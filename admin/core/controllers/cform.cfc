@@ -46,6 +46,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 */
 component extends="controller" output="false" {
 
+	public function before(rc) output=false {
+		if ( !(variables.permUtility.getModulePerm('00000000000000000000000000000000000',arguments.rc.siteid) && variables.permUtility.getModulePerm('00000000000000000000000000000000004',arguments.rc.siteid) ) ) {
+			secure(arguments.rc);
+		}
+	}
+
 	public function setFormBuilderManager(formBuilderManager) output=false {
 		variables.formBuilderManager=arguments.formBuilderManager;
 	}
@@ -56,7 +62,7 @@ component extends="controller" output="false" {
 
 		var formStruct = getBean('content').loadBy(contentID=arguments.rc.contentid,siteid=rc.siteid ).getAllValues();
 		var formJSON = {};
-		
+
 		formJSON.body = formStruct.body;
 		formJSON.responseMessage = formStruct.responseMessage;
 		formJSON.responseSendTo = formStruct.responseSendTo;
@@ -67,7 +73,7 @@ component extends="controller" output="false" {
 
 		rc.zipFileLocation = "#tempDir#/form-#zipTitle#.zip";
 		rc.zipTitle = zipTitle;
-				
+
 		fileWrite(tempDir & "/form.json",formJSON);
 		zipTool.AddFiles(zipFilePath=rc.zipFileLocation,directory=tempDir,recurse="false",filter="*.json");
 	}
@@ -76,17 +82,17 @@ component extends="controller" output="false" {
 		var zipTool	= createObject("component","mura.Zip");
 		var tempDir=getTempDirectory();
 		var tempFolder = createUUID();
-				
+
 		if(structCount(form) && form.formzip != '') {
 
 			if(form.title == "") {
 				rc.errormessage="Title is required";
 				return;
 			}
-			
-			directoryCreate("#tempDir#/#tempFolder#");		
+
+			directoryCreate("#tempDir#/#tempFolder#");
 			var uploadedFile = fileUpload("#tempDir#/#tempFolder#","form.formzip","application/zip","overwrite");
-									
+
 			zipTool.Extract(zipFilePath="#tempDir#/#tempFolder#/#uploadedfile.serverfile#",extractPath="#tempDir#/#tempFolder#",overwriteFiles=true);
 
 			var formJSON = fileRead("#tempDir#/#tempFolder#/form.json");
@@ -95,11 +101,11 @@ component extends="controller" output="false" {
 				rc.errormessage="Upload did not contain an exported Mura CMS Form";
 				return;
 			}
-			
+
 			var formStruct = deserializeJSON(formJSON);
 
 			var newFormBean = getBean('content');
-			
+
 			newFormBean.set('type','Form');
 			newFormBean.set('siteid',rc.siteid);
 			newFormBean.set('moduleid','00000000000000000000000000000000004');
@@ -107,7 +113,7 @@ component extends="controller" output="false" {
 			newFormBean.set('responseMessage',formStruct.responseMessage);
 			newFormBean.set('responseSendTo',formStruct.responseSendTo);
 			newFormBean.set('title',form.title);
-						
+
 			newFormBean.save();
 			location("?muraAction=cArch.list&siteid=#rc.siteid#&topid=00000000000000000000000000000000004&moduleid=00000000000000000000000000000000004&activeTab=0",false);
 		}

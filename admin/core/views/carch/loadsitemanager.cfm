@@ -366,65 +366,70 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	   </cfif>
 	   <!--- actions hidden w/ css, copied to actions menu w/ js
 	   do not delete! --->
-	   <dd class="actions">
-		 <ul>
-		   <cfif rc.rstop.type neq 'Module' and not listFindNoCase('none,read',perm)>
-			 <cfset isLockedBySomeoneElse=$.siteConfig('hasLockableNodes') and len(rc.rsTop.lockid) and rc.rsTop.lockid neq session.mura.userid>
-			 <li class="edit<cfif isLockedBySomeoneElse> disabled</cfif>"><a onclick="draftprompt.call(this,event);return false;" data-siteid="#rc.siteid#" data-contentid="#rc.rstop.contentid#" data-contenthistid="#rc.rstop.contenthistid#" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="" data-href="./?muraAction=cArch.edit&contenthistid=#rc.rstop.ContentHistID#&siteid=#esapiEncode('url',rc.siteid)#&contentid=#rc.topid#&topid=#esapiEncode('url',rc.topid)#&type=#rc.rstop.type#&parentid=#rc.rstop.parentid#&moduleid=#rc.rstop.moduleid#"><i class="mi-pencil"></i></a></li>
-        <cfif rc.rstop.moduleid eq '00000000000000000000000000000000000' or (rc.rstop.moduleid eq '00000000000000000000000000000000099' and rc.rstop.type eq 'Variation')>
+	  <dd class="actions">
+		<ul>
+		<cfif rc.rstop.type neq 'Module' and not listFindNoCase('none,read',perm)>
+  	  <cfset isLockedBySomeoneElse=$.siteConfig('hasLockableNodes') and len(rc.rsTop.lockid) and rc.rsTop.lockid neq session.mura.userid>
+      <li class="edit<cfif isLockedBySomeoneElse> disabled</cfif>"><a onclick="draftprompt.call(this,event);return false;" data-siteid="#rc.siteid#" data-contentid="#rc.rstop.contentid#" data-contenthistid="#rc.rstop.contenthistid#" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href=""data-href="./?muraAction=cArch.edit&contenthistid=#rc.rstop.ContentHistID#&siteid=#esapiEncode('url',rc.siteid)#&contentid=#rc.topid#&topid=#esapiEncode('url',rc.topid)#&type=#rc.rstop.type#&parentid=#rc.rstop.parentid#&moduleid=#rc.rstop.moduleid#"><i class="mi-pencil"></i></a></li>
+      <cfif rc.rstop.moduleid eq '00000000000000000000000000000000000' or (rc.rstop.moduleid eq '00000000000000000000000000000000099' and rc.rstop.type eq 'Variation')>
         <cfswitch expression="#rc.rstop.type#">
-		 <cfcase value="Page,Folder,Calendar,Gallery">
-		 <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(rc.siteid).getWebPath(complete=1)##$.getURLStem(rc.siteid,rc.rstop.filename)#','#esapiEncode('javascript',rc.rstop.targetParams)#');"><i class="mi-globe"></i></a></li>
-		 </cfcase>
-		 <cfcase value="File,Link">
-		 <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(rc.siteid).getWebPath(complete=1)##$.getURLStem(rc.siteid,"")#index.cfm?LinkServID=#rc.rstop.contentid#','#esapiEncode('javascript',rc.rstop.targetParams)#');"><i class="mi-globe"></i></a></li>
-		 </cfcase>
-		 <cfcase value="Variation">
-		 <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#rc.rstop.remoteurl#','#esapiEncode('javascript',rc.rstop.targetParams)#');"><i class="mi-globe"></i></a></li>
-		 </cfcase>
-		 <cfdefaultcase>
-		 <li class="preview disabled"><a><i class="mi-globe"></i></a></li>
-		 </cfdefaultcase>
-		 </cfswitch>
-        </cfif>
-		<li class="version-history"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.versionhistory")#" href="./?muraAction=cArch.hist&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.rstop.moduleid#"><i class="mi-history"></i></a></li>
-        <cfif rc.rstop.type eq 'Form'>
-			<li class="manage-data"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.managedata")#"  href="./?muraAction=cArch.datamanager&contentid=#esapiEncode('url',rc.rstop.contentid)#&siteid=#esapiEncode('url',rc.rstop.siteid)#&topid=#esapiEncode('url',rc.topid)#&moduleid=#esapiEncode('url',rc.rstop.moduleid)#&type=Form&parentid=#esapiEncode('url',rc.rstop.parentid)#"><i class="mi-wrench"></i></a></li>
-		</cfif>
-        <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
-		    <li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.permissions")#" href="./?muraAction=cPerm.main&contentid=#rc.topid#&parentid=&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.rstop.moduleid#&type=#rc.rstop.type#"><i class="mi-group"></i></a></li>
+    		 <cfcase value="Page,Folder,Calendar,Gallery">
+    		 <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(rc.siteid).getWebPath(complete=1)##$.getURLStem(rc.siteid,rc.rstop.filename)#','#esapiEncode('javascript',rc.rstop.targetParams)#');"><i class="mi-globe"></i></a></li>
+    		 </cfcase>
+    		 <cfcase value="File,Link">
+    		 <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(rc.siteid).getWebPath(complete=1)##$.getURLStem(rc.siteid,"")#index.cfm?LinkServID=#rc.rstop.contentid#','#esapiEncode('javascript',rc.rstop.targetParams)#');"><i class="mi-globe"></i></a></li>
+    		 </cfcase>
+    		 <cfcase value="Variation">
+    		 <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#rc.rstop.remoteurl#','#esapiEncode('javascript',rc.rstop.targetParams)#');"><i class="mi-globe"></i></a></li>
+    		 </cfcase>
+    		 <cfdefaultcase>
+    		 <li class="preview disabled"><a><i class="mi-globe"></i></a></li>
+    		 </cfdefaultcase>
+    		</cfswitch>
+      </cfif>
+    	<li class="version-history"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.versionhistory")#" href="./?muraAction=cArch.hist&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.rstop.moduleid#"><i class="mi-history"></i></a></li>
+      <cfif rc.rstop.type eq 'Form'>
+    		<li class="manage-data"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.managedata")#"  href="./?muraAction=cArch.datamanager&contentid=#esapiEncode('url',rc.rstop.contentid)#&siteid=#esapiEncode('url',rc.rstop.siteid)#&topid=#esapiEncode('url',rc.topid)#&moduleid=#esapiEncode('url',rc.rstop.moduleid)#&type=Form&parentid=#esapiEncode('url',rc.rstop.parentid)#"><i class="mi-wrench"></i></a></li>
+    	</cfif>
+      <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
+    		<li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.permissions")#" href="./?muraAction=cPerm.main&contentid=#rc.topid#&parentid=&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.rstop.moduleid#&type=#rc.rstop.type#"><i class="mi-group"></i></a></li>
+    	<cfelse>
+    		<li class="permissions disabled"><a><i class="mi-group"></i></a></li>
+    	</cfif>
+    	<cfif application.settingsManager.getSite(rc.siteid).getlocking() neq 'all'>
+    		<li class="delete disabled"><a><i class="mi-trash"></i></a></li>
+    	</cfif>
 		<cfelse>
-			<li class="permissions disabled"><a><i class="mi-group"></i></a></li>
+  		<li class="edit disabled"><a><i class="mi-pencil"></i></a></li>
+      <cfif rc.rstop.moduleid eq '00000000000000000000000000000000000' or (rc.rstop.moduleid eq '00000000000000000000000000000000099' and rc.rstop.type eq 'Variation')>
+  	  <cfswitch expression="#rc.rstop.type#">
+    	   <cfcase value="Page,Folder,Calendar,Gallery">
+    	   <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(rc.siteid).getWebPath(complete=1)##$.getURLStem(rc.siteid,rc.rstop.filename)#','#esapiEncode('javascript',rc.rstop.targetParams)#');"><i class="mi-globe"></i></a></li>
+    	   </cfcase>
+    	   <cfcase value="File,Link">
+    	   <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(rc.siteid).getWebPath(complete=1)##$.getURLStem(rc.siteid,"")#index.cfm?LinkServID=#rc.rstop.contentid#','#esapiEncode('javascript',rc.rstop.targetParams)#');"><i class="mi-globe"></i></a></li>
+    	   </cfcase>
+    	   <cfcase value="Variation">
+    	   <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#rc.rstop.remoteurl#','#esapiEncode('javascript',rc.rstop.targetParams)#');"><i class="mi-globe"></i></a></li>
+    	   </cfcase>
+    	   <cfdefaultcase>
+    	   <li class="preview disabled"><a><i class="mi-globe"></i></a></li>
+    	   </cfdefaultcase>
+    	   </cfswitch>
+      </cfif>
+      <cfif rc.rstop.moduleid eq '00000000000000000000000000000000004'>
+        <li class="import"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.importnode")#"  href="./?muraAction=cForm.importform&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-upload"></i></a></li>
+      <cfelseif rc.rstop.moduleid eq '00000000000000000000000000000000003'>
+          <li class="import"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.importnode")#"  href="./?muraAction=cArch.importcomponent&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-upload"></i></a></li>
+      </cfif>
+		  <li class="version-history disabled"><a><i class="mi-history"></i></a></li>
+  		<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
+  		  <li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.permissions")#" href="./?muraAction=cPerm.main&contentid=#rc.topid#&parentid=&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.rstop.moduleid#&type=#rc.rstop.type#"><i class="mi-group"></i></a></li>
+  		<cfelse>
+  		  <li class="permissions disabled"><a><i class="mi-group"></i></a></li>
+  		</cfif>
+  		<li class="delete disabled"><a><i class="mi-trash"></i></a></li>
 		</cfif>
-		<cfif application.settingsManager.getSite(rc.siteid).getlocking() neq 'all'>
-			<li class="delete disabled"><a><i class="mi-trash"></i></a></li>
-		</cfif>
-		<cfelse>
-		<li class="edit disabled"><a><i class="mi-pencil"></i></a></li>
-    <cfif rc.rstop.moduleid eq '00000000000000000000000000000000000' or (rc.rstop.moduleid eq '00000000000000000000000000000000099' and rc.rstop.type eq 'Variation')>
-	 <cfswitch expression="#rc.rstop.type#">
-	   <cfcase value="Page,Folder,Calendar,Gallery">
-	   <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(rc.siteid).getWebPath(complete=1)##$.getURLStem(rc.siteid,rc.rstop.filename)#','#esapiEncode('javascript',rc.rstop.targetParams)#');"><i class="mi-globe"></i></a></li>
-	   </cfcase>
-	   <cfcase value="File,Link">
-	   <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(rc.siteid).getWebPath(complete=1)##$.getURLStem(rc.siteid,"")#index.cfm?LinkServID=#rc.rstop.contentid#','#esapiEncode('javascript',rc.rstop.targetParams)#');"><i class="mi-globe"></i></a></li>
-	   </cfcase>
-	   <cfcase value="Variation">
-	   <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#rc.rstop.remoteurl#','#esapiEncode('javascript',rc.rstop.targetParams)#');"><i class="mi-globe"></i></a></li>
-	   </cfcase>
-	   <cfdefaultcase>
-	   <li class="preview disabled"><a><i class="mi-globe"></i></a></li>
-	   </cfdefaultcase>
-	   </cfswitch>
-    </cfif>
-		<li class="version-history disabled"><a><i class="mi-history"></i></a></li>
-		 <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
-		   <li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.permissions")#" href="./?muraAction=cPerm.main&contentid=#rc.topid#&parentid=&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.rstop.moduleid#&type=#rc.rstop.type#"><i class="mi-group"></i></a></li>
-		 <cfelse>
-		   <li class="permissions disabled"><a><i class="mi-group"></i></a></li>
-		 </cfif>
-			 <li class="delete disabled"><a><i class="mi-trash"></i></a></li>
-		   </cfif>
 	   <cfset pluginEvent.setValue('type', rc.rstop.type)>
 		   <cfset pluginEvent.setValue('filename', rc.rstop.filename)>
 		   <cfset pluginEvent.setValue('contentid', rc.rstop.contentid)>
