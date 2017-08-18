@@ -139,6 +139,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<li><a href="./?muraAction=cArch.update&action=deleteall&contentid=#esapiEncode('url',rc.contentid)#&type=#esapiEncode('url',rc.type)#&parentid=#esapiEncode('url',rc.parentid)#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&startrow=#esapiEncode('url',rc.startrow)#&moduleid=#esapiEncode('url',rc.moduleid)##rc.$.renderCSRFTokens(context=rc.contentid & 'deleteall',format='url')#"
 							<cfif listFindNoCase(nodeLevelList,rc.contentBean.getType())>onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),rc.contentBean.getMenutitle()))#',this.href)"<cfelse>onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.deletecontentconfirm"))#',this.href)"</cfif>><i class="mi-trash"></i>  #application.rbFactory.getKeyValue(session.rb,"sitemanager.content.deletecontent")#</a></li>
 						</cfif>
+						<cfif rc.contentBean.get('type') eq 'Form' and !rc.contentBean.get('isNew')>
+							<li><a href="./?muraAction=cForm.export&contentid=#esapiEncode('url',rc.contentid)#"><i class="mi-save"></i> EXPORT</a></li>
+							<li><a href="./?muraAction=cForm.importform"><i class="mi-upload"></i> IMPORT</a></li>
+						</cfif>
+						<cfif rc.contentBean.get('type') eq 'Component' and !rc.contentBean.get('isNew')>
+							<li><a href="./?muraAction=cArch.exportcomponent&contentid=#esapiEncode('url',rc.contentid)#"><i class="mi-save"></i> EXPORT</a></li>
+							<li><a href="./?muraAction=cArch.importcomponent"><i class="mi-upload"></i> IMPORT</a></li>
+						</cfif>
 						</ul>
 						<cfif started>
 						</div>
