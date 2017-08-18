@@ -90,7 +90,7 @@ Mura(function() {
 								self.processProperties(data);
 
 								for(var i = 0;i < data.properties.length;i++) {
-									if(data.properties[i].list) {
+									if(data.properties[i].listview) {
 										data.model._displaylist.push(data.properties[i]);
 									}
 									else if(data.properties[i].fieldtype) {
@@ -283,7 +283,7 @@ Mura(function() {
 
 				var item = data.properties[x];
 
-				if (item.list) {
+				if (item.listview) {
 					item.listposition = x;
 					data.listview.push(item);
 				}
@@ -407,6 +407,21 @@ Mura(function() {
 
 			}
 			return querystring;
+		},
+		formatDate:function(dateString){
+			if(!dateString){
+				return '';
+			}
+
+			dateString=dateString.split('T')[0];
+			var dateArray=dateString.split("-");
+
+			if(dtFormat[0]==0){
+				return dateArray[1] + dtCh + dateArray[2] + dtCh + dateArray[0];
+			} else {
+				return dateArray[2] + dtCh + dateArray[1] + dtCh + dateArray[0];
+			}
+
 		}
 
 	}
@@ -507,6 +522,9 @@ Mura(function() {
 			},
 			showList: function(name) {
 				Scaffolder.showList(name);
+			},
+			formatDate:function(dateString){
+				return MuraScaffold.formatDate(dateString);
 			}
 		}
 	});
@@ -599,10 +617,15 @@ Mura(function() {
 	Vue.component('scaffold-field-text', {
 		template: '#scaffold-field-text',
 		props: ['property','model','entity'],
-		methods: {},
+		methods: {
+			formatDate:function(dateString){
+				return MuraScaffold.formatDate(dateString);
+			}
+		},
 		mounted: function() {
 			var self=this;
-			if($ && (this.$props.property.datatype=='date' || this.$props.property.datatype=='datetime' && this.$props.property.validate=='date')){
+			if($ && (this.$props.property.datatype=='date' || this.$props.property.datatype=='datetime' || this.$props.property.validate=='date')){
+				self.$props.model[self.$props.property.name]=MuraScaffold.formatDate(self.$props.model[self.$props.property.name]);
 				$('input[name="' + this.$props.property.name + '"]').datepicker({
 						'minDate': 1,
 						onSelect: function(selectedDate) {

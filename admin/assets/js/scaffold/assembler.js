@@ -84,7 +84,7 @@ $( document ).ready(function() {
 //						self.processProperties(data);
 
 						for(var i = 0;i < data.properties.length;i++) {
-							if(data.properties[i].list) {
+							if(data.properties[i].listview) {
 								data.model._displaylist.push(data.properties[i]);
 							}
 						}
@@ -115,7 +115,7 @@ $( document ).ready(function() {
 								self.processProperties(data);
 
 								for(var i = 0;i < data.properties.length;i++) {
-									if(data.properties[i].list) {
+									if(data.properties[i].listview) {
 										data.model._displaylist.push(data.properties[i]);
 									}
 									else if(data.properties[i].fieldtype) {
@@ -169,6 +169,10 @@ $( document ).ready(function() {
 
 				if(!item.displayname || item.displayname == ""){
 					item.displayname = item.name;
+				}
+
+				if(!item.name || item.name == ""){
+					item.name = item.displayname;
 				}
 
 				data.properties[x] = item;
@@ -373,7 +377,7 @@ $( document ).ready(function() {
 						fieldtype: '',
 						dynamic: true,
 						"orderno": 2,
-						list: false,
+						listview: false,
 						displayname: "siteid",
 						html: "",
 						datatype: "varchar",
@@ -395,7 +399,7 @@ $( document ).ready(function() {
 				fieldtype: '',
 				dynamic: true,
 				"orderno": 1,
-				list: false,
+				listview: false,
 				displayname: "",
 				html: "",
 				datatype: "varchar",

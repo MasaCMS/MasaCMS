@@ -2,7 +2,7 @@ component extends="mura.bean.beanORM" table="tentity" entityname="entity" orderb
 
   property name="entityid" fieldtype="id";
   property name="name" displayName="Name" fieldtype="index" datatype="varchar" length=250;
-  property name="displayName" datatype="varchar" length=250 list=true displayname="name";
+  property name="displayName" datatype="varchar" length=250 listview=true displayname="name";
   property name="dynamic" datatype="int" default="0";
   property name="scaffold" datatype="int" default="0";
   property name="bundleable" datatype="int" default="0";

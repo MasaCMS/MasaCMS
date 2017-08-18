@@ -477,10 +477,10 @@
 
 			<div v-if="data.fieldtype != 'id'">
 				<label>List</label>
-				<input type="checkbox" v-model="data.list"
+				<input type="checkbox" v-model="data.listview"
 					v-bind:true-value="true"
 	   			 	v-bind:false-value="false"
-	 				name="list" :checked="data.list == true || data.list == 1 || data.list == 'true' ? 'checked' : null"
+	 				name="listview" :checked="data.listview == true || data.listview == 1 || data.listview == 'true' ? 'checked' : null"
 				>
 			</div>
 
