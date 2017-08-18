@@ -804,6 +804,8 @@ Mura(function() {
 			},
 			showAll: function( data ) {
 				this.currentparent = {};
+				this.sortBy= '';
+				this.sortDir= '';
 				MuraScaffold.all( this.doAll );
 			},
 			hide: function() {
@@ -862,6 +864,8 @@ Mura(function() {
 				this.currentView = 'scaffold-form-template';
 			},
 			showList: function( entityname ) {
+				this.sortBy='';
+				this.sortDir='';
 				this.entityname = entityname;
 				this.currentView = 'scaffold-list-template';
 				MuraScaffold.feed( this.doList,entityname,this.itemsper,this.sortBy,this.sortDir );
