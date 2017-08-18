@@ -1851,7 +1851,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var fieldsFound=false>
 	<cfset var fields=''>
 	<cfset var beanName=listLast(arguments.componentPath,'.')>
-	
+
 	<cfif not structKeyExists(request.muraORMchecked,'#checkKey#')>
 		<!--- Catch instantiation errors --->
 		<cftry>
@@ -1860,9 +1860,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif isBoolean(getValue('debuggingEnabled')) and getValue('debuggingEnabled')>
 						<cfrethrow>
 					<cfelse>
-						<cfset writeLog(type="Error", file="exception", text="Error registering #md.path#");>
+						<cfset writeLog(type="Error", file="exception", text="Error registering #arguments.componentPath#: #serializeJSON(cfcatch.stacktrace)#");>
 						<cfreturn this>
-					</cfif>
+				</cfif>
 			</cfcatch>
 		</cftry>
 
