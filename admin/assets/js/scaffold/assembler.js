@@ -147,24 +147,31 @@ $( document ).ready(function() {
 
 				item.pos = x;
 
-				if(item['default'] == 'null')
+				if(item['default'] == 'null'){
 					item['default'] = "";
+				}
 
-				if(!item.orderno)
+				if(!item.orderno){
 					item.orderno = orderpx++;
+				}
 
 
-
-				if(item.optionlist)
+				if(item.optionlist){
 					item.optionlist = item.optionlist.split('^');
+				}
 
-				if(item.optionvaluelist)
+				if(item.optionvaluelist){
 					item.optionvaluelist = item.optionvaluelist.split('^');
-
-				if(!item.rendertype || item.rendertype == "")
+				}
+				if(!item.rendertype || item.rendertype == ""){
 					item.rendertype = self.getRenderType( item );
+				}
 
-					data.properties[x] = item;
+				if(!item.displayname || item.displayname == ""){
+					item.displayname = item.name;
+				}
+
+				data.properties[x] = item;
 
 			}
 

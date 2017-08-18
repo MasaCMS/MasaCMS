@@ -584,7 +584,7 @@ Blog: www.codfusion.com--->
 <cffunction name="setSessionCookies" output="false">
 	<cfargument name="reset" default="true">
 
-	<cfif application.configBean.getSecureCookies() or application.configBean.getSessionCookiesExpires() neq 'never' or len(application.configBean.getCookieDomain())>
+	<!---<cfif application.configBean.getSecureCookies() or application.configBean.getSessionCookiesExpires() neq 'never' or len(application.configBean.getCookieDomain())>--->
 		<!---<cftry>--->
 			<cfset var sessionData=getSession()>
 
@@ -636,7 +636,7 @@ Blog: www.codfusion.com--->
 			</cfif>
 		<!---<cfcatch></cfcatch>
 		</cftry>--->
-	</cfif>
+	<!---</cfif>--->
 </cffunction>
 
 <cffunction name="deleteCookie" output="false">

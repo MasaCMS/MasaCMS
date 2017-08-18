@@ -322,7 +322,7 @@
 	<template id="assembler-related-form-template">
 		<div class="formtemplate" id="related-form-template">
 			<div>
-				<label>Property Name df</label>
+				<label>Property Name</label>
 				<input type="text" v-model="data.name"
 					name="name" @change="data.name=data.name.replace(/[^0-9a-z]/gi, '');"
 				>
@@ -375,7 +375,7 @@
 					v-model="data.renderfield"
 					name="renderfield"
 					>
-					<option v-for="(option,index) in this.relatedprops" v-if="option.displayname && option.displayname.length > 0" :value="option.name" :selected="option.fkcolumn == option.name ? 'selected' : 'null'">{{option.displayname}}</option>
+					<option v-for="(option,index) in this.relatedprops" v-if="option.displayname && option.displayname.length > 0" :value="option.name" :selected="((!data.renderfield || data.renderfield.length==0) && option.name=='name') ? 'selected' : 'null'">{{option.displayname}}</option>
 				</select>
 			</div>
 
