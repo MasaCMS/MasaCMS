@@ -65,6 +65,10 @@ Mura(function() {
 							if(data.properties[i].list) {
 								data.model._displaylist.push(data.properties[i]);
 							}
+
+							if(data.properties[i].datatype=='datetime' || data.properties[i].datatype=='date') {
+								data.model[data.properties[i].name]=MuraScaffold.formatDate(data.model[data.properties[i].name]);
+							}
 						}
 
 						listener(data);
@@ -95,6 +99,10 @@ Mura(function() {
 									}
 									else if(data.properties[i].fieldtype) {
 
+									}
+
+									if(data.properties[i].datatype=='datetime' || data.properties[i].datatype=='date') {
+										data.model[data.properties[i].name]=MuraScaffold.formatDate(data.model[data.properties[i].name]);
 									}
 								}
 
@@ -625,7 +633,7 @@ Mura(function() {
 		mounted: function() {
 			var self=this;
 			if($ && (this.$props.property.datatype=='date' || this.$props.property.datatype=='datetime' || this.$props.property.validate=='date')){
-				self.$props.model[self.$props.property.name]=MuraScaffold.formatDate(self.$props.model[self.$props.property.name]);
+				//self.$props.model[self.$props.property.name]=MuraScaffold.formatDate(self.$props.model[self.$props.property.name]);
 				$('input[name="' + this.$props.property.name + '"]').datepicker({
 						'minDate': 1,
 						onSelect: function(selectedDate) {
@@ -755,11 +763,15 @@ Mura(function() {
 								MuraScaffold.processProperties(self.data);
 
 								for(var i = 0;i < self.data.properties.length;i++) {
-									if(self.data.properties[i].list) {
+									if(self.data.properties[i].listview) {
 										self.data.model._displaylist.push(self.data.properties[i]);
 									}
 									else if(self.data.properties[i].fieldtype) {
 
+									}
+
+									if(self.data.properties[i].datatype=='datetime' || self.data.properties[i].datatype=='date') {
+										self.data.model[self.data.properties[i].name]=MuraScaffold.formatDate(self.data.model[self.data.properties[i].name]);
 									}
 								}
 

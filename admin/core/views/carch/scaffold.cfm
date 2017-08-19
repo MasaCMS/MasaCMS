@@ -247,7 +247,6 @@
 							<tr v-for="(object,index) in data.list" :class="{'alt': index % 2 === 0}">
 									<td v-for="item in data.listview" @click="(entityname == 'entity') ? showList(object.entityname) : showForm(object.entityname,object.id)">
 											<span v-if="item.rendertype == 'htmleditor'" v-html="object[item.name]"></span>
-											<span v-else-if="item.datatype=='datetime' || item.datetime=='date'" v-text="formatDate(object[item.name])"></span>
 											<span v-else v-text="object[item.name]"></span>
 									</td>
 									<td v-if="entityname != 'entity'">
