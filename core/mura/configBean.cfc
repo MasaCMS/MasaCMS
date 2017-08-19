@@ -1890,6 +1890,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset beanName=metadata.entityname>
 		</cfif>
 	</cfif>
+
+	<cfset structDelete(application.objectMappings,beanName)>
+		
 	<cfset entity=ioc.getBean(beanName)>
 
 	<cfif isORM>
