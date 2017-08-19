@@ -486,12 +486,15 @@ $( document ).ready(function() {
 
 						prop.pos = prop.orderno = i+1;
 						newprops.push(prop);
-						console.log(JSON.parse(JSON.stringify(prop)));
+						//console.log(JSON.parse(JSON.stringify(prop)));
 					}
 
 					this.model.properties = JSON.parse(JSON.stringify(newprops));
 					// make sure there is an "id" field
 					var savemodel = JSON.parse(JSON.stringify(this.model));
+
+					console.log('savemodel')
+					console.log(this.model);
 
 					for(var i = 0;i < savemodel.properties.length;i++) {
 						var prop = savemodel.properties[i];

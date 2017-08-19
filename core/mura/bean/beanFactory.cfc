@@ -121,6 +121,8 @@ component extends="ioc" hint="This provides the primary bean factory that all co
             forceSchemaCheck=true
           );
 
+          structDelete(application.objectMappings,entity.entityName);
+
           return this;
         } else {
           throw(message="Cannot update non-dynamic bean: #entity.entityname#");
