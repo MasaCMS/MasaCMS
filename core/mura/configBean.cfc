@@ -1839,11 +1839,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="componentPath">
 	<cfargument name="siteid" hint="Can be a list" default="">
 	<cfargument name="moduleid" default="00000000000000000000000000000000000">
+	<cfargument name="forceSchemaCheck" default="false">
 
 	<cfparam name="request.muraORMchecked" default="#structNew()#">
 	<cfset var checkKey='b#hash(arguments.componentPath)#'>
 	<cfset var ioc=getServiceFactory()>
-	<cfset var checkSchema=isDefined('url.applydbupdates') and not structKeyExists(request.muraORMchecked,'#checkKey#')>
+	<cfset var checkSchema=isDefined('url.applydbupdates') and not structKeyExists(request.muraORMchecked,'#checkKey#') OR arguments.forceSchemaCheck>
 	<cfset var isSingleton=not listFindNoCase(arguments.componentPath,'entities','.') and not listFindNoCase(arguments.componentPath,'beans','.')>
 	<cfset var isORM=false>
 	<cfset var isPublic=false>

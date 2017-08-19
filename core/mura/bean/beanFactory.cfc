@@ -117,7 +117,8 @@ component extends="ioc" hint="This provides the primary bean factory that all co
           getBean('configBean').registerBean(
             componentPath="murawrm.modules.dynamic_entities.model.beans.#entity.entityname#",
             siteid=arguments.siteid,
-            moduleid="00000000000000000000000000000000000"
+            moduleid="00000000000000000000000000000000000",
+            forceSchemaCheck=true
           );
 
           return this;
