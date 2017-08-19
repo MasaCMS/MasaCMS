@@ -62,7 +62,7 @@ Mura(function() {
 
 						for(var i = 0;i < data.properties.length;i++) {
 
-							if(data.properties[i].list) {
+							if(data.properties[i].listview) {
 								data.model._displaylist.push(data.properties[i]);
 							}
 
