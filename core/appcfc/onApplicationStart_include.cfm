@@ -392,6 +392,9 @@ if ( application.setupComplete ) {
 	}
 
 	variables.serviceFactory.getBean('contentCategoryAssign');
+
+	application.serviceFactory.loadDynamicEntities();
+	
 	application.appAutoUpdated=false;
 	variables.serviceList="utility,pluginManager,settingsManager,contentManager,eventManager,contentRenderer,contentUtility,contentGateway,categoryManager,clusterManager,contentServer,changesetManager,scriptProtectionFilter,permUtility,emailManager,loginManager,mailinglistManager,userManager,dataCollectionManager,feedManager,sessionTrackingManager,favoriteManager,raterManager,dashboardManager,autoUpdater";
 	//  The ad manager has been removed, but may be there in certain legacy conditions
@@ -515,6 +518,7 @@ if ( application.setupComplete ) {
 	if ( !structKeyExists(application,"plugins") ) {
 		application.plugins=structNew();
 	}
+
 	application.pluginstemp=application.plugins;
 	application.plugins=structNew();
 	variables.pluginEvent=createObject("component","mura.event").init();

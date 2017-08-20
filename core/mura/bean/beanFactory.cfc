@@ -84,44 +84,7 @@ component extends="ioc" hint="This provides the primary bean factory that all co
 
           result = result & newline & "}";
 
-          if(!directoryExists(expandPath('/muraWRM/modules'))){
-            directoryCreate(expandPath('/muraWRM/modules'));
-          }
-
-          if(!directoryExists(expandPath('/muraWRM/modules/dynamic_entities'))){
-            directoryCreate(expandPath('/muraWRM/modules/dynamic_entities'));
-          }
-
-          if(!fileExists(expandPath('/muraWRM/modules/dynamic_entities/config.xml.cfm'))){
-            fileWrite(expandPath('/muraWRM/modules/dynamic_entities/config.xml.cfm'),'<mura name="Dynamic Entities"></mura>');
-          }
-
-          if(!directoryExists(expandPath('/muraWRM/modules/dynamic_entities/model'))){
-            directoryCreate(expandPath('/muraWRM/modules/dynamic_entities/model'));
-          }
-
-          if(!directoryExists(expandPath('/muraWRM/modules/dynamic_entities/model/beans'))){
-            directoryCreate(expandPath('/muraWRM/modules/dynamic_entities/model/beans'));
-          }
-
-          var filePath=expandPath('/muraWRM/modules/dynamic_entities/model/beans/#entity.entityname#.cfc');
-
-          if(fileExists(filePath)){
-            fileDelete(filePath);
-          }
-
-          fileWrite(filePath,result);
-
-          structDelete(application.objectMappings,entity.entityName);
-
-          getBean('configBean').registerBean(
-            componentPath="murawrm.modules.dynamic_entities.model.beans.#entity.entityname#",
-            siteid=arguments.siteid,
-            moduleid="00000000000000000000000000000000000",
-            forceSchemaCheck=true
-          );
-
-          structDelete(application.objectMappings,entity.entityName);
+          createDynamicEntity(entity.entityname,result, arguments.siteid);
 
           return this;
         } else {
@@ -138,9 +101,9 @@ component extends="ioc" hint="This provides the primary bean factory that all co
 
         var entity=getBean(arguments.beanName);
 
-        if(entity.getDynamic()){
+        if(entity.exists() && entity.getDynamic()){
 
-          getBean('dbUtility').dropTable(entity.getTable());
+          //getBean('dbUtility').dropTable(entity.getTable());
 
           structDelete(application.objectMappings,entity.getEntityName());
 
@@ -149,6 +112,8 @@ component extends="ioc" hint="This provides the primary bean factory that all co
           if(fileExists(filePath)){
             fileDelete(filePath);
           }
+
+          entity.delete();
 
         } else {
           throw(message="Cannot undeclare non-dynamic bean: #entity.entityname#");
@@ -163,6 +128,91 @@ component extends="ioc" hint="This provides the primary bean factory that all co
   	public function containsInstance( String name ) {
   	  return containsBean( name );
   	}
+
+    // Calls containsBean(). Added for WireBox compatibility
+    public function containsBean( String name ) {
+      var exists=super.containsBean( name );
+
+      if(exists){
+        return true;
+      } else if (super.containsBean( 'entity' )){
+        var entity=getBean('entity').loadBy(name=arguments.name);
+
+        if(entity.exists()){
+          createDynamicEntity(entity.getName(),entity.getCode());
+
+          return true;
+
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
+
+    }
+
+    function createDynamicEntity(entityName,code,siteid=''){
+
+      createDynamicEntityModule();
+
+      var filePath=expandPath('/muraWRM/modules/dynamic_entities/model/beans/#arguments.entityName#.cfc');
+
+      if(fileExists(filePath)){
+        fileDelete(filePath);
+      }
+
+      fileWrite(filePath,arguments.code);
+
+        structDelete(application.objectMappings,arguments.entityName);
+
+      if(len(arguments.siteid)){
+        getBean('configBean').registerBean(
+          componentPath="murawrm.modules.dynamic_entities.model.beans.#arguments.entityname#",
+          siteid=arguments.siteid,
+          moduleid="00000000000000000000000000000000000",
+          forceSchemaCheck=true
+        );
+      }
+
+      structDelete(application.objectMappings,arguments.entityName);
+    }
+
+    function loadDynamicEntities() {
+        var entities=getBean('entity').getFeed().where().prop('dynamic').isEQ(1).getIterator();
+        var entity='';
+
+        if(directoryExists(expandPath('/muraWRM/modules/dynamic_entities'))){
+          DirectoryDelete(expandPath('/muraWRM/modules/dynamic_entities'), true);
+        }
+
+        while(entities.hasNext()){
+          entity=entities.next();
+          createDynamicEntity(entity.getName(),entity.getCode());
+        }
+    }
+
+    function createDynamicEntityModule(){
+      if(!directoryExists(expandPath('/muraWRM/modules'))){
+        directoryCreate(expandPath('/muraWRM/modules'));
+      }
+
+      if(!directoryExists(expandPath('/muraWRM/modules/dynamic_entities'))){
+        directoryCreate(expandPath('/muraWRM/modules/dynamic_entities'));
+      }
+
+      if(!fileExists(expandPath('/muraWRM/modules/dynamic_entities/config.xml.cfm'))){
+        fileWrite(expandPath('/muraWRM/modules/dynamic_entities/config.xml.cfm'),'<mura name="Dynamic Entities"></mura>');
+      }
+
+      if(!directoryExists(expandPath('/muraWRM/modules/dynamic_entities/model'))){
+        directoryCreate(expandPath('/muraWRM/modules/dynamic_entities/model'));
+      }
+
+      if(!directoryExists(expandPath('/muraWRM/modules/dynamic_entities/model/beans'))){
+        directoryCreate(expandPath('/muraWRM/modules/dynamic_entities/model/beans'));
+      }
+    }
 
 	  // calls getBean(). Added for WireBox compatibility
   	public function getInstance( String name, String dsl, Any initArguments ) {
