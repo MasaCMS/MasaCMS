@@ -1346,29 +1346,30 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 
 	function registerAsEntity(){
 		var reg=getRegisteredEntity();
+		var dynamic=reg.getScaffold();
 
-		if(reg.getIsNew() || reg.getDynamic()  || isDefined('url.applydbupdates')){
+		if(reg.getIsNew() || reg.getDynamic() || (dynamic != reg.getDynamic())){
+
 			reg
 			.set('scaffold',getScaffold())
 			.set('dynamic',getDynamic())
 			.set('displayName',getEntityDisplayName())
 			.set('ishistorical',getIsHistorical());
 
-			if(reg.getDynamic()){
-				var code=reg.getCode();
-			}
-
 			var md=GetMetaData(this);
 
 			if(structKeyExists(md,'path')){
 				try{
-					reg.set('code',fileRead(expandpath(md.path)));
+					if(reg.getDynamic()){
+						var code=reg.getCode();
+						reg.set('code',fileRead(expandpath(md.path)));
+					}
 				} catch(any e){}
 
 				reg.set('path',md.path);
 			}
 			try{
-				if(reg.getIsNew() || (reg.getDynamic() && code!=reg.getCode()) || isDefined('url.applydbupdates'))
+				if( reg.getIsNew() || ( reg.getDynamic() && code != reg.getCode() ) || ( dynamic != reg.getDynamic() ) )
 				reg.save();
 			} catch (any e){
 				writeLog(type="Error", file="exception", text="Error registering #md.path#");
