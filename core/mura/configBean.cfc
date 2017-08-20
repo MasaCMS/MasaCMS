@@ -1897,6 +1897,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset entity=ioc.getBean(beanName)>
 
 	<cfif isORM>
+		<cfset entity.registerAsEntity()>
+			
 		<cfif checkSchema>
 			<cfset entity.checkSchema()>
 		</cfif>

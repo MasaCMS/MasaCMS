@@ -192,7 +192,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			arguments.config.displayname=beanInstance.getEntityDisplayName();
 		}
 
-		beanInstance.registerAsEntity();
+		//beanInstance.registerAsEntity();
 
 		if(!structKeyExists(variables.config.entities['#arguments.entityName#'],'moduleid')){
 			variables.config.entities['#arguments.entityName#'].moduleid=beanInstance.getRegisteredEntity().getEntityid();

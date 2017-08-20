@@ -170,7 +170,7 @@ component extends="ioc" hint="This provides the primary bean factory that all co
       fileWrite(filePath,arguments.code);
 
       structDelete(application.objectMappings,arguments.entityName);
-
+      
       if(len(arguments.siteid)){
         getBean('configBean').registerBean(
           componentPath="murawrm.modules.dynamic_entities.model.beans.#arguments.entityname#",
