@@ -139,7 +139,12 @@ component extends="ioc" hint="This provides the primary bean factory that all co
         var entity=getBean('entity').loadBy(name=arguments.name);
 
         if(entity.exists()){
-          createDynamicEntity(entity.getName(),entity.getCode());
+          if(super.containsBean('settingsManager')){
+            var rsSites=getBean('settingsManager').getList();
+            createDynamicEntity(entity.getName(),entity.getCode(),valueList(rsSites.siteid));
+          } else {
+            createDynamicEntity(entity.getName(),entity.getCode());
+          }
 
           return true;
 
@@ -164,7 +169,7 @@ component extends="ioc" hint="This provides the primary bean factory that all co
 
       fileWrite(filePath,arguments.code);
 
-        structDelete(application.objectMappings,arguments.entityName);
+      structDelete(application.objectMappings,arguments.entityName);
 
       if(len(arguments.siteid)){
         getBean('configBean').registerBean(
