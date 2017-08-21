@@ -725,7 +725,7 @@
 							</div>
 						</div>
 					</div>
-					<cfif $.siteConfig('scaffolding')>
+					<cfif $.siteConfig('scaffolding') and application.permUtility.getModulePerm("00000000000000000000000000000000016",session.siteid)>
 						<div id="tabCustom" class="tab-pane">
 							<div class="block block-bordered">
 								<!-- block header -->
