@@ -177,7 +177,7 @@
 
 </div> <!-- /.mura-header -->
 
-<div class="alert">IMPORTANT: Dynamically created entities are shared across all sites.</div>
+<div class="alert">IMPORTANT: Dynamically created entities are shared across all sites. You must reload Mura for updates to take effect.</div>
 
 <div class="block block-constrain" id="container">
 
