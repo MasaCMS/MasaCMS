@@ -9,7 +9,7 @@ Mura(function() {
 		init: function(siteID,Scaffold){
 
 			MuraORMScaffold.siteID = siteID;
-			MuraORMScaffold.endpoint = Mura.apiEndpoint + '/';
+			MuraORMScaffold.endpoint = Mura.apiEndpoint;
 
 			return MuraORMScaffold;
 		},
@@ -468,6 +468,9 @@ Mura(function() {
 		template: '#scaffold-form-template',
 		props: ['entityname','data','entityid','errordata'],
 		methods: {
+			openEndpoint:function(){
+				window.open(MuraScaffold.getEndpoint() + this.$props.entityname + "/" + this.$props.data.model.id, '_blank');
+			},
 			clickSave: function() {
 				MuraScaffold.Scaffold = this;
 
@@ -500,6 +503,13 @@ Mura(function() {
 			this.$parent.state = [];
 		},
 		methods: {
+			openEndpoint:function(){
+				if(this.$props.entityname=='entity'){
+					window.open(MuraScaffold.getEndpoint(), '_blank');
+				} else {
+					window.open(MuraScaffold.getEndpoint() + this.$props.entityname, '_blank');
+				}
+			},
 			goToAssembler: function(entityname){
 				location.href="./?muraAction=scaffold.assembler&entityname=" + entityname;
 			},

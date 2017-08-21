@@ -218,6 +218,7 @@
 					<button @click="goToAssembler(entityname)">Edit Entity Definition</button>
 				</span>
 			</span>
+			<button @click="openEndpoint()">View API Endpoint</button>
 			<span v-if="currentparent && currentparent.properties">
 				<button @click="showForm(currentparent.properties.entityname,currentparent.properties.id)" class="btn">Back</button>
 			</span>
@@ -313,6 +314,7 @@
 		<div>
 		<h2>EDIT {{entityname.toUpperCase()}}</h3>
 		<button @click="clickBack" type="submit" class="btn">Back</button>
+		<button @click="openEndpoint()">View API Endpoint</button>
 		<ul>
 			<template v-for="property in data.properties">
 				<span v-if="property.fieldtype == 'id'">
