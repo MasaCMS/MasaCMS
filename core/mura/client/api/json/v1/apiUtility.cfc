@@ -1560,8 +1560,12 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		entity=$.getBean(entityName).loadBy(argumentCollection=loadByparams);
 
 		if(!saveErrors && !StructIsEmpty(errors)){
-			for(var p in errors){
-				entity.set(p,$.event(p));
+			var instance=entity.getAllValues();
+			var eventData=$.event().getAllValues();
+			for(var p in eventData){
+				if(StructKeyExists(instance, "#p#")){
+					entity.set(p,$.event(p));
+				}
 			}
 		}
 
