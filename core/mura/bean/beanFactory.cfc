@@ -170,7 +170,7 @@ component extends="ioc" hint="This provides the primary bean factory that all co
       fileWrite(filePath,arguments.code);
 
       structDelete(application.objectMappings,arguments.entityName);
-      
+
       if(len(arguments.siteid)){
         getBean('configBean').registerBean(
           componentPath="murawrm.modules.dynamic_entities.model.beans.#arguments.entityname#",
@@ -187,8 +187,18 @@ component extends="ioc" hint="This provides the primary bean factory that all co
         var entities=getBean('entity').getFeed().where().prop('dynamic').isEQ(1).getIterator();
         var entity='';
 
-        if(directoryExists(expandPath('/muraWRM/modules/dynamic_entities'))){
-          DirectoryDelete(expandPath('/muraWRM/modules/dynamic_entities'), true);
+        if(directoryExists(expandPath('/muraWRM/modules/dynamic_entities/model/beans'))){
+          var files=DirectoryList(expandPath('/muraWRM/modules/dynamic_entities/model/beans'));
+          var rs=entities.getQuery();
+          var entityList=valueList(rs.name);
+          var entityPath='';
+
+          for(entityPath in files){
+            entity=listFirst(listLast(entity,application.configBean.getFileDelim()),".");
+            if(!listFindNoCase(entityList,entity)){
+                fileDelete(entityPath);
+            }
+          }
         }
 
         while(entities.hasNext()){

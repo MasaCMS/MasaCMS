@@ -126,16 +126,16 @@
   <h3 class="block-title">#application.rbFactory.getKeyValue(session.rb,"sitemanager.view.custom")#</h3>
 </div>
 
+<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
+<div class="nav-module-specific btn-group">
+	<a class="btn" href="./?muraAction=cPerm.module&contentid=00000000000000000000000000000000016&siteid=#esapiEncode('url',rc.siteid)#&moduleid=00000000000000000000000000000000016"><i class="mi-group"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.permissions')#</a>
+</div>
+</cfif>
+
 <div class="block block-constrain" id="container">
 	<div class="block-content">
 			<div class="block block-bordered">
 				<div id="load-spin" style="display: none;"><div id="load-spin-spinner"></div></div>
-				<!-- block header -->
-				<div class="block-header">
-					<h3 class="block-title">
-						Scaffolding
-					</h3>
-				</div> <!-- /.block header -->
 				<div class="block-content">
 					<div>
 						<div>

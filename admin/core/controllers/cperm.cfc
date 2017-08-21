@@ -126,6 +126,10 @@ component extends="controller" output="false" {
 		if ( arguments.rc.moduleid == '00000000000000000000000000000000015' ) {
 			variables.fw.redirect(action="cComments.default",append="siteid",path="./");
 		}
+		if ( arguments.rc.moduleid == '00000000000000000000000000000000016' ) {
+			rc.activeTab=2;
+			variables.fw.redirect(action="cArch.list",append="siteid,activeTab",path="./");
+		}
 		variables.fw.redirect(action="cPlugins.list",append="siteid",path="./");
 	}
 

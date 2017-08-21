@@ -168,17 +168,18 @@
 			var Master = "";
 		</script>
 
+<div class="mura-header">
+  <h1>Dynamic Custom Entity</h1>
 
+	<div class="nav-module-specific btn-group">
+    <a class="btn" href="./?muraAction=cArch.list&siteid=#esapiEncode('url',rc.siteid)#&activeTab=2" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#"><i class="mi-arrow-circle-left"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#</a>
+  </div>
+
+</div> <!-- /.mura-header -->
+
+<div class="alert">IMPORTANT: Dynamically created entities are shared across all sites.</div>
 
 <div class="block block-constrain" id="container">
-
-	<!--- Tab Nav (only tabbed for Admin + Super Users) --->
-
-	<ul id="viewTabs" class="mura-tab-links nav-tabs container-master">
-			<li>
-				<a href="##" @click="clickShowAssembler">Assembler</a>
-			</li>
-	</ul>
 
 	<!--- /Tab Nav --->
 
