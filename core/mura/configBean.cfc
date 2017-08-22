@@ -1858,11 +1858,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<!--- Catch instantiation errors --->
 		<cftry>
 			<cfset var metadata=getMetaData(createObject('component','#arguments.componentPath#'))>
+
 			<cfcatch>
 					<cfif isBoolean(getValue('debuggingEnabled')) and getValue('debuggingEnabled')>
 						<cfrethrow>
 					<cfelse>
-						<cfset writeLog(type="Error", file="exception", text="Error registering #arguments.componentPath#: #serializeJSON(cfcatch.stacktrace)#");>
+						<cfset writeLog(type="Error", file="exception", text="Error registering #arguments.componentPath#: #serializeJSON(cfcatch.stacktrace)#")>
 						<cfreturn this>
 				</cfif>
 			</cfcatch>
@@ -1898,7 +1899,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif isORM>
 		<cfset entity.registerAsEntity()>
-			
+
 		<cfif checkSchema>
 			<cfset entity.checkSchema()>
 		</cfif>

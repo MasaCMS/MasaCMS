@@ -10046,7 +10046,7 @@ Mura.Feed = Mura.Core.extend(
 			if(type == 'count' && typeof property=='undefined'){
 				property='*';
 			}
-			
+
 			if(typeof type != 'undefined' && typeof property!='undefined'){
 				this.queryString += '&' + encodeURIComponent( type + '[' + this.propIndex + ']') + '=' + property;
 				this.propIndex++;
@@ -10142,14 +10142,19 @@ Mura.Feed = Mura.Core.extend(
 					type: 'get',
 					url: apiEndpoint + self.queryString,
 					success: function(resp) {
+						if (resp.data != 'undefined'  ) {
+							var returnObj = new Mura.EntityCollection(resp.data,self._requestcontext);
 
-						var returnObj = new Mura.EntityCollection(resp.data,self._requestcontext);
-
-						if (typeof resolve == 'function') {
-							resolve(returnObj);
+							if (typeof resolve == 'function') {
+								resolve(returnObj);
+							}
+						} else if (typeof reject == 'function') {
+								reject(returnObj);
 						}
 					},
-					error: reject
+					error:  function(resp) {
+							this.success(resp );
+					}
 				});
 			});
 		}
