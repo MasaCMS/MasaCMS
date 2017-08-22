@@ -1010,8 +1010,10 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		var responseObject=getpagecontext().getResponse();
 		responseObject.setContentType('application/json; charset=utf-8');
 		try{
-			if(responseObject.getStatus() != 404){
-				responseObject.setStatus(200);
+			if(request.mura404){
+				responseObject.setStatus(400);
+			} else {
+				responseObject.setStatus(arguments.statusCode);
 			}
 		} catch (Any e){}
 
@@ -1458,6 +1460,16 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		errors=entity.getValue('errors');
 
 		entity=$.getBean(entityName).loadBy(argumentCollection=loadByparams);
+
+		if(!saveErrors && !StructIsEmpty(errors)){
+			var instance=entity.getAllValues();
+			var eventData=$.event().getAllValues();
+			for(var p in eventData){
+				if(StructKeyExists(instance, "#p#")){
+					entity.set(p,$.event(p));
+				}
+			}
+		}
 
 		var returnStruct=getFilteredValues(entity,true,entity.getEntityName(),arguments.siteid,arguments.expand,pk);
 
