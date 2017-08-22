@@ -184,7 +184,6 @@ component extends="ioc" hint="This provides the primary bean factory that all co
         );
       }
 
-      structDelete(application.objectMappings,arguments.entityName);
     }
 
     function loadDynamicEntities() {
