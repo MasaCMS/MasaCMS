@@ -962,7 +962,11 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			} else if(params.entityName=="entityname"){
 				var primaryKey='notvalid';
 			} else {
-				var primaryKey=application.objectMappings['#params.entityName#'].primaryKey;
+				if(isDefined('application.objectMappings.#params.entityName#.primaryKey')){
+					var primaryKey=application.objectMappings['#params.entityName#'].primaryKey;
+				} else if (getServiceFactory().containsBean(params.entityname)){
+					var primaryKey=getBean(params.entityname).getPrimaryKey();
+				}
 			}
 
 			if(httpRequestData.method=='GET' && isDefined('params.#primaryKey#') && len(params['#primaryKey#'])){
