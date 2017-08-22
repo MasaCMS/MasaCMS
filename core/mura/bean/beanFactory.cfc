@@ -76,7 +76,11 @@ component extends="ioc" hint="This provides the primary bean factory that all co
             result = result & newline & tab & tab & "property";
 
             for(var k in p){
-              result = result & ' #lcase(k)#="#p[k]#"';
+              if(listFindNoCase('yes,no,true,false',p[k])){
+                result = result & ' #lcase(k)#=#YesNoToBoolean(p[k])#';
+              } else {
+                result = result & ' #lcase(k)#="#p[k]#"';
+              }
             }
 
             result = result & ";";
@@ -256,9 +260,9 @@ component extends="ioc" hint="This provides the primary bean factory that all co
 	}
 
   function YesNoToBoolean(value){
-    if(listFindNoCase("1,yes,true",arguments.value) ) {
+    if(listFindNoCase("yes,true",arguments.value)){
       return true;
-    } else {
+    } else{
       return false;
     }
   }
