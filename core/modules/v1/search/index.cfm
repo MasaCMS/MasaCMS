@@ -175,18 +175,20 @@
 			<div class="#this.searchResultsMoreResultsRowClass#">
 				<div class="moreResults">
 					<p>#variables.$.rbKey('search.displaying')#: #request.startrow# - #variables.through# #variables.$.rbKey('search.of')# #session.rsSearch.recordcount#</p>
-					<ul class="#this.searchResultsPagerClass#">
-					<cfif variables.previous gte 1>
-						<li class="navPrev">
-							<a href="./?startrow=#variables.previous#&amp;display=search&amp;keywords=#HTMLEditFormat(request.keywords)#&amp;searchSectionID=#HTMLEditFormat(request.searchSectionID)#&amp;tag=#HTMLEditFormat(request.tag)#">#variables.$.rbKey('search.prev')#</a>
-						</li>
+					<cfif ( session.rsSearch.recordcount gt 0 and  variables.through lt session.rsSearch.recordcount ) OR variables.previous gte 1>
+						<ul class="#this.searchResultsPagerClass#">
+						<cfif variables.previous gte 1>
+							<li class="navPrev">
+								<a href="./?startrow=#variables.previous#&amp;display=search&amp;keywords=#HTMLEditFormat(request.keywords)#&amp;searchSectionID=#HTMLEditFormat(request.searchSectionID)#&amp;tag=#HTMLEditFormat(request.tag)#">#variables.$.rbKey('search.prev')#</a>
+							</li>
+						</cfif>
+						<cfif session.rsSearch.recordcount gt 0 and  variables.through lt session.rsSearch.recordcount>
+							<li class="navNext">
+								<a href="./?startrow=#next#&amp;display=search&amp;keywords=#HTMLEditFormat(request.keywords)#&amp;searchSectionID=#HTMLEditFormat(request.searchSectionID)#&amp;tag=#HTMLEditFormat(request.tag)#">#variables.$.rbKey('search.next')#</a>
+							</li>
+						</cfif>
+						</ul>
 					</cfif>
-					<cfif session.rsSearch.recordcount gt 0 and  variables.through lt session.rsSearch.recordcount>
-						<li class="navNext">
-							<a href="./?startrow=#next#&amp;display=search&amp;keywords=#HTMLEditFormat(request.keywords)#&amp;searchSectionID=#HTMLEditFormat(request.searchSectionID)#&amp;tag=#HTMLEditFormat(request.tag)#">#variables.$.rbKey('search.next')#</a>
-						</li>
-					</cfif>
-				</ul>
 				</div>
 			</div>
 		</cfif>
