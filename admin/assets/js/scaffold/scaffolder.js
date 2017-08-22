@@ -316,7 +316,7 @@ Mura(function() {
 					item.rendertype = self.getRenderType( item );
 				}
 
-				if(item.filter==true || item.filter == 'true'){
+				if(item.filter==true || item.filter == 'true' || typeof item.filter == 'string' && item.filter.toLowerCase() == 'yes'){
 					hasFilter=true;
 				}
 

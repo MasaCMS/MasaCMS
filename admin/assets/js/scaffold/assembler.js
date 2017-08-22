@@ -701,8 +701,8 @@ $( document ).ready(function() {
 			onLoadComplete: function(json) {
 
 				Mura("#load-spin").hide();
-
-				if(!json.dynamic || json.dynamic != true) {
+			
+				if(!json.dynamic || (json.dynamic != true && json.dynamic != "true")) {
 					this.checkIDProp();
 					alert("Sorry, you can only edit dynamic Mura ORM objects.");
 					return;

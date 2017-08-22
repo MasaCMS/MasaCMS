@@ -1601,7 +1601,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			fields=variables.config.entities[arguments.entityConfigName].fields;
 		}
 
-		if(!listFindNoCase(fields,'isnew')){
+		if(len(fields) && !listFindNoCase(fields,'isnew')){
 			fields=listAppend(fields,'isnew');
 		}
 
