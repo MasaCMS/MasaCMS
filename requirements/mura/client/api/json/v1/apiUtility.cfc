@@ -1461,7 +1461,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		entity=$.getBean(entityName).loadBy(argumentCollection=loadByparams);
 
-		if(!saveErrors && !StructIsEmpty(errors)){
+		if(!(isBoolean(entity.getValue('saveErrors')) && saveErrors) && !StructIsEmpty(errors)){
 			var instance=entity.getAllValues();
 			var eventData=$.event().getAllValues();
 			for(var p in eventData){
@@ -1497,6 +1497,10 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			}
 		} else if(isDefined('variables.config.entities.#arguments.entityConfigName#.fields') && len(variables.config.entities[arguments.entityConfigName].fields)){
 			fields=variables.config.entities[arguments.entityConfigName].fields;
+		}
+
+		if(!listFindNoCase(fields,'isnew')){
+			fields=listAppend(fields,'isnew');
 		}
 
 		fields=listToArray(fields);
