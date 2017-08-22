@@ -1081,8 +1081,10 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		var responseObject=getpagecontext().getResponse();
 		responseObject.setContentType('application/json; charset=utf-8');
 		try{
-			if(responseObject.getStatus() != 404){
-				responseObject.setStatus(200);
+			if(request.mura404){
+				responseObject.setStatus(400);
+			} else {
+				responseObject.setStatus(arguments.statusCode);
 			}
 		} catch (Any e){}
 
