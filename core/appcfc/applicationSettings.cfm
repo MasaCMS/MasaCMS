@@ -158,37 +158,57 @@ if ( !this.sessionManagement ) {
 	request.trackSession = len(request.userAgent)
  && !(
  REFind( "bot\b", request.userAgent ) OR
- Find( "_bot_", request.userAgent ) OR
- Find( "crawl", request.userAgent ) OR
  REFind( "\brss", request.userAgent ) OR
- Find( "feed", request.userAgent ) OR
- Find( "news", request.userAgent ) OR
- Find( "blog", request.userAgent ) OR
- Find( "reader", request.userAgent ) OR
- Find( "syndication", request.userAgent ) OR
- Find( "coldfusion", request.userAgent ) OR
- Find( "slurp", request.userAgent ) OR
- Find( "google", request.userAgent ) OR
- Find( "zyborg", request.userAgent ) OR
- Find( "emonitor", request.userAgent ) OR
- Find( "jeeves", request.userAgent ) OR
- Find( "ping", request.userAgent ) OR
- Find( "java", request.userAgent ) OR
- Find( "cfschedule", request.userAgent ) OR
- Find( "reeder", request.userAgent ) OR
- Find( "python", request.userAgent ) OR
- Find( "synapse", request.userAgent ) OR
- Find( "facebookexternalhit", request.userAgent ) OR
- Find( "tencenttraveler", request.userAgent ) OR
- Find( "bluedragon", request.userAgent ) OR
- Find( "binarycanary", request.userAgent ) OR
- Find( "siteexplorer", request.userAgent ) OR
- Find( "spider", request.userAgent ) OR
+ Find( "_bot_", request.userAgent ) OR
  Find( "80legs", request.userAgent ) OR
+ Find( "ahrefs", request.userAgent ) OR
+ Find( "applebot", request.userAgent ) OR
+ Find( "baidu", request.userAgent ) OR
+ Find( "binarycanary", request.userAgent ) OR
+ Find( "bing", request.userAgent ) OR
+ Find( "bingbot", request.userAgent ) OR
+ Find( "blog", request.userAgent ) OR
+ Find( "bluedragon", request.userAgent ) OR
+ Find( "cfnetwork", request.userAgent ) OR
+ Find( "cfschedule", request.userAgent ) OR
+ Find( "coldfusion", request.userAgent ) OR
+ Find( "crawl", request.userAgent ) OR
+ Find( "dotbot", request.userAgent ) OR
+ Find( "emonitor", request.userAgent ) OR
+ Find( "exabot", request.userAgent ) OR
+ Find( "facebookexternalhit", request.userAgent ) OR
+ Find( "feed", request.userAgent ) OR
+ Find( "go-http-client", request.userAgent ) OR
+ Find( "google", request.userAgent ) OR
  Find( "googlebot", request.userAgent ) OR
+ Find( "houzzbot", request.userAgent ) OR
+ Find( "hotbar", request.userAgent ) OR
+ Find( "java", request.userAgent ) OR
+ Find( "jeeves", request.userAgent ) OR
+ Find( "lucee", request.userAgent ) OR
  Find( "microsoft office protocol", request.userAgent ) OR
+ Find( "megaindex", request.userAgent ) OR
+ Find( "news", request.userAgent ) OR
+ Find( "netestate", request.userAgent ) OR
+ Find( "ping", request.userAgent ) OR
+ Find( "python", request.userAgent ) OR
  Find( "railo", request.userAgent ) OR
- Find( "lucee", request.userAgent )
+ Find( "reader", request.userAgent ) OR
+ Find( "reeder", request.userAgent ) OR
+ Find( "reeder", request.userAgent ) OR
+ Find( "safeassign", request.userAgent ) OR
+ Find( "seznambot", request.userAgent ) OR
+ Find( "siteimprove", request.userAgent ) OR
+ Find( "slurp", request.userAgent ) OR
+ Find( "spider", request.userAgent ) OR
+ Find( "synapse", request.userAgent ) OR
+ Find( "syndication", request.userAgent ) OR
+ Find( "tencenttraveler", request.userAgent ) OR
+ Find( "toolbar", request.userAgent ) OR
+ Find( "wikido", request.userAgent ) OR
+ Find( "yandex", request.userAgent ) OR
+ Find( "zabbix", request.userAgent ) OR
+ Find( "zyborg", request.userAgent )
  );
 
 	if ( request.tracksession ) {
