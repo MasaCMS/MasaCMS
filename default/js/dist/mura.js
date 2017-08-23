@@ -9782,14 +9782,19 @@ return /******/ (function(modules) { // webpackBootstrap
 						type: 'get',
 						url: apiEndpoint + self.queryString,
 						success: function(resp) {
+							if (resp.data != 'undefined'  ) {
+								var returnObj = new Mura.EntityCollection(resp.data);
 
-							var returnObj = new Mura.EntityCollection(resp.data);
-
-							if (typeof resolve == 'function') {
-								resolve(returnObj);
+								if (typeof resolve == 'function') {
+									resolve(returnObj);
+								}
+							} else if (typeof reject == 'function') {
+									reject(returnObj);
 							}
 						},
-						error: reject
+						error: function(resp) {
+								this.success(resp );
+						}
 					});
 				});
 			}
