@@ -441,19 +441,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfreturn {}>
 		</cfif>
 
-		<cfif not findNoCase("windows",server.os.name)>
-			<cfset local.connection=createObject("java","java.net.URL").init("file://" & local.filePath).openConnection()>
-		<cfelse>
-			<cfset local.connection=createObject("java","java.net.URL").init("file:///" & local.filePath).openConnection()>
-		</cfif>
+		<cfif application.CFVersion gte 10>
+			<cfset local.getFileType = fileGetMimeType(local.filePath,false)>
+			<cfset local.getFileInfo = getFileInfo(local.filePath) >
 
-		<cfset local.connection.connect()>
-		<cfset local.results.contentType=listFirst(local.connection.getContentType() ,"/")>
-		<cfset local.results.contentSubType=listLast(local.connection.getContentType() ,"/")>
-		<!---<cfset local.results.charSet=local.connection.getContentEncoding()>--->
-		<cfset local.results.fileSize=local.connection.getContentLength()>
-		<cfset local.connection.getInputStream().close()>
-		<!---<cffile action="readBinary" file="#local.filePath#" variable="local.fileContent">--->
+			<cfset local.results.contentType=listFirst(local.getFileType ,"/")>
+			<cfset local.results.contentSubType=listLast(local.getFileType ,"/")>
+			<cfset local.results.fileSize=local.getFileInfo.size>
+
+		<cfelse>
+			<cfif not findNoCase("windows",server.os.name)>
+				<cfset local.connection=createObject("java","java.net.URL").init("file://" & local.filePath).openConnection()>
+			<cfelse>
+				<cfset local.connection=createObject("java","java.net.URL").init("file:///" & local.filePath).openConnection()>
+			</cfif>
+
+			<cfset local.connection.connect()>
+			<cfset local.results.contentType=listFirst(local.connection.getContentType() ,"/")>
+			<cfset local.results.contentSubType=listLast(local.connection.getContentType() ,"/")>
+			<!---<cfset local.results.charSet=local.connection.getContentEncoding()>--->
+			<cfset local.results.fileSize=local.connection.getContentLength()>
+			<cfset local.connection.getInputStream().close()>
+			<!---<cffile action="readBinary" file="#local.filePath#" variable="local.fileContent">--->
+		</cfif>
 
 	<cfelse>
 		<cfset local.isLocalFile=false>
