@@ -2644,7 +2644,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 			structAppend(errors,
 				getBean(arguments.data.bean)
-				.loadBy(argumentCollection=loadArgs)
+				.loadBy(argumentCollection=args)
 				.set(arguments.data)
 				.validate(arguments.data.fields)
 				.getErrors()
