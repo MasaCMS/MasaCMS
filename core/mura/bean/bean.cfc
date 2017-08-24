@@ -563,6 +563,11 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 		return application.objectMappings[variables.entityName].orderby;
 	}
 
+	function getPublicAPI(){
+		param name="application.objectMappings.#variables.entityName#.public" default="false";
+		return application.objectMappings[variables.entityName].public;
+	}
+
 	function hasTable(){
 		return structKeyExists(application.objectMappings[variables.entityName],'table') && len(application.objectMappings[variables.entityName].table);
 	}
@@ -646,6 +651,12 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 						application.objectMappings[variables.entityName].table=md.table;
 					} else {
 						application.objectMappings[variables.entityName].table='';
+					}
+
+					if(structKeyExists(md,'public')){
+						application.objectMappings[variables.entityName].public=md.public;
+					} else {
+						application.objectMappings[variables.entityName].public=false;
 					}
 
 					if(structKeyExists(md,'discriminatorColumn')){

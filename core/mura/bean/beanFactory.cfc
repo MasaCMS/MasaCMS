@@ -142,7 +142,7 @@ component extends="ioc" hint="This provides the primary bean factory that all co
       } else if (super.containsBean( 'entity' )){
         var entity=getBean('entity').loadBy(name=arguments.name);
 
-        if(entity.exists()){
+        if(entity.exists() && entity.getDynamic()){
           if(super.containsBean('settingsManager')){
             var rsSites=getBean('settingsManager').getList();
             createDynamicEntity(entity.getName(),entity.getCode(),valueList(rsSites.siteid));
