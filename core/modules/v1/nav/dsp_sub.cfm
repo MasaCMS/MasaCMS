@@ -45,4 +45,12 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfset navOutput=dspSubNav()>
-<cfif len(navOutput)><cfoutput><nav id="navSub"<cfif this.navWrapperClass neq ""> class="mura-nav-sub #this.navWrapperClass#"</cfif>>#navOutput#</nav></cfoutput></cfif>
+<cfif len(navOutput)>
+  <cfoutput>
+    <nav id="navSub"<cfif this.navSubWrapperClass neq ""> class="mura-nav-sub #this.navSubWrapperClass#"</cfif>>
+      <cfif len(this.navSubWrapperBodyClass)><div class="#this.navSubWrapperBodyClass#"></cfif>
+      #navOutput#
+      <cfif len(this.navSubWrapperBodyClass)></div></cfif>
+    </nav>
+  </cfoutput>
+</cfif>

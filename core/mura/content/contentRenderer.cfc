@@ -75,6 +75,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.indexFileInURLS="">
 <cfset this.hashURLS="">
 
+<cfset this.generalWrapperClass="well">
+<cfset this.generalWrapperBodyClass="">
+
 <cfif isDefined('url.muraadminpreview')>
 	<cfset this.showAdminToolBar=false/>
 	<cfset this.showMemberToolBar=false/>
@@ -101,7 +104,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <!--- This is the preloader markup for async objects--->
 <cfset this.preloaderMarkup=''>
 <!--- These settings are for navigational display objects --->
-<cfset this.navWrapperClass="sidebar-nav well">
+<cfset this.navWrapperClass="sidebar-nav #this.generalWrapperClass#">
+<cfset this.navWrapperBodyClass=this.generalWrapperBodyClass>
 <cfset this.navLIClass="">
 <cfset this.liHasKidsClass="">
 <cfset this.liHasKidsAttributes="">
@@ -117,8 +121,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.ulTopClass="navSecondary">
 <cfset this.ulPaginationClass="navSequential">
 <cfset this.ulPaginationWrapperClass="pagination">
-<cfset this.formWrapperClass="well">
-<cfset this.generalWrapperClass="well">
 <cfset this.aNotCurrentClass="">
 <cfset this.bodyMetaImageSizeArgs={size="medium"}>
 <cfset this.bodyMetaImageClass="thumbnail">
@@ -133,8 +135,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 General Classes
 =================== --->
 
+<!--- Nav Specfic--->
+<cfset this.navSubWrapperClass=this.navWrapperClass>
+<cfset this.navSubWrapperBodyClass=this.navWrapperBodyClass>
+<cfset this.navPeerWrapperClass=this.navWrapperClass>
+<cfset this.navPeerWrapperBodyClass=this.navWrapperBodyClass>
+<cfset this.navFolderWrapperClass=this.navWrapperClass>
+<cfset this.navFolderWrapperBodyClass=this.navWrapperBodyClass>
+<cfset this.navStandardWrapperClass=this.navWrapperClass>
+<cfset this.navStandardWrapperBodyClass=this.navWrapperBodyClass>
+<cfset this.navMultiLevelWrapperClass=this.navWrapperClass>
+<cfset this.navMultiLevelWrapperBodyClass=this.navWrapperBodyClass>
+<cfset this.navArchiveWrapperClass=this.navWrapperClass>
+<cfset this.navArchiveWrapperBodyClass=this.navWrapperBodyClass>
+<cfset this.navCategoryWrapperClass=this.navWrapperClass>
+<cfset this.navCategoryWrapperBodyClass=this.navWrapperBodyClass>
+
 <!--- Forms --->
-<cfset this.formWrapperClass = "well">
+<cfset this.formWrapperClass=this.generalWrapperClass>
+<cfset this.formWrapperBodyClass=this.generalWrapperBodyClass>
+<cfset this.aNotCurrentClass="">
 <cfset this.formFieldWrapperClass = "control-group">
 <cfset this.formFieldLabelClass = "control-label">
 <cfset this.formInputWrapperClass = "input-addon">
@@ -190,7 +210,8 @@ Display Objects
 <cfset this.commentSortWrapperClass="">
 <cfset this.commentSortSelectClass="">
 <cfset this.commentFormWrapperClass="">
-<cfset this.commentFormClass="well">
+<cfset this.commentFormClass=this.formWrapperClass>
+<cfset this.commentFormBodyClass=this.formWrapperBodyClass>
 <cfset this.commentNewClass="btn">
 <cfset this.commentFieldWrapperClass="">
 <cfset this.commentFieldLabelClass="">
@@ -220,7 +241,8 @@ Display Objects
 <cfset this.commentDeleteButtonClass="btn btn-default btn-sm">
 <cfset this.commentEditButtonClass="btn btn-default btn-sm">
 <cfset this.commentApproveButtonClass="btn btn-default btn-sm">
-<cfset this.commentMoreCommentsContainer="well">
+<cfset this.commentMoreCommentsContainer=this.generalWrapperClass>
+<cfset this.commentMoreCommentsContainer=this.generalWrapperBodyClass>
 
 <!--- Comments/dsp_comment.cfm --->
 <cfset this.emailLinkClass="btn">
@@ -228,14 +250,14 @@ Display Objects
 <cfset this.approveCommentLinkClass="btn">
 <cfset this.deleteCommentLinkClass="btn">
 
-<!--- Dataresponses/dsp_detail.cfm --->
+<!--- Dataresponses/dsp_detail.cfm DEPRECATED --->
 <cfset this.dataResponseListClass="dl-horizontal">
 
-<!--- Dataresponses/dsp_list.cfm --->
+<!--- Dataresponses/dsp_list.cfm DEPRECATED --->
 <cfset this.dataResponseTableClass="table table-hover">
 <cfset this.dataResponsePaginationClass="pagination">
 
-<!--- Draggablefeeds/index.cfm --->
+<!--- Draggablefeeds/index.cfm DEPRECATED--->
 <cfset this.draggableBoxWrapperClass="">
 <cfset this.draggableBoxHeaderClass="">
 <cfset this.draggableBoxRSSWrapperClass="svRSSFeeds">
@@ -300,7 +322,8 @@ Display Objects
 <cfset this.folderWrapperClass="svIndex">
 
 <!--- Dsp_edit_profile.cfm --->
-<cfset this.editProfileWrapperClass="">
+<cfset this.editProfileWrapperClass=this.formWrapperClass>
+<cfset this.editProfileWrapperBodyClass=this.formWrapperBodyClass>
 <cfset this.editProfileFormClass="form-horizontal">
 <cfset this.editProfileFormGroupWrapperClass="control-group">
 <cfset this.editProfileFieldLabelClass="control-label">
@@ -322,7 +345,8 @@ Display Objects
 
 <!--- Dsp_event_reminder_form.cfm --->
 <cfset this.eventReminderFormWrapperClass="">
-<cfset this.eventReminderFormClass="well">
+<cfset this.eventReminderFormClass=this.generalWrapperClass>
+<cfset this.eventReminderFormBodyClass=this.generalWrapperBodyClass>
 <cfset this.eventReminderFieldWrapperClass="control-group">
 <cfset this.eventReminderFormLabelsClass="control-label">
 <cfset this.eventReminderSubmitClass="btn btn-default">
@@ -336,6 +360,7 @@ Display Objects
 
 <!--- Dsp_login.cfm --->
 <cfset this.loginWrapperClass="container">
+<cfset this.loginWrapperBodyClass="">
 <cfset this.loginWrapperInnerClass="row">
 <cfset this.loginFormClass="form-horizontal">
 <cfset this.forgotPasswordFormClass="form-horizontal">
@@ -351,7 +376,8 @@ Display Objects
 <cfset this.notRegisteredLinkClass="btn btn-primary">
 
 <!--- Dsp_mailing_list_master.cfm --->
-<cfset this.mailingListWrapperClass="well">
+<cfset this.mailingListWrapperClass=this.generalWrapperClass>
+<cfset this.mailingListWrapperBodyClass=this.generalWrapperBodyClass>
 <cfset this.mailingListFormClass="form-horizontal">
 <cfset this.mailingListFormGroupWrapperClass="">
 <cfset this.mailingListFormLabelClass="control-label">
@@ -390,7 +416,8 @@ Display Objects
 <cfset this.searchAgainSubmitClass="btn btn-default">
 
 <!--- Dsp_user_tools.cfm --->
-<cfset this.userToolsLoginWrapperClass="well clearfix">
+<cfset this.userToolsLoginWrapperClass="#this.generalWrapperClass# clearfix">
+<cfset this.userToolsLoginWrapperBodyClass=this.generalWrapperBodyClass>
 <cfset this.userToolsLoginFormClass="form-horizontal">
 <cfset this.userToolsFormGroupWrapperClass="">
 <cfset this.userToolsLoginFormLabelClass="control-label">

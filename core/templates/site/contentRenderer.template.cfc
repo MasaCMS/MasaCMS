@@ -128,11 +128,29 @@
 		//this.ulPaginationWrapperClass="row";
 		//this.formWrapperClass="well";
 		//this.generalWrapperClass="well";
+		//this.generalWrapperBodyClass="";
 		//this.aNotCurrentClass="";
 		//this.enablemuratag=true;
 		//this.bodyMetaImageSizeArgs={size="medium"};
 		//this.defaultnavsize=50;
 		this.shadowboxattribute="data-rel"; //This is the new value and will not be needed overtime.
+
+
+		//this.navSubWrapperClass=this.navWrapperClass;
+		//this.navSubWrapperBodyClass=this.navWrapperBodyClass;
+		//this.navPeerWrapperClass=this.navWrapperClass;
+		//this.navPeerWrapperBodyClass=this.navWrapperBodyClass;
+		//this.navFolderWrapperClass=this.navWrapperClass;
+		//this.navFolderWrapperBodyClass=this.navWrapperBodyClass;
+		//this.navStandardWrapperClass=this.navWrapperClass;
+		//this.navStandardWrapperBodyClass=this.navWrapperBodyClass;
+		//this.navMultiLevelWrapperClass=this.navWrapperClass;
+		//this.navMultiLevelWrapperBodyClass=this.navWrapperBodyClass;
+		//this.navArchiveWrapperClass=this.navWrapperClass;
+		//this.navArchiveWrapperBodyClass=this.navWrapperBodyClass;
+		//this.navCategoryWrapperClass=this.navWrapperClass>
+		//this.navCategoryWrapperBodyClass=this.navWrapperBodyClass;
+
 
 		this.alertSuccessClass = "";
 		this.alertInfoClass = "";
@@ -161,10 +179,12 @@
 		//comments/index.cfm
 		this.allowPublicComments=true;
 		this.commentsWrapperClass="";
+		this.commentsWrapperBodyClass="";
 		this.commentSortContainerClass="";
 		this.commentSortWrapperClass="";
 		this.commentSortSelectClass=this.formInputClass;
 		this.commentFormWrapperClass=this.generalWrapperClass;
+		this.commentFormWrapperBodyClass=this.generalWrapperBodyClass;
 		this.commentFormClass="";
 		this.commentNewClass=this.formButtonClass;
 		this.commentFieldWrapperClass=this.formFieldWrapperClass;
@@ -197,30 +217,6 @@
 		this.commentsLinkClass="";
 		this.approveCommentLinkClass="";
 		this.deleteCommentLinkClass="";
-
-		//dataresponses/dsp_detail.cfm
-		this.dataResponseListClass="";
-
-		//dataresponses/dsp_list.cfm
-		this.dataResponseTableClass="";
-		this.dataResponsePaginationClass="";
-
-		//draggablefeeds/index.cfm
-		this.draggableBoxWrapperClass="";
-		this.draggableBoxHeaderClass="";
-		this.draggableBoxRSSWrapperClass="";
-		this.draggableBoxHeaderButtonClass="";
-		this.draggableBoxRSSeditFormClass="";
-		this.draggableBoxAddFeedWrapperClass="";
-		this.draggableBoxNewFeedFormClass="";
-		this.draggableBoxSelectFeedWrapperClass="";
-		this.draggableBoxSelectFeedRowClass="";
-		this.draggableBoxSelectFeedMenuClass="";
-		this.draggableBoxSelectFeedMenuDivClass="";
-		this.draggableFeedMenuSelectFieldClass="";
-		this.addFeedButtonWrapperDivClass="";
-		this.addFeedButtonWrapperDivInnerClass="";
-		this.addFeedButtonClass="";
 
 		//dsp_categories_nest.cfm
 		this.categoriesNestCheckboxClass="";

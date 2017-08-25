@@ -56,8 +56,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 )>
 <cfif len(navOutput)>
 <cfoutput>
-<nav id="navMultilevel"<cfif this.navWrapperClass neq ""> class="mura-nav-multi-level #this.navWrapperClass#"</cfif>>
-#navOutput#
-</nav>
+	<nav id="navMultilevel"<cfif this.navMultiLevelWrapperClass neq ""> class="mura-nav-multi-level #this.navMultiLevelWrapperClass#"</cfif>>
+		<cfif len(this.navMultiLevelWrapperBodyClass)><div class="#this.navMultiLevelWrapperBodyClass#"></cfif>
+		#navOutput#
+		<cfif len(this.navMultiLevelWrapperBodyClass)></div></cfif>
+	</nav>
 </cfoutput>
 </cfif>

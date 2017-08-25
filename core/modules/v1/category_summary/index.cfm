@@ -76,7 +76,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif variables.rs.recordcount>
 
 <cfoutput>
-<div class="svCatSummary mura-category-summary #this.navWrapperClass#">
+<div class="svCatSummary mura-category-summary #this.navCategoryWrapperClass#">
+<cfif len(this.navCategoryWrapperBodyClass)><div class="#this.navCategoryWrapperBodyClass#"></cfif>
 <#variables.$.getHeaderTag('subHead1')#>#variables.$.rbKey('list.categories')#</#variables.$.getHeaderTag('subHead1')#>
 <ul class="#this.ulTopClass#"><cfloop query="variables.rs">
 	<cfsilent>
@@ -98,5 +99,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<li class="last"><a href="#variables.viewAllURL#">View All</a><cfif useRss><a class="rss" href="#variables.$.globalConfig('context')#/tasks/feed/index.cfm?siteid=#variables.$.event('siteID')#&contentID=#variables.rsSection.contentid#">RSS</a></cfif></li>
 </ul>
 </div>
+<cfif len(this.navCategoryWrapperBodyClass)></div></cfif>
 </cfoutput>
 </cfif></cfif>
