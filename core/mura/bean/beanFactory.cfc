@@ -187,12 +187,13 @@ component extends="ioc" hint="This provides the primary bean factory that all co
     }
 
     function loadDynamicEntities() {
-        var entities=getBean('entity').getFeed().where().prop('dynamic').isEQ(1).getIterator();
+        var qs=new Query();
+        var rs=qs.execute(sql="select * from tentity where dynamic=1").getResult();
+
         var entity='';
 
         if(directoryExists(expandPath('/muraWRM/modules/dynamic_entities/model/beans'))){
           var files=DirectoryList(expandPath('/muraWRM/modules/dynamic_entities/model/beans'));
-          var rs=entities.getQuery();
           var entityList=valueList(rs.name);
           var entityPath='';
 
@@ -204,10 +205,9 @@ component extends="ioc" hint="This provides the primary bean factory that all co
           }
         }
 
-        while(entities.hasNext()){
-          entity=entities.next();
-          createDynamicEntity(entity.getName(),entity.getCode());
-        }
+      for(var e=1;e<=rs.recordcount;e++){
+          createDynamicEntity(rs.name[e],rs.code[e]);
+      }
     }
 
     function createDynamicEntityModule(){
