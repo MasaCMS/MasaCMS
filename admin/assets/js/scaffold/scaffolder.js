@@ -184,6 +184,15 @@ Mura(function() {
 					data.properties=response.properties.properties;
 					data.parentproperties=response.properties;
 
+					if(typeof data.parentproperties.dynamic=='undefined'){
+						data.parentproperties.dynamic=false;
+					} else if(typeof data.parentproperties.dynamic =='string'){
+						if(data.parentproperties.dynamic=='0' || data.parentproperties.dynamic.toLowerCase()=='false'){
+							data.parentproperties.dynamic=false;
+						} else {
+							data.parentproperties.dynamic=true;
+						}
+					}
 					self.processProperties(data);
 					data.hasFilterApplied=hasFilterApplied;
 					listener(data);
