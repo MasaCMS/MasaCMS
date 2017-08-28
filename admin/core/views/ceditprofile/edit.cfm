@@ -147,6 +147,10 @@ select * from rsSubTypes where subType <> 'Default'
 						      			<input id="username" name="usernameNoCache" type="text" value="#esapiEncode('html_attr',rc.userBean.getusername())#" message="#application.rbFactory.getKeyValue(session.rb,'user.usernamerequired')#" >
 						    </div>
 
+								<cfif isBoolean($.globalConfig('strongpasswords')) and $.globalConfig('strongpasswords')>
+									<div class="help-block-inline">#$.rbKey('user.passwordstrengthhelptext')#</div>
+								</cfif>
+
 								<div class="mura-control-group">
 							      		<label>#application.rbFactory.getKeyValue(session.rb,'user.newpassword')#**</label>
 							      			<input name="passwordNoCache"  autocomplete="off" validate="match" matchfield="password2" type="password" value=""  message="#application.rbFactory.getKeyValue(session.rb,'user.passwordmatchvalidate')#">
