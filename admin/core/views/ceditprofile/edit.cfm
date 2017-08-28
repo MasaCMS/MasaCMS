@@ -64,9 +64,8 @@ select * from rsSubTypes where subType <> 'Default'
 </cfif>
 <cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,'user.advanced'))>
 <cfset tabList=listAppend(tabList,"tabAdvanced")>
-<form novalidate="novalidate" action="./?muraAction=cEditProfile.update" method="post" enctype="multipart/form-data" name="form1" class="columns" onsubmit="return userManager.submitForm(this);">
-<cfoutput>
 
+<cfoutput>
 <div class="mura-header">
 	<h1>#application.rbFactory.getKeyValue(session.rb,'user.editprofile')#</h1>
 </div> <!-- /.mura-header -->
@@ -75,6 +74,7 @@ select * from rsSubTypes where subType <> 'Default'
 	<div class="alert alert-error"><span>#application.utility.displayErrors(rc.userBean.getErrors())#</span></div>
 </cfif>
 
+<form novalidate="novalidate" action="./?muraAction=cEditProfile.update" method="post" enctype="multipart/form-data" name="form1" class="columns" onsubmit="return userManager.submitForm(this);">
 <div class="block block-constrain">
 
 	<ul class="mura-tabs nav-tabs" data-toggle="tabs">
