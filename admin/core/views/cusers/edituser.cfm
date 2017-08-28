@@ -94,23 +94,22 @@
 	</div>
 </div> <!-- /.mura-header -->
 
-		<cfif len(rc.userBean.getUsername())>
-			<cfset strikes=createObject("component","mura.user.userstrikes").init(rc.userBean.getUsername(),application.configBean)>
-			<cfif structKeyExists(rc,"removeBlock")>
-				<cfset strikes.clear()>
-			</cfif>
-			<cfif strikes.isBlocked()>
-				<div class="alert alert-error"><span>#rbKey('user.blocked')#: #LSTimeFormat(strikes.blockedUntil(),"short")# <a href="?muraAction=cUsers.edituser&amp;userid=#esapiEncode('url',rc.userid)#&amp;type=2&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;removeBlock">[#rbKey('user.remove')#]</a></span>
-				</div>
-			</cfif>
-		</cfif>
+<cfif len(rc.userBean.getUsername())>
+	<cfset strikes=createObject("component","mura.user.userstrikes").init(rc.userBean.getUsername(),application.configBean)>
+	<cfif structKeyExists(rc,"removeBlock")>
+		<cfset strikes.clear()>
+	</cfif>
+	<cfif strikes.isBlocked()>
+		<div class="alert alert-error"><span>#rbKey('user.blocked')#: #LSTimeFormat(strikes.blockedUntil(),"short")# <a href="?muraAction=cUsers.edituser&amp;userid=#esapiEncode('url',rc.userid)#&amp;type=2&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;removeBlock">[#rbKey('user.remove')#]</a></span>
+		</div>
+	</cfif>
+</cfif>
 
-		<cfif not structIsEmpty(rc.userBean.getErrors())>
-			<div class="alert alert-error"><span>#application.utility.displayErrors(rc.userBean.getErrors())#</span></div>
-		</cfif>
+<cfif not structIsEmpty(rc.userBean.getErrors())>
+	<div class="alert alert-error"><span>#application.utility.displayErrors(rc.userBean.getErrors())#</span></div>
+</cfif>
 
-
-	<form novalidate="novalidate" action="#buildURL(action='cUsers.update', querystring='userid=#rc.userBean.getUserID()#&routeid=#rc.routeid#')#" method="post" enctype="multipart/form-data" name="form1" onsubmit="return userManager.submitForm(this);;" autocomplete="off">
+<form novalidate="novalidate" action="#buildURL(action='cUsers.update', querystring='userid=#rc.userBean.getUserID()#&routeid=#rc.routeid#')#" method="post" enctype="multipart/form-data" name="form1" onsubmit="return userManager.submitForm(this);;" autocomplete="off">
 
 	<div class="block block-constrain">
 
@@ -185,6 +184,10 @@
 								<label for="username">#rbKey('user.username')#*</label>
 								<input id="username"  name="usernameNoCache" type="text" value="#esapiEncode('html',rc.userBean.getusername())#" required="true" message="The 'Username' field is required" autocomplete="off">
 							</div>
+
+							<cfif isBoolean($.globalConfig('strongpasswords')) and $.globalConfig('strongpasswords')>
+								<div class="help-block-inline">#$.rbKey('user.passwordstrengthhelptext')#</div>
+							</cfif>
 
 							<!--- Password --->
 							<div class="mura-control-group">
