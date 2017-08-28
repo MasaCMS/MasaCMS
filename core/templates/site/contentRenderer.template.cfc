@@ -148,7 +148,7 @@
 		//this.navMultiLevelWrapperBodyClass=this.navWrapperBodyClass;
 		//this.navArchiveWrapperClass=this.navWrapperClass;
 		//this.navArchiveWrapperBodyClass=this.navWrapperBodyClass;
-		//this.navCategoryWrapperClass=this.navWrapperClass>
+		//this.navCategoryWrapperClass=this.navWrapperClass;
 		//this.navCategoryWrapperBodyClass=this.navWrapperBodyClass;
 
 
