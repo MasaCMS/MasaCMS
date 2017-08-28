@@ -150,7 +150,7 @@
 					--->
 
 					<cfif isBoolean($.globalConfig('strongpasswords')) and $.globalConfig('strongpasswords')>
-						<div class="#this.alertInfoClass">#$.rbKey('user.passwordstrengthhelptext')#</div>
+						<div class="#this.alertInfoClass#">#$.rbKey('user.passwordstrengthhelptext')#</div>
 					</cfif>
 
 					<!--- Password --->
