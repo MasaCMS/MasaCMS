@@ -60,6 +60,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="locktype" type="string" default="" required="true">
 
 <cfscript>
+
+variables.primaryKey = 'contentid';
+variables.entityName = 'stats';
+
 function init() output=false {
 variables.instance.contentID="";
 variables.instance.siteID="";
