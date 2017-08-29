@@ -1047,6 +1047,7 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 	}
 
 	function getEntityDisplayName(){
+		getEntityName();
 		param name="application.objectMappings.#variables.entityName#.displayname" default=getEntityName();
 		return application.objectMappings[variables.entityName].displayname;
 	}
