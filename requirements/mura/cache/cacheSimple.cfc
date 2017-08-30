@@ -52,7 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="isSoft" type="boolean" required="true" default="true"/>
 		<cfargument name="freeMemoryThreshold" type="numeric" required="true" default="0"/>
 		<cfscript>
-			super.init( argumentCollection:arguments );
+			super.init( argumentCollection=arguments );
 			variables.isSoft = arguments.isSoft;
 			variables.freeMemoryThreshold=arguments.freeMemoryThreshold;
 			return this;
