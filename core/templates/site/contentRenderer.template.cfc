@@ -425,7 +425,11 @@
 		this.navArchiveListClass="";
 
 		//navBreadcrumb
-		this.navBreadcrumbULClass="";
+		this.navBreadcrumbULClass="breadcrumb";
+		this.liBreadcrumbCurrentClass="";
+		this.liBreadcrumbNotCurrentClass="";
+		this.aBreadcrumbCurrentClass="";
+		this.aBreadcrumbNotCurrentClass="";
 
 		//rater/index.cfm
 		this.raterObjectWrapperClass="";

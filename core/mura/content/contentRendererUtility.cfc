@@ -1777,8 +1777,55 @@
 		<cfset var counter=0 />
 		<cfif arrayLen(crumbdata) gt (1 + arguments.renderer.getNavOffSet())>
 			<cfsavecontent variable="theNav">
-				<cfoutput><ol itemscope itemtype="http://schema.org/BreadcrumbList"<cfif len(arguments.id)> id="#arguments.id#"</cfif> class="mura-breadcrumb breadcrumb<cfif Len(arguments.class)> #arguments.class#</cfif>">
-					<cfloop from="#theOffset#" to="1" index="I" step="-1"><cfif I neq 1><li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="#iif(I eq theOffset,de('first'),de(''))#"><cfif I neq theOffset>#arguments.separator#</cfif>#arguments.renderer.addlink(type=crumbdata[I].type,filename=crumbdata[I].filename,title=crumbdata[I].menutitle,target='_self',targetparams='',contentid=crumbdata[I].contentid,siteid=crumbdata[I].siteid,queryString='',context=application.configBean.getContext(),stub=application.configBean.getStub(),indexFile=application.configBean.getIndexFile(),showMeta=event.getValue('showMeta'),showCurrent=0,isBreadCrumb=true)#<cfset counter=counter+1 /><meta itemprop="position" content="#counter#" /></li><cfelse><li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="#iif(arraylen(crumbdata),de('last'),de('first'))#">#arguments.separator##arguments.renderer.addlink(type=crumbdata[1].type,filename=crumbdata[1].filename,title=crumbdata[1].menutitle,target='_self',targetparams='',contentid=crumbdata[1].contentid,siteid=crumbdata[1].siteid,queryString='',context=application.configBean.getContext(),stub=application.configBean.getStub(),indexfile=application.configBean.getIndexFile(),showMeta=event.getValue('showMeta'),showCurrent=0,isBreadCrumb=true)#<meta itemprop="position" content="#I#" /></li></cfif></cfloop>
+				<cfoutput><ol itemscope itemtype="http://schema.org/BreadcrumbList"<cfif len(arguments.id)> id="#arguments.id#"</cfif> class="mura-breadcrumb<cfif Len(arguments.class)> #arguments.class#</cfif>">
+					<cfloop from="#theOffset#" to="1" index="I" step="-1">
+						<cfif I neq 1>
+							<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="<cfif len(this.liBreadcrumbNotCurrentClass)><cfif I eq theOffset>first </cfif>#this.liBreadcrumbNotCurrentClass#<cfelseif I eq theOffset>first</cfif>">
+								<cfif I neq theOffset>#arguments.separator#</cfif>
+								#arguments.renderer.addlink(
+									type=crumbdata[I].type,
+									filename=crumbdata[I].filename,
+									title=crumbdata[I].menutitle,
+									target='_self',
+									targetparams='',
+									contentid=crumbdata[I].contentid,
+									siteid=crumbdata[I].siteid,
+									queryString='',
+									context=application.configBean.getContext(),
+									stub=application.configBean.getStub(),
+									indexFile=application.configBean.getIndexFile(),
+									showMeta=event.getValue('showMeta'),
+									showCurrent=0,
+									isBreadCrumb=true,
+									aCurrentClass=this.aBreadcrumbCurrentClass,
+									aNotCurrentClass=this.aBreadcrumbNotCurrentClass)#
+									<cfset counter=counter+1>
+									<meta itemprop="position" content="#counter#" />
+							</li>
+						<cfelse>
+							<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="<cfif arraylen(crumbdata)>last<cfelse>first</cfif><cfif len(this.liBreadcrumbNotCurrentClass)> #this.liBreadcrumbCurrentClass#</cfif>">
+								#arguments.separator#
+								#arguments.renderer.addlink(type=crumbdata[1].type,
+									filename=crumbdata[1].filename,
+									title=crumbdata[1].menutitle,
+									target='_self',
+									targetparams='',
+									contentid=crumbdata[1].contentid,
+									siteid=crumbdata[1].siteid,
+									queryString='',
+									context=application.configBean.getContext(),
+									stub=application.configBean.getStub(),
+									indexfile=application.configBean.getIndexFile(),
+									showMeta=event.getValue('showMeta'),
+									showCurrent=0,
+									isBreadCrumb=true,
+									aCurrentClass=this.aBreadcrumbCurrentClass,
+									aNotCurrentClass=this.aBreadcrumbNotCurrentClass
+								)#
+								<meta itemprop="position" content="#I#" />
+							</li>
+						</cfif>
+					</cfloop>
 				</ol></cfoutput>
 			</cfsavecontent>
 		</cfif>

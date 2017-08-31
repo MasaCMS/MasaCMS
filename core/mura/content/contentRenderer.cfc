@@ -120,6 +120,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.ulNestedClass="">
 <cfset this.ulNestedAttributes="">
 <cfset this.ulTopClass="navSecondary">
+
 <cfset this.ulPaginationClass="navSequential">
 <cfset this.ulPaginationWrapperClass="pagination">
 <cfset this.liPaginationCurrentClass=this.liCurrentClass>
@@ -488,6 +489,10 @@ Display Objects
 
 <!--- NavBreadcrumb --->
 <cfset this.navBreadcrumbULClass="breadcrumb">
+<cfset this.liBreadcrumbCurrentClass="">
+<cfset this.liBreadcrumbNotCurrentClass="">
+<cfset this.aBreadcrumbCurrentClass="">
+<cfset this.aBreadcrumbNotCurrentClass="">
 
 <!--- Rater/Index.cfm --->
 <cfset this.raterObjectWrapperClass="row clearfix">
