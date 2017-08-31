@@ -76,12 +76,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset isCurrentArchive=variables.archiveFilter and variables.$.event("month") eq variables.rsArchive.month and variables.$.event("year") eq variables.rsArchive.year>
 		<cfsilent>
 			<cfscript>
-				thisClass = variables.rsArchive.currentRow == 1 ? 'first' : variables.rsArchive.currentRow == variables.rsArchive.recordcount ? 'last' : '';
-				thisClass &= isCurrentArchive ? ' ' & this.liCurrentClass : '';
+				thisLiClass = variables.rsArchive.currentRow == 1 ? 'first' : variables.rsArchive.currentRow == variables.rsArchive.recordcount ? 'last' : '';
+				thisAClass=thisLiClass;
+
+				if(isCurrentArchive){
+					thisLiClass &= ' ' & this.navliClass & ' ' & this.liCurrentClass;
+					thisAClass &= ' ' & this.aCurrentClass;
+				} else {
+					thisLiClass &= ' ' & this.navliClass;
+					thisAClass &= ' ' & this.aNotCurrentClass;
+				}
 			</cfscript>
 		</cfsilent>
-		<li class="#thisClass#">
-			<a href="#variables.$.createHREF(filename='#variables.archive.getFilename()#/date/#variables.rsArchive.year#/#variables.rsArchive.month#/')#" class="#thisClass#">
+		<li class="#thisLiClass#">
+			<a href="#variables.$.createHREF(filename='#variables.archive.getFilename()#/date/#variables.rsArchive.year#/#variables.rsArchive.month#/')#" class="#thisAClass#">
 				#monthasstring(variables.rsArchive.month)# #variables.rsArchive.year# (#variables.rsArchive.items#)
 			</a>
 		</li>

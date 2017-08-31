@@ -1,4 +1,4 @@
-/*  This file is part of Mura CMS.
+<!--- This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@ Your custom code
  /admin/
  /tasks/
  /config/
- /core/mura/
+ /requirements/mura/
  /Application.cfc
  /index.cfm
  /MuraProxy.cfc
@@ -43,176 +43,209 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
-*/
-/**
- * This provide basic factory methods for cache factories
- */
-component output="false" extends="mura.cfobject" hint="This provide basic factory methods for cache factories" {
-	variables.parent = "";
-	variables.javaLoader = "";
-	//  main collection
-	variables.collections = "";
-	variables.collection = "";
-	variables.map = "";
-	variables.utility="";
-	//  default variables
+--->
+<cfcomponent output="false" extends="mura.cfobject" hint="This provide basic factory methods for cache factories">
 
-	public function init() output=false {
-		variables.collections = createObject( "java", "java.util.Collections" );
-		variables.collection = "";
-		variables.map = createObject( "java", "java.util.HashMap" ).init();
-		variables.utility=application.utility;
-		//  set the map into the collections
-		setCollection( variables.collections.synchronizedMap( variables.map ) );
-		return this;
-	}
-	//  *************************
-	//  GLOBAL
-	//  *************************
+	<cfset variables.parent = "" />
+	<cfset variables.javaLoader = "" />
+	<!--- main collection --->
+	<cfset variables.collections = "" />
+	<cfset variables.collection = "" />
+	<cfset variables.map = "" />
+	<cfset variables.utility="">
+	<!--- default variables --->
 
-	public function getHashKey(required string key) output=false {
-		return hash( arguments.key, "MD5" );
-	}
+	<cffunction name="init" output="false">
 
-	public function setParent(required parent) output=false {
-		variables.parent = arguments.parent;
-	}
+		<cfset variables.collections = createObject( "java", "java.util.Collections" ) />
+		<cfset variables.collection = "" />
+		<cfset variables.map = createObject( "java", "java.util.HashMap" ).init() />
+		<cfset variables.utility=application.utility>
+		<!--- set the map into the collections --->
+		<!---
+		<cfset setCollection( variables.collections.synchronizedMap( variables.map ) ) />
+		--->
 
-	public function getParent() output=false {
-		return variables.parent;
-	}
+		<cfset setCollection( variables.map ) />
 
-	public boolean function hasParent() output=false {
-		return isObject( variables.parent );
-	}
+		<cfreturn this />
+	</cffunction>
 
-	private function setCollection(required struct collection) output=false {
-		variables.collection = arguments.collection;
-	}
-	//  *************************
-	//  COMMON
-	//  *************************
+	<!--- *************************--->
+	<!--- GLOBAL --->
+	<!--- *************************--->
+	<!---
+	<cffunction name="configure" output="false">
+	</cffunction>
+	--->
 
-	public function get(required string key) output=false {
-		var hashedKey = getHashKey( arguments.key );
-		var cacheData=structNew();
-		//  check to see if the item is in the parent
-		//  only if a parent is present
-		if ( !has( arguments.key ) && hasParent() && getParent().has( arguments.key ) ) {
-			return getParent().get( arguments.key );
-		}
-		//  check to make sure the key exists within the factory collection
-		if ( has( arguments.key ) ) {
-			//  if it's a soft reference then do a get against the soft reference
-			cacheData=variables.collection.get( hashedKey );
-			if ( isSoftReference( cacheData.object ) ) {
-				//  is it still a soft reference
-				//  if so then return it
-				return cacheData.object.get();
-			} else {
-				//  return the object from the factory collection
-				return cacheData.object;
-			}
-		}
-		throw( message="Key '#arguments.key#' was not found within the map collection" );
-	}
+	<cffunction name="getHashKey" output="false">
+		<cfargument name="key" type="string" required="true" />
+		<cfreturn hash( arguments.key, "MD5" ) />
+	</cffunction>
 
-	public function getAll() output=false {
-		return variables.collection;
-	}
+	<cffunction name="setParent" output="false">
+		<cfargument name="parent" required="true" />
+		<cfset variables.parent = arguments.parent />
+	</cffunction>
 
-	public function set(required string key, required any obj, boolean isSoft="false", timespan="") output=false {
-		var softRef = "";
-		var hashedKey = getHashKey( arguments.key );
-		var cacheData=structNew();
-		if ( arguments.timespan != '' ) {
-			cacheData.expires=now() + arguments.timespan;
-		} else {
-			cacheData.expires=dateAdd("yyyy",1,now()) + 0;
-		}
-		//  check to see if this should be a soft reference
-		if ( arguments.isSoft ) {
-			//  create the soft reference
-			cacheData.object = createObject( "java", "java.lang.ref.SoftReference" ).init( arguments.obj );
-		} else {
-			//  assign object to main collection
-			cacheData.object =arguments.obj;
-		}
-		//  assign object to main collection
-		variables.collection.put( hashedKey, cacheData );
-	}
+	<cffunction name="getParent" output="false">
+		<cfreturn variables.parent />
+	</cffunction>
+	<cffunction name="hasParent" returntype="boolean" output="false">
+		<cfreturn isObject( variables.parent ) />
+	</cffunction>
 
-	public function size() output=false {
-		return variables.map.size();
-	}
+	<cffunction name="setCollection" access="private" output="false">
+		<cfargument name="collection" type="struct" required="true" />
+		<cfset variables.collection = arguments.collection />
+	</cffunction>
 
-	public boolean function keyExists(key) output=false {
-		return structKeyExists( variables.collection , arguments.key );
-	}
+	<!--- *************************--->
+	<!--- COMMON --->
+	<!--- *************************--->
+	<cffunction name="get" output="false">
+		<cfargument name="key" type="string" required="true" />
 
-	public boolean function has(required string key) output=false {
-		var refLocal = structnew();
-		var hashLocal=getHashKey( arguments.key );
-		var cacheData="";
-		refLocal.tmpObj=0;
-		//  Check for Object in Cache.
-		if ( keyExists( hashLocal ) ) {
-			cacheData=variables.collection.get( hashLocal );
-			if ( isNumeric(cacheData.expires) && cacheData.expires > (now() + 0) ) {
-				if ( isSoftReference( cacheData.object ) ) {
-					refLocal.tmpObj =cacheData.object.get();
-					return structKeyExists(refLocal, "tmpObj");
-				}
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
-	}
-	//  *************************
-	//  PURGE
-	//  *************************
+		<cfset var hashedKey = getHashKey( arguments.key ) />
+		<cfset var cacheData=structNew()>
 
-	public function purgeAll() output=false {
-		variables.collections = createObject( "java", "java.util.Collections" );
-		variables.collection = "";
-		variables.map = createObject( "java", "java.util.HashMap" ).init();
-		init();
-	}
+		<!--- check to see if the item is in the parent --->
+		<!--- only if a parent is present --->
+		<cfif NOT has( arguments.key ) AND hasParent() AND getParent().has( arguments.key )>
+			<cfreturn getParent().get( arguments.key ) />
+		</cfif>
 
-	public function purge(required string key) output=false {
-		//  check to see if the id exists
-		if ( variables.map.containsKey( getHashKey( arguments.key ) ) ) {
-			//  delete from map
-			variables.map.remove( getHashKey( arguments.key ) );
-		}
-	}
-	//  *************************
-	//  JAVALOADER
-	//  *************************
+		<!--- check to make sure the key exists within the factory collection --->
+		<cfif has( arguments.key )>
+			<!--- if it's a soft reference then do a get against the soft reference --->
+			<cfset cacheData=variables.collection.get( hashedKey )>
+			<cfif isSoftReference( cacheData.object )>
+				<!--- is it still a soft reference --->
+				<!--- if so then return it --->
+				<cfreturn cacheData.object.get() />
+			<cfelse>
+				<!--- return the object from the factory collection --->
+				<cfreturn cacheData.object />
+			</cfif>
+		</cfif>
 
-	public function setJavaLoader(required any javaLoader) output=false {
-		variables.javaLoader = arguments.javaLoader;
-	}
+		<cfthrow message="Key '#arguments.key#' was not found within the map collection" />
 
-	public function getJavaLoader() output=false {
-		return variables.javaLoader;
-	}
-	//  *************************
-	//  SOFT REFERENCE
-	//  *************************
+	</cffunction>
 
-	private boolean function isSoftReference(required any obj) output=false {
-		if ( isdefined("arguments.obj") && isObject( arguments.obj ) && variables.utility.checkForInstanceOf( arguments.obj, "java.lang.ref.SoftReference") ) {
-			return true;
-		}
-		return false;
-	}
+	<cffunction name="getAll" output="false">
+		<cfreturn variables.collection />
+	</cffunction>
 
-	public function getCollection() output=false {
-		return variables.collection;
-	}
+	<cffunction name="set" output="false">
+		<cfargument name="key" type="string" required="true" />
+		<cfargument name="obj" type="any" required="true" />
+		<cfargument name="isSoft" type="boolean" required="false" default="false" />
+		<cfargument name="timespan" required="false" default="">
 
-}
+		<cfset var softRef = "" />
+		<cfset var hashedKey = getHashKey( arguments.key ) />
+		<cfset var cacheData=structNew()>
+
+		<cfif arguments.timespan neq ''>
+			<cfset cacheData.expires=now() + arguments.timespan>
+		<cfelse>
+			<cfset cacheData.expires=dateAdd("yyyy",1,now()) + 0>
+		</cfif>
+
+		<!--- check to see if this should be a soft reference --->
+		<cfif arguments.isSoft>
+			<!--- create the soft reference --->
+			<cfset cacheData.object = createObject( "java", "java.lang.ref.SoftReference" ).init( arguments.obj ) />
+		<cfelse>
+			<!--- assign object to main collection --->
+			<cfset cacheData.object =arguments.obj>
+		</cfif>
+
+		<!--- assign object to main collection --->
+		<cfset variables.collection.put( hashedKey, cacheData ) />
+
+	</cffunction>
+
+	<cffunction name="size" output="false">
+		<cfreturn variables.map.size() />
+	</cffunction>
+
+	<cffunction name="keyExists" returntype="boolean" output="false">
+		<cfargument name="key">
+		<cfreturn structKeyExists( variables.collection , arguments.key ) />
+	</cffunction>
+
+	<cffunction name="has" returntype="boolean" output="false">
+		<cfargument name="key" type="string" required="true" />
+
+		<cfset var refLocal = structnew() />
+		<cfset var hashLocal=getHashKey( arguments.key ) />
+		<cfset var cacheData=""/>
+		<cfset refLocal.tmpObj=0 />
+
+		<!--- Check for Object in Cache. --->
+		<cfif keyExists( hashLocal ) >
+			<cfset cacheData=variables.collection.get( hashLocal )>
+			<cfif isNumeric(cacheData.expires) and cacheData.expires gt (now() + 0)>
+				<cfif isSoftReference( cacheData.object ) >
+					<cfset refLocal.tmpObj =cacheData.object.get() />
+					<cfreturn structKeyExists(refLocal, "tmpObj") />
+				</cfif>
+				<cfreturn true />
+			<cfelse>
+				<cfreturn false>
+			</cfif>
+		<cfelse>
+			<cfreturn false />
+		</cfif>
+
+	</cffunction>
+
+	<!--- *************************--->
+	<!--- PURGE --->
+	<!--- *************************--->
+	<cffunction name="purgeAll" output="false">
+		<cfset variables.collections = createObject( "java", "java.util.Collections" ) />
+		<cfset variables.collection = "" />
+		<cfset variables.map = createObject( "java", "java.util.HashMap" ).init() />
+		<cfset init()/>
+	</cffunction>
+	<cffunction name="purge" output="false">
+		<cfargument name="key" type="string" required="true" />
+
+		<!--- check to see if the id exists --->
+		<cfif variables.map.containsKey( getHashKey( arguments.key ) )>
+			<!--- delete from map --->
+			<cfset variables.map.remove( getHashKey( arguments.key ) ) />
+		</cfif>
+	</cffunction>
+
+	<!--- *************************--->
+	<!--- JAVALOADER --->
+	<!--- *************************--->
+	<cffunction name="setJavaLoader" output="false">
+		<cfargument name="javaLoader" type="any" required="true" />
+		<cfset variables.javaLoader = arguments.javaLoader />
+	</cffunction>
+	<cffunction name="getJavaLoader" output="false">
+		<cfreturn variables.javaLoader />
+	</cffunction>
+
+	<!--- *************************--->
+	<!--- SOFT REFERENCE --->
+	<!--- *************************--->
+	<cffunction name="isSoftReference" access="private" returntype="boolean" output="false">
+		<cfargument name="obj" type="any" required="true" />
+		<cfif isdefined("arguments.obj") and isObject( arguments.obj ) AND variables.utility.checkForInstanceOf( arguments.obj, "java.lang.ref.SoftReference")>
+			<cfreturn true />
+		</cfif>
+		<cfreturn false />
+	</cffunction>
+
+	<cffunction name="getCollection" output="false">
+		<cfreturn variables.collection/>
+	</cffunction>
+
+</cfcomponent>

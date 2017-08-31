@@ -115,13 +115,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.aHasKidsClass="">
 <cfset this.aHasKidsAttributes="">
 <cfset this.aCurrentClass="current">
+<cfset this.aNotCurrentClass="">
 <cfset this.aCurrentAttributes="">
 <cfset this.ulNestedClass="">
 <cfset this.ulNestedAttributes="">
 <cfset this.ulTopClass="navSecondary">
 <cfset this.ulPaginationClass="navSequential">
 <cfset this.ulPaginationWrapperClass="pagination">
-<cfset this.aNotCurrentClass="">
+<cfset this.liPaginationCurrentClass=this.liCurrentClass>
+<cfset this.liPaginationNotCurrentClass="">
+<cfset this.aPaginationCurrentClass=this.aCurrentClass>
+<cfset this.aPaginationNotCurrentClass="">
+
 <cfset this.bodyMetaImageSizeArgs={size="medium"}>
 <cfset this.bodyMetaImageClass="thumbnail">
 <!-- This is temp only for backward compatibility--->
@@ -280,6 +285,8 @@ Display Objects
 <!--- Dsp_content_list.cfm --->
 <cfset this.contentListImageStyles=true>
 <cfset this.contentListImagePadding=20>
+<cfset this.contentListWrapperDivClass="">
+<cfset this.contentListItemImageLinkClass="thumbnail">
 <cfset this.contentListPropertyMap={
 		containerEl={tag="div"},
 		itemEl={tag="dl",class="clearfix"},
@@ -291,6 +298,14 @@ Display Objects
 		rating={tag="dd",showLabel=true,labelDelim=":",rbkey="list.rating"},
 		default={tag="dd"}
 	}>
+
+<cfset this.aContentListCurrentClass=this.aCurrentClass>
+<cfset this.aContentListCurrentAttributes=this.aCurrentAttributes>
+<cfset this.aContentListNotCurrentClass=this.aNotCurrentClass>
+
+<cfset this.aMetaListCurrentClass=this.aContentListCurrentClass>
+<cfset this.aMetaListCurrentAttributes=this.aContentListCurrentAttributes>
+<cfset this.aMetaListNotCurrentClass=this.aContentListNotCurrentClass>
 
 <cfset this.contentGridStyleMap={
 		'1 Column'='mura-grid-one',
@@ -314,9 +329,6 @@ Display Objects
 		rating={tag="div",showLabel=true,labelDelim=":",rbkey="list.rating"},
 		'default'={tag="div"}
 	}>
-
-<cfset this.contentListWrapperDivClass="">
-<cfset this.contentListItemImageLinkClass="thumbnail">
 
 <!--- dsp_folder.cfm --->
 <cfset this.folderWrapperClass="svIndex">

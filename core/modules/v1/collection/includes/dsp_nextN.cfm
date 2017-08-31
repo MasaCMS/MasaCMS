@@ -104,40 +104,40 @@
 			<cfif variables.nextN.currentpagenumber gt 1>
 				<cfif request.muraExportHtml>
 					<cfif variables.nextN.currentpagenumber eq 2>
-						<li class="navPrev">
-							<a href="index.html">&laquo;&nbsp;#variables.$.rbKey('list.previous')#</a>
+						<li class="navPrev #this.liPaginationNotCurrentClass#">
+							<a class="#this.aPaginationNotCurrentClass#" href="index.html">&laquo;&nbsp;#variables.$.rbKey('list.previous')#</a>
 						</li>
 					<cfelse>
-						<li class="navPrev">
-							<a href="index#evaluate('#variables.nextn.currentpagenumber#-1')#.html">&laquo;&nbsp;#variables.$.rbKey('list.previous')#</a>
+						<li class="navPrev #this.liPaginationNotCurrentClass#">
+							<a class="#this.aPaginationNotCurrentClass#" href="index#evaluate('#variables.nextn.currentpagenumber#-1')#.html">&laquo;&nbsp;#variables.$.rbKey('list.previous')#</a>
 						</li>
 					</cfif>
 				<cfelse>
-					<li class="navPrev">
-						<a href="#xmlFormat('?#paginationKey#=#variables.nextN.previous##variables.qrystr#')#">&laquo;&nbsp;#variables.$.rbKey('list.previous')#</a>
+					<li class="navPrev #this.liPaginationNotCurrentClass#">
+						<a class="#this.aPaginationNotCurrentClass#" href="#xmlFormat('?#paginationKey#=#variables.nextN.previous##variables.qrystr#')#">&laquo;&nbsp;#variables.$.rbKey('list.previous')#</a>
 					</li>
 				</cfif>
 			</cfif>
 			<cfloop from="#variables.nextN.firstPage#" to="#variables.nextN.lastPage#" index="i">
 				<cfif variables.nextn.currentpagenumber eq i>
-					<li class="#this.liCurrentClass#"><a class="#this.aCurrentClass#" href="##">#i#</a></li>
+					<li class="#this.liPaginationCurrentClass#"><a class="#this.aPaginationCurrentClass#" href="##">#i#</a></li>
 				<cfelse>
 					<cfif request.muraExportHtml>
 						<cfif i eq 1>
-						<li><a href="index.html">#i#</a></li>
+						<li class="#this.liPaginationNotCurrentClass#"><a class="#this.aPaginationNotCurrentClass#" href="index.html">#i#</a></li>
 						<cfelse>
-						<li><a href="index#i#.html">#i#</a></li>
+						<li class="#this.liPaginationNotCurrentClass#"><a class="#this.aPaginationNotCurrentClass#" href="index#i#.html">#i#</a></li>
 						</cfif>
 					<cfelse>
-						<li><a href="#xmlFormat('?#paginationKey#=#evaluate('(#i#*#variables.nextN.recordsperpage#)-#variables.nextN.recordsperpage#+1')##variables.qrystr#')#">#i#</a></li>
+						<li><a class="#this.aPaginationNotCurrentClass#" href="#xmlFormat('?#paginationKey#=#evaluate('(#i#*#variables.nextN.recordsperpage#)-#variables.nextN.recordsperpage#+1')##variables.qrystr#')#">#i#</a></li>
 					</cfif>
 				</cfif>
 			</cfloop>
 			<cfif variables.nextN.currentpagenumber lt variables.nextN.NumberOfPages>
 				<cfif request.muraExportHtml>
-					<li class="navNext"><a href="index#evaluate('#variables.nextn.currentpagenumber#+1')#.html">#variables.$.rbKey('list.next')#&nbsp;&raquo;</a></li>
+					<li class="navNext #this.liPaginationNotCurrentClass#"><a href="index#evaluate('#variables.nextn.currentpagenumber#+1')#.html">#variables.$.rbKey('list.next')#&nbsp;&raquo;</a></li>
 				<cfelse>
-					<li class="navNext"><a href="#xmlFormat('?#paginationKey#=#variables.nextN.next##variables.qrystr#')#">#variables.$.rbKey('list.next')#&nbsp;&raquo;</a></li>
+					<li class="navNext #this.liPaginationNotCurrentClass#"><a href="#xmlFormat('?#paginationKey#=#variables.nextN.next##variables.qrystr#')#">#variables.$.rbKey('list.next')#&nbsp;&raquo;</a></li>
 				</cfif>
 			</cfif>
 			</ul>

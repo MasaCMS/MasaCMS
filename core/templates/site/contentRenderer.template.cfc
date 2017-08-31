@@ -120,16 +120,22 @@
 		//this.aHasKidsClass="";
 		//this.aHasKidsAttributes="";
 		//this.aCurrentClass="current";
+		//this.aNotCurrentClass="";
 		//this.aCurrentAttributes="";
 		//this.ulNestedClass="";
 		//this.ulNestedAttributes="";
 		//this.ulTopClass="navSecondary";
 		//this.ulPaginationClass="navSequential";
-		//this.ulPaginationWrapperClass="row";
+		//this.ulPaginationWrapperClass="pagination";
+		//this.liPaginationCurrentClass="";
+		//this.liPaginationNotCurrentClass="";
+		//this.aPaginationCurrentClass="";
+		//this.aPaginationNotCurrentClass="";
 		//this.formWrapperClass="well";
 		//this.generalWrapperClass="well";
 		//this.generalWrapperBodyClass="";
-		//this.aNotCurrentClass="";
+
+
 		//this.enablemuratag=true;
 		//this.bodyMetaImageSizeArgs={size="medium"};
 		//this.defaultnavsize=50;
@@ -247,6 +253,9 @@
 		//dsp_content_list.cfm
 		this.contentListImageStyles=true;
 		this.contentListImagePadding=20; //must be pixels
+		this.contentListWrapperDivClass="";
+		this.contentListItemImageLinkClass="";
+
 		/* this.contentListPropertyMap={
 				containerEl={tag="div"},
 				itemEl={tag="dl"},
@@ -258,8 +267,15 @@
 				rating={tag="dd",showLabel=true,labelDelim=":",rbkey="list.rating"},
 				'default'={tag="dd"}
 			};*/
-		this.contentListWrapperDivClass="";
-		this.contentListItemImageLinkClass="";
+
+		this.aContentListCurrentClass=this.aCurrentClass;
+		this.aContentListCurrentAttributes=this.aCurrentAttributes;
+		this.aContentListNotCurrentClass=this.aNotCurrentClass;
+
+		//dsp_meta_list.cfm
+		this.aMetaListCurrentClass=this.aContentListCurrentClass;
+		this.aMetaListCurrentAttributes=this.aContentListCurrentAttributes;
+		this.aMetaListNotCurrentClass=this.aContentListNotCurrentClass;
 
 		//dsp_folder.cfm
 		this.folderWrapperClass="";

@@ -226,7 +226,19 @@
 					<cfcase value="ReadMore">
 					 	<#variables.$.getContentListPropertyValue(arguments.field,'tag')# #variables.$.getContentListAttributes(arguments.field,"readMore")#>
 					 	#variables.$.getContentListPropertyValue(arguments.field,"openingInnerMarkUp")#
-					 		#variables.$.addLink(arguments.item.getValue('type'),arguments.item.getValue('filename'),variables.$.rbKey('list.readmore'),arguments.item.getValue('target'),arguments.item.getValue('targetparams'),arguments.item.getValue('contentID'),arguments.item.getValue('siteID'),'',variables.$.globalConfig('context'),variables.$.globalConfig('stub'),variables.$.globalConfig('indexFile'))#
+					 	#variables.$.addLink(
+							type=arguments.item.getValue('type'),
+							filename=arguments.item.getValue('filename'),
+							title=variables.$.rbKey('list.readmore'),
+							target=arguments.item.getValue('target'),
+							contentid=arguments.item.getValue('contentID'),
+							siteid=arguments.item.getValue('siteID'),
+							aHasKidsClass='',
+							aHasKidsAttributes='',
+							aCurrentClass=this.aContentListCurrentClass,
+							aCurrentAttributes=this.aContentListCurrentAttributes,
+							aNotCurrentClass=this.aContentListNotCurrentClass
+						)#
 					 	#variables.$.getContentListPropertyValue(arguments.field,"closingInnerMarkUp")#
 					 	</#variables.$.getContentListPropertyValue(arguments.field,'tag')#>
 					</cfcase>
@@ -244,7 +256,20 @@
 						<cfif not variables.$.event('muraMobileTemplate') and (arguments.item.getValue('type') eq 'Page' or showItemMeta(arguments.item.getValue('type')) or (len(arguments.item.getValue('fileID')) and showItemMeta(arguments.item.getValue('fileEXT')))) >
 						 	<#variables.$.getContentListPropertyValue(arguments.field,'tag')# #variables.$.getContentListAttributes(arguments.field)#>
 						 	#variables.$.getContentListPropertyValue(arguments.field,"openingInnerMarkUp")#
-						 		#variables.$.addLink(arguments.item.getValue('type'),arguments.item.getValue('filename'),'#variables.$.rbKey("list.comments")# (#variables.$.getBean('contentGateway').getCommentCount(variables.$.event('siteID'),arguments.item.getValue('contentID'))#)',arguments.item.getValue('target'),arguments.item.getValue('targetparams'),arguments.item.getValue('contentID'),variables.$.event('siteID'),'##mura-comments')#
+						 	#variables.$.addLink(
+								type=arguments.item.getValue('type'),
+								filename=arguments.item.getValue('filename'),
+								title='#variables.$.rbKey("list.comments")# (#variables.$.getBean('contentGateway').getCommentCount(variables.$.event('siteID'),arguments.item.getValue('contentID'))#)',
+								target=arguments.item.getValue('target'),
+								contentid=arguments.item.getValue('contentID'),
+								siteid=arguments.item.getValue('siteID'),
+								queryString='##mura-comments',
+								aHasKidsClass='',
+								aHasKidsAttributes='',
+								aCurrentClass=this.aContentListCurrentClass,
+								aCurrentAttributes=this.aContentListCurrentAttributes,
+								aNotCurrentClass=this.aContentListNotCurrentClass
+							)#
 						 	#variables.$.getContentListPropertyValue(arguments.field,"closingInnerMarkUp")#
 						 	</#variables.$.getContentListPropertyValue(arguments.field,'tag')#>
 						</cfif>
