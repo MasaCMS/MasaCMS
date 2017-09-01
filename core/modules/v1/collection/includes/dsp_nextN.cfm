@@ -135,9 +135,9 @@
 			</cfloop>
 			<cfif variables.nextN.currentpagenumber lt variables.nextN.NumberOfPages>
 				<cfif request.muraExportHtml>
-					<li class="navNext #this.liPaginationNotCurrentClass#"><a href="index#evaluate('#variables.nextn.currentpagenumber#+1')#.html">#variables.$.rbKey('list.next')#&nbsp;&raquo;</a></li>
+					<li class="navNext #this.liPaginationNotCurrentClass#"><a class="#this.aPaginationNotCurrentClass#" href="index#evaluate('#variables.nextn.currentpagenumber#+1')#.html">#variables.$.rbKey('list.next')#&nbsp;&raquo;</a></li>
 				<cfelse>
-					<li class="navNext #this.liPaginationNotCurrentClass#"><a href="#xmlFormat('?#paginationKey#=#variables.nextN.next##variables.qrystr#')#">#variables.$.rbKey('list.next')#&nbsp;&raquo;</a></li>
+					<li class="navNext #this.liPaginationNotCurrentClass#"><a class="#this.aPaginationNotCurrentClass#" href="#xmlFormat('?#paginationKey#=#variables.nextN.next##variables.qrystr#')#">#variables.$.rbKey('list.next')#&nbsp;&raquo;</a></li>
 				</cfif>
 			</cfif>
 			</ul>
