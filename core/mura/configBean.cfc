@@ -1853,6 +1853,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var fieldsFound=false>
 	<cfset var fields=''>
 	<cfset var beanName=listLast(arguments.componentPath,'.')>
+	<cfset var entity="">
 
 	<cfif not structKeyExists(request.muraORMchecked,'#checkKey#')>
 		<!--- Catch instantiation errors --->
@@ -1870,7 +1871,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cftry>
 
 		<cfset var levelObj=metadata>
-		<cfset var entity="">
+
 		<cfloop condition="structKeyExists(levelObj,'extends')">
 			<cfif not isPublicFound and (isdefined('levelObj.public') and isBoolean(levelObj.public) and levelObj.public or isdefined('levelObj.access') && levelObj.access eq 'remote')>
 				<cfset isPublic=true>
@@ -1924,11 +1925,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset request.muraORMchecked['#checkkey#']=true>
 		</cfif>
 	<cfelseif getServiceFactory().containsBean(beanName)>
-		<cfset getBean(beanName)>
+		<cfset var entity=getBean(beanName)>
 		<cfloop list="#arguments.siteid#" index="local.i">
 			<cfset getBean('settingsManager').getSite(local.i).getApi('json','v1').registerEntity(beanName,{
 				moduleid=arguments.moduleid,
-				public=application.objectMappings['#beanName#'].public,
+				public=application.objectMappings['#entity.getEntityName()#'].public,
 				fields=fields
 			})>
 		</cfloop>
