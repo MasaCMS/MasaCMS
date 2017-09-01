@@ -219,7 +219,7 @@ component extends="mura.bean.bean" output="false" hint="This provides functional
 
 	public function getValue(required string property, defaultValue) output=false {
 		var tempValue="";
-		if ( isValid('variableName',arguments.property) && isDefined("this.get#arguments.property#") ) {
+		if ( isValid('variableName',arguments.property) && isDefined("this.get#arguments.property#") && arguments.property != 'bean') {
 			var tempFunc=this["get#arguments.property#"];
 			return tempFunc();
 		} else if ( structKeyExists(variables.instance,"#arguments.property#") ) {

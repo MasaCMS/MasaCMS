@@ -413,7 +413,7 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 
 	function getValue(String property,defaultValue){
 
-		if(isValid('variableName',arguments.property) and isDefined("this.get#arguments.property#")){
+		if(isValid('variableName',arguments.property) && isDefined("this.get#arguments.property#") && arguments.property != 'bean'){
 			var tempFunc=this["get#arguments.property#"];
 			return tempFunc();
 		} else if(structKeyExists(variables.instance,"#arguments.property#")){
