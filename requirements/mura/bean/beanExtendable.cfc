@@ -239,7 +239,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="defaultValue">
 	<cfset var tempValue="">	
 	
-	<cfif isValid('variableName',arguments.property) and isDefined("this.get#arguments.property#")>
+	<cfif isValid('variableName',arguments.property) and isDefined("this.get#arguments.property#") and arguments.property neq 'bean'>
 		<cfset var tempFunc=this["get#arguments.property#"]>
 		<cfreturn tempFunc()>
 	<cfelseif structKeyExists(variables.instance,"#arguments.property#")>
