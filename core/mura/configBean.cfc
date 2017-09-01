@@ -1923,7 +1923,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				<cfset request.muraORMchecked['#checkkey#']=true>
 		</cfif>
-	<cfelse>
+	<cfelseif getServiceFactory().containsBean(beanName)>
+		<cfset getBean(beanName)>
 		<cfloop list="#arguments.siteid#" index="local.i">
 			<cfset getBean('settingsManager').getSite(local.i).getApi('json','v1').registerEntity(beanName,{
 				moduleid=arguments.moduleid,
