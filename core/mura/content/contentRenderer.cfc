@@ -157,10 +157,12 @@ General Classes
 <cfset this.navCategoryWrapperClass=this.navWrapperClass>
 <cfset this.navCategoryWrapperBodyClass=this.navWrapperBodyClass>
 
+<!--- This may not be used --->
+<cfset this.formInputWrapperClass = "input-addon">
+
 <!--- Forms --->
 <cfset this.formWrapperClass=this.generalWrapperClass>
 <cfset this.formWrapperBodyClass=this.generalWrapperBodyClass>
-<cfset this.aNotCurrentClass="">
 <cfset this.formFieldWrapperClass = "control-group">
 <cfset this.formFieldLabelClass = "control-label">
 <cfset this.formGeneralControlClass = "form-control">
@@ -170,10 +172,6 @@ General Classes
 <cfset this.formFileClass = this.formGeneralControlClass>
 <cfset this.formCheckboxClass = "">
 <cfset this.formRadioClass = "">
-
-<cfset this.formInputWrapperClass = "input-addon">
-
-
 <cfset this.formButtonWrapperClass = "btn-group">
 <cfset this.formButtonInnerClass="">
 <cfset this.formButtonClass = "btn btn-default">

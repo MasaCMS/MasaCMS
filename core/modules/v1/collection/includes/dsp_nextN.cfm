@@ -129,7 +129,7 @@
 						<li class="#this.liPaginationNotCurrentClass#"><a class="#this.aPaginationNotCurrentClass#" href="index#i#.html">#i#</a></li>
 						</cfif>
 					<cfelse>
-						<li><a class="#this.aPaginationNotCurrentClass#" href="#xmlFormat('?#paginationKey#=#evaluate('(#i#*#variables.nextN.recordsperpage#)-#variables.nextN.recordsperpage#+1')##variables.qrystr#')#">#i#</a></li>
+						<li class="#this.liPaginationNotCurrentClass#"><a class="#this.aPaginationNotCurrentClass#" href="#xmlFormat('?#paginationKey#=#evaluate('(#i#*#variables.nextN.recordsperpage#)-#variables.nextN.recordsperpage#+1')##variables.qrystr#')#">#i#</a></li>
 					</cfif>
 				</cfif>
 			</cfloop>
