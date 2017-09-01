@@ -1767,7 +1767,7 @@
 	<cffunction name="dspCrumblistLinks"  output="false">
 		<cfargument name="id" type="string" default="crumblist">
 		<cfargument name="separator" type="string" default="">
-		<cfargument name="class" type="string" default="#this.navBreadcrumbULClass#">
+		<cfargument name="class" type="string" default="">
 		<cfargument name="renderer">
 		<cfset var crumbdata=arguments.renderer.getValue('crumbdata')>
 		<cfset var thenav="" />
@@ -1775,12 +1775,15 @@
 		<cfset var I = 0 />
 		<cfset var event=arguments.renderer.getEvent()>
 		<cfset var counter=0 />
+		<cfif not len(arguments.class)>
+			<cfset arguments.class=arguments.renderer.navBreadcrumbULClass>
+		</cfif>
 		<cfif arrayLen(crumbdata) gt (1 + arguments.renderer.getNavOffSet())>
 			<cfsavecontent variable="theNav">
 				<cfoutput><ol itemscope itemtype="http://schema.org/BreadcrumbList"<cfif len(arguments.id)> id="#arguments.id#"</cfif> class="mura-breadcrumb<cfif Len(arguments.class)> #arguments.class#</cfif>">
 					<cfloop from="#theOffset#" to="1" index="I" step="-1">
 						<cfif I neq 1>
-							<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="<cfif len(this.liBreadcrumbNotCurrentClass)><cfif I eq theOffset>first </cfif>#this.liBreadcrumbNotCurrentClass#<cfelseif I eq theOffset>first</cfif>">
+							<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="<cfif len(arguments.renderer.liBreadcrumbNotCurrentClass)><cfif I eq theOffset>first </cfif>#arguments.renderer.liBreadcrumbNotCurrentClass#<cfelseif I eq theOffset>first</cfif>">
 								<cfif I neq theOffset>#arguments.separator#</cfif>
 								#arguments.renderer.addlink(
 									type=crumbdata[I].type,
@@ -1797,13 +1800,13 @@
 									showMeta=event.getValue('showMeta'),
 									showCurrent=0,
 									isBreadCrumb=true,
-									aCurrentClass=this.aBreadcrumbCurrentClass,
-									aNotCurrentClass=this.aBreadcrumbNotCurrentClass)#
+									aCurrentClass=arguments.renderer.aBreadcrumbCurrentClass,
+									aNotCurrentClass=arguments.renderer.aBreadcrumbNotCurrentClass)#
 									<cfset counter=counter+1>
 									<meta itemprop="position" content="#counter#" />
 							</li>
 						<cfelse>
-							<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="<cfif arraylen(crumbdata)>last<cfelse>first</cfif><cfif len(this.liBreadcrumbNotCurrentClass)> #this.liBreadcrumbCurrentClass#</cfif>">
+							<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="<cfif arraylen(crumbdata)>last<cfelse>first</cfif><cfif len(arguments.renderer.liBreadcrumbNotCurrentClass)> #arguments.renderer.liBreadcrumbCurrentClass#</cfif>">
 								#arguments.separator#
 								#arguments.renderer.addlink(type=crumbdata[1].type,
 									filename=crumbdata[1].filename,
@@ -1819,8 +1822,8 @@
 									showMeta=event.getValue('showMeta'),
 									showCurrent=0,
 									isBreadCrumb=true,
-									aCurrentClass=this.aBreadcrumbCurrentClass,
-									aNotCurrentClass=this.aBreadcrumbNotCurrentClass
+									aCurrentClass=arguments.renderer.aBreadcrumbCurrentClass,
+									aNotCurrentClass=arguments.renderer.aBreadcrumbNotCurrentClass
 								)#
 								<meta itemprop="position" content="#I#" />
 							</li>
