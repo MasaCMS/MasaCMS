@@ -237,12 +237,13 @@ var siteManager = {
 			}
 		}
 
-		if( $('form#contentForm #title').val() === '') {
-			if( $('form#contentForm').prop('type').value == 'Component') {
+		if(document.contentForm.title.value == '') {
+			if(document.contentForm.type.value == 'Component') {
+
 				alertDialog("The form field 'Menu Title' is required");
 				return false;
 
-			} else if( $('form#contentForm').prop('type').value == 'Form') {
+			} else if(document.contentForm.type.value == 'Form') {
 
 				alertDialog("The form field 'Title' is required");
 				return false;
