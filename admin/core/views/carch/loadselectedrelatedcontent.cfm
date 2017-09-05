@@ -66,7 +66,7 @@
 				<cfelse>
 					<cfif item.contentid neq rc.contentBean.getContentID()>
 	 					<cfset queryAddRow(rcsRs,1)>
-						<cfloop list="contentid,url,title" index="c">
+						<cfloop list="#rcsRs.columnlist#" index="c">
 							<cfset querySetCell(rcsRs, lcase(c),item[c], rcsRs.recordcount)>
 						</cfloop>
 					</cfif>
