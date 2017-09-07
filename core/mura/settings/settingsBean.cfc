@@ -68,7 +68,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 	property name="useDefaultSMTPServer" type="numeric" default="1" required="true";
 	property name="EmailBroadcaster" type="numeric" default="0" required="false";
 	property name="EmailBroadcasterLimit" type="numeric" default="0" required="true";
-	property name="extranet" type="numeric" default="1" required="true";
+	property name="extranet" type="numeric" default="0" required="true";
 	property name="extranetSSL" type="numeric" default="0" required="true" hint="deprecated";
 	property name="cache" type="numeric" default="0" required="true";
 	property name="cacheCapacity" type="numeric" default="0" required="true";
@@ -168,7 +168,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		variables.instance.useDefaultSMTPServer=1;
 		variables.instance.EmailBroadcaster=0;
 		variables.instance.EmailBroadcasterLimit=0;
-		variables.instance.Extranet=1;
+		variables.instance.Extranet=0;
 		variables.instance.ExtranetSSL=0;
 		variables.instance.cache=0;
 		variables.instance.cacheFactories=structNew();
