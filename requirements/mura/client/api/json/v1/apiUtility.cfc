@@ -795,9 +795,9 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			param name="params.method" default="undefined";
 
 			if(getBean('configBean').getDebuggingEnabled()){
-				return serializeResponse(statusCode=500,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='server_error','message'="Unhandeld Exception",'stacktrace'=e}});
+				return serializeResponse(statusCode=500,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='server_error','message'="Unhandled Exception",'stacktrace'=e}});
 			} else {
-				return serializeResponse(statusCode=500,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='server_error','message'="Unhandeld Exception"}});
+				return serializeResponse(statusCode=500,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='server_error','message'="Unhandled Exception"}});
 			}
 
 		}
@@ -976,11 +976,12 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		if(!structKeyExists(variables.config.entities,entityName)){
 			return false;
 		} else if (
-				listFind('address,user',entityName)
+				listFind('address,user,group',entityName)
 				&& !(
 					$.currentUser().isAdminUser()
 					|| $.currentUser().isSuperUser()
 					|| $.event('id') == $.currentUser().getUserID()
+					|| getBean('permUtility').getModulePerm(variables.config.entities['#entityName#'].moduleid,variables.siteid)
 				)
 			){
 			return false;

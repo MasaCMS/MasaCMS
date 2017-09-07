@@ -1420,6 +1420,7 @@ buttons: {
 					setToolTips("#gridContainer");
 					if(r.perm.toLowerCase() == "editor" && r.sortby.toLowerCase() == 'orderno') {
 						$("#sortableKids").sortable({
+							helper:'clone',
 							stop: function(event, ui) {
 								stripe('stripe');
 								siteManager.setAsSorted();
@@ -1427,7 +1428,7 @@ buttons: {
 							},
 							start: function(event, ui) {
 								$(ui.item).addClass('ui-draggable-dragging');
-							}
+							} 
 						});
 						$("#sortableKids").disableSelection();
 					}
