@@ -153,8 +153,8 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				}
 
 				param name="obj.public" default=false;
-
-				getServiceFactory().declareBean(json=arguments.entityConfig,siteid=$.event('siteid'));
+				var rsSites=getBean('settingsManager').getList();
+				getServiceFactory().declareBean(json=arguments.entityConfig,siteid=valueList(rsSites.siteid));
 
 				return findProperties(obj.entityName);
 			} else {
