@@ -154,9 +154,8 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 				param name="obj.public" default=false;
 
-				getServiceFactory().declareBean(arguments.entityConfig);
+				getServiceFactory().declareBean(json=arguments.entityConfig,siteid=$.event('siteid'));
 
-				registerEntity(obj.entityname,{public=obj.public,moduleid='00000000000000000000000000000000000'});
 				return findProperties(obj.entityName);
 			} else {
 				throw(type="invalidTokens");
