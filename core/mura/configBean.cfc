@@ -140,7 +140,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.duplicateTransients=false>
 <cfset variables.instance.maxArchivedVersions=0 />
 <cfset variables.instance.postBundles=false />
-<cfset variables.instance.applyDBUpdates=false />
+<cfset variables.instance.applyDBUpdates=true />
 <cfset variables.instance.broadcastCachePurges=true />
 <cfset variables.instance.broadcastAppreloads=true />
 <cfset variables.instance.broadcastWithProxy=true />
@@ -831,46 +831,47 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var MSSQLversion=0 />
 	<cfset var MSSQLlob="[nvarchar](max)" />
 
-	<cfif variables.instance.dbtype eq 'MSSQL'>
-
-		<cftry>
-			<cfquery name="MSSQLversion"  datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-				SELECT CONVERT(varchar(100), SERVERPROPERTY('ProductVersion')) as version
-			</cfquery>
-			<cfset MSSQLversion=listFirst(MSSQLversion.version,".")>
-			<cfcatch></cfcatch>
-		</cftry>
-
-		<cftry>
-			<cfif not MSSQLversion>
-				<cfquery name="MSSQLversion" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-					EXEC sp_MSgetversion
+	<cfif getValue(property="applyDbUpdates",defaultValue=true)>
+		<cfif variables.instance.dbtype eq 'MSSQL'>
+			<cftry>
+				<cfquery name="MSSQLversion"  datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+					SELECT CONVERT(varchar(100), SERVERPROPERTY('ProductVersion')) as version
 				</cfquery>
+				<cfset MSSQLversion=listFirst(MSSQLversion.version,".")>
+				<cfcatch></cfcatch>
+			</cftry>
 
-				<cftry>
-					<cfset MSSQLversion=left(MSSQLversion.CHARACTER_VALUE,1)>
-					<cfcatch>
-						<cfset MSSQLversion=mid(MSSQLversion.COMPUTED_COLUMN_1,1,find(".",MSSQLversion.COMPUTED_COLUMN_1)-1)>
-					</cfcatch>
-				</cftry>
-			</cfif>
+			<cftry>
+				<cfif not MSSQLversion>
+					<cfquery name="MSSQLversion" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+						EXEC sp_MSgetversion
+					</cfquery>
 
-			<cfif MSSQLversion neq 8>
+					<cftry>
+						<cfset MSSQLversion=left(MSSQLversion.CHARACTER_VALUE,1)>
+						<cfcatch>
+							<cfset MSSQLversion=mid(MSSQLversion.COMPUTED_COLUMN_1,1,find(".",MSSQLversion.COMPUTED_COLUMN_1)-1)>
+						</cfcatch>
+					</cftry>
+				</cfif>
+
+				<cfif MSSQLversion neq 8>
+					<cfset MSSQLlob="[nvarchar](max)">
+				<cfelse>
+					<cfset MSSQLlob="[ntext]">
+				</cfif>
+			<cfcatch>
 				<cfset MSSQLlob="[nvarchar](max)">
-			<cfelse>
-				<cfset MSSQLlob="[ntext]">
-			</cfif>
-		<cfcatch>
-			<cfset MSSQLlob="[nvarchar](max)">
-		</cfcatch>
-		</cftry>
+			</cfcatch>
+			</cftry>
+		</cfif>
+
+		<cfdirectory action="list" directory="#getDirectoryFromPath(getCurrentTemplatePath())#dbUpdates" name="rsUpdates" filter="*.cfm" sort="name asc">
+
+		<cfloop query="rsUpdates">
+			<cfinclude template="dbUpdates/#rsUpdates.name#">
+		</cfloop>
 	</cfif>
-
-	<cfdirectory action="list" directory="#getDirectoryFromPath(getCurrentTemplatePath())#dbUpdates" name="rsUpdates" filter="*.cfm" sort="name asc">
-
-	<cfloop query="rsUpdates">
-		<cfinclude template="dbUpdates/#rsUpdates.name#">
-	</cfloop>
 	<cfreturn this>
 </cffunction>
 

@@ -184,7 +184,7 @@ if ( application.setupComplete ) {
 		if(!isDefined('application.serviceFactory')){
 			application.serviceFactory=variables.serviceFactory;
 		}
-		
+
 		variables.serviceFactory.addBean("useFileMode",application.configBean.getUseFileMode());
 		variables.serviceFactory.addBean("tempDir",application.configBean.getTempDir());
 		variables.serviceFactory.addBean("configBean",application.configBean);
@@ -364,8 +364,12 @@ if ( application.setupComplete ) {
 	application.objectMappings.bundleableBeans="";
 	application.objectMappings.versionedBeans="";
 	if ( application.appAutoUpdated || isdefined('url.applyDBUpdates') ) {
-		variables.tracepoint=variables.tracer.initTracepoint("Checking/Applying DB updates");
-		application.configBean.applyDbUpdates();
+		if(application.configBean.getValue(property="applyDbUpdates",defaultValue=true)){
+			variables.tracepoint=variables.tracer.initTracepoint("Checking/Applying DB updates");
+			application.configBean.applyDbUpdates();
+		} else {
+			variables.tracepoint=variables.tracer.initTracepoint("Bypassing Checking/Applying DB updates");
+		}
 		variables.tracer.commitTracepoint(variables.tracepoint);
 	} else if ( fileExists(ExpandPath("/muraWRM/config/objectMappings.json.cfm")) ) {
 		cffile( variable="variables.objectMappingJSON", file=ExpandPath("/muraWRM/config/objectMappings.json.cfm"), action="read" );
