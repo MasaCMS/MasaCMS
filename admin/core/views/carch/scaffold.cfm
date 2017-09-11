@@ -214,7 +214,7 @@
 			<div class="btn-group">
 			<span v-if="entityname != 'entity'">
 				<button @click="showAll" type="submit" class="btn">View All Custom Entities</button>
-				<span v-if="data.issuperuser && data && data.parentproperties.dynamic && data.parentproperties.dynamic">
+				<span v-if="data.issuperuser && data && data.parentproperties && data.parentproperties.dynamic">
 					<button @click="goToAssembler(entityname)">Edit Entity Definition</button>
 				</span>
 			</span>
