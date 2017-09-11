@@ -3274,8 +3274,8 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				"url"= "https://github.com/blueriver/MuraCMS/blob/develop/license.txt"
 			}
 			},
-			"host"= $.siteConfig('domain'),
-			"basePath"= replace($.siteConfig().getApi('JSON','v1').getEndPoint(useProtocol=false,mode='rest'),'/json/','/rest/'),
+			"host"= $.siteConfig('domain') & $.siteConfig('serverPort'),
+			"basePath"= "/index.cfm/_api/rest/#$.siteConfig('siteid')#",
 			"tags"= [
 				{
 					"name"= "Mura CMS",
