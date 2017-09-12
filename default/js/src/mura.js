@@ -313,16 +313,25 @@
             root.Mura.ajax({
                 async: true,
                 type: 'get',
-                url: root.Mura.apiEndpoint + params.siteid +
+                url: root.Mura.apiEndpoint +
                     '/content/_path/' + filename + '?' +
                     query.join('&'),
                 success: function(resp) {
-                    if (typeof resolve ==
-                        'function') {
-                        var item = new root.Mura.Entity();
-                        item.set(resp.data);
-                        resolve(item);
-                    }
+                  if (typeof resolve ==
+                      'function') {
+                      var item = new root.Mura.Entity();
+                      item.set(resp.data);
+                      resolve(item);
+                  }
+                },
+                error: function(resp) {
+  								if (typeof resp.data != 'undefined' && typeof resolve == 'function') {
+                    var item = new root.Mura.Entity();
+                    item.set(resp.data);
+  									resolve(item);
+  								} else if (typeof reject == 'function') {
+                    reject(resp);
+                  }
                 }
             });
         });
