@@ -171,11 +171,22 @@ General Classes
 <cfset this.formTextareaClass = this.formGeneralControlClass>
 <cfset this.formFileClass = this.formGeneralControlClass>
 <cfset this.formCheckboxClass = "">
+<cfset this.formCheckboxLabelClass = "checkbox">
 <cfset this.formRadioClass = "">
+<cfset this.formRadioLabelClass = "radio">
 <cfset this.formButtonWrapperClass = "btn-group">
 <cfset this.formButtonInnerClass="">
 <cfset this.formButtonClass = "btn btn-default">
-<cfset this.formRequiredWrapperClass="">
+<cfset this.formRequiredWrapperClass = "">
+<cfset this.formButtomSubmitclass = "form-submit  btn-primary">form-nav
+<cfset this.formButtonSubmitLabel = "Submit">
+<cfset this.formButtonNextlClass = "form-nav">
+<cfset this.formButtonNextLabel = "Next">
+<cfset this.formButtonBackClass = "form-nav">
+<cfset this.formButtonBackLabel = "Back">
+<cfset this.formButtonCancelLabel = "Cancel">
+<cfset this.formButtonCancelClass = "form-cancel btn-primary pull-right">
+
 
 <!--- Images --->
 <cfset this.imageClass="img-thumbnail">
@@ -577,6 +588,39 @@ Display Objects
 	</cfscript>
 
 	<cfreturn this />
+</cffunction>
+
+<cffunction name="getClientRenderVariables" output="false">
+	<cfreturn {
+    generalwrapperclass = this.generalwrapperclass,
+    generalwrapperbodyclass = this.generalwrapperbodyclass,
+    formWrapperClass=this.formWrapperClass,
+  	formWrapperBodyClass=this.formWrapperBodyClass,
+  	formFieldWrapperClass = this.formFieldWrapperClass,
+  	formFieldLabelClass = this.formFieldLabelClass,
+  	formGeneralControlClass = this.formGeneralControlClass,
+  	formInputClass=this.formInputClass,
+  	formSelectClass = this.formSelectClass,
+  	formTextareaClass = this.formTextareaClass,
+  	formFileClass = this.formFileClass,
+  	formCheckboxClass = this.formCheckboxClass,
+  	formCheckboxLabelClass = this.formCheckboxLabelClass,
+  	formRadioClass = this.formRadioClass,
+  	formRadioLabelClass = this.formRadioLabelClass,
+  	formButtonWrapperClass = this.formButtonWrapperClass,
+  	formButtonInnerClass=this.formButtonInnerClass,
+  	formButtonClass = this.formButtonClass,
+  	formRequiredWrapperClass = this.formRequiredWrapperClass,
+		formButtomSubmitclass = this.formButtomSubmitclass,
+		formButtonSubmitLabel = this.formButtonSubmitLabel,
+		formButtonNextlClass = this.formButtonNextlClass,
+		formButtonNextLabel = this.formButtonNextLabel,
+		formButtonBackClass = this.formButtonBackClass,
+		formButtonBackLabel = this.formButtonBackLabel,
+		formButtonCancelLabel = this.formButtonCancelLabel,
+		formButtonCancelClass = this.formButtonCancelClass
+  }>
+
 </cffunction>
 
 <cffunction name="postMergeInit" output="false">

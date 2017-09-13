@@ -131,16 +131,42 @@
 		//this.liPaginationNotCurrentClass="";
 		//this.aPaginationCurrentClass="";
 		//this.aPaginationNotCurrentClass="";
-		//this.formWrapperClass="well";
 		//this.generalWrapperClass="well";
 		//this.generalWrapperBodyClass="";
 
+		//These are used as primary form settings as well as in the form builder.
+		//this.formWrapperClass="well";
+		//this.formWrapperClass=this.generalWrapperClass;
+		//this.formWrapperBodyClass=this.generalWrapperBodyClass;
+		//this.formFieldWrapperClass = "control-group";
+		//this.formFieldLabelClass = "control-label">
+		//this.formGeneralControlClass = "form-control";
+		//this.formInputClass=this.formGeneralControlClass;
+		//this.formSelectClass = this.formGeneralControlClass;
+		//this.formTextareaClass = this.formGeneralControlClass;
+		//this.formFileClass = this.formGeneralControlClass;
+		//this.formCheckboxClass = "";
+		//this.formCheckboxLabelClass = "checkbox";
+		//this.formRadioClass = "";
+		//this.formRadioLabelClass = "radio";
+		//this.formButtonWrapperClass = "btn-group";
+		//this.formButtonInnerClass="";
+		//this.formButtonClass = "btn btn-default";
+		//this.formRequiredWrapperClass="";
+		//this.formButtomSubmitclass = "form-submit  btn-primary";
+		//this.formButtonSubmitLabel = "Submit";
+		//this.this.formButtonNextClass = "form-nav";
+		//this.formButtonNextLabel = "Next";
+		//this.this.formButtonBackClass = "form-nav";
+		//this.formButtonBackLabel = "Back";
+		//this.formButtonCancelLabel = "Cancel";
+		//this.formButtonCancelClass = "form-cancel btn-primary pull-right";
 
 		//this.enablemuratag=true;
 		//this.bodyMetaImageSizeArgs={size="medium"};
 		//this.defaultnavsize=50;
-		this.shadowboxattribute="data-rel"; //This is the new value and will not be needed overtime.
 
+		this.shadowboxattribute="data-rel"; //This is the new value and will not be needed overriding.
 
 		//this.navSubWrapperClass=this.navWrapperClass;
 		//this.navSubWrapperBodyClass=this.navWrapperBodyClass;
@@ -436,8 +462,7 @@
 		this.raterWrapperClass="";
 		this.avgRatingWrapperClass="";
 
-		//Generic form vars
-		this.formWrapperClass = "";
+
 	</cfscript>
 
 </cfcomponent>

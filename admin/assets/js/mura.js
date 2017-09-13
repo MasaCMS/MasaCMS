@@ -6737,11 +6737,20 @@ Mura.RequestContext=Mura.Core.extend(
               type: 'get',
               url: Mura.apiEndpoint + '/content/_path/' + filename + '?' + query.join('&'),
               success: function(resp) {
-                  if (typeof resolve == 'function') {
-                      var item = new Mura.Entity({},self);
-                      item.set(resp.data);
-                      resolve(item);
-                  }
+                if (typeof resolve == 'function') {
+                  var item = new Mura.Entity({},self);
+                  item.set(resp.data);
+                  resolve(item);
+                }
+              },
+							error: function(resp) {
+								if (typeof resp.data != 'undefined' && typeof resolve == 'function') {
+									var item = new Mura.Entity({},self);
+									item.set(resp.data);
+									resolve(item);
+								} else if (typeof reject == 'function') {
+                  reject(resp);
+                }
               }
             }
           );
@@ -10199,11 +10208,34 @@ renderqueue: 0,
 formInit: false,
 responsemessage: "",
 rb: {
-	btnsubmitclass:"form-submit",
-	btnsubmitlabel:"Submit",
-	btnnextlabel:"Next",
-	btnbacklabel:"Back",
-	btncancellabel:"Cancel"
+	generalwrapperclass:"well",
+	generalwrapperbodyclass:"",
+	formwrapperclass: "well",
+	formwrapperbodyclass: "",
+	formfieldwrapperclass: "control-group",
+	formfieldlabelclass:"control-label",
+	formgeneralcontrolclass:"form-control",
+	forminputclass:"form-control",
+	formselectclass:"form-control",
+	formtextareaclass:"form-control",
+	formfileclass:"form-control",
+	formtextblockclass:"form-control",
+	formcheckboxclass:"",
+	formcheckboxlabelclass:"checkbox",
+	formradioclass:"",
+	formradiolabelclass:"radio",
+	formbuttonwrapperclass:"btn-group",
+	formbuttoninnerclass:"",
+	formbuttonclass:"btn btn-default",
+	formrequiredwrapperclass:"",
+	formbuttomsubmitclass :"form-submit",
+	formbuttonsubmitlabel : "Submit",
+	formbuttonnextclass:"form-nav",
+	formbuttonnextlabel : "Next",
+	formbuttonbackclass:"form-nav",
+	formbuttonbacklabel : "Back",
+	formbuttoncancelclass:"form-cancel btn-primary pull-right",
+	formbuttoncancellabel :"Cancel"
 },
 render:function(){
 
@@ -10485,14 +10517,14 @@ renderForm: function( ) {
 
 	for(var i = 0;i < fields.length;i++) {
 		var field =  self.formJSON.form.fields[fields[i]];
-		try {
+		//try {
 			if( field.fieldtype.fieldtype != undefined && field.fieldtype.fieldtype != "") {
 				self.renderField(field.fieldtype.fieldtype,field);
 			}
-		} catch(e){
-			console.log('Error rendering form field:');
-			console.log(field);
-		}
+		//} catch(e){
+			//console.log('Error rendering form field:');
+			//console.log(field);
+		//}
 	}
 
 	if(self.ishuman && self.currentpage==(self.formJSON.form.pages.length-1)){
@@ -10511,31 +10543,31 @@ renderForm: function( ) {
 
 renderPaging:function() {
 	var self = this;
-	var submitlabel=(typeof self.formJSON.form.formattributes != 'undefined' && typeof self.formJSON.form.formattributes.submitlabel != 'undefined' && self.formJSON.form.formattributes.submitlabel) ? self.formJSON.form.formattributes.submitlabel : self.rb.btnsubmitlabel;
+	var submitlabel=(typeof self.formJSON.form.formattributes != 'undefined' && typeof self.formJSON.form.formattributes.submitlabel != 'undefined' && self.formJSON.form.formattributes.submitlabel) ? self.formJSON.form.formattributes.submitlabel : self.rb.formbuttonsubmitlabel;
 
 	mura(".error-container-" + self.context.objectid,self.context.formEl).empty();
 
 	mura(".paging-container-" + self.context.objectid,self.context.formEl).empty();
 
 	if(self.formJSON.form.pages.length == 1) {
-		mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:self.currentpage+1,label:submitlabel,"class":self.rb.btnsubmitclass}));
+		mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:self.currentpage+1,label:submitlabel,"class":self.rb.formbuttomsubmitclass}));
 	}
 	else {
 		if(self.currentpage == 0) {
-			mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:1,label:self.rb.btnnextlabel,"class":"form-nav"}));
+			mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:1,label:self.rb.formbuttonnextlabel,"class":"form-nav"}));
 		} else {
-			mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:self.currentpage-1,label:self.rb.btnbacklabel,"class":'form-nav'}));
+			mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:self.currentpage-1,label:self.rb.formbuttonbacklabel,"class":self.rb.formbuttombackclass}));
 
 			if(self.currentpage+1 < self.formJSON.form.pages.length) {
-				mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:self.currentpage+1,label:self.rb.btnnextlabel,"class":'form-nav'}));
+				mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:self.currentpage+1,label:self.rb.formbuttonnextlabel,"class":self.rb.formbuttomnextclass}));
 			}
 			else {
-				mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:self.currentpage+1,label:submitlabel,"class":'form-submit  btn-primary'}));
+				mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:self.currentpage+1,label:submitlabel,"class":self.rb.formbuttomsubmitclass}));
 			}
 		}
 
 		if(self.backlink != undefined && self.backlink.length)
-			mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:self.currentpage+1,label:self.rb.btncancellabel,"class":'form-cancel btn-primary pull-right'}));
+			mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:self.currentpage+1,label:self.rb.formbuttoncancellabel,"class":self.rb.formbuttomcancelclass}));
 	}
 
 	mura(".form-submit",self.context.formEl).click( function() {
@@ -11348,6 +11380,8 @@ cleanProps: function( props ) {
 registerHelpers: function() {
 	var self = this;
 
+	Mura.extend(self.rb,Mura.rb);
+
 	Mura.Handlebars.registerHelper('eachColRow',function(row, columns, options) {
 		var ret = "";
 		for(var i = 0;i < columns.length;i++) {
@@ -11468,6 +11502,10 @@ registerHelpers: function() {
 		var escapeExpression=Mura.Handlebars.escapeExpression;
 		var returnString='mura-control-group';
 
+		if(self.rb.formfieldwrapperclass){
+			returnString += ' ' + self.rb.formfieldwrapperclass;
+		}
+
 		if(this.wrappercssclass){
 			returnString += ' ' + escapeExpression(this.wrappercssclass);
 		}
@@ -11477,6 +11515,22 @@ registerHelpers: function() {
 		}
 
 		return returnString;
+	});
+
+	Mura.Handlebars.registerHelper('radioLabelClass',function() {
+		return self.rb.formradiolabelclass;
+	});
+
+	Mura.Handlebars.registerHelper('radioClass',function() {
+		return self.rb.formradioclass;
+	});
+
+	Mura.Handlebars.registerHelper('checkboxLabelClass',function() {
+		return self.rb.formchecklabelclass;
+	});
+
+	Mura.Handlebars.registerHelper('checkboxClass',function() {
+		return self.rb.formcheckboxclass;
 	});
 
 	Mura.Handlebars.registerHelper('formClass',function() {
@@ -11506,9 +11560,29 @@ registerHelpers: function() {
 			returnString += ' id="field-' + escapeExpression(this.name) + '"';
 		}
 
+		returnString += ' class="';
+
 		if(this.cssclass){
-			returnString += ' class="' + escapeExpression(this.cssclass) + '"';
+			returnString += escapeExpression(this.cssclass) + ' ';
 		}
+
+		if(this.fieldtype=='radio' || this.fieldtype=='radio_static'){
+			returnString += self.rb.formradioclass;
+		} else if(this.fieldtype=='checkbox' || this.fieldtype=='checkbox_static'){
+			returnString += self.rb.formcheckboxclass;
+		} else if(this.fieldtype=='file'){
+			returnString += self.rb.formfileclass;
+		} else if(this.fieldtype=='textarea'){
+			returnString += self.rb.formtextareaclass;
+		} else if(this.fieldtype=='dropdown' || this.fieldtype=='dropdown_static'){
+			returnString += self.rb.formselectclass;
+		} else if(this.fieldtype=='textblock'){
+			returnString += self.rb.formtextblockclass;
+		} else {
+			returnString += self.rb.forminputclass;
+		}
+
+		returnString += '"';
 
 		if(this.tooltip){
 			returnString += ' title="' + escapeExpression(this.tooltip) + '"';
@@ -18484,24 +18558,28 @@ this["Mura"]["templates"]["checkbox"] = this.Mura.Handlebars.template({"1":funct
 },"7":function(container,depth0,helpers,partials,data) {
     return "</br>";
 },"9":function(container,depth0,helpers,partials,data,blockParams,depths) {
-    var stack1, helper, alias1=container.lambda, alias2=container.escapeExpression, alias3=depth0 != null ? depth0 : (container.nullContext || {}), alias4=helpers.helperMissing, alias5="function";
+    var stack1, helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=helpers.helperMissing, alias3="function", alias4=container.lambda, alias5=container.escapeExpression;
 
-  return "				<label class=\"checkbox\">\r\n				<input source=\""
-    + alias2(alias1(((stack1 = (depths[1] != null ? depths[1].dataset : depths[1])) != null ? stack1.source : stack1), depth0))
+  return "				<label class=\""
+    + ((stack1 = ((helper = (helper = helpers.checkboxLabelClass || (depth0 != null ? depth0.checkboxLabelClass : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"checkboxLabelClass","hash":{},"data":data}) : helper))) != null ? stack1 : "")
+    + "\">\r\n				<input source=\""
+    + alias5(alias4(((stack1 = (depths[1] != null ? depths[1].dataset : depths[1])) != null ? stack1.source : stack1), depth0))
     + "\" type=\"checkbox\" name=\""
-    + alias2(alias1((depths[1] != null ? depths[1].name : depths[1]), depth0))
+    + alias5(alias4((depths[1] != null ? depths[1].name : depths[1]), depth0))
+    + "\" class=\""
+    + ((stack1 = ((helper = (helper = helpers.checkboxClass || (depth0 != null ? depth0.checkboxClass : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"checkboxClass","hash":{},"data":data}) : helper))) != null ? stack1 : "")
     + "\" id=\"field-"
-    + alias2(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias4),(typeof helper === alias5 ? helper.call(alias3,{"name":"id","hash":{},"data":data}) : helper)))
+    + alias5(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
     + "\" value=\""
-    + alias2(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias4),(typeof helper === alias5 ? helper.call(alias3,{"name":"id","hash":{},"data":data}) : helper)))
+    + alias5(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
     + "\" id=\""
-    + alias2(alias1((depths[1] != null ? depths[1].name : depths[1]), depth0))
+    + alias5(alias4((depths[1] != null ? depths[1].name : depths[1]), depth0))
     + "-"
-    + alias2(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias4),(typeof helper === alias5 ? helper.call(alias3,{"name":"id","hash":{},"data":data}) : helper)))
+    + alias5(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
     + "\" "
-    + ((stack1 = helpers["if"].call(alias3,(depth0 != null ? depth0.isselected : depth0),{"name":"if","hash":{},"fn":container.program(10, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.isselected : depth0),{"name":"if","hash":{},"fn":container.program(10, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "/>\r\n				"
-    + alias2(((helper = (helper = helpers.label || (depth0 != null ? depth0.label : depth0)) != null ? helper : alias4),(typeof helper === alias5 ? helper.call(alias3,{"name":"label","hash":{},"data":data}) : helper)))
+    + alias5(((helper = (helper = helpers.label || (depth0 != null ? depth0.label : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"label","hash":{},"data":data}) : helper)))
     + "</label>\r\n";
 },"10":function(container,depth0,helpers,partials,data) {
     return "checked='checked'";
@@ -18535,21 +18613,25 @@ this["Mura"]["templates"]["checkbox_static"] = this.Mura.Handlebars.template({"1
 },"7":function(container,depth0,helpers,partials,data) {
     return "</br>";
 },"9":function(container,depth0,helpers,partials,data,blockParams,depths) {
-    var stack1, helper, alias1=container.lambda, alias2=container.escapeExpression, alias3=depth0 != null ? depth0 : (container.nullContext || {}), alias4=helpers.helperMissing, alias5="function";
+    var stack1, helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=helpers.helperMissing, alias3="function", alias4=container.lambda, alias5=container.escapeExpression;
 
-  return "				<label class=\"checkbox\">\r\n				<input type=\"checkbox\" name=\""
-    + alias2(alias1((depths[1] != null ? depths[1].name : depths[1]), depth0))
+  return "				<label class=\""
+    + ((stack1 = ((helper = (helper = helpers.checkboxLabelClass || (depth0 != null ? depth0.checkboxLabelClass : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"checkboxLabelClass","hash":{},"data":data}) : helper))) != null ? stack1 : "")
+    + "\">\r\n				<input type=\"checkbox\" name=\""
+    + alias5(alias4((depths[1] != null ? depths[1].name : depths[1]), depth0))
+    + "\" class=\""
+    + ((stack1 = ((helper = (helper = helpers.checkboxClass || (depth0 != null ? depth0.checkboxClass : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"checkboxClass","hash":{},"data":data}) : helper))) != null ? stack1 : "")
     + "\" id=\"field-"
-    + alias2(((helper = (helper = helpers.datarecordid || (depth0 != null ? depth0.datarecordid : depth0)) != null ? helper : alias4),(typeof helper === alias5 ? helper.call(alias3,{"name":"datarecordid","hash":{},"data":data}) : helper)))
+    + alias5(((helper = (helper = helpers.datarecordid || (depth0 != null ? depth0.datarecordid : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"datarecordid","hash":{},"data":data}) : helper)))
     + "\" value=\""
-    + alias2(((helper = (helper = helpers.value || (depth0 != null ? depth0.value : depth0)) != null ? helper : alias4),(typeof helper === alias5 ? helper.call(alias3,{"name":"value","hash":{},"data":data}) : helper)))
+    + alias5(((helper = (helper = helpers.value || (depth0 != null ? depth0.value : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"value","hash":{},"data":data}) : helper)))
     + "\" id=\""
-    + alias2(alias1((depths[1] != null ? depths[1].name : depths[1]), depth0))
+    + alias5(alias4((depths[1] != null ? depths[1].name : depths[1]), depth0))
     + "\" "
-    + ((stack1 = helpers["if"].call(alias3,(depth0 != null ? depth0.isselected : depth0),{"name":"if","hash":{},"fn":container.program(10, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + ((stack1 = helpers["if"].call(alias3,(depth0 != null ? depth0.selected : depth0),{"name":"if","hash":{},"fn":container.program(10, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.isselected : depth0),{"name":"if","hash":{},"fn":container.program(10, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.selected : depth0),{"name":"if","hash":{},"fn":container.program(10, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "/>\r\n				"
-    + alias2(((helper = (helper = helpers.label || (depth0 != null ? depth0.label : depth0)) != null ? helper : alias4),(typeof helper === alias5 ? helper.call(alias3,{"name":"label","hash":{},"data":data}) : helper)))
+    + alias5(((helper = (helper = helpers.label || (depth0 != null ? depth0.label : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"label","hash":{},"data":data}) : helper)))
     + "</label>\r\n";
 },"10":function(container,depth0,helpers,partials,data) {
     return " checked='checked'";
@@ -18786,9 +18868,13 @@ this["Mura"]["templates"]["radio"] = this.Mura.Handlebars.template({"1":function
 
   return "				<label for=\""
     + alias4(((helper = (helper = helpers.label || (depth0 != null ? depth0.label : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"label","hash":{},"data":data}) : helper)))
-    + "\" class=\"radio\">\n				<input type=\"radio\" name=\""
+    + "\" test1=1 class=\""
+    + ((stack1 = ((helper = (helper = helpers.radioLabelClass || (depth0 != null ? depth0.radioLabelClass : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"radioLabelClass","hash":{},"data":data}) : helper))) != null ? stack1 : "")
+    + "\">\n				<input type=\"radio\" name=\""
     + alias4(container.lambda((depths[1] != null ? depths[1].name : depths[1]), depth0))
-    + "id\" id=\"field-"
+    + "id\" class=\""
+    + ((stack1 = ((helper = (helper = helpers.radioClass || (depth0 != null ? depth0.radioClass : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"radioClass","hash":{},"data":data}) : helper))) != null ? stack1 : "")
+    + "\" id=\"field-"
     + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
     + "\" value=\""
     + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
@@ -18833,8 +18919,12 @@ this["Mura"]["templates"]["radio_static"] = this.Mura.Handlebars.template({"1":f
 
   return "				<label for=\""
     + alias4(((helper = (helper = helpers.label || (depth0 != null ? depth0.label : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"label","hash":{},"data":data}) : helper)))
-    + "\" class=\"radio\">\n				<input type=\"radio\" name=\""
+    + "\" class=\""
+    + ((stack1 = ((helper = (helper = helpers.radioLabelClass || (depth0 != null ? depth0.radioLabelClass : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"radioLabelClass","hash":{},"data":data}) : helper))) != null ? stack1 : "")
+    + "\">\n				<input type=\"radio\" name=\""
     + alias4(container.lambda((depths[1] != null ? depths[1].name : depths[1]), depth0))
+    + "\" class=\""
+    + ((stack1 = ((helper = (helper = helpers.radioClass || (depth0 != null ? depth0.radioClass : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"radioClass","hash":{},"data":data}) : helper))) != null ? stack1 : "")
     + "\" id=\"field-"
     + alias4(((helper = (helper = helpers.datarecordid || (depth0 != null ? depth0.datarecordid : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"datarecordid","hash":{},"data":data}) : helper)))
     + "\" value=\""
@@ -19041,7 +19131,7 @@ this["Mura"]["templates"]["textblock"] = this.Mura.Handlebars.template({"compile
     + container.escapeExpression(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
     + "-container\">\r\n<div class=\"mura-form-text\">"
     + ((stack1 = ((helper = (helper = helpers.value || (depth0 != null ? depth0.value : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"value","hash":{},"data":data}) : helper))) != null ? stack1 : "")
-    + "</div>\r\n</div>";
+    + "</div>\r\n</div>\r\n";
 },"useData":true});
 
 this["Mura"]["templates"]["textfield"] = this.Mura.Handlebars.template({"1":function(container,depth0,helpers,partials,data) {

@@ -68,6 +68,7 @@ Mura.init({
 	type:"#esapiEncode('javascript',variables.$.content('type'))#",
 	subtype:"#esapiEncode('javascript',variables.$.content('subtype'))#",
 	queueObjects: #esapiEncode('javascript',this.queueObjects)#,
+	rb:#variables.$.siteConfig().getAPI('JSON','v1').getSerializer().serialize(variables.$.getClientRenderVariables())#,
 	#trim(variables.$.siteConfig('JSDateKeyObjInc'))#
 });
 </script>

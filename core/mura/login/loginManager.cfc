@@ -69,8 +69,8 @@ component extends="mura.cfobject" output="false" hint="This provides primary log
 			sessionData.rememberMe=1;
 			return true;
 		} else {
-			structDelete(cookie,"userid");
-			structDelete(cookie,"userhash");
+			variables.globalUtility.deleteCookie(name="userHash");
+			variables.globalUtility.deleteCookie(name="userid");
 			sessionData.rememberMe=0;
 			return false;
 		}
