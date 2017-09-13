@@ -1779,7 +1779,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		if(isDefined('arguments.params.countOnly') && isBoolean(arguments.params.countOnly) && arguments.params.countOnly){
 			return {count=feed.getAvailableCount()};
 		} else {
-			var iterator=feed.getIterator();
+			var iterator=feed.getIterator(applyPermFilter=$.siteConfig('extranet'));
 			setIteratorProps(iterator,arguments.params);
 		}
 
@@ -1849,7 +1849,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		feed.addParam(column=pk,criteria=arguments.ids,condition='in');
 
 		setFeedProps(feed,arguments.params);
-		var iterator=feed.getIterator();
+		var iterator=feed.getIterator(applyPermFilter=$.siteConfig('extranet'));
 		setIteratorProps(iterator,arguments.params);
 
 
@@ -2043,7 +2043,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		if(isdefined('arguments.params.countOnly') && isBoolean(arguments.params.countOnly) && arguments.params.countOnly){
 			return {count=feed.getAvailableCount()};
 		} else {
-			var iterator=feed.getIterator();
+			var iterator=feed.getIterator(applyPermFilter=$.siteConfig('extranet'));
 
 			setIteratorProps(iterator=iterator);
 			var returnArray=iteratorToArray(iterator=iterator,siteid=arguments.siteid,expand=arguments.expand);

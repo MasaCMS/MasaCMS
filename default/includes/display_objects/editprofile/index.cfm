@@ -148,6 +148,11 @@
 						Comment out the following two password fields to automatically create a random password
 						for the user instead of letting them pick one themselves
 					--->
+
+					<cfif isBoolean($.globalConfig('strongpasswords')) and $.globalConfig('strongpasswords')>
+						<div class="#this.alertInfoClass#">#$.rbKey('user.passwordstrengthhelptext')#</div>
+					</cfif>
+
 					<!--- Password --->
 					<div class="req #this.editProfileFormGroupWrapperClass#">
 						<label class="#this.editProfileFieldLabelClass#" for="passwordtxt">

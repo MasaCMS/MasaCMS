@@ -62,7 +62,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.map = createObject( "java", "java.util.HashMap" ).init() />
 		<cfset variables.utility=application.utility>
 		<!--- set the map into the collections --->
+		<!---
 		<cfset setCollection( variables.collections.synchronizedMap( variables.map ) ) />
+		--->
+
+		<cfset setCollection( variables.map ) />
 
 		<cfreturn this />
 	</cffunction>

@@ -903,6 +903,8 @@
 			structDelete(result,'extenddatatable');
 			structDelete(result,'extenddata');
 			structDelete(result,'extendAutoComplete');
+			structDelete(result,'lastupdateby');
+			structDelete(result,'lastupdatebyid');
 
 			if($.content('type')=='Variation'){
 				var variationTargeting=$.content().getVariationTargeting();

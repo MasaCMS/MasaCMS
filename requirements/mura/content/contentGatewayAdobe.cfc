@@ -906,13 +906,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getCommentCount" access="remote" output="false">
 			<cfargument name="siteid" type="string">
 			<cfargument name="contentID" type="string" >
-
+			<cfargument name="isSpam" type="boolean" default="0">
+			<cfargument name="isDeleted" type="boolean" default="0">
 			<cfset var rsCommentCount=""/>
 
 			<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsCommentCount')#">
 				SELECT count(tcontentcomments.contentid) as CommentCount
 				FROM tcontentcomments
-				WHERE contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/> and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> and isApproved=1
+				WHERE contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/> and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> and isApproved=1 and isSpam = <cfqueryparam cfsqltype="cf_sql_bit" value="#arguments.isSpam#"/> AND isDeleted = <cfqueryparam cfsqltype="cf_sql_bit" value="#arguments.isDeleted#"/>
 			</cfquery>
 
 		 <cfreturn rsCommentCount.CommentCount>
@@ -2225,7 +2226,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif arguments.liveOnly>
 		#renderActiveClause("tcontent",arguments.siteID)#
-		
+
 	 	AND (
 			(
 			  	tcontent.Display = 2
