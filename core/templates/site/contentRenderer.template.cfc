@@ -138,6 +138,8 @@
 		//this.formWrapperClass="well";
 		//this.formWrapperClass=this.generalWrapperClass;
 		//this.formWrapperBodyClass=this.generalWrapperBodyClass;
+		//this.formErrorWrapperClass = "";
+		//this.formResponseWrapperClass = ";
 		//this.formFieldWrapperClass = "control-group";
 		//this.formFieldLabelClass = "control-label">
 		//this.formGeneralControlClass = "form-control";
@@ -155,9 +157,9 @@
 		//this.formRequiredWrapperClass="";
 		//this.formButtomSubmitclass = "form-submit  btn-primary";
 		//this.formButtonSubmitLabel = "Submit";
-		//this.this.formButtonNextClass = "form-nav";
+		//this.formButtonNextClass = "form-nav";
 		//this.formButtonNextLabel = "Next";
-		//this.this.formButtonBackClass = "form-nav";
+		//this.formButtonBackClass = "form-nav";
 		//this.formButtonBackLabel = "Back";
 		//this.formButtonCancelLabel = "Cancel";
 		//this.formButtonCancelClass = "form-cancel btn-primary pull-right";

@@ -164,6 +164,8 @@ General Classes
 <cfset this.formWrapperClass=this.generalWrapperClass>
 <cfset this.formWrapperBodyClass=this.generalWrapperBodyClass>
 <cfset this.formFieldWrapperClass = "control-group">
+<cfset this.formErrorWrapperClass = "">
+<cfset this.formResponseWrapperClass = "">
 <cfset this.formFieldLabelClass = "control-label">
 <cfset this.formGeneralControlClass = "form-control">
 <cfset this.formInputClass=this.formGeneralControlClass>
@@ -178,7 +180,7 @@ General Classes
 <cfset this.formButtonInnerClass="">
 <cfset this.formButtonClass = "btn btn-default">
 <cfset this.formRequiredWrapperClass = "">
-<cfset this.formButtomSubmitclass = "form-submit  btn-primary">form-nav
+<cfset this.formButtomSubmitclass = "form-submit  btn-primary">
 <cfset this.formButtonSubmitLabel = "Submit">
 <cfset this.formButtonNextlClass = "form-nav">
 <cfset this.formButtonNextLabel = "Next">
@@ -221,7 +223,6 @@ Display Objects
 <!--- calendar/dspList.cfm --->
 <cfset this.calendarListWrapperClass="svCalendar">
 
-<!--- calendar/index.cfm --->
 <cfset this.calendarcolors=[
 		{background='##3a87ad',text='white'},
 		{background='blue',text='white'}
@@ -596,6 +597,8 @@ Display Objects
     generalwrapperbodyclass = this.generalwrapperbodyclass,
     formWrapperClass=this.formWrapperClass,
   	formWrapperBodyClass=this.formWrapperBodyClass,
+		formErrorWrapperClass=this.formErrorWrapperClass,
+		formResponseWrapperClass=this.formResponseWrapperClass,
   	formFieldWrapperClass = this.formFieldWrapperClass,
   	formFieldLabelClass = this.formFieldLabelClass,
   	formGeneralControlClass = this.formGeneralControlClass,

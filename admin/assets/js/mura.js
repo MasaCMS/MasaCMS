@@ -10214,6 +10214,8 @@ rb: {
 	formwrapperbodyclass: "",
 	formfieldwrapperclass: "control-group",
 	formfieldlabelclass:"control-label",
+	formerrorwrapperclass: "",
+	formsuccesswrapperclass: "",
 	formgeneralcontrolclass:"form-control",
 	forminputclass:"form-control",
 	formselectclass:"form-control",
@@ -11512,6 +11514,10 @@ registerHelpers: function() {
 
 		if(this.isrequired){
 			returnString += ' req';
+
+			if(self.rb.formrequiredwrapperclass){
+				returnString += ' ' + self.rb.formrequiredwrapperclass;
+			}
 		}
 
 		return returnString;
@@ -11519,6 +11525,22 @@ registerHelpers: function() {
 
 	Mura.Handlebars.registerHelper('radioLabelClass',function() {
 		return self.rb.formradiolabelclass;
+	});
+
+	Mura.Handlebars.registerHelper('formErrorWrapperClass',function() {
+		if(self.rb.formerrorwrapperclass){
+			return 'mura-response-error' + ' ' + self.rb.formerrorwrapperclass;
+		} else {
+			return 'mura-response-error';
+		}
+	});
+
+	Mura.Handlebars.registerHelper('formSuccessWrapperClass',function() {
+		if(self.rb.formsuccesswrapperclass){
+			return 'mura-response-success' + ' ' + self.rb.formsuccesswrapperclass;
+		} else {
+			return 'mura-response-success';
+		}
 	});
 
 	Mura.Handlebars.registerHelper('radioClass',function() {
@@ -18758,7 +18780,9 @@ this["Mura"]["templates"]["error"] = this.Mura.Handlebars.template({"1":function
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
-  return "<div class=\"mura-response-error\" data-field=\""
+  return "<div class=\""
+    + ((stack1 = ((helper = (helper = helpers.formErrorWrapperClass || (depth0 != null ? depth0.formErrorWrapperClass : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"formErrorWrapperClass","hash":{},"data":data}) : helper))) != null ? stack1 : "")
+    + "\" data-field=\""
     + alias4(((helper = (helper = helpers.field || (depth0 != null ? depth0.field : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"field","hash":{},"data":data}) : helper)))
     + "\">"
     + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.label : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
@@ -18966,10 +18990,12 @@ this["Mura"]["templates"]["section"] = this.Mura.Handlebars.template({"compiler"
 },"useData":true});
 
 this["Mura"]["templates"]["success"] = this.Mura.Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    var stack1, helper;
+    var stack1, helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=helpers.helperMissing, alias3="function";
 
-  return "<div class=\"mura-response-success\">"
-    + ((stack1 = ((helper = (helper = helpers.responsemessage || (depth0 != null ? depth0.responsemessage : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : (container.nullContext || {}),{"name":"responsemessage","hash":{},"data":data}) : helper))) != null ? stack1 : "")
+  return "<div class=\""
+    + ((stack1 = ((helper = (helper = helpers.formSuccessWrapperClass || (depth0 != null ? depth0.formSuccessWrapperClass : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"formSuccessWrapperClass","hash":{},"data":data}) : helper))) != null ? stack1 : "")
+    + "\">"
+    + ((stack1 = ((helper = (helper = helpers.responsemessage || (depth0 != null ? depth0.responsemessage : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"responsemessage","hash":{},"data":data}) : helper))) != null ? stack1 : "")
     + "</div>\n";
 },"useData":true});
 
