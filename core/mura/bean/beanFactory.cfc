@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 component extends="ioc" hint="This provides the primary bean factory that all component instances are instantiated within"{
 
     public any function declareBean( string beanName, string dottedPath, boolean isSingleton = true, struct overrides = { }, string json='' , siteid='') {
-      if(isJSON(arguments.beanName)){
+      if(isDefined('arguments.beanName') && isJSON(arguments.beanName)){
         arguments.json=arguments.beanName;
       }
 
@@ -59,36 +59,55 @@ component extends="ioc" hint="This provides the primary bean factory that all co
           var newline=chr(13)&chr(10);
           var tab=chr(9);
           var extends= (isDefined('entity.historical') && isBoolean(entity.historical) && entity.historical) ? 'mura.bean.beanORMHistorical' : 'mura.bean.beanORM';
-          var orderby= (isDefined('entity.orderby')) ? entity.orderby : '';
-          var table= (isDefined('entity.table')) ? entity.table : "mura_dyn_" & entity.entityname;
-          var properties= (isDefined('entity.properties')) ? entity.properties : [];
-          var bundleable= (isDefined('entity.bundleable')) ? entity.bundleable : false;
-          var hint= (isDefined('entity.hint')) ? entity.hint : "This component was dynamically generated with JSON";
-          var scaffold= (isDefined('entity.scaffold')) ? entity.scaffold : true;
-          var displayname= (isDefined('entity.displayname')) ? entity.displayname : entity.entityname;
-          var public= (isDefined('entity.public')) ? entity.public : false;
-
+          var orderby= (isDefined('entity.orderby') && len(entity.orderby)) ? entity.orderby : '';
+          var table= (isDefined('entity.table') && len(entity.table)) ? entity.table : "mura_dyn_" & entity.entityname;
+          var properties= (isDefined('entity.properties') && isArray(entity.properties)) ? entity.properties : [];
+          var bundleable= (isDefined('entity.bundleable') && isBoolean(entity.bundleable)) ? entity.bundleable : false;
+          var hint= (isDefined('entity.hint') && len(entity.hint)) ? entity.hint : "This component was dynamically generated with JSON";
+          var scaffold= (isDefined('entity.scaffold')) && isBoolean(entity.scaffold)? entity.scaffold : true;
+          var displayname= (isDefined('entity.displayname') && len(entity.displayname)) ? entity.displayname : entity.entityname;
+          var public= (isDefined('entity.public') && isBoolean(entity.public)) ? entity.public : false;
+          var historical= (extends=='mura.bean.beanORMHistorical') ? true : false ;
           //property name="site" fieldtype="one-to-one" relatesto="site" fkcolumn="siteID";
 
           var result='component#newline##tab#extends="#extends#"#newline##tab#entityname="#entity.entityname#"#newline##tab#displayname="#displayname#"#newline##tab#table="#table#"#newline##tab#orderby="#orderby#"#newline##tab#bundleable=#YesNoToBoolean(bundleable)##newline##tab#hint="#hint#"#newline##tab#dynamic=true#newline##tab#scaffold=#YesNoToBoolean(scaffold)##newline##tab#public=#YesNoToBoolean(public)##newline##tab#{';
 
           for(var p in properties){
-            result = result & newline & tab & tab & "property";
 
-            for(var k in p){
-              if(listFindNoCase('yes,no,true,false',p[k])){
-                result = result & ' #lcase(k)#=#YesNoToBoolean(p[k])#';
-              } else {
-                result = result & ' #lcase(k)#="#p[k]#"';
+            if(isDefined('p.name') && len(p.name)){
+              result = result & newline & tab & tab & "property";
+              result = result & ' name="#p.name#"';
+
+              for(var k in p){
+                if(k != 'name'){
+                  if(listFindNoCase('yes,no,true,false',p[k])){
+                    result = result & ' #lcase(k)#=#YesNoToBoolean(p[k])#';
+                  } else {
+                    result = result & ' #lcase(k)#="#p[k]#"';
+                  }
+                }
               }
-            }
 
-            result = result & ";";
+              result = result & ";";
+            }
           }
 
           result = result & newline & "}";
 
-          createDynamicEntity(entity.entityname,result, arguments.siteid);
+
+          var registeredEntity=getBean('entity').loadBy(name=entity.entityname);
+
+          registeredEntity
+    			.set('scaffold',entity.scaffold)
+    			.set('dynamic',entity.dynamic)
+          .set('name',entity.entityname)
+    			.set('displayName',entity.displayname)
+    			.set('ishistorical',historical)
+          .set('json',arguments.json)
+          .set('code',result)
+          .save();
+
+          createDynamicEntity(entity.entityname,result, arguments.siteid,true);
 
           return this;
         } else {

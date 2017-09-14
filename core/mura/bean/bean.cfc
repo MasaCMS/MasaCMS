@@ -1365,6 +1365,7 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 			reg
 			.set('scaffold',getScaffold())
 			.set('dynamic',getDynamic())
+			.set('name',getEntityName())
 			.set('displayName',getEntityDisplayName())
 			.set('ishistorical',getIsHistorical());
 
