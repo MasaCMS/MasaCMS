@@ -3008,6 +3008,9 @@ Display Objects
 	<cfargument name="secure" default="false">
 	<cfargument name="useProtocol" default="true">
 	<cfscript>
+		if(not len(arguments.siteid) and isDefined('variables.$') and len(variables.$.event('siteid'))){
+			arguments.siteid=variables.$.event('siteid');
+		}
 		var imageURL = getBean('fileManager').createHREFForImage(argumentCollection=arguments);
 		if ( IsSimpleValue(imageURL) ) {
 			return imageURL;
