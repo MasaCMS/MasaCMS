@@ -2339,7 +2339,7 @@ Display Objects
 </cffunction>
 
 <cffunction name="createHREFForImage" output="false">
-	<cfargument name="siteID">
+	<cfargument name="siteID" default="">
 	<cfargument name="fileID">
 	<cfargument name="fileExt">
 	<cfargument name="size" required="true" default="undefined">
@@ -2348,6 +2348,9 @@ Display Objects
 	<cfargument name="height" default=""/>
 	<cfargument name="width" default=""/>
 	<cfargument name="secure" default="false">
+	<cfif not len(arguments.siteid) and isDefined('variables.$') and len(variables.$.event('siteid'))>
+		<cfset arguments.siteid=variables.$.event('siteid')>
+	</cfif>
 	<cfreturn getBean("fileManager").createHREFForImage(argumentCollection=arguments)>
 </cffunction>
 
