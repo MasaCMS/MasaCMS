@@ -1323,6 +1323,12 @@
 
 				utility('.mura-object-selected').removeClass('mura-object-selected');
 
+				utility(document)
+					.trigger('muraContentSave')
+					.trigger('MuraContentSave')
+					.trigger('contentSave')
+					.trigger('ContentSave');
+
 				MuraInlineEditor.validate(
 					function(){
 						var count=0;
