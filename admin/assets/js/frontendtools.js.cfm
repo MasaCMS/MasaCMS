@@ -588,6 +588,12 @@
 	var MuraInlineEditor={
 		inited: false,
 		init: function(){
+			
+			utility(document)
+				.trigger('muraContentEditInit')
+				.trigger('MuraContentEditInit')
+				.trigger('contentEditInit')
+				.trigger('ContentEditInit');
 
 			<cfif node.getType() eq 'Variation'>
 			if(!Mura('.mxp-editable').length){
@@ -1324,10 +1330,10 @@
 				utility('.mura-object-selected').removeClass('mura-object-selected');
 
 				utility(document)
-					.trigger('muraContentSave')
-					.trigger('MuraContentSave')
-					.trigger('contentSave')
-					.trigger('ContentSave');
+					.trigger('muraBeforeContentSave')
+					.trigger('MuraBeforeContentSave')
+					.trigger('beforeContentSave')
+					.trigger('BeforeContentSave');
 
 				MuraInlineEditor.validate(
 					function(){

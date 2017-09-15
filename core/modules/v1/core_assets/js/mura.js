@@ -300,7 +300,11 @@ var Mura=(function(){
    function trackEvent(eventData) {
        var data={};
        var isMXP=(typeof Mura.MXP != 'undefined');
-       var trackingVars = {};
+       var trackingVars = {
+         ga:{
+          trackingvars:{}
+         }
+       };
        var gaFound = false;
        var trackingComplete = false;
        var attempt=0;
