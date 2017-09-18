@@ -147,7 +147,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 							<div class="mura-control-group">
 								<label>#application.rbFactory.getKeyValue(session.rb,'login.password')#</label>
-								<input id="password" type="password" name="password">
+								<input id="password" type="password" name="password" autocomplete="off">
 					  	</div>
 
 							<cfif rc.$.getBean('configBean').getValue(property='MFA',defaultValue=false)>
