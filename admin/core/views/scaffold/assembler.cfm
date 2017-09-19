@@ -452,41 +452,43 @@
 					name="length">
 			</div>
 
-			<div class="mura-control-group" v-if="data.fieldtype != 'id'">
-				<label class="checkbox">
-				<input type="checkbox" v-model="data.required"
-					v-bind:true-value="true"
-	   		 	v-bind:false-value="false"
-	 				name="required" :checked="data.required == true || data.required == 1 || data.required == 'true' ? 'checked' : null">
-					Required</label>
-			</div>
+			<div class="mura-control-group"> 
+				<span v-if="data.fieldtype != 'id'">
+					<label class="checkbox">
+					<input type="checkbox" v-model="data.required"
+						v-bind:true-value="true"
+		   		 	v-bind:false-value="false"
+		 				name="required" :checked="data.required == true || data.required == 1 || data.required == 'true' ? 'checked' : null">
+						Required</label>
+				</span>
 
-			<div class="mura-control-group" v-if="data.fieldtype != 'id'">
-				<label class="checkbox">
-				<input type="checkbox" v-model="data.listview"
-					v-bind:true-value="true"
-	   			v-bind:false-value="false"
-	 				name="listview" :checked="data.listview == true || data.listview == 1 || data.listview == 'true' ? 'checked' : null">
-				List</label>
-			</div>
+				<span v-if="data.fieldtype != 'id'">
+					<label class="checkbox">
+					<input type="checkbox" v-model="data.listview"
+						v-bind:true-value="true"
+		   			v-bind:false-value="false"
+		 				name="listview" :checked="data.listview == true || data.listview == 1 || data.listview == 'true' ? 'checked' : null">
+					List</label>
+				</span>
 
-			<div class="mura-control-group" v-if="data.fieldtype != 'id'">
-				<label class="checkbox">
-					<input type="checkbox" v-model="data.filter"
+				<span v-if="data.fieldtype != 'id'">
+					<label class="checkbox">
+						<input type="checkbox" v-model="data.filter"
 						v-bind:true-value="true"
 		   		 	v-bind:false-value="false"
 	 					name="filter" :checked="data.filter == true || data.filter == 1 || data.filter == 'true' ? 'checked' : null">
-				Filter</label>
-			</div>
+					Filter</label>
+				</span>
 
-			<div class="mura-control-group" v-if="data.fieldtype != 'id'">
-				<label class="checkbox">
-				<input type="checkbox" v-model="data.nullable"
+				<span v-if="data.fieldtype != 'id'">
+					<label class="checkbox">
+					<input type="checkbox" v-model="data.nullable"
 					v-bind:true-value="true"
-		   		 v-bind:false-value="false"
+		   		v-bind:false-value="false"
 	 				name="nullable" :checked="data.nullable == true || data.nullable == 1 || data.nullable == 'true' ? 'checked' : null">
-				Nullable</label>
-			</div>
+					Nullable</label>
+			</span>
+		</div>
 
 
 			<div class="mura-control-group" v-if="(data.rendertype == 'radio' || data.rendertype == 'dropdown') && data.fieldtype != 'id'">
