@@ -67,10 +67,11 @@
 			##scaffold-table tr.alt td {
 				background-color: ##eee;
 			}
-
-
-			.formtemplate {
-				margin: 20px 0;
+			.formtemplate{
+				margin: 0 0 20px 0;
+			}
+			.formtemplate + .formtemplate {
+				margin-top: 20px;
 			}
 			.formtemplate div {
 				margin: 10px;
@@ -126,6 +127,7 @@
 			##assembler-preview,.assembler-preview {
 				float: left;
 				border: 2px solid ##333;
+				margin-top:10px;
 				width: 490px;
 				height: 600px;
 				overflow: scroll;
