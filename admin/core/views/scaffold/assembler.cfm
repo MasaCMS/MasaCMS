@@ -177,8 +177,6 @@
 
 </div> <!-- /.mura-header -->
 
-<div class="alert">IMPORTANT: In many instances you will need to reload Mura after updating dynamically created entities.</div>
-
 <div class="block block-constrain" id="container">
 
 	<!--- /Tab Nav --->
@@ -259,6 +257,11 @@
 
 	<template id="assembler-attributes-form-template">
 		<div class="formtemplate" id="attributes-form-template">
+
+	<div class="help-block">
+	   IMPORTANT: In many instances you will need to reload Mura after updating dynamically created entities.
+	</div>
+
 			<div>
 				<label>Entity Name</label>
 				<input type="text" v-model="model.entityname"
