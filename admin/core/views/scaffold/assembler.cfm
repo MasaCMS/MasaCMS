@@ -210,9 +210,6 @@
 									<div>
 										<component :is="currentView" :data="data" :rendertypes="rendertypes" :fieldtypes="fieldtypes" :datatypes="datatypes" :model="model" transition="fade" transition-mode="out-in"></component>
 									</div>
-
-									<pre id="assembler-preview">{{JSON.stringify(model,null,2)}}</pre>
-
 							</div>
 						</div>
 					</div>
@@ -252,67 +249,73 @@
 	<template id="assembler-attributes-form-template">
 		<div class="formtemplate" id="attributes-form-template">
 
-	<div class="help-block">
-	   IMPORTANT: In many instances you will need to reload Mura after updating dynamically created entities.
-	</div>
-
-			<div class="mura-control-group">
-				<label>Entity Name</label>
-				<input type="text" v-model="model.entityname"
-					name="entityname" @change="model.entityname=model.entityname.replace(/[^0-9a-z]/gi, '');">
+			<div class="help-block">
+			   IMPORTANT: In many instances you will need to reload Mura after updating dynamically created entities.
 			</div>
 
-			<div class="mura-control-group">
-				<label>Display Name</label>
-				<input type="text" v-model="model.displayname"
-					name="displayname" @change="model.displayname=removeInvalidText(model.displayname)">
-			</div>
+			<div class="half">
+				<div class="mura-control-group">
+					<label>Entity Name</label>
+					<input type="text" v-model="model.entityname"
+						name="entityname" @change="model.entityname=model.entityname.replace(/[^0-9a-z]/gi, '');">
+				</div>
 
-			<div class="mura-control-group">
-				<label>Order By</label>
-				<input type="text" v-model="model.orderby"
-					name="orderby">
-			</div>
+				<div class="mura-control-group">
+					<label>Display Name</label>
+					<input type="text" v-model="model.displayname"
+						name="displayname" @change="model.displayname=removeInvalidText(model.displayname)">
+				</div>
 
-			<div class="mura-control-group">
-				<label>Table Name</label>
-				<input type="text" v-model="model.table"
-					name="table" @change="model.table=model.table.replace(/[^0-9a-z]/gi, '');">
-			</div>
+				<div class="mura-control-group">
+					<label>Order By</label>
+					<input type="text" v-model="model.orderby"
+						name="orderby">
+				</div>
 
-			<div class="mura-control-group">
-				<label class="checkbox">
-					<input type="checkbox" v-model="model.scaffold"
-						name="scaffold"
+				<div class="mura-control-group">
+					<label>Table Name</label>
+					<input type="text" v-model="model.table"
+						name="table" @change="model.table=model.table.replace(/[^0-9a-z]/gi, '');">
+				</div>
+
+				<div class="mura-control-group">
+					<label class="checkbox">
+						<input type="checkbox" v-model="model.scaffold"
+							name="scaffold"
+							v-bind:true-value="true"
+		   		 		v-bind:false-value="false"
+			 				name="scaffold" :checked="model.scaffold == true || model.scaffold == 1 || model.scaffold == 'true' ? 'checked' : null">
+			 				Scaffold
+			 		</label>
+				</div>
+
+				<div class="mura-control-group">
+					<label class="checkbox">
+					<input type="checkbox" v-model="model.bundleable"
+						name="bundleable"
 						v-bind:true-value="true"
-	   		 		v-bind:false-value="false"
-		 				name="scaffold" :checked="model.scaffold == true || model.scaffold == 1 || model.scaffold == 'true' ? 'checked' : null">
-		 				Scaffold
-		 		</label>
+			   		 v-bind:false-value="false"
+		 				name="bundleable" :checked="model.bundleable == true || model.bundleable == 1 || model.bundleable == 'true' ? 'checked' : null">
+						Bundleable</label>
+				</div>
+
+				<div class="mura-control-group">
+					<label class="checkbox">
+					<input type="checkbox" v-model="model.public"
+						name="public"
+						v-bind:true-value="true"
+		   		 		v-bind:false-value="false"
+		 				name="public" :checked="model.public == true || model.public == 1 || model.public == 'true' ? 'checked' : null">
+						Publicly Accessible</label>
+				</div>
+			</div> <!--/.half -->
+
+			<div class="half">
+				<pre id="assembler-preview">{{JSON.stringify(model,null,2)}}</pre>
 			</div>
 
-			<div class="mura-control-group">
-				<label class="checkbox">
-				<input type="checkbox" v-model="model.bundleable"
-					name="bundleable"
-					v-bind:true-value="true"
-		   		 v-bind:false-value="false"
-	 				name="bundleable" :checked="model.bundleable == true || model.bundleable == 1 || model.bundleable == 'true' ? 'checked' : null">
-					Bundleable</label>
-			</div>
-
-			<div class="mura-control-group">
-				<label class="checkbox">
-				<input type="checkbox" v-model="model.public"
-					name="public"
-					v-bind:true-value="true"
-	   		 		v-bind:false-value="false"
-	 				name="public" :checked="model.public == true || model.public == 1 || model.public == 'true' ? 'checked' : null">
-					Publicly Accessible</label>
-			</div>
-		</div>
+		</div> <!-- /.formtemplate -->
 	</template>
-
 
 	<template id="assembler-related-form-template">
 		<div class="formtemplate" id="related-form-template">
