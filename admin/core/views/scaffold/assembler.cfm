@@ -266,16 +266,17 @@
 						name="displayname" @change="model.displayname=removeInvalidText(model.displayname)">
 				</div>
 
-				<div class="mura-control-group">
-					<label>Order By</label>
-					<input type="text" v-model="model.orderby"
-						name="orderby">
-				</div>
 
 				<div class="mura-control-group">
 					<label>Table Name</label>
 					<input type="text" v-model="model.table"
 						name="table" @change="model.table=model.table.replace(/[^0-9a-z]/gi, '');">
+				</div>
+	
+				<div class="mura-control-group">
+					<label>Order By (optional)</label>
+					<input type="text" v-model="model.orderby"
+						name="orderby">
 				</div>
 
 				<div class="mura-control-group">
@@ -287,9 +288,6 @@
 			 				name="scaffold" :checked="model.scaffold == true || model.scaffold == 1 || model.scaffold == 'true' ? 'checked' : null">
 			 				Scaffold
 			 		</label>
-				</div>
-
-				<div class="mura-control-group">
 					<label class="checkbox">
 					<input type="checkbox" v-model="model.bundleable"
 						name="bundleable"
@@ -297,9 +295,6 @@
 			   		 v-bind:false-value="false"
 		 				name="bundleable" :checked="model.bundleable == true || model.bundleable == 1 || model.bundleable == 'true' ? 'checked' : null">
 						Bundleable</label>
-				</div>
-
-				<div class="mura-control-group">
 					<label class="checkbox">
 					<input type="checkbox" v-model="model.public"
 						name="public"
