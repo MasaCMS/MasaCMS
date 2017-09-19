@@ -4,4 +4,4 @@ If your Mura instance requires any custom mappings they should be placed in
  ./cfapplication.cfm
 e.g.
   this.mappings["/mymapping"] = variables.basedir & "/path/to/mymapping";
---->
+---><cfset this.mappings["/WEB-INF"] = variables.basedir & "/requirements/WEB-INF">

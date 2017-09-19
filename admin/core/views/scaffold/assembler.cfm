@@ -121,10 +121,10 @@
 
 			##assembler-preview,.assembler-preview {
 				float: left;
-				border: 2px solid ##333;
 				margin-top:10px;
-				width: 490px;
-				height: 600px;
+				width: 100%;
+				height: 420px;
+				font-size: .92em;
 				overflow: scroll;
 
 			}
