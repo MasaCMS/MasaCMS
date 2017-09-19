@@ -204,7 +204,7 @@
 				</span>
 			</span>
 			</h2>
-			<div class="btn-group">
+			<div class="btn-group pull-right">
 			<span v-if="entityname != 'entity'">
 				<button @click="showAll" type="submit" class="btn">View All Custom Entities</button>
 				<span v-if="data.issuperuser && data && data.parentproperties && data.parentproperties.dynamic">
@@ -213,7 +213,7 @@
 			</span>
 
 
-			<button @click="openEndpoint()">View API Endpoint</button>
+			<button class="btn" @click="openEndpoint()">View API Endpoint</button>
 			<span v-if="currentparent && currentparent.properties">
 				<button @click="showForm(currentparent.properties.entityname,currentparent.properties.id)" class="btn">Back</button>
 			</span>
