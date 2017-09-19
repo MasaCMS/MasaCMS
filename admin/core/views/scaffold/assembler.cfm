@@ -73,11 +73,6 @@
 			.formtemplate + .formtemplate {
 				margin-top: 20px;
 			}
-			.formtemplate div {
-				margin: 10px;
-				padding: 10px 0;
-				border-top: 1px solid ##ccc;
-			}
 			##property-template {
 				margin: 10px 0;
 			}
@@ -200,7 +195,6 @@
 					<div>
 						<div>
 							<div id="container-assembler">
-								<div style="float: left;width: 49%;">
 									<!---
 									<button @click='clickLoadEntity'>Load</button>
 									<input type="text" id='loadentity' name="loadentity" value="">
@@ -216,11 +210,9 @@
 									<div>
 										<component :is="currentView" :data="data" :rendertypes="rendertypes" :fieldtypes="fieldtypes" :datatypes="datatypes" :model="model" transition="fade" transition-mode="out-in"></component>
 									</div>
-								</div>
-								<div style="float: right;width: 49%;">
-									<pre id="assembler-preview">{{JSON.stringify(model,null,2)}}
-									</pre>
-								</div>
+
+									<pre id="assembler-preview">{{JSON.stringify(model,null,2)}}</pre>
+
 							</div>
 						</div>
 					</div>
@@ -264,35 +256,35 @@
 	   IMPORTANT: In many instances you will need to reload Mura after updating dynamically created entities.
 	</div>
 
-			<div>
+			<div class="mura-control-group">
 				<label>Entity Name</label>
 				<input type="text" v-model="model.entityname"
 					name="entityname" @change="model.entityname=model.entityname.replace(/[^0-9a-z]/gi, '');"
 				>
 			</div>
 
-			<div>
+			<div class="mura-control-group">
 				<label>Display Name</label>
 				<input type="text" v-model="model.displayname"
 					name="displayname" @change="model.displayname=removeInvalidText(model.displayname)"
 				>
 			</div>
 
-			<div>
+			<div class="mura-control-group">
 				<label>Order By</label>
 				<input type="text" v-model="model.orderby"
 					name="orderby"
 				>
 			</div>
 
-			<div>
+			<div class="mura-control-group">
 				<label>Table Name</label>
 				<input type="text" v-model="model.table"
 					name="table" @change="model.table=model.table.replace(/[^0-9a-z]/gi, '');"
 				>
 			</div>
 
-			<div>
+			<div class="mura-control-group">
 				<label>Scaffold</label>
 				<input type="checkbox" v-model="model.scaffold"
 					name="scaffold"
@@ -302,7 +294,7 @@
 				>
 			</div>
 
-			<div>
+			<div class="mura-control-group">
 				<label>Bundleable</label>
 				<input type="checkbox" v-model="model.bundleable"
 					name="bundleable"
@@ -312,7 +304,7 @@
 				>
 			</div>
 
-			<div>
+			<div class="mura-control-group">
 				<label>Publicly Accessible</label>
 				<input type="checkbox" v-model="model.public"
 					name="public"
@@ -327,21 +319,21 @@
 
 	<template id="assembler-related-form-template">
 		<div class="formtemplate" id="related-form-template">
-			<div>
+			<div class="mura-control-group">
 				<label>Property Name</label>
 				<input type="text" v-model="data.name"
 					name="name" @change="data.name=data.name.replace(/[^0-9a-z]/gi, '');"
 				>
 			</div>
 
-			<div>
+			<div class="mura-control-group">
 				<label>Display Name</label>
 				<input type="text" v-model="data.displayname"
 					name="displayname"
 				>
 			</div>
 
-			<div>
+			<div class="mura-control-group">
 				<label>Relationship Type</label>
 				<select
 					v-model="data.fieldtype"
@@ -351,7 +343,7 @@
 				</select>
 			</div>
 
-			<div>
+			<div class="mura-control-group">
 				<label>Relates To</label>
 
 				<select
@@ -364,7 +356,7 @@
 			</div>
 
 
-				<div>
+			<div class="mura-control-group">
 					<label>Foriegn Key Column</label>
 					<select
 						v-model="data.fkcolumn"
@@ -375,7 +367,7 @@
 					</select>
 				</div>
 
-			<div>
+			<div class="mura-control-group">
 				<label>Render Field</label>
 				<select
 					v-model="data.renderfield"
@@ -385,14 +377,14 @@
 				</select>
 			</div>
 
-			<div>
+			<div class="mura-control-group">
 				<label>Load Key</label>
 				<input type="text" v-model="data.loadkey"
 					name="loadkey"
 				>
 			</div>
 
-			<div>
+			<div class="mura-control-group">
 				<label>Cascade Delete?</label>
 				<select
 					v-model="data.cascade"
@@ -414,21 +406,21 @@
 
 	<template id="assembler-property-form-template">
 		<div class="formtemplate">
-			<div>
+			<div class="mura-control-group">
 				<label>Property Name</label>
 				<input type="text" v-model="data.name"
 					name="name" @change="data.name=data.name.replace(/[^0-9a-z]/gi, '');"
 				>
 			</div>
 
-			<div v-if="data.fieldtype != 'id'">
+			<div class="mura-control-group" v-if="data.fieldtype != 'id'">
 				<label>Display Name</label>
 				<input type="text" v-model="data.displayname"
 					name="displayname" @change="data.displayname=removeInvalidText(data.displayname)"
 				>
 			</div>
 
-			<div v-if="data.fieldtype != 'id'">
+			<div class="mura-control-group" v-if="data.fieldtype != 'id'">
 				<label>Data Type</label>
 				<select
 					v-model="data.datatype"
@@ -438,7 +430,7 @@
 				</select>
 			</div>
 
-			<div v-if="data.fieldtype != 'id'">
+			<div class="mura-control-group" v-if="data.fieldtype != 'id'">
 				<label>Field Type</label>
 				<select
 					v-model="data.fieldtype"
@@ -448,14 +440,14 @@
 				</select>
 			</div>
 
-			<div v-if="data.fieldtype != 'id'">
+			<div class="mura-control-group" v-if="data.fieldtype != 'id'">
 				<label>Default</label>
 				<input type="text" v-model="data.default"
 					name="default"
 				>
 			</div>
 
-			<div v-if="data.fieldtype != 'id'">
+			<div class="mura-control-group" v-if="data.fieldtype != 'id'">
 				<label>Form Field</label>
 				<select
 					v-model="data.rendertype"
@@ -465,14 +457,14 @@
 				</select>
 			</div>
 
-			<div v-if="data.fieldtype != 'id'">
+			<div class="mura-control-group" v-if="data.fieldtype != 'id'">
 				<label>Length</label>
 				<input type="text" v-model="data.length"
 					name="length"
 				>
 			</div>
 
-			<div v-if="data.fieldtype != 'id'">
+			<div class="mura-control-group" v-if="data.fieldtype != 'id'">
 				<label>Required</label>
 				<input type="checkbox" v-model="data.required"
 					v-bind:true-value="true"
@@ -481,7 +473,7 @@
 				>
 			</div>
 
-			<div v-if="data.fieldtype != 'id'">
+			<div class="mura-control-group" v-if="data.fieldtype != 'id'">
 				<label>List</label>
 				<input type="checkbox" v-model="data.listview"
 					v-bind:true-value="true"
@@ -490,7 +482,7 @@
 				>
 			</div>
 
-			<div v-if="data.fieldtype != 'id'">
+			<div class="mura-control-group" v-if="data.fieldtype != 'id'">
 				<label>Filter</label>
 				<input type="checkbox" v-model="data.filter"
 					v-bind:true-value="true"
@@ -499,7 +491,7 @@
 				>
 			</div>
 
-			<div v-if="data.fieldtype != 'id'">
+			<div class="mura-control-group" v-if="data.fieldtype != 'id'">
 				<label>Nullable</label>
 				<input type="checkbox" v-model="data.nullable"
 					v-bind:true-value="true"
@@ -509,7 +501,7 @@
 			</div>
 
 
-			<div v-if="(data.rendertype == 'radio' || data.rendertype == 'dropdown') && data.fieldtype != 'id'">
+			<div class="mura-control-group" v-if="(data.rendertype == 'radio' || data.rendertype == 'dropdown') && data.fieldtype != 'id'">
 				<label>Option List</label>
 				<input type="text" v-model="data.optionlist"
 					name="optionlist">*</br>
@@ -517,7 +509,7 @@
 			</div>
 
 
-			<div v-if="(data.rendertype == 'radio' || data.rendertype == 'dropdown') && data.fieldtype != 'id'">
+			<div class="mura-control-group" v-if="(data.rendertype == 'radio' || data.rendertype == 'dropdown') && data.fieldtype != 'id'">
 				<label>Option Value List</label>
 				<input type="text" v-model="data.optionvaluelist"
 					name="optionvaluelist">*</br>
