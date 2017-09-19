@@ -27,7 +27,9 @@
 	##scaffold-table tr.alt td {
 		background-color: ##eee;
 	}
-
+	##scaffold-crumb-display:not(:empty){
+		min-height: 30px;
+	}
 
 	.formtemplate {
 		margin: 20px 0;
@@ -123,39 +125,31 @@
 </style>
 
 <div class="block-header">
-  <h3 class="block-title">#application.rbFactory.getKeyValue(session.rb,"sitemanager.view.custom")#</h3>
+<h3 class="block-title">#application.rbFactory.getKeyValue(session.rb,"sitemanager.view.custom")#</h3>
 </div>
 
-<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
-<div class="nav-module-specific btn-group">
-	<a class="btn" href="./?muraAction=cPerm.module&contentid=00000000000000000000000000000000016&siteid=#esapiEncode('url',rc.siteid)#&moduleid=00000000000000000000000000000000016"><i class="mi-group"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.permissions')#</a>
-</div>
-</cfif>
+<div id="load-spin" style="display: none;"><div id="load-spin-spinner"></div></div>
 
-<div class="block block-constrain" id="container">
-	<div class="block-content">
-			<div class="block block-bordered">
-				<div id="load-spin" style="display: none;"><div id="load-spin-spinner"></div></div>
-				<div class="block-content">
-					<div>
-						<div>
-							<div id="container-scaffold">
-							<scaffold-crumb-template :data="data" :state="state"></scaffold-crumb-template>
-								<scaffold-error-template :errordata="errordata"></scaffold-error-template>
-								<div>
-									<component :is="currentView" :currentparent="currentparent" :entityname="entityname" :data="data" transition="fade" transition-mode="out-in"></component>
-								</div>
-							</div>
-						</div>
-					</div>
-			</div> <!-- /.block-content -->
-		</div> <!-- /.block-bordered -->
-</div> <!-- /.block-constrain -->
+<div class="block-content">
+
+	<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
+		<div class="mura-control-group">
+			<a class="btn" href="./?muraAction=cPerm.module&contentid=00000000000000000000000000000000016&siteid=#esapiEncode('url',rc.siteid)#&moduleid=00000000000000000000000000000000016"><i class="mi-group"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.permissions')#</a>
+		</div>
+	</cfif>
+
+	<div id="container-scaffold">
+	<scaffold-crumb-template :data="data" :state="state"></scaffold-crumb-template>
+		<scaffold-error-template :errordata="errordata"></scaffold-error-template>
+		<div>
+			<component :is="currentView" :currentparent="currentparent" :entityname="entityname" :data="data" transition="fade" transition-mode="out-in"></component>
+		</div>
+	</div> <!-- /container-scaffold -->
+</div> <!-- /.block-content -->
 
 
 	<template id="scaffold-crumb-template">
-		<div style="height: 30px">
-			<div v-if="state">
+			<div v-if="state" id="scaffold-crumb-display">
 				<ul v-for="(att,index) in state" class="crumbly">
 					<li v-if="att.parent" @click="clickCrumb(index)">
 						<i class="mi-file">...</i>
@@ -166,7 +160,6 @@
 					</li>
 				</ul>
 			</div>
-		</div>
 	</template>
 
 	<template id="scaffold-error-template">
@@ -218,11 +211,15 @@
 					<button @click="goToAssembler(entityname)">Edit Entity Definition</button>
 				</span>
 			</span>
+
+
 			<button @click="openEndpoint()">View API Endpoint</button>
 			<span v-if="currentparent && currentparent.properties">
 				<button @click="showForm(currentparent.properties.entityname,currentparent.properties.id)" class="btn">Back</button>
 			</span>
+
 		</div>
+
 			<div v-if="data.list">
 				<table width="100%" id="scaffold-table">
 					<thead id="scaffold-filterby">
@@ -263,7 +260,7 @@
 
 						<tr v-if="!data.list.length">
 								<td :colspan="data.listview.length+1">
-									<p class="alert alert-info">No items available.</p>
+									<div class="help-block-empty">No items available.</div>
 								</td>
 						</tr>
 

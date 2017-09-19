@@ -67,15 +67,11 @@
 			##scaffold-table tr.alt td {
 				background-color: ##eee;
 			}
-
-
-			.formtemplate {
-				margin: 20px 0;
+			.formtemplate{
+				margin: 0 0 20px 0;
 			}
-			.formtemplate div {
-				margin: 10px;
-				padding: 10px 0;
-				border-top: 1px solid ##ccc;
+			.formtemplate + .formtemplate {
+				margin-top: 20px;
 			}
 			##property-template {
 				margin: 10px 0;
@@ -125,9 +121,10 @@
 
 			##assembler-preview,.assembler-preview {
 				float: left;
-				border: 2px solid ##333;
-				width: 490px;
-				height: 600px;
+				margin-top:10px;
+				width: 100%;
+				height: 420px;
+				font-size: .92em;
 				overflow: scroll;
 
 			}
@@ -177,8 +174,6 @@
 
 </div> <!-- /.mura-header -->
 
-<div class="alert">IMPORTANT: In many instances you will need to reload Mura after updating dynamically created entities.</div>
-
 <div class="block block-constrain" id="container">
 
 	<!--- /Tab Nav --->
@@ -200,7 +195,6 @@
 					<div>
 						<div>
 							<div id="container-assembler">
-								<div style="float: left;width: 49%;">
 									<!---
 									<button @click='clickLoadEntity'>Load</button>
 									<input type="text" id='loadentity' name="loadentity" value="">
@@ -216,11 +210,6 @@
 									<div>
 										<component :is="currentView" :data="data" :rendertypes="rendertypes" :fieldtypes="fieldtypes" :datatypes="datatypes" :model="model" transition="fade" transition-mode="out-in"></component>
 									</div>
-								</div>
-								<div style="float: right;width: 49%;">
-									<pre id="assembler-preview">{{JSON.stringify(model,null,2)}}
-									</pre>
-								</div>
 							</div>
 						</div>
 					</div>
@@ -259,84 +248,85 @@
 
 	<template id="assembler-attributes-form-template">
 		<div class="formtemplate" id="attributes-form-template">
-			<div>
-				<label>Entity Name</label>
-				<input type="text" v-model="model.entityname"
-					name="entityname" @change="model.entityname=model.entityname.replace(/[^0-9a-z]/gi, '');"
-				>
+
+			<div class="help-block">
+			   IMPORTANT: In many instances you will need to reload Mura after updating dynamically created entities.
 			</div>
 
-			<div>
-				<label>Display Name</label>
-				<input type="text" v-model="model.displayname"
-					name="displayname" @change="model.displayname=removeInvalidText(model.displayname)"
-				>
+			<div class="half">
+				<div class="mura-control-group">
+					<label>Entity Name</label>
+					<input type="text" v-model="model.entityname"
+						name="entityname" @change="model.entityname=model.entityname.replace(/[^0-9a-z]/gi, '');">
+				</div>
+
+				<div class="mura-control-group">
+					<label>Display Name</label>
+					<input type="text" v-model="model.displayname"
+						name="displayname" @change="model.displayname=removeInvalidText(model.displayname)">
+				</div>
+
+
+				<div class="mura-control-group">
+					<label>Table Name</label>
+					<input type="text" v-model="model.table"
+						name="table" @change="model.table=model.table.replace(/[^0-9a-z]/gi, '');">
+				</div>
+	
+				<div class="mura-control-group">
+					<label>Order By (optional)</label>
+					<input type="text" v-model="model.orderby"
+						name="orderby">
+				</div>
+
+				<div class="mura-control-group">
+					<label class="checkbox">
+						<input type="checkbox" v-model="model.scaffold"
+							name="scaffold"
+							v-bind:true-value="true"
+		   		 		v-bind:false-value="false"
+			 				name="scaffold" :checked="model.scaffold == true || model.scaffold == 1 || model.scaffold == 'true' ? 'checked' : null">
+			 				Scaffold
+			 		</label>
+					<label class="checkbox">
+					<input type="checkbox" v-model="model.bundleable"
+						name="bundleable"
+						v-bind:true-value="true"
+			   		 v-bind:false-value="false"
+		 				name="bundleable" :checked="model.bundleable == true || model.bundleable == 1 || model.bundleable == 'true' ? 'checked' : null">
+						Bundleable</label>
+					<label class="checkbox">
+					<input type="checkbox" v-model="model.public"
+						name="public"
+						v-bind:true-value="true"
+		   		 		v-bind:false-value="false"
+		 				name="public" :checked="model.public == true || model.public == 1 || model.public == 'true' ? 'checked' : null">
+						Publicly Accessible</label>
+				</div>
+			</div> <!--/.half -->
+
+			<div class="half">
+				<pre id="assembler-preview">{{JSON.stringify(model,null,2)}}</pre>
 			</div>
 
-			<div>
-				<label>Order By</label>
-				<input type="text" v-model="model.orderby"
-					name="orderby"
-				>
-			</div>
-
-			<div>
-				<label>Table Name</label>
-				<input type="text" v-model="model.table"
-					name="table" @change="model.table=model.table.replace(/[^0-9a-z]/gi, '');"
-				>
-			</div>
-
-			<div>
-				<label>Scaffold</label>
-				<input type="checkbox" v-model="model.scaffold"
-					name="scaffold"
-					v-bind:true-value="true"
-	   		 		v-bind:false-value="false"
-	 				name="scaffold" :checked="model.scaffold == true || model.scaffold == 1 || model.scaffold == 'true' ? 'checked' : null"
-				>
-			</div>
-
-			<div>
-				<label>Bundleable</label>
-				<input type="checkbox" v-model="model.bundleable"
-					name="bundleable"
-					v-bind:true-value="true"
-		   		 	v-bind:false-value="false"
-	 				name="bundleable" :checked="model.bundleable == true || model.bundleable == 1 || model.bundleable == 'true' ? 'checked' : null"
-				>
-			</div>
-
-			<div>
-				<label>Publicly Accessible</label>
-				<input type="checkbox" v-model="model.public"
-					name="public"
-					v-bind:true-value="true"
-	   		 		v-bind:false-value="false"
-	 				name="public" :checked="model.public == true || model.public == 1 || model.public == 'true' ? 'checked' : null"
-				>
-			</div>
-		</div>
+		</div> <!-- /.formtemplate -->
 	</template>
-
 
 	<template id="assembler-related-form-template">
 		<div class="formtemplate" id="related-form-template">
-			<div>
+			<div class="mura-control-group">
 				<label>Property Name</label>
 				<input type="text" v-model="data.name"
-					name="name" @change="data.name=data.name.replace(/[^0-9a-z]/gi, '');"
-				>
+					name="name" @change="data.name=data.name.replace(/[^0-9a-z]/gi, '');">
 			</div>
 
-			<div>
+			<div class="mura-control-group">
 				<label>Display Name</label>
 				<input type="text" v-model="data.displayname"
-					name="displayname"
-				>
+					name="displayname">
 			</div>
 
-			<div>
+			<div class="mura-control-group">
 				<label>Relationship Type</label>
 				<select
 					v-model="data.fieldtype"
@@ -346,7 +336,7 @@
 				</select>
 			</div>
 
-			<div>
+			<div class="mura-control-group">
 				<label>Relates To</label>
 
 				<select
@@ -359,7 +349,7 @@
 			</div>
 
 
-				<div>
+			<div class="mura-control-group">
 					<label>Foriegn Key Column</label>
 					<select
 						v-model="data.fkcolumn"
@@ -370,7 +360,7 @@
 					</select>
 				</div>
 
-			<div>
+			<div class="mura-control-group">
 				<label>Render Field</label>
 				<select
 					v-model="data.renderfield"
@@ -380,14 +370,13 @@
 				</select>
 			</div>
 
-			<div>
+			<div class="mura-control-group">
 				<label>Load Key</label>
 				<input type="text" v-model="data.loadkey"
-					name="loadkey"
-				>
+					name="loadkey">
 			</div>
 
-			<div>
+			<div class="mura-control-group">
 				<label>Cascade Delete?</label>
 				<select
 					v-model="data.cascade"
@@ -409,21 +398,19 @@
 
 	<template id="assembler-property-form-template">
 		<div class="formtemplate">
-			<div>
+			<div class="mura-control-group">
 				<label>Property Name</label>
 				<input type="text" v-model="data.name"
-					name="name" @change="data.name=data.name.replace(/[^0-9a-z]/gi, '');"
-				>
+					name="name" @change="data.name=data.name.replace(/[^0-9a-z]/gi, '');">
 			</div>
 
-			<div v-if="data.fieldtype != 'id'">
+			<div class="mura-control-group" v-if="data.fieldtype != 'id'">
 				<label>Display Name</label>
 				<input type="text" v-model="data.displayname"
-					name="displayname" @change="data.displayname=removeInvalidText(data.displayname)"
-				>
+					name="displayname" @change="data.displayname=removeInvalidText(data.displayname)">
 			</div>
 
-			<div v-if="data.fieldtype != 'id'">
+			<div class="mura-control-group" v-if="data.fieldtype != 'id'">
 				<label>Data Type</label>
 				<select
 					v-model="data.datatype"
@@ -433,7 +420,7 @@
 				</select>
 			</div>
 
-			<div v-if="data.fieldtype != 'id'">
+			<div class="mura-control-group" v-if="data.fieldtype != 'id'">
 				<label>Field Type</label>
 				<select
 					v-model="data.fieldtype"
@@ -443,14 +430,13 @@
 				</select>
 			</div>
 
-			<div v-if="data.fieldtype != 'id'">
+			<div class="mura-control-group" v-if="data.fieldtype != 'id'">
 				<label>Default</label>
 				<input type="text" v-model="data.default"
-					name="default"
-				>
+					name="default">
 			</div>
 
-			<div v-if="data.fieldtype != 'id'">
+			<div class="mura-control-group" v-if="data.fieldtype != 'id'">
 				<label>Form Field</label>
 				<select
 					v-model="data.rendertype"
@@ -460,64 +446,68 @@
 				</select>
 			</div>
 
-			<div v-if="data.fieldtype != 'id'">
+			<div class="mura-control-group" v-if="data.fieldtype != 'id'">
 				<label>Length</label>
 				<input type="text" v-model="data.length"
-					name="length"
-				>
+					name="length">
 			</div>
 
-			<div v-if="data.fieldtype != 'id'">
-				<label>Required</label>
-				<input type="checkbox" v-model="data.required"
-					v-bind:true-value="true"
+			<div class="mura-control-group"> 
+				<span v-if="data.fieldtype != 'id'">
+					<label class="checkbox">
+					<input type="checkbox" v-model="data.required"
+						v-bind:true-value="true"
 		   		 	v-bind:false-value="false"
-	 				name="required" :checked="data.required == true || data.required == 1 || data.required == 'true' ? 'checked' : null"
-				>
-			</div>
+		 				name="required" :checked="data.required == true || data.required == 1 || data.required == 'true' ? 'checked' : null">
+						Required</label>
+				</span>
 
-			<div v-if="data.fieldtype != 'id'">
-				<label>List</label>
-				<input type="checkbox" v-model="data.listview"
-					v-bind:true-value="true"
-	   			 	v-bind:false-value="false"
-	 				name="listview" :checked="data.listview == true || data.listview == 1 || data.listview == 'true' ? 'checked' : null"
-				>
-			</div>
+				<span v-if="data.fieldtype != 'id'">
+					<label class="checkbox">
+					<input type="checkbox" v-model="data.listview"
+						v-bind:true-value="true"
+		   			v-bind:false-value="false"
+		 				name="listview" :checked="data.listview == true || data.listview == 1 || data.listview == 'true' ? 'checked' : null">
+					List</label>
+				</span>
 
-			<div v-if="data.fieldtype != 'id'">
-				<label>Filter</label>
-				<input type="checkbox" v-model="data.filter"
-					v-bind:true-value="true"
+				<span v-if="data.fieldtype != 'id'">
+					<label class="checkbox">
+						<input type="checkbox" v-model="data.filter"
+						v-bind:true-value="true"
 		   		 	v-bind:false-value="false"
-	 				name="filter" :checked="data.filter == true || data.filter == 1 || data.filter == 'true' ? 'checked' : null"
-				>
-			</div>
+	 					name="filter" :checked="data.filter == true || data.filter == 1 || data.filter == 'true' ? 'checked' : null">
+					Filter</label>
+				</span>
 
-			<div v-if="data.fieldtype != 'id'">
-				<label>Nullable</label>
-				<input type="checkbox" v-model="data.nullable"
+				<span v-if="data.fieldtype != 'id'">
+					<label class="checkbox">
+					<input type="checkbox" v-model="data.nullable"
 					v-bind:true-value="true"
-		   		 	v-bind:false-value="false"
-	 				name="nullable" :checked="data.nullable == true || data.nullable == 1 || data.nullable == 'true' ? 'checked' : null"
-				>
-			</div>
+		   		v-bind:false-value="false"
+	 				name="nullable" :checked="data.nullable == true || data.nullable == 1 || data.nullable == 'true' ? 'checked' : null">
+					Nullable</label>
+			</span>
+		</div>
 
 
-			<div v-if="(data.rendertype == 'radio' || data.rendertype == 'dropdown') && data.fieldtype != 'id'">
+			<div class="mura-control-group" v-if="(data.rendertype == 'radio' || data.rendertype == 'dropdown') && data.fieldtype != 'id'">
 				<label>Option List</label>
+					<div class="help-block-inline">
+						"^" Delimiter, e.g. One^Two^Three
+					</div>
 				<input type="text" v-model="data.optionlist"
-					name="optionlist">*</br>
-					<span class="small">*separate by ^, i.e. One^Two^Three</span>
+					name="optionlist">
 			</div>
 
 
-			<div v-if="(data.rendertype == 'radio' || data.rendertype == 'dropdown') && data.fieldtype != 'id'">
+			<div class="mura-control-group" v-if="(data.rendertype == 'radio' || data.rendertype == 'dropdown') && data.fieldtype != 'id'">
 				<label>Option Value List</label>
+					<div class="help-block-inline">
+						"^" Delimiter, e.g. 1^2^3
+					</div>
 				<input type="text" v-model="data.optionvaluelist"
 					name="optionvaluelist">*</br>
-
-					<span class="small">*separate by ^, i.e. 1^2^3</span>
 			</div>
 
 
