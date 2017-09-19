@@ -259,59 +259,56 @@
 			<div class="mura-control-group">
 				<label>Entity Name</label>
 				<input type="text" v-model="model.entityname"
-					name="entityname" @change="model.entityname=model.entityname.replace(/[^0-9a-z]/gi, '');"
-				>
+					name="entityname" @change="model.entityname=model.entityname.replace(/[^0-9a-z]/gi, '');">
 			</div>
 
 			<div class="mura-control-group">
 				<label>Display Name</label>
 				<input type="text" v-model="model.displayname"
-					name="displayname" @change="model.displayname=removeInvalidText(model.displayname)"
-				>
+					name="displayname" @change="model.displayname=removeInvalidText(model.displayname)">
 			</div>
 
 			<div class="mura-control-group">
 				<label>Order By</label>
 				<input type="text" v-model="model.orderby"
-					name="orderby"
-				>
+					name="orderby">
 			</div>
 
 			<div class="mura-control-group">
 				<label>Table Name</label>
 				<input type="text" v-model="model.table"
-					name="table" @change="model.table=model.table.replace(/[^0-9a-z]/gi, '');"
-				>
+					name="table" @change="model.table=model.table.replace(/[^0-9a-z]/gi, '');">
 			</div>
 
 			<div class="mura-control-group">
-				<label>Scaffold</label>
-				<input type="checkbox" v-model="model.scaffold"
-					name="scaffold"
-					v-bind:true-value="true"
+				<label class="checkbox">
+					<input type="checkbox" v-model="model.scaffold"
+						name="scaffold"
+						v-bind:true-value="true"
 	   		 		v-bind:false-value="false"
-	 				name="scaffold" :checked="model.scaffold == true || model.scaffold == 1 || model.scaffold == 'true' ? 'checked' : null"
-				>
+		 				name="scaffold" :checked="model.scaffold == true || model.scaffold == 1 || model.scaffold == 'true' ? 'checked' : null">
+		 				Scaffold
+		 		</label>
 			</div>
 
 			<div class="mura-control-group">
-				<label>Bundleable</label>
+				<label class="checkbox">
 				<input type="checkbox" v-model="model.bundleable"
 					name="bundleable"
 					v-bind:true-value="true"
-		   		 	v-bind:false-value="false"
-	 				name="bundleable" :checked="model.bundleable == true || model.bundleable == 1 || model.bundleable == 'true' ? 'checked' : null"
-				>
+		   		 v-bind:false-value="false"
+	 				name="bundleable" :checked="model.bundleable == true || model.bundleable == 1 || model.bundleable == 'true' ? 'checked' : null">
+					Bundleable</label>
 			</div>
 
 			<div class="mura-control-group">
-				<label>Publicly Accessible</label>
+				<label class="checkbox">
 				<input type="checkbox" v-model="model.public"
 					name="public"
 					v-bind:true-value="true"
 	   		 		v-bind:false-value="false"
-	 				name="public" :checked="model.public == true || model.public == 1 || model.public == 'true' ? 'checked' : null"
-				>
+	 				name="public" :checked="model.public == true || model.public == 1 || model.public == 'true' ? 'checked' : null">
+					Publicly Accessible</label>
 			</div>
 		</div>
 	</template>
@@ -322,15 +319,13 @@
 			<div class="mura-control-group">
 				<label>Property Name</label>
 				<input type="text" v-model="data.name"
-					name="name" @change="data.name=data.name.replace(/[^0-9a-z]/gi, '');"
-				>
+					name="name" @change="data.name=data.name.replace(/[^0-9a-z]/gi, '');">
 			</div>
 
 			<div class="mura-control-group">
 				<label>Display Name</label>
 				<input type="text" v-model="data.displayname"
-					name="displayname"
-				>
+					name="displayname">
 			</div>
 
 			<div class="mura-control-group">
@@ -380,8 +375,7 @@
 			<div class="mura-control-group">
 				<label>Load Key</label>
 				<input type="text" v-model="data.loadkey"
-					name="loadkey"
-				>
+					name="loadkey">
 			</div>
 
 			<div class="mura-control-group">
@@ -409,15 +403,13 @@
 			<div class="mura-control-group">
 				<label>Property Name</label>
 				<input type="text" v-model="data.name"
-					name="name" @change="data.name=data.name.replace(/[^0-9a-z]/gi, '');"
-				>
+					name="name" @change="data.name=data.name.replace(/[^0-9a-z]/gi, '');">
 			</div>
 
 			<div class="mura-control-group" v-if="data.fieldtype != 'id'">
 				<label>Display Name</label>
 				<input type="text" v-model="data.displayname"
-					name="displayname" @change="data.displayname=removeInvalidText(data.displayname)"
-				>
+					name="displayname" @change="data.displayname=removeInvalidText(data.displayname)">
 			</div>
 
 			<div class="mura-control-group" v-if="data.fieldtype != 'id'">
@@ -443,8 +435,7 @@
 			<div class="mura-control-group" v-if="data.fieldtype != 'id'">
 				<label>Default</label>
 				<input type="text" v-model="data.default"
-					name="default"
-				>
+					name="default">
 			</div>
 
 			<div class="mura-control-group" v-if="data.fieldtype != 'id'">
@@ -460,61 +451,63 @@
 			<div class="mura-control-group" v-if="data.fieldtype != 'id'">
 				<label>Length</label>
 				<input type="text" v-model="data.length"
-					name="length"
-				>
+					name="length">
 			</div>
 
 			<div class="mura-control-group" v-if="data.fieldtype != 'id'">
-				<label>Required</label>
+				<label class="checkbox">
 				<input type="checkbox" v-model="data.required"
 					v-bind:true-value="true"
-		   		 	v-bind:false-value="false"
-	 				name="required" :checked="data.required == true || data.required == 1 || data.required == 'true' ? 'checked' : null"
-				>
+	   		 	v-bind:false-value="false"
+	 				name="required" :checked="data.required == true || data.required == 1 || data.required == 'true' ? 'checked' : null">
+					Required</label>
 			</div>
 
 			<div class="mura-control-group" v-if="data.fieldtype != 'id'">
-				<label>List</label>
+				<label class="checkbox">
 				<input type="checkbox" v-model="data.listview"
 					v-bind:true-value="true"
-	   			 	v-bind:false-value="false"
-	 				name="listview" :checked="data.listview == true || data.listview == 1 || data.listview == 'true' ? 'checked' : null"
-				>
+	   			v-bind:false-value="false"
+	 				name="listview" :checked="data.listview == true || data.listview == 1 || data.listview == 'true' ? 'checked' : null">
+				List</label>
 			</div>
 
 			<div class="mura-control-group" v-if="data.fieldtype != 'id'">
-				<label>Filter</label>
-				<input type="checkbox" v-model="data.filter"
-					v-bind:true-value="true"
+				<label class="checkbox">
+					<input type="checkbox" v-model="data.filter"
+						v-bind:true-value="true"
 		   		 	v-bind:false-value="false"
-	 				name="filter" :checked="data.filter == true || data.filter == 1 || data.filter == 'true' ? 'checked' : null"
-				>
+	 					name="filter" :checked="data.filter == true || data.filter == 1 || data.filter == 'true' ? 'checked' : null">
+				Filter</label>
 			</div>
 
 			<div class="mura-control-group" v-if="data.fieldtype != 'id'">
-				<label>Nullable</label>
+				<label class="checkbox">
 				<input type="checkbox" v-model="data.nullable"
 					v-bind:true-value="true"
-		   		 	v-bind:false-value="false"
-	 				name="nullable" :checked="data.nullable == true || data.nullable == 1 || data.nullable == 'true' ? 'checked' : null"
-				>
+		   		 v-bind:false-value="false"
+	 				name="nullable" :checked="data.nullable == true || data.nullable == 1 || data.nullable == 'true' ? 'checked' : null">
+				Nullable</label>
 			</div>
 
 
 			<div class="mura-control-group" v-if="(data.rendertype == 'radio' || data.rendertype == 'dropdown') && data.fieldtype != 'id'">
 				<label>Option List</label>
+					<div class="help-block-inline">
+						"^" Delimiter, e.g. One^Two^Three
+					</div>
 				<input type="text" v-model="data.optionlist"
-					name="optionlist">*</br>
-					<span class="small">*separate by ^, i.e. One^Two^Three</span>
+					name="optionlist">
 			</div>
 
 
 			<div class="mura-control-group" v-if="(data.rendertype == 'radio' || data.rendertype == 'dropdown') && data.fieldtype != 'id'">
 				<label>Option Value List</label>
+					<div class="help-block-inline">
+						"^" Delimiter, e.g. 1^2^3
+					</div>
 				<input type="text" v-model="data.optionvaluelist"
 					name="optionvaluelist">*</br>
-
-					<span class="small">*separate by ^, i.e. 1^2^3</span>
 			</div>
 
 
