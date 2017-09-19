@@ -27,7 +27,9 @@
 	##scaffold-table tr.alt td {
 		background-color: ##eee;
 	}
-
+	##scaffold-crumb-display:not(:empty){
+		min-height: 30px;
+	}
 
 	.formtemplate {
 		margin: 20px 0;
@@ -147,8 +149,7 @@
 
 
 	<template id="scaffold-crumb-template">
-		<div style="height: 30px">
-			<div v-if="state">
+			<div v-if="state" id="scaffold-crumb-display">
 				<ul v-for="(att,index) in state" class="crumbly">
 					<li v-if="att.parent" @click="clickCrumb(index)">
 						<i class="mi-file">...</i>
@@ -159,7 +160,6 @@
 					</li>
 				</ul>
 			</div>
-		</div>
 	</template>
 
 	<template id="scaffold-error-template">
@@ -211,11 +211,15 @@
 					<button @click="goToAssembler(entityname)">Edit Entity Definition</button>
 				</span>
 			</span>
+
+
 			<button @click="openEndpoint()">View API Endpoint</button>
 			<span v-if="currentparent && currentparent.properties">
 				<button @click="showForm(currentparent.properties.entityname,currentparent.properties.id)" class="btn">Back</button>
 			</span>
+
 		</div>
+
 			<div v-if="data.list">
 				<table width="100%" id="scaffold-table">
 					<thead id="scaffold-filterby">
