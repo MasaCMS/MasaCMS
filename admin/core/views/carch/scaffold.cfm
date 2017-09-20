@@ -16,6 +16,51 @@
 <script src="#$.globalConfig('rootPath')#/admin/assets/js/scaffold/scaffolder.js"></script>
 
 <style>
+
+/* TODO move these styles to global less & compile */
+
+	.mura .mura-table-grid > thead > tr:not(:last-child) > th{
+			border-bottom: none !important;
+			height: 25px !important;
+		}
+
+	.mura .mura-table-grid > thead > tr:not(:last-child){
+		height: 25px !important;
+		overflow-y: hidden;
+	}
+
+	.mura .mura-table-grid > thead > tr + tr > th{
+		padding-top: 0 !important;
+	}
+
+	.mura .mura-table-grid th input.filter{
+		border:none;
+		border-radius: 3px;
+    font-size: 13px;
+    font-weight: normal !important;
+    /* TODO use less font definition */
+    font-family: montserratlight,montserratregular,"Helvetica Neue",Helvetica,Arial,sans-serif;
+    height: 18px;
+    padding-left: 8px;
+	}
+
+	.mura .mura-table-grid th .btn-group{
+		margin-right: 1px;
+		margin-bottom: 0;
+	}
+	.mura .mura-table-grid th .btn-group .btn{
+		font-weight: bold;
+		padding: 1px 4px;
+	}
+
+	##scaffold-table tbody tr td span{
+		cursor: pointer;
+	}
+
+	##scaffold-sortby th span{
+		cursor: pointer;
+	}
+
 	##scaffold-sortby th i {
 		padding: 1px 0px 0px 5px;
 		color: ##333333;
@@ -24,9 +69,6 @@
 	##scaffold-sortby th {
 	}
 
-	##scaffold-table tr.alt td {
-		background-color: ##eee;
-	}
 	##scaffold-crumb-display:not(:empty){
 		min-height: 30px;
 	}
@@ -67,11 +109,6 @@
 		font-size: 0.7em;
 	}
 
-	.breadcrumb {
-		list-style: none;
-		overflow: hidden;
-		height: 25px;
-	}
 	.crumbly li {
 		display: inline-block;
 		float: left;
@@ -121,7 +158,8 @@
 		z-index: 10000;
 		border: 16px solid ##f3f3f3;
 		opacity: .8;
-	}
+	}	
+
 </style>
 
 <div class="block-header">
@@ -132,12 +170,6 @@
 
 <div class="block-content">
 
-	<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
-		<div class="mura-control-group">
-			<a class="btn" href="./?muraAction=cPerm.module&contentid=00000000000000000000000000000000016&siteid=#esapiEncode('url',rc.siteid)#&moduleid=00000000000000000000000000000000016"><i class="mi-group"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.permissions')#</a>
-		</div>
-	</cfif>
-
 	<div id="container-scaffold">
 	<scaffold-crumb-template :data="data" :state="state"></scaffold-crumb-template>
 		<scaffold-error-template :errordata="errordata"></scaffold-error-template>
@@ -147,7 +179,7 @@
 	</div> <!-- /container-scaffold -->
 </div> <!-- /.block-content -->
 
-
+<!--- TODO: what goes here? : looks empty? --->
 	<template id="scaffold-crumb-template">
 			<div v-if="state" id="scaffold-crumb-display">
 				<ul v-for="(att,index) in state" class="crumbly">
@@ -195,79 +227,122 @@
 
 	<template id="scaffold-list-template">
 		<div>
-			<h2>
-			<span v-if="entityname"><span v-if="entityname=='entity'">CUSTOM </span>{{entityname.toUpperCase()}} LIST</span>
+
+			<div class="btn-group pull-right">
+					<a v-if="entityname != 'entity' && data.issuperuser && data && data.parentproperties && data.parentproperties.dynamic" class="btn" @click="goToAssembler(entityname)"><i class="mi-edit"></i> Edit Entity Definition</a>
+				<a class="btn" @click="openEndpoint()"><i class="mi-globe"> API Endpoint</i></a>
+				<a v-if="currentparent && currentparent.properties" @click="showForm(currentparent.properties.entityname,currentparent.properties.id)" class="btn">Back</a>
+				<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
+					<a class="btn" href="./?muraAction=cPerm.module&contentid=00000000000000000000000000000000016&siteid=#esapiEncode('url',rc.siteid)#&moduleid=00000000000000000000000000000000016"><i class="mi-group"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.permissions')#</a>
+				</cfif>
+
+			</div> <!-- /.btn-group -->
+
+			<span v-if="entityname">
+				<ul class="breadcrumb" v-if="entityname=='entity'">	
+						<li><strong><a @click="showAll" onclick="return false;" href="##"><i class="mi-cube"></i>Custom Entities</a></strong></li>
+				</ul>
+				<ul class="breadcrumb" v-if="entityname!='entity'">
+						<li><a @click="showAll" onclick="return false;" href="##"><i class="mi-cube"></i>Custom Entities</a></li>					
+						<li><strong><a href="##" onclick="return false;"><i class="mi-cube"></i>{{entityname}}</a></strong></li>					
+				</ul>
+			</span>
+
+			<!--- todo where is this used --->
 			<span v-if="currentparent && currentparent.properties"> for {{currentparent.properties.entityname}}:
 				<input type="HIDDEN" class="filter" :name="'filter-' + currentparent.properties.properties.primarykey" :value="currentparent.properties.id">
-				<span v-for="item in currentparent.properties._displaylist">
-					{{currentparent.properties[item.name]}}
-				</span>
+				<span v-for="item in currentparent.properties._displaylist">{{currentparent.properties[item.name]}}</span>
 			</span>
+
+<!---
+			<h2>
+				<span v-if="entityname"><span v-if="entityname!='entity'">{{entityname.toUpperCase()}} LIST</span></span>
 			</h2>
-			<div class="btn-group">
-			<span v-if="entityname != 'entity'">
-				<button @click="showAll" type="submit" class="btn">View All Custom Entities</button>
-				<span v-if="data.issuperuser && data && data.parentproperties && data.parentproperties.dynamic">
-					<button @click="goToAssembler(entityname)">Edit Entity Definition</button>
-				</span>
-			</span>
-
-
-			<button @click="openEndpoint()">View API Endpoint</button>
-			<span v-if="currentparent && currentparent.properties">
-				<button @click="showForm(currentparent.properties.entityname,currentparent.properties.id)" class="btn">Back</button>
-			</span>
-
-		</div>
+--->
 
 			<div v-if="data.list">
-				<table width="100%" id="scaffold-table">
-					<thead id="scaffold-filterby">
-						<tr>
-							<th v-for="item in data.listview">
-								<div v-if="item.filter==true || item.filter == 'true'">
-									<input class="filter" :name="'filter-' + item.name" @keyup="applyKeyFilter">
-								</div>
-							</th>
-							<th><button class="pull-right" @click='applyFilter'>Filter</button><span v-if="data.hasFilterApplied"><button class="pull-right" @click='removeFilter'>Remove Filter</button><span></th>
-						</tr>
-					</thead>
-					<thead id="scaffold-sortby">
-						<tr>
-							<th v-for="(item, key, index) in data.listview" :id="'sortby-' + item.name">
+				<table width="100%" class="table table-striped table-condensed table-bordered mura-table-grid" id="scaffold-table">
+
+					<thead>
+
+						<tr id="scaffold-sortby">
+							<th class="actions"></th>
+							<th class="var-width" v-for="(item, key, index) in data.listview" :id="'sortby-' + item.name">
 								<span @click="applySortBy(item.name)">{{item.displayname}}</span>
 							</th>
 							<th></th>
 						</tr>
+
+						<tr id="scaffold-filterby">
+							<th class="actions"></th>
+							<th class="var-width" v-for="item in data.listview">
+								<div v-if="item.filter==true || item.filter == 'true'">
+									<input class="filter" :name="'filter-' + item.name" @keyup="applyKeyFilter">
+								</div>
+							</th>
+							<th>
+								<div class="btn-group pull-right">
+									<span v-if="!data.hasFilterApplied"><a class="btn btn-sm" @click='applyFilter'>Filter</a></span>
+									<span v-if="data.hasFilterApplied"><a class="btn btn-sm" @click='removeFilter'>Remove Filter</a><span>
+								</div>
+							</th>
+						</tr>
 					</thead>
+
 					<tbody>
-						<span v-if="data.list.length">
-							<tr v-for="(object,index) in data.list" :class="{'alt': index % 2 === 0}">
-									<td v-for="item in data.listview" @click="(entityname == 'entity') ? showList(object.entityname) : showForm(object.entityname,object.id)">
+							<tr v-if="data.list.length" v-for="(object,index) in data.list">
+
+									<td class="actions">
+
+									<a class="show-actions" href="javascript:;" <!---ontouchstart="this.onclick();"---> onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
+									<div class="actions-menu hide">
+										<ul class="actions-list">
+											<li v-if="entityname != 'entity'">
+												<a href="##" onclick="return false;" @click="showForm(object.entityname,object.id)"><i class="mi-edit"></i> Edit Record</a>
+											</li>
+											<li v-if="entityname == 'entity'">
+												<a href="##" onclick="return false;" @click="showList(object.entityname)"><i class="mi-list"></i> View Records</a>
+											</li>
+											<li v-if="entityname == 'entity' && data.issuperuser && object.dynamic">  
+												<a href="##" onclick="return false;" @click="goToAssembler(object.entityname)"><i class="mi-edit"></i> Edit Entity Definition</a>
+											</li>
+										</ul>
+									</div>	
+
+
+									</td>
+
+
+									<td class="var-width" v-for="item in data.listview" @click="(entityname == 'entity') ? showList(object.entityname) : showForm(object.entityname,object.id)">
 											<span v-if="item.rendertype == 'htmleditor'" v-html="object[item.name]"></span>
 											<span v-else-if="item.datatype=='datetime' || item.datetime=='date'" v-text="formatDate(object[item.name])"></span>
 											<span v-else v-text="object[item.name]"></span>
 									</td>
+									<td></td>
+
+<!--- 
 									<td v-if="entityname != 'entity'">
 										<button class="pull-right" @click="showForm(object.entityname,object.id)"><i class="mi-edit"></i></button>
 									</td>
 									<td v-if="entityname == 'entity'">
 										<button class="pull-right" @click="showList(object.entityname)"><i class="mi-edit"></i></button>
 									</td>
+ --->
 								</li>
 							</tr>
-						</span>
 
 						<tr v-if="!data.list.length">
-								<td :colspan="data.listview.length+1">
-									<div class="help-block-empty">No items available.</div>
+							<td class="actions"></td>
+								<td class="var-width" :colspan="data.listview.length+1">
 								</td>
 						</tr>
 
 					</tbody>
-					<tfoot>
-						<tr>
-							<th :colspan="data.listview.length+1" style="text-align: right">
+				</table>
+
+
+<!--- TODO :  paging :  --->
+
 								<button v-if="data.links.first" @click="applyPage('first')">
 									|<
 								</button>
@@ -287,10 +362,10 @@
 										<option value='20' :selected="this.$parent.itemsper == 20 ? 'selected' : null">20</option>
 									</select>
 								</span>
-							</th>
-						</tr>
-					</tfoot>
-				</table>
+
+
+
+
 				<span v-if="entityname != 'entity'">
 					<span v-if="currentparent && currentparent.properties">
 						<button @click="showForm(entityname)">Add Child</button>
@@ -309,9 +384,22 @@
 
 	<template id="scaffold-form-template">
 		<div>
-		<h2>EDIT {{entityname.toUpperCase()}}</h3>
-		<button @click="clickBack" type="submit" class="btn">Back</button>
-		<button @click="openEndpoint()">View API Endpoint</button>
+
+
+		<div class="btn-group pull-right">
+			<button class="btn" @click="clickBack" type="submit" class="btn">Back</button>
+			<button  class="btn" @click="openEndpoint()"><i class="mi-globe"> API Endpoint</i></button>
+			<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
+					<a class="btn" href="./?muraAction=cPerm.module&contentid=00000000000000000000000000000000016&siteid=#esapiEncode('url',rc.siteid)#&moduleid=00000000000000000000000000000000016"><i class="mi-group"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.permissions')#</a>
+			</cfif>
+		</div>	<!-- /.btn-group -->
+
+		<ul class="breadcrumb">	
+			<li><a @click="showAll" href="##" onclick="return false;"><i class="mi-cube"></i>Custom Entities</a></li>
+			<li><a @click="clickBack" href="##" onclick="return false;"><i class="mi-cube"></i>{{entityname}}</a></li>
+			<li><strong><a href="##" onclick="return false;"><i class="mi-edit"></i>Edit Record</a></strong></li>
+		</ul>
+
 		<ul>
 			<template v-for="property in data.properties">
 				<span v-if="property.fieldtype == 'id'">
