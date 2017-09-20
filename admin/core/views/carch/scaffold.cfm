@@ -192,15 +192,9 @@
 		<div>
 
 			<div class="btn-group pull-right">
-				<span v-if="entityname != 'entity'">
-					<span v-if="data.issuperuser && data && data.parentproperties && data.parentproperties.dynamic">
-						<button @click="goToAssembler(entityname)">Edit Entity Definition</button>
-					</span>
-				</span>
-				<button class="btn" @click="openEndpoint()">View API Endpoint</button>
-				<span v-if="currentparent && currentparent.properties">
-					<button @click="showForm(currentparent.properties.entityname,currentparent.properties.id)" class="btn">Back</button>
-				</span>
+					<button v-if="entityname != 'entity' && data.issuperuser && data && data.parentproperties && data.parentproperties.dynamic" class="btn" @click="goToAssembler(entityname)"><i class="mi-edit"></i> Edit Entity Definition</button>
+				<button class="btn" @click="openEndpoint()"><i class="mi-globe"> API Endpoint</i></button>
+				<button v-if="currentparent && currentparent.properties" @click="showForm(currentparent.properties.entityname,currentparent.properties.id)" class="btn">Back</button>
 			</div> <!-- /.btn-group -->
 
 			<span v-if="entityname" class="pull-left">
@@ -318,11 +312,11 @@
 		<ul class="breadcrumb">	
 			<li><a @click="showAll" href="##" onclick="return false;"><i class="mi-cube"></i>Custom Entities</a></li>
 			<li><a @click="clickBack" href="##" onclick="return false;"><i class="mi-cube"></i>{{entityname}}</a></li>
-			<li><strong><a href="##" onclick="return false;"><i class="mi-cube"></i>Edit Record</a></strong></li>
+			<li><strong><a href="##" onclick="return false;"><i class="mi-edit"></i>Edit Record</a></strong></li>
 		</ul>
 
 		<button @click="clickBack" type="submit" class="btn">Back</button>
-		<button @click="openEndpoint()">View API Endpoint</button>
+		<button @click="openEndpoint()"><i class="mi-globe"> API Endpoint</i></button>
 		<ul>
 			<template v-for="property in data.properties">
 				<span v-if="property.fieldtype == 'id'">
