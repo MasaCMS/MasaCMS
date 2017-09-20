@@ -67,11 +67,6 @@
 		font-size: 0.7em;
 	}
 
-	.breadcrumb {
-		list-style: none;
-		overflow: hidden;
-		height: 25px;
-	}
 	.crumbly li {
 		display: inline-block;
 		float: left;
@@ -209,19 +204,27 @@
 				</span>
 			</div> <!-- /.btn-group -->
 
+			<span v-if="entityname">
+				<ul class="breadcrumb" v-if="entityname=='entity'">	
+						<li><strong><a href="/admin/?muraAction=cArch.list&siteid=default&activeTab=2"><i class="mi-cube"></i>Custom Entities</a></strong></li>
+				</ul>
+				<ul class="breadcrumb" v-if="entityname!='entity'">
+						<li><a href="/admin/?muraAction=cArch.list&siteid=default&activeTab=2"><i class="mi-cube"></i>Custom Entities</a></li>					
+						<li><strong><a href="##" onclick="return false;"><i class="mi-cube"></i>{{entityname}}</a></strong></li>					
+				</ul>
+			</span>
 
-<ul class="breadcrumb">	
-	<li class=""><strong>
-	<a href="" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('default','00000000000000000000000000000000001','00000000000000000000000000000000000','','','Page',1)});"><i class="mi-cog"></i>Custom Entities</a></strong></li>
-</ul>
 
+<!---
 			<h2>
 				<span v-if="entityname"><span v-if="entityname!='entity'">{{entityname.toUpperCase()}} LIST</span></span>
 					<span v-if="currentparent && currentparent.properties"> for {{currentparent.properties.entityname}}:
+					<!--- todo where is this used --->
 						<input type="HIDDEN" class="filter" :name="'filter-' + currentparent.properties.properties.primarykey" :value="currentparent.properties.id">
 						<span v-for="item in currentparent.properties._displaylist">{{currentparent.properties[item.name]}}</span>
 				</span>
 			</h2>
+--->
 
 			<div v-if="data.list">
 				<table width="100%" id="scaffold-table">
@@ -312,7 +315,13 @@
 
 	<template id="scaffold-form-template">
 		<div>
-		<h2>EDIT {{entityname.toUpperCase()}}</h3>
+
+		<ul class="breadcrumb">	
+			<li><a href="/admin/?muraAction=cArch.list&siteid=default&activeTab=2"><i class="mi-cube"></i>Custom Entities</a></li>
+			<li><a @click="clickBack" href="##"><i class="mi-cube"></i>{{entityname}}</a></li>
+			<li><strong><a href="##" onclick="return false;"><i class="mi-cube"></i>Edit Record</a></strong></li>
+		</ul>
+
 		<button @click="clickBack" type="submit" class="btn">Back</button>
 		<button @click="openEndpoint()">View API Endpoint</button>
 		<ul>
