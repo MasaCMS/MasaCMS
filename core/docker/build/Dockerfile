@@ -1,4 +1,4 @@
-FROM lucee/lucee5:latest
+FROM blueriver/lucee:5.2.3.35-1
 
 # Rewrite rules
 COPY core/docker/build/rewrite.config /usr/local/tomcat/conf/Catalina/127.0.0.1/
