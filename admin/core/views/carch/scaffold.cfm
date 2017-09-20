@@ -127,12 +127,6 @@
 
 <div class="block-content">
 
-	<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
-		<div class="mura-control-group">
-			<a class="btn" href="./?muraAction=cPerm.module&contentid=00000000000000000000000000000000016&siteid=#esapiEncode('url',rc.siteid)#&moduleid=00000000000000000000000000000000016"><i class="mi-group"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.permissions')#</a>
-		</div>
-	</cfif>
-
 	<div id="container-scaffold">
 	<scaffold-crumb-template :data="data" :state="state"></scaffold-crumb-template>
 		<scaffold-error-template :errordata="errordata"></scaffold-error-template>
@@ -191,13 +185,17 @@
 	<template id="scaffold-list-template">
 		<div>
 
-			<div class="btn-group pull-right">
+			<div class="btn-group">
 					<button v-if="entityname != 'entity' && data.issuperuser && data && data.parentproperties && data.parentproperties.dynamic" class="btn" @click="goToAssembler(entityname)"><i class="mi-edit"></i> Edit Entity Definition</button>
 				<button class="btn" @click="openEndpoint()"><i class="mi-globe"> API Endpoint</i></button>
 				<button v-if="currentparent && currentparent.properties" @click="showForm(currentparent.properties.entityname,currentparent.properties.id)" class="btn">Back</button>
+				<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
+					<a class="btn" href="./?muraAction=cPerm.module&contentid=00000000000000000000000000000000016&siteid=#esapiEncode('url',rc.siteid)#&moduleid=00000000000000000000000000000000016"><i class="mi-group"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.permissions')#</a>
+				</cfif>
+
 			</div> <!-- /.btn-group -->
 
-			<span v-if="entityname" class="pull-left">
+			<span v-if="entityname">
 				<ul class="breadcrumb" v-if="entityname=='entity'">	
 						<li><strong><a @click="showAll" onclick="return false;" href="##"><i class="mi-cube"></i>Custom Entities</a></strong></li>
 				</ul>
@@ -309,14 +307,21 @@
 	<template id="scaffold-form-template">
 		<div>
 
+
+		<div class="btn-group">
+			<button class="btn" @click="clickBack" type="submit" class="btn">Back</button>
+			<button  class="btn" @click="openEndpoint()"><i class="mi-globe"> API Endpoint</i></button>
+			<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
+					<a class="btn" href="./?muraAction=cPerm.module&contentid=00000000000000000000000000000000016&siteid=#esapiEncode('url',rc.siteid)#&moduleid=00000000000000000000000000000000016"><i class="mi-group"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.permissions')#</a>
+			</cfif>
+		</div>	<!-- /.btn-group -->
+
 		<ul class="breadcrumb">	
 			<li><a @click="showAll" href="##" onclick="return false;"><i class="mi-cube"></i>Custom Entities</a></li>
 			<li><a @click="clickBack" href="##" onclick="return false;"><i class="mi-cube"></i>{{entityname}}</a></li>
 			<li><strong><a href="##" onclick="return false;"><i class="mi-edit"></i>Edit Record</a></strong></li>
 		</ul>
 
-		<button @click="clickBack" type="submit" class="btn">Back</button>
-		<button @click="openEndpoint()"><i class="mi-globe"> API Endpoint</i></button>
 		<ul>
 			<template v-for="property in data.properties">
 				<span v-if="property.fieldtype == 'id'">

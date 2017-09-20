@@ -633,7 +633,7 @@
 					<li><a href="##tabArchitectural" onclick="return false;"><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.view.architectural")#</span></a></li>
 					<li><a href="##tabFlat" onclick="return false;"><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.view.flat")#</span></a></li>
 					<cfif $.siteConfig('scaffolding') and application.permUtility.getModulePerm("00000000000000000000000000000000016",session.siteid)>
-						<li><a href="##tabCustom"><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.view.custom")#</span></a></li>
+						<li><a href="##tabEntities"><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.view.custom")#</span></a></li>
 					</cfif>
 				</ul>
 				<div class="block-content tab-content">
@@ -726,7 +726,7 @@
 						</div>
 					</div>
 					<cfif $.siteConfig('scaffolding') and application.permUtility.getModulePerm("00000000000000000000000000000000016",session.siteid)>
-						<div id="tabCustom" class="tab-pane">
+						<div id="tabEntities" class="tab-pane">
 							<div class="block block-bordered">
 								<!-- block header -->
 
@@ -803,7 +803,7 @@
 						}
 						break;
 						case 2:
-							jQuery('##viewTabs a[href="##tabCustom"]').tab('show');
+							jQuery('##viewTabs a[href="##tabEntities"]').tab('show');
 						break;
 					}
 				}
