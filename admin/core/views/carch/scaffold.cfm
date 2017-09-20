@@ -19,17 +19,21 @@
 
 /* TODO move these styles to global less & compile */
 
-	.mura .mura-table-grid>thead>tr:not(:last-child)>th{
+	.mura .mura-table-grid > thead > tr:not(:last-child) > th{
 			border-bottom: none !important;
-			height: 20px !important;
+			height: 25px !important;
 		}
 
-	.mura .mura-table-grid>thead>tr:not(:last-child){
-		height: 20px !important;
+	.mura .mura-table-grid > thead > tr:not(:last-child){
+		height: 25px !important;
 		overflow-y: hidden;
 	}
 
-	.mura 	.mura-table-grid th input.filter{
+	.mura .mura-table-grid > thead > tr + tr > th{
+		padding-top: 0 !important;
+	}
+
+	.mura .mura-table-grid th input.filter{
 		border:none;
 		border-radius: 3px;
     font-size: 13px;
@@ -40,9 +44,21 @@
     padding-left: 8px;
 	}
 
-	.mura 	.mura-table-grid th .btn-group{
-		margin-right: 2px;
-		margin-bottom: 3px;
+	.mura .mura-table-grid th .btn-group{
+		margin-right: 1px;
+		margin-bottom: 0;
+	}
+	.mura .mura-table-grid th .btn-group .btn{
+		font-weight: bold;
+		padding: 1px 4px;
+	}
+
+	##scaffold-table tbody tr td span{
+		cursor: pointer;
+	}
+
+	##scaffold-sortby th span{
+		cursor: pointer;
 	}
 
 	##scaffold-sortby th i {
