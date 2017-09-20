@@ -229,9 +229,9 @@
 		<div>
 
 			<div class="btn-group pull-right">
-					<button v-if="entityname != 'entity' && data.issuperuser && data && data.parentproperties && data.parentproperties.dynamic" class="btn" @click="goToAssembler(entityname)"><i class="mi-edit"></i> Edit Entity Definition</button>
-				<button class="btn" @click="openEndpoint()"><i class="mi-globe"> API Endpoint</i></button>
-				<button v-if="currentparent && currentparent.properties" @click="showForm(currentparent.properties.entityname,currentparent.properties.id)" class="btn">Back</button>
+					<a v-if="entityname != 'entity' && data.issuperuser && data && data.parentproperties && data.parentproperties.dynamic" class="btn" @click="goToAssembler(entityname)"><i class="mi-edit"></i> Edit Entity Definition</a>
+				<a class="btn" @click="openEndpoint()"><i class="mi-globe"> API Endpoint</i></a>
+				<a v-if="currentparent && currentparent.properties" @click="showForm(currentparent.properties.entityname,currentparent.properties.id)" class="btn">Back</a>
 				<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
 					<a class="btn" href="./?muraAction=cPerm.module&contentid=00000000000000000000000000000000016&siteid=#esapiEncode('url',rc.siteid)#&moduleid=00000000000000000000000000000000016"><i class="mi-group"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.permissions')#</a>
 				</cfif>
@@ -282,8 +282,8 @@
 							</th>
 							<th>
 								<div class="btn-group pull-right">
-									<span v-if="!data.hasFilterApplied"><button class="btn btn-sm" @click='applyFilter'>Filter</button></span>
-									<span v-if="data.hasFilterApplied"><button class="btn btn-sm" @click='removeFilter'>Remove Filter</button><span>
+									<span v-if="!data.hasFilterApplied"><a class="btn btn-sm" @click='applyFilter'>Filter</a></span>
+									<span v-if="data.hasFilterApplied"><a class="btn btn-sm" @click='removeFilter'>Remove Filter</a><span>
 								</div>
 							</th>
 						</tr>
