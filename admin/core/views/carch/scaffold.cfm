@@ -17,11 +17,32 @@
 
 <style>
 
+/* TODO move these styles to global less & compile */
 
-	.mura-table-grid th input.filter{
+	.mura .mura-table-grid>thead>tr:not(:last-child)>th{
+			border-bottom: none !important;
+			height: 20px !important;
+		}
+
+	.mura .mura-table-grid>thead>tr:not(:last-child){
+		height: 20px !important;
+		overflow-y: hidden;
+	}
+
+	.mura 	.mura-table-grid th input.filter{
+		border:none;
+		border-radius: 3px;
     font-size: 13px;
-    height: 22px;
+    font-weight: normal !important;
+    /* TODO use less font definition */
+    font-family: montserratlight,montserratregular,"Helvetica Neue",Helvetica,Arial,sans-serif;
+    height: 18px;
     padding-left: 8px;
+	}
+
+	.mura 	.mura-table-grid th .btn-group{
+		margin-right: 2px;
+		margin-bottom: 3px;
 	}
 
 	##scaffold-sortby th i {
@@ -226,23 +247,27 @@
 			<div v-if="data.list">
 				<table width="100%" class="table table-striped table-condensed table-bordered mura-table-grid" id="scaffold-table">
 
-					<thead id="scaffold-sortby">
-						<tr>
+					<thead>
+
+						<tr id="scaffold-sortby">
 							<th class="var-width" v-for="(item, key, index) in data.listview" :id="'sortby-' + item.name">
 								<span @click="applySortBy(item.name)">{{item.displayname}}</span>
 							</th>
 							<th></th>
 						</tr>
-					</thead>
 
-					<thead id="scaffold-filterby">
-						<tr>
+						<tr id="scaffold-filterby">
 							<th class="var-width" v-for="item in data.listview">
 								<div v-if="item.filter==true || item.filter == 'true'">
 									<input class="filter" :name="'filter-' + item.name" @keyup="applyKeyFilter">
 								</div>
 							</th>
-							<th><button class="pull-right" @click='applyFilter'>Filter</button><span v-if="data.hasFilterApplied"><button class="pull-right" @click='removeFilter'>Remove Filter</button><span></th>
+							<th>
+								<div class="btn-group pull-right">
+									<span v-if="!data.hasFilterApplied"><button class="btn btn-sm" @click='applyFilter'>Filter</button></span>
+									<span v-if="data.hasFilterApplied"><button class="btn btn-sm" @click='removeFilter'>Remove Filter</button><span>
+								</div>
+							</th>
 						</tr>
 					</thead>
 
