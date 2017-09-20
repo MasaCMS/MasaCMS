@@ -303,6 +303,9 @@
 											<li v-if="entityname == 'entity'">
 												<a href="##" onclick="return false;" @click="showList(object.entityname)"><i class="mi-list"></i> View Records</a>
 											</li>
+											<li v-if="entityname == 'entity' && data.issuperuser && object.dynamic">  
+												<a href="##" onclick="return false;" @click="goToAssembler(object.entityname)"><i class="mi-edit"></i> Edit Entity Definition</a>
+											</li>
 										</ul>
 									</div>	
 
