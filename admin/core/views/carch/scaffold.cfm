@@ -332,8 +332,8 @@
 							</tr>
 
 						<tr v-if="!data.list.length">
-								<td :colspan="data.listview.length+1">
-									<div class="help-block-empty">No items available.</div>
+							<td class="actions"></td>
+								<td class="var-width" :colspan="data.listview.length+1">
 								</td>
 						</tr>
 
