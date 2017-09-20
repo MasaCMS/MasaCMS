@@ -16,6 +16,14 @@
 <script src="#$.globalConfig('rootPath')#/admin/assets/js/scaffold/scaffolder.js"></script>
 
 <style>
+
+
+	.mura-table-grid th input.filter{
+    font-size: 13px;
+    height: 22px;
+    padding-left: 8px;
+	}
+
 	##scaffold-sortby th i {
 		padding: 1px 0px 0px 5px;
 		color: ##333333;
@@ -24,9 +32,6 @@
 	##scaffold-sortby th {
 	}
 
-	##scaffold-table tr.alt td {
-		background-color: ##eee;
-	}
 	##scaffold-crumb-display:not(:empty){
 		min-height: 30px;
 	}
@@ -116,7 +121,8 @@
 		z-index: 10000;
 		border: 16px solid ##f3f3f3;
 		opacity: .8;
-	}
+	}	
+
 </style>
 
 <div class="block-header">
@@ -218,10 +224,20 @@
 --->
 
 			<div v-if="data.list">
-				<table width="100%" id="scaffold-table">
+				<table width="100%" class="table table-striped table-condensed table-bordered mura-table-grid" id="scaffold-table">
+
+					<thead id="scaffold-sortby">
+						<tr>
+							<th class="var-width" v-for="(item, key, index) in data.listview" :id="'sortby-' + item.name">
+								<span @click="applySortBy(item.name)">{{item.displayname}}</span>
+							</th>
+							<th></th>
+						</tr>
+					</thead>
+
 					<thead id="scaffold-filterby">
 						<tr>
-							<th v-for="item in data.listview">
+							<th class="var-width" v-for="item in data.listview">
 								<div v-if="item.filter==true || item.filter == 'true'">
 									<input class="filter" :name="'filter-' + item.name" @keyup="applyKeyFilter">
 								</div>
@@ -229,18 +245,10 @@
 							<th><button class="pull-right" @click='applyFilter'>Filter</button><span v-if="data.hasFilterApplied"><button class="pull-right" @click='removeFilter'>Remove Filter</button><span></th>
 						</tr>
 					</thead>
-					<thead id="scaffold-sortby">
-						<tr>
-							<th v-for="(item, key, index) in data.listview" :id="'sortby-' + item.name">
-								<span @click="applySortBy(item.name)">{{item.displayname}}</span>
-							</th>
-							<th></th>
-						</tr>
-					</thead>
+
 					<tbody>
-						<span v-if="data.list.length">
-							<tr v-for="(object,index) in data.list" :class="{'alt': index % 2 === 0}">
-									<td v-for="item in data.listview" @click="(entityname == 'entity') ? showList(object.entityname) : showForm(object.entityname,object.id)">
+							<tr v-if="data.list.length" v-for="(object,index) in data.list">
+									<td class="var-width" v-for="item in data.listview" @click="(entityname == 'entity') ? showList(object.entityname) : showForm(object.entityname,object.id)">
 											<span v-if="item.rendertype == 'htmleditor'" v-html="object[item.name]"></span>
 											<span v-else-if="item.datatype=='datetime' || item.datetime=='date'" v-text="formatDate(object[item.name])"></span>
 											<span v-else v-text="object[item.name]"></span>
@@ -253,7 +261,6 @@
 									</td>
 								</li>
 							</tr>
-						</span>
 
 						<tr v-if="!data.list.length">
 								<td :colspan="data.listview.length+1">
@@ -262,9 +269,11 @@
 						</tr>
 
 					</tbody>
-					<tfoot>
-						<tr>
-							<th :colspan="data.listview.length+1" style="text-align: right">
+				</table>
+
+
+<!--- TODO :  paging :  --->
+
 								<button v-if="data.links.first" @click="applyPage('first')">
 									|<
 								</button>
@@ -284,10 +293,10 @@
 										<option value='20' :selected="this.$parent.itemsper == 20 ? 'selected' : null">20</option>
 									</select>
 								</span>
-							</th>
-						</tr>
-					</tfoot>
-				</table>
+
+
+
+
 				<span v-if="entityname != 'entity'">
 					<span v-if="currentparent && currentparent.properties">
 						<button @click="showForm(entityname)">Add Child</button>
