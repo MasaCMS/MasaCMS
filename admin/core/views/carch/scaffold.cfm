@@ -195,30 +195,33 @@
 
 	<template id="scaffold-list-template">
 		<div>
-			<h2>
-			<span v-if="entityname"><span v-if="entityname=='entity'">CUSTOM </span>{{entityname.toUpperCase()}} LIST</span>
-			<span v-if="currentparent && currentparent.properties"> for {{currentparent.properties.entityname}}:
-				<input type="HIDDEN" class="filter" :name="'filter-' + currentparent.properties.properties.primarykey" :value="currentparent.properties.id">
-				<span v-for="item in currentparent.properties._displaylist">
-					{{currentparent.properties[item.name]}}
-				</span>
-			</span>
-			</h2>
+
 			<div class="btn-group pull-right">
-			<span v-if="entityname != 'entity'">
-				<button @click="showAll" type="submit" class="btn">View All Custom Entities</button>
-				<span v-if="data.issuperuser && data && data.parentproperties && data.parentproperties.dynamic">
-					<button @click="goToAssembler(entityname)">Edit Entity Definition</button>
+				<span v-if="entityname != 'entity'">
+					<button @click="showAll" type="submit" class="btn">View All Custom Entities</button>
+					<span v-if="data.issuperuser && data && data.parentproperties && data.parentproperties.dynamic">
+						<button @click="goToAssembler(entityname)">Edit Entity Definition</button>
+					</span>
 				</span>
-			</span>
+				<button class="btn" @click="openEndpoint()">View API Endpoint</button>
+				<span v-if="currentparent && currentparent.properties">
+					<button @click="showForm(currentparent.properties.entityname,currentparent.properties.id)" class="btn">Back</button>
+				</span>
+			</div> <!-- /.btn-group -->
 
 
-			<button class="btn" @click="openEndpoint()">View API Endpoint</button>
-			<span v-if="currentparent && currentparent.properties">
-				<button @click="showForm(currentparent.properties.entityname,currentparent.properties.id)" class="btn">Back</button>
-			</span>
+<ul class="breadcrumb">	
+	<li class=""><strong>
+	<a href="" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('default','00000000000000000000000000000000001','00000000000000000000000000000000000','','','Page',1)});"><i class="mi-cog"></i>Custom Entities</a></strong></li>
+</ul>
 
-		</div>
+			<h2>
+				<span v-if="entityname"><span v-if="entityname!='entity'">{{entityname.toUpperCase()}} LIST</span></span>
+					<span v-if="currentparent && currentparent.properties"> for {{currentparent.properties.entityname}}:
+						<input type="HIDDEN" class="filter" :name="'filter-' + currentparent.properties.properties.primarykey" :value="currentparent.properties.id">
+						<span v-for="item in currentparent.properties._displaylist">{{currentparent.properties[item.name]}}</span>
+				</span>
+			</h2>
 
 			<div v-if="data.list">
 				<table width="100%" id="scaffold-table">
