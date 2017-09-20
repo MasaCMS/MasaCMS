@@ -142,7 +142,7 @@
 	</div> <!-- /container-scaffold -->
 </div> <!-- /.block-content -->
 
-
+<!--- TODO: what goes here? : looks empty? --->
 	<template id="scaffold-crumb-template">
 			<div v-if="state" id="scaffold-crumb-display">
 				<ul v-for="(att,index) in state" class="crumbly">
@@ -193,7 +193,6 @@
 
 			<div class="btn-group pull-right">
 				<span v-if="entityname != 'entity'">
-					<button @click="showAll" type="submit" class="btn">View All Custom Entities</button>
 					<span v-if="data.issuperuser && data && data.parentproperties && data.parentproperties.dynamic">
 						<button @click="goToAssembler(entityname)">Edit Entity Definition</button>
 					</span>
@@ -204,25 +203,25 @@
 				</span>
 			</div> <!-- /.btn-group -->
 
-			<span v-if="entityname">
+			<span v-if="entityname" class="pull-left">
 				<ul class="breadcrumb" v-if="entityname=='entity'">	
-						<li><strong><a href="/admin/?muraAction=cArch.list&siteid=default&activeTab=2"><i class="mi-cube"></i>Custom Entities</a></strong></li>
+						<li><strong><a @click="showAll" onclick="return false;" href="##"><i class="mi-cube"></i>Custom Entities</a></strong></li>
 				</ul>
 				<ul class="breadcrumb" v-if="entityname!='entity'">
-						<li><a href="/admin/?muraAction=cArch.list&siteid=default&activeTab=2"><i class="mi-cube"></i>Custom Entities</a></li>					
+						<li><a @click="showAll" onclick="return false;" href="##"><i class="mi-cube"></i>Custom Entities</a></li>					
 						<li><strong><a href="##" onclick="return false;"><i class="mi-cube"></i>{{entityname}}</a></strong></li>					
 				</ul>
 			</span>
 
+			<!--- todo where is this used --->
+			<span v-if="currentparent && currentparent.properties"> for {{currentparent.properties.entityname}}:
+				<input type="HIDDEN" class="filter" :name="'filter-' + currentparent.properties.properties.primarykey" :value="currentparent.properties.id">
+				<span v-for="item in currentparent.properties._displaylist">{{currentparent.properties[item.name]}}</span>
+			</span>
 
 <!---
 			<h2>
 				<span v-if="entityname"><span v-if="entityname!='entity'">{{entityname.toUpperCase()}} LIST</span></span>
-					<span v-if="currentparent && currentparent.properties"> for {{currentparent.properties.entityname}}:
-					<!--- todo where is this used --->
-						<input type="HIDDEN" class="filter" :name="'filter-' + currentparent.properties.properties.primarykey" :value="currentparent.properties.id">
-						<span v-for="item in currentparent.properties._displaylist">{{currentparent.properties[item.name]}}</span>
-				</span>
 			</h2>
 --->
 
@@ -317,8 +316,8 @@
 		<div>
 
 		<ul class="breadcrumb">	
-			<li><a href="/admin/?muraAction=cArch.list&siteid=default&activeTab=2"><i class="mi-cube"></i>Custom Entities</a></li>
-			<li><a @click="clickBack" href="##"><i class="mi-cube"></i>{{entityname}}</a></li>
+			<li><a @click="showAll" href="##" onclick="return false;"><i class="mi-cube"></i>Custom Entities</a></li>
+			<li><a @click="clickBack" href="##" onclick="return false;"><i class="mi-cube"></i>{{entityname}}</a></li>
 			<li><strong><a href="##" onclick="return false;"><i class="mi-cube"></i>Edit Record</a></strong></li>
 		</ul>
 
