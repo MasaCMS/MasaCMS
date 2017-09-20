@@ -228,7 +228,7 @@
 	<template id="scaffold-list-template">
 		<div>
 
-			<div class="btn-group">
+			<div class="btn-group pull-right">
 					<button v-if="entityname != 'entity' && data.issuperuser && data && data.parentproperties && data.parentproperties.dynamic" class="btn" @click="goToAssembler(entityname)"><i class="mi-edit"></i> Edit Entity Definition</button>
 				<button class="btn" @click="openEndpoint()"><i class="mi-globe"> API Endpoint</i></button>
 				<button v-if="currentparent && currentparent.properties" @click="showForm(currentparent.properties.entityname,currentparent.properties.id)" class="btn">Back</button>
@@ -266,6 +266,7 @@
 					<thead>
 
 						<tr id="scaffold-sortby">
+							<th class="actions"></th>
 							<th class="var-width" v-for="(item, key, index) in data.listview" :id="'sortby-' + item.name">
 								<span @click="applySortBy(item.name)">{{item.displayname}}</span>
 							</th>
@@ -273,6 +274,7 @@
 						</tr>
 
 						<tr id="scaffold-filterby">
+							<th class="actions"></th>
 							<th class="var-width" v-for="item in data.listview">
 								<div v-if="item.filter==true || item.filter == 'true'">
 									<input class="filter" :name="'filter-' + item.name" @keyup="applyKeyFilter">
@@ -289,17 +291,40 @@
 
 					<tbody>
 							<tr v-if="data.list.length" v-for="(object,index) in data.list">
+
+									<td class="actions">
+
+									<a class="show-actions" href="javascript:;" <!---ontouchstart="this.onclick();"---> onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
+									<div class="actions-menu hide">
+										<ul class="actions-list">
+											<li v-if="entityname != 'entity'">
+												<a href="##" onclick="return false;" @click="showForm(object.entityname,object.id)"><i class="mi-edit"></i> Edit Record</a>
+											</li>
+											<li v-if="entityname == 'entity'">
+												<a href="##" onclick="return false;" @click="showList(object.entityname)"><i class="mi-list"></i> View Records</a>
+											</li>
+										</ul>
+									</div>	
+
+
+									</td>
+
+
 									<td class="var-width" v-for="item in data.listview" @click="(entityname == 'entity') ? showList(object.entityname) : showForm(object.entityname,object.id)">
 											<span v-if="item.rendertype == 'htmleditor'" v-html="object[item.name]"></span>
 											<span v-else-if="item.datatype=='datetime' || item.datetime=='date'" v-text="formatDate(object[item.name])"></span>
 											<span v-else v-text="object[item.name]"></span>
 									</td>
+									<td></td>
+
+<!--- 
 									<td v-if="entityname != 'entity'">
 										<button class="pull-right" @click="showForm(object.entityname,object.id)"><i class="mi-edit"></i></button>
 									</td>
 									<td v-if="entityname == 'entity'">
 										<button class="pull-right" @click="showList(object.entityname)"><i class="mi-edit"></i></button>
 									</td>
+ --->
 								</li>
 							</tr>
 
@@ -358,7 +383,7 @@
 		<div>
 
 
-		<div class="btn-group">
+		<div class="btn-group pull-right">
 			<button class="btn" @click="clickBack" type="submit" class="btn">Back</button>
 			<button  class="btn" @click="openEndpoint()"><i class="mi-globe"> API Endpoint</i></button>
 			<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
