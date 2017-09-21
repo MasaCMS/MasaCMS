@@ -6363,6 +6363,10 @@ return /******/ (function(modules) { // webpackBootstrap
      * @memberof Mura
      */
      function trackEvent(eventData) {
+         if(typeof Mura.editing != 'undefined' && Mura.editing){
+          return;
+         }
+         
          var data={};
          var isMXP=(typeof Mura.MXP != 'undefined');
          var trackingVars = {
@@ -13496,6 +13500,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				else {
 					this.getList();
 				}
+
 				return this;
 			},
 
@@ -14138,6 +14143,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				self.currentpage = 0;
 				self.attachments={};
 				self.formInit=true;
+				Mura.trackEvent({category:'Form',action:'Impression',label:self.context.name,objectid:self.context.objectid,nonInteraction:true});
 			},
 
 			onSubmit: function(){
@@ -14166,7 +14172,7 @@ return /******/ (function(modules) { // webpackBootstrap
 					.trigger('formSubmit');
 
 
-				Mura.trackEvent({category:'Form',action:'Submit',label:self.context.name,objectid:self.context.objectid})
+				Mura.trackEvent({category:'Form',action:'Conversion',label:self.context.name,objectid:self.context.objectid});
 
 				if(self.ormform) {
 					//console.log('a!');
