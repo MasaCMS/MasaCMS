@@ -15,14 +15,6 @@
 --->
 <script src="#$.globalConfig('rootPath')#/admin/assets/js/scaffold/scaffolder.js"></script>
 
- <script>
-   $(document).ready(function(){
-	 $('##sm-modify-view .dropdown-menu').click(function(e) {
-	   e.stopPropagation();
-	 })
-   })
- </script>
- 
 <style>
 
 /* TODO move these styles to global less & compile */
@@ -253,15 +245,13 @@
 				 #application.rbFactory.getKeyValue(session.rb,"sitemanager.modifyview")#
 				 <span class="caret"></span>
 			   </a>
-			   <div class="dropdown-menu">
-					<span>
+			   <div class="dropdown-menu" onclick="function(e){e.stopPropagation();};">
 						<label>Rows Displayed:&nbsp;</label>
 						<select name="itemsper" @change="applyItemsPer">
 							<option value='5' :selected="this.$parent.itemsper == 5 ? 'selected' : null">5</option>
 							<option value='10' :selected="this.$parent.itemsper == 10 ? 'selected' : null">10</option>
 							<option value='20' :selected="this.$parent.itemsper == 20 ? 'selected' : null">20</option>
 						</select>
-					</span>
 			   </div>
 
 			</div> <!-- /.btn-group -->
