@@ -207,6 +207,8 @@
 									<div class="block-content">
 										<div class="btn-group">
 											<button class="btn" @click='clickAddProperty'><i class="mi-plus-circle"></i> New Property</button>
+										</div>
+										<div class="btn-group">
 											<button class="btn" @click='clickAddRelated'><i class="mi-plus-circle"></i> New Relationship</button>
 										</div>
 										<assembler-property-template :model="model"	></assembler-property-template>
