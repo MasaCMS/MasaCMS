@@ -139,6 +139,12 @@ this.mappings["/mura"] = variables.baseDir & "/core/mura";
 this.mappings["/testbox"] = variables.baseDir & "/core/vendor/testbox";
 this.mappings["/docbox"] = variables.baseDir & "/core/vendor/docbox";
 
+s3assets=getINIProperty("s3assets","");
+
+if (len(s3assets)) {
+    this.mappings["/s3assets"] = s3assets;
+}
+
 variables.context=evalSetting(getINIProperty("context",""));
 
 try {

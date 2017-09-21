@@ -464,7 +464,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset local.connection.getInputStream().close()>
 			<!---<cffile action="readBinary" file="#local.filePath#" variable="local.fileContent">--->
 		</cfif>
-		
+
 	<cfelse>
 		<cfset local.isLocalFile=false>
 
@@ -972,8 +972,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var source="#application.configBean.getFileDir()#/#arguments.siteID#/cache/file/#arguments.fileID#_source.#rsMeta.fileExt#">
 	<cfset var cropper=structNew()>
 	<cfset var customImageSize="">
+	<cfset var pluginEvent = createObject("component","mura.event") />
+	<cfset arguments.action="cropAndScale">
+	<cfset pluginEvent.init(arguments)>
+	<cfset var pluginManager=getBean("pluginManager")>
+
 
 	<cfset arguments.size=lcase(arguments.size)>
+
+	<cfset pluginManager.announceEvent("onBeforeImageManipulation",pluginEvent)>
 
 	<cfif not fileExists(source)>
 		<cfset source="#application.configBean.getFileDir()#/#arguments.siteID#/cache/file/#arguments.fileID#.#rsMeta.fileExt#">
@@ -1056,6 +1063,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 
 		<cfset cropper=imageRead(file)>
+
+		<cfset pluginManager.announceEvent("onAfterImageManipulation",pluginEvent)>
+
 		<cfreturn ImageInfo(cropper)>
 	</cfif>
 </cffunction>
@@ -1067,13 +1077,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rsMeta=readMeta(arguments.fileID)>
 	<cfset var source="#application.configBean.getFileDir()#/#rsMeta.siteID#/cache/file/#arguments.fileID#_source.#rsMeta.fileExt#">
 	<cfset var myImage="">
+	<cfset var pluginEvent = createObject("component","mura.event") />
+	<cfset arguments.action="rotate">
+	<cfset pluginEvent.init(arguments)>
+	<cfset var pluginManager=getBean("pluginManager")>
 
 	<cfif rsMeta.recordcount and IsImageFile(source)>
+		<cfset getBean("pluginManager").announceEvent("onBeforeImageManipulation",pluginEvent)>
+
 		<cfscript>
 			myImage=imageRead(source);
 			ImageRotate(myImage,arguments.degrees);
 			imageWrite(myImage,source,variables.configBean.getImageQuality());
 		</cfscript>
+
+		<cfset var pluginEvent = createObject("component","mura.event") />
+		<cfset arguments.action="rate">
+		<cfset pluginEvent.init(arguments)>
+		<cfset getBean("pluginManager").announceEvent("onAfterImageManipulation",pluginEvent)>
 	</cfif>
 </cffunction>
 
@@ -1084,13 +1105,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rsMeta=readMeta(arguments.fileID)>
 	<cfset var source="#application.configBean.getFileDir()#/#rsMeta.siteID#/cache/file/#arguments.fileID#_source.#rsMeta.fileExt#">
 	<cfset var myImage="">
+	<cfset var pluginEvent = createObject("component","mura.event") />
+	<cfset arguments.action="flip">
+	<cfset pluginEvent.init(arguments)>
+	<cfset var pluginManager=getBean("pluginManager")>
 
 	<cfif rsMeta.recordcount and IsImageFile(source)>
+		<cfset pluginManager.announceEvent("onBeforeImageManipulation",pluginEvent)>
 		<cfscript>
 			myImage=imageRead(source);
 			ImageFlip(myImage,arguments.transpose);
 			imageWrite(myImage,source,variables.configBean.getImageQuality());
 		</cfscript>
+		<cfset pluginManager.announceEvent("onAfterImageManipulation",pluginEvent)>
 	</cfif>
 </cffunction>
 
