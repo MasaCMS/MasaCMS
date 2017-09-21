@@ -37,7 +37,7 @@
 		/admin/
 		/tasks/
 		/config/
-		/requirements/mura/
+		/core/mura/
 		/Application.cfc
 		/index.cfm
 		/MuraProxy.cfc
@@ -56,16 +56,16 @@
 --->
 <cfcomponent extends="Mura.cfobject">
 
-	<cffunction name="get" access="remote" output="true">
+	<cffunction name="get" access="remote" returnformat="plain">
 		<cfargument name="commentID">
 		<cfargument name="siteid" default="#application.contentServer.bindToDomain()#" />
 		<cfset var $ = getBean("MuraScope").init(arguments.siteid)>
 		<cfset var comment = $.getBean("contentManager").getCommentBean()>
 		<cfset var data = comment.setCommentID(arguments.commentID).load().getAllValues()>
-		<cfoutput>#createobject("component","Mura.json").encode(data)#</cfoutput>
+		<cfreturn createobject("component","Mura.json").encode(data)>
 	</cffunction>
 
-	<cffunction name="flag" access="remote" output="true">
+	<cffunction name="flag" access="remote" returnformat="plain">
 		<cfargument name="commentID">
 		<cfargument name="siteid" default="#application.contentServer.bindToDomain()#" />
 		<cfset var $ = getBean("MuraScope").init(arguments.siteid)>
@@ -73,16 +73,16 @@
 		<cfset comment.setCommentID(arguments.commentID).load().flag()>
 	</cffunction>
 
-	<cffunction name="getContentStats" access="remote" output="true">
+	<cffunction name="getContentStats" access="remote" returnformat="plain">
 		<cfargument name="contentID">
 		<cfargument name="siteid" default="#application.contentServer.bindToDomain()#" />
 		<cfset var $ = getBean("MuraScope").init(arguments.siteid)>
 		<cfset var contentStats = $.getBean('content').loadBy(contentID=arguments.contentID).getStats()>
 
-		<cfcontent type="application/json" reset="true"><cfscript>writeOutput(new Mura.json().jsonencode(contentStats.getAllValues()));</cfscript>
+		<cfreturn createobject("component","Mura.json").encode(contentStats.getAllValues())>
 	</cffunction>
 
-	<cffunction name="renderCommentsPage" access="remote" output="true">
+	<cffunction name="renderCommentsPage" access="remote" returnformat="plain">
 		<cfargument name="contentID">
 		<cfargument name="pageNo" data-required="true" default="1">
 		<cfargument name="nextN" data-required="true" default="3">
@@ -243,7 +243,8 @@
 			</cfoutput>
 		</cfsavecontent>
 
-		<cfcontent type="application/json; charset=utf-8" reset="true"><cfscript>writeOutput(serializeJSON(returnStruct));</cfscript>
+		<cfreturn serializeJSON(returnStruct)>
+
 	</cffunction>
 
 </cfcomponent>
