@@ -15,6 +15,14 @@
 --->
 <script src="#$.globalConfig('rootPath')#/admin/assets/js/scaffold/scaffolder.js"></script>
 
+ <script>
+   $(document).ready(function(){
+	 $('##sm-modify-view .dropdown-menu').click(function(e) {
+	   e.stopPropagation();
+	 })
+   })
+ </script>
+ 
 <style>
 
 /* TODO move these styles to global less & compile */
