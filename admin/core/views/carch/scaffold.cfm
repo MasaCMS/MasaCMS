@@ -31,26 +31,30 @@
 
 	.mura .mura-table-grid > thead > tr + tr > th{
 		padding-top: 0 !important;
+		background-color: ##fafafa;
 	}
 
 	.mura .mura-table-grid th input.filter{
-		border:none;
-		border-radius: 3px;
+    border: 1px solid ##e9e9e9;
     font-size: 13px;
     font-weight: normal !important;
-    /* TODO use less font definition */
-    font-family: montserratlight,montserratregular,"Helvetica Neue",Helvetica,Arial,sans-serif;
     height: 18px;
-    padding-left: 8px;
+    padding-left: 4px;
+    position: relative;
+    top: 1px;
+    /* TODO use global font definition */
+    font-family: montserratlight,montserratregular,"Helvetica Neue",Helvetica,Arial,sans-serif;
 	}
 
 	.mura .mura-table-grid th .btn-group{
 		margin-right: 1px;
-		margin-bottom: 0;
+		margin-bottom: 1px;
 	}
 	.mura .mura-table-grid th .btn-group .btn{
-		font-weight: bold;
 		padding: 1px 4px;
+		color: ##545454;
+    background-color: ##f5f5f5;
+    border-color: ##e9e9e9;
 	}
 
 	##scaffold-table tbody tr td span{
@@ -276,13 +280,11 @@
 						<tr id="scaffold-filterby">
 							<th class="actions"></th>
 							<th class="var-width" v-for="item in data.listview">
-								<div v-if="item.filter==true || item.filter == 'true'">
-									<input class="filter" :name="'filter-' + item.name" @keyup="applyKeyFilter">
-								</div>
+									<input v-if="item.filter==true || item.filter == 'true'" class="filter" :name="'filter-' + item.name" @keyup="applyKeyFilter">
 							</th>
 							<th>
 								<div class="btn-group pull-right">
-									<span v-if="!data.hasFilterApplied"><a class="btn btn-sm" @click='applyFilter'>Filter</a></span>
+									<span v-if="!data.hasFilterApplied"><a class="btn btn-sm" @click='applyFilter'>Apply Filter</a></span>
 									<span v-if="data.hasFilterApplied"><a class="btn btn-sm" @click='removeFilter'>Remove Filter</a><span>
 								</div>
 							</th>
@@ -334,50 +336,54 @@
 						<tr v-if="!data.list.length">
 							<td class="actions"></td>
 								<td class="var-width" :colspan="data.listview.length+1">
+									<div class="help-block-empty">No items available.</div>
 								</td>
 						</tr>
 
 					</tbody>
 				</table>
 
-
-<!--- TODO :  paging :  --->
-
-								<button v-if="data.links.first" @click="applyPage('first')">
-									|<
-								</button>
-								<button v-if="data.links.previous" @click="applyPage('previous')">
-									<
-								</button>
-								<button v-if="data.links.next" @click="applyPage('next')">
-									>
-								</button>
-								<button v-if="data.links.last" @click="applyPage('last')">
-									>|
-								</button>
-								<span>
-									<select name="itemsper" @change="applyItemsPer">
-										<option value='5' :selected="this.$parent.itemsper == 5 ? 'selected' : null">5</option>
-										<option value='10' :selected="this.$parent.itemsper == 10 ? 'selected' : null">10</option>
-										<option value='20' :selected="this.$parent.itemsper == 20 ? 'selected' : null">20</option>
-									</select>
-								</span>
-
-
-
-
 				<span v-if="entityname != 'entity'">
 					<span v-if="currentparent && currentparent.properties">
-						<button @click="showForm(entityname)">Add Child</button>
-						<button @click="showForm(currentparent.properties.entityname,currentparent.properties.id)">Back</button>
+						<div class="btn-group">
+							<a class="btn" href="##" onclick="return false;" @click="showForm(entityname)">Add Child</a>
+							<a class="btn" href="##" onclick="return false;" @click="showForm(currentparent.properties.entityname,currentparent.properties.id)">Back</a>
+						</div>
 					</span>
 					<span v-else>
-						<button @click="showForm(entityname)">Add New</button>
+						<div class="btn-group">
+							<a class="btn" href="##" onclick="return false;" @click="showForm(entityname)">Add New</a>
+						</div>
 					</span>
 				</span>
 				<span v-if="entityname == 'entity' && data.issuperuser">
-					<a href="./?muraAction=scaffold.assembler" class="btn">Add New</a>
+					<div class="btn-group">
+						<a href="./?muraAction=scaffold.assembler" class="btn">Add New</a>
+					</div>
 				</span>
+
+
+				<!--- TODO :  paging :  --->
+				<button v-if="data.links.first" @click="applyPage('first')">
+					|<
+				</button>
+				<button v-if="data.links.previous" @click="applyPage('previous')">
+					<
+				</button>
+				<button v-if="data.links.next" @click="applyPage('next')">
+					>
+				</button>
+				<button v-if="data.links.last" @click="applyPage('last')">
+					>|
+				</button>
+				<span>
+					<select name="itemsper" @change="applyItemsPer">
+						<option value='5' :selected="this.$parent.itemsper == 5 ? 'selected' : null">5</option>
+						<option value='10' :selected="this.$parent.itemsper == 10 ? 'selected' : null">10</option>
+						<option value='20' :selected="this.$parent.itemsper == 20 ? 'selected' : null">20</option>
+					</select>
+				</span>
+
 			</div>
 		</div>
 	</template>
