@@ -232,28 +232,13 @@
 	<template id="scaffold-list-template">
 		<div>
 
-			<div class="btn-group pull-right" id="sm-modify-view">
+			<div class="btn-group pull-right">
 					<a v-if="entityname != 'entity' && data.issuperuser && data && data.parentproperties && data.parentproperties.dynamic" class="btn" @click="goToAssembler(entityname)"><i class="mi-edit"></i> Edit Entity Definition</a>
 				<a class="btn" @click="openEndpoint()"><i class="mi-globe"> API Endpoint</i></a>
 				<a v-if="currentparent && currentparent.properties" @click="showForm(currentparent.properties.entityname,currentparent.properties.id)" class="btn">Back</a>
 				<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
 					<a class="btn" href="./?muraAction=cPerm.module&contentid=00000000000000000000000000000000016&siteid=#esapiEncode('url',rc.siteid)#&moduleid=00000000000000000000000000000000016"><i class="mi-group"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.permissions')#</a>
 				</cfif>
-
-
-				<a class="btn dropdown-toggle" data-toggle="dropdown" href="">
-				 #application.rbFactory.getKeyValue(session.rb,"sitemanager.modifyview")#
-				 <span class="caret"></span>
-			   </a>
-			   <div class="dropdown-menu" onclick="function(e){e.stopPropagation();};">
-						<label>Rows Displayed:&nbsp;</label>
-						<select name="itemsper" @change="applyItemsPer">
-							<option value='5' :selected="this.$parent.itemsper == 5 ? 'selected' : null">5</option>
-							<option value='10' :selected="this.$parent.itemsper == 10 ? 'selected' : null">10</option>
-							<option value='20' :selected="this.$parent.itemsper == 20 ? 'selected' : null">20</option>
-						</select>
-			   </div>
-
 			</div> <!-- /.btn-group -->
 
 			<span v-if="entityname">
@@ -376,29 +361,28 @@
 					</div>
 				</span>
 
-
-				<!--- TODO :  paging :  --->
 				<ul class="pagination">
 
-				<li><a v-if="data.links.first" @click="applyPage('first')">
-					<i class="mi-angle-double-left"></i>
-				</a></li>
-				<li><a v-if="data.links.previous" @click="applyPage('previous')">
-					<i class="mi-angle-left"></i>
-				</a></li>
-				<li><a v-if="data.links.next" @click="applyPage('next')">
-					<i class="mi-angle-right"></i>
-				</a></li>
-				<li><a v-if="data.links.last" @click="applyPage('last')">
-					<i class="mi-angle-double-right"></i>
-				</a></li>
-<!--- 				<span>
-					<select name="itemsper" @change="applyItemsPer">
-						<option value='5' :selected="this.$parent.itemsper == 5 ? 'selected' : null">5</option>
-						<option value='10' :selected="this.$parent.itemsper == 10 ? 'selected' : null">10</option>
-						<option value='20' :selected="this.$parent.itemsper == 20 ? 'selected' : null">20</option>
-					</select>
-				</span> --->
+					<li><a v-if="data.links.first" @click="applyPage('first')">
+						<i class="mi-angle-double-left"></i>
+					</a></li>
+					<li><a v-if="data.links.previous" @click="applyPage('previous')">
+						<i class="mi-angle-left"></i>
+					</a></li>
+					<li><a v-if="data.links.next" @click="applyPage('next')">
+						<i class="mi-angle-right"></i>
+					</a></li>
+					<li><a v-if="data.links.last" @click="applyPage('last')">
+						<i class="mi-angle-double-right"></i>
+					</a></li>
+
+					<li class="pull-right">
+						<select name="itemsper" class="itemsper" @change="applyItemsPer">
+							<option value='10' :selected="this.$parent.itemsper == 10 ? 'selected' : null">10</option>
+							<option value='20' :selected="this.$parent.itemsper == 20 ? 'selected' : null">20</option>
+							<option value='50' :selected="this.$parent.itemsper == 50 ? 'selected' : null">50</option>
+						</select>
+					</li>
 
 				</ul>
 

@@ -692,7 +692,7 @@ Mura(function() {
 			sortBy: '',
 			sortDir: '',
 			isvisible: false,
-			itemsper: 5,
+			itemsper: 10,
 			entity: {},
 			entityname: '',
 			data: {},
