@@ -264,7 +264,10 @@
 --->
 
 			<div v-if="data.list">
-				<table width="100%" class="table table-striped table-condensed table-bordered mura-table-grid" id="scaffold-table">
+
+				<div v-if="!data.list.length" class="help-block-empty">No items available.</div>
+
+				<table v-if="data.list.length" width="100%" class="table table-striped table-condensed table-bordered mura-table-grid" id="scaffold-table">
 
 					<thead>
 
@@ -331,14 +334,6 @@
  --->
 								</li>
 							</tr>
-
-						<tr v-if="!data.list.length">
-							<td class="actions"></td>
-								<td class="var-width" :colspan="data.listview.length+1">
-									<div class="help-block-empty">No items available.</div>
-								</td>
-						</tr>
-
 					</tbody>
 				</table>
 
@@ -376,7 +371,7 @@
 						<i class="mi-angle-double-right"></i>
 					</a></li>
 
-					<li class="pull-right">
+					<li class="pull-right" v-if="data.list.length">
 						<select name="itemsper" class="itemsper" @change="applyItemsPer">
 							<option value='10' :selected="this.$parent.itemsper == 10 ? 'selected' : null">10</option>
 							<option value='20' :selected="this.$parent.itemsper == 20 ? 'selected' : null">20</option>
