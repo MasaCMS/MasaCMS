@@ -341,7 +341,7 @@
 					<span v-if="currentparent && currentparent.properties">
 						<div class="btn-group">
 							<a class="btn" href="##" onclick="return false;" @click="showForm(entityname)"><i class="mi-plus-circle"></i> Add Child</a>
-							<a class="btn" href="##" onclick="return false;" @click="showForm(currentparent.properties.entityname,currentparent.properties.id)">Back</a>
+							<a class="btn" href="##" onclick="return false;" @click="showForm(currentparent.properties.entityname,currentparent.properties.id)"><i class="mi-arrow-circle-left"></i> Back</a>
 						</div>
 					</span>
 					<span v-else>
@@ -390,7 +390,7 @@
 
 
 		<div class="btn-group pull-right">
-			<button class="btn" @click="clickBack" type="submit" class="btn">Back</button>
+			<button class="btn" @click="clickBack" type="submit" class="btn"><i class="mi-arrow-circle-left"></i> Back</button>
 			<button  class="btn" @click="openEndpoint()"><i class="mi-globe"> API Endpoint</i></button>
 			<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
 					<a class="btn" href="./?muraAction=cPerm.module&contentid=00000000000000000000000000000000016&siteid=#esapiEncode('url',rc.siteid)#&moduleid=00000000000000000000000000000000016"><i class="mi-group"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.permissions')#</a>
@@ -403,7 +403,7 @@
 			<li><strong><a href="##" onclick="return false;"><i class="mi-edit"></i>Edit Record</a></strong></li>
 		</ul>
 
-		<ul>
+
 			<template v-for="property in data.properties">
 				<span v-if="property.fieldtype == 'id'">
 				</span>
@@ -420,23 +420,22 @@
 				</span>
 				<span v-else-if="property.name.slice(-2).toLowerCase()=='id'">
 				</span>
-				<li v-else>
-				<scaffold-field-textarea v-if="property.rendertype == 'textarea'" :property=property :model=data.model :entity=data.entity></scaffold-field-textarea>
-				<scaffold-field-htmleditor v-else-if="property.rendertype === 'htmleditor'" :property=property :model=data.model :entity=data.entity></scaffold-field-htmleditor>
-				<scaffold-field-checkbox v-else-if="property.rendertype === 'checkbox'" :property=property :model=data.model :entity=data.entity></scaffold-field-checkbox>
-				<scaffold-field-dropdown v-else-if="property.rendertype === 'dropdown'" :property=property :model=data.model :entity=data.entity></scaffold-field-dropdown>
-				<scaffold-field-radio v-else-if="property.rendertype === 'radio'" :property=property :model=data.model :entity=data.entity></scaffold-field-radio>
-				<scaffold-field-text v-else="property.rendertype == 'textbox'" :property=property :model=data.model :entity=data.entity>~</scaffold-field-text>
-				</li>
+				<div v-else>
+					<scaffold-field-textarea v-if="property.rendertype == 'textarea'" :property=property :model=data.model :entity=data.entity></scaffold-field-textarea>
+					<scaffold-field-htmleditor v-else-if="property.rendertype === 'htmleditor'" :property=property :model=data.model :entity=data.entity></scaffold-field-htmleditor>
+					<scaffold-field-checkbox v-else-if="property.rendertype === 'checkbox'" :property=property :model=data.model :entity=data.entity></scaffold-field-checkbox>
+					<scaffold-field-dropdown v-else-if="property.rendertype === 'dropdown'" :property=property :model=data.model :entity=data.entity></scaffold-field-dropdown>
+					<scaffold-field-radio v-else-if="property.rendertype === 'radio'" :property=property :model=data.model :entity=data.entity></scaffold-field-radio>
+					<scaffold-field-text v-else="property.rendertype == 'textbox'" :property=property :model=data.model :entity=data.entity>~</scaffold-field-text>
+				</div>
 			</template>
 
 
-			<li>
-				<button @click="clickSave" type="submit" class="btn">Save</button>
-				<button @click="clickBack" type="submit" class="btn">Back</button>
-				<button v-if="data.model && !data.model.isnew" @click="clickDelete" type="submit" class="btn btn-warning">Delete</button>
-			</li>
-		</ul>
+			<div class="btn-group">
+				<a href="##" onclick="return false;" @click="clickSave" class="btn"><i class="mi-save"></i> Save</a>
+				<a href="##" onclick="return false;" v-if="data.model && !data.model.isnew" @click="clickDelete" class="btn"><i class="mi-trash"></i> Delete</a>
+			</div>
+
 		</div>
 	</template>
 
