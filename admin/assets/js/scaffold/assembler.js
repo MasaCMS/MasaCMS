@@ -629,7 +629,7 @@ $( document ).ready(function() {
 				this.currentView = "";
 			},
 			clickClear: function() {
-				var conf = confirm( "Are you sure you want to delete *all* of your hard work?");
+				var conf = confirm( "Clear the form? Unsaved changes will be lost.");
 
 				if(conf) {
 					this.data = {};

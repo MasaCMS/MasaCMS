@@ -169,7 +169,8 @@
   <h1>Dynamic Custom Entity</h1>
 
 	<div class="nav-module-specific btn-group">
-    <a class="btn" href="./?muraAction=cArch.list&siteid=#esapiEncode('url',rc.siteid)#&activeTab=2" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#"><i class="mi-arrow-circle-left"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#</a>
+		<a class="btn" href="./?muraAction=scaffold.assembler"><i class="mi-plus-circle"></i> New Entity</a>
+    <a class="btn" href="./?muraAction=cArch.list&siteid=#esapiEncode('url',rc.siteid)#&activeTab=2"><i class="mi-cube"></i> Entity List</a>
   </div>
 
 </div> <!-- /.mura-header -->
@@ -191,8 +192,6 @@
 						Scaffolding
 					</h3>
 				</div> <!-- /.block header -->
-				<div class="block-content">
-					<div>
 						<div>
 							<div id="container-assembler">
 									<!---
@@ -200,20 +199,25 @@
 									<input type="text" id='loadentity' name="loadentity" value="">
 									--->
 									<assembler-attributes-form-template :model="model"></assembler-attributes-form-template>
-									<div>
-										<button @click='clickAddProperty'>New Property</button>
-										<button @click='clickAddRelated'>New Relationship</button>
-										<button class="btn btn-info" @click='clickSave' v-if="model.entityname != '' && model.table != ''">Save</button>
-										<button class="btn btn-danger pull-right" @click='clickClear'>New</button>
+									<div class="btn-group">
+										<button v-if="model.entityname != '' && model.table != ''" @click='clickSave' class="btn"><i class="mi-save"></i> Save</button>
+										<button v-else class="btn" disabled><i class="mi-save"></i> Save</button>
+									</div>	
+
+									<div class="block-content">
+										<div class="btn-group">
+											<button class="btn" @click='clickAddProperty'><i class="mi-plus-circle"></i> New Property</button>
+											<button class="btn" @click='clickAddRelated'><i class="mi-plus-circle"></i> New Relationship</button>
+										</div>
+										<assembler-property-template :model="model"	></assembler-property-template>
+										<div>
+											<component :is="currentView" :data="data" :rendertypes="rendertypes" :fieldtypes="fieldtypes" :datatypes="datatypes" :model="model" transition="fade" transition-mode="out-in"></component>
+										</div>
 									</div>
-									<assembler-property-template :model="model"	></assembler-property-template>
-									<div>
-										<component :is="currentView" :data="data" :rendertypes="rendertypes" :fieldtypes="fieldtypes" :datatypes="datatypes" :model="model" transition="fade" transition-mode="out-in"></component>
-									</div>
+
 							</div>
 						</div>
-					</div>
-			</div> <!-- /.block-content -->
+
 			</div> <!-- /.block-bordered -->
 		</div> <!-- /.tab-pane -->
 
