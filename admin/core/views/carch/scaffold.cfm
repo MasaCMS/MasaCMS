@@ -232,13 +232,29 @@
 	<template id="scaffold-list-template">
 		<div>
 
-			<div class="btn-group pull-right">
+			<div class="btn-group pull-right" id="sm-modify-view">
 					<a v-if="entityname != 'entity' && data.issuperuser && data && data.parentproperties && data.parentproperties.dynamic" class="btn" @click="goToAssembler(entityname)"><i class="mi-edit"></i> Edit Entity Definition</a>
 				<a class="btn" @click="openEndpoint()"><i class="mi-globe"> API Endpoint</i></a>
 				<a v-if="currentparent && currentparent.properties" @click="showForm(currentparent.properties.entityname,currentparent.properties.id)" class="btn">Back</a>
 				<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
 					<a class="btn" href="./?muraAction=cPerm.module&contentid=00000000000000000000000000000000016&siteid=#esapiEncode('url',rc.siteid)#&moduleid=00000000000000000000000000000000016"><i class="mi-group"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.permissions')#</a>
 				</cfif>
+
+
+				<a class="btn dropdown-toggle" data-toggle="dropdown" href="">
+				 #application.rbFactory.getKeyValue(session.rb,"sitemanager.modifyview")#
+				 <span class="caret"></span>
+			   </a>
+			   <div class="dropdown-menu">
+					<span>
+						<label>Rows Displayed:&nbsp;</label>
+						<select name="itemsper" @change="applyItemsPer">
+							<option value='5' :selected="this.$parent.itemsper == 5 ? 'selected' : null">5</option>
+							<option value='10' :selected="this.$parent.itemsper == 10 ? 'selected' : null">10</option>
+							<option value='20' :selected="this.$parent.itemsper == 20 ? 'selected' : null">20</option>
+						</select>
+					</span>
+			   </div>
 
 			</div> <!-- /.btn-group -->
 
@@ -346,43 +362,47 @@
 				<span v-if="entityname != 'entity'">
 					<span v-if="currentparent && currentparent.properties">
 						<div class="btn-group">
-							<a class="btn" href="##" onclick="return false;" @click="showForm(entityname)">Add Child</a>
+							<a class="btn" href="##" onclick="return false;" @click="showForm(entityname)"><i class="mi-plus-circle"></i> Add Child</a>
 							<a class="btn" href="##" onclick="return false;" @click="showForm(currentparent.properties.entityname,currentparent.properties.id)">Back</a>
 						</div>
 					</span>
 					<span v-else>
 						<div class="btn-group">
-							<a class="btn" href="##" onclick="return false;" @click="showForm(entityname)">Add New</a>
+							<a class="btn" href="##" onclick="return false;" @click="showForm(entityname)"><i class="mi-plus-circle"></i> Add New</a>
 						</div>
 					</span>
 				</span>
 				<span v-if="entityname == 'entity' && data.issuperuser">
 					<div class="btn-group">
-						<a href="./?muraAction=scaffold.assembler" class="btn">Add New</a>
+						<a href="./?muraAction=scaffold.assembler" class="btn"><i class="mi-plus-circle"></i> Add New</a>
 					</div>
 				</span>
 
 
 				<!--- TODO :  paging :  --->
-				<button v-if="data.links.first" @click="applyPage('first')">
-					|<
-				</button>
-				<button v-if="data.links.previous" @click="applyPage('previous')">
-					<
-				</button>
-				<button v-if="data.links.next" @click="applyPage('next')">
-					>
-				</button>
-				<button v-if="data.links.last" @click="applyPage('last')">
-					>|
-				</button>
-				<span>
+				<ul class="pagination">
+
+				<li><a v-if="data.links.first" @click="applyPage('first')">
+					<i class="mi-angle-double-left"></i>
+				</a></li>
+				<li><a v-if="data.links.previous" @click="applyPage('previous')">
+					<i class="mi-angle-left"></i>
+				</a></li>
+				<li><a v-if="data.links.next" @click="applyPage('next')">
+					<i class="mi-angle-right"></i>
+				</a></li>
+				<li><a v-if="data.links.last" @click="applyPage('last')">
+					<i class="mi-angle-double-right"></i>
+				</a></li>
+<!--- 				<span>
 					<select name="itemsper" @change="applyItemsPer">
 						<option value='5' :selected="this.$parent.itemsper == 5 ? 'selected' : null">5</option>
 						<option value='10' :selected="this.$parent.itemsper == 10 ? 'selected' : null">10</option>
 						<option value='20' :selected="this.$parent.itemsper == 20 ? 'selected' : null">20</option>
 					</select>
-				</span>
+				</span> --->
+
+				</ul>
 
 			</div>
 		</div>
