@@ -298,131 +298,136 @@ var Mura=(function(){
    * @memberof {class} Mura
    */
    function trackEvent(eventData) {
-       var data={};
-       var isMXP=(typeof Mura.MXP != 'undefined');
-       var trackingVars = {
-         ga:{
-          trackingvars:{}
+     if(typeof Mura.editing != 'undefined' && Mura.editing){
+       return;
+     }
+
+     var data={};
+     var isMXP=(typeof Mura.MXP != 'undefined');
+     var trackingVars = {
+       ga:{
+        trackingvars:{}
+       }
+     };
+     var gaFound = false;
+     var trackingComplete = false;
+     var attempt=0;
+
+     data.category = eventData.eventCategory || eventData.category || '';
+     data.action = eventData.eventAction || eventData.action || '';
+     data.label = eventData.eventLabel || eventData.label || '';
+     data.type =  eventData.hitType || eventData.type || 'event';
+     data.value =  eventData.eventValue || eventData.value || undefined;
+
+     if (typeof eventData.nonInteraction == 'undefined') {
+         data.nonInteraction = false;
+     } else {
+         data.nonInteraction = eventData.nonInteraction;
+     }
+
+     data.contentid = eventData.contentid || Mura.contentid;
+     data.objectid = eventData.objectid || '';
+
+     function track() {
+         if(!attempt){
+             trackingVars.ga.trackingvars.eventCategory = data.category;
+             trackingVars.ga.trackingvars.eventAction = data.action;
+             trackingVars.ga.trackingvars.nonInteraction = data.nonInteraction;
+             trackingVars.ga.trackingvars.hitType = data.type;
+
+             if (typeof data.value != 'undefined' && Mura.isNumeric(
+                     data.value)) {
+                 trackingVars.ga.trackingvars.eventValue = data.value;
+             }
+
+             if (data.label) {
+                 trackingVars.ga.trackingvars.eventLabel = data.label;
+             } else if(isMXP) {
+                 if(typeof trackingVars.object != 'undefined'){
+                   trackingVars.ga.trackingvars.eventLabel = trackingVars.object.title;
+                 } else {
+                   trackingVars.ga.trackingvars.eventLabel = trackingVars.content.title;
+                 }
+
+                 data.label=trackingVars.object.title;
+             }
+
+             Mura(document).trigger('muraTrackEvent',trackingVars);
+             Mura(document).trigger('muraRecordEvent',trackingVars);
          }
-       };
-       var gaFound = false;
-       var trackingComplete = false;
-       var attempt=0;
 
-       data.category = eventData.eventCategory || eventData.category || '';
-       data.action = eventData.eventAction || eventData.action || '';
-       data.label = eventData.eventLabel || eventData.label || '';
-       data.type =  eventData.hitType || eventData.type || 'event';
-       data.value =  eventData.eventValue || eventData.value || undefined;
+         if (typeof ga != 'undefined') {
+             if(isMXP){
 
-       if (typeof eventData.nonInteraction == 'undefined') {
-           data.nonInteraction = false;
-       } else {
-           data.nonInteraction = eventData.nonInteraction;
-       }
+                 ga('mxpGATracker.send', data.type, trackingVars.ga.trackingvars);
+             } else {
+                 ga('send', data.type, trackingVars.ga.trackingvars);
+             }
 
-       data.contentid = eventData.contentid || Mura.contentid;
-       data.objectid = eventData.objectid || '';
+             gaFound = true;
+             trackingComplete = true;
+         }
 
-       function track() {
-           if(!attempt){
-               trackingVars.ga.trackingvars.eventCategory = data.category;
-               trackingVars.ga.trackingvars.eventAction = data.action;
-               trackingVars.ga.trackingvars.nonInteraction = data.nonInteraction;
-               trackingVars.ga.trackingvars.hitType = data.type;
+         attempt++;
 
-               if (typeof data.value != 'undefined' && Mura.isNumeric(
-                       data.value)) {
-                   trackingVars.ga.trackingvars.eventValue = data.value;
-               }
+         if (!gaFound && attempt <250) {
+             setTimeout(track, 1);
+         } else {
+             trackingComplete = true;
+         }
 
-               if (data.label) {
-                   trackingVars.ga.trackingvars.eventLabel = data.label;
-               } else if(isMXP) {
-                   if(typeof trackingVars.object != 'undefined'){
-                     trackingVars.ga.trackingvars.eventLabel = trackingVars.object.title;
-                   } else {
-                     trackingVars.ga.trackingvars.eventLabel = trackingVars.content.title;
-                   }
+     }
 
-                   data.label=trackingVars.object.title;
-               }
+     if(isMXP){
 
-               Mura(document).trigger('muraTrackEvent',trackingVars);
-               Mura(document).trigger('muraRecordEvent',trackingVars);
-           }
+         var trackingID = data.contentid + data.objectid;
 
-           if (typeof ga != 'undefined') {
-               if(isMXP){
+         if(typeof trackingMetadata[trackingID] != 'undefined'){
+             Mura.deepExtend(trackingVars,trackingMetadata[trackingID]);
+             trackingVars.eventData=data;
+             track();
+         } else {
+             Mura.get(mura.apiEndpoint, {
+                 method: 'findTrackingProps',
+                 siteid: Mura.siteid,
+                 contentid: data.contentid,
+                 objectid: data.objectid
+             }).then(function(response) {
+                 Mura.deepExtend(trackingVars,response.data);
+                 trackingVars.eventData=data;
 
-                   ga('mxpGATracker.send', data.type, trackingVars.ga.trackingvars);
-               } else {
-                   ga('send', data.type, trackingVars.ga.trackingvars);
-               }
+                 for(var p in trackingVars.ga.trackingprops){
+                     if(trackingVars.ga.trackingprops.hasOwnProperty(p) && p.substring(0,1)=='d' && typeof trackingVars.ga.trackingprops[p] != 'string'){
+                         trackingVars.ga.trackingprops[p]=new String(trackingVars.ga[p]);
+                     }
+                 }
 
-               gaFound = true;
-               trackingComplete = true;
-           }
+                 trackingMetadata[trackingID]={};
+                 Mura.deepExtend(trackingMetadata[trackingID],response.data);
+                 track();
+             });
+         }
+     } else {
+         Mura.deepExtend(trackingVars,{ga:{}});
+         track();
+     }
 
-           attempt++;
+     return new Promise(function(resolve, reject) {
 
-           if (!gaFound && attempt <250) {
-               setTimeout(track, 1);
-           } else {
-               trackingComplete = true;
-           }
+         resolve = resolve || function() {};
 
-       }
+         function checkComplete() {
+             if (trackingComplete) {
+                 resolve();
+             } else {
+                 setTimeout(checkComplete, 1);
+             }
+         }
 
-       if(isMXP){
+         checkComplete();
 
-           var trackingID = data.contentid + data.objectid;
+     });
 
-           if(typeof trackingMetadata[trackingID] != 'undefined'){
-               Mura.deepExtend(trackingVars,trackingMetadata[trackingID]);
-               trackingVars.eventData=data;
-               track();
-           } else {
-               Mura.get(mura.apiEndpoint, {
-                   method: 'findTrackingProps',
-                   siteid: Mura.siteid,
-                   contentid: data.contentid,
-                   objectid: data.objectid
-               }).then(function(response) {
-                   Mura.deepExtend(trackingVars,response.data);
-                   trackingVars.eventData=data;
-
-                   for(var p in trackingVars.ga.trackingprops){
-                       if(trackingVars.ga.trackingprops.hasOwnProperty(p) && p.substring(0,1)=='d' && typeof trackingVars.ga.trackingprops[p] != 'string'){
-                           trackingVars.ga.trackingprops[p]=new String(trackingVars.ga[p]);
-                       }
-                   }
-
-                   trackingMetadata[trackingID]={};
-                   Mura.deepExtend(trackingMetadata[trackingID],response.data);
-                   track();
-               });
-           }
-       } else {
-           Mura.deepExtend(trackingVars,{ga:{}});
-           track();
-       }
-
-       return new Promise(function(resolve, reject) {
-
-           resolve = resolve || function() {};
-
-           function checkComplete() {
-               if (trackingComplete) {
-                   resolve();
-               } else {
-                   setTimeout(checkComplete, 1);
-               }
-           }
-
-           checkComplete();
-
-       });
    }
 
   /**
@@ -2069,7 +2074,9 @@ var Mura=(function(){
   function addEventHandler(eventName, fn) {
       if (typeof eventName == 'object') {
           for (var h in eventName) {
-              on(document, h, eventName[h]);
+              if(eventName.hasOwnProperty(h)){
+                on(document, h, eventName[h]);
+              }
           }
       } else {
           on(document, eventName, fn);
@@ -7484,6 +7491,32 @@ Mura.DOMSelection = Mura.Core.extend(
       },
 
       /**
+       * addEventHandler - Add event event handling object
+       *
+       * @param  {string} selector  Selector (optional: for use with delegated events)
+       * @param  {object} handler        description
+       * @return {Mura.DOMSelection} Self
+       */
+      addEventHandler:function(selector, handler){
+        if (typeof handler == 'undefined') {
+            handler = selector;
+            selector = '';
+        }
+
+        for (var h in handler) {
+            if(eventName.hasOwnProperty(h)){
+              if(typeof selector == 'string' && selector){
+                on(h, selector, handler[h]);
+              } else {
+                on(h,handler[h]);
+              }
+            }
+        }
+
+        return this;
+      },
+
+      /**
        * on - Add event handling method
        *
        * @param  {string} eventName Event name
@@ -10263,6 +10296,7 @@ render:function(){
 	else {
 		this.getList();
 	}
+
 	return this;
 },
 
@@ -10905,6 +10939,7 @@ initForm: function() {
 	self.currentpage = 0;
 	self.attachments={};
 	self.formInit=true;
+	Mura.trackEvent({category:'Form',action:'Impression',label:self.context.name,objectid:self.context.objectid,nonInteraction:true});
 },
 
 onSubmit: function(){
@@ -10933,7 +10968,7 @@ submitForm: function() {
 		.trigger('formSubmit');
 
 
-	Mura.trackEvent({category:'Form',action:'Submit',label:self.context.name,objectid:self.context.objectid})
+	Mura.trackEvent({category:'Form',action:'Conversion',label:self.context.name,objectid:self.context.objectid});
 
 	if(self.ormform) {
 		//console.log('a!');
