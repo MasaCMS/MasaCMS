@@ -589,7 +589,6 @@
 		</div>
 	</template>
 
-
 	<template id="scaffold-field-radio">
 		<div>
 			<div v-if="model.errors && model.errors[property.name]" class="help-block-inline">
@@ -605,14 +604,14 @@
 							type="radio"
 							v-model="model[property.name]"
 							:name="property.name"
-							:value="option"
+							:value="property.optionvaluelist[index]"
 							:checked="option == property.default ? 'checked' : null"
 							>
-							{{property.optionvaluelist[index]}}
+							{{option}}
 					</label>	
 				</div>
 			</div>
-			
 		</div>
 	</template>
+
 </cfoutput>
