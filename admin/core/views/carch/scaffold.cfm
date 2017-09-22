@@ -391,6 +391,7 @@
 
 			<template v-for="property in data.properties">
 				<span v-if="property.fieldtype == 'id'">
+						<scaffold-field-text-readonly :property=property :model=data.model :entity=data.entity>~</scaffold-field-text-readonly>
 				</span>
 				<span v-else-if="property.name == 'siteid' || property.relatesto == 'site'">
 				</span>
@@ -488,6 +489,28 @@
 				<label><i class="mi-cube"></i> {{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
 				<button class="btn btn-sm" @click="showRelatedList(property.relatesto,entity)">Manage</button>
 		  </div>
+		</div>
+	</template>
+
+	<template id="scaffold-field-text-readonly">
+		<div>
+			<div v-if="model.errors && model.errors[property.name]" class="help-block-inline">
+				{{model.errors[property.name]}}
+			</div>
+			<div class="mura-control-group">
+				<label :for="property.name">{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
+				<input
+				  disabled="disabled"
+					type="text"
+					v-model="model[property.name]"
+					:name="property.name"
+					:id="property.name"
+					:value="model[property.name] ? model[property.name] : property.default"
+					:length="property.length"
+					:data-validate="property.validate ? property.validate : null"
+					:data-validate-message="property.validatemessage ? property.validatemessage : null"
+					>
+			</div>
 		</div>
 	</template>
 
