@@ -598,8 +598,8 @@
 				<label :for="property.name">
 					{{property.displayname ? property.displayname : property.label ? property.label : property.name}}
 				</label>
-				<div class="radio-group" v-for="(option,index) in property.optionlist" :value="option">
-					<label class="radio">
+				<div class="radio-group">
+					<label class="radio" v-for="(option,index) in property.optionlist" :value="option">
 						<input
 							type="radio"
 							v-model="model[property.name]"
