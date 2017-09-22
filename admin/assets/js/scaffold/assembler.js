@@ -528,6 +528,7 @@ $( document ).ready(function() {
 						.then( function(response) {
 							Mura("#load-spin").hide();
 							alert("Saved!");
+							Mura("#alert-assembler-saved").show();
 							console.log("big load");
 							MuraAssembler.all( self.setDynamicObjects );
 							Assembler.loadEntity(savemodel.entityname);

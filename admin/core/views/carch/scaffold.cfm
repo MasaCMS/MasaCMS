@@ -247,15 +247,16 @@
 				</ul>
 				<ul class="breadcrumb" v-if="entityname!='entity'">
 						<li><a @click="showAll" onclick="return false;" href="##"><i class="mi-cube"></i>Custom Entities</a></li>					
-						<li><strong><a href="##" onclick="return false;"><i class="mi-cube"></i>{{entityname}}</a></strong></li>					
+						<li v-if="currentparent && currentparent.properties"><a href="##" onclick="return false;"><i class="mi-cube"></i>{{entityname}}</a></li>	
+						<li v-else="currentparent && currentparent.properties"><strong><a href="##" onclick="return false;"><i class="mi-cube"></i>{{entityname}}</a></strong></li>					
+						<li v-if="currentparent && currentparent.properties"><strong><a href="" onclick="return false;"><i class="mi-cube"></i> For {{currentparent.properties.entityname}}:
+							<span v-for="item in currentparent.properties._displaylist">{{currentparent.properties[item.name]}}</span></a></strong>
+						</li>
 				</ul>
 			</span>
 
-			<!--- todo where is this used --->
-			<span v-if="currentparent && currentparent.properties"> for {{currentparent.properties.entityname}}:
-				<input type="HIDDEN" class="filter" :name="'filter-' + currentparent.properties.properties.primarykey" :value="currentparent.properties.id">
-				<span v-for="item in currentparent.properties._displaylist">{{currentparent.properties[item.name]}}</span>
-			</span>
+
+			<input v-if="currentparent && currentparent.properties" type="HIDDEN" class="filter" :name="'filter-' + currentparent.properties.properties.primarykey" :value="currentparent.properties.id">
 
 <!---
 			<h2>
@@ -506,6 +507,7 @@
 	<template id="scaffold-field-text">
 		<div>
 			<div v-if="model.errors && model.errors[property.name]">{{model.errors[property.name]}}</div>
+			<div class="mura-control-group">
 			<label :for="property.name">{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
 			<input
 				type="text"
@@ -517,6 +519,7 @@
 				:data-validate="property.validate ? property.validate : null"
 				:data-validate-message="property.validatemessage ? property.validatemessage : null"
 				>
+			</div>
 		</div>
 	</template>
 
@@ -550,8 +553,8 @@
 
 	<template id="scaffold-field-checkbox">
 		<div>
-			<div v-if="model.errors && model.errors[property.name]">{{model.errors[property.name]}}</div>
-			<label :for="property.name">{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
+			<div class="mura-checkbox-group" v-if="model.errors && model.errors[property.name]">{{model.errors[property.name]}}</div>
+			<label :for="property.name">
 			<input type="checkbox" v-model="model[property.name]"
 			 v-bind:true-value="1"
   		 v-bind:false-value="0"
@@ -559,6 +562,7 @@
 			:data-validate="property.validate ? property.validate : null"
 			:data-validate-message="property.validatemessage ? property.validatemessage : null"
 			>
+		{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
 		</div>
 	</template>
 

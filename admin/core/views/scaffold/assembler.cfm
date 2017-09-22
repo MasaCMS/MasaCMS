@@ -168,6 +168,11 @@
 			var Master = "";
 		</script>
 
+<div id="alert-assembler-saved" class="alert alert-success hidden">
+	<span>Entity definition saved</span>
+	<button type="button" class="close" data-dismiss="alert"><i class="mi-close"></i></button>
+</div>
+
 <div class="mura-header">
   <h1>Dynamic Custom Entity</h1>
 
