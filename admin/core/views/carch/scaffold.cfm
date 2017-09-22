@@ -436,7 +436,9 @@
 		<div v-if="mparent && mparent.properties">
 			<div v-if="property.relatesto">
 				<div class="mura-control-group">
-					<label>{{property.displayname ? property.displayname : property.label ? property.label : mparent.properties.name}}</label>
+					<label>
+						{{property.displayname ? property.displayname : property.label ? property.label : mparent.properties.name}}
+					</label>
 					<select
 					v-model="property.fkcolumn=='primaryKey' ? model[mparent.properties.primarykey] : model[property.fkcolumn]"
 					:name="mparent.properties.primarykey">
@@ -479,14 +481,12 @@
 		</div>
 	</template>
 
-<!--- TODO : relationship management buttons :  --->
-
 	<template id="scaffold-related-many">
 		<div v-if="this.entity.properties.isnew == 0" class="mura-control-group">
 			<label>Relationships</label>
-		  <div class="mura-control">
-				<label>{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
-				<button class="btn btn-sm" @click="showRelatedList(property.relatesto,entity)"><i class="mi-cube"></i> Manage {{property.displayname ? property.displayname : property.label ? property.label : property.name}}(s)</button>
+		  <div class="mura-control-inline">
+				<label><i class="mi-cube"></i> {{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
+				<button class="btn btn-sm" @click="showRelatedList(property.relatesto,entity)">Manage</button>
 		  </div>
 		</div>
 	</template>
