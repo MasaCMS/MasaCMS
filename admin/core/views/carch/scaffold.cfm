@@ -486,14 +486,17 @@
 					<button @click="showForm(object.properties.entityname,object.properties.id,entity.properties.id)">EDIT: {{object.properties[property.renderfield] ? object.properties[property.renderfield] : object.properties.entityname}}</button>
 				</li>
 			</ul>
-			<button class='btn' @click="showForm(property.name,'new',entity.properties.id)">ADD NEW {{property.displayname ? property.displayname : property.name.toUpperCase()}}</button>
+			<button class="btn" @click="showForm(property.name,'new',entity.properties.id)">ADD NEW {{property.displayname ? property.displayname : property.name.toUpperCase()}}</button>
 		</div>
 	</template>
 
 	<template id="scaffold-related-many">
-		<div v-if="this.entity.properties.isnew == 0">
-			<label>{{property.displayname ? property.displayname : property.label ? property.label : property.name}}(s)</label>
-			<button class='btn' @click="showRelatedList(property.relatesto,entity)">Manage {{property.displayname ? property.displayname : property.label ? property.label : property.name}}(s)</button>
+		<div v-if="this.entity.properties.isnew == 0" class="mura-control-group">
+			<label>Relationships</label>
+		  <div class="mura-control">
+				<label>{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
+				<button class="btn btn-sm" @click="showRelatedList(property.relatesto,entity)"><i class="mi-cube"></i> Manage {{property.displayname ? property.displayname : property.label ? property.label : property.name}}(s)</button>
+		  </div>
 		</div>
 	</template>
 
