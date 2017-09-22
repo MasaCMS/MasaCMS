@@ -123,9 +123,10 @@
 
 			##assembler-preview,.assembler-preview {
 				float: left;
+				margin-bottom:60px;
 				margin-top:10px;
 				width: 100%;
-				height: 420px;
+				height: 480px;
 				font-size: .92em;
 				overflow: scroll;
 
@@ -201,11 +202,8 @@
 									<input type="text" id='loadentity' name="loadentity" value="">
 									--->
 									<assembler-attributes-form-template :model="model"></assembler-attributes-form-template>
-									<div class="btn-group">
-										<button v-if="model.entityname != '' && model.table != ''" @click='clickSave' class="btn"><i class="mi-save"></i> Save</button>
-										<button v-else class="btn" disabled><i class="mi-save"></i> Save</button>
-									</div>	
 
+									<!--- new relationship/property form --->
 									<div class="block-content">
 										<div class="btn-group pull-right">
 											<button class="btn" @click='clickAddProperty'><i class="mi-plus-circle"></i> New Property</button>
@@ -216,6 +214,21 @@
 											<component :is="currentView" :data="data" :rendertypes="rendertypes" :fieldtypes="fieldtypes" :datatypes="datatypes" :model="model" transition="fade" transition-mode="out-in"></component>
 										</div>
 									</div>
+
+
+									<!--- save button --->
+<!--- 									<div class="btn-group">
+										<button v-if="model.entityname != '' && model.table != ''" @click='clickSave' class="btn"><i class="mi-save"></i> Save</button>
+										<button v-else class="btn" disabled><i class="mi-save"></i> Save</button>
+									</div>	
+ --->
+<div class="mura-actions">
+ <div class="form-actions">
+		<button v-if="model.entityname != '' && model.table != ''" @click='clickSave' class="btn mura-primary"><i class="mi-check-circle"></i> Save</button>
+		<button v-else class="btn" disabled><i class="mi-ban"></i> Save</button>
+ </div>
+</div>
+
 
 							</div>
 						</div>
@@ -398,7 +411,7 @@
 
 			<div>
 				<div class="btn-group">
-					<button class="btn" @click="clickUpdateRelated"><i class="mi-save"></i> <span v-if="this.$parent.isupdate">Update</span><span v-else>Save</span></button>
+					<button class="btn" @click="clickUpdateRelated"><i class="mi-save"></i> <span v-if="this.$parent.isupdate">Update Relationship</span><span v-else>Add Relationship</span></button>
 					<button class="btn" v-if="this.$parent.isupdate" @click="clickDeleteRelated"><i class="mi-trash"></i> Delete</button>
 					<button class="btn" @click='clickCancel'><i class="mi-times-circle"></i> Cancel</button>
 					</div>
@@ -523,7 +536,7 @@
 
 			<div>
 				<div class="btn-group">
-					<button class="btn" @click="clickUpdateProperty"><i class="mi-save"></i> <span v-if="this.$parent.isupdate">Update</span><span v-else>Save</span></button>
+					<button class="btn" @click="clickUpdateProperty"><i class="mi-save"></i> <span v-if="this.$parent.isupdate">Update Property</span><span v-else>Add Property</span></button>
 					<button class="btn" v-if="this.$parent.isupdate && data.fieldtype != 'id'" @click="clickDeleteProperty"><i class="mi-trash"></i> Delete</button>
 					<button class="btn" @click='clickCancel'><i class="mi-times-circle"></i> Cancel</button>
 				</div>
