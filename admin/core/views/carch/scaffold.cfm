@@ -258,12 +258,6 @@
 
 			<input v-if="currentparent && currentparent.properties" type="HIDDEN" class="filter" :name="'filter-' + currentparent.properties.properties.primarykey" :value="currentparent.properties.id">
 
-<!---
-			<h2>
-				<span v-if="entityname"><span v-if="entityname!='entity'">{{entityname.toUpperCase()}} LIST</span></span>
-			</h2>
---->
-
 			<div v-if="data.list">
 				<table width="100%" class="table table-striped table-condensed table-bordered mura-table-grid" id="scaffold-table">
 
