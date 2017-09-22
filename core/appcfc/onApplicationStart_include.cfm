@@ -245,7 +245,7 @@ if ( application.setupComplete ) {
 			}
 
 			if ( !local.hasTheme ) {
-				WriteDump('no theme');abort;
+				//WriteDump('no theme');abort;
 				try {
 					local.themeZip="install_theme_#createUUID()#.zip";
 
