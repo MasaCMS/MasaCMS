@@ -247,15 +247,16 @@
 				</ul>
 				<ul class="breadcrumb" v-if="entityname!='entity'">
 						<li><a @click="showAll" onclick="return false;" href="##"><i class="mi-cube"></i>Custom Entities</a></li>					
-						<li v-if="currentparent && currentparent.properties"><a href="##" onclick="return false;"><i class="mi-cube"></i>{{entityname}}</a></li>	
-						<li v-else="currentparent && currentparent.properties"><strong><a href="##" onclick="return false;"><i class="mi-cube"></i>{{entityname}}</a></strong></li>					
-						<li v-if="currentparent && currentparent.properties"><strong><a href="" onclick="return false;"><i class="mi-cube"></i> For {{currentparent.properties.entityname}}:
-							<span v-for="item in currentparent.properties._displaylist">{{currentparent.properties[item.name]}}</span></a></strong>
-						</li>
+						<li><strong><a href="##" onclick="return false;"><i class="mi-cube"></i>{{entityname}}</a></strong></li>					
 				</ul>
 			</span>
 
+			<!--- todo where is this used --->
+			<span v-if="currentparent && currentparent.properties"> for {{currentparent.properties.entityname}}:
+				<span v-for="item in currentparent.properties._displaylist">{{currentparent.properties[item.name]}}</span>
+			</span>
 
+			
 			<input v-if="currentparent && currentparent.properties" type="HIDDEN" class="filter" :name="'filter-' + currentparent.properties.properties.primarykey" :value="currentparent.properties.id">
 
 <!---
