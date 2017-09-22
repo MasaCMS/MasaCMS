@@ -417,7 +417,7 @@
 
 
 			<div class="btn-group">
-				<a href="##" onclick="return false;" @click="clickSave" class="btn"><i class="mi-save"></i> Save</a>
+				<a href="##" onclick="return false;" @click="clickSave" class="btn"><i class="mi-check-circle"></i> Save</a>
 				<a href="##" onclick="return false;" v-if="data.model && !data.model.isnew" @click="clickDelete" class="btn"><i class="mi-trash"></i> Delete</a>
 			</div>
 
@@ -425,61 +425,61 @@
 	</template>
 
 	<template id="scaffold-related-one">
-		<div>
-			<ul v-if="property.fieldtype && this.$parent.data.parent">
-				<input type="hidden" :name="property.fkcolumn" v-model="model[property.fkcolumn]" id="primary-id"
+		<div v-if="property.fieldtype && this.$parent.data.parent">
+			<input type="hidden" :name="property.fkcolumn" v-model="model[property.fkcolumn]" id="primary-id"
 				:data-default="doDefault(this.$parent.data.parent[property.fkcolumn] ? this.$parent.data.parent[property.fkcolumn] : null,property.fkcolumn ? property.fkcolumn : null,model)"
 				:value="this.$parent.data.parent[property.fkcolumn] ? this.$parent.data.parent[property.fkcolumn] : null" :length="property.length">
-			</ul>
 		</div>
 	</template>
 
 	<template id="scaffold-related-many-one">
 		<div v-if="mparent && mparent.properties">
 			<div v-if="property.relatesto">
-				<label>{{property.displayname ? property.displayname : property.label ? property.label : mparent.properties.name}}</label>
-				<select
-				v-model="property.fkcolumn=='primaryKey' ? model[mparent.properties.primarykey] : model[property.fkcolumn]"
-				:name="mparent.properties.primarykey">
-				<option value="">-- None --</option>
-				<option v-for="(option,index) in this.mparent.list" :value="option.id"
-					 :selected="option[property.loadkey] == model[property.fkcolumn] ? 'selected' : null">
-					<span v-if="property.renderfield">{{option[property.renderfield]}}</span>
-					<span v-elseif="option.name">{{option.name}}</span>
-					<span v-elseif="option.menutitle">{{option.menutitle}}</span>
-					<span v-elseif="option.title">{{option.title}}</span>
-					<span v-elseif="option.grouname">{{option.groupname}}</span>
-					<span v-elseif="option.company">{{option.company}}</span>
-					<span v-elseif="option.organization">{{option.organization}}</span>
-					<span v-else>
-							<span v-if="option.fname">{{option.fname}}</span>
-							<span v-if="option.firstname">{{option.firstname}}</span>
-							<span v-if="option.lname">{{option.lname}}</span>
-							<span v-if="option.lastname">{{option.lastname}}</span>
-					</span>
-					<!--
-					<span v-else v-for="(option,index) in mparent.properties.properties">
-
-					</span>
-					-->
-				</option>
-			</select>
+				<div class="mura-control-group">
+					<label>{{property.displayname ? property.displayname : property.label ? property.label : mparent.properties.name}}</label>
+					<select
+					v-model="property.fkcolumn=='primaryKey' ? model[mparent.properties.primarykey] : model[property.fkcolumn]"
+					:name="mparent.properties.primarykey">
+						<option value="">-- none --</option>
+						<option v-for="(option,index) in this.mparent.list" :value="option.id"
+							 :selected="option[property.loadkey] == model[property.fkcolumn] ? 'selected' : null">
+							<span v-if="property.renderfield">{{option[property.renderfield]}}</span>
+							<span v-elseif="option.name">{{option.name}}</span>
+							<span v-elseif="option.menutitle">{{option.menutitle}}</span>
+							<span v-elseif="option.title">{{option.title}}</span>
+							<span v-elseif="option.grouname">{{option.groupname}}</span>
+							<span v-elseif="option.company">{{option.company}}</span>
+							<span v-elseif="option.organization">{{option.organization}}</span>
+							<span v-else>
+									<span v-if="option.fname">{{option.fname}}</span>
+									<span v-if="option.firstname">{{option.firstname}}</span>
+									<span v-if="option.lname">{{option.lname}}</span>
+									<span v-if="option.lastname">{{option.lastname}}</span>
+							</span>
+						</option>
+					</select>
+				</div>
 			</div>
 		</div>
 	</template>
 
+<!--- todo: is this used? --->
 	<template id="x-scaffold-related-many">
 		<div v-if="this.entity.properties.isnew == 0">
-			<label>{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
-			<ul v-if="mrelated && mrelated.collection">
-				<li v-for="object in mrelated.collection.items">
-					<span v-if="property.renderfield">{{object.properties[property.renderfield]}}</span><span v-else>{{object.properties.id}}</span>
-					<button @click="showForm(object.properties.entityname,object.properties.id,entity.properties.id)">EDIT: {{object.properties[property.renderfield] ? object.properties[property.renderfield] : object.properties.entityname}}</button>
-				</li>
-			</ul>
-			<button class="btn" @click="showForm(property.name,'new',entity.properties.id)">ADD NEW {{property.displayname ? property.displayname : property.name.toUpperCase()}}</button>
+			<div class="mura-control-group">
+				<label>{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
+				<ul v-if="mrelated && mrelated.collection">
+					<li v-for="object in mrelated.collection.items">
+						<span v-if="property.renderfield">{{object.properties[property.renderfield]}}</span><span v-else>{{object.properties.id}}</span>
+						<button @click="showForm(object.properties.entityname,object.properties.id,entity.properties.id)">EDIT: {{object.properties[property.renderfield] ? object.properties[property.renderfield] : object.properties.entityname}}</button>
+					</li>
+				</ul>
+				<button class="btn" @click="showForm(property.name,'new',entity.properties.id)">ADD NEW {{property.displayname ? property.displayname : property.name.toUpperCase()}}</button>
+			</div>
 		</div>
 	</template>
+
+<!--- TODO : relationship management buttons :  --->
 
 	<template id="scaffold-related-many">
 		<div v-if="this.entity.properties.isnew == 0" class="mura-control-group">
@@ -493,96 +493,126 @@
 
 	<template id="scaffold-field-text">
 		<div>
-			<div v-if="model.errors && model.errors[property.name]">{{model.errors[property.name]}}</div>
+			<div v-if="model.errors && model.errors[property.name]" class="help-block-inline">
+				{{model.errors[property.name]}}
+			</div>
 			<div class="mura-control-group">
-			<label :for="property.name">{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
-			<input
-				type="text"
-				v-model="model[property.name]"
-				:name="property.name"
-				:id="property.name"
-				:value="model[property.name] ? model[property.name] : property.default"
-				:length="property.length"
-				:data-validate="property.validate ? property.validate : null"
-				:data-validate-message="property.validatemessage ? property.validatemessage : null"
-				>
+				<label :for="property.name">{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
+				<input
+					type="text"
+					v-model="model[property.name]"
+					:name="property.name"
+					:id="property.name"
+					:value="model[property.name] ? model[property.name] : property.default"
+					:length="property.length"
+					:data-validate="property.validate ? property.validate : null"
+					:data-validate-message="property.validatemessage ? property.validatemessage : null"
+					>
 			</div>
 		</div>
 	</template>
 
 	<template id="scaffold-field-htmleditor">
 		<div>
-			<div v-if="model.errors && model.errors[property.name]">{{model.errors[property.name]}}</div>
-			<label :for="property.name">{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
-			<textarea
-				v-model="model[property.name]"
-				class="htmlEditor"
-				:id="property.name"
-				:name="property.name"
-				:data-validate="property.validate ? property.validate : null"
-				:data-validate-message="property.validatemessage ? property.validatemessage : null"
-				>{{model[property.name] ? model[property.name] : property.default}}</textarea>
+			<div v-if="model.errors && model.errors[property.name]" class="help-block-inline">
+				{{model.errors[property.name]}}
+			</div>
+			<div class="mura-control-group">
+				<label :for="property.name">{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
+				<textarea
+					v-model="model[property.name]"
+					class="htmlEditor"
+					:id="property.name"
+					:name="property.name"
+					:data-validate="property.validate ? property.validate : null"
+					:data-validate-message="property.validatemessage ? property.validatemessage : null"
+					>{{model[property.name] ? model[property.name] : property.default}}</textarea>
+			</div>
 		</div>
 	</template>
 
 	<template id="scaffold-field-textarea">
 		<div>
-			<div v-if="model.errors && model.errors[property.name]">{{model.errors[property.name]}}</div>
-			<label :for="property.name">{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
-			<textarea
-				v-model="model[property.name]"
-				:name="property.name"
-				:data-validate="property.validate ? property.validate : null"
-				:data-validate-message="property.validatemessage ? property.validatemessage : null"
-				>{{model[property.name] ? model[property.name] : property.default}}</textarea>
+			<div v-if="model.errors && model.errors[property.name]" class="help-block-inline">
+				{{model.errors[property.name]}}
+			</div>
+			<div class="mura-control-group">
+				<label :for="property.name">{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
+				<textarea
+					v-model="model[property.name]"
+					:name="property.name"
+					:data-validate="property.validate ? property.validate : null"
+					:data-validate-message="property.validatemessage ? property.validatemessage : null"
+					>{{model[property.name] ? model[property.name] : property.default}}</textarea>
+			</div>
 		</div>
 	</template>
 
 	<template id="scaffold-field-checkbox">
 		<div>
-			<div class="mura-checkbox-group" v-if="model.errors && model.errors[property.name]">{{model.errors[property.name]}}</div>
-			<label :for="property.name">
-			<input type="checkbox" v-model="model[property.name]"
-			 v-bind:true-value="1"
-  		 v-bind:false-value="0"
-			:name="property.name" :value="1" :checked="typeof model[property.name] != 'undefined'  ? model[property.name] == 1 ? 1 : 0 : property.default"
-			:data-validate="property.validate ? property.validate : null"
-			:data-validate-message="property.validatemessage ? property.validatemessage : null"
-			>
-		{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
+			<div v-if="model.errors && model.errors[property.name]" class="help-block-inline">
+				{{model.errors[property.name]}}
+			</div>
+			<div class="mura-control-group">
+				<div class="checkbox-group-inline">
+					<label :for="property.name" class="checkbox">
+						<input type="checkbox" v-model="model[property.name]"
+						 v-bind:true-value="1"
+			  		 v-bind:false-value="0"
+						:name="property.name" :value="1" :checked="typeof model[property.name] != 'undefined'  ? model[property.name] == 1 ? 1 : 0 : property.default"
+						:data-validate="property.validate ? property.validate : null"
+						:data-validate-message="property.validatemessage ? property.validatemessage : null"
+						>
+						{{property.displayname ? property.displayname : property.label ? property.label : property.name}}
+					</label>
+				</div>
+			</div>
 		</div>
 	</template>
 
 	<template id="scaffold-field-dropdown">
 		<div>
-			<div v-if="model.errors && model.errors[property.name]">{{model.errors[property.name]}}</div>
-			<label :for="property.name">{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
-			<select
-				v-model="model[property.name]"
-				:name="property.name"
-				:data-validate="property.validate ? property.validate : null"
-				:data-validate-message="property.validatemessage ? property.validatemessage : null"
-				>
-				<option v-for="(option,index) in property.optionlist" :value="option" :selected="option == property.default ? 'selected' : null">{{property.optionvaluelist[index]}}</option>
-			</select>
+			<div v-if="model.errors && model.errors[property.name]" class="help-block-inline">
+				{{model.errors[property.name]}}
+			</div>
+			<div class="mura-control-group">
+				<label :for="property.name">{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
+				<select
+					v-model="model[property.name]"
+					:name="property.name"
+					:data-validate="property.validate ? property.validate : null"
+					:data-validate-message="property.validatemessage ? property.validatemessage : null"
+					>
+					<option v-for="(option,index) in property.optionlist" :value="option" :selected="option == property.default ? 'selected' : null">{{property.optionvaluelist[index]}}</option>
+				</select>
+			</div>
 		</div>
 	</template>
 
 
 	<template id="scaffold-field-radio">
 		<div>
-			<div v-if="model.errors && model.errors[property.name]">{{model.errors[property.name]}}</div>
-			<label :for="property.name">{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
-			<div v-for="(option,index) in property.optionlist" :value="option">
-				{{property.optionvaluelist[index]}}
-				<input
-					type="radio"
-					v-model="model[property.name]"
-					:name="property.name"
-					:value="option"
-					:checked="option == property.default ? 'checked' : null"
-					>
+			<div v-if="model.errors && model.errors[property.name]" class="help-block-inline">
+				{{model.errors[property.name]}}
 			</div>
+			<div class="mura-control-group">
+				<label :for="property.name">
+					{{property.displayname ? property.displayname : property.label ? property.label : property.name}}
+				</label>
+				<div class="radio-group" v-for="(option,index) in property.optionlist" :value="option">
+					<label class="radio">
+						<input
+							type="radio"
+							v-model="model[property.name]"
+							:name="property.name"
+							:value="option"
+							:checked="option == property.default ? 'checked' : null"
+							>
+							{{property.optionvaluelist[index]}}
+					</label>	
+				</div>
+			</div>
+			
 		</div>
 	</template>
 </cfoutput>
