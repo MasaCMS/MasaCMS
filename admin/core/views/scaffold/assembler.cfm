@@ -73,7 +73,9 @@
 			.formtemplate + .formtemplate {
 				margin-top: 20px;
 			}
-			##property-template {
+			##property-template, 
+			##related-form-template-property,
+			##related-form-template {
 				margin: 10px 0;
 			}
 			##assembler-properties li {
@@ -121,9 +123,10 @@
 
 			##assembler-preview,.assembler-preview {
 				float: left;
+				margin-bottom:60px;
 				margin-top:10px;
 				width: 100%;
-				height: 420px;
+				height: 480px;
 				font-size: .92em;
 				overflow: scroll;
 
@@ -165,6 +168,9 @@
 			var Master = "";
 		</script>
 
+<div id="alert-assembler-saved">
+</div>
+
 <div class="mura-header">
   <h1>Dynamic Custom Entity</h1>
 
@@ -199,16 +205,11 @@
 									<input type="text" id='loadentity' name="loadentity" value="">
 									--->
 									<assembler-attributes-form-template :model="model"></assembler-attributes-form-template>
-									<div class="btn-group">
-										<button v-if="model.entityname != '' && model.table != ''" @click='clickSave' class="btn"><i class="mi-save"></i> Save</button>
-										<button v-else class="btn" disabled><i class="mi-save"></i> Save</button>
-									</div>	
 
+									<!--- new relationship/property form --->
 									<div class="block-content">
-										<div class="btn-group">
+										<div class="btn-group pull-right">
 											<button class="btn" @click='clickAddProperty'><i class="mi-plus-circle"></i> New Property</button>
-										</div>
-										<div class="btn-group">
 											<button class="btn" @click='clickAddRelated'><i class="mi-plus-circle"></i> New Relationship</button>
 										</div>
 										<assembler-property-template :model="model"	></assembler-property-template>
@@ -216,6 +217,21 @@
 											<component :is="currentView" :data="data" :rendertypes="rendertypes" :fieldtypes="fieldtypes" :datatypes="datatypes" :model="model" transition="fade" transition-mode="out-in"></component>
 										</div>
 									</div>
+
+
+									<!--- save button --->
+<!--- 									<div class="btn-group">
+										<button v-if="model.entityname != '' && model.table != ''" @click='clickSave' class="btn"><i class="mi-save"></i> Save</button>
+										<button v-else class="btn" disabled><i class="mi-save"></i> Save</button>
+									</div>	
+ --->
+<div class="mura-actions">
+ <div class="form-actions">
+		<button v-if="model.entityname != '' && model.table != ''" @click='clickSave' class="btn mura-primary"><i class="mi-check-circle"></i> Save</button>
+		<button v-else class="btn" disabled><i class="mi-ban"></i> Save</button>
+ </div>
+</div>
+
 
 							</div>
 						</div>
@@ -229,7 +245,7 @@
 
 	<template id="assembler-property-template">
 		<div id="property-template">
-			<h3>Properties</h3>
+			<h3>Entity Properties</h3>
 			<ul id="assembler-properties">
 				<li v-for="(item,index) in model.properties" v-bind:id="'assembler-property-index-' + index" :data-index="index" :data-name="item.name" :key="item.pos">
 					<span class="assembler-item-box">
@@ -254,10 +270,12 @@
 
 	<template id="assembler-attributes-form-template">
 		<div class="formtemplate" id="attributes-form-template">
+			<h3>Entity Definition</h3>
 
 			<div class="help-block">
 			   IMPORTANT: In many instances you will need to reload Mura after updating dynamically created entities.
 			</div>
+
 
 			<div class="half">
 				<div class="mura-control-group">
@@ -356,7 +374,7 @@
 
 
 			<div class="mura-control-group">
-					<label>Foriegn Key Column</label>
+					<label>Foreign Key Column</label>
 					<select
 						v-model="data.fkcolumn"
 						name="fkcolumn"
@@ -395,15 +413,17 @@
 
 
 			<div>
-				<button @click="clickUpdateRelated"><span v-if="this.$parent.isupdate">Update</span><span v-else>Add</span></button>
-				<button v-if="this.$parent.isupdate" @click="clickDeleteRelated">Delete</button>
-				<button @click='clickCancel'>Cancel</button>
+				<div class="btn-group">
+					<button class="btn" @click="clickUpdateRelated"><i class="mi-save"></i> <span v-if="this.$parent.isupdate">Update Relationship</span><span v-else>Add Relationship</span></button>
+					<button class="btn" v-if="this.$parent.isupdate" @click="clickDeleteRelated"><i class="mi-trash"></i> Delete</button>
+					<button class="btn" @click='clickCancel'><i class="mi-times-circle"></i> Cancel</button>
+					</div>
 			</div>
 		</div>
 	</template>
 
 	<template id="assembler-property-form-template">
-		<div class="formtemplate">
+		<div class="formtemplate" id="related-form-template-property">
 			<div class="mura-control-group">
 				<label>Property Name</label>
 				<input type="text" v-model="data.name"
@@ -518,9 +538,11 @@
 
 
 			<div>
-				<button @click="clickUpdateProperty"><span v-if="this.$parent.isupdate">Update</span><span v-else>Add</span></button>
-				<button v-if="this.$parent.isupdate && data.fieldtype != 'id'" @click="clickDeleteProperty">Delete</button>
-				<button @click='clickCancel'>Cancel</button>
+				<div class="btn-group">
+					<button class="btn" @click="clickUpdateProperty"><i class="mi-save"></i> <span v-if="this.$parent.isupdate">Update Property</span><span v-else>Add Property</span></button>
+					<button class="btn" v-if="this.$parent.isupdate && data.fieldtype != 'id'" @click="clickDeleteProperty"><i class="mi-trash"></i> Delete</button>
+					<button class="btn" @click='clickCancel'><i class="mi-times-circle"></i> Cancel</button>
+				</div>
 			</div>
 		</div>
 	</template>

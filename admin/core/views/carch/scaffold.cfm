@@ -233,9 +233,9 @@
 		<div>
 
 			<div class="btn-group pull-right">
-					<a v-if="entityname != 'entity' && data.issuperuser && data && data.parentproperties && data.parentproperties.dynamic" class="btn" @click="goToAssembler(entityname)"><i class="mi-edit"></i> Edit Entity Definition</a>
+				<a v-if="currentparent && currentparent.properties" @click="showForm(currentparent.properties.entityname,currentparent.properties.id)" class="btn"><i class="mi-arrow-circle-left"></i> Back</a>
+				<a v-if="entityname != 'entity' && data.issuperuser && data && data.parentproperties && data.parentproperties.dynamic" class="btn" @click="goToAssembler(entityname)"><i class="mi-edit"></i> Edit Entity Definition</a>
 				<a class="btn" @click="openEndpoint()"><i class="mi-globe"> API Endpoint</i></a>
-				<a v-if="currentparent && currentparent.properties" @click="showForm(currentparent.properties.entityname,currentparent.properties.id)" class="btn">Back</a>
 				<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
 					<a class="btn" href="./?muraAction=cPerm.module&contentid=00000000000000000000000000000000016&siteid=#esapiEncode('url',rc.siteid)#&moduleid=00000000000000000000000000000000016"><i class="mi-group"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.permissions')#</a>
 				</cfif>
@@ -247,21 +247,15 @@
 				</ul>
 				<ul class="breadcrumb" v-if="entityname!='entity'">
 						<li><a @click="showAll" onclick="return false;" href="##"><i class="mi-cube"></i>Custom Entities</a></li>					
-						<li><strong><a href="##" onclick="return false;"><i class="mi-cube"></i>{{entityname}}</a></strong></li>					
+						<li>
+							<strong><a href="##" onclick="return false;"><i class="mi-cube"></i>{{entityname}}
+								<span v-if="currentparent && currentparent.properties">(for {{currentparent.properties.entityname}}: <span v-for="item in currentparent.properties._displaylist">{{currentparent.properties[item.name]}}) </span>
+						</span>
+						</a></strong>
+						</li>					
 				</ul>
 			</span>
 
-			<!--- todo where is this used --->
-			<span v-if="currentparent && currentparent.properties"> for {{currentparent.properties.entityname}}:
-				<input type="HIDDEN" class="filter" :name="'filter-' + currentparent.properties.properties.primarykey" :value="currentparent.properties.id">
-				<span v-for="item in currentparent.properties._displaylist">{{currentparent.properties[item.name]}}</span>
-			</span>
-
-<!---
-			<h2>
-				<span v-if="entityname"><span v-if="entityname!='entity'">{{entityname.toUpperCase()}} LIST</span></span>
-			</h2>
---->
 
 			<div v-if="data.list">
 				<table width="100%" class="table table-striped table-condensed table-bordered mura-table-grid" id="scaffold-table">
@@ -279,6 +273,7 @@
 						<tr id="scaffold-filterby">
 							<th class="actions"></th>
 							<th class="var-width" v-for="item in data.listview">
+									<input v-if="currentparent && currentparent.properties" type="HIDDEN" class="filter" :name="'filter-' + currentparent.properties.properties.primarykey" :value="currentparent.properties.id">
 									<input v-if="item.filter==true || item.filter == 'true'" class="filter" :name="'filter-' + item.name" @keyup="applyKeyFilter">
 							</th>
 							<th>
@@ -321,15 +316,6 @@
 									</td>
 									<td></td>
 
-<!--- 
-									<td v-if="entityname != 'entity'">
-										<button class="pull-right" @click="showForm(object.entityname,object.id)"><i class="mi-edit"></i></button>
-									</td>
-									<td v-if="entityname == 'entity'">
-										<button class="pull-right" @click="showList(object.entityname)"><i class="mi-edit"></i></button>
-									</td>
- --->
-								</li>
 							</tr>
 
 					</tbody>
@@ -341,7 +327,6 @@
 					<span v-if="currentparent && currentparent.properties">
 						<div class="btn-group">
 							<a class="btn" href="##" onclick="return false;" @click="showForm(entityname)"><i class="mi-plus-circle"></i> Add Child</a>
-							<a class="btn" href="##" onclick="return false;" @click="showForm(currentparent.properties.entityname,currentparent.properties.id)"><i class="mi-arrow-circle-left"></i> Back</a>
 						</div>
 					</span>
 					<span v-else>
@@ -406,6 +391,7 @@
 
 			<template v-for="property in data.properties">
 				<span v-if="property.fieldtype == 'id'">
+						<scaffold-field-text-readonly :property=property :model=data.model :entity=data.entity>~</scaffold-field-text-readonly>
 				</span>
 				<span v-else-if="property.name == 'siteid' || property.relatesto == 'site'">
 				</span>
@@ -432,7 +418,7 @@
 
 
 			<div class="btn-group">
-				<a href="##" onclick="return false;" @click="clickSave" class="btn"><i class="mi-save"></i> Save</a>
+				<a href="##" onclick="return false;" @click="clickSave" class="btn"><i class="mi-check-circle"></i> Save</a>
 				<a href="##" onclick="return false;" v-if="data.model && !data.model.isnew" @click="clickDelete" class="btn"><i class="mi-trash"></i> Delete</a>
 			</div>
 
@@ -440,158 +426,215 @@
 	</template>
 
 	<template id="scaffold-related-one">
-		<div>
-			<ul v-if="property.fieldtype && this.$parent.data.parent">
-				<input type="hidden" :name="property.fkcolumn" v-model="model[property.fkcolumn]" id="primary-id"
+		<div v-if="property.fieldtype && this.$parent.data.parent">
+			<input type="hidden" :name="property.fkcolumn" v-model="model[property.fkcolumn]" id="primary-id"
 				:data-default="doDefault(this.$parent.data.parent[property.fkcolumn] ? this.$parent.data.parent[property.fkcolumn] : null,property.fkcolumn ? property.fkcolumn : null,model)"
 				:value="this.$parent.data.parent[property.fkcolumn] ? this.$parent.data.parent[property.fkcolumn] : null" :length="property.length">
-			</ul>
 		</div>
 	</template>
 
 	<template id="scaffold-related-many-one">
 		<div v-if="mparent && mparent.properties">
 			<div v-if="property.relatesto">
-				<label>{{property.displayname ? property.displayname : property.label ? property.label : mparent.properties.name}}</label>
-				<select
-				v-model="property.fkcolumn=='primaryKey' ? model[mparent.properties.primarykey] : model[property.fkcolumn]"
-				:name="mparent.properties.primarykey">
-				<option value="">-- None --</option>
-				<option v-for="(option,index) in this.mparent.list" :value="option.id"
-					 :selected="option[property.loadkey] == model[property.fkcolumn] ? 'selected' : null">
-					<span v-if="property.renderfield">{{option[property.renderfield]}}</span>
-					<span v-elseif="option.name">{{option.name}}</span>
-					<span v-elseif="option.menutitle">{{option.menutitle}}</span>
-					<span v-elseif="option.title">{{option.title}}</span>
-					<span v-elseif="option.grouname">{{option.groupname}}</span>
-					<span v-elseif="option.company">{{option.company}}</span>
-					<span v-elseif="option.organization">{{option.organization}}</span>
-					<span v-else>
-							<span v-if="option.fname">{{option.fname}}</span>
-							<span v-if="option.firstname">{{option.firstname}}</span>
-							<span v-if="option.lname">{{option.lname}}</span>
-							<span v-if="option.lastname">{{option.lastname}}</span>
-					</span>
-					<!--
-					<span v-else v-for="(option,index) in mparent.properties.properties">
-
-					</span>
-					-->
-				</option>
-			</select>
+				<div class="mura-control-group">
+					<label>
+						{{property.displayname ? property.displayname : property.label ? property.label : mparent.properties.name}}
+					</label>
+					<select
+					v-model="property.fkcolumn=='primaryKey' ? model[mparent.properties.primarykey] : model[property.fkcolumn]"
+					:name="mparent.properties.primarykey">
+						<option value="">-- none --</option>
+						<option v-for="(option,index) in this.mparent.list" :value="option.id"
+							 :selected="option[property.loadkey] == model[property.fkcolumn] ? 'selected' : null">
+							<span v-if="property.renderfield">{{option[property.renderfield]}}</span>
+							<span v-elseif="option.name">{{option.name}}</span>
+							<span v-elseif="option.menutitle">{{option.menutitle}}</span>
+							<span v-elseif="option.title">{{option.title}}</span>
+							<span v-elseif="option.grouname">{{option.groupname}}</span>
+							<span v-elseif="option.company">{{option.company}}</span>
+							<span v-elseif="option.organization">{{option.organization}}</span>
+							<span v-else>
+									<span v-if="option.fname">{{option.fname}}</span>
+									<span v-if="option.firstname">{{option.firstname}}</span>
+									<span v-if="option.lname">{{option.lname}}</span>
+									<span v-if="option.lastname">{{option.lastname}}</span>
+							</span>
+						</option>
+					</select>
+				</div>
 			</div>
 		</div>
 	</template>
 
+<!--- todo: is this used? --->
 	<template id="x-scaffold-related-many">
 		<div v-if="this.entity.properties.isnew == 0">
-			<label>{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
-			<ul v-if="mrelated && mrelated.collection">
-				<li v-for="object in mrelated.collection.items">
-					<span v-if="property.renderfield">{{object.properties[property.renderfield]}}</span><span v-else>{{object.properties.id}}</span>
-					<button @click="showForm(object.properties.entityname,object.properties.id,entity.properties.id)">EDIT: {{object.properties[property.renderfield] ? object.properties[property.renderfield] : object.properties.entityname}}</button>
-				</li>
-			</ul>
-			<button class='btn' @click="showForm(property.name,'new',entity.properties.id)">ADD NEW {{property.displayname ? property.displayname : property.name.toUpperCase()}}</button>
+			<div class="mura-control-group">
+				<label>{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
+				<ul v-if="mrelated && mrelated.collection">
+					<li v-for="object in mrelated.collection.items">
+						<span v-if="property.renderfield">{{object.properties[property.renderfield]}}</span><span v-else>{{object.properties.id}}</span>
+						<button @click="showForm(object.properties.entityname,object.properties.id,entity.properties.id)">EDIT: {{object.properties[property.renderfield] ? object.properties[property.renderfield] : object.properties.entityname}}</button>
+					</li>
+				</ul>
+				<button class="btn" @click="showForm(property.name,'new',entity.properties.id)">ADD NEW {{property.displayname ? property.displayname : property.name.toUpperCase()}}</button>
+			</div>
 		</div>
 	</template>
 
 	<template id="scaffold-related-many">
-		<div v-if="this.entity.properties.isnew == 0">
-			<label>{{property.displayname ? property.displayname : property.label ? property.label : property.name}}(s)</label>
-			<button class='btn' @click="showRelatedList(property.relatesto,entity)">Manage {{property.displayname ? property.displayname : property.label ? property.label : property.name}}(s)</button>
+		<div v-if="this.entity.properties.isnew == 0" class="mura-control-group">
+			<label>Relationships</label>
+		  <div class="mura-control-inline">
+				<label><i class="mi-cube"></i> {{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
+				<button class="btn btn-sm" @click="showRelatedList(property.relatesto,entity)">Manage</button>
+		  </div>
+		</div>
+	</template>
+
+	<template id="scaffold-field-text-readonly">
+		<div>
+			<div v-if="model.errors && model.errors[property.name]" class="help-block-inline">
+				{{model.errors[property.name]}}
+			</div>
+			<div class="mura-control-group">
+				<label :for="property.name">{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
+				<input
+				  disabled="disabled"
+					type="text"
+					v-model="model[property.name]"
+					:name="property.name"
+					:id="property.name"
+					:value="model[property.name] ? model[property.name] : property.default"
+					:length="property.length"
+					:data-validate="property.validate ? property.validate : null"
+					:data-validate-message="property.validatemessage ? property.validatemessage : null"
+					>
+			</div>
 		</div>
 	</template>
 
 	<template id="scaffold-field-text">
 		<div>
-			<div v-if="model.errors && model.errors[property.name]">{{model.errors[property.name]}}</div>
-			<label :for="property.name">{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
-			<input
-				type="text"
-				v-model="model[property.name]"
-				:name="property.name"
-				:id="property.name"
-				:value="model[property.name] ? model[property.name] : property.default"
-				:length="property.length"
-				:data-validate="property.validate ? property.validate : null"
-				:data-validate-message="property.validatemessage ? property.validatemessage : null"
-				>
+			<div v-if="model.errors && model.errors[property.name]" class="help-block-inline">
+				{{model.errors[property.name]}}
+			</div>
+			<div class="mura-control-group">
+				<label :for="property.name">{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
+				<input
+					type="text"
+					v-model="model[property.name]"
+					:name="property.name"
+					:id="property.name"
+					:value="model[property.name] ? model[property.name] : property.default"
+					:length="property.length"
+					:data-validate="property.validate ? property.validate : null"
+					:data-validate-message="property.validatemessage ? property.validatemessage : null"
+					>
+			</div>
 		</div>
 	</template>
 
 	<template id="scaffold-field-htmleditor">
 		<div>
-			<div v-if="model.errors && model.errors[property.name]">{{model.errors[property.name]}}</div>
-			<label :for="property.name">{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
-			<textarea
-				v-model="model[property.name]"
-				class="htmlEditor"
-				:id="property.name"
-				:name="property.name"
-				:data-validate="property.validate ? property.validate : null"
-				:data-validate-message="property.validatemessage ? property.validatemessage : null"
-				>{{model[property.name] ? model[property.name] : property.default}}</textarea>
+			<div v-if="model.errors && model.errors[property.name]" class="help-block-inline">
+				{{model.errors[property.name]}}
+			</div>
+			<div class="mura-control-group">
+				<label :for="property.name">{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
+				<textarea
+					v-model="model[property.name]"
+					class="htmlEditor"
+					:id="property.name"
+					:name="property.name"
+					:data-validate="property.validate ? property.validate : null"
+					:data-validate-message="property.validatemessage ? property.validatemessage : null"
+					>{{model[property.name] ? model[property.name] : property.default}}</textarea>
+			</div>
 		</div>
 	</template>
 
 	<template id="scaffold-field-textarea">
 		<div>
-			<div v-if="model.errors && model.errors[property.name]">{{model.errors[property.name]}}</div>
-			<label :for="property.name">{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
-			<textarea
-				v-model="model[property.name]"
-				:name="property.name"
-				:data-validate="property.validate ? property.validate : null"
-				:data-validate-message="property.validatemessage ? property.validatemessage : null"
-				>{{model[property.name] ? model[property.name] : property.default}}</textarea>
+			<div v-if="model.errors && model.errors[property.name]" class="help-block-inline">
+				{{model.errors[property.name]}}
+			</div>
+			<div class="mura-control-group">
+				<label :for="property.name">{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
+				<textarea
+					v-model="model[property.name]"
+					:name="property.name"
+					:data-validate="property.validate ? property.validate : null"
+					:data-validate-message="property.validatemessage ? property.validatemessage : null"
+					>{{model[property.name] ? model[property.name] : property.default}}</textarea>
+			</div>
 		</div>
 	</template>
 
 	<template id="scaffold-field-checkbox">
 		<div>
-			<div v-if="model.errors && model.errors[property.name]">{{model.errors[property.name]}}</div>
-			<label :for="property.name">{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
-			<input type="checkbox" v-model="model[property.name]"
-			 v-bind:true-value="1"
-  		 v-bind:false-value="0"
-			:name="property.name" :value="1" :checked="typeof model[property.name] != 'undefined'  ? model[property.name] == 1 ? 1 : 0 : property.default"
-			:data-validate="property.validate ? property.validate : null"
-			:data-validate-message="property.validatemessage ? property.validatemessage : null"
-			>
+			<div v-if="model.errors && model.errors[property.name]" class="help-block-inline">
+				{{model.errors[property.name]}}
+			</div>
+			<div class="mura-control-group">
+				<div class="checkbox-group-inline">
+					<label :for="property.name" class="checkbox">
+						<input type="checkbox" v-model="model[property.name]"
+						 v-bind:true-value="1"
+			  		 v-bind:false-value="0"
+						:name="property.name" :value="1" :checked="typeof model[property.name] != 'undefined'  ? model[property.name] == 1 ? 1 : 0 : property.default"
+						:data-validate="property.validate ? property.validate : null"
+						:data-validate-message="property.validatemessage ? property.validatemessage : null"
+						>
+						{{property.displayname ? property.displayname : property.label ? property.label : property.name}}
+					</label>
+				</div>
+			</div>
 		</div>
 	</template>
 
 	<template id="scaffold-field-dropdown">
 		<div>
-			<div v-if="model.errors && model.errors[property.name]">{{model.errors[property.name]}}</div>
-			<label :for="property.name">{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
-			<select
-				v-model="model[property.name]"
-				:name="property.name"
-				:data-validate="property.validate ? property.validate : null"
-				:data-validate-message="property.validatemessage ? property.validatemessage : null"
-				>
-				<option v-for="(option,index) in property.optionlist" :value="option" :selected="option == property.default ? 'selected' : null">{{property.optionvaluelist[index]}}</option>
-			</select>
-		</div>
-	</template>
-
-
-	<template id="scaffold-field-radio">
-		<div>
-			<div v-if="model.errors && model.errors[property.name]">{{model.errors[property.name]}}</div>
-			<label :for="property.name">{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
-			<div v-for="(option,index) in property.optionlist" :value="option">
-				{{property.optionvaluelist[index]}}
-				<input
-					type="radio"
+			<div v-if="model.errors && model.errors[property.name]" class="help-block-inline">
+				{{model.errors[property.name]}}
+			</div>
+			<div class="mura-control-group">
+				<label :for="property.name">{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
+				<select
 					v-model="model[property.name]"
 					:name="property.name"
-					:value="option"
-					:checked="option == property.default ? 'checked' : null"
+					:data-validate="property.validate ? property.validate : null"
+					:data-validate-message="property.validatemessage ? property.validatemessage : null"
 					>
+					<option v-for="(option,index) in property.optionlist" :value="option" :selected="option == property.default ? 'selected' : null">{{property.optionvaluelist[index]}}</option>
+				</select>
 			</div>
 		</div>
 	</template>
+
+	<template id="scaffold-field-radio">
+		<div>
+			<div v-if="model.errors && model.errors[property.name]" class="help-block-inline">
+				{{model.errors[property.name]}}
+			</div>
+			<div class="mura-control-group">
+				<label :for="property.name">
+					{{property.displayname ? property.displayname : property.label ? property.label : property.name}}
+				</label>
+				<div class="radio-group">
+					<label class="radio" v-for="(option,index) in property.optionlist" :value="option">
+						<input
+							type="radio"
+							v-model="model[property.name]"
+							:name="property.name"
+							:value="property.optionvaluelist[index]"
+							:checked="option == property.default ? 'checked' : null"
+							>
+							{{option}}
+					</label>	
+				</div>
+			</div>
+		</div>
+	</template>
+
 </cfoutput>

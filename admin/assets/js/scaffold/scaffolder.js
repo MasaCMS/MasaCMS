@@ -619,6 +619,10 @@ Mura(function() {
 		}
 	});
 
+	Vue.component('scaffold-field-text-readonly', {
+		template: '#scaffold-field-text-readonly',
+		props: ['property','model','entity','list']
+	});
 
 	Vue.component('scaffold-field-text', {
 		template: '#scaffold-field-text',
