@@ -249,7 +249,7 @@
 						<li><a @click="showAll" onclick="return false;" href="##"><i class="mi-cube"></i>Custom Entities</a></li>					
 						<li>
 							<strong><a href="##" onclick="return false;"><i class="mi-cube"></i>{{entityname}}
-								<span v-if="currentparent && currentparent.properties"><strong>(for {{currentparent.properties.entityname}}: <span v-for="item in currentparent.properties._displaylist">{{currentparent.properties[item.name]}}) </span>
+								<span v-if="currentparent && currentparent.properties">(for {{currentparent.properties.entityname}}: <span v-for="item in currentparent.properties._displaylist">{{currentparent.properties[item.name]}}) </span>
 						</span>
 						</a></strong>
 						</li>					
@@ -316,15 +316,6 @@
 									</td>
 									<td></td>
 
-<!--- 
-									<td v-if="entityname != 'entity'">
-										<button class="pull-right" @click="showForm(object.entityname,object.id)"><i class="mi-edit"></i></button>
-									</td>
-									<td v-if="entityname == 'entity'">
-										<button class="pull-right" @click="showList(object.entityname)"><i class="mi-edit"></i></button>
-									</td>
- --->
-								</li>
 							</tr>
 
 					</tbody>
