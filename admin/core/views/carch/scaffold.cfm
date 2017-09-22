@@ -233,9 +233,9 @@
 		<div>
 
 			<div class="btn-group pull-right">
-					<a v-if="entityname != 'entity' && data.issuperuser && data && data.parentproperties && data.parentproperties.dynamic" class="btn" @click="goToAssembler(entityname)"><i class="mi-edit"></i> Edit Entity Definition</a>
+				<a v-if="currentparent && currentparent.properties" @click="showForm(currentparent.properties.entityname,currentparent.properties.id)" class="btn"><i class="mi-arrow-circle-left"></i> Back</a>
+				<a v-if="entityname != 'entity' && data.issuperuser && data && data.parentproperties && data.parentproperties.dynamic" class="btn" @click="goToAssembler(entityname)"><i class="mi-edit"></i> Edit Entity Definition</a>
 				<a class="btn" @click="openEndpoint()"><i class="mi-globe"> API Endpoint</i></a>
-				<a v-if="currentparent && currentparent.properties" @click="showForm(currentparent.properties.entityname,currentparent.properties.id)" class="btn">Back</a>
 				<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
 					<a class="btn" href="./?muraAction=cPerm.module&contentid=00000000000000000000000000000000016&siteid=#esapiEncode('url',rc.siteid)#&moduleid=00000000000000000000000000000000016"><i class="mi-group"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.permissions')#</a>
 				</cfif>
@@ -336,7 +336,6 @@
 					<span v-if="currentparent && currentparent.properties">
 						<div class="btn-group">
 							<a class="btn" href="##" onclick="return false;" @click="showForm(entityname)"><i class="mi-plus-circle"></i> Add Child</a>
-							<a class="btn" href="##" onclick="return false;" @click="showForm(currentparent.properties.entityname,currentparent.properties.id)"><i class="mi-arrow-circle-left"></i> Back</a>
 						</div>
 					</span>
 					<span v-else>
