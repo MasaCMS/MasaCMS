@@ -527,9 +527,9 @@ $( document ).ready(function() {
 						.declareEntity(savemodel)
 						.then( function(response) {
 							Mura("#load-spin").hide();
-							alert("Saved!");
-							Mura("#alert-assembler-saved").show();
-							console.log("big load");
+							Mura("#alert-assembler-saved").html('<div class="alert alert-success"><span>Entity definition saved</span><button type="button" class="close" data-dismiss="alert"><i class="mi-close"></i></button></div>');
+							// console.log("Saved!");
+							// console.log("big load");
 							MuraAssembler.all( self.setDynamicObjects );
 							Assembler.loadEntity(savemodel.entityname);
 						});
