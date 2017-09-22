@@ -424,7 +424,6 @@
 				</div>
 			</template>
 
-
 			<div class="btn-group">
 				<a href="##" onclick="return false;" @click="clickSave" class="btn"><i class="mi-save"></i> Save</a>
 				<a href="##" onclick="return false;" v-if="data.model && !data.model.isnew" @click="clickDelete" class="btn"><i class="mi-trash"></i> Delete</a>
