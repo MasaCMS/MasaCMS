@@ -256,7 +256,6 @@
 				</ul>
 			</span>
 
-			<input v-if="currentparent && currentparent.properties" type="HIDDEN" class="filter" :name="'filter-' + currentparent.properties.properties.primarykey" :value="currentparent.properties.id">
 
 			<div v-if="data.list">
 				<table width="100%" class="table table-striped table-condensed table-bordered mura-table-grid" id="scaffold-table">
@@ -274,6 +273,7 @@
 						<tr id="scaffold-filterby">
 							<th class="actions"></th>
 							<th class="var-width" v-for="item in data.listview">
+									<input v-if="currentparent && currentparent.properties" type="HIDDEN" class="filter" :name="'filter-' + currentparent.properties.properties.primarykey" :value="currentparent.properties.id">
 									<input v-if="item.filter==true || item.filter == 'true'" class="filter" :name="'filter-' + item.name" @keyup="applyKeyFilter">
 							</th>
 							<th>
