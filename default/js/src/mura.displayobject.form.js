@@ -85,7 +85,7 @@
 				btncancellabel:"Cancel"
 			},
 			render:function(){
-
+				
 				if(this.context.mode == undefined){
 					this.context.mode = 'form';
 				}
@@ -747,6 +747,7 @@
 				self.currentpage = 0;
 				self.attachments={};
 				self.formInit=true;
+
 				Mura.trackEvent({category:'Form',action:'Impression',label:self.context.name,objectid:self.context.objectid,nonInteraction:true});
 			},
 

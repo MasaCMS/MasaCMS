@@ -2993,10 +2993,11 @@ return /******/ (function(modules) { // webpackBootstrap
      * @memberof Mura
      */
      function trackEvent(eventData) {
+
          if(typeof Mura.editing != 'undefined' && Mura.editing){
           return;
          }
-         
+
          var data={};
          var isMXP=(typeof Mura.MXP != 'undefined');
          var trackingVars = {
@@ -3103,7 +3104,6 @@ return /******/ (function(modules) { // webpackBootstrap
                  });
              }
          } else {
-             Mura.deepExtend(trackingVars,{ga:{}});
              track();
          }
 
@@ -10111,7 +10111,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				btncancellabel:"Cancel"
 			},
 			render:function(){
-
+				
 				if(this.context.mode == undefined){
 					this.context.mode = 'form';
 				}
@@ -10773,6 +10773,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				self.currentpage = 0;
 				self.attachments={};
 				self.formInit=true;
+
 				Mura.trackEvent({category:'Form',action:'Impression',label:self.context.name,objectid:self.context.objectid,nonInteraction:true});
 			},
 
