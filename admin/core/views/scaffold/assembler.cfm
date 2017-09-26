@@ -73,7 +73,7 @@
 			.formtemplate + .formtemplate {
 				margin-top: 20px;
 			}
-			##property-template, 
+			##property-template,
 			##related-form-template-property,
 			##related-form-template {
 				margin: 10px 0;
@@ -172,11 +172,11 @@
 </div>
 
 <div class="mura-header">
-  <h1>Dynamic Custom Entity</h1>
+  <h1>Custom Mura ORM Entity</h1>
 
 	<div class="nav-module-specific btn-group">
-		<a class="btn" href="./?muraAction=scaffold.assembler"><i class="mi-plus-circle"></i> New Entity</a>
-    <a class="btn" href="./?muraAction=cArch.list&siteid=#esapiEncode('url',rc.siteid)#&activeTab=2"><i class="mi-cube"></i> Entity List</a>
+		<!---<a class="btn" href="./?muraAction=scaffold.assembler"><i class="mi-plus-circle"></i> New Entity</a>--->
+    <a class="btn" href="./?muraAction=cArch.list&siteid=#esapiEncode('url',rc.siteid)#&activeTab=2"><i class="mi-arrow-circle-left"></i> Back</a>
   </div>
 
 </div> <!-- /.mura-header -->
@@ -209,8 +209,8 @@
 									<!--- new relationship/property form --->
 									<div class="block-content">
 										<div class="btn-group pull-right">
-											<button class="btn" @click='clickAddProperty'><i class="mi-plus-circle"></i> New Property</button>
-											<button class="btn" @click='clickAddRelated'><i class="mi-plus-circle"></i> New Relationship</button>
+											<button class="btn" @click='clickAddProperty'><i class="mi-plus-circle"></i> Add Property</button>
+											<button class="btn" @click='clickAddRelated'><i class="mi-plus-circle"></i> Add Relationship</button>
 										</div>
 										<assembler-property-template :model="model"	></assembler-property-template>
 										<div>
@@ -223,7 +223,7 @@
 <!--- 									<div class="btn-group">
 										<button v-if="model.entityname != '' && model.table != ''" @click='clickSave' class="btn"><i class="mi-save"></i> Save</button>
 										<button v-else class="btn" disabled><i class="mi-save"></i> Save</button>
-									</div>	
+									</div>
  --->
 <div class="mura-actions">
  <div class="form-actions">
@@ -296,7 +296,7 @@
 					<input type="text" v-model="model.table"
 						name="table" @change="model.table=model.table.replace(/[^0-9a-z]/gi, '');">
 				</div>
-	
+
 				<div class="mura-control-group">
 					<label>Order By (optional)</label>
 					<input type="text" v-model="model.orderby"
@@ -478,7 +478,7 @@
 					name="length">
 			</div>
 
-			<div class="mura-control-group"> 
+			<div class="mura-control-group">
 				<span v-if="data.fieldtype != 'id'">
 					<label class="checkbox">
 					<input type="checkbox" v-model="data.required"

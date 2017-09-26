@@ -650,7 +650,7 @@ to your own modified versions of Mura CMS.
 				</div>
 
 				<div class="mura-control-group">
-					<label>Custom Entity Scaffolding (ALPHA)</label>
+					<label>Mura ORM Scaffolding (ALPHA)</label>
 					<label class="radio inline">
 					<input type="radio" name="scaffolding" value="0" <cfif rc.siteBean.getScaffolding() neq 1> checked</cfif>>
 					Off </label>

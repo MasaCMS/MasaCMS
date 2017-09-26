@@ -162,7 +162,7 @@
 		z-index: 10000;
 		border: 16px solid ##f3f3f3;
 		opacity: .8;
-	}	
+	}
 
 </style>
 
@@ -234,25 +234,27 @@
 
 			<div class="btn-group pull-right">
 				<a v-if="currentparent && currentparent.properties" @click="showForm(currentparent.properties.entityname,currentparent.properties.id)" class="btn"><i class="mi-arrow-circle-left"></i> Back</a>
-				<a v-if="entityname != 'entity' && data.issuperuser && data && data.parentproperties && data.parentproperties.dynamic" class="btn" @click="goToAssembler(entityname)"><i class="mi-edit"></i> Edit Entity Definition</a>
+				<a v-if="entityname != 'entity' && data.issuperuser && data && data.parentproperties && data.parentproperties.dynamic" class="btn" @click="goToAssembler(entityname)"><i class="mi-edit"></i> Edit</a>
 				<a class="btn" @click="openEndpoint()"><i class="mi-globe"> API Endpoint</i></a>
 				<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
-					<a class="btn" href="./?muraAction=cPerm.module&contentid=00000000000000000000000000000000016&siteid=#esapiEncode('url',rc.siteid)#&moduleid=00000000000000000000000000000000016"><i class="mi-group"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.permissions')#</a>
+					<span v-if="entityname == 'entity'">
+						<a class="btn" href="./?muraAction=cPerm.module&contentid=00000000000000000000000000000000016&siteid=#esapiEncode('url',rc.siteid)#&moduleid=00000000000000000000000000000000016"><i class="mi-group"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.permissions')#</a>
+					</span>
 				</cfif>
 			</div> <!-- /.btn-group -->
 
 			<span v-if="entityname">
-				<ul class="breadcrumb" v-if="entityname=='entity'">	
-						<li><strong><a @click="showAll" onclick="return false;" href="##"><i class="mi-cube"></i>Custom Entities</a></strong></li>
+				<ul class="breadcrumb" v-if="entityname=='entity'">
+						<li><strong><a @click="showAll" onclick="return false;" href="##"><i class="mi-cube"></i>Custom</a></strong></li>
 				</ul>
 				<ul class="breadcrumb" v-if="entityname!='entity'">
-						<li><a @click="showAll" onclick="return false;" href="##"><i class="mi-cube"></i>Custom Entities</a></li>					
+						<li><a @click="showAll" onclick="return false;" href="##"><i class="mi-cube"></i>Custom</a></li>
 						<li>
 							<strong><a href="##" onclick="return false;"><i class="mi-cube"></i>{{entityname}}
 								<span v-if="currentparent && currentparent.properties">(for {{currentparent.properties.entityname}}: <span v-for="item in currentparent.properties._displaylist">{{currentparent.properties[item.name]}}) </span>
 						</span>
 						</a></strong>
-						</li>					
+						</li>
 				</ul>
 			</span>
 
@@ -294,16 +296,16 @@
 									<div class="actions-menu hide">
 										<ul class="actions-list">
 											<li v-if="entityname != 'entity'">
-												<a href="##" onclick="return false;" @click="showForm(object.entityname,object.id)"><i class="mi-edit"></i> Edit Record</a>
+												<a href="##" onclick="return false;" @click="showForm(object.entityname,object.id)"><i class="mi-edit"></i> Edit</a>
 											</li>
 											<li v-if="entityname == 'entity'">
-												<a href="##" onclick="return false;" @click="showList(object.entityname)"><i class="mi-list"></i> View Records</a>
+												<a href="##" onclick="return false;" @click="showList(object.entityname)"><i class="mi-list"></i> List</a>
 											</li>
-											<li v-if="entityname == 'entity' && data.issuperuser && object.dynamic">  
-												<a href="##" onclick="return false;" @click="goToAssembler(object.entityname)"><i class="mi-edit"></i> Edit Entity Definition</a>
+											<li v-if="entityname == 'entity' && data.issuperuser && object.dynamic">
+												<a href="##" onclick="return false;" @click="goToAssembler(object.entityname)"><i class="mi-edit"></i> Edit</a>
 											</li>
 										</ul>
-									</div>	
+									</div>
 
 
 									</td>
@@ -326,18 +328,18 @@
 				<span v-if="entityname != 'entity'">
 					<span v-if="currentparent && currentparent.properties">
 						<div class="btn-group">
-							<a class="btn" href="##" onclick="return false;" @click="showForm(entityname)"><i class="mi-plus-circle"></i> Add Child</a>
+							<a class="btn" href="##" onclick="return false;" @click="showForm(entityname)"><i class="mi-plus-circle"></i> Add</a>
 						</div>
 					</span>
 					<span v-else>
 						<div class="btn-group">
-							<a class="btn" href="##" onclick="return false;" @click="showForm(entityname)"><i class="mi-plus-circle"></i> Add New</a>
+							<a class="btn" href="##" onclick="return false;" @click="showForm(entityname)"><i class="mi-plus-circle"></i> Add</a>
 						</div>
 					</span>
 				</span>
 				<span v-if="entityname == 'entity' && data.issuperuser">
 					<div class="btn-group">
-						<a href="./?muraAction=scaffold.assembler" class="btn"><i class="mi-plus-circle"></i> Add New</a>
+						<a href="./?muraAction=scaffold.assembler" class="btn"><i class="mi-plus-circle"></i> Add</a>
 					</div>
 				</span>
 
@@ -378,14 +380,16 @@
 			<button class="btn" @click="clickBack" type="submit" class="btn"><i class="mi-arrow-circle-left"></i> Back</button>
 			<button  class="btn" @click="openEndpoint()"><i class="mi-globe"> API Endpoint</i></button>
 			<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
+				<span v-if="entityname == 'entity'">
 					<a class="btn" href="./?muraAction=cPerm.module&contentid=00000000000000000000000000000000016&siteid=#esapiEncode('url',rc.siteid)#&moduleid=00000000000000000000000000000000016"><i class="mi-group"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.permissions')#</a>
+				</span>
 			</cfif>
 		</div>	<!-- /.btn-group -->
 
-		<ul class="breadcrumb">	
-			<li><a @click="showAll" href="##" onclick="return false;"><i class="mi-cube"></i>Custom Entities</a></li>
+		<ul class="breadcrumb">
+			<li><a @click="showAll" href="##" onclick="return false;"><i class="mi-cube"></i>Custom</a></li>
 			<li><a @click="clickBack" href="##" onclick="return false;"><i class="mi-cube"></i>{{entityname}}</a></li>
-			<li><strong><a href="##" onclick="return false;"><i class="mi-edit"></i>Edit Record</a></strong></li>
+			<li><strong><a href="##" onclick="return false;"><i class="mi-edit"></i>Edit</a></strong></li>
 		</ul>
 
 
@@ -477,7 +481,7 @@
 						<button @click="showForm(object.properties.entityname,object.properties.id,entity.properties.id)">EDIT: {{object.properties[property.renderfield] ? object.properties[property.renderfield] : object.properties.entityname}}</button>
 					</li>
 				</ul>
-				<button class="btn" @click="showForm(property.name,'new',entity.properties.id)">ADD NEW {{property.displayname ? property.displayname : property.name.toUpperCase()}}</button>
+				<button class="btn" @click="showForm(property.name,'new',entity.properties.id)">ADD {{property.displayname ? property.displayname : property.name.toUpperCase()}}</button>
 			</div>
 		</div>
 	</template>
@@ -631,7 +635,7 @@
 							:checked="option == property.default ? 'checked' : null"
 							>
 							{{option}}
-					</label>	
+					</label>
 				</div>
 			</div>
 		</div>

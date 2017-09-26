@@ -37,7 +37,7 @@ select siteID from tsettings where siteid not in(
 			,'Module'
 			,'default'
 			,1
-			,'Custom Entity Manager'
+			,'Mura ORM Scaffolding'
 			,1
 			,1
 			,1
