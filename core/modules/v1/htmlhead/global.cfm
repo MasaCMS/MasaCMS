@@ -59,7 +59,6 @@ Mura.init({
 	assetpath:"#variables.$.siteConfig('assetPath')#",
 	corepath:"#variables.$.globalConfig('corepath')#",
 	themepath:"#variables.$.siteConfig('themeAssetPath')#",
-	rb:"#lcase(listFirst(variables.$.siteConfig('JavaLocale'),"_"))#",
 	reCAPTCHALanguage:"#$.siteConfig('reCAPTCHALanguage')#",
 	preloaderMarkup: "#esapiEncode('javascript',this.preloaderMarkup)#",
 	mobileformat: #esapiEncode('javascript',$.event('muraMobileRequest'))#,
