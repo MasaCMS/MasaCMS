@@ -2068,10 +2068,12 @@
 				Mura('#mura-sidebar-editor').show();
 			} else if(action=='minimizesidebar'){
 				Mura('#mura-sidebar-container').fadeOut();	
-				Mura('body').removeClass('mura-sidebar-state__pushed--right');
+				Mura('body').removeClass('mura-sidebar-state__pushed--right')
+				Mura('.mura-object').removeClass('mura-active').addClass("mura-active-min");
 			} else if(action=='restoresidebar'){
 				Mura('#mura-sidebar-container').fadeIn();	
 				Mura('body').addClass('mura-sidebar-state__pushed--right');
+				Mura('.mura-object').removeClass('mura-active-min').addClass("mura-active");
 			}
 
 		},
