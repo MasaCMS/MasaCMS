@@ -163,6 +163,11 @@
      * @memberof Mura
      */
      function trackEvent(eventData) {
+
+         if(typeof Mura.editing != 'undefined' && Mura.editing){
+          return;
+         }
+
          var data={};
          var isMXP=(typeof Mura.MXP != 'undefined');
          var trackingVars = {
@@ -269,7 +274,6 @@
                  });
              }
          } else {
-             Mura.deepExtend(trackingVars,{ga:{}});
              track();
          }
 
