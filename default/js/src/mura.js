@@ -164,9 +164,12 @@
      */
      function trackEvent(eventData) {
 
-         if(typeof Mura.editing != 'undefined' && Mura.editing){
-          return;
-         }
+        if(typeof Mura.editing != 'undefined' && Mura.editing){
+          return new Promise(function(resolve, reject) {
+             resolve = resolve || function() {};
+             resolve();
+          });
+        }
 
          var data={};
          var isMXP=(typeof Mura.MXP != 'undefined');

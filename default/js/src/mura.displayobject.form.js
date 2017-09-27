@@ -85,7 +85,7 @@
 				btncancellabel:"Cancel"
 			},
 			render:function(){
-				
+
 				if(this.context.mode == undefined){
 					this.context.mode = 'form';
 				}
@@ -776,9 +776,6 @@
 					.find('form')
 					.trigger('formSubmit');
 
-
-				Mura.trackEvent({category:'Form',action:'Conversion',label:self.context.name,objectid:self.context.objectid});
-
 				if(self.ormform) {
 					//console.log('a!');
 					Mura.getEntity(self.entity)
@@ -875,16 +872,31 @@
 								   if(typeof resp.data.errors == 'object' && !Mura.isEmptyObject(resp.data.errors )){
 									   self.showErrors( resp.data.errors );
 										 self.trigger('afterErrorRender');
-								   } else if(typeof resp.data.redirect != 'undefined'){
-									   if(resp.data.redirect && resp.data.redirect != location.href){
-										   location.href=resp.data.redirect;
-									   } else {
-										   location.reload(true);
-									   }
 								   } else {
-									   mura(self.context.formEl).html( Mura.templates['success'](resp.data) );
-										 self.trigger('afterResponseRender');
-								   }
+
+										 mura(self.context.formEl)
+						 					.find('form')
+						 					.trigger('formSubmitSuccess');
+
+						 				Mura.trackEvent(
+											{category:'Form',
+											action:'Conversion',
+											label:self.context.name,
+											objectid:self.context.objectid}
+										).then(function(){
+												if(typeof resp.data.redirect != 'undefined'){
+	 										   if(resp.data.redirect && resp.data.redirect != location.href){
+	 											   location.href=resp.data.redirect;
+	 										   } else {
+	 											   location.reload(true);
+	 										   }
+	 									   } else {
+	 										   mura(self.context.formEl).html( Mura.templates['success'](resp.data) );
+	 											 self.trigger('afterResponseRender');
+	 									   }
+										});
+
+								 	}
 							  });
 						}
 					});
