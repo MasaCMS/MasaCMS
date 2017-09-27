@@ -409,14 +409,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								</ul>
 							</li>
 							<cfif $.content('type') neq 'Variation'>
-							<li id="adminAddContent"><a href="#variables.newLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.add')#" #variables.targethook# data-configurator="true"><i class="mi-plus"></i></a>
-							</li>
+							<li id="adminAddContent"><a href="#variables.newLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.add')#" #variables.targethook# data-configurator="true"><i class="mi-plus"></i></a></li>
+							<li id="adminAddContent-suspend" class="suspend" style="display:none;"><a href="##" title="" onclick="return false;"><i class="mi-plus"></i></a></li>
 							</cfif>
 							<li id="adminVersionHistory"><a href="#variables.historyLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#" #variables.targethook#><i class="mi-history"></i></a></li>
+							<li id="adminVersionHistory-suspend" class="suspend" style="display:none;"><a href="##" title="" onclick="return false;"><i class="mi-history"></i></a></li>
 							<cfif $.content('type') neq 'Variation'>
 							<li id="adminPreview"<!--- class="dropdown"--->><a href="#esapiEncode(
-								'html_attr',variables.$.getCurrentURL())#" data-modal-preview="true" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.multidevicepreview')#" #variables.targethook#><i class="mi-mobile"></i></a>
-							</li>
+								'html_attr',variables.$.getCurrentURL())#" data-modal-preview="true" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.multidevicepreview')#" #variables.targethook#><i class="mi-mobile"></i></a></li>
+							<li id="adminPreview-suspend" class="suspend" style="display:none;"<!--- class="dropdown"--->><a href="##" title="" onclick="return false;"><i class="mi-mobile"></i></a></li>
 							</cfif>
 							<!---</cfif>--->
 

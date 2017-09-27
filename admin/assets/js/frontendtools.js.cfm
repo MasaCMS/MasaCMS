@@ -626,6 +626,14 @@
 			MuraInlineEditor.inited=true;
 			utility('##adminSave').show();
 			utility('##adminStatus').hide();
+
+			utility('##adminAddContent').hide();
+			utility('##adminVersionHistory').hide();
+			utility('##adminPreview').hide();
+			utility('##adminAddContent-suspend').show();
+			utility('##adminVersionHistory-suspend').show();
+			utility('##adminPreview-suspend').show();
+
 			utility('.mura-editable').removeClass('mura-inactive');
 			window.Mura.editing=true;
 
@@ -989,7 +997,7 @@
 					reset();
 					Mura('##adminStatus').show();
 					Mura('##adminSave').hide();
-
+				
 					var prev=Mura('.mura-var-target');
 					prev.removeClass('mura-var-target');
 
