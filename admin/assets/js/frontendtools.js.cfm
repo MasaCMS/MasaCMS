@@ -474,6 +474,7 @@
 			utility(".editableObject").addClass('editableObjectHide');
 
 			if(typeof MuraInlineEditor != 'undefined' && MuraInlineEditor.inited){
+				MuraInlineEditor.sidebarAction('minimizesidebar');
 				utility(".mura-editable").addClass('mura-inactive');
 			}
 
@@ -488,6 +489,7 @@
 			utility(".editableObject").removeClass('editableObjectHide');
 
 			if(typeof MuraInlineEditor != 'undefined' && MuraInlineEditor.inited){
+				MuraInlineEditor.sidebarAction('restoresidebar');
 				utility(".mura-editable").removeClass('mura-inactive');
 			}
 		}
@@ -2064,7 +2066,14 @@
 				Mura('#mura-sidebar-objects-legacy').hide();
 				Mura('#mura-sidebar-objects').hide();
 				Mura('#mura-sidebar-editor').show();
+			} else if(action=='minimizesidebar'){
+				Mura('#mura-sidebar-container').fadeOut();	
+				Mura('body').removeClass('mura-sidebar-state__pushed--right');
+			} else if(action=='restoresidebar'){
+				Mura('#mura-sidebar-container').fadeIn();	
+				Mura('body').addClass('mura-sidebar-state__pushed--right');
 			}
+
 		},
 		setAnchorSaveChecks:function(el){
 			function handleEditCheck(){
