@@ -1,3 +1,4 @@
+<cfoutput>
 <!doctype html>
 <html class="mura">
 	<head>
@@ -11,7 +12,6 @@
 	<body id="mura-select-component" class="mura-plugin">
 		<div class="cke_dialog">
 			<h4>Select a Component to Insert</h4>
-			<cfoutput>
 			<div class="mura-control-group">
 			<label></label>
 			<select id="btnComponents">
@@ -21,7 +21,7 @@
 				</cfloop>
 			</select>
 			</div>
-			</cfoutput>
 		</div>
 	</body>
 </html>
+</cfoutput>
