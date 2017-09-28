@@ -1723,6 +1723,8 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			} else {
 				if(len($.event('contenthistid'))){
 					var entity=$.getBean('content').loadBy(contenthistid=$.event('contenthistid'));
+				} else if(len($.event('contentid'))){
+					var entity=$.getBean('content').loadBy(contentid=$.event('contentid'));
 				} else {
 					var entity=$.getBean('content').loadBy(contentid=arguments.id);
 				}
