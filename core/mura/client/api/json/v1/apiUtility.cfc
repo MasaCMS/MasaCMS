@@ -2175,6 +2175,14 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 										criteria=replace(criteria,'*','%','all');
 									}
 
+									if(propname=='id'){
+										if(entity.getEntityName()=='content'){
+											propname='contentid';
+										} else {
+											propname=entity.getPrimaryKey();
+										}
+									}
+
 									feed.addParam(column=propName,criteria=criteria,condition=condition,relationship=relationship);
 									relationship='and';
 							}
