@@ -1259,15 +1259,18 @@ select * from tplugins order by #arguments.orderby#
 <cfargument name="index" required="true" default="0" type="any">
 <cfargument name="objectid" required="true" default="" type="any">
 	<cfset var siteID="">
-	<cfif variables.utility.checkForInstanceOf(arguments.currentEventObject,"mura.MuraScope")>
-		<cfset siteID=arguments.currentEventObject.event('siteID')>
-	<cfelse>
-		<cfset siteID=arguments.currentEventObject.getValue('siteID')>
-	</cfif>
-	<cfif arguments.index>
-		<cfset executeScript(runat=arguments.eventToAnnounce,siteid=siteid,event=arguments.currentEventObject,index=arguments.index,objectid=arguments.objectid)>
-	<cfelse>
-		<cfset executeScripts(runat=arguments.eventToAnnounce,siteid=siteid,event=arguments.currentEventObject,rsHandlers=arguments.rsHandlers,moduleID=arguments.moduleID,objectid=arguments.objectid)>
+	<!-- Don't fire unless pluginManager has been initted--->
+	<cfif isDefined('variables.utility')>
+		<cfif variables.utility.checkForInstanceOf(arguments.currentEventObject,"mura.MuraScope")>
+			<cfset siteID=arguments.currentEventObject.event('siteID')>
+		<cfelse>
+			<cfset siteID=arguments.currentEventObject.getValue('siteID')>
+		</cfif>
+		<cfif arguments.index>
+			<cfset executeScript(runat=arguments.eventToAnnounce,siteid=siteid,event=arguments.currentEventObject,index=arguments.index,objectid=arguments.objectid)>
+		<cfelse>
+			<cfset executeScripts(runat=arguments.eventToAnnounce,siteid=siteid,event=arguments.currentEventObject,rsHandlers=arguments.rsHandlers,moduleID=arguments.moduleID,objectid=arguments.objectid)>
+		</cfif>
 	</cfif>
 </cffunction>
 

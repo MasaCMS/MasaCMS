@@ -1382,8 +1382,9 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 				reg.set('path',md.path);
 			}
 			try{
-				if( reg.getIsNew() || ( reg.getDynamic() && code != reg.getCode() ) || ( dynamic != reg.getDynamic() ) )
-				reg.save();
+				if( reg.getIsNew() || ( reg.getDynamic() && code != reg.getCode() ) || ( dynamic != reg.getDynamic() ) ){
+					reg.save();
+				}
 			} catch (any e){
 				writeLog(type="Error", file="exception", text="Error registering #md.path#");
 			}
