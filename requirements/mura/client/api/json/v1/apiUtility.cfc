@@ -1618,6 +1618,8 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			} else {
 				if(len($.event('contenthistid'))){
 					var entity=$.getBean('content').loadBy(contenthistid=$.event('contenthistid'));
+				} else if(len($.event('contentid'))){
+					var entity=$.getBean('content').loadBy(contentid=$.event('contentid'));
 				} else {
 					var entity=$.getBean('content').loadBy(contentid=arguments.id);
 				}
@@ -1946,8 +1948,15 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 			for(var p in arguments.params){
 				if(!listFindNoCase('maxItems,pageIndex,sort,itemsPerPage,sortBy,sortDirection,contentpoolid,shownavonly,showexcludesearch,includehomepage',p)){
-					feed.addParam(column=p,criteria=arguments.params[p]);
-
+					if(p=='id'){
+						if(entity.getEntityName() == 'content'){
+							feed.addParam(column='contentid',criteria=arguments.params[p]);
+						} else {
+							feed.addParam(column=entity.getPrimaryKey(),criteria=arguments.params[p]);
+						}
+					} else {
+						feed.addParam(column=p,criteria=arguments.params[p]);
+					}
 					if(started){
 						baseURL=baseURL & '&';
 					}
