@@ -1511,7 +1511,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 			dirIndex=dirIndex+1;
 			if ( !arguments.customonly || dirIndex < coreIndex ) {
 				result=dir & arguments.filePath;
-				if ( fileExists(expandPath(result)) && utility.isPathUnderMuraRoot(result)) {
+				if ( fileExists(expandPath(result)) && utility.isPathLegal(result)) {
 					setContentTypeFilePath(arguments.filePath,result);
 					return result;
 				}
@@ -1778,7 +1778,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 			dirIndex=dirIndex+1;
 			if ( !arguments.customonly || dirIndex < coreIndex ) {
 				result=dir & arguments.filePath;
-				if ( fileExists(expandPath(result)) && utility.isPathUnderMuraRoot(result)) {
+				if ( fileExists(expandPath(result)) && utility.isPathLegal(result)) {
 					setDisplayObjectFilePath(arguments.filePath,result);
 					return result;
 				}
