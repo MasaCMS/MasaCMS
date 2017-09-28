@@ -129,6 +129,22 @@
 
 	<cfset sServerDirectory = replace(CFFILE.ServerDirectory, "\", "/", "all")>
 
+	<!---file metadata is valid --->
+	<cfif isImageFile("#sServerDirectory#/#CFFILE.ServerFile#")
+		and listFindNoCase('jpg,jpeg',CFFILE.serverFileExt)>
+		<cfimage source="#sServerDirectory#/#CFFILE.ServerFile#" name="imageObj">
+		<cfset imageObj=ImageGetEXIFMetadata(imageObj)>
+		<cfif not application.Mura.getBean('fileManager').allowMetaData(imageObj)>
+			<cftry>
+				<cffile action="DELETE" file="#sServerDirectory#/#CFFILE.ServerFile#" />
+				<cfcatch type="any">
+				</cfcatch>
+			</cftry>
+			<cfset THIS.throwError(REQUEST.constants.CKFINDER_CONNECTOR_ERROR_UPLOADED_CORRUPT) />
+			<cfreturn false />
+		</cfif>
+	</cfif>
+
 	<!---file name is invalid --->
 	<cfif not filesystem.checkFileName(fileName) or coreConfig.checkIsHiddenFile(fileName)>
 		<cftry>

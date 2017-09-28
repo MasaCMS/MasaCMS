@@ -70,7 +70,15 @@ component extends="mura.bean.beanORM" table='tfiles' entityName="file" hint="Thi
 			}
 
 			if(isStruct(local.tempfile.exif)){
-				local.tempFile.exif=serializeJSON(local.tempFile.exif);
+				if(fileManager.allowMetaData(local.tempfile.exif)){
+					local.tempFile.exif=serializeJSON(local.tempFile.exif);
+				} else {
+					setValue('filename','File contains invalid Metadata');
+					if(fileExists(local.tempFile.serverDirectory & "/" & local.tempFile.serverfilename)){
+						fileDelete(local.tempFile.serverDirectory & "/" & local.tempFile.serverfilename);
+					}
+					return this;
+				}
 			}
 
 			var allowableExtensions=getBean('configBean').getFmAllowedExtensions();

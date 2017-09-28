@@ -1506,11 +1506,12 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		var result="";
 		var coreIndex=arrayLen(variables.instance.contentTypeLoopUpArray)-2;
 		var dirIndex=0;
+		var utility=getBean('utility');
 		for ( dir in variables.instance.contentTypeLoopUpArray ) {
 			dirIndex=dirIndex+1;
 			if ( !arguments.customonly || dirIndex < coreIndex ) {
 				result=dir & arguments.filePath;
-				if ( fileExists(expandPath(result)) ) {
+				if ( fileExists(expandPath(result)) && utility.isPathUnderMuraRoot(result)) {
 					setContentTypeFilePath(arguments.filePath,result);
 					return result;
 				}
@@ -1772,11 +1773,12 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		var result="";
 		var coreIndex=arrayLen(variables.instance.displayObjectLoopUpArray)-2;
 		var dirIndex=0;
+		var utility=getBean('utility');
 		for ( dir in variables.instance.displayObjectLoopUpArray ) {
 			dirIndex=dirIndex+1;
 			if ( !arguments.customonly || dirIndex < coreIndex ) {
 				result=dir & arguments.filePath;
-				if ( fileExists(expandPath(result)) ) {
+				if ( fileExists(expandPath(result)) && utility.isPathUnderMuraRoot(result)) {
 					setDisplayObjectFilePath(arguments.filePath,result);
 					return result;
 				}
