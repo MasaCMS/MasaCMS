@@ -1291,6 +1291,12 @@ Blog: www.codfusion.com--->
 		}
 	}
 
+	function isPathUnderMuraRoot(path){
+		var rootPath=replace(expandPath('muraWRM'), "\", "/", "ALL");
+		arguments.path=replace(expandPath(arguments.path), "\", "/", "ALL");
+		return (len(arguments.path) >= len(rootPath) && left(arguments.path,len(rootPath)) == rootPath);
+	}
+
 </cfscript>
 
 <!--- Stashing some support for tags here until CF10 support is dropped --->

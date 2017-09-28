@@ -2477,7 +2477,7 @@ Display Objects
 	<cfreturn variables.contentRendererUtility.getCurrentURL(argumentCollection=arguments)>
 </cffunction>
 
-<cffunction name="dspUserTools" output="false">
+<cffunction name="dspUserTools" output="false" hint="deprecated">
 	<cfset var theObject = "" />
 	<cfset var theIncludePath = variables.event.getSite().getIncludePath() />
 
@@ -2553,50 +2553,63 @@ Display Objects
 	<cfreturn body />
 </cffunction>
 
-<cffunction name="dspCaptcha" output="false">
+<cffunction name="dspCaptcha" output="false" hint="deprecated">
 	<cfset var theObject = "" />
-	<cfset var theIncludePath = variables.event.getSite().getIncludePath() />
+	<cfset var theIncludePath = variables.event.getSite().getDSPIncludePath() />
 
 	<cfsavecontent variable="theObject">
-		<cfinclude template="#theIncludePath#/includes/display_objects/dsp_captcha.cfm">
+		<cfinclude template="#theIncludePath#/display_objects/dsp_captcha.cfm">
 	</cfsavecontent>
 
 	<cfreturn trim(theObject)>
 </cffunction>
 
-<cffunction name="dspInclude">
+<cffunction name="dspInclude" output="false">
 	<cfargument name="template" default="" required="true">
-	<cfargument name="baseDir" default="#variables.event.getSite().getIncludePath()#/includes" required="true">
+
+	<cfset var baseDir=variables.event.getSite().getDSPIncludePath()>
 	<cfset var str='' />
-	<cfset var tracePoint=0>
-	<cfif arguments.template neq ''>
-		<cfset tracePoint=initTracePoint("#arguments.baseDir#/#arguments.template#")>
-		<cfsavecontent variable="str">
-			<cfinclude template="#arguments.baseDir#/#arguments.template#">
-		</cfsavecontent>
-		<cfset commitTracePoint(tracePoint)>
+	<cfset var tracePoint1=0>
+	<cfset var tracePoint2=0>
+	<cfif arguments.template neq '' and listFindNoCase('cfm,html,htm,txt',listLast(template,'.'))>
+		<cfset tracePoint1=initTracePoint("#baseDir#/#arguments.template#")>
+		<cfif getBean('utility').isPathUnderMuraRoot("#baseDir#/#arguments.template#")>
+			<cfsavecontent variable="str">
+				<cfinclude template="#baseDir#/#arguments.template#">
+			</cfsavecontent>
+		<cfelse>
+			<cfset tracePoint2=initTracePoint("Path excluded for being outside Mura root")>
+			<cfset commitTracePoint(tracePoint2)>
+		</cfif>
+		<cfset commitTracePoint(tracePoint1)>
 	</cfif>
 
 	<cfreturn trim(str) />
 </cffunction>
 
-<cffunction name="dspThemeInclude">
+<cffunction name="dspThemeInclude" output="false">
 	<cfargument name="template" default="" required="true">
 	<cfset var str='' />
-	<cfset var tracePoint=0>
-	<cfif arguments.template neq ''>
-		<cfset tracePoint=initTracePoint("#variables.$.siteConfig('themeIncludePath')#/#arguments.template#")>
-		<cfsavecontent variable="str">
-			<cfinclude template="#variables.$.siteConfig('themeIncludePath')#/#arguments.template#">
-		</cfsavecontent>
-		<cfset commitTracePoint(tracePoint)>
+	<cfset var tracePoint1=0>
+	<cfset var tracePoint2=0>
+	<cfif arguments.template neq '' and listFindNoCase('cfm,html,htm,txt',listLast(template,'.'))>
+		<cfset tracePoint1=initTracePoint("#variables.$.siteConfig('themeIncludePath')#/#arguments.template#")>
+		<cfif getBean('utility').isPathUnderMuraRoot("#variables.$.siteConfig('themeIncludePath')#/#arguments.template#")>
+			<cfsavecontent variable="str">
+				<cfinclude template="#variables.$.siteConfig('themeIncludePath')#/#arguments.template#">
+			</cfsavecontent>
+		<cfelse>
+			<cfset tracePoint2=initTracePoint("Path excluded for being outside Mura root")>
+			<cfset commitTracePoint(tracePoint2)>
+		</cfif>
+		<cfset commitTracePoint(tracePoint1)>
 	</cfif>
 
 	<cfreturn trim(str) />
 </cffunction>
 
 <!--- DEPRECATED --->
-<cffunction name="sendToFriendLink" output="false">
+<cffunction name="sendToFriendLink" output="false" hint="deprecated">
 <cfreturn "javascript:sendtofriend=window.open('#variables.event.getSite().getAssetPath()#/utilities/sendtofriend.cfm?link=#urlEncodedFormat(getCurrentURL())#&siteID=#variables.event.getValue('siteID')#', 'sendtofriend', 'scrollbars=yes,resizable=yes,screenX=0,screenY=0,width=570,height=390');sendtofriend.focus();void(0);"/>
 </cffunction>
 
