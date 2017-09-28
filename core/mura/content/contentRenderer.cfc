@@ -2573,7 +2573,7 @@ Display Objects
 	<cfset var tracePoint2=0>
 	<cfif arguments.template neq '' and listFindNoCase('cfm,html,htm,txt',listLast(template,'.'))>
 		<cfset tracePoint1=initTracePoint("#baseDir#/#arguments.template#")>
-		<cfif getBean('utility').isPathUnderMuraRoot("#baseDir#/#arguments.template#")>
+		<cfif getBean('utility').isPathLegal("#baseDir#/#arguments.template#")>
 			<cfsavecontent variable="str">
 				<cfinclude template="#baseDir#/#arguments.template#">
 			</cfsavecontent>
@@ -2594,7 +2594,7 @@ Display Objects
 	<cfset var tracePoint2=0>
 	<cfif arguments.template neq '' and listFindNoCase('cfm,html,htm,txt',listLast(template,'.'))>
 		<cfset tracePoint1=initTracePoint("#variables.$.siteConfig('themeIncludePath')#/#arguments.template#")>
-		<cfif getBean('utility').isPathUnderMuraRoot("#variables.$.siteConfig('themeIncludePath')#/#arguments.template#")>
+		<cfif getBean('utility').isPathLegal("#variables.$.siteConfig('themeIncludePath')#/#arguments.template#")>
 			<cfsavecontent variable="str">
 				<cfinclude template="#variables.$.siteConfig('themeIncludePath')#/#arguments.template#">
 			</cfsavecontent>

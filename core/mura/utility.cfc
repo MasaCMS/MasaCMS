@@ -1291,10 +1291,21 @@ Blog: www.codfusion.com--->
 		}
 	}
 
-	function isPathUnderMuraRoot(path){
-		var rootPath=replace(expandPath('/muraWRM'), "\", "/", "ALL");
+	function isPathLegal(path){
+		var rootPath=replace(variables.configBean.getWebRoot(), "\", "/", "ALL");
+		var pluginPath=replace(variables.configBean.getPluginDir(), "\", "/", "ALL");
 		arguments.path=replace(expandPath(arguments.path), "\", "/", "ALL");
-		return (len(arguments.path) >= len(rootPath) && left(arguments.path,len(rootPath)) == rootPath);
+		return (
+			len(arguments.path) >= len(rootPath) && left(arguments.path,len(rootPath)) == rootPath
+		) && (
+			rootPath & "/plugins" == pluginPath
+
+			||
+
+			(
+				len(arguments.path) >= len(pluginPath) && left(arguments.path,len(pluginPath)) == pluginPath
+			)
+		);
 	}
 
 </cfscript>
