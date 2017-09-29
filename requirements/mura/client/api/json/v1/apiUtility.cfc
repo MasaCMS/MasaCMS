@@ -1948,15 +1948,8 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 			for(var p in arguments.params){
 				if(!listFindNoCase('maxItems,pageIndex,sort,itemsPerPage,sortBy,sortDirection,contentpoolid,shownavonly,showexcludesearch,includehomepage',p)){
-					if(p=='id'){
-						if(entity.getEntityName() == 'content'){
-							feed.addParam(column='contentid',criteria=arguments.params[p]);
-						} else {
-							feed.addParam(column=entity.getPrimaryKey(),criteria=arguments.params[p]);
-						}
-					} else {
-						feed.addParam(column=p,criteria=arguments.params[p]);
-					}
+					feed.addParam(column=p,criteria=arguments.params[p]);
+
 					if(started){
 						baseURL=baseURL & '&';
 					}
@@ -2032,6 +2025,14 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 									} else if(find('*',criteria)){
 										condition="like";
 										criteria=replace(criteria,'*','%','all');
+									}
+
+									if(propname=='id'){
+										if(entity.getEntityName()=='content'){
+											propname='contentid';
+										} else {
+											propname=entity.getPrimaryKey();
+										}
 									}
 
 									feed.addParam(column=propName,criteria=criteria,condition=condition,relationship=relationship);
