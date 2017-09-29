@@ -433,9 +433,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="metadata">
 	<cfset var key="">
 	<cfloop collection="#arguments.metadata#" item="key">
-		<cfif isStruct(arguments.metadata[key]) and not allowMetaData(arguments.metadata[key])>
-			<cfreturn false>
-		<cfelseif isSimpleValue(arguments.metadata[key]) and findNoCase('<cf',arguments.metadata[key]) or findNoCase('</cf',arguments.metadata[key])>
+		<cfif isSimpleValue(key)>
+			<cfif isStruct(arguments.metadata['#key#']) and not allowMetaData(arguments.metadata['#key#'])>
+				 <cfreturn false>
+			<cfelseif isSimpleValue(arguments.metadata['#key#']) and (findNoCase('<cf',arguments.metadata['#key#']) or findNoCase('</cf',arguments.metadata['#key#']))>
+				<cfreturn false>
+			</cfif>
+		<cfelseif isStruct(key) and not allowMetaData(key)>
 			<cfreturn false>
 		</cfif>
 	</cfloop>
