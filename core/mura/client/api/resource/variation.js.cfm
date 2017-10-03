@@ -128,6 +128,7 @@
 						queueObjects: #esapiEncode('javascript',$.getContentRenderer().queueObjects)#,
 						rb:#$.siteConfig().getAPI('JSON','v1').getSerializer().serialize($.getClientRenderVariables())#,
 						#trim($.siteConfig('JSDateKeyObjInc'))#
+						</cfoutput>
     			});
 
 
