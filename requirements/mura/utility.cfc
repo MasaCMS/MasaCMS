@@ -193,26 +193,10 @@
 	</cfif>
 
 	<!--- Double checking that it sees the new property on autoupdated instances--->
-	<cfif len(variables.configBean.getSiteDir())>
-		<cfif directoryExists('#variables.configBean.getSiteDir()#/#arguments.siteid#/includes')>
-			<cfset basedir="#variables.configBean.getSiteDir()#/#arguments.siteid#/includes">
-		<cfelse>
-			<cfset basedir="#variables.configBean.getSiteDir()#/#arguments.siteid#">
-		</cfif>
+	<cfset var basedir="#webroot#/#arguments.siteid#/includes">
 
-		<cfif not directoryExists(basedir) and arguments.displaypoolid neq arguments.siteid>
-			<cfif directoryExists('#variables.configBean.getSiteDir()#/#arguments.displaypoolid#/includes')>
-				<cfset basedir="#variables.configBean.getSiteDir()#/#arguments.displaypoolid#/includes">
-			<cfelse>
-				<cfset basedir="#variables.configBean.getSiteDir()#/#arguments.displaypoolid#">
-			</cfif>
-		</cfif>
-	<cfelse>
-		<cfset var basedir="#webroot#/#arguments.siteid#/includes">
-
-		<cfif not directoryExists(basedir) and arguments.displaypoolid neq arguments.siteid>
-			<cfset basedir="#webroot#/#arguments.displaypoolid#/includes">
-		</cfif>
+	<cfif not directoryExists(basedir) and arguments.displaypoolid neq arguments.siteid>
+		<cfset basedir="#webroot#/#arguments.displaypoolid#/includes">
 	</cfif>
 
 	<cfif not directoryExists(basedir)>
