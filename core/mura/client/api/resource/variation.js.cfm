@@ -32,10 +32,11 @@
       	var assetpath="#$.siteConfig().getResourcePath(complete=1)#" + "#$.siteConfig().getAssetPath()#";
 				var corepath="#$.siteConfig().getResourcePath(complete=1)#" + "/core";
       	var themepath="#$.siteConfig().getResourcePath(complete=1)#" + "#$.siteConfig().getThemeAssetPath()#";
-    	var context="#$.siteConfig().getResourcePath(complete=1)#";
+    		var context="#$.siteConfig().getResourcePath(complete=1)#";
       	var editableSelector='.mxp-editable';
       	var currentId='';
-    	var theme="#$.siteConfig().getTheme()#";
+    		var theme="#$.siteConfig().getTheme()#";
+				var preloaderMarkup="#esapiEncode('javascript',$.getContentRenderer().preloaderMarkup)#";
       	</cfoutput>
 
         function loadScript(url, callback) {
@@ -121,7 +122,12 @@
     				remoteid:content.remoteid,
     				remoteurl:content.remoteurl,
     				title:content.title,
-    				context:context
+    				context:context,
+						preloaderMarkup:preloaderMarkup,
+						<cfoutput>
+						queueObjects: #esapiEncode('javascript',$.getContentRenderer().queueObjects)#,
+						rb:#$.siteConfig().getAPI('JSON','v1').getSerializer().serialize($.getClientRenderVariables())#,
+						#trim($.siteConfig('JSDateKeyObjInc'))#
     			});
 
 
