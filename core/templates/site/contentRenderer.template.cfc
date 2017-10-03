@@ -184,7 +184,8 @@
 		//this.navArchiveWrapperBodyClass=this.navWrapperBodyClass;
 		//this.navCategoryWrapperClass=this.navWrapperClass;
 		//this.navCategoryWrapperBodyClass=this.navWrapperBodyClass;
-
+		//this.navNextDecoration="&nbsp;&raquo;";
+		//this.navPrevDecoration="&laquo;&nbsp;";
 
 		this.alertSuccessClass = "";
 		this.alertInfoClass = "";

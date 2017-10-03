@@ -109,12 +109,12 @@
 						</li>
 					<cfelse>
 						<li class="navPrev #this.liPaginationNotCurrentClass#">
-							<a class="#this.aPaginationNotCurrentClass#" href="index#evaluate('#variables.nextn.currentpagenumber#-1')#.html">&laquo;&nbsp;#variables.$.rbKey('list.previous')#</a>
+							<a class="#this.aPaginationNotCurrentClass#" href="index#evaluate('#variables.nextn.currentpagenumber#-1')#.html">#this.navPrevtDecoration##variables.$.rbKey('list.previous')#</a>
 						</li>
 					</cfif>
 				<cfelse>
 					<li class="navPrev #this.liPaginationNotCurrentClass#">
-						<a class="#this.aPaginationNotCurrentClass#" href="#xmlFormat('?#paginationKey#=#variables.nextN.previous##variables.qrystr#')#">&laquo;&nbsp;#variables.$.rbKey('list.previous')#</a>
+						<a class="#this.aPaginationNotCurrentClass#" href="#xmlFormat('?#paginationKey#=#variables.nextN.previous##variables.qrystr#')#">#this.navPrevtDecoration##variables.$.rbKey('list.previous')#</a>
 					</li>
 				</cfif>
 			</cfif>
@@ -137,7 +137,7 @@
 				<cfif request.muraExportHtml>
 					<li class="navNext #this.liPaginationNotCurrentClass#"><a class="#this.aPaginationNotCurrentClass#" href="index#evaluate('#variables.nextn.currentpagenumber#+1')#.html">#variables.$.rbKey('list.next')#&nbsp;&raquo;</a></li>
 				<cfelse>
-					<li class="navNext #this.liPaginationNotCurrentClass#"><a class="#this.aPaginationNotCurrentClass#" href="#xmlFormat('?#paginationKey#=#variables.nextN.next##variables.qrystr#')#">#variables.$.rbKey('list.next')#&nbsp;&raquo;</a></li>
+					<li class="navNext #this.liPaginationNotCurrentClass#"><a class="#this.aPaginationNotCurrentClass#" href="#xmlFormat('?#paginationKey#=#variables.nextN.next##variables.qrystr#')#">#variables.$.rbKey('list.next')##this.navNextDecoration#</a></li>
 				</cfif>
 			</cfif>
 			</ul>

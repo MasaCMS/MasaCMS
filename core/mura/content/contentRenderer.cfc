@@ -156,6 +156,8 @@ General Classes
 <cfset this.navArchiveWrapperBodyClass=this.navWrapperBodyClass>
 <cfset this.navCategoryWrapperClass=this.navWrapperClass>
 <cfset this.navCategoryWrapperBodyClass=this.navWrapperBodyClass>
+<cfset this.navNextDecoration="&nbsp;&raquo;">
+<cfset this.navPrevDecoration="&laquo;&nbsp;">
 
 <!--- This may not be used --->
 <cfset this.formInputWrapperClass = "input-addon">
