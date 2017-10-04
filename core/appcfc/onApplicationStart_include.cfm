@@ -265,7 +265,7 @@ if ( application.setupComplete ) {
 					local.zipUtil=new mura.Zip();
 					local.zipUtil.Extract(zipFilePath="#application.configBean.getWebRoot()#/#local.themeZip#",extractPath="#application.configBean.getWebRoot()#/themes", overwriteFiles=false);
 					local.themeRS=local.fileWriter.getDirectoryList(directory="#application.configBean.getWebRoot()#/themes",recurse=false,type="dir");
-					local.fileWriter.renameDir(directory="#application.configBean.getWebRoot()#/themes/#local.themeRS.name#",newDirectory="#application.configBean.getWebRoot()#/themes/#listFirst(local.themeRS.name,'-')#");
+					local.fileWriter.renameDir(directory="#application.configBean.getWebRoot()#/themes/#local.themeRS.name#",newDirectory="#application.configBean.getWebRoot()#/themes/default");
 					fileDelete("#application.configBean.getWebRoot()#/#local.themeZip#");
 
 				} catch (any error) {
