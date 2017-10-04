@@ -10,161 +10,6 @@
 <script src="#$.globalConfig('rootPath')#/core/vendor/vue/vue.js"></script>
 <script src="#$.globalConfig('rootPath')#/admin/assets/js/scaffold/scaffolder.js"></script>
 
-<style>
-
-/* TODO move these styles to global less & compile */
-
-	.mura .mura-table-grid > thead > tr:not(:last-child) > th{
-			border-bottom: none !important;
-			height: 25px !important;
-		}
-
-	.mura .mura-table-grid > thead > tr:not(:last-child){
-		height: 25px !important;
-		overflow-y: hidden;
-	}
-
-	.mura .mura-table-grid > thead > tr + tr > th{
-		padding-top: 0 !important;
-		background-color: ##fafafa;
-	}
-
-	.mura .mura-table-grid th input.filter{
-    border: 1px solid ##e9e9e9;
-    font-size: 13px;
-    font-weight: normal !important;
-    height: 18px;
-    padding-left: 4px;
-    position: relative;
-    top: 1px;
-    /* TODO use global font definition */
-    font-family: montserratlight,montserratregular,"Helvetica Neue",Helvetica,Arial,sans-serif;
-	}
-
-	.mura .mura-table-grid th .btn-group{
-		margin-right: 1px;
-		margin-bottom: 1px;
-	}
-	.mura .mura-table-grid th .btn-group .btn{
-		padding: 1px 4px;
-		color: ##545454;
-    background-color: ##f5f5f5;
-    border-color: ##e9e9e9;
-	}
-
-	##scaffold-table tbody tr td span{
-		cursor: pointer;
-	}
-
-	##scaffold-sortby th span{
-		cursor: pointer;
-	}
-
-	##scaffold-sortby th i {
-		padding: 1px 0px 0px 5px;
-		color: ##333333;
-		font-size: 1.1em;
-	}
-	##scaffold-sortby th {
-	}
-
-	##scaffold-crumb-display:not(:empty){
-		min-height: 30px;
-	}
-
-	.formtemplate {
-		margin: 20px 0;
-	}
-	.formtemplate div {
-		margin: 10px;
-		padding: 10px 0;
-		border-top: 1px solid ##ccc;
-	}
-	##property-template {
-		margin: 10px 0;
-	}
-	##assembler-properties li {
-		list-style: none;
-		margin: 0;
-		padding: 0;
-	}
-	##assembler-properties .assembler-item-box {
-		width: 100%;
-		display: block;
-		margin: 1px 0;
-		padding: 5px 5px 5px 10px;
-	}
-
-	##assembler-properties .assembler-item-box .assembler-prop {
-		padding: 4px 5px 5px 10px;
-		border-left: 5px solid ##eee;
-	}
-
-	.assembler-no-displayname {
-		color: ##880000;
-	}
-
-	.small {
-		font-size: 0.7em;
-	}
-
-	.crumbly li {
-		display: inline-block;
-		float: left;
-	}
-
-	##scaffold-table {
-
-	}
-
-	##scaffold-table td {
-		padding-bottom: 5px;
-	}
-
-	##assembler-preview,.assembler-preview {
-		float: left;
-		border: 2px solid ##333;
-		width: 490px;
-		height: 600px;
-		overflow: scroll;
-
-	}
-
-	##load-spin ##spinner {
-	  position: absolute;
-	  left: 50%;
-	  top: 50%;
-	  z-index: 10000;
-	  width: 150px;
-	  height: 150px;
-	  margin: -75px 0 0 -75px;
-	  border: 16px solid ##f3f3f3;
-	  border-radius: 50%;
-	  border-top: 16px solid ##3498db;
-	  width: 120px;
-	  height: 120px;
-	  -webkit-animation: spin 2s linear infinite;
-	  animation: spin 2s linear infinite;
-	}
-
-	##load-spin {
-		position: fixed;
-		width: 100%;
-		height: 100%;
-		left: 0;
-		top: 0;
-		background-color: ##fff;
-		z-index: 10000;
-		border: 16px solid ##f3f3f3;
-		opacity: .8;
-	}
-
-</style>
-
-<div class="block-header">
-<h3 class="block-title">#application.rbFactory.getKeyValue(session.rb,"sitemanager.view.custom")#</h3>
-</div>
-
 <div id="load-spin" style="display: none;"><div id="load-spin-spinner"></div></div>
 
 <div class="block-content">
@@ -620,3 +465,152 @@
 	</template>
 
 </cfoutput>
+
+
+<style>
+
+/* TODO move these styles to global less & compile */
+
+	.mura .mura-table-grid > thead > tr:not(:last-child) > th{
+			border-bottom: none !important;
+			height: 25px !important;
+		}
+
+	.mura .mura-table-grid > thead > tr:not(:last-child){
+		height: 25px !important;
+		overflow-y: hidden;
+	}
+
+	.mura .mura-table-grid > thead > tr + tr > th{
+		padding-top: 0 !important;
+		background-color: ##fafafa;
+	}
+
+	.mura .mura-table-grid th input.filter{
+    border: 1px solid ##e9e9e9;
+    font-size: 13px;
+    font-weight: normal !important;
+    height: 18px;
+    padding-left: 4px;
+    position: relative;
+    top: 1px;
+    /* TODO use global font definition */
+    font-family: montserratlight,montserratregular,"Helvetica Neue",Helvetica,Arial,sans-serif;
+	}
+
+	.mura .mura-table-grid th .btn-group{
+		margin-right: 1px;
+		margin-bottom: 1px;
+	}
+	.mura .mura-table-grid th .btn-group .btn{
+		padding: 1px 4px;
+		color: ##545454;
+    background-color: ##f5f5f5;
+    border-color: ##e9e9e9;
+	}
+
+	#scaffold-table tbody tr td span{
+		cursor: pointer;
+	}
+
+	#scaffold-sortby th span{
+		cursor: pointer;
+	}
+
+	#scaffold-sortby th i {
+		padding: 1px 0px 0px 5px;
+		color: #333333;
+		font-size: 1.1em;
+	}
+	#scaffold-sortby th {
+	}
+
+	#scaffold-crumb-display:not(:empty){
+		min-height: 30px;
+	}
+
+	.formtemplate {
+		margin: 20px 0;
+	}
+	.formtemplate div {
+		margin: 10px;
+		padding: 10px 0;
+		border-top: 1px solid #ccc;
+	}
+	#property-template {
+		margin: 10px 0;
+	}
+	#assembler-properties li {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	#assembler-properties .assembler-item-box {
+		width: 100%;
+		display: block;
+		margin: 1px 0;
+		padding: 5px 5px 5px 10px;
+	}
+
+	#assembler-properties .assembler-item-box .assembler-prop {
+		padding: 4px 5px 5px 10px;
+		border-left: 5px solid #eee;
+	}
+
+	.assembler-no-displayname {
+		color: #880000;
+	}
+
+	.small {
+		font-size: 0.7em;
+	}
+
+	.crumbly li {
+		display: inline-block;
+		float: left;
+	}
+
+	#scaffold-table td {
+		padding-bottom: 5px;
+	}
+
+	#assembler-preview,.assembler-preview {
+		float: left;
+		border: 2px solid #333;
+		width: 490px;
+		height: 600px;
+		overflow: scroll;
+
+	}
+
+	#load-spin #spinner {
+	  position: absolute;
+	  left: 50%;
+	  top: 50%;
+	  z-index: 10000;
+	  width: 150px;
+	  height: 150px;
+	  margin: -75px 0 0 -75px;
+	  border: 16px solid #f3f3f3;
+	  border-radius: 50%;
+	  border-top: 16px solid #3498db;
+	  width: 120px;
+	  height: 120px;
+	  -webkit-animation: spin 2s linear infinite;
+	  animation: spin 2s linear infinite;
+	}
+
+	#load-spin {
+		position: fixed;
+		width: 100%;
+		height: 100%;
+		left: 0;
+		top: 0;
+		background-color: #fff;
+		z-index: 10000;
+		border: 16px solid #f3f3f3;
+		opacity: .8;
+	}
+
+</style>
+
