@@ -46,129 +46,7 @@
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 
-
 <cfoutput>
-<script src="#$.globalConfig('rootPath')#/core/vendor/vue/vue.js"></script>
-<!--- todo: ok to delete these? --->
-<!---<script src="#$.globalConfig('rootPath')#/admin/assets/js/vue.min.js"></script>--->
-<!--- 
-<script src="#$.globalConfig('rootPath')#/admin/assets/js/jquery/jquery-ui.min.js"></script>
- --->
-<script src="#$.globalConfig('rootPath')#/admin/assets/js/scaffold/assembler.js"></script>
-
-
-		<style>
-			##scaffold-sortby th i {
-				padding: 1px 0px 0px 5px;
-				color: ##333333;
-				font-size: 1.1em;
-			}
-			##scaffold-sortby th {
-			}
-
-			##scaffold-table tr.alt td {
-				background-color: ##eee;
-			}
-			.formtemplate{
-				margin: 0 0 20px 0;
-			}
-			.formtemplate + .formtemplate {
-				margin-top: 20px;
-			}
-			##property-template,
-			##related-form-template-property,
-			##related-form-template {
-				margin: 10px 0;
-			}
-			##assembler-properties li {
-				list-style: none;
-				margin: 0;
-				padding: 0;
-			}
-			##assembler-properties .assembler-item-box {
-				width: 100%;
-				display: block;
-				margin: 1px 0;
-				padding: 5px 5px 5px 10px;
-			}
-
-			##assembler-properties .assembler-item-box .assembler-prop {
-				padding: 4px 5px 5px 10px;
-				border-left: 5px solid ##eee;
-			}
-
-			.assembler-no-displayname {
-				color: ##880000;
-			}
-
-			.small {
-				font-size: 0.7em;
-			}
-
-			.breadcrumb {
-				list-style: none;
-				overflow: hidden;
-				height: 25px;
-			}
-			.crumbly li {
-				display: inline-block;
-				float: left;
-			}
-
-			##scaffold-table {
-
-			}
-
-			##scaffold-table td {
-				padding-bottom: 5px;
-			}
-
-			##assembler-preview,.assembler-preview {
-				float: left;
-				margin-bottom:60px;
-				margin-top:10px;
-				width: 100%;
-				height: 480px;
-				font-size: .92em;
-				overflow: scroll;
-
-			}
-
-			##load-spin ##spinner {
-			  position: absolute;
-			  left: 50%;
-			  top: 50%;
-			  z-index: 10000;
-			  width: 150px;
-			  height: 150px;
-			  margin: -75px 0 0 -75px;
-			  border: 16px solid ##f3f3f3;
-			  border-radius: 50%;
-			  border-top: 16px solid ##3498db;
-			  width: 120px;
-			  height: 120px;
-			  -webkit-animation: spin 2s linear infinite;
-			  animation: spin 2s linear infinite;
-			}
-
-			##load-spin {
-				position: fixed;
-				width: 100%;
-				height: 100%;
-				left: 0;
-				top: 0;
-				background-color: ##fff;
-				z-index: 10000;
-				border: 16px solid ##f3f3f3;
-				opacity: .8;
-			}
-		</style>
-
-		<script>
-			var Assembler = "";
-			var Scaffolder = "";
-			var Master = "";
-		</script>
 
 <div id="alert-assembler-saved">
 </div>
@@ -185,65 +63,39 @@
 
 <div class="block block-constrain" id="container">
 
-	<!--- /Tab Nav --->
+	<!--- Tab navigation --->
+  <ul class="mura-tabs nav-tabs" data-toggle="tabs">
+    <li class="active"><a href="##tabDef" onclick="return false;"><span>Definition</span></a></li>
+    <li class=""><a href="##tabProp" onclick="return false;"><span>Properties</span></a></li>
+    <li class=""><a href="##tabRel" onclick="return false;"><span>Relationships</span></a></li>
+  </ul>	<!--- /Tab Nav --->
 
 	<div class="block-content tab-content">
 
-		<!-- start tab -->
-		<div class="tab-pane active">
+		<!-- definitions-->
+		<div class="tab-pane active" id="tabDef">
 
 			<div class="block block-bordered">
-				<div id="load-spin" style="display: none;"><div id="load-spin-spinner"></div></div>
-				<!-- block header -->
-				<div class="block-header">
-					<h3 class="block-title">
-						Scaffolding
-					</h3>
-				</div> <!-- /.block header -->
-						<div>
-							<div id="container-assembler">
-									<!---
-									<button @click='clickLoadEntity'>Load</button>
-									<input type="text" id='loadentity' name="loadentity" value="">
-									--->
-									<assembler-attributes-form-template :model="model"></assembler-attributes-form-template>
-
-									<!--- new relationship/property form --->
-									<div class="block-content">
-										<div class="btn-group pull-right">
-											<button class="btn" @click='clickAddProperty'><i class="mi-plus-circle"></i> Add Property</button>
-											<button class="btn" @click='clickAddRelated'><i class="mi-plus-circle"></i> Add Relationship</button>
-										</div>
-										<assembler-property-template :model="model"	></assembler-property-template>
-										<div>
-											<component :is="currentView" :data="data" :rendertypes="rendertypes" :fieldtypes="fieldtypes" :datatypes="datatypes" :model="model" transition="fade" transition-mode="out-in"></component>
-										</div>
-									</div>
-
-
-									<!--- save button --->
-<!--- 									<div class="btn-group">
-										<button v-if="model.entityname != '' && model.table != ''" @click='clickSave' class="btn"><i class="mi-save"></i> Save</button>
-										<button v-else class="btn" disabled><i class="mi-save"></i> Save</button>
-									</div>
- --->
-<div class="mura-actions">
- <div class="form-actions">
-		<button v-if="model.entityname != '' && model.table != ''" @click='clickSave' class="btn mura-primary"><i class="mi-check-circle"></i> Save</button>
-		<button v-else class="btn" disabled><i class="mi-ban"></i> Save</button>
- </div>
-</div>
-
-
-							</div>
-						</div>
-
+				<cfinclude template="assembler_def.cfm">
 			</div> <!-- /.block-bordered -->
-		</div> <!-- /.tab-pane -->
+		</div> <!-- /tabDef -->
+
+		<!-- properties -->
+		<div class="tab-pane" id="tabProp">
+			<div class="block block-bordered">
+				<cfinclude template="assembler_prop.cfm">
+			</div> <!-- /.block-bordered -->
+		</div> <!-- /tabProp -->
+
+		<!-- relationships -->
+		<div class="tab-pane" id="tabRel">
+			<div class="block block-bordered">
+				<cfinclude template="assembler_rel.cfm">
+			</div> <!-- /.block-bordered -->
+		</div> <!-- /tabRel -->
 
 	</div> <!-- /.block-content.tab-content -->
 </div> <!-- /.block-constrain -->
-
 
 	<template id="assembler-property-template">
 		<div id="property-template">
@@ -278,7 +130,6 @@
 			   IMPORTANT: In many instances you will need to reload Mura after updating dynamically created entities.
 			</div>
 
-
 			<div class="half">
 				<div class="mura-control-group">
 					<label>Entity Name</label>
@@ -291,7 +142,6 @@
 					<input type="text" v-model="model.displayname"
 						name="displayname" @change="model.displayname=removeInvalidText(model.displayname)">
 				</div>
-
 
 				<div class="mura-control-group">
 					<label>Table Name</label>
@@ -374,7 +224,6 @@
 				</select>
 			</div>
 
-
 			<div class="mura-control-group">
 					<label>Foreign Key Column</label>
 					<select
@@ -411,8 +260,6 @@
 					<option v-for="(option,index) in ['none','delete']" :value="option" :selected="option == data.cascade ? 'selected' : 'null'">{{option}}</option>
 				</select>
 			</div>
-
-
 
 			<div>
 				<div class="btn-group">
@@ -518,7 +365,6 @@
 			</span>
 		</div>
 
-
 			<div class="mura-control-group" v-if="(data.rendertype == 'radio' || data.rendertype == 'dropdown') && data.fieldtype != 'id'">
 				<label>Option List</label>
 					<div class="help-block-inline">
@@ -528,16 +374,14 @@
 					name="optionlist">
 			</div>
 
-
 			<div class="mura-control-group" v-if="(data.rendertype == 'radio' || data.rendertype == 'dropdown') && data.fieldtype != 'id'">
 				<label>Option Value List</label>
 					<div class="help-block-inline">
 						"^" Delimiter, e.g. 1^2^3
 					</div>
-				<input type="text" v-model="data.optionvaluelist"
+				<input type="text" v-model="data.optionvaluelistF"
 					name="optionvaluelist">
 			</div>
-
 
 			<div>
 				<div class="btn-group">
@@ -549,4 +393,120 @@
 		</div>
 	</template>
 
+<script src="#$.globalConfig('rootPath')#/core/vendor/vue/vue.js"></script>
+<script src="#$.globalConfig('rootPath')#/admin/assets/js/scaffold/assembler.js"></script>
+
+<script>
+	var Assembler = "";
+	var Scaffolder = "";
+	var Master = "";
+</script>
+
 </cfoutput>
+
+<style>
+	#scaffold-sortby th i {
+		padding: 1px 0px 0px 5px;
+		color: #333333;
+		font-size: 1.1em;
+	}
+	#scaffold-sortby th {
+	}
+
+	#scaffold-table tr.alt td {
+		background-color: #eee;
+	}
+	.formtemplate{
+		margin: 0 0 20px 0;
+	}
+	.formtemplate + .formtemplate {
+		margin-top: 20px;
+	}
+	#property-template,
+	#related-form-template-property,
+	#related-form-template {
+		margin: 10px 0;
+	}
+	#assembler-properties li {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	#assembler-properties .assembler-item-box {
+		width: 100%;
+		display: block;
+		margin: 1px 0;
+		padding: 5px 5px 5px 10px;
+	}
+
+	#assembler-properties .assembler-item-box .assembler-prop {
+		padding: 4px 5px 5px 10px;
+		border-left: 5px solid #eee;
+	}
+
+	.assembler-no-displayname {
+		color: #880000;
+	}
+
+	.small {
+		font-size: 0.7em;
+	}
+
+	.breadcrumb {
+		list-style: none;
+		overflow: hidden;
+		height: 25px;
+	}
+	.crumbly li {
+		display: inline-block;
+		float: left;
+	}
+
+	#scaffold-table {
+
+	}
+
+	#scaffold-table td {
+		padding-bottom: 5px;
+	}
+
+	#assembler-preview,.assembler-preview {
+		float: left;
+		margin-bottom:60px;
+		margin-top:10px;
+		width: 100%;
+		height: 480px;
+		font-size: .92em;
+		overflow: scroll;
+
+	}
+
+	#load-spin #spinner {
+	  position: absolute;
+	  left: 50%;
+	  top: 50%;
+	  z-index: 10000;
+	  width: 150px;
+	  height: 150px;
+	  margin: -75px 0 0 -75px;
+	  border: 16px solid #f3f3f3;
+	  border-radius: 50%;
+	  border-top: 16px solid #3498db;
+	  width: 120px;
+	  height: 120px;
+	  -webkit-animation: spin 2s linear infinite;
+	  animation: spin 2s linear infinite;
+	}
+
+	#load-spin {
+		position: fixed;
+		width: 100%;
+		height: 100%;
+		left: 0;
+		top: 0;
+		background-color: #fff;
+		z-index: 10000;
+		border: 16px solid #f3f3f3;
+		opacity: .8;
+	}
+</style>
