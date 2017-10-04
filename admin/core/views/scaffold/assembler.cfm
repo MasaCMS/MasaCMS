@@ -124,10 +124,9 @@
 
 	<template id="assembler-attributes-form-template">
 		<div class="formtemplate" id="attributes-form-template">
-			<h3>Entity Definition</h3>
 
 			<div class="help-block">
-			   IMPORTANT: In many instances you will need to reload Mura after updating dynamically created entities.
+			   IMPORTANT: After updating dynamically created entities, a reload of the Mura application may be required.
 			</div>
 
 			<div class="half">
