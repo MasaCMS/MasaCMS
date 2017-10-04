@@ -7,12 +7,7 @@
   var IsSuperUser = #rc.$.currentUser().isSuperUser()#;
 </script>
 
-
 <script src="#$.globalConfig('rootPath')#/core/vendor/vue/vue.js"></script>
-<!---
-<script src="#$.globalConfig('rootPath')#/admin/assets/js/jquery/jquery-ui.min.js"></script>
-<script src="#$.globalConfig('rootPath')#/admin/assets/js/vue.min.js"></script>
---->
 <script src="#$.globalConfig('rootPath')#/admin/assets/js/scaffold/scaffolder.js"></script>
 
 <style>
@@ -465,22 +460,6 @@
 						</option>
 					</select>
 				</div>
-			</div>
-		</div>
-	</template>
-
-<!--- todo: is this used? --->
-	<template id="x-scaffold-related-many">
-		<div v-if="this.entity.properties.isnew == 0">
-			<div class="mura-control-group">
-				<label>{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
-				<ul v-if="mrelated && mrelated.collection">
-					<li v-for="object in mrelated.collection.items">
-						<span v-if="property.renderfield">{{object.properties[property.renderfield]}}</span><span v-else>{{object.properties.id}}</span>
-						<button @click="showForm(object.properties.entityname,object.properties.id,entity.properties.id)">EDIT: {{object.properties[property.renderfield] ? object.properties[property.renderfield] : object.properties.entityname}}</button>
-					</li>
-				</ul>
-				<button class="btn" @click="showForm(property.name,'new',entity.properties.id)">ADD {{property.displayname ? property.displayname : property.name.toUpperCase()}}</button>
 			</div>
 		</div>
 	</template>
