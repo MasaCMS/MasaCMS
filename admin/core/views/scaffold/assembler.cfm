@@ -129,7 +129,6 @@
 			   IMPORTANT: After updating dynamically created entities, a reload of the Mura application may be required.
 			</div>
 
-			<div class="half">
 				<div class="mura-control-group">
 					<label>Entity Name</label>
 					<input type="text" v-model="model.entityname"
@@ -178,9 +177,9 @@
 		 				name="public" :checked="model.public == true || model.public == 1 || model.public == 'true' ? 'checked' : null">
 						Publicly Accessible</label>
 				</div>
-			</div> <!--/.half -->
 
-			<div class="half">
+			<div id="assembler-preview-pane">
+				<h3>JSON Preview</h3>
 				<pre id="assembler-preview">{{JSON.stringify(model,null,2)}}</pre>
 			</div>
 
@@ -409,9 +408,6 @@
 		color: #333333;
 		font-size: 1.1em;
 	}
-	#scaffold-sortby th {
-	}
-
 	#scaffold-table tr.alt td {
 		background-color: #eee;
 	}
@@ -461,14 +457,13 @@
 		float: left;
 	}
 
-	#scaffold-table {
-
-	}
-
 	#scaffold-table td {
 		padding-bottom: 5px;
 	}
 
+  #assembler-preview-pane{
+  	display: none;
+  }
 	#assembler-preview,.assembler-preview {
 		float: left;
 		margin-bottom:60px;
