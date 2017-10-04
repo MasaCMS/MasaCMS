@@ -25,6 +25,128 @@
 	</div>
 </template> <!--- / assembler-property-template --->
 
+<template id="assembler-property-form-template">
+	<div class="formtemplate" id="related-form-template-property">
+		<div class="mura-control-group">
+			<label>Property Name</label>
+			<input type="text" v-model="data.name"
+				name="name" @change="data.name=data.name.replace(/[^0-9a-z]/gi, '');">
+		</div>
+
+		<div class="mura-control-group" v-if="data.fieldtype != 'id'">
+			<label>Display Name</label>
+			<input type="text" v-model="data.displayname"
+				name="displayname" @change="data.displayname=removeInvalidText(data.displayname)">
+		</div>
+
+		<div class="mura-control-group" v-if="data.fieldtype != 'id'">
+			<label>Data Type</label>
+			<select
+				v-model="data.datatype"
+				name="datatype"
+				>
+				<option v-for="(option,index) in datatypes" :value="option.name" :selected="option.name == data.datatype ? 'selected' : 'null'">{{datatypes[index].label}}</option>
+			</select>
+		</div>
+
+		<div class="mura-control-group" v-if="data.fieldtype != 'id'">
+			<label>Field Type</label>
+			<select
+				v-model="data.fieldtype"
+				name="fieldtype"
+				>
+				<option v-for="(option,index) in fieldtypes" :value="option.name" :selected="option.name == data.fieldtype ? 'selected' : 'null'">{{fieldtypes[index].label}}</option>
+			</select>
+		</div>
+
+		<div class="mura-control-group" v-if="data.fieldtype != 'id'">
+			<label>Default</label>
+			<input type="text" v-model="data.default"
+				name="default">
+		</div>
+
+		<div class="mura-control-group" v-if="data.fieldtype != 'id'">
+			<label>Form Field</label>
+			<select
+				v-model="data.rendertype"
+				name="rendertype"
+				>
+				<option v-for="(option,index) in rendertypes" :value="option.name" :selected="option.name == data.rendertype ? 'selected' : 'null'">{{rendertypes[index].label}}</option>
+			</select>
+		</div>
+
+		<div class="mura-control-group" v-if="data.fieldtype != 'id'">
+			<label>Length</label>
+			<input type="text" v-model="data.length"
+				name="length">
+		</div>
+
+		<div class="mura-control-group">
+			<span v-if="data.fieldtype != 'id'">
+				<label class="checkbox">
+				<input type="checkbox" v-model="data.required"
+					v-bind:true-value="true"
+	   		 	v-bind:false-value="false"
+	 				name="required" :checked="data.required == true || data.required == 1 || data.required == 'true' ? 'checked' : null">
+					Required</label>
+			</span>
+
+			<span v-if="data.fieldtype != 'id'">
+				<label class="checkbox">
+				<input type="checkbox" v-model="data.listview"
+					v-bind:true-value="true"
+	   			v-bind:false-value="false"
+	 				name="listview" :checked="data.listview == true || data.listview == 1 || data.listview == 'true' ? 'checked' : null">
+				List</label>
+			</span>
+
+			<span v-if="data.fieldtype != 'id'">
+				<label class="checkbox">
+					<input type="checkbox" v-model="data.filter"
+					v-bind:true-value="true"
+	   		 	v-bind:false-value="false"
+ 					name="filter" :checked="data.filter == true || data.filter == 1 || data.filter == 'true' ? 'checked' : null">
+				Filter</label>
+			</span>
+
+			<span v-if="data.fieldtype != 'id'">
+				<label class="checkbox">
+				<input type="checkbox" v-model="data.nullable"
+				v-bind:true-value="true"
+	   		v-bind:false-value="false"
+ 				name="nullable" :checked="data.nullable == true || data.nullable == 1 || data.nullable == 'true' ? 'checked' : null">
+				Nullable</label>
+		</span>
+	</div>
+
+		<div class="mura-control-group" v-if="(data.rendertype == 'radio' || data.rendertype == 'dropdown') && data.fieldtype != 'id'">
+			<label>Option List</label>
+				<div class="help-block-inline">
+					"^" Delimiter, e.g. One^Two^Three
+				</div>
+			<input type="text" v-model="data.optionlist"
+				name="optionlist">
+		</div>
+
+		<div class="mura-control-group" v-if="(data.rendertype == 'radio' || data.rendertype == 'dropdown') && data.fieldtype != 'id'">
+			<label>Option Value List</label>
+				<div class="help-block-inline">
+					"^" Delimiter, e.g. 1^2^3
+				</div>
+			<input type="text" v-model="data.optionvaluelistF"
+				name="optionvaluelist">
+		</div>
+
+		<div>
+			<div class="btn-group">
+				<button class="btn" @click="clickUpdateProperty"><i class="mi-save"></i> <span v-if="this.$parent.isupdate">Update Property</span><span v-else>Add Property</span></button>
+				<button class="btn" v-if="this.$parent.isupdate && data.fieldtype != 'id'" @click="clickDeleteProperty"><i class="mi-trash"></i> Delete</button>
+				<button class="btn" @click='clickCancel'><i class="mi-times-circle"></i> Cancel</button>
+			</div>
+		</div>
+	</div>
+</template> <!--- / assembler-property-form-template --->
+
 <template id="assembler-attributes-form-template">
 	<div class="formtemplate" id="attributes-form-template">
 
@@ -171,127 +293,5 @@
 		</div>
 	</div>
 </template> <!--- / assembler-related-form-template --->
-
-<template id="assembler-property-form-template">
-	<div class="formtemplate" id="related-form-template-property">
-		<div class="mura-control-group">
-			<label>Property Name</label>
-			<input type="text" v-model="data.name"
-				name="name" @change="data.name=data.name.replace(/[^0-9a-z]/gi, '');">
-		</div>
-
-		<div class="mura-control-group" v-if="data.fieldtype != 'id'">
-			<label>Display Name</label>
-			<input type="text" v-model="data.displayname"
-				name="displayname" @change="data.displayname=removeInvalidText(data.displayname)">
-		</div>
-
-		<div class="mura-control-group" v-if="data.fieldtype != 'id'">
-			<label>Data Type</label>
-			<select
-				v-model="data.datatype"
-				name="datatype"
-				>
-				<option v-for="(option,index) in datatypes" :value="option.name" :selected="option.name == data.datatype ? 'selected' : 'null'">{{datatypes[index].label}}</option>
-			</select>
-		</div>
-
-		<div class="mura-control-group" v-if="data.fieldtype != 'id'">
-			<label>Field Type</label>
-			<select
-				v-model="data.fieldtype"
-				name="fieldtype"
-				>
-				<option v-for="(option,index) in fieldtypes" :value="option.name" :selected="option.name == data.fieldtype ? 'selected' : 'null'">{{fieldtypes[index].label}}</option>
-			</select>
-		</div>
-
-		<div class="mura-control-group" v-if="data.fieldtype != 'id'">
-			<label>Default</label>
-			<input type="text" v-model="data.default"
-				name="default">
-		</div>
-
-		<div class="mura-control-group" v-if="data.fieldtype != 'id'">
-			<label>Form Field</label>
-			<select
-				v-model="data.rendertype"
-				name="rendertype"
-				>
-				<option v-for="(option,index) in rendertypes" :value="option.name" :selected="option.name == data.rendertype ? 'selected' : 'null'">{{rendertypes[index].label}}</option>
-			</select>
-		</div>
-
-		<div class="mura-control-group" v-if="data.fieldtype != 'id'">
-			<label>Length</label>
-			<input type="text" v-model="data.length"
-				name="length">
-		</div>
-
-		<div class="mura-control-group">
-			<span v-if="data.fieldtype != 'id'">
-				<label class="checkbox">
-				<input type="checkbox" v-model="data.required"
-					v-bind:true-value="true"
-	   		 	v-bind:false-value="false"
-	 				name="required" :checked="data.required == true || data.required == 1 || data.required == 'true' ? 'checked' : null">
-					Required</label>
-			</span>
-
-			<span v-if="data.fieldtype != 'id'">
-				<label class="checkbox">
-				<input type="checkbox" v-model="data.listview"
-					v-bind:true-value="true"
-	   			v-bind:false-value="false"
-	 				name="listview" :checked="data.listview == true || data.listview == 1 || data.listview == 'true' ? 'checked' : null">
-				List</label>
-			</span>
-
-			<span v-if="data.fieldtype != 'id'">
-				<label class="checkbox">
-					<input type="checkbox" v-model="data.filter"
-					v-bind:true-value="true"
-	   		 	v-bind:false-value="false"
- 					name="filter" :checked="data.filter == true || data.filter == 1 || data.filter == 'true' ? 'checked' : null">
-				Filter</label>
-			</span>
-
-			<span v-if="data.fieldtype != 'id'">
-				<label class="checkbox">
-				<input type="checkbox" v-model="data.nullable"
-				v-bind:true-value="true"
-	   		v-bind:false-value="false"
- 				name="nullable" :checked="data.nullable == true || data.nullable == 1 || data.nullable == 'true' ? 'checked' : null">
-				Nullable</label>
-		</span>
-	</div>
-
-		<div class="mura-control-group" v-if="(data.rendertype == 'radio' || data.rendertype == 'dropdown') && data.fieldtype != 'id'">
-			<label>Option List</label>
-				<div class="help-block-inline">
-					"^" Delimiter, e.g. One^Two^Three
-				</div>
-			<input type="text" v-model="data.optionlist"
-				name="optionlist">
-		</div>
-
-		<div class="mura-control-group" v-if="(data.rendertype == 'radio' || data.rendertype == 'dropdown') && data.fieldtype != 'id'">
-			<label>Option Value List</label>
-				<div class="help-block-inline">
-					"^" Delimiter, e.g. 1^2^3
-				</div>
-			<input type="text" v-model="data.optionvaluelistF"
-				name="optionvaluelist">
-		</div>
-
-		<div>
-			<div class="btn-group">
-				<button class="btn" @click="clickUpdateProperty"><i class="mi-save"></i> <span v-if="this.$parent.isupdate">Update Property</span><span v-else>Add Property</span></button>
-				<button class="btn" v-if="this.$parent.isupdate && data.fieldtype != 'id'" @click="clickDeleteProperty"><i class="mi-trash"></i> Delete</button>
-				<button class="btn" @click='clickCancel'><i class="mi-times-circle"></i> Cancel</button>
-			</div>
-		</div>
-	</div>
-</template> <!--- / assembler-property-form-template --->
 
 </cfoutput>

@@ -115,7 +115,8 @@
 						<div class="btn-group pull-right">
 							<button class="btn" @click='clickAddRelated'><i class="mi-plus-circle"></i> Add Relationship</button>
 						</div>
-						<assembler-property-template :model="model"	></assembler-property-template>
+						<!--- todo: split relationships to separate tab --->
+						<!--- <assembler-related-template :model="model"	></assembler-related-template> --->
 						<div>
 							<component :is="currentView" :data="data" :rendertypes="rendertypes" :fieldtypes="fieldtypes" :datatypes="datatypes" :model="model" transition="fade" transition-mode="out-in"></component>
 						</div>
