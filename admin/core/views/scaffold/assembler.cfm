@@ -111,21 +111,21 @@
 			<!-- relationships -->
 			<div class="tab-pane" id="tabRel">
 				<div class="block block-bordered">
-
 				</div> <!-- /.block-bordered -->
 			</div> <!-- /tabRel -->
 
-			<div class="mura-actions">
-				<div class="form-actions">
-					<button v-if="model.entityname != '' && model.table != ''" @click='clickSave' class="btn mura-primary"><i class="mi-check-circle"></i> Save</button>
-					<button v-else class="btn" disabled><i class="mi-ban"></i> Save</button>
-				</div>
-			</div>				
 		</div> <!-- /.block-content.tab-content -->
+
+		<div class="mura-actions">
+			<div class="form-actions">
+				<button v-if="model.entityname != '' && model.table != ''" @click='clickSave' class="btn mura-primary"><i class="mi-check-circle"></i> Save</button>
+				<button v-else class="btn" disabled><i class="mi-ban"></i> Save</button>
+			</div>
+		</div>				
+
 	</div> <!--- /container-assembler --->
 
 </div> <!-- /.block-constrain -->
-
 
 	<template id="assembler-property-template">
 		<div id="property-template">
