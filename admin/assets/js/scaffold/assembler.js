@@ -89,7 +89,6 @@ $( document ).ready(function() {
 							}
 						}
 
-
 						listener(data);
 
 					});
@@ -133,7 +132,6 @@ $( document ).ready(function() {
 			}
 		},
 
-
 		processProperties: function( data ) {
 
 			var self = this;
@@ -154,7 +152,6 @@ $( document ).ready(function() {
 				if(!item.orderno){
 					item.orderno = orderpx++;
 				}
-
 
 				if(item.optionlist){
 					item.optionlist = item.optionlist.split('^');
@@ -206,10 +203,7 @@ $( document ).ready(function() {
 			return text.replace(/"/g,'\'');
 		}
 
-
-
 }
-
 
 	var MuraAssembler = new MuraORMAssenbler.init( Mura.siteid );
 
@@ -408,7 +402,6 @@ $( document ).ready(function() {
 				nullable: true
 			};
 
-
 			this.relatedmodel = {
 				"default": "",
 				fieldtype: "one-to-many",
@@ -534,7 +527,6 @@ $( document ).ready(function() {
 							Assembler.loadEntity(savemodel.entityname);
 						});
 
-
 			},
 			clickDelete: function( entityname ) {
 			},
@@ -542,7 +534,6 @@ $( document ).ready(function() {
 
 				this.isupdate = false;
 				this.data = JSON.parse(JSON.stringify(this.relatedmodel));
-
 
 				if(this.data.fkcolumn && this.data.fkcolumn == 'primaryKey') {
 					this.data.fkcolumn = '';
@@ -671,7 +662,6 @@ $( document ).ready(function() {
 				if(!this.data.relatesto)
 					this.data.relatesto = this.data.cfc;
 
-
 				this.currentView = "assembler-related-form-template";
 			},
 			clickLoadEntity: function() {
@@ -684,7 +674,6 @@ $( document ).ready(function() {
 				this.model = JSON.parse(JSON.stringify(this.staticmodel));
 
 				var entityname = $("#loadentity").val();
-
 
 				if(!entityname.length){
 					Mura("#load-spin").hide();
@@ -709,11 +698,9 @@ $( document ).ready(function() {
 					return;
 				}
 
-
 				this.model = json;
 
 				console.log(this.model);
-
 
 				$( "#assembler-properties" ).sortable(
 					{

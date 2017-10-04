@@ -48,8 +48,17 @@
 
 <cfoutput>
 
-<div id="alert-assembler-saved">
-</div>
+<script src="#$.globalConfig('rootPath')#/core/vendor/vue/vue.js"></script>
+<script src="#$.globalConfig('rootPath')#/admin/assets/js/scaffold/assembler.js"></script>
+
+<script>
+	var Assembler = "";
+	var Scaffolder = "";
+	var Master = "";
+</script>
+
+<div id="load-spin" style="display: none;"><div id="load-spin-spinner"></div></div>
+<div id="alert-assembler-saved"></div>
 
 <div class="mura-header">
   <h1>Custom Mura ORM Entity</h1>
@@ -70,32 +79,53 @@
     <li class=""><a href="##tabRel" onclick="return false;"><span>Relationships</span></a></li>
   </ul>	<!--- /Tab Nav --->
 
-	<div class="block-content tab-content">
+	<!--- assembler --->
+	<div id="container-assembler">
 
-		<!-- definitions-->
-		<div class="tab-pane active" id="tabDef">
+	  <!--- start tab content --->
+		<div class="block-content tab-content">		
+			<!-- definitions-->
+			<div class="tab-pane active" id="tabDef">
+				<div class="block block-bordered">
+					<assembler-attributes-form-template :model="model"></assembler-attributes-form-template>
+				</div> <!-- /.block-bordered -->
+			</div> <!-- /tabDef -->
 
-			<div class="block block-bordered">
-				<cfinclude template="assembler_def.cfm">
-			</div> <!-- /.block-bordered -->
-		</div> <!-- /tabDef -->
+			<!-- properties -->
+			<div class="tab-pane" id="tabProp">
+				<div class="block block-bordered">
+					<!--- new relationship/property form --->
+					<div class="block-content">
+						<div class="btn-group pull-right">
+							<button class="btn" @click='clickAddProperty'><i class="mi-plus-circle"></i> Add Property</button>
+							<button class="btn" @click='clickAddRelated'><i class="mi-plus-circle"></i> Add Relationship</button>
+						</div>
+						<assembler-property-template :model="model"	></assembler-property-template>
+						<div>
+							<component :is="currentView" :data="data" :rendertypes="rendertypes" :fieldtypes="fieldtypes" :datatypes="datatypes" :model="model" transition="fade" transition-mode="out-in"></component>
+						</div>
+					</div>
+				</div> <!-- /.block-bordered -->
+			</div> <!-- /tabProp -->
 
-		<!-- properties -->
-		<div class="tab-pane" id="tabProp">
-			<div class="block block-bordered">
-				<cfinclude template="assembler_prop.cfm">
-			</div> <!-- /.block-bordered -->
-		</div> <!-- /tabProp -->
+			<!-- relationships -->
+			<div class="tab-pane" id="tabRel">
+				<div class="block block-bordered">
 
-		<!-- relationships -->
-		<div class="tab-pane" id="tabRel">
-			<div class="block block-bordered">
-				<cfinclude template="assembler_rel.cfm">
-			</div> <!-- /.block-bordered -->
-		</div> <!-- /tabRel -->
+				</div> <!-- /.block-bordered -->
+			</div> <!-- /tabRel -->
 
-	</div> <!-- /.block-content.tab-content -->
+			<div class="mura-actions">
+				<div class="form-actions">
+					<button v-if="model.entityname != '' && model.table != ''" @click='clickSave' class="btn mura-primary"><i class="mi-check-circle"></i> Save</button>
+					<button v-else class="btn" disabled><i class="mi-ban"></i> Save</button>
+				</div>
+			</div>				
+		</div> <!-- /.block-content.tab-content -->
+	</div> <!--- /container-assembler --->
+
 </div> <!-- /.block-constrain -->
+
 
 	<template id="assembler-property-template">
 		<div id="property-template">
@@ -391,14 +421,7 @@
 		</div>
 	</template>
 
-<script src="#$.globalConfig('rootPath')#/core/vendor/vue/vue.js"></script>
-<script src="#$.globalConfig('rootPath')#/admin/assets/js/scaffold/assembler.js"></script>
 
-<script>
-	var Assembler = "";
-	var Scaffolder = "";
-	var Master = "";
-</script>
 
 </cfoutput>
 
