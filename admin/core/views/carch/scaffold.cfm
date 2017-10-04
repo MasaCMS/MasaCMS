@@ -183,7 +183,6 @@
 	</div> <!-- /container-scaffold -->
 </div> <!-- /.block-content -->
 
-<!--- TODO: what goes here? : looks empty? --->
 	<template id="scaffold-crumb-template">
 			<div v-if="state" id="scaffold-crumb-display">
 				<ul v-for="(att,index) in state" class="crumbly">
@@ -250,7 +249,7 @@
 				<ul class="breadcrumb" v-if="entityname!='entity'">
 						<li><a @click="showAll" onclick="return false;" href="##"><i class="mi-cube"></i>Custom</a></li>
 						<li>
-							<strong><a href="##" onclick="return false;"><i class="mi-cube"></i>{{entityname}}
+							<strong><a href="##" onclick="return false;"><i class="mi-cubes"></i>{{entityname}}
 								<span v-if="currentparent && currentparent.properties">(for {{currentparent.properties.entityname}}: <span v-for="item in currentparent.properties._displaylist">{{currentparent.properties[item.name]}}) </span>
 						</span>
 						</a></strong>
@@ -388,7 +387,7 @@
 
 		<ul class="breadcrumb">
 			<li><a @click="showAll" href="##" onclick="return false;"><i class="mi-cube"></i>Custom</a></li>
-			<li><a @click="clickBack" href="##" onclick="return false;"><i class="mi-cube"></i>{{entityname}}</a></li>
+			<li><a @click="clickBack" href="##" onclick="return false;"><i class="mi-cubes"></i>{{entityname}}</a></li>
 			<li><strong><a href="##" onclick="return false;"><i class="mi-edit"></i>Edit</a></strong></li>
 		</ul>
 

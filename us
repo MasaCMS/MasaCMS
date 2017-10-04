@@ -1,0 +1,47 @@
+[1mdiff --git a/admin/core/views/carch/scaffold.cfm b/admin/core/views/carch/scaffold.cfm[m
+[1mindex ee8a350..65fc681 100644[m
+[1m--- a/admin/core/views/carch/scaffold.cfm[m
+[1m+++ b/admin/core/views/carch/scaffold.cfm[m
+[36m@@ -183,7 +183,6 @@[m
+ 	</div> <!-- /container-scaffold -->[m
+ </div> <!-- /.block-content -->[m
+ [m
+[31m-<!--- TODO: what goes here? : looks empty? --->[m
+ 	<template id="scaffold-crumb-template">[m
+ 			<div v-if="state" id="scaffold-crumb-display">[m
+ 				<ul v-for="(att,index) in state" class="crumbly">[m
+[36m@@ -250,7 +249,7 @@[m
+ 				<ul class="breadcrumb" v-if="entityname!='entity'">[m
+ 						<li><a @click="showAll" onclick="return false;" href="##"><i class="mi-cube"></i>Custom</a></li>[m
+ 						<li>[m
+[31m-							<strong><a href="##" onclick="return false;"><i class="mi-cube"></i>{{entityname}}[m
+[32m+[m							[32m<strong><a href="##" onclick="return false;"><i class="mi-cubes"></i>{{entityname}}[m
+ 								<span v-if="currentparent && currentparent.properties">(for {{currentparent.properties.entityname}}: <span v-for="item in currentparent.properties._displaylist">{{currentparent.properties[item.name]}}) </span>[m
+ 						</span>[m
+ 						</a></strong>[m
+[36m@@ -388,7 +387,7 @@[m
+ [m
+ 		<ul class="breadcrumb">[m
+ 			<li><a @click="showAll" href="##" onclick="return false;"><i class="mi-cube"></i>Custom</a></li>[m
+[31m-			<li><a @click="clickBack" href="##" onclick="return false;"><i class="mi-cube"></i>{{entityname}}</a></li>[m
+[32m+[m			[32m<li><a @click="clickBack" href="##" onclick="return false;"><i class="mi-cubes"></i>{{entityname}}</a></li>[m
+ 			<li><strong><a href="##" onclick="return false;"><i class="mi-edit"></i>Edit</a></strong></li>[m
+ 		</ul>[m
+ [m
+[1mdiff --git a/admin/core/views/scaffold/assembler.cfm b/admin/core/views/scaffold/assembler.cfm[m
+[1mindex cf92825..57905cd 100644[m
+[1m--- a/admin/core/views/scaffold/assembler.cfm[m
+[1m+++ b/admin/core/views/scaffold/assembler.cfm[m
+[36m@@ -49,9 +49,11 @@[m
+ [m
+ <cfoutput>[m
+ <script src="#$.globalConfig('rootPath')#/core/vendor/vue/vue.js"></script>[m
+[32m+[m[32m<!--- todo: ok to delete these? --->[m
+ <!---<script src="#$.globalConfig('rootPath')#/admin/assets/js/vue.min.js"></script>--->[m
+[31m-[m
+[32m+[m[32m<!---[m[41m [m
+ <script src="#$.globalConfig('rootPath')#/admin/assets/js/jquery/jquery-ui.min.js"></script>[m
+[32m+[m[32m --->[m
+ <script src="#$.globalConfig('rootPath')#/admin/assets/js/scaffold/assembler.js"></script>[m
+ [m
+ [m

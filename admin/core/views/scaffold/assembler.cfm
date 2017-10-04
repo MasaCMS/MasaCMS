@@ -49,9 +49,11 @@
 
 <cfoutput>
 <script src="#$.globalConfig('rootPath')#/core/vendor/vue/vue.js"></script>
+<!--- todo: ok to delete these? --->
 <!---<script src="#$.globalConfig('rootPath')#/admin/assets/js/vue.min.js"></script>--->
-
+<!--- 
 <script src="#$.globalConfig('rootPath')#/admin/assets/js/jquery/jquery-ui.min.js"></script>
+ --->
 <script src="#$.globalConfig('rootPath')#/admin/assets/js/scaffold/assembler.js"></script>
 
 
