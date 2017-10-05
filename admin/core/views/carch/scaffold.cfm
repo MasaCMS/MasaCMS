@@ -7,168 +7,8 @@
   var IsSuperUser = #rc.$.currentUser().isSuperUser()#;
 </script>
 
-
 <script src="#$.globalConfig('rootPath')#/core/vendor/vue/vue.js"></script>
-<!---
-<script src="#$.globalConfig('rootPath')#/admin/assets/js/jquery/jquery-ui.min.js"></script>
-<script src="#$.globalConfig('rootPath')#/admin/assets/js/vue.min.js"></script>
---->
 <script src="#$.globalConfig('rootPath')#/admin/assets/js/scaffold/scaffolder.js"></script>
-
-<style>
-
-/* TODO move these styles to global less & compile */
-
-	.mura .mura-table-grid > thead > tr:not(:last-child) > th{
-			border-bottom: none !important;
-			height: 25px !important;
-		}
-
-	.mura .mura-table-grid > thead > tr:not(:last-child){
-		height: 25px !important;
-		overflow-y: hidden;
-	}
-
-	.mura .mura-table-grid > thead > tr + tr > th{
-		padding-top: 0 !important;
-		background-color: ##fafafa;
-	}
-
-	.mura .mura-table-grid th input.filter{
-    border: 1px solid ##e9e9e9;
-    font-size: 13px;
-    font-weight: normal !important;
-    height: 18px;
-    padding-left: 4px;
-    position: relative;
-    top: 1px;
-    /* TODO use global font definition */
-    font-family: montserratlight,montserratregular,"Helvetica Neue",Helvetica,Arial,sans-serif;
-	}
-
-	.mura .mura-table-grid th .btn-group{
-		margin-right: 1px;
-		margin-bottom: 1px;
-	}
-	.mura .mura-table-grid th .btn-group .btn{
-		padding: 1px 4px;
-		color: ##545454;
-    background-color: ##f5f5f5;
-    border-color: ##e9e9e9;
-	}
-
-	##scaffold-table tbody tr td span{
-		cursor: pointer;
-	}
-
-	##scaffold-sortby th span{
-		cursor: pointer;
-	}
-
-	##scaffold-sortby th i {
-		padding: 1px 0px 0px 5px;
-		color: ##333333;
-		font-size: 1.1em;
-	}
-	##scaffold-sortby th {
-	}
-
-	##scaffold-crumb-display:not(:empty){
-		min-height: 30px;
-	}
-
-	.formtemplate {
-		margin: 20px 0;
-	}
-	.formtemplate div {
-		margin: 10px;
-		padding: 10px 0;
-		border-top: 1px solid ##ccc;
-	}
-	##property-template {
-		margin: 10px 0;
-	}
-	##assembler-properties li {
-		list-style: none;
-		margin: 0;
-		padding: 0;
-	}
-	##assembler-properties .assembler-item-box {
-		width: 100%;
-		display: block;
-		margin: 1px 0;
-		padding: 5px 5px 5px 10px;
-	}
-
-	##assembler-properties .assembler-item-box .assembler-prop {
-		padding: 4px 5px 5px 10px;
-		border-left: 5px solid ##eee;
-	}
-
-	.assembler-no-displayname {
-		color: ##880000;
-	}
-
-	.small {
-		font-size: 0.7em;
-	}
-
-	.crumbly li {
-		display: inline-block;
-		float: left;
-	}
-
-	##scaffold-table {
-
-	}
-
-	##scaffold-table td {
-		padding-bottom: 5px;
-	}
-
-	##assembler-preview,.assembler-preview {
-		float: left;
-		border: 2px solid ##333;
-		width: 490px;
-		height: 600px;
-		overflow: scroll;
-
-	}
-
-	##load-spin ##spinner {
-	  position: absolute;
-	  left: 50%;
-	  top: 50%;
-	  z-index: 10000;
-	  width: 150px;
-	  height: 150px;
-	  margin: -75px 0 0 -75px;
-	  border: 16px solid ##f3f3f3;
-	  border-radius: 50%;
-	  border-top: 16px solid ##3498db;
-	  width: 120px;
-	  height: 120px;
-	  -webkit-animation: spin 2s linear infinite;
-	  animation: spin 2s linear infinite;
-	}
-
-	##load-spin {
-		position: fixed;
-		width: 100%;
-		height: 100%;
-		left: 0;
-		top: 0;
-		background-color: ##fff;
-		z-index: 10000;
-		border: 16px solid ##f3f3f3;
-		opacity: .8;
-	}
-
-</style>
-
-<div class="block-header">
-<h3 class="block-title">#application.rbFactory.getKeyValue(session.rb,"sitemanager.view.custom")#</h3>
-</div>
 
 <div id="load-spin" style="display: none;"><div id="load-spin-spinner"></div></div>
 
@@ -183,7 +23,6 @@
 	</div> <!-- /container-scaffold -->
 </div> <!-- /.block-content -->
 
-<!--- TODO: what goes here? : looks empty? --->
 	<template id="scaffold-crumb-template">
 			<div v-if="state" id="scaffold-crumb-display">
 				<ul v-for="(att,index) in state" class="crumbly">
@@ -245,10 +84,10 @@
 
 			<span v-if="entityname">
 				<ul class="breadcrumb" v-if="entityname=='entity'">
-						<li><strong><a @click="showAll" onclick="return false;" href="##"><i class="mi-cube"></i>Custom</a></strong></li>
+						<li><strong><a @click="showAll" onclick="return false;" href="##"><i class="mi-cubes"></i>Custom Entities</a></strong></li>
 				</ul>
 				<ul class="breadcrumb" v-if="entityname!='entity'">
-						<li><a @click="showAll" onclick="return false;" href="##"><i class="mi-cube"></i>Custom</a></li>
+						<li><a @click="showAll" onclick="return false;" href="##"><i class="mi-cubes"></i>Custom Entities</a></li>
 						<li>
 							<strong><a href="##" onclick="return false;"><i class="mi-cube"></i>{{entityname}}
 								<span v-if="currentparent && currentparent.properties">(for {{currentparent.properties.entityname}}: <span v-for="item in currentparent.properties._displaylist">{{currentparent.properties[item.name]}}) </span>
@@ -258,19 +97,10 @@
 				</ul>
 			</span>
 
-
 			<div v-if="data.list">
 				<table width="100%" class="table table-striped table-condensed table-bordered mura-table-grid" id="scaffold-table">
 
 					<thead>
-
-						<tr id="scaffold-sortby">
-							<th class="actions"></th>
-							<th class="var-width" v-for="(item, key, index) in data.listview" :id="'sortby-' + item.name">
-								<span @click="applySortBy(item.name)">{{item.displayname}}</span>
-							</th>
-							<th></th>
-						</tr>
 
 						<tr id="scaffold-filterby">
 							<th class="actions"></th>
@@ -280,46 +110,48 @@
 							</th>
 							<th>
 								<div class="btn-group pull-right">
-									<span v-if="!data.hasFilterApplied"><a class="btn btn-sm" @click='applyFilter'>Apply Filter</a></span>
-									<span v-if="data.hasFilterApplied"><a class="btn btn-sm" @click='removeFilter'>Remove Filter</a><span>
+									<span v-if="!data.hasFilterApplied"><a class="btn btn-sm btn-default" @click='applyFilter'>Apply Filter</a></span>
+									<span v-if="data.hasFilterApplied"><a class="btn btn-sm btn-default" @click='removeFilter'>Remove Filter</a><span>
 								</div>
 							</th>
 						</tr>
+
+						<tr id="scaffold-sortby">
+							<th class="actions"></th>
+							<th class="var-width" v-for="(item, key, index) in data.listview" :id="'sortby-' + item.name">
+								<span @click="applySortBy(item.name)">{{item.displayname}}</span>
+							</th>
+							<th v-if="entityname == 'entity'">Dynamic</th>
+							<th v-else></th>
+						</tr>
+
 					</thead>
-
 					<tbody>
-							<tr v-if="data.list.length" v-for="(object,index) in data.list">
-
-									<td class="actions">
-
-									<a class="show-actions" href="javascript:;" <!---ontouchstart="this.onclick();"---> onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
-									<div class="actions-menu hide">
-										<ul class="actions-list">
-											<li v-if="entityname != 'entity'">
-												<a href="##" onclick="return false;" @click="showForm(object.entityname,object.id)"><i class="mi-edit"></i> Edit</a>
-											</li>
-											<li v-if="entityname == 'entity'">
-												<a href="##" onclick="return false;" @click="showList(object.entityname)"><i class="mi-list"></i> List</a>
-											</li>
-											<li v-if="entityname == 'entity' && data.issuperuser && object.dynamic">
-												<a href="##" onclick="return false;" @click="goToAssembler(object.entityname)"><i class="mi-edit"></i> Edit</a>
-											</li>
-										</ul>
-									</div>
-
-
-									</td>
-
-
-									<td class="var-width" v-for="item in data.listview" @click="(entityname == 'entity') ? showList(object.entityname) : showForm(object.entityname,object.id)">
-											<span v-if="item.rendertype == 'htmleditor'" v-html="object[item.name]"></span>
-											<span v-else-if="item.datatype=='datetime' || item.datetime=='date'" v-text="formatDate(object[item.name])"></span>
-											<span v-else v-text="object[item.name]"></span>
-									</td>
-									<td></td>
-
-							</tr>
-
+						<tr v-if="data.list.length" v-for="(object,index) in data.list">
+								<td class="actions">
+								<a class="show-actions" href="javascript:;" <!---ontouchstart="this.onclick();"---> onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
+								<div class="actions-menu hide">
+									<ul class="actions-list">
+										<li v-if="entityname != 'entity'">
+											<a href="##" onclick="return false;" @click="showForm(object.entityname,object.id)"><i class="mi-edit"></i> Edit</a>
+										</li>
+										<li v-if="entityname == 'entity'">
+											<a href="##" onclick="return false;" @click="showList(object.entityname)"><i class="mi-list"></i> List</a>
+										</li>
+										<li v-if="entityname == 'entity' && data.issuperuser && object.dynamic">
+											<a href="##" onclick="return false;" @click="goToAssembler(object.entityname)"><i class="mi-edit"></i> Edit</a>
+										</li>
+									</ul>
+								</div>
+								</td>
+								<td class="var-width" v-for="item in data.listview" @click="(entityname == 'entity') ? showList(object.entityname) : showForm(object.entityname,object.id)">
+										<span v-if="item.rendertype == 'htmleditor'" v-html="object[item.name]"></span>
+										<span v-else-if="item.datatype=='datetime' || item.datetime=='date'" v-text="formatDate(object[item.name])"></span>
+										<span v-else v-text="object[item.name]"></span>
+								</td>
+								<td v-if="entityname == 'entity' && object.dynamic"><i class="mi-check"></i></td>
+								<td v-else></td>
+						</tr>
 					</tbody>
 				</table>
 
@@ -375,7 +207,6 @@
 	<template id="scaffold-form-template">
 		<div>
 
-
 		<div class="btn-group pull-right">
 			<button class="btn" @click="clickBack" type="submit" class="btn"><i class="mi-arrow-circle-left"></i> Back</button>
 			<button  class="btn" @click="openEndpoint()"><i class="mi-globe"> API Endpoint</i></button>
@@ -387,11 +218,10 @@
 		</div>	<!-- /.btn-group -->
 
 		<ul class="breadcrumb">
-			<li><a @click="showAll" href="##" onclick="return false;"><i class="mi-cube"></i>Custom</a></li>
+			<li><a @click="showAll" href="##" onclick="return false;"><i class="mi-cubes"></i>Custom Entities</a></li>
 			<li><a @click="clickBack" href="##" onclick="return false;"><i class="mi-cube"></i>{{entityname}}</a></li>
 			<li><strong><a href="##" onclick="return false;"><i class="mi-edit"></i>Edit</a></strong></li>
 		</ul>
-
 
 			<template v-for="property in data.properties">
 				<span v-if="property.fieldtype == 'id'">
@@ -419,7 +249,6 @@
 					<scaffold-field-text v-else="property.rendertype == 'textbox'" :property=property :model=data.model :entity=data.entity>~</scaffold-field-text>
 				</div>
 			</template>
-
 
 			<div class="btn-group">
 				<a href="##" onclick="return false;" @click="clickSave" class="btn"><i class="mi-check-circle"></i> Save</a>
@@ -470,28 +299,12 @@
 		</div>
 	</template>
 
-<!--- todo: is this used? --->
-	<template id="x-scaffold-related-many">
-		<div v-if="this.entity.properties.isnew == 0">
-			<div class="mura-control-group">
-				<label>{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
-				<ul v-if="mrelated && mrelated.collection">
-					<li v-for="object in mrelated.collection.items">
-						<span v-if="property.renderfield">{{object.properties[property.renderfield]}}</span><span v-else>{{object.properties.id}}</span>
-						<button @click="showForm(object.properties.entityname,object.properties.id,entity.properties.id)">EDIT: {{object.properties[property.renderfield] ? object.properties[property.renderfield] : object.properties.entityname}}</button>
-					</li>
-				</ul>
-				<button class="btn" @click="showForm(property.name,'new',entity.properties.id)">ADD {{property.displayname ? property.displayname : property.name.toUpperCase()}}</button>
-			</div>
-		</div>
-	</template>
-
 	<template id="scaffold-related-many">
 		<div v-if="this.entity.properties.isnew == 0" class="mura-control-group">
 			<label>Relationships</label>
 		  <div class="mura-control-inline">
 				<label><i class="mi-cube"></i> {{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
-				<button class="btn btn-sm" @click="showRelatedList(property.relatesto,entity)">Manage</button>
+				<button class="btn btn-sm btn-default" @click="showRelatedList(property.relatesto,entity)">Manage</button>
 		  </div>
 		</div>
 	</template>

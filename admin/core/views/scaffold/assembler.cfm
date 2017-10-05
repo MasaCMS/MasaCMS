@@ -46,130 +46,18 @@
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 
-
 <cfoutput>
-<script src="#$.globalConfig('rootPath')#/core/vendor/vue/vue.js"></script>
-<!---<script src="#$.globalConfig('rootPath')#/admin/assets/js/vue.min.js"></script>--->
 
-<script src="#$.globalConfig('rootPath')#/admin/assets/js/jquery/jquery-ui.min.js"></script>
+<script src="#$.globalConfig('rootPath')#/core/vendor/vue/vue.js"></script>
 <script src="#$.globalConfig('rootPath')#/admin/assets/js/scaffold/assembler.js"></script>
 
+<script>
+	var Assembler = "";
+	var Scaffolder = "";
+	var Master = "";
+</script>
 
-		<style>
-			##scaffold-sortby th i {
-				padding: 1px 0px 0px 5px;
-				color: ##333333;
-				font-size: 1.1em;
-			}
-			##scaffold-sortby th {
-			}
-
-			##scaffold-table tr.alt td {
-				background-color: ##eee;
-			}
-			.formtemplate{
-				margin: 0 0 20px 0;
-			}
-			.formtemplate + .formtemplate {
-				margin-top: 20px;
-			}
-			##property-template,
-			##related-form-template-property,
-			##related-form-template {
-				margin: 10px 0;
-			}
-			##assembler-properties li {
-				list-style: none;
-				margin: 0;
-				padding: 0;
-			}
-			##assembler-properties .assembler-item-box {
-				width: 100%;
-				display: block;
-				margin: 1px 0;
-				padding: 5px 5px 5px 10px;
-			}
-
-			##assembler-properties .assembler-item-box .assembler-prop {
-				padding: 4px 5px 5px 10px;
-				border-left: 5px solid ##eee;
-			}
-
-			.assembler-no-displayname {
-				color: ##880000;
-			}
-
-			.small {
-				font-size: 0.7em;
-			}
-
-			.breadcrumb {
-				list-style: none;
-				overflow: hidden;
-				height: 25px;
-			}
-			.crumbly li {
-				display: inline-block;
-				float: left;
-			}
-
-			##scaffold-table {
-
-			}
-
-			##scaffold-table td {
-				padding-bottom: 5px;
-			}
-
-			##assembler-preview,.assembler-preview {
-				float: left;
-				margin-bottom:60px;
-				margin-top:10px;
-				width: 100%;
-				height: 480px;
-				font-size: .92em;
-				overflow: scroll;
-
-			}
-
-			##load-spin ##spinner {
-			  position: absolute;
-			  left: 50%;
-			  top: 50%;
-			  z-index: 10000;
-			  width: 150px;
-			  height: 150px;
-			  margin: -75px 0 0 -75px;
-			  border: 16px solid ##f3f3f3;
-			  border-radius: 50%;
-			  border-top: 16px solid ##3498db;
-			  width: 120px;
-			  height: 120px;
-			  -webkit-animation: spin 2s linear infinite;
-			  animation: spin 2s linear infinite;
-			}
-
-			##load-spin {
-				position: fixed;
-				width: 100%;
-				height: 100%;
-				left: 0;
-				top: 0;
-				background-color: ##fff;
-				z-index: 10000;
-				border: 16px solid ##f3f3f3;
-				opacity: .8;
-			}
-		</style>
-
-		<script>
-			var Assembler = "";
-			var Scaffolder = "";
-			var Master = "";
-		</script>
-
-<div id="alert-assembler-saved">
-</div>
+<div id="alert-assembler-saved"></div>
 
 <div class="mura-header">
   <h1>Custom Mura ORM Entity</h1>
@@ -183,368 +71,69 @@
 
 <div class="block block-constrain" id="container">
 
-	<!--- /Tab Nav --->
+	<!--- Tab navigation --->
+  <ul class="mura-tabs nav-tabs" data-toggle="tabs">
+    <li class="active"><a href="##tabDef" onclick="return false;"><span>Definition</span></a></li>
+    <li class=""><a href="##tabJson" onclick="return false;"><span>JSON</span></a></li>
+  </ul>	<!--- /Tab Nav --->
 
-	<div class="block-content tab-content">
+	<!--- assembler --->
+	<div id="container-assembler">
 
-		<!-- start tab -->
-		<div class="tab-pane active">
-
-			<div class="block block-bordered">
-				<div id="load-spin" style="display: none;"><div id="load-spin-spinner"></div></div>
-				<!-- block header -->
-				<div class="block-header">
-					<h3 class="block-title">
-						Scaffolding
-					</h3>
-				</div> <!-- /.block header -->
-						<div>
-							<div id="container-assembler">
-									<!---
-									<button @click='clickLoadEntity'>Load</button>
-									<input type="text" id='loadentity' name="loadentity" value="">
-									--->
-									<assembler-attributes-form-template :model="model"></assembler-attributes-form-template>
-
-									<!--- new relationship/property form --->
-									<div class="block-content">
-										<div class="btn-group pull-right">
-											<button class="btn" @click='clickAddProperty'><i class="mi-plus-circle"></i> Add Property</button>
-											<button class="btn" @click='clickAddRelated'><i class="mi-plus-circle"></i> Add Relationship</button>
-										</div>
-										<assembler-property-template :model="model"	></assembler-property-template>
-										<div>
-											<component :is="currentView" :data="data" :rendertypes="rendertypes" :fieldtypes="fieldtypes" :datatypes="datatypes" :model="model" transition="fade" transition-mode="out-in"></component>
-										</div>
-									</div>
-
-
-									<!--- save button --->
-<!--- 									<div class="btn-group">
-										<button v-if="model.entityname != '' && model.table != ''" @click='clickSave' class="btn"><i class="mi-save"></i> Save</button>
-										<button v-else class="btn" disabled><i class="mi-save"></i> Save</button>
-									</div>
- --->
-<div class="mura-actions">
- <div class="form-actions">
-		<button v-if="model.entityname != '' && model.table != ''" @click='clickSave' class="btn mura-primary"><i class="mi-check-circle"></i> Save</button>
-		<button v-else class="btn" disabled><i class="mi-ban"></i> Save</button>
- </div>
-</div>
-
-
-							</div>
+	  <!--- start tab content --->
+		<div class="block-content tab-content">		
+			<!-- definitions-->
+			<div class="tab-pane active" id="tabDef">
+				<div class="block block-bordered">
+		
+					<div class="block-content">
+						<div class="help-block">
+						   IMPORTANT: After updating dynamically created entities, a reload of the Mura application may be required.
 						</div>
+	
+						<!--- entity form --->
+						<div class="half">
+							<assembler-attributes-form-template :model="model"></assembler-attributes-form-template>
+						</div>
+						<!--- property/relationship form --->
+						<div class="half">
+							<h3>Entity Properties</h3>
+							<div class="btn-group">
+								<button class="btn" @click='clickAddProperty'><i class="mi-plus-circle"></i> Add Property</button>
+								<button class="btn" @click='clickAddRelated'><i class="mi-plus-circle"></i> Add Relationship</button>
+							</div>
+							<assembler-property-template :model="model"></assembler-property-template>
+							<component :is="currentView" :data="data" :rendertypes="rendertypes" :fieldtypes="fieldtypes" :datatypes="datatypes" :model="model" transition="fade" transition-mode="out-in"></component>
+						</div>
+	
+					</div>
+				</div> <!-- /.block-bordered -->
+			</div> <!-- /tabDef -->
 
-			</div> <!-- /.block-bordered -->
-		</div> <!-- /.tab-pane -->
+			<!-- json -->
+			<div class="tab-pane" id="tabJson">
+				<div class="block block-bordered">
+					<div class="block-content">
+						<h3>JSON Preview</h3>
+						<pre id="assembler-preview">{{JSON.stringify(model,null,2)}}</pre>
+					</div>
+				</div> <!-- /.block-bordered -->
+			</div> <!-- /tabJson -->
 
-	</div> <!-- /.block-content.tab-content -->
+		</div> <!-- /.block-content.tab-content -->
+
+		<div class="mura-actions">
+			<div class="form-actions">
+				<button v-if="model.entityname != '' && model.table != ''" @click='clickSave' class="btn mura-primary"><i class="mi-check-circle"></i> Save</button>
+				<button v-else class="btn" disabled><i class="mi-ban"></i> Save</button>
+			</div>
+		</div>				
+
+	</div> <!--- /container-assembler --->
+
 </div> <!-- /.block-constrain -->
 
-
-	<template id="assembler-property-template">
-		<div id="property-template">
-			<h3>Entity Properties</h3>
-			<ul id="assembler-properties">
-				<li v-for="(item,index) in model.properties" v-bind:id="'assembler-property-index-' + index" :data-index="index" :data-name="item.name" :key="item.pos">
-					<span class="assembler-item-box">
-						<span v-if="item.relatesto || item.cfc" class="assembler-prop">
-							<button @click="clickEditRelated(index)"><i class="mi-cogs"></i></button>
-						</span>
-						<span v-else-if="item.fieldtype == 'id'" class="assembler-prop">
-							<button @click="clickEditProperty(index)"><i class="mi-cog"></i></button>
-						</span>
-						<span v-else class="assembler-prop">
-							<button @click="clickEditProperty(index)"><i class="mi-edit"></i></button>
-						</span>
-						<span v-if="item.displayname && item.displayname.length">{{item.displayname}}</span><span v-else class="assembler-no-displayname">{{item.name}}</span>
-						<span v-if="item.relatesto || item.cfc"> ({{item.fieldtype}} {{item.cfc}})</span>
-						<span v-if="item.rendertype == 'hidden'"> (Hidden)</span>
-						<span v-if="item.rendertype == 'null'"> (Does Not Render)</span>
-					</span>
-				</li>
-			</ul>
-		</div>
-	</template>
-
-	<template id="assembler-attributes-form-template">
-		<div class="formtemplate" id="attributes-form-template">
-			<h3>Entity Definition</h3>
-
-			<div class="help-block">
-			   IMPORTANT: In many instances you will need to reload Mura after updating dynamically created entities.
-			</div>
-
-
-			<div class="half">
-				<div class="mura-control-group">
-					<label>Entity Name</label>
-					<input type="text" v-model="model.entityname"
-						name="entityname" @change="model.entityname=model.entityname.replace(/[^0-9a-z]/gi, '');">
-				</div>
-
-				<div class="mura-control-group">
-					<label>Display Name</label>
-					<input type="text" v-model="model.displayname"
-						name="displayname" @change="model.displayname=removeInvalidText(model.displayname)">
-				</div>
-
-
-				<div class="mura-control-group">
-					<label>Table Name</label>
-					<input type="text" v-model="model.table"
-						name="table" @change="model.table=model.table.replace(/[^0-9a-z]/gi, '');">
-				</div>
-
-				<div class="mura-control-group">
-					<label>Order By (optional)</label>
-					<input type="text" v-model="model.orderby"
-						name="orderby">
-				</div>
-
-				<div class="mura-control-group">
-					<label class="checkbox">
-						<input type="checkbox" v-model="model.scaffold"
-							name="scaffold"
-							v-bind:true-value="true"
-		   		 		v-bind:false-value="false"
-			 				name="scaffold" :checked="model.scaffold == true || model.scaffold == 1 || model.scaffold == 'true' ? 'checked' : null">
-			 				Scaffold
-			 		</label>
-					<label class="checkbox">
-					<input type="checkbox" v-model="model.bundleable"
-						name="bundleable"
-						v-bind:true-value="true"
-			   		 v-bind:false-value="false"
-		 				name="bundleable" :checked="model.bundleable == true || model.bundleable == 1 || model.bundleable == 'true' ? 'checked' : null">
-						Bundleable</label>
-					<label class="checkbox">
-					<input type="checkbox" v-model="model.public"
-						name="public"
-						v-bind:true-value="true"
-		   		 		v-bind:false-value="false"
-		 				name="public" :checked="model.public == true || model.public == 1 || model.public == 'true' ? 'checked' : null">
-						Publicly Accessible</label>
-				</div>
-			</div> <!--/.half -->
-
-			<div class="half">
-				<pre id="assembler-preview">{{JSON.stringify(model,null,2)}}</pre>
-			</div>
-
-		</div> <!-- /.formtemplate -->
-	</template>
-
-	<template id="assembler-related-form-template">
-		<div class="formtemplate" id="related-form-template">
-			<div class="mura-control-group">
-				<label>Property Name</label>
-				<input type="text" v-model="data.name"
-					name="name" @change="data.name=data.name.replace(/[^0-9a-z]/gi, '');">
-			</div>
-
-			<div class="mura-control-group">
-				<label>Display Name</label>
-				<input type="text" v-model="data.displayname"
-					name="displayname">
-			</div>
-
-			<div class="mura-control-group">
-				<label>Relationship Type</label>
-				<select
-					v-model="data.fieldtype"
-					name="fieldtype"
-					>
-					<option v-for="(option,index) in ['one-to-many','one-to-one','many-to-one']" :value="option" :selected="option == data.fieldtype ? 'selected' : 'null'">{{option}}</option>
-				</select>
-			</div>
-
-			<div class="mura-control-group">
-				<label>Relates To</label>
-
-				<select
-					v-model="data.relatesto"
-					name="relatesto"
-					@change="getRelatesToFields"
-					>
-					<option v-for="(option,index) in this.$parent.alldynamicobjects" :value="option.entityname" :selected="option.entityname == data.cfc ? 'selected' : 'null'">{{option.displayname}}</option>
-				</select>
-			</div>
-
-
-			<div class="mura-control-group">
-					<label>Foreign Key Column</label>
-					<select
-						v-model="data.fkcolumn"
-						name="fkcolumn"
-						>
-						<option value="" :selected="!data.fkcolumn || data.fkcolumn == ''">Primary Key</option>
-						<option v-for="(option,index) in this.relatedprops" v-if="option.fieldtype='id' || option.fieldtype=='index'" :value="option.name" :selected="option.fkcolumn == option.name ? 'selected' : 'null'">{{option.name}}</option>
-					</select>
-				</div>
-
-			<div class="mura-control-group">
-				<label>Render Field</label>
-				<select
-					v-model="data.renderfield"
-					name="renderfield"
-					>
-					<option v-for="(option,index) in this.relatedprops" v-if="option.displayname && option.displayname.length > 0" :value="option.name" :selected="((!data.renderfield || data.renderfield.length==0) && option.name=='name') ? 'selected' : 'null'">{{option.displayname}}</option>
-				</select>
-			</div>
-
-			<div class="mura-control-group">
-				<label>Load Key</label>
-				<input type="text" v-model="data.loadkey"
-					name="loadkey">
-			</div>
-
-			<div class="mura-control-group">
-				<label>Cascade Delete?</label>
-				<select
-					v-model="data.cascade"
-					name="cascade"
-					>
-					<option v-for="(option,index) in ['none','delete']" :value="option" :selected="option == data.cascade ? 'selected' : 'null'">{{option}}</option>
-				</select>
-			</div>
-
-
-
-			<div>
-				<div class="btn-group">
-					<button class="btn" @click="clickUpdateRelated"><i class="mi-save"></i> <span v-if="this.$parent.isupdate">Update Relationship</span><span v-else>Add Relationship</span></button>
-					<button class="btn" v-if="this.$parent.isupdate" @click="clickDeleteRelated"><i class="mi-trash"></i> Delete</button>
-					<button class="btn" @click='clickCancel'><i class="mi-times-circle"></i> Cancel</button>
-					</div>
-			</div>
-		</div>
-	</template>
-
-	<template id="assembler-property-form-template">
-		<div class="formtemplate" id="related-form-template-property">
-			<div class="mura-control-group">
-				<label>Property Name</label>
-				<input type="text" v-model="data.name"
-					name="name" @change="data.name=data.name.replace(/[^0-9a-z]/gi, '');">
-			</div>
-
-			<div class="mura-control-group" v-if="data.fieldtype != 'id'">
-				<label>Display Name</label>
-				<input type="text" v-model="data.displayname"
-					name="displayname" @change="data.displayname=removeInvalidText(data.displayname)">
-			</div>
-
-			<div class="mura-control-group" v-if="data.fieldtype != 'id'">
-				<label>Data Type</label>
-				<select
-					v-model="data.datatype"
-					name="datatype"
-					>
-					<option v-for="(option,index) in datatypes" :value="option.name" :selected="option.name == data.datatype ? 'selected' : 'null'">{{datatypes[index].label}}</option>
-				</select>
-			</div>
-
-			<div class="mura-control-group" v-if="data.fieldtype != 'id'">
-				<label>Field Type</label>
-				<select
-					v-model="data.fieldtype"
-					name="fieldtype"
-					>
-					<option v-for="(option,index) in fieldtypes" :value="option.name" :selected="option.name == data.fieldtype ? 'selected' : 'null'">{{fieldtypes[index].label}}</option>
-				</select>
-			</div>
-
-			<div class="mura-control-group" v-if="data.fieldtype != 'id'">
-				<label>Default</label>
-				<input type="text" v-model="data.default"
-					name="default">
-			</div>
-
-			<div class="mura-control-group" v-if="data.fieldtype != 'id'">
-				<label>Form Field</label>
-				<select
-					v-model="data.rendertype"
-					name="rendertype"
-					>
-					<option v-for="(option,index) in rendertypes" :value="option.name" :selected="option.name == data.rendertype ? 'selected' : 'null'">{{rendertypes[index].label}}</option>
-				</select>
-			</div>
-
-			<div class="mura-control-group" v-if="data.fieldtype != 'id'">
-				<label>Length</label>
-				<input type="text" v-model="data.length"
-					name="length">
-			</div>
-
-			<div class="mura-control-group">
-				<span v-if="data.fieldtype != 'id'">
-					<label class="checkbox">
-					<input type="checkbox" v-model="data.required"
-						v-bind:true-value="true"
-		   		 	v-bind:false-value="false"
-		 				name="required" :checked="data.required == true || data.required == 1 || data.required == 'true' ? 'checked' : null">
-						Required</label>
-				</span>
-
-				<span v-if="data.fieldtype != 'id'">
-					<label class="checkbox">
-					<input type="checkbox" v-model="data.listview"
-						v-bind:true-value="true"
-		   			v-bind:false-value="false"
-		 				name="listview" :checked="data.listview == true || data.listview == 1 || data.listview == 'true' ? 'checked' : null">
-					List</label>
-				</span>
-
-				<span v-if="data.fieldtype != 'id'">
-					<label class="checkbox">
-						<input type="checkbox" v-model="data.filter"
-						v-bind:true-value="true"
-		   		 	v-bind:false-value="false"
-	 					name="filter" :checked="data.filter == true || data.filter == 1 || data.filter == 'true' ? 'checked' : null">
-					Filter</label>
-				</span>
-
-				<span v-if="data.fieldtype != 'id'">
-					<label class="checkbox">
-					<input type="checkbox" v-model="data.nullable"
-					v-bind:true-value="true"
-		   		v-bind:false-value="false"
-	 				name="nullable" :checked="data.nullable == true || data.nullable == 1 || data.nullable == 'true' ? 'checked' : null">
-					Nullable</label>
-			</span>
-		</div>
-
-
-			<div class="mura-control-group" v-if="(data.rendertype == 'radio' || data.rendertype == 'dropdown') && data.fieldtype != 'id'">
-				<label>Option List</label>
-					<div class="help-block-inline">
-						"^" Delimiter, e.g. One^Two^Three
-					</div>
-				<input type="text" v-model="data.optionlist"
-					name="optionlist">
-			</div>
-
-
-			<div class="mura-control-group" v-if="(data.rendertype == 'radio' || data.rendertype == 'dropdown') && data.fieldtype != 'id'">
-				<label>Option Value List</label>
-					<div class="help-block-inline">
-						"^" Delimiter, e.g. 1^2^3
-					</div>
-				<input type="text" v-model="data.optionvaluelist"
-					name="optionvaluelist">*</br>
-			</div>
-
-
-			<div>
-				<div class="btn-group">
-					<button class="btn" @click="clickUpdateProperty"><i class="mi-save"></i> <span v-if="this.$parent.isupdate">Update Property</span><span v-else>Add Property</span></button>
-					<button class="btn" v-if="this.$parent.isupdate && data.fieldtype != 'id'" @click="clickDeleteProperty"><i class="mi-trash"></i> Delete</button>
-					<button class="btn" @click='clickCancel'><i class="mi-times-circle"></i> Cancel</button>
-				</div>
-			</div>
-		</div>
-	</template>
-
 </cfoutput>
+
+<!--- vue templates --->
+<cfinclude template="assembler_templates.cfm">
