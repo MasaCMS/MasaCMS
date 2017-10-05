@@ -514,6 +514,15 @@ if ( application.setupComplete ) {
 				local.fileWriter.createDir(directory="#application.configBean.getWebRoot()#/plugins");
 			}
 		}
+
+		if ( directoryExists("#application.configBean.getWebRoot()#/modules") && !fileExists("#application.configBean.getWebRoot()#/modules/Application.cfc") ) {
+			local.fileWriter.copyFile(source="#variables.basedir#/core/templates/site/application.depth1.template.cfc", destination="#variables.basedir#/modules/Application.cfc");
+		}
+
+		if ( directoryExists("#application.configBean.getWebRoot()#/sites") && !fileExists("#application.configBean.getWebRoot()#/sites/Application.cfc") ) {
+			local.fileWriter.copyFile(source="#variables.basedir#/core/templates/site/application.depth1.template.cfc", destination="#variables.basedir#/sites/Application.cfc");
+		}
+
 		if ( !fileExists(variables.basedir & "/robots.txt") ) {
 			local.fileWriter.copyFile(source="#variables.basedir#/core/templates/robots.template.cfm", destination="#variables.basedir#/robots.txt");
 		}
