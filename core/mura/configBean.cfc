@@ -244,7 +244,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cfloop>
 
-	<cfif directoryExists(expandPath('/muraWRM/sites/default'))>
+	<cfif directoryExists(expandPath('/muraWRM/sites/')) and not directoryExists(expandPath('/muraWRM/default/'))>
 		<cfset variables.instance.siteDir='sites'>
 	<cfelse>
 		<cfset variables.instance.siteDir=''>
