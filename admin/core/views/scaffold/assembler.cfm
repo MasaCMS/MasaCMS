@@ -161,6 +161,7 @@
 	}
 	#assembler-properties {
 		margin-top: 1em;
+		margin-bottom: 2.4em;
 	}	
 	#assembler-properties li {
 		list-style: none;
