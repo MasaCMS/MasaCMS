@@ -75,8 +75,7 @@
 	<!--- Tab navigation --->
   <ul class="mura-tabs nav-tabs" data-toggle="tabs">
     <li class="active"><a href="##tabDef" onclick="return false;"><span>Definition</span></a></li>
-    <li class=""><a href="##tabProp" onclick="return false;"><span>Properties</span></a></li>
-    <li class=""><a href="##tabRel" onclick="return false;"><span>Relationships</span></a></li>
+    <li class=""><a href="##tabJson" onclick="return false;"><span>JSON</span></a></li>
   </ul>	<!--- /Tab Nav --->
 
 	<!--- assembler --->
@@ -87,43 +86,40 @@
 			<!-- definitions-->
 			<div class="tab-pane active" id="tabDef">
 				<div class="block block-bordered">
-					<assembler-attributes-form-template :model="model"></assembler-attributes-form-template>
+		
+					<div class="block-content">
+						<div class="help-block">
+						   IMPORTANT: After updating dynamically created entities, a reload of the Mura application may be required.
+						</div>
+	
+						<!--- entity form --->
+						<div class="half">
+							<assembler-attributes-form-template :model="model"></assembler-attributes-form-template>
+						</div>
+						<!--- property/relationship form --->
+						<div class="half">
+							<h3>Entity Properties</h3>
+							<div class="btn-group">
+								<button class="btn" @click='clickAddProperty'><i class="mi-plus-circle"></i> Add Property</button>
+								<button class="btn" @click='clickAddRelated'><i class="mi-plus-circle"></i> Add Relationship</button>
+							</div>
+							<assembler-property-template :model="model"></assembler-property-template>
+							<component :is="currentView" :data="data" :rendertypes="rendertypes" :fieldtypes="fieldtypes" :datatypes="datatypes" :model="model" transition="fade" transition-mode="out-in"></component>
+						</div>
+	
+					</div>
 				</div> <!-- /.block-bordered -->
 			</div> <!-- /tabDef -->
 
-			<!-- properties -->
-			<div class="tab-pane" id="tabProp">
+			<!-- json -->
+			<div class="tab-pane" id="tabJson">
 				<div class="block block-bordered">
-					<!--- new property form --->
 					<div class="block-content">
-						<div class="btn-group pull-right">
-							<button class="btn" @click='clickAddProperty'><i class="mi-plus-circle"></i> Add Property</button>
-						</div>
-						<assembler-property-template :model="model"	></assembler-property-template>
-						<div>
-							<component :is="currentView" :data="data" :rendertypes="rendertypes" :fieldtypes="fieldtypes" :datatypes="datatypes" :model="model" transition="fade" transition-mode="out-in"></component>
-						</div>
+						<h3>JSON Preview</h3>
+						<pre id="assembler-preview">{{JSON.stringify(model,null,2)}}</pre>
 					</div>
 				</div> <!-- /.block-bordered -->
-			</div> <!-- /tabProp -->
-
-			<!-- relationships -->
-			<div class="tab-pane" id="tabRel">
-				<div class="block block-bordered">
-					<!--- new relationship form --->
-					<div class="block-content">
-						<div class="btn-group pull-right">
-							<button class="btn" @click='clickAddRelated'><i class="mi-plus-circle"></i> Add Relationship</button>
-						</div>
-						<!--- todo: split relationships to separate tab --->
-						<!--- <assembler-related-template :model="model"	></assembler-related-template> --->
-						<div>
-							<component :is="currentView" :data="data" :rendertypes="rendertypes" :fieldtypes="fieldtypes" :datatypes="datatypes" :model="model" transition="fade" transition-mode="out-in"></component>
-						</div>
-					</div>
-
-				</div> <!-- /.block-bordered -->
-			</div> <!-- /tabRel -->
+			</div> <!-- /tabJson -->
 
 		</div> <!-- /.block-content.tab-content -->
 
@@ -139,6 +135,7 @@
 </div> <!-- /.block-constrain -->
 
 </cfoutput>
+
 <!--- vue templates --->
 <cfinclude template="assembler_templates.cfm">
 
@@ -162,6 +159,9 @@
 	#related-form-template {
 		margin: 10px 0;
 	}
+	#assembler-properties {
+		margin-top: 1em;
+	}	
 	#assembler-properties li {
 		list-style: none;
 		margin: 0;
@@ -171,7 +171,7 @@
 		width: 100%;
 		display: block;
 		margin: 1px 0;
-		padding: 5px 5px 5px 10px;
+		padding: 5px 5px 5px 0;
 	}
 
 	#assembler-properties .assembler-item-box .assembler-prop {
@@ -201,18 +201,13 @@
 		padding-bottom: 5px;
 	}
 
-  #assembler-preview-pane{
-  	display: none;
-  }
 	#assembler-preview,.assembler-preview {
 		float: left;
 		margin-bottom:60px;
 		margin-top:10px;
 		width: 100%;
-		height: 480px;
 		font-size: .92em;
 		overflow: scroll;
-
 	}
 
 	#load-spin #spinner {

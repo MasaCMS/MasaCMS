@@ -2,31 +2,33 @@
 
 <template id="assembler-property-template">
 	<div id="property-template">
-		<h3>Entity Properties</h3>
-		<ul id="assembler-properties">
-			<li v-for="(item,index) in model.properties" v-bind:id="'assembler-property-index-' + index" :data-index="index" :data-name="item.name" :key="item.pos">
-				<span class="assembler-item-box">
-					<span v-if="item.relatesto || item.cfc" class="assembler-prop">
-						<button @click="clickEditRelated(index)"><i class="mi-cogs"></i></button>
+		<div class="mura-control justify">
+			<ul id="assembler-properties">
+				<li v-for="(item,index) in model.properties" v-bind:id="'assembler-property-index-' + index" :data-index="index" :data-name="item.name" :key="item.pos">
+					<span class="assembler-item-box">
+						<span v-if="item.relatesto || item.cfc" class="assembler-prop">
+							<button @click="clickEditRelated(index)"><i class="mi-cogs"></i></button>
+						</span>
+						<span v-else-if="item.fieldtype == 'id'" class="assembler-prop">
+							<button @click="clickEditProperty(index)"><i class="mi-cog"></i></button>
+						</span>
+						<span v-else class="assembler-prop">
+							<button @click="clickEditProperty(index)"><i class="mi-edit"></i></button>
+						</span>
+						<span v-if="item.displayname && item.displayname.length">{{item.displayname}}</span><span v-else class="assembler-no-displayname">{{item.name}}</span>
+						<span v-if="item.relatesto || item.cfc"> ({{item.fieldtype}} {{item.cfc}})</span>
+						<span v-if="item.rendertype == 'hidden'"> (Hidden)</span>
+						<span v-if="item.rendertype == 'null'"> (Does Not Render)</span>
 					</span>
-					<span v-else-if="item.fieldtype == 'id'" class="assembler-prop">
-						<button @click="clickEditProperty(index)"><i class="mi-cog"></i></button>
-					</span>
-					<span v-else class="assembler-prop">
-						<button @click="clickEditProperty(index)"><i class="mi-edit"></i></button>
-					</span>
-					<span v-if="item.displayname && item.displayname.length">{{item.displayname}}</span><span v-else class="assembler-no-displayname">{{item.name}}</span>
-					<span v-if="item.relatesto || item.cfc"> ({{item.fieldtype}} {{item.cfc}})</span>
-					<span v-if="item.rendertype == 'hidden'"> (Hidden)</span>
-					<span v-if="item.rendertype == 'null'"> (Does Not Render)</span>
-				</span>
-			</li>
-		</ul>
+				</li>
+			</ul>
+		</div>
 	</div>
 </template> <!--- / assembler-property-template --->
 
 <template id="assembler-property-form-template">
 	<div class="formtemplate" id="related-form-template-property">
+		<h3>Property Details</h3>
 		<div class="mura-control-group">
 			<label>Property Name</label>
 			<input type="text" v-model="data.name"
@@ -150,10 +152,6 @@
 <template id="assembler-attributes-form-template">
 	<div class="formtemplate" id="attributes-form-template">
 
-		<div class="help-block">
-		   IMPORTANT: After updating dynamically created entities, a reload of the Mura application may be required.
-		</div>
-
 			<div class="mura-control-group">
 				<label>Entity Name</label>
 				<input type="text" v-model="model.entityname"
@@ -203,16 +201,13 @@
 					Publicly Accessible</label>
 			</div>
 
-		<div id="assembler-preview-pane">
-			<h3>JSON Preview</h3>
-			<pre id="assembler-preview">{{JSON.stringify(model,null,2)}}</pre>
-		</div>
-
 	</div> <!-- /.formtemplate -->
 </template> <!--- / assembler-attributes-form-template --->
 
 <template id="assembler-related-form-template">
 	<div class="formtemplate" id="related-form-template">
+
+		<h3>Relationship Details</h3>
 		<div class="mura-control-group">
 			<label>Property Name</label>
 			<input type="text" v-model="data.name"
