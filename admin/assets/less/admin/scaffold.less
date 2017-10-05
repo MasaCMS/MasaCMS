@@ -1,0 +1,172 @@
+#container-scaffold{
+
+	#scaffold-table.mura-table-grid{
+
+		&> thead > tr#scaffold-filterby{
+			height: 25px !important;
+			overflow-y: hidden;
+
+			&> th{
+						background-color: #fff;
+
+				 	 input.filter{
+					    border: 1px solid #e9e9e9;
+					    font-size: 13px;
+					    font-weight: normal !important;
+					    height: 18px;
+					    max-width: 8em;
+					    padding-left: 4px;
+					    position: relative;
+					    top: 1px;
+						} // input.filter
+					
+					.btn-group{
+						margin-right: 1px;
+						margin-bottom: 1px;
+						
+						.btn{
+							color: #545454;
+					    background-color: #f5f5f5;
+					    border-color: #e9e9e9;
+							padding: 1px 4px;
+							} // .btn
+					} // btn-group
+			 	} // th
+			} // tr#scaffold-filterby
+
+			#scaffold-sortby th {
+				span{
+					cursor: pointer;
+				}
+				i {
+						color: #333333;
+						font-size: 1.1em;
+						padding: 1px 0px 0px 5px;
+					}
+			}
+			
+		tbody tr td span{
+				cursor: pointer;
+			}
+
+		td {
+			padding-bottom: 5px;
+		}
+
+		} // scaffold-table
+
+	#scaffold-crumb-display:not(:empty){
+		min-height: 30px;
+	}
+	
+	.crumbly li {
+			display: inline-block;
+			float: left;
+	}
+
+	.formtemplate {
+		margin: 20px 0;
+
+			div {
+				margin: 10px;
+				padding: 10px 0;
+				border-top: 1px solid #ccc;
+			}
+
+			&+ .formtemplate {
+					margin-top: 20px;
+			}
+
+	}
+
+	#property-template {
+		margin: 10px 0;
+	}
+	#assembler-properties{	
+		 li {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+		}
+	.assembler-item-box {
+			width: 100%;
+			display: block;
+			margin: 1px 0;
+			padding: 5px 5px 5px 10px;
+		}
+	
+		.assembler-prop {
+			padding: 4px 5px 5px 10px;
+			border-left: 5px solid #eee;
+		}
+	} // assembler-properties
+
+	.assembler-no-displayname {
+		color: #880000;
+	}
+
+	.small {
+		font-size: 0.7em;
+	}
+
+	.crumbly li {
+		display: inline-block;
+		float: left;
+	}
+
+	#assembler-preview,.assembler-preview {
+		float: left;
+		border: 2px solid #333;
+		width: 490px;
+		height: 600px;
+		overflow: scroll;
+
+	}
+
+} // container-scaffold
+
+#container-assembler{
+
+		#property-template,
+		#related-form-template-property,
+		#related-form-template {
+			margin: 10px 0;
+		}
+		#assembler-properties {
+
+			margin-top: 1em;
+			margin-bottom: 2.4em;
+				
+				.assembler-no-displayname {
+					color: #880000;
+				}
+			
+				li {
+					list-style: none;
+					margin: 0;
+					padding: 0;
+				}
+		
+			.assembler-item-box {
+				width: 100%;
+				display: block;
+				margin: 1px 0;
+				padding: 5px 5px 5px 0;
+
+				.assembler-prop {
+					padding: 4px 5px 5px 10px;
+					border-left: 5px solid #eee;
+				}
+
+			}
+		}	
+
+		#assembler-preview,.assembler-preview {
+			float: left;
+			margin-bottom:60px;
+			margin-top:10px;
+			width: 100%;
+			font-size: .92em;
+			overflow: scroll;
+		}
+} // container-assembler
