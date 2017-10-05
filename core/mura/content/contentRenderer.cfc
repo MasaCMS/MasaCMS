@@ -464,6 +464,13 @@ Display Objects
 <cfset this.userToolsEditProfileLinkClass="btn btn-default">
 <cfset this.userToolsLogoutLinkClass="btn btn-default">
 
+<!--- Favorites/index.cfm --->	
+<cfset this.userFavoritesWrapperClass="">
+<cfset this.userFavoritesWrapperBodyClass="">
+<cfset this.pageToolsWrapperClass="">
+<cfset this.pageToolsWrapperBodyClass="">
+
+
 <!--- Formbuilder/Dsp_form.cfm --->
 <cfset this.formBuilderFieldWrapperClass="">
 <cfset this.formBuilderButtonWrapperClass="form-actions">

@@ -141,7 +141,7 @@
 		//this.formErrorWrapperClass = "";
 		//this.formResponseWrapperClass = ";
 		//this.formFieldWrapperClass = "control-group";
-		//this.formFieldLabelClass = "control-label">
+		//this.formFieldLabelClass = "control-label";
 		//this.formGeneralControlClass = "form-control";
 		//this.formInputClass=this.formGeneralControlClass;
 		//this.formSelectClass = this.formGeneralControlClass;
@@ -412,6 +412,12 @@
 		this.userToolsWrapperClass="";
 		this.userToolsEditProfileLinkClass="";
 		this.userToolsLogoutLinkClass="";
+
+		<!--- Favorites/index.cfm --->	
+		this.userFavoritesWrapperClass="">
+		this.userFavoritesWrapperBodyClass="";
+		this.pageToolsWrapperClass="";
+		this.pageToolsWrapperBodyClass="";
 
 		//formbuilder/dsp_form.cfm
 		this.formBuilderFieldWrapperClass="";
