@@ -84,12 +84,12 @@
 
 			<span v-if="entityname">
 				<ul class="breadcrumb" v-if="entityname=='entity'">
-						<li><strong><a @click="showAll" onclick="return false;" href="##"><i class="mi-cube"></i>Custom</a></strong></li>
+						<li><strong><a @click="showAll" onclick="return false;" href="##"><i class="mi-cubes"></i>Custom</a></strong></li>
 				</ul>
 				<ul class="breadcrumb" v-if="entityname!='entity'">
-						<li><a @click="showAll" onclick="return false;" href="##"><i class="mi-cube"></i>Custom</a></li>
+						<li><a @click="showAll" onclick="return false;" href="##"><i class="mi-cubes"></i>Custom</a></li>
 						<li>
-							<strong><a href="##" onclick="return false;"><i class="mi-cubes"></i>{{entityname}}
+							<strong><a href="##" onclick="return false;"><i class="mi-cube"></i>{{entityname}}
 								<span v-if="currentparent && currentparent.properties">(for {{currentparent.properties.entityname}}: <span v-for="item in currentparent.properties._displaylist">{{currentparent.properties[item.name]}}) </span>
 						</span>
 						</a></strong>
@@ -114,7 +114,6 @@
 									<span v-if="data.hasFilterApplied"><a class="btn btn-sm" @click='removeFilter'>Remove Filter</a><span>
 								</div>
 							</th>
-							<th v-if="entityname == 'entity'"></th>
 						</tr>
 
 						<tr id="scaffold-sortby">
@@ -123,7 +122,7 @@
 								<span @click="applySortBy(item.name)">{{item.displayname}}</span>
 							</th>
 							<th v-if="entityname == 'entity'">Dynamic</th>
-							<th></th>
+							<th v-else></th>
 						</tr>
 
 					</thead>
@@ -151,7 +150,7 @@
 										<span v-else v-text="object[item.name]"></span>
 								</td>
 								<td v-if="entityname == 'entity' && object.dynamic"><i class="mi-check"></i></td>
-								<td></td>
+								<td v-else></td>
 						</tr>
 					</tbody>
 				</table>
@@ -219,8 +218,8 @@
 		</div>	<!-- /.btn-group -->
 
 		<ul class="breadcrumb">
-			<li><a @click="showAll" href="##" onclick="return false;"><i class="mi-cube"></i>Custom</a></li>
-			<li><a @click="clickBack" href="##" onclick="return false;"><i class="mi-cubes"></i>{{entityname}}</a></li>
+			<li><a @click="showAll" href="##" onclick="return false;"><i class="mi-cubes"></i>Custom</a></li>
+			<li><a @click="clickBack" href="##" onclick="return false;"><i class="mi-cube"></i>{{entityname}}</a></li>
 			<li><strong><a href="##" onclick="return false;"><i class="mi-edit"></i>Edit</a></strong></li>
 		</ul>
 
@@ -304,7 +303,7 @@
 		<div v-if="this.entity.properties.isnew == 0" class="mura-control-group">
 			<label>Relationships</label>
 		  <div class="mura-control-inline">
-				<label><i class="mi-cube"></i> {{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
+				<label><i class="mi-cubes"></i> {{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
 				<button class="btn btn-sm" @click="showRelatedList(property.relatesto,entity)">Manage</button>
 		  </div>
 		</div>
