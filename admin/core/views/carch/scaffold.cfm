@@ -97,19 +97,10 @@
 				</ul>
 			</span>
 
-
 			<div v-if="data.list">
 				<table width="100%" class="table table-striped table-condensed table-bordered mura-table-grid" id="scaffold-table">
 
 					<thead>
-
-						<tr id="scaffold-sortby">
-							<th class="actions"></th>
-							<th class="var-width" v-for="(item, key, index) in data.listview" :id="'sortby-' + item.name">
-								<span @click="applySortBy(item.name)">{{item.displayname}}</span>
-							</th>
-							<th></th>
-						</tr>
 
 						<tr id="scaffold-filterby">
 							<th class="actions"></th>
@@ -123,42 +114,45 @@
 									<span v-if="data.hasFilterApplied"><a class="btn btn-sm" @click='removeFilter'>Remove Filter</a><span>
 								</div>
 							</th>
+							<th v-if="entityname == 'entity'"></th>
 						</tr>
+
+						<tr id="scaffold-sortby">
+							<th class="actions"></th>
+							<th class="var-width" v-for="(item, key, index) in data.listview" :id="'sortby-' + item.name">
+								<span @click="applySortBy(item.name)">{{item.displayname}}</span>
+							</th>
+							<th v-if="entityname == 'entity'">Dynamic</th>
+							<th></th>
+						</tr>
+
 					</thead>
-
 					<tbody>
-							<tr v-if="data.list.length" v-for="(object,index) in data.list">
-
-									<td class="actions">
-
-									<a class="show-actions" href="javascript:;" <!---ontouchstart="this.onclick();"---> onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
-									<div class="actions-menu hide">
-										<ul class="actions-list">
-											<li v-if="entityname != 'entity'">
-												<a href="##" onclick="return false;" @click="showForm(object.entityname,object.id)"><i class="mi-edit"></i> Edit</a>
-											</li>
-											<li v-if="entityname == 'entity'">
-												<a href="##" onclick="return false;" @click="showList(object.entityname)"><i class="mi-list"></i> List</a>
-											</li>
-											<li v-if="entityname == 'entity' && data.issuperuser && object.dynamic">
-												<a href="##" onclick="return false;" @click="goToAssembler(object.entityname)"><i class="mi-edit"></i> Edit</a>
-											</li>
-										</ul>
-									</div>
-
-
-									</td>
-
-
-									<td class="var-width" v-for="item in data.listview" @click="(entityname == 'entity') ? showList(object.entityname) : showForm(object.entityname,object.id)">
-											<span v-if="item.rendertype == 'htmleditor'" v-html="object[item.name]"></span>
-											<span v-else-if="item.datatype=='datetime' || item.datetime=='date'" v-text="formatDate(object[item.name])"></span>
-											<span v-else v-text="object[item.name]"></span>
-									</td>
-									<td></td>
-
-							</tr>
-
+						<tr v-if="data.list.length" v-for="(object,index) in data.list">
+								<td class="actions">
+								<a class="show-actions" href="javascript:;" <!---ontouchstart="this.onclick();"---> onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
+								<div class="actions-menu hide">
+									<ul class="actions-list">
+										<li v-if="entityname != 'entity'">
+											<a href="##" onclick="return false;" @click="showForm(object.entityname,object.id)"><i class="mi-edit"></i> Edit</a>
+										</li>
+										<li v-if="entityname == 'entity'">
+											<a href="##" onclick="return false;" @click="showList(object.entityname)"><i class="mi-list"></i> List</a>
+										</li>
+										<li v-if="entityname == 'entity' && data.issuperuser && object.dynamic">
+											<a href="##" onclick="return false;" @click="goToAssembler(object.entityname)"><i class="mi-edit"></i> Edit</a>
+										</li>
+									</ul>
+								</div>
+								</td>
+								<td class="var-width" v-for="item in data.listview" @click="(entityname == 'entity') ? showList(object.entityname) : showForm(object.entityname,object.id)">
+										<span v-if="item.rendertype == 'htmleditor'" v-html="object[item.name]"></span>
+										<span v-else-if="item.datatype=='datetime' || item.datetime=='date'" v-text="formatDate(object[item.name])"></span>
+										<span v-else v-text="object[item.name]"></span>
+								</td>
+								<td v-if="entityname == 'entity' && object.dynamic"><i class="mi-check"></i></td>
+								<td></td>
+						</tr>
 					</tbody>
 				</table>
 
@@ -214,7 +208,6 @@
 	<template id="scaffold-form-template">
 		<div>
 
-
 		<div class="btn-group pull-right">
 			<button class="btn" @click="clickBack" type="submit" class="btn"><i class="mi-arrow-circle-left"></i> Back</button>
 			<button  class="btn" @click="openEndpoint()"><i class="mi-globe"> API Endpoint</i></button>
@@ -230,7 +223,6 @@
 			<li><a @click="clickBack" href="##" onclick="return false;"><i class="mi-cubes"></i>{{entityname}}</a></li>
 			<li><strong><a href="##" onclick="return false;"><i class="mi-edit"></i>Edit</a></strong></li>
 		</ul>
-
 
 			<template v-for="property in data.properties">
 				<span v-if="property.fieldtype == 'id'">
@@ -258,7 +250,6 @@
 					<scaffold-field-text v-else="property.rendertype == 'textbox'" :property=property :model=data.model :entity=data.entity>~</scaffold-field-text>
 				</div>
 			</template>
-
 
 			<div class="btn-group">
 				<a href="##" onclick="return false;" @click="clickSave" class="btn"><i class="mi-check-circle"></i> Save</a>
@@ -466,7 +457,6 @@
 
 </cfoutput>
 
-
 <style>
 
 /* TODO move these styles to global less & compile */
@@ -481,19 +471,15 @@
 		overflow-y: hidden;
 	}
 
-	.mura .mura-table-grid > thead > tr + tr > th{
-		padding-top: 0 !important;
-		background-color: ##fafafa;
-	}
-
 	.mura .mura-table-grid th input.filter{
-    border: 1px solid ##e9e9e9;
+    border: 1px solid #e9e9e9;
     font-size: 13px;
     font-weight: normal !important;
     height: 18px;
     padding-left: 4px;
     position: relative;
     top: 1px;
+    max-width: 8em;
     /* TODO use global font definition */
     font-family: montserratlight,montserratregular,"Helvetica Neue",Helvetica,Arial,sans-serif;
 	}
@@ -504,9 +490,9 @@
 	}
 	.mura .mura-table-grid th .btn-group .btn{
 		padding: 1px 4px;
-		color: ##545454;
-    background-color: ##f5f5f5;
-    border-color: ##e9e9e9;
+		color: #545454;
+    background-color: #f5f5f5;
+    border-color: #e9e9e9;
 	}
 
 	#scaffold-table tbody tr td span{
@@ -522,7 +508,8 @@
 		color: #333333;
 		font-size: 1.1em;
 	}
-	#scaffold-sortby th {
+	#scaffold-filterby th {
+		background-color: #fff;
 	}
 
 	#scaffold-crumb-display:not(:empty){
@@ -613,4 +600,3 @@
 	}
 
 </style>
-
