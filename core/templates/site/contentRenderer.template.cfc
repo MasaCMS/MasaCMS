@@ -449,10 +449,6 @@
 		//nav/dsp_tag_cloud.cfm
 		this.tagCloudWrapperClass="";
 
-		//navArchive
-		this.navArchiveWrapperClass="";
-		this.navArchiveListClass="";
-
 		//navBreadcrumb
 		this.navBreadcrumbULClass="breadcrumb";
 		this.liBreadcrumbCurrentClass="";

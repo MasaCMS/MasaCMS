@@ -68,7 +68,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfsilent>
 <cfif variables.rsArchive.recordcount>
 <cfoutput>
-<nav id="navArchive" <cfif this.navArchiveWrapperClass neq "">class="mura-nav-archive #this.navArchiveWrapperClass#"</cfif>>
+<nav id="navArchive" class="mura-nav-archive<cfif this.navWrapperClass neq "">#this.navArchiveWrapperClass#"</cfif>>
 <cfif len(this.navArchiveWrapperBodyClass)><div class="#this.navArchiveWrapperBodyClass#"></cfif>
 <#variables.$.getHeaderTag('subHead1')#>#variables.$.rbKey('list.archive')#</#variables.$.getHeaderTag('subHead1')#>
 <ul class="#this.ulTopClass#">
