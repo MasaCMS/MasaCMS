@@ -50,12 +50,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.mode=""/>
 <cfset variables.autoupdateurl="https://github.com/blueriver/MuraCMS/archive/master.zip"/>
 <cfset variables.instance.version="7.1.0"/>
-<cfset variables.instance.title=""/>
+<cfset variables.instance.title="Mura CMS"/>
+<cfset variables.instance.projectname="Mura CMS"/>
+<cfset variables.instance.projectname="Mura CMS"/>
 <cfset variables.instance.webroot=""/>
 <cfset variables.instance.webrootmap="muraWRM"/>
 <cfset variables.instance.mapdir="mura"/>
 <cfset variables.instance.datasource=""/>
-<cfset variables.instance.defaultthemeurl="https://github.com/blueriver/MuraBootstrap3/archive/7.1.zip">
+<cfset variables.instance.defaultthemeurl="https://github.com/blueriver/MuraBootstrap4/archive/master.zip">
 <cfset variables.instance.stub=""/>
 <cfset variables.instance.context=""/>
 <cfset variables.instance.admindomain=""/>

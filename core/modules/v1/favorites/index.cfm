@@ -11,7 +11,7 @@
 	});
 </script>
 <div id="svFavoritesList" class="mura-favorites-list #this.userFavoritesWrapperClass#">
-	<cfif len(this.userFavoritesWrapperClass)><div class="#this.userFavoritesWrapperClass#"></cfif>
+	<cfif len(this.userFavoritesWrapperBodyClass)><div class="#this.userFavoritesWrapperBodyClass#"></cfif>
 	<#variables.$.getHeaderTag('subHead1')#>#variables.$.rbKey('favorites.favorites')#</#variables.$.getHeaderTag('subHead1')#>
 <cfif len(getPersonalizationID())>
 	<!--- list the favorites --->
@@ -69,7 +69,7 @@
 <cfelse>
 	<p class="loginMessage">#rbFactory.getResourceBundle().messageFormat(variables.$.rbKey('favorites.pleaselogin'),'#variables.$.siteConfig('LoginURL')#&returnURL=#esapiEncode('url',getCurrentURL())#')#</p>
 </cfif>
-<cfif len(this.userFavoritesWrapperClass)></div></cfif>
+<cfif len(this.userFavoritesWrapperBodyClass)></div></cfif>
 </div>
 <cfif len(getPersonalizationID())>
 <div id="svPageTools" class="mura-page-tools #this.pageToolsWrapperClass#">
