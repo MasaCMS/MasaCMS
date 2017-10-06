@@ -246,6 +246,11 @@ if ( application.setupComplete ) {
 
 			if ( !local.hasTheme ) {
 				//WriteDump('no theme');abort;
+
+				if ( structKeyExists(request.muraSysEnv,'MURA_DEFAULTTHEMEURL') ) {
+					application.configBean.setDefaultThemeURL(request.muraSysEnv['MURA_DEFAULTTHEMEURL']);
+				}
+
 				try {
 					local.themeZip="install_theme_#createUUID()#.zip";
 
@@ -536,10 +541,45 @@ if ( application.setupComplete ) {
 	if ( !structKeyExists(application,"plugins") ) {
 		application.plugins=structNew();
 	}
-
 	application.pluginstemp=application.plugins;
 	application.plugins=structNew();
 	variables.pluginEvent=createObject("component","mura.event").init();
+
+	if ( structKeyExists(request.muraSysEnv,'MURA_PROJECTSITEID') ) {
+		application.configBean.setProjectSiteID(request.muraSysEnv['MURA_PROJECTSITEID']);
+	}
+
+	projectSiteID=application.configBean.getValue(property='ProjectSiteID',defaultValue='default');
+
+	domain=listFirst(cgi.http_host,":");
+	if( domain eq '127.0.0.1') {
+			domain='localhost';
+	}
+
+	if(!application.settingsManager.siteExists(projectSiteID)){
+		application.settingsManager.create({
+			siteid=projectSiteID,
+			domain=domain,
+			site=application.configBean.getValue(property='title',defaultValue='Mura CMS')
+			});
+		application.settingsManager.setSites();
+	}
+
+	if ( request.muraInDocker ) {
+		local.bundleLoc="/tmp/MuraBundle.zip";
+	} else {
+		local.bundleLoc=expandPath("/muraWRM/config/setup/deploy/bundle.zip");
+	}
+	
+	if ( fileExists(local.bundleLoc) && application.contentGateway.getPageCount(projectSiteID).counter == 1 ) {
+		application.settingsManager.restoreBundle(
+			bundleFile=local.bundleLoc,
+			keyMode='publish',
+			siteID=projectSiteID,
+			contentMode='all',
+			pluginMode='all'
+		);
+	}
 
 	try {
 		application.pluginManager.executeScripts(runat='onApplicationLoad',event= variables.pluginEvent);
@@ -683,20 +723,6 @@ if ( application.setupComplete ) {
 		}
 	}
 
-	if ( request.muraInDocker ) {
-		local.bundleLoc="/tmp/MuraBundle.zip";
-	} else {
-		local.bundleLoc=expandPath("/muraWRM/config/setup/deploy/bundle.zip");
-	}
-	if ( fileExists(local.bundleLoc) && application.contentGateway.getPageCount('default').counter == 1 ) {
-		application.settingsManager.restoreBundle(
-			bundleFile=local.bundleLoc,
-			keyMode='publish',
-			siteID='default',
-			contentMode='all',
-			pluginMode='all'
-		);
-	}
 	application.sessionTrackingThrottle=false;
 
 	application.clusterManager.clearOldCommands();
