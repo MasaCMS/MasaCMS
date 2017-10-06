@@ -80,7 +80,7 @@
 			$(function(){
 				Mura.loader()
 					.loadcss("#variables.$.globalConfig('context')#/core/modules/v1/rater/css/rater.min.css")
-					.loadjs("#variables.$.globalConfig('context')#/core/modules/v1rater/js/rater-jquery.min.js"
+					.loadjs("#variables.$.globalConfig('context')#/core/modules/v1/rater/js/rater-jquery.min.js"
 							,"#variables.$.globalConfig('context')#/core/modules/v1/rater/js/rater.min.js",
 							function(){
 								initRatings('rater1');
