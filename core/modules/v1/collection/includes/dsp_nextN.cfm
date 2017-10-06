@@ -109,12 +109,12 @@
 						</li>
 					<cfelse>
 						<li class="navPrev #this.liPaginationNotCurrentClass#">
-							<a class="#this.aPaginationNotCurrentClass#" href="index#evaluate('#variables.nextn.currentpagenumber#-1')#.html">#this.navPrevtDecoration##variables.$.rbKey('list.previous')#</a>
+							<a class="#this.aPaginationNotCurrentClass#" href="index#evaluate('#variables.nextn.currentpagenumber#-1')#.html">#this.navPrevDecoration##variables.$.rbKey('list.previous')#</a>
 						</li>
 					</cfif>
 				<cfelse>
 					<li class="navPrev #this.liPaginationNotCurrentClass#">
-						<a class="#this.aPaginationNotCurrentClass#" href="#xmlFormat('?#paginationKey#=#variables.nextN.previous##variables.qrystr#')#">#this.navPrevtDecoration##variables.$.rbKey('list.previous')#</a>
+						<a class="#this.aPaginationNotCurrentClass#" href="#xmlFormat('?#paginationKey#=#variables.nextN.previous##variables.qrystr#')#">#this.navPrevDecoration##variables.$.rbKey('list.previous')#</a>
 					</li>
 				</cfif>
 			</cfif>

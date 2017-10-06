@@ -464,7 +464,7 @@ Display Objects
 <cfset this.userToolsEditProfileLinkClass="btn btn-default">
 <cfset this.userToolsLogoutLinkClass="btn btn-default">
 
-<!--- Favorites/index.cfm --->	
+<!--- Favorites/index.cfm --->
 <cfset this.userFavoritesWrapperClass="">
 <cfset this.userFavoritesWrapperBodyClass="">
 <cfset this.pageToolsWrapperClass="">
@@ -1886,6 +1886,41 @@ Display Objects
 	<cfreturn eventOutput>
 </cffunction>
 
+<cffunction name="dspPrimaryNavKids" output="false">
+	<cfargument name="contentid" type="string">
+	<cfargument name="viewDepth" type="numeric" required="true" default="1">
+	<cfargument name="currDepth" type="numeric"  required="true"  default="1">
+	<cfargument name="type" type="string"  default="default">
+	<cfargument name="today" type="date"  default="#now()#">
+	<cfargument name="id" type="string" default="">
+	<cfargument name="querystring" type="string" default="">
+	<cfargument name="sortBy" type="string" default="orderno">
+	<cfargument name="sortDirection" type="string" default="asc">
+	<cfargument name="context" type="string" default="#application.configBean.getContext()#">
+	<cfargument name="stub" type="string" default="#application.configBean.getStub()#">
+	<cfargument name="displayHome" type="string" default="conditional">
+	<cfargument name="closeFolders" type="string" default="">
+	<cfargument name="openFolders" type="string" default="">
+	<cfargument name="menuClass" type="string" default="">
+	<cfargument name="showCurrentChildrenOnly" type="boolean" default="false">
+	<cfargument name="liHasKidsClass" required="true" default="">
+	<cfargument name="liHasKidsAttributes" required="true" default="">
+	<cfargument name="liCurrentClass" required="true" default="#this.liCurrentClass#">
+	<cfargument name="liCurrentAttributes" required="true" default="">
+	<cfargument name="liHasKidsNestedClass" required="true" default="#this.liHasKidsNestedClass#">
+	<cfargument name="aHasKidsClass" required="true" default="">
+	<cfargument name="aHasKidsAttributes" required="true" default="">
+	<cfargument name="aCurrentClass" required="true" default="#this.aCurrentClass#">
+	<cfargument name="aCurrentAttributes" required="true" default="">
+	<cfargument name="ulNestedClass" required="true" default="">
+	<cfargument name="ulNestedAttributes" required="true" default="">
+	<cfargument name="aNotCurrentClass" required="true" default="#this.aNotCurrentClass#">
+	<cfargument name="siteid" default="#variables.event.getValue('siteID')#">
+	<cfargument name="liClass" type="string" default="">
+	<cfargument name="setLiIds" type="boolean" default="false">
+	<cfreturn dspNestedNavPrimary(argumentCollection=arguments)>
+</cffunction>
+
 <cffunction name="dspNestedNavPrimary" output="false">
 		<cfargument name="contentid" type="string">
 		<cfargument name="viewDepth" type="numeric" required="true" default="1">
@@ -2039,8 +2074,8 @@ Display Objects
 				<cfset nestedArgs.menuClass="">
 				<cfset nestedArgs.ulTopClass="">
 				<cfset structAppend(nestedArgs,arguments,false)>
-				<cfset nest=this.dspNestedNavPrimary(argumentCollection=nestedArgs) />
-				<cfset subnav=subnav and find("<li",nest)>
+				<cfset nest=this.dspPrimaryNavKids(argumentCollection=nestedArgs) />
+				<cfset subnav=subnav and (find("<li",nest) or find("<div",nest))>
 			</cfif>
 
 			<cfset itemClass=''>
