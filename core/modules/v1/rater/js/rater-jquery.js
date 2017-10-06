@@ -13,10 +13,10 @@
 /*    along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>. */
 
 function saveRate(id){
-	
+
 	var frm=document.getElementById(id);
 	$.post(
-		   Mura.assetpath + "/includes/display_objects/rater/ajax/saveRate.cfm",
+		   Mura.corepath + "/modules/vs/rater/ajax/saveRate.cfm",
 		   {contentID: frm.contentID.value, siteID: frm.siteID.value, userID: frm.userID.value, rate:frm.rate.value},
 		   function(data){showRatingResponse(data);}
 		   );

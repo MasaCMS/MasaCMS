@@ -37,7 +37,7 @@ if (!document.getElementById && document.all)
 
 function starImg(val)
 {
-  return themepath + "/images/rater/star_" + starString(val) + ".gif";
+  return Mura.corepath + "/modules/v1/rater/images/rater/star_" + starString(val) + ".gif";
 }
 
 function starString(val)
@@ -51,9 +51,9 @@ function starString(val)
   else if (val <   3) num = "twohalf";
   else if (val < 3.5) num = "three";
   else if (val <   4) num = "threehalf";
-  else if (val < 4.5) num = "four";  
+  else if (val < 4.5) num = "four";
   else if (val <   5) num = "fourhalf";
-  else if (val >=  5) num = "five";  
+  else if (val >=  5) num = "five";
 
   return num;
 }
@@ -62,7 +62,7 @@ String.prototype.pluralize = function(count, plural)
 {
   if (plural == null)
     plural = this + 's';
-	
+
   return (count == 1 ? this : plural)
 }
 
@@ -93,18 +93,18 @@ function setRating(rating, votes, avg)
 function initRatings(formName)
 {
 	if (!document.getElementById) return;
-	//if (document.styleSheets) 
+	//if (document.styleSheets)
 	//{
 		//if (document.styleSheets[0].disabled) return;
 	//}
-	
-	
-	var i=0; 
+
+
+	var i=0;
 	var forms = document.getElementsByName(formName);
 	var form = (forms) ? forms[0] : null;
 
 	if (!form) return false;
-	
+
 	while (i >=0)
 	{
 		var sInputName = formName + '_rater_input' + i;
@@ -124,18 +124,18 @@ function gatherRadioAttributes(pRadios, pForm)
 	var curSelectedIndex = -1;
 	var nRadioLength = pRadios.length;
 	var oRadioContainer = pRadios[0].parentNode.parentNode;
-	
+
 	var oLegend = oRadioContainer.getElementsByTagName('LEGEND');
 	var defaultText =  (oLegend[0]) ? oLegend[0].innerHTML : '';
 	var oRadioValuesLabels = new Array();
 	var inputName = pRadios[0].name;
-	var className = pRadios[0].className;	
+	var className = pRadios[0].className;
 	for (var i = 0 ; i < nRadioLength ; i++)
 	{
 		var oCurRadio = pRadios[i];
 		var radioValueLength =oRadioValuesLabels.length;
 		oRadioValuesLabels[radioValueLength] = new Array();
-		var curRadioValues =oRadioValuesLabels[radioValueLength] 
+		var curRadioValues =oRadioValuesLabels[radioValueLength]
 		curRadioValues['value'] =  (oCurRadio.value) ? oCurRadio.value : i;
 		if (!macIe)	curRadioValues['label'] =  (oCurRadio.nextSibling.data) ? oCurRadio.nextSibling.data : gDEFAULT_TEXT;
 		else curRadioValues['label'] =  (oCurRadio.parentNode.innerText) ? oCurRadio.parentNode.innerText : gDEFAULT_TEXT;
@@ -143,12 +143,12 @@ function gatherRadioAttributes(pRadios, pForm)
 	}
 	var appendTo = oRadioContainer.parentNode;
 	appendTo.removeChild(oRadioContainer);
-	createRater(inputName,appendTo, oRadioValuesLabels, curSelectedIndex, className, defaultText , pForm);	
+	createRater(inputName,appendTo, oRadioValuesLabels, curSelectedIndex, className, defaultText , pForm);
 }
 
 
 function gatherSelectAttributes(pInput , pForm)
-{	
+{
 	var oInputOptions = pInput.getElementsByTagName('OPTION');
 	var curSelectedIndex = -1;
 	var defaultText = '';
@@ -164,7 +164,7 @@ function gatherSelectAttributes(pInput , pForm)
 		{
 			var optionValueLength =oOptionValuesLabels.length;
 			oOptionValuesLabels[optionValueLength] = new Array();
-			var curOptionValues =oOptionValuesLabels[optionValueLength] 
+			var curOptionValues =oOptionValuesLabels[optionValueLength]
 			curOptionValues['value'] =  (oCurOption.value) ? oCurOption.value : i;
 			curOptionValues['label'] =  (oCurOption.innerHTML) ? oCurOption.innerHTML : "";
 			if (oCurOption.selected) curSelectedIndex = i-1;
@@ -178,7 +178,7 @@ function gatherSelectAttributes(pInput , pForm)
 
 function createRater(pName, pAppendTo, pOptionValuesLabels, pCurSelectedIndex, pClassName, pDefaultText , pForm)
 {
-	
+
 	var oContainer = document.createElement('DIV');
 	oContainer.className = pClassName;
 	oContainer.id = pName+'_container';
@@ -189,40 +189,40 @@ function createRater(pName, pAppendTo, pOptionValuesLabels, pCurSelectedIndex, p
 	var textP = document.createElement('P');
 	textP.id = pName+ '_text';
 	/*var	hiddenField;
-	if (!macIe) 
+	if (!macIe)
 	{
 		hiddenField = document.createElement('INPUT');
 		hiddenField.type = 'hidden';
 	}
 	else hiddenField = document.createElement('<INPUT type="hidden">');
-	
+
 	hiddenField.name = pName;
 	hiddenField.id = pName;*/
-	
+
 	//textP.innerHTML = ( pCurSelectedIndex >=0 ) ? gYOUR_RATING : pDefaultText;
-	
+
 	oContainer.textElemId = textP.id;
 	oContainer.appendChild(textP);
 	oContainer.defaultText = pDefaultText;
 	var oElements = new Array();
-	
+
 	for ( var i = 0; i < nElemsToAdd; i++ )
 	{
 		var oElem = document.createElement('A');
 		oElem.href="#";
-		
+
 		oElem.onmouseover = raterMouseOver;
 		oElem.onfocus = raterMouseOver;
 		oElem.onmouseout = raterMouseOut;
-		oElem.onblur = raterMouseOut;		
+		oElem.onblur = raterMouseOut;
 		oElem.onclick = raterClick;
-		oElem.containerId = oContainer.id;		
+		oElem.containerId = oContainer.id;
 		oElem.index = i;
 		var className = ''
 		if (pCurSelectedIndex != -1 && i <= pCurSelectedIndex)
 		{
 				className = 'selected';
-				
+
 		}
 		var separator = (className != '') ? ' ' : '';
 		var classNamePrefix = (i%2) ? 'odd'+separator : 'even'+separator;
@@ -231,10 +231,10 @@ function createRater(pName, pAppendTo, pOptionValuesLabels, pCurSelectedIndex, p
 		oContainer.appendChild(oElem);
 		oElements[oElements.length] = oElem;
 	}
-	
-		
+
+
 	//hiddenField.value = pCurSelectedIndex;
-	
+
 	//oContainer.hiddenFieldId = hiddenField.id ;
 	oContainer.ratingElements = oElements;
 	//oContainer.appendChild(hiddenField);
@@ -244,7 +244,7 @@ function createRater(pName, pAppendTo, pOptionValuesLabels, pCurSelectedIndex, p
 
 	oContainer.appendChild(clearDiv);
 	pAppendTo.appendChild(oContainer);
-	
+
 }
 
 
@@ -265,7 +265,7 @@ function raterMouseOver()
 			else if (i > selectedIndex && i <= this.index) className = 'over';
 			else if ( i > selectedIndex && i > this.index ) className = '';
 		}
-		else 
+		else
 		{
 			if (i <= this.index) className ='over'
 		}
@@ -299,7 +299,7 @@ function raterClick()
 {
 
 	var container = document.getElementById(this.containerId);
-	
+
 	var elements = container.getElementsByTagName('A');
 	var numElements = elements.length;
 	for (var i = 0; i < numElements; i++)
@@ -309,32 +309,33 @@ function raterClick()
 		var separator = (className != '') ? ' ' : '';
 		var classNamePrefix = (i%2) ? 'odd'+separator : 'even'+separator;
 		curElem.className = classNamePrefix + className;
-		container.selectedIndex =this.index;		
+		container.selectedIndex =this.index;
 	}
 	var textElem = document.getElementById(container.textElemId);
-	
-	//textElem.innerHTML = (container.selectedIndex != -1) ? gYOUR_RATING : container.defaultText;		
+
+	//textElem.innerHTML = (container.selectedIndex != -1) ? gYOUR_RATING : container.defaultText;
 	var hiddenField = document.getElementById('rate');
 	hiddenField.value = container.labelsValues[container.selectedIndex]['value'];
-	
-	
+
+
 	if(document.getElementById(container.formId).userID.value != ''){
-		
+
 		saveRate(container.formId);
-	
+
 	} else {
-		
+
 		location.href=document.getElementById(container.formId).loginURL.value + document.getElementById(container.formId).rate.value;
-		
+
 	}
 	return false;
 }
 
 function showRatingResponse(resp)
 {
-	var r= eval( '(' + resp + ')' );
-	document.getElementById("numvotes").innerHTML=r.data.THECOUNT + String(" vote").pluralize(r.data.THECOUNT);
-	document.getElementById("avgratingstars").setAttribute("class","ratestars " + starString(r.data.THEAVG));
-
+	if(Mura('#avgrating').length){
+		var r= eval( '(' + resp + ')' );
+		document.getElementById("numvotes").innerHTML=r.data.THECOUNT + String(" vote").pluralize(r.data.THECOUNT);
+		document.getElementById("avgratingstars").setAttribute("class","ratestars " + starString(r.data.THEAVG));
+	}
 	return false;
 }

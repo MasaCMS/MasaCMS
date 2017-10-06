@@ -20,7 +20,7 @@ function effectFunction()
 {
 	$("#favoriteListMore").animate({opacity: 'toggle'});
 	return false;
-	
+
 }
 
 function saveFavorite(userID, siteID, favoriteName, favoriteLocation, favoriteType)
@@ -28,10 +28,10 @@ function saveFavorite(userID, siteID, favoriteName, favoriteLocation, favoriteTy
 	//if (!favoriteExists){
 		$("#addFavorite").fadeOut();
 		//location.href= url + "?" + pars;
-		
+
 		$.ajax({
 		   type: "GET",
-		   url: Mura.assetpath + '/includes/display_objects/favorites/ajax/saveFavorite.cfm',
+		   url: Mura.corepath + '/modules/v1/favorites/ajax/saveFavorite.cfm',
 		   data: 'userID=' + userID + '&siteid=' + siteID + '&favoriteName=' + favoriteName + '&favoriteLocation=' + favoriteLocation + '&favoriteType=' + favoriteType + '&cacheid=' + Math.random(),
 		   success: showSaveFavoriteResponse
 		   });
@@ -50,7 +50,7 @@ function showSaveFavoriteResponse(originalRequest)
 	li.innerHTML=r.link;
 	currentPageFavoriteID=r.favoriteid;
 	mover.appendChild(li);
-	
+
 	$("#favoriteList").prepend(mover.innerHTML);
 	$("#favoriteTip").fadeOut();
 	$("#favorite" + iid).fadeIn();
@@ -67,13 +67,13 @@ function deleteFavorite(favoriteID, id)
 {
 	$.ajax({
 		  type: "GET",
-		   url: Mura.assetpath + '/includes/display_objects/favorites/ajax/deleteFavorite.cfm',
-		   data: 'favoriteID=' + favoriteID  + '&cacheid=' + Math.random()
+		   url: Mura.corepath + '/modules/v1/favorites/ajax/deleteFavorite.cfm',
+		   data: 'favoriteID=' + favoriteID  + '&cacheid=' + Math.random(),
 		   });
-		
-	var menuItems = document.getElementById(id).parentNode.getElementsByTagName('LI');	// Get an array of all favorite items
+
+	var menuItems = document.getElementById('favoriteList').parentNode.getElementsByTagName('LI');	// Get an array of all favorite items
 	menuLength = (menuItems.length - 1);
-	if (menuLength == 0){
+	if (menuLength == 1){
 		$("#favoriteTip").fadeIn();
 	}
 	$("#" +id).fadeOut();
@@ -82,6 +82,6 @@ function deleteFavorite(favoriteID, id)
 	{
 		$("#addFavorite").fadeIn();
 	}
-	
+
 	return false;
 }

@@ -80,7 +80,7 @@
 			$(function(){
 				Mura.loader()
 					.loadcss("#variables.$.globalConfig('context')#/core/modules/v1/rater/css/rater.min.css")
-					.loadjs("#variables.$.globalConfig('context')#/core/modules/v1rater/js/rater-jquery.min.js"
+					.loadjs("#variables.$.globalConfig('context')#/core/modules/v1/rater/js/rater-jquery.min.js"
 							,"#variables.$.globalConfig('context')#/core/modules/v1/rater/js/rater.min.js",
 							function(){
 								initRatings('rater1');
@@ -110,12 +110,14 @@
 				</form>
 			</div>
 			<!--- Average Rating --->
-			<div id="avgrating" class="#this.avgRatingWrapperClass#">
-				<cfif variables.rsRating.theCount gt 0>
-					<#variables.$.getHeaderTag('subHead1')#>#variables.$.rbKey('rater.avgrating')# (<span id="numvotes">#variables.rsRating.theCount# <cfif variables.rsRating.theCount neq 1>#variables.$.rbKey('rater.votes')#<cfelse>#variables.$.rbKey('rater.vote')#</cfif></span>)</#variables.$.getHeaderTag('subHead1')#>
-					<div id="avgratingstars" class="ratestars #variables.$.getBean('raterManager').getStarText(variables.rsRating.theAvg)#<!--- #replace(variables.rsRating.theAvg(),".","")# --->"><cfif isNumeric(variables.rsRating.theAvg)>#variables.rsRating.theAvg#<cfelse>0</cfif></div>
-				</cfif>
-			</div>
+
+			<cfif variables.rsRating.theCount gt 0>
+				<div id="avgrating" class="#this.avgRatingWrapperClass#">
+				<#variables.$.getHeaderTag('subHead1')#>#variables.$.rbKey('rater.avgrating')# (<span id="numvotes">#variables.rsRating.theCount# <cfif variables.rsRating.theCount neq 1>#variables.$.rbKey('rater.votes')#<cfelse>#variables.$.rbKey('rater.vote')#</cfif></span>)</#variables.$.getHeaderTag('subHead1')#>
+				<div id="avgratingstars" class="ratestars #variables.$.getBean('raterManager').getStarText(variables.rsRating.theAvg)#<!--- #replace(variables.rsRating.theAvg(),".","")# --->"><cfif isNumeric(variables.rsRating.theAvg)>#variables.rsRating.theAvg#<cfelse>0</cfif></div>
+				</div>
+			</cfif>
+
 		</div>
 	</cfoutput>
 </cfif>
