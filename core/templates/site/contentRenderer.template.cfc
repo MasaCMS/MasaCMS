@@ -413,8 +413,8 @@
 		this.userToolsEditProfileLinkClass="";
 		this.userToolsLogoutLinkClass="";
 
-		<!--- Favorites/index.cfm --->	
-		this.userFavoritesWrapperClass="">
+		<!--- Favorites/index.cfm --->
+		this.userFavoritesWrapperClass="";
 		this.userFavoritesWrapperBodyClass="";
 		this.pageToolsWrapperClass="";
 		this.pageToolsWrapperBodyClass="";
