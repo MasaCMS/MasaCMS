@@ -29,6 +29,7 @@ dbtablespace=USERS
 dbusername=
 debuggingenabled=true
 defaultfilemode=777
+defaultthemeurl=https://github.com/blueriver/MuraBootstrap3/archive/7.1.zip
 enablemuratag=true
 encryptionkey=
 errortemplate=/muraWRM/core/templates/error.html
