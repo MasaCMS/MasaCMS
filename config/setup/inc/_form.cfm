@@ -41,7 +41,6 @@ the GNU General Public License version 2 ?without this exception. ?You may, if y
 to your own modified versions of Mura CMS.
 --->
 <cfoutput>
-<cfset message=getSystemEnvironmentSetting('MYSQL_ROOT_PASSWORD')>
 <cfif len( trim( message ) )>
 	<p class="alert alert-error">#message#</p>
 </cfif>
