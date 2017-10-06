@@ -551,17 +551,28 @@ if ( application.setupComplete ) {
 
 	projectSiteID=application.configBean.getValue(property='ProjectSiteID',defaultValue='default');
 
-	domain=listFirst(cgi.http_host,":");
-	if( domain eq '127.0.0.1') {
-			domain='localhost';
-	}
-
 	if(!application.settingsManager.siteExists(projectSiteID)){
+
+		domain=listFirst(cgi.http_host,":");
+
+		if( domain eq '127.0.0.1') {
+				domain='localhost';
+		}
+
 		application.settingsManager.create({
 			siteid=projectSiteID,
 			domain=domain,
-			site=application.configBean.getValue(property='title',defaultValue='Mura CMS')
+			site=application.configBean.getValue(property='title',defaultValue='Mura CMS'),
+			orderno=1
 			});
+
+		if(projectSiteID != 'default'){
+			application.settingsManager.update({
+				siteid='default',
+				orderno=2
+			});
+		}
+
 		application.settingsManager.setSites();
 	}
 
@@ -570,7 +581,7 @@ if ( application.setupComplete ) {
 	} else {
 		local.bundleLoc=expandPath("/muraWRM/config/setup/deploy/bundle.zip");
 	}
-	
+
 	if ( fileExists(local.bundleLoc) && application.contentGateway.getPageCount(projectSiteID).counter == 1 ) {
 		application.settingsManager.restoreBundle(
 			bundleFile=local.bundleLoc,
