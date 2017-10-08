@@ -516,15 +516,22 @@ $( document ).ready(function() {
 
 					}
 
+					$('body').append('<div id="action-modal" class="modal-backdrop fade in"></div>');
+					$('#action-modal').spin(spinnerArgs);
+
 					Mura
 						.declareEntity(savemodel)
 						.then( function(response) {
-							Mura("#load-spin").hide();
-							Mura("#alert-assembler-saved").html('<div class="alert alert-success"><span>Entity definition saved</span><button type="button" class="close" data-dismiss="alert"><i class="mi-close"></i></button></div>');
-							// console.log("Saved!");
-							// console.log("big load");
-							MuraAssembler.all( self.setDynamicObjects );
-							Assembler.loadEntity(savemodel.entityname);
+							Mura.getEntity(savemodel.entityname)
+							.checkSchema()
+							.then(function(){
+								$('#action-modal').stop().remove();
+								Mura("#alert-assembler-saved").html('<div class="alert alert-success"><span>Entity definition saved</span><button type="button" class="close" data-dismiss="alert"><i class="mi-close"></i></button></div>');
+								// console.log("Saved!");
+								// console.log("big load");
+								MuraAssembler.all( self.setDynamicObjects );
+								Assembler.loadEntity(savemodel.entityname);
+							})
 						});
 
 			},

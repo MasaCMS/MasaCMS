@@ -27,7 +27,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		variables.config={
 			linkMethods=[],
-			publicMethods="undeclareEntity,declareEntity,findOne,findMany,findAll,findProperties,findNew,findQuery,save,delete,findCrumbArray,generateCSRFTokens,validateEmail,login,logout,submitForm,findCalendarItems,validate,processAsyncObject,findRelatedContent,getURLForImage,findVersionHistory,findCurrentUser,swagger",
+			publicMethods="undeclareEntity,declareEntity,checkSchema,findOne,findMany,findAll,findProperties,findNew,findQuery,save,delete,findCrumbArray,generateCSRFTokens,validateEmail,login,logout,submitForm,findCalendarItems,validate,processAsyncObject,findRelatedContent,getURLForImage,findVersionHistory,findCurrentUser,swagger",
 			entities={
 				'contentnav'={
 					fields="links,images,parentid,moduleid,path,contentid,contenthistid,changesetid,siteid,active,approved,title,menutitle,summary,tags,type,subtype,displayStart,displayStop,display,filename,url,assocurl,isNew,remoteurl,remoteid"
@@ -155,6 +155,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				param name="obj.public" default=false;
 				var rsSites=getBean('settingsManager').getList();
 				getServiceFactory().declareBean(json=arguments.entityConfig,siteid=valueList(rsSites.siteid));
+				//application.appInitialized=false;
 
 				return findProperties(obj.entityName);
 			} else {
@@ -169,9 +170,32 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				if(!getCurrentUser().isSuperUser()){
 					throw(type="authorization");
 				}
-				getServiceFactory().deleteBean(arguments.entityname);
-				structDelete(getConfig(),arguments.entityname);
-				return {success:true};
+				if(getServiceFactory().containsBean(arguments.entityname)){
+					getServiceFactory().deleteBean(arguments.entityname);
+					structDelete(getConfig(),arguments.entityname);
+					//application.appInitialized=false;
+					return {success:true};
+				} else {
+					return {success:false};
+				}
+			} else {
+				throw(type="invalidTokens");
+			}
+	}
+
+	function checkSchema(entityname){
+			var $=getBean('$').init(variables.siteid);
+
+			if(!request.muraSessionManagement || $.validateCSRFTokens()){
+				if(!getCurrentUser().isSuperUser()){
+					throw(type="authorization");
+				}
+				if(getServiceFactory().containsBean(arguments.entityname)){
+					getBean(arguments.entityname).checkSchema();
+					return {success:true};
+				} else {
+					return {success:false};
+				}
 			} else {
 				throw(type="invalidTokens");
 			}

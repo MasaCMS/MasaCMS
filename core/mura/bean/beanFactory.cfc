@@ -107,7 +107,8 @@ component extends="ioc" hint="This provides the primary bean factory that all co
           .set('code',result)
           .save();
 
-          createDynamicEntity(entity.entityname,result, arguments.siteid,true);
+          var rsSites=getBean('settingsManager').getList();
+          createDynamicEntity(entity.entityname,result,valueList(rsSites.siteid));
 
           return this;
         } else {
