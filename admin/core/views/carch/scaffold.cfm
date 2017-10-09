@@ -222,6 +222,7 @@
 			<li><a @click="clickBack" href="##" onclick="return false;"><i class="mi-cube"></i>{{entityname}}</a></li>
 			<li><strong><a href="##" onclick="return false;"><i class="mi-edit"></i>Edit</a></strong></li>
 		</ul>
+			<div class="help-block-inline">*Required</div>
 
 			<template v-for="property in data.properties">
 				<span v-if="property.fieldtype == 'id'">
@@ -337,7 +338,7 @@
 				{{model.errors[property.name]}}
 			</div>
 			<div class="mura-control-group">
-				<label :for="property.name">{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
+				<label :for="property.name">{{property.displayname ? property.displayname : property.label ? property.label : property.name}}<span v-if="property.required">*</span></label>
 				<input
 					type="text"
 					v-model="model[property.name]"
@@ -358,7 +359,7 @@
 				{{model.errors[property.name]}}
 			</div>
 			<div class="mura-control-group">
-				<label :for="property.name">{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
+				<label :for="property.name">{{property.displayname ? property.displayname : property.label ? property.label : property.name}}<span v-if="property.required">*</span></label>
 				<textarea
 					v-model="model[property.name]"
 					class="htmlEditor"
@@ -377,7 +378,7 @@
 				{{model.errors[property.name]}}
 			</div>
 			<div class="mura-control-group">
-				<label :for="property.name">{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
+				<label :for="property.name">{{property.displayname ? property.displayname : property.label ? property.label : property.name}}<span v-if="property.required">*</span></label>
 				<textarea
 					v-model="model[property.name]"
 					:name="property.name"
@@ -403,7 +404,7 @@
 						:data-validate="property.validate ? property.validate : null"
 						:data-validate-message="property.validatemessage ? property.validatemessage : null"
 						>
-						{{property.displayname ? property.displayname : property.label ? property.label : property.name}}
+						{{property.displayname ? property.displayname : property.label ? property.label : property.name}}<span v-if="property.required">*</span>
 					</label>
 				</div>
 			</div>
@@ -416,7 +417,7 @@
 				{{model.errors[property.name]}}
 			</div>
 			<div class="mura-control-group">
-				<label :for="property.name">{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
+				<label :for="property.name">{{property.displayname ? property.displayname : property.label ? property.label : property.name}}<span v-if="property.required">*</span></label>
 				<select
 					v-model="model[property.name]"
 					:name="property.name"
@@ -436,7 +437,7 @@
 			</div>
 			<div class="mura-control-group">
 				<label :for="property.name">
-					{{property.displayname ? property.displayname : property.label ? property.label : property.name}}
+					{{property.displayname ? property.displayname : property.label ? property.label : property.name}}<span v-if="property.required">*</span>
 				</label>
 				<div class="radio-group">
 					<label class="radio" v-for="(option,index) in property.optionlist" :value="option">
