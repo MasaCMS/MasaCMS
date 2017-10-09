@@ -74,6 +74,7 @@
 		</cfquery>
 	<cfelseif variables.dbtype neq 'oracle'>
 		<cfdbinfo
+			pattern="%"
 			name="rsCheck"
 			type="tables">
 
