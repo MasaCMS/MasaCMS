@@ -229,7 +229,7 @@ to your own modified versions of Mura CMS.
 										<input name="pagelimit" type="text" value="#esapiEncode('html_attr',rc.siteBean.getpagelimit())#" size="5" maxlength="6">
 							</div>
 							<div class="mura-control-group">
-								<label>Default  Rows <span>(in Site Manager)</span></label>
+								<label>Default  Rows <span>(in Content Tree View)</span></label>
 										<input name="nextN" type="text" value="#esapiEncode('html_attr',rc.siteBean.getnextN())#" size="5" maxlength="5">
 					</div>
 							<div class="mura-control-group">
