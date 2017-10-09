@@ -215,12 +215,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<h2>Install Plugin</h2>
 		<cfif application.configBean.getJavaEnabled()>
-		<div class="mura-control-group">
 		<div class="mura-file-selector">
-			<div class="mura-control justify">
-				<div class="mura-input-set" data-toggle="buttons-radio">
-				  <button type="button" class="btn btn-default active" data-toggle="button" name="installType" value="Upload" id="apptypefile"><i class="mi-upload"></i> Via Upload</button>
-				  <button type="button" class="btn btn-default" name="installType" value="URL" id="apptypeurl"><i class="mi-globe"></i> Via URL</button>
+			<div class="mura-control-group">
+				<div class="mura-control justify">
+					<div class="mura-input-set" data-toggle="buttons-radio">
+					  <button type="button" class="btn btn-default active" data-toggle="button" name="installType" value="Upload" id="apptypefile"><i class="mi-upload"></i> Via Upload</button>
+					  <button type="button" class="btn btn-default" name="installType" value="URL" id="apptypeurl"><i class="mi-globe"></i> Via URL</button>
+					</div>
 				</div>
 			</div>
 
@@ -253,7 +254,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</form>
 				</div>
 			</div>
-		</div>
 		<script>
 			$(function(){
 				$("#apptypefile").click(
