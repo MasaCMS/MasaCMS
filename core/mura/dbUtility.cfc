@@ -72,24 +72,15 @@
 		<cfquery name="rscheck" >
 			select table_name from information_schema.tables where table_schema = current_schema()
 		</cfquery>
-	<cfelseif variables.dbtype neq 'oracle'>
+	<cfelseif variables.dbtype eq 'oracle'>
+		<cfquery name="rscheck">
+			select TABLE_NAME from user_tables
+		</cfquery>
+	<cfelse>
 		<cfdbinfo
 			pattern="%"
 			name="rsCheck"
 			type="tables">
-
-			<!---
-			<cfif variables.dbtype eq "nuodb">
-				<cfquery name="rscheck" dbtype="query">
-					select tablename as table_name from rscheck
-				</cfquery>
-			</cfif>
-			--->
-
-	<cfelse>
-		<cfquery name="rscheck">
-			select TABLE_NAME from user_tables
-		</cfquery>
 	</cfif>
 
 	<cfloop query="rscheck">
