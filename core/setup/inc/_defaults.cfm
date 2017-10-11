@@ -127,15 +127,15 @@ variables.setupProcessComplete	= false;
 <cfparam name="FORM.auto_create"					default="0" />
 <!--- admin account tab --->
 <cfparam name="FORM.production_adminemail"			default="#settingsIni.get( "production", "adminemail" )#" />
-<cfparam name="FORM.admin_username"					default="#settingsIni.get( "production", "admin_username" )#" />
-<cfparam name="FORM.admin_password"					default="#settingsIni.get( "production", "admin_password" )#" />
+<cfparam name="FORM.admin_username"					default="#settingsIni.get( "production", "admin_username", "admin")#" />
+<cfparam name="FORM.admin_password"					default="#settingsIni.get( "production", "admin_password", "admin" )#" />
 <!--- options tab --->
 <cfif form.action eq 'doSetup'>
 	<cfparam name="FORM.production_siteidinurls"	default="false" />
 	<cfparam name="FORM.production_indexfileinurls"	default="true" />
 <Cfelse>
-	<cfparam name="FORM.production_siteidinurls"	default="#settingsIni.get( "production", "siteidinurls" )#" />
-	<cfparam name="FORM.production_indexfileinurls"	default="#settingsIni.get( "production", "indexfileinurls" )#" />
+	<cfparam name="FORM.production_siteidinurls"	default="#settingsIni.get( "production", "siteidinurls", "false")#" />
+	<cfparam name="FORM.production_indexfileinurls"	default="#settingsIni.get( "production", "indexfileinurls", "true")#" />
 </cfif>
 <cfparam name="FORM.production_cfpassword"			default="" />
 <!--- EncryptionKey --->
