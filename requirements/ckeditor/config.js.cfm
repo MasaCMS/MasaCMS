@@ -286,4 +286,30 @@ CKEDITOR.on('instanceReady', function(ev){
 CKEDITOR.on( 'dialogDefinition', function( ev ) {
     ev.data.definition.removeContents('Upload');
     ev.data.definition.removeContents('upload');
+    // position dialog windows e.g. image properties
+    ev.data.definition.onShow = function() {
+
+    	// position dialog windows relative to iframe (front end full edit)
+    	if (parent.document.getElementById(window.name) != null){
+
+				var editor = this.getParentEditor()
+					//get the top of the frame in the window that holds it
+					,intFrameTop = parent.document.getElementById(window.name).offsetTop 
+					,intScrollTop = $(top).scrollTop() //get scroll position
+					,intFrameOffset =  intFrameTop - intScrollTop //frame offset
+					,intDocumentHeight = $(top).height() //height of the current browser window
+					,intPopupHeight = this.getSize().height
+					,intNewTop = (intDocumentHeight/2) - (intPopupHeight/2) - intFrameOffset
+					,objCurrentPos = this.getPosition()
+					;
+
+				if (intNewTop < 0) {
+					intNewTop = 5; //If it's under the frame pad it 5px off it the top of it!
+				}
+				console.log(objCurrentPos);
+				console.log(intPopupHeight);
+				this.move( objCurrentPos.x, intNewTop ,false);
+	
+    	} // /iframe
+    }
 });
