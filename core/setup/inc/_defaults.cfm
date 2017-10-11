@@ -127,8 +127,8 @@ variables.setupProcessComplete	= false;
 <cfparam name="FORM.auto_create"					default="0" />
 <!--- admin account tab --->
 <cfparam name="FORM.production_adminemail"			default="#settingsIni.get( "production", "adminemail" )#" />
-<cfparam name="FORM.admin_username"					default="admin" />
-<cfparam name="FORM.admin_password"					default="admin" />
+<cfparam name="FORM.admin_username"					default="#settingsIni.get( "production", "admin_username" )#" />
+<cfparam name="FORM.admin_password"					default="#settingsIni.get( "production", "admin_password" )#" />
 <!--- options tab --->
 <cfif form.action eq 'doSetup'>
 	<cfparam name="FORM.production_siteidinurls"	default="false" />
