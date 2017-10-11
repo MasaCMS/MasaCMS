@@ -124,7 +124,7 @@
 
 							<div class="mura-control justify">
 								<div id="#lcase(s)##f#loader" class="load-inline" style="display:none"></div>
-								<img id="#lcase(s)##f#" src="#$.getURLForImage(fileID=f,size=lcase(s),useProtocol=false)#?cacheID=#createUUID()#"/>
+								<img id="#lcase(s)##f#" class="img-responsive" style="max-width:#$.siteConfig('#s#ImageWidth')#px;" src="#$.getURLForImage(fileID=f,size=lcase(s),useProtocol=false)#?cacheID=#createUUID()#"/>
 							</div>
 						</div>
 					</cfloop>
@@ -146,7 +146,7 @@
 
 							<div class="mura-control justify">
 								<div id="#lcase(customImage.getName())##f#loader" class="load-inline" style="display:none"></div>
-								<img class="mura-custom-image" data-fileid="#f#" data-size="#lcase(customImage.getName())#" id="#lcase(customImage.getName())##f#" src="assets/images/ajax-loader.gif"/>
+								<img class="mura-custom-image img-responsive" data-fileid="#f#" data-size="#lcase(customImage.getName())#" id="#lcase(customImage.getName())##f#" style="max-width:#customImage.getWidth()#px;" src=""/>
 							</div>
 						</div>
 					</cfloop>
@@ -165,7 +165,7 @@
 
 							<div class="mura-control justify">
 								<div id="#lcase(s)##f#loader" class="load-inline" style="display:none"></div>
-								<img id="#lcase(s)##f#" src="#$.getURLForImage(fileID=f,size=lcase(s),useProtocol=false)#?cacheID=#createUUID()#"/>
+								<img id="#lcase(s)##f#" class="img-responsive" style="max-width:#$.siteConfig('#s#ImageWidth')#px" src="#$.getURLForImage(fileID=f,size=lcase(s),useProtocol=false)#?cacheID=#createUUID()#"/>
 							</div>
 						</div>
 					<cfelse>
@@ -188,7 +188,7 @@
 
 									<div class="mura-control justify">
 										<div id="#lcase(customImage.getName())##f#loader" class="load-inline" style="display:none"></div>
-										<img class="mura-custom-image" data-fileid="#f#" data-size="#lcase(customImage.getName())#" id="#lcase(customImage.getName())##f#" src="assets/images/ajax-loader.gif"/>
+										<img class="mura-custom-image" data-fileid="#f#" data-size="#lcase(customImage.getName())#" id="#lcase(customImage.getName())##f#" src=""/>
 									</div>
 								</div>
 								<cfset rc.found=true>
@@ -217,13 +217,6 @@
 									<button type="button" class="btn btn-default btn-small cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#rc.customImageRatio#" data-size="#lcase(esapiEncode('html_attr',rc.imagesize))#"><i class="mi-crop"></i> Re-Crop</button>
 								</div>
 
-								<!---
-								<div id="#lcase(customImage.getName())##f#loader" class="load-inline" style="display:none"></div>
-								--->
-
-								<!---<div id="cropper">
-									<div class="jc-dialog">
-									--->
 								<div class="mura-control justify">
 									<img id="#lcase(esapiEncode('html_attr',rc.imagesize))##f#"
 									src="#$.getURLForImage(fileID=f,size='custom',height=customImage.getHeight(),width=customImage.getWidth(),useProtocol=false)#?cacheID=#createUUID()#"
@@ -231,32 +224,17 @@
 									<cfif isNumeric(customImage.getHeight())> width="#customImage.getHeight()#"</cfif>
 									>
 								</div>
-									<!---
-										<img id="#lcase(esapiEncode('html_attr',rc.imagesize))##f#"
-										src="#rc.sourceImage#" data-ratio="#rc.customImageRatio#">
 
-										<input type="hidden" name="coords" value="" id="coords">
-										<input class="btn" type="button"id="applyCoords" value="Apply Cropping" onclick="applyCropping();">
-									</div>
-								</div>
-								--->
 							</div>
 						</cfif>
 					</cfif>
 				</cfif>
 			</cfif>
 		</cfloop>
-		<!-- Hidden dialog
-	   	<div style="display:none;" id="jc-container" >
-			<div class="jc-dialog">
-			   	<img id="jc-source-image"/>
-			</div>
-	    </div>
-	    --->
 
-	    <script>
-	    var currentFileID='';
-	    var currentCoords='';
+    <script>
+    var currentFileID='';
+    var currentCoords='';
 		var currentSize='';
 		var instanceid='#esapiEncode("javascript",rc.instanceid)#';
 

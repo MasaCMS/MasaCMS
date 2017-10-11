@@ -286,4 +286,26 @@ CKEDITOR.on('instanceReady', function(ev){
 CKEDITOR.on( 'dialogDefinition', function( ev ) {
     ev.data.definition.removeContents('Upload');
     ev.data.definition.removeContents('upload');
+    // position dialog windows e.g. image properties
+    ev.data.definition.onShow = function() {
+    	// position dialog windows relative to iframe (in front end full edit)
+    	if (parent.document.getElementById(window.name) != null){
+				var editor = this.getParentEditor()
+					// top of parent iframe
+					,dlgFrameTop = parent.document.getElementById(window.name).offsetTop 
+					// scroll position
+					,dlgScrollTop = $(top).scrollTop() 
+					// frame offset
+					,dlgFrameOffset =  dlgFrameTop - dlgScrollTop 
+					// browser window height
+					,dlgDocumentHeight = $(top).height() 
+					,dlgPopupHeight = this.getSize().height
+					,dlgNewTop = (dlgDocumentHeight/2) - (dlgPopupHeight/2) - dlgFrameOffset
+					,objCurrentPos = this.getPosition();
+					// pad top if negative (small iframe)
+					if (dlgNewTop < 0) { dlgNewTop = 5; }
+					// set the position
+					this.move( objCurrentPos.x, dlgNewTop ,false);
+    	} // /iframe
+    }
 });
