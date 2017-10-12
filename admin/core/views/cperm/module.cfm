@@ -48,7 +48,7 @@
 <cfset rc.rslist=rc.groups.privateGroups />
 <cfoutput>
 <div class="mura-header">
-  <h1>#application.rbFactory.getKeyValue(session.rb,'permissions')#</h1>
+  <h1>#rc.rscontent.title# #application.rbFactory.getKeyValue(session.rb,'permissions')#</h1>
   <div class="nav-module-specific btn-group">
     <a class="btn" href="##" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#" onclick="window.history.back(); return false;"><i class="mi-arrow-circle-left"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#</a>
   </div>
