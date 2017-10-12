@@ -13,6 +13,6 @@
         <condition type="request-filename" operator="notfile"/>
         <!-- Turn localhost/foo into localhost/index.cfm/foo -->
         <from>^/(.+)$</from>
-        <to last="true">/index.cfm/$1</to>
+        <to last="true">/$1</to>
     </rule>
 </urlrewrite>
