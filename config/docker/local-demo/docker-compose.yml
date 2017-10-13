@@ -5,6 +5,7 @@ services:
   mura_demo_cfml:
     build: .
     environment:
+      URL_REWRITES: "true"
       PORT: 8080
       SSL_PORT: 8443
       CFENGINE: lucee@5
