@@ -1207,6 +1207,8 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			result.links.endpoint=getEndpoint() & "/" & arguments.entityname;
 		}
 
+		result.links.swagger=getEndpoint() & "/swagger?entities=" & arguments.entityname;
+
 		if(getCurrentUser().isAdminUser() || getCurrentUser().isSuperUser()){
 			result.table=exampleEntity.getTable();
 		}
