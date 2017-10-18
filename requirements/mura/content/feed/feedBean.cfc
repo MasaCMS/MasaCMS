@@ -387,8 +387,8 @@ component extends="mura.bean.beanFeed" entityName="feed" table="tcontentfeeds" o
 		return this;
 	}
 
-	public function setUseCategoryIntersect(any value) output=false {
-		return setShowExcludeSearch(arguments.value);
+	public function useCategoryIntersect(any value) output=false {
+		return setUseCategoryIntersect(arguments.value);
 	}
 
 	public function setShowExcludeSearch(any showExcludeSearch) output=false {
