@@ -410,10 +410,11 @@ function getCommenter() output=false {
 
 	<cfset validate()>
 
-	<cfif structIsEmpty(getErrors())>
-		<cfset setCommenter()>
+	<cfset pluginManager.announceEvent("onBeforeCommentSave",pluginEvent)>
 
-		<cfset pluginManager.announceEvent("onBeforeCommentSave",pluginEvent)>
+	<cfif structIsEmpty(getErrors())>
+
+		<cfset setCommenter()>
 
 		<cfif getQuery().recordcount>
 
