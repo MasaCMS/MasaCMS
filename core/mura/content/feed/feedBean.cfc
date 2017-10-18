@@ -280,36 +280,56 @@ component extends="mura.bean.beanFeed" entityName="feed" table="tcontentfeeds" o
 	}
 
 	public function setDisplayName(any DisplayName) output=false {
-		if ( isNumeric(arguments.DisplayName) ) {
-			variables.instance.DisplayName = arguments.DisplayName;
+		if ( isBoolean(arguments.DisplayName) ) {
+			if(arguments.DisplayName){
+				variables.instance.DisplayName = 1;
+			} else {
+				variables.instance.DisplayName = 0;
+			}
 		}
 		return this;
 	}
 
 	public function setDisplayRatings(any DisplayRatings) output=false {
-		if ( isNumeric(arguments.DisplayRatings) ) {
-			variables.instance.DisplayRatings = arguments.DisplayRatings;
+		if ( isBoolean(arguments.DisplayRatings) ) {
+			if(arguments.DisplayRatings){
+				variables.instance.DisplayRatings = 1;
+			} else {
+				variables.instance.DisplayRatings = 0;
+			}
 		}
 		return this;
 	}
 
 	public function setDisplayComments(any DisplayComments) output=false {
-		if ( isNumeric(arguments.DisplayComments) ) {
-			variables.instance.DisplayComments = arguments.DisplayComments;
+		if ( isBoolean(arguments.DisplayComments) ) {
+			if(arguments.DisplayComments){
+				variables.instance.DisplayComments = 1;
+			} else {
+				variables.instance.DisplayComments = 0;
+			}
 		}
 		return this;
 	}
 
 	public function setDisplayKids(any DisplayKids) output=false {
-		if ( isNumeric(arguments.DisplayKids) ) {
-			variables.instance.displayKids = arguments.DisplayKids;
+		if ( isBoolean(arguments.DisplayKids) ) {
+			if(arguments.DisplayKids){
+				variables.instance.DisplayKids = 1;
+			} else {
+				variables.instance.DisplayKids = 0;
+			}
 		}
 		return this;
 	}
 
 	public function setIncludeHomePage(any includeHomePage) output=false {
-		if ( isNumeric(arguments.includeHomePage) ) {
-			variables.instance.includeHomePage = arguments.includeHomePage;
+		if ( isBoolean(arguments.includeHomePage) ) {
+			if(arguments.includeHomePage){
+				variables.instance.includeHomePage = 1;
+			} else {
+				variables.instance.includeHomePage = 0;
+			}
 		}
 		return this;
 	}
@@ -331,8 +351,12 @@ component extends="mura.bean.beanFeed" entityName="feed" table="tcontentfeeds" o
 	}
 
 	public function setShowNavOnly(any showNavOnly) output=false {
-		if ( isNumeric(arguments.showNavOnly) ) {
-			variables.instance.showNavOnly = arguments.showNavOnly;
+		if ( isBoolean(arguments.showNavOnly) ) {
+			if(arguments.showNavOnly){
+				variables.instance.showNavOnly = 1;
+			} else {
+				variables.instance.showNavOnly = 0;
+			}
 		}
 		return this;
 	}
@@ -342,8 +366,12 @@ component extends="mura.bean.beanFeed" entityName="feed" table="tcontentfeeds" o
 	}
 
 	public function setIsLocked(any isLocked) output=false {
-		if ( isNumeric(arguments.isLocked) ) {
-			variables.instance.isLocked = arguments.isLocked;
+		if ( isBoolean(arguments.isLocked) ) {
+			if(arguments.isLocked){
+				variables.instance.isLocked = 1;
+			} else {
+				variables.instance.isLocked = 0;
+			}
 		}
 		return this;
 	}
@@ -360,7 +388,18 @@ component extends="mura.bean.beanFeed" entityName="feed" table="tcontentfeeds" o
 	}
 
 	public function useCategoryIntersect(any value) output=false {
-		return setShowExcludeSearch(arguments.value);
+		return setUseCategoryIntersect(arguments.value);
+	}
+
+	public function setShowExcludeSearch(any showExcludeSearch) output=false {
+		if ( isBoolean(arguments.showExcludeSearch) ) {
+			if(arguments.showExcludeSearch){
+				variables.instance.showExcludeSearch = 1;
+			} else {
+				variables.instance.showExcludeSearch = 0;
+			}
+		}
+		return this;
 	}
 
 	public function showExcludeSearch(any value) output=false {
@@ -407,8 +446,12 @@ component extends="mura.bean.beanFeed" entityName="feed" table="tcontentfeeds" o
 	}
 
 	public function setAutoImport(required autoimport) output=false {
-		if ( isNumeric(arguments.autoimport) ) {
-			variables.instance.autoimport = arguments.autoimport;
+		if ( isBoolean(arguments.autoimport) ) {
+			if(arguments.autoimport){
+				variables.instance.autoimport = 1;
+			} else {
+				variables.instance.autoimport = 0;
+			}
 		}
 		return this;
 	}

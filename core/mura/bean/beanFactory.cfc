@@ -78,6 +78,17 @@ component extends="ioc" hint="This provides the primary bean factory that all co
               result = result & newline & tab & tab & "property";
               result = result & ' name="#p.name#"';
 
+              if(isDefined('p.fieldtype')
+                && listFindNoCase('many-to-one', p.fieldtype )
+                && isDefined('p.relatesto') && len(p.relatesto)
+                && application.Mura.getServiceFactory().containsBean(p.relatesto)
+                && (!isDefined('p.fkcolumn') || !len(p.fkcolumn))
+                ){
+
+                p.fkcolumn=getBean(p.relatesto).getValue('primaryKey');
+
+              }
+
               for(var k in p){
                 if(k != 'name'){
                   if(listFindNoCase('yes,no,true,false',p[k])){
