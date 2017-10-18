@@ -39,8 +39,8 @@ CKEDITOR.editorConfig = function( config )
 	lite.userId='#JSStringFormat($.currentUser().getUserID())#';
 	--->
 
-	CKEditorBasePath='#application.configBean.getContext()#/core/modules/v1';
-	CKFinderBasePath='#application.configBean.getContext()#/core/modules/v1';
+	CKEditorBasePath='#application.configBean.getContext()#/requirements';
+	CKFinderBasePath='#application.configBean.getContext()#/requirements';
 	</cfoutput>
 
 	<cfoutput>
