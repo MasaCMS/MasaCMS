@@ -899,6 +899,9 @@ Mura(function() {
 				this.currentView = 'scaffold-form-template';
 			},
 			showList: function( entityname ) {
+				if(entityname=='entity'){
+					this.currentparent={};
+				}
 				this.sortBy='';
 				this.sortDir='';
 				this.entityname = entityname;
