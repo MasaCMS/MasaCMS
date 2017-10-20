@@ -32,7 +32,8 @@
 		<div class="mura-control-group">
 			<label>Property Name</label>
 			<input type="text" v-model="data.name"
-				name="name" @change="data.name=data.name.replace(/[^0-9a-z]/gi, '');">
+				name="name" @change="data.name=data.name.replace(/[^0-9a-z]/gi, '');"
+				:disabled="data.fieldtype && data.fieldtype=='id' && this.$parent.entityissaved">
 		</div>
 
 		<div class="mura-control-group" v-if="data.fieldtype != 'id'">
@@ -155,7 +156,7 @@
 			<div class="mura-control-group">
 				<label>Entity Name</label>
 				<input type="text" v-model="model.entityname"
-					name="entityname" @change="model.entityname=model.entityname.replace(/[^0-9a-z]/gi, '');">
+					name="entityname" @change="checkIDProp();model.table='dyn_' + model.entityname" :disabled="this.$parent.entityissaved">
 			</div>
 
 			<div class="mura-control-group">
@@ -167,7 +168,8 @@
 			<div class="mura-control-group">
 				<label>Table Name</label>
 				<input type="text" v-model="model.table"
-					name="table" @change="model.table=model.table.replace(/[^0-9a-z]/gi, '');">
+					name="table" @change="model.table=model.table.replace(/[^0-9a-z]/gi, '');"
+					:disabled="this.$parent.entityissaved">
 			</div>
 
 			<div class="mura-control-group">

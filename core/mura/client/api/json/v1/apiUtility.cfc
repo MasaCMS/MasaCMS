@@ -2189,7 +2189,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 									feed.innerJoin(relatedEntity=params[p]);
 								} else if(propname=='leftJoin'){
 									feed.leftJoin(relatedEntity=params[p]);
-								} else if(entity.valueExists(propName) || entity.valueExists('extendData')){
+								} else if(propName=='id' || entity.valueExists(propName) || entity.valueExists('extendData')){
 									var condition="eq";
 									var criteria=arguments.params[p];
 

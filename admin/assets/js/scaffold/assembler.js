@@ -224,6 +224,9 @@ $( document ).ready(function() {
 		methods: {
 			removeInvalidText:function(text){
 				return MuraAssembler.removeInvalidText(text);
+			},
+			checkIDProp:function(){
+				this.$parent.checkIDProp();
 			}
 		}
 	});
@@ -340,6 +343,7 @@ $( document ).ready(function() {
 			data: {},
 			propertymodel: {},
 			relatedmodel: {},
+			entityissaved:false,
 			currentView: '',
 			rendertypes: [],
 			datatypes: [],
@@ -450,7 +454,10 @@ $( document ).ready(function() {
 
 			var urlparams=Mura.getQueryStringParams(location.search);
 
+			this.entityissaved=false;
+
 			if(urlparams.entityname){
+				this.entityissaved=true;
 				this.loadEntity( urlparams.entityname );
 			}
 
@@ -525,6 +532,7 @@ $( document ).ready(function() {
 							Mura.getEntity(savemodel.entityname)
 							.checkSchema()
 							.then(function(){
+								self.entityissaved=true;
 								$('#action-modal').stop().remove();
 								Mura("#alert-assembler-saved").html('<div class="alert alert-success"><span>Entity definition saved</span><button type="button" class="close" data-dismiss="alert"><i class="mi-close"></i></button></div>');
 								// console.log("Saved!");
@@ -699,6 +707,7 @@ $( document ).ready(function() {
 
 				Mura("#load-spin").hide();
 
+
 				if(!json.dynamic || (json.dynamic != true && json.dynamic != "true")) {
 					this.checkIDProp();
 					alert("Sorry, you can only edit dynamic Mura ORM objects.");
@@ -706,6 +715,8 @@ $( document ).ready(function() {
 				}
 
 				this.model = json;
+
+				this.checkIDProp();
 
 				console.log(this.model);
 
@@ -734,9 +745,15 @@ $( document ).ready(function() {
 			  var hasid = false;
 				var newprops = [];
 
+				this.model.entityname=this.model.entityname.replace(/[^0-9a-z]/gi, '');
+
 			  for(var i = 0;i < self.model.properties.length;i++) {
 			    var prop = self.model.properties[i];
 			    if(prop.fieldtype &&  prop.fieldtype == "id") {
+						if(!this.entityissaved){
+							prop.name = this.model.entityname.toLowerCase() + "id";
+							prop.displayname = prop.name;
+						}
 			      return;
 			      break;
 			    }
