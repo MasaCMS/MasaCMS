@@ -164,7 +164,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<a class="add" href="javascript:;" <!---ontouchstart="this.onclick();"---> onclick="siteManager.showMenu('newContentMenu','#esapiEncode('javascript',newcontent)#',this,'#rsnest.contentid#','#esapiEncode('javascript',attributes.topid)#','#rsnest.parentid#','#esapiEncode('javascript',attributes.siteid)#','#rsnest.type#','#esapiEncode('javascript',rsnest.moduleid)#');"><i class="mi-ellipsis-v"></i></a>
 
 	<cfif isNumeric(attributes.hasKids) and attributes.hasKids>
-		<span <cfif isOpenSection>class="hasChildren open"<cfelse>class="hasChildren closed"</cfif> onclick="return siteManager.loadSiteSection( jQuery(this).parents('li:first') , 1 , true);"></span>
+		<span <cfif isOpenSection>class="hasChildren open"<cfelse>class="hasChildren closed"</cfif> onclick="return siteManager.loadSiteSection( jQuery(this).closest('li') , 1 , true);"></span>
 	</cfif>
 
 	<cfsilent>

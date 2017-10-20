@@ -51,8 +51,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="session.copyAll" default="false">
 <cfparam name="session.openSectionList" default="">
 <cfparam name="rc.sorted" default="false" />
-
-<cfset sectionFound=listFind(session.openSectionList,rc.contentID)>
+<cfset sectionid=rc.contentID>
+<cfset sectionFound=listFind(session.openSectionList,sectionid)>
 
 <cfif not sectionFound>
 
@@ -71,19 +71,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset request.hasPublishingTab=not len(request.tabAssignments) or listFindNocase(request.tabAssignments,'Publishing')>
 <cfset request.hasLayoutObjectsTab=not len(request.tabAssignments) or listFindNocase(request.tabAssignments,'Layout & Objects')>
 <cfset request.rowNum=0>
-<cfset request.menulist=rc.contentID>
-<cfset crumbdata=application.contentManager.getCrumbList(rc.contentID,rc.siteid)>
+<cfset request.menulist=sectionid>
+<cfset crumbdata=application.contentManager.getCrumbList(sectionid,rc.siteid)>
 <cfset perm=application.permUtility.getnodePerm(crumbdata)>
 <cfset r=application.permUtility.setRestriction(crumbdata).restrict>
-<cfset rsNext=application.contentManager.getNest(rc.contentID,rc.siteid,rc.sortBy,rc.sortDirection)>
+<cfset rsNext=application.contentManager.getNest(sectionid,rc.siteid,rc.sortBy,rc.sortDirection)>
 
 <cfsavecontent variable="data.html">
-<cf_dsp_nest topid="#esapiEncode('html_attr',rc.contentID)#" parentid="#esapiEncode('html_attr',rc.contentID)#"  rsnest="#rsNext#" locking="#application.settingsManager.getSite(rc.siteid).getlocking()#" nestlevel="1" perm="#perm#" siteid="#rc.siteid#" moduleid="#esapiEncode('html_attr',rc.moduleid)#" restricted="#r#" viewdepth="1" nextn="#session.mura.nextN#" startrow="#esapiEncode('html_attr',rc.startrow)#" sortBy="#esapiEncode('html_attr',rc.sortBy)#" sortDirection="#esapiEncode('html_attr',rc.sortDirection)#" pluginEvent="#pluginEvent#" isSectionRequest="true" muraScope="#rc.$#">
+<cf_dsp_nest topid="#esapiEncode('html_attr',sectionid)#" parentid="#esapiEncode('html_attr',rc.contentID)#"  rsnest="#rsNext#" locking="#application.settingsManager.getSite(rc.siteid).getlocking()#" nestlevel="1" perm="#perm#" siteid="#rc.siteid#" moduleid="#esapiEncode('html_attr',rc.moduleid)#" restricted="#r#" viewdepth="1" nextn="#session.mura.nextN#" startrow="#esapiEncode('html_attr',rc.startrow)#" sortBy="#esapiEncode('html_attr',rc.sortBy)#" sortDirection="#esapiEncode('html_attr',rc.sortDirection)#" pluginEvent="#pluginEvent#" isSectionRequest="true" muraScope="#rc.$#">
 </cfsavecontent>
 
-<cfset session.openSectionList=listAppend(session.openSectionList,rc.contentID)>
-	
-<cfcontent type="application/json; charset=utf-8" reset="true"><cfoutput>#createObject("component","mura.json").encode(data)#</cfoutput><cfabort>
+<cfset session.openSectionList=listAppend(session.openSectionList,sectionid)>
+
+<cfcontent type="application/json; charset=utf-8" reset="true"><cfoutput>#$.getBean('jsonSerializer').serialize(data)#</cfoutput><cfabort>
 
 <cfelse>
 	<cfset session.openSectionList=listDeleteAt(session.openSectionList,sectionFound)>
