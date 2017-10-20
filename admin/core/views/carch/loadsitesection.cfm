@@ -83,7 +83,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cf_dsp_nest topid="#esapiEncode('html_attr',sectionid)#" parentid="#esapiEncode('html_attr',sectionid)#"  rsnest="#rsNext#" locking="#application.settingsManager.getSite(rc.siteid).getlocking()#" nestlevel="1" perm="#perm#" siteid="#rc.siteid#" moduleid="#esapiEncode('html_attr',rc.moduleid)#" restricted="#r#" viewdepth="1" nextn="#session.mura.nextN#" startrow="#esapiEncode('html_attr',rc.startrow)#" sortBy="#esapiEncode('html_attr',rc.sortBy)#" sortDirection="#esapiEncode('html_attr',rc.sortDirection)#" pluginEvent="#pluginEvent#" isSectionRequest="true" muraScope="#rc.$#">
 </cfsavecontent>
 
-<cfcontent type="application/json; charset=utf-8" reset="true"><cfoutput>#createObject("component","mura.json").encode(data)#</cfoutput><cfabort>
+<cfcontent type="application/json; charset=utf-8" reset="true"><cfoutput>#$.getBean('jsonSerializer').serialize(data)#</cfoutput><cfabort>
 
 <cfelse>
 	<cfset session.openSectionList=listDeleteAt(session.openSectionList,sectionFound)>
