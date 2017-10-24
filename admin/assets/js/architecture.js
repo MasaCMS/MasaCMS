@@ -1677,13 +1677,12 @@ buttons: {
 			clearTimeout(startTimer);
 		};
 
-
 		clearTimer();
 
 		if(!this.sectionLoading) {
 
 			this.sectionLoading = true;
-			var url = './';
+			var url = './index.cfm';
 			var pars = 'muraAction=cArch.loadSiteSection&siteid=' + node.attr("data-siteid") + '&contentID=' + node.attr("data-contentid") + '&moduleid=' + node.attr("data-moduleid") + '&sortby=' + node.attr("data-sortby") + '&sortdirection=' + node.attr("data-sortdirection") + '&ptype=' + node.attr("data-type") + '&startrow=' + startrow + '&cacheid=' + Math.random();
 
 			//location.href=url + "?" + pars;
@@ -1694,16 +1693,13 @@ buttons: {
 				var startTimer=setTimeout(
 					function(){
 					//if(siteManager.sectionLoading){
-						$('body').prepend('<div id="mura-section-loading" class="spinner-wrap"></div>');
+						node.prepend('<div id="mura-section-loading" class="spinner-wrap"></div>');
 						$('.mura-grid').prepend('<div id="mura-grid-loader"></div>');
 						$("#mura-section-loading").spin(spinnerArgs3);
 						//}
 					},
 					1000
 				);
-
-
-
 
 				icon.removeClass('hasChildren closed');
 				icon.addClass('hasChildren open');
