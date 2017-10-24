@@ -1677,7 +1677,6 @@ buttons: {
 			clearTimeout(startTimer);
 		};
 
-
 		clearTimer();
 
 		if(!this.sectionLoading) {
@@ -1694,16 +1693,13 @@ buttons: {
 				var startTimer=setTimeout(
 					function(){
 					//if(siteManager.sectionLoading){
-						$('body').prepend('<div id="mura-section-loading" class="spinner-wrap"></div>');
+						node.prepend('<div id="mura-section-loading" class="spinner-wrap"></div>');
 						$('.mura-grid').prepend('<div id="mura-grid-loader"></div>');
 						$("#mura-section-loading").spin(spinnerArgs3);
 						//}
 					},
 					1000
 				);
-
-
-
 
 				icon.removeClass('hasChildren closed');
 				icon.addClass('hasChildren open');
