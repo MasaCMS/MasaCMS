@@ -1682,7 +1682,7 @@ buttons: {
 		if(!this.sectionLoading) {
 
 			this.sectionLoading = true;
-			var url = './';
+			var url = './index.cfm';
 			var pars = 'muraAction=cArch.loadSiteSection&siteid=' + node.attr("data-siteid") + '&contentID=' + node.attr("data-contentid") + '&moduleid=' + node.attr("data-moduleid") + '&sortby=' + node.attr("data-sortby") + '&sortdirection=' + node.attr("data-sortdirection") + '&ptype=' + node.attr("data-type") + '&startrow=' + startrow + '&cacheid=' + Math.random();
 
 			//location.href=url + "?" + pars;
