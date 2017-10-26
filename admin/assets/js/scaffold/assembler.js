@@ -226,10 +226,13 @@ $( document ).ready(function() {
 				return MuraAssembler.removeInvalidText(text);
 			},
 			checkIDProp:function(){
+				console.log(this);
+				console.log(this.$parent);
 				this.$parent.checkIDProp();
 			}
 		}
 	});
+
 	Vue.component('assembler-related-form-template', {
 		template: '#assembler-related-form-template',
 		props: ['data','datatypes','relatedprops'],
@@ -271,6 +274,67 @@ $( document ).ready(function() {
 				}
 
 				this.relatedprops = related;
+			}
+		}
+	});
+
+	Vue.component('assembler-template', {
+		template: '#assembler-template',
+		props: ['data','rendertypes','datatypes','fieldtypes','model','isupdate'],
+		create: function () {
+			console.log("create: " + $( "#assembler-properties" ));
+			$( "#assembler-properties" ).sortable (
+				{
+					axis: 'y'
+				}
+			);
+
+		},
+		updated: function () {
+			console.log("updated: " + $( "#assembler-properties" ));
+			$( "#assembler-properties" ).sortable (
+				{
+					axis: 'y'
+				}
+			);
+
+		},
+		methods: {
+			checkIDProp:function(){
+				console.log(this);
+				console.log(this.$parent);
+				this.$parent.checkIDProp();
+			},
+			clickEditProperty: function( pos ) {
+				this.$parent.clickEditProperty(pos);
+			},
+			clickEditRelated: function( pos ) {
+				this.$parent.clickEditRelated(pos);
+			},
+			clickAddRelated: function() {
+					this.$parent.clickAddRelated();
+			},
+			clickAddProperty: function() {
+				this.$parent.clickAddProperty();
+			},
+			clickCancel: function() {
+				this.$parent.clickCancel();
+			},
+			clickUpdateProperty: function() {
+				this.$forceUpdate();
+
+				this.$parent.clickUpdateProperty();
+			},
+			clickDeleteProperty: function() {
+				this.$forceUpdate();
+
+				this.$parent.clickDeleteProperty();
+			},
+			removeInvalidText:function(text){
+				return MuraAssembler.removeInvalidText(text);
+			},
+			removeInvalidText:function(text){
+				return MuraAssembler.removeInvalidText(text);
 			}
 		}
 	});
@@ -344,7 +408,7 @@ $( document ).ready(function() {
 			propertymodel: {},
 			relatedmodel: {},
 			entityissaved:false,
-			currentView: '',
+			currentView: 'assembler-template',
 			rendertypes: [],
 			datatypes: [],
 			fieldtypes: [],
@@ -445,12 +509,6 @@ $( document ).ready(function() {
 				{name:'',label: ''},
 				{name:'index',label: 'Index'}
 			];
-
-			$( "#assembler-properties" ).sortable (
-				{
-					axis: 'y'
-				}
-			);
 
 			var urlparams=Mura.getQueryStringParams(location.search);
 
@@ -580,7 +638,14 @@ $( document ).ready(function() {
 				}
 
 				this.data = {};
-				this.currentView="";
+				this.currentView="assembler-template";
+				console.log('now');
+
+				$( "#assembler-properties" ).sortable (
+					{
+						axis: 'y'
+					}
+				);
 			},
 			clickDeleteProperty: function() {
 				var data = JSON.parse(JSON.stringify(this.data));
@@ -589,7 +654,7 @@ $( document ).ready(function() {
 				if (conf) {
 					this.model.properties.splice(data.pos, 1);
 					this.data = {};
-					this.currentView = "";
+					this.currentView = "assembler-template";
 				}
 			},
 			clickUpdateRelated: function() {
@@ -619,7 +684,7 @@ $( document ).ready(function() {
 				}
 
 				this.data = {};
-				this.currentView="";
+				this.currentView="assembler-template";
 			},
 			clickDeleteRelated: function() {
 				var data = JSON.parse(JSON.stringify(this.data));
@@ -628,12 +693,12 @@ $( document ).ready(function() {
 				if (conf) {
 					this.model.properties.splice(data.pos, 1);
 					this.data = {};
-					this.currentView = "";
+					this.currentView = "assembler-template";
 				}
 			},
 			clickCancel: function() {
 				this.data = {};
-				this.currentView = "";
+				this.currentView = "assembler-template";
 			},
 			clickClear: function() {
 				var conf = confirm( "Clear the form? Unsaved changes will be lost.");
@@ -642,13 +707,7 @@ $( document ).ready(function() {
 					this.data = {};
 					this.model = JSON.parse(JSON.stringify(this.staticmodel));
 
-					this.currentView = "";
-
-					$( "#assembler-properties" ).sortable (
-						{
-							axis: 'y'
-						}
-					);
+					this.currentView = "assembler-template";
 
 					this.checkIDProp();
 				}
@@ -684,7 +743,7 @@ $( document ).ready(function() {
 				Mura("#load-spin").show();
 
 				this.data = {};
-				this.currentView = "";
+				this.currentView = "assembler-template";
 
 				this.model = JSON.parse(JSON.stringify(this.staticmodel));
 
@@ -715,16 +774,7 @@ $( document ).ready(function() {
 				}
 
 				this.model = json;
-
 				this.checkIDProp();
-
-				console.log(this.model);
-
-				$( "#assembler-properties" ).sortable(
-					{
-						axis: 'y'
-					}
-				);
 			},
 			setDynamicObjects( data ) {
 /*
@@ -769,16 +819,9 @@ $( document ).ready(function() {
 			show: function() {
 				this.data = {};
 				this.model = JSON.parse(JSON.stringify(this.staticmodel));
-				this.currentView = "";
+				this.currentView = "assembler-template";
 				this.checkIDProp();
 				this.isvisible = true;
-
-				$( "#assembler-properties" ).sortable(
-						{
-							axis: 'y'
-						}
-					);
-
 			},
 			hide: function() {
 				this.isvisible = false;

@@ -1,5 +1,75 @@
 <cfoutput>
 
+<template id="assembler-template">
+	<div>
+		<div class="half">
+			<div class="formtemplate" id="attributes-form-template">
+
+					<div class="mura-control-group">
+						<label>Entity Name</label>
+						<input type="text" v-model="model.entityname"
+							name="entityname" @change="checkIDProp();model.table='dyn_' + model.entityname" :disabled="this.$parent.entityissaved">
+					</div>
+
+					<div class="mura-control-group">
+						<label>Display Name</label>
+						<input type="text" v-model="model.displayname"
+							name="displayname" @change="model.displayname=removeInvalidText(model.displayname)">
+					</div>
+
+					<div class="mura-control-group">
+						<label>Table Name</label>
+						<input type="text" v-model="model.table"
+							name="table" @change="model.table=model.table.replace(/[^0-9a-z]/gi, '');"
+							:disabled="this.$parent.entityissaved">
+					</div>
+
+					<div class="mura-control-group">
+						<label>Order By (optional)</label>
+						<input type="text" v-model="model.orderby"
+							name="orderby">
+					</div>
+
+					<div class="mura-control-group">
+						<label class="checkbox">
+							<input type="checkbox" v-model="model.scaffold"
+								name="scaffold"
+								v-bind:true-value="true"
+			   		 		v-bind:false-value="false"
+				 				name="scaffold" :checked="model.scaffold == true || model.scaffold == 1 || model.scaffold == 'true' ? 'checked' : null">
+				 				Scaffold
+				 		</label>
+						<label class="checkbox">
+						<input type="checkbox" v-model="model.bundleable"
+							name="bundleable"
+							v-bind:true-value="true"
+				   		 v-bind:false-value="false"
+			 				name="bundleable" :checked="model.bundleable == true || model.bundleable == 1 || model.bundleable == 'true' ? 'checked' : null">
+							Bundleable</label>
+						<label class="checkbox">
+						<input type="checkbox" v-model="model.public"
+							name="public"
+							v-bind:true-value="true"
+			   		 		v-bind:false-value="false"
+			 				name="public" :checked="model.public == true || model.public == 1 || model.public == 'true' ? 'checked' : null">
+							Publicly Accessible</label>
+					</div>
+
+			</div> <!-- /.formtemplate -->
+		</div>
+		<!--- property/relationship form --->
+		<div class="half">
+			<h3>Entity Properties</h3>
+			<div class="btn-group">
+				<button class="btn" @click='clickAddProperty'><i class="mi-plus-circle"></i> Add Property</button>
+				<button class="btn" @click='clickAddRelated'><i class="mi-plus-circle"></i> Add Relationship</button>
+			</div>
+			<assembler-property-template :model="model"></assembler-property-template>
+		</div>
+	</div>
+</template>
+
+
 <template id="assembler-property-template">
 	<div id="property-template">
 		<div class="mura-control justify">
@@ -33,7 +103,7 @@
 			<label>Property Name</label>
 			<input type="text" v-model="data.name"
 				name="name" @change="data.name=data.name.replace(/[^0-9a-z]/gi, '');"
-				:disabled="data.fieldtype && data.fieldtype=='id' && this.$parent.entityissaved">
+				:disabled="data.fieldtype==='id' && this.$parent.entityissaved===false">
 		</div>
 
 		<div class="mura-control-group" v-if="data.fieldtype != 'id'">
@@ -142,69 +212,16 @@
 
 		<div>
 			<div class="btn-group">
+				<!---
 				<button class="btn" @click="clickUpdateProperty"><i class="mi-save"></i> <span v-if="this.$parent.isupdate">Update Property</span><span v-else>Add Property</span></button>
 				<button class="btn" v-if="this.$parent.isupdate && data.fieldtype != 'id'" @click="clickDeleteProperty"><i class="mi-trash"></i> Delete</button>
 				<button class="btn" @click='clickCancel'><i class="mi-times-circle"></i> Cancel</button>
+				--->
 			</div>
 		</div>
 	</div>
 </template> <!--- / assembler-property-form-template --->
 
-<template id="assembler-attributes-form-template">
-	<div class="formtemplate" id="attributes-form-template">
-
-			<div class="mura-control-group">
-				<label>Entity Name</label>
-				<input type="text" v-model="model.entityname"
-					name="entityname" @change="checkIDProp();model.table='dyn_' + model.entityname" :disabled="this.$parent.entityissaved">
-			</div>
-
-			<div class="mura-control-group">
-				<label>Display Name</label>
-				<input type="text" v-model="model.displayname"
-					name="displayname" @change="model.displayname=removeInvalidText(model.displayname)">
-			</div>
-
-			<div class="mura-control-group">
-				<label>Table Name</label>
-				<input type="text" v-model="model.table"
-					name="table" @change="model.table=model.table.replace(/[^0-9a-z]/gi, '');"
-					:disabled="this.$parent.entityissaved">
-			</div>
-
-			<div class="mura-control-group">
-				<label>Order By (optional)</label>
-				<input type="text" v-model="model.orderby"
-					name="orderby">
-			</div>
-
-			<div class="mura-control-group">
-				<label class="checkbox">
-					<input type="checkbox" v-model="model.scaffold"
-						name="scaffold"
-						v-bind:true-value="true"
-	   		 		v-bind:false-value="false"
-		 				name="scaffold" :checked="model.scaffold == true || model.scaffold == 1 || model.scaffold == 'true' ? 'checked' : null">
-		 				Scaffold
-		 		</label>
-				<label class="checkbox">
-				<input type="checkbox" v-model="model.bundleable"
-					name="bundleable"
-					v-bind:true-value="true"
-		   		 v-bind:false-value="false"
-	 				name="bundleable" :checked="model.bundleable == true || model.bundleable == 1 || model.bundleable == 'true' ? 'checked' : null">
-					Bundleable</label>
-				<label class="checkbox">
-				<input type="checkbox" v-model="model.public"
-					name="public"
-					v-bind:true-value="true"
-	   		 		v-bind:false-value="false"
-	 				name="public" :checked="model.public == true || model.public == 1 || model.public == 'true' ? 'checked' : null">
-					Publicly Accessible</label>
-			</div>
-
-	</div> <!-- /.formtemplate -->
-</template> <!--- / assembler-attributes-form-template --->
 
 <template id="assembler-related-form-template">
 	<div class="formtemplate" id="related-form-template">
@@ -283,10 +300,12 @@
 
 		<div>
 			<div class="btn-group">
+				<!---
 				<button class="btn" @click="clickUpdateRelated"><i class="mi-save"></i> <span v-if="this.$parent.isupdate">Update Relationship</span><span v-else>Add Relationship</span></button>
 				<button class="btn" v-if="this.$parent.isupdate" @click="clickDeleteRelated"><i class="mi-trash"></i> Delete</button>
 				<button class="btn" @click='clickCancel'><i class="mi-times-circle"></i> Cancel</button>
-				</div>
+				--->
+			</div>
 		</div>
 	</div>
 </template> <!--- / assembler-related-form-template --->
