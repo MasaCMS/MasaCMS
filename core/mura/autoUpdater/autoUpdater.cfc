@@ -152,7 +152,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif arrayLen(updatedArray)>
 				<cfset application.appInitialized=false>
 				<cfset application.appAutoUpdated=true>
-				<cfset application.coreversion=updateVersion>
+				<cfset application.coreversion=application.configBean.getVersionFromFile()>
 
 				<cfif isNumeric(autoUpdateSleep) and autoUpdateSleep>
 					<cfset autoUpdateSleep=autoUpdateSleep*1000>
