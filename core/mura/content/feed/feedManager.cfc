@@ -501,63 +501,43 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="maxItems" required="true" >
 	<cfargument name="timeout" required="true" default="5" >
 	<cfargument name="authtype" required="true" default="">
-	<cfset var data = "" />
-	<cfset var temp = 0 />
-	<cfset var response=structNew() />
+	<cfargument name="siteid" required="true" default="default">
 
-	<cftry>
-		<cfhttp attributeCollection='#getHTTPAttrs(result="temp",
-						url=arguments.feedURL,
-						authtype=arguments.authtype,
-						method="GET",
-						resolveurl="Yes",
-						throwOnError="Yes",
-						charset="UTF-8",
-						timeout="#arguments.timeout#")#'>
+	<cfset var key= arguments.feedURL />
+	<cfset var site=getBean('settingsManager').getSite(arguments.siteid)/>
+	<cfset var cacheFactory=site.getCacheFactory(name="data")>
+	<cfset var feedData="">
 
-		<cfcatch>
-			<cfreturn ''>
-		</cfcatch>
-	</cftry>
-
-	<cfset data=replace(temp.FileContent,chr(20),'','ALL') />
-	<cfset data=REReplace( data, "^[^<]*", "", "all" )/>
-
-	<cfif isXML(data)>
-		<cfset response.xml=XMLParse(data)/>
-		<cfif StructKeyExists(response.xml, "rss")>
-	       	<cfset response.channelTitle =  response.xml.rss.channel.title.xmlText>
-	       	<cfif isdefined("response.xml.rss.channel.item")>
-	       		<cfset response.itemArray = response.xml.rss.channel.item>
-        		<cfset response.maxItems = arrayLen(response.itemArray) />
-			<cfelse>
-				<cfset response.maxItems = 0 />
+	<cfif site.getCache()>
+		<!--- check to see if it is cached. if not then pass in the context --->
+		<!--- otherwise grab it from the cache --->
+		<cfif NOT cacheFactory.has( key )>
+			<cfreturn variables.feedUtility.getRemoteFeedData(argumentCollection=arguments)>
+			<cfif not IsSimpleValue(feedData)>
+				<cfset cacheFactory.get( key=key, context=structCopy(feedData),timespan=CreateTimeSpan(0,0,5,0) ) />
 			</cfif>
-			<cfset response.type = "rss" />
-    	<cfelseif StructKeyExists(response.xml, "rdf:RDF")>
-	       	<cfset response.channelArray = XMLSearch(response.xml, "//:channel")>
-	      	<cfset response.channelTitle =  response.channelArray[1].title.xmlText>
-	      	<cfset response.itemArray = XMLSearch(response.channelArray[1], "//:item")>
-	     	<cfset response.maxItems = arrayLen(response.itemArray) />
-	    	<cfset response.type = "rdf" />
-     	<cfelseif StructKeyExists(response.xml, "feed")>
-			<cfset response.channelTitle =  response.xml.feed.title.xmlText>
-			<cfif isdefined("response.xml.feed.entry")>
-				<cfset response.itemArray = response.xml.feed.entry>
-				<cfset response.maxItems = arrayLen(response.itemArray) />
-			<cfelse>
-				<cfset response.maxItems = 0 />
-			</cfif>
-			<cfset response.type = "atom" />
+			<cfset commitTracePoint(initTracePoint(detail="DATA CACHE MISS: {class: feedBean, key: #key#}"))>
+			<cfreturn feedData/>
+		<cfelse>
+			<cftry>
+				<cfset feedData=structCopy(cacheFactory.get( key ))>
+				<cfset feedData.frommuracache=true>
+				<cfset commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: feedBean, key: #key#}"))>
+				<cfreturn feedData />
+				<cfcatch>
+					<cfset feedData=variables.feedUtility.getRemoteFeedData(argumentCollection=arguments)>
+					<cfif not IsSimpleValue(feedData)>
+						<cfset cacheFactory.get( key=key, context=structCopy(feedData),timespan=CreateTimeSpan(0,0,5,0) ) />
+					</cfif>
+					<cfset commitTracePoint(initTracePoint(detail="DATA CACHE MISS: {class: feedBean, key: #key#}"))>
+					<cfreturn feedData/>
+				</cfcatch>
+			</cftry>
 		</cfif>
-
-		<cfif response.maxItems gt arguments.MaxItems>
-			<cfset response.maxItems=arguments.MaxItems/>
-		</cfif>
-
+	<cfelse>
+		<cfreturn variables.feedUtility.getRemoteFeedData(argumentCollection=arguments)>
 	</cfif>
 
-	<cfreturn response />
 </cffunction>
 
 </cfcomponent>

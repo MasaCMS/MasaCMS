@@ -199,4 +199,68 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn theImport />
 </cffunction>
 
+<cffunction name="getRemoteFeedData" output="false">
+	<cfargument name="feedURL" required="true" >
+	<cfargument name="maxItems" required="true" >
+	<cfargument name="timeout" required="true" default="5" >
+	<cfargument name="authtype" required="true" default="">
+	<cfset var data = "" />
+	<cfset var temp = 0 />
+	<cfset var response=structNew() />
+
+	<cftry>
+		<cfhttp attributeCollection='#getHTTPAttrs(result="temp",
+						url=arguments.feedURL,
+						authtype=arguments.authtype,
+						method="GET",
+						resolveurl="Yes",
+						throwOnError="Yes",
+						charset="UTF-8",
+						cachedwithin=createTimeSpan(0,0,1,0),
+						timeout="#arguments.timeout#")#'>
+
+		<cfcatch>
+			<cfreturn ''>
+		</cfcatch>
+	</cftry>
+
+	<cfset data=replace(temp.FileContent,chr(20),'','ALL') />
+	<cfset data=REReplace( data, "^[^<]*", "", "all" )/>
+
+	<cfif isXML(data)>
+		<cfset response.xml=XMLParse(data)/>
+		<cfif StructKeyExists(response.xml, "rss")>
+	       	<cfset response.channelTitle =  response.xml.rss.channel.title.xmlText>
+	       	<cfif isdefined("response.xml.rss.channel.item")>
+	       		<cfset response.itemArray = response.xml.rss.channel.item>
+        		<cfset response.maxItems = arrayLen(response.itemArray) />
+			<cfelse>
+				<cfset response.maxItems = 0 />
+			</cfif>
+			<cfset response.type = "rss" />
+    	<cfelseif StructKeyExists(response.xml, "rdf:RDF")>
+	       	<cfset response.channelArray = XMLSearch(response.xml, "//:channel")>
+	      	<cfset response.channelTitle =  response.channelArray[1].title.xmlText>
+	      	<cfset response.itemArray = XMLSearch(response.channelArray[1], "//:item")>
+	     	<cfset response.maxItems = arrayLen(response.itemArray) />
+	    	<cfset response.type = "rdf" />
+     	<cfelseif StructKeyExists(response.xml, "feed")>
+			<cfset response.channelTitle =  response.xml.feed.title.xmlText>
+			<cfif isdefined("response.xml.feed.entry")>
+				<cfset response.itemArray = response.xml.feed.entry>
+				<cfset response.maxItems = arrayLen(response.itemArray) />
+			<cfelse>
+				<cfset response.maxItems = 0 />
+			</cfif>
+			<cfset response.type = "atom" />
+		</cfif>
+
+		<cfif response.maxItems gt arguments.MaxItems>
+			<cfset response.maxItems=arguments.MaxItems/>
+		</cfif>
+
+	</cfif>
+
+	<cfreturn response />
+</cffunction>
 </cfcomponent>

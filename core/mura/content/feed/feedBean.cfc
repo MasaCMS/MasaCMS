@@ -673,7 +673,7 @@ component extends="mura.bean.beanFeed" entityName="feed" table="tcontentfeeds" o
 	}
 
 	public function getRemoteData() output=false {
-		return getBean('feedManager').getRemoteFeedData(feedURL=variables.instance.channellink,maxItems=variables.instance.maxitems,authtype=variables.instance.authtype);
+		return getBean('feedManager').getRemoteFeedData(feedURL=variables.instance.channellink,maxItems=variables.instance.maxitems,authtype=variables.instance.authtype,siteid=variables.instance.siteid);
 	}
 
 	function getFeed(){
