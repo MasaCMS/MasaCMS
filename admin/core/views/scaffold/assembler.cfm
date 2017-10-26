@@ -81,31 +81,16 @@
 	<div id="container-assembler">
 
 	  <!--- start tab content --->
-		<div class="block-content tab-content">		
+		<div class="block-content tab-content">
 			<!-- definitions-->
 			<div class="tab-pane active" id="tabDef">
 				<div class="block block-bordered">
-		
+
 					<div class="block-content">
 						<div class="help-block">
 						   IMPORTANT: After updating dynamically created entities, a reload of the Mura application may be required.
 						</div>
-	
-						<!--- entity form --->
-						<div class="half">
-							<assembler-attributes-form-template :model="model"></assembler-attributes-form-template>
-						</div>
-						<!--- property/relationship form --->
-						<div class="half">
-							<h3>Entity Properties</h3>
-							<div class="btn-group">
-								<button class="btn" @click='clickAddProperty'><i class="mi-plus-circle"></i> Add Property</button>
-								<button class="btn" @click='clickAddRelated'><i class="mi-plus-circle"></i> Add Relationship</button>
-							</div>
-							<assembler-property-template :model="model"></assembler-property-template>
-							<component :is="currentView" :data="data" :rendertypes="rendertypes" :fieldtypes="fieldtypes" :datatypes="datatypes" :model="model" transition="fade" transition-mode="out-in"></component>
-						</div>
-	
+							<component :is="currentView" :data="data" :isupdate="isupdate" :rendertypes="rendertypes" :fieldtypes="fieldtypes" :datatypes="datatypes" :model="model" transition="fade" transition-mode="out-in"></component>
 					</div>
 				</div> <!-- /.block-bordered -->
 			</div> <!-- /tabDef -->
@@ -123,11 +108,21 @@
 		</div> <!-- /.block-content.tab-content -->
 
 		<div class="mura-actions">
-			<div class="form-actions">
+			<div class="form-actions" v-if="currentView==='assembler-template'">
 				<button v-if="model.entityname != '' && model.table != ''" @click='clickSave' class="btn mura-primary"><i class="mi-check-circle"></i> Save</button>
 				<button v-else class="btn" disabled><i class="mi-ban"></i> Save</button>
 			</div>
-		</div>				
+			<div class="form-actions" v-else-if="currentView==='assembler-property-form-template'">
+				<button  class="btn mura-primary" @click="clickUpdateProperty"><i class="mi-check-circle"></i> Add Property</button>
+				<button class="btn" v-if="isupdate && data.fieldtype != 'id'" @click="clickDeleteProperty"><i class="mi-trash"></i> Delete</button>
+				<button  class="btn" @click='clickCancel'><i class="mi-arrow-circle-left"></i> Cancel</button>
+			</div>
+			<div class="form-actions" v-else-if="currentView==='assembler-related-form-template'">
+				<button  class="btn mura-primary" @click="clickUpdateRelated"><i class="mi-check-circle"></i> Add Property</button>
+				<button class="btn" v-if="isupdate" @click="clickDeleteRelated"><i class="mi-trash"></i> Delete</button>
+				<button  class="btn" @click='clickCancel'><i class="mi-arrow-circle-left"></i> Cancel</button>
+			</div>
+		</div>
 
 	</div> <!--- /container-assembler --->
 
