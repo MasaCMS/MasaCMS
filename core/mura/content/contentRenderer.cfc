@@ -3347,15 +3347,15 @@ Display Objects
 		return '';
 	}
 
-	public function outputMuraCSS(includeskin=true, version=7.0) {
+	public function outputMuraCSS(includeskin=true, version='7.1', complete=false, useProtocol=true) {
 		if ( !FileExists('/muraWRM/core/modules/v1/core_assets/css/mura.' & arguments.version & '.min.css') ) {
-			arguments.version = 7.0;
+			arguments.version = '7.0';
 		}
-
-		var str = '<link rel="stylesheet" href="#variables.$.globalConfig("corePath")#/modules/v1/core_assets/css/mura.#arguments.version#.min.css?v=#variables.$.siteConfig("version")#">'
+		var corePath=variables.$.siteConfig().getCorePath(complete=arguments.complete, useProtocol=arguments.useProtocol);
+		var str = '<link rel="stylesheet" href="#corePath#/modules/v1/core_assets/css/mura.#arguments.version#.min.css?v=#variables.$.globalConfig("version")#">';
 
 		if ( arguments.includeskin ) {
-			str &= '<link rel="stylesheet" href="#variables.$.globalConfig("corePath")#/modules/v1/core_assets/css/mura.#arguments.version#.skin.css?v=#variables.$.siteConfig("version")#">';
+			str &= '<link rel="stylesheet" href="#corePath#/modules/v1/core_assets/css/mura.#arguments.version#.skin.css?v=#variables.$.globalConfig("version")#">';
 		}
 
 		return str;
