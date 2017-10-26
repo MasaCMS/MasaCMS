@@ -165,12 +165,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cffile action="delete" file="#currentDir##zipFileName#.zip" >
 
+		<cfset application.configBean.setVersion(application.configBean.getVersionFromFile())>
+		<cfset returnStruct.currentVersion=application.configBean.getVersion()/>
+		<cfset application.coreversion=application.configBean.getVersion()>
+
 		<cfif len(diff)>
-			<cfset variables.fileWriter.writeFile(file="#versionDir##variables.fileDelim#version.cfm",output="#updateVersion#")>
-			<cfset returnStruct.currentVersion=updateVersion/>
 			<cfset returnstruct.files=updatedArray>
-		<cfelse>
-			<cfset returnStruct.currentVersion=currentVersion/>
 		</cfif>
 
 		</cflock>
