@@ -97,13 +97,13 @@ component extends="mura.cfobject" output="false" hint="This handles translating 
 				tracePoint=initTracePoint("#defaultTemplatePath#");
 				try {
 					include defaultTemplatePath;
-				} catch (any cfcatch) {	
+				} catch (any cfcatch) {
 						writeOutput("#$.getBean('resourceBundle').messageFormat($.rbKey('sitemanager.missingDefaultTemplate'), ['<strong>/#ListRest(defaultTemplatePath, '/')#</strong>'])#");
 				}
 				commitTracePoint(tracePoint);
 			}
 		}
-		page=rereplace(page,'(class|id)="\s*"','','all');
+		
 		page=replaceNoCase(page,"</head>", renderer.renderHTMLQueue("Head") & "</head>");
 		//  This is to prevent a lower level CF replaceNoCase issue from throwing an error with some utf chars
 		var renderedFootQueue=renderer.renderHTMLQueue("Foot");
