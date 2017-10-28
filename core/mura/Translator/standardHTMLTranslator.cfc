@@ -104,19 +104,18 @@ component extends="mura.cfobject" output="false" hint="This handles translating 
 				commitTracePoint(tracePoint);
 			}
 		}
-		//page=rereplace(page,'(class|id)="\s*"','','all');
-		page=replaceNoCase(page,"</head>", renderer.renderHTMLQueue("Head") & "</head>");
+
+		page=replace(page,"</head>", renderer.renderHTMLQueue("Head") & "</head>");
+		page=replace(page,"</HEAD>", renderer.renderHTMLQueue("Head") & "</HEAD>");
 
 		//  This is to prevent a lower level CF replaceNoCase issue from throwing an error with some utf chars
 		var renderedFootQueue=renderer.renderHTMLQueue("Foot");
 		try {
-			page=replaceNoCase(page,"</body>", renderedFootQueue & "</body>");
+			page=replace(page,"</body>", renderedFootQueue & "</body>");
+			page=replace(page,"</BODY>", renderedFootQueue & "</BODY>");
 		} catch (any cfcatch) {
 			page=replace(page,"</body>", renderedFootQueue & "</body>");
 		}
-		//  Cleaning up old paths
-		page=replace(page,"/tasks/widgets/","/core/vendor/");
-		page=replace(page,"/tasks/","/index.cfm/tasks/");
 
 		arguments.event.setValue('__MuraResponse__',trim(page));
 	}
