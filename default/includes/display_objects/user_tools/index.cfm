@@ -98,6 +98,7 @@
 					<div class="#this.userToolsFormGroupWrapperClass#">
 						<div class="#this.userToolsLoginFormFieldInnerClass#">
 							<input type="hidden" name="doaction" value="login">
+							#variables.$.renderCSRFTokens(format='form',context='login')#
 							<button type="submit" class="#this.userToolsLoginFormSubmitClass#">#variables.$.rbKey('user.signin')#</button>
 						</div>
 					</div>
