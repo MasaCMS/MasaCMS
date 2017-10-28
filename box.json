@@ -49,10 +49,9 @@
         }
     ],
     "contributors":[
-        
+
     ],
     "dependencies":{
-        "MuraBootstrap3":">=7.1.0"
     },
     "devDependencies":{
         "testbox":"^2.3.0+00044",
@@ -64,7 +63,7 @@
         "MuraBoostrap3":"themes/MuraBootstrap3"
     },
     "scripts":{
-        
+
     },
     "ignore":[
         "**/.*",
