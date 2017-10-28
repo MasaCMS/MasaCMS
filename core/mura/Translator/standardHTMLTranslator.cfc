@@ -105,16 +105,19 @@ component extends="mura.cfobject" output="false" hint="This handles translating 
 			}
 		}
 
-		page=replace(page,"</head>", renderer.renderHTMLQueue("Head") & "</head>");
-		page=replace(page,"</HEAD>", renderer.renderHTMLQueue("Head") & "</HEAD>");
 
-		//  This is to prevent a lower level CF replaceNoCase issue from throwing an error with some utf chars
-		var renderedFootQueue=renderer.renderHTMLQueue("Foot");
-		try {
-			page=replace(page,"</body>", renderedFootQueue & "</body>");
-			page=replace(page,"</BODY>", renderedFootQueue & "</BODY>");
-		} catch (any cfcatch) {
-			page=replace(page,"</body>", renderedFootQueue & "</body>");
+		var pageLen=len(page);
+		var renderedQueue=renderer.renderHTMLQueue("Head");
+		page=replace(page,"</head>", renderedQueue & "</head>");
+		if(pageLen==len(page)){
+			replace(page,"</HEAD>", renderedQueue & "</HEAD>");
+		}
+
+		pageLen=len(page);
+		renderedQueue=renderer.renderHTMLQueue("Foot");
+		page=replace(page,"</body>", renderedQueue & "</body>");
+		if(pageLen==len(page)){
+			replace(page,"</BODY>", renderedQueue & "</BODY>");
 		}
 
 		arguments.event.setValue('__MuraResponse__',trim(page));
