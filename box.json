@@ -1,6 +1,6 @@
 {
     "name":"Mura CMS",
-    "version":"7.1.94",
+    "version":"7.1.95",
     "author":"Blue River Interactive Group, Inc.",
     "location":"https://github.com/blueriver/MuraCMS/archive/master.zip",
     "directory":"",
@@ -49,9 +49,10 @@
         }
     ],
     "contributors":[
-
+        
     ],
     "dependencies":{
+        
     },
     "devDependencies":{
         "testbox":"^2.3.0+00044",
@@ -63,7 +64,7 @@
         "MuraBoostrap3":"themes/MuraBootstrap3"
     },
     "scripts":{
-
+        
     },
     "ignore":[
         "**/.*",
