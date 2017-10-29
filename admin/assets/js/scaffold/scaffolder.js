@@ -573,6 +573,7 @@ Mura(function() {
 		props: ['property','model','entity','mparent','properties'],
 		mounted: function() {
 			// processes related 'many' children
+			this.loaded=false;
 			MuraScaffold.feed( this.proplist,this.property.relatesto );
 		},
 		methods: {
@@ -582,6 +583,7 @@ Mura(function() {
 				this.properties = data.properties;
 				this.mparent.list = data.list;
 				this.mparent.properties = data.parentproperties;
+				this.loaded=true;
 			},
 			doDefault: function( val,fkcolumn,model ) {
 				if(val && fkcolumn) {

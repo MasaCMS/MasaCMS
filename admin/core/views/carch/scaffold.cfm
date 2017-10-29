@@ -268,7 +268,7 @@
 	</template>
 
 	<template id="scaffold-related-many-one">
-		<div v-if="mparent && mparent.properties">
+		<div v-if="loaded || mparent && mparent.properties">
 			<div v-if="property.relatesto">
 				<div class="mura-control-group">
 					<label>
