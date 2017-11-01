@@ -18,7 +18,7 @@ Mura CMS. Thus, the terms and conditions of the GNU General Public License versi
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+In addition, as a special exception, "the copyright holders of Mura CMS grant you permission to combine Mura CMS with
 independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
 Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
@@ -1110,6 +1110,7 @@ select * from tplugins order by #arguments.orderby#
 		where moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.args.moduleID#">
 		</cfquery>
 		<cfset application.appInitialized=false>
+		<cfset getBean('clusterManager').reload() />
 		<cfset loadPlugins() />
 	</cfif>
 </cffunction>
