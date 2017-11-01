@@ -1110,6 +1110,7 @@ select * from tplugins order by #arguments.orderby#
 		where moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.args.moduleID#">
 		</cfquery>
 		<cfset application.appInitialized=false>
+		<cfset getBean('clusterManager').reload() />
 		<cfset loadPlugins() />
 	</cfif>
 </cffunction>
