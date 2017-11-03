@@ -54,6 +54,8 @@ node_modules/
 /requirements/testbox/
 
 # ignored 'config' directory files
+/config/mappings.cfm
+/config/applicationSettings.cfm
 /config/cfapplication.cfm
 /config/settings.ini.cfm
 /config/version.cfm

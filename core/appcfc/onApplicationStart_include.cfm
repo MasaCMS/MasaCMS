@@ -511,6 +511,24 @@ if ( application.setupComplete ) {
 		commitTracePoint(variables.tracePoint);
 	}
 
+	if ( !fileExists(application.configBean.getWebRoot() & "/config/applicationSettings.cfm") ) {
+		variables.tracePoint=initTracePoint("Writing config/applicationSettings.cfm");
+		fileCopy("#application.configBean.getWebRoot()#/core/templates/applicationSettings.cfm","#application.configBean.getWebRoot()#/config/applicationSettings.cfm");
+		try {
+			fileSetAccessMode("#application.configBean.getWebRoot()#/config/applicationSettings.cfm","777");
+		} catch (any cfcatch) {}
+		commitTracePoint(variables.tracePoint);
+	}
+
+	if ( !fileExists(application.configBean.getWebRoot() & "/config/mappings.cfm") ) {
+		variables.tracePoint=initTracePoint("Writing config/mappings.cfm");
+		fileCopy("#application.configBean.getWebRoot()#/core/templates/mappings.cfm","#application.configBean.getWebRoot()#/config/mappings.cfm");
+		try {
+			fileSetAccessMode("#application.configBean.getWebRoot()#/config/mappings.cfm","777");
+		} catch (any cfcatch) {}
+		commitTracePoint(variables.tracePoint);
+	}
+
 	if ( application.configBean.getCreateRequiredDirectories() ) {
 		if ( !directoryExists("#application.configBean.getWebRoot()#/plugins") ) {
 			try {

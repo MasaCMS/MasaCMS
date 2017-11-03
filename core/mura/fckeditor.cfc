@@ -28,16 +28,7 @@ component output="false" displayname="FCKeditor" hint="Create an instance of the
  *
  * Syntax:
  *
- * <cfscript>
- * 		fckEditor = createObject("component", "fckeditor.fckeditor");
- * 		fckEditor.instanceName="myEditor";
- * 		fckEditor.basePath="/fckeditor/";
- * 		fckEditor.value="<p>This is my <strong>initial</strong> html text.</p>";
- * 		fckEditor.width="100%";
- * 		fckEditor.height="200";
- * 	 	// ... additional parameters ...
- * 		fckEditor.create(); // create instance now.
- * </cfscript>
+
  *
  * See your macromedia coldfusion mx documentation for more info.
  *
@@ -50,11 +41,10 @@ component output="false" displayname="FCKeditor" hint="Create an instance of the
 	/**
 	 * Outputs the editor HTML in the place where the function is called
 	 */
-	public void function Create() output=true {
-		cfoutput(  ) {
+	public void function Create() output=false {
 
-			writeOutput("#CreateHtml()#");
-		}
+		return CreateHtml();
+
 	}
 
 	/**
