@@ -240,7 +240,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfquery name="rsInActivefiles">
 				select fileID,fileExt from tfiles
 				where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#filePoolID#"/>
-				and moduleid in ('00000000000000000000000000000000000','00000000000000000000000000000000003'<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.includeUsers>,'00000000000000000000000000000000008'</cfif>)
+				and moduleid in (<cfif len(arguments.moduleID)><cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"><cfelse>'00000000000000000000000000000000000','00000000000000000000000000000000003','00000000000000000000000000000000099'<cfif arguments.includeUsers>,'00000000000000000000000000000000008'</cfif></cfif>)
 				and (
 
 					<cfif not arguments.includeVersionHistory and rstfiles.recordcount>
