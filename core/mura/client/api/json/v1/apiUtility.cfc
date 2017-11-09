@@ -3208,16 +3208,35 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		var properties=arguments.entity.getProperties();
 		var map={};
 
-		if(arguments.idInPath){
-			if(entity.getEntityName()=='content'){
-				var primarykey='contentid';
-			} else {
-				var primarykey=lcase(entity.getPrimaryKey());
-			}
+		if(entity.getEntityName()=='content'){
+			var primarykey='contentid';
+		} else {
+			var primarykey=lcase(entity.getPrimaryKey());
+		}
 
+		if(arguments.idInPath){
 			arrayAppend(response,{
 					"name"= primarykey,
 					"in"= "path",
+					"required"= true,
+					"type"= "string"
+				});
+
+		}
+
+		if(request.muraAPIRequestMode=='JSON'){
+			arrayAppend(response,{
+					"name"= 'csrf_token',
+					"in"= "formData",
+					"description"= "Value returned from generateCSRFTokens, context of '#primarykey#'",
+					"required"= true,
+					"type"= "string"
+				});
+
+			arrayAppend(response,{
+					"name"= 'csrf_token_expires',
+					"in"= "formData",
+					"description"= "Value returned from generateCSRFTokens, context of '#primarykey#'",
 					"required"= true,
 					"type"= "string"
 				});
@@ -3449,6 +3468,20 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 										"description"= "#i# id to delete",
 										"required"= true,
 										"type"= "string"
+									},
+									{
+										"in"= "formData",
+										"description"= "Value returned from generateCSRFTokens, context of 'login'",
+										"required"= false,
+										"type"= "string",
+										"name"= "csrf_token"
+									},
+									{
+										"in"= "formData",
+										"description"= "Value returned from generateCSRFTokens, context of 'login'",
+										"required"= false,
+										"type"= "string",
+										"name"= "csrf_token_expires"
 									}
 								],
 								"responses"= {
@@ -3614,6 +3647,37 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		result["definitions"]["links"]={"type"="object","properties"={}};
 
+		result['paths']['/findCurrentUser']={
+			"get"= {
+				"tags"= ['user'],
+				"summary"= "Finds current user",
+				"description"= "",
+				"operationId"= "findCurrentUser",
+				"consumes"= [],
+				"produces"= [
+					"application/json"
+				],
+				"parameters"= [],
+				"responses"= {
+					"200"= {
+						"description"= "Status",
+						"schema"= {
+							"type"="object",
+							"properties"={
+								"data"={
+									"$ref"="##/definitions/user"
+								}
+							}
+						}
+					},
+					"405"= {
+						"description"= "Invalid input"
+					}
+				},
+				"security"= appliedSecurity
+			}
+		};
+
 		if(request.muraAPIRequestMode == 'REST'){
 			result['securityDefinitions']= {
 				"oauthSecurity"= {
@@ -3668,6 +3732,20 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 							"required"= false,
 							"type"= "string",
 							"name"= "siteid"
+						},
+						{
+							"in"= "formData",
+							"description"= "Value returned from generateCSRFTokens, context of login",
+							"required"= false,
+							"type"= "string",
+							"name"= "csrf_token"
+						},
+						{
+							"in"= "formData",
+							"description"= "Value returned from generateCSRFTokens, context of login",
+							"required"= false,
+							"type"= "string",
+							"name"= "csrf_token_expires"
 						}
 					],
 					"responses"= {
@@ -3704,8 +3782,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 					"produces"= [
 						"application/json"
 					],
-					"parameters"= [
-				],
+					"parameters"= [],
 					"responses"= {
 						"200"= {
 							"description"= "Status",
@@ -3732,14 +3809,11 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 					"summary"= "Log out user",
 					"description"= "",
 					"operationId"= "logout",
-					"consumes"= [
-						"multipart/form-data"
-					],
+					"consumes"= [],
 					"produces"= [
 						"application/json"
 					],
-					"parameters"= [
-				],
+					"parameters"= [],
 					"responses"= {
 						"200"= {
 							"description"= "Status",
@@ -3760,6 +3834,60 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 					},
 					"security"= appliedSecurity
 
+				}
+			};
+
+			result['paths']['/generateCSRFTokens']={
+				"post"= {
+					"tags"= ['security'],
+					"summary"= "Generate CSFR tokens",
+					"description"= "",
+					"operationId"= "generateCSRFTokens",
+					"consumes"= [
+						"multipart/form-data"
+					],
+					"produces"= [
+						"application/json"
+					],
+					"parameters"= [
+						{
+							"in"= "formData",
+							"description"= "Unique key to identify transaction, most often the primary key of entity.",
+							"required"= true,
+							"type"= "string",
+							"name"= "content"
+						},
+
+						{
+							"in"= "formData",
+							"description"= "siteid of site to log into",
+							"required"= false,
+							"type"= "string",
+							"name"= "siteid"
+						}
+					],
+					"responses"= {
+						"200"= {
+							"description"= "",
+							"schema"= {
+								"type"="object",
+								"properties"={
+									"data"={
+										"csrf_token"= {
+											"type"= "string"
+											},
+										"csrf_token_expires"= {
+											"type"= "string"
+											}
+									}
+								}
+							}
+						},
+						"405"= {
+							"description"= "Invalid input"
+						}
+					},
+					"security"= appliedSecurity
 				}
 			};
 		}
