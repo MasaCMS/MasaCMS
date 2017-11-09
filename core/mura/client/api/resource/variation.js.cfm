@@ -13,7 +13,7 @@
 	<cfset application.rbFactory.resetSessionLocale()>
 </cfif>
 <cfcontent reset="true"><cfparam name="Cookie.fetDisplay" default="">
-<cfinclude template="/muraWRM/default/js/dist/mura.min.js">
+<cfinclude template="/muraWRM/code/modules/v1/core_assets/js/mura.min.js">
 
     /*
     	BEGIN Mura VARIATION TOOLS
@@ -199,7 +199,16 @@
     			}
 
     			ga('create', content.ga.trackingid, 'auto','mxpGATracker');
-    			ga('mxpGATracker.send','pageview', content.ga.trackingvars);
+					ga('mxpGATracker.set', 'dataSource', 'MXP');
+					ga('mxpGATracker.set', 'userId', '#$.getBean('marketingManager').getTrackingid()#');
+
+					for(var p in gaTrackingVars){
+							if(gaTrackingVars.hasOwnProperty(p) && p.substring(0,1)=='d' && typeof gaTrackingVars[p] != 'string'){
+									ga('mxpGATracker.set',p, gaTrackingVars[p]);
+							}
+					}
+
+    			ga('mxpGATracker.send','pageview');
 
 					Mura.MXP=true;
 
@@ -229,8 +238,7 @@
     						}
 
     					    //Send to GA
-    						var eventData= { eventCategory: scrollDepth.eventCategory, eventAction: scrollDepth.eventAction, eventLabel: scrollDepth.eventLabel, nonInteraction:true};
-    						Mura.extend(eventData,content.ga.trackingvars);
+    						var eventData= { eventCategory: scrollDepth.eventCategory, eventAction: scrollDepth.eventAction, eventLabel: scrollDepth.eventLabel, nonInteraction:true}
     						ga('mxpGATracker.send', 'event', eventData);
 
     					  }
@@ -256,7 +264,6 @@
 
     					    	//Send to GA
     							var eventData= { eventCategory: 'Active Time', eventAction: 'Seconds', eventLabel: data.toString(), eventValue: data, nonInteraction:true};
-    							Mura.extend(eventData,content.ga.trackingvars);
     							ga('mxpGATracker.send', 'event', eventData);
     						}
     					});

@@ -1209,6 +1209,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		result.links.swagger=getEndpoint() & "/swagger?entities=" & arguments.entityname;
 
+
 		if(getCurrentUser().isAdminUser() || getCurrentUser().isSuperUser()){
 			result.table=exampleEntity.getTable();
 		}
@@ -3311,7 +3312,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			}
 			},
 			"host"= $.siteConfig('domain') & $.siteConfig('serverPort'),
-			"basePath"= "/index.cfm/_api/rest/#$.siteConfig('siteid')#",
+			"basePath"= "/index.cfm/_api/#request.muraAPIRequestMode#/#$.siteConfig('siteid')#",
 			"tags"= [
 				{
 					"name"= "Mura CMS",
@@ -3328,6 +3329,23 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			'paths'={},
 			'definitions'={}
 		};
+
+		if(request.muraAPIRequestMode == 'JSON'){
+			var appliedSecurity=[
+				{
+					"cookieAuth"= []
+				}
+			];
+		} else {
+			var appliedSecurity=[
+				{
+					"oauthSecurity"= []
+				},
+				{
+					"basic"= []
+				}
+			];
+		}
 
 		var entityKeys=listToArray(ListSort(StructKeyList(variables.config.entities),'textnocase'));
 
@@ -3375,14 +3393,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 										"description"= "Invalid input"
 									}
 								},
-								"security"= [
-									{
-										"oauthSecurity"= []
-									},
-									{
-										"basic"= []
-									}
-								]
+								"security"= appliedSecurity
 
 							},
 							"post"= {
@@ -3415,14 +3426,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 										"description"= "Invalid input"
 									}
 								},
-								"security"= [
-									{
-										"oauthSecurity"= []
-									},
-									{
-										"basic"= []
-									}
-								]
+								"security"= appliedSecurity
 
 							},
 							"delete"= {
@@ -3463,14 +3467,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 										"description"= "Invalid input"
 									}
 								},
-								"security"= [
-									{
-										"oauthSecurity"= []
-									},
-									{
-										"basic"= []
-									}
-								]
+								"security"= appliedSecurity
 
 							}
 						};
@@ -3512,14 +3509,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 										"description"= "Invalid input"
 									}
 								},
-								"security"= [
-									{
-										"oauthSecurity"= []
-									},
-									{
-										"basic"= []
-									}
-								]
+								"security"= appliedSecurity
 
 							},
 							"post"= {
@@ -3552,14 +3542,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 										"description"= "Invalid input"
 									}
 								},
-								"security"= [
-									{
-										"oauthSecurity"= []
-									},
-									{
-										"basic"= []
-									}
-								]
+								"security"= appliedSecurity
 
 							},
 							"delete"= {
@@ -3598,14 +3581,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 										"description"= "Invalid input"
 									}
 								},
-								"security"= [
-									{
-										"oauthSecurity"= []
-									},
-									{
-										"basic"= []
-									}
-								]
+								"security"= appliedSecurity
 
 							}
 						};
@@ -3637,25 +3613,156 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		}
 
 		result["definitions"]["links"]={"type"="object","properties"={}};
-		result['securityDefinitions']= {
-			"oauthSecurity"= {
-					"type"= "oauth2",
-					"authorizationUrl"= $.siteConfig().getRootPath(complete=1),
-					"tokenUrl"=getBean('utility').getRequestProtocol() & ":" & result.basePath & "/auth",
-					"flow"= "accessCode",
-					"scopes"= {
-						/*"member"="Site member",
-						"administrator"="Site administrator",
-						"super"="Site super user"
-						*/
-					}
-			},
-			"basic"= {
-				"type"= "apiKey",
-				"name"= "Authorization",
-				"in"= "header"
-			}
-		};
+
+		if(request.muraAPIRequestMode == 'REST'){
+			result['securityDefinitions']= {
+				"oauthSecurity"= {
+						"type"= "oauth2",
+						"authorizationUrl"= $.siteConfig().getRootPath(complete=1),
+						"tokenUrl"=getBean('utility').getRequestProtocol() & ":" & result.basePath & "/auth",
+						"flow"= "accessCode",
+						"scopes"= {
+							/*"member"="Site member",
+							"administrator"="Site administrator",
+							"super"="Site super user"
+							*/
+						}
+				},
+				"basic"= {
+					"type"= "apiKey",
+					"name"= "Authorization",
+					"in"= "header"
+				}
+			};
+		} else {
+			result['paths']['/login']={
+				"post"= {
+					"tags"= ['security'],
+					"summary"= "Log in user",
+					"description"= "",
+					"operationId"= "login",
+					"consumes"= [
+						"multipart/form-data"
+					],
+					"produces"= [
+						"application/json"
+					],
+					"parameters"= [
+						{
+							"in"= "formData",
+							"description"= "username of account",
+							"required"= true,
+							"type"= "string",
+							"name"= "username"
+						},
+						{
+							"in"= "formData",
+							"description"= "password of account",
+							"required"= true,
+							"type"= "string",
+							"name"= "password"
+						},
+						{
+							"in"= "formData",
+							"description"= "siteid of site to log into",
+							"required"= false,
+							"type"= "string",
+							"name"= "siteid"
+						}
+					],
+					"responses"= {
+						"200"= {
+							"description"= "Status",
+							"schema"= {
+								"type"="object",
+								"properties"={
+									"data"={
+										"status"= {
+											"type"= "string"
+											}
+									}
+								}
+							}
+						},
+						"405"= {
+							"description"= "Invalid input"
+						}
+					},
+					"security"= appliedSecurity
+				}
+			};
+
+			result['paths']['/logout']={
+				"post"= {
+					"tags"= ['security'],
+					"summary"= "Log out user",
+					"description"= "",
+					"operationId"= "logout",
+					"consumes"= [
+						"multipart/form-data"
+					],
+					"produces"= [
+						"application/json"
+					],
+					"parameters"= [
+				],
+					"responses"= {
+						"200"= {
+							"description"= "Status",
+							"schema"= {
+								"type"="object",
+								"properties"={
+									"data"={
+										"status"= {
+											"type"="string"
+											}
+									}
+								}
+							}
+						},
+						"405"= {
+							"description"= "Invalid input"
+						}
+					},
+					"security"= appliedSecurity
+
+				},
+				"get"= {
+					"tags"= ['security'],
+					"summary"= "Log out user",
+					"description"= "",
+					"operationId"= "logout",
+					"consumes"= [
+						"multipart/form-data"
+					],
+					"produces"= [
+						"application/json"
+					],
+					"parameters"= [
+				],
+					"responses"= {
+						"200"= {
+							"description"= "Status",
+							"schema"= {
+								"type"="object",
+								"properties"={
+									"data"={
+										"status"= {
+											"type"="string"
+											}
+									}
+								}
+							}
+						},
+						"405"= {
+							"description"= "Invalid input"
+						}
+					},
+					"security"= appliedSecurity
+
+				}
+			};
+		}
 		//result["paths"]=StructSort(result["paths"],"text","asc");
 
 		result=serializeJSON(result);

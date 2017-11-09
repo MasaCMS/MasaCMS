@@ -1731,7 +1731,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<cfset setValue("sincedate",arguments.sincedate)>
 			<cfset setValue("bundledate",now())>
-			<cfset BundleFiles( argumentCollection=sArgs ) />
+			<cfif arguments.bundleMode neq 'plugin'>
+				<cfset BundleFiles( argumentCollection=sArgs ) />
+			</cfif>
 		<cfelseif arguments.bundleMode neq 'plugin'>
 			<cfquery name="rsthierarchy">
 				select contentid,contenthistid,filename,type,subtype,orderno,path,
