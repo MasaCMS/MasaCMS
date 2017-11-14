@@ -86,18 +86,22 @@ if ( isDefined("application.contentServer") ) {
 		local.contextArray=listToArray(application.configBean.getValue('context'),"/");
 		local.contextArrayLen=arrayLen(local.contextArray);
 		for ( local.i=1 ; local.i<=local.contextArrayLen ; local.i++ ) {
-			arrayDeleteAt(local.contextArray, 1);
+			arrayDeleteAt(local.fileArray, 1);
 		}
 	}
-	if ( application.configBean.getValue('siteidinurls') == 1 ) {
-		if ( local.fileArray[1] != 'index.cfm' ) {
-			siteid=local.fileArray[1];
-		} else {
-			siteid=application.contentServer.bindToDomain();
-		}
+
+	if ( local.fileArray[1] != 'index.cfm' && application.settingsManager.siteExists(local.fileArray[1])) {
+		siteid=local.fileArray[1];
+	} else if (arrayLen(local.fileArray) > 1 && application.settingsManager.siteExists(local.fileArray[2])) {
+		siteid=local.fileArray[2];;
 	} else {
 		siteid=application.contentServer.bindToDomain();
 	}
+
+	if(len(cgi.path_info)){
+		local.fileArray=ListToArray(cgi.path_info ,'/');
+	}
+
 	for ( local.i=1 ; local.i<=arrayLen(local.fileArray) ; local.i++ ) {
 		if ( find(".",local.fileArray[local.i]) && local.i < arrayLen(local.fileArray) ) {
 			local.filename="";

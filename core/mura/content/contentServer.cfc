@@ -297,11 +297,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset cgi_path=setCGIPath(siteId)>
 
+	<cfif len(cgi_path)>
+		<cfset var pathArray=listToArray(cgi_path,"/,\")>
+		<cfif arrayLen(pathArray) and application.settingsManager.siteExists(pathArray[1])>
+			<cfset siteid=pathArray[1]>
+			<cfset url.path="#application.configBean.getStub()#/#url.path#" />
+		<cfelse>
+			<cfset url.path="#application.configBean.getStub()#/#siteID#/#url.path#" />
+		</cfif>
+	<cfelse>
+		<cfset url.path="#application.configBean.getStub()#/#siteID#/#url.path#" />
+	</cfif>
+
 	<cfset forcePathDirectoryStructure(cgi_path,siteID)>
 
-	<cfset url.path="#application.configBean.getStub()#/#siteID#/#url.path#" />
 	<cfset request.preformated=true/>
-
 	<cfset var last=listLast(url.path,'/')>
 
 	<cfif find(".",last) and (application.configBean.getAllowedIndexFiles() eq '*' or listFind(application.configBean.getAllowedIndexFiles(),last))>
