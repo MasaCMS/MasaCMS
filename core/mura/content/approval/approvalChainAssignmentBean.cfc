@@ -1,4 +1,4 @@
-component extends="mura.bean.beanORM" table="tapprovalassignments" bundleable=true hint="This provides approval chain assignment functionality" {
+component extends="mura.bean.beanORM" table="tapprovalassignments" bundleable=false hint="This provides approval chain assignment functionality" {
 
 	property name="assignmentID" fieldtype="id";
     property name="approvalChain" fieldtype="many-to-one" cfc="approvalChain" fkcolumn="chainID";
