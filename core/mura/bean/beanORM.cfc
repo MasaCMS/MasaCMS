@@ -71,9 +71,9 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 
 					if(structKeyExists(prop,"fieldType") and prop.fieldType eq "id"){
 						variables.instance[prop.column]=createUUID();
-					} else if (listFindNoCase('created,lastupdate',prop.column) && (listFindNoCase('datetime,timestamp',prop.datatype) && !(structKeyExists(prop,"default") && prop.default != 'null') || structKeyExists(prop,"default") && prop.default=='now()') ){
+					} else if (listFindNoCase('created,lastupdate',prop.column) && (listFindNoCase('datetime,timestamp',prop.datatype) && !(structKeyExists(prop,"default") && prop.default != 'null') || structKeyExists(prop,"default") && (prop.default=='now()' || prop.default=='now')) ){
 						variables.instance[prop.column]=now();
-					} else if(structKeyExists(prop,"default")){
+					} else if(!listFindNoCase('datetime,timestamp',prop.datatype) && structKeyExists(prop,"default")){
 						if(prop.default neq 'null'){
 							variables.instance[prop.column]=prop.default;
 						} else {

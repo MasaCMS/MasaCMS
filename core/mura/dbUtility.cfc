@@ -266,9 +266,9 @@
 				<cfelse>
 					#transformDataType(arguments.datatype,arguments.length)#
 					<cfif not arguments.nullable> not null </cfif>
-					<cfif not(not arguments.nullable and arguments.default eq 'null')>
+					<cfif not(not arguments.nullable and arguments.default eq 'null') and arguments.datatype neq 'datetime'>
 						default
-						<cfif arguments.default eq 'null' or listFindNoCase('int,tinyint',arguments.datatype)>
+						<cfif arguments.default eq 'null' or listFindNoCase('int,tinyint,boolean,float,double',arguments.datatype)>
 							#arguments.default#
 						<cfelse>
 								'#arguments.default#'
@@ -294,9 +294,9 @@
 				<cfelse>
 					#transformDataType(arguments.datatype,arguments.length)#
 					<cfif not arguments.nullable> not null </cfif>
-					<cfif not(not arguments.nullable and arguments.default eq 'null') and arguments.default neq 'null'>
+					<cfif not(not arguments.nullable and arguments.default eq 'null') and arguments.default neq 'null' and arguments.datatype neq 'datetime'>
 						default
-						<cfif arguments.default eq 'null' or listFindNoCase('int,tinyint',arguments.datatype)>
+						<cfif arguments.default eq 'null' or listFindNoCase('int,tinyint,boolean,float,double',arguments.datatype)>
 							#arguments.default#
 						<cfelse>
 							'#arguments.default#'
@@ -334,9 +334,9 @@
 				<cfif arguments.autoincrement>SERIAL<cfelse>#transformDataType(arguments.datatype,arguments.length)#</cfif>
 				<cfif not arguments.nullable>NOT NULL</cfif>
 				<cfif not arguments.autoincrement>
-					<cfif not(not arguments.nullable and arguments.default eq 'null')>
+					<cfif not(not arguments.nullable and arguments.default eq 'null') and arguments.datatype neq 'datetime'>
 						DEFAULT
-						<cfif arguments.default eq 'null' or listFindNoCase('int,tinyint,smallint',arguments.datatype)>
+						<cfif arguments.default eq 'null' or listFindNoCase('int,tinyint,smallint,boolean,float,double',arguments.datatype)>
 							#arguments.default#
 						<cfelse>
 							'#arguments.default#'
@@ -363,9 +363,9 @@
 				<cfelse>
 					#transformDataType(arguments.datatype,arguments.length)#
 					<cfif not arguments.nullable> not null </cfif>
-					<cfif not(not arguments.nullable and arguments.default eq 'null')>
+					<cfif not(not arguments.nullable and arguments.default eq 'null') and arguments.datatype neq 'datetime'>
 						default
-						<cfif arguments.default eq 'null' or listFindNoCase('int,tinyint',arguments.datatype)>
+						<cfif arguments.default eq 'null' or listFindNoCase('int,tinyint,boolean,float,double',arguments.datatype)>
 							#arguments.default#
 						<cfelse>
 							'#arguments.default#'
@@ -389,9 +389,9 @@
 				</cfif>
 
 				#arguments.column# #transformDataType(arguments.datatype,arguments.length)#
-				<cfif not(not arguments.nullable and arguments.default eq 'null')>
+				<cfif not(not arguments.nullable and arguments.default eq 'null') and arguments.datatype neq 'datetime'>
 					default
-					<cfif arguments.default eq 'null' or listFindNoCase('int,tinyint',arguments.datatype)>
+					<cfif arguments.default eq 'null' or listFindNoCase('int,tinyint,boolean,float,double',arguments.datatype)>
 						#arguments.default#
 					<cfelse>
 						'#arguments.default#'
@@ -508,9 +508,9 @@
 					<cfelse>
 						#transformDataType(arguments.datatype,arguments.length)#
 						<cfif not arguments.nullable> not null </cfif>
-						<cfif not(not arguments.nullable and arguments.default eq 'null') and arguments.default neq 'null'>
+						<cfif not(not arguments.nullable and arguments.default eq 'null') and arguments.default neq 'null' and arguments.datatype neq 'datetime'>
 							default
-							<cfif arguments.default eq 'null' or listFindNoCase('int,tinyint',arguments.datatype)>
+							<cfif arguments.default eq 'null' or listFindNoCase('int,tinyint,boolean,float,double',arguments.datatype)>
 								#arguments.default#
 							<cfelse>
 								'#arguments.default#'
@@ -525,8 +525,8 @@
 					<cfif not arguments.nullable>
 					ALTER TABLE #arguments.table# ALTER COLUMN #arguments.column# SET NOT NULL;
 					</cfif>
-					<cfif not arguments.autoincrement and not(not arguments.nullable and arguments.default eq 'null')>
-					ALTER TABLE #arguments.table# ALTER COLUMN #arguments.column# SET DEFAULT <cfif arguments.default eq 'null' or listFindNoCase('int,tinyint,smallint',arguments.datatype)>#arguments.default#<cfelse>'#arguments.default#'</cfif>;
+					<cfif not arguments.autoincrement and not(not arguments.nullable and arguments.default eq 'null') and arguments.datatype neq 'datetime'>
+					ALTER TABLE #arguments.table# ALTER COLUMN #arguments.column# SET DEFAULT <cfif arguments.default eq 'null' or listFindNoCase('int,tinyint,smallint,boolean,float,double',arguments.datatype)>#arguments.default#<cfelse>'#arguments.default#'</cfif>;
 					</cfif>
 				</cfquery>
 			</cfcase>
@@ -538,8 +538,8 @@
 					</cfif>
 					<cfquery>
 						ALTER TABLE #arguments.table# ADD COLUMN #tempName# #transformDataType(arguments.datatype,arguments.length)# <cfif arguments.autoincrement>integer generated always as identity (seq_#arguments.table#)<cfelse><cfif not arguments.nullable> not null </cfif>
-						<cfif not(not arguments.nullable and arguments.default eq 'null')>
-							default <cfif arguments.default eq 'null' or listFindNoCase('int,tinyint',arguments.datatype)>#arguments.default#<cfelse>'#arguments.default#'</cfif></cfif>
+						<cfif not(not arguments.nullable and arguments.default eq 'null') and arguments.datatype neq 'datetime'>
+							default <cfif arguments.default eq 'null' or listFindNoCase('int,tinyint,boolean,float,double',arguments.datatype)>#arguments.default#<cfelse>'#arguments.default#'</cfif></cfif>
 						</cfif>
 					</cfquery>
 					<cfquery>
@@ -554,8 +554,8 @@
 
 					<cfquery>
 						ALTER TABLE #arguments.table# ADD COLUMN #arguments.column# #transformDataType(arguments.datatype,arguments.length)# <cfif arguments.autoincrement>integer generated always as identity (seq_#arguments.table#)<cfelse><cfif not arguments.nullable> not null </cfif>
-						<cfif not(not arguments.nullable and arguments.default eq 'null')>
-							default <cfif arguments.default eq 'null' or listFindNoCase('int,tinyint',arguments.datatype)>#arguments.default#<cfelse>'#arguments.default#'</cfif></cfif>
+						<cfif not(not arguments.nullable and arguments.default eq 'null') and arguments.datatype neq 'datetime'>
+							default <cfif arguments.default eq 'null' or listFindNoCase('int,tinyint,boolean,float,double',arguments.datatype)>#arguments.default#<cfelse>'#arguments.default#'</cfif></cfif>
 						</cfif>
 					</cfquery>
 					<cfquery>
@@ -577,8 +577,8 @@
 					</cfquery>
 					<cfquery>
 						ALTER TABLE #arguments.table# ADD #arguments.column# #transformDataType(arguments.datatype,arguments.length)#
-						<cfif not(not arguments.nullable and arguments.default eq 'null')>
-							default <cfif arguments.default eq 'null' or listFindNoCase('int,tinyint',arguments.datatype)>#arguments.default#<cfelse>'#arguments.default#'</cfif>
+						<cfif not(not arguments.nullable and arguments.default eq 'null') and arguments.datatype neq 'datetime'>
+							default <cfif arguments.default eq 'null' or listFindNoCase('int,tinyint,boolean,float,double',arguments.datatype)>#arguments.default#<cfelse>'#arguments.default#'</cfif>
 						</cfif>
 					</cfquery>
 
