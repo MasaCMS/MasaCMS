@@ -106,7 +106,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif len(application.configBean.getContext()) and listFirst(parsed_path_info,"/") eq right(application.configBean.getContext(),len(application.configBean.getContext())-1)>
 		<cfset parsed_path_info = replace(parsed_path_info,application.configBean.getContext() & "/","")/>
 	</cfif>
-	<cfif isDefined('arguments.siteid') && listFirst(parsed_path_info,"/") eq arguments.siteID>
+	<cfif isDefined('arguments.siteid') and listFirst(parsed_path_info,"/") eq arguments.siteID>
 		<cfset parsed_path_info=listRest(parsed_path_info,"/")>
 	</cfif>
 	<cfif listFirst(parsed_path_info,"/") eq "index.cfm">
@@ -122,9 +122,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset cgi_path = "/" & cgi_path />
 	</cfif>
 
-	<cfif isDefined('arguments.siteid') && left(cgi_path,1) eq "/" and cgi_path neq "/">
+	<cfif isDefined('arguments.siteid') and left(cgi_path,1) eq "/" and cgi_path neq "/">
 		<cfset url.path=right(cgi_path,len(cgi_path)-1) />
 	</cfif>
+
 	<cfreturn cgi_path>
 </cffunction>
 
@@ -291,25 +292,35 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="parseURLRoot" output="false" access="remote">
 	<cfset var cgi_path="">
-	<cfset var siteid=bindToDomain()>
+	<cfset var siteid="">
 
 	<cfparam name="url.path" default="" />
 
-	<cfset cgi_path=setCGIPath(siteId)>
+	<cfset cgi_path=setCGIPath()>
 
 	<cfif len(cgi_path)>
 		<cfset var pathArray=listToArray(cgi_path,"/,\")>
 		<cfif arrayLen(pathArray) and application.settingsManager.siteExists(pathArray[1])>
 			<cfset siteid=pathArray[1]>
-			<cfset url.path="#application.configBean.getStub()#/#url.path#" />
+			<cfif arrayLen(pathArray) gt 1>
+				<cfset pathArray=arrayToList(pathArray)>
+				<cfset pathArray=listToArray(ListRest(pathArray))>
+				<cfset url.path="/#arrayToList(pathArray,'/')#/#url.path#" />
+			<cfelse>
+				<cfset url.path="/#url.path#" />
+			</cfif>
 		<cfelse>
-			<cfset url.path="#application.configBean.getStub()#/#siteID#/#url.path#" />
+			<cfset siteid=bindToDomain()>
+			<cfset url.path="/#url.path#" />
 		</cfif>
 	<cfelse>
-		<cfset url.path="#application.configBean.getStub()#/#siteID#/#url.path#" />
+		<cfset siteid=bindToDomain()>
+		<cfset url.path="/#url.path#" />
 	</cfif>
 
 	<cfset forcePathDirectoryStructure(cgi_path,siteID)>
+
+	<cfset url.path="#application.configBean.getStub()#/#siteID#/#url.path#">
 
 	<cfset request.preformated=true/>
 	<cfset var last=listLast(url.path,'/')>
@@ -677,7 +688,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn handleAPIRequest(path)>
 	<cfelse>
 
-		<cfif application.configBean.getSiteIDInURLS()>
+		<cfif application.configBean.getSiteIDInURLS() and application.configBean.getIndexFileInURLS()>
 			<cfset application.contentServer.redirect()>
 		<cfelse>
 			<cfif len(application.configBean.getStub())>
@@ -873,10 +884,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif arguments.indexfileinurls>
 				<cfreturn application.configBean.getSiteAssetPath() & "/" & arguments.siteID & "/index.cfm" & filenamePrefix & arguments.filename />
 			<cfelse>
-				<cfreturn application.configBean.getSiteAssetPath() & "/" & arguments.siteID & filenamePrefix & arguments.filename />
+				<cfreturn "/" & arguments.siteID & filenamePrefix & arguments.filename />
 			</cfif>
 		<cfelse>
-			<cfreturn application.configBean.getSiteAssetPath() & "/" & arguments.siteID & "/" />
+			<cfif arguments.indexfileinurls>
+				<cfreturn application.configBean.getSiteAssetPath() & "/" & arguments.siteID & "/" />
+			<cfelse>
+				<cfreturn "/" & arguments.siteID & "/">
+			</cfif>
 		</cfif>
 	</cfif>
 </cffunction>

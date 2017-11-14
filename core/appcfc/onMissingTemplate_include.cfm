@@ -114,6 +114,11 @@ if ( isDefined("application.contentServer") ) {
 		writeOutput("#application.contentServer.handleAPIRequest('/' & local.filename)#");
 		abort;
 	} else {
+
+		if(len(cgi.path_info) && right(cgi.path_info,1) != '/'){
+			url.path=local.filename & '/';
+			application.contentServer.forcePathDirectoryStructure(local.filename,siteID);
+		}
 		application.contentServer.renderFilename(filename=local.filename,siteid=siteid);
 	}
 	return true;
