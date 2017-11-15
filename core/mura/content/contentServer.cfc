@@ -291,7 +291,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="parseURLRoot" output="false" access="remote">
-	<cfset var cgi_path="">
+	<cfargument name="path">
+	<cfif isDefined('arguments.path')>
+		<cfset var cgi_path=arguments.path>
+	<cfelse>
+		<cfset var cgi_path=setCGIPath()>
+	</cfif>
 	<cfset var siteid="">
 
 	<cfparam name="url.path" default="" />
@@ -699,7 +704,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif len(application.configBean.getStub())>
 				<cfset pageContent = application.contentServer.parseURLRootStub()>
 			<cfelse>
-				<cfset pageContent = application.contentServer.parseURLRoot()>
+				<cfset pageContent = application.contentServer.parseURLRoot(path=path)>
 			</cfif>
 			<cfreturn pageContent>
 		</cfif>

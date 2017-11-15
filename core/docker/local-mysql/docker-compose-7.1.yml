@@ -23,7 +23,7 @@ services:
       MURA_DBPASSWORD: NOT_SECURE_CHANGE
       MURA_DBHOST: mura7_1_mysql
       MURA_DBPORT: 3306
-      MURA_SITEIDINURLS: "true"
+      MURA_SITEIDINURLS: "false"
       MURA_INDEXFILEINURLS: "false"
       MURA_TESTBOX: "true"
     volumes:
