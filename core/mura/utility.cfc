@@ -369,6 +369,17 @@
 
 </cffunction>
 
+<cffunction name="getRemoteIP" output="false">
+	<cfset var headers=getHttpRequestData().headers>
+
+	<cfif StructKeyExists(headers,"X-Forwarded-For") and len(headers["X-Forwarded-For"])>
+		<cfreturn headers["X-Forwarded-Host"]>
+	<cfelse>
+		<cfreturn cgi.Remote_Addr>
+	</cfif>
+
+</cffunction>
+
 <cffunction name="getRequestProtocol" output="false">
 	<cftry>
 		<cfset var headers=getHttpRequestData().headers>
