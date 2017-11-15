@@ -639,7 +639,7 @@ $( document ).ready(function() {
 
 				this.data = {};
 				this.currentView="assembler-template";
-				console.log('now');
+				console.log('save property');
 
 				$( "#assembler-properties" ).sortable (
 					{
@@ -776,7 +776,7 @@ $( document ).ready(function() {
 				this.model = json;
 				this.checkIDProp();
 			},
-			setDynamicObjects( data ) {
+			setDynamicObjects:function( data ) {
 /*
 				var items = data.items;
 				var itemlist = [];

@@ -298,7 +298,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var cgi_path=setCGIPath()>
 	</cfif>
 	<cfset var siteid="">
-
+	
 	<cfparam name="url.path" default="" />
 
 	<cfset cgi_path=setCGIPath()>

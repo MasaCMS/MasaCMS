@@ -99,7 +99,12 @@ if ( isDefined("application.contentServer") ) {
 	}
 
 	if(len(cgi.path_info)){
-		local.fileArray=ListToArray(cgi.path_info ,'/');
+		local.fileArray=ListToArray(cgi.path_info ,"/,\");
+	}
+
+	if(arrayLen(local.fileArray) && application.settingsManager.siteExists(local.fileArray[1])){
+		local.fileArray=arrayToList(local.fileArray);
+		local.fileArray=listToArray(listRest(local.fileArray));
 	}
 
 	for ( local.i=1 ; local.i<=arrayLen(local.fileArray) ; local.i++ ) {
