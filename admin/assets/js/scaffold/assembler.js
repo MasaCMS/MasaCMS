@@ -68,7 +68,7 @@ $( document ).ready(function() {
 			var ident = id ? id : 'new';
 
 			if(ident == 'new') {
-				var blah = Mura
+				var newEntity = Mura
 				.getEntity(entityname)
 				.new()
 				.then(function(entity) {
@@ -281,23 +281,11 @@ $( document ).ready(function() {
 	Vue.component('assembler-template', {
 		template: '#assembler-template',
 		props: ['data','rendertypes','datatypes','fieldtypes','model','isupdate'],
-		create: function () {
-			console.log("create: " + $( "#assembler-properties" ));
-			$( "#assembler-properties" ).sortable (
-				{
-					axis: 'y'
-				}
-			);
-
+		created: function () {
+		},
+		destroyed: function () {
 		},
 		updated: function () {
-			console.log("updated: " + $( "#assembler-properties" ));
-			$( "#assembler-properties" ).sortable (
-				{
-					axis: 'y'
-				}
-			);
-
 		},
 		methods: {
 			checkIDProp:function(){
@@ -533,26 +521,14 @@ $( document ).ready(function() {
 					var newprops = [];
 					var ind = 1;
 
-					var sortorder = $( "#assembler-properties" ).sortable('toArray',{attribute: "data-index"});
-
 					Mura("#load-spin").show();
 
-					// sort properties based on drag/drop list
-					for(var i = 0;i < sortorder.length;i++) {
-
-						var prop = this.model.properties[sortorder[i]];
-
-						prop.pos = prop.orderno = i+1;
-						newprops.push(prop);
-						//console.log(JSON.parse(JSON.stringify(prop)));
+					for(var i = 1;i < this.model.properties.length;i++) {
+							this.model.properties[i].orderno = i;
 					}
 
-					this.model.properties = JSON.parse(JSON.stringify(newprops));
 					// make sure there is an "id" field
 					var savemodel = JSON.parse(JSON.stringify(this.model));
-
-					console.log('savemodel')
-					console.log(this.model);
 
 					for(var i = 0;i < savemodel.properties.length;i++) {
 						var prop = savemodel.properties[i];
@@ -639,13 +615,6 @@ $( document ).ready(function() {
 
 				this.data = {};
 				this.currentView="assembler-template";
-				console.log('save property');
-
-				$( "#assembler-properties" ).sortable (
-					{
-						axis: 'y'
-					}
-				);
 			},
 			clickDeleteProperty: function() {
 				var data = JSON.parse(JSON.stringify(this.data));

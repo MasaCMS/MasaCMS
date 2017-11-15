@@ -69,12 +69,11 @@
 	</div>
 </template>
 
-
 <template id="assembler-property-template">
 	<div id="property-template">
 		<div class="mura-control justify">
-			<ul id="assembler-properties">
-				<li v-for="(item,index) in model.properties" v-bind:id="'assembler-property-index-' + index" :data-index="index" :data-name="item.name" :key="item.pos">
+			<draggable :model="model" :list="model.properties" id="assembler-properties">
+				<div v-for="(item,index) in model.properties" v-bind:id="'assembler-property-index-' + index" :data-index="index" :data-name="item.name" :key="item.pos">
 					<span class="assembler-item-box">
 						<span v-if="item.relatesto || item.cfc" class="assembler-prop">
 							<button @click="clickEditRelated(index)"><i class="mi-cogs"></i></button>
@@ -90,8 +89,8 @@
 						<span v-if="item.rendertype == 'hidden'"> (Hidden)</span>
 						<span v-if="item.rendertype == 'null'"> (Does Not Render)</span>
 					</span>
-				</li>
-			</ul>
+				</div>
+			</draggable>
 		</div>
 	</div>
 </template> <!--- / assembler-property-template --->

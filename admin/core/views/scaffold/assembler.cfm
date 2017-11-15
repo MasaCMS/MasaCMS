@@ -50,12 +50,26 @@
 
 <script src="#$.globalConfig('rootPath')#/core/vendor/vue/vue.js"></script>
 <script src="#$.globalConfig('rootPath')#/admin/assets/js/scaffold/assembler.js"></script>
+<script src="#$.globalConfig('rootPath')#/admin/assets/js/scaffold/Sortable.min.js"></script>
+<script src="#$.globalConfig('rootPath')#/admin/assets/js/scaffold/vuedraggable.min.js"></script>
 
 <script>
 	var Assembler = "";
 	var Scaffolder = "";
 	var Master = "";
 </script>
+
+<style>
+.mura ##container-assembler ##assembler-properties .sortable-ghost {
+	background-color: ##eee;
+	border-color: ##eee;
+}
+.mura ##container-assembler ##assembler-properties sortable-list div {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+</style>
 
 <div id="alert-assembler-saved"></div>
 
@@ -87,7 +101,7 @@
 				<div class="block block-bordered">
 
 					<div class="block-content">
-						<div class="help-block">
+						<div class="alert alert-warning">
 						   IMPORTANT: After updating dynamically created entities, a reload of the Mura application may be required.
 						</div>
 							<component :is="currentView" :data="data" :isupdate="isupdate" :rendertypes="rendertypes" :fieldtypes="fieldtypes" :datatypes="datatypes" :model="model" transition="fade" transition-mode="out-in"></component>
@@ -113,12 +127,12 @@
 				<button v-else class="btn" disabled><i class="mi-ban"></i> Save</button>
 			</div>
 			<div class="form-actions" v-else-if="currentView==='assembler-property-form-template'">
-				<button  class="btn mura-primary" @click="clickUpdateProperty"><i class="mi-check-circle"></i> Add Property</button>
+				<button  class="btn mura-primary" @click="clickUpdateProperty"><i class="mi-check-circle"></i> <span v-if="isupdate">Update</span><span v-else>Add</span> Property</button>
 				<button class="btn" v-if="isupdate && data.fieldtype != 'id'" @click="clickDeleteProperty"><i class="mi-trash"></i> Delete</button>
 				<button  class="btn" @click='clickCancel'><i class="mi-arrow-circle-left"></i> Cancel</button>
 			</div>
 			<div class="form-actions" v-else-if="currentView==='assembler-related-form-template'">
-				<button  class="btn mura-primary" @click="clickUpdateRelated"><i class="mi-check-circle"></i> Add Property</button>
+				<button  class="btn mura-primary" @click="clickUpdateRelated"><i class="mi-check-circle"></i> <span v-if="isupdate">Update</span><span v-else>Add</span> Relationship</button>
 				<button class="btn" v-if="isupdate" @click="clickDeleteRelated"><i class="mi-trash"></i> Delete</button>
 				<button  class="btn" @click='clickCancel'><i class="mi-arrow-circle-left"></i> Cancel</button>
 			</div>
