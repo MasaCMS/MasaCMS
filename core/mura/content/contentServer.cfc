@@ -307,20 +307,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset pathArray=listToArray(ListRest(pathArray))>
 				<cfset url.path="/#arrayToList(pathArray,'/')#/#url.path#" />
 			<cfelse>
-				<cfset url.path="/#url.path#" />
+				<cfset url.path="#url.path#" />
 			</cfif>
 		<cfelse>
 			<cfset siteid=bindToDomain()>
-			<cfset url.path="/#url.path#" />
+			<cfif cgi_path eq '/'>
+				<cfset url.path="/#url.path#" />
+			<cfelse>
+				<cfset url.path="#cgi_path#/#url.path#" />
+			</cfif>
 		</cfif>
 	<cfelse>
 		<cfset siteid=bindToDomain()>
-		<cfset url.path="/#url.path#" />
+		<cfset url.path="#url.path#" />
 	</cfif>
 
 	<cfset forcePathDirectoryStructure(cgi_path,siteID)>
 
 	<cfset url.path="#application.configBean.getStub()#/#siteID#/#url.path#">
+
 
 	<cfset request.preformated=true/>
 	<cfset var last=listLast(url.path,'/')>
@@ -688,7 +693,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn handleAPIRequest(path)>
 	<cfelse>
 
-		<cfif application.configBean.getSiteIDInURLS() and application.configBean.getIndexFileInURLS()>
+		<cfif not len(cgi.path_info) and application.configBean.getSiteIDInURLS()>
 			<cfset application.contentServer.redirect()>
 		<cfelse>
 			<cfif len(application.configBean.getStub())>
