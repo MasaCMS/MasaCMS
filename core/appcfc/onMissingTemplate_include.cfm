@@ -120,7 +120,16 @@ if ( isDefined("application.contentServer") ) {
 		abort;
 	} else {
 
-		if(len(cgi.path_info) && right(cgi.path_info,1) != '/'){
+		local.fileArray=ListToArray(cgi.path_info,'\,/');
+		local.last=local.fileArray[arrayLen(local.fileArray)];
+		local.hasAllowedFile=find(".",local.last) and (application.configBean.getAllowedIndexFiles() eq '*' or listFind(application.configBean.getAllowedIndexFiles(),local.last));
+
+		if (find(".",local.last) and local.hasAllowedFile){
+			if (local.last eq 'index.json'){
+				request.returnFormat="JSON";
+			}
+		}
+		if( len(cgi.path_info) && right(cgi.path_info,1) != '/' && !local.hasAllowedFile ) {
 			url.path=local.filename & '/';
 			application.contentServer.forcePathDirectoryStructure(local.filename,siteID);
 		}
