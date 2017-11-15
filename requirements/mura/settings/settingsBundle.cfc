@@ -655,6 +655,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="changesetID" default="">
 		<cfargument name="parentID" default="">
 		<cfargument name="doChildrenOnly" default="1">
+		<cfargument name="bundleMode" default="">
 
 		<cfset var rstcontent=""/>
 		<cfset var rstcontentstats=""/>
