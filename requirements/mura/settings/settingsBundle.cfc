@@ -209,6 +209,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="sinceDate" type="any" default="">
 		<cfargument name="includeUsers" type="boolean" default="false" required="true">
 		<cfargument name="changesetID" default="">
+    <cfargument name="bundleMode" default="">
 
 		<cfset var siteRoot = variables.configBean.getValue('webroot') & '/' & arguments.siteID />
 		<cfset var zipDir	= "" />
@@ -232,7 +233,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfloop>
 		--->
 
-		<cfif len(arguments.siteID)>
+		<cfif arguments.bundleMode neq 'plugin' and len(arguments.siteID)>
 			<cfset  getBean("fileManager").cleanFileCache(arguments.siteID)>
 			<cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#sitefiles.zip",directory=siteRoot,recurse="true",sinceDate=arguments.sinceDate)>
 			<cfset var filePoolID=getBean('settingsManager').getSite(arguments.siteid).getFilePoolID()>
