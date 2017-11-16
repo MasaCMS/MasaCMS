@@ -1207,8 +1207,8 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			result.links.endpoint=getEndpoint() & "/" & arguments.entityname;
 		}
 
-		result.links.swagger=getEndpoint() & "/swagger?entities=" & arguments.entityname;
-
+		result.links.swagger_json=getEndpoint() & "/swagger?mode=json&entities=" & arguments.entityname;
+		result.links.swagger_rest=getEndpoint() & "/swagger?mode=rest&entities=" & arguments.entityname;
 
 		if(getCurrentUser().isAdminUser() || getCurrentUser().isSuperUser()){
 			result.table=exampleEntity.getTable();
@@ -3311,9 +3311,15 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 	function swagger(siteid,params){
 		param name="arguments.params" default=url;
 		param name="arguments.params.entities" default="";
+		param name="arguments.params.mode" default=request.muraAPIRequestMode;
+
 		var $=getBean('$').init(arguments.siteid);
 		var entity='';
 		var primarykey='';
+
+		if(!listFindNoCase('json,rest',arguments.params.mode)){
+			arguments.params.mode=request.muraAPIRequestMode;
+		}
 
 		var result={
 			"swagger"= "2.0",
@@ -3331,7 +3337,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			}
 			},
 			"host"= $.siteConfig('domain') & $.siteConfig('serverPort'),
-			"basePath"= "/index.cfm/_api/#request.muraAPIRequestMode#/#$.siteConfig('siteid')#",
+			"basePath"= "/index.cfm/_api/#arguments.params.mode#/#$.siteConfig('siteid')#",
 			"tags"= [
 				{
 					"name"= "Mura CMS",
@@ -3349,7 +3355,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			'definitions'={}
 		};
 
-		if(request.muraAPIRequestMode == 'JSON'){
+		if(arguments.params.mode == 'JSON'){
 			var appliedSecurity=[
 				{
 					"cookieAuth"= []
@@ -3678,7 +3684,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			}
 		};
 
-		if(request.muraAPIRequestMode == 'REST'){
+		if(arguments.params.mode == 'REST'){
 			result['securityDefinitions']= {
 				"oauthSecurity"= {
 						"type"= "oauth2",
