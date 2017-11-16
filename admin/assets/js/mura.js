@@ -1498,21 +1498,20 @@ var Mura=(function(){
   }
 
   function initShadowBox(el) {
-      if (Mura(el).find('[data-rel^="shadowbox"],[rel^="shadowbox"]')
-          .length) {
+      if(!window){
+        return;
+      };
+
+      if (Mura(el).find('[data-rel^="shadowbox"],[rel^="shadowbox"]').length) {
 
           loader().load(
               [
                   Mura.context + '/core/modules/v1/core_assets/css/shadowbox.min.css',
-                  Mura.context +
-                  '/core/modules/v1/core_assets/js/shadowbox.js'
+                  Mura.context + '/core/modules/v1/core_assets/js/shadowbox.js'
               ],
               function() {
-                  Mura('#shadowbox_overlay,#shadowbox_container')
-                      .remove();
-                  if (window.Shadowbox) {
-                      window.Shadowbox.init();
-                  }
+                  Mura('#shadowbox_overlay,#shadowbox_container').remove();
+                  window.Shadowbox.init();
               }
           );
       }
@@ -2028,7 +2027,7 @@ var Mura=(function(){
                   }
 
 
-                  if (window.MuraInlineEditor && window.MuraInlineEditor
+                  if (window  && window.MuraInlineEditor && window.MuraInlineEditor
                       .checkforImageCroppers) {
                       find("img").each(function() {
                           window.muraInlineEditor.checkforImageCroppers(
@@ -3122,6 +3121,15 @@ var Mura=(function(){
           Mura.apiEndpoint=Mura.apiEndpoint.replace('/json/', '/rest/');
       }
 
+      if(isInNode()
+        && typeof Mura.request != 'undefined'
+        && typeof Mura.response != 'undefined'){
+
+        Mura._requestcontext=Mura.getRequestContext(Mura.request,Mura.response);
+      } else {
+        Mura._requestcontext=Mura.getRequestContext();
+      }
+
       Mura(function() {
 
           if(!isInNode()){
@@ -3148,7 +3156,9 @@ var Mura=(function(){
                     });
             }
 
-            Mura(window).on('hashchange', handleHashChange);
+            if(window){
+              Mura(window).on('hashchange', handleHashChange);
+            }
 
             processMarkup(document);
 
@@ -8928,7 +8938,7 @@ Mura.DOMSelection = Mura.Core.extend(
           var el = this.selection[0];
           //var type=el.constructor.name.toLowerCase();
 
-          if (el === window) {
+          if (window && el === window) {
               return innerHeight
           } else if (el === document) {
               var body = document.body;
@@ -8967,7 +8977,7 @@ Mura.DOMSelection = Mura.Core.extend(
           var el = this.selection[0];
           //var type=el.constructor.name.toLowerCase();
 
-          if (el === window) {
+          if (window && el === window) {
               return innerWidth
           } else if (el === document) {
               var body = document.body;
@@ -20272,8 +20282,6 @@ __webpack_require__(132);
 __webpack_require__(130);
 __webpack_require__(133);
 __webpack_require__(134);
-
-Mura._requestcontext=new Mura.RequestContext();
 
 if(!Mura.isInNode()){
   __webpack_require__(136);
