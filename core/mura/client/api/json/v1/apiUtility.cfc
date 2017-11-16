@@ -3201,7 +3201,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 	}
 
-	function getSwaggerEntityParams(entity,_in="query",idInPath=false,method='get'){
+	function getSwaggerEntityParams(entity,_in="query",idInPath=false,method='get',mode=''){
 		var response=[];
 		var item='';
 		var p='';
@@ -3224,7 +3224,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		}
 
-		if(request.muraAPIRequestMode=='JSON'){
+		if(arguments.mode=='JSON'){
 			arrayAppend(response,{
 					"name"= 'csrf_token',
 					"in"= "formData",
@@ -3401,7 +3401,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 								"produces"= [
 									"application/json"
 								],
-								"parameters"= getSwaggerEntityParams(entity=entity,_in="query",idInPath=false,method='findQuery'),
+								"parameters"= getSwaggerEntityParams(entity=entity,_in="query",idInPath=false,method='findQuery',mode=arguments.params.mode),
 								"responses"= {
 									"200"= {
 										"description"= "Collection of #i#",
@@ -3434,7 +3434,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 								"produces"= [
 									"application/json"
 								],
-								"parameters"= getSwaggerEntityParams(entity=entity,_in='formData',idInPath=false,method='save'),
+								"parameters"= getSwaggerEntityParams(entity=entity,_in='formData',idInPath=false,method='save',mode=arguments.params.mode),
 								"responses"= {
 									"200"= {
 										"description"= "#i# entity",
@@ -3564,7 +3564,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 								"produces"= [
 									"application/json"
 								],
-								"parameters"= getSwaggerEntityParams(entity=entity,_in='formData',idInPath=true, method='save'),
+								"parameters"= getSwaggerEntityParams(entity=entity,_in='formData',idInPath=true, method='save',mode=arguments.params.mode),
 								"responses"= {
 									"200"= {
 										"description"= "#i# entity",
