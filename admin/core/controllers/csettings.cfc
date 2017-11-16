@@ -236,6 +236,7 @@ to your own modified versions of Mura CMS.
 	<cfparam name="arguments.rc.includeFormData" default="false">
 	<cfparam name="arguments.rc.saveFile" default="false">
 	<cfparam name="arguments.rc.saveFileDir" default="">
+	<cfparam name="arguments.rc.bundleMode" default="">
 	
 	<cfif len(arguments.rc.saveFileDir)>
 		<cfif directoryExists(arguments.rc.saveFileDir)>
@@ -257,7 +258,8 @@ to your own modified versions of Mura CMS.
 			includeUsers=arguments.rc.includeUsers,
 			includeFormData=arguments.rc.includeFormData,
 			saveFile=arguments.rc.saveFile,
-			saveFileDir=arguments.rc.saveFileDir
+			saveFileDir=arguments.rc.saveFileDir,
+			bundleMode=arguments.rc.bundleMode
 			) />
 </cffunction>
 
