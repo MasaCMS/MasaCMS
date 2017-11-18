@@ -52,7 +52,7 @@ component extends="mura.bean.beanORM" table="tcontentcategoryassign" entityname=
     property name="category" fieldtype="many-to-one" cfc="category" fkcolumn="categoryid";
     property name="site" fieldtype="many-to-one" cfc="site" fkcolumn="siteid";
     property name="isfeature" datatype="int" default=0;
-    property name="featureStart" datatype="datetime" default=null;
-    property name="featureSop" datatype="datetime" default=null;
+    property name="featureStart" datatype="datetime";
+    property name="featureSop" datatype="datetime";
 
 }
