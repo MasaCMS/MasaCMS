@@ -129,7 +129,7 @@ component extends="mura.cfobject" output="false" hint="This provides a utility t
 				} else {
 					//  temp fix, may become permanent
 					if ( globalConfig().getValue(property='alwaysUseLocalRenderer',defaultValue=false) ) {
-						if ( fileExists(application.configBean.getSiteDir() & "/#getValue('siteid')#/contentRenderer.cfc") ) {
+						if ( fileExists(application.configBean.getSiteDir() & "/#event('siteid')#/contentRenderer.cfc") ) {
 							event("contentRenderer",createObject("component","#globalConfig('sitemap')#.#event('siteid')#.contentRenderer") );
 						} else {
 							event("contentRenderer",createObject("component","#globalConfig('sitemap')#.#event('siteid')#.includes.contentRenderer") );
