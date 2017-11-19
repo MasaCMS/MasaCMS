@@ -104,21 +104,26 @@ component extends="mura.cfobject" output="false" hint="This handles translating 
 				commitTracePoint(tracePoint);
 			}
 		}
-
-
-		var pageLen=len(page);
+		tracePoint=initTracePoint("Rendering HTML Head Queue");
 		var renderedQueue=renderer.renderHTMLQueue("Head");
+		commitTracePoint(tracePoint);
+		var pageLen=len(page);
+		tracePoint=initTracePoint("Placing Head Queue");
 		page=replace(page,"</head>", renderedQueue & "</head>");
 		if(pageLen==len(page)){
 			replace(page,"</HEAD>", renderedQueue & "</HEAD>");
 		}
-
+		commitTracePoint(tracePoint);
 		pageLen=len(page);
+		tracePoint=initTracePoint("Rendering HTML Foot Queue");
 		renderedQueue=renderer.renderHTMLQueue("Foot");
+		commitTracePoint(tracePoint);
+		tracePoint=initTracePoint("Placing Foot Queue");
 		page=replace(page,"</body>", renderedQueue & "</body>");
 		if(pageLen==len(page)){
 			replace(page,"</BODY>", renderedQueue & "</BODY>");
 		}
+		commitTracePoint(tracePoint);
 
 		arguments.event.setValue('__MuraResponse__',trim(page));
 	}

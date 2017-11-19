@@ -257,6 +257,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		variables.instance.displayObjectLookup={};
 		variables.instance.displayObjectFilePathLookup={};
 		variables.instance.displayObjectLoopUpArray=[];
+		variables.instance.htmlQueueFilePathLookup={};
 		variables.instance.showDashboard=0;
 		variables.instance.themeLookup={};
 		variables.instance.scaffolding=0;

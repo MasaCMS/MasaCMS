@@ -2737,16 +2737,10 @@ Display Objects
 		<cfelseif arguments.queueType eq "FOOT">
 			<cfif (getShowModal() or variables.event.getValue("muraChangesetPreviewToolbar")) and not request.muraExportHTML>
 				<cfif getShowModal()>
+					<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##application.configBean.getAdminDir()#/core/utilities/modal/toolbar.cfm")>
 					<cfsavecontent variable="headerStr"><cfinclude template="/#application.configBean.getWebRootMap()##application.configBean.getAdminDir()#/core/utilities/modal/toolbar.cfm"></cfsavecontent>
 					<cfset commitTracePoint(tracePoint)>
 				</cfif>
-				<!---
-				<cfif variables.event.getValue("muraChangesetPreviewToolbar")>
-					<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##application.configBean.getAdminDir()#/core/utilities/modal/dsp_modal_changeset.cfm")>
-					<cfinclude template="/#application.configBean.getWebRootMap()##application.configBean.getAdminDir()#/core/utilities/modal/dsp_modal_changeset.cfm">
-					<cfset commitTracePoint(tracePoint)>
-				</cfif>
-				--->
 			</cfif>
 		</cfif>
 		<!--- Loop through the HTML Head Que--->
