@@ -3572,7 +3572,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 								"tags"= [
 									i
 								],
-								"summary"= "Saves a #i#",
+								"summary"= "Updates a #i#",
 								"description"= "",
 								"operationId"= "save#$.getBean('utility').setProperCase(i)#ByPath",
 								"consumes"= [
