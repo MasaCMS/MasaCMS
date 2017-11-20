@@ -82,7 +82,7 @@ component extends="mura.bean.beanORM" entityName='oauthClient' table="toauthclie
             return true;
         }
 
-        for(var i in listToArray(replace(variables.redirecturl,chr(13)&chr(10),"|"),"|")){
+        for(var i in listToArray(replace(variables.instance.redirecturl,chr(13)&chr(10),"|"),"|")){
             if(i==arguments.redirect_uri){
                 return true;
             }

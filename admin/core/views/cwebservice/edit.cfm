@@ -117,7 +117,7 @@
                     #rc.bean.getClientID()#
                 </div>
             </div>
-            <div class="mura-control-group conditional client_credentials authorization_code password">
+            <div class="mura-control-group conditional client_credentials password">
                 <label>client_secret</label>
                 <div>
                     #rc.bean.getClientSecret()#
