@@ -500,16 +500,13 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 									} else {
 										result=serializeResponse(
 											statusCode=200,
-											response={'apiversion'=getApiVersion(),
-											'method'=params.method,
-											'params'=getParamsWithOutMethod(params),
-											'data'={
+											response={
 												'token_type'='Bearer',
 												'access_token'=token.getToken(),
 												'expires_in'=token.getExpiresIn(),
 												'expires_at'=token.getExpiresAt(),
 												'refresh_token'=oauthclient.generateToken(granttype='refresh_token').getToken()
-											 }});
+											 });
 
 										return result;
 									}
@@ -535,15 +532,12 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 										var token=oauthclient.generateToken(granttype='password',userid=clientAccount.getUserID());
 										result=serializeResponse(
 											statusCode=200,
-											response={'apiversion'=getApiVersion(),
-											'method'=params.method,
-											'params'=getParamsWithOutMethod(params),
-											'data'={
+											response={
 												'token_type'='Bearer',
 												'access_token'=token.getToken(),
 												'expires_in'=token.getExpiresIn(),
 												'expires_at'=token.getExpiresAt()
-											 }});
+											 });
 
 										return result;
 									}
@@ -566,15 +560,12 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 									} else {
 										result=serializeResponse(
 											statusCode=200,
-											response={'apiversion'=getApiVersion(),
-											'method'=params.method,
-											'params'=getParamsWithOutMethod(params),
-											'data'={
+											response={
 												'token_type'='Bearer',
 												'access_token'=token.getToken(),
 												'expires_in'=token.getExpiresIn(),
 												'expires_at'=token.getExpiresAt()
-											 }});
+											 });
 
 										return result;
 									}
@@ -605,16 +596,13 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 									result=serializeResponse(
 										statusCode=200,
-										response={'apiversion'=getApiVersion(),
-										'method'=params.method,
-										'params'=getParamsWithOutMethod(params),
-										'data'={
+										response={
 											'token_type'='Bearer',
 											'access_token'=token.getToken(),
 											'expires_in'=token.getExpiresIn(),
 											'expires_at'=token.getExpiresAt(),
 											'refresh_token'=refreshToken.getToken()
-										 }});
+										 });
 
 
 									return result;
