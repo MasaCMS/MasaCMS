@@ -176,7 +176,7 @@ if ( application.setupComplete ) {
 
 		variables.serviceFactory=new mura.bean.beanFactory("/mura",{
 				recurse=true,
-				exclude=["/.","/mura/autoUpdater/global","/mura/configBean.cfc","/mura/bean/beanFactory.cfc","/mura/cache/provider","/mura/moment.cfc"],
+				exclude=["/.","/mura/autoUpdater/global","/mura/configBean.cfc","/mura/bean/beanFactory.cfc","/mura/cache/provider","/mura/moment.cfc","/mura/client/oath"],
 				strict=application.configBean.getStrictFactory(),
 				transientPattern = "(Iterator|Bean|executor|MuraScope|Event|dbUtility|extendObject)$"
 				});
