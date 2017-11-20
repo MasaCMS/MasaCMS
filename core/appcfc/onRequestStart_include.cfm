@@ -170,18 +170,21 @@ try {
 	application.utility.deleteCookie(name="userHash");
 	application.utility.deleteCookie(name="userid");
 }
-try {
-	param name="sessionData.muraSessionID" default=application.utility.getUUID();
-	if ( !structKeyExists(cookie,"MXP_TRACKINGID") ) {
-		if ( structKeyExists(cookie,"originalURLToken") ) {
-			application.utility.setCookie(name="MXP_TRACKINGID", value=cookie.originalURLToken);
-			StructDelete(cookie, 'originalURLToken');
-		} else {
-			application.utility.setCookie(name="MXP_TRACKINGID", value=sessionData.muraSessionID);
+
+if(request.muraSessionManagement){
+	try {
+		param name="sessionData.muraSessionID" default=application.utility.getUUID();
+		if ( !structKeyExists(cookie,"MXP_TRACKINGID") ) {
+			if ( structKeyExists(cookie,"originalURLToken") ) {
+				application.utility.setCookie(name="MXP_TRACKINGID", value=cookie.originalURLToken);
+				StructDelete(cookie, 'originalURLToken');
+			} else {
+				application.utility.setCookie(name="MXP_TRACKINGID", value=sessionData.muraSessionID);
+			}
 		}
+		param name="sessionData.muraTrackingID" default=cookie.MXP_TRACKINGID;
+	} catch (any cfcatch) {
 	}
-	param name="sessionData.muraTrackingID" default=cookie.MXP_TRACKINGID;
-} catch (any cfcatch) {
 }
 //  look to see is there is a custom remote IP header in the settings.ini.cfm
 variables.remoteIPHeader=application.configBean.getValue("remoteIPHeader");
@@ -198,7 +201,7 @@ if ( len(variables.remoteIPHeader) ) {
 } else {
 	request.remoteAddr = CGI.REMOTE_ADDR;
 }
-if ( !isdefined('url.muraadminpreview') ) {
+if (request.muraSessionManagement && !isdefined('url.muraadminpreview') ) {
 	request.muraMobileRequest=false;
 	if ( isDefined("form.mobileFormat") && isBoolean(form.mobileFormat) ) {
 		request.muraMobileRequest=form.mobileFormat;
