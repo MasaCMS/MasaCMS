@@ -467,11 +467,11 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 							throw(type='authorization');
 						} else {
 							if(arrayLen(pathInfo) == 6
-								&& pathInfo[5]=='oauth'
+								&& listFind('oauth,oauth2',pathInfo[5])
 								||
 									arrayLen(pathInfo) == 5
 									&& (
-										pathInfo[4]=='oauth' || pathInfo[5]=='oauth'
+										listFind('oauth,oauth2',pathInfo[4]) || listFind('oauth,oauth2',pathInfo[5])
 									)
 								){
 
