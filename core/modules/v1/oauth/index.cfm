@@ -19,8 +19,6 @@
 <cfelseif not oauthClient.isValidRedirectURI(m.event('redirect_uri'))>
     <div class="alert alert-danger">Invalid redirect_uri variable.</div>
 <cfelseif m.event('grant_type') neq oauthClient.getGrantType()>
-    <cfdump var="#url#">
-      <cfdump var="#form#">
     <div class="alert alert-danger">Invalid grant_type variable.</div>
 <cfelse>
     <cfoutput>
