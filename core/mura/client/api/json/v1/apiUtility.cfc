@@ -458,7 +458,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 					} else {
 						var oauthclient=getBean('oauthClient').loadBy(clientid=params.client_id);
 
-						//WriteDump(oauthclient.getAllValues());abort;
+
 						if(!oauthclient.exists()){
 							params.method='Not Available';
 							params={
@@ -466,6 +466,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 							};
 							throw(type='authorization');
 						} else {
+
 							if(arrayLen(pathInfo) == 6
 								&& listFind('oauth,oauth2',pathInfo[5])
 								||
@@ -474,6 +475,15 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 										listFind('oauth,oauth2',pathInfo[4]) || listFind('oauth,oauth2',pathInfo[5])
 									)
 								){
+
+								var oauth2=(arrayLen(pathInfo) == 6
+									&& listFind('oauth2',pathInfo[5])
+									||
+										arrayLen(pathInfo) == 5
+										&& (
+											listFind('oauth2',pathInfo[4]) || listFind('oauth2',pathInfo[5])
+										)
+									);
 
 								param name="params.grant_type" default="invalid";
 
@@ -511,7 +521,8 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 										return result;
 									}
 								} else if(params.grant_type == 'password'){
-									if(oauthclient.getGrantType()!='password' || oauthclient.getClientSecret() != params.client_secret){
+
+									if(oauthclient.getGrantType()!='password'){
 										params={
 											method='getOAuthToken'
 										};
@@ -521,15 +532,17 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 									param name="params.username" default="";
 									param name="params.password" default="";
 
-									var clientAccount=getBean('userUtility').lookupByCredentials(username=params.username,password=params.password,siteid=variables.siteid);
+									var rsUser=getBean('userUtility').lookupByCredentials(username=params.username,password=params.password,siteid=variables.siteid);
 
-									if(!clientAccount.exists()){
+									if(!rsUser.recordcount){
 										params={
 											method='getOAuthToken'
 										};
 										throw(type='authorization');
 									} else {
-										var token=oauthclient.generateToken(granttype='password',userid=clientAccount.getUserID());
+										var token=oauthclient.generateToken(granttype='password',userid=rsUser.userid);
+
+										if(oauth2){
 										result=serializeResponse(
 											statusCode=200,
 											response={
@@ -538,6 +551,19 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 												'expires_in'=token.getExpiresIn(),
 												'expires_at'=token.getExpiresAt()
 											 });
+										} else {
+											result=serializeResponse(
+											statusCode=200,
+											response={'apiversion'=getApiVersion(),
+											'method'=params.method,
+											'params'=getParamsWithOutMethod(params),
+											'data'={
+												'token_type'='Bearer',
+												'access_token'=token.getToken(),
+												'expires_in'=token.getExpiresIn(),
+												'expires_at'=token.getExpiresAt()
+											 }});
+										}
 
 										return result;
 									}
@@ -558,6 +584,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 										};
 										throw(type='authorization');
 									} else {
+										if(oauth2){
 										result=serializeResponse(
 											statusCode=200,
 											response={
@@ -566,6 +593,19 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 												'expires_in'=token.getExpiresIn(),
 												'expires_at'=token.getExpiresAt()
 											 });
+										 } else {
+											result=serializeResponse(
+	 											statusCode=200,
+	 											response={'apiversion'=getApiVersion(),
+	 											'method'=params.method,
+	 											'params'=getParamsWithOutMethod(params),
+	 											'data'={
+													'token_type'='Bearer',
+													'access_token'=token.getToken(),
+													'expires_in'=token.getExpiresIn(),
+													'expires_at'=token.getExpiresAt()
+												 }});
+										 }
 
 										return result;
 									}
@@ -594,6 +634,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 									var token=oauthclient.generateToken(granttype='client_credentials',userid=clientAccount.getUserID());
 
+									if(oauth2){
 									result=serializeResponse(
 										statusCode=200,
 										response={
@@ -603,6 +644,20 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 											'expires_at'=token.getExpiresAt(),
 											'refresh_token'=refreshToken.getToken()
 										 });
+									 } else {
+										 result=serializeResponse(
+											 statusCode=200,
+											 response={'apiversion'=getApiVersion(),
+											 'method'=params.method,
+											 'params'=getParamsWithOutMethod(params),
+											 'data'={
+	 											'token_type'='Bearer',
+	 											'access_token'=token.getToken(),
+	 											'expires_in'=token.getExpiresIn(),
+	 											'expires_at'=token.getExpiresAt(),
+	 											'refresh_token'=refreshToken.getToken()
+	 										 }});
+									 }
 
 
 									return result;
