@@ -911,13 +911,13 @@
 				result.initjs=variationTargeting.getInitJS();
 				result.targetingjs=variationTargeting.getTargetingJS();
 			}
-
-			$.event('__MuraResponse__',apiUtility.serializeResponse({'apiversion'=apiUtility.getApiVersion(),'method'='findOne','params'={filename=result.filename,siteid=result.siteid,rendered=true},data=result}));
+			
+			$.event('__MuraResponse__',apiUtility.serializeResponse(response={'apiversion'=apiUtility.getApiVersion(),'method'='findOne','params'={filename=result.filename,siteid=result.siteid,rendered=true},data=result},statuscode=200));
 
 		} catch (any e){
 			result.error = e;
 			$.announceEvent(eventName='onapierror',objectid=$.content('contentid'));
-			$.event('__MuraResponse__',apiUtility.serializeResponse({error=result.error.stacktrace}));
+			$.event('__MuraResponse__',apiUtility.serializeResponse(response={error=result.error.stacktrace},statuscode=500));
 		}
 
 	</cfscript>
