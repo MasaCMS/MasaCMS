@@ -91,12 +91,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var strikes = createObject("component","mura.user.userstrikes").init(arguments.username,variables.configBean) />
 	<cfset var sessionData=getSession()>
 
-	<cfparam name="sessionData.blockLoginUntil" type="string" default="#strikes.blockedUntil()#" />
+	<cfif request.muraSessionManagement>
+		<cfparam name="sessionData.blockLoginUntil" type="string" default="#strikes.blockedUntil()#" />
 
-	<cfif len(arguments.siteID)>
-		<cfset variables.pluginManager.announceEvent('onSiteLogin',pluginEvent)/>
-	<cfelse>
-		<cfset variables.pluginManager.announceEvent('onGlobalLogin',pluginEvent)/>
+		<cfif len(arguments.siteID)>
+			<cfset variables.pluginManager.announceEvent('onSiteLogin',pluginEvent)/>
+		<cfelse>
+			<cfset variables.pluginManager.announceEvent('onGlobalLogin',pluginEvent)/>
+		</cfif>
 	</cfif>
 
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsUser')#">

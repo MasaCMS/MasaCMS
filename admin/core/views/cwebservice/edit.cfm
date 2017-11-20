@@ -88,11 +88,30 @@
                 </div>
             </div>
             <div class="mura-control-group conditional basic">
+                <label>Username</label>
+                <div>
+                    #rc.bean.getClientID()#
+                </div>
+            </div>
+            <div class="mura-control-group conditional basic">
+                <label>Password</label>
+                <div>
+                    #rc.bean.getClientSecret()#
+                </div>
+            </div>
+            <div class="mura-control-group conditional basic">
                 <label>Basic Authentication Header</label>
                 <div>
                     Authorization: Basic #ToBase64(rc.bean.getClientID() & ":" & rc.bean.getClientSecret())#
                 </div>
             </div>
+            <div class="mura-control-group conditional client_credentials">
+                <label>Example Usage of</label>
+                <div>
+                    <a href="#rc.$.siteConfig().getApi('json','v1').getEndpoint(mode='rest')#/oauth?grant_type=client_credentials&client_id=#rc.bean.getClientID()#&client_secret=#rc.bean.getClientSecret()#" target="_blank">#rc.$.siteConfig().getApi('json','v1').getEndpoint(mode='rest')#/oauth?grant_type=client_credentials&client_id=#rc.bean.getClientID()#&client_secret#rc.bean.getClientSecret()#</a>
+                </div>
+            </div>
+
             <div class="mura-control-group conditional client_credentials authorization_code implicit password">
                 <label>client_id</label>
                 <div>
