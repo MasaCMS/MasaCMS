@@ -1791,6 +1791,10 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 			if ( fileExists(expandPath(altThemePath)) ) {
 				return altThemePath;
 			}
+			altThemePath=getThemeIncludePath(request.altTheme) & "/modules/" & arguments.filePath;
+			if ( fileExists(expandPath(altThemePath)) ) {
+				return altThemePath;
+			}
 		}
 		if ( hasDisplayObjectFilePath(arguments.filePath) ) {
 			return getDisplayObjectFilePath(arguments.filePath);
