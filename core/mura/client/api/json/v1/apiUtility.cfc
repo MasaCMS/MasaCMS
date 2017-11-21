@@ -2663,7 +2663,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			if(!isDefined('request.apiEndpoint')){
 
 				if(useProtocol){
-					if(getBean('configBean').getAdminSSL()){
+					if(configBean.getAdminSSL()){
 						var protocol='https:';
 					} else {
 						var protocol=getBean('utility').getRequestProtocol() & ":";
@@ -2674,7 +2674,14 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 				var domain=cgi.server_name;
 
-				request.apiEndpoint="#protocol#//#domain##configBean.getServerPort()##configBean.getContext()#/index.cfm/_api/#request.muraAPIRequestMode#/v1/#variables.siteid#";
+				//Rigged to always have index.cfm until some issues are figured out
+				if(true || configBean.getValue('indexFileInURLS')){
+					var indexFile="/index.cfm";
+				} else {
+					var indexFile="";
+				}
+
+				request.apiEndpoint="#protocol#//#domain##configBean.getServerPort()##configBean.getContext()##indexFile#/_api/#request.muraAPIRequestMode#/v1/#variables.siteid#";
 			}
 			return request.apiEndpoint;
 		}
@@ -3378,6 +3385,13 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			arguments.params.mode=request.muraAPIRequestMode;
 		}
 
+		//Rigged to always have index.cfm until some issues are figured out
+		if(true || $.globalConfig('indexFileInURLS')){
+			var indexFile="/index.cfm";
+		} else {
+			var indexFile="";
+		}
+
 		var result={
 			"swagger"= "2.0",
 			"info"= {
@@ -3394,7 +3408,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			}
 			},
 			"host"= $.siteConfig('domain') & $.siteConfig('serverPort'),
-			"basePath"= "/index.cfm/_api/#arguments.params.mode#/v1/#$.siteConfig('siteid')#",
+			"basePath"= "#indexFile#/_api/#arguments.params.mode#/v1/#$.siteConfig('siteid')#",
 			"tags"= [
 				{
 					"name"= "Mura CMS",
@@ -3420,12 +3434,10 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			];
 		} else {
 			var appliedSecurity=[
-				{
-					"oauthSecurity"= []
-				},
-				{
-					"basic"= []
-				}
+				{"oauth2_code"=[]},
+				{"oauth2_credentials"=[]},
+				{"oauth2_password"=[]},
+				{"basicAuth"= []}
 			];
 		}
 
@@ -3712,6 +3724,11 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		}
 
 		result["definitions"]["links"]={"type"="object","properties"={}};
+		result["definitions"]["user"]={
+			"type"="object",
+			"properties"=getSwaggerEntityProps($.getBean('user'))
+		};
+
 
 		result['paths']['/findCurrentUser']={
 			"get"= {
@@ -3745,20 +3762,28 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		};
 
 		if(arguments.params.mode == 'REST'){
-			result['securityDefinitions']= {
-				"oauthSecurity"= {
-						"type"= "oauth2",
-						"authorizationUrl"= $.siteConfig().getRootPath(complete=1),
-						"tokenUrl"=getBean('utility').getRequestProtocol() & ":" & result.basePath & "/auth",
-						"flow"= "accessCode",
-						"scopes"= {
-							/*"member"="Site member",
-							"administrator"="Site administrator",
-							"super"="Site super user"
-							*/
-						}
+			result['securityDefinitions']=
+			{
+				"oauth2_code"={
+				  "type"= "oauth2",
+					"scopes": {},
+					"flow":"accessCode",
+		      "authorizationUrl"= $.createHREF(filename='authorize',complete=true),
+					"tokenUrl"= $.siteConfig().getRootPath(complete=1)  & result.basePath & "/oauth2"
 				},
-				"basic"= {
+				"oauth2_credentials"={
+				  "type"= "oauth2",
+					"scopes": {},
+					"flow":"application",
+					"tokenUrl"= $.siteConfig().getRootPath(complete=1)  & result.basePath & "/oauth2"
+				},
+				"oauth2_password"={
+				  "type"= "oauth2",
+					"scopes": {},
+					"flow":"password",
+					"tokenUrl"= $.siteConfig().getRootPath(complete=1)  & result.basePath & "/oauth2"
+				},
+				"basicAuth"= {
 					"type"= "apiKey",
 					"name"= "Authorization",
 					"in"= "header"
