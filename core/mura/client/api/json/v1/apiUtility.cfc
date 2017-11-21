@@ -3265,7 +3265,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 	}
 
-	function getSwaggerEntityParams(entity,_in="query",idInPath=false,method='get',mode=''){
+	function getSwaggerEntityParams(entity,_in="query",idInPath=false,method='get',mode='',csrf=true){
 		var response=[];
 		var item='';
 		var p='';
@@ -3288,7 +3288,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		}
 
-		if(arguments.mode=='JSON'){
+		if(arguments.mode=='JSON' && arguments.csrf){
 			arrayAppend(response,{
 					"name"= 'csrf_token',
 					"in"= "formData",
@@ -3427,17 +3427,13 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		};
 
 		if(arguments.params.mode == 'JSON'){
-			var appliedSecurity=[
-				{
-					"cookieAuth"= []
-				}
-			];
+			var appliedSecurity=[];
 		} else {
 			var appliedSecurity=[
 				{"oauth2_code"=[]},
 				{"oauth2_credentials"=[]},
 				{"oauth2_password"=[]},
-				{"basicAuth"= []}
+				{"apiKey"= []}
 			];
 		}
 
@@ -3470,7 +3466,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 								"produces"= [
 									"application/json"
 								],
-								"parameters"= getSwaggerEntityParams(entity=entity,_in="query",idInPath=false,method='findQuery',mode=arguments.params.mode),
+								"parameters"= getSwaggerEntityParams(entity=entity,_in="query",idInPath=false,method='findQuery',mode=arguments.params.mode,csrf=false),
 								"responses"= {
 									"200"= {
 										"description"= "Collection of #i#",
@@ -3783,13 +3779,26 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 					"flow":"password",
 					"tokenUrl"= $.siteConfig().getRootPath(complete=1)  & result.basePath & "/oauth2"
 				},
-				"basicAuth"= {
+				"apiKey"= {
 					"type"= "apiKey",
 					"name"= "Authorization",
 					"in"= "header"
 				}
 			};
 		} else {
+
+			result["definitions"]["csrf_tokens"]={
+				"type"="object",
+				"properties"={
+					"csrf_token"= {
+						"type"= "string"
+						},
+					"csrf_token_expires"= {
+						"type"= "string"
+						}
+				}
+			};
+
 			result['paths']['/login']={
 				"post"= {
 					"tags"= ['security'],
@@ -3841,17 +3850,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 					],
 					"responses"= {
 						"200"= {
-							"description"= "Status",
-							"schema"= {
-								"type"="object",
-								"properties"={
-									"data"={
-										"status"= {
-											"type"= "string"
-											}
-									}
-								}
-							}
+							"description"= "Status"
 						},
 						"405"= {
 							"description"= "Invalid input"
@@ -3876,55 +3875,13 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 					"parameters"= [],
 					"responses"= {
 						"200"= {
-							"description"= "Status",
-							"schema"= {
-								"type"="object",
-								"properties"={
-									"data"={
-										"status"= {
-											"type"="string"
-											}
-									}
-								}
-							}
+							"description"= "Status"
 						},
 						"405"= {
 							"description"= "Invalid input"
 						}
 					},
 					"security"= appliedSecurity
-
-				},
-				"get"= {
-					"tags"= ['security'],
-					"summary"= "Log out user",
-					"description"= "",
-					"operationId"= "logout",
-					"consumes"= [],
-					"produces"= [
-						"application/json"
-					],
-					"parameters"= [],
-					"responses"= {
-						"200"= {
-							"description"= "Status",
-							"schema"= {
-								"type"="object",
-								"properties"={
-									"data"={
-										"status"= {
-											"type"="string"
-											}
-									}
-								}
-							}
-						},
-						"405"= {
-							"description"= "Invalid input"
-						}
-					},
-					"security"= appliedSecurity
-
 				}
 			};
 
@@ -3964,12 +3921,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 								"type"="object",
 								"properties"={
 									"data"={
-										"csrf_token"= {
-											"type"= "string"
-											},
-										"csrf_token_expires"= {
-											"type"= "string"
-											}
+										"$ref"="##/definitions/csrf_tokens"
 									}
 								}
 							}
