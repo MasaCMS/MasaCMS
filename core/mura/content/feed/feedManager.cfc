@@ -89,6 +89,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="menuType" default="default">
 	<cfargument name="from" required="true" default="">
 	<cfargument name="to" required="true" default="">
+	<cfargument name="applyIntervals" required="true" type="boolean" default="true">
 
 	<cfreturn variables.feedgateway.getFeed(
 		feedBean=arguments.feedBean
@@ -99,6 +100,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		, menuType=arguments.menuType
 		, from=arguments.from
 		, to=arguments.to
+		, applyIntervals=arguments.applyIntervals
 	) />
 </cffunction>
 
