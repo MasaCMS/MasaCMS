@@ -532,20 +532,13 @@ component extends="mura.bean.beanFeed" entityName="feed" table="tcontentfeeds" o
 
 	public function getQuery(required aggregation="false", required applyPermFilter="false", countOnly="false", menuType="default", required from="", required to="", required cachedWithin="#variables.instance.cachedWithin#") output=false {
 		variables.instance.cachedWithin=arguments.cachedWithin;
-		return variables.feedManager.getFeed(
-		feedBean=this
-		, tag=''
-		, aggregation=arguments.aggregation
-		, applyPermFilter=arguments.applyPermFilter
-		, countOnly=arguments.countOnly
-		, menuType=arguments.menuType
-		, from=arguments.from
-		, to=arguments.to
-	);
+		arguments.tag='';
+		arguments.feedBean=this;
+		return variables.feedManager.getFeed(argumentCollection=arguments);
 	}
 
-	public function getIterator(required aggregation="false", required applyPermFilter="false", required from="", required to="", required cachedWithin="#variables.instance.cachedWithin#") output=false {
-		var q=getQuery(aggregation=arguments.aggregation,applyPermFilter=arguments.applyPermFilter,from=arguments.from,to=arguments.to,cachedwithin=arguments.cachedWithin);
+	public function getIterator(required aggregation="false", required applyPermFilter="false", required from="", required to="", required cachedWithin="#variables.instance.cachedWithin#", countOnly="false", menuType="default") output=false {
+		var q=getQuery(argumentCollection=arguments);
 		var it=getBean("contentIterator");
 		it.setQuery(q,variables.instance.nextn);
 		return it;

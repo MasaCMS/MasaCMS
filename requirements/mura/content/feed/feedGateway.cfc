@@ -107,6 +107,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="menuType" default="default">
 	<cfargument name="from" required="true" default="">
 	<cfargument name="to" required="true" default="">
+	<cfargument name="applyIntervals" required="true" type="boolean" default="true">
 
 	<cfset var c ="" />
 	<cfset var rsFeed ="" />
@@ -1243,7 +1244,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset rsFeed=variables.permUtility.queryPermFilter(rawQuery=rsFeed,siteID=arguments.feedBean.getSiteID())>
 	</cfif>
 
-	<cfif not arguments.countOnly and arguments.feedBean.getLiveOnly()>
+	<cfif not arguments.countOnly and arguments.feedBean.getLiveOnly() and arguments.applyIntervals>
 		<cfset rsfeed=variables.contentIntervalManager.apply(query=rsFeed,current=nowAdjusted,from=arguments.from,to=arguments.to) />
 	</cfif>
 
