@@ -82,7 +82,7 @@ component extends="controller" output="false" {
 		var objectID="";
 		if ( structKeyExists(arguments.rc,"deleteid") ) {
 			it=variables.trashManager.getIterator(deleteID=arguments.rc.deleteID);
-			while ( condition="it.hasNext()" ) {
+			while ( it.hasNext() ) {
 				obj=it.next();
 				objectID=obj.getObjectID();
 				obj=obj.getObject();
