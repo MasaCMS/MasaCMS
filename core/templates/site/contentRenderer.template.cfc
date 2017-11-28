@@ -74,6 +74,7 @@
 		this.layoutmanager=true;
 		this.validateCSRFTokens=false;
 
+		//this.hideRestrictedNav=false;
 		//this.navOffSet=0;
 		//this.navDepthLimit=1000;
 		//this.navParentIdx=2;
