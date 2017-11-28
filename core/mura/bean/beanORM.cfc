@@ -107,6 +107,10 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 						}
 					}
 				}
+
+				if(!isDefined('variables.instance.#prop.column#')){
+					variables.instance[prop.column]='';
+				}
 			}
 		}
 
