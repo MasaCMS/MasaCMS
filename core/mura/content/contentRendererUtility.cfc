@@ -1825,7 +1825,7 @@
 									aCurrentClass=arguments.renderer.aBreadcrumbCurrentClass,
 									aNotCurrentClass=arguments.renderer.aBreadcrumbNotCurrentClass
 								)#
-								<meta itemprop="position" content="#I#" />
+								<meta itemprop="position" content="#arrayLen(crumbdata)#" />
 							</li>
 						</cfif>
 					</cfloop>
