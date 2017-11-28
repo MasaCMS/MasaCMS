@@ -608,7 +608,10 @@
 		<cfset var allowLink=true>
 		<cfset var G = 0 />
 		<cfset var event=arguments.renderer.getEvent()>
-		<cfif  arguments.loggedIn and (arguments.restrict)>
+		<cfset var hideRestrictedNav=arguments.renderer.getHideRestrictedNav()>
+		<cfif hideRestrictedNav and arguments.restrict and not arguments.loggedIn>
+			<cfset allowLink = false>
+		<cfelseif arguments.loggedIn and (arguments.restrict)>
 			<cfif arguments.restrictgroups eq '' or listFind(sessionData.mura.memberships,'S2IsPrivate;#application.settingsManager.getSite(event.getValue('siteID')).getPrivateUserPoolID()#') or listFind(sessionData.mura.memberships,'S2')>
 				<cfset allowLink=True>
 			<cfelseif arguments.restrictgroups neq ''>

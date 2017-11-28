@@ -69,6 +69,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.queueObjects=true>
 <cfset this.layoutmanager=false>
 <cfset this.legacyobjects=true>
+<cfset this.hideRestrictedNav=false>
 
 <!--- Set these to a boolean value to override settings.ini.cfm value--->
 <cfset this.siteIDInURLS="">
@@ -130,11 +131,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset this.bodyMetaImageSizeArgs={size="medium"}>
 <cfset this.bodyMetaImageClass="thumbnail">
-<!-- This is temp only for backward compatibility--->
+<!--- This is temp only for backward compatibility--->
 <cfset this.shadowboxattribute="rel">
 <!--- this is legacy--->
 <cfset this.size=50>
-<!-- use this--->
+<!--- use this--->
 <cfset this.navsize=this.size>
 
 <!--- ===================
@@ -527,7 +528,7 @@ Display Objects
 <cfset this.avgRatingWrapperClass="">
 
 <cffunction name="init" output="false">
-<cfargument name="event" required="true" default="">
+	<cfargument name="event" required="true" default="">
 
 	<cfif isObject(arguments.event)>
 		<cfset variables.event=arguments.event>
