@@ -798,9 +798,10 @@ saveDraftPrompt=function(){
 	}
 }
 
-//try{
+//This will throw an error under crossdomain
+try{
 	window.top.document.addEventListener("keydown", checkForSave , false);
-//} catch (e){};
+} catch (e){};
 </script>
 	<input name="approved" type="hidden" value="0">
 	<input name="muraPreviouslyApproved" type="hidden" value="#rc.contentBean.getApproved()#">

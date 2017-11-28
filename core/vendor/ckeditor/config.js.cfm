@@ -61,7 +61,7 @@ CKEDITOR.editorConfig = function( config )
 		config.format_h4 = { element : '#renderer.getHeaderTag('subHead4')#' };
 	</cfif>
 	</cfoutput>
-	
+
 	config.disableNativeSpellChecker = false;
 	config.startupFocus = false;
 	config.skin = 'moono'; // 'bootstrapck'
@@ -85,7 +85,7 @@ CKEDITOR.editorConfig = function( config )
 	config.pasteFromWordNumberedHeadingToList = true;
 	config.pasteFromWordRemoveFontStyles = true;
 	config.pasteFromWordRemoveStyles = true;
-
+ 	config.floatSpacePinnedOffsetY = 32;
 	config.toolbarStartupExpanded=true;
 	config.toolbarCanCollapse = true;
 	config.startupShowBorders = false;
@@ -288,20 +288,28 @@ CKEDITOR.on( 'dialogDefinition', function( ev ) {
     dialogdef.removeContents('Upload');
     dialogdef.removeContents('upload');
     dialogdef.dialog.on('show',function() { // position dialog windows e.g. image, link
-    	if (parent.document.getElementById(window.name) != null){ // if iframe/full edit
+
+			//Check to make sure that it has access to parent window, import for crossdomain restristions
+			try{
+				var pwEl=parent.document.getElementById(window.name);
+			} catch(e){
+				var pwEl=null;
+			}
+
+    	if (pwEl != null){ // if iframe/full edit
 				var editor = this.getParentEditor() // set up logic for iframe centering
-					,dlgFrameTop = parent.document.getElementById(window.name).offsetTop 
-					,dlgScrollTop = $(top).scrollTop() 
-					,dlgFrameOffset =  dlgFrameTop - dlgScrollTop 
-					,dlgDocumentHeight = $(top).height() 
+					,dlgFrameTop = parent.document.getElementById(window.name).offsetTop
+					,dlgScrollTop = $(top).scrollTop()
+					,dlgFrameOffset =  dlgFrameTop - dlgScrollTop
+					,dlgDocumentHeight = $(top).height()
 					,dlgPopupHeight = this.getSize().height
 					,dlgNewTop = (dlgDocumentHeight/2) - (dlgPopupHeight/2) - dlgFrameOffset
 					,objCurrentPos = this.getPosition();
-					if (dlgNewTop < 0) { // pad top if small iframe 
-						dlgNewTop = 5; 
+					if (dlgNewTop < 0) { // pad top if small iframe
+						dlgNewTop = 5;
 					}
 					this.move( objCurrentPos.x, dlgNewTop ,false ); // set the position
 			 	  this._.moved = 1; // prevent ck location memory
-    	} 
+    	}
     });
 });
