@@ -115,29 +115,32 @@ version 2 without this exception.  You may, if you choose, apply this exception 
             .validate($,$.event('fields')).getErrors()>
 			<cfelseif request.muraApiRequest>
 				<cfscript>
-   					 if(isdefined('local.formJSON.form.fields')){
-   						 for(b in local.formJSON.form.fields){
-							 field=local.formJSON.form.fields[b];
-							if(structKeyExists(field,'value')){
-   							 	local.formJSON.form.fields[b].value=$.setDynamicContent(field.value);
-						 	}
+						objectParams.render = "client";
+				 		objectParams.async = "true";
 
-							if(isDefined('field.fieldtype.isdata') && field.fieldtype.isdata==1){
-								local.formJSON.datasets['#field.datasetid#']=$.getBean('formBuilderManager').processDataset( $, local.formJSON.datasets['#field.datasetid#'] );
-							}
-						 }
+						 if(not arguments.RenderingAsRegion){
+	   					 if(isdefined('local.formJSON.form.fields')){
+	   						 for(b in local.formJSON.form.fields){
+								 	field=local.formJSON.form.fields[b];
+									if(structKeyExists(field,'value')){
+		   							 	local.formJSON.form.fields[b].value=$.setDynamicContent(field.value);
+								 	}
 
-   					 }
+									if(isDefined('field.fieldtype.isdata') && field.fieldtype.isdata==1){
+										local.formJSON.datasets['#field.datasetid#']=$.getBean('formBuilderManager').processDataset( $, local.formJSON.datasets['#field.datasetid#'] );
+									}
+								 }
+	   					 }
 
-   					 request.cffpJS=true;
-
-   					 objectParams.def=serializeJSON(local.formJSON);
-   					 objectParams.ishuman=$.dspObject_Include(thefile='form/dsp_form_protect.cfm');
+							 request.cffpJS=true;
+	   					 objectParams.def=serializeJSON(local.formJSON);
+	   					 objectParams.ishuman=$.dspObject_Include(thefile='form/dsp_form_protect.cfm');
+					 	 }
 
 						 if(!this.layoutmanager && local.formBean.getDisplayTitle() > 0){
 						 	objectParams.label=local.formBean.get('title');
 					 	 }
-						 
+
    					 objectParams.filename=local.formBean.get('filename');
 					 	 objectParams.name=local.formBean.get('title');
    					 objectParams.responsemessage=local.formBean.get('responseMessage');

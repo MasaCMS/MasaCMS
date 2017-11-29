@@ -912,6 +912,7 @@
 		<cfset var openingDiv='<div class="mura-object'>
 
 		<cfparam name="arguments.objectparams.instanceid" default="#createUUID()#">
+		<cfparam name="arguments.objectparams.render" default="server">
 
 		<cfif arguments.bodyRender or structKeyExists(arguments.objectParams,'isBodyObject')>
 			<cfset openingDiv=openingDiv & ' mura-body-object'>
@@ -965,13 +966,11 @@
 
 		<cfset openingDiv=openingDiv & '" data-object="#esapiEncode('html_attr',lcase(arguments.object))#" data-objectid="#esapiEncode('html_attr',arguments.objectid)#" data-instanceid="#arguments.objectparams.instanceid#"'>
 
-		<cfif not arguments.objectParams.render eq 'client' and arguments.returnFormat eq 'struct'>
-			<cfloop collection="#arguments.objectparams#" item="local.i">
-				<cfif len(local.i) and not listFindNoCase('runtime,object,objectid,instanceid',local.i)>
-					<cfset openingDiv=openingDiv & ' data-#esapiEncode('html_attr',lcase(local.i))#="#esapiEncode('html_attr', serializeObjectParam(arguments.objectparams[local.i]))#"'>
-				</cfif>
-			</cfloop>
-		</cfif>
+		<cfloop collection="#arguments.objectparams#" item="local.i">
+			<cfif len(local.i) and not listFindNoCase('runtime,object,objectid,instanceid',local.i)>
+				<cfset openingDiv=openingDiv & ' data-#esapiEncode('html_attr',lcase(local.i))#="#esapiEncode('html_attr', serializeObjectParam(arguments.objectparams[local.i]))#"'>
+			</cfif>
+		</cfloop>
 
 		<cfif arguments.showEditable>
 			<cfset openingDiv=openingDiv & ' data-objectname="#esapiEncode('html_attr',arguments.objectname)#" data-perm="author" data-isconfigurator="#esapiEncode('html_attr',arguments.isConfigurator)#">'>
@@ -980,7 +979,10 @@
 		</cfif>
 
 		<cfif arguments.renderer.useLayoutManager()>
-			<cfset openingDiv="#openingDiv##arguments.renderer.dspObject_include(theFile='object/meta.cfm',params=arguments.objectParams)#">
+			<cfif arguments.objectparams.render eq 'server'>
+				<cfset openingDiv="#openingDiv##arguments.renderer.dspObject_include(theFile='object/meta.cfm',params=arguments.objectParams)#">
+			</cfif>
+
 			<cfset arguments.content=trim(arguments.content)>
 
 			<cfif arguments.returnFormat eq 'struct'>
@@ -1037,6 +1039,7 @@
 		<cfargument name="bodyRender" required="true" default="false">
 		<cfargument name="include" required="true" default="false">
 		<cfargument name="returnFormat" required="true" default="html">
+		<cfargument name="RenderingAsRegion" required="true" default="false">
 
 		<cfset var event=arguments.renderer.getEvent()>
 		<cfset var $=arguments.renderer.getMuraScope()>
@@ -1272,7 +1275,7 @@
 						<cfreturn trim(theDisplay1)>
 					</cfif>
 				<cfelse>
-					<cfset var objectargs={regionid=arguments.regionid,siteID=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename=filePath,params=arguments.params,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,bodyRender=arguments.bodyRender,returnformat=arguments.returnformat,include=arguments.include}>
+					<cfset var objectargs={regionid=arguments.regionid,siteID=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename=filePath,params=arguments.params,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,bodyRender=arguments.bodyRender,returnformat=arguments.returnformat,include=arguments.include,RenderingAsRegion=arguments.RenderingAsRegion}>
 
 					<cfif objectargs.object neq 'plugin' and displayobject.cacheoutput  and not ( isdefined('form') and not structIsEmpty(form) )>
 						<cfset objectargs.cacheKey=cacheKeyContentId>
@@ -1409,7 +1412,6 @@
 			<cfset theObject="<!-- Invalid Display Object (Type: #arguments.object#, ID: #arguments.objectid#) -->">
 			<cfset request.muraValidObject=true>
 		</cfif>
-
 		<cfif isSimpleValue(theObject)>
 			<cfreturn trim(theObject) />
 		<cfelse>
@@ -1498,7 +1500,7 @@
 			<cfset rsObjects=getBean('contentGateway').getObjects(arguments.columnID,arguments.contentHistID,event.getValue('siteID'))>
 			<cfset request.muraRegionObjectCounts['region#arguments.columnID#']=request.muraRegionObjectCounts['region#arguments.columnID#'] + rsObjects.recordcount>
 			<cfloop query="rsObjects">
-				<cfset theObject=arguments.renderer.dspObject(object=rsObjects.object,objectid=rsObjects.objectid,siteid=event.getValue('siteID'), params=rsObjects.params, assignmentid=arguments.contentHistID, regionid=arguments.columnID, orderno=rsObjects.orderno, hasConfigurator=len(rsObjects.configuratorInit),assignmentPerm=$.event('r').perm,objectname=rsObjects.name,returnformat=objectReturnFormat)>
+				<cfset theObject=arguments.renderer.dspObject(object=rsObjects.object,objectid=rsObjects.objectid,siteid=event.getValue('siteID'), params=rsObjects.params, assignmentid=arguments.contentHistID, regionid=arguments.columnID, orderno=rsObjects.orderno, hasConfigurator=len(rsObjects.configuratorInit),assignmentPerm=$.event('r').perm,objectname=rsObjects.name,returnformat=objectReturnFormat,RenderingAsRegion=true)>
 				<cfif isSimpleValue(theObject)>
 					<cfset theObject={html=theObject}>
 				</cfif>

@@ -1412,6 +1412,7 @@ Display Objects
 	<cfargument name="bodyRender" required="true" default="false">
 	<cfargument name="returnformat" required="true" default="html">
 	<cfargument name="include" required="true" default="false">
+	<cfargument name="RenderingAsRegion" required="true" default="false">
 
 	<cfset var theContent=""/>
 	<cfset var objectPerm="none">
@@ -1420,7 +1421,7 @@ Display Objects
 	<cfif StructKeyExists(arguments,"cacheKey") and not arguments.showEditable and not arguments.include and arguments.object neq 'plugin'>
 		<cfsavecontent variable="theContent">
 		<cf_CacheOMatic key="#arguments.cacheKey##request.muraFrontEndRequest#" nocache="#variables.event.getValue('nocache')#">
-			<cfset result=dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,"none",arguments.params,arguments.assignmentID,arguments.regionID,arguments.orderno,'',true,arguments.showEditable,arguments.isConfigurator,arguments.objectname,arguments.bodyRender,arguments.returnformat,arguments.include)>
+			<cfset result=dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,"none",arguments.params,arguments.assignmentID,arguments.regionID,arguments.orderno,'',true,arguments.showEditable,arguments.isConfigurator,arguments.objectname,arguments.bodyRender,arguments.returnformat,arguments.include,arguments.RenderingAsRegion)>
 			<cfif isSimpleValue(result)>
 				<cfoutput>#result#</cfoutput>
 			<cfelse>
@@ -1435,7 +1436,7 @@ Display Objects
 			<cfreturn result>
 		</cfif>
 	<cfelse>
-		<cfset result = dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,objectPerm,arguments.params,arguments.assignmentID,arguments.regionID,arguments.orderno,'',true,arguments.showEditable,arguments.isConfigurator,arguments.objectname,arguments.bodyRender,arguments.returnformat,arguments.include) />
+		<cfset result = dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,objectPerm,arguments.params,arguments.assignmentID,arguments.regionID,arguments.orderno,'',true,arguments.showEditable,arguments.isConfigurator,arguments.objectname,arguments.bodyRender,arguments.returnformat,arguments.include,arguments.RenderingAsRegion) />
 
 		<cfif isSimpleValue(result)>
 			<cfreturn trim(result)>
@@ -1467,6 +1468,7 @@ Display Objects
 	<cfargument name="bodyRender" required="true" default="false">
 	<cfargument name="returnFormat" required="true" default="html">
 	<cfargument name="include" required="true" default="false">
+	<cfargument name="RenderingAsRegion" required="true" default="false">
 
 	<cfparam name="request.muraDisplayObjectNestLevel" default="0">
 
@@ -1533,14 +1535,11 @@ Display Objects
 
 	<cfset var doLayoutManagerWrapper=not arguments.include and (request.muraFrontEndRequest or request.muraDisplayObjectNestLevel) and (this.layoutmanager or objectparams.render eq 'client') and len(arguments.object)>
 
-	<cfif arguments.object eq 'tag_cloud'>
-		<cfdump var="#doLayoutManagerWrapper#">
-		<cfabort>
-	</cfif>
-	<cfif doLayoutManagerWrapper && (arguments.returnFormat eq 'struct' or not (objectParams.async and objectParams.render eq 'client' and request.returnFormat eq 'json'))>
+	<cfif doLayoutManagerWrapper &&  (arguments.returnFormat eq 'struct' or not (objectParams.async and objectParams.render eq 'client' and request.returnFormat eq 'json'))>
 		<cfset var managerResponse=''>
 		<cfset theContent=trim(theContent)>
 		<cfif objectParams.render eq 'client'>
+
 			<cfset managerResponse=variables.contentRendererUtility.renderObjectInManager(object=arguments.object,
 				objectid=arguments.objectid,
 				content='',
