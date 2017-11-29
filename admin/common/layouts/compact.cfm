@@ -126,7 +126,13 @@
 		<script type="text/javascript" src="#application.configBean.getContext()#/requirements/ckeditor/adapters/jquery.js"></script>
 
 		<cfif rc.$.event('contenttype') neq 'Variation' and not len(rc.$.event('remoteurl')) and not len(rc.$.event('preloadOnly'))>
-			<script type="text/javascript" src="#application.configBean.getContext()#/requirements/ckfinder/ckfinder.js"></script>
+			<script>
+				try{
+					//if you can access window.top.document then ckfinder won't work
+					crossdomainhack=window.top.document;
+					Mura.loader().loadjs('#application.configBean.getContext()#/core/vendor/ckfinder/ckfinder.js');
+				} catch (e){};
+			</script>
 		</cfif>
 
 		<!-- Color Picker -->
