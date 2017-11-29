@@ -126,7 +126,13 @@
 		<script type="text/javascript" src="#application.configBean.getContext()#/core/vendor/ckeditor/adapters/jquery.js"></script>
 
 		<cfif rc.$.event('contenttype') neq 'Variation' and not len(rc.$.event('remoteurl')) and not len(rc.$.event('preloadOnly'))>
-			<script type="text/javascript" src="#application.configBean.getContext()#/core/vendor/ckfinder/ckfinder.js"></script>
+			<script>
+				try{
+					//if you can access window.top.document then ckfinder won't work
+					crossdomainhack=window.top.document;
+					Mura.loader().loadjs('#application.configBean.getContext()#/core/vendor/ckfinder/ckfinder.js');
+				} catch (e){};
+			</script>
 		</cfif>
 
 		<!-- Color Picker -->
@@ -136,7 +142,7 @@
 		<!-- nice-select: select box replacement (sidebar configurator only) -->
 		<cfif rc.sourceFrame neq 'modal'>
 	    <link rel="stylesheet" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/css/nice-select.min.css">
-		<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery.nice-select.min.js" type="text/javascript"></script>
+			<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery.nice-select.min.js" type="text/javascript"></script>
 	    <script type="text/javascript">
 	    	$(document).ready(function() {
 				//$('.mura ##configurator select').niceSelect();
