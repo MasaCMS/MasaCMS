@@ -130,7 +130,7 @@
 				try{
 					//if you can access window.top.document then ckfinder won't work
 					crossdomainhack=window.top.document;
-					Mura.loader().loadjs('#application.configBean.getContext()#/core/vendor/ckfinder/ckfinder.js');
+					Mura.loader().loadjs('#application.configBean.getContext()#/requirements/ckfinder/ckfinder.js');
 				} catch (e){};
 			</script>
 		</cfif>
