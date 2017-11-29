@@ -1537,10 +1537,9 @@ Display Objects
 		<cfdump var="#doLayoutManagerWrapper#">
 		<cfabort>
 	</cfif>
-	<cfif doLayoutManagerWrapper && not (objectParams.async and objectParams.render eq 'client' and request.returnFormat eq 'json')>
+	<cfif doLayoutManagerWrapper && (arguments.returnFormat eq 'struct' or not (objectParams.async and objectParams.render eq 'client' and request.returnFormat eq 'json'))>
 		<cfset var managerResponse=''>
 		<cfset theContent=trim(theContent)>
-
 		<cfif objectParams.render eq 'client'>
 			<cfset managerResponse=variables.contentRendererUtility.renderObjectInManager(object=arguments.object,
 				objectid=arguments.objectid,
@@ -1564,7 +1563,6 @@ Display Objects
 				bodyRender=arguments.bodyRender,
 				returnformat=arguments.returnFormat) />
 		</cfif>
-
 
 		<cfif arguments.returnFormat eq 'struct'>
 			<cfset objectparams.header=managerResponse.header>

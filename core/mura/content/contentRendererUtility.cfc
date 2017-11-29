@@ -965,11 +965,13 @@
 
 		<cfset openingDiv=openingDiv & '" data-object="#esapiEncode('html_attr',lcase(arguments.object))#" data-objectid="#esapiEncode('html_attr',arguments.objectid)#" data-instanceid="#arguments.objectparams.instanceid#"'>
 
-		<cfloop collection="#arguments.objectparams#" item="local.i">
-			<cfif len(local.i) and not listFindNoCase('runtime,object,objectid,instanceid',local.i)>
-				<cfset openingDiv=openingDiv & ' data-#esapiEncode('html_attr',lcase(local.i))#="#esapiEncode('html_attr', serializeObjectParam(arguments.objectparams[local.i]))#"'>
-			</cfif>
-		</cfloop>
+		<cfif not arguments.objectParams.render eq 'client' and arguments.returnFormat eq 'struct'>
+			<cfloop collection="#arguments.objectparams#" item="local.i">
+				<cfif len(local.i) and not listFindNoCase('runtime,object,objectid,instanceid',local.i)>
+					<cfset openingDiv=openingDiv & ' data-#esapiEncode('html_attr',lcase(local.i))#="#esapiEncode('html_attr', serializeObjectParam(arguments.objectparams[local.i]))#"'>
+				</cfif>
+			</cfloop>
+		</cfif>
 
 		<cfif arguments.showEditable>
 			<cfset openingDiv=openingDiv & ' data-objectname="#esapiEncode('html_attr',arguments.objectname)#" data-perm="author" data-isconfigurator="#esapiEncode('html_attr',arguments.isConfigurator)#">'>
