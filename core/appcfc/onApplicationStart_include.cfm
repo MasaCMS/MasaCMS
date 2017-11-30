@@ -513,7 +513,7 @@ if ( application.setupComplete ) {
 	}
 
 	if ( fileExists(application.configBean.getWebRoot() & "/config/appcfc/onApplicationStart_method.cfm") ) {
-		directory(application.configBean.getWebRoot() & "/config/appcfc",true);
+		directoryDelete(application.configBean.getWebRoot() & "/config/appcfc",true);
 
 		if (fileExists(application.configBean.getWebRoot() & "/config/applicationSettings.cfm") ) {
 			fileDelete(application.configBean.getWebRoot() & "/config/applicationSettings.cfm");
