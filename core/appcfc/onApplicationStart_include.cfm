@@ -502,6 +502,7 @@ if ( application.setupComplete ) {
 	} catch (any cfcatch) {
 	}
 
+	//BEGIN CONFIG DIR MANAGEMENT
 	if ( !fileExists(application.configBean.getWebRoot() & "/config/Application.cfc") ) {
 		variables.tracePoint=initTracePoint("Writing config/Application.cfc");
 		fileCopy("#application.configBean.getWebRoot()#/core/templates/Application.cfc","#application.configBean.getWebRoot()#/config/Application.cfc");
@@ -511,7 +512,37 @@ if ( application.setupComplete ) {
 		commitTracePoint(variables.tracePoint);
 	}
 
+	if ( fileExists(application.configBean.getWebRoot() & "/config/appcfc/onApplicationStart_method.cfm") ) {
+		directory(application.configBean.getWebRoot() & "/config/appcfc",true);
 
+		if (fileExists(application.configBean.getWebRoot() & "/config/applicationSettings.cfm") ) {
+			fileDelete(application.configBean.getWebRoot() & "/config/applicationSettings.cfm");
+		}
+
+		if (fileExists(application.configBean.getWebRoot() & "/config/settings.cfm") ) {
+			fileDelete(application.configBean.getWebRoot() & "/config/settings.cfm");
+		}
+
+		if (fileExists(application.configBean.getWebRoot() & "/config/mappings.cfm") ) {
+			fileDelete(application.configBean.getWebRoot() & "/config/mappings.cfm");
+		}
+
+		if (fileExists(application.configBean.getWebRoot() & "/config/buildMainMappings.cfm") ) {
+			fileDelete(application.configBean.getWebRoot() & "/config/buildMainMappings.cfm");
+		}
+
+		if (fileExists(application.configBean.getWebRoot() & "/config/buildPluginCFApplication.cfm") ) {
+			fileDelete(application.configBean.getWebRoot() & "/config/buildPluginCFApplication.cfm");
+		}
+
+		if (fileExists(application.configBean.getWebRoot() & "/config/buildPluginMappings.cfm") ) {
+			fileDelete(application.configBean.getWebRoot() & "/config/buildPluginMappings.cfm");
+		}
+
+		if (fileExists(application.configBean.getWebRoot() & "/config/lockdown.cfm") ) {
+			fileDelete(application.configBean.getWebRoot() & "/config/lockdown.cfm");
+		}
+	}
 
 	if(application.configBean.getValue(property='legacyAppcfcSupport',defaultvalue=false)){
 
@@ -598,6 +629,7 @@ if ( application.setupComplete ) {
 		}
 
 	}
+	//END CONFIG DIR MANAGEMENT
 
 	if ( application.configBean.getCreateRequiredDirectories() ) {
 		if ( !directoryExists("#application.configBean.getWebRoot()#/plugins") ) {
