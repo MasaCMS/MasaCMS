@@ -511,9 +511,73 @@ if ( application.setupComplete ) {
 		commitTracePoint(variables.tracePoint);
 	}
 
+	if ( !directoryExists(application.configBean.getWebRoot() & "/config/appcfc") ) {
+		variables.tracePoint=initTracePoint("creating config/appcfc");
+		try {
+			directoryCreate("#application.configBean.getWebRoot()#/config/appcfc");
+		} catch (any cfcatch) {}
+		commitTracePoint(variables.tracePoint);
+	}
+
+	if ( !fileExists(application.configBean.getWebRoot() & "/config/appcfc/onApplicationStart_include.cfm") ) {
+		variables.tracePoint=initTracePoint("Writing config/appcfc/onApplicationStart_include.cfm");
+		fileCopy("#application.configBean.getWebRoot()#/core/templates/appcfc/onApplicationStart_include.cfm","#application.configBean.getWebRoot()#/config/appcfc/onApplicationStart_include.cfm");
+		try {
+			fileSetAccessMode("#application.configBean.getWebRoot()#/config/appcfc/onApplicationStart_include.cfm","777");
+		} catch (any cfcatch) {}
+		commitTracePoint(variables.tracePoint);
+	}
+
+	if ( !fileExists(application.configBean.getWebRoot() & "/config/appcfc/onRequestStart_include.cfm") ) {
+		variables.tracePoint=initTracePoint("Writing config/appcfc/onRequestStart_include.cfm");
+		fileCopy("#application.configBean.getWebRoot()#/core/templates/appcfc/onRequestStart_include.cfm","#application.configBean.getWebRoot()#/config/appcfc/onRequestStart_include.cfm");
+		try {
+			fileSetAccessMode("#application.configBean.getWebRoot()#/config/appcfc/onRequestStart_include.cfm","777");
+		} catch (any cfcatch) {}
+		commitTracePoint(variables.tracePoint);
+	}
+
+	if ( !fileExists(application.configBean.getWebRoot() & "/config/appcfc/onSessionEnd_include.cfm") ) {
+		variables.tracePoint=initTracePoint("Writing config/appcfc/onSessionEnd_include.cfm");
+		fileCopy("#application.configBean.getWebRoot()#/core/templates/appcfc/onSessionEnd_include.cfm","#application.configBean.getWebRoot()#/config/appcfc/onSessionEnd_include.cfm");
+		try {
+			fileSetAccessMode("#application.configBean.getWebRoot()#/config/appcfc/onSessionEnd_include.cfm","777");
+		} catch (any cfcatch) {}
+		commitTracePoint(variables.tracePoint);
+	}
+
+
+	if ( !fileExists(application.configBean.getWebRoot() & "/config/appcfc/onSessionStart_include.cfm") ) {
+		variables.tracePoint=initTracePoint("Writing config/appcfc/onSessionStart_include.cfm");
+		fileCopy("#application.configBean.getWebRoot()#/core/templates/appcfc/onSessionStart_include.cfm","#application.configBean.getWebRoot()#/config/appcfc/onSessionStart_include.cfm");
+		try {
+			fileSetAccessMode("#application.configBean.getWebRoot()#/config/appcfc/onSessionStart_include.cfm","777");
+		} catch (any cfcatch) {}
+		commitTracePoint(variables.tracePoint);
+	}
+
+	if ( !fileExists(application.configBean.getWebRoot() & "/config/appcfc/onSessionEnd_include.cfm") ) {
+		variables.tracePoint=initTracePoint("Writing config/appcfc/onSessionEnd_include.cfm");
+		fileCopy("#application.configBean.getWebRoot()#/core/templates/appcfc/onSessionEnd_include.cfm","#application.configBean.getWebRoot()#/config/appcfc/onSessionEnd_include.cfm");
+		try {
+			fileSetAccessMode("#application.configBean.getWebRoot()#/config/appcfc/onSessionEnd_include.cfm","777");
+		} catch (any cfcatch) {}
+		commitTracePoint(variables.tracePoint);
+	}
+
+
+	if ( !fileExists(application.configBean.getWebRoot() & "/config/settings.cfm") ) {
+		variables.tracePoint=initTracePoint("Writing config/applicationSettings.cfm");
+		fileCopy("#application.configBean.getWebRoot()#/core/templates/appcfc/settings.cfm","#application.configBean.getWebRoot()#/config/settings.cfm");
+		try {
+			fileSetAccessMode("#application.configBean.getWebRoot()#/config/settings.cfm","777");
+		} catch (any cfcatch) {}
+		commitTracePoint(variables.tracePoint);
+	}
+
 	if ( !fileExists(application.configBean.getWebRoot() & "/config/applicationSettings.cfm") ) {
 		variables.tracePoint=initTracePoint("Writing config/applicationSettings.cfm");
-		fileCopy("#application.configBean.getWebRoot()#/core/templates/applicationSettings.cfm","#application.configBean.getWebRoot()#/config/applicationSettings.cfm");
+		fileCopy("#application.configBean.getWebRoot()#/core/templates/appcfc/applicationSettings.cfm","#application.configBean.getWebRoot()#/config/applicationSettings.cfm");
 		try {
 			fileSetAccessMode("#application.configBean.getWebRoot()#/config/applicationSettings.cfm","777");
 		} catch (any cfcatch) {}
@@ -522,7 +586,7 @@ if ( application.setupComplete ) {
 
 	if ( !fileExists(application.configBean.getWebRoot() & "/config/mappings.cfm") ) {
 		variables.tracePoint=initTracePoint("Writing config/mappings.cfm");
-		fileCopy("#application.configBean.getWebRoot()#/core/templates/mappings.cfm","#application.configBean.getWebRoot()#/config/mappings.cfm");
+		fileCopy("#application.configBean.getWebRoot()#/core/templates/appcfc/mappings.cfm","#application.configBean.getWebRoot()#/config/mappings.cfm");
 		try {
 			fileSetAccessMode("#application.configBean.getWebRoot()#/config/mappings.cfm","777");
 		} catch (any cfcatch) {}
