@@ -10,14 +10,15 @@
     CKEDITOR.plugins.add('codemirror', {
         icons: 'searchcode,autoformat,commentselectedrange,uncommentselectedrange,autocomplete', // %REMOVE_LINE_CORE%
         lang: 'af,ar,bg,bn,bs,ca,cs,cy,da,de,el,en-au,en-ca,en-gb,en,eo,es,et,eu,fa,fi,fo,fr-ca,fr,gl,gu,he,hi,hr,hu,is,it,ja,ka,km,ko,ku,lt,lv,mk,mn,ms,nb,nl,no,pl,pt-br,pt,ro,ru,sk,sl,sr-latn,sr,sv,th,tr,ug,uk,vi,zh-cn,zh', // %REMOVE_LINE_CORE%
-        version: 1.13,
+        version: '1.17.3',
         init: function (editor) {
             var rootPath = this.path,
                 defaultConfig = {
                     autoCloseBrackets: true,
                     autoCloseTags: true,
                     autoFormatOnStart: false,
-                    autoFormatOnUncomment: true,
+                    autoFormatOnUncomment: false,
+                    autoLoadCodeMirror: true,
                     continueComments: true,
                     enableCodeFolding: true,
                     enableCodeFormatting: true,
@@ -28,6 +29,7 @@
                     lineWrapping: true,
                     mode: 'htmlmixed',
                     matchBrackets: true,
+                    maxHighlightLineLength: 1000,
                     matchTags: true,
                     showAutoCompleteButton: true,
                     showCommentButton: true,
@@ -37,13 +39,13 @@
                     showUncommentButton: true,
                     styleActiveLine: true,
                     theme: 'default',
-                    useBeautify: false
+                    useBeautifyOnStart: false
                 };
-            
+
             // Get Config & Lang
             var config = CKEDITOR.tools.extend(defaultConfig, editor.config.codemirror || {}, true),
                 lang = editor.lang.codemirror;
-            
+
             // check for old config settings for legacy support
             if (editor.config.codemirror_theme) {
                 config.theme = editor.config.codemirror_theme;
@@ -56,21 +58,82 @@
             if (editor.plugins.bbcode && config.mode.indexOf("bbcode") <= 0) {
                 config.mode = "bbcode";
             }
+            var requirePresent = "function" === typeof require;
 
+            if (requirePresent){
+                var location = window.CKEDITOR_GETURL('plugins/codemirror/js');
+                require.config({
+                    packages: [{
+                        name: 'codemirror',
+                        location: location,
+                        main: 'codemirror.min.js'
+                    }, {
+                        name: 'codemirror-mode-twig',
+                        location: location,
+                        main: 'codemirror.mode.twig.min.js'
+                    }, {
+                        name: 'codemirror-mode-html',
+                        location: location,
+                        main: 'codemirror.mode.htmlmixed.min.js'
+                    }, {
+                        name: 'codemirror-mode-php',
+                        location: location,
+                        main: 'codemirror.mode.php.min.js'
+                    }, {
+                        name: 'codemirror-mode-js',
+                        location: location,
+                        main: 'codemirror.mode.js.min.js'
+                    }, {
+                        name: 'codemirror-addons',
+                        location: location,
+                        main: 'codemirror.addons.min.js'
+                    }, {
+                        name: 'codemirror-addon-search',
+                        location: location,
+                        main: 'codemirror.addons.search.min.js'
+                    }, {
+                        name: 'codemirror-beautify',
+                        location: location,
+                        main: 'beautify.min.js'
+                    }],
+                    bundles: {
+                        'codemirror': ['core', 'codemirror.js'],
+                        'codemirror-mode-twig': ['modeTwig'],
+                        'codemirror-mode-html': ['modeHtml'],
+                        'codemirror-mode-php': ['modePHP'],
+                        'codemirror-mode-js': ['modeJS'],
+                        'codemirror-addons': ['addons'],
+                        'codemirror-addon-search': ['addonSearch'],
+                        'codemirror-beautify': ['beautifyModule']
+                    },
+                    map: {
+                        '*': {
+                            //all the requires pointing to ../../lib/codemirror from addons will be redirected to module named codemirror.js
+                            //which is located in bundle 'codemirror' whose js file is codemirror.min.js
+                            'lib/codemirror': 'codemirror.js'
+                        }
+                    }
+                });
+            }
             // Source mode isn't available in inline mode yet.
             if (editor.elementMode === CKEDITOR.ELEMENT_MODE_INLINE || editor.plugins.sourcedialog) {
-                
+
                 // Override Source Dialog
                 CKEDITOR.dialog.add('sourcedialog', function (editor) {
-                    var size = CKEDITOR.document.getWindow().getViewPaneSize(),
-                        width = Math.min(size.width - 70, 800),
-                        height = size.height / 1.5,
+                    var sizeDialog = CKEDITOR.document.getWindow().getViewPaneSize(),
+                        minWidth = Math.min(sizeDialog.width - 70, 800),
+                        minHeight = sizeDialog.height / 1.5,
                         oldData;
 
-                    function loadCodeMirrorInline(editor, textarea) {
+                    function loadCodeMirrorInline(editor, textarea, dialog) {
+                        var size = dialog.getSize(),
+                            width = size.width,
+                            height = size.height / 1.5;
+
                         window["codemirror_" + editor.id] = CodeMirror.fromTextArea(textarea, {
                             mode: config.mode,
                             matchBrackets: config.matchBrackets,
+                            maxHighlightLineLength: config.maxHighlightLineLength,
                             matchTags: config.matchTags,
                             workDelay: 300,
                             workTime: 35,
@@ -93,47 +156,24 @@
                                     if (config.enableCodeFolding) {
                                         window["foldFunc_" + editor.id](codeMirror_Editor, codeMirror_Editor.getCursor().line);
                                     }
-                                },
-                                "'>'": function (codeMirror_Editor) {
-                                    codeMirror_Editor.closeTag(codeMirror_Editor, '>');
-                                },
-                                "'/'": function (codeMirror_Editor) {
-                                    codeMirror_Editor.closeTag(codeMirror_Editor, '/');
                                 }
                             },
                             foldGutter: true,
-                            gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
-                            onKeyEvent: function (codeMirror_Editor, evt) {
-                                if (config.enableCodeFormatting) {
-                                    var range = getSelectedRange();
-                                    if (evt.type === "keydown" && evt.ctrlKey && evt.keyCode === 75 && !evt.shiftKey && !evt.altKey) {
-                                        window["codemirror_" + editor.id].commentRange(true, range.from, range.to);
-                                    } else if (evt.type === "keydown" && evt.ctrlKey && evt.keyCode === 75 && evt.shiftKey && !evt.altKey) {
-                                        window["codemirror_" + editor.id].commentRange(false, range.from, range.to);
-                                        if (config.autoFormatOnUncomment) {
-                                            window["codemirror_" + editor.id].autoFormatRange(range.from, range.to);
-                                        }
-                                    } else if (evt.type === "keydown" && evt.ctrlKey && evt.keyCode === 75 && !evt.shiftKey && evt.altKey) {
-                                        window["codemirror_" + editor.id].autoFormatRange(range.from, range.to);
-                                    }
-                                    /*else if (evt.type === "keydown") {
-                                        CodeMirror.commands.newlineAndIndentContinueMarkdownList(window["codemirror_" + editor.id]);
-                                    }*/
-                                }
-                            }
+                            gutters: ["CodeMirror-linenumbbers", "CodeMirror-foldgutter"]
                         });
+       
 
                         var holderHeight = height + 'px';
                         var holderWidth = width + 'px';
 
                         // Store config so we can access it within commands etc.
                         window["codemirror_" + editor.id].config = config;
-                        
+
                         if (config.autoFormatOnStart) {
-                            if (config.useBeautify) {
+                            if (config.useBeautifyOnStart) {
                                 var indent_size = 4,
                                     indent_char = ' ',
-                                    brace_style = 'collapse'; //collapse, expand, end-expand 
+                                    brace_style = 'collapse'; //collapse, expand, end-expand
 
                                 var source = window["codemirror_" + editor.id].getValue();
 
@@ -161,6 +201,7 @@
                             editor.fire('change', this);
                         });
 
+
                         window["codemirror_" + editor.id].setSize(holderWidth, holderHeight);
 
                         // Enable Code Folding (Requires 'lineNumbers' to be set to 'true')
@@ -176,50 +217,111 @@
                         window["codemirror_" + editor.id].on("blur", function () {
                             editor.fire('blur', this);
                         });
+
+                        window["codemirror_" + editor.id].on("keypress", function (codeMirror_Editor, evt) {
+                            if (config.enableCodeFormatting) {
+                                var range = getSelectedRange();
+                                if (evt.type === "keydown" && evt.ctrlKey && evt.keyCode === 75 && !evt.shiftKey && !evt.altKey) {
+                                    window["codemirror_" + editor.id].commentRange(true, range.from, range.to);
+                                } else if (evt.type === "keydown" && evt.ctrlKey && evt.keyCode === 75 && evt.shiftKey && !evt.altKey) {
+                                    window["codemirror_" + editor.id].commentRange(false, range.from, range.to);
+                                    if (config.autoFormatOnUncomment) {
+                                        window["codemirror_" + editor.id].autoFormatRange(range.from, range.to);
+                                    }
+                                } else if (evt.type === "keydown" && evt.ctrlKey && evt.keyCode === 75 && !evt.shiftKey && evt.altKey) {
+                                    window["codemirror_" + editor.id].autoFormatRange(range.from, range.to);
+                                }/* else if (evt.type === "keydown") {
+                                CodeMirror.commands.newlineAndIndentContinueMarkdownList(window["codemirror_" + editor.id]);
+                            }*/
+                            }
+                        });
+
+                        if (editor.plugins.textselection && textRange && !editor.config.fullPage) {
+
+                            var start, end;
+
+                            start = OffSetToLineChannel(window["codemirror_" + editor.id], textRange.startOffset);
+
+                            if (typeof (textRange.endOffset) == 'undefined') {
+                                window["codemirror_" + editor.id].focus();
+                                window["codemirror_" + editor.id].setCursor(start);
+                            } else {
+                                window["codemirror_" + editor.id].focus();
+                                end = OffSetToLineChannel(window["codemirror_" + editor.id], textRange.endOffset);
+                                window["codemirror_" + editor.id].setSelection(start, end);
+                            }
+                        }
                     }
+
 
                     return {
                         title: editor.lang.sourcedialog.title,
-                        minWidth: width,
-                        minHeight: height,
-                        resizable : CKEDITOR.DIALOG_RESIZE_NONE,
-                        onShow: function () {
+                        minWidth: minWidth,
+                        minHeight: minHeight,
+                        resizable: CKEDITOR.DIALOG_RESIZE_BOTH,
+                        onLoad: function() {
+                            this.on('resize',
+                                function (event) {
+                                    var parts = event.sender.parts;
+                                    var title = parts.title;
+                                    var footer = parts.footer;
+                                    
+                                    var holderHeight = (event.data.height - title.$.offsetHeight - footer.$.offsetHeight) + 'px';
+                                    var holderWidth = event.data.width + 'px';
+
+                                    window["codemirror_" + editor.id].setSize(holderWidth, holderHeight);
+                                },
+                                this);
+                        },
+                        onShow: function (event) {
                             // Set Elements
                             this.getContentElement('main', 'data').focus();
                             this.getContentElement('main', 'AutoComplete').setValue(config.autoCloseTags, true);
-                            
+
                             var textArea = this.getContentElement('main', 'data').getInputElement().$;
-                            
+
                             // Load the content
                             this.setValueOf('main', 'data', oldData = editor.getData());
 
-                            if (!IsStyleSheetAlreadyLoaded(rootPath + 'css/codemirror.min.css')) {
-                                CKEDITOR.document.appendStyleSheet(rootPath + 'css/codemirror.min.css');
-                            }
+                            if (config.autoLoadCodeMirror) {
 
-                            if (config.theme.length && config.theme != 'default' && !IsStyleSheetAlreadyLoaded(rootPath + 'theme/' + config.theme + '.css')) {
-                                CKEDITOR.document.appendStyleSheet(rootPath + 'theme/' + config.theme + '.css');
-                            }
+                                if (!IsStyleSheetAlreadyLoaded(rootPath + 'css/codemirror.min.css')) {
+                                    CKEDITOR.document.appendStyleSheet(rootPath + 'css/codemirror.min.css');
+                                }
 
-                            if (typeof (CodeMirror) == 'undefined') {
-
-                                CKEDITOR.scriptLoader.load(rootPath + 'js/codemirror.min.js', function() {
-
-                                    CKEDITOR.scriptLoader.load(getCodeMirrorScripts(), function() {
-                                        loadCodeMirrorInline(editor, textArea);
+                                if (config.theme.length &&
+                                    config.theme != 'default' &&
+                                    !IsStyleSheetAlreadyLoaded(rootPath + 'theme/' + config.theme + '.css')) {
+                                    CKEDITOR.document.appendStyleSheet(rootPath + 'theme/' + config.theme + '.css');
+                                }
+                                if(requirePresent) {
+                                    require(getCodeMirrorDependencies(),function (codemirror, addons){
+                                        loadCodeMirrorInline(editor, textArea, event.sender);
                                     });
-                                });
-
-
-                            } else {
-                                //loadCodeMirrorInline(editor, textArea);
-                                if (CodeMirror.prototype['autoFormatAll']) {
-                                    loadCodeMirrorInline(editor, textArea);
                                 } else {
-                                    // loading the add-on scripts.
-                                    CKEDITOR.scriptLoader.load(getCodeMirrorScripts(), function() {
-                                        loadCodeMirrorInline(editor, textArea);
-                                    });
+                                    if (typeof (CodeMirror) == 'undefined') {
+
+                                        CKEDITOR.scriptLoader.load(rootPath + 'js/codemirror.min.js',
+                                            function() {
+
+                                                CKEDITOR.scriptLoader.load(getCodeMirrorScripts(),
+                                                    function() {
+                                                        loadCodeMirrorInline(editor, textArea, event.sender);
+                                                    });
+                                            });
+
+
+                                    } else {
+                                        if (CodeMirror.prototype['autoFormatAll']) {
+                                            loadCodeMirrorInline(editor, textArea, event.sender);
+                                        } else {
+                                            // loading the add-on scripts.
+                                            CKEDITOR.scriptLoader.load(getCodeMirrorScripts(),
+                                                function() {
+                                                    loadCodeMirrorInline(editor, textArea, event.sender);
+                                                });
+                                        }
+                                    }
                                 }
                             }
                         },
@@ -229,6 +331,9 @@
 
                                 // Free Memory
                                 window["codemirror_" + editor.id] = null;
+
+                                editor.fire('blur', this);
+                                editor.fire('focus', this);
                             }
                         },
                         onOk: (function () {
@@ -257,11 +362,17 @@
 
                                 // Avoid unnecessary setData. Also preserve selection
                                 // when user changed his mind and goes back to wysiwyg editing.
-                                if (newData === oldData)
+                                if (newData === oldData) {
+                                    editor.fire('blur', this);
+                                    editor.fire('focus', this);
                                     return true;
+                                }
 
                                 // Set data asynchronously to avoid errors in IE.
                                 CKEDITOR.env.ie ? CKEDITOR.tools.setTimeout(setData, 0, this, newData) : setData.call(this, newData);
+
+                                editor.fire('blur', this);
+                                editor.fire('focus', this);
 
                                 // Don't let the dialog close before setData is over.
                                 return false;
@@ -342,8 +453,8 @@
                                     id: 'data',
                                     dir: 'ltr',
                                     inputStyle: 'cursor:auto;' +
-                                        'width:' + width + 'px;' +
-                                        'height:' + height + 'px;' +
+                                        'width:' + minWidth + 'px;' +
+                                        'height:' + minHeight + 'px;' +
                                         'tab-size:4;' +
                                         'text-align:left;',
                                     'class': 'cke_source cke_enable_context_menu'
@@ -355,7 +466,7 @@
 
                // return;
             }
-            
+
             /*
             // Override Copy Button
             if (editor.commands.copy) {
@@ -402,7 +513,7 @@
                     }
                 };
             }
-            
+
             // Override Replace Button
             if (editor.commands.replace) {
                 editor.commands.replace.modes = {
@@ -418,9 +529,9 @@
                     }
                 };
             }
-            
+
             var sourcearea = CKEDITOR.plugins.sourcearea;
-            
+
             // check if sourcearea plugin is overrriden
             if (!sourcearea.commands.searchCode) {
 
@@ -528,36 +639,84 @@
             }
 
             editor.addMode('source', function (callback) {
+                if (!config.autoLoadCodeMirror) {
+                    return;
+                }
+
                 if (!IsStyleSheetAlreadyLoaded(rootPath + 'css/codemirror.min.css')) {
-                    CKEDITOR.document.appendStyleSheet(rootPath + 'css/codemirror.min.css');
-                }
+                        CKEDITOR.document.appendStyleSheet(rootPath + 'css/codemirror.min.css');
+                    }
 
-                if (config.theme.length && config.theme != 'default' && !IsStyleSheetAlreadyLoaded(rootPath + 'theme/' + config.theme + '.css')) {
-                    CKEDITOR.document.appendStyleSheet(rootPath + 'theme/' + config.theme + '.css');
-                }
+                    if (config.theme.length &&
+                        config.theme != 'default' &&
+                        !IsStyleSheetAlreadyLoaded(rootPath + 'theme/' + config.theme + '.css')) {
+                        CKEDITOR.document.appendStyleSheet(rootPath + 'theme/' + config.theme + '.css');
+                    }
 
-                if (typeof (CodeMirror) == 'undefined') {
-
-                    CKEDITOR.scriptLoader.load(rootPath + 'js/codemirror.min.js', function() {
-
-                        CKEDITOR.scriptLoader.load(getCodeMirrorScripts(), function() {
-                            loadCodeMirror(editor);
-                            callback();
-                        });
-                    });
-                } else {
-                    if (CodeMirror.prototype['autoFormatAll']) {
+                if (requirePresent) {
+                    require(getCodeMirrorDependencies(), function () {
                         loadCodeMirror(editor);
                         callback();
+                    });
+                } else {
+                    if (typeof (CodeMirror) == 'undefined') {
+
+                        CKEDITOR.scriptLoader.load(rootPath + 'js/codemirror.min.js',
+                            function() {
+
+                                CKEDITOR.scriptLoader.load(getCodeMirrorScripts(),
+                                    function() {
+                                        loadCodeMirror(editor);
+                                        callback();
+                                    });
+                            });
                     } else {
-                        // loading the add-on scripts.
-                        CKEDITOR.scriptLoader.load(getCodeMirrorScripts(), function() {
+                        if (CodeMirror.prototype['autoFormatAll']) {
                             loadCodeMirror(editor);
                             callback();
-                        });
+                        } else {
+                            // loading the add-on scripts.
+                            CKEDITOR.scriptLoader.load(getCodeMirrorScripts(),
+                                function() {
+                                    loadCodeMirror(editor);
+                                    callback();
+                                });
+                        }
                     }
                 }
+
             });
+            function getCodeMirrorDependencies() {
+                var dependencies = ['core', 'addons'];
+                switch (config.mode) {
+                    case "bbcode":
+                    case "bbcodemixed":
+                        dependencies.push('modeHtml');
+                        break;
+                    case "application/x-httpd-php":
+                        dependencies.push('modePHP');
+                        break;
+                    case "text/javascript":
+                        dependencies.push('modeJs');
+                        break;
+                    case "twig":
+                        dependencies.push('modeTwig');
+                        break;
+                    case "htmlmixed":
+                    case "text/html":
+                    default:
+                        dependencies.push('modeHtml');
+                }
+
+                if (config.useBeautifyOnStart) {
+                    dependencies.push('beautifyModule');
+                }
+
+                if (config.enableSearchTools) {
+                    dependencies.push('addonSearch');
+                }
+                return dependencies;
+            }
 
             function getCodeMirrorScripts() {
                 var scriptFiles = [rootPath + 'js/codemirror.addons.min.js'];
@@ -599,11 +758,17 @@
                     }
 
                     break;
+                case "twig":
+                        {
+                            scriptFiles.push(rootPath + 'js/codemirror.mode.twig.min.js');
+                        }
+
+                        break;
                 default:
                     scriptFiles.push(rootPath + 'js/codemirror.mode.htmlmixed.min.js');
                 }
 
-                if (config.useBeautify) {
+                if (config.useBeautifyOnStart) {
                     scriptFiles.push(rootPath + 'js/beautify.min.js');
                 }
 
@@ -696,12 +861,6 @@
                         if (config.enableCodeFolding) {
                             window["foldFunc_" + editor.id](codeMirror_Editor, codeMirror_Editor.getCursor().line);
                         }
-                    },
-                    "'>'": function (codeMirror_Editor) {
-                        codeMirror_Editor.closeTag(codeMirror_Editor, '>');
-                    },
-                    "'/'": function (codeMirror_Editor) {
-                        codeMirror_Editor.closeTag(codeMirror_Editor, '/');
                     }
                 };
 
@@ -710,6 +869,7 @@
                 window["codemirror_" + editor.id] = CodeMirror.fromTextArea(sourceAreaElement.$, {
                     mode: config.mode,
                     matchBrackets: config.matchBrackets,
+                    maxHighlightLineLength: config.maxHighlightLineLength,
                     matchTags: config.matchTags,
                     workDelay: 300,
                     workTime: 35,
@@ -728,25 +888,7 @@
                     //extraKeys: {"Ctrl-Space": "autocomplete"},
                     extraKeys: extraKeys,
                     foldGutter: true,
-                    gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
-                    onKeyEvent: function (codeMirror_Editor, evt) {
-                        
-                        if (config.enableCodeFormatting) {
-                            var range = getSelectedRange();
-                            if (evt.type === "keydown" && evt.ctrlKey && evt.keyCode === 75 && !evt.shiftKey && !evt.altKey) {
-                                window["codemirror_" + editor.id].commentRange(true, range.from, range.to);
-                            } else if (evt.type === "keydown" && evt.ctrlKey && evt.keyCode === 75 && evt.shiftKey && !evt.altKey) {
-                                window["codemirror_" + editor.id].commentRange(false, range.from, range.to);
-                                if (config.autoFormatOnUncomment) {
-                                    window["codemirror_" + editor.id].autoFormatRange(range.from, range.to);
-                                }
-                            } else if (evt.type === "keydown" && evt.ctrlKey && evt.keyCode === 75 && !evt.shiftKey && evt.altKey) {
-                                window["codemirror_" + editor.id].autoFormatRange(range.from, range.to);
-                            }/* else if (evt.type === "keydown") {
-                                CodeMirror.commands.newlineAndIndentContinueMarkdownList(window["codemirror_" + editor.id]);
-                            }*/
-                        }
-                    }
+                    gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
                 });
 
                 var holderHeight = holderElement.$.clientHeight == 0 ? editor.ui.space('contents').getStyle('height') : holderElement.$.clientHeight + 'px';
@@ -755,10 +897,10 @@
                 // Store config so we can access it within commands etc.
                 window["codemirror_" + editor.id].config = config;
                 if (config.autoFormatOnStart) {
-                    if (config.useBeautify) {
+                    if (config.useBeautifyOnStart) {
                         var indent_size = 4;
                         var indent_char = ' ';
-                        var brace_style = 'collapse'; //collapse, expand, end-expand 
+                        var brace_style = 'collapse'; //collapse, expand, end-expand
 
                         var source = window["codemirror_" + editor.id].getValue();
 
@@ -787,7 +929,7 @@
                 });
 
                 window["codemirror_" + editor.id].setSize(null, holderHeight);
-                
+
                 // Enable Code Folding (Requires 'lineNumbers' to be set to 'true')
                 if (config.lineNumbers && config.enableCodeFolding) {
                     window["codemirror_" + editor.id].on("gutterClick", window["foldFunc_" + editor.id]);
@@ -801,6 +943,24 @@
                 // inherit blur event
                 window["codemirror_" + editor.id].on("blur", function () {
                     editor.fire('blur', this);
+                });
+
+                window["codemirror_" + editor.id].on("keypress", function (codeMirror_Editor, evt) {
+                    if (config.enableCodeFormatting) {
+                        var range = getSelectedRange();
+                        if (evt.type === "keydown" && evt.ctrlKey && evt.keyCode === 75 && !evt.shiftKey && !evt.altKey) {
+                            window["codemirror_" + editor.id].commentRange(true, range.from, range.to);
+                        } else if (evt.type === "keydown" && evt.ctrlKey && evt.keyCode === 75 && evt.shiftKey && !evt.altKey) {
+                            window["codemirror_" + editor.id].commentRange(false, range.from, range.to);
+                            if (config.autoFormatOnUncomment) {
+                                window["codemirror_" + editor.id].autoFormatRange(range.from, range.to);
+                            }
+                        } else if (evt.type === "keydown" && evt.ctrlKey && evt.keyCode === 75 && !evt.shiftKey && evt.altKey) {
+                            window["codemirror_" + editor.id].autoFormatRange(range.from, range.to);
+                        }/* else if (evt.type === "keydown") {
+                                CodeMirror.commands.newlineAndIndentContinueMarkdownList(window["codemirror_" + editor.id]);
+                            }*/
+                    }
                 });
             }
 
@@ -823,13 +983,13 @@
                     if (config.showFormatButton || config.showCommentButton || config.showUncommentButton || config.showSearchButton) {
                         editor.ui.add('-', CKEDITOR.UI_SEPARATOR, { toolbar: 'mode,30' });
                     }
-                    /*if (config.showSearchButton && config.enableSearchTools) {
+                    if (config.showSearchButton && config.enableSearchTools) {
                         editor.ui.addButton('searchCode', {
                             label: lang.searchCode,
                             command: 'searchCode',
                             toolbar: 'mode,40'
                         });
-                    }*/
+                    }
                     if (config.showFormatButton) {
                         editor.ui.addButton('autoFormat', {
                             label: lang.autoFormat,
@@ -860,19 +1020,23 @@
                     }
                 }
             }
-            
+
             editor.on('beforeModeUnload', function (evt) {
-                if (editor.mode === 'source' && editor.plugins.textselection) {
+                if (editor.mode === 'source' && editor.plugins.textselection && !editor.config.fullPage) {
 
                     var range = editor.getTextSelection();
 
                     range.startOffset = LineChannelToOffSet(window["codemirror_" + editor.id], window["codemirror_" + editor.id].getCursor(true));
                     range.endOffset = LineChannelToOffSet(window["codemirror_" + editor.id], window["codemirror_" + editor.id].getCursor(false));
 
-                    // Fly the range when create bookmark. 
+                    // Fly the range when create bookmark.
                     delete range.element;
                     range.createBookmark(editor);
                     sourceBookmark = true;
+
+                    if (editor.undoManager) {
+                        editor.undoManager.unlock();
+                    }
 
                     evt.data = range.content;
                 }
@@ -883,7 +1047,7 @@
                 if (editor.mode === 'source') {
                     editor.getCommand('autoCompleteToggle').setState(window["codemirror_" + editor.id].config.autoCloseTags ? CKEDITOR.TRISTATE_ON : CKEDITOR.TRISTATE_OFF);
 
-                    if (editor.plugins.textselection && textRange) {
+                    if (editor.plugins.textselection && textRange && !editor.config.fullPage) {
 
                         //textRange.element = new CKEDITOR.dom.element(editor._.editable.$);
                         //textRange.select();
@@ -912,17 +1076,16 @@
                     window["codemirror_" + editor.id].setSize(holderWidth, holderHeight);
                 }
             });
-            
+
             editor.on('readOnly', function () {
                 if (window["editable_" + editor.id] && editor.mode === 'source') {
                     window["codemirror_" + editor.id].setOption("readOnly", this.readOnly);
                 }
             });
-            
+
             editor.on('instanceReady', function (evt) {
 
-                // Fix native context menu
-                editor.container.getPrivate().events.contextmenu.listeners.splice(0, 1);
+                //editor.container.getPrivate().events.contextmenu.listeners.splice(0, 1);
 
                 var selectAllCommand = editor.commands.selectAll;
 
@@ -961,10 +1124,10 @@
                 });
             }
 
-            editor.on('setData', function (data) {
- 
-                if (window["editable_" + editor.id] && editor.mode === 'source') {
-                    window["codemirror_" + editor.id].setValue(data.data.dataValue);
+            editor.on('setData', function(data) {
+
+                if (window["editable_" + data.editor.id] && data.editor.mode === 'source') {
+                    window["codemirror_" + data.editor.id].setValue(data.data.dataValue);
                 }
             });
         }
@@ -972,12 +1135,12 @@
     var sourceEditable = CKEDITOR.tools.createClass({
         base: CKEDITOR.editable,
         proto: {
-            setData: function(data) {
+            setData: function (data) {
 
                 this.setValue(data);
 
-                if (this.codeMirror != null) {
-                    this.codeMirror.setValue(data);
+                if (window["editable_" + this.editor.id] && this.editor.mode === 'source') {
+                    window["codemirror_" + this.editor.id].setValue(data);
                 }
 
                 this.editor.fire('dataReady');
@@ -999,13 +1162,13 @@
             editorID: null,
             detach: function() {
                 window["codemirror_" + this.editorID].toTextArea();
-                
+
                 // Free Memory on destroy
                 window["editable_" + this.editorID] = null;
                 window["codemirror_" + this.editorID] = null;
 
                 sourceEditable.baseProto.detach.call(this);
-                
+
                 this.clearCustomData();
                 this.remove();
             }
@@ -1132,7 +1295,7 @@ function OffSetToLineChannel(ed, n) {
     for (i = 0; i < ed.lineCount() ; i++) {
         len = (ed.getLine(i)).length;
         if (n < index + len) {
-            
+
             line = i;
             ch = n - index;
             return { line: line, ch: ch };
@@ -1144,13 +1307,5 @@ function OffSetToLineChannel(ed, n) {
 }
 
 function IsStyleSheetAlreadyLoaded(href) {
-    var links = CKEDITOR.document.getHead().find('link');
-
-    for (var i = 0; i < links.count() ; i++) {
-        if (links.getItem(i).$.href === href) {
-            return true;
-        }
-    }
-
-    return false;
+    return CKEDITOR.document.getHead().findOne('link[href="' + href + '"]') != null;
 }
