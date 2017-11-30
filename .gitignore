@@ -55,6 +55,9 @@ node_modules/
 
 # ignored 'config' directory files
 /config/mappings.cfm
+/config/applicationSettings.cfm
+/config/settings.cfm
+/config/appcfc
 /config/cfapplication.cfm
 /config/settings.ini.cfm
 /config/version.cfm
