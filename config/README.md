@@ -14,7 +14,7 @@ Mura will dynamically generate an empty cfapplication.cfm file in this directory
 
 ## Legacy Plugin Support
 
-The following files are here to prevent legacy plugins from breaking.
+The following files are here to prevent legacy plugins from breaking.  Using them is deprecated and they will be removed in a future release.
 
 * applicationSettings.cfc
 * settings.cfm
