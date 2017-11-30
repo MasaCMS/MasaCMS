@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.bean.beanFeed" entityName="feed" table="tcontentfeeds" output="false">
@@ -105,7 +105,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="init" returntype="any" output="false" access="public">
 	<cfset super.init(argumentCollection=arguments)>
-	
+
 	<cfset variables.instance.feedID=""/>
 	<cfset variables.instance.siteID=""/>
 	<cfset variables.instance.dateCreated="#now()#"/>
@@ -165,7 +165,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.contentpoolid="" />
 	<cfset variables.instance.fieldAliases={'tag'={field='tcontenttags.tag',datatype='varchar'},'taggroup'={field='tcontenttags.taggroup',datatype='varchar'}}/>
 	<cfset variables.instance.cachedWithin=createTimeSpan(0,0,0,0)/>
-	
+
 	<cfreturn this />
 </cffunction>
 
@@ -178,7 +178,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="set" returnType="any" output="false" access="public">
 	<cfargument name="property" required="true">
     <cfargument name="propertyValue">
-   
+
     <cfif not isDefined('arguments.feed')>
 	    <cfif isSimpleValue(arguments.property)>
 	      <cfreturn setValue(argumentCollection=arguments)>
@@ -186,23 +186,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	    <cfset arguments.feed=arguments.property>
     </cfif>
-    
+
 	<cfset var prop=""/>
-	
+
 	<cfif isQuery(arguments.feed) and arguments.feed.recordcount>
 		<cfloop list="#arguments.feed.columnlist#" index="prop">
 			<cfset setValue(prop,arguments.feed[prop][1]) />
 		</cfloop>
-		
+
 	<cfelseif isStruct(arguments.feed)>
 
 		<cfloop collection="#arguments.feed#" item="prop">
 			<cfset setValue(prop,arguments.feed[prop]) />
 		</cfloop>
-		
+
 		<cfset setAdvancedParams(arguments.feed) />
 	</cfif>
-	
+
 	<cfreturn this />
 </cffunction>
 
@@ -222,14 +222,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="contentID" type="String" />
 	<cfargument name="append" type="boolean" default="false" required="true" />
 	<cfset var i="">
-	
+
 	<cfif not arguments.append>
 		<cfset variables.instance.contentID = trim(arguments.contentID) />
 	<cfelse>
 		<cfloop list="#arguments.contentID#" index="i">
 		<cfif not listFindNoCase(variables.instance.contentID,trim(i))>
 	    	<cfset variables.instance.contentID = listAppend(variables.instance.contentID,trim(i)) />
-	    </cfif> 
+	    </cfif>
 	    </cfloop>
 	</cfif>
 	<cfreturn this>
@@ -239,16 +239,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="contentID" type="String" />
 	<cfset var i=0>
 	<cfset var offset=0>
-	
+
 	<cfif len(arguments.contentID)>
 		<cfloop from="1" to="#listLen(arguments.contentID)#" index="i">
 		<cfif listFindNoCase(variables.instance.contentID,listGetAt(arguments.contentID,i))>
 	    	<cfset variables.instance.contentID = listDeleteAt(variables.instance.contentID,i-offset) /> />
 	    	<cfset offset=offset+1>
 	    </cfif>
-	    </cfloop> 
+	    </cfloop>
 	</cfif>
-	
+
 	<cfreturn this>
 </cffunction>
 
@@ -257,7 +257,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif not len(variables.instance.contentpoolid)>
 		<cfset variables.instance.contentpoolid=variables.instance.siteid />
 	</cfif>
-	
+
 	<cfreturn variables.instance.contentpoolid>
 </cffunction>
 
@@ -265,14 +265,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="categoryID" type="String" />
 	<cfargument name="append" type="boolean" default="false" required="true" />
 	<cfset var i="">
-	
+
 	<cfif not arguments.append>
 		<cfset variables.instance.categoryID = trim(arguments.categoryID) />
 	<cfelse>
 		<cfloop list="#arguments.categoryID#" index="i">
 		<cfif not listFindNoCase(variables.instance.categoryID,trim(i))>
 	    	<cfset variables.instance.categoryID = listAppend(variables.instance.categoryID,trim(i)) />
-	    </cfif> 
+	    </cfif>
 	    </cfloop>
 	</cfif>
 	<cfreturn this>
@@ -282,16 +282,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="categoryID" type="String" />
 	<cfset var i=0>
 	<cfset var offset=0>
-	
+
 	<cfif len(arguments.categoryID)>
 		<cfloop from="1" to="#listLen(arguments.categoryID)#" index="i">
 		<cfif listFindNoCase(variables.instance.categoryID,listGetAt(arguments.categoryID,i))>
 	    	<cfset variables.instance.categoryID = listDeleteAt(variables.instance.categoryID,i-offset) /> />
 	    	<cfset offset=offset+1>
 	    </cfif>
-	    </cfloop> 
+	    </cfloop>
 	</cfif>
-	
+
 	<cfreturn this>
 </cffunction>
 
@@ -363,13 +363,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="imageSize">
 	<cfif len(arguments.imageSize)>
 		<cfset variables.instance.imageSize = arguments.imageSize>
-	</cfif>	
+	</cfif>
 	<cfreturn this>
 </cffunction>
 
 <cffunction name="getImageSize" output="false" access="public">
 	<cfif variables.instance.imageSize eq "Custom"
-	and variables.instance.ImageHeight eq "AUTO" 
+	and variables.instance.ImageHeight eq "AUTO"
 	and variables.instance.ImageWidth eq "AUTO">
   	  <cfreturn "small" />
 	<cfelse>
@@ -419,16 +419,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setParams" access="public" output="false">
 	<cfargument name="params" type="any" required="true">
-		
+
 	<cfset var rows=0/>
 	<cfset var I = 0 />
 
 
 	<cfif isquery(arguments.params)>
 		<cfset variables.instance.params=arguments.params />
-			
+
 	<cfelseif isdefined('arguments.params.param')>
-	
+
 		<cfset clearParams() />
 		<cfloop from="1" to="#listLen(arguments.params.param)#" index="i">
 
@@ -440,9 +440,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					listLast(arguments.params['paramField#i#'],'^')
 					) />
 		</cfloop>
-			
+
 	</cfif>
-	
+
 	<cfreturn this>
 </cffunction>
 
@@ -451,7 +451,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn setParams(argumentCollection=arguments)>
 </cffunction>
 
-<cffunction name="renderName" returntype="String" access="public" output="false">	
+<cffunction name="renderName" returntype="String" access="public" output="false">
 	<cfif len(variables.instance.altName)>
 		<cfreturn variables.instance.altName />
 	<cfelse>
@@ -508,7 +508,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset arguments.siteID=variables.instance.siteID>
 	</cfif>
 	<cfset arguments.feedBean=this>
-	
+
 	<cfreturn variables.feedManager.read(argumentCollection=arguments)>
 </cffunction>
 
@@ -538,36 +538,36 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getEditUrl" access="public" returntype="string" output="false">
 	<cfargument name="compactDisplay" type="any" required="true" default="false"/>
 	<cfset var returnStr="">
-	
+
 	<cfset returnStr= "#variables.configBean.getAdminPath()#/?muraAction=cFeed.edit&feedID=#variables.instance.feedID#&siteid=#variables.instance.siteID#&type=#variables.instance.type#&compactDisplay=#arguments.compactdisplay#" >
-	
+
 	<cfreturn returnStr>
-</cffunction> 
+</cffunction>
 
 <cffunction name="getDisplayList" output="false">
 	<cfset var hasRating=false>
 	<cfset var hasComments=false>
-	
+
 	<cfif not len(variables.instance.displayList)>
 		<cfset variables.instance.displayList="Date,Title,Image,Summary,Credits" />
 		<cfset hasRating=listFindNoCase(variables.instance.displayList,"Rating")>
 		<cfset hasComments=listFindNoCase(variables.instance.displayList,"Comments")>
-		
+
 		<cfif variables.instance.displayComments and not hasComments>
 			<cfset variables.instance.displayList=listAppend(variables.instance.displayList,"Comments")>
 		<cfelseif not variables.instance.displayComments and hasComments>
 			<cfset variables.instance.displayList=listDeleteAt(variables.instance.displayList,hasComments)>
 		</cfif>
-		
+
 		<cfset variables.instance.displayList=listAppend(variables.instance.displayList,"Tags")>
-		
+
 		<cfif variables.instance.displayRatings and not hasRating>
 			<cfset variables.instance.displayList=listAppend(variables.instance.displayList,"Rating")>
 		<cfelseif not variables.instance.displayRatings and hasRating>
 			<cfset variables.instance.displayList=listDeleteAt(variables.instance.displayList,hasRating)>
-		</cfif>		
+		</cfif>
 	</cfif>
-		
+
 	<cfreturn variables.instance.displayList>
 </cffunction>
 
@@ -576,16 +576,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var i=0>
 	<cfset var finder=0>
 	<cfset var rsExtend=variables.configBean.getClassExtensionManager().getExtendedAttributeList(variables.instance.siteid,"tcontent")>
-	
+
 	<cfif rsExtend.recordcount>
 		<cfquery name="rsExtend" dbType="query">
-			select attribute from rsExtend 
+			select attribute from rsExtend
 			group by attribute
 			order by attribute
 		</cfquery>
 		<cfset returnList=returnList & "," & valueList(rsExtend.attribute)>
 	</cfif>
-	
+
 	<cfloop list="#variables.instance.displayList#" index="i">
 		<cfset finder=listFindNoCase(returnList,i)>
 		<cfif finder>
@@ -601,6 +601,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getEntityName" output="false">
 	<cfargument name="userProxyName" default="true">
+	<cfset variables.entityName='feed'>
 	<cfif arguments.userProxyName>
 		<cfreturn "content">
 	<cfelse>
@@ -621,9 +622,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cfscript>
- function getFeed(){		
+ function getFeed(){
 		var feed=getBean('beanFeed').setEntityName('feed').setTable('tcontentfeeds');
-	
+
 		if(hasProperty('siteid')){
 			feed.setSiteID(getValue('siteID'));
 		}
@@ -632,8 +633,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			feed.setOrderBy(getOrderBy());
 		}
 
-		return feed;	
+		return feed;
 	}
-</cfscript>	
+</cfscript>
 
 </cfcomponent>
