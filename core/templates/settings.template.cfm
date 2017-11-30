@@ -47,6 +47,7 @@ javasettingsloadcoldfusionclasspath=true
 ;javasettingsloadpaths=/core/vendor/lib
 javasettingswatchextensions=jar,class
 javasettingswatchinterval=60
+legacyAppcfcSupport=false
 legacyJavaLoader=false
 locale=Server
 loginStrikes=4
