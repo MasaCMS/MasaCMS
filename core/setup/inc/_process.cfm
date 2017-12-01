@@ -58,11 +58,22 @@ to your own modified versions of Mura CMS.
   <cfif Form.production_datasource NEQ "" AND IsDefined("Form.auto_create") AND IsBoolean(Form.auto_create) AND Form.auto_create>
     <cfset FORM.production_datasource="">
   </cfif>
+
+  <cfset queryAttrs={
+    datasource="#FORM.production_datasource#",
+    username="#FORM.production_dbusername#",
+    password="#FORM.production_dbpassword#",
+    name="rs"
+  }>
+  <cfif not len(FORM.production_dbusername)>
+    <cfset structDelete(queryAttrs,'username')>
+    <cfset structDelete(queryAttrs,'password')>
+  </cfif>
   <cftry>
     <!--- do not run if we do not have a datasource (bsoylu 6/6/2010)  --->
     <cfif Form.production_datasource NEQ "">
       <!--- try to run a basic query --->
-      <cfquery name="qry" datasource="#FORM.production_datasource#" username="#FORM.production_dbusername#" password="#FORM.production_dbpassword#">
+      <cfquery attributeCollection="#queryAttrs#">
         SELECT COUNT( contentid )
         FROM tcontent
       </cfquery>
@@ -169,12 +180,12 @@ to your own modified versions of Mura CMS.
             <cfif form.production_dbtype eq 'Oracle'>
             <cfset form.production_dbtablespace=ucase(form.production_dbtablespace)>
 
-            <cfquery name="rsTableSpaces" datasource="#form.production_datasource#" username="#form.production_dbusername#" password="#form.production_dbpassword#">
+            <cfquery attributeCollection="#queryAttrs#">
                 select * from user_ts_quotas
                 where tablespace_name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#form.production_dbtablespace#">
             </cfquery>
 
-            <cfif not rsTableSpaces.recordcount>
+            <cfif not rs.recordcount>
                 <cfset message = "<strong>Error:</strong> The Oracle tablespace named '#form.production_dbtablespace#' is not available">
                 <cfset bProcessWithMessage = false>
             </cfif>
@@ -186,12 +197,19 @@ to your own modified versions of Mura CMS.
           <!--- <cftry> --->
 
           <!--- get selected DB type --->
-          <cfdbinfo
-                name="rsCheck"
-                datasource="#FORM.production_datasource#"
-                username="#FORM.production_dbusername#"
-                password="#FORM.production_dbpassword#"
-                type="version">
+          <cfif len(FORM.production_dbusername)>
+            <cfdbinfo
+              name="rsCheck"
+              datasource="#FORM.production_datasource#"
+              username="#FORM.production_dbusername#"
+              password="#FORM.production_dbpassword#"
+              type="version">
+          <cfelse>
+            <cfdbinfo
+              name="rsCheck"
+              datasource="#FORM.production_datasource#"
+              type="version">
+          </cfif>
 
           <cfif rsCheck.database_productname eq 'H2'>
             <cfsavecontent variable="sql">
@@ -217,10 +235,10 @@ to your own modified versions of Mura CMS.
             <cfswitch expression="#FORM.production_dbtype#">
               <cfcase value="mssql">
                 <!--- if we are working with a SQL db we go ahead and delimit with GO so we can loop over each sql even --->
-                <cfquery name="MSSQLversion" datasource="#FORM.production_datasource#" username="#FORM.production_dbusername#" password="#FORM.production_dbpassword#">
+                <cfquery attributeCollection="#queryAttrs#">
                   SELECT CONVERT(varchar(100), SERVERPROPERTY('ProductVersion')) as version
                 </cfquery>
-                <cfset MSSQLversion=listFirst(MSSQLversion.version,".")>
+                <cfset MSSQLversion=listFirst(rs.version,".")>
 
                 <cfset sql = REReplaceNoCase( sql, "\nGO", ";", "ALL") />
                 <cfset aSql = ListToArray(sql, ';')>
@@ -228,7 +246,7 @@ to your own modified versions of Mura CMS.
                 <cfloop index="x" from="1" to="#arrayLen(aSql) - 1#">
                   <!--- we placed a small check here to skip empty rows --->
                   <cfif len( trim( aSql[x] ) )>
-                    <cfquery datasource="#FORM.production_datasource#" username="#FORM.production_dbusername#" password="#FORM.production_dbpassword#">
+                    <cfquery attributeCollection="#queryAttrs#">
                       #mssqlFormat(aSql[x],MSSQLversion)#
                     </cfquery>
                   </cfif>
@@ -250,7 +268,7 @@ to your own modified versions of Mura CMS.
                       <cfset s=replace(s,"/","","ALL")>
                       <cfset s=replace(s,chr(13)," ","ALL")>
                     </cfif>
-                    <cfquery datasource="#FORM.production_datasource#" username="#FORM.production_dbusername#" password="#FORM.production_dbpassword#">
+                    <cfquery attributeCollection="#queryAttrs#">
                       #keepSingleQuotes(s)#
                     </cfquery>
                   </cfif>
@@ -263,7 +281,7 @@ to your own modified versions of Mura CMS.
                 <cfloop index="x" from="1" to="#arrayLen(aSql) - 1#">
                   <!--- we placed a small check here to skip empty rows --->
                   <cfif len( trim( aSql[x] ) )>
-                    <cfquery datasource="#FORM.production_datasource#" username="#FORM.production_dbusername#" password="#FORM.production_dbpassword#">
+                    <cfquery attributeCollection="#queryAttrs#">
                       #keepSingleQuotes(aSql[x])#
                     </cfquery>
                   </cfif>
@@ -275,7 +293,7 @@ to your own modified versions of Mura CMS.
 				  <cfloop index="x" from="1" to="#arrayLen(aSql) - 1#">
 					<!--- we placed a small check here to skip empty rows --->
 					<cfif len( trim( aSql[x] ) )>
-					  <cfquery datasource="#FORM.production_datasource#" username="#FORM.production_dbusername#" password="#FORM.production_dbpassword#">
+					  <cfquery attributeCollection="#queryAttrs#">
 						#keepSingleQuotes(aSql[x])#
 					  </cfquery>
 					</cfif>
@@ -287,7 +305,7 @@ to your own modified versions of Mura CMS.
             <cfif domain eq '127.0.0.1'>
                 <cfset domain='localhost'>
             </cfif>
-            <cfquery datasource="#FORM.production_datasource#" username="#FORM.production_dbusername#" password="#FORM.production_dbpassword#">
+            <cfquery attributeCollection="#queryAttrs#">
               UPDATE tsettings
               SET domain = '#domain#',
                 theme = 'default',
@@ -298,7 +316,7 @@ to your own modified versions of Mura CMS.
                 galleryMainScaleBy='y',
                 galleryMainScale=600
             </cfquery>
-             <cfquery datasource="#FORM.production_datasource#" username="#FORM.production_dbusername#" password="#FORM.production_dbpassword#">
+             <cfquery attributeCollection="#queryAttrs#">
               UPDATE tusers
               SET username=<cfqueryparam cfsqltype="cf_sql_varchar" value="#form.admin_username#">,
                 password=<cfqueryparam cfsqltype="cf_sql_varchar" value="#hash(form.admin_password)#">,
@@ -312,6 +330,7 @@ to your own modified versions of Mura CMS.
             <!--- set a message --->
             <cfset message = "" />
             <cfcatch type="any">
+              <cfrethrow>
               <cfset message = "<strong>Error:</strong> Error during database creation (2). Please ensure you have updated drivers or contact support:" & cfcatch.message & " - " & cfcatch.Detail>
               <cfset bProcessWithMessage = false>
             </cfcatch>
@@ -398,7 +417,7 @@ to your own modified versions of Mura CMS.
   <!--- this also assumes that the db exists --->
   <cfif dbCreated AND NOT len( errorType )>
     <!--- update the domain to be local to the domain the server is being installed on --->
-    <cfquery datasource="#FORM.production_datasource#" username="#FORM.production_dbusername#" password="#FORM.production_dbpassword#">
+    <cfquery attributeCollection="#queryAttrs#">
       UPDATE tsettings
       SET MailServerIP = '',
         MailServerUsername = '',

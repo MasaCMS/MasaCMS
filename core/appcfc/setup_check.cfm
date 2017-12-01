@@ -81,18 +81,18 @@ if ( request.muraInDocker && len(getSystemEnvironmentSetting('MURA_DATABASE'))) 
 			FORM['setupSubmitButton']=true;
 			FORM['action']='doSetup';
 		}
-		} else if ( request.muraSysEnv.MURA_DBTYPE == 'oracle' ) {
+		
+	} else if ( request.muraSysEnv.MURA_DBTYPE == 'oracle' ) {
 
-			/*
 			qs=new Query();
 
-			if ( !qs.execute(sql="select * FROM dba_tables WHERE lower(owner)='#lcase(request.muraSysEnv.MURA_DATABASE)#' and lower(table_name)='tcontent'").getResult().recordcount ) {
+			if ( !qs.execute(sql="select table_name from all_tables where lower(owner)='#lcase(request.muraSysEnv.MURA_DATABASE)#' and lower(table_name)='tcontent'").getResult().recordcount ) {
 				FORM['#application.setupSubmitButton#']=true;
 				FORM['#application.setupSubmitButtonComplete#']=true;
 				FORM['setupSubmitButton']=true;
 				FORM['action']='doSetup';
 			}
-			*/
-		}
+
+	}
 }
 </cfscript>

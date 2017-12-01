@@ -837,7 +837,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif getValue(property="applyDbUpdates",defaultValue=true)>
 		<cfif variables.instance.dbtype eq 'MSSQL'>
 			<cftry>
-				<cfquery name="MSSQLversion"  datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+				<cfquery attributeCollection="#getQRYAttrs(name='MSSQLversion')#">
 					SELECT CONVERT(varchar(100), SERVERPROPERTY('ProductVersion')) as version
 				</cfquery>
 				<cfset MSSQLversion=listFirst(MSSQLversion.version,".")>
@@ -846,7 +846,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<cftry>
 				<cfif not MSSQLversion>
-					<cfquery name="MSSQLversion" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+					<cfquery attributeCollection="#getQRYAttrs(name='MSSQLversion')#">
 						EXEC sp_MSgetversion
 					</cfquery>
 
@@ -884,11 +884,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif getDbType() eq "postgresql">
 		<cfif variables.instance.dbSchema eq "">
-			<cfquery
-				name="rs"
-				datasource="#getDatasource()#"
-				username="#getDbUsername()#"
-				password="#getDbPassword()#">
+			<cfquery attributeCollection="#getQRYAttrs(name='rs')#">
 				SELECT current_schema() AS schema
 			</cfquery>
 			<cfset variables.instance.dbSchema = rs.schema>
@@ -905,12 +901,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfswitch expression="#getDbType()#">
 			<cfcase value="oracle">
-				<cfquery
-				name="rs"
-				datasource="#getDatasource()#"
-				username="#getDbUsername()#"
-				password="#getDbPassword()#">
-					SELECT column_name,
+				<cfquery attributeCollection="#getQRYAttrs(name='rs')#">
 					data_length column_size,
 					data_type type_name,
 					nullable is_nullable,
@@ -949,11 +940,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfcase>
 			--->
 			<cfcase value="mssql">
-			<cfquery
-				name="rs"
-				datasource="#getDatasource()#"
-				username="#getDbUsername()#"
-				password="#getDbPassword()#">
+			<cfquery attributeCollection="#getQRYAttrs(name='rs')#">
 					select column_name,
 					character_maximum_length column_size,
 					data_type type_name,
@@ -965,13 +952,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfquery>
 			</cfcase>
 			<cfdefaultcase>
-				<cfdbinfo
-				name="rs"
-				datasource="#getDatasource()#"
-				username="#getDbUsername()#"
-				password="#getDbPassword()#"
-				table="#qualifySchema(arguments.table)#"
-				type="columns">
+				<cfdbinfo attributeCollection="#getQRYAttrs(name='rs',table=qualifySchema(arguments.table),type='columns')#">
 			</cfdefaultcase>
 		</cfswitch>
 
@@ -1075,7 +1056,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset var rsCheck="">
 
-	<cfdbinfo
+	<cfdbinfo attributeCollection="#getQRYAttrs(name='rs')#"
 		name="rsCheck"
 		datasource="#getDatasource()#"
 		username="#getDbUsername()#"

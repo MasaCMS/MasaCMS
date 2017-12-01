@@ -1,4 +1,3 @@
-<cfprocessingdirective pageencoding="utf-8">
 <cfscript>
 /*  This file is part of Mura CMS.
 
@@ -64,7 +63,7 @@ if ( left(server.coldfusion.productversion,5) == "9,0,0" || listFirst(server.col
 
 //  this is here for CF8 compatibility
 variables.baseDir=this.baseDir;
-
+application.setupComplete=false;
 //  do a settings setup check
 if ( !application.setupComplete || (not application.appInitialized || structKeyExists(url,application.appReloadKey) ) ) {
 	if ( getINIProperty(entry="mode",section="settings") == "production" ) {
@@ -512,9 +511,18 @@ if ( application.setupComplete ) {
 		commitTracePoint(variables.tracePoint);
 	}
 
-	if ( fileExists(application.configBean.getWebRoot() & "/config/appcfc/onApplicationStart_method.cfm") ) {
-		directoryDelete(application.configBean.getWebRoot() & "/config/appcfc",true);
+	if (
+		fileExists(application.configBean.getWebRoot() & "/config/appcfc/onApplicationStart_method.cfm")
+		|| (
+				fileExists(application.configBean.getWebRoot() & "/config/applicationSettings.cfm")
+				&& !application.configBean.getValue(property='legacyAppcfcSupport',defaultvalue=false)
+			)
+	 ) {
 
+		if ( !directoryExists(application.configBean.getWebRoot() & "/config/appcfc") ) {
+			directoryDelete(application.configBean.getWebRoot() & "/config/appcfc",true);
+		}
+		
 		if (fileExists(application.configBean.getWebRoot() & "/config/applicationSettings.cfm") ) {
 			fileDelete(application.configBean.getWebRoot() & "/config/applicationSettings.cfm");
 		}
@@ -563,7 +571,6 @@ if ( application.setupComplete ) {
 			commitTracePoint(variables.tracePoint);
 		}
 
-
 		if ( !fileExists(application.configBean.getWebRoot() & "/config/appcfc/onRequestStart_include.cfm") ) {
 			variables.tracePoint=initTracePoint("Writing config/appcfc/onRequestStart_include.cfm");
 			fileCopy("#application.configBean.getWebRoot()#/core/templates/appcfc/onRequestStart_include.cfm","#application.configBean.getWebRoot()#/config/appcfc/onRequestStart_include.cfm");
@@ -581,7 +588,6 @@ if ( application.setupComplete ) {
 			} catch (any cfcatch) {}
 			commitTracePoint(variables.tracePoint);
 		}
-
 
 		if ( !fileExists(application.configBean.getWebRoot() & "/config/appcfc/onSessionStart_include.cfm") ) {
 			variables.tracePoint=initTracePoint("Writing config/appcfc/onSessionStart_include.cfm");

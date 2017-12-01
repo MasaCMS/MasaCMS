@@ -320,7 +320,7 @@ if ( this.ormenabled ) {
 	this.ormSettings.logsql= evalSetting(getINIProperty("ormlogsql","false"));
 }
 
-if(request.muraInDocker && len(getSystemEnvironmentSetting('MURA_DATABASE'))){
+if(request.muraInDocker && len(getSystemEnvironmentSetting('MURA_DATABASE')) && getSystemEnvironmentSetting('MURA_DBTYPE') != 'oracle'){
 		if(server.coldfusion.productname == 'lucee'){
 			driverVarName='type';
 
@@ -375,21 +375,20 @@ if(request.muraInDocker && len(getSystemEnvironmentSetting('MURA_DATABASE'))){
 					 , password = getSystemEnvironmentSetting('MURA_DBPASSWORD')
 				}
 		};
-
-
 	}
-try {
-	include "#variables.context#/plugins/cfapplication.cfm";
-	hasPluginCFApplication=true;
-} catch (any cfcatch) {
-	hasPluginCFApplication=false;
-}
-if ( !(isSimpleValue(this.ormSettings.cfclocation) && len(this.ormSettings.cfclocation))
-	and !(isArray(this.ormSettings.cfclocation) && arrayLen(this.ormSettings.cfclocation)) ) {
-	this.ormenabled=false;
-}
 
-//This is use to interact with Lucee admin settings.s
+	try {
+		include "#variables.context#/plugins/cfapplication.cfm";
+		hasPluginCFApplication=true;
+	} catch (any cfcatch) {
+		hasPluginCFApplication=false;
+	}
+	if ( !(isSimpleValue(this.ormSettings.cfclocation) && len(this.ormSettings.cfclocation))
+		and !(isArray(this.ormSettings.cfclocation) && arrayLen(this.ormSettings.cfclocation)) ) {
+		this.ormenabled=false;
+	}
+
+	//This is use to interact with Lucee admin settings.s
 	this.webadminpassword=evalSetting(getINIProperty('webadminpassword',''));
 
 	// if true, CF converts form fields as an array instead of a list (not recommended)
