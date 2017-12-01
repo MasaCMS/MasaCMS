@@ -31,7 +31,7 @@ Your custom code
  /admin/
  /tasks/
  /config/
- /requirements/mura/
+ /core/mura/
  /Application.cfc
  /index.cfm
  /MuraProxy.cfc
@@ -64,7 +64,7 @@ component extends="contentRenderer" output="false" hint="This provides static co
 				href="/#application.settingsManager.getSite(arguments.siteid).getExportLocation()#/#replace(arguments.contentid, '-', '', 'ALL')#.#rsfile.fileExt#";
 				break;
 			default:
-				href="/#application.settingsManager.getSite(arguments.siteid).getExportLocation()#/#arguments.filename##iif(arguments.filename != '',de('/'),de(''))##staticIndexFile#";
+				href="/#application.settingsManager.getSite(arguments.siteid).getExportLocation()#/#arguments.filename##iif(not len(arguments.filename),de('/'),de(''))##staticIndexFile#";
 				break;
 		}
 		if ( arguments.target == "_blank" ) {
@@ -81,8 +81,8 @@ component extends="contentRenderer" output="false" hint="This provides static co
 		if ( request.contentBean.getcontentid() == arguments.contentid ) {
 			link='<a href="#staticIndexFile#" class="current">#arguments.title#</a>';
 		} else {
-			href=createHREF(arguments.type,arguments.filename,arguments.siteid,arguments.contentid,arguments.target,iif(arguments.filename == request.contentBean.getfilename(),de(''),de(arguments.targetParams)),arguments.queryString,arguments.context,arguments.stub,arguments.indexFile);
-			link='<a href="#href#" #iif(request.contentBean.getparentid() == arguments.contentid,de("class=current"),de(""))#>#arguments.title#</a>';
+			href=createHREF(arguments.type,arguments.filename,arguments.siteid,arguments.contentid,arguments.target,iif(arguments.filename eq request.contentBean.getfilename(),de(''),de(arguments.targetParams)),arguments.queryString,arguments.context,arguments.stub,arguments.indexFile);
+			link='<a href="#href#" #iif(request.contentBean.getparentid() eq arguments.contentid,de("class=current"),de(""))#>#arguments.title#</a>';
 		}
 		return link;
 	}
