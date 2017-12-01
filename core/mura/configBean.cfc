@@ -902,6 +902,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfswitch expression="#getDbType()#">
 			<cfcase value="oracle">
 				<cfquery attributeCollection="#getQueryAttrs(name='rs')#">
+					SELECT column_name,
 					data_length column_size,
 					data_type type_name,
 					nullable is_nullable,
