@@ -63,7 +63,7 @@ if ( left(server.coldfusion.productversion,5) == "9,0,0" || listFirst(server.col
 
 //  this is here for CF8 compatibility
 variables.baseDir=this.baseDir;
-application.setupComplete=false;
+
 //  do a settings setup check
 if ( !application.setupComplete || (not application.appInitialized || structKeyExists(url,application.appReloadKey) ) ) {
 	if ( getINIProperty(entry="mode",section="settings") == "production" ) {
@@ -522,7 +522,7 @@ if ( application.setupComplete ) {
 		if ( !directoryExists(application.configBean.getWebRoot() & "/config/appcfc") ) {
 			directoryDelete(application.configBean.getWebRoot() & "/config/appcfc",true);
 		}
-		
+
 		if (fileExists(application.configBean.getWebRoot() & "/config/applicationSettings.cfm") ) {
 			fileDelete(application.configBean.getWebRoot() & "/config/applicationSettings.cfm");
 		}

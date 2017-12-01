@@ -184,7 +184,7 @@ to your own modified versions of Mura CMS.
                 select * from user_ts_quotas
                 where tablespace_name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#form.production_dbtablespace#">
             </cfquery>
-
+          
             <cfif not rs.recordcount>
                 <cfset message = "<strong>Error:</strong> The Oracle tablespace named '#form.production_dbtablespace#' is not available">
                 <cfset bProcessWithMessage = false>

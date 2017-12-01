@@ -119,7 +119,7 @@ variables.setupProcessComplete	= false;
 <cfparam name="FORM.production_datasource"			default="#settingsIni.get( "production", "datasource" )#" />
 <cfparam name="FORM.production_dbusername"			default="#settingsIni.get( "production", "dbusername" )#" />
 <cfparam name="FORM.production_dbpassword"			default="#settingsIni.get( "production", "dbpassword" )#" />
-<cfparam name="FORM.production_dbtablespace"		default="#settingsIni.get( "production", "dbtablespace" )#" />
+<cfparam name="FORM.production_dbtablespace"		default="#settingsIni.get( "production", "dbtablespace", "USERS" )#" />
 <cfparam name="FORM.production_databaseserver"		default="localhost" />
 <cfparam name="FORM.production_databasename"		default="#application.applicationName#" />
 <cfparam name="FORM.production_context"				default="#context#" />
