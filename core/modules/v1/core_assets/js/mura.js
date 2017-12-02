@@ -10471,8 +10471,7 @@ Mura.Feed = Mura.Core.extend(
 		 * @return {Mura.Feed}          Self
 		 */
 		isEQ: function(criteria) {
-			if (typeof criteria == 'undefined' || criteria == '' || criteria ==
-				null) {
+			if (typeof criteria== 'undefined' || criteria === '' || criteria ==	null) {
 				criteria = 'null';
 			}
 			this.queryString += encodeURIComponent(criteria);
@@ -10486,8 +10485,7 @@ Mura.Feed = Mura.Core.extend(
 		 * @return {Mura.Feed}          Self
 		 */
 		isNEQ: function(criteria) {
-			if (typeof criteria == 'undefined' || criteria == '' || criteria ==
-				null) {
+			if (typeof criteria == 'undefined' || criteria === '' || criteria == null) {
 				criteria = 'null';
 			}
 			this.queryString += encodeURIComponent('neq^' + criteria);
@@ -10501,8 +10499,7 @@ Mura.Feed = Mura.Core.extend(
 		 * @return {Mura.Feed}          Self
 		 */
 		isLT: function(criteria) {
-			if (typeof criteria == 'undefined' || criteria == '' || criteria ==
-				null) {
+			if (typeof criteria == 'undefined' || criteria === '' || criteria == null) {
 				criteria = 'null';
 			}
 			this.queryString += encodeURIComponent('lt^' + criteria);
@@ -10516,7 +10513,7 @@ Mura.Feed = Mura.Core.extend(
 		 * @return {Mura.Feed}          Self
 		 */
 		isLTE: function(criteria) {
-			if (typeof criteria == 'undefined' || criteria == '' || criteria ==
+			if (typeof criteria == 'undefined' || criteria === '' || criteria ==
 				null) {
 				criteria = 'null';
 			}
@@ -10531,8 +10528,7 @@ Mura.Feed = Mura.Core.extend(
 		 * @return {Mura.Feed}          Self
 		 */
 		isGT: function(criteria) {
-			if (typeof criteria == 'undefined' || criteria == '' || criteria ==
-				null) {
+			if (typeof criteria == 'undefined' || criteria === '' || criteria == null) {
 				criteria = 'null';
 			}
 			this.queryString += encodeURIComponent('gt^' + criteria);
@@ -10546,7 +10542,7 @@ Mura.Feed = Mura.Core.extend(
 		 * @return {Mura.Feed}          Self
 		 */
 		isGTE: function(criteria) {
-			if (typeof criteria == 'undefined' || criteria == '' || criteria ==
+			if (typeof criteria == 'undefined' || criteria === '' || criteria ==
 				null) {
 				criteria = 'null';
 			}
