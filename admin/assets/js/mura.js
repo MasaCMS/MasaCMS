@@ -943,6 +943,53 @@ var Mura=(function(){
       return Number(parseFloat(val)) == val;
   }
 
+  /**
+  * buildDisplayRegion - Renders display region data returned from Mura.renderFilename()
+  *
+  * @param  {any} data Region data to build string from
+  * @return {string}
+  */
+  function buildDisplayRegion(data){
+
+    if(typeof data == 'undefined'){
+      return '';
+    }
+
+    var str = data.header;
+
+    str += data.inherited.header;
+
+    if(data.inherited.items.length){
+      for(var i in data.inherited.items){
+        str += data.inherited.items[i].header;
+        if(typeof data.inherited.items[i].html != 'undefined'){
+          str += data.inherited.items[i].html;
+        }
+        str += data.inherited.items[i].footer;
+      }
+    }
+
+    str += data.inherited.footer;
+
+    str += data.local.header;
+
+    if(data.local.items.length){
+      for(var i in data.local.items){
+        str += data.local.items[i].header;
+        if(typeof data.local.items[i].html != 'undefined'){
+          str += data.local.items[i].html;
+        }
+        str += data.local.items[i].footer;
+      }
+    }
+
+    str += data.local.footer;
+
+    str += data.footer;
+
+    return str;
+  }
+
   function parseString(val) {
       if (typeof val == 'string') {
           var lcaseVal = val.toLowerCase();
@@ -3263,7 +3310,8 @@ var Mura=(function(){
               getRequestHeaders:getRequestHeaders,
               mode: 'json',
               declareEntity:declareEntity,
-              undeclareEntity:undeclareEntity
+              undeclareEntity:undeclareEntity,
+              buildDisplayRegion:buildDisplayRegion
           }
       );
 
@@ -9315,7 +9363,24 @@ Mura.DOMSelection = Mura.Core.extend(
           this.selection[0].focus();
 
           return this;
-      }
+      },
+
+      /**
+      * processDisplayRegion - Renders and processes the display region data returned from Mura.renderFilename()
+      *
+      * @param  {any} data Region data to render
+      * @return {Promise}
+      */
+      processDisplayRegion:function(data){
+
+        if (typeof data == 'undefined' || !this.selection.length) {
+            return this.processMarkup();
+        }
+
+        this.html(Mura.buildDisplayRegion(data));
+
+        return this.processMarkup();
+     }
   });
 
 
@@ -10688,7 +10753,18 @@ Mura.Feed = Mura.Core.extend(
 		},
 
 		/**
-		 * showExcludeSearch - Sets to include the homepage
+		 * showNavOnly - Sets to include the homepage
+		 *
+		 * @param  {boolean} showNavOnly Whether to return items that have been excluded from search
+		 * @return {Mura.Feed}              Self
+		 */
+		showNavOnly: function(showNavOnly) {
+			this.queryString += '&showNavOnly=' + encodeURIComponent(showNavOnly);
+			return this;
+		},
+
+		/**
+		 * no - Sets to include the homepage
 		 *
 		 * @param  {boolean} showExcludeSearch Whether to return items that have been excluded from search
 		 * @return {Mura.Feed}              Self
