@@ -1,0 +1,54 @@
+version: '2.1'
+
+services:
+  #Mura Server
+  mura_oracle_cfml:
+    image: ortussolutions/commandbox:adobe2016
+    depends_on:
+      - mura7_1_oracle
+    environment:
+      PORT: 8080
+      SSL_PORT: 8443
+      URL_REWRITES: "true"
+      CFENGINE: adobe@2016
+      CFCONFIG_ADMINPASSWORD: NOT_SECURE_CHANGE
+      MURA_ADMIN_USERNAME: admin
+      MURA_ADMIN_PASSWORD: admin
+      MURA_ADMINEMAIL: example@localhost.com
+      MURA_APPRELOADKEY: appreload
+      MURA_DATASOURCE: muradb
+      MURA_DATABASE: mura
+      MURA_DBTYPE: oracle
+      MURA_DBTABLESPACE: APEX_2240109313515463
+      MURA_SITEIDINURLS: "false"
+      MURA_INDEXFILEINURLS: "false"
+      MURA_TESTBOX: "true"
+    volumes:
+        - ../../../:/app
+    ports:
+        - "8080:8080"
+
+  #Oracle  https://hub.docker.com/r/sath89/oracle-12c/
+  # http://localhost:8181/apex
+  #Passwords
+  # INTERNAL /ADMIN / Password1!
+  # MURA /ADMIN / Password2!
+  #     SCHEMA: mura/password
+  # ACF Datasource https://helpx.adobe.com/coldfusion/kb/configure-dsn-oracle-12c-rac.html
+  # jdbc:macromedia:oracle://mura7_1_oracle:1521;ServiceName=xe;ConnectionRetryCount=2;ConnectionRetryDelay=5;jdbcbehavior=0
+  # macromedia.jdbc.MacromediaDriver
+  # mura/password
+
+  mura7_1_oracle:
+    image: sath89/oracle-12c:latest
+    environment:
+        MYSQL_ROOT_PASSWORD: NOT_SECURE_CHANGE
+        MYSQL_DATABASE: muradb
+    volumes:
+        - mura7_1_oracle_data:/u01/app/oracle
+    ports:
+        - "1521:1521"
+        - "8181:8080"
+
+volumes:
+    mura7_1_oracle_data:
