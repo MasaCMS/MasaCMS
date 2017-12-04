@@ -1761,6 +1761,10 @@ and tclassextendattributes.type='File'
 	<cfset var relsetorder=0>
 
 	<cflock name="loadConfigXML#application.instanceID#" type="exclusive" timeout="200">
+	<cfif variables.configBean.getValue(property='readonly',defaultValue=false)>
+		<cfreturn>
+	</cfif>
+	
 	<cfif isDefined("arguments.configXML.plugin")>
 		<cfset baseElement="plugin">
 	<cfelseif isDefined("arguments.configXML.theme")>

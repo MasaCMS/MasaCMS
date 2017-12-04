@@ -49,8 +49,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="init" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
 <cfset variables.configBean=arguments.configBean />
-<cfset variables.broadcastCachePurges=variables.configBean.getValue("broadcastCachePurges")>
-<cfset variables.broadcastAppreloads=variables.configBean.getValue("broadcastAppreloads")>
+<cfset variables.broadcastClusterCommands= variables.configBean.getValue(property='broadcastClusterCommands',defaultValue=true) and not variables.configBean.getValue(property='readonly',defaultValue=false)>
+<cfset variables.broadcastCachePurges=variables.configBean.getValue("broadcastCachePurges") and variables.broadcastClusterCommands>
+<cfset variables.broadcastAppreloads=variables.configBean.getValue("broadcastAppreloads") and variables.broadcastClusterCommands>
 
 <cfreturn this />
 </cffunction>
@@ -133,49 +134,54 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="runCommands" output="false">
 	<cfset var rsCommands="">
 
-	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsCommands')#">
-		select * from tclustercommands where instanceID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#application.instanceID#">
-	</cfquery>
-
-	<cfloop query="rsCommands">
-		<cftry>
-			<cfset evaluate("#rsCommands.command#")>
-			<cfcatch>
-				<cfif isDefined('cfcatch')>
-					<cflog
-						type="error"
-						file="exception"
-						text="Cluster Communication Error -- Command: #rsCommands.command#: #serializeJSON(cfcatch)#">
-				<cfelse>
-					<cflog
-						type="error"
-						file="exception"
-						text="Cluster Communication Error -- Command: #rsCommands.command#">
-				</cfif>
-			</cfcatch>
-		</cftry>
-		<cfquery>
-			delete from tclustercommands where commandID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsCommands.commandID#">
+	<cfif variables.broadcastClusterCommands>
+		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsCommands')#">
+			select * from tclustercommands where instanceID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#application.instanceID#">
 		</cfquery>
-	</cfloop>
+
+		<cfloop query="rsCommands">
+			<cftry>
+				<cfset evaluate("#rsCommands.command#")>
+				<cfcatch>
+					<cfif isDefined('cfcatch')>
+						<cflog
+							type="error"
+							file="exception"
+							text="Cluster Communication Error -- Command: #rsCommands.command#: #serializeJSON(cfcatch)#">
+					<cfelse>
+						<cflog
+							type="error"
+							file="exception"
+							text="Cluster Communication Error -- Command: #rsCommands.command#">
+					</cfif>
+				</cfcatch>
+			</cftry>
+			<cfquery>
+				delete from tclustercommands where commandID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsCommands.commandID#">
+			</cfquery>
+		</cfloop>
+	</cfif>
 </cffunction>
 
 <cffunction name="broadcastCommand" output="false">
 	<cfargument name="command" required="true" default="">
-	<cfset var rsPeers=getPeers()>
 
-	<cfif rsPeers.recordcount>
-		<cfloop query="rsPeers">
-			<cfquery>
-				insert into tclustercommands (commandID,instanceID,command,created)
-					values(
-					'#createUUID()#',
-					<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsPeers.instanceID#">,
-					<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.command#">,
-					<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
-					)
-			</cfquery>
-		</cfloop>
+	<cfif variables.broadcastClusterCommands>
+		<cfset var rsPeers=getPeers()>
+
+		<cfif rsPeers.recordcount>
+			<cfloop query="rsPeers">
+				<cfquery>
+					insert into tclustercommands (commandID,instanceID,command,created)
+						values(
+						'#createUUID()#',
+						<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsPeers.instanceID#">,
+						<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.command#">,
+						<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
+						)
+				</cfquery>
+			</cfloop>
+		</cfif>
 	</cfif>
 
 </cffunction>
@@ -199,7 +205,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="touchInstance" output="false">
-	<cfif not hasInstance()>
+	<cfif not hasInstance() and variables.broadcastClusterCommands>
 		<cfquery>
 			insert into tclusterpeers (instanceID) values(<cfqueryparam cfsqltype="cf_sql_varchar" value="#application.instanceID#">)
 		</cfquery>
@@ -208,13 +214,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="purgeInstance" output="false">
 
-	<cfquery>
-		delete from tclusterpeers where instanceid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#application.instanceID#">
-	</cfquery>
-	<cfquery>
-		delete from tclustercommands where instanceid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#application.instanceID#">
-	</cfquery>
-
+	<cfif variables.broadcastClusterCommands>
+		<cfquery>
+			delete from tclusterpeers where instanceid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#application.instanceID#">
+		</cfquery>
+		<cfquery>
+			delete from tclustercommands where instanceid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#application.instanceID#">
+		</cfquery>
+	</cfif>
 </cffunction>
 
 <cffunction name="hasInstance" output="false">
@@ -238,18 +245,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="clearOldCommands" output="false">
-	<cfquery>
-		delete from tclusterpeers
-		where instanceid in (select instanceid from
-							tclustercommands
-							where created <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd('d',-1,now())#">
-							)
-	</cfquery>
+	<cfif variables.broadcastClusterCommands>
+		<cfquery>
+			delete from tclusterpeers
+			where instanceid in (select instanceid from
+								tclustercommands
+								where created <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd('d',-1,now())#">
+								)
+		</cfquery>
 
-	<cfquery>
-		delete from tclustercommands
-		where created <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd('d',-1,now())#">
-	</cfquery>
+		<cfquery>
+			delete from tclustercommands
+			where created <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd('d',-1,now())#">
+		</cfquery>
+	</cfif>
 </cffunction>
 
 </cfcomponent>

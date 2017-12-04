@@ -528,47 +528,49 @@ if ( application.setupComplete ) {
 
 	}
 
-	qs=new Query();
-	qs.setUsername(application.configBean.getDbUserName());
-	qs.setPassword(application.configBean.getDbPassword());
-	qs.setDatasource(application.configBean.getDatasource());
-
-	variables.legacyURLs=qs.execute(sql="select contenthistID, contentID,parentId,siteID,filename,urlTitle,filename from tcontent where type in ('File','Link')
-		and active=1
-		and body is null
-		and filename is not null").getResult();
-
-	variables.legacyURLsIterator=application.serviceFactory.getBean("contentIterator").setQuery(variables.legacyURLs);
-
-	while ( variables.legacyURLsIterator.hasNext() ) {
-		variables.item=variables.legacyURLsIterator.next();
-
+	if(!application.configBean.getValue(property='readonly',defaultValue=false)){
 		qs=new Query();
 		qs.setUsername(application.configBean.getDbUserName());
 		qs.setPassword(application.configBean.getDbPassword());
 		qs.setDatasource(application.configBean.getDatasource());
-		qs.addParam(name="contentid", cfsqltype="cf_sql_varchar", value=variables.item.getContentID() );
-		qs.addParam(name="siteid", cfsqltype="cf_sql_varchar", value=variables.item.getSiteID() );
 
-		qs.execute(sql="update tcontent set body=filename where contentID= :contentid and siteid = :siteid and body is null");
+		variables.legacyURLs=qs.execute(sql="select contenthistID, contentID,parentId,siteID,filename,urlTitle,filename from tcontent where type in ('File','Link')
+			and active=1
+			and body is null
+			and filename is not null").getResult();
 
-		application.serviceFactory.getBean("contentUtility").setUniqueFilename(variables.item);
-		try {
+		variables.legacyURLsIterator=application.serviceFactory.getBean("contentIterator").setQuery(variables.legacyURLs);
+
+		while ( variables.legacyURLsIterator.hasNext() ) {
+			variables.item=variables.legacyURLsIterator.next();
 
 			qs=new Query();
 			qs.setUsername(application.configBean.getDbUserName());
 			qs.setPassword(application.configBean.getDbPassword());
 			qs.setDatasource(application.configBean.getDatasource());
-
-			qs.addParam( name="filename",cfsqltype="cf_sql_varchar", value=variables.item.getFilename() );
-			qs.addParam(name="urltitle", cfsqltype="cf_sql_varchar", value=variables.item.getURLTitle() );
 			qs.addParam(name="contentid", cfsqltype="cf_sql_varchar", value=variables.item.getContentID() );
 			qs.addParam(name="siteid", cfsqltype="cf_sql_varchar", value=variables.item.getSiteID() );
 
-			qs.execute(sql="update tcontent set filename= :filename, urlTitle= :urltitle where contentid= :contentid and siteid= :siteid");
+			qs.execute(sql="update tcontent set body=filename where contentID= :contentid and siteid = :siteid and body is null");
 
-		} catch (any cfcatch) {
-			throw( message="An error occurred trying to create a filename for #variables.item.getFilename()#" );
+			application.serviceFactory.getBean("contentUtility").setUniqueFilename(variables.item);
+			try {
+
+				qs=new Query();
+				qs.setUsername(application.configBean.getDbUserName());
+				qs.setPassword(application.configBean.getDbPassword());
+				qs.setDatasource(application.configBean.getDatasource());
+
+				qs.addParam( name="filename",cfsqltype="cf_sql_varchar", value=variables.item.getFilename() );
+				qs.addParam(name="urltitle", cfsqltype="cf_sql_varchar", value=variables.item.getURLTitle() );
+				qs.addParam(name="contentid", cfsqltype="cf_sql_varchar", value=variables.item.getContentID() );
+				qs.addParam(name="siteid", cfsqltype="cf_sql_varchar", value=variables.item.getSiteID() );
+
+				qs.execute(sql="update tcontent set filename= :filename, urlTitle= :urltitle where contentid= :contentid and siteid= :siteid");
+
+			} catch (any cfcatch) {
+				throw( message="An error occurred trying to create a filename for #variables.item.getFilename()#" );
+			}
 		}
 	}
 	//  Clean root admin directory
