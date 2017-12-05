@@ -519,7 +519,7 @@ if ( application.setupComplete ) {
 			)
 	 ) {
 
-		if ( !directoryExists(application.configBean.getWebRoot() & "/config/appcfc") ) {
+		if (directoryExists(application.configBean.getWebRoot() & "/config/appcfc") ) {
 			directoryDelete(application.configBean.getWebRoot() & "/config/appcfc",true);
 		}
 
@@ -841,7 +841,7 @@ if ( application.setupComplete ) {
 			}
 		}
 	}
-	
+
 	//  Clean root admin directory
 	local.fileWriter=application.serviceFactory.getBean('fileWriter');
 	local.rs=local.fileWriter.getDirectoryList(expandPath('/muraWRM#application.configBean.getAdminDir()#/'));
