@@ -171,9 +171,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif isDefined("session.mura") and session.mura.isLoggedIn>
 		<cfset variables.instance.LastUpdateBy = left(session.mura.fname & " " & session.mura.lname,50) />
 		<cfset variables.instance.LastUpdateByID = session.mura.userID />
-	<cfelse>
-		<cfset variables.instance.LastUpdateBy = "" />
-		<cfset variables.instance.LastUpdateByID = "" />
+	</cfif>
+	<cfif not StructKeyExists(variables.instance, 'LastUpdateBy')>
+		<cfset variables.instance.LastUpdateBy = '' />
+	</cfif>
+	<cfif not StructKeyExists(variables.instance, 'LastUpdateByID')>
+		<cfset variables.instance.LastUpdateByID = '' />
 	</cfif>
 
 	<cfset variables.instance.Summary = "" />
