@@ -983,7 +983,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 						}
 					} else if(listFind('new,properties',pathInfo[3])){
 						params.id=pathInfo[3];
-					} else if (isDefined('application.objectmappings.#params.entityName#.remoteFunctions.#pathInfo[3]#')) {
+					} else if (isValid('variableName',pathInfo[3]) && isDefined('application.objectmappings.#params.entityName#.remoteFunctions.#pathInfo[3]#')) {
 						params.method=pathInfo[3];
 						url.method=pathInfo[3];
 
