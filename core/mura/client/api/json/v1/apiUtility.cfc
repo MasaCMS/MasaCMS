@@ -882,7 +882,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 								result=findCrumbArray(argumentCollection=params);
 								return serializeResponse(statusCode=200,response={'apiversion'=getApiVersion(),'method'='findCrumbArray','params'=getParamsWithOutMethod(params),'data'=result});
 
-							} else if (isDefined('application.objectmappings.#params.entityName#.remoteFunctions.#pathInfo[4]#')) {
+							} else if (isValid('variableName',pathInfo[4]) && isDefined('application.objectmappings.#params.entityName#.remoteFunctions.#pathInfo[4]#')) {
 								params.method=pathInfo[4];
 								url.method=pathInfo[4];
 								var entity=getBean(params.entityName);
