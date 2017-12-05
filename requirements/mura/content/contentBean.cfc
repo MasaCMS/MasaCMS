@@ -169,9 +169,13 @@ component extends="mura.bean.beanExtendable" entityName="content" table="tconten
 		if ( isDefined("sessionData.mura") && sessionData.mura.isLoggedIn ) {
 			variables.instance.LastUpdateBy = left(sessionData.mura.fname & " " & sessionData.mura.lname,50);
 			variables.instance.LastUpdateByID = sessionData.mura.userID;
-		} else {
-			variables.instance.LastUpdateBy = "";
-			variables.instance.LastUpdateByID = "";
+		}
+		// allow for these settings to be set programmatically
+		if ( !StructKeyExists(variables.instance, 'LastUpdateBy') ) {
+			variables.instance.LastUpdateBy = '';
+		}
+		if ( !StructKeyExists(variables.instance, 'LastUpdateByID') ) {
+			variables.instance.LastUpdateByID = '';
 		}
 		variables.instance.Summary = "";
 		variables.instance.SiteID = "";
@@ -412,9 +416,13 @@ component extends="mura.bean.beanExtendable" entityName="content" table="tconten
 			if ( isDefined("sessionData.mura") && sessionData.mura.isLoggedIn ) {
 				variables.instance.LastUpdateBy = left(sessionData.mura.fname & " " & sessionData.mura.lname,50);
 				variables.instance.LastUpdateByID = sessionData.mura.userID;
-			} else {
-				variables.instance.LastUpdateBy = "";
-				variables.instance.LastUpdateByID = "";
+			}
+			// allow for these settings to be set programmatically
+			if ( !StructKeyExists(variables.instance, 'LastUpdateBy') ) {
+				variables.instance.LastUpdateBy = '';
+			}
+			if ( !StructKeyExists(variables.instance, 'LastUpdateByID') ) {
+				variables.instance.LastUpdateByID = '';
 			}
 		}
 
