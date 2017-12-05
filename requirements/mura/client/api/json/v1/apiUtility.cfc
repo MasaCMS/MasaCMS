@@ -731,7 +731,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 								result=findCrumbArray(argumentCollection=params);
 								return serializeResponse(statusCode=200,response={'apiversion'=getApiVersion(),'method'='findCrumbArray','params'=getParamsWithOutMethod(params),'data'=result});
 
-							} else if (isDefined('application.objectmappings.#params.entityName#.remoteFunctions.#pathInfo[4]#')) {
+							} else if (isValid('variableName',pathInfo[4]) && isDefined('application.objectmappings.#params.entityName#.remoteFunctions.#pathInfo[4]#')) {
 								params.method=pathInfo[4];
 								url.method=pathInfo[4];
 								var entity=getBean(params.entityName);
@@ -832,7 +832,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 						}
 					} else if(listFind('new,properties',pathInfo[3])){
 						params.id=pathInfo[3];
-					} else if (isDefined('application.objectmappings.#params.entityName#.remoteFunctions.#pathInfo[3]#')) {
+					} else if (isValid('variableName',pathInfo[3]) && isDefined('application.objectmappings.#params.entityName#.remoteFunctions.#pathInfo[3]#')) {
 						params.method=pathInfo[3];
 						url.method=pathInfo[3];
 
