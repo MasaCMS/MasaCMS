@@ -10760,6 +10760,18 @@ Mura.Feed = Mura.Core.extend(
 		},
 
 		/**
+		 * expand - Sets which linked properties to return expanded values
+		 *
+		 * @param  {string} expand List of properties to expand, use 'all' for all.
+		 * @return {Mura.Feed}              Self
+		 */
+		expand: function(expand) {
+			expand = expand || 'all';
+			this.queryString += '&expand=' + encodeURIComponent(expand);
+			return this;
+		},
+
+		/**
 		 * no - Sets to include the homepage
 		 *
 		 * @param  {boolean} showExcludeSearch Whether to return items that have been excluded from search
