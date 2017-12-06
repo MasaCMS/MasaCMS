@@ -10821,8 +10821,20 @@ Mura.Feed = Mura.Core.extend(
 		 * Query - Return Mura.EntityCollection fetched from JSON API
 		 * @return {Promise}
 		 */
-		getQuery: function() {
+		getQuery: function(params) {
 			var self = this;
+
+			if(typeof params != 'undefined'){
+				for(var p in params){
+					if(params.hasOwnProperty(p)){
+						if(typeof self[p] == 'function'){
+							self[p](params[p]);
+						} else {
+							self.andProp(p).isEQ(params[p]);
+						}
+					}
+				}
+			}
 
 			return new Promise(function(resolve, reject) {
 				if (Mura.apiEndpoint.charAt(Mura.apiEndpoint.length - 1) == "/") {
