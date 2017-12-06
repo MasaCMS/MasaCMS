@@ -3340,7 +3340,7 @@ Display Objects
 	}
 
 	public function outputMuraCSS(includeskin=true, version='7.1', complete=false, useProtocol=true) {
-		if ( !FileExists('/muraWRM/core/modules/v1/core_assets/css/mura.' & arguments.version & '.min.css') ) {
+		if ( !fileExists(expandPath('/muraWRM/core/modules/v1/core_assets/css/mura.' & arguments.version & '.min.css')) ) {
 			arguments.version = '7.0';
 		}
 		var corePath=variables.$.siteConfig().getCorePath(complete=arguments.complete, useProtocol=arguments.useProtocol);
