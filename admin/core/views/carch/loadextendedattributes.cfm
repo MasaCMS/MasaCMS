@@ -94,10 +94,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfif>
 				</label>
 				<div class="controls">
-					<cfif attributeBean.getAdminOnly() and (not $.currentUser().isSuperUser() and not $.currentUser().isAdminUser())>
-						#attributeBean.renderAttribute(theValue=attributeValue,bean=contentBean,compactDisplay=rc.compactDisplay,size='medium', readonly=true)#
-					<cfelse>
-						#attributeBean.renderAttribute(theValue=attributeValue,bean=contentBean,compactDisplay=rc.compactDisplay,size='medium')#
+					<cfset readonly = attributeBean.getAdminOnly() and (not $.currentUser().isSuperUser() and not $.currentUser().isAdminUser()) />
+					#attributeBean.renderAttribute(theValue=attributeValue,bean=contentBean,compactDisplay=rc.compactDisplay,size='medium', readonly=readonly)#
+					<cfif not readonly>
 						<cfif attributeBean.getValidation() eq "URL">
 							<cfif len(application.serviceFactory.getBean('settingsManager').getSite(session.siteid).getRazunaSettings().getHostname())>
 								<div class="btn-group">
