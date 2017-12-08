@@ -59,11 +59,7 @@
 if(typeof $ != 'undefined'){
 	$(function(){
 		Mura.loader()
-		.loadcss("#variables.$.globalConfig('corepath')#/vendor/prettify/themes/tomorrow-night.min.css")
-		.loadjs("#variables.$.globalConfig('corepath')#/vendor/prettify/prettify.min.js",
-		function(){
-			!function($){$(function(){window.prettyPrint && prettyPrint()});}(window.jQuery)
-		});
+		.loadjs("#variables.$.globalConfig('corepath')#/vendor/prettify/run_prettify.js");
 	});
 }
 </script>

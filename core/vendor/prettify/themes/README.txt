@@ -1,1 +1,0 @@
-Prettify Themes - http://jmblog.github.io/color-themes-for-google-code-prettify/
