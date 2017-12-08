@@ -56,9 +56,11 @@ component extends="mura.cfobject" output="false" hint="This is used by advanced 
 
 		variables.cacheName=arguments.siteID & "-" & arguments.name;
 
-        if(!cacheRegionExists(variables.cacheName) ) {
+		/*
+    if(!cacheRegionExists(variables.cacheName) ) {
 			cacheRegionNew(variables.cacheName);
 		}
+		*/
 
 		return this;
 	}
