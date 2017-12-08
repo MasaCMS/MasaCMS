@@ -258,6 +258,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfcase value="manual,entered">
 				<cfreturn arguments.dataset />
 			</cfcase>
+			<cfcase value="remote">
+                <cfhttp url="#dataset.source#" result="srcData" >
+
+				<cfif isJSON(srcData.filecontent)>
+                    <cfset arguments.dataset = deserializeJSON(srcData.filecontent) />
+                </cfif>
+
+                <cfreturn arguments.dataset />
+            </cfcase>
 			<cfcase value="muraorm">
 
 				<cfset dataBean = $.getBean( arguments.dataset.source ) />
