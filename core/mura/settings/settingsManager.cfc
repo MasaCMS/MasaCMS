@@ -642,10 +642,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfcatch>
 		<cflog type="Error"
-	    file="mura_bundle"
+	    file="exception"
 	    text="#serializeJSON(cfcatch)#">
 
-		<cfset arguments.errors.message="The bundle was not successfully imported:<br/>ERROR (Full Details Available in 'mura_bundle' Log)<br/>: " & cfcatch.message>
+		<cfset arguments.errors.message="The bundle was not successfully imported:<br/>ERROR (Full Details Available in 'exception' Log)<br/>: " & cfcatch.message>
 		<cfif findNoCase("duplicate",errors.message)>
 			<cfset arguments.errors.message=arguments.errors.message & "<br/>HINT: This error is most often caused by 'Maintaining Keys' when the bundle data already exists within another site in the current Mura instance.">
 		</cfif>
