@@ -958,7 +958,7 @@ Blog: www.codfusion.com--->
 			var secret = $.siteConfig('reCAPTCHASecret');
 
 			if ( Len(secret) && StructKeyExists(form, 'g-recaptcha-response') && Len(form['g-recaptcha-response']) ) {
-				var reCaptcha = new mura.reCaptcha(secret);
+				var reCaptcha = new mura.reCAPTCHA(secret);
 				var verified = reCaptcha.verifyResponse(response=form['g-recaptcha-response'], remoteid=request.remoteAddr);
 			}
 
