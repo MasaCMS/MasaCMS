@@ -71,5 +71,5 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfoutput>
 </ul>
 <cfelseif attributes.parentID eq ''>
-<cfoutput><div class="help-block-empty">#application.rbFactory.getKeyValue(session.rb,'user.nointerestcategories')#</div></cfoutput>
+<cfoutput><div class="help-block-empty">#rc.$.rbKey('user.nointerestcategories')#</div></cfoutput>
 </cfif> 
