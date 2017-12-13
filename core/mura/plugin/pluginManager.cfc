@@ -2862,7 +2862,7 @@ select * from tplugins order by #arguments.orderby#
 
 <cffunction name="renderAdminTemplate" output="false">
 <cfargument name="body">
-<cfargument name="pageTitle">
+<cfargument name="pageTitle" default="">
 <cfargument name="jsLib" required="true" default="jquery">
 <cfargument name="jsLibLoaded" required="true" default="true">
 <cfargument name="compactDisplay" required="false" default="false" />

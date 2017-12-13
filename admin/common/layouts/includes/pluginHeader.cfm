@@ -83,11 +83,11 @@ function toggleAdminToolbar(){
 	<img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/mura-logo-fe@2x.png" id="frontEndToolsHandle" onclick="if (document.getElementById('frontEndTools').style.display == 'none') { createCookie('FETDISPLAY','',5); } else { createCookie('FETDISPLAY','none',5); } toggleAdminToolbar();" />
 	<div id="frontEndTools" class="pluginHdr" style="display: #Cookie.fetDisplay#">
 			<ul>
-				<li id="adminPlugIns"><a href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cPlugins.list&siteid=#session.siteid#"><i class="mi-cogs"></i> #application.rbFactory.getKeyValue(session.rb,"layout.plugins")#</a></li>
-				<li id="adminSiteManager"><a href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cArch.list&siteid=#session.siteid#&moduleid=00000000000000000000000000000000000&topid=00000000000000000000000000000000001"><i class="mi-sitemap"></i> #application.rbFactory.getKeyValue(session.rb,"layout.sitemanager")#</a></li>
-				<li id="adminDashboard"><a href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cDashboard.main&siteid=#session.siteid#&span=#session.dashboardSpan#"><i class="mi-dashboard"></i> #application.rbFactory.getKeyValue(session.rb,"layout.dashboard")#</a></li>
-				<li id="adminLogOut"><a href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cLogin.logout"><i class="mi-sign-out"></i> #application.rbFactory.getKeyValue(session.rb,"layout.logout")#</a></li>
-				<li id="adminWelcome">#application.rbFactory.getKeyValue(session.rb,"layout.welcome")#, #esapiEncode("html","#session.mura.fname# #session.mura.lname#")#.</li>
+				<li id="adminPlugIns"><a href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cPlugins.list&siteid=#session.siteid#"><i class="mi-cogs"></i> #rc.$.rbKey("layout.plugins")#</a></li>
+				<li id="adminSiteManager"><a href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cArch.list&siteid=#session.siteid#&moduleid=00000000000000000000000000000000000&topid=00000000000000000000000000000000001"><i class="mi-sitemap"></i> #rc.$.rbKey("layout.sitemanager")#</a></li>
+				<li id="adminDashboard"><a href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cDashboard.main&siteid=#session.siteid#&span=#session.dashboardSpan#"><i class="mi-dashboard"></i> #rc.$.rbKey("layout.dashboard")#</a></li>
+				<li id="adminLogOut"><a href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cLogin.logout"><i class="mi-sign-out"></i> #rc.$.rbKey("layout.logout")#</a></li>
+				<li id="adminWelcome">#rc.$.rbKey("layout.welcome")#, #esapiEncode("html","#session.mura.fname# #session.mura.lname#")#.</li>
 			</ul>
 		</div>
 </cfoutput>

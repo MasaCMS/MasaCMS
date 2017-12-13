@@ -313,7 +313,7 @@
      					<div class="alert alert-error">
      						<span>
 			           	<a href="##" data-alertid="defaultpasswordnotice" class="close alert-dismiss" data-dismiss="alert"><i class="mi-close"></i></a>
-     						#application.rbFactory.getKeyValue(session.rb,"layout.defaultpasswordnotice")#
+     						#rc.$.rbKey("layout.defaultpasswordnotice")#
      						</span>
 							</div>
 	     			</cfif>
@@ -324,7 +324,7 @@
 			           	<div class="alert alert-warning">
 		     						<span>
 					           	<a href="##" data-alertid="cachenotice" class="close alert-dismiss" data-dismiss="alert"><i class="mi-close"></i></a>
-			           		#application.rbFactory.getKeyValue(session.rb,"layout.cachenotice")#
+			           		#rc.$.rbKey("layout.cachenotice")#
 		     						</span>
 			           </div>
 		           	</cfif>
