@@ -50,11 +50,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="configBean" type="any" required="yes" />
 	<cfargument name="contentIntervalManager" type="any" required="yes" />
 	<cfargument name="permUtility" type="any" required="yes" />
+	<cfargument name="utility" type="any" required="yes" />
 
 	<cfset variables.configBean=arguments.configBean />
 	<cfset variables.classExtensionManager=variables.configBean.getClassExtensionManager()>
 	<cfset variables.contentIntervalManager=arguments.contentIntervalManager>
-	<cfset variables.permUtility=arguments.permUtility>
+	<cfset variables.utility=arguments.utility>
 	<cfreturn this />
 </cffunction>
 
@@ -161,8 +162,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfif not isdate(nowAdjusted)>
-		<cfset nowAdjusted=createDateTime(year(now()),month(now()),day(now()),hour(now()),int((minute(now())/5)*5),0)>
+			<cfset nowAdjusted=now()>
 	</cfif>
+
+	<cfset nowAdjusted=variables.utility.datetimeToTimespanInterval(nowAdjusted,arguments.feedBean.getCachedWithin())>
 
 	<cfif not(isDate(arguments.from) and isDate(arguments.to))>
 		<cfset arguments.from=nowAdjusted>
