@@ -89,7 +89,7 @@
                     </cfif>
                     <!--- Content --->
                     <li>
-                      <a id="navContentAdmin" <cfif rc.originalcircuit eq 'carch' or rc.originalcircuit eq 'scaffold' or rc.originalcircuit eq 'cform' or (rc.originalcircuit eq 'cperm' and (rc.originalfuseaction eq 'main' or rc.moduleid eq '00000000000000000000000000000000016' or rc.moduleid eq '00000000000000000000000000000000000' ))> class="active"</cfif> href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cArch.list&amp;siteid=#esapiEncode('url',session.siteid)#"><i class="mi-edit"></i><span class="sidebar-mini-hide">#application.rbFactory.getKeyValue(session.rb,"layout.contentmanager")#</span></a>
+                      <a id="navContentAdmin" <cfif rc.originalcircuit eq 'carch' or rc.originalcircuit eq 'scaffold' or rc.originalcircuit eq 'cform' or (rc.originalcircuit eq 'cperm' and (rc.originalfuseaction eq 'main' or rc.moduleid eq '00000000000000000000000000000000016' or rc.moduleid eq '00000000000000000000000000000000000' ))> class="active"</cfif> href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cArch.list&amp;siteid=#esapiEncode('url',session.siteid)#"><i class="mi-edit"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.contentmanager")#</span></a>
                     </li>
                     <cfif structKeyExists(rc,'$')>
                         #rc.$.renderEvent('onAdminNavMainRender')#
@@ -99,20 +99,20 @@
                     <cfif isNumeric(application.settingsManager.getSite(session.siteid).getValue("HasChangesets"))
                       and application.settingsManager.getSite(session.siteid).getHasChangesets() and application.permUtility.getModulePerm("00000000000000000000000000000000014",session.siteid)>
                     <li>
-                    <a<cfif rc.originalcircuit eq 'cChangesets' or (rc.originalcircuit eq 'cperm' and rc.moduleid eq '00000000000000000000000000000000014')> class="active"</cfif> href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cChangesets.list&amp;siteid=#session.siteid#"><i class="mi-clone"></i><span class="sidebar-mini-hide">#application.rbFactory.getKeyValue(session.rb,"layout.changesets")#</span></a>
+                    <a<cfif rc.originalcircuit eq 'cChangesets' or (rc.originalcircuit eq 'cperm' and rc.moduleid eq '00000000000000000000000000000000014')> class="active"</cfif> href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cChangesets.list&amp;siteid=#session.siteid#"><i class="mi-clone"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.changesets")#</span></a>
                     </li>
                     </cfif>
                     <!--- /Change Sets --->
                     <!--- Comments --->
                     <cfif isBoolean(application.settingsManager.getSite(session.siteid).getHasComments()) and application.settingsManager.getSite(session.siteid).getHasComments() and application.permUtility.getModulePerm("00000000000000000000000000000000015",session.siteid)>
                       <li>
-                        <a<cfif rc.originalcircuit eq 'cComments' or (rc.originalcircuit eq 'cperm' and rc.moduleid eq '00000000000000000000000000000000015')> class="active"</cfif> href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cComments.default&amp;siteid=#session.siteid#"><i class="mi-comments"></i><span class="sidebar-mini-hide">#application.rbFactory.getKeyValue(session.rb,'layout.comments')#</span></a>
+                        <a<cfif rc.originalcircuit eq 'cComments' or (rc.originalcircuit eq 'cperm' and rc.moduleid eq '00000000000000000000000000000000015')> class="active"</cfif> href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cComments.default&amp;siteid=#session.siteid#"><i class="mi-comments"></i><span class="sidebar-mini-hide">#rc.$.rbKey('layout.comments')#</span></a>
                       </li>
                     </cfif>
                     <!---- /Comments --->
                     <!--- Categories --->
                     <cfif application.permUtility.getModulePerm("00000000000000000000000000000000010",session.siteid)>
-                      <li><a<cfif (rc.originalcircuit eq 'cPerm' and rc.moduleid eq '00000000000000000000000000000000010') or rc.originalcircuit eq 'cCategory'> class="active"</cfif> href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cCategory.list&amp;siteid=#session.siteid#"><i class="mi-th"></i><span class="sidebar-mini-hide">#application.rbFactory.getKeyValue(session.rb,"layout.categories")#</span></a>
+                      <li><a<cfif (rc.originalcircuit eq 'cPerm' and rc.moduleid eq '00000000000000000000000000000000010') or rc.originalcircuit eq 'cCategory'> class="active"</cfif> href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cCategory.list&amp;siteid=#session.siteid#"><i class="mi-th"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.categories")#</span></a>
                       </li>
                     </cfif>
                     <!--- /Categories --->
@@ -120,18 +120,18 @@
                     <cfif application.settingsManager.getSite(session.siteid).getHasFeedManager() and application.permUtility.getModulePerm("00000000000000000000000000000000011",session.siteid)>
                       <li>
                         <a<cfif  rc.originalcircuit eq 'cFeed' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000011')> class="active"</cfif> href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cFeed.list&amp;siteid=#session.siteid#">
-                          <i class="mi-list"></i><span class="sidebar-mini-hide">#application.rbFactory.getKeyValue(session.rb,"layout.contentcollections")#</span></a>
+                          <i class="mi-list"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.contentcollections")#</span></a>
                       </li>
                     </cfif>
                     <!--- /Content Collections --->
                     <!--- File Manager --->
                     <li>
-                    <a<cfif rc.originalcircuit eq 'cFilemanager'> class="active"</cfif> href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cFilemanager.default&amp;siteid=#session.siteid#"><i class="mi-folder-open"></i><span class="sidebar-mini-hide">#application.rbFactory.getKeyValue(session.rb,"layout.filemanager")#</span></a>
+                    <a<cfif rc.originalcircuit eq 'cFilemanager'> class="active"</cfif> href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cFilemanager.default&amp;siteid=#session.siteid#"><i class="mi-folder-open"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.filemanager")#</span></a>
                     </li>
                     <!--- /File Manager --->
                     <!--- Advertising, this is not only available in certain legacy situations --->
                       <cfif application.settingsManager.getSite(session.siteid).getAdManager() and  application.permUtility.getModulePerm("00000000000000000000000000000000006",session.siteid)>
-                        <li><a<cfif rc.originalcircuit eq 'cAdvertising' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000006')> class="active"</cfif> href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cAdvertising.listAdvertisers&amp;siteid=#session.siteid#&amp;moduleid=00000000000000000000000000000000006"><i class="mi-cog"></i><span class="sidebar-mini-hide">#application.rbFactory.getKeyValue(session.rb,"layout.advertising")#</span></a>
+                        <li><a<cfif rc.originalcircuit eq 'cAdvertising' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000006')> class="active"</cfif> href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cAdvertising.listAdvertisers&amp;siteid=#session.siteid#&amp;moduleid=00000000000000000000000000000000006"><i class="mi-cog"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.advertising")#</span></a>
                         </li>
                       </cfif>
                     <!--- /Advertising --->
@@ -139,14 +139,14 @@
                       <cfif application.settingsManager.getSite(session.siteid).getemailbroadcaster() and  application.permUtility.getModulePerm("00000000000000000000000000000000005",session.siteid)>
                         <li>
                           <a<cfif rc.originalcircuit eq 'cEmail' or (rc.originalcircuit eq 'cPerm' and rc.moduleid eq '00000000000000000000000000000000005')> class="active"</cfif> href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cEmail.list&amp;siteid=#session.siteid#">
-                            <i class="mi-cog"></i><span class="sidebar-mini-hide">#application.rbFactory.getKeyValue(session.rb,"layout.emailbroadcaster")#</span></a>
+                            <i class="mi-cog"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.emailbroadcaster")#</span></a>
                         </li>
                       </cfif>
                     <!--- /Email Broadcaster --->
                     <!--- Mailing Lists --->
                       <cfif application.settingsManager.getSite(session.siteid).getemailbroadcaster() and  application.permUtility.getModulePerm("00000000000000000000000000000000009",session.siteid)>
                         <li>
-                          <a<cfif rc.originalcircuit eq 'cMailingList' or (rc.originalcircuit eq 'cPerm' and rc.moduleid eq '00000000000000000000000000000000009')> class="active"</cfif> href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cMailingList.list&amp;siteid=#session.siteid#"><i class="mi-cog"></i><span class="sidebar-mini-hide">#application.rbFactory.getKeyValue(session.rb,"layout.mailinglists")#</span></a>
+                          <a<cfif rc.originalcircuit eq 'cMailingList' or (rc.originalcircuit eq 'cPerm' and rc.moduleid eq '00000000000000000000000000000000009')> class="active"</cfif> href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cMailingList.list&amp;siteid=#session.siteid#"><i class="mi-cog"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.mailinglists")#</span></a>
                         </li>
                       </cfif>
                     <!--- /Mailing Lists --->
@@ -180,7 +180,7 @@
                       <cfif rc.rsplugins.recordcount or listFind(session.mura.memberships,'S2')>
                         <li class="divider"></li>
                         <li  id="admin-plugin-manager"<cfif rc.originalcircuit eq 'cPlugins'> class="open"</cfif>>
-                          <a class="nav-submenu<cfif rc.originalcircuit eq 'cPlugins'> active</cfif>" data-toggle="nav-submenu" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cPlugins.list&amp;siteid=#session.siteid#"><i class="mi-plug"></i><span class="sidebar-mini-hide">#application.rbFactory.getKeyValue(session.rb,"layout.plugins")#</span></a>
+                          <a class="nav-submenu<cfif rc.originalcircuit eq 'cPlugins'> active</cfif>" data-toggle="nav-submenu" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cPlugins.list&amp;siteid=#session.siteid#"><i class="mi-plug"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.plugins")#</span></a>
                           <ul>
                             <li>
                               <a class="<cfif rc.originalcircuit eq 'cplugins' and rc.originalfuseaction eq 'list'> active</cfif>" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cPlugins.list&amp;siteid=#session.siteid#"><i class="mi-plug"></i><span class="sidebar-mini-hide">Site Plugins</span></a>
@@ -196,7 +196,7 @@
                                 <li class="divider"></li>
                               </cfif>
                               <li>
-                                <a href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cSettings.list&plugins##tabPlugins"><i class="mi-plus-circle"></i><span class="sidebar-mini-hide">#application.rbFactory.getKeyValue(session.rb,"layout.addplugin")#</span></a>
+                                <a href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cSettings.list&plugins##tabPlugins"><i class="mi-plus-circle"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.addplugin")#</span></a>
                               </li>
                             </cfif>
                             <!--- /Add Plugin --->
