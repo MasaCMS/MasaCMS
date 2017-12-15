@@ -262,6 +262,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset setDefaultLocale(arguments.config.locale)>
 	<cfset setServerPort(arguments.config.port)>
 
+	<cfif not len(getAssetPath())>
+		<cfset setAssetPath(getSiteAssetPath())/>
+	</cfif>
+
 	<cfif not len(variables.instance.tempDir)>
 		<cfset variables.instance.tempDir=getTempDirectory()>
 	</cfif>
