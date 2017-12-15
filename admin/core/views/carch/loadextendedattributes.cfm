@@ -111,7 +111,7 @@
 
 								#attributeBean.renderAttribute(theValue=attributeValue, bean=contentBean, compactDisplay=rc.compactDisplay, size='medium', readonly=readonly)#
 
-								<cfif attributeBean.getType() neq 'Hidden' and not readonly and attributeBean.getValidation() eq "URL">
+								<cfif not readonly and attributeBean.getValidation() eq "URL">
 									<cfif len(application.serviceFactory.getBean('settingsManager').getSite(session.siteid).getRazunaSettings().getHostname())>
 										<div class="btn-group">
 											<a class="btn dropdown-toggle" data-toggle="dropdown" href="##">
