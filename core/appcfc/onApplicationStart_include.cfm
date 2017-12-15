@@ -510,6 +510,15 @@ if ( application.setupComplete ) {
 		} catch (any cfcatch) {}
 		commitTracePoint(variables.tracePoint);
 	}
+	
+	if (directoryExists(application.configBean.getWebRoot() & "/resource_bundles") && !fileExists(application.configBean.getWebRoot() & "/resource_bundles/Application.cfc") ) {
+		variables.tracePoint=initTracePoint("Writing resource_bundles/Application.cfc");
+		fileCopy("#application.configBean.getWebRoot()#/core/templates/Application.cfc","#application.configBean.getWebRoot()#/resource_bundles/Application.cfc");
+		try {
+			fileSetAccessMode("#application.configBean.getWebRoot()#/resource_bundles/Application.cfc","777");
+		} catch (any cfcatch) {}
+		commitTracePoint(variables.tracePoint);
+	}
 
 	if (
 		fileExists(application.configBean.getWebRoot() & "/config/appcfc/onApplicationStart_method.cfm")
