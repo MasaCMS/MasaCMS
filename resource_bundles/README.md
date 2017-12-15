@@ -10,21 +10,21 @@ The file itself is comprised of key-value pairs. The keys remain the same throug
 
 Mura automatically searches for resource bundles under specific&nbsp;directories, and uses the key-value pair(s) found in the order outlined below. If a `resource_bundles` directory does not exist in the following locations, you may safely create one, and place your resource bundle files there.
 
-    * **Module**
-        * `../{module}/resource_bundles/`
-        * Module (aka "Display Object") resource bundles are used for the specified module itself.
-    * **Theme**
-        * `../{ThemeName}/resource_bundles/`
-        * Theme resource bundles are only used when the specified theme is actively assigned to a site.
-    * **Site**
-        * `{context}/sites/{SiteName}/resource_bundles/`
-        * Site resource bundles are shared across all themes within the specified site.
-    * **Global**
-        * `{context}/resource_bundles/`
-        * Global resource bundles are shared across all sites under a single Mura instance.
-    * **Core Modules**
-        * `{context}/core/modules/v1/core_assets/resource_bundles/`
-        * If the requested key-value pair is not found in any of the locations above, Mura will use the default resource bundles located here for Mura's modules.
+* **Module**
+    * `../{module}/resource_bundles/`
+    * Module (aka "Display Object") resource bundles are used for the specified module itself.
+* **Theme**
+    * `../{ThemeName}/resource_bundles/`
+    * Theme resource bundles are only used when the specified theme is actively assigned to a site.
+* **Site**
+    * `{context}/sites/{SiteName}/resource_bundles/`
+    * Site resource bundles are shared across all themes within the specified site.
+* **Global**
+    * `{context}/resource_bundles/`
+    * Global resource bundles are shared across all sites under a single Mura instance.
+* **Core Modules**
+    * `{context}/core/modules/v1/core_assets/resource_bundles/`
+    * If the requested key-value pair is not found in any of the locations above, Mura will use the default resource bundles located here for Mura's modules.
 
 ### Note
 Admin-area resource bundles are stored under `{context}/core/mura/resourceBundle/resources/`. However, as of v7.1, many key-value pairs are not able to be overwritten using the technique described above at this time. Allowing for this option is under consideration for a future version.
