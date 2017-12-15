@@ -60,8 +60,11 @@
 <cffunction name="standardEnableLockdownHandler" output="false">
 	<cfargument name="event" required="true">
 
-	<cfinclude template="/muraWRM/core/templates/lockdown.cfm">
-
+	<cfif fileExists(expandPath('/muraWRM/config/templates/lockdown.cfm'))>
+		<cfinclude template="/muraWRM/config/templates/lockdown.cfm">
+	<cfelse>
+		<cfinclude template="/muraWRM/core/templates/lockdown.cfm">
+	</cfif>
 </cffunction>
 
 <cffunction name="standardWrongDomainHandler" output="false">
@@ -911,7 +914,7 @@
 				result.initjs=variationTargeting.getInitJS();
 				result.targetingjs=variationTargeting.getTargetingJS();
 			}
-			
+
 			$.event('__MuraResponse__',apiUtility.serializeResponse(response={'apiversion'=apiUtility.getApiVersion(),'method'='findOne','params'={filename=result.filename,siteid=result.siteid,rendered=true},data=result},statuscode=200));
 
 		} catch (any e){
