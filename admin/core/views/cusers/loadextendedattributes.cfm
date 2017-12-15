@@ -32,7 +32,7 @@
 	 /admin/
 	 /tasks/
 	 /config/
-	 /requirements/mura/
+	 /core/mura/
 	 /Application.cfc
 	 /index.cfm
 	 /MuraProxy.cfc
@@ -47,145 +47,162 @@
 --->
 
 <cfsilent>
-<cfset request.layout=false>
-<cfset returnsets=structNew()>
-<cfif isDefined("session.mura.editBean") and isInstanceOf(session.mura.editBean, "mura.user.userBean") and session.mura.editBean.getUserID() eq rc.baseID>
-	<cfset userBean=session.mura.editBean>
-<cfelse>
-	<cfset userBean=application.userManager.read(userid=rc.baseID, siteid=rc.siteid)/>
-</cfif>
-<cfset structDelete(session.mura,"editBean")>
-<cfset extendSets=application.classExtensionManager.getSubTypeByName(rc.type,rc.subtype,rc.siteid).getExtendSets(inherit=true,container="Default",activeOnly=true) />
-<!---
-<cfif userBean.getType() eq 2>
+	<cfset request.layout=false />
+	<cfset returnsets=structNew() />
+	<cfif isDefined("session.mura.editBean") and isInstanceOf(session.mura.editBean, "mura.user.userBean") and session.mura.editBean.getUserID() eq rc.baseID>
+		<cfset userBean=session.mura.editBean />
+	<cfelse>
+		<cfset userBean=application.userManager.read(userid=rc.baseID, siteid=rc.siteid) />
+	</cfif>
+	<cfset structDelete(session.mura,"editBean") />
+	<cfset extendSets=application.classExtensionManager.getSubTypeByName(rc.type,rc.subtype,rc.siteid).getExtendSets(inherit=true,container="Default",activeOnly=true) />
 	<cfset started=false />
-<cfelse>
-	<cfset started=true />
-</cfif
---->
-<cfset started=false />
-<cfset style="" />
+	<cfset style="" />
 </cfsilent>
 <cfsavecontent variable="returnsets.extended">
-<cfoutput>
-<cfif arrayLen(extendSets)>
-<cfloop from="1" to="#arrayLen(extendSets)#" index="s">
-<cfset extendSetBean=extendSets[s]/>
-<cfif  userBean.getType() eq 2><cfset style=extendSetBean.getStyle()/><cfif not len(style)><cfset started=true/></cfif></cfif>
-	<span class="extendset" extendsetid="#extendSetBean.getExtendSetID()#" categoryid="#extendSetBean.getCategoryID()#" #style#>
-	<input name="extendSetID" type="hidden" value="#extendSetBean.getExtendSetID()#"/>
-		<h2>#extendSetBean.getName()#</h2>
-	<cfsilent>
-	<cfset attributesArray=extendSetBean.getAttributes() />
-	</cfsilent>
-	<cfloop from="1" to="#arrayLen(attributesArray)#" index="a">
-		<cfset attributeBean=attributesArray[a]/>
-		<cfset attributeValue=userBean.getvalue(attributeBean.getName(),'useMuraDefault') />
-		<div class="mura-control-group">
-			<label>
-				<cfif len(attributeBean.getHint())>
-					<span data-toggle="popover" title="" data-placement="right"
-					data-content="#esapiEncode('html_attr',attributeBean.getLabel())#"
-					data-original-title="#esapiEncode('html_attr',attributeBean.gethint())#">
-						#attributeBean.getLabel()# <i class="mi-question-circle"></i>
-					</span>
-				<cfelse>
-					#esapiEncode('html',attributeBean.getLabel())#
-				</cfif>
-			</label>
+	<cfoutput>
+		<cfif arrayLen(extendSets)>
+			<cfloop from="1" to="#arrayLen(extendSets)#" index="s">
+				<cfset extendSetBean=extendSets[s]/>
+				<cfif  userBean.getType() eq 2><cfset style=extendSetBean.getStyle()/><cfif not len(style)><cfset started=true/></cfif></cfif>
+				<span class="extendset" extendsetid="#extendSetBean.getExtendSetID()#" categoryid="#extendSetBean.getCategoryID()#" #style#>
+					<input name="extendSetID" type="hidden" value="#extendSetBean.getExtendSetID()#" />
+					<h2>#esapiEncode('html', extendSetBean.getName())#</h2>
+					<cfsilent>
+						<cfset attributesArray=extendSetBean.getAttributes() />
+					</cfsilent>
+					<cfloop from="1" to="#arrayLen(attributesArray)#" index="a">
+						<cfset attributeBean=attributesArray[a] />
+						<cfset attributeValue=userBean.getvalue(attributeBean.getName(), 'useMuraDefault') />
+						<cfset readonly = attributeBean.getAdminOnly() and (not $.currentUser().isSuperUser() and not $.currentUser().isAdminUser()) />
 
-			#attributeBean.renderAttribute(theValue=attributeValue,bean=userBean,compactDisplay=rc.compactDisplay,size='medium')#
+						<!--- 
+							Hidden attributes should be editable via the back-end Admin area
+						--->
+						<cfif attributeBean.getType() eq 'Hidden'>
+							<cfset attributeBean.setType('TextBox') />
+						</cfif>
 
-			<cfif attributeBean.getValidation() eq "URL">
-				<cfif len(application.serviceFactory.getBean('settingsManager').getSite(session.siteid).getRazunaSettings().getHostname())>
-					<div class="btn-group">
-						<a class="btn dropdown-toggle" data-toggle="dropdown" href="##">
-							<i class="mi-folder-open"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.browseassets')#
-						</a>
-						<ul class="dropdown-menu">
-							<li><a href="##" type="button" data-completepath="false" data-target="#esapiEncode('javascript',attributeBean.getName())#" data-resourcetype="user" class="mura-file-type-selector mura-ckfinder" title="Select a File from Server">
-								<i class="mi-folder-open"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.local')#</a></li>
-							<li><a href="##" type="button" onclick="renderRazunaWindow('#esapiEncode('javascript',attributeBean.getName())#');return false;" class="mura-file-type-selector btn-razuna-icon" value="URL-Razuna" title="Select a File from Razuna"><i></i> Razuna</a></li>
-						</ul>
-					</div>
-				<cfelse>
-					<div class="btn-group">
-						<button type="button" data-target="#esapiEncode('javascript',attributeBean.getName())#" data-resourcetype="user" class="btn mura-file-type-selector mura-ckfinder" title="Select a File from Server"><i class="mi-folder-open"></i> Browse Assets</button>
-					</div>
-				</cfif>
-			</cfif>
+						<div class="mura-control-group">
+							<label>
+								<cfif len(attributeBean.getHint())>
+									<span data-toggle="popover" 
+										title="" 
+										data-placement="right"
+										data-content="#esapiEncode('html_attr',attributeBean.getLabel())#"
+										data-original-title="#esapiEncode('html_attr',attributeBean.gethint())#">
+										#esapiEncode('html',attributeBean.getLabel())# <i class="mi-question-circle"></i>
+									</span>
+								<cfelse>
+									#esapiEncode('html',attributeBean.getLabel())#
+								</cfif>
+							</label>
 
-			<!---<cfif attributeBean.getType() eq "File" and len(attributeValue) and attributeValue neq 'useMuraDefault'>
+							#attributeBean.renderAttribute(theValue=attributeValue, bean=userBean, compactDisplay=rc.compactDisplay, size='medium', readonly=readonly)#
 
-			<cfif listFindNoCase("png,jpg,jpeg",application.serviceFactory.getBean("fileManager").readMeta(attributeValue).fileExt)>
-				<a href="./index.cfm?muraAction=cArch.imagedetails&contenthistid=#contentBean.getContentHistID()#&siteid=#contentBean.getSiteID()#&fileid=#attributeValue#"><img id="assocImage" src="#application.configBean.getContext()#/index.cfm/_api/render/file/?fileid=#attributeValue#&cacheID=#createUUID()#" /></a>
-			</cfif>
-
-			<a href="#application.configBean.getContext()#/index.cfm/_api/render/file/?fileID=#attributeValue#" target="_blank">[Download]</a> <input type="checkbox" value="true" name="extDelete#attributeBean.getAttributeID()#"/> Delete
-
-
-			</cfif>--->
-		<!--- if it's an hidden type attribute then flip it to be a textbox so it can be editable through the admin --->
-		<cfif attributeBean.getType() IS "Hidden">
-			<cfset attributeBean.setType( "TextBox" ) />
+							<cfif not readonly and attributeBean.getValidation() eq "URL">
+								<cfif len(application.serviceFactory.getBean('settingsManager').getSite(session.siteid).getRazunaSettings().getHostname())>
+									<div class="btn-group">
+										<a class="btn dropdown-toggle" data-toggle="dropdown" href="##">
+											<i class="mi-folder-open"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.browseassets')#
+										</a>
+										<ul class="dropdown-menu">
+											<li><a href="##" type="button" data-completepath="false" data-target="#esapiEncode('javascript',attributeBean.getName())#" data-resourcetype="user" class="mura-file-type-selector mura-ckfinder" title="Select a File from Server">
+												<i class="mi-folder-open"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.local')#</a></li>
+											<li><a href="##" type="button" onclick="renderRazunaWindow('#esapiEncode('javascript',attributeBean.getName())#');return false;" class="mura-file-type-selector btn-razuna-icon" value="URL-Razuna" title="Select a File from Razuna"><i></i> Razuna</a></li>
+										</ul>
+									</div>
+								<cfelse>
+									<div class="btn-group">
+										<button type="button" data-target="#esapiEncode('javascript',attributeBean.getName())#" data-resourcetype="user" class="btn mura-file-type-selector mura-ckfinder" title="Select a File from Server"><i class="mi-folder-open"></i> Browse Assets</button>
+									</div>
+								</cfif>
+							</cfif>
+						</div>
+					</cfloop>
+				</span>
+			</cfloop>
 		</cfif>
-	</div>
-	</cfloop>
-	</span>
-</cfloop>
-</cfif>
-</cfoutput>
+	</cfoutput>
 </cfsavecontent>
+
 <cfset returnsets.extended=trim(returnsets.extended)>
 <cfsilent>
-<cfset extendSets=application.classExtensionManager.getSubTypeByName(rc.type,rc.subtype,rc.siteid).getExtendSets(inherit=true,container="Basic",activeOnly=true) />
-<cfif userBean.getType() eq 2>
-	<cfset started=false />
-<cfelse>
-	<cfset started=true />
-</cfif>
-<cfset style="" />
+	<cfset extendSets=application.classExtensionManager.getSubTypeByName(rc.type,rc.subtype,rc.siteid).getExtendSets(inherit=true,container="Basic",activeOnly=true) />
+	<cfif userBean.getType() eq 2>
+		<cfset started=false />
+	<cfelse>
+		<cfset started=true />
+	</cfif>
+	<cfset style="" />
 </cfsilent>
 <cfsavecontent variable="returnsets.basic">
-<cfoutput>
-<cfif arrayLen(extendSets)>
-<cfloop from="1" to="#arrayLen(extendSets)#" index="s">
-<cfset extendSetBean=extendSets[s]/>
-<cfif  userBean.getType() eq 2><cfset style=extendSetBean.getStyle()/><cfif not len(style)><cfset started=true/></cfif></cfif>
-	<span class="extendset" extendsetid="#extendSetBean.getExtendSetID()#" categoryid="#extendSetBean.getCategoryID()#" #style#>
-	<input name="extendSetID" type="hidden" value="#extendSetBean.getExtendSetID()#"/>
-		<h2>#extendSetBean.getName()#</h2>
-	<cfsilent>
-	<cfset attributesArray=extendSetBean.getAttributes() />
-	</cfsilent>
-	<cfloop from="1" to="#arrayLen(attributesArray)#" index="a">
-		<cfset attributeBean=attributesArray[a]/>
-		<cfset attributeValue=userBean.getvalue(attributeBean.getName(),'useMuraDefault') />
-		<div class="mura-control-group">
-	    <label>
-				<cfif len(attributeBean.getHint())>
-					<span data-toggle="popover" title="" data-placement="right" data-content="#esapiEncode('html',attributeBean.gethint())#" data-original-title="#attributeBean.getLabel()#">#attributeBean.getLabel()# <i class="mi-question-circle"></i></span>
-				<cfelse>
-				#attributeBean.getLabel()#
-				</cfif>
-				<cfif attributeBean.getType() eq "File" and len(attributeValue) and attributeValue neq 'useMuraDefault'>
-					<cfif listFindNoCase("png,jpg,jpeg",application.serviceFactory.getBean("fileManager").readMeta(attributeValue).fileExt)>
-						<a href="./index.cfm?muraAction=cArch.imagedetails&amp;userid=#userBean.getUserID()#&amp;siteid=#userBean.getSiteID()#&amp;fileid=#attributeValue#"><img id="assocImage" src="#application.configBean.getContext()#/index.cfm/_api/render/small/?fileid=#attributeValue#&amp;cacheID=#createUUID()#" /></a>
-					</cfif>
-					<a href="#application.configBean.getContext()#/index.cfm/_api/render/file/?fileID=#attributeValue#" target="_blank">[#rbKey('user.download')#]</a> <input type="checkbox" value="true" name="extDelete#attributeBean.getAttributeID()#"/> #rbKey('user.delete')#
-				</cfif>
-			</label>
-			<!--- if it's an hidden type attribute then flip it to be a textbox so it can be editable through the admin --->
-			<cfif attributeBean.getType() IS "Hidden">
-				<cfset attributeBean.setType( "TextBox" ) />
-			</cfif>
-				#attributeBean.renderAttribute(attributeValue)#
-		</div>
-	</cfloop>
-	</span>
-</cfloop>
-</cfif>
-</cfoutput>
+	<cfoutput>
+		<cfif arrayLen(extendSets)>
+			<cfloop from="1" to="#arrayLen(extendSets)#" index="s">
+				<cfset extendSetBean=extendSets[s] />
+				<cfif  userBean.getType() eq 2><cfset style=extendSetBean.getStyle()/><cfif not len(style)><cfset started=true/></cfif></cfif>
+				<span class="extendset" extendsetid="#extendSetBean.getExtendSetID()#" categoryid="#extendSetBean.getCategoryID()#" #style#>
+					<input name="extendSetID" type="hidden" value="#extendSetBean.getExtendSetID()#" />
+					<h2>#esapiEncode('html', extendSetBean.getName())#</h2>
+					<cfsilent>
+						<cfset attributesArray=extendSetBean.getAttributes() />
+					</cfsilent>
+
+					<cfloop from="1" to="#arrayLen(attributesArray)#" index="a">
+						<cfset attributeBean=attributesArray[a] />
+						<cfset attributeValue=userBean.getvalue(attributeBean.getName(),'useMuraDefault') />
+						<cfset readonly = attributeBean.getAdminOnly() and (not $.currentUser().isSuperUser() and not $.currentUser().isAdminUser()) />
+
+						<!--- 
+							Hidden attributes should be editable via the back-end Admin area
+						--->
+						<cfif attributeBean.getType() eq 'Hidden'>
+							<cfset attributeBean.setType('TextBox') />
+						</cfif>
+
+						<div class="mura-control-group">
+							<label>
+								<cfif len(attributeBean.getHint())>
+									<span data-toggle="popover" 
+										title="" 
+										data-placement="right" 
+										data-content="#esapiEncode('htmt_attr', attributeBean.gethint())#" 
+										data-original-title="#esapiEncode('html_attr', attributeBean.getLabel())#">
+										#esapiEncode('html', attributeBean.getLabel())# <i class="mi-question-circle"></i>
+									</span>
+								<cfelse>
+									#esapiEncode('html', attributeBean.getLabel())#
+								</cfif>
+							</label>
+
+							#attributeBean.renderAttribute(theValue=attributeValue, bean=userBean, compactDisplay=rc.compactDisplay, size='medium', readonly=readonly)#
+
+							<cfif not readonly and attributeBean.getValidation() eq "URL">
+								<cfif len(application.serviceFactory.getBean('settingsManager').getSite(session.siteid).getRazunaSettings().getHostname())>
+									<div class="btn-group">
+										<a class="btn dropdown-toggle" data-toggle="dropdown" href="##">
+											<i class="mi-folder-open"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.browseassets')#
+										</a>
+										<ul class="dropdown-menu">
+											<li><a href="##" type="button" data-completepath="false" data-target="#esapiEncode('javascript',attributeBean.getName())#" data-resourcetype="user" class="mura-file-type-selector mura-ckfinder" title="Select a File from Server">
+												<i class="mi-folder-open"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.local')#</a></li>
+											<li><a href="##" type="button" onclick="renderRazunaWindow('#esapiEncode('javascript',attributeBean.getName())#');return false;" class="mura-file-type-selector btn-razuna-icon" value="URL-Razuna" title="Select a File from Razuna"><i></i> Razuna</a></li>
+										</ul>
+									</div>
+								<cfelse>
+									<div class="btn-group">
+										<button type="button" data-target="#esapiEncode('javascript',attributeBean.getName())#" data-resourcetype="user" class="btn mura-file-type-selector mura-ckfinder" title="Select a File from Server"><i class="mi-folder-open"></i> Browse Assets</button>
+									</div>
+								</cfif>
+							</cfif>
+
+						</div>
+					</cfloop>
+				</span>
+			</cfloop>
+		</cfif>
+	</cfoutput>
 </cfsavecontent>
 <cfset returnsets.basic=trim(returnsets.basic)>
 <cfoutput>#createObject("component","mura.json").encode(returnsets)#</cfoutput>
