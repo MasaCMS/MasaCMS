@@ -95,9 +95,9 @@
           <span class="caret"></span>
         </button>
         <ul  id="site-selector-list" class="dropdown-menu">
-				<cfif theSiteList.recordCount gt 20>
+				<cfif theSiteList.recordCount gt 10>
 					<div class="ui-widget">
-						<input name="site-search" class="form-control input-sm" type="text" placeholder="#rc.$.rbKey("dashboard.search")#...">
+						<input name="site-list-filter" id="site-list-filter" class="form-control input-sm" type="text" placeholder="#rc.$.rbKey("dashboard.search")#...">
 					</div>
 				</cfif>
 				<cfset settingsManager=rc.$.getBean('settingsManager')>

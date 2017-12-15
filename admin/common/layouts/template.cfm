@@ -366,6 +366,33 @@
 						$('##mura-header-search').show();
 					});
 
+					// site list filter		
+					var sitefilter = jQuery('##site-list-filter');
+					var sitelist = jQuery('ul##site-selector-list');
+					var sitelistw = jQuery(sitelist).width();
+					jQuery(sitelist).find('.ui-widget').click(function(){
+						return false;
+					})   
+					jQuery(sitefilter).click(function(){
+						return false;
+					});
+					jQuery(sitelist).css('width',sitelistw);
+					jQuery(sitefilter).keyup(function(){
+						var str = jQuery(this).val();
+						jQuery(sitelist).find('li').hide();
+						if (str == ''){
+							jQuery(sitelist).find('li').show();
+						} else {
+							jQuery(sitelist).find('li:contains(' + str + ')').show();
+						}
+					});
+
+					// make :contains selector case-insensitive
+					jQuery.expr[":"].contains = jQuery.expr.createPseudo(function(arg) {
+					    return function( elem ) {
+				        return jQuery(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0;
+					    };
+					});
 
 					// min-height for page content area
 					var setBlockHeight = function(){
