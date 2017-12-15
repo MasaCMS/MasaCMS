@@ -60,8 +60,8 @@
 <cffunction name="standardEnableLockdownHandler" output="false">
 	<cfargument name="event" required="true">
 
-	<cfif fileExists(expandPath('/muraWRM/config/templates/lockdown.cfm'))>
-		<cfinclude template="/muraWRM/config/templates/lockdown.cfm">
+	<cfif fileExists(expandPath('/muraWRM/config/lockdown.cfm'))>
+		<cfinclude template="/muraWRM/config/lockdown.cfm">
 	<cfelse>
 		<cfinclude template="/muraWRM/core/templates/lockdown.cfm">
 	</cfif>
