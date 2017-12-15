@@ -158,7 +158,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.BCryptReseedFrequency=60>
 <cfset variables.instance.maxSourceImageWidth=4000>
 <cfset variables.dbUtility="">
-<cfset variables.instance.allowAutoUpdates=1>
+<cfset variables.instance.allowAutoUpdates=false>
 <cfset variables.instance.CFFPConfigFilename="cffp.ini.cfm">
 <cfset variables.instance.loadcontentby='filename'/>
 <cfset variables.instance.strictfactory=false/>
@@ -302,7 +302,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.instance.readOnlyDbUsername=variables.instance.dbUsername>
 	</cfif>
 
-	<cfset variables.instance.allowAutoUpdates=false>
+	<cfif not IsBoolean(variables.instance.allowAutoUpdates)>
+		<cfset variables.instance.allowAutoUpdates=false>	
+	</cfif>
 
 	<cfreturn this />
 </cffunction>
