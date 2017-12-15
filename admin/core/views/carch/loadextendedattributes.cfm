@@ -87,26 +87,27 @@
 							<cfset readonly = attributeBean.getAdminOnly() and (not $.currentUser().isSuperUser() and not $.currentUser().isAdminUser()) />
 
 							<!--- 
-								If the attribute is a 'hidden' form field, we don't want to display the label
-								or output the wrapping 'div'
+								Hidden attributes should be editable via the back-end Admin area
 							--->
-							<cfif attributeBean.getType() neq 'Hidden'>
-								<div class="mura-control-group">
-									<label>
-										<cfif len(attributeBean.getHint())>
-											<span 
-												data-toggle="popover" 
-												title="" 
-												data-placement="right"
-												data-content="#esapiEncode('html_attr', attributeBean.getLabel())#"
-												data-original-title="#esapiEncode('html_attr', attributeBean.gethint())#">
-												#esapiEncode('html', attributeBean.getLabel())# <i class="mi-question-circle"></i>
-											</span>
-										<cfelse>
-											#esapiEncode('html',attributeBean.getLabel())#
-										</cfif>
-									</label>
+							<cfif attributeBean.getType() eq 'Hidden'>
+								<cfset attributeBean.setType('TextBox') />
 							</cfif>
+
+							<div class="mura-control-group">
+								<label>
+									<cfif len(attributeBean.getHint())>
+										<span 
+											data-toggle="popover" 
+											title="" 
+											data-placement="right"
+											data-content="#esapiEncode('html_attr', attributeBean.getLabel())#"
+											data-original-title="#esapiEncode('html_attr', attributeBean.gethint())#">
+											#esapiEncode('html', attributeBean.getLabel())# <i class="mi-question-circle"></i>
+										</span>
+									<cfelse>
+										#esapiEncode('html',attributeBean.getLabel())#
+									</cfif>
+								</label>
 
 								#attributeBean.renderAttribute(theValue=attributeValue, bean=contentBean, compactDisplay=rc.compactDisplay, size='medium', readonly=readonly)#
 
@@ -128,17 +129,7 @@
 										</div>
 									</cfif>
 								</cfif>
-
-							<!--- 
-								If attribute is a 'hidden' type attribute then flip it to be a 
-								textbox so it can be editable through the admin, otherwise,
-								close the wrapper 'div'
-							--->
-							<cfif attributeBean.getType() eq 'Hidden'>
-								<cfset attributeBean.setType('TextBox') />
-							<cfelse>
-								</div>
-							</cfif>
+							</div>
 						</cfloop>
 					</span>
 				</cfloop>
