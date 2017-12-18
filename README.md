@@ -1,5 +1,6 @@
 # MuraCMS
 [![Build Status](https://travis-ci.org/blueriver/MuraCMS.svg?branch=master "master")](https://travis-ci.org/blueriver/MuraCMS)
+[![Crowdin](https://d322cqt584bo4o.cloudfront.net/muracms/localized.svg)](https://translate.getmura.com/project/muracms)
 [![Docs](https://img.shields.io/badge/view%20docs-readthedocs-blue.svg?style=flat-square)](http://docs.getmura.com/)
 
 Mura CMS is an open source content management system for CFML, created by [Blue River Interactive Group](http://www.getmura.com). Mura has been designed to be used by marketing departments, web designers and developers.
