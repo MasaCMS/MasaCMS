@@ -170,7 +170,17 @@ function setMaxItems(any maxItems) output=false {
 }
 
 function setFields(fields) output=false {
-	variables.instance.fields=arguments.fields;
+	loadTableMetaData();
+
+	if(len(arguments.fields)){
+		var tempArray=[];
+		for(var p in listToArray(arguments.fields)){
+			if(structKeyExists(application.objectMappings[getEntityName()].columns,trim(p))){
+				arrayAppend(tempArray,transformFieldName(p));
+			}
+		}
+	}
+	variables.instance.fields=arrayToList(tempArray);
 	return this;
 }
 
@@ -435,22 +445,14 @@ function prop(property) output=false {
 }
 
 function andProp(property) output=false {
-	if ( listLen(arguments.property,'.') == 2 ) {
-		var propArray=listToArray(arguments.property,'.');
-		arguments.property=application.objectMappings[propArray[1]].table & '.' & propArray[2];
-	}
 	variables.instance.pendingParam.relationship='and';
-	variables.instance.pendingParam.column=arguments.property;
+	variables.instance.pendingParam.column=transformFieldName(arguments.property);
 	return this;
 }
 
 function orProp(property) output=false {
-	if ( listLen(arguments.property,'.') == 2 ) {
-		var propArray=listToArray(arguments.property,'.');
-		arguments.property=application.objectMapping[propArray[1]].table & '.' & propArray[2];
-	}
 	variables.instance.pendingParam.relationship='or';
-	variables.instance.pendingParam.column=arguments.property;
+	variables.instance.pendingParam.column=transformFieldName(arguments.property);
 	return this;
 }
 
@@ -581,7 +583,7 @@ function sort(property, direction) output=false {
 			arguments.direction = "asc";
 		}
 	}
-	variables.instance.orderby=listAppend(variables.instance.orderby,arguments.property & ' ' & arguments.direction);
+	variables.instance.orderby=listAppend(variables.instance.orderby, transformFieldName(arguments.property) & ' ' & arguments.direction);
 	return this;
 }
 
@@ -649,7 +651,7 @@ function leftJoin(entityName) output=false {
 function groupBy(property) output=false {
 	if(len(trim(arguments.property))){
 		for(var p in listToArray(arguments.property)){
-			arrayAppend(variables.instance.groupByArray,trim(p));
+			arrayAppend(variables.instance.groupByArray,transformFieldName(p));
 		}
 	}
 	return this;
@@ -660,37 +662,56 @@ function aggregate(type,property) output=false {
 		switch(arguments.type){
 			case 'sum':
 			for(var p in listToArray(arguments.property)){
-				arrayAppend(variables.instance.sumValArray,trim(p));
+				arrayAppend(variables.instance.sumValArray,transformFieldName(p));
 			}
 			break;
 			case 'count':
 			for(var p in listToArray(arguments.property)){
-				arrayAppend(variables.instance.countValArray,trim(p));
+				arrayAppend(variables.instance.countValArray,transformFieldName(p));
 			}
 			break;
 			case 'avg':
 			for(var p in listToArray(arguments.property)){
-				arrayAppend(variables.instance.avgValArray,trim(p));
+				arrayAppend(variables.instance.avgValArray,transformFieldName(p));
 			}
 			break;
 			case 'min':
 			for(var p in listToArray(arguments.property)){
-				arrayAppend(variables.instance.minValArray,trim(p));
+				arrayAppend(variables.instance.minValArray,transformFieldName(p));
 			}
 			break;
 			case 'max':
 			for(var p in listToArray(arguments.property)){
-				arrayAppend(variables.instance.maxValArray,trim(p));
+				arrayAppend(variables.instance.maxValArray,transformFieldName(p));
 			}
 			break;
 			case 'groupby':
 			for(var p in listToArray(arguments.property)){
-				arrayAppend(variables.instance.groupByArray,trim(p));
+				arrayAppend(variables.instance.groupByArray,transformFieldName(p));
 			}
 			break;
 		}
 	}
 	return this;
+}
+
+function transformFields(fields){
+	return argments.fields;
+}
+
+function transformFieldName(fieldname){
+	arguments.fieldname=trim(arguments.fieldname);
+
+	if ( listLen(arguments.fieldname,'.') == 2 ) {
+		var fieldArray=listToArray(arguments.fieldname,'.');
+		if(structKeyExists(application.objectMappings,fieldArray[1])){
+			arguments.fieldname=application.objectMappings[fieldArray[1]].table & '.' & fieldArray[2];
+		}
+	} else {
+		arguments.fieldname=application.objectMappings[getEntityName()].table & '.' & arguments.fieldname;
+	}
+
+	return arguments.fieldname;
 }
 
 function isAggregateQuery(){
@@ -790,7 +811,7 @@ function getEndRow() output=false {
 
 		<cfif not arguments.countOnly>
 			<cfif len(getFields())>
-				#sanitizedValue(listFirst(getFields(),"."),"[^0-9A-Za-z\._,\- ]","","all")#
+				#sanitizedValue(transformFields(getFields()),"[^0-9A-Za-z\._,\- ]","","all")#
 				from #variables.instance.table#
 			<cfelseif isAggregateQuery()>
 				<cfset started=false>

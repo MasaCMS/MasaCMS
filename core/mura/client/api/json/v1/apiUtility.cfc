@@ -1698,7 +1698,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			var temp={};
 
 			for(var f in fields){
-				var prop=arguments.entity.getValue(f);
+				var prop=arguments.entity.getValue(listLast(f,'.'));
 				//if(len(prop)){
 					temp['#f#']=prop;
 				//}

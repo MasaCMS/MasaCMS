@@ -205,7 +205,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				<cfif not arguments.countOnly>
 					<cfif len(arguments.feedBean.getFields())>
-						#REReplace(listFirst(arguments.feedBean.getFields(),"."),"[^0-9A-Za-z\._,\- ]","","all")#
+						#REReplace(arguments.feedBean.transformFields(arguments.feedBean.getFields()),"[^0-9A-Za-z\._,\- ]","","all")#
 						<cfelseif arguments.feedBean.isAggregateQuery()>
 							<cfset started=false>
 							<cfif arrayLen(arguments.feedBean.getGroupByArray())>

@@ -683,4 +683,43 @@ component extends="mura.bean.beanFeed" entityName="feed" table="tcontentfeeds" o
 		return feed;
 	}
 
+	function transformFields(fields){
+
+		if(!listFind(arguments.fields,'tcontent.displayInterval')){
+			arguments.fields=listAppend(arguments.fields,'tcontent.displayInterval');
+		}
+		if(!listFind(arguments.fields,'tcontent.displayStart')){
+			arguments.fields=listAppend(arguments.fields,'tcontent.displayStart');
+		}
+		if(!listFind(arguments.fields,'tcontent.displayStop')){
+			arguments.fields=listAppend(arguments.fields,'tcontent.displayStop');
+		}
+		if(!listFind(arguments.fields,'tcontent.display')){
+			arguments.fields=listAppend(arguments.fields,'tcontent.display');
+		}
+		if(!listFind(arguments.fields,'tcontent.siteid')){
+			arguments.fields=listAppend(arguments.fields,'tcontent.siteid');
+		}
+		if(!(listFind(arguments.fields,'tcontent.contentid') || listFind(arguments.fields,'tcontent.contenthistid'))){
+			arguments.fields=listAppend(arguments.fields,'tcontent.contentid');
+		}
+
+		return arguments.fields;
+	}
+
+	function transformFieldName(fieldname){
+		arguments.fieldname=trim(arguments.fieldname);
+
+		if ( listLen(arguments.fieldname,'.') == 2 ) {
+			var fieldArray=listToArray(arguments.fieldname,'.');
+			if(structKeyExists(application.objectMappings,fieldArray[1])){
+				arguments.fieldname=application.objectMappings[fieldArray[1]].table & '.' & fieldArray[2];
+			}
+		} else {
+			arguments.fieldname=application.objectMappings[getEntityName()].table & '.' & arguments.fieldname;
+		}
+
+		return arguments.fieldname;
+	}
+
 }
