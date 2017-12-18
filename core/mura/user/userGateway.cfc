@@ -207,7 +207,50 @@
 		select <cfif not arguments.countOnly and dbtype eq "mssql" and params.getMaxItems()>top #params.getMaxItems()# </cfif>
 
 		<cfif not arguments.countOnly>
-			#variables.fieldList# <cfif len(params.getAdditionalColumns())>,#params.getAdditionalColumns()#</cfif>
+			<cfif len(params.getFields())>
+				#REReplace(params.transformFields(params.getFields()),"[^0-9A-Za-z\._,\- ]","","all")#
+				<cfelseif params.isAggregateQuery()>
+					<cfset started=false>
+					<cfif arrayLen(params.getGroupByArray())>
+						<cfloop array="#params.getGroupByArray()#" index="local.i">
+							<cfif started>, <cfelse><cfset started=true></cfif>
+							#sanitizedValue(local.i)#
+						</cfloop>
+					</cfif>
+					<cfif arrayLen(params.getSumValArray())>
+						<cfloop array="#params.getSumValArray()#" index="local.i">
+							<cfif started>, <cfelse><cfset started=true></cfif>
+							sum(#sanitizedValue(local.i)#) as sum_#sanitizedValue(local.i)#
+						</cfloop>
+					</cfif>
+					<cfif arrayLen(params.getCountValArray())>
+						<cfloop array="#params.getCountValArray()#" index="local.i">
+							<cfif started>, <cfelse><cfset started=true></cfif>
+							<cfif local.i eq '*'>count(*) as count<cfelse>count(#sanitizedValue(local.i)#) as count_#sanitizedValue(local.i)#</cfif>
+						</cfloop>
+					</cfif>
+					<cfif arrayLen(params.getAvgValArray())>
+						<cfloop array="#params.getAvgValArray()#" index="local.i">
+							<cfif started>, <cfelse><cfset started=true></cfif>
+							avg(#sanitizedValue(local.i)#) as avg_#sanitizedValue(local.i)#
+						</cfloop>
+					</cfif>
+					<cfif arrayLen(params.getMinValArray())>
+						<cfloop array="#params.getMinValArray()#" index="local.i">
+							<cfif started>, <cfelse><cfset started=true></cfif>
+							min(#sanitizedValue(local.i)#) as min_#sanitizedValue(local.i)#
+						</cfloop>
+					</cfif>
+					<cfif arrayLen(params.getMaxValArray())>
+						<cfloop array="#params.getMaxValArray()#" index="local.i">
+							<cfif started>, <cfelse><cfset started=true></cfif>
+							max(#sanitizedValue(local.i)#) as max_#sanitizedValue(local.i)#
+						</cfloop>
+					</cfif>
+					<cfset started=false>
+			<cfelse>
+				#variables.fieldList# <cfif len(params.getAdditionalColumns())>,#params.getAdditionalColumns()#</cfif>
+			</cfif>
 		<cfelse>
 			count(*) as count
 		</cfif>
@@ -241,7 +284,6 @@
 				#local.specifiedjoins[local.i].jointype# join #local.specifiedjoins[local.i].table# #tableModifier# on (#local.specifiedjoins[local.i].clause#)
 			</cfif>
 		</cfloop>
-
 
 		<cfif not arguments.countOnly and isExtendedSort>
 		left Join (select
@@ -452,6 +494,16 @@
 		</cfif>
 
 		<cfif not listFind(sessionData.mura.memberships,'S2')> and tusers.s2=0 </cfif>
+
+		<cfset started=false>
+		<cfif arrayLen(params.getGroupByArray())>
+			group by
+			<cfloop array="#params.getGroupByArray()#" index="local.i">
+				<cfif started>, <cfelse><cfset started=true></cfif>
+				#sanitizedValue(local.i)#
+			</cfloop>
+		</cfif>
+		<cfset started=false>
 
 		order by
 

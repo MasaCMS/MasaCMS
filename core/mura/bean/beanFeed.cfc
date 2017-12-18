@@ -696,7 +696,7 @@ function aggregate(type,property) output=false {
 }
 
 function transformFields(fields){
-	return argments.fields;
+	return arguments.fields;
 }
 
 function transformFieldName(fieldname){
