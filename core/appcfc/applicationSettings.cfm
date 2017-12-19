@@ -320,7 +320,8 @@ if ( this.ormenabled ) {
 	this.ormSettings.logsql= evalSetting(getINIProperty("ormlogsql","false"));
 }
 
-if(request.muraInDocker && len(getSystemEnvironmentSetting('MURA_DATABASE')) && getSystemEnvironmentSetting('MURA_DBTYPE') != 'oracle'){
+//This allows datasources to defined in the cfapplicain.cfm
+if(!(isDefined('this.datasources') && !StructIsEmpty(this.datasources)) && request.muraInDocker && len(getSystemEnvironmentSetting('MURA_DATABASE')) && getSystemEnvironmentSetting('MURA_DBTYPE') != 'oracle'){
 
 		if(server.coldfusion.productname == 'lucee'){
 			driverVarName='type';
@@ -387,6 +388,7 @@ if(request.muraInDocker && len(getSystemEnvironmentSetting('MURA_DATABASE')) && 
 				this.datasources[ds].timezone=getSystemEnvironmentSetting('MURA_DBTIMEZONE');
 			}
 		}
+
 	}
 
 	try {
