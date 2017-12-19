@@ -850,7 +850,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfquery>
 	</cfprocessingdirective>
 
-	<cfif not arguments.feedBean.isAggregateQUery()>
+	<cfif not arguments.feedBean.isAggregateQuery()>
 		<cfif not arguments.countOnly and arguments.applyPermFilter>
 			<cfset rsFeed=variables.permUtility.queryPermFilter(rawQuery=rsFeed,siteID=arguments.feedBean.getSiteID())>
 		</cfif>
@@ -858,6 +858,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif not arguments.countOnly and arguments.feedBean.getLiveOnly() and arguments.applyIntervals>
 			<cfset rsfeed=variables.contentIntervalManager.apply(query=rsFeed,current=nowAdjusted,from=arguments.from,to=arguments.to) />
 		</cfif>
+	<cfelseif
+		arguments.feedBean.isAggregateQuery()
+		and getBean('settingsManager').getSite(arguments.feedBean.getSiteID()).getValue('extranet')
+		and not variables.configBean.getValue(property="AggregateContentQueries", defaultValue=false)
+		and not (getCurrentUser().isAdminUser() or getCurrentUser().isSuperUser())>
+		<cfthrow type="authorization">
 	</cfif>
 
 	<cfif arguments.feedBean.getMaxItems() and rsFeed.recordcount gt arguments.feedBean.getMaxItems()>
