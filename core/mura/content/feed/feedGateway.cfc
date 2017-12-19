@@ -55,6 +55,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.configBean=arguments.configBean />
 	<cfset variables.classExtensionManager=variables.configBean.getClassExtensionManager()>
 	<cfset variables.contentIntervalManager=arguments.contentIntervalManager>
+	<cfset variables.permUtility=arguments.permUtility>
 	<cfset variables.utility=arguments.utility>
 	<cfreturn this />
 </cffunction>
@@ -862,7 +863,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		arguments.feedBean.isAggregateQuery()
 		and getBean('settingsManager').getSite(arguments.feedBean.getSiteID()).getValue('extranet')
 		and not variables.configBean.getValue(property="AggregateContentQueries", defaultValue=false)
-		and not (getCurrentUser().isAdminUser() or getCurrentUser().isSuperUser())>
+		and not (getCurrentUser().isLoggedIn() and (getCurrentUser().isAdminUser() or getCurrentUser().isSuperUser()))>
 		<cfthrow type="authorization">
 	</cfif>
 
