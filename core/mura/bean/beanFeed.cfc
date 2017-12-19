@@ -833,7 +833,7 @@ function getEndRow() output=false {
 				<cfif arrayLen(variables.instance.countValArray)>
 					<cfloop array="#variables.instance.countValArray#" index="local.i">
 						<cfif started>, <cfelse><cfset started=true></cfif>
-						 <cfif local.i eq '*'>count(*) as count<cfelse>count(#sanitizedValue(local.i)#) as count_#sanitizedValue(listLast(local.i,'.'))#</cfif>
+						 <cfif listLast(local.i,'.') eq '*'>count(*) as count<cfelse>count(#sanitizedValue(local.i)#) as count_#sanitizedValue(listLast(local.i,'.'))#</cfif>
 					</cfloop>
 				</cfif>
 				<cfif arrayLen(variables.instance.avgValArray)>
