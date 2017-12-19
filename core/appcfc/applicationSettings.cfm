@@ -368,7 +368,7 @@ if(request.muraInDocker && len(getSystemEnvironmentSetting('MURA_DATABASE')) && 
 					 , username = getSystemEnvironmentSetting('MURA_DBUSERNAME')
 					 , password = getSystemEnvironmentSetting('MURA_DBPASSWORD')
 					 , clob = true
-					 , '#connectionStringVarName#' = getSystemEnvironmentSetting('MURA_DBCONNECTIONSTRING')
+					 , '#connectionStringVarName#' = getSystemEnvironmentSetting('MURA_DB#connectionStringVarName#')
 				},
 				nodatabase=  {
 						'#driverVarName#' = driverName
@@ -378,7 +378,7 @@ if(request.muraInDocker && len(getSystemEnvironmentSetting('MURA_DATABASE')) && 
 					 , username = getSystemEnvironmentSetting('MURA_DBUSERNAME')
 					 , password = getSystemEnvironmentSetting('MURA_DBPASSWORD')
 					 , clob = true
-					 , '#connectionStringVarName#' = getSystemEnvironmentSetting('MURA_DBCONNECTIONSTRING')
+					 , '#connectionStringVarName#' = getSystemEnvironmentSetting('MURA_DB#connectionStringVarName#')
 				}
 		};
 
