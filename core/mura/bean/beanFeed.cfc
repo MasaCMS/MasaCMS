@@ -748,7 +748,7 @@ private function caseInsensitiveOrderBy(required orderBy) output=false {
 }
 
 function sanitizedValue(value) output=false {
-	return REReplace(value,"[^0-9A-Za-z\._,\- ]","","all");
+	return REReplace(value,"[^0-9A-Za-z\._,\- ]\*","","all");
 }
 
 function getOffset() output=false {
@@ -824,31 +824,31 @@ function getEndRow() output=false {
 				<cfif arrayLen(variables.instance.sumValArray)>
 					<cfloop array="#variables.instance.sumValArray#" index="local.i">
 						<cfif started>, <cfelse><cfset started=true></cfif>
-						sum(#sanitizedValue(local.i)#) as sum_#sanitizedValue(local.i)#
+						sum(#sanitizedValue(local.i)#) as sum_#sanitizedValue(listLast(local.i,'.'))#
 					</cfloop>
 				</cfif>
 				<cfif arrayLen(variables.instance.countValArray)>
 					<cfloop array="#variables.instance.countValArray#" index="local.i">
 						<cfif started>, <cfelse><cfset started=true></cfif>
-						 <cfif local.i eq '*'>count(*) as count<cfelse>count(#sanitizedValue(local.i)#) as count_#sanitizedValue(local.i)#</cfif>
+						 <cfif local.i eq '*'>count(*) as count<cfelse>count(#sanitizedValue(local.i)#) as count_#sanitizedValue(listLast(local.i,'.'))#</cfif>
 					</cfloop>
 				</cfif>
 				<cfif arrayLen(variables.instance.avgValArray)>
 					<cfloop array="#variables.instance.avgValArray#" index="local.i">
 						<cfif started>, <cfelse><cfset started=true></cfif>
-						avg(#sanitizedValue(local.i)#) as avg_#sanitizedValue(local.i)#
+						avg(#sanitizedValue(local.i)#) as avg_#sanitizedValue(listLast(local.i,'.'))#
 					</cfloop>
 				</cfif>
 				<cfif arrayLen(variables.instance.minValArray)>
 					<cfloop array="#variables.instance.minValArray#" index="local.i">
 						<cfif started>, <cfelse><cfset started=true></cfif>
-						min(#sanitizedValue(local.i)#) as min_#sanitizedValue(local.i)#
+						min(#sanitizedValue(local.i)#) as min_#sanitizedValue(listLast(local.i,'.'))#
 					</cfloop>
 				</cfif>
 				<cfif arrayLen(variables.instance.maxValArray)>
 					<cfloop array="#variables.instance.maxValArray#" index="local.i">
 						<cfif started>, <cfelse><cfset started=true></cfif>
-						max(#sanitizedValue(local.i)#) as max_#sanitizedValue(local.i)#
+						max(#sanitizedValue(local.i)#) as max_#sanitizedValue(listLast(local.i,'.'))#
 					</cfloop>
 				</cfif>
 				<cfset started=false>

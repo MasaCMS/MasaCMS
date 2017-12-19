@@ -209,45 +209,45 @@
 		<cfif not arguments.countOnly>
 			<cfif len(params.getFields())>
 				#REReplace(params.transformFields(params.getFields()),"[^0-9A-Za-z\._,\- ]","","all")#
-				<cfelseif params.isAggregateQuery()>
-					<cfset started=false>
-					<cfif arrayLen(params.getGroupByArray())>
-						<cfloop array="#params.getGroupByArray()#" index="local.i">
-							<cfif started>, <cfelse><cfset started=true></cfif>
-							#sanitizedValue(local.i)#
-						</cfloop>
-					</cfif>
-					<cfif arrayLen(params.getSumValArray())>
-						<cfloop array="#params.getSumValArray()#" index="local.i">
-							<cfif started>, <cfelse><cfset started=true></cfif>
-							sum(#sanitizedValue(local.i)#) as sum_#sanitizedValue(local.i)#
-						</cfloop>
-					</cfif>
-					<cfif arrayLen(params.getCountValArray())>
-						<cfloop array="#params.getCountValArray()#" index="local.i">
-							<cfif started>, <cfelse><cfset started=true></cfif>
-							<cfif local.i eq '*'>count(*) as count<cfelse>count(#sanitizedValue(local.i)#) as count_#sanitizedValue(local.i)#</cfif>
-						</cfloop>
-					</cfif>
-					<cfif arrayLen(params.getAvgValArray())>
-						<cfloop array="#params.getAvgValArray()#" index="local.i">
-							<cfif started>, <cfelse><cfset started=true></cfif>
-							avg(#sanitizedValue(local.i)#) as avg_#sanitizedValue(local.i)#
-						</cfloop>
-					</cfif>
-					<cfif arrayLen(params.getMinValArray())>
-						<cfloop array="#params.getMinValArray()#" index="local.i">
-							<cfif started>, <cfelse><cfset started=true></cfif>
-							min(#sanitizedValue(local.i)#) as min_#sanitizedValue(local.i)#
-						</cfloop>
-					</cfif>
-					<cfif arrayLen(params.getMaxValArray())>
-						<cfloop array="#params.getMaxValArray()#" index="local.i">
-							<cfif started>, <cfelse><cfset started=true></cfif>
-							max(#sanitizedValue(local.i)#) as max_#sanitizedValue(local.i)#
-						</cfloop>
-					</cfif>
-					<cfset started=false>
+			<cfelseif params.isAggregateQuery()>
+				<cfset started=false>
+				<cfif arrayLen(params.getGroupByArray())>
+					<cfloop array="#params.getGroupByArray()#" index="local.i">
+						<cfif started>, <cfelse><cfset started=true></cfif>
+						#sanitizedValue(local.i)#
+					</cfloop>
+				</cfif>
+				<cfif arrayLen(params.getSumValArray())>
+					<cfloop array="#params.getSumValArray()#" index="local.i">
+						<cfif started>, <cfelse><cfset started=true></cfif>
+						sum(#sanitizedValue(local.i)#) as sum_#sanitizedValue(local.i)#
+					</cfloop>
+				</cfif>
+				<cfif arrayLen(params.getCountValArray())>
+					<cfloop array="#params.getCountValArray()#" index="local.i">
+						<cfif started>, <cfelse><cfset started=true></cfif>
+						<cfif listLast(local.i,'.') eq '*'>count(*) as count<cfelse>count(#sanitizedValue(local.i)#) as count_#sanitizedValue(listLast(local.i,'.'))#</cfif>
+					</cfloop>
+				</cfif>
+				<cfif arrayLen(params.getAvgValArray())>
+					<cfloop array="#params.getAvgValArray()#" index="local.i">
+						<cfif started>, <cfelse><cfset started=true></cfif>
+						avg(#sanitizedValue(local.i)#) as avg_#sanitizedValue(listLast(local.i,'.'))#
+					</cfloop>
+				</cfif>
+				<cfif arrayLen(params.getMinValArray())>
+					<cfloop array="#params.getMinValArray()#" index="local.i">
+						<cfif started>, <cfelse><cfset started=true></cfif>
+						min(#sanitizedValue(local.i)#) as min_#sanitizedValue(listLast(local.i,'.'))#
+					</cfloop>
+				</cfif>
+				<cfif arrayLen(params.getMaxValArray())>
+					<cfloop array="#params.getMaxValArray()#" index="local.i">
+						<cfif started>, <cfelse><cfset started=true></cfif>
+						max(#sanitizedValue(local.i)#) as max_#sanitizedValue(listLast(local.i,'.'))#
+					</cfloop>
+				</cfif>
+				<cfset started=false>
 			<cfelse>
 				#variables.fieldList# <cfif len(params.getAdditionalColumns())>,#params.getAdditionalColumns()#</cfif>
 			</cfif>
@@ -500,7 +500,7 @@
 			group by
 			<cfloop array="#params.getGroupByArray()#" index="local.i">
 				<cfif started>, <cfelse><cfset started=true></cfif>
-				#sanitizedValue(local.i)#
+				#sanitizedValue(llocal.i,'.')#
 			</cfloop>
 		</cfif>
 		<cfset started=false>
@@ -664,5 +664,11 @@
 		</cfquery>
 		<cfreturn rsUsersMemb />
 	</cffunction>
+
+	<cfscript>
+	function sanitizedValue(value) output=false {
+		return REReplace(value,"[^0-9A-Za-z\._,\- ]\*","","all");
+	}
+	</cfscript>
 
 </cfcomponent>

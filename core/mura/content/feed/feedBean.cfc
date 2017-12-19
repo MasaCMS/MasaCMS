@@ -710,6 +710,10 @@ component extends="mura.bean.beanFeed" entityName="feed" table="tcontentfeeds" o
 	function transformFieldName(fieldname){
 		arguments.fieldname=trim(arguments.fieldname);
 
+		if(arguments.fieldname==application.objectMappings[getEntityName()].table & ".*"){
+			return arguments.fieldname;
+		}
+
 		if ( listLen(arguments.fieldname,'.') == 2 ) {
 			var fieldArray=listToArray(arguments.fieldname,'.');
 			if(structKeyExists(application.objectMappings,fieldArray[1])){

@@ -138,7 +138,18 @@ component extends="mura.bean.beanFeed" entityName="user" output="false" hint="Th
 
 	public function getIterator(required cachedWithin="#variables.instance.cachedWithin#") output=false {
 		var rs=getQuery(argumentCollection=arguments);
-		var it=getBean("userIterator");
+		//When selecting distinct generic iterators and beans are used
+		if(!getDistinct() && !isAggregateQuery()){
+			if ( getServiceFactory().containsBean("#variables.instance.entityName#Iterator") ) {
+				it=getBean("#variables.instance.entityName#Iterator");
+			} else {
+				it=getBean("beanIterator");
+			}
+			it.setEntityName(getValue('entityName'));
+		} else {
+			it=getBean("beanIterator");
+		}
+		
 		it.setQuery(rs,variables.instance.nextN);
 		return it;
 	}

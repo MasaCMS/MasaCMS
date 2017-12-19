@@ -1670,6 +1670,10 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		var fields='';
 		var vals={};
 
+		if(isAggregateQuery()){
+			arguments.expand=false;
+		}
+		
 		if(!(isDefined('variables.config.entities.#arguments.entityConfigName#.allowfieldselect') && !variables.config.entities[entityConfigName].allowfieldselect) && (isDefined('url.fields') && len(url.fields))){
 			fields=url.fields;
 

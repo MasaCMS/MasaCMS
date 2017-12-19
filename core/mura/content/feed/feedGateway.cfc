@@ -217,35 +217,35 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<cfif arrayLen(arguments.feedBean.getSumValArray())>
 								<cfloop array="#arguments.feedBean.getSumValArray()#" index="local.i">
 									<cfif started>, <cfelse><cfset started=true></cfif>
-									sum(#sanitizedValue(local.i)#) as sum_#sanitizedValue(local.i)#
+									sum(#sanitizedValue(local.i)#) as sum_#sanitizedValue(listLast(local.i,'.'))#
 								</cfloop>
 							</cfif>
 							<cfif arrayLen(arguments.feedBean.getCountValArray())>
 								<cfloop array="#arguments.feedBean.getCountValArray()#" index="local.i">
 									<cfif started>, <cfelse><cfset started=true></cfif>
-									<cfif local.i eq '*'>count(*) as count<cfelse>count(#sanitizedValue(local.i)#) as count_#sanitizedValue(local.i)#</cfif>
+									<cfif listLast(local.i,'.') eq '*'>count(*) as count<cfelse>count(#sanitizedValue(local.i,'.')#) as count_#sanitizedValue(listLast(local.i,'.'))#</cfif>
 								</cfloop>
 							</cfif>
 							<cfif arrayLen(arguments.feedBean.getAvgValArray())>
 								<cfloop array="#arguments.feedBean.getAvgValArray()#" index="local.i">
 									<cfif started>, <cfelse><cfset started=true></cfif>
-									avg(#sanitizedValue(local.i)#) as avg_#sanitizedValue(local.i)#
+									avg(#sanitizedValue(local.i)#) as avg_#sanitizedValue(listLast(local.i,'.'))#
 								</cfloop>
 							</cfif>
 							<cfif arrayLen(arguments.feedBean.getMinValArray())>
 								<cfloop array="#arguments.feedBean.getMinValArray()#" index="local.i">
 									<cfif started>, <cfelse><cfset started=true></cfif>
-									min(#sanitizedValue(local.i)#) as min_#sanitizedValue(local.i)#
+									min(#sanitizedValue(local.i)#) as min_#sanitizedValue(listLast(local.i,'.'))#
 								</cfloop>
 							</cfif>
 							<cfif arrayLen(arguments.feedBean.getMaxValArray())>
 								<cfloop array="#arguments.feedBean.getMaxValArray()#" index="local.i">
 									<cfif started>, <cfelse><cfset started=true></cfif>
-									max(#sanitizedValue(local.i)#) as max_#sanitizedValue(local.i)#
+									max(#sanitizedValue(local.i)#) as max_#sanitizedValue(listLast(local.i,'.'))#
 								</cfloop>
 							</cfif>
 							<cfset started=false>
-							from #variables.instance.table#
+
 					<cfelseif len(altTable)>
 						tcontent.*
 					<cfelse>
@@ -982,7 +982,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="sanitizedValue" output="false">
 	<cfargument name="value">
-	<cfreturn REReplace(arguments.value,"[^0-9A-Za-z\._,\- ]","","all")>
+	<cfreturn REReplace(arguments.value,"[^0-9A-Za-z\._,\- ]\*","","all")>
 </cffunction>
 
 </cfcomponent>
