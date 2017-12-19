@@ -324,7 +324,7 @@ if(request.muraInDocker && len(getSystemEnvironmentSetting('MURA_DATABASE')) && 
 
 		if(server.coldfusion.productname == 'lucee'){
 			driverVarName='type';
-
+			connectionStringVarName='custom';
 			switch(getSystemEnvironmentSetting('MURA_DBTYPE')){
 				case 'mysql':
 					driverName='mysql';
@@ -341,6 +341,7 @@ if(request.muraInDocker && len(getSystemEnvironmentSetting('MURA_DATABASE')) && 
 			}
 		} else {
 			driverVarName='driver';
+			connectionStringVarName='connectionString';
 
 			switch(getSystemEnvironmentSetting('MURA_DBTYPE')){
 				case 'mysql':
@@ -366,7 +367,7 @@ if(request.muraInDocker && len(getSystemEnvironmentSetting('MURA_DATABASE')) && 
 					 , port = getSystemEnvironmentSetting('MURA_DBPORT')
 					 , username = getSystemEnvironmentSetting('MURA_DBUSERNAME')
 					 , password = getSystemEnvironmentSetting('MURA_DBPASSWORD')
-					 , connectionString = getSystemEnvironmentSetting('MURA_DBCONNECTIONSTRING')
+					 , '#connectionStringVarName#' = getSystemEnvironmentSetting('MURA_DBCONNECTIONSTRING')
 				},
 				nodatabase=  {
 						'#driverVarName#' = driverName
@@ -375,7 +376,7 @@ if(request.muraInDocker && len(getSystemEnvironmentSetting('MURA_DATABASE')) && 
 					 , port = getSystemEnvironmentSetting('MURA_DBPORT')
 					 , username = getSystemEnvironmentSetting('MURA_DBUSERNAME')
 					 , password = getSystemEnvironmentSetting('MURA_DBPASSWORD')
-					 , connectionString = getSystemEnvironmentSetting('MURA_DBCONNECTIONSTRING')
+					 , '#connectionStringVarName#' = getSystemEnvironmentSetting('MURA_DBCONNECTIONSTRING')
 				}
 		};
 	}
