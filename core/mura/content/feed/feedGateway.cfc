@@ -850,12 +850,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfquery>
 	</cfprocessingdirective>
 
-	<cfif not arguments.countOnly and arguments.applyPermFilter>
-		<cfset rsFeed=variables.permUtility.queryPermFilter(rawQuery=rsFeed,siteID=arguments.feedBean.getSiteID())>
-	</cfif>
+	<cfif not arguments.feedBean.isAggregateQUery()>
+		<cfif not arguments.countOnly and arguments.applyPermFilter>
+			<cfset rsFeed=variables.permUtility.queryPermFilter(rawQuery=rsFeed,siteID=arguments.feedBean.getSiteID())>
+		</cfif>
 
-	<cfif not arguments.countOnly and arguments.feedBean.getLiveOnly() and arguments.applyIntervals>
-		<cfset rsfeed=variables.contentIntervalManager.apply(query=rsFeed,current=nowAdjusted,from=arguments.from,to=arguments.to) />
+		<cfif not arguments.countOnly and arguments.feedBean.getLiveOnly() and arguments.applyIntervals>
+			<cfset rsfeed=variables.contentIntervalManager.apply(query=rsFeed,current=nowAdjusted,from=arguments.from,to=arguments.to) />
+		</cfif>
 	</cfif>
 
 	<cfif arguments.feedBean.getMaxItems() and rsFeed.recordcount gt arguments.feedBean.getMaxItems()>

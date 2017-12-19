@@ -1673,7 +1673,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		if(isAggregateQuery()){
 			arguments.expand=false;
 		}
-		
+
 		if(!(isDefined('variables.config.entities.#arguments.entityConfigName#.allowfieldselect') && !variables.config.entities[entityConfigName].allowfieldselect) && (isDefined('url.fields') && len(url.fields))){
 			fields=url.fields;
 
@@ -3946,6 +3946,11 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 	}
 
 	function isAggregateQuery() {
+
+			if(isDefined('url.fields') && len(url.fields)){
+				return false;
+			}
+
 			var checkArray=['sum','avg','count','max','min','groupBy','distinct'];
 
 			for(var i in checkArray){

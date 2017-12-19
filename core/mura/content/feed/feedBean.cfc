@@ -541,7 +541,7 @@ component extends="mura.bean.beanFeed" entityName="feed" table="tcontentfeeds" o
 		var q=getQuery(argumentCollection=arguments);
 
 		//When selecting distinct generic iterators and beans are used
-		if(getDistinct() || arguments.countOnly){
+		if(isAggregateQuery() ||  getDistinct() || arguments.countOnly){
 			var it=getBean("beanIterator");
 		} else {
 			var it=getBean("contentIterator");
