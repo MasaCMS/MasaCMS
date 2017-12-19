@@ -407,6 +407,18 @@ if((!isDefined('this.datasources') || StructIsEmpty(this.datasources)) && reques
 			this.datasources["#getSystemEnvironmentSetting('MURA_DATASOURCE')#"].timezone=getSystemEnvironmentSetting('MURA_DBTIMEZONE');
 		}
 
+		if(len(getSystemEnvironmentSetting('MURA_DBSTORAGE'))){
+			this.datasources["#getSystemEnvironmentSetting('MURA_DATASOURCE')#"].storage=getSystemEnvironmentSetting('MURA_DBSTORAGE');
+		}
+
+		if(len(getSystemEnvironmentSetting('MURA_DBCONNECTIONLIMIT'))){
+			this.datasources["#getSystemEnvironmentSetting('MURA_DATASOURCE')#"].connectionLimit=getSystemEnvironmentSetting('MURA_DBCONNECTIONLIMIT');
+		}
+
+		if(len(getSystemEnvironmentSetting('MURA_DBCONNECTIONTIMEOUT'))){
+			this.datasources["#getSystemEnvironmentSetting('MURA_DATASOURCE')#"].connectionTimeout=getSystemEnvironmentSetting('MURA_DBCONNECTIONTIMEOUT');
+		}
+
 		if(len(getSystemEnvironmentSetting('MURA_DBCUSTOM')) && isJSON(getSystemEnvironmentSetting('MURA_DBCUSTOM'))){
 			this.datasources["#getSystemEnvironmentSetting('MURA_DATASOURCE')#"].custom=deserializeJSON(getSystemEnvironmentSetting('MURA_DBCUSTOM'));
 		}
