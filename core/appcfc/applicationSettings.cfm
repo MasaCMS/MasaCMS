@@ -390,7 +390,6 @@ if((!isDefined('this.datasources') || StructIsEmpty(this.datasources)) && reques
 				 , username = getSystemEnvironmentSetting('MURA_DBUSERNAME')
 				 , password = getSystemEnvironmentSetting('MURA_DBPASSWORD')
 				 , clob = true
-				 , custom = getSystemEnvironmentSetting('MURA_DBCUSTOM')
 			};
 
 		this.datasources.nodatabase={
@@ -400,13 +399,16 @@ if((!isDefined('this.datasources') || StructIsEmpty(this.datasources)) && reques
 				 , port = getSystemEnvironmentSetting('MURA_DBPORT')
 				 , username = getSystemEnvironmentSetting('MURA_DBUSERNAME')
 				 , password = getSystemEnvironmentSetting('MURA_DBPASSWORD')
-				 , custom = getSystemEnvironmentSetting('MURA_DBCUSTOM')
 			};
 	}
 
-	if(server.coldfusion.productname == 'lucee' && len(getSystemEnvironmentSetting('MURA_DBTIMEZONE'))){
-		for(ds in this.datasources){
-			this.datasources[ds].timezone=getSystemEnvironmentSetting('MURA_DBTIMEZONE');
+	if(server.coldfusion.productname == 'lucee'){
+		if(len(getSystemEnvironmentSetting('MURA_DBTIMEZONE'))){
+			this.datasources["#getSystemEnvironmentSetting('MURA_DATASOURCE')#"].timezone=getSystemEnvironmentSetting('MURA_DBTIMEZONE');
+		}
+
+		if(len(getSystemEnvironmentSetting('MURA_DBCUSTOM')) && isJSON(getSystemEnvironmentSetting('MURA_DBCUSTOM'))){
+			this.datasources["#getSystemEnvironmentSetting('MURA_DATASOURCE')#"].custom=deserializeJSON(getSystemEnvironmentSetting('MURA_DBCUSTOM'));
 		}
 	}
 
