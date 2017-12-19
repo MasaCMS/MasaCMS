@@ -155,7 +155,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  		<cfcase value="LTE,<=">
  			<cfset variables.condition="<=" />
  		</cfcase>
- 		<cfcase value="Begins,Contains,ContainsValue,Like,Ends">
+ 		<cfcase value="Begins,BeginsWith,Contains,ContainsValue,Like,Ends,EndsWith">
 	 		<cfif listFindNoCase("varchar,longvarchar",getDataType()) >
 				<cfset variables.condition="like" />
 			<cfelse>
