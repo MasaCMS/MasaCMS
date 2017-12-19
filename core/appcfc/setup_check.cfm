@@ -1,5 +1,5 @@
 <cfscript>
-if ( request.muraInDocker && len(getSystemEnvironmentSetting('MURA_DATABASE'))) {
+if ( request.muraHasNodatabaseDSN && request.muraInDocker && len(getSystemEnvironmentSetting('MURA_DATABASE'))) {
 	if ( request.muraSysEnv.MURA_DBTYPE == 'mssql' ) {
 
     qs=new Query();
@@ -81,7 +81,7 @@ if ( request.muraInDocker && len(getSystemEnvironmentSetting('MURA_DATABASE'))) 
 			FORM['setupSubmitButton']=true;
 			FORM['action']='doSetup';
 		}
-		
+
 	} else if ( request.muraSysEnv.MURA_DBTYPE == 'oracle' ) {
 
 			qs=new Query();

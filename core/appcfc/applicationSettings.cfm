@@ -72,6 +72,7 @@ param name="request.returnFormat" default="html";
 param name="request.muraSessionManagement" default=true;
 param name="request.muraPointInTime" default="";
 param name="request.muraTemplateMissing" default=false;
+param name="request.muraHasNodatabaseDSN" default=false;
 param name="request.muraSysEnv" default="#createObject('java','java.lang.System').getenv()#";
 
 request.muraInDocker=len(getSystemEnvironmentSetting('MURA_DATASOURCE'));
@@ -321,115 +322,139 @@ if ( this.ormenabled ) {
 }
 
 //This allows datasources to defined in the cfapplicain.cfm
-if(!(isDefined('this.datasources') && !StructIsEmpty(this.datasources)) && request.muraInDocker && len(getSystemEnvironmentSetting('MURA_DATABASE')) && getSystemEnvironmentSetting('MURA_DBTYPE') != 'oracle'){
+if((!isDefined('this.datasources') || StructIsEmpty(this.datasources)) && request.muraInDocker && (len(getSystemEnvironmentSetting('MURA_DATABASE')) || len(getSystemEnvironmentSetting('MURA_DBCONNECTIONSTRING')))){
 
-		if(server.coldfusion.productname == 'lucee'){
-			driverVarName='type';
-			connectionStringVarName='custom';
-			switch(getSystemEnvironmentSetting('MURA_DBTYPE')){
-				case 'mysql':
-					driverName='mysql';
-					break;
-				case 'mssql':
-					driverName='mssql';
-					break;
-				case 'oracle':
-					driverName='Oracle';
-					break;
-				case 'postgresql':
-					driverName='PostgreSQL';
-					break;
-			}
-		} else {
-			driverVarName='driver';
-			connectionStringVarName='connectionString';
+	if(server.coldfusion.productname == 'lucee'){
+		driverVarName='type';
+		connectionStringVarName='connectionString';
 
-			switch(getSystemEnvironmentSetting('MURA_DBTYPE')){
-				case 'mysql':
-					driverName='MySQL5';
-					break;
-				case 'mssql':
-					driverName='MSSQLServer';
-					break;
-				case 'oracle':
-					driverName='Oracle';
-					break;
-				case 'postgresql':
-					driverName='PostgreSQL';
-					break;
-			}
+		switch(getSystemEnvironmentSetting('MURA_DBTYPE')){
+			case 'mysql':
+				driverName='mysql';
+				break;
+			case 'mssql':
+				driverName='mssql';
+				break;
+			case 'oracle':
+				driverName='Oracle';
+				break;
+			case 'postgresql':
+				driverName='PostgreSQL';
+				break;
 		}
+	} else {
+		driverVarName='driver';
+		connectionStringVarName='url';
 
-		this.datasources={
-			'#getSystemEnvironmentSetting('MURA_DATASOURCE')#' =  {
-						'#driverVarName#' = driverName
-					 , host = getSystemEnvironmentSetting('MURA_DBHOST')
-					 , database = getSystemEnvironmentSetting('MURA_DATABASE')
-					 , port = getSystemEnvironmentSetting('MURA_DBPORT')
-					 , username = getSystemEnvironmentSetting('MURA_DBUSERNAME')
-					 , password = getSystemEnvironmentSetting('MURA_DBPASSWORD')
-					 , clob = true
-					 , '#connectionStringVarName#' = getSystemEnvironmentSetting('MURA_DB#connectionStringVarName#')
-				},
-				nodatabase=  {
-						'#driverVarName#' = driverName
-					 , host = getSystemEnvironmentSetting('MURA_DBHOST')
-					 , database = ''
-					 , port = getSystemEnvironmentSetting('MURA_DBPORT')
-					 , username = getSystemEnvironmentSetting('MURA_DBUSERNAME')
-					 , password = getSystemEnvironmentSetting('MURA_DBPASSWORD')
-					 , clob = true
-					 , '#connectionStringVarName#' = getSystemEnvironmentSetting('MURA_DB#connectionStringVarName#')
-				}
+		switch(getSystemEnvironmentSetting('MURA_DBTYPE')){
+			case 'mysql':
+				driverName='MySQL5';
+				break;
+			case 'mssql':
+				driverName='MSSQLServer';
+				break;
+			case 'oracle':
+				driverName='Oracle';
+				break;
+			case 'postgresql':
+				driverName='PostgreSQL';
+				break;
+		}
+	}
+	this.datasources={};
+
+	if(len(getSystemEnvironmentSetting('MURA_DBCONNECTIONSTRING'))){
+		this.datasources['#getSystemEnvironmentSetting('MURA_DATASOURCE')#']={
+					'#driverVarName#' = 'other'
+				 , '#connectionStringVarName#' = getSystemEnvironmentSetting('MURA_DBCONNECTIONSTRING')
+				 , 'class' = getSystemEnvironmentSetting('MURA_DBCLASS')
+				 , 'username' = getSystemEnvironmentSetting('MURA_DBUSERNAME')
+				 , 'password' = getSystemEnvironmentSetting('MURA_DBPASSWORD')
 		};
 
-		if(server.coldfusion.productname == 'lucee' && len(getSystemEnvironmentSetting('MURA_DBTIMEZONE'))){
-			for(ds in this.datasources){
-				this.datasources[ds].timezone=getSystemEnvironmentSetting('MURA_DBTIMEZONE');
-			}
+		if(len(getSystemEnvironmentSetting('MURA_DBCONNECTIONSTRINGNODB'))){
+			this.datasources.nodatabase={
+						'#driverVarName#' = 'other'
+					 , '#connectionStringVarName#' = getSystemEnvironmentSetting('MURA_DBCONNECTIONSTRINGNODB')
+					 , class = getSystemEnvironmentSetting('MURA_DBCLASS')
+					 , username = getSystemEnvironmentSetting('MURA_DBUSERNAME')
+					 , password = getSystemEnvironmentSetting('MURA_DBPASSWORD')
+				};
 		}
+	} else {
+		this.datasources['#getSystemEnvironmentSetting('MURA_DATASOURCE')#']={
+					'#driverVarName#' = driverName
+				 , host = getSystemEnvironmentSetting('MURA_DBHOST')
+				 , database = getSystemEnvironmentSetting('MURA_DATABASE')
+				 , port = getSystemEnvironmentSetting('MURA_DBPORT')
+				 , username = getSystemEnvironmentSetting('MURA_DBUSERNAME')
+				 , password = getSystemEnvironmentSetting('MURA_DBPASSWORD')
+				 , clob = true
+				 , custom = getSystemEnvironmentSetting('MURA_DBCUSTOM')
+			};
 
+		this.datasources.nodatabase={
+					'#driverVarName#' = driverName
+				 , host = getSystemEnvironmentSetting('MURA_DBHOST')
+				 , database = ''
+				 , port = getSystemEnvironmentSetting('MURA_DBPORT')
+				 , username = getSystemEnvironmentSetting('MURA_DBUSERNAME')
+				 , password = getSystemEnvironmentSetting('MURA_DBPASSWORD')
+				 , custom = getSystemEnvironmentSetting('MURA_DBCUSTOM')
+			};
 	}
 
-	try {
-		include "#variables.context#/plugins/cfapplication.cfm";
-		hasPluginCFApplication=true;
-	} catch (any cfcatch) {
-		hasPluginCFApplication=false;
-	}
-	if ( !(isSimpleValue(this.ormSettings.cfclocation) && len(this.ormSettings.cfclocation))
-		and !(isArray(this.ormSettings.cfclocation) && arrayLen(this.ormSettings.cfclocation)) ) {
-		this.ormenabled=false;
+	if(server.coldfusion.productname == 'lucee' && len(getSystemEnvironmentSetting('MURA_DBTIMEZONE'))){
+		for(ds in this.datasources){
+			this.datasources[ds].timezone=getSystemEnvironmentSetting('MURA_DBTIMEZONE');
+		}
 	}
 
-	//This is use to interact with Lucee admin settings.s
-	this.webadminpassword=evalSetting(getINIProperty('webadminpassword',''));
+}
 
-	// if true, CF converts form fields as an array instead of a list (not recommended)
-	this.sameformfieldsasarray=evalSetting(getINIProperty('sameformfieldsasarray',false));
+if(isDefined('this.datasources.nodatabase')){
+	request.muraHasNodatabaseDSN=true;
+}
 
-	// Custom Java library paths with dynamic loading
-	try {
-		variables.loadPaths = ListToArray(getINIProperty('javaSettingsLoadPaths','#variables.baseDir#/core/vendor/lib'));
-	} catch(any e) {
-		variables.loadPaths = ['#variables.baseDir#/core/vendor/lib'];
-	}
+try {
+	include "#variables.context#/plugins/cfapplication.cfm";
+	hasPluginCFApplication=true;
+} catch (any cfcatch) {
+	hasPluginCFApplication=false;
+}
+if ( !(isSimpleValue(this.ormSettings.cfclocation) && len(this.ormSettings.cfclocation))
+	and !(isArray(this.ormSettings.cfclocation) && arrayLen(this.ormSettings.cfclocation)) ) {
+	this.ormenabled=false;
+}
 
-	this.javaSettings = {
-		loadPaths=variables.loadPaths
-		, loadColdFusionClassPath = evalSetting(getINIProperty('javaSettingsLoadColdFusionClassPath',true))
-		, reloadOnChange=true
-		, watchInterval=evalSetting(getINIProperty('javaSettingsWatchInterval',60))
-		, watchExtensions=evalSetting(getINIProperty('javaSettingsWatchExtensions','jar,class'))
-	};
+//This is use to interact with Lucee admin settings.s
+this.webadminpassword=evalSetting(getINIProperty('webadminpassword',''));
 
-	// Amazon S3 Credentials
-	try {
-		this.s3.accessKeyId=evalSetting(getINIProperty('s3accessKeyId',''));
-		this.s3.awsSecretKey=evalSetting(getINIProperty('s3awsSecretKey',''));
-	} catch(any e) {
-		// not supported
-	}
+// if true, CF converts form fields as an array instead of a list (not recommended)
+this.sameformfieldsasarray=evalSetting(getINIProperty('sameformfieldsasarray',false));
+
+// Custom Java library paths with dynamic loading
+try {
+	variables.loadPaths = ListToArray(getINIProperty('javaSettingsLoadPaths','#variables.baseDir#/core/vendor/lib'));
+} catch(any e) {
+	variables.loadPaths = ['#variables.baseDir#/core/vendor/lib'];
+}
+
+this.javaSettings = {
+	loadPaths=variables.loadPaths
+	, loadColdFusionClassPath = evalSetting(getINIProperty('javaSettingsLoadColdFusionClassPath',true))
+	, reloadOnChange=true
+	, watchInterval=evalSetting(getINIProperty('javaSettingsWatchInterval',60))
+	, watchExtensions=evalSetting(getINIProperty('javaSettingsWatchExtensions','jar,class'))
+};
+
+// Amazon S3 Credentials
+try {
+	this.s3.accessKeyId=evalSetting(getINIProperty('s3accessKeyId',''));
+	this.s3.awsSecretKey=evalSetting(getINIProperty('s3awsSecretKey',''));
+} catch(any e) {
+	// not supported
+}
 
 function initINI(required string iniPath) output=false {
 	var file = "";
