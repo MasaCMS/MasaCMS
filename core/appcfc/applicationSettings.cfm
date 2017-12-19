@@ -367,6 +367,7 @@ if(request.muraInDocker && len(getSystemEnvironmentSetting('MURA_DATABASE')) && 
 					 , port = getSystemEnvironmentSetting('MURA_DBPORT')
 					 , username = getSystemEnvironmentSetting('MURA_DBUSERNAME')
 					 , password = getSystemEnvironmentSetting('MURA_DBPASSWORD')
+					 , clob = true
 					 , '#connectionStringVarName#' = getSystemEnvironmentSetting('MURA_DBCONNECTIONSTRING')
 				},
 				nodatabase=  {
@@ -376,9 +377,16 @@ if(request.muraInDocker && len(getSystemEnvironmentSetting('MURA_DATABASE')) && 
 					 , port = getSystemEnvironmentSetting('MURA_DBPORT')
 					 , username = getSystemEnvironmentSetting('MURA_DBUSERNAME')
 					 , password = getSystemEnvironmentSetting('MURA_DBPASSWORD')
+					 , clob = true
 					 , '#connectionStringVarName#' = getSystemEnvironmentSetting('MURA_DBCONNECTIONSTRING')
 				}
 		};
+
+		if(server.coldfusion.productname == 'lucee' && len(getSystemEnvironmentSetting('MURA_DBTIMEZONE'))){
+			for(ds in this.datasources){
+				this.datasources[ds].timezone=getSystemEnvironmentSetting('MURA_DBTIMEZONE');
+			}
+		}
 	}
 
 	try {
