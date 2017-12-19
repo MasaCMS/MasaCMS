@@ -321,6 +321,7 @@ if ( this.ormenabled ) {
 }
 
 if(request.muraInDocker && len(getSystemEnvironmentSetting('MURA_DATABASE')) && getSystemEnvironmentSetting('MURA_DBTYPE') != 'oracle'){
+
 		if(server.coldfusion.productname == 'lucee'){
 			driverVarName='type';
 
@@ -365,6 +366,7 @@ if(request.muraInDocker && len(getSystemEnvironmentSetting('MURA_DATABASE')) && 
 					 , port = getSystemEnvironmentSetting('MURA_DBPORT')
 					 , username = getSystemEnvironmentSetting('MURA_DBUSERNAME')
 					 , password = getSystemEnvironmentSetting('MURA_DBPASSWORD')
+					 , connectionString = getSystemEnvironmentSetting('MURA_DBCONNECTIONSTRING')
 				},
 				nodatabase=  {
 						'#driverVarName#' = driverName
@@ -373,6 +375,7 @@ if(request.muraInDocker && len(getSystemEnvironmentSetting('MURA_DATABASE')) && 
 					 , port = getSystemEnvironmentSetting('MURA_DBPORT')
 					 , username = getSystemEnvironmentSetting('MURA_DBUSERNAME')
 					 , password = getSystemEnvironmentSetting('MURA_DBPASSWORD')
+					 , connectionString = getSystemEnvironmentSetting('MURA_DBCONNECTIONSTRING')
 				}
 		};
 	}
