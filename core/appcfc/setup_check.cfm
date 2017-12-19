@@ -1,5 +1,5 @@
 <cfscript>
-if ( request.muraHasNodatabaseDSN && request.muraInDocker && len(getSystemEnvironmentSetting('MURA_DATABASE'))) {
+if ( request.muraHasNodatabaseDSN) {
 	if ( request.muraSysEnv.MURA_DBTYPE == 'mssql' ) {
 
     qs=new Query();

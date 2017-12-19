@@ -426,7 +426,7 @@ if((!isDefined('this.datasources') || StructIsEmpty(this.datasources)) && reques
 
 }
 
-if(isDefined('this.datasources.nodatabase')){
+if(request.muraInDocker && isDefined('this.datasources.nodatabase') && len(getSystemEnvironmentSetting('MURA_DATABASE'))){
 	request.muraHasNodatabaseDSN=true;
 }
 
