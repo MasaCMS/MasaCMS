@@ -341,6 +341,9 @@ if((!isDefined('this.datasources') || StructIsEmpty(this.datasources)) && reques
 			case 'postgresql':
 				driverName='PostgreSQL';
 				break;
+			default:
+				driverName='Other';
+				break;
 		}
 	} else {
 		driverVarName='driver';
@@ -359,27 +362,36 @@ if((!isDefined('this.datasources') || StructIsEmpty(this.datasources)) && reques
 			case 'postgresql':
 				driverName='PostgreSQL';
 				break;
+			default:
+				driverName='Other';
+				break;
 		}
 	}
 	this.datasources={};
 
 	if(len(getSystemEnvironmentSetting('MURA_DBCONNECTIONSTRING'))){
 		this.datasources['#getSystemEnvironmentSetting('MURA_DATASOURCE')#']={
-					'#driverVarName#' = 'other'
+					'#driverVarName#' = '#driverName#'
 				 , '#connectionStringVarName#' = getSystemEnvironmentSetting('MURA_DBCONNECTIONSTRING')
-				 , 'class' = getSystemEnvironmentSetting('MURA_DBCLASS')
 				 , 'username' = getSystemEnvironmentSetting('MURA_DBUSERNAME')
 				 , 'password' = getSystemEnvironmentSetting('MURA_DBPASSWORD')
 		};
 
+		if(len( getSystemEnvironmentSetting('MURA_DBCLASS'))){
+			 this.datasources['#getSystemEnvironmentSetting('MURA_DATASOURCE')#'].class = getSystemEnvironmentSetting('MURA_DBCLASS');
+		}
+
 		if(len(getSystemEnvironmentSetting('MURA_DBCONNECTIONSTRINGNODB'))){
 			this.datasources.nodatabase={
-						'#driverVarName#' = 'other'
+						'#driverVarName#' = '#driverName#'
 					 , '#connectionStringVarName#' = getSystemEnvironmentSetting('MURA_DBCONNECTIONSTRINGNODB')
-					 , class = getSystemEnvironmentSetting('MURA_DBCLASS')
 					 , username = getSystemEnvironmentSetting('MURA_DBUSERNAME')
 					 , password = getSystemEnvironmentSetting('MURA_DBPASSWORD')
 				};
+
+				if(len( getSystemEnvironmentSetting('MURA_DBCLASS'))){
+					 this.datasources.nodatabase.class = getSystemEnvironmentSetting('MURA_DBCLASS');
+				}
 		}
 	} else {
 		this.datasources['#getSystemEnvironmentSetting('MURA_DATASOURCE')#']={
