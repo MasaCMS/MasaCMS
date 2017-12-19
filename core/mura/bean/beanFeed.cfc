@@ -715,6 +715,9 @@ function transformFieldName(fieldname){
 }
 
 function isAggregateQuery(){
+	if(isDefined('url.fields') && len(url.fields)){
+		return false;
+	}
 	for(var i in ['minValArray','maxValArray','avgValArray','sumValArray','countValArray','groupByArray']){
 		if(arrayLen(variables.instance[i])){
 			return true;
