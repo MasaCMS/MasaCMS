@@ -273,14 +273,14 @@ if ( len(getINIProperty("datasource","")) ) {
 		this.datasource = structNew();
 		this.datasource.name = evalSetting(getINIProperty("datasource",""));
 
-		// dbUsername=evalSetting(getINIProperty("dbusername",""));
-		// if ( len(dbUsername) ) {
-		// 	this.datasource.username =dbUsername;
-		// }
-		// dbPassword=evalSetting(getINIProperty("dbpassword",""));
-		// if ( len(dbPassword) ) {
-		// 	this.datasource.password = dbPassword;
-		// }
+		dbUsername=evalSetting(getINIProperty("dbusername",""));
+		if ( len(dbUsername) ) {
+			this.datasource.username =dbUsername;
+		}
+		dbPassword=evalSetting(getINIProperty("dbpassword",""));
+		if ( len(dbPassword) ) {
+			this.datasource.password = dbPassword;
+		}
 	} else {
 		this.datasource = evalSetting(getINIProperty("datasource",""));
 	}
