@@ -381,10 +381,10 @@ if((!isDefined('this.datasources') || StructIsEmpty(this.datasources)) && reques
 			 this.datasources['#getSystemEnvironmentSetting('MURA_DATASOURCE')#'].class = getSystemEnvironmentSetting('MURA_DBCLASS');
 		}
 
-		if(len(getSystemEnvironmentSetting('MURA_DBCONNECTIONSTRINGNODB'))){
+		if(len(getSystemEnvironmentSetting('MURA_DATABASE'))){
 			this.datasources.nodatabase={
 						'#driverVarName#' = '#driverName#'
-					 , '#connectionStringVarName#' = getSystemEnvironmentSetting('MURA_DBCONNECTIONSTRINGNODB')
+					 , '#connectionStringVarName#' = replaceNoCase(regetSystemEnvironmentSetting('MURA_DBCONNECTIONSTRING'),getSystemEnvironmentSetting('MURA_DATABASE'),'')
 					 , username = getSystemEnvironmentSetting('MURA_DBUSERNAME')
 					 , password = getSystemEnvironmentSetting('MURA_DBPASSWORD')
 				};
@@ -393,6 +393,7 @@ if((!isDefined('this.datasources') || StructIsEmpty(this.datasources)) && reques
 					 this.datasources.nodatabase.class = getSystemEnvironmentSetting('MURA_DBCLASS');
 				}
 		}
+
 	} else {
 		this.datasources['#getSystemEnvironmentSetting('MURA_DATASOURCE')#']={
 					'#driverVarName#' = driverName
