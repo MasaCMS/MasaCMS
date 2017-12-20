@@ -1,14 +1,14 @@
 <cfscript>
 if ( request.muraHasNodatabaseDSN) {
 	if ( request.muraSysEnv.MURA_DBTYPE == 'mssql' ) {
-
-    qs=new Query();
-    qs.setDatasource('nodatabase');
+		// Microsoft SQL Server
+		qs=new Query();
+		qs.setDatasource('nodatabase');
 
 		if ( !qs.execute(sql="select * from sys.databases where name = '#request.muraSysEnv.MURA_DATABASE#'").getResult().recordcount ) {
-      qs=new Query();
-      qs.setDatasource('nodatabase');
-      qs.execute(sql="CREATE DATABASE #request.muraSysEnv.MURA_DATABASE#");
+			qs=new Query();
+			qs.setDatasource('nodatabase');
+			qs.execute(sql="CREATE DATABASE #request.muraSysEnv.MURA_DATABASE#");
 
 			FORM['#application.setupSubmitButton#']=true;
 			FORM['#application.setupSubmitButtonComplete#']=true;
@@ -16,13 +16,9 @@ if ( request.muraHasNodatabaseDSN) {
 			FORM['action']='doSetup';
 		}
 
-    qs=new Query();
+		qs=new Query();
 
-		if(!qs.execute(sql="SELECT *
-         FROM INFORMATION_SCHEMA.TABLES
-         WHERE TABLE_CATALOG = '#request.muraSysEnv.MURA_DATABASE#'
-         AND  lower(TABLE_NAME) = 'tcontent'").getResult().recordcount){
-
+		if (!qs.execute(sql="SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_CATALOG = '#request.muraSysEnv.MURA_DATABASE#' AND  lower(TABLE_NAME) = 'tcontent'").getResult().recordcount) {
 			FORM['#application.setupSubmitButton#']=true;
 			FORM['#application.setupSubmitButtonComplete#']=true;
 			FORM['setupSubmitButton']=true;
@@ -30,14 +26,14 @@ if ( request.muraHasNodatabaseDSN) {
 		}
 
 	} else if ( request.muraSysEnv.MURA_DBTYPE == 'mysql' ) {
-
-    qs=new Query();
-    qs.setDatasource('nodatabase');
+		//MySQL
+    	qs=new Query();
+    	qs.setDatasource('nodatabase');
 
 		if ( !qs.execute(sql="SELECT IF('#request.muraSysEnv.MURA_DATABASE#' IN(SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA), 1, 0) AS found").getResult().found) {
-      qs=new Query();
-      qs.setDatasource('nodatabase');
-      qs.execute(sql="CREATE DATABASE #request.muraSysEnv.MURA_DATABASE#");
+    		qs=new Query();
+    		qs.setDatasource('nodatabase');
+			qs.execute(sql="CREATE DATABASE #request.muraSysEnv.MURA_DATABASE#");
 
 			FORM['#application.setupSubmitButton#']=true;
 			FORM['#application.setupSubmitButtonComplete#']=true;
@@ -45,10 +41,10 @@ if ( request.muraHasNodatabaseDSN) {
 			FORM['action']='doSetup';
 		}
 
-    qs=new Query();
-    qs.setDatasource('nodatabase');
+		qs=new Query();
+		qs.setDatasource('nodatabase');
 
-    if ( !qs.execute(sql="SELECT IF('tcontent' IN(SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '#request.muraSysEnv.MURA_DATABASE#' AND TABLE_NAME = 'tcontent'), 1, 0) AS found").getResult().found) {
+		if ( !qs.execute(sql="SELECT IF('tcontent' IN(SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '#request.muraSysEnv.MURA_DATABASE#' AND TABLE_NAME = 'tcontent'), 1, 0) AS found").getResult().found) {
 			FORM['#application.setupSubmitButton#']=true;
 			FORM['#application.setupSubmitButtonComplete#']=true;
 			FORM['setupSubmitButton']=true;
@@ -56,15 +52,13 @@ if ( request.muraHasNodatabaseDSN) {
 		}
 
 	} else if ( request.muraSysEnv.MURA_DBTYPE == 'postgresql' ) {
-
-    qs=new Query();
-    qs.setDatasource('nodatabase');
+		// POSTGRES
+		qs=new Query();
+    	qs.setDatasource('nodatabase');
 
 		if ( !qs.execute(sql="SELECT datname FROM pg_catalog.pg_database WHERE lower(datname) = '#lcase(request.muraSysEnv.MURA_DATABASE)#'").getResult().recordcount ) {
-
-      qs=new Query();
-
-      qs.execute(sql="CREATE DATABASE #request.muraSysEnv.MURA_DATABASE#");
+			qs=new Query();
+    		qs.execute(sql="CREATE DATABASE #request.muraSysEnv.MURA_DATABASE#");
 
 			FORM['#application.setupSubmitButton#']=true;
 			FORM['#application.setupSubmitButtonComplete#']=true;
@@ -83,16 +77,15 @@ if ( request.muraHasNodatabaseDSN) {
 		}
 
 	} else if ( request.muraSysEnv.MURA_DBTYPE == 'oracle' ) {
+		// ORACLE
+		qs=new Query();
 
-			qs=new Query();
-
-			if ( !qs.execute(sql="select table_name from all_tables where lower(owner)='#lcase(request.muraSysEnv.MURA_DATABASE)#' and lower(table_name)='tcontent'").getResult().recordcount ) {
-				FORM['#application.setupSubmitButton#']=true;
-				FORM['#application.setupSubmitButtonComplete#']=true;
-				FORM['setupSubmitButton']=true;
-				FORM['action']='doSetup';
-			}
-
+		if ( !qs.execute(sql="select table_name from all_tables where lower(owner)='#lcase(request.muraSysEnv.MURA_DATABASE)#' and lower(table_name)='tcontent'").getResult().recordcount ) {
+			FORM['#application.setupSubmitButton#']=true;
+			FORM['#application.setupSubmitButtonComplete#']=true;
+			FORM['setupSubmitButton']=true;
+			FORM['action']='doSetup';
+		}
 	}
 }
 </cfscript>

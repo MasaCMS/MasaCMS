@@ -369,53 +369,58 @@ if((!isDefined('this.datasources') || StructIsEmpty(this.datasources)) && reques
 	}
 	this.datasources={};
 
-	if(len(getSystemEnvironmentSetting('MURA_DBCONNECTIONSTRING'))){
+	if (len(getSystemEnvironmentSetting('MURA_DBCONNECTIONSTRING'))) {
 		this.datasources['#getSystemEnvironmentSetting('MURA_DATASOURCE')#']={
-					'#driverVarName#' = '#driverName#'
-				 , '#connectionStringVarName#' = getSystemEnvironmentSetting('MURA_DBCONNECTIONSTRING')
-				 , 'username' = getSystemEnvironmentSetting('MURA_DBUSERNAME')
-				 , 'password' = getSystemEnvironmentSetting('MURA_DBPASSWORD')
+			'#driverVarName#' = driverName
+			, '#connectionStringVarName#' = getSystemEnvironmentSetting('MURA_DBCONNECTIONSTRING')
+			, 'username' = getSystemEnvironmentSetting('MURA_DBUSERNAME')
+			, 'password' = getSystemEnvironmentSetting('MURA_DBPASSWORD')
+			, 'clob' = true
 		};
 
-		if(len( getSystemEnvironmentSetting('MURA_DBCLASS'))){
-			 this.datasources['#getSystemEnvironmentSetting('MURA_DATASOURCE')#'].class = getSystemEnvironmentSetting('MURA_DBCLASS');
+		if (len(getSystemEnvironmentSetting('MURA_DBCLASS'))) {
+			this.datasources['#getSystemEnvironmentSetting('MURA_DATASOURCE')#'].class = getSystemEnvironmentSetting('MURA_DBCLASS');
 		}
 
-		if(len(getSystemEnvironmentSetting('MURA_DATABASE'))){
-			this.datasources.nodatabase={
-						'#driverVarName#' = '#driverName#'
-					 , '#connectionStringVarName#' = replaceNoCase(regetSystemEnvironmentSetting('MURA_DBCONNECTIONSTRING'),getSystemEnvironmentSetting('MURA_DATABASE'),'')
-					 , username = getSystemEnvironmentSetting('MURA_DBUSERNAME')
-					 , password = getSystemEnvironmentSetting('MURA_DBPASSWORD')
-				};
+		if (len(getSystemEnvironmentSetting('MURA_DATABASE'))) {
+			this.idxDBName = ListFindNoCase(getSystemEnvironmentSetting('MURA_DBCONNECTIONSTRING'), 'databasename=#getSystemEnvironmentSetting('MURA_DATABASE')#', ';');
 
-				if(len( getSystemEnvironmentSetting('MURA_DBCLASS'))){
-					 this.datasources.nodatabase.class = getSystemEnvironmentSetting('MURA_DBCLASS');
-				}
+			this.datasources.nodatabase={
+				'#driverVarName#' = driverName
+				, '#connectionStringVarName#' = ListDeleteAt(getSystemEnvironmentSetting('MURA_DBCONNECTIONSTRING'), this.idxDBName, ';')
+				, 'username' = getSystemEnvironmentSetting('MURA_DBUSERNAME')
+				, 'password' = getSystemEnvironmentSetting('MURA_DBPASSWORD')
+				, 'database' = getSystemEnvironmentSetting('MURA_DATABASE')
+			};
+
+			if (len(getSystemEnvironmentSetting('MURA_DBCLASS'))) {
+				this.datasources.nodatabase.class = getSystemEnvironmentSetting('MURA_DBCLASS');
+			}
 		}
 
 	} else {
+
 		this.datasources['#getSystemEnvironmentSetting('MURA_DATASOURCE')#']={
-					'#driverVarName#' = driverName
-				 , host = getSystemEnvironmentSetting('MURA_DBHOST')
-				 , database = getSystemEnvironmentSetting('MURA_DATABASE')
-				 , port = getSystemEnvironmentSetting('MURA_DBPORT')
-				 , username = getSystemEnvironmentSetting('MURA_DBUSERNAME')
-				 , password = getSystemEnvironmentSetting('MURA_DBPASSWORD')
-				 , clob = true
-			};
+			'#driverVarName#' = driverName
+			, host = getSystemEnvironmentSetting('MURA_DBHOST')
+			, database = getSystemEnvironmentSetting('MURA_DATABASE')
+			, port = getSystemEnvironmentSetting('MURA_DBPORT')
+			, username = getSystemEnvironmentSetting('MURA_DBUSERNAME')
+			, password = getSystemEnvironmentSetting('MURA_DBPASSWORD')
+			, clob = true
+		};
 
 		this.datasources.nodatabase={
-					'#driverVarName#' = driverName
-				 , host = getSystemEnvironmentSetting('MURA_DBHOST')
-				 , database = ''
-				 , port = getSystemEnvironmentSetting('MURA_DBPORT')
-				 , username = getSystemEnvironmentSetting('MURA_DBUSERNAME')
-				 , password = getSystemEnvironmentSetting('MURA_DBPASSWORD')
-			};
+			'#driverVarName#' = driverName
+			, host = getSystemEnvironmentSetting('MURA_DBHOST')
+			, database = ''
+			, port = getSystemEnvironmentSetting('MURA_DBPORT')
+			, username = getSystemEnvironmentSetting('MURA_DBUSERNAME')
+			, password = getSystemEnvironmentSetting('MURA_DBPASSWORD')
+		};
 	}
 
-	if(server.coldfusion.productname == 'lucee'){
+	if (server.coldfusion.productname == 'lucee') {
 		if(len(getSystemEnvironmentSetting('MURA_DBTIMEZONE'))){
 			this.datasources["#getSystemEnvironmentSetting('MURA_DATASOURCE')#"].timezone=getSystemEnvironmentSetting('MURA_DBTIMEZONE');
 		}
