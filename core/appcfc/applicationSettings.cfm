@@ -321,8 +321,7 @@ if ( this.ormenabled ) {
 	this.ormSettings.logsql= evalSetting(getINIProperty("ormlogsql","false"));
 }
 
-//This allows datasources to defined in the cfapplicain.cfm
-if((!isDefined('this.datasources') || StructIsEmpty(this.datasources)) && request.muraInDocker && (len(getSystemEnvironmentSetting('MURA_DATABASE')) || len(getSystemEnvironmentSetting('MURA_DBCONNECTIONSTRING')))){
+if(request.muraInDocker && (len(getSystemEnvironmentSetting('MURA_DATABASE')) || len(getSystemEnvironmentSetting('MURA_DBCONNECTIONSTRING')))){
 
 	if(server.coldfusion.productname == 'lucee'){
 		driverVarName='type';
@@ -383,12 +382,12 @@ if((!isDefined('this.datasources') || StructIsEmpty(this.datasources)) && reques
 		}
 
 		if (len(getSystemEnvironmentSetting('MURA_DATABASE'))) {
-			this.idxDBName = replaceNoCase(getSystemEnvironmentSetting('MURA_DBCONNECTIONSTRING'), '=#getSystemEnvironmentSetting('MURA_DATABASE')#', '=');
-			this.idxDBName = replaceNoCase(this.idxDBName, '/#getSystemEnvironmentSetting('MURA_DATABASE')#', '/');
+			nodbConnectionString = replaceNoCase(getSystemEnvironmentSetting('MURA_DBCONNECTIONSTRING'), '=#getSystemEnvironmentSetting('MURA_DATABASE')#', '=');
+			nodbConnectionString = replaceNoCase(nodbConnectionString, '/#getSystemEnvironmentSetting('MURA_DATABASE')#', '/');
 
 			this.datasources.nodatabase={
 				'#driverVarName#' = driverName
-				, '#connectionStringVarName#' = ListDeleteAt(getSystemEnvironmentSetting('MURA_DBCONNECTIONSTRING'), this.idxDBName, ';')
+				, '#connectionStringVarName#' = nodbConnectionString
 				, 'username' = getSystemEnvironmentSetting('MURA_DBUSERNAME')
 				, 'password' = getSystemEnvironmentSetting('MURA_DBPASSWORD')
 				, 'database' = getSystemEnvironmentSetting('MURA_DATABASE')
