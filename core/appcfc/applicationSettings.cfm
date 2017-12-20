@@ -383,7 +383,8 @@ if((!isDefined('this.datasources') || StructIsEmpty(this.datasources)) && reques
 		}
 
 		if (len(getSystemEnvironmentSetting('MURA_DATABASE'))) {
-			this.idxDBName = ListFindNoCase(getSystemEnvironmentSetting('MURA_DBCONNECTIONSTRING'), 'databasename=#getSystemEnvironmentSetting('MURA_DATABASE')#', ';');
+			this.idxDBName = replaceNoCase(getSystemEnvironmentSetting('MURA_DBCONNECTIONSTRING'), '=#getSystemEnvironmentSetting('MURA_DATABASE')#', '=');
+			this.idxDBName = replaceNoCase(getSystemEnvironmentSetting('MURA_DBCONNECTIONSTRING'), '/#getSystemEnvironmentSetting('MURA_DATABASE')#', '/');
 
 			this.datasources.nodatabase={
 				'#driverVarName#' = driverName
