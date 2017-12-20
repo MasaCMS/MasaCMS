@@ -3,14 +3,14 @@ version: '2.1'
 services:
   #Mura Server
   mura_mysql_cfml:
-    image: ortussolutions/commandbox:adobe2016
+    image: ortussolutions/commandbox:lucee5
     depends_on:
       - mura7_1_mysql
     environment:
       PORT: 8080
       SSL_PORT: 8443
       URL_REWRITES: "true"
-      CFENGINE: adobe@2016
+      CFENGINE: lucee@5
       CFCONFIG_ADMINPASSWORD: NOT_SECURE_CHANGE
       MURA_ADMIN_USERNAME: admin
       MURA_ADMIN_PASSWORD: admin

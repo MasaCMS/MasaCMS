@@ -1,28 +1,37 @@
 <cfscript>
 if ( request.muraCheckSetup) {
-	if ( request.muraSysEnv.MURA_DBTYPE == 'oracle' ) {
-		// Oracle
-		qs=new Query(datasource="nodatabase");
+	// MySQL, MSSQL, + Postgres
+	dbi = new dbinfo(datasource="nodatabase");
+	rsdbnames = dbi.dbnames();
 
-		if ( !qs.execute(sql="select table_name from all_tables where lower(owner)='#lcase(request.muraSysEnv.MURA_DATABASE)#' and lower(table_name)='tcontent'").getResult().recordcount ) {
-			FORM['#application.setupSubmitButton#']=true;
-			FORM['#application.setupSubmitButtonComplete#']=true;
-			FORM['setupSubmitButton']=true;
-			FORM['action']='doSetup';
-		}
+	if ( !ListFindNoCase(ValueList(rsdbnames.DATABASE_NAME), request.muraSysEnv.MURA_DATABASE) ) {
+		q = new Query(datasource="nodatabase");
+		q.execute(sql='CREATE DATABASE #request.muraSysEnv.MURA_DATABASE#');
+
+		FORM['#application.setupSubmitButton#']=true;
+		FORM['#application.setupSubmitButtonComplete#']=true;
+		FORM['setupSubmitButton']=true;
+		FORM['action']='doSetup';
+
 	} else {
-		// MySQL, MSSQL, + Postgres
-		dbi = new dbinfo(datasource="nodatabase");
-		rsdbnames = dbi.dbnames();
 
-		if ( !ListFindNoCase(ValueList(rsdbnames.DATABASE_NAME), request.muraSysEnv.MURA_DATABASE) ) {
-			q = new Query(datasource="nodatabase");
-			q.execute(sql='CREATE DATABASE #request.muraSysEnv.MURA_DATABASE#');
+		if( request.muraSysEnv.MURA_DBTYPE == 'postgresql'){
+			qs=new Query();
 
-			FORM['#application.setupSubmitButton#']=true;
-			FORM['#application.setupSubmitButtonComplete#']=true;
-			FORM['setupSubmitButton']=true;
-			FORM['action']='doSetup';
+			if(!qs.execute(sql="select table_name from information_schema.tables where table_schema = current_schema() and lower(table_name)='tcontent'").getResult().recordcount){
+				FORM['#application.setupSubmitButton#']=true;
+				FORM['#application.setupSubmitButtonComplete#']=true;
+				FORM['setupSubmitButton']=true;
+				FORM['action']='doSetup';
+			}
+
+		} else if(request.muraSysEnv.MURA_DBTYPE == 'oracle'){
+			if(!qs.execute(sql="select TABLE_NAME from user_tables where lower(table_name)='tcontent'").getResult().recordcount){
+				FORM['#application.setupSubmitButton#']=true;
+				FORM['#application.setupSubmitButtonComplete#']=true;
+				FORM['setupSubmitButton']=true;
+				FORM['action']='doSetup';
+			}
 		} else {
 
 			dbi = new dbinfo();
