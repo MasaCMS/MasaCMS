@@ -2,7 +2,7 @@
 if ( request.muraCheckSetup) {
 	if ( request.muraSysEnv.MURA_DBTYPE == 'oracle' ) {
 		// Oracle
-		qs=new Query();
+		qs=new Query(datasource="nodatabase");
 
 		if ( !qs.execute(sql="select table_name from all_tables where lower(owner)='#lcase(request.muraSysEnv.MURA_DATABASE)#' and lower(table_name)='tcontent'").getResult().recordcount ) {
 			FORM['#application.setupSubmitButton#']=true;
@@ -12,11 +12,11 @@ if ( request.muraCheckSetup) {
 		}
 	} else {
 		// MySQL, MSSQL, + Postgres
-		dbi = new dbinfo();
+		dbi = new dbinfo(datasource="nodatabase");
 		rsdbnames = dbi.dbnames();
 
 		if ( !ListFindNoCase(ValueList(rsdbnames.DATABASE_NAME), request.muraSysEnv.MURA_DATABASE) ) {
-			q = new Query();
+			q = new Query(datasource="nodatabase");
 			q.execute(sql='CREATE DATABASE #request.muraSysEnv.MURA_DATABASE#');
 
 			FORM['#application.setupSubmitButton#']=true;
@@ -24,8 +24,8 @@ if ( request.muraCheckSetup) {
 			FORM['setupSubmitButton']=true;
 			FORM['action']='doSetup';
 		} else {
-			
-			dbi.setDBName(request.muraSysEnv.MURA_DATABASE);
+
+			dbi = new dbinfo();
 			rsdbtables = dbi.tables();
 
 			if ( !ListFindNoCase(ValueList(rsdbtables.TABLE_NAME), 'tcontent') ) {

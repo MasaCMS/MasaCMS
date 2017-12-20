@@ -381,6 +381,22 @@ if(request.muraInDocker && (len(getSystemEnvironmentSetting('MURA_DATABASE')) ||
 			this.datasources['#getSystemEnvironmentSetting('MURA_DATASOURCE')#'].class = getSystemEnvironmentSetting('MURA_DBCLASS');
 		}
 
+		if (len(getSystemEnvironmentSetting('MURA_DATABASE'))) {
+			connectionString=replaceNoCase(getSystemEnvironmentSetting('MURA_DBCONNECTIONSTRING'),"=#getSystemEnvironmentSetting('MURA_DATABASE')#","=");
+			connectionString=replaceNoCase(connectionString,"/#getSystemEnvironmentSetting('MURA_DATABASE')#","/");
+
+			this.datasources.nodatabase={
+				'#driverVarName#' = driverName
+				, '#connectionStringVarName#' = connectionString
+				, 'username' = getSystemEnvironmentSetting('MURA_DBUSERNAME')
+				, 'password' = getSystemEnvironmentSetting('MURA_DBPASSWORD')
+			};
+
+			if (len(getSystemEnvironmentSetting('MURA_DBCLASS'))) {
+				this.datasources.nodatabase.class = getSystemEnvironmentSetting('MURA_DBCLASS');
+			}
+		}
+
 	} else {
 
 		this.datasources['#getSystemEnvironmentSetting('MURA_DATASOURCE')#']={
@@ -391,6 +407,14 @@ if(request.muraInDocker && (len(getSystemEnvironmentSetting('MURA_DATABASE')) ||
 			, username = getSystemEnvironmentSetting('MURA_DBUSERNAME')
 			, password = getSystemEnvironmentSetting('MURA_DBPASSWORD')
 			, clob = true
+		};
+
+		this.datasources.nodatabase={
+			'#driverVarName#' = driverName
+			, host = getSystemEnvironmentSetting('MURA_DBHOST')
+			, port = getSystemEnvironmentSetting('MURA_DBPORT')
+			, username = getSystemEnvironmentSetting('MURA_DBUSERNAME')
+			, password = getSystemEnvironmentSetting('MURA_DBPASSWORD')
 		};
 
 	}
@@ -418,7 +442,7 @@ if(request.muraInDocker && (len(getSystemEnvironmentSetting('MURA_DATABASE')) ||
 	}
 }
 
-if(request.muraInDocker && len(getSystemEnvironmentSetting('MURA_DATABASE'))){
+if(request.muraInDocker && isDefined('this.datasources.nodatabase') && len(getSystemEnvironmentSetting('MURA_DATABASE'))){
 	request.muraCheckSetup=true;
 }
 
