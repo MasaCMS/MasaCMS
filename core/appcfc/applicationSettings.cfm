@@ -72,7 +72,7 @@ param name="request.returnFormat" default="html";
 param name="request.muraSessionManagement" default=true;
 param name="request.muraPointInTime" default="";
 param name="request.muraTemplateMissing" default=false;
-param name="request.muraHasNodatabaseDSN" default=false;
+param name="request.muraCheckSetup" default=false;
 param name="request.muraSysEnv" default="#createObject('java','java.lang.System').getenv()#";
 
 request.muraInDocker=len(getSystemEnvironmentSetting('MURA_DATASOURCE'));
@@ -382,23 +382,6 @@ if(request.muraInDocker && (len(getSystemEnvironmentSetting('MURA_DATABASE')) ||
 			this.datasources['#getSystemEnvironmentSetting('MURA_DATASOURCE')#'].class = getSystemEnvironmentSetting('MURA_DBCLASS');
 		}
 
-		if (len(getSystemEnvironmentSetting('MURA_DATABASE'))) {
-			nodbConnectionString = replaceNoCase(getSystemEnvironmentSetting('MURA_DBCONNECTIONSTRING'), '=#getSystemEnvironmentSetting('MURA_DATABASE')#', '=');
-			nodbConnectionString = replaceNoCase(nodbConnectionString, '/#getSystemEnvironmentSetting('MURA_DATABASE')#', '/');
-
-			this.datasources.nodatabase={
-				'#driverVarName#' = driverName
-				, '#connectionStringVarName#' = nodbConnectionString
-				, 'username' = getSystemEnvironmentSetting('MURA_DBUSERNAME')
-				, 'password' = getSystemEnvironmentSetting('MURA_DBPASSWORD')
-				, 'database' = getSystemEnvironmentSetting('MURA_DATABASE')
-			};
-
-			if (len(getSystemEnvironmentSetting('MURA_DBCLASS'))) {
-				this.datasources.nodatabase.class = getSystemEnvironmentSetting('MURA_DBCLASS');
-			}
-		}
-
 	} else {
 
 		this.datasources['#getSystemEnvironmentSetting('MURA_DATASOURCE')#']={
@@ -411,14 +394,6 @@ if(request.muraInDocker && (len(getSystemEnvironmentSetting('MURA_DATABASE')) ||
 			, clob = true
 		};
 
-		this.datasources.nodatabase={
-			'#driverVarName#' = driverName
-			, host = getSystemEnvironmentSetting('MURA_DBHOST')
-			, database = ''
-			, port = getSystemEnvironmentSetting('MURA_DBPORT')
-			, username = getSystemEnvironmentSetting('MURA_DBUSERNAME')
-			, password = getSystemEnvironmentSetting('MURA_DBPASSWORD')
-		};
 	}
 
 	if (server.coldfusion.productname == 'lucee') {
@@ -444,8 +419,8 @@ if(request.muraInDocker && (len(getSystemEnvironmentSetting('MURA_DATABASE')) ||
 	}
 }
 
-if(request.muraInDocker && isDefined('this.datasources.nodatabase') && len(getSystemEnvironmentSetting('MURA_DATABASE'))){
-	request.muraHasNodatabaseDSN=true;
+if(request.muraInDocker && len(getSystemEnvironmentSetting('MURA_DATABASE'))){
+	request.muraCheckSetup=true;
 }
 
 try {
