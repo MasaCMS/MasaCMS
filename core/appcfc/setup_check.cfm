@@ -24,7 +24,8 @@ if ( request.muraCheckSetup) {
 			FORM['setupSubmitButton']=true;
 			FORM['action']='doSetup';
 		} else {
-
+			
+			dbi.setDBName(request.muraSysEnv.MURA_DATABASE);
 			rsdbtables = dbi.tables();
 
 			if ( !ListFindNoCase(ValueList(rsdbtables.TABLE_NAME), 'tcontent') ) {
