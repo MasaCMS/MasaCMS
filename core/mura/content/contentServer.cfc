@@ -126,7 +126,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset url.path=right(cgi_path,len(cgi_path)-1) />
 	</cfif>
 
-	<cfreturn cgi_path>
+	<cfreturn urlDecode(cgi_path)>
 </cffunction>
 
 <cffunction name="bindToDomain" output="false" access="remote">
@@ -298,7 +298,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var cgi_path=setCGIPath()>
 	</cfif>
 	<cfset var siteid="">
-	
+
 	<cfparam name="url.path" default="" />
 
 	<cfset cgi_path=setCGIPath()>
