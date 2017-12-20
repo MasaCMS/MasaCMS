@@ -174,7 +174,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cffunction name="keyExists" returntype="boolean" output="false">
 		<cfargument name="key">
-		<cfreturn structKeyExists( variables.collection , arguments.key ) />
+		<cfreturn isStruct( variables.collection ) and structKeyExists( variables.collection , arguments.key ) />
 	</cffunction>
 
 	<cffunction name="has" returntype="boolean" output="false">
