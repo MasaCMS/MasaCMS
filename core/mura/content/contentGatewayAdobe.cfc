@@ -51,10 +51,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="settingsManager" type="any" required="yes"/>
 <cfargument name="contentIntervalManager" type="any" required="yes"/>
 <cfargument name="permUtility" type="any" required="yes"/>
+<cfargument name="utility" type="any" required="yes"/>
 		<cfset variables.configBean=arguments.configBean />
 		<cfset variables.settingsManager=arguments.settingsManager />
 		<cfset variables.contentIntervalManager=arguments.contentIntervalManager>
 		<cfset variables.permUtility=arguments.permUtility>
+		<cfset variables.utility=arguments.utility>
 		<cfset variables.classExtensionManager=variables.configBean.getClassExtensionManager()>
 <cfreturn this >
 </cffunction>
@@ -388,8 +390,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 
 			<cfif not isdate(nowAdjusted)>
-				<cfset nowAdjusted=createDateTime(year(arguments.today),month(arguments.today),day(arguments.today),hour(arguments.today),int((minute(arguments.today)/5)*5),0)>
+				<cfset nowAdjusted=now()>
 			</cfif>
+
+			<cfset nowAdjusted=variables.utility.datetimeToTimespanInterval(nowAdjusted,createTimespan(0,0,5,0))>
 
 			<cfif arguments.aggregation >
 				<cfset doKids =true />
@@ -814,7 +818,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var relatedListLen = listLen(arguments.relatedID) />
 	<cfset var f=""/>
 	<cfset var c=""/>
-	<cfset var nowAdjusted=createDateTime(year(arguments.today),month(arguments.today),day(arguments.today),hour(arguments.today),int((minute(arguments.today)/5)*5),0)>
+	<cfset var nowAdjusted="">
+
+	<cfif request.muraChangesetPreview and isStruct(getCurrentUser().getValue("ChangesetPreviewData"))>
+		<cfset nowAdjusted=getCurrentUser().getValue("ChangesetPreviewData").publishDate>
+	</cfif>
+
+	<cfif not isdate(nowAdjusted)>
+			<cfset nowAdjusted=arguments.today>
+	</cfif>
+
+	<cfset nowAdjusted=variables.utility.datetimeToTimespanInterval(nowAdjusted,createTimespan(0,0,5,0))>
 
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 		SELECT tcontentcategories.categoryID, tcontentcategories.filename, Count(tcontent.contenthistID) as "Count", tcontentcategories.name from tcontent inner join tcontentcategoryassign
@@ -2103,8 +2117,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfif not isdate(nowAdjusted)>
-		<cfset nowAdjusted=createDateTime(year(arguments.today),month(arguments.today),day(arguments.today),hour(arguments.today),int((minute(arguments.today)/5)*5),0)>
+		<cfset nowAdjusted=arguments.today>
 	</cfif>
+
+	<cfset nowAdjusted=variables.utility.datetimeToTimespanInterval(nowAdjusted,createTimespan(0,0,5,0))>
 
 	<cfif dbtype eq "MSSQL">
 		<cfset tableModifier="with (nolock)">
@@ -2167,7 +2183,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		left join (
 			select sum(track.points) track_total_score, track.contentid
 			from mxp_conversiontrack track
-			where track.created >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd('m',-1,now())#">
+			where track.created >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd('m',-1,nowAdjusted)#">
 			group by track.contentid
 		) tracktotal on (tcontent.contentid=tracktotal.contentid)
 	</cfif>
@@ -2244,10 +2260,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						 )
 					   OR
 					   	(
-					   		tcontent.DisplayStart <= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#arguments.today#">
+					   		tcontent.DisplayStart <= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
 							AND
 							(
-								tcontent.DisplayStop >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#arguments.today#">
+								tcontent.DisplayStop >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
 								or tcontent.DisplayStop is null
 							)
 					   )
