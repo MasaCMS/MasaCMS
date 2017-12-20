@@ -219,7 +219,12 @@ component extends="ioc" hint="This provides the primary bean factory that all co
 
     function loadDynamicEntities() {
         var qs=new Query();
-        var rs=qs.execute(sql="select * from tentity where dynamic=1").getResult();
+
+        try {
+          var rs=qs.execute(sql="select * from tentity where dynamic=1").getResult();
+        } catch(any e) {
+          writeDump(e);abort;
+        }
 
         var entity='';
 

@@ -314,7 +314,7 @@ component extends="mura.bean.bean" output="false" hint="This provides plugin con
 	public function loadSettingValue() output=false {
 		var rs="";
 
-		var qs=new Query( password=variables.configBean.getDBPassword(), name="rs", datasource=variables.configBean.getDatasource(), username=variables.configBean.getDBUsername() );
+		var qs=new Query();
 		qs.addParam(name="name",cfsqltype="cf_sql_varchar", value=getName());
 		qs.addParam(name="moduleid",cfsqltype="cf_sql_varchar", value=getModuleID());
 

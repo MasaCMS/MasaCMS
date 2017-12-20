@@ -272,14 +272,15 @@ if ( len(getINIProperty("datasource","")) ) {
 		or listGetAt(SERVER.COLDFUSION.PRODUCTVERSION,3) > 0 ) {
 		this.datasource = structNew();
 		this.datasource.name = evalSetting(getINIProperty("datasource",""));
-		dbUsername=evalSetting(getINIProperty("dbusername",""));
-		if ( len(dbUsername) ) {
-			this.datasource.username =dbUsername;
-		}
-		dbPassword=evalSetting(getINIProperty("dbpassword",""));
-		if ( len(dbPassword) ) {
-			this.datasource.password = dbPassword;
-		}
+
+		// dbUsername=evalSetting(getINIProperty("dbusername",""));
+		// if ( len(dbUsername) ) {
+		// 	this.datasource.username =dbUsername;
+		// }
+		// dbPassword=evalSetting(getINIProperty("dbpassword",""));
+		// if ( len(dbPassword) ) {
+		// 	this.datasource.password = dbPassword;
+		// }
 	} else {
 		this.datasource = evalSetting(getINIProperty("datasource",""));
 	}
@@ -441,7 +442,6 @@ if(request.muraInDocker && (len(getSystemEnvironmentSetting('MURA_DATABASE')) ||
 			this.datasources["#getSystemEnvironmentSetting('MURA_DATASOURCE')#"].custom=deserializeJSON(getSystemEnvironmentSetting('MURA_DBCUSTOM'));
 		}
 	}
-
 }
 
 if(request.muraInDocker && isDefined('this.datasources.nodatabase') && len(getSystemEnvironmentSetting('MURA_DATABASE'))){

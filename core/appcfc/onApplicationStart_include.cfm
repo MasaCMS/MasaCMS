@@ -73,6 +73,7 @@ if ( !application.setupComplete || (not application.appInitialized || structKeyE
 			param name="application.setupSubmitButton" default="A#hash( createUUID() )#";
 			param name="application.setupSubmitButtonComplete" default="A#hash( createUUID() )#";
 			include "/muraWRM/core/appcfc/setup_check.cfm";
+
 			if ( trim( getINIProperty("datasource") ) != ""
 					AND (
 						NOT isDefined( "FORM.#application.setupSubmitButton#" )
@@ -810,9 +811,6 @@ if ( application.setupComplete ) {
 
 	if(!application.configBean.getValue(property='readonly',defaultValue=false)){
 		qs=new Query();
-		qs.setUsername(application.configBean.getDbUserName());
-		qs.setPassword(application.configBean.getDbPassword());
-		qs.setDatasource(application.configBean.getDatasource());
 
 		variables.legacyURLs=qs.execute(sql="select contenthistID, contentID,parentId,siteID,filename,urlTitle,filename from tcontent where type in ('File','Link')
 			and active=1
@@ -825,9 +823,6 @@ if ( application.setupComplete ) {
 			variables.item=variables.legacyURLsIterator.next();
 
 			qs=new Query();
-			qs.setUsername(application.configBean.getDbUserName());
-			qs.setPassword(application.configBean.getDbPassword());
-			qs.setDatasource(application.configBean.getDatasource());
 			qs.addParam(name="contentid", cfsqltype="cf_sql_varchar", value=variables.item.getContentID() );
 			qs.addParam(name="siteid", cfsqltype="cf_sql_varchar", value=variables.item.getSiteID() );
 
@@ -837,9 +832,6 @@ if ( application.setupComplete ) {
 			try {
 
 				qs=new Query();
-				qs.setUsername(application.configBean.getDbUserName());
-				qs.setPassword(application.configBean.getDbPassword());
-				qs.setDatasource(application.configBean.getDatasource());
 
 				qs.addParam( name="filename",cfsqltype="cf_sql_varchar", value=variables.item.getFilename() );
 				qs.addParam(name="urltitle", cfsqltype="cf_sql_varchar", value=variables.item.getURLTitle() );
