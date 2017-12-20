@@ -375,7 +375,6 @@ if(request.muraInDocker && (len(getSystemEnvironmentSetting('MURA_DATABASE')) ||
 			, '#connectionStringVarName#' = getSystemEnvironmentSetting('MURA_DBCONNECTIONSTRING')
 			, 'username' = getSystemEnvironmentSetting('MURA_DBUSERNAME')
 			, 'password' = getSystemEnvironmentSetting('MURA_DBPASSWORD')
-			, 'clob' = true
 		};
 
 		if (len(getSystemEnvironmentSetting('MURA_DBCLASS'))) {

@@ -16,7 +16,7 @@ if ( request.muraCheckSetup) {
 		rsdbnames = dbi.dbnames();
 
 		if ( !ListFindNoCase(ValueList(rsdbnames.DATABASE_NAME), request.muraSysEnv.MURA_DATABASE) ) {
-			q = new Query(datasource='nodatasource');
+			q = new Query();
 			q.execute(sql='CREATE DATABASE #request.muraSysEnv.MURA_DATABASE#');
 
 			FORM['#application.setupSubmitButton#']=true;
@@ -26,7 +26,7 @@ if ( request.muraCheckSetup) {
 		} else {
 
 			rsdbtables = dbi.tables();
-			
+
 			if ( !ListFindNoCase(ValueList(rsdbtables.TABLE_NAME), 'tcontent') ) {
 				FORM['#application.setupSubmitButton#']=true;
 				FORM['#application.setupSubmitButtonComplete#']=true;
