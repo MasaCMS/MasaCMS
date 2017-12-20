@@ -219,13 +219,7 @@ component extends="ioc" hint="This provides the primary bean factory that all co
 
     function loadDynamicEntities() {
         var qs=new Query();
-
-        try {
-          var rs=qs.execute(sql="select * from tentity where dynamic=1").getResult();
-        } catch(any e) {
-          writeDump(e);abort;
-        }
-
+        var rs=qs.execute(sql="select * from tentity where dynamic=1").getResult();
         var entity='';
 
         if(directoryExists(expandPath('/muraWRM/modules/dynamic_entities/model/beans'))){
