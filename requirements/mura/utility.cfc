@@ -1291,6 +1291,19 @@ Blog: www.codfusion.com--->
 			)
 		);
 	}
+
+	function datetimeToTimespanInterval(datetime,timespan=''){
+		if(!isDate(arguments.timespan)){
+			arguments.timespan=createTimeSpan(0,0,5,0);
+		}
+		var nowBase=now();
+		var nowEpoch=DateDiff("s", "January 1 1970 00:00", nowBase);
+		var seconds=dateDiff('s',nowBase,nowBase + arguments.timespan);
+		if(variables.configBean.getValue('compiler') == 'Adobe'){
+			seconds=seconds+1;
+		}
+		return DateAdd("s",fix(nowEpoch/seconds) * seconds,DateConvert("utc2Local", "January 1 1970 00:00"));
+	}
 </cfscript>
 
 <!--- Stashing some support for tags here until CF10 support is dropped --->

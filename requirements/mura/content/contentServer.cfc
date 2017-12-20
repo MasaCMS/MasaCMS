@@ -125,7 +125,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif isDefined('arguments.siteid') && left(cgi_path,1) eq "/" and cgi_path neq "/">
 		<cfset url.path=right(cgi_path,len(cgi_path)-1) />
 	</cfif>
-	<cfreturn cgi_path>
+	<cfreturn urlDecode(cgi_path)>
 </cffunction>
 
 <cffunction name="bindToDomain" output="false" access="remote">
