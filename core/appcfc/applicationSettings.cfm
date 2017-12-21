@@ -72,7 +72,6 @@ param name="request.returnFormat" default="html";
 param name="request.muraSessionManagement" default=true;
 param name="request.muraPointInTime" default="";
 param name="request.muraTemplateMissing" default=false;
-param name="request.muraCheckSetup" default=false;
 param name="request.muraSysEnv" default="#createObject('java','java.lang.System').getenv()#";
 
 request.muraInDocker=len(getSystemEnvironmentSetting('MURA_DATASOURCE'));
@@ -443,10 +442,6 @@ if(request.muraInDocker && (len(getSystemEnvironmentSetting('MURA_DATABASE')) ||
 			this.datasources["#getSystemEnvironmentSetting('MURA_DATASOURCE')#"].custom=deserializeJSON(getSystemEnvironmentSetting('MURA_DBCUSTOM'));
 		}
 	}
-}
-
-if(request.muraInDocker && isDefined('this.datasources.nodatabase') && len(getSystemEnvironmentSetting('MURA_DATABASE'))){
-	request.muraCheckSetup=true;
 }
 
 try {
