@@ -3,21 +3,21 @@ version: '2.1'
 services:
   #Mura Server
   mura_mysql_cfml:
-    image: ortussolutions/commandbox:lucee5
+    image: ortussolutions/commandbox:adobe2016
     depends_on:
       - mura7_1_mysql
     environment:
       PORT: 8080
       SSL_PORT: 8443
       URL_REWRITES: "true"
-      CFENGINE: lucee@5
+      CFENGINE: adobe@2016
       CFCONFIG_ADMINPASSWORD: NOT_SECURE_CHANGE
       MURA_ADMIN_USERNAME: admin
       MURA_ADMIN_PASSWORD: admin
       MURA_ADMINEMAIL: example@localhost.com
       MURA_APPRELOADKEY: appreload
       MURA_DATASOURCE: muradb
-      #MURA_DATABASE: muradb
+      MURA_DATABASE: muradb
       MURA_DBTYPE: mysql
       MURA_DBCONNECTIONSTRING: "jdbc:mysql://mura7_1_mysql:3306/muradb?useUnicode=true&characterEncoding=UTF-8&useLegacyDatetimeCode=true"
       MURA_DBCLASS: com.mysql.jdbc.Driver

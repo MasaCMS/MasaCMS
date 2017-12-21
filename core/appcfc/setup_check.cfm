@@ -1,8 +1,8 @@
 <cfscript>
 if ( request.muraCheckSetup) {
 	// MySQL, MSSQL, + Postgres
-	dbi = new dbinfo(datasource="nodatabase");
-	rsdbnames = dbi.dbnames();
+
+	cfdbinfo(datasource="nodatabase",type='dbnames',name="rsdbnames");
 
 	if ( !ListFindNoCase(ValueList(rsdbnames.DATABASE_NAME), request.muraSysEnv.MURA_DATABASE) ) {
 		q = new Query(datasource="nodatabase");
@@ -34,9 +34,8 @@ if ( request.muraCheckSetup) {
 			}
 		} else {
 
-			dbi = new dbinfo();
-			rsdbtables = dbi.tables();
-
+			cfdbinfo(type='tables',name="rsdbtables");
+			
 			if ( !ListFindNoCase(ValueList(rsdbtables.TABLE_NAME), 'tcontent') ) {
 				FORM['#application.setupSubmitButton#']=true;
 				FORM['#application.setupSubmitButtonComplete#']=true;
