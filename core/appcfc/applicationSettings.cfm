@@ -367,14 +367,16 @@ if(request.muraInDocker && (len(getSystemEnvironmentSetting('MURA_DATABASE')) ||
 				break;
 		}
 	}
-	this.datasources={};
+
 
 	if (len(getSystemEnvironmentSetting('MURA_DBCONNECTIONSTRING'))) {
-		this.datasources['#getSystemEnvironmentSetting('MURA_DATASOURCE')#']={
+		this.datasources={
+			'#getSystemEnvironmentSetting('MURA_DATASOURCE')#'={
 			'#driverVarName#' = driverName
 			, '#connectionStringVarName#' = getSystemEnvironmentSetting('MURA_DBCONNECTIONSTRING')
 			, 'username' = getSystemEnvironmentSetting('MURA_DBUSERNAME')
 			, 'password' = getSystemEnvironmentSetting('MURA_DBPASSWORD')
+			}
 		};
 
 		if (len(getSystemEnvironmentSetting('MURA_DBCLASS'))) {
@@ -399,24 +401,25 @@ if(request.muraInDocker && (len(getSystemEnvironmentSetting('MURA_DATABASE')) ||
 
 	} else {
 
-		this.datasources['#getSystemEnvironmentSetting('MURA_DATASOURCE')#']={
-			'#driverVarName#' = driverName
-			, host = getSystemEnvironmentSetting('MURA_DBHOST')
-			, database = getSystemEnvironmentSetting('MURA_DATABASE')
-			, port = getSystemEnvironmentSetting('MURA_DBPORT')
-			, username = getSystemEnvironmentSetting('MURA_DBUSERNAME')
-			, password = getSystemEnvironmentSetting('MURA_DBPASSWORD')
-			, clob = true
+		this.datasources={
+			'#getSystemEnvironmentSetting('MURA_DATASOURCE')#'={
+				'#driverVarName#' = driverName
+				, host = getSystemEnvironmentSetting('MURA_DBHOST')
+				, database = getSystemEnvironmentSetting('MURA_DATABASE')
+				, port = getSystemEnvironmentSetting('MURA_DBPORT')
+				, username = getSystemEnvironmentSetting('MURA_DBUSERNAME')
+				, password = getSystemEnvironmentSetting('MURA_DBPASSWORD')
+				, clob = true
+			},
+			nodatabase={
+				'#driverVarName#' = driverName
+				, host = getSystemEnvironmentSetting('MURA_DBHOST')
+				, database =''
+				, port = getSystemEnvironmentSetting('MURA_DBPORT')
+				, username = getSystemEnvironmentSetting('MURA_DBUSERNAME')
+				, password = getSystemEnvironmentSetting('MURA_DBPASSWORD')
+			}
 		};
-
-		this.datasources.nodatabase={
-			'#driverVarName#' = driverName
-			, host = getSystemEnvironmentSetting('MURA_DBHOST')
-			, port = getSystemEnvironmentSetting('MURA_DBPORT')
-			, username = getSystemEnvironmentSetting('MURA_DBUSERNAME')
-			, password = getSystemEnvironmentSetting('MURA_DBPASSWORD')
-		};
-
 	}
 
 	if (server.coldfusion.productname == 'lucee') {

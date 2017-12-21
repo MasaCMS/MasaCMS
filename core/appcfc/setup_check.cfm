@@ -35,7 +35,7 @@ if ( request.muraCheckSetup) {
 		} else {
 
 			cfdbinfo(type='tables',name="rsdbtables");
-			
+
 			if ( !ListFindNoCase(ValueList(rsdbtables.TABLE_NAME), 'tcontent') ) {
 				FORM['#application.setupSubmitButton#']=true;
 				FORM['#application.setupSubmitButtonComplete#']=true;
