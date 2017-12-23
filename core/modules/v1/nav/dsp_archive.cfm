@@ -89,7 +89,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfscript>
 		</cfsilent>
 		<li class="#thisLiClass#">
-			<a href="#variables.$.createHREF(filename='#variables.archive.getFilename()#/date/#variables.rsArchive.year#/#variables.rsArchive.month#/')#" class="#thisAClass#">
+			<a href="#variables.$.createHREF(filename='#variables.archive.getFilename()#/')#date/#variables.rsArchive.year#/#variables.rsArchive.month#/" class="#thisAClass#">
 				#monthasstring(variables.rsArchive.month)# #variables.rsArchive.year# (#variables.rsArchive.items#)
 			</a>
 		</li>
