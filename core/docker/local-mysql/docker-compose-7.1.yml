@@ -10,6 +10,7 @@ services:
       PORT: 8080
       SSL_PORT: 8443
       URL_REWRITES: "true"
+      HEAPSIZE: 1024
       CFENGINE: lucee@5
       CFCONFIG_ADMINPASSWORD: NOT_SECURE_CHANGE
       MURA_ADMIN_USERNAME: admin
