@@ -640,7 +640,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 
 	public function getRBFactory() output=false {
 		if ( !isObject(variables.instance.rbFactory) ) {
-		
+
 			//Get core admin RB factory
 			if ( !isDefined('application.rbFactory') ) {
 				variables.tracepoint = initTracepoint("Instantiating resourceBundleFactory");
@@ -682,7 +682,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 			} else if ( directoryExists(themeRBDir2) ) {
 				tmpFactory = createObject("component","mura.resourceBundle.resourceBundleFactory").init(tmpFactory,themeRBDir2,getJavaLocale());
 			}
-			
+
 			variables.instance.rbFactory = tmpFactory;
 
 			//Additional module level RB factories will be added when discovering modules
@@ -1528,6 +1528,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 	public function clearFilePaths() output=false {
 		variables.instance.displayObjectFilePathLookup=structNew();
 		variables.instance.contentTypeFilePathLookup=structNew();
+		variables.instance.htmlQueueFilePathLookup=structNew();
 	}
 
 	public function lookupContentTypeFilePath(filePath, customOnly="false") output=false {
@@ -1972,6 +1973,328 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 			}
 			return variables.dspincludepath;
 		}
+	}
+
+	public function lookupHTMLHeadQueueFilePath(filePath, customOnly="false") output=false {
+		arguments.filePath=Replace(arguments.filePath, "\", "/", "ALL");
+
+		if ( hasHTMLQueueFilePath(arguments.filePath) ) {
+			return getHTMLQueueFilePath(arguments.filePath);
+		}
+
+		var displaypoolid=getValue('displaypoolid');
+		var theme=getValue('theme');
+		var pluginbasePath='';
+		var i='';
+		var headerFound=false;
+		var pluginPath='';
+		var pathData={};
+
+		if ( !refind('[\\/]',i) ) {
+			pluginBasePath="#application.configBean.getSiteAssetPath()#/#displayPoolID#/includes/themes/#theme#/display_objects/htmlhead/";
+			if ( fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#")) ) {
+				pathData={
+					pluginPath=application.configBean.getContext() & pluginBasePath,
+					filePath="/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#"
+				};
+				setHTMLQueueFilePath(arguments.filePath,pathData);
+				headerFound=true;
+			}
+			pluginBasePath="#application.configBean.getSiteAssetPath()#/#displayPoolID#/includes/themes/#theme#/modules/htmlhead/";
+			if ( fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#")) ) {
+				pathData={
+					pluginPath=application.configBean.getContext() & pluginBasePath,
+					filePath="/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#"
+				};
+				setHTMLQueueFilePath(arguments.filePath,pathData);
+				headerFound=true;
+			}
+			if ( !headerFound ) {
+				pluginBasePath="#application.configBean.getSiteAssetPath()#/#displayPoolID#/themes/#theme#/display_objects/htmlhead/";
+				if ( fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#")) ) {
+					pathData={
+						pluginPath=application.configBean.getContext() & pluginBasePath,
+						filePath="/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#"
+					};
+					setHTMLQueueFilePath(arguments.filePath,pathData);
+					headerFound=true;
+				}
+			}
+			if ( !headerFound ) {
+				pluginBasePath="#application.configBean.getSiteAssetPath()#/#displayPoolID#/themes/#theme#/modules/htmlhead/";
+				if ( fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#")) ) {
+					pathData={
+						pluginPath=application.configBean.getContext() & pluginBasePath,
+						filePath="/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#"
+					};
+					setHTMLQueueFilePath(arguments.filePath,pathData);
+					headerFound=true;
+				}
+			}
+
+			if ( !headerFound ) {
+				pluginBasePath="/themes/#theme#/display_objects/htmlhead/";
+				if ( fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#")) ) {
+					pathData={
+						pluginPath=application.configBean.getContext() & pluginBasePath,
+						filePath="/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#"
+					};
+					setHTMLQueueFilePath(arguments.filePath,pathData);
+					headerFound=true;
+				}
+			}
+			if ( !headerFound ) {
+				pluginBasePath="/themes/#theme#/modules/htmlhead/";
+				if ( fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#")) ) {
+					pathData={
+						pluginPath=application.configBean.getContext() & pluginBasePath,
+						filePath="/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#"
+					};
+					setHTMLQueueFilePath(arguments.filePath,pathData);
+					headerFound=true;
+				}
+			}
+			if ( !headerFound ) {
+				pluginBasePath="#application.configBean.getSiteAssetPath()#/#displayPoolID#/display_objects/htmlhead/";
+				if ( fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#")) ) {
+					pathData={
+						pluginPath=application.configBean.getContext() & pluginBasePath,
+						filePath="/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#"
+					};
+
+					setHTMLQueueFilePath(arguments.filePath,pathData);
+					headerFound=true;
+				}
+			}
+			if ( !headerFound ) {
+				pluginBasePath="#application.configBean.getSiteAssetPath()#/#displayPoolID#/modules/htmlhead/";
+				if ( fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#")) ) {
+					pathData={
+						pluginPath=application.configBean.getContext() & pluginBasePath,
+						filePath="/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#"
+					};
+					setHTMLQueueFilePath(arguments.filePath,pathData);
+					headerFound=true;
+				}
+			}
+			if ( !headerFound ) {
+				pluginBasePath="#application.configBean.getSiteAssetPath()#/#displayPoolID#/includes/display_objects/htmlhead/";
+				if ( fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#")) ) {
+					pathData={
+						pluginPath=application.configBean.getContext() & pluginBasePath,
+						filePath="/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#"
+					};
+					setHTMLQueueFilePath(arguments.filePath,pathData);
+					headerFound=true;
+				}
+			}
+			if ( !headerFound ) {
+				pluginBasePath="#application.configBean.getSiteAssetPath()#/#displayPoolID#/includes/modules/htmlhead/";
+				if ( fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#")) ) {
+					pathData={
+						pluginPath=application.configBean.getContext() & pluginBasePath,
+						filePath="/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#"
+					};
+					setHTMLQueueFilePath(arguments.filePath,pathData);
+					headerFound=true;
+				}
+			}
+			if ( !headerFound ) {
+				pluginBasePath="/display_objects/htmlhead/";
+				if ( fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#")) ) {
+					pathData={
+						pluginPath=application.configBean.getContext() & pluginBasePath,
+						filePath="/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#"
+					};
+					setHTMLQueueFilePath(arguments.filePath,pathData);
+					headerFound=true;
+				}
+			}
+			if ( !headerFound ) {
+				pluginBasePath="/modules/htmlhead/";
+				if ( fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#")) ) {
+					pathData={
+						pluginPath=application.configBean.getContext() & pluginBasePath,
+						filePath="/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#"
+					};
+					setHTMLQueueFilePath(arguments.filePath,pathData);
+					headerFound=true;
+				}
+			}
+			if ( !headerFound ) {
+				pluginBasePath="/core/modules/v1/htmlhead/";
+				if ( fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#")) ) {
+					pathData={
+						pluginPath=application.configBean.getContext() & pluginBasePath,
+						filePath="/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#"
+					};
+					setHTMLQueueFilePath(arguments.filePath,pathData);
+					headerFound=true;
+				}
+			}
+		} else {
+			pluginBasePath="#application.configBean.getSiteAssetPath()#/#displayPoolID#/includes/themes/#theme#/display_objects/";
+			if ( fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#")) ) {
+				pathData={
+					pluginPath=application.configBean.getContext() & pluginBasePath,
+					filePath="/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#"
+				};
+				setHTMLQueueFilePath(arguments.filePath,pathData);
+				headerFound=true;
+			}
+			pluginBasePath="#application.configBean.getSiteAssetPath()#/#displayPoolID#/includes/themes/#theme#/modules/";
+			if ( fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#")) ) {
+				pathData={
+					pluginPath=application.configBean.getContext() & pluginBasePath,
+					filePath="/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#"
+				};
+				setHTMLQueueFilePath(arguments.filePath,pathData);
+				headerFound=true;
+			}
+			if ( !headerFound ) {
+				pluginBasePath="#application.configBean.getSiteAssetPath()#/#displayPoolID#/themes/#theme#/display_objects/";
+				if ( fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#")) ) {
+					pathData={
+						pluginPath=application.configBean.getContext() & pluginBasePath,
+						filePath="/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#"
+					};
+					setHTMLQueueFilePath(arguments.filePath,pathData);
+					headerFound=true;
+				}
+			}
+			if ( !headerFound ) {
+				pluginBasePath="#application.configBean.getSiteAssetPath()#/#displayPoolID#/themes/#theme#/modules/";
+				if ( fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#")) ) {
+					pathData={
+						pluginPath=application.configBean.getContext() & pluginBasePath,
+						filePath="/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#"
+					};
+					setHTMLQueueFilePath(arguments.filePath,pathData);
+					headerFound=true;
+				}
+			}
+			if ( !headerFound ) {
+				pluginBasePath="/themes/#theme#/display_objects/";
+				if ( fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#")) ) {
+					pathData={
+						pluginPath=application.configBean.getContext() & pluginBasePath,
+						filePath="/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#"
+					};
+					setHTMLQueueFilePath(arguments.filePath,pathData);
+					headerFound=true;
+				}
+			}
+			if ( !headerFound ) {
+				pluginBasePath="/themes/#theme#/modules/";
+				if ( fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#")) ) {
+					pathData={
+						pluginPath=application.configBean.getContext() & pluginBasePath,
+						filePath="/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#"
+					};
+					setHTMLQueueFilePath(arguments.filePath,pathData);
+					headerFound=true;
+				}
+			}
+			//  if not found, try the path that was passed
+			if ( !headerFound && fileExists(expandPath(i)) ) {
+				pathData={
+					pluginPath=i,
+					filePath=i
+				};
+				setHTMLQueueFilePath(arguments.filePath,pathData);
+				headerFound=true;
+			}
+			//  If not found, look in display_objects directory
+			if ( !headerFound ) {
+				pluginBasePath="#application.configBean.getSiteAssetPath()#/#displayPoolID#/display_objects/";
+				if ( fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#")) ) {
+					pathData={
+						pluginPath=application.configBean.getContext() & pluginBasePath,
+						filePath="/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#"
+					};
+					setHTMLQueueFilePath(arguments.filePath,pathData);
+					headerFound=true;
+				}
+			}
+			if ( !headerFound ) {
+				pluginBasePath="#application.configBean.getSiteAssetPath()#/#displayPoolID#/includes/display_objects/";
+				if ( fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#")) ) {
+					pathData={
+						pluginPath=application.configBean.getContext() & pluginBasePath,
+						filePath="/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#"
+					};
+					setHTMLQueueFilePath(arguments.filePath,pathData);
+					headerFound=true;
+				}
+			}
+			if ( !headerFound ) {
+				pluginBasePath="/display_objects/";
+				if ( fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#")) ) {
+					pathData={
+						pluginPath=application.configBean.getContext() & pluginBasePath,
+						filePath="/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#"
+					};
+					setHTMLQueueFilePath(arguments.filePath,pathData);
+					headerFound=true;
+				}
+			}
+			if ( !headerFound ) {
+				pluginBasePath="/modules/";
+				if ( fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#")) ) {
+					pathData={
+						pluginPath=application.configBean.getContext() & pluginBasePath,
+						filePath="/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#"
+					};
+					setHTMLQueueFilePath(arguments.filePath,pathData);
+					headerFound=true;
+				}
+			}
+			//  If not found, look in includes directory
+			if ( !headerFound ) {
+				pluginBasePath="#application.configBean.getSiteAssetPath()#/#displayPoolID#/includes/";
+				if ( fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#")) ) {
+					pathData={
+						pluginPath=application.configBean.getContext() & pluginBasePath,
+						filePath="/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#"
+					};
+					setHTMLQueueFilePath(arguments.filePath,pathData);
+					headerFound=true;
+				}
+			}
+
+			//  If not found, look in global plugins directory
+			if ( !headerFound ) {
+				pluginBasePath="/plugins/";
+				if ( fileExists(expandPath("#pluginbasePath##arguments.filepath#")) ) {
+					pathData={
+						pluginID=listLast(listFirst(i,"/"),"_"),
+						pluginPath=application.configBean.getContext() & pluginBasePath & pluginConfig.getDirectory() & "/",
+						filePath="/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#"
+					};
+					setHTMLQueueFilePath(arguments.filePath,pathData);
+					headerFound=true;
+				}
+			}
+		}
+
+		if(! headerFound ) {
+			setHTMLQueueFilePath(arguments.filePath,{});
+		}
+
+		return getHTMLQueueFilePath(arguments.filePath);
+	}
+
+	public function hasHTMLQueueFilePath(filepath) output=false {
+		return structKeyExists(variables.instance.HTMLQueueFilePathLookup,'#arguments.filepath#');
+	}
+
+	public function getHTMLQueueFilePath(filepath) output=false {
+		return variables.instance.HTMLQueueFilePathLookup['#arguments.filepath#'];
+	}
+
+	public function setHTMLQueueFilePath(filepath, result) output=false {
+		variables.instance.HTMLQueueFilePathLookup['#arguments.filepath#']=arguments.result;
+		return this;
 	}
 
 }
