@@ -1990,7 +1990,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		var pluginPath='';
 		var pathData={};
 
-		if ( !refind('[\\/]',i) ) {
+		if ( !refind('[\\/]',arguments.filePath) ) {
 			pluginBasePath="#application.configBean.getSiteAssetPath()#/#displayPoolID#/includes/themes/#theme#/display_objects/htmlhead/";
 			if ( fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#")) ) {
 				pathData={
@@ -2293,7 +2293,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 				if ( fileExists(expandPath("#pluginbasePath##arguments.filepath#")) ) {
 					pathData={
 						pluginID=listLast(listFirst(arguments.filePath,"/"),"_"),
-						pluginPath=application.configBean.getContext() & pluginBasePath & pluginConfig.getDirectory() & "/",
+						pluginPath="",
 						filePath="/#application.configBean.getWebRootMap()##pluginbasePath##arguments.filepath#"
 					};
 					setHTMLQueueFilePath(arguments.filePath,pathData);
