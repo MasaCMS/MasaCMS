@@ -2758,11 +2758,12 @@ Display Objects
 					<!--- look in default htmlHead directory --->
 					<cfset lookupData=$.siteConfig().lookupHTMLHeadQueueFilePath(i)>
 					<cfif not structIsEmpty(lookupData)>
-						<cfset pluginPath= lookupData.pluginPath >
+						<cfset pluginPath=lookupData.pluginPath >
 						<cfset tracePoint=initTracePoint(lookupData.filePath)>
 						<cfif structKeyExists(lookupData,'pluginID')>
 							<cfset variables.event.setValue('pluginConfig',application.pluginManager.getConfig(lookupData.pluginID))>
 							<cfset pluginConfig=variables.event.getValue('pluginConfig')>
+							<cfset pluginPath=application.configBean.getContext() & "/plugins/" & pluginConfig.getDirectory() & "/">
 						</cfif>
 						<cfsavecontent variable="itemStr"><cfinclude template="#lookupData.filePath#"></cfsavecontent>
 						<cfif structKeyExists(lookupData,'pluginID')>
