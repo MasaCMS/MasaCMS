@@ -2593,7 +2593,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		var iterator=entity.loadBy(contentid=arguments.id).getVersionHistoryIterator();
 		setIteratorProps(iterator);
 		var returnArray=iteratorToArray(iterator=iterator,siteid=arguments.siteid,expand=arguments.expand,$=$);
-		
+
 		for(var i in returnArray){
 				i.links.self=i.links.self & "?contenthistid=" & i.contenthistid;
 		}
