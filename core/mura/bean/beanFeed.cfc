@@ -50,7 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="table" type="string" default="">
 <cfproperty name="keyField" type="string" default="">
 <cfproperty name="nextN" type="numeric" default="0" required="true">
-<cfproperty name="maxItems" type="numeric" default="0" required="true">
+<cfproperty name="maxItems" type="numeric" default="1000" required="true">
 <cfproperty name="siteID" type="string" default="">
 <cfproperty name="contentpoolid" type="string" default="">
 <cfproperty name="sortBy" type="string" default="">
