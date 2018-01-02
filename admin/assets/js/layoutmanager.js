@@ -168,7 +168,7 @@
 				function(e) {
 					//e.stopPropagation();
 
-					Mura(this).removeClass('mura-active-target');
+					Mura(this).removeClass('mura-active-target').removeAttr('style');
 				}
 			);
 	}
