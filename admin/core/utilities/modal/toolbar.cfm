@@ -82,39 +82,41 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<script type="text/javascript" src="#variables.$.globalConfig('adminPath')#/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#"></script>
 
 		<script>
-			var hasMuraLoader=(typeof(Mura) != 'undefined' && typeof(Mura.loader) != 'undefined');
-			if(!window.CKEDITOR){
-				if(hasMuraLoader){
-					Mura.loader().loadjs(
-						'#variables.$.globalConfig("corepath")#/vendor/ckeditor/ckeditor.js',
-						'#variables.$.globalConfig("corepath")#/vendor/ckeditor/adapters/jquery.js'
-					);
+			Mura(function(){
+				var hasMuraLoader=(typeof(Mura) != 'undefined' && typeof(Mura.loader) != 'undefined');
+				if(!window.CKEDITOR){
+					if(hasMuraLoader){
+						Mura.loader().loadjs(
+							'#variables.$.globalConfig("corepath")#/vendor/ckeditor/ckeditor.js',
+							'#variables.$.globalConfig("corepath")#/vendor/ckeditor/adapters/jquery.js'
+						);
 
-				} else {
-					$.getScript('#variables.$.globalConfig("corepath")#/vendor/ckeditor/ckeditor.js');
-					$.getScript('#variables.$.globalConfig("corepath")#/vendor/ckeditor/adapters/jquery.js');
+					} else {
+						$.getScript('#variables.$.globalConfig("corepath")#/vendor/ckeditor/ckeditor.js');
+						$.getScript('#variables.$.globalConfig("corepath")#/vendor/ckeditor/adapters/jquery.js');
+					}
+
+					window.CKEDITOR_BASEPATH = '#variables.$.globalConfig("corepath")#/vendor/ckeditor/';
 				}
 
-				window.CKEDITOR_BASEPATH = '#variables.$.globalConfig("corepath")#/vendor/ckeditor/';
-			}
+				<cfif not $.getContentRenderer().useLayoutManager()>
+				if(!window.CKFinder){
+					if(hasMuraLoader){
+						Mura.loader().loadjs(
+							'#variables.$.globalConfig("corepath")#/vendor/ckfinder/ckfinder.js');
+					} else {
+						$.getScript('#variables.$.globalConfig("corepath")#/vendor/ckfinder/ckfinder.js');
+					}
+				}
+				</cfif>
 
-			<cfif not $.getContentRenderer().useLayoutManager()>
-			if(!window.CKFinder){
 				if(hasMuraLoader){
 					Mura.loader().loadjs(
-						'#variables.$.globalConfig("corepath")#/vendor/ckfinder/ckfinder.js');
+							'#variables.$.globalConfig("adminPath")#/assets/js/frontendtools.js.cfm?siteid=#esapiEncode("url",variables.$.event("siteid"))#&contenthistid=#$.content("contenthistid")#&coreversion=#application.coreversion#&showInlineEditor=#getShowInlineEditor()#&cacheid=' + Math.random());
 				} else {
-					$.getScript('#variables.$.globalConfig("corepath")#/vendor/ckfinder/ckfinder.js');
+					$.getScript('#variables.$.globalConfig("adminPath")#/assets/js/frontendtools.js.cfm?siteid=#esapiEncode("url",variables.$.event("siteid"))#&contenthistid=#$.content("contenthistid")#&coreversion=#application.coreversion#&showInlineEditor=#getShowInlineEditor()#&cacheid=' + Math.random());
 				}
-			}
-			</cfif>
-
-			if(hasMuraLoader){
-				Mura.loader().loadjs(
-						'#variables.$.globalConfig("adminPath")#/assets/js/frontendtools.js.cfm?siteid=#esapiEncode("url",variables.$.event("siteid"))#&contenthistid=#$.content("contenthistid")#&coreversion=#application.coreversion#&showInlineEditor=#getShowInlineEditor()#&cacheid=' + Math.random());
-			} else {
-				$.getScript('#variables.$.globalConfig("adminPath")#/assets/js/frontendtools.js.cfm?siteid=#esapiEncode("url",variables.$.event("siteid"))#&contenthistid=#$.content("contenthistid")#&coreversion=#application.coreversion#&showInlineEditor=#getShowInlineEditor()#&cacheid=' + Math.random());
-			}
+			});
 		</script>
 
 

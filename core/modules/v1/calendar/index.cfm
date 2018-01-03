@@ -137,161 +137,163 @@
 			<div id="mura-calendar-loading">#this.preloaderMarkup#</div>
 		</div>
 		<script>
-		$(function(){
-			<cfset muraCalenderView='muraCalenderView' & replace(variables.$.content('contentid'),'-','','all')>
-			<cfset muraHiddenCals='muraHiddenCals' & replace(variables.$.content('contentid'),'-','','all')>
-			var hiddenCalendars=window.sessionStorage.getItem('#muraHiddenCals#');
+		Mura(function(){
+			$(function(){
+				<cfset muraCalenderView='muraCalenderView' & replace(variables.$.content('contentid'),'-','','all')>
+				<cfset muraHiddenCals='muraHiddenCals' & replace(variables.$.content('contentid'),'-','','all')>
+				var hiddenCalendars=window.sessionStorage.getItem('#muraHiddenCals#');
 
-			if(hiddenCalendars){
-				hiddenCalendars=hiddenCalendars.split(',');
-			} else {
-				hiddenCalendars=[];
-			}
-
-			var muraCalendarView=JSON.parse(window.sessionStorage.getItem('#muraCalenderView#'));
-
-			if(!muraCalendarView){
-				muraCalendarView={
-					name:'#esapiEncode("javascript",objectParams.viewdefault)#',
-				};
-			}
-
-			<cfif objectParams.dateparams>
-				var defaultDate= '#variables.$.getCalendarUtility().getDefaultDate()#';
-			<cfelse>
-				if(muraCalendarView.defaultDate){
-				var defaultDate=  muraCalendarView.defaultDate;
+				if(hiddenCalendars){
+					hiddenCalendars=hiddenCalendars.split(',');
 				} else {
-					var defaultDate= '#variables.$.getCalendarUtility().getDefaultDate()#';
+					hiddenCalendars=[];
 				}
-			</cfif>
 
-			var colors=#lcase(serializeJSON(this.calendarcolors))#;
-			var calendars=#lcase(serializeJSON(objectparams.items))#;
-			var eventSources=[
-				<cfset colorIndex=0>
-				<cfloop array="#objectParams.items#" index="i">
-					<cfsilent>
-						<cfset colorIndex=colorIndex+1>
-						<cfif colorIndex gt arrayLen(this.calendarcolors)>
-							<cfset colorIndex=1>
-						</cfif>
-					</cfsilent>
-					{
-						url: '#variables.$.siteConfig().getApi("JSON","v1").getEndpoint()#/findCalendarItems?calendarid=#esapiEncode("javascript",i)#'
-						, type: 'POST'
-						, data: {
-							method: 'getFullCalendarItems'
-							, calendarid: '#esapiEncode("javascript",i)#'
-							, siteid: '#variables.$.content('siteid')#'
-							, categoryid: '#esapiEncode('javascript',variables.$.event('categoryid'))#'
-							, tag: '#esapiEncode('javascript',variables.$.event('tag'))#'
-							, format: 'fullcalendar'
-						}
-						, color: '#this.calendarcolors[colorIndex].background#'
-						, textColor: '#this.calendarcolors[colorIndex].text#'
-						, error: function() {
-							$('##mura-calendar-error').show();
-						}
-					},
-				</cfloop>
-			];
+				var muraCalendarView=JSON.parse(window.sessionStorage.getItem('#muraCalenderView#'));
 
-			$('.mura-calender__filters').show();
+				if(!muraCalendarView){
+					muraCalendarView={
+						name:'#esapiEncode("javascript",objectParams.viewdefault)#',
+					};
+				}
 
-			Mura.loader()
-				.loadcss("#$.siteConfig('corepath')#/vendor/fullcalendar/fullcalendar.css",{media:'all'})
-				.loadcss("#$.siteConfig('corepath')#/vendor/fullcalendar/fullcalendar.print.css",{media:'print'})
-				.loadjs(
-					"#$.siteConfig('corepath')#/vendor/fullcalendar/lib/moment-with-locales.min.js",
-					"#$.siteConfig('corepath')#/vendor/fullcalendar/fullcalendar.min.js",
-					"#$.siteConfig('corepath')#/vendor/fullcalendar/gcal.js",
-					function(){
-						$('##mura-calendar').fullCalendar({
-							timezone: 'local'
-							, defaultDate: defaultDate
-							, buttonText: {
-								day: '#variables.$.rbKey('calendar.day')#'
-								, agendaDay: '#variables.$.rbKey('calendar.agendaday')#'
-								, week: '#variables.$.rbKey('calendar.week')#'
-								, agendaWeek: '#variables.$.rbKey('calendar.agendaweek')#'
-								, month: '#variables.$.rbKey('calendar.month')#'
-								, today: '#variables.$.rbKey('calendar.today')#'
-							}
-							, monthNames: #SerializeJSON(ListToArray(variables.$.rbKey('calendar.monthLong')))#
-							, monthNamesShort: #SerializeJSON(ListToArray(variables.$.rbKey('calendar.monthShort')))#
-							, dayNames: #SerializeJSON(ListToArray(variables.$.rbKey('calendar.weekdaylong')))#
-							, dayNamesShort: #SerializeJSON(ListToArray(variables.$.rbKey('calendar.weekdayShort')))#
-							, firstDay: 0 // (0=Sunday, 1=Monday, etc.)
-							, weekends: true // show weekends?
-							, weekMode: 'fixed' // fixed, liquid, or variable
-							, header: {
-								left: 'today prev,next'
-								, center: 'title'
-								, right: '#esapiEncode("javascript",objectParams.viewoptions)#'
-							}
-							<cfif isNumeric(variables.$.event('day')) and variables.$.event('day')>
-								, defaultView: 'agendaDay'
-							<cfelse>
-								, defaultView:  muraCalendarView.name
-							</cfif>
-							, viewRender: function(view,element){
-								if(view.end){
-									var newDefaultDate=new Date((new Date(view.start).getTime() + new Date(view.end).getTime()) / 2)
-								} else {
-									var newDefaultDate=view.start;
-								}
-								window.sessionStorage.setItem('#muraCalenderView#',JSON.stringify({
-									name:view.name,
-									defaultDate:newDefaultDate
-								}));
-							}
-							, loading: function(isLoading) {
-									$('##mura-calendar-loading').toggle(isLoading);
-							}
-							, eventLimit: true
-						});
-
-						<cfif arrayLen(objectParams.items) eq 1>
-							$('##mura-calendar').fullCalendar('addEventSource',eventSources[0]);
-						<cfelse>
-							$('.mura-calendar__filter-item').each(function(){
-								var optionContainer=$(this);
-								var calendarToggleInput=optionContainer.find('.input-style--swatch');
-
-								if(hiddenCalendars.indexOf(calendarToggleInput.data('contentid')) == -1){
-									calendarToggleInput.attr('checked',true);
-								} else {
-									calendarToggleInput.attr('checked',false);
-								}
-
-								calendarToggleInput.on('change',function(){
-									var swatch=optionContainer.find('.mura-calendar__filter-item__swatch');
-									var self=$(this);
-									if(self.is(':checked')){
-										swatch.css('background-color',self.data('color'));
-										$('##mura-calendar').fullCalendar('addEventSource',eventSources[self.data('index')]);
-
-										var temp=[];
-										var contentid=self.data('contentid');
-										for(var i in hiddenCalendars){
-											if(hiddenCalendars[i] !=contentid){
-												temp.push(hiddenCalendars[i])
-											}
-										}
-										hiddenCalendars=temp;;
-									} else {
-										swatch.css('background-color','');
-										$('##mura-calendar').fullCalendar('removeEventSource',eventSources[self.data('index')]);
-										hiddenCalendars.push(self.data('contentid'));
-									}
-									window.sessionStorage.setItem('#muraHiddenCals#',hiddenCalendars.join(','));
-								}).trigger('change');
-							});
-						</cfif>
-
+				<cfif objectParams.dateparams>
+					var defaultDate= '#variables.$.getCalendarUtility().getDefaultDate()#';
+				<cfelse>
+					if(muraCalendarView.defaultDate){
+					var defaultDate=  muraCalendarView.defaultDate;
+					} else {
+						var defaultDate= '#variables.$.getCalendarUtility().getDefaultDate()#';
 					}
-				);
+				</cfif>
+
+				var colors=#lcase(serializeJSON(this.calendarcolors))#;
+				var calendars=#lcase(serializeJSON(objectparams.items))#;
+				var eventSources=[
+					<cfset colorIndex=0>
+					<cfloop array="#objectParams.items#" index="i">
+						<cfsilent>
+							<cfset colorIndex=colorIndex+1>
+							<cfif colorIndex gt arrayLen(this.calendarcolors)>
+								<cfset colorIndex=1>
+							</cfif>
+						</cfsilent>
+						{
+							url: '#variables.$.siteConfig().getApi("JSON","v1").getEndpoint()#/findCalendarItems?calendarid=#esapiEncode("javascript",i)#'
+							, type: 'POST'
+							, data: {
+								method: 'getFullCalendarItems'
+								, calendarid: '#esapiEncode("javascript",i)#'
+								, siteid: '#variables.$.content('siteid')#'
+								, categoryid: '#esapiEncode('javascript',variables.$.event('categoryid'))#'
+								, tag: '#esapiEncode('javascript',variables.$.event('tag'))#'
+								, format: 'fullcalendar'
+							}
+							, color: '#this.calendarcolors[colorIndex].background#'
+							, textColor: '#this.calendarcolors[colorIndex].text#'
+							, error: function() {
+								$('##mura-calendar-error').show();
+							}
+						},
+					</cfloop>
+				];
+
+				$('.mura-calender__filters').show();
+
+				Mura.loader()
+					.loadcss("#$.siteConfig('corepath')#/vendor/fullcalendar/fullcalendar.css",{media:'all'})
+					.loadcss("#$.siteConfig('corepath')#/vendor/fullcalendar/fullcalendar.print.css",{media:'print'})
+					.loadjs(
+						"#$.siteConfig('corepath')#/vendor/fullcalendar/lib/moment-with-locales.min.js",
+						"#$.siteConfig('corepath')#/vendor/fullcalendar/fullcalendar.min.js",
+						"#$.siteConfig('corepath')#/vendor/fullcalendar/gcal.js",
+						function(){
+							$('##mura-calendar').fullCalendar({
+								timezone: 'local'
+								, defaultDate: defaultDate
+								, buttonText: {
+									day: '#variables.$.rbKey('calendar.day')#'
+									, agendaDay: '#variables.$.rbKey('calendar.agendaday')#'
+									, week: '#variables.$.rbKey('calendar.week')#'
+									, agendaWeek: '#variables.$.rbKey('calendar.agendaweek')#'
+									, month: '#variables.$.rbKey('calendar.month')#'
+									, today: '#variables.$.rbKey('calendar.today')#'
+								}
+								, monthNames: #SerializeJSON(ListToArray(variables.$.rbKey('calendar.monthLong')))#
+								, monthNamesShort: #SerializeJSON(ListToArray(variables.$.rbKey('calendar.monthShort')))#
+								, dayNames: #SerializeJSON(ListToArray(variables.$.rbKey('calendar.weekdaylong')))#
+								, dayNamesShort: #SerializeJSON(ListToArray(variables.$.rbKey('calendar.weekdayShort')))#
+								, firstDay: 0 // (0=Sunday, 1=Monday, etc.)
+								, weekends: true // show weekends?
+								, weekMode: 'fixed' // fixed, liquid, or variable
+								, header: {
+									left: 'today prev,next'
+									, center: 'title'
+									, right: '#esapiEncode("javascript",objectParams.viewoptions)#'
+								}
+								<cfif isNumeric(variables.$.event('day')) and variables.$.event('day')>
+									, defaultView: 'agendaDay'
+								<cfelse>
+									, defaultView:  muraCalendarView.name
+								</cfif>
+								, viewRender: function(view,element){
+									if(view.end){
+										var newDefaultDate=new Date((new Date(view.start).getTime() + new Date(view.end).getTime()) / 2)
+									} else {
+										var newDefaultDate=view.start;
+									}
+									window.sessionStorage.setItem('#muraCalenderView#',JSON.stringify({
+										name:view.name,
+										defaultDate:newDefaultDate
+									}));
+								}
+								, loading: function(isLoading) {
+										$('##mura-calendar-loading').toggle(isLoading);
+								}
+								, eventLimit: true
+							});
+
+							<cfif arrayLen(objectParams.items) eq 1>
+								$('##mura-calendar').fullCalendar('addEventSource',eventSources[0]);
+							<cfelse>
+								$('.mura-calendar__filter-item').each(function(){
+									var optionContainer=$(this);
+									var calendarToggleInput=optionContainer.find('.input-style--swatch');
+
+									if(hiddenCalendars.indexOf(calendarToggleInput.data('contentid')) == -1){
+										calendarToggleInput.attr('checked',true);
+									} else {
+										calendarToggleInput.attr('checked',false);
+									}
+
+									calendarToggleInput.on('change',function(){
+										var swatch=optionContainer.find('.mura-calendar__filter-item__swatch');
+										var self=$(this);
+										if(self.is(':checked')){
+											swatch.css('background-color',self.data('color'));
+											$('##mura-calendar').fullCalendar('addEventSource',eventSources[self.data('index')]);
+
+											var temp=[];
+											var contentid=self.data('contentid');
+											for(var i in hiddenCalendars){
+												if(hiddenCalendars[i] !=contentid){
+													temp.push(hiddenCalendars[i])
+												}
+											}
+											hiddenCalendars=temp;;
+										} else {
+											swatch.css('background-color','');
+											$('##mura-calendar').fullCalendar('removeEventSource',eventSources[self.data('index')]);
+											hiddenCalendars.push(self.data('contentid'));
+										}
+										window.sessionStorage.setItem('#muraHiddenCals#',hiddenCalendars.join(','));
+									}).trigger('change');
+								});
+							</cfif>
+
+						}
+					);
+			});
 		});
 		</script>
 	</cfif>
