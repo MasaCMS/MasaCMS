@@ -69,6 +69,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.queueObjects=true>
 <cfset this.layoutmanager=false>
 <cfset this.legacyobjects=true>
+<cfset this.muraJSDefer="">
 
 <!--- Set these to a boolean value to override settings.ini.cfm value--->
 <cfset this.siteIDInURLS="">

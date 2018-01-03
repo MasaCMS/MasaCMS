@@ -137,7 +137,7 @@
 			<div id="mura-calendar-loading">#this.preloaderMarkup#</div>
 		</div>
 		<script>
-		$(function(){
+		Mura(function(){
 			<cfset muraCalenderView='muraCalenderView' & replace(variables.$.content('contentid'),'-','','all')>
 			<cfset muraHiddenCals='muraHiddenCals' & replace(variables.$.content('contentid'),'-','','all')>
 			var hiddenCalendars=window.sessionStorage.getItem('#muraHiddenCals#');
