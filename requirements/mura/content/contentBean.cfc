@@ -1001,11 +1001,11 @@ component extends="mura.bean.beanExtendable" entityName="content" table="tconten
 		return it;
 	}
 
-	public function getRelatedContentQuery(required boolean liveOnly="true", required date today="#now()#", string sortBy="orderno", string sortDirection="asc", string relatedContentSetID="", string name="", boolean reverse="false", required boolean navOnly="false") output=false {
+	public function getRelatedContentQuery(required boolean liveOnly="true", required date today="#now()#", string sortBy="orderno", string sortDirection="asc", string relatedContentSetID="", string name="", boolean reverse="false", required boolean navOnly="false", required any cachedWithin="#createTimeSpan(0,0,0,0)#") output=false {
 		return variables.contentManager.getRelatedContent(variables.instance.siteID, getContentHistID(), arguments.liveOnly, arguments.today, arguments.sortBy, arguments.sortDirection, arguments.relatedContentSetID, arguments.name, arguments.reverse, getContentID(),arguments.navOnly);
 	}
 
-	public function getRelatedContentIterator(required boolean liveOnly="true", required date today="#now()#", string sortBy="orderno", string sortDirection="asc", string relatedContentSetID="", string name="", boolean reverse="false", required boolean navOnly="false") output=false {
+	public function getRelatedContentIterator(required boolean liveOnly="true", required date today="#now()#", string sortBy="orderno", string sortDirection="asc", string relatedContentSetID="", string name="", boolean reverse="false", required boolean navOnly="false", required any cachedWithin="#createTimeSpan(0,0,0,0)#") output=false {
 		var q=getRelatedContentQuery(argumentCollection=arguments);
 		var it=getBean("contentIterator");
 		it.setQuery(q);
