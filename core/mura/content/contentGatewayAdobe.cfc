@@ -2107,6 +2107,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="reverse" type="boolean" default="false">
 	<cfargument name="reverseContentID"  type="string" />
 	<cfargument name="navOnly" type="boolean" required="yes" default="false" />
+	<cfargument name="cachedWithin" type="any" required="yes" default="#createTimeSpan(0,0,0,0)#" />
+
 	<cfset var rsRelatedContent ="" />
 	<cfset var dbType=variables.configBean.getDbType() />
 	<cfset var tableModifier="">
@@ -2154,7 +2156,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var mxpRelevanceSort=false>
 	</cfif>
 
-	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsRelatedContent')#">
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsRelatedContent',cachedWithin=arguments.cachedWithin)#">
 	SELECT tcontent.title, tcontent.releasedate, tcontent.menuTitle, tcontent.lastupdate, tcontent.lastupdatebyid, tcontent.summary, tcontent.filename, tcontent.type, tcontent.contentid,
 	tcontent.target,tcontent.targetParams, tcontent.restricted, tcontent.restrictgroups, tcontent.displaystart, tcontent.displaystop, tcontent.orderno,tcontent.sortBy,tcontent.sortDirection,
 	tcontent.fileid, tcontent.credits, tcontent.remoteSource, tcontent.remoteSourceURL, tcontent.remoteURL, tcontent.subtype,
