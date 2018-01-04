@@ -66,26 +66,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   root.deferMuraInit();
   }
 )(this,{
-loginURL:"#variables.$.siteConfig('LoginURL')#",
-siteid:"#variables.$.event('siteID')#",
-contentid:"#variables.$.content('contentid')#",
-contenthistid:"#variables.$.content('contenthistid')#",
-parentid:"#variables.$.content('parentid')#",
-context:"#variables.$.globalConfig('context')#",
-nocache:#val($.event('nocache'))#,
-assetpath:"#variables.$.siteConfig('assetPath')#",
-corepath:"#variables.$.globalConfig('corepath')#",
-themepath:"#variables.$.siteConfig('themeAssetPath')#",
-reCAPTCHALanguage:"#$.siteConfig('reCAPTCHALanguage')#",
-preloaderMarkup: "#esapiEncode('javascript',this.preloaderMarkup)#",
-mobileformat: #esapiEncode('javascript',$.event('muraMobileRequest'))#,
-windowdocumentdomain: "#application.configBean.getWindowDocumentDomain()#",
-layoutmanager:#variables.$.getContentRenderer().useLayoutManager()#,
-type:"#esapiEncode('javascript',variables.$.content('type'))#",
-subtype:"#esapiEncode('javascript',variables.$.content('subtype'))#",
-queueObjects: #esapiEncode('javascript',this.queueObjects)#,
-rb:#variables.$.siteConfig().getAPI('JSON','v1').getSerializer().serialize(variables.$.getClientRenderVariables())#,
-#trim(variables.$.siteConfig('JSDateKeyObjInc'))#
+  loginURL:"#variables.$.siteConfig('LoginURL')#",
+  siteid:"#variables.$.event('siteID')#",
+  contentid:"#variables.$.content('contentid')#",
+  contenthistid:"#variables.$.content('contenthistid')#",
+  parentid:"#variables.$.content('parentid')#",
+  context:"#variables.$.globalConfig('context')#",
+  nocache:#val($.event('nocache'))#,
+  assetpath:"#variables.$.siteConfig('assetPath')#",
+  corepath:"#variables.$.globalConfig('corepath')#",
+  themepath:"#variables.$.siteConfig('themeAssetPath')#",
+  reCAPTCHALanguage:"#$.siteConfig('reCAPTCHALanguage')#",
+  preloaderMarkup: "#esapiEncode('javascript',this.preloaderMarkup)#",
+  mobileformat: #esapiEncode('javascript',$.event('muraMobileRequest'))#,
+  windowdocumentdomain: "#application.configBean.getWindowDocumentDomain()#",
+  layoutmanager:#variables.$.getContentRenderer().useLayoutManager()#,
+  type:"#esapiEncode('javascript',variables.$.content('type'))#",
+  subtype:"#esapiEncode('javascript',variables.$.content('subtype'))#",
+  queueObjects: #esapiEncode('javascript',this.queueObjects)#,
+  rb:#variables.$.siteConfig().getAPI('JSON','v1').getSerializer().serialize(variables.$.getClientRenderVariables())#,
+  #trim(variables.$.siteConfig('JSDateKeyObjInc'))#
 })
 </script>
 </cfoutput>
