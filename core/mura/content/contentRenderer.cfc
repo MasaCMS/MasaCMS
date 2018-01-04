@@ -69,7 +69,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.queueObjects=true>
 <cfset this.layoutmanager=false>
 <cfset this.legacyobjects=true>
-<cfset this.muraJSDefer="">
+<cfset this.deferMuraJS=false>
 <cfset this.hideRestrictedNav=false>
 
 <!--- Set these to a boolean value to override settings.ini.cfm value--->
@@ -3055,6 +3055,14 @@ Display Objects
 		}
 
 		return str;
+	}
+
+	public function getMuraJSDeferredString(){
+		if(isBoolean(this.deferMuraJS) && this.deferMuraJS){
+			return 'defer';
+		} else {
+			return '';
+		}
 	}
 </cfscript>
 

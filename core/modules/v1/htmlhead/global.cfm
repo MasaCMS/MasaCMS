@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfif request.returnformat neq 'amp'>
 <cfoutput>
-<script type="text/javascript" src="#$.globalConfig('context')#/core/modules/v1/core_assets/js/mura.js?v=#$.globalConfig('version')#" #this.muraJSDefer#></script>
+<script type="text/javascript" src="#$.globalConfig('context')#/core/modules/v1/core_assets/js/mura.js?v=#$.globalConfig('version')#" #$.getMuraJSDeferredString()#></script>
 <script>
 (function(root,config){
   root.queuedMuraCmds=[];
