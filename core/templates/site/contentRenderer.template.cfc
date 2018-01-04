@@ -94,6 +94,7 @@
 		//this.showMemberToolBar=false;
 		//this.showEditableObjects=false;
 		//this.showInlineEditor=true;
+		//this.muraJSDefer="";
 
 		//Queue async display objects to render when scrolled into view
 		//this.queueObjects=true;
