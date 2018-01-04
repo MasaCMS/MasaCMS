@@ -2122,7 +2122,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset nowAdjusted=arguments.today>
 	</cfif>
 
-	<cfset nowAdjusted=variables.utility.datetimeToTimespanInterval(nowAdjusted,createTimespan(0,0,5,0))>
+	<cfset nowAdjusted=variables.utility.datetimeToTimespanInterval(nowAdjusted,arguments.cachedWithin)>
 
 	<cfif dbtype eq "MSSQL">
 		<cfset tableModifier="with (nolock)">
