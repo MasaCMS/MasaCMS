@@ -78,8 +78,10 @@ for(var cmd in root.queuedMuraCmds){
 root.Mura(root.queuedMuraCmds[cmd]);
 }
 } else {
+if(typeof root.Mura != 'function'){
 root.mura = root.m = root.Mura = function(cmd){root.queuedMuraCmds.push(cmd);};
-setTimeout(root.deferMuraInit,5);
+}
+setTimeout(root.deferMuraInit,1);
 }
 }
 root.deferMuraInit();
