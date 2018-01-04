@@ -48,11 +48,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <script type="text/javascript" src="#$.globalConfig('context')#/core/modules/v1/core_assets/js/mura.js?v=#$.globalConfig('version')#" #this.muraJSDefer#></script>
 <script>
-(function(root){
-root.queuedMuraCmds=[];
-root.deferMuraInit=function(){
-if(typeof root.Mura != 'undefined'  && typeof root.Mura.init == 'function'){
-root.Mura.init({
+(function(root,config){
+  root.queuedMuraCmds=[];
+  root.deferMuraInit=function(){
+    if(typeof root.Mura != 'undefined'  && typeof root.Mura.init == 'function'){
+      root.Mura.init(config);
+      for(var cmd in root.queuedMuraCmds){
+      root.Mura(root.queuedMuraCmds[cmd]);
+      }
+    } else {
+      if(typeof root.Mura != 'function'){
+        root.mura = root.m = root.Mura = function(cmd){root.queuedMuraCmds.push(cmd);};
+      }
+      setTimeout(root.deferMuraInit,1);
+    }
+  }
+  root.deferMuraInit();
+  }
+)(this,{
 loginURL:"#variables.$.siteConfig('LoginURL')#",
 siteid:"#variables.$.event('siteID')#",
 contentid:"#variables.$.content('contentid')#",
@@ -73,20 +86,7 @@ subtype:"#esapiEncode('javascript',variables.$.content('subtype'))#",
 queueObjects: #esapiEncode('javascript',this.queueObjects)#,
 rb:#variables.$.siteConfig().getAPI('JSON','v1').getSerializer().serialize(variables.$.getClientRenderVariables())#,
 #trim(variables.$.siteConfig('JSDateKeyObjInc'))#
-});
-for(var cmd in root.queuedMuraCmds){
-root.Mura(root.queuedMuraCmds[cmd]);
-}
-} else {
-if(typeof root.Mura != 'function'){
-root.mura = root.m = root.Mura = function(cmd){root.queuedMuraCmds.push(cmd);};
-}
-setTimeout(root.deferMuraInit,1);
-}
-}
-root.deferMuraInit();
-}
-)(this)
+})
 </script>
 </cfoutput>
 </cfif>
