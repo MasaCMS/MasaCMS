@@ -1317,7 +1317,7 @@ var Mura=(function(){
       }
 
       loader().loadjs(
-          Mura.corepath + '/ckeditor/ckeditor.js',
+          Mura.corepath + '/vendor/ckeditor/ckeditor.js',
           function() {
               initEditor();
           }
