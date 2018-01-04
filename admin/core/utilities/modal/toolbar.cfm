@@ -82,7 +82,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<script type="text/javascript" src="#variables.$.globalConfig('adminPath')#/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#"></script>
 
 		<script>
-			var hasMuraLoader=(typeof Mura != 'undefined' && (typeof Mura.loader != 'undefined' || typeof root.queuedMuraCmds != 'undefined'));
+			var hasMuraLoader=(typeof Mura != 'undefined' && (typeof Mura.loader != 'undefined' || typeof window.queuedMuraCmds != 'undefined'));
 			if(!window.CKEDITOR){
 				if(hasMuraLoader){
 					Mura(function(){
