@@ -51,7 +51,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 (function(root,config){
   root.queuedMuraCmds=[];
   root.deferMuraInit=function(){
-    if(typeof root.Mura != 'undefined'  && typeof root.Mura.init == 'function'){
+    if(typeof root.Mura != 'undefined' && typeof root.Mura.init == 'function'){
       root.Mura.init(config);
       for(var cmd in root.queuedMuraCmds){
       root.Mura(root.queuedMuraCmds[cmd]);
