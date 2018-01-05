@@ -12383,21 +12383,69 @@ var Mura=__webpack_require__(10);
 				return parts;
 			}
 			,appendElmt = function(type,attrs,cb){
-				var e = D.createElement(type), i;
-				if( cb ){ //-- this is not intended to be used for link
-					if(e[readyState]){
-						e[onreadystatechange] = function(){
-							if (e[readyState] === "loaded" || e[readyState] === "complete"){
-								e[onreadystatechange] = null;
+
+
+				var el = D.createElement(type), i;
+
+				if( type =='script' && cb ){ //-- this is not intended to be used for link
+					if(el[readyState]){
+						el[onreadystatechange] = function(){
+							if (el[readyState] === "loaded" || el[readyState] === "complete"){
+								el[onreadystatechange] = null;
 								cb();
 							}
 						};
-					}else{
-						e.onload = cb;
+					} else{
+						el.onload = cb;
 					}
+				} else if(
+						type=='link'
+						&& typeof attrs == 'object'
+						&& typeof attrs.rel != 'undefined'
+						&& attrs.rel=='preload'
+					){
+					/*
+					Inspired by
+					https://github.com/filamentgroup/loadCSS/blob/master/src/loadCSS.js
+					*/
+
+					var media=attrs.media || 'all';
+					attrs.media='x only';
+					attrs.rel="stylesheet";
+
+					function loadCB(){
+						if( el.addEventListener ){
+							el.removeEventListener( "load", loadCB );
+						}
+						el.media = media || "all";
+					}
+
+					function onloadcssdefined( cb ){
+						var sheets=document.styleSheets;
+						var resolvedHref = attrs.href;
+						var i = sheets.length;
+						while( i-- ){
+							if( sheets[ i ].href === resolvedHref ){
+								return cb();
+							}
+						}
+						setTimeout(function() {
+							onloadcssdefined( cb );
+						});
+					};
+
+					if( el.addEventListener ){
+						el.addEventListener( "load", loadCB);
+					}
+
+					el.onloadcssdefined = onloadcssdefined;
+
+					onloadcssdefined( loadCB );
 				}
-				for( i in attrs ){ attrs[i] && (e[i]=attrs[i]); }
-				header.appendChild(e);
+
+				for( i in attrs ){ attrs[i] && (el[i]=attrs[i]); }
+
+				header.appendChild(el);
 				// return e; // unused at this time so drop it
 			}
 			,load = function(url,cb){
