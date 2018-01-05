@@ -12427,6 +12427,7 @@ var Mura=__webpack_require__(10);
 								el.removeEventListener( "load", loadCB );
 							}
 							el.media = media || "all";
+						  el.rel="stylesheet";
 						}
 
 						function onloadcssdefined( cb ){
