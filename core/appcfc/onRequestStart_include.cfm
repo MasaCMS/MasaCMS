@@ -226,6 +226,8 @@ if (request.muraSessionManagement && !isdefined('url.muraadminpreview') ) {
 				request.muraMobileRequest=false;
 			}
 		}
+	} else if (isBoolean(cookie.mobileFormat)) {
+		request.muraMobileRequest=cookie.mobileFormat;
 	}
 	if ( !isBoolean(request.muraMobileRequest) ) {
 		request.muraMobileRequest=false;
