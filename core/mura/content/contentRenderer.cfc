@@ -3059,7 +3059,7 @@ Display Objects
 
 	public function getMuraJSDeferredString(){
 		if(isBoolean(this.deferMuraJS) && this.deferMuraJS){
-			return 'defer';
+			return 'defer="defer"';
 		} else {
 			return '';
 		}
