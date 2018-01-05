@@ -46,30 +46,47 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfif request.returnformat neq 'amp'>
 <cfoutput>
-<script type="text/javascript" src="#$.globalConfig('context')#/core/modules/v1/core_assets/js/mura.min.js?v=#$.globalConfig('version')#"></script>
+<script type="text/javascript" src="#$.globalConfig('context')#/core/modules/v1/core_assets/js/mura.js?v=#$.globalConfig('version')#" #$.getMuraJSDeferredString()#></script>
 <script>
-Mura.init({
-	loginURL:"#variables.$.siteConfig('LoginURL')#",
-	siteid:"#variables.$.event('siteID')#",
-	contentid:"#variables.$.content('contentid')#",
-	contenthistid:"#variables.$.content('contenthistid')#",
-	parentid:"#variables.$.content('parentid')#",
-	context:"#variables.$.globalConfig('context')#",
-	nocache:#val($.event('nocache'))#,
-	assetpath:"#variables.$.siteConfig('assetPath')#",
-	corepath:"#variables.$.globalConfig('corepath')#",
-	themepath:"#variables.$.siteConfig('themeAssetPath')#",
-	reCAPTCHALanguage:"#$.siteConfig('reCAPTCHALanguage')#",
-	preloaderMarkup: "#esapiEncode('javascript',this.preloaderMarkup)#",
-	mobileformat: #esapiEncode('javascript',$.event('muraMobileRequest'))#,
-	windowdocumentdomain: "#application.configBean.getWindowDocumentDomain()#",
-	layoutmanager:#variables.$.getContentRenderer().useLayoutManager()#,
-	type:"#esapiEncode('javascript',variables.$.content('type'))#",
-	subtype:"#esapiEncode('javascript',variables.$.content('subtype'))#",
-	queueObjects: #esapiEncode('javascript',this.queueObjects)#,
-	rb:#variables.$.siteConfig().getAPI('JSON','v1').getSerializer().serialize(variables.$.getClientRenderVariables())#,
-	#trim(variables.$.siteConfig('JSDateKeyObjInc'))#
-});
+(function(root,config){
+  root.queuedMuraCmds=[];
+  root.deferMuraInit=function(){
+    if(typeof root.Mura != 'undefined' && typeof root.Mura.init == 'function'){
+      root.Mura.init(config);
+      for(var cmd in root.queuedMuraCmds){
+      root.Mura(root.queuedMuraCmds[cmd]);
+      }
+    } else {
+      if(typeof root.Mura != 'function'){
+        root.mura = root.m = root.Mura = function(cmd){root.queuedMuraCmds.push(cmd);};
+      }
+      setTimeout(root.deferMuraInit,1);
+    }
+  }
+  root.deferMuraInit();
+  }
+)(this,{
+  loginURL:"#variables.$.siteConfig('LoginURL')#",
+  siteid:"#variables.$.event('siteID')#",
+  contentid:"#variables.$.content('contentid')#",
+  contenthistid:"#variables.$.content('contenthistid')#",
+  parentid:"#variables.$.content('parentid')#",
+  context:"#variables.$.globalConfig('context')#",
+  nocache:#val($.event('nocache'))#,
+  assetpath:"#variables.$.siteConfig('assetPath')#",
+  corepath:"#variables.$.globalConfig('corepath')#",
+  themepath:"#variables.$.siteConfig('themeAssetPath')#",
+  reCAPTCHALanguage:"#$.siteConfig('reCAPTCHALanguage')#",
+  preloaderMarkup: "#esapiEncode('javascript',this.preloaderMarkup)#",
+  mobileformat: #esapiEncode('javascript',$.event('muraMobileRequest'))#,
+  windowdocumentdomain: "#application.configBean.getWindowDocumentDomain()#",
+  layoutmanager:#variables.$.getContentRenderer().useLayoutManager()#,
+  type:"#esapiEncode('javascript',variables.$.content('type'))#",
+  subtype:"#esapiEncode('javascript',variables.$.content('subtype'))#",
+  queueObjects: #esapiEncode('javascript',this.queueObjects)#,
+  rb:#variables.$.siteConfig().getAPI('JSON','v1').getSerializer().serialize(variables.$.getClientRenderVariables())#,
+  #trim(variables.$.siteConfig('JSDateKeyObjInc'))#
+})
 </script>
 </cfoutput>
 </cfif>

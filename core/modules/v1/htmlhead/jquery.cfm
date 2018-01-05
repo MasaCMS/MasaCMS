@@ -54,8 +54,10 @@
 	may, if you choose, apply this exception to your own modified versions of
 	Mura CMS.
 --->
+<cfif this.muraJSDefer != 'defer'>
 <cfoutput><script type="text/javascript">
 <!--
 !window.jQuery && document.write(unescape('%3Cscript type="text/javascript" src="#variables.$.globalConfig('context')#/core/vendor/jquery/jquery.min.js"%3E%3C/script%3E'))
 //-->
 </script></cfoutput>
+</cfif>

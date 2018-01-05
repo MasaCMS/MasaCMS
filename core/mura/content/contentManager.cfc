@@ -1296,7 +1296,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newBean.getSiteID()#">
 						</cfquery>
 					</cfif>
-					
+
 					<cfif not newBean.getIsNew()>
 						<cfset newBean.setfilename(currentBean.getfilename())>
 						<cfset newBean.setOldfilename(currentBean.getfilename())>
@@ -2186,6 +2186,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="reverse" type="boolean" default="false">
 		<cfargument name="reverseContentID"  type="string" />
 		<cfargument name="navOnly" type="boolean" required="yes" default="false" />
+		<cfargument name="cachedWithin" type="any" required="yes" default="#createTimeSpan(0,0,0,0)#" />
 
 		<cfreturn variables.contentGateway.getRelatedContent(argumentCollection=arguments) />
 	</cffunction>
@@ -2202,6 +2203,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="reverse" type="boolean" default="false">
 		<cfargument name="reverseContentID"  type="string" />
 		<cfargument name="navOnly" type="boolean" required="yes" default="false" />
+		<cfargument name="cachedWithin" type="any" required="yes" default="#createTimeSpan(0,0,0,0)#" />
 
 		<cfset var rs=getRelatedContent(argumentCollection=arguments) />
 		<cfset var it = getBean("contentIterator")>

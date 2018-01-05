@@ -82,14 +82,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<script type="text/javascript" src="#variables.$.globalConfig('adminPath')#/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#"></script>
 
 		<script>
-			var hasMuraLoader=(typeof(Mura) != 'undefined' && typeof(Mura.loader) != 'undefined');
+			var hasMuraLoader=(typeof Mura != 'undefined' && (typeof Mura.loader != 'undefined' || typeof window.queuedMuraCmds != 'undefined'));
 			if(!window.CKEDITOR){
 				if(hasMuraLoader){
-					Mura.loader().loadjs(
-						'#variables.$.globalConfig("corepath")#/vendor/ckeditor/ckeditor.js',
-						'#variables.$.globalConfig("corepath")#/vendor/ckeditor/adapters/jquery.js'
-					);
-
+					Mura(function(){
+						Mura.loader().loadjs(
+							'#variables.$.globalConfig("corepath")#/vendor/ckeditor/ckeditor.js',
+							'#variables.$.globalConfig("corepath")#/vendor/ckeditor/adapters/jquery.js'
+						);
+					});
 				} else {
 					$.getScript('#variables.$.globalConfig("corepath")#/vendor/ckeditor/ckeditor.js');
 					$.getScript('#variables.$.globalConfig("corepath")#/vendor/ckeditor/adapters/jquery.js');
@@ -101,8 +102,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif not $.getContentRenderer().useLayoutManager()>
 			if(!window.CKFinder){
 				if(hasMuraLoader){
-					Mura.loader().loadjs(
-						'#variables.$.globalConfig("corepath")#/vendor/ckfinder/ckfinder.js');
+					Mura(function(){
+						Mura.loader().loadjs('#variables.$.globalConfig("corepath")#/vendor/ckfinder/ckfinder.js');
+					});
 				} else {
 					$.getScript('#variables.$.globalConfig("corepath")#/vendor/ckfinder/ckfinder.js');
 				}
@@ -110,8 +112,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 
 			if(hasMuraLoader){
-				Mura.loader().loadjs(
-						'#variables.$.globalConfig("adminPath")#/assets/js/frontendtools.js.cfm?siteid=#esapiEncode("url",variables.$.event("siteid"))#&contenthistid=#$.content("contenthistid")#&coreversion=#application.coreversion#&showInlineEditor=#getShowInlineEditor()#&cacheid=' + Math.random());
+				Mura(function(){
+					Mura.loader().loadjs('#variables.$.globalConfig("adminPath")#/assets/js/frontendtools.js.cfm?siteid=#esapiEncode("url",variables.$.event("siteid"))#&contenthistid=#$.content("contenthistid")#&coreversion=#application.coreversion#&showInlineEditor=#getShowInlineEditor()#&cacheid=' + Math.random());
+				});
 			} else {
 				$.getScript('#variables.$.globalConfig("adminPath")#/assets/js/frontendtools.js.cfm?siteid=#esapiEncode("url",variables.$.event("siteid"))#&contenthistid=#$.content("contenthistid")#&coreversion=#application.coreversion#&showInlineEditor=#getShowInlineEditor()#&cacheid=' + Math.random());
 			}

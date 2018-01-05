@@ -149,7 +149,7 @@
 </cfif>
 </div>
 <script>
-Mura.ready(function(){
+Mura(function(){
 	<cfif $.content('type') eq 'Variation'>
 	if(!Mura('.mxp-editable').length){
 		Mura('##adminQuickEdit').remove();

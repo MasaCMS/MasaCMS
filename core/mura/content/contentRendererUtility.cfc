@@ -1638,7 +1638,6 @@
 					<cfelse>
 						<cfset href=HTMLEditFormat("#begin##arguments.renderer.getURLStem(arguments.siteid,'#arguments.filename#')##arguments.querystring#") />
 					</cfif>
-					<cfset href=HTMLEditFormat("#begin##arguments.renderer.getURLStem(arguments.siteid,'#arguments.filename#')##arguments.querystring#") />
 				<cfelseif arguments.type eq "Link">
 					<cfset href=arguments.bean.getBody()>
 				<cfelse>
