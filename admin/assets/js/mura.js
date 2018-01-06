@@ -12391,42 +12391,72 @@ var Mura=__webpack_require__(10);
 			,appendElmt = function(type,attrs,cb){
 				var el = D.createElement(type), i;
 
-				if( type =='script'){
-					if(cb ){ //-- this is not intended to be used for link
-						if(el[readyState]){
-							el[onreadystatechange] = function(){
-								if (el[readyState] === "loaded" || el[readyState] === "complete"){
-									el[onreadystatechange] = null;
-									cb();
-								}
-							};
-						} else{
-							el.onload = cb;
-						}
+				if( type =='script' && cb ){ //-- this is not intended to be used for link
+					if(el[readyState]){
+						el[onreadystatechange] = function(){
+							if (el[readyState] === "loaded" || el[readyState] === "complete"){
+								el[onreadystatechange] = null;
+								cb();
+							}
+						};
+					} else{
+						el.onload = cb;
 					}
-				}
-
-				for( i in attrs ){ attrs[i] && (el[i]=attrs[i]); }
-
-				if(
+				} else if(
 						type=='link'
 						&& typeof attrs == 'object'
 						&& typeof attrs.rel != 'undefined'
 						&& attrs.rel=='preload'
 					){
-						el.rel='stylesheet';
 
-						//Inpired by https://www.giftofspeed.com/defer-loading-css/
-						var links=document.getElementsByTagName('link');
-						if(links.length){
-							var target = links[0];
-							target.parentNode.insertBefore(el, target);
-						} else {
-							header.appendChild(el);
+						/*
+						Inspired by
+						https://github.com/filamentgroup/loadCSS/blob/master/src/loadCSS.js
+						*/
+
+						var media=attrs.media || 'all';
+						attrs.as = attrs.as || 'style';
+
+						if(!preloadsupport){
+							attrs.media='x only';
+							attrs.rel="stylesheet";
 						}
-				} else {
-					header.appendChild(el);
+
+						function loadCB(){
+							if( el.addEventListener ){
+								el.removeEventListener( "load", loadCB );
+							}
+							el.media = media || "all";
+						  el.rel="stylesheet";
+						}
+
+						function onloadcssdefined( cb ){
+							var sheets=document.styleSheets;
+							var resolvedHref = attrs.href;
+							var i = sheets.length;
+							while( i-- ){
+								if( sheets[ i ].href === resolvedHref ){
+									return cb();
+								}
+							}
+							setTimeout(function() {
+								onloadcssdefined( cb );
+							});
+						};
+
+						if( el.addEventListener ){
+							el.addEventListener( "load", loadCB);
+						}
+
+						el.onloadcssdefined = onloadcssdefined;
+
+						onloadcssdefined( loadCB );
+
 				}
+
+				for( i in attrs ){ attrs[i] && (el[i]=attrs[i]); }
+
+				header.appendChild(el);
 				// return e; // unused at this time so drop it
 			}
 			,load = function(url,cb){
