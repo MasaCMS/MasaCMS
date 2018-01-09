@@ -1363,10 +1363,14 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 				arguments.domain=request.muraPreviewDomain;
 			}
 			if ( !isDefined('arguments.domain') || !len(arguments.domain) ) {
-				if ( len(cgi.server_name) && isValidDomain(domain=cgi.server_name,mode='complete') ) {
-					arguments.domain=cgi.server_name;
-				} else {
+				if(getValue('isRemote') ){
 					arguments.domain=getValue('domain');
+				} else {
+					if ( len(cgi.server_name) && isValidDomain(domain=cgi.server_name,mode='complete') ) {
+						arguments.domain=cgi.server_name;
+					} else {
+						arguments.domain=getValue('domain');
+					}
 				}
 			}
 			if ( arguments.useProtocol ) {
