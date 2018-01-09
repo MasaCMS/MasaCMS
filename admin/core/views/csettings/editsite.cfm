@@ -1182,29 +1182,43 @@ to your own modified versions of Mura CMS.
 					</div>
 
 				<div class="mura-control-group">
-				<label>Select Bundle File From Server
-						<cfif application.configBean.getPostBundles()>
-						(Preferred)
-					</cfif>
+					<label>
+						<span 
+							data-toggle="popover" 
+							title="" 
+							data-placement="right"
+							data-content="Enter the complete server path to the Site Bundle here. For example: C://path/to/bundle/file.zip"
+							data-original-title="INFO">
+							Select Bundle File From Server
+							<cfif application.configBean.getPostBundles()>
+								<strong>(Preferred)</strong>
+							</cfif>
+							<i class="mi-question-circle"></i>
+						</span>
 					</label>
 					<div class="mura-control justify">
 						<input class="text" type="text" name="serverBundlePath" id="serverBundlePath" value="">
 						<input type="button" value="Browse Server" class="mura-ckfinder" data-completepath="true" data-resourcetype="root" data-target="serverBundlePath"/>
 					</div>
-						<p class="help-block">You can deploy a bundle that exists on the server by entering the complete server path to the Site Bundle here. This eliminates the need to upload the file via your web browser, avoiding some potential timeout issues.</p>
-			</div>
+					<cfif application.configBean.getPostBundles()>
+						<p class="help-block">
+							Selecting a bundle file from the server eliminates the need to upload the file via your web browser, avoiding potential timeout issues and server upload restrictions.
+						</p>
+					</cfif>
+				</div>
+				
 				<cfif application.configBean.getPostBundles()>
-				<div class="mura-control-group">
+					<div class="mura-control-group">
 						<label>
 							<span data-toggle="popover" title="" data-placement="right"
-						  	data-content="#esapiEncode('html_attr','Uploading large files via a web browser can produce inconsistent results.')#"
-						  	data-original-title="#esapiEncode('html_attr','WARNING')#">Upload Bundle File <i class="mi-question-circle"></i></span>
+							data-content="Uploading large files via the web browser can result in potential timeout issues and trigger server upload restrictions."
+							data-original-title="WARNING">Upload Bundle File <i class="mi-question-circle"></i></span>
 						</label>
 						<input type="file" name="bundleFile" accept=".zip"/>
 					</div>
 				<cfelse>
-				<input type="hidden" name="bundleFile" value=""/>
-			</cfif>
+					<input type="hidden" name="bundleFile" value=""/>
+				</cfif>
 
 			</div> <!--- /.block-content --->
 			<cfelse>
