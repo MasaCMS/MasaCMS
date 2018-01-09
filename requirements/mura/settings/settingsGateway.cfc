@@ -58,7 +58,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="cached" default="true" />
 		<cfset var rsSites = "" />
 
-		<cfif (StructKeyExists(request, 'muraAppreloaded') and request['muraAppreloaded'] is true) or not StructKeyExists(variables, 'rsSites') or not arguments.cached>
+		<cfif (StructKeyExists(request, 'muraAppreloaded') and isBoolean(request['muraAppreloaded']) && request['muraAppreloaded']) or not StructKeyExists(variables, 'rsSites') or not arguments.cached>
 			<cfquery name="rsSites">
 				SELECT * FROM tsettings ORDER BY
 				<cfif listFindNoCase("domain,site,orderno",arguments.sortBy)>
