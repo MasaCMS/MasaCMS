@@ -68,6 +68,12 @@ component extends="mura.cfobject" output="false" hint="This handles translating 
 		variables.$=$;
 		variables.m=$;
 		variables.mura=$;
+
+		//Remote site must be rendered via the json api
+		if($.siteConfig('isRemote')){
+			location($.content().getURL(complete=true), false, 301 );
+		}
+
 		if ( !isNumeric(arguments.event.getValue('startRow')) ) {
 			arguments.event.setValue('startRow',1);
 		}

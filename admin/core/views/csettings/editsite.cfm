@@ -310,7 +310,7 @@ to your own modified versions of Mura CMS.
 
 				<!--- Custom Context + Port --->
 						<div class="mura-control-group">
-								<label>Is this a Remote Site?</label>
+								<label>Is this a Remote Site? (WARNING: When set to true all content MUST be rendered via the JSON/REST APIs)</label>
 								<label class="radio inline">
 										<input type="radio" name="IsRemote" value="0"<cfif rc.siteBean.getIsRemote() neq 1> checked</cfif>>
 								No</label>
@@ -1183,9 +1183,9 @@ to your own modified versions of Mura CMS.
 
 				<div class="mura-control-group">
 					<label>
-						<span 
-							data-toggle="popover" 
-							title="" 
+						<span
+							data-toggle="popover"
+							title=""
 							data-placement="right"
 							data-content="Enter the complete server path to the Site Bundle here. For example: C://path/to/bundle/file.zip"
 							data-original-title="INFO">
@@ -1206,7 +1206,7 @@ to your own modified versions of Mura CMS.
 						</p>
 					</cfif>
 				</div>
-				
+
 				<cfif application.configBean.getPostBundles()>
 					<div class="mura-control-group">
 						<label>
