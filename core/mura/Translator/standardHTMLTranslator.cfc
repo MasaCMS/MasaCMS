@@ -71,7 +71,7 @@ component extends="mura.cfobject" output="false" hint="This handles translating 
 
 		//Remote site must be rendered via the json api
 		if($.siteConfig('isRemote')){
-			location($.content().getURL(complete=true), false, 301 );
+			location($.content().getURL(complete=true), false, 302 );
 		}
 
 		if ( !isNumeric(arguments.event.getValue('startRow')) ) {
