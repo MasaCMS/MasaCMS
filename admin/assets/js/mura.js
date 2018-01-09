@@ -3160,6 +3160,10 @@ var Mura=(function(){
           document.domain = config.rootdocumentdomain;
       }
 
+      if (typeof config.preloaderMarkup == 'undefined') {
+          config.preloaderMarkup = '';
+      }
+
       Mura.editing;
 
       extend(Mura, config);
