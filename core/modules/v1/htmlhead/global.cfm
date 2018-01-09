@@ -44,7 +44,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfif request.returnformat neq 'amp'>
+<cfif request.returnformat neq 'amp' and not $.siteConfig('isRemote')>
 <cfoutput>
 <script type="text/javascript" src="#$.globalConfig('context')#/core/modules/v1/core_assets/js/mura.js?v=#$.globalConfig('version')#" #$.getMuraJSDeferredString()#></script>
 <script>
