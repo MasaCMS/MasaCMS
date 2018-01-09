@@ -87,13 +87,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				if(hasMuraLoader){
 					Mura(function(){
 						Mura.loader().loadjs(
-							'#variables.$.globalConfig("corepath")#/vendor/ckeditor/ckeditor.js',
-							'#variables.$.globalConfig("corepath")#/vendor/ckeditor/adapters/jquery.js'
+							'#variables.$.globalConfig("corepath")#/vendor/ckeditor/ckeditor.js'
 						);
 					});
 				} else {
 					$.getScript('#variables.$.globalConfig("corepath")#/vendor/ckeditor/ckeditor.js');
-					$.getScript('#variables.$.globalConfig("corepath")#/vendor/ckeditor/adapters/jquery.js');
 				}
 
 				window.CKEDITOR_BASEPATH = '#variables.$.globalConfig("corepath")#/vendor/ckeditor/';
