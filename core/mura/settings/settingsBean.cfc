@@ -802,7 +802,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 			}
 			path=expandPath('/#variables.configBean.getWebRootMap()#/themes/#arguments.theme#');
 			if ( directoryExists(path) ) {
-				variables.instance.themeLookup['#arguments.theme#'][key]=variables.configBean.getResourcePath(argumentCollection=arguments) & "/themes/#arguments.theme#";
+				variables.instance.themeLookup['#arguments.theme#'][key]=getResourcePath(argumentCollection=arguments) & "/themes/#arguments.theme#";
 				return variables.instance.themeLookup['#arguments.theme#'][key];
 			}
 			variables.instance.themeLookup['#arguments.theme#'][key]=getAssetPath(argumentCollection=arguments);
