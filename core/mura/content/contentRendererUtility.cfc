@@ -125,7 +125,7 @@
 
 						cssClass=cssClass & "mura-inactive mura-editable-attribute#inline#";
 
-						return '<div class="mura-region mura-editable mura-inactive#inline#">
+						return '<div class="mura-region mura-region-loose mura-editable mura-inactive#inline#">
 							<label class="mura-editable-label">#ucase(arguments.label)#</label>
 							<div contenteditable="false" id="mura-editable-attribute-#arguments.attribute#" class="#cssClass#" #dataString#>#arguments.value#</div>
 							</div>';
@@ -151,7 +151,7 @@
 				}
 			} else if (layoutManager && arguments.type == 'htmlEditor'){
 
-				return '<div class="mura-region">
+				return '<div class="mura-region mura-region-loose">
 					<div class="mura-region-local">#arguments.value#</div>
 					</div>';
 			} else {
@@ -960,8 +960,8 @@
 			<cfset openingDiv=openingDiv & " mura-async-object">
 		</cfif>
 
-		<cfif structKeyExists(arguments.objectParams,'cssClass') and len(arguments.objectParams.cssClass)>
-			<cfset openingDiv=openingDiv & " " & arguments.objectParams.cssClass>
+		<cfif structKeyExists(arguments.objectParams,'class') and len(arguments.objectParams.class)>
+			<cfset openingDiv=openingDiv & " " & arguments.objectParams.class>
 		</cfif>
 
 		<cfset openingDiv=openingDiv & '" data-object="#esapiEncode('html_attr',lcase(arguments.object))#" data-objectid="#esapiEncode('html_attr',arguments.objectid)#" data-instanceid="#arguments.objectparams.instanceid#"'>
