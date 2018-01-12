@@ -60,7 +60,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       if(typeof root.Mura != 'function'){
         root.mura = root.m = root.Mura = function(cmd){root.queuedMuraCmds.push(cmd);};
       }
-      setTimeout(root.deferMuraInit,1);
+      setTimeout(root.deferMuraInit);
     }
   }
   root.deferMuraInit();
