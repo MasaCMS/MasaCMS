@@ -1621,9 +1621,11 @@
 			<cfset arguments.filename=arguments.bean.getFilename()>
 		</cfif>
 
-		<cfif application.configBean.getValue(property='AllowUnicodeInFilenames',defaultValue=false)>
+		<cfif false and application.configBean.getValue(property='AllowUnicodeInFilenames',defaultValue=false)>
 			<cfset arguments.filename=urlEncodedFormat(arguments.filename)>
 			<cfset arguments.filename=replace(arguments.filename,'%2F',"/","all")>
+			<cfset arguments.filename=replace(arguments.filename,'%2D',"-","all")>
+			<cfset arguments.filename=replace(arguments.filename,'%5F',"_","all")>
 		</cfif>
 
 		<cfif arguments.hashURLS and len(arguments.queryString) and right(arguments.filename,1) neq "/">
