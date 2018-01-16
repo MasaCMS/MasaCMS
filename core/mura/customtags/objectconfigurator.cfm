@@ -136,7 +136,7 @@
 	  				if(inited && typeof updateDraft == 'function'){
 	  					updateDraft();
 	  				}
-
+					/*
 	  			if(alignment.val()=='mura-left'){
 		  			var offset=$('select[name="offset"]');
 
@@ -153,6 +153,7 @@
 
 		  			}
 		  		}
+					*/
 					//}
 		  		var cssclassInput=$('input[name="cssclass"]');
 
