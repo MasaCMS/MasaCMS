@@ -20,7 +20,7 @@ services:
       MURA_DATASOURCE: muradb
       MURA_DATABASE: muradb
       MURA_DBTYPE: mysql
-      #MURA_DBCONNECTIONSTRING: "jdbc:mysql://mura7_1_mysql:3306/muradb?useUnicode=true&characterEncoding=UTF-8&useLegacyDatetimeCode=true"
+      MURA_DBCONNECTIONSTRING: "jdbc:mysql://mura7_1_mysql:3306/muradb?useUnicode=true&characterEncoding=UTF-8&useLegacyDatetimeCode=true"
       MURA_DBCLASS: com.mysql.jdbc.Driver
       MURA_DBUSERNAME: root
       MURA_DBPASSWORD: NOT_SECURE_CHANGE

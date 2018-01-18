@@ -802,7 +802,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 			}
 			path=expandPath('/#variables.configBean.getWebRootMap()#/themes/#arguments.theme#');
 			if ( directoryExists(path) ) {
-				variables.instance.themeLookup['#arguments.theme#'][key]=getRootPath(argumentCollection=arguments) & "/themes/#arguments.theme#";
+				variables.instance.themeLookup['#arguments.theme#'][key]=getResourcePath(argumentCollection=arguments) & "/themes/#arguments.theme#";
 				return variables.instance.themeLookup['#arguments.theme#'][key];
 			}
 			variables.instance.themeLookup['#arguments.theme#'][key]=getAssetPath(argumentCollection=arguments);
@@ -1363,10 +1363,14 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 				arguments.domain=request.muraPreviewDomain;
 			}
 			if ( !isDefined('arguments.domain') || !len(arguments.domain) ) {
-				if ( len(cgi.server_name) && isValidDomain(domain=cgi.server_name,mode='complete') ) {
-					arguments.domain=cgi.server_name;
-				} else {
+				if(getValue('isRemote') ){
 					arguments.domain=getValue('domain');
+				} else {
+					if ( len(cgi.server_name) && isValidDomain(domain=cgi.server_name,mode='complete') ) {
+						arguments.domain=cgi.server_name;
+					} else {
+						arguments.domain=getValue('domain');
+					}
 				}
 			}
 			if ( arguments.useProtocol ) {

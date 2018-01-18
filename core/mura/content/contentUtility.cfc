@@ -687,6 +687,9 @@ VERSION LINK:
 		<cfset arguments.filename=rereplace(arguments.filename,"svphsv",wordDelim,"ALL") />
 
 		<cfset arguments.filename=lcase(rereplace(arguments.filename,"\#wordDelim#+",wordDelim,"ALL")) />
+
+		<!--- Remove any whitespace --->
+		<cfset arguments.filename=rereplace(arguments.filename,"[[:space:]]","","ALL") />
 	</cfif>
 
 	<cfreturn arguments.filename>

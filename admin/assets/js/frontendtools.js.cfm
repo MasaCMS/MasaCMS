@@ -590,7 +590,7 @@
 	var MuraInlineEditor={
 		inited: false,
 		init: function(){
-			
+
 			utility(document)
 				.trigger('muraContentEditInit')
 				.trigger('MuraContentEditInit')
@@ -997,7 +997,7 @@
 					reset();
 					Mura('##adminStatus').show();
 					Mura('##adminSave').hide();
-				
+
 					var prev=Mura('.mura-var-target');
 					prev.removeClass('mura-var-target');
 
@@ -1551,11 +1551,14 @@
 											}
 					        	<cfelse>
 					        		var resp = eval('(' + data + ')');
-
+											console.log(data)
+											console.log(MuraInlineEditor.requestedURL)
 					        		if(MuraInlineEditor.requestedURL){
 												location.href=MuraInlineEditor.requestedURL
-											} else {
+											} else if(location.href==resp.location){
 												location.href=resp.location;
+											} else {
+												location.reload();
 											}
 					        	</cfif>
 								} else {
@@ -2075,11 +2078,11 @@
 				Mura('#mura-sidebar-objects').hide();
 				Mura('#mura-sidebar-editor').show();
 			} else if(action=='minimizesidebar'){
-				Mura('#mura-sidebar-container').fadeOut();	
+				Mura('#mura-sidebar-container').fadeOut();
 				Mura('body').removeClass('mura-sidebar-state__pushed--right')
 				Mura('.mura-object').removeClass('mura-active').addClass("mura-active-min");
 			} else if(action=='restoresidebar'){
-				Mura('#mura-sidebar-container').fadeIn();	
+				Mura('#mura-sidebar-container').fadeIn();
 				Mura('body').addClass('mura-sidebar-state__pushed--right');
 				Mura('.mura-object').removeClass('mura-active-min').addClass("mura-active");
 			}

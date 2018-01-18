@@ -259,9 +259,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 
 		<cfset variables.DAO.update(bean) />
-
 		<cfset validateDisplayPool(bean) />
-
 		<cfset checkForBundle(arguments.data,bean.getErrors())>
 		<cfset setSites() />
 		<cfset application.appInitialized=false>
@@ -378,7 +376,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset var fileDelim=variables.configBean.getFileDelim()>
 
-	<cfif bean.getSiteID() eq bean.getDisplayPoolID() and !directoryExists('#variables.configBean.getWebRoot()##fileDelim##bean.getSiteID()##fileDelim#')>
+	<cfif bean.getSiteID() eq bean.getDisplayPoolID() and !directoryExists('#variables.configBean.getSiteDir()##fileDelim##bean.getSiteID()##fileDelim#')>
 
 		<cfset variables.utility.copyDir(
 				baseDir="#variables.configBean.getSiteDir()##fileDelim#default#fileDelim#",

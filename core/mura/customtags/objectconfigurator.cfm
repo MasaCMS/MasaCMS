@@ -48,10 +48,11 @@
 					<select name="alignment">
 						<option value="">--</option>
 					<option value="mura-left"<cfif listFind(attributes.params.class,'mura-left',' ')> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.left')#</option>
-					<!--<option value="mura-center"<cfif listFind(attributes.params.class,'mura-center',' ')> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.center')#</option>--->
+					<!---<option value="mura-center"<cfif listFind(attributes.params.class,'mura-center',' ')> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.center')#</option>--->
 					<option value="mura-right"<cfif listFind(attributes.params.class,'mura-right',' ')> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.right')#</option>
 					</select>
 			</div>
+			<!---
 			<div id="offsetcontainer" class="mura-control-group" style="display:none">
       	<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.offset')#</label>
 				<select name="offset">
@@ -69,6 +70,7 @@
 					<option value="mura-offset-by-eleven"<cfif listFind(attributes.params.class,'mura-offset-by-eleven',' ')> selected</cfif>>Eleven Twelfths</option>
 				</select>
 			</div>
+			--->
 			<div class="mura-control-group">
 				<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.width')#</label>
 				<select name="width">
@@ -114,16 +116,17 @@
 	  			var alignment=$('select[name="alignment"]');
 
 	  			classInput.val(alignment.val());
-
+					/*
 	  			if(alignment.val()=='mura-left'){
 	  				$('#offsetcontainer').show();
 	  			} else {
 	  				$('#offsetcontainer').hide();
 	  			}
+					*/
 
 	  			var width=$('select[name="width"]');
 
-	  			if(width.val()){
+	  			//if(width.val()){
 	  				if(classInput.val() ){
 	  					classInput.val(classInput.val() + ' ' + width.val());
 	  				} else {
@@ -133,8 +136,7 @@
 	  				if(inited && typeof updateDraft == 'function'){
 	  					updateDraft();
 	  				}
-	  			}
-
+					/*
 	  			if(alignment.val()=='mura-left'){
 		  			var offset=$('select[name="offset"]');
 
@@ -151,7 +153,8 @@
 
 		  			}
 		  		}
-
+					*/
+					//}
 		  		var cssclassInput=$('input[name="cssclass"]');
 
 		  		if(cssclassInput.val()){
