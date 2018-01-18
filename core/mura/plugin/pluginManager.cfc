@@ -1260,7 +1260,7 @@ select * from tplugins order by #arguments.orderby#
 <cfargument name="index" required="true" default="0" type="any">
 <cfargument name="objectid" required="true" default="" type="any">
 	<cfset var siteID="">
-	<!-- Don't fire unless pluginManager has been initted--->
+	<!--- Don't fire unless pluginManager has been initted--->
 	<cfif isDefined('variables.utility')>
 		<cfif variables.utility.checkForInstanceOf(arguments.currentEventObject,"mura.MuraScope")>
 			<cfset siteID=arguments.currentEventObject.event('siteID')>
