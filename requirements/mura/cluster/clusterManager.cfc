@@ -141,10 +141,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cftry>
 			<cfset evaluate("#rsCommands.command#")>
 			<cfcatch>
-				<cflog 
-					type="error"
-					file="exception"
-					text="Cluster Communication Error -- Command: #rsCommands.command#">
+				<cfif isDefined('cfcatch')>
+					<cflog
+						type="error"
+						file="exception"
+						text="Cluster Communication Error -- Command: #rsCommands.command#: #serializeJSON(cfcatch)#">
+				<cfelse>
+					<cflog
+						type="error"
+						file="exception"
+						text="Cluster Communication Error -- Command: #rsCommands.command#">
+				</cfif>
 			</cfcatch>
 		</cftry>
 		<cfquery>
