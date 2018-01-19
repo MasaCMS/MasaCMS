@@ -436,9 +436,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif not len(altTable)>
 					Left Join tfiles #tableModifier# ON (tcontent.fileID=tfiles.fileID)
 					left Join tcontentstats #tableModifier# on (tcontent.contentid=tcontentstats.contentid
-									    and tcontent.siteid=tcontentstats.siteid)
+						and tcontent.siteid=tcontentstats.siteid)
 					Left Join tcontentfilemetadata #tableModifier# on (tcontent.fileid=tcontentfilemetadata.fileid
-													and tcontent.contenthistid=tcontentfilemetadata.contenthistid)
+						and tcontent.contenthistid=tcontentfilemetadata.contenthistid
+						and tcontent.siteid=tcontentfilemetadata.siteid)
 				</cfif>
 
 				<cfif mxpRelevanceSort>

@@ -312,7 +312,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						and tcontent.siteid=tparent.siteid
 						and tparent.active=1)
 					Left Join tcontentfilemetadata #tableModifier# on (tcontent.fileid=tcontentfilemetadata.fileid
-						and tcontent.contenthistid=tcontentfilemetadata.contenthistid)
+						and tcontent.contenthistid=tcontentfilemetadata.contenthistid
+						and tcontent.siteid=tcontentfilemetadata.siteid)
 				</cfif>
 
 				<cfif mxpRelevanceSort>
