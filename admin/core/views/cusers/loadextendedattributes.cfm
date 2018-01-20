@@ -89,8 +89,8 @@
 									<span data-toggle="popover"
 										title=""
 										data-placement="right"
-										data-content="#esapiEncode('html_attr',attributeBean.getLabel())#"
-										data-original-title="#esapiEncode('html_attr',attributeBean.gethint())#">
+										data-content="#esapiEncode('html_attr',attributeBean.getHint())#"
+										data-original-title="#esapiEncode('html_attr',attributeBean.getLabel())#">
 										#esapiEncode('html',attributeBean.getLabel())# <i class="mi-question-circle"></i>
 									</span>
 								<cfelse>
@@ -167,7 +167,7 @@
 									<span data-toggle="popover"
 										title=""
 										data-placement="right"
-										data-content="#esapiEncode('html_attr', attributeBean.gethint())#" 
+										data-content="#esapiEncode('html_attr', attributeBean.gethint())#"
 										data-original-title="#esapiEncode('html_attr', attributeBean.getLabel())#">
 										#esapiEncode('html', attributeBean.getLabel())# <i class="mi-question-circle"></i>
 									</span>

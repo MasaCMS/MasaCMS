@@ -1,4 +1,4 @@
-<!--- 
+<!---
 	This file is part of Mura CMS.
 
 	Mura CMS is free software: you can redistribute it and/or modify
@@ -86,7 +86,7 @@
 							<cfset attributeValue=contentBean.getvalue(attributeBean.getName(), 'useMuraDefault') />
 							<cfset readonly = attributeBean.getAdminOnly() and (not $.currentUser().isSuperUser() and not $.currentUser().isAdminUser()) />
 
-							<!--- 
+							<!---
 								Hidden attributes should be editable via the back-end Admin area
 							--->
 							<cfif attributeBean.getType() eq 'Hidden'>
@@ -96,12 +96,12 @@
 							<div class="mura-control-group">
 								<label>
 									<cfif len(attributeBean.getHint())>
-										<span 
-											data-toggle="popover" 
-											title="" 
+										<span
+											data-toggle="popover"
+											title=""
 											data-placement="right"
-											data-content="#esapiEncode('html_attr', attributeBean.getLabel())#"
-											data-original-title="#esapiEncode('html_attr', attributeBean.gethint())#">
+											data-content="#esapiEncode('html_attr', attributeBean.getHint())#"
+											data-original-title="#esapiEncode('html_attr', attributeBean.getLabel())#">
 											#esapiEncode('html', attributeBean.getLabel())# <i class="mi-question-circle"></i>
 										</span>
 									<cfelse>
