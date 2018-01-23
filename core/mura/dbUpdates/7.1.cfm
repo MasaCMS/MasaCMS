@@ -2,6 +2,8 @@
     getBean('entity').checkSchema();
     dbUtility.setTable("tsettings")
     .addColumn(column="scaffolding",dataType="int");
+
+    dbUtility.setTable("tclustercommands").addIndex("created");
 </cfscript>
 
 <cfquery name="rsCheck">
