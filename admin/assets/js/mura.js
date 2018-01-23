@@ -258,7 +258,7 @@ module.exports = function (it) {
 
 /* WEBPACK VAR INJECTION */(function(process) {
 __webpack_require__(130);
-__webpack_require__(359);
+__webpack_require__(358);
 
 /**
  * Creates a new Mura
@@ -7104,23 +7104,23 @@ exports.logger = _logger2['default'];
 
 Mura=__webpack_require__(11);
 
-__webpack_require__(358);
-__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./core/request.js\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+__webpack_require__(357);
+__webpack_require__(360);
+__webpack_require__(359);
 __webpack_require__(349);
+__webpack_require__(352);
 __webpack_require__(350);
 __webpack_require__(353);
-__webpack_require__(351);
 __webpack_require__(354);
-__webpack_require__(355);
 
 if(Mura.isInNode()){
   Mura._request=__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"request\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 } else {
-  __webpack_require__(357);
-  __webpack_require__(352);
-  __webpack_require__(362);
   __webpack_require__(356);
-  __webpack_require__(361);
+  __webpack_require__(351);
+  __webpack_require__(363);
+  __webpack_require__(355);
+  __webpack_require__(362);
 
   window.m=Mura;
   window.mura=Mura;
@@ -13568,512 +13568,6 @@ process.umask = function() { return 0; };
 
 
 var Mura=__webpack_require__(11);
-
-/**
-* Creates a new Mura.RequestContext
-* @name  Mura.RequestContext
-* @class
-* @extends Mura.Core
-* @memberof Mura
-* @param  {object} request     Siteid
-* @param  {object} response Entity name
-* @param  {object} requestHeaders Optional
-* @return {Mura.RequestContext} Self
-*/
-
-Mura.RequestContext=Mura.Core.extend(
-/** @lends Mura.RequestContext.prototype */
-{
-	init: function(request, response, requestHeaders) {
-    this.requestObject=request;
-    this.reponseObject=response;
-    this._request=new Mura.Request(request, response, requestHeaders);
-    return this;
-	},
-
-  /**
-   * setRequestHeader - Initialiazes feed
-   *
-   * @param  {string} headerName  Name of header
-   * @param  {string} value Header value
-   * @return {Mura.RequestContext}  Self
-   */
-  setRequestHeader:function(headerName,value){
-    this._request.setRequestHeader(headerName,value);
-    return this;
-  },
-
-  /**
-   * getRequestHeader - Returns a request header value
-   *
-   * @param  {string} headerName  Name of header
-   * @return {string} header Value
-   */
-  getRequestHeader:function(headerName){
-    return this._request.getRequestHeader(headerName);
-  },
-
-  /**
-   * getRequestHeaders - Returns a request header value
-   *
-   * @return {object} All Headers
-   */
-  getRequestHeaders:function(){
-    return this._request.getRequestHeaders();
-  },
-
-  /**
-   * request - Executes a request
-   *
-   * @param  {object} params     Object
-   * @return {Promise}            Self
-   */
-  request:function(params){
-    return this._request.execute(params);
-  },
-
-  /**
-   * renderFilename - Returns "Rendered" JSON object of content
-   *
-   * @param  {type} filename Mura content filename
-   * @param  {type} params Object
-   * @return {Promise}
-   */
-  renderFilename:function(filename, params) {
-
-      var query = [];
-      var self=this;
-
-      params = params || {};
-      params.filename = params.filename || '';
-      params.siteid = params.siteid || Mura.siteid;
-
-      for (var key in params) {
-          if (key != 'entityname' && key != 'filename' && key !=
-              'siteid' && key != 'method') {
-              query.push(encodeURIComponent(key) + '=' +
-                  encodeURIComponent(params[key]));
-          }
-      }
-
-      return new Promise(function(resolve, reject) {
-          self.request({
-              async: true,
-              type: 'get',
-              url: Mura.apiEndpoint + '/content/_path/' + filename + '?' + query.join('&'),
-              success: function(resp) {
-                if (typeof resolve == 'function') {
-                  var item = new Mura.entities.Content({},self);
-                  item.set(resp.data);
-                  resolve(item);
-                }
-              },
-							error: function(resp) {
-								if (typeof resp.data != 'undefined' && typeof resolve == 'function') {
-									var item = new Mura.Entity({},self);
-									item.set(resp.data);
-									resolve(item);
-								} else if (typeof reject == 'function') {
-                  reject(resp);
-                }
-              }
-            }
-          );
-      });
-
-  },
-
-  /**
-   * getEntity - Returns Mura.Entity instance
-   *
-   * @param  {string} entityname Entity Name
-   * @param  {string} siteid     Siteid
-   * @return {Mura.Entity}
-   */
-  getEntity:function(entityname, siteid) {
-      if (typeof entityname == 'string') {
-          var properties = {
-              entityname: entityname
-          };
-          properties.siteid = siteid || Mura.siteid;
-      } else {
-          properties = entityname;
-          properties.entityname = properties.entityname || 'content';
-          properties.siteid = properties.siteid || Mura.siteid;
-      }
-
-      if (Mura.entities[properties.entityname]) {
-          var entity=new Mura.entities[properties.entityname](properties,this);
-          return entity;
-      } else {
-          var entity=new Mura.Entity(properties,this);
-          return entity;
-      }
-  },
-
-	/**
-   * declareEntity - Declare Entity with in service factory
-   *
-   * @param  {object} entityConfig Entity config object
-   * @return {Promise}
-   */
-  declareEntity:function(entityConfig) {
-		var self=this;
-
-		if(Mura.mode.toLowerCase() == 'rest'){
-			return new Promise(function(resolve, reject) {
-        self.request({
-            async: true,
-            type: 'POST',
-            url: Mura.apiEndpoint,
-						data:{
-							method: 'declareEntity',
-							entityConfig: encodeURIComponent(JSON.stringify(entityConfig))
-						},
-            success: function(resp) {
-							if (typeof resolve =='function' && typeof resp.data != 'undefined') {
-								resolve(resp.data);
-							} else if (typeof reject =='function' && typeof resp.error != 'undefined') {
-								resolve(resp);
-							} else if (typeof resolve =='function'){
-								resolve(resp);
-							}
-            }
-          }
-        );
-			});
-		} else {
-			return new Promise(function(resolve, reject) {
-					self.request({
-							type: 'POST',
-							url: Mura.apiEndpoint + '?method=generateCSRFTokens',
-							data: {context: ''},
-							success: function(resp) {
-								self.request({
-										async: true,
-										type: 'POST',
-										url: Mura.apiEndpoint,
-										data:{
-											method: 'declareEntity',
-											entityConfig: encodeURIComponent(JSON.stringify(entityConfig)),
-											'csrf_token': resp.data.csrf_token,
-											'csrf_token_expires': resp.data.csrf_token_expires
-										},
-										success: function(resp) {
-												if (typeof resolve =='function' && typeof resp.data != 'undefined') {
-													resolve(resp.data);
-												} else if (typeof reject =='function' && typeof resp.error != 'undefined') {
-													resolve(resp);
-												} else if (typeof resolve =='function'){
-													resolve(resp);
-												}
-										}
-									}
-								);
-							}
-					});
-			});
-		}
-  },
-
-	/**
-   * undeclareEntity - Delete entity class from Mura
-   *
-   * @param  {object} entityName
-   * @return {Promise}
-   */
-  undeclareEntity:function(entityName) {
-		var self=this;
-
-		if(Mura.mode.toLowerCase() == 'rest'){
-			return new Promise(function(resolve, reject) {
-        self.request({
-            async: true,
-            type: 'POST',
-            url: Mura.apiEndpoint,
-						data:{
-							method: 'undeclareEntity',
-							entityConfig: entityName
-						},
-            success: function(resp) {
-							if (typeof resolve =='function' && typeof resp.data != 'undefined') {
-								resolve(resp.data);
-							} else if (typeof reject =='function' && typeof resp.error != 'undefined') {
-								resolve(resp);
-							} else if (typeof resolve =='function'){
-								resolve(resp);
-							}
-            }
-          }
-        );
-			});
-		} else {
-			return new Promise(function(resolve, reject) {
-					self.request({
-							type: 'POST',
-							url: Mura.apiEndpoint + '?method=generateCSRFTokens',
-							data: {context: ''},
-							success: function(resp) {
-								self.request({
-										async: true,
-										type: 'POST',
-										url: Mura.apiEndpoint,
-										data:{
-											method: 'undeclareEntity',
-											entityName: entityName,
-											'csrf_token': resp.data.csrf_token,
-											'csrf_token_expires': resp.data.csrf_token_expires
-										},
-										success: function(resp) {
-												if (typeof resolve =='function' && typeof resp.data != 'undefined') {
-													resolve(resp.data);
-												} else if (typeof reject =='function' && typeof resp.error != 'undefined') {
-													resolve(resp);
-												} else if (typeof resolve =='function'){
-													resolve(resp);
-												}
-										}
-									}
-								);
-							}
-					});
-			});
-		}
-  },
-
-  /**
-   * getFeed - Return new instance of Mura.Feed
-   *
-   * @param  {type} entityname Entity name
-   * @return {Mura.Feed}
-   */
-  getFeed:function(entityname,siteid) {
-			siteid=siteid || Mura.siteid;
-      var feed=new Mura.Feed(siteid, entityname, this);
-      return feed;
-  },
-
-  /**
-   * getCurrentUser - Return Mura.Entity for current user
-   *
-   * @param  {object} params Load parameters, fields:listoffields
-   * @return {Promise}
-   */
-  getCurrentUser:function(params) {
-      var self=this;
-
-      params=params || {};
-      params.fields=params.fields || '';
-      return new Promise(function(resolve, reject) {
-
-          if (Mura.currentUser) {
-              return Mura.currentUser;
-          } else {
-              self.request({
-                  async: true,
-                  type: 'get',
-                  url: Mura.apiEndpoint +
-                      'findCurrentUser?fields=' + params.fields + '&_cacheid=' +
-                      Math.random(),
-                  success: function(resp) {
-                      if (typeof resolve ==
-                          'function') {
-                          Mura.currentUser = self.getEntity('user');
-                          Mura.currentUser.set(resp.data);
-                          resolve(Mura.currentUser);
-                      }
-                  },
-                  success: function(resp) {
-                      if (typeof resolve ==
-                          'function') {
-                          Mura.currentUser=self.getEntity('user')
-                          Mura.currentUser.set( resp.data);
-                          resolve(Mura.currentUser);
-                      }
-                  }
-              });
-          }
-      });
-  },
-
-  /**
-   * findQuery - Returns Mura.EntityCollection with properties that match params
-   *
-   * @param  {object} params Object of matching params
-   * @return {Promise}
-   */
-  findQuery:function(params) {
-      var self=this;
-
-      params = params || {};
-      params.entityname = params.entityname || 'content';
-      params.siteid = params.siteid || Mura.siteid;
-      params.method = params.method || 'findQuery';
-      params['_cacheid'] == Math.random();
-
-      return new Promise(function(resolve, reject) {
-
-          self.request({
-              type: 'get',
-              url: Mura.apiEndpoint,
-              data: params,
-              success: function(resp) {
-                  var collection = new Mura.EntityCollection(resp.data,self)
-
-                  if (typeof resolve == 'function') {
-                      resolve(collection);
-                  }
-              },
-              error:function(resp){
-                console.log(resp);
-              }
-          });
-      });
-  },
-
-  /**
-   * login - Logs user into Mura
-   *
-   * @param  {string} username Username
-   * @param  {string} password Password
-   * @param  {string} siteid   Siteid
-   * @return {Promise}
-   */
-  login:function(username, password, siteid) {
-      siteid = siteid || Mura.siteid;
-
-      var self=this;
-
-      return new Promise(function(resolve, reject) {
-
-          self.request({
-              type: 'post',
-              url: Mura.apiEndpoint +
-                  '?method=generateCSRFTokens',
-              data: {
-                  siteid: siteid,
-                  context: 'login'
-              },
-              success: function(resp) {
-                  self.request({
-                      async: true,
-                      type: 'post',
-                      url: Mura.apiEndpoint,
-                      data: {
-                          siteid: siteid,
-                          username: username,
-                          password: password,
-                          method: 'login',
-                          'csrf_token': resp.data.csrf_token,
-                          'csrf_token_expires': resp.data.csrf_token_expires
-                      },
-                      success: function(resp) {
-                          resolve(resp.data);
-                      }
-                  });
-              }
-          });
-
-      });
-
-  },
-
-  /**
-   * logout - Logs user out
-   *
-   * @param  {type} siteid Siteid
-   * @return {Promise}
-   */
-  logout:function(siteid) {
-      siteid = siteid || Mura.siteid;
-
-      var self=this;
-
-      return new Promise(function(resolve, reject) {
-          self.request({
-              async: true,
-              type: 'post',
-              url: Mura.apiEndpoint,
-              data: {
-                  siteid: siteid,
-                  method: 'logout'
-              },
-              success: function(resp) {
-                  resolve(resp.data);
-              }
-          });
-      });
-
-  },
-
-  /**
-   * get - Make GET request
-   *
-   * @param  {url} url  URL
-   * @param  {object} data Data to send to url
-   * @return {Promise}
-   */
-  get:function(url, data) {
-      var self=this;
-
-      data = data || {};
-      return new Promise(function(resolve, reject) {
-          return self.request({
-              type: 'get',
-              url: url,
-              data: data,
-              success: function(resp) {
-                  resolve(resp);
-              },
-              error: function(resp) {
-                  reject(resp);
-              }
-          });
-      });
-
-  },
-
-  /**
-   * post - Make POST request
-   *
-   * @param  {url} url  URL
-   * @param  {object} data Data to send to url
-   * @return {Promise}
-   */
-  post:function(url, data) {
-      var self=this;
-
-      data = data || {};
-      return new Promise(function(resolve, reject) {
-          return self.request({
-              type: 'post',
-              url: url,
-              data: data,
-              success: function(resp) {
-                  resolve(resp);
-              },
-              error: function(resp) {
-                  reject(resp);
-              }
-          });
-      });
-
-  },
-
-  /**
-   * Request Headers
-  **/
-  requestHeaders:{}
-
-});
-
-
-/***/ }),
-/* 350 */
-/***/ (function(module, exports, __webpack_require__) {
-
-
-var Mura=__webpack_require__(11);
 /**
  * Creates a new Mura.Cache
  * @name Mura.Cache
@@ -14184,7 +13678,7 @@ Mura.datacache=new Mura.Cache();
 
 
 /***/ }),
-/* 351 */
+/* 350 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -14273,7 +13767,7 @@ Mura.entities.Content = Mura.Entity.extend(
 
 
 /***/ }),
-/* 352 */
+/* 351 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -15876,7 +15370,7 @@ Mura.DOMSelection = Mura.Core.extend(
 
 
 /***/ }),
-/* 353 */
+/* 352 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -16648,7 +16142,7 @@ Mura.Entity = Mura.Core.extend(
 
 
 /***/ }),
-/* 354 */
+/* 353 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -16837,7 +16331,7 @@ Mura.EntityCollection=Mura.Entity.extend(
 
 
 /***/ }),
-/* 355 */
+/* 354 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -17357,7 +16851,7 @@ Mura.Feed = Mura.Core.extend(
 
 
 /***/ }),
-/* 356 */
+/* 355 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -18824,7 +18318,7 @@ Mura.DisplayObject.form=Mura.DisplayObject.Form;
 
 
 /***/ }),
-/* 357 */
+/* 356 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -19157,7 +18651,7 @@ var Mura=__webpack_require__(11);
 
 
 /***/ }),
-/* 358 */
+/* 357 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -19223,7 +18717,7 @@ Mura.Core=Core;
 
 
 /***/ }),
-/* 359 */
+/* 358 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {if(typeof window != 'undefined'){
@@ -19353,7 +18847,994 @@ Mura.Core=Core;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
 
 /***/ }),
+/* 359 */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var Mura=__webpack_require__(11);
+
+/**
+* Creates a new Mura.RequestContext
+* @name  Mura.RequestContext
+* @class
+* @extends Mura.Core
+* @memberof Mura
+* @param  {object} request     Siteid
+* @param  {object} response Entity name
+* @param  {object} requestHeaders Optional
+* @return {Mura.RequestContext} Self
+*/
+
+Mura.RequestContext=Mura.Core.extend(
+/** @lends Mura.RequestContext.prototype */
+{
+	init: function(request, response, requestHeaders) {
+    this.requestObject=request;
+    this.reponseObject=response;
+    this._request=new Mura.Request(request, response, requestHeaders);
+    return this;
+	},
+
+  /**
+   * setRequestHeader - Initialiazes feed
+   *
+   * @param  {string} headerName  Name of header
+   * @param  {string} value Header value
+   * @return {Mura.RequestContext}  Self
+   */
+  setRequestHeader:function(headerName,value){
+    this._request.setRequestHeader(headerName,value);
+    return this;
+  },
+
+  /**
+   * getRequestHeader - Returns a request header value
+   *
+   * @param  {string} headerName  Name of header
+   * @return {string} header Value
+   */
+  getRequestHeader:function(headerName){
+    return this._request.getRequestHeader(headerName);
+  },
+
+  /**
+   * getRequestHeaders - Returns a request header value
+   *
+   * @return {object} All Headers
+   */
+  getRequestHeaders:function(){
+    return this._request.getRequestHeaders();
+  },
+
+  /**
+   * request - Executes a request
+   *
+   * @param  {object} params     Object
+   * @return {Promise}            Self
+   */
+  request:function(params){
+    return this._request.execute(params);
+  },
+
+  /**
+   * renderFilename - Returns "Rendered" JSON object of content
+   *
+   * @param  {type} filename Mura content filename
+   * @param  {type} params Object
+   * @return {Promise}
+   */
+  renderFilename:function(filename, params) {
+
+      var query = [];
+      var self=this;
+
+      params = params || {};
+      params.filename = params.filename || '';
+      params.siteid = params.siteid || Mura.siteid;
+
+      for (var key in params) {
+          if (key != 'entityname' && key != 'filename' && key !=
+              'siteid' && key != 'method') {
+              query.push(encodeURIComponent(key) + '=' +
+                  encodeURIComponent(params[key]));
+          }
+      }
+
+      return new Promise(function(resolve, reject) {
+          self.request({
+              async: true,
+              type: 'get',
+              url: Mura.apiEndpoint + '/content/_path/' + filename + '?' + query.join('&'),
+              success: function(resp) {
+                if (typeof resolve == 'function') {
+                  var item = new Mura.entities.Content({},self);
+                  item.set(resp.data);
+                  resolve(item);
+                }
+              },
+							error: function(resp) {
+								if (typeof resp.data != 'undefined' && typeof resolve == 'function') {
+									var item = new Mura.Entity({},self);
+									item.set(resp.data);
+									resolve(item);
+								} else if (typeof reject == 'function') {
+                  reject(resp);
+                }
+              }
+            }
+          );
+      });
+
+  },
+
+  /**
+   * getEntity - Returns Mura.Entity instance
+   *
+   * @param  {string} entityname Entity Name
+   * @param  {string} siteid     Siteid
+   * @return {Mura.Entity}
+   */
+  getEntity:function(entityname, siteid) {
+      if (typeof entityname == 'string') {
+          var properties = {
+              entityname: entityname
+          };
+          properties.siteid = siteid || Mura.siteid;
+      } else {
+          properties = entityname;
+          properties.entityname = properties.entityname || 'content';
+          properties.siteid = properties.siteid || Mura.siteid;
+      }
+
+      if (Mura.entities[properties.entityname]) {
+          var entity=new Mura.entities[properties.entityname](properties,this);
+          return entity;
+      } else {
+          var entity=new Mura.Entity(properties,this);
+          return entity;
+      }
+  },
+
+	/**
+   * declareEntity - Declare Entity with in service factory
+   *
+   * @param  {object} entityConfig Entity config object
+   * @return {Promise}
+   */
+  declareEntity:function(entityConfig) {
+		var self=this;
+
+		if(Mura.mode.toLowerCase() == 'rest'){
+			return new Promise(function(resolve, reject) {
+        self.request({
+            async: true,
+            type: 'POST',
+            url: Mura.apiEndpoint,
+						data:{
+							method: 'declareEntity',
+							entityConfig: encodeURIComponent(JSON.stringify(entityConfig))
+						},
+            success: function(resp) {
+							if (typeof resolve =='function' && typeof resp.data != 'undefined') {
+								resolve(resp.data);
+							} else if (typeof reject =='function' && typeof resp.error != 'undefined') {
+								resolve(resp);
+							} else if (typeof resolve =='function'){
+								resolve(resp);
+							}
+            }
+          }
+        );
+			});
+		} else {
+			return new Promise(function(resolve, reject) {
+					self.request({
+							type: 'POST',
+							url: Mura.apiEndpoint + '?method=generateCSRFTokens',
+							data: {context: ''},
+							success: function(resp) {
+								self.request({
+										async: true,
+										type: 'POST',
+										url: Mura.apiEndpoint,
+										data:{
+											method: 'declareEntity',
+											entityConfig: encodeURIComponent(JSON.stringify(entityConfig)),
+											'csrf_token': resp.data.csrf_token,
+											'csrf_token_expires': resp.data.csrf_token_expires
+										},
+										success: function(resp) {
+												if (typeof resolve =='function' && typeof resp.data != 'undefined') {
+													resolve(resp.data);
+												} else if (typeof reject =='function' && typeof resp.error != 'undefined') {
+													resolve(resp);
+												} else if (typeof resolve =='function'){
+													resolve(resp);
+												}
+										}
+									}
+								);
+							}
+					});
+			});
+		}
+  },
+
+	/**
+   * undeclareEntity - Delete entity class from Mura
+   *
+   * @param  {object} entityName
+   * @return {Promise}
+   */
+  undeclareEntity:function(entityName) {
+		var self=this;
+
+		if(Mura.mode.toLowerCase() == 'rest'){
+			return new Promise(function(resolve, reject) {
+        self.request({
+            async: true,
+            type: 'POST',
+            url: Mura.apiEndpoint,
+						data:{
+							method: 'undeclareEntity',
+							entityConfig: entityName
+						},
+            success: function(resp) {
+							if (typeof resolve =='function' && typeof resp.data != 'undefined') {
+								resolve(resp.data);
+							} else if (typeof reject =='function' && typeof resp.error != 'undefined') {
+								resolve(resp);
+							} else if (typeof resolve =='function'){
+								resolve(resp);
+							}
+            }
+          }
+        );
+			});
+		} else {
+			return new Promise(function(resolve, reject) {
+					self.request({
+							type: 'POST',
+							url: Mura.apiEndpoint + '?method=generateCSRFTokens',
+							data: {context: ''},
+							success: function(resp) {
+								self.request({
+										async: true,
+										type: 'POST',
+										url: Mura.apiEndpoint,
+										data:{
+											method: 'undeclareEntity',
+											entityName: entityName,
+											'csrf_token': resp.data.csrf_token,
+											'csrf_token_expires': resp.data.csrf_token_expires
+										},
+										success: function(resp) {
+												if (typeof resolve =='function' && typeof resp.data != 'undefined') {
+													resolve(resp.data);
+												} else if (typeof reject =='function' && typeof resp.error != 'undefined') {
+													resolve(resp);
+												} else if (typeof resolve =='function'){
+													resolve(resp);
+												}
+										}
+									}
+								);
+							}
+					});
+			});
+		}
+  },
+
+  /**
+   * getFeed - Return new instance of Mura.Feed
+   *
+   * @param  {type} entityname Entity name
+   * @return {Mura.Feed}
+   */
+  getFeed:function(entityname,siteid) {
+			siteid=siteid || Mura.siteid;
+      var feed=new Mura.Feed(siteid, entityname, this);
+      return feed;
+  },
+
+  /**
+   * getCurrentUser - Return Mura.Entity for current user
+   *
+   * @param  {object} params Load parameters, fields:listoffields
+   * @return {Promise}
+   */
+  getCurrentUser:function(params) {
+      var self=this;
+
+      params=params || {};
+      params.fields=params.fields || '';
+      return new Promise(function(resolve, reject) {
+
+          if (Mura.currentUser) {
+              return Mura.currentUser;
+          } else {
+              self.request({
+                  async: true,
+                  type: 'get',
+                  url: Mura.apiEndpoint +
+                      'findCurrentUser?fields=' + params.fields + '&_cacheid=' +
+                      Math.random(),
+                  success: function(resp) {
+                      if (typeof resolve ==
+                          'function') {
+                          Mura.currentUser = self.getEntity('user');
+                          Mura.currentUser.set(resp.data);
+                          resolve(Mura.currentUser);
+                      }
+                  },
+                  success: function(resp) {
+                      if (typeof resolve ==
+                          'function') {
+                          Mura.currentUser=self.getEntity('user')
+                          Mura.currentUser.set( resp.data);
+                          resolve(Mura.currentUser);
+                      }
+                  }
+              });
+          }
+      });
+  },
+
+  /**
+   * findQuery - Returns Mura.EntityCollection with properties that match params
+   *
+   * @param  {object} params Object of matching params
+   * @return {Promise}
+   */
+  findQuery:function(params) {
+      var self=this;
+
+      params = params || {};
+      params.entityname = params.entityname || 'content';
+      params.siteid = params.siteid || Mura.siteid;
+      params.method = params.method || 'findQuery';
+      params['_cacheid'] == Math.random();
+
+      return new Promise(function(resolve, reject) {
+
+          self.request({
+              type: 'get',
+              url: Mura.apiEndpoint,
+              data: params,
+              success: function(resp) {
+                  var collection = new Mura.EntityCollection(resp.data,self)
+
+                  if (typeof resolve == 'function') {
+                      resolve(collection);
+                  }
+              },
+              error:function(resp){
+                console.log(resp);
+              }
+          });
+      });
+  },
+
+  /**
+   * login - Logs user into Mura
+   *
+   * @param  {string} username Username
+   * @param  {string} password Password
+   * @param  {string} siteid   Siteid
+   * @return {Promise}
+   */
+  login:function(username, password, siteid) {
+      siteid = siteid || Mura.siteid;
+
+      var self=this;
+
+      return new Promise(function(resolve, reject) {
+
+          self.request({
+              type: 'post',
+              url: Mura.apiEndpoint +
+                  '?method=generateCSRFTokens',
+              data: {
+                  siteid: siteid,
+                  context: 'login'
+              },
+              success: function(resp) {
+                  self.request({
+                      async: true,
+                      type: 'post',
+                      url: Mura.apiEndpoint,
+                      data: {
+                          siteid: siteid,
+                          username: username,
+                          password: password,
+                          method: 'login',
+                          'csrf_token': resp.data.csrf_token,
+                          'csrf_token_expires': resp.data.csrf_token_expires
+                      },
+                      success: function(resp) {
+                          resolve(resp.data);
+                      }
+                  });
+              }
+          });
+
+      });
+
+  },
+
+  /**
+   * logout - Logs user out
+   *
+   * @param  {type} siteid Siteid
+   * @return {Promise}
+   */
+  logout:function(siteid) {
+      siteid = siteid || Mura.siteid;
+
+      var self=this;
+
+      return new Promise(function(resolve, reject) {
+          self.request({
+              async: true,
+              type: 'post',
+              url: Mura.apiEndpoint,
+              data: {
+                  siteid: siteid,
+                  method: 'logout'
+              },
+              success: function(resp) {
+                  resolve(resp.data);
+              }
+          });
+      });
+
+  },
+
+  /**
+   * get - Make GET request
+   *
+   * @param  {url} url  URL
+   * @param  {object} data Data to send to url
+   * @return {Promise}
+   */
+  get:function(url, data) {
+      var self=this;
+
+      data = data || {};
+      return new Promise(function(resolve, reject) {
+          return self.request({
+              type: 'get',
+              url: url,
+              data: data,
+              success: function(resp) {
+                  resolve(resp);
+              },
+              error: function(resp) {
+                  reject(resp);
+              }
+          });
+      });
+
+  },
+
+  /**
+   * post - Make POST request
+   *
+   * @param  {url} url  URL
+   * @param  {object} data Data to send to url
+   * @return {Promise}
+   */
+  post:function(url, data) {
+      var self=this;
+
+      data = data || {};
+      return new Promise(function(resolve, reject) {
+          return self.request({
+              type: 'post',
+              url: url,
+              data: data,
+              success: function(resp) {
+                  resolve(resp);
+              },
+              error: function(resp) {
+                  reject(resp);
+              }
+          });
+      });
+
+  },
+
+  /**
+   * Request Headers
+  **/
+  requestHeaders:{}
+
+});
+
+
+/***/ }),
 /* 360 */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var Mura=__webpack_require__(11);
+
+/**
+* Creates a new Mura.Request
+* @name  Mura.Request
+* @class
+* @extends Mura.Core
+* @memberof Mura
+* @param  {object} request     Siteid
+* @param  {object} response Entity name
+* @param  {object} requestHeaders Optional
+* @return {Mura.Request}  Self
+*/
+
+Mura.Request=Mura.Core.extend(
+  /** @lends Mura.Request.prototype */
+  {
+		init: function(request, response, headers) {
+      this.requestObject=request;
+      this.responseObject=response;
+      this.requestHeaders=headers || {};
+      return this;
+		},
+
+    /**
+    * execute - Make ajax request
+    *
+    * @param  {object} params
+    * @return {Promise}
+    */
+    execute: function(params) {
+
+      if (!('type' in params)) {
+          params.type = 'GET';
+      }
+
+      if (!('success' in params)) {
+          params.success = function() {};
+      }
+
+      if (!('error' in params)) {
+          params.error = function() {};
+      }
+
+      if (!('data' in params)) {
+          params.data = {};
+      }
+
+      if (!('headers' in params)) {
+          params.headers = {};
+      }
+
+      if(Mura.isInNode()){
+        this.nodeRequest(params);
+      } else {
+        this.browserRequest(params);
+      }
+    },
+    /**
+     * setRequestHeader - Initialiazes feed
+     *
+     * @param  {string} headerName  Name of header
+     * @param  {string} value Header value
+     * @return {Mura.RequestContext}            Self
+     */
+    setRequestHeader:function(headerName,value){
+      this.requestHeaders[headerName]=value;
+      return this;
+    },
+    /**
+     * getRequestHeader - Returns a request header value
+     *
+     * @param  {string} headerName  Name of header
+     * @return {string} header Value
+     */
+    getRequestHeader:function(headerName){
+       if(typeof this.requestHeaders[headerName] != 'undefined'){
+         return this.requestHeaders[headerName];
+       } else {
+         return null;
+       }
+    },
+    /**
+     * getRequestHeaders - Returns a request header value
+     *
+     * @return {object} All Headers
+     */
+    getRequestHeaders:function(){
+      return this.requestHeaders;
+    },
+    nodeRequest:function(params){
+
+      self=this;
+
+      if(typeof this.requestObject != 'undefined'){
+        params.headers['User-Agent']='MuraJS';
+        if(typeof this.requestObject.headers['cookie'] != 'undefined'){
+          console.log('pre cookies:');
+          console.log(this.requestObject.headers['cookie']);
+          params.headers['Cookie']=this.requestObject.headers['cookie'];
+        }
+        if(typeof this.requestObject.headers['x-client_id'] != 'undefined'){
+          params.headers['X-client_id']=this.requestObject.headers['x-client_id'];
+        }
+        if(typeof this.requestObject.headers['x-client_id'] != 'undefined'){
+          params.headers['X-client_id']=this.requestObject.headers['x-client_id'];
+        }
+        if(typeof this.requestObject.headers['X-client_secret'] != 'undefined'){
+          params.headers['X-client_secret']=this.requestObject.headers['X-client_secret'];
+        }
+        if(typeof this.requestObject.headers['x-client_secret'] != 'undefined'){
+          params.headers['X-client_secret']=this.requestObject.headers['x-client_secret'];
+        }
+        if(typeof this.requestObject.headers['X-access_token'] != 'undefined'){
+          params.headers['X-access_token']=this.requestObject.headers['X-access_token'];
+        }
+        if(typeof this.requestObject.headers['x-access_token'] != 'undefined'){
+          params.headers['X-access_token']=this.requestObject.headers['x-access_token'];
+        }
+        if(typeof this.requestObject.headers['Authorization'] != 'undefined'){
+          params.headers['Authorization']=this.requestObject.headers['Authorization'];
+        }
+        if(typeof this.requestObject.headers['authorization'] != 'undefined'){
+          params.headers['Authorization']=this.requestObject.headers['authorization'];
+        }
+      }
+
+      for(var h in Mura.requestHeaders){
+          if(Mura.requestHeaders.hasOwnProperty(h)){
+              params.headers[h]= Mura.requestHeaders[h];
+          }
+      }
+
+      for(var h in this.requestHeaders){
+          if(this.requestHeaders.hasOwnProperty(h)){
+              params.headers[h]= this.requestHeaders[h];
+          }
+      }
+
+      //console.log('pre:')
+      //console.log(params.headers);
+      //console.log(params.headers)
+
+      if (params.type.toLowerCase() == 'post') {
+
+          Mura._request.post(
+            {
+              url: params.url,
+              formData: params.data,
+              headers: params.headers
+            },
+            nodeResponseHandler
+          );
+
+      } else {
+          if (params.url.indexOf('?') == -1) {
+              params.url += '?';
+          }
+
+          var query = [];
+
+          for (var key in params.data) {
+              query.push(Mura.escape(key) + '=' + Mura.escape(params.data[key]));
+          }
+
+          query = query.join('&');
+
+          Mura._request(
+            {
+              url: params.url + query,
+              headers:params.headers
+            },
+            nodeResponseHandler
+          );
+
+      }
+
+      function nodeResponseHandler(error, httpResponse, body) {
+
+          if(typeof self.responseObject != 'undefined' && typeof httpResponse.headers['set-cookie'] != 'undefined'){
+
+            var existingCookies=((typeof self.requestObject.headers['cookie'] != 'undefined') ? self.requestObject.headers['cookie'] : '').split("; ");
+
+            var newSetCookies=httpResponse.headers['set-cookie'];
+
+            console.log('response cookies:');
+            console.log(httpResponse.headers['set-cookie']);
+
+            if(!(newSetCookies instanceof Array)){
+              newSetCookies=[newSetCookies];
+            }
+
+            self.responseObject.setHeader('Set-Cookie',newSetCookies);
+
+            var cookieMap={};
+            var setMap={};
+
+            // pull out existing cookies
+            if(existingCookies.length){
+              for(var c in existingCookies){
+                var tempCookie=existingCookies[c];
+                if(typeof tempCookie != 'undefined'){
+                  tempCookie=existingCookies[c].split(" ")[0].split("=");
+                  if(tempCookie.length > 1){
+                    cookieMap[tempCookie[0]]=tempCookie[1].split(';')[0];
+                  }
+                }
+              }
+            }
+
+            console.log('existing 1:');
+            console.log(cookieMap);
+
+            // pull out new cookies
+            if(newSetCookies.length){
+              for(var c in newSetCookies){
+                var tempCookie=newSetCookies[c];
+                if(typeof tempCookie != 'undefined'){
+                  tempCookie=tempCookie.split(" ")[0].split("=");
+                  if(tempCookie.length > 1){
+                    cookieMap[tempCookie[0]]=tempCookie[1].split(';')[0];
+                  }
+                }
+              }
+            }
+
+            console.log('existing 2:');
+            console.log(cookieMap);
+            var cookie='';
+
+            // put cookies back in in the same order that they came out
+            if(existingCookies.length){
+              for(var c in existingCookies){
+                var tempCookie=existingCookies[c];
+                if(typeof tempCookie != 'undefined'){
+                  tempCookie=tempCookie.split(" ")[0].split("=");
+                  if(tempCookie.length > 1){
+                    if(cookie != ''){
+                      cookie=cookie + "; ";
+                    }
+                    setMap[tempCookie[0]]=true;
+                    cookie=cookie + tempCookie[0] + "=" + cookieMap[tempCookie[0]];
+                  }
+                }
+              }
+            }
+
+            if(newSetCookies.length){
+              for(var c in newSetCookies){
+                var tempCookie=newSetCookies[c];
+                if(typeof tempCookie != 'undefined'){
+                  var tempCookie=tempCookie.split(" ")[0].split("=");
+                  if(typeof setMap[tempCookie[0]] == 'undefined' && tempCookie.length > 1){
+                    if(cookie != ''){
+                      cookie=cookie + "; ";
+                    }
+                    setMap[tempCookie[0]]=true;
+                    cookie=cookie + tempCookie[0] + "=" + cookieMap[tempCookie[0]];
+                  }
+                }
+              }
+            }
+
+            self.requestObject.headers['cookie']=cookie;
+
+            console.log('merged cookies:');
+            console.log(self.requestObject.headers['cookie']);
+
+        }
+
+        if (typeof error == 'undefined' || ( httpResponse.statusCode >= 200 && httpResponse.statusCode < 400)) {
+
+            try {
+                var data = JSON.parse(body);
+            } catch (e) {
+                var data = body;
+            }
+
+            params.success(data, httpResponse);
+
+        } else if (typeof error == 'undefined') {
+
+            try {
+                var data = JSON.parse(body);
+            } catch (e) {
+                var data = body;
+            }
+
+            params.error(data,httpResponse);
+
+        } else {
+
+            params.error(error);
+
+        }
+
+      }
+    },
+    browserRequest:function(params){
+
+      for(var h in Mura.requestHeaders){
+          if(Mura.requestHeaders.hasOwnProperty(h)){
+              params.headers[h]= Mura.requestHeaders[h];
+          }
+      }
+
+      for(var h in this.requestHeaders){
+          if(this.requestHeaders.hasOwnProperty(h)){
+              params.headers[h]= this.requestHeaders[h];
+          }
+      }
+
+      if (!(typeof FormData != 'undefined' && params.data instanceof FormData)) {
+          params.data = Mura.deepExtend({}, params.data);
+
+          for (var p in params.data) {
+              if (typeof params.data[p] == 'object') {
+                  params.data[p] = JSON.stringify(params.data[p]);
+              }
+          }
+      }
+
+      if (!('xhrFields' in params)) {
+          params.xhrFields = {
+              withCredentials: true
+          };
+      }
+
+      if (!('crossDomain' in params)) {
+          params.crossDomain = true;
+      }
+
+      if (!('async' in params)) {
+          params.async = true;
+      }
+
+      var req = new XMLHttpRequest();
+
+      if (params.crossDomain) {
+          if (!("withCredentials" in req) && typeof XDomainRequest !=
+              "undefined" && this.isXDomainRequest(params.url)) {
+              // Check if the XMLHttpRequest object has a "withCredentials" property.
+              // "withCredentials" only exists on XMLHTTPRequest2 objects.
+              // Otherwise, check if XDomainRequest.
+              // XDomainRequest only exists in IE, and is IE's way of making CORS requests.
+
+              req = new XDomainRequest();
+
+          }
+      }
+
+      req.onreadystatechange = function() {
+          if (req.readyState == 4) {
+              //IE9 doesn't appear to return the request status
+              if (typeof req.status == 'undefined' || (req.status >= 200 && req.status < 400)) {
+
+                  try {
+                      var data = JSON.parse(req.responseText);
+                  } catch (e) {
+                      var data = req.responseText;
+                  }
+
+                  params.success(data, req);
+              } else {
+                  params.error(req);
+              }
+          }
+      }
+
+      if (params.type.toLowerCase() == 'post') {
+          req.open(params.type.toUpperCase(), params.url, params.async);
+
+          for (var p in params.xhrFields) {
+              if (p in req) {
+                  req[p] = params.xhrFields[p];
+              }
+          }
+
+          for (var h in params.headers) {
+              req.setRequestHeader(p, params.headers[h]);
+          }
+
+          //if(params.data.constructor.name == 'FormData'){
+          if (typeof FormData != 'undefined' && params.data instanceof FormData) {
+              req.send(params.data);
+          } else {
+              req.setRequestHeader('Content-Type',
+                  'application/x-www-form-urlencoded; charset=UTF-8'
+              );
+              var query = [];
+
+              for (var key in params.data) {
+                  query.push(Mura.escape(key) + '=' + Mura.escape(params.data[
+                      key]));
+              }
+
+              query = query.join('&');
+
+              setTimeout(function() {
+                  req.send(query);
+              }, 0);
+          }
+      } else {
+          if (params.url.indexOf('?') == -1) {
+              params.url += '?';
+          }
+
+          var query = [];
+
+          for (var key in params.data) {
+              query.push(Mura.escape(key) + '=' + Mura.escape(params.data[key]));
+          }
+
+          query = query.join('&');
+
+          req.open(params.type.toUpperCase(), params.url + '&' +
+              query, params.async);
+
+          for (var p in params.xhrFields) {
+              if (p in req) {
+                  req[p] = params.xhrFields[p];
+              }
+          }
+
+          for (var h in params.headers) {
+              req.setRequestHeader(p, params.headers[h]);
+          }
+
+          setTimeout(function() {
+              req.send();
+          }, 0);
+      }
+    },
+
+    isXDomainRequest:function(url) {
+        function getHostName(url) {
+            var match = url.match(/:\/\/([0-9]?\.)?(.[^/:]+)/i);
+            if (match != null && match.length > 2 && typeof match[2] ===
+                'string' && match[2].length > 0) {
+                return match[2];
+            } else {
+                return null;
+            }
+        }
+
+
+        function getDomain(url) {
+            var hostName = getHostName(url);
+            var domain = hostName;
+
+            if (hostName != null) {
+                var parts = hostName.split('.').reverse();
+
+                if (parts != null && parts.length > 1) {
+                    domain = parts[1] + '.' + parts[0];
+
+                    if (hostName.toLowerCase().indexOf('.co.uk') != -1 &&
+                        parts.length > 2) {
+                        domain = parts[2] + '.' + domain;
+                    }
+                }
+            }
+
+            return domain;
+        }
+
+        var requestDomain = getDomain(url);
+
+        return (requestDomain && requestDomain != location.host);
+
+    }
+
+  }
+);
+
+
+/***/ }),
+/* 361 */
 /***/ (function(module, exports, __webpack_require__) {
 
 this["Mura"]=__webpack_require__(11);
@@ -20014,7 +20495,7 @@ this["Mura"]["templates"]["view"] = this.Mura.Handlebars.template({"1":function(
 },"useData":true});
 
 /***/ }),
-/* 361 */
+/* 362 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -20049,11 +20530,11 @@ Mura.templates['embed']=function(context){
   return context.source;
 }
 
-__webpack_require__(360);
+__webpack_require__(361);
 
 
 /***/ }),
-/* 362 */
+/* 363 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
