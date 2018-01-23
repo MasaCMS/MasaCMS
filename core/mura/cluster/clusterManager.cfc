@@ -175,7 +175,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfif rsPeers.recordcount>
 			<cfloop query="rsPeers">
-				<cfset broadcasttime=DateAdd("n", arguments.interval, broadcastTime)>
+				<cfset broadcasttime=DateAdd("s", arguments.interval, broadcastTime)>
 				<cfquery>
 					insert into tclustercommands (commandID,instanceID,command,created)
 						values(
