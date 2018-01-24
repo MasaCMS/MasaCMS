@@ -607,6 +607,9 @@
 		return true;
 	}
 	function deInitLayoutManager(){
+		Mura('body').addClass('mura-sidebar-state__hidden--right');
+		Mura('body').removeClass('mura-sidebar-state__pushed--right');
+
 		Mura('.mura-object, .mura-body-object').each(function(){
 			Mura(this)
 				.off('dragenter', initDraggableObject_dragstart)
@@ -635,6 +638,22 @@
 				.off('dragover', initLooseDropTarget_dragover)
 				.off('drop', initLooseDropTarget_drop)
 				.off('dragleave', initLooseDropTarget_dragleave);
+
+				Mura('.mura-editable-attribute')
+					.each(function(){
+					var attribute=Mura(this);
+
+					if(typeof CKEDITOR != 'undefined' && CKEDITOR.instances[attribute.attr('id')]){
+						var instance =CKEDITOR.instances[attribute.attr('id')];
+						instance.updateElement();
+						instance.destroy(true)
+					}
+
+					attribute.attr('contenteditable','false');
+					attribute.removeClass('mura-active');
+					attribute.data('manualedit',false);
+					attribute.off('dblclick')
+				})
 		})
 	}
 

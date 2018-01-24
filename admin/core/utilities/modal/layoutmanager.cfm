@@ -162,8 +162,6 @@ Mura(function(){
 				//Mura('##mura-edit-var-targetingjs-text').html('Re-Select Editable Content')
 			}
 			</cfif>
-			Mura('body').addClass('mura-sidebar-state__hidden--right');
-			Mura('body').removeClass('mura-sidebar-state__pushed--right');
 			Mura('##mura-sidebar-container').show();
 			Mura('##mura-objects-legacy-btn').click(function(e){
 				e.preventDefault();
