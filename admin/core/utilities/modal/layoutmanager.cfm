@@ -150,42 +150,47 @@
 </div>
 <script>
 Mura(function(){
-	<cfif $.content('type') eq 'Variation'>
-	if(!Mura('.mxp-editable').length){
-		Mura('##adminQuickEdit').remove();
-		//Mura('##adminQuickEdit').css('text-decoration','line-through');
-	} else {
-		//Mura('##mura-edit-var-targetingjs-text').html('Re-Select Editable Content')
-	}
-	</cfif>
-	Mura('body').addClass('mura-sidebar-state__hidden--right');
-	Mura('body').removeClass('mura-sidebar-state__pushed--right');
-	Mura('##mura-sidebar-container').show();
-	Mura('##mura-objects-legacy-btn').click(function(e){
-		e.preventDefault();
-		MuraInlineEditor.sidebarAction('showlegacyobjects');
-	});
-	Mura('##mura-objects-openregions-btn').click(function(e){
-		e.preventDefault();
-		var el=Mura('body');
-		if(el.hasClass('mura-regions-state__pushed--right')){
-			el.removeClass('mura-regions-state__pushed--right');
-		} else {
-			el.addClass('mura-regions-state__pushed--right');
+	Mura.editing=false;
+	Mura.loader().load('#variables.$.globalConfig("adminpath")#/assets/js/layoutmanager.js',
+		function(){
+			<cfif not request.muraFrontEndRequest or request.muraAPIRequest>Mura.deInitLayoutManager();</cfif>
+			<cfif $.content('type') eq 'Variation'>
+			if(!Mura('.mxp-editable').length){
+				Mura('##adminQuickEdit').remove();
+				//Mura('##adminQuickEdit').css('text-decoration','line-through');
+			} else {
+				//Mura('##mura-edit-var-targetingjs-text').html('Re-Select Editable Content')
+			}
+			</cfif>
+			Mura('body').addClass('mura-sidebar-state__hidden--right');
+			Mura('body').removeClass('mura-sidebar-state__pushed--right');
+			Mura('##mura-sidebar-container').show();
+			Mura('##mura-objects-legacy-btn').click(function(e){
+				e.preventDefault();
+				MuraInlineEditor.sidebarAction('showlegacyobjects');
+			});
+			Mura('##mura-objects-openregions-btn').click(function(e){
+				e.preventDefault();
+				var el=Mura('body');
+				if(el.hasClass('mura-regions-state__pushed--right')){
+					el.removeClass('mura-regions-state__pushed--right');
+				} else {
+					el.addClass('mura-regions-state__pushed--right');
+				}
+			});
+			Mura('##mura-objects-closeregions-btn').click(function(e){
+				e.preventDefault();
+				Mura('body').removeClass('mura-regions-state__pushed--right');
+			});
+			Mura('.mura-objects-back-btn').click(function(e){
+				e.preventDefault();
+				MuraInlineEditor.sidebarAction('showobjects');
+			});
+			//Mura('.mura-region.mura-editable').attr('style','clear:both;');
+			Mura.rb.saveasdraft='#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.saveasdraft"))#';
+			Mura.adminpath='#variables.$.globalConfig("adminPath")#';
 		}
-	});
-	Mura('##mura-objects-closeregions-btn').click(function(e){
-		e.preventDefault();
-		Mura('body').removeClass('mura-regions-state__pushed--right');
-	});
-	Mura('.mura-objects-back-btn').click(function(e){
-		e.preventDefault();
-		MuraInlineEditor.sidebarAction('showobjects');
-	});
-	//Mura('.mura-region.mura-editable').attr('style','clear:both;');
-	Mura.rb.saveasdraft='#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.saveasdraft"))#';
-	Mura.adminpath='#variables.$.globalConfig("adminPath")#';
-	Mura.loader().loadjs('#variables.$.globalConfig("adminpath")#/assets/js/layoutmanager.js');
+	);
 });
 </script>
 </cfoutput>

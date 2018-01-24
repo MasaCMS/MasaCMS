@@ -583,18 +583,22 @@
 
 	<cfif not node.getIsNew()>
 	<cfoutput>
-
 	editingVariations=false;
 	targetingVariations=false;
 
 	var MuraInlineEditor={
 		inited: false,
+		deInit: function(){
+			if(MuraInlineEditor.inited){
+				MuraInlineEditor.inited=false;
+				if(window.Mura.layoutmanager){
+					Mura.deInitLayoutManager();
+				}
+			}
+		},
 		init: function(){
-
 			utility(document)
 				.trigger('muraContentEditInit')
-				.trigger('MuraContentEditInit')
-				.trigger('contentEditInit')
 				.trigger('ContentEditInit');
 
 			<cfif node.getType() eq 'Variation'>

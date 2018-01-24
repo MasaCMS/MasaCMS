@@ -144,6 +144,21 @@
 
 	}
 
+	function initDraggableObject_hoverin(e){
+		//e.stopPropagation();
+		Mura('.mura-active-target').removeClass('mura-active-target');
+		var self = Mura(this);
+		if (!self.hasClass('mura-object-selected')) {
+			Mura(this).addClass('mura-active-target');
+		}
+	}
+
+	function initDraggableObject_hoverout(e){
+		//e.stopPropagation();
+
+		Mura(this).removeClass('mura-active-target').removeAttr('style');
+	}
+
 	function initDraggableObject(item) {
 
 		Mura(item)
@@ -157,19 +172,8 @@
 			.on('dragleave', initDraggableObject_dragleave)
 			.on('drop', initDraggableObject_drop).attr('draggable', true)
 			.hover(
-				function(e) {
-					//e.stopPropagation();
-					Mura('.mura-active-target').removeClass('mura-active-target');
-					var self = Mura(this);
-					if (!self.hasClass('mura-object-selected')) {
-						Mura(this).addClass('mura-active-target');
-					}
-				},
-				function(e) {
-					//e.stopPropagation();
-
-					Mura(this).removeClass('mura-active-target').removeAttr('style');
-				}
+				initDraggableObject_hoverin,
+				initDraggableObject_hoverout
 			);
 	}
 
@@ -525,55 +529,10 @@
 
 					if (!region.data('loose') || (region.data('loose') && (region.html() ==
 							'<p></p>') || Mura.trim(region.html()) == '')) {
-						region.on('drop', function(e) {
-								var dropParent, dropIndex, dragIndex;
-
-								e.preventDefault();
-
-								if (Mura(this).find('.mura-object').length) {
-									return;
-								}
-
-								if (e.stopPropagation) {
-									e.stopPropagation();
-								}
-
-								if (dragEl && dragEl !== this) {
-									dropParent = this.parentNode;
-									dragIndex = slice(dragEl.parentNode.children).indexOf(dragEl);
-									dropIndex = slice(this.parentNode.children).indexOf(this);
-									if (this.parentNode === dragEl.parentNode && dropIndex >
-										dragIndex) {
-										dropParent.insertBefore(dragEl, this.nextSibling);
-									} else {
-										this.appendChild(dragEl);
-									}
-
-									Mura('#adminSave').show();
-									Mura(dragEl).data('async', true);
-									Mura(dragEl).addClass('mura-async-object');
-									Mura(this).data('dirty', true);
-									elDropHandled = true;
-									disabledEventPropagation(e);
-								} else if (dragEl == this) {
-									elDropHandled = true;
-									disabledEventPropagation(e);
-								}
-
-								checkForNew.call(this, e);
-
-								muraLooseDropTarget = null;
-								Mura('.mura-drop-target')
-									.removeClass('mura-drop-target')
-									.removeClass('mura-append')
-									.removeClass('mura-prepend');
-
-								return true;
-							})
-							.on('dragover', function(e) {
-								e.preventDefault();
-								e.dataTransfer.dropEffect = 'copy';
-							}).data('inited', 'true');
+						region
+							.on('drop', initRegion_drop)
+							.on('dragover', initRegion_dragover)
+							.data('inited', 'true');
 
 					}
 				});
@@ -590,26 +549,101 @@
 
 				obj.find('.mura-body-object')
 					.hover(
-						function(e) {
-							//e.stopPropagation();
-							Mura('.mura-active-target').removeClass('mura-active-target');
-							var self = Mura(this);
-							if (!self.hasClass('mura-object-selected')) {
-								Mura(this).addClass('mura-active-target');
-							}
-						},
-						function(e) {
-							//e.stopPropagation();
-							Mura(this).removeClass('mura-active-target');
-						}
+						initDraggableObject_hoverin,
+						initDraggableObject_hoverout
 					);
 			});
 
 	}
 
+	function initRegion_dragover(e){
+		e.preventDefault();
+		e.dataTransfer.dropEffect = 'copy';
+	}
+
+	function initRegion_drop(e){
+		var dropParent, dropIndex, dragIndex;
+
+		e.preventDefault();
+
+		if (Mura(this).find('.mura-object').length) {
+			return;
+		}
+
+		if (e.stopPropagation) {
+			e.stopPropagation();
+		}
+
+		if (dragEl && dragEl !== this) {
+			dropParent = this.parentNode;
+			dragIndex = slice(dragEl.parentNode.children).indexOf(dragEl);
+			dropIndex = slice(this.parentNode.children).indexOf(this);
+			if (this.parentNode === dragEl.parentNode && dropIndex >
+				dragIndex) {
+				dropParent.insertBefore(dragEl, this.nextSibling);
+			} else {
+				this.appendChild(dragEl);
+			}
+
+			Mura('#adminSave').show();
+			Mura(dragEl).data('async', true);
+			Mura(dragEl).addClass('mura-async-object');
+			Mura(this).data('dirty', true);
+			elDropHandled = true;
+			disabledEventPropagation(e);
+		} else if (dragEl == this) {
+			elDropHandled = true;
+			disabledEventPropagation(e);
+		}
+
+		checkForNew.call(this, e);
+
+		muraLooseDropTarget = null;
+		Mura('.mura-drop-target')
+			.removeClass('mura-drop-target')
+			.removeClass('mura-append')
+			.removeClass('mura-prepend');
+
+		return true;
+	}
+	function deInitLayoutManager(){
+		Mura('.mura-object, .mura-body-object').each(function(){
+			Mura(this)
+				.off('dragenter', initDraggableObject_dragstart)
+				.off('dragover', initDraggableObject_dragover)
+				.off('drop', initDraggableObject_drop)
+				.off('dragleave', initDraggableObject_dragleave)
+				.off('dragstart', initDraggableObject_dragstart)
+				.off('dragend', initDraggableObject_dragend)
+				.off('mouseover', initDraggableObject_hoverin)
+				.off('mouseout', initDraggableObject_hoverout)
+				.off('touchstart', initDraggableObject_hoverin)
+				.off('touchend', initDraggableObject_hoverout)
+				.attr('draggable', false)
+				.removeClass('mura-active')
+				.removeClass('mura-object-selected')
+				.removeClass('mura-object-select')
+				.removeClass('mura-active-target')
+
+				Mura('.mura-region-local')
+					.off('drop',initRegion_drop)
+					.off('dragover',initRegion_dragover)
+					.data('inited', 'false')
+
+				Mura('.mura-object[data-object="container"], .mura-region-local div, .mura-region-local[data-loose="true"] p, .mura-region-local[data-loose="true"] h1, .mura-region-local[data-loose="true"] h2, .mura-region-local[data-loose="true"] h3, .mura-region-local[data-loose="true"] h4, .mura-region-local[data-loose="true"] img, .mura-region-local[data-loose="true"] table, .mura-region-local[data-loose="true"] article, .mura-region-local[data-loose="true"] dl')
+				.off('dragenter', initLooseDropTarget_dragenter)
+				.off('dragover', initLooseDropTarget_dragover)
+				.off('drop', initLooseDropTarget_drop)
+				.off('dragleave', initLooseDropTarget_dragleave);
+		})
+	}
+
 	Mura.initLayoutManager = initLayoutManager;
+	Mura.deInitLayoutManager = deInitLayoutManager;
 	Mura.loadObjectClass = loadObjectClass;
 	Mura.initLooseDropTarget = initLooseDropTarget;
 	Mura.initDraggableObject = initDraggableObject;
+	Mura.initDraggableObject_hoverin=initDraggableObject_hoverin;
+	Mura.initDraggableObject_hoverout=initDraggableObject_hoverout;
 
 })(window);
