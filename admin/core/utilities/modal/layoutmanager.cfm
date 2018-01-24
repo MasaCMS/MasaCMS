@@ -159,12 +159,12 @@ Mura(function(){
 	}
 	</cfif>
 	Mura('body').addClass('mura-sidebar-state__hidden--right');
+	Mura('body').removeClass('mura-sidebar-state__pushed--right');
 	Mura('##mura-sidebar-container').show();
 	Mura('##mura-objects-legacy-btn').click(function(e){
 		e.preventDefault();
 		MuraInlineEditor.sidebarAction('showlegacyobjects');
 	});
-
 	Mura('##mura-objects-openregions-btn').click(function(e){
 		e.preventDefault();
 		var el=Mura('body');
@@ -178,12 +178,10 @@ Mura(function(){
 		e.preventDefault();
 		Mura('body').removeClass('mura-regions-state__pushed--right');
 	});
-
 	Mura('.mura-objects-back-btn').click(function(e){
 		e.preventDefault();
 		MuraInlineEditor.sidebarAction('showobjects');
 	});
-
 	//Mura('.mura-region.mura-editable').attr('style','clear:both;');
 	Mura.rb.saveasdraft='#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.saveasdraft"))#';
 	Mura.adminpath='#variables.$.globalConfig("adminPath")#';
