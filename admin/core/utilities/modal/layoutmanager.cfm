@@ -150,10 +150,14 @@
 </div>
 <script>
 Mura(function(){
+	if(typeof Mura.deInitLayoutManager != 'undefined'
+		&& typeof Mura.editing != 'undefined'
+		&& Mura.editing){
+			Mura.deInitLayoutManager();
+	}
 	Mura.editing=false;
 	Mura.loader().load('#variables.$.globalConfig("adminpath")#/assets/js/layoutmanager.js',
 		function(){
-			<cfif not request.muraFrontEndRequest or request.muraAPIRequest>Mura.deInitLayoutManager();</cfif>
 			<cfif $.content('type') eq 'Variation'>
 			if(!Mura('.mxp-editable').length){
 				Mura('##adminQuickEdit').remove();
