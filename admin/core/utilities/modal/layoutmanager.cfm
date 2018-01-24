@@ -155,7 +155,6 @@ Mura(function(){
 		&& Mura.editing){
 			Mura.deInitLayoutManager();
 	}
-	Mura.editing=false;
 	Mura.loader().load('#variables.$.globalConfig("adminpath")#/assets/js/layoutmanager.js',
 		function(){
 			<cfif $.content('type') eq 'Variation'>

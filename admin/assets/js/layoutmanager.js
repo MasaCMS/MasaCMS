@@ -607,6 +607,8 @@
 		return true;
 	}
 	function deInitLayoutManager(){
+		Mura.editing=false;
+		
 		Mura('body').addClass('mura-sidebar-state__hidden--right');
 		Mura('body').removeClass('mura-sidebar-state__pushed--right');
 
