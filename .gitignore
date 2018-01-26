@@ -52,6 +52,7 @@ WEB-INF/
 node_modules/
 /requirements/docbox/
 /requirements/testbox/
+/modules/dynamic_entities
 
 # ignored 'config' directory files
 /config/mappings.cfm
