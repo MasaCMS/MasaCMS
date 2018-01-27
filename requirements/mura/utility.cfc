@@ -1302,7 +1302,7 @@ Blog: www.codfusion.com--->
 		if(variables.configBean.getValue('compiler') == 'Adobe'){
 			seconds=seconds+1;
 		}
-		return DateAdd("s",fix(nowEpoch/seconds) * seconds,DateConvert("utc2Local", "January 1 1970 00:00"));
+		var nowEpoch=DateDiff("s", DateConvert("utc2Local", "January 1 1970 00:00"), nowBase);
 	}
 </cfscript>
 
