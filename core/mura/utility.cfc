@@ -1324,7 +1324,7 @@ Blog: www.codfusion.com--->
 			arguments.timespan=createTimeSpan(0,0,5,0);
 		}
 		var nowBase=now();
-		var nowEpoch=DateDiff("s", "January 1 1970 00:00", nowBase);
+		var nowEpoch=DateDiff("s", DateConvert("utc2Local", "January 1 1970 00:00"), nowBase);
 		var seconds=dateDiff('s',nowBase,nowBase + arguments.timespan);
 		if(variables.configBean.getValue('compiler') == 'Adobe'){
 			seconds=seconds+1;
