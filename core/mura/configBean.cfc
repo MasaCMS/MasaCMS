@@ -168,7 +168,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.defaultflatviewrange=0 />
 <cfset variables.instance.defaultflatviewtable="" />
 <cfset variables.instance.showadminloginhelp=true/>
-<cfset variables.instance.allowUnicodeInFilenames=true/>
+<cfset variables.instance.allowUnicodeInFilenames=false/>
 <cfset variables.instance.dashboardcomments=true/>
 <cfset variables.instance.lockableNodes=false/>
 <cfset variables.instance.allowLocalFiles=false/>
