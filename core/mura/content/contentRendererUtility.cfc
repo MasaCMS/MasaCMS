@@ -1570,7 +1570,6 @@
 		<cfargument name="secure" default="false">
 		<cfargument name="renderer">
 		<cfargument name="hashURLS">
-		<cfargument name="domain" default="">
 
 		<cfset var href=""/>
 		<cfset var tp=""/>
@@ -1583,10 +1582,7 @@
 				<cfset arguments.siteid=arguments.renderer.getMuraScope().event('siteID')>
 			</cfif>
 			<cfif arguments.siteid neq arguments.renderer.getMuraScope().event('siteID')>
-				<cfset var extSite=getBean('settingsManager').getSite(arguments.siteid)>
-				<cfset var extArgs=arguments>
-				<cfset siteArgs.domain=extSite.getDomain()>
-				<cfreturn getBean('settingsManager').getSite(arguments.siteid).getContentRenderer().createHREF(argumentCollection=siteArgs)>
+				<cfreturn getBean('settingsManager').getSite(arguments.siteid).getContentRenderer().createHREF(argumentCollection=arguments)>
 			</cfif>
 		</cfif>
 
