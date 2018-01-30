@@ -167,7 +167,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset nowAdjusted=now()>
 	</cfif>
 
-	<cfset nowAdjusted=variables.utility.datetimeToTimespanInterval(nowAdjusted,createTimespan(0,0,5,0))>
+	<cfset nowAdjusted=variables.utility.datetimeToTimespanInterval(nowAdjusted,arguments.feedBean.getCachedWithin())>
 
 	<cfif not(isDate(arguments.from) and isDate(arguments.to))>
 		<cfset arguments.from=nowAdjusted>

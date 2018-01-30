@@ -1293,7 +1293,7 @@ Blog: www.codfusion.com--->
 	}
 
 	function datetimeToTimespanInterval(datetime,timespan=''){
-		if(!isDate(arguments.timespan)){
+		if(!(0+arguments.timespan)){
 			arguments.timespan=createTimeSpan(0,0,5,0);
 		}
 		var nowBase=now();
