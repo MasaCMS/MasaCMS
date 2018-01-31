@@ -292,7 +292,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				}
 
 				var isBasicAuth=false;
-
+				var isBasicAuthDirect=false;
 				if( structKeyExists( headers, 'Authorization' )){
 					var tokentype=listFirst(headers['Authorization'],' ');
 					var tokenvalue=listLast(headers['Authorization'],' ');
@@ -302,236 +302,293 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 						params['client_id']=listFirst(tokenvalue,":");
 						params['client_secret']=listLast(tokenvalue,":");
 						isBasicAuth=true;
+						if(len(params['client_id']) && !isValid('uuid',params['client_id'])){
+							isBasicAuthDirect=true;
+						}
 					} else if(tokentype=='Bearer') {
 						params['access_token']=tokenvalue;
 					}
 				}
-
-				if(isDefined('params.access_token')){
-					var token=getBean('oauthToken').loadBy(token=params.access_token);
-					structDelete(params,'access_token');
-					structDelete(url,'access_token');
-					if(!token.exists() || !listFind('client_credentials,authorization_code',token.getGrantType())){
-						params.method='Not Available';
-						throw(type='invalidAccessToken');
-					} else if (token.isExpired()){
-						params.method='Not Available';
-						throw(type='accessTokenExpired');
+				if(isBasicAuth && isBasicAuthDirect){
+					var userUtility=getBean('userUtility');
+					var rsuser=userUtility.lookupByCredentials(params['client_id'],params['client_secret'],variables.siteid);
+					structDelete(params,'client_id');
+					structDelete(params,'client_secret');
+					if(rsuser.recordcount){
+						userUtility.loginByUserID(rsuser.userid,rsuser.siteid);
 					} else {
-						if(isJSON(token.getData())){
-							structAppend(getSession(), deserializeJSON(token.getData()), true);
+						throw(type="authorization");
+					}
+				} else {
+					if(isDefined('params.access_token')){
+						var token=getBean('oauthToken').loadBy(token=params.access_token);
+						structDelete(params,'access_token');
+						structDelete(url,'access_token');
+						if(!token.exists() || !listFind('client_credentials,authorization_code',token.getGrantType())){
+							params.method='Not Available';
+							throw(type='invalidAccessToken');
+						} else if (token.isExpired()){
+							params.method='Not Available';
+							throw(type='accessTokenExpired');
 						} else {
-							var oauthclient=token.getClient();
-
-							if(!oauthclient.exists()){
-								params.method='undefined';
-								throw(type='invalidAccessToken');
+							if(isJSON(token.getData())){
+								structAppend(getSession(), deserializeJSON(token.getData()), true);
 							} else {
-								var clientAccount=token.getUser();
+								var oauthclient=token.getClient();
 
-								if(!clientAccount.exists()){
+								if(!oauthclient.exists()){
 									params.method='undefined';
 									throw(type='invalidAccessToken');
 								} else {
-									clientAccount.login();
-									token.setData(serializeJSON(getSession())).save();
+									var clientAccount=token.getUser();
+
+									if(!clientAccount.exists()){
+										params.method='undefined';
+										throw(type='invalidAccessToken');
+									} else {
+										clientAccount.login();
+										token.setData(serializeJSON(getSession())).save();
+									}
 								}
 							}
 						}
-					}
-				} else if(!(isDefined('params.client_id') || isDefined('params.refresh_token'))){
-					params.method='Not Available';
-					structDelete(params,'client_id');
-					structDelete(params,'client_secret');
-					structDelete(params,'refresh_token');
-					structDelete(url,'client_id');
-					structDelete(url,'client_secret');
-					structDelete(url,'refresh_token');
-					throw(type='authorization');
-				} else {
-					var oauthclient=getBean('oauthClient').loadBy(clientid=params.client_id);
-
-					//WriteDump(oauthclient.getAllValues());abort;
-					if(!oauthclient.exists()){
+					} else if(!(isDefined('params.client_id') || isDefined('params.refresh_token'))){
 						params.method='Not Available';
-						params={
-							method='getOAuthToken'
-						};
+						structDelete(params,'client_id');
+						structDelete(params,'client_secret');
+						structDelete(params,'refresh_token');
+						structDelete(url,'client_id');
+						structDelete(url,'client_secret');
+						structDelete(url,'refresh_token');
 						throw(type='authorization');
 					} else {
-						if(arrayLen(pathInfo) == 6
-							&& pathInfo[5]=='oauth'
-							||
-								arrayLen(pathInfo) == 5
-								&& (
-									pathInfo[4]=='oauth' || pathInfo[5]=='oauth'
-								)
-							){
+						var oauthclient=getBean('oauthClient').loadBy(clientid=params.client_id);
 
-							param name="params.grant_type" default="invalid";
 
-							params.method='getOAuthToken';
+						if(!oauthclient.exists()){
+							params.method='Not Available';
+							params={
+								method='getOAuthToken'
+							};
+							throw(type='authorization');
+						} else {
 
-							if(params.grant_type == 'authorization_code'){
-								if(oauthclient.getGrantType()!='authorization_code' || oauthclient.getClientSecret() != params.client_secret){
-									structDelete(params,'client_id');
-									structDelete(params,'client_secret');
-									throw(type='authorization');
-								}
+							if(arrayLen(pathInfo) == 6
+								&& listFind('oauth,oauth2',pathInfo[5])
+								||
+									arrayLen(pathInfo) == 5
+									&& (
+										listFind('oauth,oauth2',pathInfo[4]) || listFind('oauth,oauth2',pathInfo[5])
+									)
+								){
 
-								param name="params.code" default="invalid";
-								param name="params.redirect_uri" default="invalid";
-								var token=getBean('oauthToken').loadBy(clientid=params.client_id,accessCode=params.code);
-								var clientAccount=token.getUser();
+								var oauth2=(arrayLen(pathInfo) == 6
+									&& listFind('oauth2',pathInfo[5])
+									||
+										arrayLen(pathInfo) == 5
+										&& (
+											listFind('oauth2',pathInfo[4]) || listFind('oauth2',pathInfo[5])
+										)
+									);
 
-								if(!token.exists() || isExpired.isExpired() || !clientAccount.exists() || !oauthclient.isValidRedirectURI(params.redirect_uri)){
-									params={
-										method='getOAuthToken'
-									};
+								param name="params.grant_type" default="invalid";
 
-									throw(type='authorization');
-								} else {
+								params.method='getOAuthToken';
+
+								if(params.grant_type == 'authorization_code'){
+									if(oauthclient.getGrantType()!='authorization_code' || oauthclient.getClientSecret() != params.client_secret){
+										structDelete(params,'client_id');
+										structDelete(params,'client_secret');
+										throw(type='authorization');
+									}
+
+									param name="params.code" default="invalid";
+									param name="params.redirect_uri" default="invalid";
+									var token=getBean('oauthToken').loadBy(clientid=params.client_id,accessCode=params.code);
+									var clientAccount=token.getUser();
+
+									if(!token.exists() || token.isExpired() || !clientAccount.exists() || !oauthclient.isValidRedirectURI(params.redirect_uri)){
+										params={
+											method='getOAuthToken'
+										};
+
+										throw(type='authorization');
+									} else {
+										result=serializeResponse(
+											statusCode=200,
+											response={
+												'token_type'='Bearer',
+												'access_token'=token.getToken(),
+												'expires_in'=token.getExpiresIn(),
+												'expires_at'=token.getExpiresAt(),
+												'refresh_token'=oauthclient.generateToken(granttype='refresh_token').getToken()
+											 });
+
+										return result;
+									}
+								} else if(params.grant_type == 'password'){
+
+									if(oauthclient.getGrantType()!='password'){
+										params={
+											method='getOAuthToken'
+										};
+										throw(type='authorization');
+									}
+
+									param name="params.username" default="";
+									param name="params.password" default="";
+
+									var rsUser=getBean('userUtility').lookupByCredentials(username=params.username,password=params.password,siteid=variables.siteid);
+
+									if(!rsUser.recordcount){
+										params={
+											method='getOAuthToken'
+										};
+										throw(type='authorization');
+									} else {
+										var token=oauthclient.generateToken(granttype='password',userid=rsUser.userid);
+
+										if(oauth2){
+										result=serializeResponse(
+											statusCode=200,
+											response={
+												'token_type'='Bearer',
+												'access_token'=token.getToken(),
+												'expires_in'=token.getExpiresIn(),
+												'expires_at'=token.getExpiresAt()
+											 });
+										} else {
+											result=serializeResponse(
+											statusCode=200,
+											response={'apiversion'=getApiVersion(),
+											'method'=params.method,
+											'params'=getParamsWithOutMethod(params),
+											'data'={
+												'token_type'='Bearer',
+												'access_token'=token.getToken(),
+												'expires_in'=token.getExpiresIn(),
+												'expires_at'=token.getExpiresAt()
+											 }});
+										}
+
+										return result;
+									}
+								} else if(params.grant_type == 'client_credentials'){
+									if(oauthclient.getGrantType()!='client_credentials' || oauthclient.getClientSecret() != params.client_secret){
+										params={
+											method='getOAuthToken'
+										};
+										throw(type='authorization');
+									}
+
+									var token=oauthclient.generateToken(granttype='client_credentials');
+									var clientAccount=token.getUser();
+
+									if(!clientAccount.exists()){
+										params={
+											method='getOAuthToken'
+										};
+										throw(type='authorization');
+									} else {
+										if(oauth2){
+										result=serializeResponse(
+											statusCode=200,
+											response={
+												'token_type'='Bearer',
+												'access_token'=token.getToken(),
+												'expires_in'=token.getExpiresIn(),
+												'expires_at'=token.getExpiresAt()
+											 });
+										 } else {
+											result=serializeResponse(
+												statusCode=200,
+												response={'apiversion'=getApiVersion(),
+												'method'=params.method,
+												'params'=getParamsWithOutMethod(params),
+												'data'={
+													'token_type'='Bearer',
+													'access_token'=token.getToken(),
+													'expires_in'=token.getExpiresIn(),
+													'expires_at'=token.getExpiresAt()
+												 }});
+										 }
+
+										return result;
+									}
+								} else if(params.grant_type == 'refresh_token'){
+									//IF REFRESH_TOKEN WAS NOT SUBMITTED THROW AN ERROR
+									if(!isDefined('params.refresh_token')){
+										params={
+											method='getOAuthToken'
+										};
+										throw(type='authorization');
+									}
+
+									var refreshToken=getBean('oauthToken').loadBy(token=params.refresh_token,granttype='refresh_token');
+									var clientAccount=refreshToken.getUser();
+
+									//IF THE REFRESH_TOKEN OR ASSOCIATED USER DOES NOT EXIST OR IS EXPIRED THROW AN ERROR
+									if(!clientAccount.exists() || !refreshToken.exists() || refreshToken.isExpired()){
+										if(refreshToken.exists() && refreshToken.isExpired()){
+											refreshToken.delete();
+										}
+										params={
+											method='getOAuthToken'
+										};
+										throw(type='invalid_token');
+									}
+
+									var token=oauthclient.generateToken(granttype='client_credentials',userid=clientAccount.getUserID());
+
+									if(oauth2){
 									result=serializeResponse(
 										statusCode=200,
-										response={'apiversion'=getApiVersion(),
-										'method'=params.method,
-										'params'=getParamsWithOutMethod(params),
-										'data'={
+										response={
 											'token_type'='Bearer',
 											'access_token'=token.getToken(),
 											'expires_in'=token.getExpiresIn(),
 											'expires_at'=token.getExpiresAt(),
-											'refresh_token'=oauthclient.generateToken(granttype='refresh_token').getToken()
-										 }});
+											'refresh_token'=refreshToken.getToken()
+										 });
+									 } else {
+										 result=serializeResponse(
+											 statusCode=200,
+											 response={'apiversion'=getApiVersion(),
+											 'method'=params.method,
+											 'params'=getParamsWithOutMethod(params),
+											 'data'={
+												'token_type'='Bearer',
+												'access_token'=token.getToken(),
+												'expires_in'=token.getExpiresIn(),
+												'expires_at'=token.getExpiresAt(),
+												'refresh_token'=refreshToken.getToken()
+											 }});
+									 }
+
 
 									return result;
-								}
-							} else if(params.grant_type == 'password'){
-								if(oauthclient.getGrantType()!='password' || oauthclient.getClientSecret() != params.client_secret){
-									params={
-										method='getOAuthToken'
-									};
-									throw(type='authorization');
-								}
-
-								param name="params.username" default="";
-								param name="params.password" default="";
-
-								var clientAccount=getBean('userUtility').lookupByCredentials(username=params.username,password=params.password,siteid=variables.siteid);
-
-								if(!clientAccount.exists()){
-									params={
-										method='getOAuthToken'
-									};
-									throw(type='authorization');
 								} else {
-									var token=oauthclient.generateToken(granttype='password',userid=clientAccount.getUserID());
-									result=serializeResponse(
-										statusCode=200,
-										response={'apiversion'=getApiVersion(),
-										'method'=params.method,
-										'params'=getParamsWithOutMethod(params),
-										'data'={
-											'token_type'='Bearer',
-											'access_token'=token.getToken(),
-											'expires_in'=token.getExpiresIn(),
-											'expires_at'=token.getExpiresAt()
-										 }});
-
-									return result;
-								}
-							} else if(params.grant_type == 'client_credentials'){
-								if(oauthclient.getGrantType()!='client_credentials' || oauthclient.getClientSecret() != params.client_secret){
+									//IF VALID GRANT_TYPE WAS NOT SUBMITTED THROW AN ERROR
 									params={
 										method='getOAuthToken'
 									};
 									throw(type='authorization');
 								}
-
-								var token=oauthclient.generateToken(granttype='client_credentials');
-								var clientAccount=token.getUser();
-
-								if(!clientAccount.exists()){
-									params={
-										method='getOAuthToken'
-									};
-									throw(type='authorization');
-								} else {
-									result=serializeResponse(
-										statusCode=200,
-										response={'apiversion'=getApiVersion(),
-										'method'=params.method,
-										'params'=getParamsWithOutMethod(params),
-										'data'={
-											'token_type'='Bearer',
-											'access_token'=token.getToken(),
-											'expires_in'=token.getExpiresIn(),
-											'expires_at'=token.getExpiresAt()
-										 }});
-
-									return result;
-								}
-							} else if(params.grant_type == 'refresh_token'){
-								//IF REFRESH_TOKEN WAS NOT SUBMITTED THROW AN ERROR
-								if(!isDefined('params.refresh_token')){
-									params={
-										method='getOAuthToken'
-									};
-									throw(type='authorization');
-								}
-
-								var refreshToken=getBean('oauthToken').loadBy(token=params.refresh_token,granttype='refresh_token');
-								var clientAccount=refreshToken.getUser();
-
-								//IF THE REFRESH_TOKEN OR ASSOCIATED USER DOES NOT EXIST OR IS EXPIRED THROW AN ERROR
-								if(!clientAccount.exists() || !refreshToken.exists() || refreshToken.isExpired()){
-									if(refreshToken.exists() && refreshToken.isExpired()){
-										refreshToken.delete();
-									}
-									params={
-										method='getOAuthToken'
-									};
-									throw(type='invalid_token');
-								}
-
-								var token=oauthclient.generateToken(granttype='client_credentials',userid=clientAccount.getUserID());
-
-								result=serializeResponse(
-									statusCode=200,
-									response={'apiversion'=getApiVersion(),
-									'method'=params.method,
-									'params'=getParamsWithOutMethod(params),
-									'data'={
-										'token_type'='Bearer',
-										'access_token'=token.getToken(),
-										'expires_in'=token.getExpiresIn(),
-										'expires_at'=token.getExpiresAt(),
-										'refresh_token'=refreshToken.getToken()
-									 }});
-
-
-								return result;
 							} else {
-								//IF VALID GRANT_TYPE WAS NOT SUBMITTED THROW AN ERROR
-								params={
-									method='getOAuthToken'
-								};
-								throw(type='authorization');
-							}
-						} else {
-							//USING CLIENT_ID AND CLIENT_SECRET AS BASIC AUTH
-							//ONLY WORKS WITH CLIENTS WITH CLIENT_CREDENTIALS GRANTTYPE
-							structDelete(params,'client_id');
-							structDelete(params,'client_secret');
+								//USING CLIENT_ID AND CLIENT_SECRET AS BASIC AUTH
+								//ONLY WORKS WITH CLIENTS WITH CLIENT_CREDENTIALS GRANTTYPE
+								structDelete(params,'client_id');
+								structDelete(params,'client_secret');
 
-							if(!isBasicAuth){
-								params={
-									method='getOAuthToken'
-								};
-								throw(type='authorization');
-							}
+								if(!isBasicAuth){
+									params={
+										method='getOAuthToken'
+									};
+									throw(type='authorization');
+								}
 
-							oauthclient.getUser().login();
+								oauthclient.getUser().login();
+							}
 						}
 					}
 				}

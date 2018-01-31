@@ -1,9 +1,17 @@
 <cfscript>
     if(m.event('grant_type')=='implicit'){
-        oauthClient=m.getBean('oauthClient').loadBy(clientid=m.event('client_id'));
+      oauthClient=m.getBean('oauthClient').loadBy(clientid=m.event('client_id'));
     } else {
-        oauthClient=m.getBean('oauthClient').loadBy(clientid=m.event('client_id'),client_secret=m.event('client_secret'));
+      oauthClient=m.getBean('oauthClient').loadBy(clientid=m.event('client_id'),client_secret=m.event('client_secret'));
     }
+
+    if(m.event('response_type') eq 'code'){
+      m.event('grant_type','authorization_code');
+    } else if(m.event('response_type') eq 'token'){
+      m.event('grant_type','implicit');
+    }
+
+    request.cacheItem=false;
 </cfscript>
 
 <cfif not oauthClient.exists()>
@@ -20,10 +28,10 @@
             and oauthClient.exists()
             and oauthClient.isValidRedirectURI(m.event('redirect_uri'))
             and m.event('grant_type') eq oauthClient.getGrantType()
-            and (oauthClient.getGrantType() eq 'implicit'
-                or oauthClient.getGrantType() eq 'authorization_code'
-                    and m.event('client_secret') eq oauthClient.getClientSecret()
-                )>
+            and (
+              oauthClient.getGrantType() eq 'implicit'
+              or oauthClient.getGrantType() eq 'authorization_code'
+            )>
             <cfscript>
                 if(m.event('accept')){
                     if(find(m.event('redirect_uri'),'?')){
@@ -31,6 +39,8 @@
                     } else {
                         delim="?";
                     }
+
+
 
                     token=oauthClient.generateToken(granttype=m.event('grant_type'),userid=m.currentUser('userid'));
 
@@ -45,7 +55,7 @@
             </cfscript>
         <cfelse>
             <form id="accept-app-form">
-                <p><strong>"#esapiEncode('html',oauthClient.getName())#"</strong> would like to your account.</p>
+                <p><strong>"#esapiEncode('html',oauthClient.getName())#"</strong> would like to access information about your account.</p>
                 <button type="button" class="btn accept-app" value="true">Yes</button>&nbsp;<button type="button" class="btn accept-app" value="false">No</button>
                 #variables.m.renderCSRFTokens(format='form',context=oauthClient.getClientID())#
                 <input type="hidden" name="client_id" value="#esapiEncode('html_attr',oauthClient.getClientID())#"/>

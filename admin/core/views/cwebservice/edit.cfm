@@ -87,6 +87,24 @@
                     <a href="#rc.$.siteConfig().getApi('json','v1').getEndpoint(mode='rest')#" target="_blank">#rc.$.siteConfig().getApi('json','v1').getEndpoint(mode='rest')#</a>
                 </div>
             </div>
+            <div class="mura-control-group conditional client_credentials authorization_code implicit password">
+                <label>OAuth Endpoint</label>
+                <div>
+                    <a href="#rc.$.siteConfig().getApi('json','v1').getEndpoint(mode='rest')#/oauth2" target="_blank">#rc.$.siteConfig().getApi('json','v1').getEndpoint(mode='rest')#/oauth2</a>
+                </div>
+            </div>
+            <div class="mura-control-group conditional basic">
+                <label>Username</label>
+                <div>
+                    #rc.bean.getClientID()#
+                </div>
+            </div>
+            <div class="mura-control-group conditional basic">
+                <label>Password</label>
+                <div>
+                    #rc.bean.getClientSecret()#
+                </div>
+            </div>
             <div class="mura-control-group conditional basic">
                 <label>Basic Authentication Header</label>
                 <div>
@@ -99,7 +117,7 @@
                     #rc.bean.getClientID()#
                 </div>
             </div>
-            <div class="mura-control-group conditional client_credentials authorization_code password">
+            <div class="mura-control-group conditional client_credentials password authorization_code implicit">
                 <label>client_secret</label>
                 <div>
                     #rc.bean.getClientSecret()#
@@ -108,7 +126,7 @@
             <div class="mura-control-group conditional client_credentials">
                 <label>Example Usage of</label>
                 <div>
-                    <a href="#rc.$.siteConfig().getApi('json','v1').getEndpoint(mode='rest')#/oauth?grant_type=client_credentials&client_id=#rc.bean.getClientID()#&client_secret=#rc.bean.getClientSecret()#" target="_blank">#rc.$.siteConfig().getApi('json','v1').getEndpoint(mode='rest')#/oauth?grant_type=client_credentials&client_id=#rc.bean.getClientID()#&client_secret#rc.bean.getClientSecret()#</a>
+                    <a href="#rc.$.siteConfig().getApi('json','v1').getEndpoint(mode='rest')#/oauth2?grant_type=client_credentials&client_id=#rc.bean.getClientID()#&client_secret=#rc.bean.getClientSecret()#" target="_blank">#rc.$.siteConfig().getApi('json','v1').getEndpoint(mode='rest')#/oauth2?grant_type=client_credentials&client_id=#rc.bean.getClientID()#&client_secret#rc.bean.getClientSecret()#</a>
                 </div>
             </div>
         </cfif>
