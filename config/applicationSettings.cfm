@@ -80,13 +80,19 @@ this.configPath=getDirectoryFromPath(getCurrentTemplatePath());
 this.name = "mura" & hash(getCurrentTemplatePath());
 //  How long application vars persist
 this.applicationTimeout = createTimeSpan(3,0,0,0);
+
 //  Where should cflogin stuff persist
-this.loginStorage = "session";
 this.sessionManagement = !(left(cgi.path_info,11) == '/_api/rest/');
-//  We don't set client cookies here, because they are not set secure if required. We use setSessionCookies()
-this.setClientCookies = true;
-param name="this.sessioncookies" default=structNew();
-this.sessioncookie.disableupdate = false;
+
+if(this.sessionManagement){
+	this.loginStorage = "session";
+
+	//  We don't set client cookies here, because they are not set secure if required. We use setSessionCookies()
+	this.setClientCookies = false;
+	param name="this.sessioncookies" default=structNew();
+	this.sessioncookie.disableupdate = false;
+}
+
 this.searchImplicitScopes=false;
 /*  should cookies be domain specific, ie, *.foo.com or www.foo.com
 	this.setDomainCookies = not refind('\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b',listFirst(cgi.http_host,":"))>
