@@ -44,7 +44,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfif application.configBean.getValue(property='showUsageTabs',default=true)>
+<cfif application.configBean.getValue(property='showUsageTabs',defaultValue=true)>
 	<cfset tabList="tabBasic,tabUsagereport">
 	<cfset tabLabelList="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.basic')#,#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.usagereport')#">
 <cfelse>
@@ -173,7 +173,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 
-<cfif application.configBean.getValue(property='showUsageTabs',default=true) and rc.mlid neq ''>
+<cfif application.configBean.getValue(property='showUsageTabs',defaultValue=true) and rc.mlid neq ''>
 	<cfinclude template="dsp_tab_usage.cfm">
 </cfif>
 
