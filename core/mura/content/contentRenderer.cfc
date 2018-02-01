@@ -176,6 +176,7 @@ General Classes
 <cfset this.formSelectClass = this.formGeneralControlClass>
 <cfset this.formTextareaClass = this.formGeneralControlClass>
 <cfset this.formFileClass = this.formGeneralControlClass>
+<cfset this.formCheckboxWrapperClass = "">
 <cfset this.formCheckboxClass = "">
 <cfset this.formCheckboxLabelClass = "checkbox">
 <cfset this.formRadioClass = "">
@@ -246,6 +247,7 @@ Display Objects
 <cfset this.commentInputWrapperClass="">
 <cfset this.commentInputClass="">
 <cfset this.commentCheckboxClass="checkbox">
+<cfset this.commentCheckboxWrapperClass="">
 <cfset this.commentPrefsInputWrapperClass="">
 <cfset this.commentSubmitButtonWrapperClass="">
 <cfset this.commentSubmitButtonClass="btn">
@@ -405,8 +407,9 @@ Display Objects
 <cfset this.loginFormFieldWrapperClass="">
 <cfset this.loginFormFieldClass="">
 <cfset this.loginFormPrefsClass="">
-<cfset this.loginFormCheckboxClass="checkbox">
-<cfset this.loginFormSubmitWrapperClass="">
+<cfset this.loginFormCheckboxClass="">
+<cfset this.loginFormCheckboxWrapperClass="">
+<cfset this.loginFormSubmitWrapperClass="checkbox">
 <cfset this.loginFormSubmitClass="btn btn-default">
 <cfset this.notRegisteredLinkClass="btn btn-primary">
 
@@ -619,6 +622,7 @@ Display Objects
   	formFileClass = this.formFileClass,
   	formCheckboxClass = this.formCheckboxClass,
   	formCheckboxLabelClass = this.formCheckboxLabelClass,
+		formCheckboxWrapperClass = this.formCheckboxWrapperClass,
   	formRadioClass = this.formRadioClass,
   	formRadioLabelClass = this.formRadioLabelClass,
   	formButtonWrapperClass = this.formButtonWrapperClass,

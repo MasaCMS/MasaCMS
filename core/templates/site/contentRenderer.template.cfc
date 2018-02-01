@@ -151,6 +151,7 @@
 		//this.formFileClass = this.formGeneralControlClass;
 		//this.formCheckboxClass = "";
 		//this.formCheckboxLabelClass = "checkbox";
+		//this.formCheckboxWrapperClass = "";
 		//this.formRadioClass = "";
 		//this.formRadioLabelClass = "radio";
 		//this.formButtonWrapperClass = "btn-group";
@@ -229,6 +230,7 @@
 		this.commentInputWrapperClass="";
 		this.commentInputClass=this.formInputClass;
 		this.commentCheckboxClass="";
+		this.commentCheckboxWrapperClass="";
 		this.commentPrefsInputWrapperClass="";
 		this.commentSubmitButtonWrapperClass="";
 		this.commentSubmitButtonClass=this.formButtonClass;
@@ -358,6 +360,7 @@
 		this.loginFormFieldClass="";
 		this.loginFormPrefsClass="";
 		this.loginFormCheckboxClass="";
+		this.loginFormCheckboxWrapperClass="";
 		this.loginFormSubmitWrapperClass="";
 		this.loginFormSubmitClass="";
 		this.notRegisteredLinkClass="";
