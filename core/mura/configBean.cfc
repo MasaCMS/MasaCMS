@@ -195,6 +195,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.HSTSMaxAge=1200/>
 <cfset variables.instance.siteDir=""/>
 <cfset variables.instance.legacyAppcfcSupport=false>
+<cfset variables.instance.showUsageTags=true>
 
 <cffunction name="OnMissingMethod" output="false" hint="Handles missing method exceptions.">
 <cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />

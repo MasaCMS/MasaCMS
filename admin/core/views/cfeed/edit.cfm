@@ -758,7 +758,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</div> <!-- /.block-bordered -->
 </div> <!-- /.tab-pane -->
 
-<cfif rc.feedID neq ''>
+<cfif application.configBean.getValue(property='showUsageTabs',default=true) and rc.feedID neq ''>
 	<cfinclude template="dsp_tab_usage.cfm">
 </cfif>
 </cfif>
@@ -1051,7 +1051,7 @@ jQuery(document).ready(function(){
 
 </cfif>
 
-<cfif rc.feedID neq ''>
+<cfif application.configBean.getValue(property='showUsageTabs',default=true) and rc.feedID neq ''>
 	<cfinclude template="dsp_tab_usage.cfm">
 </cfif>
 </cfsavecontent>
