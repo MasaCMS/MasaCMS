@@ -593,7 +593,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Tags')>
 				<cfinclude template="form/dsp_tab_tags.cfm">
 			</cfif>
-			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Usage Report')>
+			<cfif application.configBean.getValue(property='showUsageTabs',default=true) and (not len(tabAssignments) or listFindNocase(tabAssignments,'Usage Report'))>
 				<cfif not rc.contentBean.getIsNew()>
 					<cfinclude template="form/dsp_tab_usage.cfm">
 				</cfif>
@@ -608,7 +608,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Tags')>
 				<cfinclude template="form/dsp_tab_tags.cfm">
 			</cfif>
-			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Usage Report')>
+			<cfif application.configBean.getValue(property='showUsageTabs',default=true) and (not len(tabAssignments) or listFindNocase(tabAssignments,'Usage Report'))>
 				<cfif not rc.contentBean.getIsNew()>
 					<cfinclude template="form/dsp_tab_usage.cfm">
 				</cfif>
