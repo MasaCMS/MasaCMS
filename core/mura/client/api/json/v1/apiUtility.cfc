@@ -2236,7 +2236,15 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 					if(!listFindNoCase('feedid,_cacheid,distinct,fields,entityname,method,maxItems,pageIndex,itemsPerPage,sortBy,sortDirection,contentpoolid,shownavonly,showexcludesearch,includehomepage,feedname',p)){
 						if(propName == 'sort'){
-							advancedsort=listAppend(advancedsort,arguments.params[p]);
+							for(var s in listToArray(arguments.params[p])){
+								var sProp=trim(s);
+								if(right(sCheck,1)=="-"){
+									sProp=left(sProp,len(sProp)-1));
+								}
+								if(len(sProp) && entity.hasProperty(sProp)){
+									advancedsort=listAppend(advancedsort,s);
+								}
+							}
 						} else if(!(entity.getEntityName()=='user' && propName=='isPublic')){
 								if(entity.getEnityName()=='user' && propName=='groupid'){
 									feed.setGroupID(arguments.params[p]);
