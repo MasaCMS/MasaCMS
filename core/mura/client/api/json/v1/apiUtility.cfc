@@ -54,7 +54,9 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 	      .asInteger('code')
 	      .asString('title')
 		  	.asInteger('isnew')
-	      .asBoolean('saveErrors');
+	      .asBoolean('saveErrors')
+				.asInteger('expires_at')
+				.asInteger('expires_in');
 
 	    registerEntity('site',{
 	    	public=true,
