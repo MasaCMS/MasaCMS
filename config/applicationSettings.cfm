@@ -88,7 +88,7 @@ if(this.sessionManagement){
 	this.loginStorage = "session";
 
 	//  We don't set client cookies here, because they are not set secure if required. We use setSessionCookies()
-	this.setClientCookies = false;
+	this.setClientCookies = true;
 	param name="this.sessioncookies" default=structNew();
 	this.sessioncookie.disableupdate = false;
 }
