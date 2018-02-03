@@ -1,5 +1,5 @@
-<cfif not m.currentUser().isLoggedIn()>
-  #.dspObject(object='login')#
+<cfif not m.currentUser().isLoggedIn() and not len(m.event('returnURL'))>
+  <cfset m.redirect("./?display=login&returnURL=#esapiEncode('url',m.getCurrentURL())#")>
 <cfelse>
   <cfscript>
       if(m.event('grant_type')=='implicit'){
@@ -77,3 +77,4 @@
       </cfoutput>
   </cfif>
 </cfif>
+<cfset request.cacheItem=false>
