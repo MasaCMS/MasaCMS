@@ -138,7 +138,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsCommands')#">
 			select * from tclustercommands
 				where instanceID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#application.instanceID#">
-				and created < <cfqueryparam cfsqltype="cf_sql_varchar" value="#now()#">
+				and created < <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
 		</cfquery>
 
 		<cfloop query="rsCommands">
