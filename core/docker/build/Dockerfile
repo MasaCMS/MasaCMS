@@ -1,4 +1,4 @@
-FROM blueriver/lucee:5.2.6.51-SNAPSHOT
+FROM blueriver/lucee:5.2.6.51-SNAPSHOT.1
 
 # Provide app
 RUN mkdir -p /var/www
