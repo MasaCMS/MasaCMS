@@ -8,7 +8,7 @@
 		#$.renderEvent("onBase#$.content('subtype')##attributes.tab##attributes.context#Render")#
 	</cfif>
 </cfif>
-#$.renderEvent("on#$.content('type')##attributes.tab##attributes.context#Render")#	
+#$.renderEvent("on#$.content('type')##attributes.tab##attributes.context#Render")#
 #$.renderEvent("on#$.content('type')##$.content('subtype')##attributes.tab##attributes.context#Render")#
 <cfcatch>
 	#cfcatch.message#
