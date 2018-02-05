@@ -120,6 +120,8 @@ component extends="ioc" hint="This provides the primary bean factory that all co
 
           var rsSites=getBean('settingsManager').getList();
           createDynamicEntity(entity.entityname,result,valueList(rsSites.siteid));
+          application.appInitialized=false;
+          getBean('clusterManager').reload();
 
           return this;
         } else {
@@ -130,31 +132,29 @@ component extends="ioc" hint="This provides the primary bean factory that all co
       }
     }
 
-    function undeclareBean(beanName){
+    function undeclareBean(entityname){
 
-      if(containsBean(arguments.beanName)){
 
-        var entity=getBean(arguments.beanName);
+      var registeredEntity=getBean('entity').loadBy(name=arguments.entityname);
 
-        if(entity.exists() && entity.getDynamic()){
+      if(registeredEntity.exists() && registeredEntity.getDynamic()){
 
-          //getBean('dbUtility').dropTable(entity.getTable());
+        var entity=getBean(arguments.entityname);
 
-          structDelete(application.objectMappings,entity.getEntityName());
+        structDelete(application.objectMappings,entity.getEntityName());
 
-          var filePath=expandPath('/muraWRM/modules/dynamic_entities/model/beans/#entity.getEntityName()#.cfc');
+        var filePath=expandPath('/muraWRM/modules/dynamic_entities/model/beans/#entity.getEntityName()#.cfc');
 
-          if(fileExists(filePath)){
-            fileDelete(filePath);
-          }
-
-          entity.delete();
-
-        } else {
-          throw(message="Cannot undeclare non-dynamic bean: #entity.entityname#");
+        if(fileExists(filePath)){
+          fileDelete(filePath);
         }
 
+        registeredEntity.delete();
+        application.appInitialized=false;
+        getBean('clusterManager').reload();
 
+      } else {
+        throw(message="Cannot undeclare non-dynamic bean: #arguments.entityname#");
       }
 
     }

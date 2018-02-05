@@ -577,7 +577,21 @@ $( document ).ready(function() {
 						});
 
 			},
-			clickDelete: function( entityname ) {
+			clickDelete: function( ) {
+				var self=this;
+				confirmDialog(
+					"Delete dynamic entity?",
+					function(){
+						$('body').append('<div id="action-modal" class="modal-backdrop fade in"></div>');
+						$('#action-modal').spin(spinnerArgs);
+						Mura.
+							getEntity(self.model.entityname)
+							.undeclareEntity()
+							.then(function(){
+								location.href="./?muraAction=cArch.list&activeTab=2&" + Mura.siteid;
+							});
+					}
+				);
 			},
 			clickAddRelated: function() {
 

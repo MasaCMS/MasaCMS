@@ -82,6 +82,7 @@ if ( !request.muraTemplateMissing ) {
 		}
 		if ( isObject(local.pluginEvent) ) {
 			local.pluginEvent.setValue("exception",arguments.exception);
+			local.pluginEvent.setValue("error",arguments.exception);
 			local.pluginEvent.setValue("eventname",arguments.eventname);
 			try {
 				if ( len(local.pluginEvent.getValue("siteID")) ) {

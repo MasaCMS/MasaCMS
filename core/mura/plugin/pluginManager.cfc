@@ -1865,6 +1865,7 @@ select * from tplugins order by #arguments.orderby#
 						<cfset arguments.event.setValue("errorType","event")>
 						<cfset arguments.event.setValue("errorEvent",arguments.runat)>
 						<cfset arguments.event.setValue("error",cfcatch)>
+						<cfset arguments.event.setValue("exception",cfcatch)>
 						<cfset executeScripts("onError",arguments.siteid,arguments.event,rsOnError)>
 						<cfif not yesNoFormat(arguments.event.getValue("errorIsHandled"))>
 							<cfrethrow>
@@ -2589,6 +2590,7 @@ select * from tplugins order by #arguments.orderby#
 					<cfset arguments.event.setValue("errorType","render")>
 					<cfset arguments.event.setValue("errorEvent",arguments.runat)>
 					<cfset arguments.event.setValue("error",cfcatch)>
+					<cfset arguments.event.setValue("exception",cfcatch)>
 					<cfset testStr=renderScripts("onError",arguments.siteid,arguments.event,rsOnError)>
 					<cfif len(testStr) or yesNoFormat(arguments.event.getValue("errorIsHandled"))>
 						<cfset str=str & testStr>
@@ -2765,6 +2767,7 @@ select * from tplugins order by #arguments.orderby#
 			<cfif rsOnError.recordcount>
 				<cfset arguments.event.setValue("errorType","render")>
 				<cfset arguments.event.setValue("error",cfcatch)>
+				<cfset arguments.event.setValue("exception",cfcatch)>
 				<cfreturn renderScripts("onError",event.getValue('siteID'),arguments.event,rsOnError)>
 			<cfelseif variables.configBean.getDebuggingEnabled()>
 				<cfset request.muraDynamicContentError=true>

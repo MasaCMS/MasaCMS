@@ -172,8 +172,8 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				if(!getCurrentUser().isSuperUser()){
 					throw(type="authorization");
 				}
-				if(getServiceFactory().containsBean(arguments.entityname)){
-					getServiceFactory().deleteBean(arguments.entityname);
+				if(getServiceFactory().containsBean(arguments.entityname) && getBean(arguments.entityname).getDynamic()){
+					getServiceFactory().undeclareBean(arguments.entityname);
 					structDelete(getConfig(),arguments.entityname);
 					//application.appInitialized=false;
 					return {success:true};
