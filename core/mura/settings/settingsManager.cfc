@@ -400,6 +400,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset rs=getList() />
 
+	<cfparam name="variables.sites" default="#structNew()#">
+
 	<cfloop query="rs">
 		<cfif arguments.missingOnly and structKeyExists(variables.sites,'#rs.siteid#')>
 			<cfset builtSites['#rs.siteid#']=variables.sites['#rs.siteid#'] />
@@ -431,6 +433,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset arguments.siteid='default'>
 	</cfif>
 
+	<cfparam name="variables.sites" default="#structNew()#">
+
 	<cfif not structKeyExists(variables,'sites')>
 		<cfset setSites(missingOnly=true)>
 	</cfif>
@@ -456,12 +460,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="siteExists" output="false">
 	<cfargument name="siteid" type="string" />
-
+	<cfparam name="variables.sites" default="#structNew()#">
 	<cfreturn structKeyExists(variables.sites,arguments.siteid) />
-
 </cffunction>
 
 <cffunction name="getSites" output="false">
+	<cfparam name="variables.sites" default="#structNew()#">
 	<cfreturn variables.sites />
 </cffunction>
 
