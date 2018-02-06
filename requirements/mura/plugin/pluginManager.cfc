@@ -1742,6 +1742,30 @@ select * from tplugins order by #arguments.orderby#
 	<cfif isValidEvent>
 		<cftry>
 		<cfif not isGlobalEvent and len(arguments.siteID)>
+
+			<cfif isObject(arguments.event.getValue("localHandler"))>
+				<cfset localHandler=arguments.event.getValue("localHandler")>
+				<cfif structKeyExists(localHandler,arguments.runat)>
+					<cfset tracePoint=initTracePoint("#localHandler.getValue('_objectName')#.#arguments.runat#")>
+					<cfsavecontent variable="local.theDisplay1">
+						<cfinvoke component="#localHandler#" method="#arguments.runat#" returnVariable="local.theDisplay2">
+							<cfinvokeargument name="event" value="#arguments.event#">
+							<cfinvokeargument name="$" value="#muraScope#">
+							<cfinvokeargument name="mura" value="#muraScope#">
+							<cfinvokeargument name="m" value="#muraScope#">
+						</cfinvoke>
+					</cfsavecontent>
+
+					<cfif isDefined("local.theDisplay2")>
+						<cfset str=str & local.theDisplay2>
+					<cfelse>
+						<cfset str=str & local.theDisplay1>
+					</cfif>
+					<cfset commitTracePoint(tracePoint)>
+					<cfset request.muraHandledEvents["#arguments.runat#"]=true>
+				</cfif>
+			</cfif>
+			
 			<cfif isDefined("variables.siteListeners.#siteIDadjusted#.#arguments.runat#")>
 
 					<cfset listenerStruct = variables.siteListeners[siteIDadjusted] />
