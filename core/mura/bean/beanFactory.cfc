@@ -69,7 +69,7 @@ component extends="ioc" hint="This provides the primary bean factory that all co
           var public= (isDefined('entity.public') && isBoolean(entity.public)) ? entity.public : false;
           var historical= (extends=='mura.bean.beanORMHistorical') ? true : false ;
           //property name="site" fieldtype="one-to-one" relatesto="site" fkcolumn="siteID";
-
+          var sampleEntity='';
           var result='component#newline##tab#extends="#extends#"#newline##tab#entityname="#entity.entityname#"#newline##tab#displayname="#displayname#"#newline##tab#table="#table#"#newline##tab#orderby="#orderby#"#newline##tab#bundleable=#YesNoToBoolean(bundleable)##newline##tab#hint="#hint#"#newline##tab#dynamic=true#newline##tab#scaffold=#YesNoToBoolean(scaffold)##newline##tab#public=#YesNoToBoolean(public)##newline##tab#{';
 
           for(var p in properties){
@@ -78,14 +78,26 @@ component extends="ioc" hint="This provides the primary bean factory that all co
               result = result & newline & tab & tab & "property";
               result = result & ' name="#p.name#"';
 
-              if(isDefined('p.fieldtype')
-                && listFindNoCase('many-to-one', p.fieldtype )
-                && isDefined('p.relatesto') && len(p.relatesto)
-                && application.Mura.getServiceFactory().containsBean(p.relatesto)
-                && (!isDefined('p.fkcolumn') || !len(p.fkcolumn))
-                ){
+                structDelete(p,'dynamic');
 
-                p.fkcolumn=getBean(p.relatesto).getValue('primaryKey');
+              if(isDefined('p.fieldtype')){
+
+                if(listFindNoCase('many-to-one', p.fieldtype)
+                  && isDefined('p.relatesto') && len(p.relatesto)
+                  && application.Mura.getServiceFactory().containsBean(p.relatesto)
+                  && (!isDefined('p.fkcolumn') || !len(p.fkcolumn))
+                  ){
+
+                  p.fkcolumn=getBean(p.relatesto).getValue('primaryKey');
+
+                }
+
+                if(listFindNoCase('id,many-to-one,one-to-one,one-to-many,many-to-many', p.fieldtype )){
+                  structDelete(p,'datatype');
+                  structDelete(p,'rendertype');
+                  structDelete(p,'nullable');
+                  structDelete(p,'maxlength');
+                }
 
               }
 

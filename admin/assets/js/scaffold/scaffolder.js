@@ -575,6 +575,7 @@ Mura(function() {
 		mounted: function() {
 			// processes related 'many' children
 			this.loaded=false;
+
 			MuraScaffold.feed( this.proplist,this.property.relatesto );
 		},
 		methods: {
@@ -583,6 +584,27 @@ Mura(function() {
 
 				this.properties = data.properties;
 				this.mparent.list = data.list;
+
+				if(!this.property.renderfield && data.list.length){
+					var item=data.list[0];
+
+					if(item.name){
+						this.property.renderfield='name';
+					} else if(item.menutitle){
+						this.property.renderfield='item';
+					} else if(item.title){
+						this.property.renderfield='title';
+					} else if(item.groupname){
+						this.property.renderfield='groupname';
+					} else if(item.company){
+						this.property.renderfield='company';
+					} else if(item.organization){
+						this.property.renderfield='organization';
+					} else if(item.label){
+						this.property.renderfield='label';
+					}
+				}
+
 				this.mparent.properties = data.parentproperties;
 				this.loaded=true;
 			},

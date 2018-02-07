@@ -280,19 +280,7 @@
 						<option value="">-- none --</option>
 						<option v-for="(option,index) in this.mparent.list" :value="option.id"
 							 :selected="option[property.loadkey] == model[property.fkcolumn] ? 'selected' : null">
-							<span v-if="property.renderfield">{{option[property.renderfield]}}</span>
-							<span v-elseif="option.name">{{option.name}}</span>
-							<span v-elseif="option.menutitle">{{option.menutitle}}</span>
-							<span v-elseif="option.title">{{option.title}}</span>
-							<span v-elseif="option.grouname">{{option.groupname}}</span>
-							<span v-elseif="option.company">{{option.company}}</span>
-							<span v-elseif="option.organization">{{option.organization}}</span>
-							<span v-else>
-									<span v-if="option.fname">{{option.fname}}</span>
-									<span v-if="option.firstname">{{option.firstname}}</span>
-									<span v-if="option.lname">{{option.lname}}</span>
-									<span v-if="option.lastname">{{option.lastname}}</span>
-							</span>
+							{{option[property.renderfield]}}
 						</option>
 					</select>
 				</div>
