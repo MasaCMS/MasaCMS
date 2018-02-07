@@ -165,6 +165,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     									<option value="pt"<cfif cookie.rb eq "pt"> selected</cfif>>Portuguese</option>
     									<option value="es"<cfif cookie.rb eq "es"> selected</cfif>>Spanish</option>
     									<!---<option value="es">Spanish</option>--->
+									<option value="ru"<cfif cookie.rb eq "ru"> selected</cfif>>Русский</option>
     								</select>
     						  	</div>
 							<cfelse>
@@ -187,6 +188,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 										<option value="pt"<cfif cookie.rb eq "pt"> selected</cfif>>Portuguese</option>
 										<option value="es"<cfif cookie.rb eq "es"> selected</cfif>>Spanish</option>
 										<!---<option value="es">Spanish</option>--->
+										<option value="ru"<cfif cookie.rb eq "ru"> selected</cfif>>Русский</option>
 									</select>
 								</div>
 
