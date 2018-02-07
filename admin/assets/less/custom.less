@@ -1,5 +1,4 @@
 /* tabdrop menu */
-
 .nav-tabs,
 .nav-pills {
   position: relative;
@@ -190,11 +189,16 @@
      margin-right: 10px;
     }
 }
+
 #header-navbar #user-tools-selector{
   margin-right: 10px;
 }
+
 #header-navbar #site-selector-list.dropdown-menu{
+  max-height: 390px;
+  max-height: 50vh;
   min-width: 100%;
+  overflow-y:auto;
   padding-right: 12px;
 }
 
@@ -226,12 +230,15 @@
 #header-navbar .btn#mura-sidebar-toggle{
   display:block;
  }
+
 #header-navbar .btn#mura-sidebar-toggle-open{
   display: none;
 }
+
 .sidebar-mini #header-navbar .btn#mura-sidebar-toggle-open{
   display: block;
 }
+
 .sidebar-mini #header-navbar .btn#mura-sidebar-toggle{
   display: none;
 }
@@ -281,6 +288,7 @@
   .border-right-radius(0px);
   margin-right: -2px !important;
  }
+
 .mura-input-set .btn:not(:first-child),
 .mura-input-set input:not(:first-child){
   .border-left-radius(0px);
@@ -344,6 +352,7 @@
   background-color: #dcdcdc;
   border-color: #cacaca;
 }
+
 .btn-default.active:hover,
 .open > .dropdown-toggle.btn-default:hover{
   color: #545454;
@@ -1482,7 +1491,7 @@ ul.dropdown-menu{
   input.text, { width: 95%; }
 }
 #plugin-license textarea{
-  min-height: 528px;
+  min-height: 264px;
   margin-bottom: 24px;
 }
 
