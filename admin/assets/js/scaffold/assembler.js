@@ -237,15 +237,17 @@ $( document ).ready(function() {
 		template: '#assembler-related-form-template',
 		props: ['data','datatypes','relatedprops'],
 		mounted: function() {
-
+			/*
 			if(!this.data.cfc)
 				this.data.cfc = this.data.relatesto;
 
 			if(!this.data.relatesto)
 				this.data.relatesto = this.data.cfc;
 
-			if(this.data.cfc.length) {
-				MuraAssembler.getPropertiesAsJSON( this.onLoadComplete,this.data.cfc );
+			*/
+
+			if(this.data.relatesto.length) {
+				MuraAssembler.getPropertiesAsJSON( this.onLoadComplete,this.data.relatesto );
 			}
 		},
 		methods: {
@@ -641,11 +643,12 @@ $( document ).ready(function() {
 				}
 			},
 			clickUpdateRelated: function() {
+				/*
 				if(!this.data.cfc)
 					this.data.cfc = this.data.relatesto;
 				if(!this.data.relatesto)
 					this.data.relatesto = this.data.cfc;
-
+				*/
 				var data = JSON.parse(JSON.stringify(this.data));
 
 				if(data.loadkey && data.loadkey == 'primaryKey') {
@@ -714,10 +717,12 @@ $( document ).ready(function() {
 					this.data.fkcolumn = '';
 				}
 
+				/*
 				if(!this.data.cfc)
 					this.data.cfc = this.data.relatesto;
 				if(!this.data.relatesto)
 					this.data.relatesto = this.data.cfc;
+				*/
 
 				this.currentView = "assembler-related-form-template";
 			},

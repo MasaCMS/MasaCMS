@@ -15,7 +15,7 @@
 <div class="block-content">
 
 	<div id="container-scaffold">
-	<scaffold-crumb-template :data="data" :state="state"></scaffold-crumb-template>
+		<scaffold-crumb-template :data="data" :state="state"></scaffold-crumb-template>
 		<scaffold-error-template :errordata="errordata"></scaffold-error-template>
 		<div>
 			<component :is="currentView" :currentparent="currentparent" :entityname="entityname" :data="data" transition="fade" transition-mode="out-in"></component>

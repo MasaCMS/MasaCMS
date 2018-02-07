@@ -75,7 +75,7 @@
 			<draggable :model="model" :list="model.properties" id="assembler-properties">
 				<div v-for="(item,index) in model.properties" v-bind:id="'assembler-property-index-' + index" :data-index="index" :data-name="item.name" :key="item.pos">
 					<span class="assembler-item-box">
-						<span v-if="item.relatesto || item.cfc" class="assembler-prop">
+						<span v-if="item.relatesto || item.relatesto" class="assembler-prop">
 							<button @click="clickEditRelated(index)"><i class="mi-cogs"></i></button>
 						</span>
 						<span v-else-if="item.fieldtype == 'id'" class="assembler-prop">
@@ -85,7 +85,7 @@
 							<button @click="clickEditProperty(index)"><i class="mi-edit"></i></button>
 						</span>
 						<span v-if="item.displayname && item.displayname.length">{{item.displayname}}</span><span v-else class="assembler-no-displayname">{{item.name}}</span>
-						<span v-if="item.relatesto || item.cfc"> ({{item.fieldtype}} {{item.cfc}})</span>
+						<span v-if="item.relatesto || item.relatesto"> ({{item.fieldtype}} {{item.relatesto}})</span>
 						<span v-if="item.rendertype == 'hidden'"> (Hidden)</span>
 						<span v-if="item.rendertype == 'null'"> (Does Not Render)</span>
 					</span>
@@ -256,7 +256,7 @@
 				name="relatesto"
 				@change="getRelatesToFields"
 				>
-				<option v-for="(option,index) in this.$parent.alldynamicobjects" :value="option.entityname" :selected="option.entityname == data.cfc ? 'selected' : 'null'">{{option.displayname}}</option>
+				<option v-for="(option,index) in this.$parent.alldynamicobjects" :value="option.entityname" :selected="option.entityname == data.relatesto ? 'selected' : 'null'">{{option.displayname}}</option>
 			</select>
 		</div>
 

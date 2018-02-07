@@ -133,6 +133,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			}
 		});
 
+		<cfparam name="request.opencategorylist" default="">
+		
 		<cfset cats=$.getBean('categoryFeed')
 			.addParam(
 				column="categoryid",

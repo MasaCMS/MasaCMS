@@ -145,6 +145,7 @@ Mura(function() {
 			var entity = {};
 			var data = {};
 			var filterVal='';
+			var itemsPer = itemsPer || 20;
 			var feed = Mura
 				.getFeed(entityname)
 				.itemsPerPage(itemsPer);
@@ -779,12 +780,14 @@ Mura(function() {
 					self.data.model = entity.getAll();
 					self.data.model._displaylist = [];
 					self.data.entity = entity;
-					this.model = self.data.model;
-
+					self.model = self.data.model;
+					self.errordata=self.data.model.errors;
 					entity.get('properties')
 						.then(
 							function(properties) {
+
 								self.data.properties = properties.properties.properties;
+
 								MuraScaffold.processProperties(self.data);
 
 								for(var i = 0;i < self.data.properties.length;i++) {
@@ -801,7 +804,7 @@ Mura(function() {
 								}
 
 								this.currentView = "";
-								this.currentView = "scaffold-form-template";
+								this.currentView = 'scaffold-form-template';
 
 						},
 						function(error) {
@@ -971,7 +974,7 @@ Mura(function() {
 			},
 			applyKeyFilter: function( e ) {
 				if(e.keyCode == 13){
-					MuraScaffold.feed( this.doList,this.entityname,this.itemsper,this.sortBy,this.sortDir );
+					MuraScaffold.this.currentView = 'scaffold-form-template';( this.doList,this.entityname,this.itemsper,this.sortBy,this.sortDir );
 				}
 			},
 			applyItemsPer: function( itemsper ) {
