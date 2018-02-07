@@ -36602,7 +36602,6 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
   overflow: hidden;
   padding-right: 30px;
   text-decoration: none;
-  text-overflow: ellipsis;
   white-space: nowrap;
 }
 .mura .nav-main li a span {
