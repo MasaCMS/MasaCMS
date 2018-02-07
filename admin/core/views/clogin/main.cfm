@@ -154,18 +154,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     							<div class="mura-control-group half">
     								<!--- <label>Language</label> --->
     								<label></label>
-    				      	        <select name="rb">
+    				      	<select name="rb">
     									<option value="en">English</option>
     									<option value="de"<cfif cookie.rb eq "de"> selected</cfif>>Deutsch</option>
     									<option value="nl"<cfif cookie.rb eq "nl"> selected</cfif>>Dutch</option>
     									<option value="fr"<cfif cookie.rb eq "fr"> selected</cfif>>Fran&ccedil;ais</option>
     									<option value="hu"<cfif cookie.rb eq "hu"> selected</cfif>>Hungarian</option>
     									<option value="it"<cfif cookie.rb eq "it"> selected</cfif>>Italian</option>
-    									<!---<option value="no"<cfif cookie.rb eq "no"> selected</cfif>>Norwegian</option>--->
     									<option value="pt"<cfif cookie.rb eq "pt"> selected</cfif>>Portuguese</option>
+                      <option value="ru"<cfif cookie.rb eq "ru"> selected</cfif>>Русский</option>
     									<option value="es"<cfif cookie.rb eq "es"> selected</cfif>>Spanish</option>
-    									<!---<option value="es">Spanish</option>--->
-									<option value="ru"<cfif cookie.rb eq "ru"> selected</cfif>>Русский</option>
     								</select>
     						  	</div>
 							<cfelse>
