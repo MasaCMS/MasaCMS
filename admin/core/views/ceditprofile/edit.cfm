@@ -234,7 +234,7 @@ select * from rsSubTypes where subType <> 'Default'
 
 							<div id="mura-list-tree" class="mura-control-group">
 								<cfoutput><label>#application.settingsManager.getSite(rc.userBean.getSiteID()).getSite()#</label></cfoutput>
-								<cf_dsp_categories_nest siteID="#rc.userBean.getSiteID()#" parentID="" categoryID="#rc.categoryID#" nestLevel="0"  userBean="#rc.userBean#">
+								<cf_dsp_categories_nest siteID="#rc.userBean.getSiteID()#" parentID="" categoryID="#rc.categoryID#" nestLevel="0"  userBean="#rc.userBean#" rc="#rc#">
 								<cfset matchedlist=rc.userBean.getSiteID()>
 								<cfloop collection="#application.settingsManager.getSites()#" item="site">
 									<cfif not listFindNoCase(matchedlist,application.settingsManager.getSite(site).getPrivateUserPoolID()) and  application.settingsManager.getSite(site).getPrivateUserPoolID() eq application.settingsManager.getSite(rc.siteID).getPrivateUserPoolID()>
