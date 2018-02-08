@@ -93,6 +93,9 @@ if(this.sessionManagement){
 	this.sessioncookie.disableupdate = false;
 }
 
+// needed for lockdown screens
+this.bufferOutput = true;
+
 this.searchImplicitScopes=false;
 /*  should cookies be domain specific, ie, *.foo.com or www.foo.com
 	this.setDomainCookies = not refind('\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b',listFirst(cgi.http_host,":"))>
