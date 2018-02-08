@@ -145,7 +145,7 @@ Mura(function() {
 			var entity = {};
 			var data = {};
 			var filterVal='';
-			var itemsPer = itemsPer || 20;
+			var itemsPer = itemsPer || ((this.data && this.data.itemsPer) ? this.data.itemsPer : 0);
 			var feed = Mura
 				.getFeed(entityname)
 				.itemsPerPage(itemsPer);
@@ -631,6 +631,9 @@ Mura(function() {
 				if(val && fkcolumn) {
 					model[fkcolumn] = val;
 				}
+			},
+			showForm: function(entityname,entityid,parentid){
+				Scaffolder.showForm(entityname,entityid,parentid);
 			}
 		}
 	});

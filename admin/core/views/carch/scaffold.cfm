@@ -144,7 +144,7 @@
 									</ul>
 								</div>
 								</td>
-								<td class="var-width" v-for="item in data.listview" @click="(entityname == 'entity') ? showList(object.entityname) : showForm(object.entityname,object.id)">
+								<td class="var-width" v-for="item in data.listview" @click="(entityname == 'entity') ? showList(object.entityname) : ( (item.fieldtype == 'many-to-one' || item.fieldtype == 'one-to-one' ) ? showForm(object[item.name].entityname,object[item.name].id)  : showForm(object.entityname,object.id) )">
 										<span v-if="item.fieldtype == 'many-to-one' || item.fieldtype == 'one-to-one'" v-html="object[item.name][item.renderfield]"></span>
 										<span v-else-if="item.rendertype == 'htmleditor'" v-html="object[item.name]"></span>
 										<span v-else-if="item.datatype=='datetime' || item.datetime=='date'" v-text="formatDate(object[item.name])"></span>
@@ -284,6 +284,7 @@
 							{{option[property.renderfield]}}
 						</option>
 					</select>
+					<button class="btn btn-default" v-if="property.fkcolumn" @click="showForm(property.relatesto,model[property.fkcolumn])"><i class="mi-edit"></i> Edit</button>
 				</div>
 			</div>
 		</div>
