@@ -104,8 +104,8 @@
 						<tr id="scaffold-filterby">
 							<th class="actions"></th>
 							<th class="var-width" v-for="item in data.listview">
-									<input v-if="currentparent && currentparent.properties" type="HIDDEN" class="filter" :name="'filter-' + currentparent.properties.properties.primarykey" :value="currentparent.properties.id">
-									<input v-if="item.filter==true || item.filter == 'true'" class="filter" :name="'filter-' + item.name" @keyup="applyKeyFilter">
+								<input v-if="!item.relatesto && currentparent && currentparent.properties" type="HIDDEN" class="filter" :name="'filter-' + currentparent.properties.properties.primarykey" :value="currentparent.properties.id">
+								<input v-if="!item.relatesto && (item.filter==true || item.filter == 'true')" class="filter" :name="'filter-' + item.name" @keyup="applyKeyFilter">
 							</th>
 							<th>
 								<div class="btn-group pull-right">
@@ -118,7 +118,8 @@
 						<tr id="scaffold-sortby">
 							<th class="actions"></th>
 							<th class="var-width" v-for="(item, key, index) in data.listview" :id="'sortby-' + item.name">
-								<span @click="applySortBy(item.name)">{{item.displayname}}</span>
+								<span v-if="item.relatesto">{{item.displayname}}</span>
+								<span v-else @click="applySortBy(item.name)">{{item.displayname}}</span>
 							</th>
 							<th v-if="entityname == 'entity'">Dynamic</th>
 							<th v-else></th>
