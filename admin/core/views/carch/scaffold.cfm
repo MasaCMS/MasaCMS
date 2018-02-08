@@ -70,7 +70,6 @@
 
 	<template id="scaffold-list-template">
 		<div>
-
 			<div class="btn-group pull-right">
 				<a v-if="currentparent && currentparent.properties" @click="showForm(currentparent.properties.entityname,currentparent.properties.id)" class="btn"><i class="mi-arrow-circle-left"></i> Back</a>
 				<a v-if="entityname != 'entity' && data.issuperuser && data && data.parentproperties && data.parentproperties.dynamic" class="btn" @click="goToAssembler(entityname)"><i class="mi-edit"></i> Edit</a>
@@ -145,7 +144,8 @@
 								</div>
 								</td>
 								<td class="var-width" v-for="item in data.listview" @click="(entityname == 'entity') ? showList(object.entityname) : showForm(object.entityname,object.id)">
-										<span v-if="item.rendertype == 'htmleditor'" v-html="object[item.name]"></span>
+										<span v-if="item.fieldtype == 'many-to-one' || item.fieldtype == 'one-to-one'" v-html="object[item.name][item.renderfield]"></span>
+										<span v-else-if="item.rendertype == 'htmleditor'" v-html="object[item.name]"></span>
 										<span v-else-if="item.datatype=='datetime' || item.datetime=='date'" v-text="formatDate(object[item.name])"></span>
 										<span v-else v-text="object[item.name]"></span>
 								</td>

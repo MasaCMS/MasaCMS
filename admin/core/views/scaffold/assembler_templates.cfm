@@ -297,6 +297,15 @@
 			</select>
 		</div>
 
+		<div class="mura-control-group" v-if="data.fieldtype == 'many-to-one' || data.fieldtype == '0me-to-one'">
+			<label class="checkbox">
+			<input type="checkbox" v-model="data.listview"
+				v-bind:true-value="true"
+				v-bind:false-value="false"
+				name="listview" :checked="data.listview == true || data.listview == 1 || data.listview == 'true' ? 'checked' : null">
+			List</label>
+		</div>
+
 		<div>
 			<div class="btn-group">
 				<!---

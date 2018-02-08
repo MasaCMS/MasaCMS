@@ -174,31 +174,41 @@ Mura(function() {
 				feed.sort(sortBy,sortDir);
 			}
 
-			feed.getQuery()
-				.then(function(collection) {
+			Mura.getEntity(entityname).new().then(
+				function(entity){
+					entity.get('properties').then(function(response){
+						data.properties=response.properties.properties;
+						data.parentproperties=response.properties;
 
-				data.collection = collection;
-				data.list=collection.getAll().items;
-				data.links=collection.getAll().links;
-
-				collection.get('properties').then(function(response){
-					data.properties=response.properties.properties;
-					data.parentproperties=response.properties;
-
-					if(typeof data.parentproperties.dynamic=='undefined'){
-						data.parentproperties.dynamic=false;
-					} else if(typeof data.parentproperties.dynamic =='string'){
-						if(data.parentproperties.dynamic=='0' || data.parentproperties.dynamic.toLowerCase()=='false'){
+						if(typeof data.parentproperties.dynamic=='undefined'){
 							data.parentproperties.dynamic=false;
-						} else {
-							data.parentproperties.dynamic=true;
+						} else if(typeof data.parentproperties.dynamic =='string'){
+							if(data.parentproperties.dynamic=='0' || data.parentproperties.dynamic.toLowerCase()=='false'){
+								data.parentproperties.dynamic=false;
+							} else {
+								data.parentproperties.dynamic=true;
+							}
 						}
-					}
-					self.processProperties(data);
-					data.hasFilterApplied=hasFilterApplied;
-					listener(data);
-				});
-			});
+						self.processProperties(data);
+						data.hasFilterApplied=hasFilterApplied;
+
+						feed.expand(data.expand.join());
+
+						feed.getQuery().then(function(response){
+
+							feed.getQuery()
+								.then(function(collection) {
+
+								data.collection = collection;
+								data.list=collection.getAll().items;
+								data.links=collection.getAll().links;
+
+								listener(data);
+							});
+						});
+					});
+				}
+			);
 		},
 
 		page: function( listener,collection,action ) {
@@ -293,6 +303,7 @@ Mura(function() {
 			var orderpx = 10000;
 			var hasFilter=false;
 
+			data.expand= [];
 			data.listview = [];
 
 			data.properties.sort(self.propertySort);
@@ -356,9 +367,10 @@ Mura(function() {
 							|| item.name=='company'
 							|| item.name=='organization'
 						)
-						 && (!item.relatesto || item.relatesto=="")){
+						 && (!item.relatesto || item.relatesto=="")
+					 ){
 						item.listposition = x;
-						data.listview.push(data.properties[x]);
+						data.listview.push(item);
 					}
 				}
 
@@ -370,6 +382,13 @@ Mura(function() {
 							data.listview.push(data.properties[x]);
 						}
 					}
+				}
+			}
+
+			for(var x = 0;x < data.listview.length;x++) {
+				var item=data.listview[x];
+				if(item.fieldtype=='one-to-one' || item.fieldtype=='many-to-one'){
+					data.expand.push(item.name);
 				}
 			}
 
