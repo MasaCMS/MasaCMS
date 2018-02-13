@@ -321,10 +321,12 @@
 	<cfset var currentFilename=arguments.event.getValue('currentFilename')>
 	<cfset var currentFilenameAdjusted=arguments.event.getValue('currentFilenameAdjusted')>
 
-	<cfif len(currentFilename) and currentFilename neq currentFilenameAdjusted>
-		<cfset arguments.event.setValue('currentFilename',arguments.event.getValue('contentBean').getFilename() & right(currentFilename,len(currentFilename)-len(currentFilenameAdjusted)))>
-	<cfelse>
-		<cfset arguments.event.setValue('currentFilename',arguments.event.getValue('contentBean').getFilename())>
+	<cfif not arguments.event.getValue('muraSiteIDRedirect')>
+		<cfif len(currentFilename) and currentFilename neq currentFilenameAdjusted>
+			<cfset arguments.event.setValue('currentFilename',arguments.event.getValue('contentBean').getFilename() & right(currentFilename,len(currentFilename)-len(currentFilenameAdjusted)))>
+		<cfelse>
+			<cfset arguments.event.setValue('currentFilename',arguments.event.getValue('contentBean').getFilename())>
+		</cfif>
 	</cfif>
 
 	<cfif request.returnFormat eq 'JSON'>
@@ -721,7 +723,16 @@
 	<cfset var requestedfilename=arguments.event.getValue('currentFilenameAdjusted')>
 	<cfset var contentFilename=arguments.event.getValue('contentBean').getFilename()>
 	<cfset var renderer=arguments.event.getContentRenderer()>
-	
+
+	<cfset arguments.event.setValue(
+		'muraSiteIDRedirect',
+		(isBoolean(renderer.siteIDInURLS)
+		and (
+				renderer.siteIDInURLS and not request.muraSiteIDInURL
+				or not renderer.siteIDInURLS and request.muraSiteIDInURL
+			))
+		)>
+
 	<cfif (
 			request.returnFormat eq 'HTML'
 				and  arguments.event.getValue('muraForceFilename')
@@ -729,13 +740,7 @@
 				and len(requestedfilename)
 				and requestedfilename neq contentFilename
 
-			) or (
-				isBoolean(renderer.siteIDInURLS)
-				and (
-						renderer.siteIDInURLS and not request.muraSiteIDInURL
-						or not renderer.siteIDInURLS and request.muraSiteIDInURL
-					)
-				)>
+			) or arguments.event.getValue('muraSiteIDRedirect')>
 		<cfset arguments.event.getHandler("standardWrongFilename").handle(arguments.event)>
 	</cfif>
 </cffunction>
