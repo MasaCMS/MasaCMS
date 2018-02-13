@@ -16583,7 +16583,8 @@ Mura.Feed = Mura.Core.extend(
 		 * @return {Mura.Feed}          Self
 		 */
 		openGrouping: function() {
-			this.queryString += '&openGrouping';
+			this.queryString += '&openGrouping[' + this.propIndex + ']';
+			this.propIndex++;
 			return this;
 		},
 
@@ -16593,7 +16594,7 @@ Mura.Feed = Mura.Core.extend(
 		 * @return {Mura.Feed}          Self
 		 */
 		andOpenGrouping: function(criteria) {
-			this.queryString += '&andOpenGrouping' + this.propIndex + ']';
+			this.queryString += '&andOpenGrouping[' + this.propIndex + ']';
 			this.propIndex++;
 			return this;
 		},
