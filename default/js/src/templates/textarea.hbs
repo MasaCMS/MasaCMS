@@ -1,5 +1,5 @@
 <div class="{{{inputWrapperClass}}}"  id="field-{{name}}-container">
 	<label for="{{name}}">{{#if summary}}{{summary}}{{else}}{{label}}{{/if}}{{#if isrequired}} <ins>Required</ins>{{/if}}</label>
 	{{#if summary}}</br>{{/if}}
-	<textarea {{{commonInputAttributes}}}>{{value}}</textarea>
+	<textarea {{{commonInputAttributes}}}{{#if placeholder}} placeholder="{{placeholder}}"{{/if}}>{{value}}</textarea>
 </div>
