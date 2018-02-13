@@ -270,6 +270,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var cgi_path="">
 	<cfparam name="url.path" default="" />
 
+	<cfset request.muraSiteIDInURL=true>
+
 	<cfset siteID = listGetAt(cgi.script_name,listLen(cgi.script_name,"/")-1,"/") />
 	<cfset cgi_path=setCGIPath(siteId)>
 
@@ -307,10 +309,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var pathArray=listToArray(cgi_path,"/,\")>
 		<cfif arrayLen(pathArray) and application.settingsManager.siteExists(pathArray[1])>
 			<cfset siteid=pathArray[1]>
+			<cfset request.muraSiteIDInURL=true>
 			<cfif arrayLen(pathArray) gt 1>
 				<cfset pathArray=arrayToList(pathArray)>
 				<cfset pathArray=listToArray(ListRest(pathArray))>
-				<cfset url.path="/#arrayToList(pathArray,'/')#/#url.path#" />
+				<cfset url.path="#arrayToList(pathArray,'/')##url.path#" />
 			<cfelse>
 				<cfset url.path="#url.path#" />
 			</cfif>
@@ -330,7 +333,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset forcePathDirectoryStructure(cgi_path,siteID)>
 
 	<cfset url.path="#application.configBean.getStub()#/#siteID#/#url.path#">
-
 
 	<cfset request.preformated=true/>
 	<cfset var last=listLast(url.path,'/')>
@@ -435,6 +437,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfset request.siteid =arguments.siteid>
+	<cfset request.muraSiteIDInURL=false>
 	<cfset request.servletEvent = createObject("component","mura.servletEvent").init() />
 	<cfset request.servletEvent.setValue("muraValidateDomain",arguments.validateDomain)>
 	<cfset request.servletEvent.setValue("currentfilename",arguments.filename)>

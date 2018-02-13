@@ -79,6 +79,8 @@ component output="false" extends="mura.cfobject" hint="This provides specialized
 		param name="request.showMeta" default=0;
 		param name="request.forceSSL" default=0;
 		param name="request.muraForceFilename" default=true;
+		param name="request.muraSiteIDInURL" default=false;
+
 		setValue('HandlerFactory',application.pluginManager.getStandardEventFactory(getValue('siteid')));
 		setValue("MuraScope",createObject("component","mura.MuraScope"));
 		getValue('MuraScope').setEvent(this);

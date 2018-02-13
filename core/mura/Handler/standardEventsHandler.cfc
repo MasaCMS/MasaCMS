@@ -720,8 +720,22 @@
 	<cfargument name="event" required="true">
 	<cfset var requestedfilename=arguments.event.getValue('currentFilenameAdjusted')>
 	<cfset var contentFilename=arguments.event.getValue('contentBean').getFilename()>
+	<cfset var renderer=arguments.event.getContentRenderer()>
+	
+	<cfif (
+			request.returnFormat eq 'HTML'
+				and  arguments.event.getValue('muraForceFilename')
+				and contentFilename neq '404'
+				and len(requestedfilename)
+				and requestedfilename neq contentFilename
 
-	<cfif request.returnFormat eq 'HTML' and  arguments.event.getValue('muraForceFilename') and contentFilename neq '404' and len(requestedfilename) and requestedfilename neq contentFilename>
+			) or (
+				isBoolean(renderer.siteIDInURLS)
+				and (
+						renderer.siteIDInURLS and not request.muraSiteIDInURL
+						or not renderer.siteIDInURLS and request.muraSiteIDInURL
+					)
+				)>
 		<cfset arguments.event.getHandler("standardWrongFilename").handle(arguments.event)>
 	</cfif>
 </cffunction>
