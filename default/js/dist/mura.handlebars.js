@@ -13024,7 +13024,8 @@ return /******/ (function(modules) { // webpackBootstrap
 			 * @return {Mura.Feed}          Self
 			 */
 			openGrouping: function() {
-				this.queryString += '&openGrouping';
+				this.queryString += '&openGrouping[' + this.propIndex + ']';
+				this.propIndex++;
 				return this;
 			},
 
@@ -13034,7 +13035,8 @@ return /******/ (function(modules) { // webpackBootstrap
 			 * @return {Mura.Feed}          Self
 			 */
 			andOpenGrouping: function(criteria) {
-				this.queryString += '&andOpenGrouping';
+				this.queryString += '&andOpenGrouping[' + this.propIndex + ']';
+				this.propIndex++;
 				return this;
 			},
 
@@ -13044,7 +13046,8 @@ return /******/ (function(modules) { // webpackBootstrap
 			 * @return {Mura.Feed}          Self
 			 */
 			closeGrouping: function(criteria) {
-				this.queryString += '&closeGrouping:';
+				this.queryString += '&closeGrouping[' + this.propIndex + ']';
+				this.propIndex++;
 				return this;
 			},
 
