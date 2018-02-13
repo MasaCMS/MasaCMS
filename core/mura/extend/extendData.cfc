@@ -383,7 +383,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 			<cfelse>
 				<cftry>
-					<cfset extData.data['#arguments.rs.name#']=getContentRenderer().setDynamicContent(arguments.rs.defaultValue)>
+					<cfset var returnExtendedAttributeDefaultWhenEmptyAttributeValue=variables.configBean.getValue(property='returnExtendedAttributeDefaultWhenEmptyAttributeValue',defaultValue=true)>
+					<cfif yesNoFormat(returnExtendedAttributeDefaultWhenEmptyAttributeValue)>
+						<cfset extData.data['#arguments.rs.name#']=getContentRenderer().setDynamicContent(arguments.rs.defaultValue)>
+					<cfelse>
+						<cfset extData.data['#arguments.rs.name#']=''>
+					</cfif>
 					<cfcatch><cfset extData.data['#arguments.rs.name#']=''></cfcatch>
 				</cftry>
 			</cfif>
