@@ -100,8 +100,15 @@ component extends="mura.bean.bean" entityname="dataCollection" hint="This provid
 			}
 		}
 
-		return super.set(arguments.data);
+		var prop='';
 
+		for(prop in arguments.data){
+			if (IsSimpleValue(prop) && !isNull(arguments.data['#prop#']) && Len(prop) && !(prop==getPrimaryKey() && !len(arguments.data['#prop#'])) ) {
+				setValue(prop,arguments.data['#prop#']);
+			}
+		}
+
+		return this;
 	}
 
 	function getValidations( content = '',prefix='' ) {

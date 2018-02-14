@@ -75,7 +75,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var thefield = "" />
 		<cfset var f = "" />
 		<cfset var theXml = "" />
-		<cfset var ignoreList='_p,ASYNC,CSS,CSRF_TOKEN,CSRF_TOKEN_EXPIRES,INSTANCEID,OBJECTICONCLASS,OBJECTID,PERM,OBJECT,OBJECTNAME,OBJECTICONCLASS,VIEW,INITED,LABEL,ASYNC,REPONSECHART,ISCONFIGURATOR,CONTENTID,CONTENTHISTID,NOCACHE,DOACTION,SUBMIT,MLID,SITEID,FORMID,POLLLIST,REDIRECT_URL,REDIRECT_LABEL,X,Y,UKEY,HKEY,formfield1234567891,formfield1234567892,formfield1234567893,formfield1234567894,INITED,useProtect,linkservid,useReCAPTCHA,g-recaptcha-response,grecaptcharesponse,RENDER,RESPONSECHART' />
+		<cfset var ignoreList = '_P,CSSCLASS,ASYNC,CSS,CSRF_TOKEN,CSRF_TOKEN_EXPIRES,INSTANCEID,OBJECTICONCLASS,OBJECTID,PERM,OBJECT,OBJECTNAME,OBJECTICONCLASS,VIEW,INITED,LABEL,ASYNC,REPONSECHART,ISCONFIGURATOR,CONTENTID,CONTENTHISTID,NOCACHE,DOACTION,SUBMIT,MLID,SITEID,FORMID,POLLLIST,REDIRECT_URL,REDIRECT_LABEL,X,Y,UKEY,HKEY,formfield1234567891,formfield1234567892,formfield1234567893,formfield1234567894,INITED,useProtect,linkservid,useReCAPTCHA,g-recaptcha-response,grecaptcharesponse,RENDER,RESPONSECHART' />
 		<cfset var scopeCheck=structNew()>
 
 		<cfparam name="info.fieldnames" default=""/>
@@ -96,7 +96,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 
 		<cfset info['responseid'] = responseid />
-
+		
 		<cfloop list="#fieldlist#" index="f">
 			<cfif Not ListFindNoCase(ignoreList, f)>
 				<cfif action eq 'create' and right(f,8) eq '_default'>
