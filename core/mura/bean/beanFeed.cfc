@@ -272,6 +272,7 @@ function setParams(required any params) output=false {
 
 function addParam(required string field="", required string relationship="and", required string criteria="", required string condition="EQUALS", required string datatype="") output=false {
 	var rows=1;
+
 	if ( structKeyExists(arguments,'column') ) {
 		arguments.field=arguments.column;
 	}
@@ -281,6 +282,12 @@ function addParam(required string field="", required string relationship="and", 
 	if ( structKeyExists(arguments,'value') ) {
 		arguments.criteria=arguments.value;
 	}
+
+	if(isValid('variablename',arguments.field) && isdefined('set#arguments.field#')){
+			setValue(arguments.field,arguments.criteria);
+			return this;
+	}
+
 	if ( structKeyExists(variables.instance.fieldAliases,arguments.field) ) {
 		arguments.datatype=variables.instance.fieldAliases[arguments.field].datatype;
 		arguments.field=variables.instance.fieldAliases[arguments.field].field;

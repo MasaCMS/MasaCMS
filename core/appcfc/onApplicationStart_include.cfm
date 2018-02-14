@@ -453,8 +453,8 @@ if ( application.setupComplete ) {
 	variables.rsRequirements=application.serviceFactory.getBean('fileWriter').getDirectoryList(directory="#variables.basedir#/requirements/");
 
 	for(i=1;i <= variables.rsRequirements.recordcount;i++){
-		if ( variables.rsRequirements.type[i] == "dir" && variables.rsRequirements.name[i] != '.svn' && !structKeyExists(this.mappings,"/#variables.rsRequirements.name[i]#") ) {
-			local.fileWriter.appendFile(file="#variables.basedir#/config/mappings.cfm", output='<cfset this.mappings["/#variables.rsRequirements.name[i]#"] = variables.basedir & "/requirements/#variables.rsRequirements.name[i]#">');
+		if ( variables.rsRequirements['type'][i] == "dir" && variables.rsRequirements['name'][i] != '.svn' && !structKeyExists(this.mappings,"/#variables.rsRequirements['name'][i]#") ) {
+			local.fileWriter.appendFile(file="#variables.basedir#/config/mappings.cfm", output='<cfset this.mappings["/#variables.rsRequirements['name'][i]#"] = variables.basedir & "/requirements/#variables.rsRequirements['name'][i]#">');
 		}
 	}
 
@@ -559,7 +559,7 @@ if ( application.setupComplete ) {
 
 		if (
 				fileExists(application.configBean.getWebRoot() & "/config/appcfc/onApplicationStart_method.cfm") &&
-				fileExists(application.configBean.getWebRoot() & "/config/lockdown.cfm") 
+				fileExists(application.configBean.getWebRoot() & "/config/lockdown.cfm")
 			) {
 			fileDelete(application.configBean.getWebRoot() & "/config/lockdown.cfm");
 		}
@@ -743,7 +743,7 @@ if ( application.setupComplete ) {
 	variables.rsSites=application.settingsManager.getList();
 
 	for(i=1;i <= variables.rsSites.recordcount;i++){
-		variables.siteBean=application.settingsManager.getSite(variables.rsSites.siteID[i]);
+		variables.siteBean=application.settingsManager.getSite(variables.rsSites['siteid'][i]);
 		variables.themedir=expandPath(variables.siteBean.getThemeIncludePath());
 		if ( fileExists(variables.themedir & '/config.xml.cfm') ) {
 			variables.themeConfig='config.xml.cfm';
@@ -762,13 +762,13 @@ if ( application.setupComplete ) {
 			}
 			if ( IsValid('xml', variables.themeConfig) ) {
 				variables.themeConfig=xmlParse(variables.themeConfig);
-				application.configBean.getClassExtensionManager().loadConfigXML(variables.themeConfig,variables.rsSites.siteid[i]);
+				application.configBean.getClassExtensionManager().loadConfigXML(variables.themeConfig,variables.rsSites['siteid'][i]);
 			}
 		}
 		variables.localHandler=variables.siteBean.getLocalHandler();
 		if ( isObject(variables.localHandler) ) {
 			if ( structKeyExists(variables.localhandler,"onApplicationLoad") ) {
-				variables.pluginEvent.setValue("siteID",variables.rsSites.siteID[i]);
+				variables.pluginEvent.setValue("siteID",variables.rsSites['siteid'][i]);
 				variables.pluginEvent.loadSiteRelatedObjects();
 				if ( !isDefined('variables.localhandler.injectMethod') ) {
 					variables.localhandler.injectMethod=variables.pluginEvent.injectMethod;
@@ -788,7 +788,7 @@ if ( application.setupComplete ) {
 		if ( fileExists(variables.expandedPath) ) {
 			variables.themeHandler=createObject("component","#variables.siteBean.getThemeAssetMap()#.eventHandler").init();
 			if ( structKeyExists(variables.themeHandler,"onApplicationLoad") ) {
-				variables.pluginEvent.setValue("siteID",variables.rsSites.siteID[i]);
+				variables.pluginEvent.setValue("siteID",variables.rsSites['siteid'][i]);
 				variables.pluginEvent.loadSiteRelatedObjects();
 				if ( !isDefined('variables.themeHandler.injectMethod') ) {
 					variables.themeHandler.injectMethod=variables.pluginEvent.injectMethod;
@@ -804,7 +804,7 @@ if ( application.setupComplete ) {
 				variables.themeHandler.onApplicationLoad(event=variables.pluginEvent,$=variables.pluginEvent.getValue("muraScope"),mura=variables.pluginEvent.getValue("muraScope"),m=variables.pluginEvent.getValue("muraScope"));
 				application.pluginManager.commitTracepoint(variables.tracepoint);
 			}
-			application.pluginManager.addEventHandler(variables.themeHandler,variables.rsSites.siteID[i]);
+			application.pluginManager.addEventHandler(variables.themeHandler,variables.rsSites['siteid'][i]);
 		}
 
 	}
@@ -853,13 +853,13 @@ if ( application.setupComplete ) {
 
 	if(local.rs.recordcount){
 		for(i=1;i <= local.rs.recordcount;i++){
-			if ( !listFind('.gitignore,.svn,Application.cfc,assets,common,core,framework.cfc,index.cfm,temp,custom,framework',local.rs.name[i]) ) {
+			if ( !listFind('.gitignore,.svn,Application.cfc,assets,common,core,framework.cfc,index.cfm,temp,custom,framework',local.rs['name'][i]) ) {
 				try {
 					local.fileWriter.touchDir(local.tempDir);
-					if ( local.rs.type[i] == 'dir' ) {
-						local.fileWriter.renameDir(directory=local.rs.directory[i] & "/" & local.rs.name[i],newDirectory=local.rs.directory[i] & "/temp/" & local.rs.name[i] );
+					if ( local.rs['type'][i] == 'dir' ) {
+						local.fileWriter.renameDir(directory=local.rs['directory'][i] & "/" & local.rs['name'][i],newDirectory=local.rs['directory'][i] & "/temp/" & local.rs['name'][i] );
 					} else {
-						local.fileWriter.renameFile(source=local.rs.directory[i] & "/" & local.rs.name[i],destination=local.rs.directory[i] & "/temp/" & local.rs.name[i] );
+						local.fileWriter.renameFile(source=local.rs['directory'][i] & "/" & local.rs['name'][i],destination=local.rs['directory'][i] & "/temp/" & local.rs['name'][i] );
 					}
 				} catch (any cfcatch) {
 				}
