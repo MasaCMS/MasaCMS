@@ -4810,7 +4810,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
                 function() {
                     if (find(
-                            ".cffp_applied  .cffp_mm .cffp_kp"
+                            ".cffp_applied,  .cffp_mm, .cffp_kp"
                         ).length) {
                         var fileref = document.createElement(
                             'script')
@@ -4820,7 +4820,7 @@ return /******/ (function(modules) { // webpackBootstrap
                             .requirementspath +
                             '/cfformprotect/js/cffp.js'
                         )
-
+                        
                         document.getElementsByTagName(
                             "head")[0].appendChild(
                             fileref)

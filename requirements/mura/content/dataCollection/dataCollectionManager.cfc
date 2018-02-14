@@ -50,12 +50,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="configBean" type="any" required="yes"/>
 		<cfargument name="settingsManager" type="any" required="yes"/>
 		<cfargument name="fileManager" type="any" required="yes"/>
-		
+
 		<cfset variables.configBean=arguments.configBean />
 		<cfset variables.settingsManager=arguments.settingsManager />
 		<cfset variables.fileManager=arguments.fileManager />
 		<cfset variables.dsn=variables.configBean.getDatasource()/>
-		
+
 		<cfreturn this />
 	</cffunction>
 
@@ -75,7 +75,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var thefield = "" />
 		<cfset var f = "" />
 		<cfset var theXml = "" />
-		<cfset var ignoreList = 'ASYNC,CSS,CSRF_TOKEN,CSRF_TOKEN_EXPIRES,INSTANCEID,OBJECTICONCLASS,OBJECTID,PERM,OBJECT,OBJECTNAME,OBJECTICONCLASS,VIEW,INITED,LABEL,ASYNC,REPONSECHART,ISCONFIGURATOR,CONTENTID,CONTENTHISTID,NOCACHE,DOACTION,SUBMIT,MLID,SITEID,FORMID,POLLLIST,REDIRECT_URL,REDIRECT_LABEL,X,Y,UKEY,HKEY,formfield1234567891,formfield1234567892,formfield1234567893,formfield1234567894,INITED,useProtect,linkservid,useReCAPTCHA,g-recaptcha-response,grecaptcharesponse,RENDER,RESPONSECHART' />
+		<cfset var ignoreList = '_P,CSSCLASS,ASYNC,CSS,CSRF_TOKEN,CSRF_TOKEN_EXPIRES,INSTANCEID,OBJECTICONCLASS,OBJECTID,PERM,OBJECT,OBJECTNAME,OBJECTICONCLASS,VIEW,INITED,LABEL,ASYNC,REPONSECHART,ISCONFIGURATOR,CONTENTID,CONTENTHISTID,NOCACHE,DOACTION,SUBMIT,MLID,SITEID,FORMID,POLLLIST,REDIRECT_URL,REDIRECT_LABEL,X,Y,UKEY,HKEY,formfield1234567891,formfield1234567892,formfield1234567893,formfield1234567894,INITED,useProtect,linkservid,useReCAPTCHA,g-recaptcha-response,grecaptcharesponse,RENDER,RESPONSECHART' />
 		<cfset var scopeCheck=structNew()>
 
 		<cfparam name="info.fieldnames" default=""/>
@@ -96,7 +96,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 
 		<cfset info['responseid'] = responseid />
-
+		
 		<cfloop list="#fieldlist#" index="f">
 			<cfif Not ListFindNoCase(ignoreList, f)>
 				<cfif action eq 'create' and right(f,8) eq '_default'>
@@ -235,7 +235,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset stop = lsParseDateTime(arguments.data.date2) />
 			<cfset stop = createdatetime(year(stop),month(stop),day(stop),arguments.data.hour2,arguments.data.minute2,59)>
 		</cfif>
-				
+
 		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 			select tformresponsepackets.* from tformresponsepackets
 			<cfif extend>
@@ -367,7 +367,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cffunction name="_deserializeWDDX" output="false">
 		<cfargument name="wddx">
 		<cfwddx action="wddx2cfml" input="#arguments.wddx#" output="local.data">
-			
+
 		<cfreturn local.data>
 	</cffunction>
 </cfcomponent>
