@@ -170,22 +170,22 @@
 	<cfset var webroot=expandPath('/muraWRM')>
 
 	<!--- make sure that the file cache directory exists, for node level files --->
-	<cfif not directoryExists("#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#cache#variables.configBean.getFileDelim()#file")>
+	<cfif not directoryExists("#variables.configBean.getFileDir()#/#arguments.siteid#/cache/file")>
 
-		<cfif not directoryExists("#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid#")>
-			<cfset variables.fileWriter.createDir(directory="#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid#")>
+		<cfif not directoryExists("#variables.configBean.getFileDir()#/#arguments.siteid#")>
+			<cfset variables.fileWriter.createDir(directory="#variables.configBean.getFileDir()#/#arguments.siteid#")>
 		</cfif>
 
-		<cfif not directoryExists("#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#cache")>
-			<cfset variables.fileWriter.createDir(directory="#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#cache")>
+		<cfif not directoryExists("#variables.configBean.getFileDir()#/#arguments.siteid#/cache")>
+			<cfset variables.fileWriter.createDir(directory="#variables.configBean.getFileDir()#/#arguments.siteid#/cache")>
 		</cfif>
 
-		<cfset variables.fileWriter.createDir(directory="#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#cache#variables.configBean.getFileDelim()#file")>
+		<cfset variables.fileWriter.createDir(directory="#variables.configBean.getFileDir()#/#arguments.siteid#/cache/file")>
 	</cfif>
 
 	<!--- make sure that the asset directory exists, for fckeditor assets --->
-	<cfif not directoryExists("#variables.configBean.getAssetDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#assets")>
-		<cfset variables.fileWriter.createDir(directory="#variables.configBean.getAssetDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#assets")>
+	<cfif not directoryExists("#variables.configBean.getAssetDir()#/#arguments.siteid#/assets")>
+		<cfset variables.fileWriter.createDir(directory="#variables.configBean.getAssetDir()#/#arguments.siteid#/assets")>
 	</cfif>
 
 	<cfif variables.configBean.getSiteIDInURLS() and not fileExists("#variables.configBean.getSiteDir()#/#arguments.siteid#/index.cfm")>
