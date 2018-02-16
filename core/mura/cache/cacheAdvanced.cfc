@@ -59,23 +59,23 @@ component extends="mura.cache.cacheAbstract" hint="This allows Mura to use core 
 	}
 
 	public any function set(key,context,timespan=1,idleTime=1) {
-
 		variables.collection.put( getHashKey( arguments.key ), arguments.context, arguments.timespan, arguments.idleTime );
 
 	}
 
-	public any function get(key,context,timespan= CreateTimeSpan(1,0,0,0) ,idleTime=CreateTimeSpan(1,0,0,0)) {
+	public any function get(key, context, timespan=createTimeSpan(1,0,0,0), idleTime=createTimeSpan(1,0,0,0)) {
+		var local.exists = has( arguments.key );
+		
+		if ( local.exists ) {
+			return variables.collection.get(getHashKey( arguments.key ));
+		}
 
-		if ( !has( arguments.key ) && isDefined("arguments.context") ) {
+		if ( !local.exists && isDefined("arguments.context") ) {
 			set( arguments.key, arguments.context,arguments.timespan,arguments.idleTime );
 		}
 
-		if ( !has( arguments.key ) && hasParent() && getParent().has( arguments.key ) ) {
+		if ( !local.exists && hasParent() && getParent().has( arguments.key ) ) {
 			return getParent().get( arguments.key );
-		}
-
-		if ( has( arguments.key ) ) {
-			return variables.collection.get(getHashKey( arguments.key ));
 		}
 
 		if ( isDefined("arguments.context") ) {
@@ -98,6 +98,9 @@ component extends="mura.cache.cacheAbstract" hint="This allows Mura to use core 
 	}
 
 	public any function has(key) {
+		if ( isDefined('request.purgeCache') && yesNoFormat(request.purgeCache)) {
+			return false;
+		}
 		return variables.collection.has(getHashKey( arguments.key ) );
 	}
 
