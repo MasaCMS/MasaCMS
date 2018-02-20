@@ -485,9 +485,21 @@ component extends="mura.bean.beanFeed" entityName="feed" table="tcontentfeeds" o
 	}
 
 	public function addParam(required string field="", required string relationship="and", required string criteria="", required string condition="EQUALS", required string datatype="") output=false {
-		if ( isDefined('arguments.column') ) {
+		if ( structKeyExists(arguments,'column') ) {
 			arguments.field=arguments.column;
 		}
+		if ( structKeyExists(arguments,'name') ) {
+			arguments.field=arguments.name;
+		}
+		if ( structKeyExists(arguments,'value') ) {
+			arguments.criteria=arguments.value;
+		}
+
+		if(arguments.field != 'categoryid' && isValid('variablename',arguments.field) && isdefined('set#arguments.field#')){
+				setValue(arguments.field,arguments.criteria);
+				return this;
+		}
+
 		if ( listFindNoCase('tcontentcategories.categoryid,categoryid,category',arguments.field) ) {
 			arguments.field='tcontentcategoryassign.categoryid';
 		} else if ( arguments.field == 'categorypathid' ) {
