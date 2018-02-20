@@ -16694,6 +16694,18 @@ Mura.Feed = Mura.Core.extend(
 		},
 
 		/**
+		 * liveOnly - Set whether to return all content or only content that is currently live.
+		 * This only works if the user has module level access to the current site's content
+		 *
+		 * @param  {number} liveOnly 0 or 1
+		 * @return {Mura.Feed}              Self
+		 */
+		liveOnly: function(maxItems) {
+			this.queryString += '&liveOnly=' + encodeURIComponent(liveOnly);
+			return this;
+		},
+
+		/**
 		 * groupBy - Sets property or properties to group by
 		 *
 		 * @param  {string} groupBy
