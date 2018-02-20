@@ -350,6 +350,21 @@ component extends="mura.bean.beanFeed" entityName="feed" table="tcontentfeeds" o
 		return set('isFeaturesOnly', arguments.value);
 	}
 
+	public function setLiveOnly(any liveOnly) output=false {
+		if ( isBoolean(arguments.liveOnly) ) {
+			if(arguments.liveOnly){
+				variables.instance.liveOnly = 1;
+			} else {
+				variables.instance.liveOnly = 0;
+			}
+		}
+		return this;
+	}
+
+	public function liveOnly(any value) output=false {
+		return setLiveOnly(arguments.value);
+	}
+
 	public function setShowNavOnly(any showNavOnly) output=false {
 		if ( isBoolean(arguments.showNavOnly) ) {
 			if(arguments.showNavOnly){
