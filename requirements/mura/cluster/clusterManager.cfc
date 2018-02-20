@@ -136,7 +136,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif variables.broadcastClusterCommands>
 		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsCommands')#">
-			select * from tclustercommands where instanceID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#application.instanceID#">
+			select * from tclustercommands
+				where instanceID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#application.instanceID#">
+				and created < <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
 		</cfquery>
 
 		<cfloop query="rsCommands">
@@ -165,19 +167,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="broadcastCommand" output="false">
 	<cfargument name="command" required="true" default="">
+	<cfargument name="interval" required="true" default="0">
 
 	<cfif variables.broadcastClusterCommands>
 		<cfset var rsPeers=getPeers()>
+		<cfset var broadcastTime=now()>
 
 		<cfif rsPeers.recordcount>
 			<cfloop query="rsPeers">
+				<cfset broadcasttime=DateAdd("s", arguments.interval, broadcastTime)>
 				<cfquery>
 					insert into tclustercommands (commandID,instanceID,command,created)
 						values(
 						'#createUUID()#',
 						<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsPeers.instanceID#">,
 						<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.command#">,
-						<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
+						<cfqueryparam cfsqltype="cf_sql_timestamp" value="#broadcastTime#">
 						)
 				</cfquery>
 			</cfloop>
@@ -192,7 +197,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset touchInstance()>
 
 	<cfif arguments.broadcast and variables.broadcastAppreloads>
-		<cfset broadcastCommand("getBean('settingsManager').remoteReload()")>
+		<cfset broadcastCommand(command="getBean('settingsManager').remoteReload()",interval=variables.configBean.getValue(property="broadcastAppreloadInterval",defaultValue=0))>
 		<cfquery>
 			delete from tclustercommands where instanceid not in (select instanceid from tclusterpeers)
 			and created < <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd('d',-1,now())#">

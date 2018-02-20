@@ -34,6 +34,8 @@
         .addIndex('userid')
         .addColumn(column="siteid",dataType="varchar",length=25)
         .addIndex('siteid');
+
+    dbUtility.setTable("tclustercommands").addIndex("created");
 </cfscript>
 
 <cfquery>
