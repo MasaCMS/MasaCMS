@@ -511,7 +511,7 @@ component extends="mura.bean.beanFeed" entityName="feed" table="tcontentfeeds" o
 			arguments.criteria=arguments.value;
 		}
 
-		if(arguments.field != 'categoryid' && isValid('variablename',arguments.field) && isdefined('set#arguments.field#')){
+		if(!listFind('categoryid,contentid',arguments.field ) && isValid('variablename',arguments.field) && isdefined('set#arguments.field#')){
 				setValue(arguments.field,arguments.criteria);
 				return this;
 		}

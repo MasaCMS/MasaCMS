@@ -303,7 +303,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		<cfif not started>
 			<cfoutput>
-				<p>#application.rbFactory.getKeyValue(session.rb,'sitemanager.noresults')#</p>
+				<div class="help-block-empty">#application.rbFactory.getKeyValue(session.rb,'sitemanager.noresults')#</div>
 			</cfoutput>
 		</cfif>
 
