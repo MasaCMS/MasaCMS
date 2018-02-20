@@ -13133,7 +13133,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			 * @param  {number} liveOnly 0 or 1
 			 * @return {Mura.Feed}              Self
 			 */
-			liveOnly: function(maxItems) {
+			liveOnly: function(liveOnly) {
 				this.queryString += '&liveOnly=' + encodeURIComponent(liveOnly);
 				return this;
 			},
