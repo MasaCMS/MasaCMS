@@ -543,7 +543,32 @@ component extends="mura.bean.beanFeed" entityName="feed" table="tcontentfeeds" o
 			arguments.field='tcontenttags.tag';
 		}
 		arguments.column=arguments.field;
-		return super.addParam(argumentCollection=arguments);
+
+		if ( structKeyExists(variables.instance.fieldAliases,arguments.field) ) {
+			arguments.datatype=variables.instance.fieldAliases[arguments.field].datatype;
+			arguments.field=variables.instance.fieldAliases[arguments.field].field;
+		}
+		if ( !len(arguments.dataType) ) {
+			loadTableMetaData();
+			if ( !structKeyExists(variables, "dbUtility") ) {
+				variables.dbUtility = getBean('dbUtility');
+			}
+			var tempField=listLast(arguments.field,'.');
+			if ( structKeyExists(application.objectMappings[variables.instance.entityName].columns,tempField) ) {
+				arguments.dataType=variables.dbUtility.transformParamType(application.objectMappings[variables.instance.entityName].columns[tempField].dataType);
+			} else {
+				arguments.dataType="varchar";
+			}
+		}
+		queryAddRow(variables.instance.params,1);
+		rows = variables.instance.params.recordcount;
+		querysetcell(variables.instance.params,"param",rows,rows);
+		querysetcell(variables.instance.params,"field",formatField(arguments.field),rows);
+		querysetcell(variables.instance.params,"relationship",arguments.relationship,rows);
+		querysetcell(variables.instance.params,"criteria",arguments.criteria,rows);
+		querysetcell(variables.instance.params,"condition",arguments.condition,rows);
+		querysetcell(variables.instance.params,"dataType",arguments.datatype,rows);
+		return this;
 	}
 
 	public function setAdvancedParams(required any params) output=false {
