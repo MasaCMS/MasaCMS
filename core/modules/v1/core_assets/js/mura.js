@@ -16700,7 +16700,7 @@ Mura.Feed = Mura.Core.extend(
 		 * @param  {number} liveOnly 0 or 1
 		 * @return {Mura.Feed}              Self
 		 */
-		liveOnly: function(maxItems) {
+		liveOnly: function(liveOnly) {
 			this.queryString += '&liveOnly=' + encodeURIComponent(liveOnly);
 			return this;
 		},
@@ -19524,6 +19524,10 @@ Mura.Request=Mura.Core.extend(
               query.push(Mura.escape(key) + '=' + Mura.escape(params.data[key]));
           }
 
+          if(typeof params.data['muraPointInTime'] == 'undefined' && typeof Mura.pointInTime != 'undefined'){
+              query.push('muraPointInTime=' + Mura.escape(Mura.pointInTime));
+          }
+
           query = query.join('&');
 
           Mura._request(
@@ -19537,6 +19541,7 @@ Mura.Request=Mura.Core.extend(
       }
 
       function nodeResponseHandler(error, httpResponse, body) {
+          var debug=typeof Mura.debug != 'undefined' && Mura.debug;
 
           if(typeof self.responseObject != 'undefined' && typeof httpResponse.headers['set-cookie'] != 'undefined'){
 
@@ -19544,8 +19549,10 @@ Mura.Request=Mura.Core.extend(
 
             var newSetCookies=httpResponse.headers['set-cookie'];
 
-            console.log('response cookies:');
-            console.log(httpResponse.headers['set-cookie']);
+            if(debug){
+              console.log('response cookies:');
+              console.log(httpResponse.headers['set-cookie']);
+            }
 
             if(!(newSetCookies instanceof Array)){
               newSetCookies=[newSetCookies];
@@ -19569,8 +19576,10 @@ Mura.Request=Mura.Core.extend(
               }
             }
 
-            console.log('existing 1:');
-            console.log(cookieMap);
+            if(debug){
+              console.log('existing 1:');
+              console.log(cookieMap);
+            }
 
             // pull out new cookies
             if(newSetCookies.length){
@@ -19585,8 +19594,11 @@ Mura.Request=Mura.Core.extend(
               }
             }
 
-            console.log('existing 2:');
-            console.log(cookieMap);
+            if(debug){
+              console.log('existing 2:');
+              console.log(cookieMap);
+            }
+
             var cookie='';
 
             // put cookies back in in the same order that they came out
@@ -19624,8 +19636,10 @@ Mura.Request=Mura.Core.extend(
 
             self.requestObject.headers['cookie']=cookie;
 
-            console.log('merged cookies:');
-            console.log(self.requestObject.headers['cookie']);
+            if(debug){
+              console.log('merged cookies:');
+              console.log(self.requestObject.headers['cookie']);
+            }
 
         }
 
@@ -19755,6 +19769,10 @@ Mura.Request=Mura.Core.extend(
                       key]));
               }
 
+              if(typeof params.data['muraPointInTime'] == 'undefined' && typeof Mura.pointInTime != 'undefined'){
+                  query.push('muraPointInTime=' + Mura.escape(Mura.pointInTime));
+              }
+
               query = query.join('&');
 
               setTimeout(function() {
@@ -19770,6 +19788,10 @@ Mura.Request=Mura.Core.extend(
 
           for (var key in params.data) {
               query.push(Mura.escape(key) + '=' + Mura.escape(params.data[key]));
+          }
+
+          if(typeof params.data['muraPointInTime'] == 'undefined' && typeof Mura.pointInTime != 'undefined'){
+              query.push('muraPointInTime=' + Mura.escape(Mura.pointInTime));
           }
 
           query = query.join('&');

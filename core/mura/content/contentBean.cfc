@@ -1291,10 +1291,25 @@ component extends="mura.bean.beanExtendable" entityName="content" table="tconten
 	}
 
 	public function getIsOnDisplay() output=false {
+
+		var nowAdjusted='';
+
+		if(request.muraChangesetPreview){
+			nowAdjusted=getCurrentUser().getValue("ChangesetPreviewData").publishDate;
+		}
+
+		if(isDate(request.muraPointInTime)){
+			nowAdjusted=request.muraPointInTime;
+		}
+
+		if(not isdate(nowAdjusted)){
+			nowAdjusted=now();
+		}
+
 		return variables.instance.display == 1 or
 			(
-				variables.instance.display == 2 && variables.instance.displayStart <= now()
-				AND (variables.instance.displayStop == "" || variables.instance.displayStop >= now())
+				variables.instance.display == 2 && variables.instance.displayStart <= nowAdjusted
+				AND (variables.instance.displayStop == "" || variables.instance.displayStop >= nowAdjusted)
 			)
 			and (listFind("Page,Folder,Gallery,File,Calendar,Link,Form",variables.instance.type) || listFind(variables.instance.moduleAssign,'00000000000000000000000000000000000'));
 	}

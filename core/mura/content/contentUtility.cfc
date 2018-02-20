@@ -789,6 +789,10 @@ VERSION LINK:
 				<cfset nowAdjusted=getCurrentUser().getValue("ChangesetPreviewData").publishDate>
 			</cfif>
 
+			<cfif isDate(request.muraPointInTime)>
+				<cfset nowAdjusted=request.muraPointInTime>
+			</cfif>
+
 			<cfif not isdate(nowAdjusted)>
 				<cfset nowAdjusted=now()>
 			</cfif>
