@@ -2205,8 +2205,8 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			}
 
 			if(isDefined('params.liveOnly')
-				&& isNumeric(params.liveOnly)
-				&& getBean('permUtility').getModulePerm(variables.config.entities['content'].moduleid,variables.siteid)){
+				&& isBoolean(params.liveOnly)
+				&& getBean('permUtility').getModulePerm('00000000000000000000000000000000000',variables.siteid)){
 				feed.setLiveOnly(params.liveOnly);
 			}
 		}
