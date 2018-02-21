@@ -12860,7 +12860,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			 * @return {Mura.Feed}          Self
 			 */
 			orProp: function(property) {
-				this.queryString += '&or$' + this.propIndex + '&';
+				this.queryString += '&or[' + this.propIndex + ']&';
 				this.propIndex++;
 				this.queryString += encodeURIComponent(property +'[' + this.propIndex + ']') +
 					'=';
