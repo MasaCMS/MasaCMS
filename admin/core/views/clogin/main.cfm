@@ -53,7 +53,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfsavecontent variable="focusblockheader">
   <div class="focus-block-header">
   	<img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/mura-logo@2x.png" class="mura-logo">
-				<h1 class="page-heading">#rc.$.rbKey('login.login')#</h1>
   </div><!-- /focus-block-header -->
 </cfsavecontent>
 
