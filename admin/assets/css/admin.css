@@ -36016,7 +36016,7 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 }
 .mura #page-container,
 .mura #sidebar {
-  background-color: #333;
+  background-color: #2c2c2f;
 }
 .mura .header-navbar-fixed #main-container,
 .mura #main-container {
@@ -36030,7 +36030,7 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
   padding-bottom: 15px;
 }
 .mura .nav-main-header {
-  background-color: #333;
+  background-color: #2c2c2f;
 }
 @media screen and (min-width: 992px) {
   .mura .nav-main-header {
