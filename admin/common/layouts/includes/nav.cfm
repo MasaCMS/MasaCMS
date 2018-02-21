@@ -67,11 +67,12 @@
                 </button>
                 <!-- Themes functionality initialized in App() -> uiHandleTheme() -->
                 <div class="btn-group">
-                    <strong>
-                    <a class="brand" href="http://www.getmura.com" title="Mura CMS" target="_blank">
+                    <a id="brand-logo-lg" class="brand" href="http://www.getmura.com" title="Mura CMS" target="_blank">
                         <img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/mura-logo@2x.png" class="mura-logo">
                     </a>
-                </strong>
+                    <a id="brand-logo-min" class="brand" href="http://www.getmura.com" title="Mura CMS" target="_blank">
+                        <img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/mura-icon@2x.png" class="mura-logo">
+                    </a>
                 </div>
             </div>
             <!-- END Side Header -->

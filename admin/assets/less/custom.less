@@ -1040,13 +1040,33 @@ a.no-link{
   cursor: default;
 }
 
-.side-content img.mura-logo {
-    width: 38px;
-    max-width: 38px;
-    height: 40px;
-    max-height: 40px;
-    margin-top: -13px;
-    margin-left: -10px;
+.side-content #brand-logo-lg{
+  img.mura-logo {
+    width: 96px;
+    max-width: 96px;
+    height: 26px;
+    max-height: 26px;
+    margin-top: 3px;
+    margin-left: -1px;
+  } 
+}
+.side-content #brand-logo-min{
+  display: none;
+
+ img.mura-logo {
+    width: 25px;
+    max-width: 25px;
+    height: 26px;
+    max-height: 26px;
+    margin-top: 3px;
+    margin-left: -1px;
+  }
+}
+.sidebar-mini .side-content #brand-logo-lg{
+  display: none;
+}
+.sidebar-mini .side-content #brand-logo-min{
+  display: block;
 }
 
 .sidebar-icon-right{
