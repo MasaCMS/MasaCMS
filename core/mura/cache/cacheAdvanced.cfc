@@ -65,17 +65,18 @@ component extends="mura.cache.cacheAbstract" hint="This allows Mura to use core 
 
 	public any function get(key, context, timespan=createTimeSpan(1,0,0,0), idleTime=createTimeSpan(1,0,0,0)) {
 		var local.exists = has( arguments.key );
-		
-		if ( local.exists ) {
-			return variables.collection.get(getHashKey( arguments.key ));
-		}
 
-		if ( !local.exists && isDefined("arguments.context") ) {
+    if ( !local.exists && isDefined("arguments.context") ) {
 			set( arguments.key, arguments.context,arguments.timespan,arguments.idleTime );
+      local.exists=true;
 		}
 
 		if ( !local.exists && hasParent() && getParent().has( arguments.key ) ) {
 			return getParent().get( arguments.key );
+		}
+
+		if ( local.exists ) {
+			return variables.collection.get(getHashKey( arguments.key ));
 		}
 
 		if ( isDefined("arguments.context") ) {
