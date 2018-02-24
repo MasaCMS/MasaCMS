@@ -249,7 +249,7 @@ function addParam(required string field="", required string relationship="and", 
 			setValue(arguments.field,arguments.criteria);
 			return this;
 	}
-	
+
 	if ( structKeyExists(variables.instance.fieldAliases,arguments.field) ) {
 		arguments.datatype=variables.instance.fieldAliases[arguments.field].datatype;
 		arguments.field=variables.instance.fieldAliases[arguments.field].field;
@@ -516,7 +516,7 @@ function endsWith(criteria) output=false {
 
 function null() output=false {
 	variables.instance.pendingParam.condition='=';
-	variables.instance.pendingParam.column='null';
+	variables.instance.pendingParam.criteria='null';
 	addParam(argumentCollection=variables.instance.pendingParam);
 	variables.instance.pendingParam={};
 	return this;
