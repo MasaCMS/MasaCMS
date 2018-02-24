@@ -68,7 +68,7 @@ component extends="mura.cache.cacheAbstract" hint="This allows Mura to use core 
 
     if ( !local.exists && isDefined("arguments.context") ) {
       set( arguments.key, arguments.context,arguments.timespan,arguments.idleTime );
-      local.exists=true;
+      return arguments.context;
     }
 
 		if ( !local.exists && hasParent() && getParent().has( arguments.key ) ) {
