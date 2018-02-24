@@ -118,8 +118,11 @@ if ( isDefined("application.contentServer") ) {
 	if ( listFind('_api,tasks',firstItem) ) {
 		writeOutput("#application.contentServer.handleAPIRequest('/' & local.filename)#");
 		abort;
+	} else if ( !len(cgi.path_info) ) {
+		// handle /missing.cfm/ file with 404 
+		application.contentServer.render404();
 	} else {
-
+	
 		local.fileArray=ListToArray(cgi.path_info,'\,/');
 		local.last=local.fileArray[arrayLen(local.fileArray)];
 		local.hasAllowedFile=find(".",local.last) and (application.configBean.getAllowedIndexFiles() eq '*' or listFind(application.configBean.getAllowedIndexFiles(),local.last));
