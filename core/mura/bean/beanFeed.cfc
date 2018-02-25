@@ -553,7 +553,7 @@ function endsWith(criteria) output=false {
 
 function null() output=false {
 	variables.instance.pendingParam.condition='=';
-	variables.instance.pendingParam.column='null';
+	variables.instance.pendingParam.criteria='null';
 	addParam(argumentCollection=variables.instance.pendingParam);
 	variables.instance.pendingParam={};
 	return this;
