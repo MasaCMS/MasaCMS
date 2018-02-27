@@ -54,6 +54,7 @@
 	may, if you choose, apply this exception to your own modified versions of
 	Mura CMS.
 --->
+
 <cfif not isBoolean(variables.$.event('isBlocked'))>
 	<cfset variables.$.event('isBlocked',false)>
 </cfif>
@@ -61,7 +62,6 @@
 	<div id="svLoginContainer" class="mura-login-container #this.loginWrapperClass#">
 		<div class="#this.loginWrapperInnerClass#">
 			<#variables.$.getHeaderTag('subhead1')#>#variables.$.content('title')#</#variables.$.getHeaderTag('subhead1')#>
-
 			<!---
 				SUMMARY
 				The page summary can be used to show some content before the user has logged in.
@@ -134,8 +134,34 @@
 					</cfif>
 				<cfelse>
 					<form role="form" id="login" class="mura-login-form #this.loginFormClass# <cfif this.formWrapperClass neq "">#this.formWrapperClass#</cfif>" name="frmLogin" method="post" novalidate="novalidate">
+						<!--- Use Google oAuth Button --->
+						<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google')>
+							<div class="#this.loginFormGroupWrapperClass#">
+								<div class="#this.loginFormSubmitWrapperClass#">
+									<a href="#$.getBean('googleLoginUtility').generateAuthUrl(session.urltoken)#">
+										<!--- <img src="/admin/assets/images/btn_google_signin_dark_normal_web@2x.png" /> --->
+										Sign in with Google
+									</a>
+								</div>
+							</div>
+						</cfif>
+						<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'facebook')>
+							<div class="#this.loginFormGroupWrapperClass#">
+								<div class="#this.loginFormSubmitWrapperClass#">
+									<a href="#$.getBean('facebookLoginUtility').generateAuthUrl(session.urltoken)#">
+										Sign in with Facebook
+									</a>
+								</div>
+							</div>
+						</cfif>
+
 						<fieldset>
-							<legend>#variables.$.rbKey('user.pleaselogin')#</legend>
+							<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google') or listFindNoCase($.globalConfig().getEnableOauth(), 'facebook') >
+								<legend>Or log in with your credentials</legend>
+							<cfelse>
+								<legend>#variables.$.rbKey('user.pleaselogin')#</legend>
+							</cfif>
+
 							<!--- Username --->
 							<div class="req #this.loginFormGroupWrapperClass#">
 								<label for="txtUsername" class="#this.loginFormFieldLabelClass#">

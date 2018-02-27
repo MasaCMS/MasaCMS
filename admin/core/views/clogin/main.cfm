@@ -137,6 +137,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</cfif>
 					<cfelse>
 						<form novalidate="novalidate" id="loginForm" name="frmLogin" method="post" action="index.cfm" onsubmit="return submitForm(this);">
+              <!--- Use Google oAuth Button --->
+              <cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google')>
+                <div class="mura-control-group">
+                    <a href="#$.getBean('googleLoginUtility').generateAuthUrl(session.urltoken)#">
+                      <!--- <img src="/admin/assets/images/btn_google_signin_dark_normal_web@2x.png" /> --->
+                      Sign in with Google
+                    </a>
+                </div>
+              </cfif>
+              <!--- Use Facebook oAuth Button --->
+              <cfif listFindNoCase($.globalConfig().getEnableOauth(), 'facebook')>
+                <div class="mura-control-group">
+                  <a href="#$.getBean('facebookLoginUtility').generateAuthUrl(session.urltoken)#">
+                    Sign in with Facebook
+                  </a>
+                </div>
+              </cfif>
+
+              <cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google') or listFindNoCase($.globalConfig().getEnableOauth(), 'facebook') >
+								<h3>Or log in with your credentials</h3>
+							</cfif>
 
 							<div class="mura-control-group">
 						    <label>
