@@ -18,7 +18,7 @@ component extends="mura.cfobject" accessors=true output=false {
 
 	public function updateOrCreateUserAccount(oAuth) {
 
-		m = StructKeyExists(session, 'default') //Using default site id here
+		var m = StructKeyExists(session, 'default') //Using default site id here
 			? application.serviceFactory.getBean('m').init(session.siteid)
 			: application.serviceFactory.getBean('m').init('default');
 
