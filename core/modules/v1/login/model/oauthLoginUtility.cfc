@@ -82,7 +82,7 @@ component extends="mura.cfobject" accessors=true output=false {
 		// }
 
     // Copy across user's info from oAuth if it is a brand new user
-		if (userBean.getIsNew() == '1') {
+		if (userBean.getIsNew()) {
 			userBean.setState('');
 			userBean.setPassword(createUUID());
 			userBean.setUsername(arguments.oAuth.username); //Unique?
