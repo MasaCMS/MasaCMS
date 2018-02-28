@@ -1,20 +1,4 @@
 component extends="mura.cfobject" accessors=true output=false {
-	public function init() {
-
-		return this;
-	}
-
-	function setCallbackTarget(){
-		session.mura.callbackTarget='';
-
-		if(isDefined('form.returnURL')){
-			session.mura.callbackTarget = form.returnURL;
-		} else if(isDefined('url.returnURL')){
-			session.mura.callbackTarget = url.returnURL;
-		} else {
-			session.mura.callbackTarget = getBean('configBean').getContext();
-		}
-	}
 
 	public function updateOrCreateUserAccount(oAuth) {
 
@@ -148,4 +132,5 @@ component extends="mura.cfobject" accessors=true output=false {
 
 		return true;
 	}
+
 }

@@ -140,7 +140,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
               <!--- Use Google oAuth Button --->
               <cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google')>
                 <div class="mura-control-group">
-                    <a href="#$.getBean('googleLoginUtility').generateAuthUrl(session.urltoken)#">
+                    <a href="#$.getBean('googleLoginProvider').generateAuthUrl(session.urltoken)#">
                       <!--- <img src="/admin/assets/images/btn_google_signin_dark_normal_web@2x.png" /> --->
                       Sign in with Google
                     </a>
@@ -149,7 +149,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
               <!--- Use Facebook oAuth Button --->
               <cfif listFindNoCase($.globalConfig().getEnableOauth(), 'facebook')>
                 <div class="mura-control-group">
-                  <a href="#$.getBean('facebookLoginUtility').generateAuthUrl(session.urltoken)#">
+                  <a href="#$.getBean('facebookLoginProvider').generateAuthUrl(session.urltoken)#">
                     Sign in with Facebook
                   </a>
                 </div>

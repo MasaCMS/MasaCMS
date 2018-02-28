@@ -132,7 +132,7 @@ form p#error {
 					<!--- Use Google oAuth Button --->
 					<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google')>
 						<div style="padding-bottom: 5px">
-								<a href="#$.getBean('googleLoginUtility').generateAuthUrl(session.urltoken)#">
+								<a href="#$.getBean('googleLoginProvider').generateAuthUrl(session.urltoken)#">
 									<!--- <img src="/admin/assets/images/btn_google_signin_dark_normal_web@2x.png" /> --->
 									Sign in with Google
 								</a>
@@ -141,7 +141,7 @@ form p#error {
 					<!--- Use Facebook oAuth Button --->
 					<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'facebook')>
 						<div style="padding-bottom: 5px">
-							<a href="#$.getBean('facebookLoginUtility').generateAuthUrl(session.urltoken)#">
+							<a href="#$.getBean('facebookLoginProvider').generateAuthUrl(session.urltoken)#">
 								Sign in with Facebook
 							</a>
 						</div>
