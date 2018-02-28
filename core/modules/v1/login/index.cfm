@@ -140,7 +140,7 @@
 								<div class="#this.loginFormSubmitWrapperClass#">
 									<a href="#$.getBean('googleLoginProvider').generateAuthUrl(session.urltoken)#">
 										<!--- <img src="/admin/assets/images/btn_google_signin_dark_normal_web@2x.png" /> --->
-										Sign in with Google
+										#variables.$.rbKey('login.loginwithgoogle')#
 									</a>
 								</div>
 							</div>
@@ -149,7 +149,7 @@
 							<div class="#this.loginFormGroupWrapperClass#">
 								<div class="#this.loginFormSubmitWrapperClass#">
 									<a href="#$.getBean('facebookLoginProvider').generateAuthUrl(session.urltoken)#">
-										Sign in with Facebook
+										#variables.$.rbKey('login.loginwithfacebook')#
 									</a>
 								</div>
 							</div>
@@ -157,7 +157,7 @@
 
 						<fieldset>
 							<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google') or listFindNoCase($.globalConfig().getEnableOauth(), 'facebook') >
-								<legend>Or log in with your credentials</legend>
+								<legend>#variables.$.rbKey('login.orloginwithyourcredentials')#</legend>
 							<cfelse>
 								<legend>#variables.$.rbKey('user.pleaselogin')#</legend>
 							</cfif>
