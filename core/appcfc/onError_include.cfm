@@ -77,19 +77,22 @@ if ( !request.muraTemplateMissing ) {
 		} else {
 			try {
 				local.pluginEvent=createObject("component","mura.event");
-			} catch (any cfcatch) {
-			}
+			} catch (any cfcatch) {}
 		}
 		if ( isObject(local.pluginEvent) ) {
 			local.pluginEvent.setValue("exception",arguments.exception);
 			local.pluginEvent.setValue("error",arguments.exception);
 			local.pluginEvent.setValue("eventname",arguments.eventname);
-			//try {
+			try {
 				if ( len(local.pluginEvent.getValue("siteID")) ) {
 					application.pluginManager.announceEvent("onSiteError",local.pluginEvent);
 				}
 				application.pluginManager.announceEvent("onGlobalError",local.pluginEvent);
-			//} catch (any cfcatch) {}
+			} catch (any cfcatch) {
+				if(application.configBean.getDebuggingEnabled()){
+					arguments.exception=cfcatch;
+				}
+			}
 		}
 	}
 	if ( structKeyExists(application,"configBean") ) {
