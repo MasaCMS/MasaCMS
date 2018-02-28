@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 boolean function onApplicationStart() output=false {
 	param name="application.instanceID" default=createUUID();
-	lock name="appInitBlock#application.instanceID#" type="exclusive" timeout="200" {
+	lock name="appInitBlock#application.instanceID#" type="exclusive" timeout="400" {
 		include "/muraWRM/core/appcfc/onApplicationStart_include.cfm";
 	}
 	return true;
