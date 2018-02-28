@@ -156,7 +156,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
               </cfif>
 
               <cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google') or listFindNoCase($.globalConfig().getEnableOauth(), 'facebook') >
-								<h3>#variables.$.rbKey('login.loginwithfacebook')#</h3>
+								<h3>#rc.$.rbKey('login.loginwithfacebook')#</h3>
 							</cfif>
 
 							<div class="mura-control-group">
