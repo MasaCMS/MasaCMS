@@ -134,7 +134,7 @@ form p#error {
 					</cfif>
 
 					<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google') or listFindNoCase($.globalConfig().getEnableOauth(), 'facebook') >
-						<h3>#variables.$.rbKey('login.orloginwithyourcredentials')#</h3>
+						<h3>#$.rbKey('login.orloginwithyourcredentials')#</h3>
 					</cfif>
 				</cfoutput>
 
