@@ -360,14 +360,14 @@ if ( application.setupComplete ) {
 	}
 	variables.tracer.commitTracepoint(variables.tracepoint);
 
-	if( application.configBean.getValue(property="purgeCachedQueriesOnAppreload",defaultValue=true) ){
+	if( application.configBean.getValue(property="purgeQueriesOnAppreload",defaultValue=true) ){
 		try {
 
 			application.serviceFactory.getBean('utility').clearObjectCache();
 
 		} catch (any cfcatch) {}
 	}
-	
+
 	application.objectMappings={};
 	application.objectMappings.bundleableBeans="";
 	application.objectMappings.versionedBeans="";
