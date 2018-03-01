@@ -31,7 +31,7 @@ Your custom code
  /admin/
  /tasks/
  /config/
- /requirements/mura/
+ /core/mura/
  /Application.cfc
  /index.cfm
  /MuraProxy.cfc
@@ -46,6 +46,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.cfobject" output="false" hint="This provides site gateway queries">
 
+	<cfset variables.rslists={}>
+
 	<cffunction name="init" output="false">
 		<cfargument name="configBean" type="any" required="yes"/>
 		<cfset variables.configBean=arguments.configBean />
@@ -56,7 +58,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="sortBy" default="orderno">
 		<cfargument name="sortDirection" default="asc">
 		<cfargument name="cached" default="true" />
+		<cfargument name="clearCache" default="false" />
 		<cfset var rsSites = "" />
+
+		<cfif arguments.clearCache>
+			<cfset variables.rslists={}>
+		</cfif>
 
 		<cfif (StructKeyExists(request, 'muraAppreloaded') and isBoolean(request['muraAppreloaded']) && request['muraAppreloaded']) or not StructKeyExists(variables, 'rsSites#arguments.sortBy##arguments.sortDirection#') or not arguments.cached>
 			<cfquery name="rsSites">
@@ -72,10 +79,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					asc
 				</cfif>
 			</cfquery>
-			<cfset variables["rsSites#arguments.sortBy##arguments.sortDirection#"] = rsSites />
+			<cfset variables.rslists["rsSites#arguments.sortBy##arguments.sortDirection#"] = rsSites />
 		</cfif>
 
-		<cfreturn variables["rsSites#arguments.sortBy##arguments.sortDirection#"] />
+		<cfreturn variables.rslists["rsSites#arguments.sortBy##arguments.sortDirection#"] />
 	</cffunction>
 
 </cfcomponent>

@@ -192,7 +192,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfloop>
 	</cfif>
 
-	<cfobjectcache action="clear"/>
 	<cfset variables.gateway.getList(cached=false)>
 
 </cffunction>
@@ -395,12 +394,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var builtSites=structNew()>
 	<cfset var foundSites=structNew()>
 
-	<cftry>
-		<cfobjectcache action="clear"/>
-		<cfcatch></cfcatch>
-	</cftry>
-
-	<cfset rs=getList() />
+	<cfif arguments.missingOnly>
+		<cfset rs=getList() />
+	<cfelse>
+		<cfset rs=getList(clearCache=true) />
+	</cfif>
 
 	<cfparam name="variables.sites" default="#structNew()#">
 

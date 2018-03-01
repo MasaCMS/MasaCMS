@@ -289,11 +289,12 @@ if ( application.setupComplete ) {
 	} catch (any cfcatch) {
 	}
 	variables.tracer.commitTracepoint(variables.tracepoint);
-	try {
+	if( application.configBean.getValue(property="purgeQueriesOnAppreload",defaultValue=false) ){
+		try {
 
-		application.serviceFactory.getBean('utility').clearObjectCache();
+			application.serviceFactory.getBean('utility').clearObjectCache();
 
-	} catch (any cfcatch) {
+		} catch (any cfcatch) {}
 	}
 	// You can create an onGlobalConfig.cfm file that runs after the initial configBean loads, but before anything else is loaded
 	if ( fileExists(ExpandPath("/muraWRM/config/onGlobalConfig.cfm")) ) {
