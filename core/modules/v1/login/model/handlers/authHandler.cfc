@@ -23,11 +23,12 @@ component extends="mura.cfobject" {
   }
 
   function hasCallbackValues(){
-    param name="url.code" default="";
-    param name="url.loginProvider" default="";
-    param name="url.state" default="";
-    param name="url.error" default="";
-    return len(url.loginProvider) && (len(url.code) || len(url.error) || len(url.state));
+    structAppend(local,url);
+    param name="local.code" default="";
+    param name="local.loginProvider" default="";
+    param name="local.state" default="";
+    param name="local.error" default="";
+    return len(local.loginProvider) && (len(local.code) || len(local.error) || len(local.state));
   }
 
   function handleCallback(){
