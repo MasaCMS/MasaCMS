@@ -360,7 +360,7 @@ if ( application.setupComplete ) {
 	}
 	variables.tracer.commitTracepoint(variables.tracepoint);
 
-	if( application.configBean.getValue(property="purgeQueriesOnAppreload",defaultValue=true) ){
+	if( application.configBean.getValue(property="purgeQueriesOnAppreload",defaultValue=false) ){
 		try {
 
 			application.serviceFactory.getBean('utility').clearObjectCache();
