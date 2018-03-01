@@ -134,6 +134,9 @@
 					</cfif>
 				<cfelse>
 					<form role="form" id="login" class="mura-login-form #this.loginFormClass# <cfif this.formWrapperClass neq "">#this.formWrapperClass#</cfif>" name="frmLogin" method="post" novalidate="novalidate">
+						<fieldset>
+						<legend>#variables.$.rbKey('user.pleaselogin')#</legend>
+
 						<!--- Use Google oAuth Button --->
 						<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google')>
 							<div class="#this.loginFormGroupWrapperClass#">
@@ -155,11 +158,9 @@
 							</div>
 						</cfif>
 
-						<fieldset>
 							<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google') or listFindNoCase($.globalConfig().getEnableOauth(), 'facebook') >
+								</fieldset><fieldset>
 								<legend>#variables.$.rbKey('login.orloginwithyourcredentials')#</legend>
-							<cfelse>
-								<legend>#variables.$.rbKey('user.pleaselogin')#</legend>
 							</cfif>
 
 							<!--- Username --->
