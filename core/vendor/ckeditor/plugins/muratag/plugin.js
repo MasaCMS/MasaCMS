@@ -4,23 +4,23 @@
 	init : function( editor )
 	{
 		var pluginName = 'muratag';
-		
-		// Create the toolbar button		
+
+		// Create the toolbar button
 		editor.ui.addButton( pluginName,
 			{
 				label : 'Insert Mura Tag',
 				command : pluginName,
 				icon: this.path + 'btn_muratag.png'
 			});
-				
-		
+
+
 		// Create the dialog
 		CKEDITOR.dialog.add( pluginName, function()
 		{
-						
+
 			return {
 				title : 'Insert Mura Tag',
-				minWidth : 400,
+				minWidth : 500,
 				minHeight : 300,
 				buttons : [ CKEDITOR.dialog.cancelButton, CKEDITOR.dialog.okButton ],
 				contents :
@@ -38,7 +38,7 @@
 								id: 'includePath',
 								type: 'text',
 								label: 'Relative path to file to be included'
-							}							
+							}
 						]
 					},
 					{
@@ -54,7 +54,7 @@
 								id: 'themeIncludePath',
 								type: 'text',
 								label: 'Relative path to file to be included'
-							}							
+							}
 						]
 					},
 					{
@@ -80,7 +80,7 @@
 								id: 'objectSite',
 								type: 'text',
 								label: 'SiteID (optional - only required if not the current site)'
-							}							
+							}
 						]
 					},
 					{
@@ -100,36 +100,36 @@
 						]
 					}
 				],
-				
+
 				onOk : function()
 				{
 					var editor = this.getParentEditor(),
 						selection = editor.getSelection(),
 						ranges = selection.getRanges( true ),
 						tagContent;
-						
+
 					if (this.getContentElement('include', 'includePath').isVisible())
 					{
 						var includePath = this.getValueOf( 'include', 'includePath' );
-						
+
 						if (!includePath.length)
 						{
 							alert('File path is required!');
 							return false;
 						}
-						
+
 						tagContent = "$.dspInclude('" + includePath + "')";
 					}
 					else if (this.getContentElement('themeInclude', 'themeIncludePath').isVisible())
 					{
 						var themeIncludePath = this.getValueOf( 'themeInclude', 'themeIncludePath' );
-						
+
 						if (!themeIncludePath.length)
 						{
 							alert('File path is required!');
 							return false;
 						}
-						
+
 						tagContent = "$.dspThemeInclude('" + themeIncludePath + "')";
 					}
 					else if (this.getContentElement('object', 'objectType').isVisible())
@@ -137,13 +137,13 @@
 						var objectType = this.getValueOf( 'object', 'objectType' ),
 							contentId = this.getValueOf( 'object', 'objectId' ),
 							siteId = this.getValueOf( 'object', 'objectSite' );
-						
+
 						if (!(objectType.length && contentId.length))
 						{
 							alert('Object type and content ID are both required!');
 							return false;
 						}
-						
+
 						tagContent = "$.dspObject('" + objectType + "', '" + contentId;
 						if (siteId.length) tagContent += "', '" + siteId;
 						tagContent += "')";
@@ -151,16 +151,16 @@
 					else
 					{
 						var manualTagContent = this.getValueOf( 'manual', 'manualTagContent' );
-						
+
 						if (!manualTagContent.length)
 						{
 							alert('Mura tag content is required!');
 							return false;
 						}
-						
+
 						tagContent = manualTagContent;
 					}
-					
+
 					// Insert Mura Tag into editor
 					if ( ranges.length == 1 )
 					{
@@ -171,12 +171,12 @@
 					}
 				}
 			};
-			
+
 		} );
-		
-		
+
+
 		// Register the command
 		editor.addCommand( pluginName, new CKEDITOR.dialogCommand( pluginName ) );
-	
+
 	}
 } );

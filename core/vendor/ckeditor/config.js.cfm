@@ -64,7 +64,7 @@ CKEDITOR.editorConfig = function( config )
 
 	config.disableNativeSpellChecker = false;
 	config.startupFocus = false;
-	config.skin = 'moono'; // 'bootstrapck'
+	config.skin = 'moono-lisa'; // 'bootstrapck'
 	config.allowedContent = {
 		$1: {
 		// specify elements as an object
@@ -102,8 +102,8 @@ CKEDITOR.editorConfig = function( config )
 			{name: 'group5', items:['Bold','Italic','Underline','Strike','-','Subscript','Superscript']},
 			{name: 'group6', items:['NumberedList','BulletedList','Outdent','Indent','-','Blockquote','CreateDiv']},
 			{name: 'group7', items:['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']},
-			{name: 'group8', items:['Link','Unlink','Anchor']},'/',
-			{name: 'group9', items:['Image','Flash','oembed','leaflet','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
+			{name: 'group8', items:['Link','Unlink','Anchor']},
+			{name: 'group9', items:['Image','oembed','leaflet','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
 			{name: 'group10', items:['Styles','Format','-','Maximize','ShowBlocks','About']}
 		];
 
@@ -111,12 +111,12 @@ CKEDITOR.editorConfig = function( config )
 			{name: 'group1', items:['A11ychecker','Sourcedialog']},
 			{name: 'group2', items:['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print']},
 			{name: 'group3', items:['Undo','Redo','-','Find','Replace','-','RemoveFormat']},
-			{name: 'group4', items:['BidiLtr','BidiRtl']},'/',
+			{name: 'group4', items:['BidiLtr','BidiRtl']},
 			{name: 'group5', items:['Bold','Italic','Underline','Strike','-','Subscript','Superscript']},
 			{name: 'group6', items:['NumberedList','BulletedList','Outdent','Indent','-','Blockquote','CreateDiv']},
 			{name: 'group7', items:['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']},
-			{name: 'group8', items:['Link','Unlink','Anchor']},'/',
-			{name: 'group9', items:['Image','Flash','oembed','leaflet','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
+			{name: 'group8', items:['Link','Unlink','Anchor']},
+			{name: 'group9', items:['Image','oembed','leaflet','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
 			{name: 'group10', items:['Styles','Format','-','Maximize','ShowBlocks','About']}
 		];
 
@@ -128,8 +128,8 @@ CKEDITOR.editorConfig = function( config )
 			{name: 'group5', items: ['Bold','Italic','Underline','Strike','-','Subscript','Superscript']},
 			{name: 'group6', items: ['NumberedList','BulletedList','Outdent','Indent','-','Blockquote','CreateDiv']},
 			{name: 'group7', items: ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']},
-			{name: 'group8', items: ['Link','Unlink','Anchor']},'/',
-			{name: 'group9', items: ['Image','Flash','oembed','leaflet','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
+			{name: 'group8', items: ['Link','Unlink','Anchor']},
+			{name: 'group9', items: ['Image','oembed','leaflet','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
 			{name: 'group10', items: ['Styles','Format','-','Maximize','ShowBlocks','About']}
 		];
 
@@ -142,7 +142,7 @@ CKEDITOR.editorConfig = function( config )
 			{name: 'group6', items: ['NumberedList','BulletedList','Outdent','Indent','-','Blockquote','CreateDiv']},
 			{name: 'group7', items: ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']},
 			{name: 'group8', items: ['Link','Unlink','Anchor']},
-			{name: 'group9', items: ['Image','Flash','oembed','leaflet','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
+			{name: 'group9', items: ['Image','oembed','leaflet','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
 			{name: 'group10', items: ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField']},
 			{name: 'group11', items: ['Styles','Format','-','Maximize','ShowBlocks','About']}
 		];
