@@ -56,7 +56,8 @@
     },
     "devDependencies":{
         "testbox":"^2.3.0+00044",
-        "docbox":"^2.0.7+00005"
+        "docbox":"^2.0.7+00005",
+				"CFSelenium":"github:teamcfadvance/CFSelenium#master"
     },
     "installPaths":{
         "testbox":"core/vendor/testbox/",
