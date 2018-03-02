@@ -147,7 +147,7 @@ this.mappings["/requirements"] = variables.baseDir & "/core/vender";
 this.mappings["/mura"] = variables.baseDir & "/core/mura";
 this.mappings["/testbox"] = variables.baseDir & "/core/vendor/testbox";
 this.mappings["/docbox"] = variables.baseDir & "/core/vendor/docbox";
-this.mappings["/CFSelenium"] = variables.baseDir & "/core/vendor/CFSelenium";
+//this.mappings["/CFSelenium"] = variables.baseDir & "/core/vendor/CFSelenium";
 
 s3assets=getINIProperty("s3assets","");
 
@@ -467,9 +467,9 @@ this.sameformfieldsasarray=evalSetting(getINIProperty('sameformfieldsasarray',fa
 
 // Custom Java library paths with dynamic loading
 try {
-	variables.loadPaths = ListToArray(getINIProperty('javaSettingsLoadPaths','#variables.baseDir#/core/vendor/lib,#variables.baseDir#/core/CFSelenium/lib'));
+	variables.loadPaths = ListToArray(getINIProperty('javaSettingsLoadPaths','#variables.baseDir#/core/vendor/lib'));
 } catch(any e) {
-	variables.loadPaths = ['#variables.baseDir#/core/vendor/lib',',#variables.baseDir#/core/CFSelenium/lib'];
+	variables.loadPaths = ['#variables.baseDir#/core/vendor/lib'];
 }
 
 this.javaSettings = {
