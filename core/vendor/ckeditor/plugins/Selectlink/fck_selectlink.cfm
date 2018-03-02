@@ -26,7 +26,7 @@ StructAppend(attributes, form, "no");
     <script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript"></script>
 		<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/oneui.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript"></script>
 		<link href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/css/admin.min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
-		<link rel="stylesheet" type="text/css" href="#application.configBean.getContext()#/core/vendor/ckeditor/skins/moono-lisa/dialog.css">
+		<link rel="stylesheet" type="text/css" href="#application.configBean.getContext()#/core/vendor/ckeditor/skins/mura/dialog.css">
 	</head>
 </cfoutput>
 <body id="mura-select-link">
