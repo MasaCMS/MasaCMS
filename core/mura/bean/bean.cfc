@@ -1257,7 +1257,7 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 	}
 
 	//used in json api for entity specific permission checking
-  function allowAccess($,m,mura){
+	function allowAccess($,m,mura){
 		return false;
 	}
 

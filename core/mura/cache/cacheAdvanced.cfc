@@ -69,19 +69,19 @@ component extends="mura.cache.cacheAbstract" hint="This allows Mura to use core 
     if ( local.exists ) {
 			return variables.collection.get(getHashKey( arguments.key ));
 		} else {
-      if ( isDefined("arguments.context") ) {
-        set( arguments.key, arguments.context,arguments.timespan,arguments.idleTime );
-        return arguments.context;
-      } else  if ( hasParent() && getParent().has( arguments.key ) ) {
-        return getParent().get( arguments.key );
-      } else {
-        if ( isDefined("arguments.context") ) {
-    			return arguments.context;
-    		} else {
-    			throw(message="Context not found for '#arguments.key#'");
-    		}
-      }
-    }
+			if ( isDefined("arguments.context") ) {
+				set( arguments.key, arguments.context,arguments.timespan,arguments.idleTime );
+				return arguments.context;
+			} else  if ( hasParent() && getParent().has( arguments.key ) ) {
+				return getParent().get( arguments.key );
+			} else {
+				if ( isDefined("arguments.context") ) {
+						return arguments.context;
+				} else {
+					throw(message="Context not found for '#arguments.key#'");
+				}
+			}
+		}
 	}
 
 	public any function purge(key) {
