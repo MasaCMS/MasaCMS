@@ -13702,6 +13702,18 @@ Mura.entities.Content = Mura.Entity.extend(
     return Mura.buildDisplayRegion(this.get('displayregions')[region])
   },
   /**
+   * dspRegion - Appends a display region to a element.
+   *
+   * @return {self}
+   */
+  dspRegion:function(selector,region,label){
+		if(Mura.isNumeric(region) && region <= this.get('displayregionnames').length){
+			region=this.get('displayregionnames')[region-1];
+		}
+		Mura(selector).processDisplayRegion(this.get('displayregions')[region],label);
+		return this;
+  },
+  /**
    * getRelatedContent - Gets related content sets by name
    *
    * @param  {string} relatedContentSetName
@@ -15338,7 +15350,7 @@ Mura.DOMSelection = Mura.Core.extend(
       * @param  {any} data Region data to render
       * @return {Promise}
       */
-      processDisplayRegion:function(data){
+      processDisplayRegion:function(data,label){
 
         if (typeof data == 'undefined' || !this.selection.length) {
             return this.processMarkup();
@@ -15346,8 +15358,22 @@ Mura.DOMSelection = Mura.Core.extend(
 
         this.html(Mura.buildDisplayRegion(data));
 
+				if(label != 'undefined'){
+					this.find('label.mura-editable-label').html('DISPLAY REGION : ' + data.label);
+				}
+
         return this.processMarkup();
-     }
+     },
+
+		/**
+		 * appendDisplayObject - Appends display object to selected items
+		 *
+		 * @param  {object} data Display objectparams (including object='objectkey')
+		 * @return {Promise}
+		 */
+	 dspObject:function(data){
+			return this.appendDisplayObject(data);
+	 }
   });
 
 

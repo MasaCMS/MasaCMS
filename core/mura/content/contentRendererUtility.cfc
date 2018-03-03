@@ -1426,6 +1426,7 @@
 		<cfargument name="renderer">
 		<cfargument name="layoutmanager">
 		<cfargument name="allowInheritance" default="true">
+		<cfargument name="label" default="">
 
 		<cfset var event=arguments.renderer.getEvent()>
 		<cfset var $=arguments.renderer.getMuraScope()>
@@ -1452,7 +1453,9 @@
 		<cfset request.muraRegionObjectCounts['region#arguments.columnID#']=0>
 
 		<cfif perm and arguments.renderer.getShowToolbar() and arguments.renderer.showInlineEditor>
-			<cfif listLen($.siteConfig('columnnames'),'^') gte arguments.columnid>
+			<cfif len(arguments.label)>
+				<cfset var regionLabel=UCASE(arguments.label)>
+			<cfelseif listLen($.siteConfig('columnnames'),'^') gte arguments.columnid>
 				<cfset var regionLabel=UCASE(listGetAt($.siteConfig('columnnames'),arguments.columnid,'^'))>
 			<cfelse>
 				<cfset var regionLabel=arguments.columnid>

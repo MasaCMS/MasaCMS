@@ -829,7 +829,7 @@
 			$.event('response',result);
 
 			result.displayRegions={};
-
+			result.displayRegionNames=listToArray($.siteConfig('columnNames'),'^');
 			for(var r =1;r<=ListLen($.siteConfig('columnNames'),'^');r++){
 				var regionName='#replace(listGetAt($.siteConfig('columnNames'),r,'^'),' ','','all')#';
 

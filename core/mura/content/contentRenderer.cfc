@@ -2275,10 +2275,28 @@ Display Objects
 	<cfreturn variables.contentRendererUtility.dspObject(argumentCollection=arguments)>
 </cffunction>
 
-<cffunction name="dspObjects" output="false">
-	<cfargument name="columnID" required="yes" type="numeric" default="1">
-	<cfargument name="ContentHistID" required="yes" type="string" default="#variables.event.getValue('contentBean').getcontenthistid()#">
+<cffunction name="dspRegion" output="false">
+	<cfargument name="region" default="">
+	<cfargument name="label" default="">
+	<cfargument name="ContentHistID" default="#variables.event.getValue('contentBean').getcontenthistid()#">
 	<cfargument name="returnFormat" default="string">
+	<cfargument name="columnID" default="1">
+	<cfif len(arguments.region)>
+		<cfset arguments.columnid=listFindNoCase( variables.$.siteConfig('columnNames'), arguments.region, '^')>
+	</cfif>
+	<cfset arguments.renderer=this>
+	<cfset arguments.layoutmanager=this.layoutmanager>
+	<cfreturn variables.contentRendererUtility.dspObjects(argumentCollection=arguments)>
+</cffunction>
+
+<cffunction name="dspObjects" output="false">
+	<cfargument name="columnID" default="1">
+	<cfargument name="ContentHistID" default="#variables.event.getValue('contentBean').getcontenthistid()#">
+	<cfargument name="returnFormat" default="string">
+	<cfargument name="label" default="">
+	<cfif not isNumeric(arguments.columnID)>
+		<cfset arguments.columnid=listFindNoCase( variables.$.siteConfig('columnNames'), arguments.region, '^')>
+	</cfif>
 	<cfset arguments.renderer=this>
 	<cfset arguments.layoutmanager=this.layoutmanager>
 	<cfreturn variables.contentRendererUtility.dspObjects(argumentCollection=arguments)>
