@@ -260,7 +260,11 @@ component extends="mura.bean.bean" entityname="dataCollection" hint="This provid
 
 			setValue('acceptData',structIsEmpty(getErrors()));
 
-			if( isDefined('variables.sessionData.mura.requestcount') && !(variables.sessionData.mura.requestcount > 1) ){
+			var requestMin=getBean('configBean').getValue(property='validSessionRequestCount',defaultValue=2);
+
+			if( requestMin
+			 	&& isDefined('variables.sessionData.mura.requestcount')
+				&& !(variables.sessionData.mura.requestcount >= requestMin) ){
 				setValue('acceptError','Spam');
 				setValue('acceptData','0');
 				variables.instance.errors.Spam=getBean('settingsManager').getSite(getValue('siteid')).getRBFactory().getKey("captcha.spam");

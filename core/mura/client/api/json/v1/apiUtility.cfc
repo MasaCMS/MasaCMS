@@ -1343,8 +1343,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 
 	function isValidRequest(){
-		var sessionData=getSession();
-		return (isDefined('sessionData.siteid') && isDefined('sessionData.mura.requestcount') && sessionData.mura.requestcount > 1);
+		return true;
 	}
 
 	function AllowAccess(bean,$,throwError=true){
