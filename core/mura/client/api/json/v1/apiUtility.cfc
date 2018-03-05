@@ -1362,13 +1362,14 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				return false;
 			}
 			var entityName=arguments.bean;
+			arguments.bean=arguments.$.getBean(entityName);
 		}
 
 		if(entityName == 'entity'){
 			return true;
 		}
 
-		if(arguments.bean.allowAccess(m=$,$=$,mura=$)){
+		if(isDefined('arguments.bean.allowAccess') && arguments.bean.allowAccess(m=$,$=$,mura=$)){
 			return true;
 		}
 
