@@ -5,7 +5,7 @@
 <div class="mura-layout-row">
 	<div id="labelContainer" class="mura-control-group">
 		<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.label')#</label>
-		<input name="label" type="text" class="objectParam" value="#esapiEncode('html_attr',objectParams.label)#"/>
+		<input name="label" type="text" class="objectParam" maxlength="50" value="#esapiEncode('html_attr',objectParams.label)#"/>
 	</div>
 </div>
 </cfoutput>
