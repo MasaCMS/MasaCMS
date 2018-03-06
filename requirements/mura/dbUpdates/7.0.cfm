@@ -36,6 +36,9 @@
         .addIndex('siteid');
 
     dbUtility.setTable("tclustercommands").addIndex("created");
+
+		dbUtility.setTable("tformresponsequestions")
+    .addColumn(column="formField",dataType="varchar",length=255);
 </cfscript>
 
 <cfquery>
