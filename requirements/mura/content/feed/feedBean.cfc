@@ -511,7 +511,6 @@ component extends="mura.bean.beanFeed" entityName="feed" table="tcontentfeeds" o
 		}
 
 		if(!listFind('categoryid,contentid',arguments.field ) && isValid('variablename',arguments.field) && isdefined('set#arguments.field#')){
-				WriteDump(arguments);abort;
 				setValue(arguments.field,arguments.criteria);
 				return this;
 		}
@@ -681,7 +680,7 @@ component extends="mura.bean.beanFeed" entityName="feed" table="tcontentfeeds" o
 		for(i in ListToArray(variables.instance.displayList)){
 			finder=listFindNoCase(returnList,i);
 			if (finder){
-				eturnList=listDeleteAt(returnList,finder);
+				returnList=listDeleteAt(returnList,finder);
 			}
 		}
 
