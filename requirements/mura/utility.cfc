@@ -650,7 +650,7 @@ Blog: www.codfusion.com--->
 
 	<cfif len(variables.configBean.getCookiePath()) and len(variables.configBean.getCookieDomain())>
 		<cfset arguments.path=variables.configBean.getCookiePath()>
-	<cfelseif len(variables.configBean.getCookieDomain())>
+	<cfelseif len(variables.configBean.getCookieDomain()) and variables.configBean.getCompiler() eq 'Lucee'>
 		<cfset arguments.path="/">
 	</cfif>
 
