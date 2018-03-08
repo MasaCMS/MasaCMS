@@ -223,9 +223,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							#rc.$.renderCSRFTokens(format='form',context='login')#
 						</form>
 
-						<div id="pw-link">
-							<label><a href="##">#rc.$.rbKey('login.forgetpassword')#</a></label>
-						</div>
+						<cfif not isBoolean(application.configBean.getValue('showadminloginhelp')) or application.configBean.getValue('showadminloginhelp')>
+							<div id="pw-link">
+								<label><a href="##">#application.rbFactory.getKeyValue(session.rb,'login.forgetpassword')#</a></label>
+							</div>
+						</cfif>
 
 				</div><!-- /block-content -->
 			</div><!-- /mura-focus-block -->

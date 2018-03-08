@@ -65,7 +65,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset variables.rslists={}>
 		</cfif>
 
-		<cfif (StructKeyExists(request, 'muraAppreloaded') and isBoolean(request['muraAppreloaded']) && request['muraAppreloaded']) or not StructKeyExists(variables, 'rsSites#arguments.sortBy##arguments.sortDirection#') or not arguments.cached>
+		<cfif (StructKeyExists(request, 'muraAppreloaded') and isBoolean(request['muraAppreloaded']) && request['muraAppreloaded']) or not StructKeyExists(variables.rslists, 'rsSites#arguments.sortBy##arguments.sortDirection#') or not arguments.cached>
 			<cfquery name="rsSites">
 				SELECT * FROM tsettings ORDER BY
 				<cfif listFindNoCase("domain,site,orderno",arguments.sortBy)>
