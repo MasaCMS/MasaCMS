@@ -718,10 +718,6 @@
             params.success = function() {};
         }
 
-        if (!('error' in params)) {
-            params.error = function() {};
-        }
-
         if (!('data' in params)) {
             params.data = {};
         }
@@ -784,7 +780,9 @@
 
                     params.success(data, request);
                 } else {
-                    params.error(request);
+										if(typeof params.error == 'function'){
+                    	params.error(request);
+										}
                 }
             }
         }
@@ -804,7 +802,15 @@
 
             //if(params.data.constructor.name == 'FormData'){
             if (typeof FormData != 'undefined' && params.data instanceof FormData) {
+							try{
                 request.send(params.data);
+							} catch(e){
+								if(typeof params.error == 'function'){
+									params.error(e,params.data);
+								} else {
+									throw e;
+								}
+							}
             } else {
                 request.setRequestHeader('Content-Type',
                     'application/x-www-form-urlencoded; charset=UTF-8'
@@ -849,7 +855,15 @@
             }
 
             setTimeout(function() {
-                request.send();
+							try{
+								request.send();
+							} catch(e){
+								if(typeof params.error == 'function'){
+									params.error(e,params.data);
+								} else {
+									throw e;
+								}
+							}
             }, 0);
         }
 
@@ -1990,7 +2004,7 @@
                             .requirementspath +
                             '/cfformprotect/js/cffp.js'
                         )
-                        
+
                         document.getElementsByTagName(
                             "head")[0].appendChild(
                             fileref)

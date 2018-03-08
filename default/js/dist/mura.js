@@ -3548,10 +3548,6 @@ return /******/ (function(modules) { // webpackBootstrap
             params.success = function() {};
         }
 
-        if (!('error' in params)) {
-            params.error = function() {};
-        }
-
         if (!('data' in params)) {
             params.data = {};
         }
@@ -3614,7 +3610,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
                     params.success(data, request);
                 } else {
-                    params.error(request);
+										if(typeof params.error == 'function'){
+                    	params.error(request);
+										}
                 }
             }
         }
@@ -3634,7 +3632,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
             //if(params.data.constructor.name == 'FormData'){
             if (typeof FormData != 'undefined' && params.data instanceof FormData) {
+							try{
                 request.send(params.data);
+							} catch(e){
+								if(typeof params.error == 'function'){
+									params.error(e,params.data);
+								} else {
+									throw e;
+								}
+							}
             } else {
                 request.setRequestHeader('Content-Type',
                     'application/x-www-form-urlencoded; charset=UTF-8'
@@ -3679,7 +3685,15 @@ return /******/ (function(modules) { // webpackBootstrap
             }
 
             setTimeout(function() {
-                request.send();
+							try{
+								request.send();
+							} catch(e){
+								if(typeof params.error == 'function'){
+									params.error(e,params.data);
+								} else {
+									throw e;
+								}
+							}
             }, 0);
         }
 
@@ -4820,7 +4834,7 @@ return /******/ (function(modules) { // webpackBootstrap
                             .requirementspath +
                             '/cfformprotect/js/cffp.js'
                         )
-                        
+
                         document.getElementsByTagName(
                             "head")[0].appendChild(
                             fileref)
@@ -10941,7 +10955,11 @@ return /******/ (function(modules) { // webpackBootstrap
 										});
 
 								 	}
-							  });
+							  },
+								function(resp){
+									self.showErrors( {"systemerror":"We're sorry, a system error has occured. Please try again later."} );
+									self.trigger('afterErrorRender');
+								});
 						}
 					});
 				}
