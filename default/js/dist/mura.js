@@ -3636,7 +3636,7 @@ return /******/ (function(modules) { // webpackBootstrap
                 request.send(params.data);
 							} catch(e){
 								if(typeof params.error == 'function'){
-									params.error(e,params.data);
+									params.error(request,e);
 								} else {
 									throw e;
 								}
@@ -3655,7 +3655,15 @@ return /******/ (function(modules) { // webpackBootstrap
                 query = query.join('&');
 
                 setTimeout(function() {
-                    request.send(query);
+									try{
+										request.send(query);
+									} catch(e){
+										if(typeof params.error == 'function'){
+											params.error(request,e);
+										} else {
+											throw e;
+										}
+									}
                 }, 0);
             }
         } else {
@@ -3689,7 +3697,7 @@ return /******/ (function(modules) { // webpackBootstrap
 								request.send();
 							} catch(e){
 								if(typeof params.error == 'function'){
-									params.error(e,params.data);
+									params.error(request,e);
 								} else {
 									throw e;
 								}
@@ -10957,7 +10965,7 @@ return /******/ (function(modules) { // webpackBootstrap
 								 	}
 							  },
 								function(resp){
-									self.showErrors( {"systemerror":"We're sorry, a system error has occured. Please try again later."} );
+									self.showErrors( {"systemerror":"We're sorry, a system error has occurred. Please try again later."} );
 									self.trigger('afterErrorRender');
 								});
 						}

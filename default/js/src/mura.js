@@ -806,7 +806,7 @@
                 request.send(params.data);
 							} catch(e){
 								if(typeof params.error == 'function'){
-									params.error(e,params.data);
+									params.error(request,e);
 								} else {
 									throw e;
 								}
@@ -825,7 +825,15 @@
                 query = query.join('&');
 
                 setTimeout(function() {
-                    request.send(query);
+									try{
+										request.send(query);
+									} catch(e){
+										if(typeof params.error == 'function'){
+											params.error(request,e);
+										} else {
+											throw e;
+										}
+									}
                 }, 0);
             }
         } else {
@@ -859,7 +867,7 @@
 								request.send();
 							} catch(e){
 								if(typeof params.error == 'function'){
-									params.error(e,params.data);
+									params.error(request,e);
 								} else {
 									throw e;
 								}
