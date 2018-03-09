@@ -1257,6 +1257,10 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 	}
 
 	//used in json api for entity specific permission checking
+	function allowAccess($,m,mura){
+		return false;
+	}
+
 	function allowSave(){
 		return false;
 	}
@@ -1269,7 +1273,7 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 		return true;
 	}
 
-	function allowQueryParams(params,$,m){
+	function allowQueryParams(params,$,m,mura){
 		return true;
 	}
 

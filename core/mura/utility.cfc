@@ -677,7 +677,7 @@ Blog: www.codfusion.com--->
 
 	<cfif len(variables.configBean.getCookiePath()) and len(variables.configBean.getCookieDomain())>
 		<cfset arguments.path=variables.configBean.getCookiePath()>
-	<cfelseif len(variables.configBean.getCookieDomain())>
+	<cfelseif len(variables.configBean.getCookieDomain()) and variables.configBean.getCompiler() eq 'Lucee'>
 		<cfset arguments.path="/">
 	</cfif>
 
@@ -690,6 +690,8 @@ Blog: www.codfusion.com--->
 		)>
 		<cfset structDelete(arguments,'expires')>
 	</cfif>
+
+	<cfset structDelete(arguments,'path')>
 
 	<cfif application.cfversion gt 9>
 		<cfcookie attributeCollection="#arguments#" />

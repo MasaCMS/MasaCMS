@@ -44,7 +44,7 @@ form input.text {
 	-moz-transition: border 100ms linear; /* Firefox 4 */
 	-webkit-transition: border 100ms linear; /* Safari and Chrome */
 	-o-transition: border 100ms linear; /* Opera */
-	
+
 }
 
 form input.text:focus {
@@ -62,7 +62,7 @@ form select {
 	-moz-transition: border 100ms linear; /* Firefox 4 */
 	-webkit-transition: border 100ms linear; /* Safari and Chrome */
 	-o-transition: border 100ms linear; /* Opera */
-	
+
 }
 
 form select {
@@ -85,7 +85,7 @@ form input.submit {
 	-moz-transition: background 100ms linear; /* Firefox 4 */
 	-webkit-transition: background 100ms linear; /* Safari and Chrome */
 	-o-transition: background 100ms linear; /* Opera */
-	
+
 }
 
 form input.submit:hover {
@@ -102,7 +102,7 @@ form p#error {
 	padding: 5px 10px;
 	font-size: 12px;
 	margin: 0;
-	float: left;	
+	float: left;
 }
 
 </style>
@@ -113,12 +113,38 @@ form p#error {
 			<div class="alert"><cfoutput>#application.settingsManager.getSite(request.siteID).getSite()#</cfoutput> is currently undergoing maintenance.</div>
 		<cfelseif application.settingsManager.getSite(request.siteID).getEnableLockdown() eq "development">
 			<form method="post" action="<cfif application.configBean.getLockdownHTTPS() eq true><cfoutput>#replacenocase(arguments.$.getContentRenderer().createHREF(siteid = request.siteid, filename = arguments.event.getScope().currentfilename, complete = true), "http:", "https:")#</cfoutput></cfif>">
+
+				<cfoutput>
+					<!--- Use Google oAuth Button --->
+					<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google')>
+						<div style="padding-bottom: 5px">
+							<a href="#$.getBean('googleLoginProvider').generateAuthUrl(session.urltoken)#">
+								<!--- <img src="/admin/assets/images/btn_google_signin_dark_normal_web@2x.png" /> --->
+								#$.rbKey('login.loginwithgoogle')#
+							</a>
+						</div>
+					</cfif>
+					<!--- Use Facebook oAuth Button --->
+					<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'facebook')>
+						<div style="padding-bottom: 5px">
+							<a href="#$.getBean('facebookLoginProvider').generateAuthUrl(session.urltoken)#">
+								#$.rbKey('login.loginwithfacebook')#
+							</a>
+						</div>
+					</cfif>
+
+					<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google') or listFindNoCase($.globalConfig().getEnableOauth(), 'facebook') >
+						<h3>#$.rbKey('login.orloginwithyourcredentials')#</h3>
+					</cfif>
+				</cfoutput>
+
+
 				<label for="locku">Username</label>
 				<input type="text" name="locku" id="locku" class="text" />
-				
+
 				<label for="lockp">Password</label>
 				<input type="password" name="lockp" id="lockp" class="text" />
-				
+
 				<label for="expires">Log me in for:</label>
 				<select name="expires">
 					<option value="session">Session</option>
@@ -127,7 +153,7 @@ form p#error {
 					<option value="30">One Month</option>
 					<option value="10950">Forever</option>
 				</select>
-				
+
 				<input type="hidden" name="locks" value="true" />
 				<cfif len(event.getValue('locks'))>
 					<p id="error">Login failed!</p>

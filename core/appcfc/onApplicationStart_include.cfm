@@ -359,11 +359,13 @@ if ( application.setupComplete ) {
 	} catch (any cfcatch) {
 	}
 	variables.tracer.commitTracepoint(variables.tracepoint);
-	try {
 
-		application.serviceFactory.getBean('utility').clearObjectCache();
+	if( application.configBean.getValue(property="purgeQueriesOnAppreload",defaultValue=false) ){
+		try {
 
-	} catch (any cfcatch) {
+			application.serviceFactory.getBean('utility').clearObjectCache();
+
+		} catch (any cfcatch) {}
 	}
 
 	application.objectMappings={};

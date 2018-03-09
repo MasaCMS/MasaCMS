@@ -72,13 +72,12 @@ if ( !request.muraTemplateMissing ) {
 	if ( structKeyExists(application,"pluginManager") && structKeyExists(application.pluginManager,"announceEvent") ) {
 		if ( structKeyExists(request,"servletEvent") ) {
 			local.pluginEvent=request.servletEvent;
-		} else if ( structKeyExists(request,"event") ) {
+		} else if ( structKeyExists(request,"event") && isObject(request.event) ) {
 			local.pluginEvent=request.event;
 		} else {
 			try {
 				local.pluginEvent=createObject("component","mura.event");
-			} catch (any cfcatch) {
-			}
+			} catch (any cfcatch) {}
 		}
 		if ( isObject(local.pluginEvent) ) {
 			local.pluginEvent.setValue("exception",arguments.exception);
@@ -90,6 +89,9 @@ if ( !request.muraTemplateMissing ) {
 				}
 				application.pluginManager.announceEvent("onGlobalError",local.pluginEvent);
 			} catch (any cfcatch) {
+				if(application.configBean.getDebuggingEnabled()){
+					arguments.exception=cfcatch;
+				}
 			}
 		}
 	}

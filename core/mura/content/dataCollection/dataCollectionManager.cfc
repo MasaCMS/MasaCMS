@@ -96,7 +96,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 
 		<cfset info['responseid'] = responseid />
-		
+
 		<cfloop list="#fieldlist#" index="f">
 			<cfif Not ListFindNoCase(ignoreList, f)>
 				<cfif action eq 'create' and right(f,8) eq '_default'>
@@ -138,7 +138,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						values(
 						<cfqueryparam cfsqltype="cf_sql_varchar" value="#responseID#"/>,
 						<cfqueryparam cfsqltype="cf_sql_varchar" value="#formID#"/>,
-						<cfqueryparam cfsqltype="cf_sql_varchar" value="#thefield#">,
+						<cfqueryparam cfsqltype="cf_sql_varchar" value="#left(thefield,255)#">,
 						<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#info['#thefield#']#">,
 						<cfqueryparam cfsqltype="cf_sql_varchar" value="#left(info['#thefield#'],255)#">)
 					</cfquery>

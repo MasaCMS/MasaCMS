@@ -34,6 +34,9 @@
         .addIndex('userid')
         .addColumn(column="siteid",dataType="varchar",length=25)
         .addIndex('siteid');
+
+		dbUtility.setTable("tformresponsequestions")
+    .addColumn(column="formField",dataType="varchar",length=255);
 </cfscript>
 
 <cfquery>

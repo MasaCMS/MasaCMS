@@ -1343,8 +1343,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 
 	function isValidRequest(){
-		var sessionData=getSession();
-		return (isDefined('sessionData.siteid') && isDefined('sessionData.mura.requestcount') && sessionData.mura.requestcount > 1);
+		return true;
 	}
 
 	function AllowAccess(bean,$,throwError=true){
@@ -1362,9 +1361,14 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				return false;
 			}
 			var entityName=arguments.bean;
+			arguments.bean=arguments.$.getBean(entityName);
 		}
 
 		if(entityName == 'entity'){
+			return true;
+		}
+
+		if(isDefined('arguments.bean.allowAccess') && arguments.bean.allowAccess(m=$,$=$,mura=$)){
 			return true;
 		}
 
@@ -1993,7 +1997,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			throw(type="authorization");
 		}
 
-		if(!entity.allowQueryParams(arguments.params,$,$)){
+		if(!entity.allowQueryParams(arguments.params,$,$,$)){
 			throw(type="authorization");
 		}
 
@@ -2162,7 +2166,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			}
 		}
 
-		if(!entity.allowQueryParams(arguments.params,$,$)){
+		if(!entity.allowQueryParams(arguments.params,$,$,$)){
 			throw(type="authorization");
 		}
 

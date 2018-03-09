@@ -1,6 +1,6 @@
 /**
- * @license Copyright (c) 2003-2016, CKSource - Frederico Knabben. All rights reserved.
- * For licensing, see LICENSE.md or http://ckeditor.com/license
+ * @license Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
 /**
@@ -11,14 +11,20 @@
 ( function() {
 	'use strict';
 
+	// This flag prevents appending stylesheet more than once.
+	var stylesLoaded = false;
+
 	CKEDITOR.plugins.add( 'balloonpanel', {
-		onLoad: function() {
-			CKEDITOR.document.appendStyleSheet( this.path + 'skins/' + CKEDITOR.skin.name + '/balloonpanel.css' );
+		init: function() {
+			if ( !stylesLoaded ) {
+				CKEDITOR.document.appendStyleSheet( this.path + 'skins/' + CKEDITOR.skin.name + '/balloonpanel.css' );
+				stylesLoaded = true;
+			}
 		}
 	} );
 
 	/**
-	 * A class which represents a floating, balloon-shaped panel capable of presenting defined
+	 * A class that represents a floating, balloon-shaped panel capable of presenting defined
 	 * content at a precise position in the document. It can be used to represent
 	 * contextual data or forms i.e. related to an element in the editor's editable.
 	 *
@@ -111,7 +117,7 @@
 
 		/**
 		 * @property rect Contains panel properties as {@link #move}, {@link #resize},
-		 * {@link #method-show} and {@link #method-hide} are called. It holds values and avoids unnecessary
+		 * {@link #method-show} and {@link #method-hide} are called. It stores values and avoids unnecessary
 		 * and expensive checks in the future.
 		 *
 		 * @property {Number} rect.width
@@ -277,6 +283,7 @@
 
 			this.rect.visible = false;
 			this.parts.panel.hide();
+			this.blur();
 
 			this.fire( 'hide' );
 		},
@@ -313,10 +320,14 @@
 		 *
 		 * @method attach
 		 * @param {CKEDITOR.dom.element} element The element to which the panel is attached.
-		 * @param {CKEDITOR.dom.element/Boolean} [focusElement] The element to be focused after the panel
+		 * @param {Object/CKEDITOR.dom.element/Boolean} [options] **Since 4.8.0** this parameter works as an `options` object.
+		 *
+		 * If a `{@link CKEDITOR.dom.element}/Boolean` instance is given, this parameter acts as an `options.focusElement`.
+		 * @param {CKEDITOR.dom.element/Boolean} [options.focusElement] The element to be focused after the panel
 		 * is attached. By default the `panel` property of {@link #parts} will be focused. You might specify the element
 		 * to be focused by passing any {@link CKEDITOR.dom.element} instance.
-		 * You can also prevent changing focus at all, by setting it to `false`.
+		 * You can also prevent changing focus at all by setting it to `false`.
+		 * @param {Boolean} [options.show=true] Defines if the balloon panel should be shown after being attached.
 		 */
 		attach: ( function() {
 			var winGlobal, frame, editable, isInline;
@@ -376,8 +387,18 @@
 				left: 'right'
 			};
 
-			return function( element, focusElement ) {
-				this.show();
+			return function( element, options ) {
+				if ( options instanceof CKEDITOR.dom.element || !options ) {
+					options = { focusElement: options };
+				}
+
+				options = CKEDITOR.tools.extend( options, {
+					show: true
+				} );
+
+				if ( options.show === true ) {
+					this.show();
+				}
 
 				this.fire( 'attach' );
 
@@ -467,8 +488,8 @@
 				this.setTriangle( triangleRelativePosition[ minDifferenceAlignment[ 0 ] ], minDifferenceAlignment[ 1 ] );
 
 				// Set focus to proper element.
-				if ( focusElement !== false ) {
-					( focusElement || this.parts.panel ).focus();
+				if ( options.focusElement !== false ) {
+					( options.focusElement || this.parts.panel ).focus();
 				}
 			};
 		} )(),
@@ -509,7 +530,7 @@
 		},
 
 		/**
-		 * Changes the position of the baloon's triangle that points to the element in the editable.
+		 * Changes the position of the balloon's triangle that points to the element in the editable.
 		 *
 		 * @param {String} side One of 'left', 'right', 'top' or 'bottom'.
 		 */
@@ -732,9 +753,9 @@
 
 		/**
 		 * This method will modify `elementRect` if the element is outside of `editorRect`. If it is outside, it is
-		 * going to change it into a rect that is within `editorRect`.
+		 * going to change it into a rectangle that is within `editorRect`.
 		 *
-		 * For example here `elementRect` is going to be changed into a very narrow rect (with unmodified height)
+		 * For example here `elementRect` is going to be changed into a very narrow rectangle (with unmodified height)
 		 * representation within `editorRect`.
 		 *
 		 *		+------------------------------------------+
@@ -750,7 +771,7 @@
 		 *		+------------------------------------------+
 		 *
 		 * @private
-		 * @param elementRect Rect object that should be contained within `editorRect`. **This object might be modified.**
+		 * @param elementRect Rectangle object that should be contained within `editorRect`. **This object might be modified.**
 		 * @param editorRect Reference container that should contain `elementRect`.
 		 */
 		_adjustElementRect: function( elementRect, editorRect ) {

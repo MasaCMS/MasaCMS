@@ -672,12 +672,16 @@
 
 			jQuery(document).on('click',".mura-tb-grid-radio",function() {
 				id = jQuery(this).attr('data-id');
-				_currentDataset.defaultid = id;
+				if(id){
+					_currentDataset.defaultid = id;
+				}
 			});
 
 			jQuery(document).on('click',$_grid,function() {
 				id = jQuery(this).attr('data-id');
-				_currentDataset.defaultid = id;
+				if(id){
+					_currentDataset.defaultid = id;
+				}
 			});
 
 			$_grid.show();

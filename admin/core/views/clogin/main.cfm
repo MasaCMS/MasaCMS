@@ -136,6 +136,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</cfif>
 					<cfelse>
 						<form novalidate="novalidate" id="loginForm" name="frmLogin" method="post" action="index.cfm" onsubmit="return submitForm(this);">
+              <!--- Use Google oAuth Button --->
+              <cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google')>
+                <div class="mura-control-group">
+                    <a href="#$.getBean('googleLoginProvider').generateAuthUrl(session.urltoken)#">
+                      <!--- <img src="/admin/assets/images/btn_google_signin_dark_normal_web@2x.png" /> --->
+                      #rc.$.rbKey('login.loginwithgoogle')#
+                    </a>
+                </div>
+              </cfif>
+              <!--- Use Facebook oAuth Button --->
+              <cfif listFindNoCase($.globalConfig().getEnableOauth(), 'facebook')>
+                <div class="mura-control-group">
+                  <a href="#$.getBean('facebookLoginProvider').generateAuthUrl(session.urltoken)#">
+                      #rc.$.rbKey('login.loginwithfacebook')#
+                  </a>
+                </div>
+              </cfif>
+
+              <cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google') or listFindNoCase($.globalConfig().getEnableOauth(), 'facebook') >
+								<h3>#rc.$.rbKey('login.orloginwithyourcredentials')#</h3>
+							</cfif>
 
 							<div class="mura-control-group">
 						    <label>
@@ -201,9 +222,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							#rc.$.renderCSRFTokens(format='form',context='login')#
 						</form>
 
-						<div id="pw-link">
-							<label><a href="##">#rc.$.rbKey('login.forgetpassword')#</a></label>
-						</div>
+						<cfif not isBoolean(application.configBean.getValue('showadminloginhelp')) or application.configBean.getValue('showadminloginhelp')>
+							<div id="pw-link">
+								<label><a href="##">#application.rbFactory.getKeyValue(session.rb,'login.forgetpassword')#</a></label>
+							</div>
+						</cfif>
 
 				</div><!-- /block-content -->
 			</div><!-- /mura-focus-block -->

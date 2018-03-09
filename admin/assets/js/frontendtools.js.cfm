@@ -21,7 +21,7 @@
 	window.Mura=window.Mura || window.mura || {};
 	window.Mura.layoutmanager=#$.getContentRenderer().useLayoutManager()#;
 
-	var utility=(typeof jQuery != 'undefined')?jQuery:Mura;
+	var utility=Mura;
 
 	var adminProxy;
 	<cfif len($.globalConfig('admindomain'))>
