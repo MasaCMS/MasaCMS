@@ -232,7 +232,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfsilent>
 		<cfoutput>
 		<div class="mura mura-toolbar">
-			<img src="#variables.$.globalConfig("adminPath")#/assets/images/mura-logo-fe@2x.png" id="frontEndToolsHandle" onclick="if (document.getElementById('frontEndTools').style.display == 'none') { createCookie('FETDISPLAY','',5); } else { createCookie('FETDISPLAY','none',5); } toggleAdminToolbar();" />
+			<a id="frontEndToolsHandle" href="##" onclick="if (document.getElementById('frontEndTools').style.display == 'none') { createCookie('FETDISPLAY','block',5); } else { createCookie('FETDISPLAY','none',5); } toggleAdminToolbar(); return false;">
+				<img src="#variables.$.globalConfig("adminPath")#/assets/images/mura-logo-fe-icon@2x.png" />
+				<span id="frontEndToolsHandleText" style="display: #Cookie.fetDisplay#">
+					<img src="#variables.$.globalConfig("adminPath")#/assets/images/mura-logo-fe-text@2x.png" />
+				</span>
+			</a>
+
 			<div id="frontEndTools" style="display: #Cookie.fetDisplay#">
 				<cfif $.currentUser().isLoggedIn() and not request.contentBean.getIsNew()>
 
