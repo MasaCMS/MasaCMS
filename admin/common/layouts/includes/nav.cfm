@@ -72,7 +72,12 @@
                     </a>
                     <a id="brand-logo-min" class="brand" href="http://www.getmura.com" title="Mura CMS" target="_blank">
                         <img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/mura-icon@2x.png" class="mura-logo">
+                        <span class="sidebar-mini-hide">
+                            <img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/mura-logo-text@2x.png" class="mura-logo-text">
+                        </span>
                     </a>
+
+
                 </div>
             </div>
             <!-- END Side Header -->
