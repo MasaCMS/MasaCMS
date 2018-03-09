@@ -691,99 +691,127 @@ form .mura-control-group > * + .help-block{
   }
 }
 
-.nav-main a{
-  color: rgba(255, 255, 255, 0.8);
-}
 
-.nav-main a:hover,
-.nav-main a:focus{
-  color: @white !important;
-}
+.nav-main {
 
-.nav-main li a{
-  display: block;
-  overflow: hidden;
-  padding-right: 30px;
-  text-decoration: none;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-
-  span{
-    display: inline-block;
-    vertical-align: top;
+  a{
+    color: rgba(255, 255, 255, 0.8);
   }
 
-}
+  a:hover,
+  a:focus{
+    color: @white !important;
+  }
 
-.nav-main li > a.nav-submenu:before {
-  content: "\f105";
-}
-.nav-main li.open > a.nav-submenu:before {
-  content: "\f107";
-}
+  ul{
+    padding-left: 32px;
+    background-color: #3B3B3B;
 
-.nav-main ul{
-  padding-left: 32px;
-  background-color: #3B3B3B;
+    > li ul{
+      padding-left: 6px;
 
-  > li ul{
-    padding-left: 6px;
+      > li,
+      > li a{
+        font-size: 13px;
+      }
+    }
 
-    > li,
-    > li a{
-      font-size: 13px;
+    li a i {
+          font-size: 19px;
+          margin-left: 0;
+          min-width: 21px;
+        }
+
+         a i.fa-action {
+            display: inline-block;
+            font-size: 19px;
+            line-height: 1em;
+            margin-left: 8px;
+            float:right;
+        }
+
+  } /* /ul */
+
+  ul.version{
+    padding-left: 20px;
+      
+    li a,
+    li a strong{
+      font-weight: normal;
+      white-space: normal;
+    }
+
+    li a i{
+      font-weight: normal;
+      margin-left: 0;
+      margin-right: 10px;
     }
   }
 
+  li{
+    
+    a{
+      display: block;
+      overflow: hidden;
+      padding-right: 30px;
+      text-decoration: none;
+      text-overflow: ellipsis;
+      white-space: nowrap;
 
-}
+      span{
+        display: inline-block;
+        vertical-align: top;
+      }
 
-.nav-main ul.version{
-  padding-left: 20px;
-}
+      i {
+        font-size: 24px;
+        margin-left: -3px;
+        min-width: 26px;
+        position: relative;
+        text-align:center;
 
-.nav-main ul.version li a,
-.nav-main ul.version li a strong{
-  font-weight: normal;
-  white-space: normal;
-}
+        &.mi-edit{
+          padding-left: 2px;
+        }
 
-.nav-main ul.version li a i{
-  font-weight: normal;
-  margin-left: 0;
-  margin-right: 10px;
-}
+      }
 
-.nav-main li a i {
-  font-size: 23px;
-  margin-left: -3px;
-  min-width: 26px;
-  position: relative;
-  text-align:center;
 
-  &.mi-edit{
+    }
+    
+    > a.nav-submenu:before {
+      content: "\f105";
+    }
+
+    
+  
+  } /* /li */
+  
+  > li > a{
+    padding-bottom: 18px;
+    padding-top: 18px;
+  }
+  
+  li.open > a.nav-submenu:before {
+    content: "\f107";
+  }
+
+  #navContentAdmin i{
     padding-left: 2px;
   }
 
-}
+}  
+/* .nav-main */
 
-.nav-main #navContentAdmin i{
-  padding-left: 2px;
-}
 
-.nav-main li ul li a i {
-  font-size: 17px;
-  margin-left: 0;
-  min-width: 20px;
-}
 
-.nav-main ul a i.fa-action {
-    display: inline-block;
-    font-size: 18px;
-    line-height: 1em;
-    margin-left: 8px;
-    float:right;
-}
+
+
+
+
+
+
+
 .content h2{
   font-size: 15px;
   margin-bottom: 15px;
