@@ -136,27 +136,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</cfif>
 					<cfelse>
 						<form novalidate="novalidate" id="loginForm" name="frmLogin" method="post" action="index.cfm" onsubmit="return submitForm(this);">
-              <!--- Use Google oAuth Button --->
-              <cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google')>
-                <div class="mura-control-group">
-                    <a href="#$.getBean('googleLoginProvider').generateAuthUrl(session.urltoken)#">
-                      <!--- <img src="/admin/assets/images/btn_google_signin_dark_normal_web@2x.png" /> --->
-                      #rc.$.rbKey('login.loginwithgoogle')#
-                    </a>
-                </div>
-              </cfif>
-              <!--- Use Facebook oAuth Button --->
-              <cfif listFindNoCase($.globalConfig().getEnableOauth(), 'facebook')>
-                <div class="mura-control-group">
-                  <a href="#$.getBean('facebookLoginProvider').generateAuthUrl(session.urltoken)#">
-                      #rc.$.rbKey('login.loginwithfacebook')#
-                  </a>
-                </div>
-              </cfif>
+						  <cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google') or 
+						   		listFindNoCase($.globalConfig().getEnableOauth(), 'facebook')>
+							<div class="center">
+				              <!--- Use Google oAuth Button --->
+				              <cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google')>
+				                    <a href="#$.getBean('googleLoginProvider').generateAuthUrl(session.urltoken)#" title="#rc.$.rbKey('login.loginwithgoogle')#">
+				                      <img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/btn_google_signin_light_normal_web@2x.png" class="mura-login-auth-img">
+				                    </a>
+				              </cfif>
+				              <!--- Use Facebook oAuth Button --->
+				              <cfif listFindNoCase($.globalConfig().getEnableOauth(), 'facebook')>
+				                  <a href="#$.getBean('facebookLoginProvider').generateAuthUrl(session.urltoken)#" title="#rc.$.rbKey('login.loginwithfacebook')#">
+	  			                      <img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/btn_facebook_continue@2x.png" class="mura-login-auth-img-fb">
+				                  </a>
+				              </cfif>
+				             </div> 
 
-              <cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google') or listFindNoCase($.globalConfig().getEnableOauth(), 'facebook') >
-								<h3>#rc.$.rbKey('login.orloginwithyourcredentials')#</h3>
-							</cfif>
+							<h3 class="center mura-login-auth-heading">#rc.$.rbKey('login.orloginwithyourcredentials')#</h3>
+			              	</cfif>
 
 							<div class="mura-control-group">
 						    <label>
