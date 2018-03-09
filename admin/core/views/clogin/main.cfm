@@ -110,7 +110,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<form novalidate="novalidate" id="loginForm" name="frmLogin" method="post" action="index.cfm" onsubmit="return submitForm(this);">
 
 							<div class="mura-control-group">
-				      	<label>#rc.$.rbKey('login.enteremailedauthcode')#</label>
+				      			<label>#rc.$.rbKey('login.enteremailedauthcode')#</label>
 								<div class="input-prepend">
 								  	<span class="add-on"><i class="mi-envelope"></i></span><input autocomplete="off" id="authcode" name="authcode" type="text" placeholder="#esapiEncode('html_attr',rc.$.rbKey('login.authorizationcode'))#" />
 								</div>
@@ -277,7 +277,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<div id="login-link">
 							<!--- 							<label><a href="##">#rc.$.rbKey('login.forgetpassword')#</a></label>
 							 --->
-							 <label><a href="##">Return to Login</a></label>
+							 <label><a href="##">Return to login</a></label>
 						</div>
 
 						</cfif>
