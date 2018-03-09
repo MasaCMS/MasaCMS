@@ -701,6 +701,13 @@ form .mura-control-group > * + .help-block{
   .nav-main-header ul {
     background-color: #555;
   }
+  .mura-focus-block{
+       width: 498px !important;
+
+       .block-content{
+          padding: 60px 70px !important;
+       }
+  }
 }
 
 .nav-main {
@@ -1763,13 +1770,11 @@ form .checkbox.inline
    margin: auto;
 
   .focus-block-header{
-     background-color: #252525 ;
       height: 54px;
       text-align: center; 
 
       img.mura-logo{
-        width: 96px;
-        max-width: 96px;
+        width: auto;
         height: 26px;
         max-height: 26px;
         margin: 13px auto 0 auto;
@@ -1777,7 +1782,9 @@ form .checkbox.inline
 
   }
   .block-content{
-    padding: 30px 20px 10px;
+    padding: 30px 40px;
+    border: 2px solid #ECEEEF;  
+    border-radius: 1px;
   }
   .mura-focus-actions button,
   .mura-focus-actions button:hover,
@@ -1795,10 +1802,6 @@ form .checkbox.inline
     margin-right: 0;
   }
 }
-body#clogin,
-body#csetup{
-  background-color:#333;
-}
 #clogin #main-container,
 #csetup #main-container{
   background: none;
@@ -1806,6 +1809,7 @@ body#csetup{
 #clogin #page-container,
 #clogin #main-container,
 #clogin #main-container > .content{
+  background-color: #fff;
   height: 100%;
   margin-top: 0;
   margin-bottom: 0;

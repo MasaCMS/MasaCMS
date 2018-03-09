@@ -52,7 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfsavecontent variable="focusblockheader">
   <div class="focus-block-header">
-  	<img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/mura-logo@2x.png" class="mura-logo">
+  	<img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/mura-logo-black@2x.png" class="mura-logo">
   </div><!-- /focus-block-header -->
 </cfsavecontent>
 
@@ -224,7 +224,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 						<cfif not isBoolean(application.configBean.getValue('showadminloginhelp')) or application.configBean.getValue('showadminloginhelp')>
 							<div id="pw-link">
-								<label><a href="##">#application.rbFactory.getKeyValue(session.rb,'login.forgetpassword')#</a></label>
+								<label><a href="##" onclick="return false;">#application.rbFactory.getKeyValue(session.rb,'login.forgetpassword')#</a></label>
 							</div>
 						</cfif>
 
@@ -275,9 +275,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						   </form>
 
 						<div id="login-link">
-							<!--- 							<label><a href="##">#rc.$.rbKey('login.forgetpassword')#</a></label>
-							 --->
-							 <label><a href="##">Return to login</a></label>
+							 <label><a href="##" onclick="return false;">Return to login</a></label>
 						</div>
 
 						</cfif>
