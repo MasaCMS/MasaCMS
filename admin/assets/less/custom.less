@@ -1800,6 +1800,11 @@ h3.mura-login-auth-heading{
     padding: 30px 40px;
     border: 2px solid #ECEEEF;  
     border-radius: 1px;
+
+      h3{
+        font-size: 18px;
+      }
+
   }
   .mura-focus-actions button,
   .mura-focus-actions button:hover,
@@ -1833,10 +1838,37 @@ h3.mura-login-auth-heading{
   padding-bottom: 0;
 }
 
-#csetup #main-container{
+#mura-setup{ 
+  margin-top: 3%;
+}
 
-  .mura-focus-block .block-content{
-    padding-top: 0;
+#csetup #page-container,
+#csetup #main-container{
+  background-color: #fff;
+  height: 100%;
+  margin-top: 0;
+  margin-bottom: 0;
+  min-height: 480px;
+  padding-top: 0;
+  padding-bottom: 0;
+
+  h3{
+  margin: 0 auto 22px;
+    padding: 0;
+  }
+
+  .mura-focus-block {
+    width: 498px!important;
+  
+    .block-content{
+        padding: 40px 30px!important;
+    
+        .block-content{
+         border: none !important;
+          padding: 0 !important;
+        }
+    }
+
   }
 
   .alert{
