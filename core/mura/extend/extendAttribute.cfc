@@ -380,7 +380,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		regex=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getRegex() neq '',de('no'),de('yes'))#" value="#getRegex()#">,
 		message=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getMessage() neq '',de('no'),de('yes'))#" value="#getMessage()#">,
 		label=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getLabel() neq '',de('no'),de('yes'))#" value="#getLabel()#">,
-		defaultValue=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getDefaultValue() neq '',de('no'),de('yes'))#" value="#getDefaultValue()#">,
+		defaultValue=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getDefaultValue() neq '',de('no'),de('yes'))#" value="#Left(getDefaultValue(), 100)#">,
 		optionList=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getOptionList() neq '',de('no'),de('yes'))#" value="#getOptionList()#">,
 		optionLabelList=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getOptionLabelList() neq '',de('no'),de('yes'))#" value="#getOptionLabelList()#">
 		where attributeID=<cfqueryparam cfsqltype="cf_sql_numeric"  value="#getAttributeID()#">
@@ -406,7 +406,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getRegex() neq '',de('no'),de('yes'))#" value="#getRegex()#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getMessage() neq '',de('no'),de('yes'))#" value="#getMessage()#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getLabel() neq '',de('no'),de('yes'))#" value="#getLabel()#">,
-			<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getDefaultValue() neq '',de('no'),de('yes'))#" value="#getDefaultValue()#">,
+			<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getDefaultValue() neq '',de('no'),de('yes'))#" value="#Left(getDefaultValue(), 100)#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getOptionList() neq '',de('no'),de('yes'))#" value="#getOptionList()#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getOptionLabelList() neq '',de('no'),de('yes'))#" value="#getOptionLabelList()#">
 			)
