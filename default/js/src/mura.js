@@ -801,7 +801,12 @@
             }
 
             //if(params.data.constructor.name == 'FormData'){
+
             if (typeof FormData != 'undefined' && params.data instanceof FormData) {
+							request.setRequestHeader('Content-Type',
+								'multipart/form-data; charset=UTF-8'
+							);
+
 							try{
                 request.send(params.data);
 							} catch(e){
@@ -812,29 +817,30 @@
 								}
 							}
             } else {
-                request.setRequestHeader('Content-Type',
-                    'application/x-www-form-urlencoded; charset=UTF-8'
-                );
-                var query = [];
+							request.setRequestHeader('Content-Type',
+									'application/x-www-form-urlencoded; charset=UTF-8'
+							);
 
-                for (var key in params.data) {
-                    query.push($escape(key) + '=' + $escape(params.data[
-                        key]));
-                }
+              var query = [];
 
-                query = query.join('&');
+              for (var key in params.data) {
+                  query.push($escape(key) + '=' + $escape(params.data[
+                      key]));
+              }
 
-                setTimeout(function() {
-									try{
-										request.send(query);
-									} catch(e){
-										if(typeof params.error == 'function'){
-											params.error(request,e);
-										} else {
-											throw e;
-										}
+              query = query.join('&');
+
+              setTimeout(function() {
+								try{
+									request.send(query);
+								} catch(e){
+									if(typeof params.error == 'function'){
+										params.error(request,e);
+									} else {
+										throw e;
 									}
-                }, 0);
+								}
+              }, 0);
             }
         } else {
             if (params.url.indexOf('?') == -1) {
