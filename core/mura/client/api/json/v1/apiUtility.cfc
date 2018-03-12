@@ -1109,7 +1109,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			param name="params.method" default="undefined";
 
 			if(isDefined('result.errors') && isStruct(result.errors) && !StructIsEmpty(result.errors)){
-				return serializeResponse(statusCode=405,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'data'=result});
+				return serializeResponse(statusCode=403,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'data'=result});
 			} else {
 				return serializeResponse(statusCode=200,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'data'=result});
 			}
