@@ -885,7 +885,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif not arguments.siteidinurls>
 		<cfif arguments.filename neq ''>
 			<cfif arguments.indexfileinurls and not request.muraExportHTML>
-				<cfreturn "/index.cfm" & filenamePrefix & arguments.filename />
+				<cfreturn "/index.cfm" & filenamePrefix & arguments.filename/>
 			<cfelse>
 				<cfreturn filenamePrefix & arguments.filename />
 			</cfif>
@@ -895,13 +895,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<cfif arguments.filename neq ''>
 			<cfif arguments.indexfileinurls>
-				<cfreturn application.configBean.getSiteAssetPath() & "/" & arguments.siteID & "/index.cfm" & filenamePrefix & arguments.filename />
+					<cfreturn "/index.cfm/" & arguments.siteID & filenamePrefix & arguments.filename/>
 			<cfelse>
-				<cfreturn "/" & arguments.siteID & filenamePrefix & arguments.filename />
+				<cfreturn "/" & arguments.siteID & filenamePrefix & arguments.filename/>
 			</cfif>
 		<cfelse>
 			<cfif arguments.indexfileinurls>
-				<cfreturn application.configBean.getSiteAssetPath() & "/" & arguments.siteID & "/" />
+				<cfreturn "/index.cfm/" & arguments.siteID & "/" />
 			<cfelse>
 				<cfreturn "/" & arguments.siteID & "/">
 			</cfif>
