@@ -895,7 +895,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<cfif arguments.filename neq ''>
 			<cfif arguments.indexfileinurls>
-				<cfif application.configBean.getValue(property='legacyIndexFileLocation', default=false)>
+				<cfif application.configBean.getValue(property='legacyIndexFileLocation', defaultValue=false)>
 					<cfreturn application.configBean.getSiteAssetPath() & "/" & arguments.siteID & "/index.cfm" & filenamePrefix & arguments.filename />
 				<cfelse>
 					<cfreturn "/index.cfm/" & arguments.siteID  & filenamePrefix & arguments.filename />
@@ -905,7 +905,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		<cfelse>
 			<cfif arguments.indexfileinurls>
-				<cfif application.configBean.getValue(property='legacyIndexFileLocation', default=false)>
+				<cfif application.configBean.getValue(property='legacyIndexFileLocation', defaultValue=false)>
 					<cfreturn application.configBean.getSiteAssetPath() & "/" & arguments.siteID & "/" />
 				<cfelse>
 				<cfreturn "/index.cfm/" & arguments.siteID & "/" />
