@@ -8,21 +8,21 @@ component
 
 		moment=new mura.moment();
 		// Every key is added to the full key list - used for one-time key serialization.
-		fullKeyList = {};
+		variables.fullKeyList = {};
 
 		// Every key is added to the hint list so that we don't have to switch on the lists.
-		fullHintList = {};
+		variables.fullHintList = {};
 
 		// These key lists determine special data serialization.
-		stringKeyList = {};
-		booleanKeyList = {};
-		integerKeyList = {};
-		floatKeyList = {};
-		dateKeyList = {};
+		variables.stringKeyList = {};
+		variables.booleanKeyList = {};
+		variables.integerKeyList = {};
+		variables.floatKeyList = {};
+		variables.dateKeyList = {};
 
 		// These keys will NOT be used in serialization (ie. the key/value pairs will not be
 		// added to the serialized output).
-		blockedKeyList = {};
+		variables.blockedKeyList = {};
 
 		// Return the initialized component.
 		return( this );
@@ -39,7 +39,7 @@ component
 	// about why type of data convertion takes place. Returns serializer.
 	public any function asAny( required string key ) {
 
-		return( defineKey( fullKeyList, key, "any" ) );
+		return( defineKey( variables.fullKeyList, key, "any" ) );
 
 	}
 
@@ -47,7 +47,7 @@ component
 	// I define the given key as a boolean. Returns serializer.
 	public any function asBoolean( required string key ) {
 
-		return( defineKey( booleanKeyList, key, "boolean" ) );
+		return( defineKey( variables.booleanKeyList, key, "boolean" ) );
 
 	}
 
@@ -55,14 +55,14 @@ component
 	// I define the given key as a date. Returns serializer.
 	public any function asDate( required string key ) {
 
-		return( defineKey( dateKeyList, key, "date" ) );
+		return( defineKey( variables.dateKeyList, key, "date" ) );
 
 	}
 
 	// I define the given key as a date. Returns serializer.
 	public any function asUTCDate( required string key ) {
 
-		return( defineKey( dateKeyList, key, "utcdate" ) );
+		return( defineKey( variables.dateKeyList, key, "utcdate" ) );
 
 	}
 
@@ -70,7 +70,7 @@ component
 	// I define the given key as a float / decimal. Returns serializer.
 	public any function asFloat( required string key ) {
 
-		return( defineKey( floatKeyList, key, "float" ) );
+		return( defineKey( variables.floatKeyList, key, "float" ) );
 
 	}
 
@@ -78,7 +78,7 @@ component
 	// I define the given key as an integer. Returns serializer.
 	public any function asInteger( required string key ) {
 
-		return( defineKey( integerKeyList, key, "integer" ) );
+		return( defineKey( variables.integerKeyList, key, "integer" ) );
 
 	}
 
@@ -86,7 +86,7 @@ component
 	// I define the given key as a string. Returns serializer.
 	public any function asString( required string key ) {
 
-		return( defineKey( stringKeyList, key, "string" ) );
+		return( defineKey( variables.stringKeyList, key, "string" ) );
 
 	}
 
@@ -94,7 +94,7 @@ component
 	// I define the key as one that should not be included in the serialized response.
 	public any function exclude( required string key ) {
 
-		blockedKeyList[ key ] = true;
+		variables.blockedKeyList[ key ] = true;
 
 		return( this );
 
@@ -135,14 +135,14 @@ component
 
 		arguments.key=lcase(arguments.key);
 
-		if ( structKeyExists( fullKeyList, key ) ) {
+		if ( structKeyExists( variables.fullKeyList, key ) ) {
 
 			return this;
 
 			throw(
 				type = "DuplicateKey",
 				message = "The key [#key#] has already been defined within the serializer.",
-				detail = "The current key list is: #structKeyList( fullKeyList, ', ' )#"
+				detail = "The current key list is: #structKeyList( variables.fullKeyList, ', ' )#"
 			);
 
 		}
@@ -152,7 +152,7 @@ component
 
 		// Add all keys to the full key list as well. This one is used to store the serialzation
 		// of the key so that it doesn't have to be recalculated each time the object is serialized.
-		fullKeyList[ key ] = serializeJson( key );
+		variables.fullKeyList[ key ] = serializeJson( key );
 
 		// If we have a specific type, then add the hint to the full hint list as well. This will
 		// allow us to quickly look up the pass-through data type hint during serialization.
@@ -162,7 +162,7 @@ component
 		// then it would always overwrite the parent data type.
 		if ( hint != "any" ) {
 
-			fullHintList[ key ] = hint;
+			variables.fullHintList[ key ] = hint;
 
 		}
 
@@ -257,7 +257,7 @@ component
 			for ( var key in input ) {
 
 				// Skip any black-listed keys.
-				if ( structKeyExists( blockedKeyList, key ) ) {
+				if ( structKeyExists( variables.blockedKeyList, key ) ) {
 
 					continue;
 
@@ -276,18 +276,18 @@ component
 
 				// Ensure that the given key can be referenced on the full-key list. This way,
 				// the subsequent logic will be easier.
-				if ( ! structKeyExists( fullKeyList, key ) ) {
+				if ( ! structKeyExists( variables.fullKeyList, key ) ) {
 
 					asAny( lcase( key ) );
 
 				}
 
-				writeOutput( fullKeyList[ key ] & ":" );
+				writeOutput( variables.fullKeyList[ key ] & ":" );
 
 				// Pass in the most appropriate data-type hint based on the parent key.
-				if ( structKeyExists( fullHintList, key ) ) {
+				if ( structKeyExists( variables.fullHintList, key ) ) {
 
-					serializeInput( input[ key ], fullHintList[ key ] );
+					serializeInput( input[ key ], variables.fullHintList[ key ] );
 
 				// If the given key is unknown, just pass through the most recent hint as
 				// it may be defining the type for an entire sturcture.
@@ -348,7 +348,7 @@ component
 			// Make sure each column is defined as a known key - makes the subsequent logic easier.
 			for ( var key in keys ) {
 
-				if ( ! structKeyExists( fullKeyList, key ) ) {
+				if ( ! structKeyExists( variables.fullKeyList, key ) ) {
 
 					asAny( lcase( key ) );
 
@@ -375,7 +375,7 @@ component
 				for ( var key in keys ) {
 
 					// Skip any black-listed keys.
-					if ( structKeyExists( blockedKeyList, key ) ) {
+					if ( structKeyExists( variables.blockedKeyList, key ) ) {
 
 						continue;
 
@@ -392,12 +392,12 @@ component
 
 					}
 
-					writeOutput( fullKeyList[ key ] & ":" );
+					writeOutput( variables.fullKeyList[ key ] & ":" );
 
 					// Pass in the most appropriate data-type hint based on the parent key.
-					if ( structKeyExists( fullHintList, key ) ) {
+					if ( structKeyExists( variables.fullHintList, key ) ) {
 
-						serializeInput( input[ key ][ i ], fullHintList[ key ] );
+						serializeInput( input[ key ][ i ], variables.fullHintList[ key ] );
 
 					// If the given key is unknown, just pass through the most recent hint as
 					// it may be defining the type for an entire sturcture.
