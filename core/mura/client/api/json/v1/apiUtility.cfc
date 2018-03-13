@@ -283,12 +283,15 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		if(!arguments.expanded &&
 			!(isDefined('arguments.baseURL')) || !len(arguments.baseURL)){
 			arguments.baseURL=getEndPoint() & "/?";
-
 			var params={};
 			structAppend(params,url,true);
 			structAppend(params,form,true);
 
 			param name="params.method" default=arguments.method;
+
+			if(find('.',arguments.method)){
+				params.method=arguments.method;
+			}
 
 			if(params.method=='undefined'){
 				params.method=arguments.method;
@@ -794,6 +797,16 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				} else {
 					params.entityName=pathInfo[2];
 				}
+			}
+
+			if(find('.',params.method)){
+				params.entityName=listFirst(params.method,'.');
+				params.method=listLast(params.method,'.');
+				pathInfo=[
+					pathInfo[1],
+					params.entityName,
+					params.method
+				];
 			}
 
 			if(isDefined('params.entityName') && listFIndNoCase('contentnavs,contentnav',params.entityName)){
