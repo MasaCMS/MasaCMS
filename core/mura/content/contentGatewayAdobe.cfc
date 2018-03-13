@@ -1654,7 +1654,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="tag" type="string" required="true" default="">
 	<cfargument name="sectionID" type="string" required="true" default="">
 	<cfargument name="searchType" type="string" required="true" default="default" hint="Can be default or image">
-	<cfargument name="moduleid" type="string" required="true" default="00000000000000000000000000000000000">
+	<cfargument name="moduleid" type="string" required="true" default="00000000000000000000000000000000000,00000000000000000000000000000000003,00000000000000000000000000000000004">
 
 	<cfset var rsPrivateSearch = "">
 	<cfset var kw = trim(arguments.keywords)>
@@ -1752,7 +1752,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						)
 					</cfif>
 
-				and tcontent.moduleid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleid#">
+				and tcontent.moduleid in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.moduleid#">)
 		<cfelse>
 		0=1
 		</cfif>
