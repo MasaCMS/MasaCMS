@@ -663,7 +663,7 @@ component extends="mura.cfobject" output="false" hint="This provides locale spec
 		arguments.mySession.localeHasDayParts=findNoCase('AM',LSTimeFormat(createTime(0,0,0),  'medium'));
 	}
 
-	public function resetSessionLocale(required mySession="#session#") output=false {
+	public function resetSessionLocale(required mySession="#getSession()#") output=false {
 		arguments.mySession.locale=application.settingsManager.getSite(arguments.mySession.siteID).getJavaLocale();
 		arguments.mySession.localeHasDayParts=true;
 		arguments.mySession.dateKey="";
