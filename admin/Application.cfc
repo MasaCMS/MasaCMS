@@ -167,6 +167,8 @@ component extends="framework" output="false" {
 
 	function onRequestStart() output="false"{
 
+		variables.framework.base="/muraWRM#application.configBean.getAdminDir()#/";
+		
 		include "../core/appcfc/onRequestStart_include.cfm";
 
 		try{
