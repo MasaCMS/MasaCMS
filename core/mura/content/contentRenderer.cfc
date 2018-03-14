@@ -2697,25 +2697,29 @@ Display Objects
 </cffunction>
 
 <cffunction name="getShowToolbar" output="false">
-	<cfset var sessionData=getSession()>
-	<cfreturn this.enableFrontEndTools
-		and (
-			request.muraChangesetPreviewToolbar
+	<cfif not request.muraSessionManagement>
+		<cfreturn false>
+	<cfelse>
+		<cfset var sessionData=getSession()>
+		<cfreturn this.enableFrontEndTools
 			and (
-				this.showMemberToolBar or this.showAdminToolBar
-			) or (
-				(
-				 	StructKeyExists(sessionData, 'mura')
-				 	and (
-						(listFind(sessionData.mura.memberships,'S2IsPrivate;#application.settingsManager.getSite(variables.event.getValue('siteID')).getPrivateUserPoolID()#') and getBean('permUtility').getModulePerm("00000000000000000000000000000000000",variables.event.getValue('siteID')))
-						or listFind(sessionData.mura.memberships,'S2')
-					)
+				request.muraChangesetPreviewToolbar
+				and (
+					this.showMemberToolBar or this.showAdminToolBar
 				) or (
-					listFindNoCase("editor,author",variables.event.getValue('r').perm)
-					and this.showMemberToolBar
-				)
-			) and getShowAdminToolBar()
-		) and not request.muraExportHTML />
+					(
+					 	StructKeyExists(sessionData, 'mura')
+					 	and (
+							(listFind(sessionData.mura.memberships,'S2IsPrivate;#application.settingsManager.getSite(variables.event.getValue('siteID')).getPrivateUserPoolID()#') and getBean('permUtility').getModulePerm("00000000000000000000000000000000000",variables.event.getValue('siteID')))
+							or listFind(sessionData.mura.memberships,'S2')
+						)
+					) or (
+						listFindNoCase("editor,author",variables.event.getValue('r').perm)
+						and this.showMemberToolBar
+					)
+				) and getShowAdminToolBar()
+			) and not request.muraExportHTML />
+		</cfif>
 </cffunction>
 
 <cffunction name="hasFETools" output="false">
