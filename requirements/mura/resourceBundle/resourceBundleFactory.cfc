@@ -604,7 +604,7 @@ component extends="mura.cfobject" output="false" hint="This provides locale spec
 		}
 	}
 
-	public function setAdminLocale(required mySession="#session#") output=false {
+	public function setAdminLocale(mySession="#getSession()#") output=false {
 		var utils="";
 		//  make sure that a locale and language resouce bundle have been set in the users session
 		if ( !structKeyExists(arguments.mySession,"dateKey") ) {
