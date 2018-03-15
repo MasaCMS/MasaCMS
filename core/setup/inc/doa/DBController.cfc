@@ -124,9 +124,9 @@
 	<!--- initilialization of component (bsoylu 6/6/2010)  --->
 	<cffunction name="init" access="public" hint="start the controller">
 		<cfscript>
-			//set baseDir: config\setup\doa\  =17 chars
-			this.baseDir = left(getDirectoryFromPath(getCurrentTemplatePath()),len(getDirectoryFromPath(getCurrentTemplatePath()))-22);
-			this.settingsPath = this.baseDir & "/config/settings.ini.cfm";
+			//set baseDir: core\setup\inc\doa\  =19 chars
+			this.baseDir = left(getDirectoryFromPath(getCurrentTemplatePath()),len(getDirectoryFromPath(getCurrentTemplatePath()))-20);
+			this.settingsPath = this.baseDir & "\config\settings.ini.cfm";
 			// (bsoylu 6/5/2010) get default database type from file as a starter
 			this.settingsIni = createObject( "component", "mura.IniFile" ).init( this.settingsPath );
 			this.dbType = this.settingsIni.get( "production", "dbtype" );
