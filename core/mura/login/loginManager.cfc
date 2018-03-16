@@ -270,9 +270,6 @@ If you did not request a new authorization, contact #contactEmail#.");
 					, $ = arguments.$
 				};
 
-				// WriteDump(arguments.$.event().getAllValues());
-				// abort;
-
 				handleChallenge(argumentCollection=data);
 			} else {
 				if ( getBean('configBean').getValue(property='MFA',defaultValue=false) && isBoolean(arguments.$.event('rememberdevice')) && arguments.$.event('rememberdevice') ) {
