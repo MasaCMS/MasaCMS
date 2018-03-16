@@ -177,20 +177,21 @@ If you did not request a new authorization, contact #contactEmail#.");
 	);
 	}
 
-	public function handleChallenge(rememberMe="0", contentid="", linkServID="", isAdminLogin="false", compactDisplay="false", deviceid="", publicDevice="false") output=false {
+	public function handleChallenge(rememberMe="0", contentid="", linkServID="", isAdminLogin="false", compactDisplay="false", deviceid="", publicDevice="false", failedchallenge="false") output=false {
 		var sessionData=getSession();
+
 		sessionData.mfa.authcode=variables.userUtility.getRandomPassword();
-		if ( getBean('configBean').getValue(property='MFASendAuthCode',defaultValue=true) ) {
+		if ( !arguments.failedchallenge && getBean('configBean').getValue(property='MFASendAuthCode',defaultValue=true) ) {
 			sendAuthCode();
 		}
 		if ( arguments.isAdminLogin ) {
-			location( "./?muraAction=cLogin.main&display=login&status=challenge&rememberMe=#arguments.rememberMe#&contentid=#arguments.contentid#&LinkServID=#arguments.linkServID#&returnURL=#urlEncodedFormat(arguments.returnUrl)#&compactDisplay=#urlEncodedFormat(arguments.compactDisplay)#", false );
+			location( "./?muraAction=cLogin.main&display=login&status=challenge&failedchallenge=#arguments.failedchallenge#&rememberMe=#arguments.rememberMe#&contentid=#arguments.contentid#&LinkServID=#arguments.linkServID#&returnURL=#urlEncodedFormat(arguments.returnUrl)#&compactDisplay=#urlEncodedFormat(arguments.compactDisplay)#", false);
 		} else {
 			var loginURL = application.settingsManager.getSite(request.siteid).getLoginURL();
 			if ( find('?', loginURL) ) {
-				loginURL &= "&status=challenge&rememberMe=#arguments.rememberMe#&contentid=#arguments.contentid#&LinkServID=#arguments.linkServID#&returnURL=#urlEncodedFormat(arguments.returnUrl)#";
+				loginURL &= "&status=challenge&failedchallenge=#arguments.failedchallenge#&rememberMe=#arguments.rememberMe#&contentid=#arguments.contentid#&LinkServID=#arguments.linkServID#&returnURL=#urlEncodedFormat(arguments.returnUrl)#";
 			} else {
-				loginURL &= "?status=challenge&rememberMe=#arguments.rememberMe#&contentid=#arguments.contentid#&LinkServID=#arguments.linkServID#&returnURL=#urlEncodedFormat(arguments.returnUrl)#";
+				loginURL &= "?status=challenge&failedchallenge=#arguments.failedchallenge#&rememberMe=#arguments.rememberMe#&contentid=#arguments.contentid#&LinkServID=#arguments.linkServID#&returnURL=#urlEncodedFormat(arguments.returnUrl)#";
 			}
 			if ( request.muraAPIRequest ) {
 				request.muraJSONRedirectURL=loginURL;
@@ -222,7 +223,11 @@ If you did not request a new authorization, contact #contactEmail#.");
 
 	public function attemptChallenge($) output=false {
 		var sessionData=getSession();
-		return len(arguments.$.event('authcode')) && isDefined('sessionData.mfa.authcode') && arguments.$.event('authcode') == sessionData.mfa.authcode;
+		var eventResponse = arguments.$.renderEvent('onMFAAttemptChallenge');
+		var isCodeValid = IsBoolean(eventResponse)
+						? eventResponse
+						: Len(arguments.$.event('authcode')) && IsDefined('sessionData.mfa.authcode') && arguments.$.event('authcode') == sessionData.mfa.authcode;
+		return isCodeValid;
 	}
 
 	public function handleChallengeAttempt($) output=false {
@@ -242,20 +247,49 @@ If you did not request a new authorization, contact #contactEmail#.");
 
 	public function completedChallenge($) output=false {
 		var sessionData=getSession();
-		if ( isDefined('sessionData.mfa') ) {
-			if ( getBean('configBean').getValue(property='MFA',defaultValue=false) && isBoolean(arguments.$.event('rememberdevice')) && arguments.$.event('rememberdevice') ) {
-				var userDevice=getBean('userDevice')
-						.loadBy(
-							userid=sessionData.mfa.userid,
-							deviceid=sessionData.mfa.deviceid,
-							siteid=sessionData.mfa.siteid
-						)
-						.setLastLogin(now())
-						.save();
-			}
-			variables.userUtility.loginByUserID(argumentCollection=sessionData.mfa);
-			handleSuccess(argumentCollection=sessionData.mfa);
+		var failedchallenge = IsBoolean(arguments.$.event('failedchallenge')) ? arguments.$.event('failedchallenge') : false;
+
+		if ( !IsBoolean(arguments.$.event('isadminlogin')) ) {
+			arguments.$.event('isadminlogin', false);
 		}
+
+		if ( isDefined('sessionData.mfa') ) {
+
+			if ( failedchallenge ) {
+				var data = {
+					failedchallenge = true
+					, returnurl = arguments.$.event('returnurl')
+					, rememberme = arguments.$.event('rememberme')
+					, contentid = arguments.$.event('contentid')
+					, linkservid = arguments.$.event('linkservid')
+					, isadminlogin = arguments.$.event('isadminlogin')
+					, compactdisplay = arguments.$.event('compactdisplay')
+					, deviceid = arguments.$.event('deviceid')
+					, publicdevice = arguments.$.event('publicdevice')
+					, m = arguments.$
+					, $ = arguments.$
+				};
+
+				// WriteDump(arguments.$.event().getAllValues());
+				// abort;
+
+				handleChallenge(argumentCollection=data);
+			} else {
+				if ( getBean('configBean').getValue(property='MFA',defaultValue=false) && isBoolean(arguments.$.event('rememberdevice')) && arguments.$.event('rememberdevice') ) {
+					var userDevice=getBean('userDevice')
+							.loadBy(
+								userid=sessionData.mfa.userid,
+								deviceid=sessionData.mfa.deviceid,
+								siteid=sessionData.mfa.siteid
+							)
+							.setLastLogin(now())
+							.save();
+				}
+				variables.userUtility.loginByUserID(argumentCollection=sessionData.mfa);
+				handleSuccess(argumentCollection=sessionData.mfa);
+			}
+		}
+
 	}
 
 	public function login(struct data, required any loginObject="") output=false {
