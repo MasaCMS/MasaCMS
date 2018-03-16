@@ -74,7 +74,7 @@ to your own modified versions of Mura CMS.
 
 			<!--- TAB-DATABASE --->
 			<div class="tab-pane in active" id="tab-database">
-					<p class="alert alert-warning"><strong>Step 1:</strong> Select the database type to be used, and provide the datasource connection information.</p>
+					<p class="help-block"><strong>Step 1:</strong> Select the database type to be used, and provide the datasource connection information.</p>
 
 					<div class="mura-control-group">
 						<label></label>
@@ -143,7 +143,7 @@ to your own modified versions of Mura CMS.
 			<!-- TAB-ADMIN -->
 			<div class="tab-pane" id="tab-admin">
 
-					<p class="alert alert-warning"><strong>Step 2:</strong> Enter credentials for the "Super Admin" administrative user account.
+					<p class="help-block"><strong>Step 2:</strong> Enter credentials for the "Super Admin" administrative user account.
 					</p>
 
 					<div class="mura-control-group">
@@ -167,7 +167,7 @@ to your own modified versions of Mura CMS.
 			<!-- TAB-OPTIONS -->
 			<div class="tab-pane" id="tab-options">
 
-					<p class="alert alert-warning"><strong>Step 3:</strong> Select whether "index.cfm" and the Site ID should appear in Mura's navigation links
+					<p class="help-block"><strong>Step 3:</strong> Select whether "index.cfm" and the Site ID should appear in Mura's navigation links
 					</p>
 
 					<div class="mura-control-group" >
