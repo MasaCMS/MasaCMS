@@ -75,22 +75,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 	<div class="block mura-focus-block animated" <cfif rc.status eq 'sendLogin'>style="display:none;"</cfif> id="mura-login-panel">
 
-			#focusblockheader#
+		#focusblockheader#
 
 	    <div class="block-content">
-				<cfif not (rc.$.event('status') eq 'challenge' and isdefined('session.mfa'))>
-					<cfif rc.status eq 'denied'>
-						<div class="alert alert-error"><span>#rc.$.rbKey('login.denied')#</span></div>
-					<cfelseif rc.status eq 'failed'>
-						<cfset isBlocked=structKeyExists(session, "blockLoginUntil") and isDate(session.blockLoginUntil) and session.blockLoginUntil gt now() />
-						<cfif isBLocked>
-							<div class="alert alert-error"><span>#rc.$.rbKey('login.blocked')#</span></div>
-						<cfelse>
-							<div class="alert alert-error"><span>#rc.$.rbKey('login.failed')#</span></div>
-						</cfif>
-					</cfif>
+
+				<cfset errorMessage = '' />
+				<cfset isBlocked = StructKeyExists(session, "blockLoginUntil") and isDate(session.blockLoginUntil) and session.blockLoginUntil gt now() />
+
+				<cfif isBlocked>
+					<cfset errorMessage = rc.$.rbKey('login.blocked') />
+				<cfelseif rc.status eq 'denied'>
+					<cfset errorMessage = rc.$.rbKey('login.denied') />
+				<cfelseif rc.status eq 'failed'>
+					<cfset errorMessage = rc.$.rbKey('login.failed') />
+				<cfelseif rc.$.event('failedchallenge') eq 'true'>
+					<cfset errorMessage = rc.$.rbKey('login.incorrectauthorizationcode') />
 				</cfif>
 
+				<cfif Len(errorMessage)>
+					<div class="alert alert-error">
+						<span>#errorMessage#</span>
+					</div>
+				</cfif>
+					
 				<!--- Do not change the html comment below --->
 				<!-- mura-primary-login-token -->
 
@@ -132,6 +139,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<input type="hidden" name="muraAction" value="cLogin.login">
 							<input type="hidden" name="status" value="challenge">
 							<input type="hidden" name="attemptChallenge" value="true">
+							<input type="hidden" name="isadminlogin" value="true">
 							#rc.$.renderCSRFTokens(format='form',context='login')#
 							</form>
 						</cfif>
