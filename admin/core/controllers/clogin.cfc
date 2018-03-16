@@ -73,18 +73,8 @@ component extends="controller" output="false" {
 		if ( rc.$.validateCSRFTokens(context='login') ) {
 			var loginManager=rc.$.getBean('loginManager');
 			if ( isBoolean(rc.$.event('attemptChallenge')) && rc.$.event('attemptChallenge') ) {
-
 				rc.$.event('failedchallenge', !loginManager.handleChallengeAttempt(rc.$));
 				loginManager.completedChallenge(rc.$);
-
-				// if ( loginManager.handleChallengeAttempt(rc.$) ) {
-				// 	loginManager.completedChallenge(rc.$);
-				// } else {
-				// 	// failed
-				// 	// WriteDump('FAIL');
-				// 	// abort;
-				// }
-
 			} else if ( isDefined('form.username') && isDefined('form.password') ) {
 				loginManager.login(arguments.rc);
 			}
