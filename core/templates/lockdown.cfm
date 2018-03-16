@@ -118,17 +118,16 @@ form p#error {
 					<!--- Use Google oAuth Button --->
 					<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google')>
 						<div style="padding-bottom: 5px">
-							<a href="#$.getBean('googleLoginProvider').generateAuthUrl(session.urltoken)#">
-								<!--- <img src="/admin/assets/images/btn_google_signin_dark_normal_web@2x.png" /> --->
-								#$.rbKey('login.loginwithgoogle')#
+							<a href="#$.getBean('googleLoginProvider').generateAuthUrl(session.urltoken)#" title="#$.rbKey('login.loginwithgoogle')#">
+		                      <img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/btn_google_signin_light_normal_web@2x.png" class="mura-login-auth-img-google">
 							</a>
 						</div>
 					</cfif>
 					<!--- Use Facebook oAuth Button --->
 					<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'facebook')>
 						<div style="padding-bottom: 5px">
-							<a href="#$.getBean('facebookLoginProvider').generateAuthUrl(session.urltoken)#">
-								#$.rbKey('login.loginwithfacebook')#
+							<a href="#$.getBean('facebookLoginProvider').generateAuthUrl(session.urltoken)#" title="#$.rbKey('login.loginwithfacebook')#">
+						       <img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/btn_facebook_continue@2x.png" class="mura-login-auth-img-facebook">
 							</a>
 						</div>
 					</cfif>

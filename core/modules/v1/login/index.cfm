@@ -139,7 +139,7 @@
 							<div class="#this.loginFormGroupWrapperClass#">
 								<div class="#this.loginFormSubmitWrapperClass#">
 									<a href="#$.getBean('googleLoginProvider').generateAuthUrl(session.urltoken)#" title="#variables.$.rbKey('login.loginwithgoogle')#">
-				                      <img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/btn_google_signin_light_normal_web@2x.png" class="mura-login-auth-img">
+				                      <img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/btn_google_signin_light_normal_web@2x.png" class="mura-login-auth-img-google">
 									</a>
 								</div>
 							</div>
@@ -148,7 +148,7 @@
 							<div class="#this.loginFormGroupWrapperClass#">
 								<div class="#this.loginFormSubmitWrapperClass#">
 									<a href="#$.getBean('facebookLoginProvider').generateAuthUrl(session.urltoken)#" title="#variables.$.rbKey('login.loginwithfacebook')#">
-								       <img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/btn_facebook_continue@2x.png" class="mura-login-auth-img-fb">	
+								       <img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/btn_facebook_continue@2x.png" class="mura-login-auth-img-facebook">	
    									</a>
 								</div>
 							</div>
