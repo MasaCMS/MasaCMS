@@ -138,9 +138,8 @@
 						<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google')>
 							<div class="#this.loginFormGroupWrapperClass#">
 								<div class="#this.loginFormSubmitWrapperClass#">
-									<a href="#$.getBean('googleLoginProvider').generateAuthUrl(session.urltoken)#">
-										<!--- <img src="/admin/assets/images/btn_google_signin_dark_normal_web@2x.png" /> --->
-										#variables.$.rbKey('login.loginwithgoogle')#
+									<a href="#$.getBean('googleLoginProvider').generateAuthUrl(session.urltoken)#" title="#variables.$.rbKey('login.loginwithgoogle')#">
+				                      <img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/btn_google_signin_light_normal_web@2x.png" class="mura-login-auth-img">
 									</a>
 								</div>
 							</div>
@@ -148,9 +147,9 @@
 						<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'facebook')>
 							<div class="#this.loginFormGroupWrapperClass#">
 								<div class="#this.loginFormSubmitWrapperClass#">
-									<a href="#$.getBean('facebookLoginProvider').generateAuthUrl(session.urltoken)#">
-										#variables.$.rbKey('login.loginwithfacebook')#
-									</a>
+									<a href="#$.getBean('facebookLoginProvider').generateAuthUrl(session.urltoken)#" title="#variables.$.rbKey('login.loginwithfacebook')#">
+								       <img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/btn_facebook_continue@2x.png" class="mura-login-auth-img-fb">	
+   									</a>
 								</div>
 							</div>
 						</cfif>
