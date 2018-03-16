@@ -1439,22 +1439,23 @@ component extends="mura.bean.beanExtendable" entityName="content" table="tconten
 
 	public function getStatus() output=false {
 		var status = '';
-		if ( IsDefined('sessionData.rb') ) {
-			switch ( getStatusID() ) {
-				case  0:
-					status = application.rbFactory.getKeyValue(sessionData.rb,"sitemanager.content.draft");
-					break;
-				case  1:
-					status = application.rbFactory.getKeyValue(sessionData.rb,"sitemanager.content.#variables.instance.approvalstatus#");
-					break;
-				case  2:
-					status = application.rbFactory.getKeyValue(sessionData.rb,"sitemanager.content.published");
-					break;
-				default:
-					status = application.rbFactory.getKeyValue(sessionData.rb,"sitemanager.content.archived");
-					break;
-			}
+		param name="sessionData" default={};
+		param name="sessionData.rb" default="en";
+		switch ( getStatusID() ) {
+			case  0:
+				status = application.rbFactory.getKeyValue(sessionData.rb,"sitemanager.content.draft");
+				break;
+			case  1:
+				status = application.rbFactory.getKeyValue(sessionData.rb,"sitemanager.content.#variables.instance.approvalstatus#");
+				break;
+			case  2:
+				status = application.rbFactory.getKeyValue(sessionData.rb,"sitemanager.content.published");
+				break;
+			default:
+				status = application.rbFactory.getKeyValue(sessionData.rb,"sitemanager.content.archived");
+				break;
 		}
+
 		return status;
 	}
 
