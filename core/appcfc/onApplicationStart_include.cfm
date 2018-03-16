@@ -205,7 +205,8 @@ if ( application.setupComplete ) {
 					new mura.javaloader.JavaLoader(
 						loadPaths=[
 									expandPath('/mura/lib/jBCrypt-0.3'),
-									expandPath('/mura/lib/diff_match_patch.jar')
+									expandPath('/mura/lib/diff_match_patch.jar'),
+									expandPath('/mura/lib/googleauth.jar')
 								]
 					)
 				);

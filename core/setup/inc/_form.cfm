@@ -189,7 +189,7 @@ to your own modified versions of Mura CMS.
 
 					</div>
 
-					<p class="help-block">Example:<br><span id="url_example"><#context#/[siteid]/index.cfm?</span></p>
+					<p class="help-block">Example:<br><span id="url_example"><#context#/index.cfm/[siteid]?</span></p>
 
 			</div>
 			<!-- /TAB-OPTIONS -->
@@ -240,12 +240,15 @@ jQuery(document).ready(function(){
 	// example URL
 	$('.build-url-example').on('change',function(){
 		var ret = 'domain.com#context#';
-		if ($("##production_siteidinurls").is(':checked')) {
-			ret = ret + '/[siteid]';
-		}
+
 		if ($("##production_indexfileinurls").is(':checked')) {
 			ret = ret + '/index.cfm';
 		}
+
+		if ($("##production_siteidinurls").is(':checked')) {
+			ret = ret + '/[siteid]';
+		}
+		
 		ret = ret + '/folder/page/';
 		$("##url_example").html(ret);
 	});

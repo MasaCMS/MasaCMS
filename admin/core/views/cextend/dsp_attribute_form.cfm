@@ -99,7 +99,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <div class="mura-control-group">
 	<label>Default Value</label>
-		<input type="text" name="defaultValue"  value="#esapiEncode('html_attr',attributes.attributeBean.getDefaultvalue())#" />
+		<input type="text" name="defaultValue"  value="#esapiEncode('html_attr',attributes.attributeBean.getDefaultvalue())#"  maxlength="100" />
 </div>
 <div class="mura-control-group">
 	<label>Tooltip</label>

@@ -19786,6 +19786,9 @@ Mura.Request=Mura.Core.extend(
 
           //if(params.data.constructor.name == 'FormData'){
           if (typeof FormData != 'undefined' && params.data instanceof FormData) {
+						req.setRequestHeader('Content-Type',
+								'multipart/form-data; charset=UTF-8'
+						);
 						try{
 							req.send(params.data);
 						} catch(e){

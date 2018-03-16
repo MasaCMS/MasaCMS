@@ -1386,8 +1386,8 @@ Display Objects
 		<cfset tracePoint=initTracePoint("/modules/nav/dsp_tag_cloud.cfm")>
 		<cfinclude template="/muraWRM/display_objects/nav/dsp_tag_cloud.cfm" />
 	<cfelseif fileExists(expandPath("/muraWRM/modules/nav/dsp_tag_cloud.cfm"))>
-		<cfset tracePoint=initTracePoint("/display_objects/nav/dsp_tag_cloud.cfm")>
-		<cfinclude template="/muraWRM/display_objects/nav/dsp_tag_cloud.cfm" />
+		<cfset tracePoint=initTracePoint("/muraWRM/modules/nav/dsp_tag_cloud.cfm")>
+		<cfinclude template="/muraWRM/modules/nav/dsp_tag_cloud.cfm" />
 	<cfelse>
 		<cfset tracePoint=initTracePoint("/core/modules/v1/nav/dsp_tag_cloud.cfm")>
 		<cfinclude template="/muraWRM/core/modules/v1/nav/dsp_tag_cloud.cfm" />
@@ -2697,25 +2697,29 @@ Display Objects
 </cffunction>
 
 <cffunction name="getShowToolbar" output="false">
-	<cfset var sessionData=getSession()>
-	<cfreturn this.enableFrontEndTools
-		and (
-			request.muraChangesetPreviewToolbar
+	<cfif not request.muraSessionManagement>
+		<cfreturn false>
+	<cfelse>
+		<cfset var sessionData=getSession()>
+		<cfreturn this.enableFrontEndTools
 			and (
-				this.showMemberToolBar or this.showAdminToolBar
-			) or (
-				(
-				 	StructKeyExists(sessionData, 'mura')
-				 	and (
-						(listFind(sessionData.mura.memberships,'S2IsPrivate;#application.settingsManager.getSite(variables.event.getValue('siteID')).getPrivateUserPoolID()#') and getBean('permUtility').getModulePerm("00000000000000000000000000000000000",variables.event.getValue('siteID')))
-						or listFind(sessionData.mura.memberships,'S2')
-					)
+				request.muraChangesetPreviewToolbar
+				and (
+					this.showMemberToolBar or this.showAdminToolBar
 				) or (
-					listFindNoCase("editor,author",variables.event.getValue('r').perm)
-					and this.showMemberToolBar
-				)
-			) and getShowAdminToolBar()
-		) and not request.muraExportHTML />
+					(
+					 	StructKeyExists(sessionData, 'mura')
+					 	and (
+							(listFind(sessionData.mura.memberships,'S2IsPrivate;#application.settingsManager.getSite(variables.event.getValue('siteID')).getPrivateUserPoolID()#') and getBean('permUtility').getModulePerm("00000000000000000000000000000000000",variables.event.getValue('siteID')))
+							or listFind(sessionData.mura.memberships,'S2')
+						)
+					) or (
+						listFindNoCase("editor,author",variables.event.getValue('r').perm)
+						and this.showMemberToolBar
+					)
+				) and getShowAdminToolBar()
+			) and not request.muraExportHTML />
+		</cfif>
 </cffunction>
 
 <cffunction name="hasFETools" output="false">
