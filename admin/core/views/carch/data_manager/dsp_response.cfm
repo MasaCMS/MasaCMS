@@ -31,7 +31,7 @@ Your custom code
  /admin/
  /tasks/
  /config/
- /requirements/mura/
+ /core/mura/
  /Application.cfc
  /index.cfm
  /MuraProxy.cfc
@@ -114,10 +114,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <input type="hidden" name="siteid" value="#esapiEncode('html_attr',session.siteid)#" />
 <input type="hidden" name="moduleid" value="#esapiEncode('html_attr',rc.moduleid)#" />
 <input type="hidden" name="newSearch" value="1" />
+<input type="hidden" name="delete" value="0" />
 <div class="mura-actions">
 	<div class="form-actions">
 		<button type="button" class="btn mura-primary" onclick="submitForm(document.forms.download);" /><i class="mi-bar-chart"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.viewdata')#</button>
-		<button type="button" class="btn" onclick="location.href='./?muraAction=cArch.downloaddata&siteid=#esapiEncode('url',rc.siteid)#&contentid=#esapiEncode('url',rc.contentid)#&date1=' + document.download.date1.value + '&hour1=' +document.download.hour1.value + '&minute1=' +document.download.minute1.value + '&date2=' + document.download.date2.value + '&hour2=' + document.download.hour2.value + '&minute2=' + document.download.minute2.value + '&sortBy=' +  document.download.sortBy.value + '&sortDirection=' +  document.download.sortDirection.value + '&filterBy='  + document.download.filterBy.value + '&keywords=' + document.download.keywords.value + '&columns=#esapiEncode('url',rc.columns)#';"><i class="mi-download"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.download')#</button>
+		<cfset downloadLocationString="'./?muraAction=cArch.downloaddata&siteid=#esapiEncode('url',rc.siteid)#&contentid=#esapiEncode('url',rc.contentid)#&date1=' + document.download.date1.value + '&hour1=' +document.download.hour1.value + '&minute1=' +document.download.minute1.value + '&date2=' + document.download.date2.value + '&hour2=' + document.download.hour2.value + '&minute2=' + document.download.minute2.value + '&sortBy=' +  document.download.sortBy.value + '&sortDirection=' +  document.download.sortDirection.value + '&filterBy='  + document.download.filterBy.value + '&keywords=' + document.download.keywords.value + '&columns=#esapiEncode('url',rc.columns)#'">
+		<cfif isdefined ('rc.minute1')><button type="button" class="btn" onclick="return confirmDialog('Delete filtered results?',function(){document.download.delete.value=1;submitForm(document.forms.download);});" /><i class="mi-trash"></i> Delete Results</button></cfif>
+		<button type="button" class="btn" onclick="location.href=#downloadLocationString#;"><i class="mi-download"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.download')#</button>
 	</div>
 </div>
 </form>
@@ -126,54 +129,60 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<div class="help-block-empty">No data to display for this form</div>
 </cfif>
 <cfif isdefined ('rc.minute1')>
-<cfsilent>
-<cfset rsData=application.dataCollectionManager.getData(rc)/>
-</cfsilent>
-<cfif rsData.recordcount>
-<div class="mura-grid-container">
-<table class="mura-table-grid">
-<thead>
-<tr>
-	<th class="actions"></th>
-	<th><cfoutput>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.datetimeentered')#</cfoutput></th>
-	<cfloop list="#rc.fieldnames#" index="f">
-	<th><cfoutput>#esapiEncode('html',f)#</cfoutput></th>
-	</cfloop>
-</tr>
-</thead>
-<tbody>
-<cfoutput query="rsData">
-<tr>
-	<cftry>
-		<cfsilent><cfwddx action="wddx2cfml" input="#rsdata.data#" output="info"></cfsilent>
-		<td class="actions">
-			<a class="show-actions" href="javascript:;" <!---ontouchstart="this.onclick();"---> onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
-			<div class="actions-menu hide">
-				<ul class="actions-list">
-					<li class="edit">
-						<a href="./?muraAction=cArch.datamanager&contentid=#esapiEncode('url',rc.contentid)#&siteid=#esapiEncode('url',rc.siteid)#&date1=#esapiEncode('url',rc.date1)#&hour1=#esapiEncode('url',rc.hour1)#&minute1=#esapiEncode('url',rc.minute1)#&date2=#esapiEncode('url',rc.date2)#&hour2=#esapiEncode('url',rc.hour2)#&minute2=#esapiEncode('url',rc.minute2)#&responseid=#rsdata.responseid#&action=edit&moduleid=#esapiEncode('url',rc.moduleid)#&sortBy=#esapiEncode('url',rc.sortBy)#&sortDirection=#esapiEncode('url',rc.sortDirection)#&filterBy=#esapiEncode('url',rc.filterBy)#&keywords=#esapiEncode('url',rc.keywords)#"><i class="mi-pencil"></i>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.edit')#</a>
-					</li>
-					<li class="delete">
-						<a href="./?muraAction=cArch.datamanager&contentid=#esapiEncode('url',rc.contentid)#&siteid=#esapiEncode('url',rc.siteid)#&date1=#esapiEncode('url',rc.date1)#&hour1=#esapiEncode('url',rc.hour1)#&minute1=#esapiEncode('url',rc.minute1)#&date2=#esapiEncode('url',rc.date2)#&hour2=#esapiEncode('url',rc.hour2)#&minute2=#esapiEncode('url',rc.minute2)#&responseid=#rsdata.responseid#&action=delete&moduleid=#esapiEncode('url',rc.moduleid)#&sortBy=#esapiEncode('url',rc.sortBy)#&sortDirection=#esapiEncode('url',rc.sortDirection)#&filterBy=#esapiEncode('url',rc.filterBy)#&keywords=#esapiEncode('url',rc.keywords)##rc.$.renderCSRFTokens(context=rsdata.responseID,format='url')#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.deleteresponseconfirm'))#',this.href)"><i class="mi-trash"></i>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.deleteresponse')#</a>
-					</li>
-				</ul>
-			</div>
-		</td>
-		<td class="dateSubmitted">#lsdateformat(rsdata.entered,session.dateKeyFormat)# #lstimeformat(rsdata.entered,"short")#</td>
-		<cfloop list="#rc.fieldnames#" index="f">
-			<cftry><cfset fValue=info['#f#']><cfcatch><cfset fValue=""></cfcatch></cftry>
-		<td class="mForm-data"><cfif findNoCase('attachment',f) and isValid("UUID",fvalue)><a  href="##" onclick="return preview('#rc.$.siteConfig('scheme')#://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/index.cfm/_api/render/file/?fileID=#esapiEncode('url',fvalue)#');">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.viewattachment')#</a><cfelse>#$.setParagraphs(esapiEncode('html',fvalue))#</cfif></td>
-		</cfloop>
-		<cfcatch>
-			<td>Invalid Response: #rsData.responseID#</td>
-		</cfcatch>
-	</cftry>
-</tr>
-</cfoutput>
-</tbody>
-</table>
-</div><!-- /.mura-grid-container -->
-
-</cfif>
+	<cfsilent>
+	<cfset rsData=application.dataCollectionManager.getData(rc)/>
+	</cfsilent>
+	<cfif rsData.recordcount>
+		<cfif isDefined('rc.delete') and isBoolean(rc.delete) and rc.delete>
+			<cfloop query="rsData">
+				<cfset application.dataCollectionManager.delete(responseid=rsData.responseID,deleteFiles=true)>
+			</cfloop>
+			<div class="help-block-empty"><cfoutput>#rsData.recordcount#</cfoutput> responses were deleted.</div>
+		<cfelse>
+			<div class="mura-grid-container">
+			<table class="mura-table-grid">
+			<thead>
+			<tr>
+				<th class="actions"></th>
+				<th><cfoutput>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.datetimeentered')#</cfoutput></th>
+				<cfloop list="#rc.fieldnames#" index="f">
+				<th><cfoutput>#esapiEncode('html',f)#</cfoutput></th>
+				</cfloop>
+			</tr>
+			</thead>
+			<tbody>
+			<cfoutput query="rsData">
+			<tr>
+				<cftry>
+					<cfsilent><cfwddx action="wddx2cfml" input="#rsdata.data#" output="info"></cfsilent>
+					<td class="actions">
+						<a class="show-actions" href="javascript:;" <!---ontouchstart="this.onclick();"---> onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
+						<div class="actions-menu hide">
+							<ul class="actions-list">
+								<li class="edit">
+									<a href="./?muraAction=cArch.datamanager&contentid=#esapiEncode('url',rc.contentid)#&siteid=#esapiEncode('url',rc.siteid)#&date1=#esapiEncode('url',rc.date1)#&hour1=#esapiEncode('url',rc.hour1)#&minute1=#esapiEncode('url',rc.minute1)#&date2=#esapiEncode('url',rc.date2)#&hour2=#esapiEncode('url',rc.hour2)#&minute2=#esapiEncode('url',rc.minute2)#&responseid=#rsdata.responseid#&action=edit&moduleid=#esapiEncode('url',rc.moduleid)#&sortBy=#esapiEncode('url',rc.sortBy)#&sortDirection=#esapiEncode('url',rc.sortDirection)#&filterBy=#esapiEncode('url',rc.filterBy)#&keywords=#esapiEncode('url',rc.keywords)#"><i class="mi-pencil"></i>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.edit')#</a>
+								</li>
+								<li class="delete">
+									<a href="./?muraAction=cArch.datamanager&contentid=#esapiEncode('url',rc.contentid)#&siteid=#esapiEncode('url',rc.siteid)#&date1=#esapiEncode('url',rc.date1)#&hour1=#esapiEncode('url',rc.hour1)#&minute1=#esapiEncode('url',rc.minute1)#&date2=#esapiEncode('url',rc.date2)#&hour2=#esapiEncode('url',rc.hour2)#&minute2=#esapiEncode('url',rc.minute2)#&responseid=#rsdata.responseid#&action=delete&moduleid=#esapiEncode('url',rc.moduleid)#&sortBy=#esapiEncode('url',rc.sortBy)#&sortDirection=#esapiEncode('url',rc.sortDirection)#&filterBy=#esapiEncode('url',rc.filterBy)#&keywords=#esapiEncode('url',rc.keywords)##rc.$.renderCSRFTokens(context=rsdata.responseID,format='url')#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.deleteresponseconfirm'))#',this.href)"><i class="mi-trash"></i>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.deleteresponse')#</a>
+								</li>
+							</ul>
+						</div>
+					</td>
+					<td class="dateSubmitted">#lsdateformat(rsdata.entered,session.dateKeyFormat)# #lstimeformat(rsdata.entered,"short")#</td>
+					<cfloop list="#rc.fieldnames#" index="f">
+						<cftry><cfset fValue=info['#f#']><cfcatch><cfset fValue=""></cfcatch></cftry>
+					<td class="mForm-data"><cfif findNoCase('attachment',f) and isValid("UUID",fvalue)><a  href="##" onclick="return preview('#rc.$.siteConfig('scheme')#://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/index.cfm/_api/render/file/?fileID=#esapiEncode('url',fvalue)#');">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.viewattachment')#</a><cfelse>#$.setParagraphs(esapiEncode('html',fvalue))#</cfif></td>
+					</cfloop>
+					<cfcatch>
+						<td>Invalid Response: #rsData.responseID#</td>
+					</cfcatch>
+				</cftry>
+			</tr>
+			</cfoutput>
+			</tbody>
+			</table>
+			</div><!-- /.mura-grid-container -->
+		</cfif>
+	</cfif>
 </cfif>
 </div>
