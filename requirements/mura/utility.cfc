@@ -1292,11 +1292,11 @@ Blog: www.codfusion.com--->
 		);
 	}
 
-	function datetimeToTimespanInterval(datetime,timespan=''){
+	function datetimeToTimespanInterval(datetime=now(),timespan=''){
 		if(!(0+arguments.timespan)){
 			arguments.timespan=createTimeSpan(0,0,5,0);
 		}
-		var nowBase=now();
+		var nowBase=arguments.datetime;
 		var nowEpoch=DateDiff("s", DateConvert("utc2Local", "January 1 1970 00:00"), nowBase);
 		var seconds=dateDiff('s',nowBase,nowBase + arguments.timespan);
 		if(variables.configBean.getValue('compiler') == 'Adobe'){
