@@ -931,14 +931,15 @@ component extends="mura.bean.beanExtendable" entityName="content" table="tconten
 		}
 	}
 
-	public function getKidsQuery(required aggregation="false", required applyPermFilter="false", required size="0", required sortBy="#getValue('sortBy')#", required sortDirection="#getValue('sortDirection')#", required nextN="#getValue('nextN')#") output=false {
+	public function getKidsQuery(required aggregation="false", required applyPermFilter="false", required size="0", required sortBy="#getValue('sortBy')#", required sortDirection="#getValue('sortDirection')#", required nextN="#getValue('nextN')#", today=now() ) output=false {
 		arguments.parentid=getContentID();
 		arguments.siteid=getValue('siteid');
 		return variables.contentManager.getKidsQuery(argumentCollection=arguments);
 	}
 
-	public function getKidsIterator(required liveOnly="true", required aggregation="false", required applyPermFilter="false", required size="0", required sortBy="#getValue('sortBy')#", required sortDirection="#getValue('sortDirection')#", required nextN="#getValue('nextN')#") output=false {
+	public function getKidsIterator(required liveOnly="true", required aggregation="false", required applyPermFilter="false", required size="0", required sortBy="#getValue('sortBy')#", required sortDirection="#getValue('sortDirection')#", required nextN="#getValue('nextN')#", today=now())output=false {
 		var q="";
+
 		var it=getBean("contentIterator");
 		if ( arguments.liveOnly ) {
 			q=getKidsQuery(argumentCollection=arguments);

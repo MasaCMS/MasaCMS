@@ -68,7 +68,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif objectParams.sourcetype neq 'remotefeed'>
 	<cfsilent>
 		<cfset variables.pagination=''>
-
 		<cfswitch expression="#objectParams.sourceType#">
 			<cfcase value="relatedcontent">
 				<cfif objectParams.source eq 'custom'>
@@ -117,6 +116,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					)>
 				<cfelseif variables.$.event('filterBy') eq "releaseMonth">
 					<cfset variables.menuType="releaseMonth">
+
 					<cfset variables.menuDate=createDate(variables.$.event('year'),variables.$.event('month'),1)>
 					<cfset iterator=calendarUtility.getCalendarItems(
 						calendarid=arrayToList(objectParams.items),
@@ -171,7 +171,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset objectParams.today=now()>
 					<cfset objectParams.type="default">
 				</cfif>
-
 				<cfset objectParams.categoryid=$.event('categoryid')>
 
 				<cfset variables.maxPortalItems=variables.$.globalConfig("maxPortalItems")>
@@ -192,7 +191,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif not len(objectParams.sortDirection)>
 					<cfset objectParams.sortDirection=$.content('sortDirection')>
 				</cfif>
-
+				
 				<cfset iterator=$.content().set(objectParams).setType('Folder').getKidsIterator(argumentCollection=objectParams)>
 				<cfset iterator.setNextN(objectParams.nextn)>
 				<cfset iterator.setStartRow(variables.$.event('startrow'))>
