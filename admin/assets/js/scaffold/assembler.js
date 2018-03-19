@@ -584,14 +584,29 @@ $( document ).ready(function() {
 				confirmDialog(
 					"Delete dynamic entity?",
 					function(){
-						$('body').append('<div id="action-modal" class="modal-backdrop fade in"></div>');
-						$('#action-modal').spin(spinnerArgs);
-						Mura.
-							getEntity(self.model.entityname)
-							.undeclareEntity()
-							.then(function(){
-								location.href="./?muraAction=cArch.list&activeTab=2&" + Mura.siteid;
-							});
+						confirmDialog(
+							"Delete entity schema from database?",
+							function(){
+								$('body').append('<div id="action-modal" class="modal-backdrop fade in"></div>');
+								$('#action-modal').spin(spinnerArgs);
+								Mura.
+									getEntity(self.model.entityname)
+									.undeclareEntity(true)
+									.then(function(){
+										location.href="./?muraAction=cArch.list&activeTab=2&" + Mura.siteid;
+									});
+							},
+							function(){
+								$('body').append('<div id="action-modal" class="modal-backdrop fade in"></div>');
+								$('#action-modal').spin(spinnerArgs);
+								Mura.
+									getEntity(self.model.entityname)
+									.undeclareEntity(false)
+									.then(function(){
+										location.href="./?muraAction=cArch.list&activeTab=2&" + Mura.siteid;
+									});
+							}
+						);
 					}
 				);
 			},

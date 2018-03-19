@@ -484,8 +484,9 @@ var Mura=(function(){
    * @return {Promise}
    * @memberof {class} Mura
    */
-  function undeclareEntity(entityName) {
-    return Mura._requestcontext.undeclareEntity(entityName);
+  function undeclareEntity(entityName,deleteSchema) {
+		deleteSchema=deleteSchema || false;
+    return Mura._requestcontext.undeclareEntity(entityName,deleteSchema);
   }
 
   /**
@@ -15716,7 +15717,8 @@ Mura.Entity = Mura.Core.extend(
      *
      * @return {Promise}
      */
-    'undeclareEntity': function() {
+    'undeclareEntity': function(deleteSchema) {
+				deleteSchema=deleteSchema || false;
         var self = this;
 
         return new Promise(function(resolve, reject) {
@@ -15726,6 +15728,7 @@ Mura.Entity = Mura.Core.extend(
                 url: Mura.apiEndpoint,
                 data: {
                         entityname: self.get('entityname'),
+												deleteSchema: deleteSchema,
                         method: 'undeclareEntity',
                         siteid: self.get('siteid'),
                         '_cacheid': Math.random()
@@ -19098,9 +19101,9 @@ Mura.RequestContext=Mura.Core.extend(
    * @param  {object} entityName
    * @return {Promise}
    */
-  undeclareEntity:function(entityName) {
+  undeclareEntity:function(entityName,deleteSchema) {
 		var self=this;
-
+		deleteSchema=deleteSchema || false;
 		if(Mura.mode.toLowerCase() == 'rest'){
 			return new Promise(function(resolve, reject) {
         self.request({
@@ -19109,7 +19112,8 @@ Mura.RequestContext=Mura.Core.extend(
             url: Mura.apiEndpoint,
 						data:{
 							method: 'undeclareEntity',
-							entityConfig: entityName
+							entityName: entityName,
+							deleteSchema : deleteSchema
 						},
             success: function(resp) {
 							if (typeof resolve =='function' && typeof resp.data != 'undefined') {
@@ -19137,6 +19141,7 @@ Mura.RequestContext=Mura.Core.extend(
 										data:{
 											method: 'undeclareEntity',
 											entityName: entityName,
+											deleteSchema : deleteSchema,
 											'csrf_token': resp.data.csrf_token,
 											'csrf_token_expires': resp.data.csrf_token_expires
 										},

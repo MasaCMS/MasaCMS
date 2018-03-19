@@ -144,14 +144,21 @@ component extends="ioc" hint="This provides the primary bean factory that all co
       }
     }
 
-    function undeclareBean(entityname){
-
+    function undeclareBean(entityname,deleteSchema=false){
 
       var registeredEntity=getBean('entity').loadBy(name=arguments.entityname);
 
-      if(registeredEntity.exists() && registeredEntity.getDynamic()){
+      if(registeredEntity.exists() && registeredEntity.getDynamic() && getCurrentUser().isSuperUser()){
 
         var entity=getBean(arguments.entityname);
+
+				if(entity.getDynamic() && len(entity.getTable()) && arguments.deleteShema){
+					try{
+						getBean('dbUtility').setTable(entity.getTable()).dropTable();
+					} catch (e){
+
+					}
+				}
 
         structDelete(application.objectMappings,entity.getEntityName());
 

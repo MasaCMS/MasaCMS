@@ -165,7 +165,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			}
 	}
 
-	function undeclareEntity(entityname){
+	function undeclareEntity(entityname,deleteSchema=false){
 			var $=getBean('$').init(variables.siteid);
 
 			if(!request.muraSessionManagement || $.validateCSRFTokens()){
@@ -173,7 +173,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 					throw(type="authorization");
 				}
 				if(getServiceFactory().containsBean(arguments.entityname) && getBean(arguments.entityname).getDynamic()){
-					getServiceFactory().undeclareBean(arguments.entityname);
+					getServiceFactory().undeclareBean(arguments.entityname,arguments.deleteSchema);
 					structDelete(getConfig(),arguments.entityname);
 					//application.appInitialized=false;
 					return {success:true};
