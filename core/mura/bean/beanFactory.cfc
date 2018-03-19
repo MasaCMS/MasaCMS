@@ -152,12 +152,10 @@ component extends="ioc" hint="This provides the primary bean factory that all co
 
         var entity=getBean(arguments.entityname);
 
-				if(entity.getDynamic() && len(entity.getTable()) && arguments.deleteShema){
-					try{
+				if( entity.getDynamic() && len(entity.getTable()) && arguments.deleteShema ){
+					try {
 						getBean('dbUtility').setTable(entity.getTable()).dropTable();
-					} catch (e){
-
-					}
+					} catch(any e){}
 				}
 
         structDelete(application.objectMappings,entity.getEntityName());
