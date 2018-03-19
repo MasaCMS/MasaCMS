@@ -174,6 +174,7 @@ to your own modified versions of Mura CMS.
             } else {
               // (bsoylu 6/7/2010) the default ds name is the App name, so we reset here
               FORM.production_datasource = Form.production_databasename;
+              queryAttrs.datasource = Form.production_databasename;
             };
           </cfscript>
 
@@ -184,7 +185,7 @@ to your own modified versions of Mura CMS.
                 select * from user_ts_quotas
                 where tablespace_name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#form.production_dbtablespace#">
             </cfquery>
-          
+
             <cfif not rs.recordcount>
                 <cfset message = "<strong>Error:</strong> The Oracle tablespace named '#form.production_dbtablespace#' is not available">
                 <cfset bProcessWithMessage = false>
