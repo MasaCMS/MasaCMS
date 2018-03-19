@@ -3,7 +3,7 @@
 			<div class="mura-group-label">{{#if summary}}{{summary}}{{else}}{{label}}{{/if}}{{#if isrequired}} <ins>Required</ins>{{/if}}</div>
 			{{#if summary}}</br>{{/if}}
 			{{#eachStatic dataset}}
-				<label for="{{label}}" class="radio">
+				<label for="field-{{datarecordid}}" class="radio">
 				<input type="radio" name="{{../name}}" id="field-{{datarecordid}}" value="{{value}}"  {{#if isselected}}checked='checked'{{/if}}/>
 				{{label}}</label>
 			{{/eachStatic}}
