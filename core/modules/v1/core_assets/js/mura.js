@@ -2162,7 +2162,7 @@ var Mura=(function(){
           frm.submit();
       }
 
-      if (typeof FormData != 'undefined' && frm.getAttribute(
+      if (Mura.formdata  && frm.getAttribute(
               'enctype') == 'multipart/form-data') {
 
           var data = new FormData(frm);
@@ -3156,6 +3156,12 @@ var Mura=(function(){
       if (typeof config.preloaderMarkup == 'undefined') {
           config.preloaderMarkup = '';
       }
+
+			if (typeof config.formdata !='undefined') {
+					config.formdata = config.formdata;
+			} else {
+					config.formdata=(typeof FormData != 'undefined') ? true : false;
+			}
 
       Mura.editing;
 
@@ -17421,7 +17427,7 @@ setDataValues: function() {
 		}
 	}
 
-	if(typeof FormData != 'undefined'){
+	if(Mura.formdata){
 		var frm=document.getElementById('frm' + self.context.objectid);
 		for(var p in currentPage){
 			if(currentPage.hasOwnProperty(p) && typeof self.data[p] != 'undefined'){
@@ -17670,7 +17676,7 @@ submitForm: function() {
 	else {
 		//console.log('b!');
 
-		if(typeof FormData == 'undefined'){
+		if(!Mura.formdata){
 			var data=Mura.deepExtend({},self.context,self.data);
 			data.saveform=true;
 			data.formid=data.objectid;
@@ -17719,7 +17725,7 @@ submitForm: function() {
 			data: tokenArgs,
 			success: function(resp) {
 
-				if(typeof FormData == 'undefined'){
+				if(!Mura.formdata){
 					data['csrf_token_expires']=resp.data['csrf_token_expires'];
 					data['csrf_token']=resp.data['csrf_token'];
 				} else {
@@ -19715,7 +19721,7 @@ Mura.Request=Mura.Core.extend(
           }
       }
 
-      if (!(typeof FormData != 'undefined' && params.data instanceof FormData)) {
+      if (!(Mura.formdata && params.data instanceof FormData)) {
           params.data = Mura.deepExtend({}, params.data);
 
           for (var p in params.data) {
@@ -19789,11 +19795,7 @@ Mura.Request=Mura.Core.extend(
               req.setRequestHeader(p, params.headers[h]);
           }
 
-          //if(params.data.constructor.name == 'FormData'){
-          if (typeof FormData != 'undefined' && params.data instanceof FormData) {
-						req.setRequestHeader('Content-Type',
-								'multipart/form-data; charset=UTF-8'
-						);
+          if (Mura.formdata && params.data instanceof FormData) {
 						try{
 							req.send(params.data);
 						} catch(e){
