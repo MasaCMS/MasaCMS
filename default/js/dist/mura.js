@@ -3552,7 +3552,7 @@ return /******/ (function(modules) { // webpackBootstrap
             params.data = {};
         }
 
-        if (!(typeof FormData != 'undefined' && params.data instanceof FormData)) {
+        if (!(Mura.formdata && params.data instanceof FormData)) {
             params.data = Mura.deepExtend({}, params.data);
 
             for (var p in params.data) {
@@ -3632,11 +3632,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
             //if(params.data.constructor.name == 'FormData'){
 
-            if (typeof FormData != 'undefined' && params.data instanceof FormData) {
+            if (Mura.formdata && params.data instanceof FormData) {
+							/*
 							request.setRequestHeader('Content-Type',
 								'multipart/form-data; charset=UTF-8'
 							);
-
+							*/
 							try{
                 request.send(params.data);
 							} catch(e){
@@ -5050,7 +5051,7 @@ return /******/ (function(modules) { // webpackBootstrap
             frm.submit();
         }
 
-        if (typeof FormData != 'undefined' && frm.getAttribute(
+        if (Mura.formdata && frm.getAttribute(
                 'enctype') == 'multipart/form-data') {
 
             var data = new FormData(frm);
@@ -5993,6 +5994,12 @@ return /******/ (function(modules) { // webpackBootstrap
             '') {
             root.document.domain = config.rootdocumentdomain;
         }
+
+				if (typeof config.formdata =='undefined') {
+						config.formdata = (config.formdata);
+				} else {
+					config.formdata=(typeof FormData != 'undefined') ? true : false;
+				}
 
         Mura.editing;
 
@@ -7446,7 +7453,7 @@ return /******/ (function(modules) { // webpackBootstrap
                 var self = this;
 
                 delete data.method;
-
+                
                 return new Promise(function(resolve, reject) {
                     self.each(function() {
                         var el = document.createElement(
@@ -10632,7 +10639,7 @@ return /******/ (function(modules) { // webpackBootstrap
 					}
 				}
 
-				if(typeof FormData != 'undefined'){
+				if(Mura.formdata){
 					var frm=document.getElementById('frm' + self.context.objectid);
 					for(var p in currentPage){
 						if(currentPage.hasOwnProperty(p) && typeof self.data[p] != 'undefined'){
@@ -10880,7 +10887,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				else {
 					//console.log('b!');
 
-					if(typeof FormData == 'undefined'){
+					if(!Mura.formdata){
 						var data=Mura.deepExtend({},self.context,self.data);
 						data.saveform=true;
 						data.formid=data.objectid;
@@ -10929,7 +10936,7 @@ return /******/ (function(modules) { // webpackBootstrap
 						data: tokenArgs,
 						success: function(resp) {
 
-							if(typeof FormData == 'undefined'){
+							if(!Mura.formdata){
 								data['csrf_token_expires']=resp.data['csrf_token_expires'];
 								data['csrf_token']=resp.data['csrf_token'];
 							} else {
@@ -11878,7 +11885,7 @@ this["mura"]["templates"]["radio"] = this.mura.Handlebars.template({"1":function
     var stack1, helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
   return "				<label for=\"field-"
-    + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"label","hash":{},"data":data}) : helper)))
+    + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
     + "\" class=\"radio\">\n				<input type=\"radio\" name=\""
     + alias4(container.lambda((depths[1] != null ? depths[1].name : depths[1]), depth0))
     + "id\" id=\"field-"
@@ -11925,7 +11932,7 @@ this["mura"]["templates"]["radio_static"] = this.mura.Handlebars.template({"1":f
     var stack1, helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
   return "				<label for=\"field-"
-    + alias4(((helper = (helper = helpers.datarecordid || (depth0 != null ? depth0.datarecordid : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"label","hash":{},"data":data}) : helper)))
+    + alias4(((helper = (helper = helpers.datarecordid || (depth0 != null ? depth0.datarecordid : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"datarecordid","hash":{},"data":data}) : helper)))
     + "\" class=\"radio\">\n				<input type=\"radio\" name=\""
     + alias4(container.lambda((depths[1] != null ? depths[1].name : depths[1]), depth0))
     + "\" id=\"field-"

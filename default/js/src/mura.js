@@ -722,7 +722,7 @@
             params.data = {};
         }
 
-        if (!(typeof FormData != 'undefined' && params.data instanceof FormData)) {
+        if (!(Mura.formdata && params.data instanceof FormData)) {
             params.data = Mura.deepExtend({}, params.data);
 
             for (var p in params.data) {
@@ -802,11 +802,12 @@
 
             //if(params.data.constructor.name == 'FormData'){
 
-            if (typeof FormData != 'undefined' && params.data instanceof FormData) {
+            if (Mura.formdata && params.data instanceof FormData) {
+							/*
 							request.setRequestHeader('Content-Type',
 								'multipart/form-data; charset=UTF-8'
 							);
-
+							*/
 							try{
                 request.send(params.data);
 							} catch(e){
@@ -2220,7 +2221,7 @@
             frm.submit();
         }
 
-        if (typeof FormData != 'undefined' && frm.getAttribute(
+        if (Mura.formdata && frm.getAttribute(
                 'enctype') == 'multipart/form-data') {
 
             var data = new FormData(frm);
@@ -3163,6 +3164,12 @@
             '') {
             root.document.domain = config.rootdocumentdomain;
         }
+
+				if (typeof config.formdata =='undefined') {
+						config.formdata = (config.formdata);
+				} else {
+					config.formdata=(typeof FormData != 'undefined') ? true : false;
+				}
 
         Mura.editing;
 
