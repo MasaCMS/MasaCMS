@@ -52,19 +52,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<div class="nav-module-specific btn-group">
 	<a class="btn" href="./?muraAction=cSettings.editSite&siteID=#esapiEncode('url',rc.siteID)#"><i class="mi-arrow-circle-left"></i> Back to Site Settings</a>
-	<a class="btn" href="./?muraAction=cTrash.empty&siteID=#esapiEncode('url',rc.siteID)#" onclick="return confirmDialog('Empty Site Trash?', this.href);"><i class="mi-trash"></i>Empty Trash</a>
+	<a class="btn" href="./?muraAction=cTrash.empty&siteID=#esapiEncode('url',rc.siteID)#&sinceDate=#esapiEncode('html_attr',$.event('sinceDate'))#&beforeDate=#esapiEncode('html_attr',$.event('beforeDate'))#" onclick="return confirmDialog('Empty Site Trash?', this.href);"><i class="mi-trash"></i>Empty Trash</a>
 	</div>
 
 	<div class="mura-item-metadata">
-		<form class="form-inline" novalidate="novalidate" id="siteSearch" name="siteSearch" method="get">
+		<form class="form-inline" novalidate="novalidate" id="siteSearch" name="siteSearch" method="post">
 			<div class="mura-search">
-				<div class="mura-input-set">			
+				<label>Search for Contents</label>
+				<div class="mura-input-set">
 					<input id="search" name="keywords" type="text" class="text" value="#esapiEncode('html_attr',rc.keywords)#" placeholder="Search Trash Bin">
 					<button type="button" class="btn" onclick="submitForm(document.forms.siteSearch);"><i class="mi-search"></i></button>
 				</div>
+				<label>Trash Date Range</label>
+				<div class="mura-control justify mura">
+					<label class="label-inline">
+						#application.rbFactory.getKeyValue(session.rb,"params.from")#
+						<input type="text" name="sinceDate" id="startDate" class="datepicker mura-custom-datepicker" placeholder="Start Date" value="#esapiEncode('html_attr',$.event('sinceDate'))#" />
+						#application.rbFactory.getKeyValue(session.rb,"params.to")#
+						<input type="text" name="beforeDate" id="endDate" class="datepicker mura-custom-datepicker" placeholder="End Date" value="#esapiEncode('html_attr',$.event('beforeDate'))#" />
+					</label>
+				</div>
+				<input type="hidden" name="muraAction" value="cTrash.list">
+				<input type="hidden" name="siteid" value="#esapiEncode('html_attr',rc.siteid)#">
 			</div>
-			<input type="hidden" name="muraAction" value="cTrash.list">
-			<input type="hidden" name="siteid" value="#esapiEncode('html_attr',rc.siteid)#">
 		</form>
 	</div>
 
