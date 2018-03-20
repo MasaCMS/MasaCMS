@@ -174,6 +174,7 @@ to your own modified versions of Mura CMS.
             } else {
               // (bsoylu 6/7/2010) the default ds name is the App name, so we reset here
               FORM.production_datasource = Form.production_databasename;
+              queryAttrs.datasource = Form.production_databasename;
             };
           </cfscript>
 
