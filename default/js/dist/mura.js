@@ -3633,11 +3633,6 @@ return /******/ (function(modules) { // webpackBootstrap
             //if(params.data.constructor.name == 'FormData'){
 
             if (Mura.formdata && params.data instanceof FormData) {
-							/*
-							request.setRequestHeader('Content-Type',
-								'multipart/form-data; charset=UTF-8'
-							);
-							*/
 							try{
                 request.send(params.data);
 							} catch(e){
@@ -5994,12 +5989,8 @@ return /******/ (function(modules) { // webpackBootstrap
             '') {
             root.document.domain = config.rootdocumentdomain;
         }
-
-				if (typeof config.formdata !='undefined') {
-						config.formdata = config.formdata;
-				} else {
-						config.formdata=(typeof FormData != 'undefined') ? true : false;
-				}
+					
+				config.formdata=(typeof FormData != 'undefined') ? true : false;
 
         Mura.editing;
 
