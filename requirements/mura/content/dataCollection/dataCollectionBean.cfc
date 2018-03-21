@@ -401,56 +401,7 @@ component extends="mura.bean.bean" entityname="dataCollection" hint="This provid
 
 		var mailer=getBean('mailer');
 
-		// If body is JSON, break response into an HTML table and send HTML email
-		if (isJSON(getFormBean().getBody())) {
-			var bodyStruct = deserializeJSON(getFormBean().getBody());
-			var pagesArray = bodyStruct.form.pages;
-
-			// I'm using an array here to keep the same order as the pagesArray,
-			// as this matches the order of fields as they appear on the form.
-			var parsedFormArray = [];
-
-			for (var i = 1; i <= ArrayLen(pagesArray); i++) {
-				var fieldsArray = pagesArray[i];
-				for (var j = 1; j <= ArrayLen(fieldsArray); j++) {
-					var fieldId = fieldsArray[j];
-					var fieldObj = bodyStruct.form.fields[fieldId];
-					ArrayAppend(parsedFormArray, fieldObj);
-				}
-			}
-
-			// Update field values with those submitted in the form
-			// Then build the HTML string with the key/value pairs.
-			var formResult = getValue('formResult');
-			var htmlString = '<h1 style="font-family: Helvetica; font-size: 18px">A response was submitted for the form "' & subject & '"</h1>';
-			htmlString &= '<table style="font-family: Helvetica" width="500" cellspacing="10" >';
-			for (var k = 1; k <= ArrayLen(parsedFormArray); k++) {
-				var field = parsedFormArray[k];
-				if (field.fieldtype.fieldtype != 'textblock') {
-					if (field.fieldtype.fieldtype == 'section' ) {
-						htmlString &= '<tr><td colspan="2" style="font-weight: bold">' & field.label & '</td></tr>';
-					} else {
-						if (StructKeyExists(formResult, field.name)) {
-							field.value = esapiEncode('html', formResult[field.name]);
-						}
-						htmlString &= '<tr><td style="vertical-align: top; min-width: 100px">' & field.label & '</td><td>' & field.value & '</td></tr>';
-					}
-				}
-			}
-			htmlString &= '</table>';
-
-			mailer.sendHTML(
-				args = getValue('formResult')
-				, sendto = sendto
-				, from = getValue('email')
-				, subject = subject
-				, siteid = getValue('siteid')
-				, replyto = getValue('email')
-				, bcc = ''
-				, html = htmlString
-			);
-
-		} else if(mailer.isValidEmailFormat(getValue('email'))){
+		if(mailer.isValidEmailFormat(getValue('email'))){
 			mailer.send(
 				args = getValue('formResult')
 				, sendto = sendto
