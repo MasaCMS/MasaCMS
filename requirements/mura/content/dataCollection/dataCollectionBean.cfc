@@ -422,7 +422,7 @@ component extends="mura.bean.bean" entityname="dataCollection" hint="This provid
 			// Update field values with those submitted in the form
 			// Then build the HTML string with the key/value pairs.
 			var formResult = getValue('formResult');
-			var htmlString = '<h1 style="font-family: Helvetica; font-size: 18px">A response was submitted for the form "' & subject & '"</h1>'
+			var htmlString = '<h1 style="font-family: Helvetica; font-size: 18px">A response was submitted for the form "' & subject & '"</h1>';
 			htmlString &= '<table style="font-family: Helvetica" width="500" cellspacing="10" >';
 			for (var k = 1; k <= ArrayLen(parsedFormArray); k++) {
 				var field = parsedFormArray[k];
