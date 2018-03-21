@@ -1071,7 +1071,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				}
 			}
 
-			if(httpRequestData.method=='GET' && isDefined('params.#primaryKey#') && len(params['#primaryKey#'])){
+			if(httpRequestData.method=='GET' && isValid('variableName',primaryKey) && isDefined('params.#primaryKey#') && len(params['#primaryKey#'])){
 				params.id=params['#primaryKey#'];
 			}
 
