@@ -176,7 +176,7 @@ component extends="mura.cfobject" output="false" hint="This provides locale spec
 				return "no_NO";
 				break;
 			case  "Norwegian (Nynorsk)":
-				return "no_NO@nynorsk";
+				return "no_NO";
 				break;
 			case  "Portuguese (Brazilian)":
 				return "pt_BR";
