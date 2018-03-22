@@ -931,14 +931,15 @@ component extends="mura.bean.beanExtendable" entityName="content" table="tconten
 		}
 	}
 
-	public function getKidsQuery(required aggregation="false", required applyPermFilter="false", required size="0", required sortBy="#getValue('sortBy')#", required sortDirection="#getValue('sortDirection')#", required nextN="#getValue('nextN')#") output=false {
+	public function getKidsQuery(required aggregation="false", required applyPermFilter="false", required size="0", required sortBy="#getValue('sortBy')#", required sortDirection="#getValue('sortDirection')#", required nextN="#getValue('nextN')#", today=now() ) output=false {
 		arguments.parentid=getContentID();
 		arguments.siteid=getValue('siteid');
 		return variables.contentManager.getKidsQuery(argumentCollection=arguments);
 	}
 
-	public function getKidsIterator(required liveOnly="true", required aggregation="false", required applyPermFilter="false", required size="0", required sortBy="#getValue('sortBy')#", required sortDirection="#getValue('sortDirection')#", required nextN="#getValue('nextN')#") output=false {
+	public function getKidsIterator(required liveOnly="true", required aggregation="false", required applyPermFilter="false", required size="0", required sortBy="#getValue('sortBy')#", required sortDirection="#getValue('sortDirection')#", required nextN="#getValue('nextN')#", today=now())output=false {
 		var q="";
+
 		var it=getBean("contentIterator");
 		if ( arguments.liveOnly ) {
 			q=getKidsQuery(argumentCollection=arguments);
@@ -1458,22 +1459,23 @@ component extends="mura.bean.beanExtendable" entityName="content" table="tconten
 
 	public function getStatus() output=false {
 		var status = '';
-		if ( IsDefined('sessionData.rb') ) {
-			switch ( getStatusID() ) {
-				case  0:
-					status = application.rbFactory.getKeyValue(sessionData.rb,"sitemanager.content.draft");
-					break;
-				case  1:
-					status = application.rbFactory.getKeyValue(sessionData.rb,"sitemanager.content.#variables.instance.approvalstatus#");
-					break;
-				case  2:
-					status = application.rbFactory.getKeyValue(sessionData.rb,"sitemanager.content.published");
-					break;
-				default:
-					status = application.rbFactory.getKeyValue(sessionData.rb,"sitemanager.content.archived");
-					break;
-			}
+		param name="sessionData" default={};
+		param name="sessionData.rb" default="en";
+		switch ( getStatusID() ) {
+			case  0:
+				status = application.rbFactory.getKeyValue(sessionData.rb,"sitemanager.content.draft");
+				break;
+			case  1:
+				status = application.rbFactory.getKeyValue(sessionData.rb,"sitemanager.content.#variables.instance.approvalstatus#");
+				break;
+			case  2:
+				status = application.rbFactory.getKeyValue(sessionData.rb,"sitemanager.content.published");
+				break;
+			default:
+				status = application.rbFactory.getKeyValue(sessionData.rb,"sitemanager.content.archived");
+				break;
 		}
+
 		return status;
 	}
 

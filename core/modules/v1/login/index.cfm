@@ -254,7 +254,10 @@
 				</cfif>
 
 				<script type="text/javascript">
-				   document.getElementById("login").elements[0].focus();
+					var loginForm = document.getElementById("login");
+					if ( loginForm !== null ) {
+					   loginForm.elements[0].focus();
+					}
 				</script>
 			</cfif>
 		</div>

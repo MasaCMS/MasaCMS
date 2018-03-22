@@ -484,8 +484,9 @@ var Mura=(function(){
    * @return {Promise}
    * @memberof {class} Mura
    */
-  function undeclareEntity(entityName) {
-    return Mura._requestcontext.undeclareEntity(entityName);
+  function undeclareEntity(entityName,deleteSchema) {
+		deleteSchema=deleteSchema || false;
+    return Mura._requestcontext.undeclareEntity(entityName,deleteSchema);
   }
 
   /**
@@ -2161,7 +2162,7 @@ var Mura=(function(){
           frm.submit();
       }
 
-      if (typeof FormData != 'undefined' && frm.getAttribute(
+      if (Mura.formdata  && frm.getAttribute(
               'enctype') == 'multipart/form-data') {
 
           var data = new FormData(frm);
@@ -3155,6 +3156,8 @@ var Mura=(function(){
       if (typeof config.preloaderMarkup == 'undefined') {
           config.preloaderMarkup = '';
       }
+
+			config.formdata=(typeof FormData != 'undefined') ? true : false;
 
       Mura.editing;
 
@@ -15716,7 +15719,8 @@ Mura.Entity = Mura.Core.extend(
      *
      * @return {Promise}
      */
-    'undeclareEntity': function() {
+    'undeclareEntity': function(deleteSchema) {
+				deleteSchema=deleteSchema || false;
         var self = this;
 
         return new Promise(function(resolve, reject) {
@@ -15726,6 +15730,7 @@ Mura.Entity = Mura.Core.extend(
                 url: Mura.apiEndpoint,
                 data: {
                         entityname: self.get('entityname'),
+												deleteSchema: deleteSchema,
                         method: 'undeclareEntity',
                         siteid: self.get('siteid'),
                         '_cacheid': Math.random()
@@ -17418,7 +17423,7 @@ setDataValues: function() {
 		}
 	}
 
-	if(typeof FormData != 'undefined'){
+	if(Mura.formdata){
 		var frm=document.getElementById('frm' + self.context.objectid);
 		for(var p in currentPage){
 			if(currentPage.hasOwnProperty(p) && typeof self.data[p] != 'undefined'){
@@ -17667,7 +17672,7 @@ submitForm: function() {
 	else {
 		//console.log('b!');
 
-		if(typeof FormData == 'undefined'){
+		if(!Mura.formdata){
 			var data=Mura.deepExtend({},self.context,self.data);
 			data.saveform=true;
 			data.formid=data.objectid;
@@ -17716,7 +17721,7 @@ submitForm: function() {
 			data: tokenArgs,
 			success: function(resp) {
 
-				if(typeof FormData == 'undefined'){
+				if(!Mura.formdata){
 					data['csrf_token_expires']=resp.data['csrf_token_expires'];
 					data['csrf_token']=resp.data['csrf_token'];
 				} else {
@@ -19098,9 +19103,9 @@ Mura.RequestContext=Mura.Core.extend(
    * @param  {object} entityName
    * @return {Promise}
    */
-  undeclareEntity:function(entityName) {
+  undeclareEntity:function(entityName,deleteSchema) {
 		var self=this;
-
+		deleteSchema=deleteSchema || false;
 		if(Mura.mode.toLowerCase() == 'rest'){
 			return new Promise(function(resolve, reject) {
         self.request({
@@ -19109,7 +19114,8 @@ Mura.RequestContext=Mura.Core.extend(
             url: Mura.apiEndpoint,
 						data:{
 							method: 'undeclareEntity',
-							entityConfig: entityName
+							entityName: entityName,
+							deleteSchema : deleteSchema
 						},
             success: function(resp) {
 							if (typeof resolve =='function' && typeof resp.data != 'undefined') {
@@ -19137,6 +19143,7 @@ Mura.RequestContext=Mura.Core.extend(
 										data:{
 											method: 'undeclareEntity',
 											entityName: entityName,
+											deleteSchema : deleteSchema,
 											'csrf_token': resp.data.csrf_token,
 											'csrf_token_expires': resp.data.csrf_token_expires
 										},
@@ -19710,7 +19717,7 @@ Mura.Request=Mura.Core.extend(
           }
       }
 
-      if (!(typeof FormData != 'undefined' && params.data instanceof FormData)) {
+      if (!(Mura.formdata && params.data instanceof FormData)) {
           params.data = Mura.deepExtend({}, params.data);
 
           for (var p in params.data) {
@@ -19784,11 +19791,7 @@ Mura.Request=Mura.Core.extend(
               req.setRequestHeader(p, params.headers[h]);
           }
 
-          //if(params.data.constructor.name == 'FormData'){
-          if (typeof FormData != 'undefined' && params.data instanceof FormData) {
-						req.setRequestHeader('Content-Type',
-								'multipart/form-data; charset=UTF-8'
-						);
+          if (Mura.formdata && params.data instanceof FormData) {
 						try{
 							req.send(params.data);
 						} catch(e){

@@ -356,7 +356,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfargument name="applyPermFilter" type="boolean" required="yes" default="false" >
 			<cfargument name="tagGroup" type="string" required="yes" default="" >
 			<cfargument name="useCategoryIntersect" default="false">
-
 			<cfset var rsKids = ""/>
 			<cfset var relatedListLen = listLen(arguments.relatedID) />
 			<cfset var categoryListLen=listLen(arguments.categoryID)/>
@@ -394,10 +393,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 
 			<cfif not isdate(nowAdjusted)>
-				<cfset nowAdjusted=now()>
+				<cfset nowAdjusted=arguments.today>
 			</cfif>
 
-			<cfset nowAdjusted=variables.utility.datetimeToTimespanInterval(nowAdjusted,createTimespan(0,0,5,0))>
+			<cfif arguments.type eq 'default'>
+				<cfset nowAdjusted=variables.utility.datetimeToTimespanInterval(nowAdjusted,createTimespan(0,0,5,0))>
+			</cfif>
 
 			<cfif arguments.aggregation >
 				<cfset doKids =true />

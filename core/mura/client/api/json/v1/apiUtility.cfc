@@ -165,7 +165,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			}
 	}
 
-	function undeclareEntity(entityname){
+	function undeclareEntity(entityname,deleteSchema=false){
 			var $=getBean('$').init(variables.siteid);
 
 			if(!request.muraSessionManagement || $.validateCSRFTokens()){
@@ -173,7 +173,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 					throw(type="authorization");
 				}
 				if(getServiceFactory().containsBean(arguments.entityname) && getBean(arguments.entityname).getDynamic()){
-					getServiceFactory().undeclareBean(arguments.entityname);
+					getServiceFactory().undeclareBean(arguments.entityname,arguments.deleteSchema);
 					structDelete(getConfig(),arguments.entityname);
 					//application.appInitialized=false;
 					return {success:true};
@@ -1071,7 +1071,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				}
 			}
 
-			if(httpRequestData.method=='GET' && isDefined('params.#primaryKey#') && len(params['#primaryKey#'])){
+			if(httpRequestData.method=='GET' && isValid('variableName',primaryKey) && isDefined('params.#primaryKey#') && len(params['#primaryKey#'])){
 				params.id=params['#primaryKey#'];
 			}
 
@@ -2168,7 +2168,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			var feed=$.getBean('feed').loadBy(feedid=$.event('feedid'));
 			var entity=$.getBean(arguments.entityName);
 		} else if(arguments.entityName=='content' && len($.event('feedname'))){
-			var feed=$.getBean('feed').loadBy(name=$.event('feedname'));
+			var feed=$.getBean('feed').loadBy(name=urlDecode($.event('feedname')));
 			var entity=$.getBean(arguments.entityName);
 		} else {
 			var entity=$.getBean(arguments.entityName);
