@@ -1981,7 +1981,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			var feed=$.getBean('feed').loadBy(feedid=$.event('feedid'));
 			var entity=$.getBean(arguments.entityName);
 		} else if(arguments.entityName=='content' && len($.event('feedname'))){
-			var feed=$.getBean('feed').loadBy(name=urlDecode($.event('feedname')));
+			var feed=$.getBean('feed').loadBy(name=$.event('feedname'));
 			var entity=$.getBean(arguments.entityName);
 		} else {
 			var entity=$.getBean(arguments.entityName);
