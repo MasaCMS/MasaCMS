@@ -52,8 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfsavecontent variable="focusblockheader">
   <div class="focus-block-header">
-  	<img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/mura-logo@2x.png" class="mura-logo">
-				<h1 class="page-heading">#rc.$.rbKey('login.login')#</h1>
+  	<img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/mura-logo-black@2x.png" class="mura-logo">
   </div><!-- /focus-block-header -->
 </cfsavecontent>
 
@@ -118,7 +117,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<form novalidate="novalidate" id="loginForm" name="frmLogin" method="post" action="index.cfm" onsubmit="return submitForm(this);">
 
 							<div class="mura-control-group">
-				      	<label>#rc.$.rbKey('login.enteremailedauthcode')#</label>
+				      			<label>#rc.$.rbKey('login.enteremailedauthcode')#</label>
 								<div class="input-prepend">
 								  	<span class="add-on"><i class="mi-envelope"></i></span><input autocomplete="off" id="authcode" name="authcode" type="text" placeholder="#esapiEncode('html_attr',rc.$.rbKey('login.authorizationcode'))#" />
 								</div>
@@ -145,27 +144,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</cfif>
 					<cfelse>
 						<form novalidate="novalidate" id="loginForm" name="frmLogin" method="post" action="index.cfm" onsubmit="return submitForm(this);">
-              <!--- Use Google oAuth Button --->
-              <cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google')>
-                <div class="mura-control-group">
-                    <a href="#$.getBean('googleLoginProvider').generateAuthUrl(session.urltoken)#">
-                      <!--- <img src="/admin/assets/images/btn_google_signin_dark_normal_web@2x.png" /> --->
-                      #rc.$.rbKey('login.loginwithgoogle')#
-                    </a>
-                </div>
-              </cfif>
-              <!--- Use Facebook oAuth Button --->
-              <cfif listFindNoCase($.globalConfig().getEnableOauth(), 'facebook')>
-                <div class="mura-control-group">
-                  <a href="#$.getBean('facebookLoginProvider').generateAuthUrl(session.urltoken)#">
-                      #rc.$.rbKey('login.loginwithfacebook')#
-                  </a>
-                </div>
-              </cfif>
-
-              <cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google') or listFindNoCase($.globalConfig().getEnableOauth(), 'facebook') >
-								<h3>#rc.$.rbKey('login.orloginwithyourcredentials')#</h3>
-							</cfif>
+						  <cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google') or 
+						   		listFindNoCase($.globalConfig().getEnableOauth(), 'facebook')>
+								<div class="center">
+			              <!--- Use Google oAuth Button --->
+			              <cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google')>
+			                    <a href="#$.getBean('googleLoginProvider').generateAuthUrl(session.urltoken)#" title="#rc.$.rbKey('login.loginwithgoogle')#">
+			                      <img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/btn_google_signin_light_normal_web@2x.png" class="mura-login-auth-img">
+			                    </a>
+			              </cfif>
+			              <!--- Use Facebook oAuth Button --->
+			              <cfif listFindNoCase($.globalConfig().getEnableOauth(), 'facebook')>
+			                  <a href="#$.getBean('facebookLoginProvider').generateAuthUrl(session.urltoken)#" title="#rc.$.rbKey('login.loginwithfacebook')#">
+  			                      <img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/btn_facebook_continue@2x.png" class="mura-login-auth-img-fb">
+			                  </a>
+			              </cfif>
+			              <div class="text-divider"><span>#rc.$.rbKey('login.or')#</span></div>
+										<h3 class="center mura-login-auth-heading">#rc.$.rbKey('login.loginwithcredentials')#</h3>
+       					</div> 
+			        </cfif>
 
 							<div class="mura-control-group">
 						    <label>
@@ -233,7 +230,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 						<cfif not isBoolean(application.configBean.getValue('showadminloginhelp')) or application.configBean.getValue('showadminloginhelp')>
 							<div id="pw-link">
-								<label><a href="##">#application.rbFactory.getKeyValue(session.rb,'login.forgetpassword')#</a></label>
+								<label><a href="##" onclick="return false;">#application.rbFactory.getKeyValue(session.rb,'login.forgetpassword')#</a></label>
 							</div>
 						</cfif>
 
@@ -284,9 +281,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						   </form>
 
 						<div id="login-link">
-							<!--- 							<label><a href="##">#rc.$.rbKey('login.forgetpassword')#</a></label>
-							 --->
-							 <label><a href="##">Return to Login</a></label>
+							 <label><a href="##" onclick="return false;">Return to login</a></label>
 						</div>
 
 						</cfif>

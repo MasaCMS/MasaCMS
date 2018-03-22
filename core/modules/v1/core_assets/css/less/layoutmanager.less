@@ -3,6 +3,27 @@ img {
 	height: auto;
 }
 
+.divider.skin::before,
+.divider.skin::after {
+    content: '';
+    background: #ccc;
+    height: 1px;
+    display: block;
+    width: 100%;
+}
+
+.text-divider {
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    position: relative;
+    text-align: center;
+}
+
+.text-divider span {
+    text-align: center;
+}
+
 hr {
 	margin: 3em 0;
 	border: 0;

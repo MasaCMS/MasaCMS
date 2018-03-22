@@ -1,4 +1,5 @@
 @import "../css/jquery/default/jquery.ui.base.css";
+@import "../fonts/inter-ui/inter-ui.css";
 /* This file is part of Mura CMS.
 
 	Mura CMS is free software: you can redistribute it and/or modify
@@ -7597,11 +7598,11 @@ button.text-primary-dark:focus {
   opacity: .75;
 }
 .text-primary-darker {
-  color: #2c343f;
+  color: #2c2c2f;
 }
 a.text-primary-darker:hover,
 a.text-primary-darker:focus {
-  color: #171b21;
+  color: #131315;
 }
 a.text-primary-darker:hover,
 a.text-primary-darker:active,
@@ -7609,7 +7610,7 @@ a.text-primary-darker:focus,
 button.text-primary-darker:hover,
 button.text-primary-darker:active,
 button.text-primary-darker:focus {
-  color: #2c343f;
+  color: #2c2c2f;
   opacity: .75;
 }
 .text-primary-light {
@@ -7972,15 +7973,15 @@ a.bg-primary-dark-op:focus {
   background-color: rgba(41, 49, 59, 0.83);
 }
 .bg-primary-darker {
-  background-color: #2c343f;
+  background-color: #2c2c2f;
 }
 a.bg-primary-darker:hover,
 a.bg-primary-darker:focus {
-  background-color: #171b21;
+  background-color: #131315;
 }
 a.bg-primary-darker:hover,
 a.bg-primary-darker:focus {
-  background-color: #171b21;
+  background-color: #131315;
 }
 .bg-primary-light {
   background-color: #98b9e3;
@@ -9589,20 +9590,20 @@ a.list-group-item:focus {
 }
 .tooltip-inner {
   padding: 6px 8px;
-  background-color: #2c343f;
+  background-color: #2c2c2f;
   border-radius: 0;
 }
 .tooltip.top .tooltip-arrow {
-  border-top-color: #2c343f;
+  border-top-color: #2c2c2f;
 }
 .tooltip.right .tooltip-arrow {
-  border-right-color: #2c343f;
+  border-right-color: #2c2c2f;
 }
 .tooltip.left .tooltip-arrow {
-  border-left-color: #2c343f;
+  border-left-color: #2c2c2f;
 }
 .tooltip.bottom .tooltip-arrow {
-  border-bottom-color: #2c343f;
+  border-bottom-color: #2c2c2f;
 }
 .popover {
   border-color: #ddd;
@@ -12966,16 +12967,16 @@ a.list-group-item:focus {
 }
 @media screen and (min-width: 992px) {
   .header-navbar-fixed.sidebar-l.sidebar-o #header-navbar {
-    left: 230px;
+    left: 250px;
   }
   .header-navbar-fixed.sidebar-r.sidebar-o #header-navbar {
-    right: 230px;
+    right: 250px;
   }
   .header-navbar-fixed.sidebar-l.sidebar-o.sidebar-mini #header-navbar {
-    left: 60px;
+    left: 72px;
   }
   .header-navbar-fixed.sidebar-r.sidebar-o.sidebar-mini #header-navbar {
-    right: 60px;
+    right: 72px;
   }
 }
 .header-navbar-transparent #header-navbar {
@@ -12993,20 +12994,20 @@ a.list-group-item:focus {
   margin: 0 auto;
   width: 100%;
   min-width: 320px;
-  background-color: #2c343f;
+  background-color: #2c2c2f;
 }
 @media screen and (min-width: 992px) {
   #page-container.sidebar-l.sidebar-o {
-    padding-left: 230px;
+    padding-left: 250px;
   }
   #page-container.sidebar-r.sidebar-o {
-    padding-right: 230px;
+    padding-right: 250px;
   }
   #page-container.sidebar-l.sidebar-o.sidebar-mini {
-    padding-left: 60px;
+    padding-left: 72px;
   }
   #page-container.sidebar-r.sidebar-o.sidebar-mini {
-    padding-right: 60px;
+    padding-right: 72px;
   }
 }
 #sidebar,
@@ -13031,8 +13032,8 @@ a.list-group-item:focus {
   }
 }
 #sidebar {
-  width: 230px;
-  background-color: #2c343f;
+  width: 250px;
+  background-color: #2c2c2f;
 }
 .sidebar-l #sidebar {
   left: 0;
@@ -13066,7 +13067,7 @@ a.list-group-item:focus {
 }
 @media screen and (min-width: 992px) {
   #sidebar {
-    width: 230px;
+    width: 250px;
     -o-transition: none;
     -webkit-transition: none;
     transition: none;
@@ -13085,31 +13086,31 @@ a.list-group-item:focus {
     transition: all 0.28s ease-out;
   }
   .sidebar-l.sidebar-o.sidebar-mini #sidebar {
-    -webkit-transform: translate3d(-170px, 0, 0);
-    transform: translate3d(-170px, 0, 0);
-    -webkit-transform: translateX(-170px) translateY(0) translateZ(0);
-    -ms-transform: translateX(-170px) translateY(0);
-    transform: translateX(-170px) translateY(0) translateZ(0);
+    -webkit-transform: translate3d(-178px, 0, 0);
+    transform: translate3d(-178px, 0, 0);
+    -webkit-transform: translateX(-178px) translateY(0) translateZ(0);
+    -ms-transform: translateX(-178px) translateY(0);
+    transform: translateX(-178px) translateY(0) translateZ(0);
   }
   .sidebar-r.sidebar-o.sidebar-mini #sidebar {
-    -webkit-transform: translate3d(170px, 0, 0);
-    transform: translate3d(170px, 0, 0);
-    -webkit-transform: translateX(170px) translateY(0) translateZ(0);
-    -ms-transform: translateX(170px) translateY(0);
-    transform: translateX(170px) translateY(0) translateZ(0);
+    -webkit-transform: translate3d(178px, 0, 0);
+    transform: translate3d(178px, 0, 0);
+    -webkit-transform: translateX(178px) translateY(0) translateZ(0);
+    -ms-transform: translateX(178px) translateY(0);
+    transform: translateX(178px) translateY(0) translateZ(0);
   }
   .sidebar-o.sidebar-mini #sidebar .sidebar-content {
-    width: 230px;
+    width: 250px;
     -o-transition: all 0.28s ease-out;
     -webkit-transition: all 0.28s ease-out;
     transition: all 0.28s ease-out;
   }
   .sidebar-l.sidebar-o.sidebar-mini #sidebar .sidebar-content {
-    -webkit-transform: translate3d(170px, 0, 0);
-    transform: translate3d(170px, 0, 0);
-    -webkit-transform: translateX(170px) translateY(0) translateZ(0);
-    -ms-transform: translateX(170px) translateY(0);
-    transform: translateX(170px) translateY(0) translateZ(0);
+    -webkit-transform: translate3d(178px, 0, 0);
+    transform: translate3d(178px, 0, 0);
+    -webkit-transform: translateX(178px) translateY(0) translateZ(0);
+    -ms-transform: translateX(178px) translateY(0);
+    transform: translateX(178px) translateY(0) translateZ(0);
   }
   .sidebar-o.sidebar-mini #sidebar:hover,
   .sidebar-o.sidebar-mini #sidebar:hover .sidebar-content {
@@ -13267,7 +13268,7 @@ a.list-group-item:focus {
 }
 .side-content {
   margin: 0 auto;
-  padding: 13px 20px 1px;
+  padding: 13px 24px 1px;
   max-width: 100%;
   overflow-x: hidden;
 }
@@ -13293,8 +13294,8 @@ a.list-group-item:focus {
   margin-top: -13px;
 }
 .side-content .pull-r-l {
-  margin-right: -20px;
-  margin-left: -20px;
+  margin-right: -24px;
+  margin-left: -24px;
 }
 .side-content .pull-b {
   margin-bottom: -1px;
@@ -14452,12 +14453,12 @@ a.block.block-link-hover3:active {
   opacity: 1;
 }
 .nav-main {
-  margin: 0 -20px;
+  margin: 0 -24px;
   padding: 0;
   list-style: none;
 }
 .nav-main .nav-main-heading {
-  padding: 22px 20px 6px 20px;
+  padding: 22px 24px 6px 24px;
   font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
@@ -14465,7 +14466,7 @@ a.block.block-link-hover3:active {
 }
 .nav-main a {
   display: block;
-  padding: 10px 20px;
+  padding: 10px 24px;
   color: rgba(255, 255, 255, 0.5);
 }
 .nav-main a:hover,
@@ -14510,7 +14511,7 @@ a.block.block-link-hover3:active {
 }
 .nav-main ul {
   margin: 0;
-  padding: 0 0 0 50px;
+  padding: 0 0 0 54px;
   height: 0;
   list-style: none;
   background-color: rgba(0, 0, 0, 0.15);
@@ -14571,10 +14572,10 @@ a.block.block-link-hover3:active {
   bottom: 0;
   left: 0;
   margin: 0;
-  padding: 20px;
+  padding: 24px;
   width: 100%;
   list-style: none;
-  background-color: #2c343f;
+  background-color: #2c2c2f;
   z-index: 1031;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
@@ -15451,11 +15452,11 @@ button.text-default-dark:focus {
   opacity: .75;
 }
 .text-default-darker {
-  color: #2c343f;
+  color: #2c2c2f;
 }
 a.text-default-darker:hover,
 a.text-default-darker:focus {
-  color: #171b21;
+  color: #131315;
 }
 a.text-default-darker:hover,
 a.text-default-darker:active,
@@ -15463,7 +15464,7 @@ a.text-default-darker:focus,
 button.text-default-darker:hover,
 button.text-default-darker:active,
 button.text-default-darker:focus {
-  color: #2c343f;
+  color: #2c2c2f;
   opacity: .75;
 }
 .text-default-light {
@@ -15543,15 +15544,15 @@ a.bg-default-dark-op:focus {
   background-color: rgba(41, 49, 59, 0.83);
 }
 .bg-default-darker {
-  background-color: #2c343f;
+  background-color: #2c2c2f;
 }
 a.bg-default-darker:hover,
 a.bg-default-darker:focus {
-  background-color: #171b21;
+  background-color: #131315;
 }
 a.bg-default-darker:hover,
 a.bg-default-darker:focus {
-  background-color: #171b21;
+  background-color: #131315;
 }
 .bg-default-light {
   background-color: #98b9e3;
@@ -19187,7 +19188,7 @@ a.bg-smooth-lighter:focus {
 .jvectormap-tip {
   padding: 6px 8px;
   font-family: "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  background: #2c343f;
+  background: #2c2c2f;
   border: none;
   border-radius: 0;
 }
@@ -19842,7 +19843,7 @@ div.tagsinput span.tag a:hover {
 /* Component containers
 ----------------------------------*/
 .ui-widget {
-  font-family: "montserratlight", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: normal;
   font-size: 13px;
 }
@@ -19850,7 +19851,7 @@ div.tagsinput span.tag a:hover {
   font-size: 1em;
 }
 .ui-widget {
-  font-family: "montserratlight", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: normal;
   font-size: 13px;
 }
@@ -19858,7 +19859,7 @@ div.tagsinput span.tag a:hover {
 .ui-widget select,
 .ui-widget textarea,
 .ui-widget button {
-  font-family: "montserratlight", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: normal;
   font-size: 1em;
 }
@@ -19871,8 +19872,8 @@ div.tagsinput span.tag a:hover {
   color: #404040;
 }
 .ui-widget-header {
-  font-family: "montserratsemi_bold", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: normal;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: bold;
   border-color: #0064cd #0064cd #003f81;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
   border: 1px solid #666;
@@ -20033,15 +20034,15 @@ div.tagsinput span.tag a:hover {
 .ui-priority-primary,
 .ui-widget-content .ui-priority-primary,
 .ui-widget-header .ui-priority-primary {
-  font-family: "montserratsemi_bold", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: normal;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: bold;
 }
 .ui-priority-secondary,
 .ui-widget-content .ui-priority-secondary,
 .ui-widget-header .ui-priority-secondary {
   opacity: .7;
   filter: alpha(opacity=70);
-  font-family: "montserratlight", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: normal;
 }
 .ui-state-disabled,
@@ -20685,8 +20686,8 @@ div.tagsinput span.tag a:hover {
   width: 100%;
 }
 .ui-accordion .ui-accordion-header {
-  font-family: "montserratsemi_bold", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: normal;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: bold;
   cursor: pointer;
   margin-top: 1px;
   position: relative;
@@ -20965,12 +20966,12 @@ button.ui-button::-moz-focus-inner {
   padding: 2px .4em;
   line-height: 1.5;
   zoom: 1;
-  font-family: "montserratlight", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: normal;
 }
 .ui-menu .ui-menu-item a.ui-state-focus,
 .ui-menu .ui-menu-item a.ui-state-active {
-  font-family: "montserratlight", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: normal;
   border-color: #0064cd #0064cd #003f81;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
@@ -21134,8 +21135,8 @@ button.ui-button::-moz-focus-inner {
   border-bottom: 1px solid #ccc;
 }
 .ui-dialog .ui-dialog-title {
-  font-family: "montserratsemi_bold", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: normal;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: bold;
   color: #404040;
   float: left;
   margin-bottom: 5px;
@@ -21543,8 +21544,8 @@ body .ui-tooltip {
 .ui-datepicker th {
   padding: .7em .3em;
   text-align: center;
-  font-family: "montserratsemi_bold", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: normal;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: bold;
   border: 0;
 }
 .ui-datepicker td {
@@ -21669,8 +21670,8 @@ body .ui-tooltip {
   /*must have*/
 }
 .ui-datepicker th {
-  font-family: "montserratsemi_bold", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: normal;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: bold;
   color: gray;
 }
 .ui-datepicker-today a:hover {
@@ -21965,7 +21966,7 @@ div.wijmo-wijmenu .wijmo-wijmenu-child .wijmo-wijmenu-text {
   border-right: 0;
 }
 .wijmo-wijmenu .wijmo-wijmenu-item input {
-  font-family: "montserratlight", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: normal;
   -moz-transition: none 0s ease 0s;
   background-color: rgba(255, 255, 255, 0.3);
@@ -22026,54 +22027,6 @@ div.wijmo-wijmenu .wijmo-wijmenu-child .wijmo-wijmenu-text {
   font-family: 'SilkscreenExpandedBold';
   src: url('../fonts/silkscreen/font/slkscreb-webfont.eot');
   src: url('../fonts/silkscreen/font/slkscreb-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/silkscreen/font/slkscreb-webfont.woff') format('woff'), url('../fonts/silkscreen/font/slkscreb-webfont.ttf') format('truetype'), url('../fonts/silkscreen/font/slkscreb-webfont.svg#SilkscreenExpandedBold') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'montserratlight';
-  src: url('../fonts/montserrat/font/montserrat-light-webfont.woff2') format('woff2'), url('../fonts/montserrat/font/montserrat-light-webfont.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'montserratregular';
-  src: url('../fonts/montserrat/font/montserrat-regular-webfont.woff2') format('woff2'), url('../fonts/montserrat/font/montserrat-regular-webfont.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'montserratbold';
-  src: url('../fonts/montserrat/font/montserrat-bold-webfont.woff2') format('woff2'), url('../fonts/montserrat/font/montserrat-bold-webfont.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'montserratblack';
-  src: url('../fonts/montserrat/font/montserrat-black-webfont.woff2') format('woff2'), url('../fonts/montserrat/font/montserrat-black-webfont.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'montserratextra_bold';
-  src: url('../fonts/montserrat/font/montserrat-extrabold-webfont.woff2') format('woff2'), url('../fonts/montserrat/font/montserrat-extrabold-webfont.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'montserrathairline';
-  src: url('../fonts/montserrat/font/montserrat-hairline-webfont.woff2') format('woff2'), url('../fonts/montserrat/font/montserrat-hairline-webfont.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'montserratsemi_bold';
-  src: url('../fonts/montserrat/font/montserrat-semibold-webfont.woff2') format('woff2'), url('../fonts/montserrat/font/montserrat-semibold-webfont.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'montserratultra_light';
-  src: url('../fonts/montserrat/font/montserrat-ultralight-webfont.woff2') format('woff2'), url('../fonts/montserrat/font/montserrat-ultralight-webfont.woff') format('woff');
   font-weight: normal;
   font-style: normal;
 }
@@ -23082,11 +23035,11 @@ fieldset[disabled] .mura .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset .
   font-weight: bold;
 }
 .bold-font {
-  font-family: "montserratsemi_bold", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: normal;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: bold;
 }
 .regular-font {
-  font-family: "montserratlight", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: normal;
 }
 /* plain sans font  used for some UI buttons */
@@ -23094,11 +23047,11 @@ fieldset[disabled] .mura .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset .
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
 }
 .bold-font {
-  font-family: "montserratsemi_bold", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: normal;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: bold;
 }
 .regular-font {
-  font-family: "montserratlight", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: normal;
 }
 /* plain sans font  used for some UI buttons */
@@ -23368,6 +23321,7 @@ i {
   /* min-width elements in input set */
   /* add-on buttons */
   /* standard button spacing */
+  /* .nav-main */
   /* custom styles */
   /* custom styles */
   /* custom styles */
@@ -24843,7 +24797,7 @@ input[type="email"].mura .mura-control-inline > select {
 }
 .mura .mura-control-inline > button {
   padding: 2px 12px;
-  font-family: "montserratlight", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: normal;
   font-size: 13px;
   height: 36px;
@@ -26244,7 +26198,7 @@ fieldset[disabled] .mura .btn:not([class*="btn-"]).active {
 }
 .mura .mura-button {
   padding: 2px 12px;
-  font-family: "montserratlight", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: normal;
   font-size: 13px;
   color: #333333;
@@ -26511,7 +26465,7 @@ fieldset[disabled] .mura .mura-button.active {
 }
 .mura .nav-module-specific .btn {
   padding: 2px 12px;
-  font-family: "montserratlight", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: normal;
   font-size: 13px;
 }
@@ -26542,7 +26496,7 @@ a.mura .nav-module-specific .label:focus {
 }
 .mura .nav-module-specific .metadata-horizontal li {
   padding: 2px 12px;
-  font-family: "montserratlight", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: normal;
   font-size: 13px;
   display: inline;
@@ -26604,7 +26558,7 @@ a.mura .nav-module-specific .metadata-horizontal li:focus {
 .mura i.png {
   display: inline-block;
   font: normal normal normal 14px/1 FontAwesome;
-  font-family: FontAwesome, "montserratlight", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: FontAwesome, "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: inherit;
   text-rendering: auto;
   -webkit-font-smoothing: antialiased;
@@ -28922,7 +28876,7 @@ a.mura .nav-module-specific .metadata-horizontal li:focus {
 }
 .mura .mura-table-grid td,
 .mura .mura-table-grid th {
-  font-family: "montserratlight", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: normal;
   border-radius: 0 !important;
   color: #000000;
@@ -28936,8 +28890,8 @@ a.mura .nav-module-specific .metadata-horizontal li:focus {
 }
 .mura .mura-table-grid th,
 .mura .mura-table-grid thead th {
-  font-family: "montserratsemi_bold", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: normal;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: bold;
   color: #7a7a7a;
   font-style: normal;
   height: 26px;
@@ -29485,8 +29439,8 @@ a.mura .nav-module-specific .metadata-horizontal li:focus {
 }
 .mura .mura-grid .mura-grid-hdr dt,
 .mura .mura-grid .mura-grid-hdr dd {
-  font-family: "montserratsemi_bold", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: normal;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: bold;
   border: 1px solid #DBDBDB;
   border-right: none;
   color: #7a7a7a;
@@ -29521,8 +29475,8 @@ a.mura .nav-module-specific .metadata-horizontal li:focus {
   line-height: 18px;
 }
 .mura .mura-grid .mura-grid-hdr a {
-  font-family: "montserratsemi_bold", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: normal;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: bold;
   display: inline-block;
   *display: inline;
   /* IE7 inline-block hack */
@@ -29649,8 +29603,8 @@ a.mura .nav-module-specific .metadata-horizontal li:focus {
   margin-bottom: 12px;
 }
 .mura #tabFlat #navReportsToggle {
-  font-family: "montserratsemi_bold", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: normal;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: bold;
   box-shadow: none !important;
   color: #545454 !important;
   cursor: pointer;
@@ -30154,8 +30108,8 @@ a.mura .nav-module-specific .metadata-horizontal li:focus {
   margin: 0 0 10px 0;
 }
 .mura #cHelp #content ul li {
-  font-family: "montserratsemi_bold", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: normal;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: bold;
   margin: 0;
 }
 .mura #cHelp #content ul ul li {
@@ -30823,8 +30777,8 @@ fieldset[disabled] .mura .mura-quickEdit .form-actions .btn.active {
 }
 .mura .mura-grid th,
 .mura .mura-table-grid th {
-  font-family: "montserratsemi_bold", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: normal;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: bold;
   color: #7a7a7a;
   line-height: 24px !important;
   padding-bottom: 1px !important;
@@ -30882,8 +30836,8 @@ fieldset[disabled] .mura .mura-quickEdit .form-actions .btn.active {
 }
 .mura .mura-grid #selected .mura-quickEditItem,
 .mura .mura-table-grid #selected .mura-quickEditItem {
-  font-family: "montserratsemi_bold", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: normal;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: bold;
 }
 .mura .mura-grid div.menu,
 .mura .mura-table-grid div.menu {
@@ -31255,7 +31209,7 @@ fieldset[disabled] .mura .mura-quickEdit .form-actions .btn.active {
   text-shadow: 0 0 0 !important;
 }
 .mura #mura-templatebuilder .button-trash:before {
-  font-family: FontAwesome, "montserratlight", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: FontAwesome, "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   content: "\f057";
 }
 .mura #mura-templatebuilder #mura-form-pages .button-trash {
@@ -31318,8 +31272,8 @@ fieldset[disabled] .mura .mura-quickEdit .form-actions .btn.active {
   padding-left: 34px;
 }
 .mura .mura-tb-form .mura-tb-header h2 span {
-  font-family: "montserratsemi_bold", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: normal;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: bold;
   font-size: 15px;
 }
 .mura #button-trash {
@@ -31741,8 +31695,8 @@ font-size: 12px;
   box-shadow: 0 0 0, 0 0 0;
 }
 .mura #mura-tb-fields .selected {
-  font-family: "montserratsemi_bold", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: normal;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: bold;
   border: 1px solid #dedede;
   color: #646464;
 }
@@ -31777,8 +31731,8 @@ font-size: 12px;
   background-image: url('../images/formbuilder/frm_nested_big.png');
 }
 .mura #mura-tb-form #mura-tb-fields li.field-section {
-  font-family: "montserratsemi_bold", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: normal;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: bold;
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
@@ -31840,8 +31794,8 @@ font-size: 12px;
   text-shadow: 0 0 0 !important;
 }
 .mura #mura-tb-grid-table-header {
-  font-family: "montserratsemi_bold", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: normal;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: bold;
   background: url('../images/formbuilder/ui-toolbar-bg.jpg') repeat-x left bottom;
   clear: both;
   font-size: 11px;
@@ -32123,8 +32077,8 @@ font-size: 12px;
   background: transparent;
 }
 .mura .categoryAssignment li {
-  font-family: "montserratsemi_bold", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: normal;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: bold;
   margin: 0 !important;
   position: relative;
 }
@@ -32221,8 +32175,8 @@ font-size: 12px;
   min-height: 22px;
 }
 .mura #mura-list-tree > ul li span {
-  font-family: "montserratsemi_bold", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: normal;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: bold;
   display: inline-block;
   *display: inline;
   /* IE7 inline-block hack */
@@ -32338,15 +32292,15 @@ font-size: 12px;
   opacity: 0.1;
 }
 .mura .list-table .list-table-content-set {
-  font-family: "montserratsemi_bold", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: normal;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: bold;
   background: #f0f0f0;
   color: #000;
   padding: 8px 5px;
 }
 .mura .list-table .list-table-header {
-  font-family: "montserratsemi_bold", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: normal;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: bold;
   background: #eaf4fd;
   background-image: linear-gradient(to bottom, #fffefe, #f5f5f5);
   color: #000;
@@ -32483,8 +32437,8 @@ font-size: 12px;
   padding-left: 15px;
 }
 .mura #cextend .attr-list li.attr-edit p {
-  font-family: "montserratsemi_bold", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: normal;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: bold;
   font-size: 16px;
   margin-left: 0;
   padding-left: 0;
@@ -33394,8 +33348,8 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
 }
 .mura #carch #tabCategorization .mura-grid-hdr dt,
 .mura #carch #tabCategorization .mura-grid-hdr dd {
-  font-family: "montserratsemi_bold", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: normal;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: bold;
 }
 .mura #carch #tabCategorization .mura-grid-hdr dt {
   padding-left: 12px !important;
@@ -33876,8 +33830,8 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
         */
 }
 .mura #ccomments .modal .modal-body dt {
-  font-family: "montserratsemi_bold", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: normal;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: bold;
   font-size: 13px;
   margin-bottom: .25em;
 }
@@ -34012,7 +33966,7 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
   background-color: #dcecfd;
 }
 .mura body.modal-wrapper {
-  font-family: "montserratlight", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: normal;
   /* allow for (x) icon on modal */
   /* hide h2 not used in front end modal*/
@@ -34087,7 +34041,7 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
 }
 .mura body.modal-wrapper .nav-pills > li > a {
   padding: 2px 12px;
-  font-family: "montserratlight", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: normal;
   font-size: 13px;
   color: #333333;
@@ -34397,8 +34351,8 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
   border-top-left-radius: 2px;
 }
 .mura .mura-list-grid dl dd {
-  font-family: "montserratsemi_bold", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: normal;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: bold;
   color: #404040;
   font-size: 16px;
   line-height: 24px;
@@ -34498,8 +34452,8 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
   background: #999999;
 }
 .mura #status-modal.mura-list-grid .approval-chain-comments > dd > em {
-  font-family: "montserratsemi_bold", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: normal;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: bold;
   display: inline-block;
   *display: inline;
   /* IE7 inline-block hack */
@@ -34749,12 +34703,12 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
   z-index: 499998 !important;
   height: 100vh;
   background-color: #454545;
-  font-family: "montserratlight", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: normal;
   text-transform: none;
 }
 .mura .mura__layout-manager__controls * {
-  font-family: "montserratlight", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: normal;
   text-transform: none;
 }
@@ -34767,7 +34721,7 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
   border: 1px solid transparent !important;
   box-shadow: none !important;
   cursor: pointer !important;
-  font-size: 13px !important;
+  font-size: 14px !important;
   height: 32px !important;
   letter-spacing: normal !important;
   line-height: 1.42857143 !important;
@@ -34817,11 +34771,11 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 }
 .mura .mura__layout-manager__controls__objects {
   min-height: 120px;
-  padding: 30px 0 50px 0;
+  padding: 50px 0;
 }
 .mura *[class^="mi-"],
 .mura *[class*=" mi-"] {
-  font-family: FontAwesome, "montserratlight", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  font-family: FontAwesome, "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
 }
 .mura .mura-sidebar__objects-list__object-item *[class^="mi-"],
 .mura .mura-sidebar__objects-list__object-item *[class*=" mi-"] {
@@ -34856,7 +34810,7 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
   margin-right: 0;
 }
 .mura .mura-sidebar__objects-list__object-group-heading {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: normal;
   color: #f3f3f3;
   line-height: 1.2;
@@ -34869,7 +34823,7 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 }
 .mura .mura-sidebar__objects-list__object-group-instruction {
   background-color: #6f6f6f;
-  font-size: 13px;
+  font-size: 14px;
   margin-bottom: 3px;
   padding: 10px 15px;
 }
@@ -34924,7 +34878,7 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
   background-color: #333;
   color: #d8d8d8;
   padding: 8px 12px;
-  font-size: 13px;
+  font-size: 14px;
   border: none;
   cursor: pointer;
   outline: none;
@@ -34935,7 +34889,7 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
   display: block;
   padding: 10px 16px;
   margin-bottom: 2px;
-  font-size: 13px;
+  font-size: 14px;
   color: #d8d8d8;
   background-color: #565656;
   font-weight: normal;
@@ -34974,7 +34928,7 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 }
 .mura body.configurator-wrapper {
   background-color: #454545;
-  font-family: "montserratlight", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: normal;
   text-transform: none;
 }
@@ -34988,7 +34942,7 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
   /* always display the drop down caret */
 }
 .mura body.configurator-wrapper #configuratorContainer * {
-  font-family: "montserratlight", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: normal;
   text-transform: none;
 }
@@ -35045,7 +34999,7 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
   right: 20px;
 }
 .mura body.configurator-wrapper #configuratorContainer .btn {
-  font-size: 13px;
+  font-size: 14px;
   padding: 6px 12px;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
@@ -35122,7 +35076,7 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 }
 .mura body.configurator-wrapper #configuratorContainer .mura-panel-group .mura-panel .mura-panel-title {
   color: #fff;
-  font-size: 13px;
+  font-size: 14px;
 }
 .mura body.configurator-wrapper #configuratorContainer .mura-panel-group .mura-panel .mura-panel-title a {
   display: block;
@@ -35137,7 +35091,7 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 .mura body.configurator-wrapper #configuratorContainer label,
 .mura body.configurator-wrapper #configuratorContainer .control-label,
 .mura body.configurator-wrapper #configuratorContainer .mura-control-label {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: normal;
   color: #f3f3f3;
   line-height: 1.2;
@@ -35172,7 +35126,7 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
   background-color: #333;
   color: #d8d8d8;
   padding: 8px 12px;
-  font-size: 13px;
+  font-size: 14px;
   border: none;
   cursor: pointer;
   outline: none;
@@ -35254,7 +35208,7 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 }
 .mura body.configurator-wrapper #configuratorContainer #sortableFields #displayListSort li:before {
   content: "\f0c9";
-  font-family: FontAwesome, "montserratlight", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: FontAwesome, "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #737373;
   float: right;
 }
@@ -35265,7 +35219,7 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
   -moz-border-radius: 0;
   border-radius: 0;
   box-shadow: none;
-  font-size: 13px;
+  font-size: 14px;
   padding: 8px 12px;
   color: #d8d8d8;
 }
@@ -35300,7 +35254,7 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 .mura .mura__layout-manager__display-regions .btn,
 .mura .mura__layout-manager__display-regions > div h3,
 .mura .mura__layout-manager__display-regions .mura-region__item h4 {
-  font-family: "montserratlight", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: normal;
 }
 .mura .mura__layout-manager__display-regions__X {
@@ -35353,8 +35307,8 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
   border: none !important;
 }
 .mura .modal-dialog .modal-content .modal-header h1 {
-  font-family: "montserratsemi_bold", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: normal;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: bold;
   color: #545454;
   display: block;
   float: left;
@@ -35455,8 +35409,8 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 }
 .mura .ui-dialog-title,
 .mura .modal-wrapper .ui-dialog-title {
-  font-family: "montserratsemi_bold", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: normal;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: bold;
   color: #545454;
   display: block;
   float: left;
@@ -35587,7 +35541,7 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
   color: #545454 !important;
 }
 .mura body {
-  font-family: "montserratlight", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: normal;
   background-color: #f5f5f5;
   font-size: 13px;
@@ -35667,21 +35621,21 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 .mura h4,
 .mura h5,
 .mura h6 {
-  font-family: "montserratsemi_bold", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: normal;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: bold;
 }
 .mura .mura-header h1,
 .mura .mura-header h1:not([class]) {
-  font-family: "montserratsemi_bold", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: normal;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: bold;
   font-size: 32px;
   letter-spacing: 0;
   white-space: nowrap;
 }
 .mura b,
 .mura strong {
-  font-family: "montserratsemi_bold", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: normal;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: bold;
 }
 .mura .text-primary-lighter {
   color: rgba(102, 153, 204, 0.8);
@@ -35814,7 +35768,7 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
   margin-left: 8px;
 }
 .mura label {
-  font-family: "montserratlight", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: normal;
 }
 .mura .label-default {
@@ -36014,9 +35968,8 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 .mura .header-navbar-transparent.header-navbar-fixed.header-navbar-scroll #header-navbar {
   background-color: #3B3B3B;
 }
-.mura #page-container,
 .mura #sidebar {
-  background-color: #333;
+  background-color: #2c2c2f;
 }
 .mura .header-navbar-fixed #main-container,
 .mura #main-container {
@@ -36024,21 +35977,6 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
   overflow: visible;
   padding-top: 45px;
   padding-bottom: 0;
-}
-.mura .nav-main {
-  font-size: 15px;
-  padding-bottom: 15px;
-}
-.mura .nav-main-header {
-  background-color: #333;
-}
-@media screen and (min-width: 992px) {
-  .mura .nav-main-header {
-    background-color: transparent;
-  }
-  .mura .nav-main-header ul {
-    background-color: #555;
-  }
 }
 .mura .form-material.form-material-primary > .form-control:focus {
   -webkit-box-shadow: 0 2px 0 #b1b1b1;
@@ -36375,9 +36313,31 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 }
 .mura .btn,
 .mura .btn-group .btn {
-  font-family: "montserratlight", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: normal;
   font-size: 13px;
+}
+.mura .text-divider {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  position: relative;
+  text-align: center;
+}
+.mura .text-divider::before,
+.mura .text-divider::after {
+  content: '';
+  background: #ccc;
+  height: 1px;
+  display: block;
+  width: 100%;
+}
+.mura .text-divider span {
+  font-size: 16px;
+  font-weight: 500;
+  padding: 10px 20px;
+  text-align: center;
 }
 .mura .mura-input-set .btn,
 .mura .mura-input-set input,
@@ -36810,6 +36770,30 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
   color: #7f7f7f;
   margin-right: 4px;
 }
+.mura .nav-main-header {
+  background-color: #2c2c2f;
+}
+@media screen and (min-width: 992px) {
+  .mura .nav-main-header {
+    background-color: transparent;
+  }
+  .mura .nav-main-header ul {
+    background-color: #555;
+  }
+  .mura .mura-focus-block {
+    width: 498px !important;
+  }
+  .mura .mura-focus-block .block-content {
+    padding: 50px 70px !important;
+  }
+}
+.mura .nav-main {
+  font-size: 16px;
+  padding-bottom: 15px;
+  padding-top: 12px;
+  /* /ul */
+  /* /li */
+}
 .mura .nav-main a {
   color: rgba(255, 255, 255, 0.8);
 }
@@ -36817,23 +36801,8 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 .mura .nav-main a:focus {
   color: #ffffff !important;
 }
-.mura .nav-main li a {
-  display: block;
-  overflow: hidden;
-  padding-right: 30px;
-  text-decoration: none;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.mura .nav-main li a span {
-  display: inline-block;
-  vertical-align: top;
-}
-.mura .nav-main li > a.nav-submenu:before {
-  content: "\f105";
-}
-.mura .nav-main li.open > a.nav-submenu:before {
-  content: "\f107";
+.mura .nav-main a.active {
+  color: #fff;
 }
 .mura .nav-main ul {
   padding-left: 32px;
@@ -36845,6 +36814,18 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 .mura .nav-main ul > li ul > li,
 .mura .nav-main ul > li ul > li a {
   font-size: 13px;
+}
+.mura .nav-main ul li a i {
+  font-size: 19px;
+  margin-left: 0;
+  min-width: 21px;
+}
+.mura .nav-main ul a i.fa-action {
+  display: inline-block;
+  font-size: 19px;
+  line-height: 1em;
+  margin-left: 8px;
+  float: right;
 }
 .mura .nav-main ul.version {
   padding-left: 20px;
@@ -36859,8 +36840,20 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
   margin-left: 0;
   margin-right: 10px;
 }
+.mura .nav-main li a {
+  display: block;
+  overflow: hidden;
+  padding-right: 30px;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.mura .nav-main li a span {
+  display: inline-block;
+  vertical-align: top;
+}
 .mura .nav-main li a i {
-  font-size: 23px;
+  font-size: 24px;
   margin-left: -3px;
   min-width: 26px;
   position: relative;
@@ -36869,20 +36862,18 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 .mura .nav-main li a i.mi-edit {
   padding-left: 2px;
 }
+.mura .nav-main li > a.nav-submenu:before {
+  content: "\f105";
+}
+.mura .nav-main > li > a {
+  padding-bottom: 18px;
+  padding-top: 18px;
+}
+.mura .nav-main li.open > a.nav-submenu:before {
+  content: "\f107";
+}
 .mura .nav-main #navContentAdmin i {
   padding-left: 2px;
-}
-.mura .nav-main li ul li a i {
-  font-size: 17px;
-  margin-left: 0;
-  min-width: 20px;
-}
-.mura .nav-main ul a i.fa-action {
-  display: inline-block;
-  font-size: 18px;
-  line-height: 1em;
-  margin-left: 8px;
-  float: right;
 }
 .mura .content h2 {
   font-size: 15px;
@@ -37052,7 +37043,7 @@ input[type="email"].mura .mura-control-table td.nested select[size] {
 .mura a.cke_dialog_ui_button:hover,
 .mura a.cke_dialog_ui_button:active {
   padding: 2px 12px;
-  font-family: "montserratlight", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: normal;
   font-size: 13px;
   background-image: none !important;
@@ -37685,7 +37676,7 @@ fieldset[disabled] .mura a.cke_dialog_ui_button:not(.cke_dialog_ui_button_ok):ac
 .mura a.cke_dialog_ui_button_ok:hover,
 .mura a.cke_dialog_ui_button_ok:active {
   padding: 2px 12px;
-  font-family: "montserratlight", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: normal;
   font-size: 13px;
   color: #ffffff !important;
@@ -37811,13 +37802,36 @@ fieldset[disabled] .mura a.cke_dialog_ui_button:not(.cke_dialog_ui_button_ok):ac
 .mura a.no-link {
   cursor: default;
 }
-.mura .side-content img.mura-logo {
-  width: 38px;
-  max-width: 38px;
-  height: 40px;
-  max-height: 40px;
-  margin-top: -13px;
-  margin-left: -10px;
+.mura .side-content #brand-logo-lg img.mura-logo {
+  width: 96px;
+  max-width: 96px;
+  height: 26px;
+  max-height: 26px;
+  margin-top: 3px;
+  margin-left: -1px;
+}
+.mura .side-content #brand-logo-min {
+  display: none;
+}
+.mura .side-content #brand-logo-min img.mura-logo {
+  width: 25px;
+  max-width: 25px;
+  height: 26px;
+  max-height: 26px;
+  margin-top: 3px;
+  margin-left: -1px;
+}
+.mura .side-content #brand-logo-min img.mura-logo-text {
+  height: 26px;
+  max-height: 26px;
+  margin-top: 3px;
+  margin-left: -3px;
+}
+.mura .sidebar-mini .side-content #brand-logo-lg {
+  display: none;
+}
+.mura .sidebar-mini .side-content #brand-logo-min {
+  display: block;
 }
 .mura .sidebar-icon-right {
   display: none;
@@ -38677,8 +38691,8 @@ fieldset[disabled] .mura .sidebar-buttons .btn.active {
   outline: 0;
 }
 .mura label.form-heading {
-  font-family: "montserratsemi_bold", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: normal;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: bold;
   font-size: 14px;
   margin-bottom: 0 !important;
 }
@@ -38742,32 +38756,41 @@ fieldset[disabled] .mura .sidebar-buttons .btn.active {
   margin-bottom: 0;
   padding-top: 7px;
 }
+.mura .mura-login-auth-img {
+  height: 52px;
+  margin-bottom: 6px;
+  width: auto;
+}
+.mura .mura-login-auth-img-fb {
+  height: 44px;
+  margin: 2px;
+  margin-bottom: 6px;
+  width: auto;
+}
+.mura h3.mura-login-auth-heading {
+  margin: 22px;
+}
 .mura .mura-focus-block {
   width: 360px;
   margin: auto;
 }
 .mura .mura-focus-block .focus-block-header {
-  background-color: #252525 ;
-  height: 54px;
+  height: 84px;
+  text-align: center;
 }
 .mura .mura-focus-block .focus-block-header img.mura-logo {
-  width: 38px;
-  max-width: 38px;
-  height: 40px;
-  max-height: 40px;
-  margin-left: 20px;
-  float: left;
-}
-.mura .mura-focus-block .focus-block-header h1 {
-  color: #FFF;
-  float: left;
-  letter-spacing: .07em;
-  margin: 8px 0 0 24px;
-  padding: 0;
-  text-transform: uppercase;
+  width: auto;
+  height: 26px;
+  max-height: 26px;
+  margin: 13px auto 0 auto;
 }
 .mura .mura-focus-block .block-content {
-  padding: 30px 20px 10px;
+  padding: 30px 40px;
+  border: 2px solid #ECEEEF;
+  border-radius: 1px;
+}
+.mura .mura-focus-block .block-content h3 {
+  font-size: 18px;
 }
 .mura .mura-focus-block .mura-focus-actions button,
 .mura .mura-focus-block .mura-focus-actions button:hover,
@@ -38776,7 +38799,7 @@ fieldset[disabled] .mura .sidebar-buttons .btn.active {
 .mura .mura-focus-block .mura-focus-actions .btn:hover,
 .mura .mura-focus-block .mura-focus-actions .btn:focus {
   padding: 2px 12px;
-  font-family: "montserratlight", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: normal;
   font-size: 13px;
   display: block;
@@ -38788,10 +38811,6 @@ fieldset[disabled] .mura .sidebar-buttons .btn.active {
   margin-left: 0;
   margin-right: 0;
 }
-.mura body#clogin,
-.mura body#csetup {
-  background-color: #333;
-}
 .mura #clogin #main-container,
 .mura #csetup #main-container {
   background: none;
@@ -38799,6 +38818,7 @@ fieldset[disabled] .mura .sidebar-buttons .btn.active {
 .mura #clogin #page-container,
 .mura #clogin #main-container,
 .mura #clogin #main-container > .content {
+  background-color: #fff;
   height: 100%;
   margin-top: 0;
   margin-bottom: 0;
@@ -38806,77 +38826,128 @@ fieldset[disabled] .mura .sidebar-buttons .btn.active {
   padding-top: 0;
   padding-bottom: 0;
 }
-.mura #csetup #main-container .mura-focus-block .block-content {
-  padding-top: 0;
+.mura #mura-setup {
+  margin-top: 3%;
 }
+.mura #csetup #page-container,
+.mura #csetup #main-container {
+  background-color: #fff;
+  height: 100%;
+  margin-top: 0;
+  margin-bottom: 0;
+  min-height: 480px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.mura #csetup #page-container h3,
+.mura #csetup #main-container h3 {
+  margin: 0 auto 22px;
+  padding: 0;
+}
+.mura #csetup #page-container .mura-focus-block,
+.mura #csetup #main-container .mura-focus-block {
+  width: 498px!important;
+}
+.mura #csetup #page-container .mura-focus-block .block-content,
+.mura #csetup #main-container .mura-focus-block .block-content {
+  padding: 40px 30px!important;
+}
+.mura #csetup #page-container .mura-focus-block .block-content .block-content,
+.mura #csetup #main-container .mura-focus-block .block-content .block-content {
+  border: none !important;
+  padding: 0 !important;
+}
+.mura #csetup #page-container .alert,
 .mura #csetup #main-container .alert {
   line-height: 1.3em;
 }
+.mura #csetup #page-container .alert.alert-error,
 .mura #csetup #main-container .alert.alert-error {
   margin-top: 10px;
 }
+.mura #csetup #page-container .alert:not(.alert-error):not(.alert-warning),
 .mura #csetup #main-container .alert:not(.alert-error):not(.alert-warning) {
   background-color: #DEDEDE !important;
   border-color: #BCBCBC !important;
 }
+.mura #csetup #page-container .alert + .mura-control-group,
 .mura #csetup #main-container .alert + .mura-control-group {
   margin-top: 12px;
 }
+.mura #csetup #page-container .wizard-progress,
 .mura #csetup #main-container .wizard-progress {
   padding: 0;
   margin-bottom: 15px;
 }
+.mura #csetup #page-container .wizard-next i,
 .mura #csetup #main-container .wizard-next i {
   margin-left: 5px;
 }
+.mura #csetup #page-container .wizard-prev i,
 .mura #csetup #main-container .wizard-prev i {
   margin-right: 5px;
 }
+.mura #csetup #page-container .progress,
 .mura #csetup #main-container .progress {
   background-color: #FFF;
 }
+.mura #csetup #page-container .progress-bar-danger,
 .mura #csetup #main-container .progress-bar-danger {
   background-color: #ff3405;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;
 }
+.mura #csetup #page-container .nav-tabs,
 .mura #csetup #main-container .nav-tabs {
   margin-left: -15px;
   margin-right: -15px;
   padding: 0;
   width: 110%;
 }
+.mura #csetup #page-container .block > .nav-tabs > li,
 .mura #csetup #main-container .block > .nav-tabs > li {
   display: table-cell !important;
   width: 1% !important;
 }
+.mura #csetup #page-container .nav-tabs li a,
 .mura #csetup #main-container .nav-tabs li a {
   background-color: #FFF;
   margin-right: 0 !important;
   font-weight: normal;
 }
+.mura #csetup #page-container .nav-tabs li.active a,
 .mura #csetup #main-container .nav-tabs li.active a {
   color: #ff3405;
 }
+.mura #csetup #page-container .tab-content,
 .mura #csetup #main-container .tab-content {
   padding: 0 0;
   min-height: 290px;
 }
+.mura #csetup #page-container .mura-control-group,
 .mura #csetup #main-container .mura-control-group {
   margin-bottom: 12px;
 }
+.mura #csetup #page-container #multi-file-upload .mura-control-group,
 .mura #csetup #main-container #multi-file-upload .mura-control-group {
   margin-bottom: 10px;
 }
+.mura #csetup #page-container label.switch label,
 .mura #csetup #main-container label.switch label {
   margin-left: 8px;
 }
+.mura #csetup #page-container .mura-control-group > label + input[type=text],
 .mura #csetup #main-container .mura-control-group > label + input[type=text],
+.mura #csetup #page-container .mura-control-group > label + * + input[type=text],
 .mura #csetup #main-container .mura-control-group > label + * + input[type=text],
+.mura #csetup #page-container .mura-control-group > label + input[type=password],
 .mura #csetup #main-container .mura-control-group > label + input[type=password],
+.mura #csetup #page-container .mura-control-group > label + * + input[type=password],
 .mura #csetup #main-container .mura-control-group > label + * + input[type=password],
+.mura #csetup #page-container .mura-control-group > label + select,
 .mura #csetup #main-container .mura-control-group > label + select,
+.mura #csetup #page-container .mura-control-group > label + * + select,
 .mura #csetup #main-container .mura-control-group > label + * + select {
   position: relative;
   float: left;
@@ -38885,29 +38956,39 @@ fieldset[disabled] .mura .sidebar-buttons .btn.active {
   padding-left: 15px;
   padding-right: 15px;
 }
+.mura #csetup #page-container .mura-focus-actions,
 .mura #csetup #main-container .mura-focus-actions {
   margin: 30px 0 25px 0;
   float: none;
   height: 20px;
 }
+.mura #csetup #page-container .mura-focus-actions .btn.mura-setup-complete,
 .mura #csetup #main-container .mura-focus-actions .btn.mura-setup-complete {
   padding: 6px 12px;
 }
+.mura #csetup #page-container #installationComplete,
 .mura #csetup #main-container #installationComplete {
   margin-top: 20px;
   margin-bottom: -10px;
 }
+.mura #csetup #page-container #installationComplete p,
 .mura #csetup #main-container #installationComplete p {
   text-align: center;
 }
+.mura #csetup #page-container .mura-focus-actions .btn:not(.mura-setup-complete),
 .mura #csetup #main-container .mura-focus-actions .btn:not(.mura-setup-complete),
+.mura #csetup #page-container .mura-focus-actions .btn:not(.mura-setup-complete):hover,
 .mura #csetup #main-container .mura-focus-actions .btn:not(.mura-setup-complete):hover,
+.mura #csetup #page-container .mura-focus-actions .btn:not(.mura-setup-complete):focus,
 .mura #csetup #main-container .mura-focus-actions .btn:not(.mura-setup-complete):focus {
   width: 45%;
   float: left;
 }
+.mura #csetup #page-container .mura-focus-actions .btn:not(.mura-setup-complete) + .btn,
 .mura #csetup #main-container .mura-focus-actions .btn:not(.mura-setup-complete) + .btn,
+.mura #csetup #page-container .mura-focus-actions .btn:not(.mura-setup-complete):hover + .btn,
 .mura #csetup #main-container .mura-focus-actions .btn:not(.mura-setup-complete):hover + .btn,
+.mura #csetup #page-container .mura-focus-actions .btn:not(.mura-setup-complete):focus + .btn,
 .mura #csetup #main-container .mura-focus-actions .btn:not(.mura-setup-complete):focus + .btn {
   margin-left: 26px;
 }

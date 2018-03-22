@@ -250,6 +250,31 @@
 
 }
 
+.text-divider {
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    margin-top: 20px;
+    position: relative;
+    text-align: center;
+}
+
+.text-divider::before,
+.text-divider::after {
+    content: '';
+    background: #ccc;
+    height: 1px;
+    display: block;
+    width: 100%;
+}
+
+.text-divider span {
+    font-size: 16px;
+    font-weight: 500;
+    padding: 10px 20px;
+    text-align: center;
+}
+
 /* input sets */
 
 .mura-input-set .btn,
@@ -691,99 +716,153 @@ form .mura-control-group > * + .help-block{
   }
 }
 
-.nav-main a{
-  color: rgba(255, 255, 255, 0.8);
+.nav-main-header {
+  background-color: #2c2c2f;
+}
+@media screen and (min-width:992px) {
+  .nav-main-header {
+    background-color: transparent;
+  }
+  .nav-main-header ul {
+    background-color: #555;
+  }
+  .mura-focus-block{
+       width: 498px !important;
+
+       .block-content{
+          padding: 50px 70px !important;
+       }
+  }
 }
 
-.nav-main a:hover,
-.nav-main a:focus{
-  color: @white !important;
-}
+.nav-main {
 
-.nav-main li a{
-  display: block;
-  overflow: hidden;
-  padding-right: 30px;
-  text-decoration: none;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  font-size:16px;
+  padding-bottom: 15px;
+  padding-top: 12px;
 
-  span{
-    display: inline-block;
-    vertical-align: top;
+  a{
+    color: rgba(255, 255, 255, 0.8);
   }
 
-}
+  a:hover,
+  a:focus{
+    color: @white !important;
+  }
 
-.nav-main li > a.nav-submenu:before {
-  content: "\f105";
-}
-.nav-main li.open > a.nav-submenu:before {
-  content: "\f107";
-}
+  a.active{
+    color: #fff;
+  }
 
-.nav-main ul{
-  padding-left: 32px;
-  background-color: #3B3B3B;
+  ul{
+    padding-left: 32px;
+    background-color: #3B3B3B;
 
-  > li ul{
-    padding-left: 6px;
+    > li ul{
+      padding-left: 6px;
 
-    > li,
-    > li a{
-      font-size: 13px;
+      > li,
+      > li a{
+        font-size: 13px;
+      }
+    }
+
+    li a i {
+          font-size: 19px;
+          margin-left: 0;
+          min-width: 21px;
+        }
+
+         a i.fa-action {
+            display: inline-block;
+            font-size: 19px;
+            line-height: 1em;
+            margin-left: 8px;
+            float:right;
+        }
+
+  } /* /ul */
+
+  ul.version{
+    padding-left: 20px;
+      
+    li a,
+    li a strong{
+      font-weight: normal;
+      white-space: normal;
+    }
+
+    li a i{
+      font-weight: normal;
+      margin-left: 0;
+      margin-right: 10px;
     }
   }
 
+  li{
+    
+    a{
+      display: block;
+      overflow: hidden;
+      padding-right: 30px;
+      text-decoration: none;
+      text-overflow: ellipsis;
+      white-space: nowrap;
 
-}
+      span{
+        display: inline-block;
+        vertical-align: top;
+      }
 
-.nav-main ul.version{
-  padding-left: 20px;
-}
+      i {
+        font-size: 24px;
+        margin-left: -3px;
+        min-width: 26px;
+        position: relative;
+        text-align:center;
 
-.nav-main ul.version li a,
-.nav-main ul.version li a strong{
-  font-weight: normal;
-  white-space: normal;
-}
+        &.mi-edit{
+          padding-left: 2px;
+        }
 
-.nav-main ul.version li a i{
-  font-weight: normal;
-  margin-left: 0;
-  margin-right: 10px;
-}
+      }
 
-.nav-main li a i {
-  font-size: 23px;
-  margin-left: -3px;
-  min-width: 26px;
-  position: relative;
-  text-align:center;
 
-  &.mi-edit{
+    }
+    
+    > a.nav-submenu:before {
+      content: "\f105";
+    }
+
+    
+  
+  } /* /li */
+  
+  > li > a{
+    padding-bottom: 18px;
+    padding-top: 18px;
+  }
+  
+  li.open > a.nav-submenu:before {
+    content: "\f107";
+  }
+
+  #navContentAdmin i{
     padding-left: 2px;
   }
 
-}
+}  
+/* .nav-main */
 
-.nav-main #navContentAdmin i{
-  padding-left: 2px;
-}
 
-.nav-main li ul li a i {
-  font-size: 17px;
-  margin-left: 0;
-  min-width: 20px;
-}
 
-.nav-main ul a i.fa-action {
-    display: inline-block;
-    font-size: 18px;
-    line-height: 1em;
-    margin-left: 8px;
-    float:right;
-}
+
+
+
+
+
+
+
 .content h2{
   font-size: 15px;
   margin-bottom: 15px;
@@ -1040,13 +1119,39 @@ a.no-link{
   cursor: default;
 }
 
-.side-content img.mura-logo {
-    width: 38px;
-    max-width: 38px;
-    height: 40px;
-    max-height: 40px;
-    margin-top: -13px;
-    margin-left: -10px;
+.side-content #brand-logo-lg{
+  img.mura-logo {
+    width: 96px;
+    max-width: 96px;
+    height: 26px;
+    max-height: 26px;
+    margin-top: 3px;
+    margin-left: -1px;
+  } 
+}
+.side-content #brand-logo-min{
+  display: none;
+
+ img.mura-logo {
+    width: 25px;
+    max-width: 25px;
+    height: 26px;
+    max-height: 26px;
+    margin-top: 3px;
+    margin-left: -1px;
+  }
+ img.mura-logo-text {
+    height: 26px;
+    max-height: 26px;
+    margin-top: 3px;
+    margin-left: -3px;
+  }
+}
+.sidebar-mini .side-content #brand-logo-lg{
+  display: none;
+}
+.sidebar-mini .side-content #brand-logo-min{
+  display: block;
 }
 
 .sidebar-icon-right{
@@ -1684,35 +1789,47 @@ form .checkbox.inline
 }
 
 /* login and setup */
+.mura-login-auth-img{
+  height: 52px;
+  margin-bottom: 6px;
+  width: auto;
+}
+.mura-login-auth-img-fb{
+  height: 44px;
+  margin: 2px;
+  margin-bottom: 6px;
+  width: auto;
+}
+h3.mura-login-auth-heading{
+  margin: 22px;
+}
+
 .mura-focus-block{
 
    width: 360px;
    margin: auto;
 
   .focus-block-header{
-     background-color: #252525 ;
-      height: 54px;
+      height: 84px;
+      text-align: center; 
 
       img.mura-logo{
-        width: 38px;
-        max-width: 38px;
-        height: 40px;
-        max-height: 40px;
-        margin-left: 20px;
-        float: left;
+        width: auto;
+        height: 26px;
+        max-height: 26px;
+        margin: 13px auto 0 auto;
      }
-      h1{
-        color: #FFF;
-        float: left;
-        letter-spacing: .07em;
-        margin: 8px 0 0 24px;
-        padding: 0;
-        text-transform: uppercase;
-      }
 
   }
   .block-content{
-    padding: 30px 20px 10px;
+    padding: 30px 40px;
+    border: 2px solid #ECEEEF;  
+    border-radius: 1px;
+
+      h3{
+        font-size: 18px;
+      }
+
   }
   .mura-focus-actions button,
   .mura-focus-actions button:hover,
@@ -1730,10 +1847,6 @@ form .checkbox.inline
     margin-right: 0;
   }
 }
-body#clogin,
-body#csetup{
-  background-color:#333;
-}
 #clogin #main-container,
 #csetup #main-container{
   background: none;
@@ -1741,6 +1854,7 @@ body#csetup{
 #clogin #page-container,
 #clogin #main-container,
 #clogin #main-container > .content{
+  background-color: #fff;
   height: 100%;
   margin-top: 0;
   margin-bottom: 0;
@@ -1749,10 +1863,37 @@ body#csetup{
   padding-bottom: 0;
 }
 
-#csetup #main-container{
+#mura-setup{ 
+  margin-top: 3%;
+}
 
-  .mura-focus-block .block-content{
-    padding-top: 0;
+#csetup #page-container,
+#csetup #main-container{
+  background-color: #fff;
+  height: 100%;
+  margin-top: 0;
+  margin-bottom: 0;
+  min-height: 480px;
+  padding-top: 0;
+  padding-bottom: 0;
+
+  h3{
+  margin: 0 auto 22px;
+    padding: 0;
+  }
+
+  .mura-focus-block {
+    width: 498px!important;
+  
+    .block-content{
+        padding: 40px 30px!important;
+    
+        .block-content{
+         border: none !important;
+          padding: 0 !important;
+        }
+    }
+
   }
 
   .alert{

@@ -2,7 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title><cfoutput>#REReplace(application.settingsManager.getSite(request.siteID).getEnableLockdown(), "([a-z]{1})", "\U\1", "ONE" )# Mode</cfoutput></title>
+
+<cfoutput>
+<title>#REReplace(application.settingsManager.getSite(request.siteID).getEnableLockdown(), "([a-z]{1})", "\U\1", "ONE" )# Mode</title>
+</cfoutput>
 
 <style type="text/css">
 
@@ -71,29 +74,22 @@ form select {
 }
 
 form input.submit {
-	background: #444;
-	color: #fff;
-	text-shadow: 0 -1px 0 #000;
-	text-transform: uppercase;
-	font-size: 12px;
-	font-weight: normal;
-	padding: 7px 14px;
-	border: 0;
-	cursor: pointer;
-	-moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px;
-	transition: background 100ms linear;
-	-moz-transition: background 100ms linear; /* Firefox 4 */
-	-webkit-transition: background 100ms linear; /* Safari and Chrome */
-	-o-transition: background 100ms linear; /* Opera */
-
-}
-
-form input.submit:hover {
-	background: #666;
+		cursor: pointer;
+		padding: 2px 12px;
+    font-weight: 400;
+    font-size: 13px;
+    display: block;
+    width: 100%;
+    border: none;
+    background-color: #ff3405;
+    color: #fff!important;
+    height: 35px;
+    margin-left: 0;
+    margin-right: 0;
 }
 
 form p#submitWrap {
-	text-align: right;
+	text-align: center;
 	margin: 0; padding: 0;
 }
 
@@ -105,38 +101,82 @@ form p#error {
 	float: left;
 }
 
+.text-divider {
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    margin-top: 20px;
+    position: relative;
+    text-align: center;
+}
+
+.text-divider::before,
+.text-divider::after {
+    content: '';
+    background: #ccc;
+    height: 1px;
+    display: block;
+    width: 100%;
+}
+
+.text-divider span {
+		color: #646464;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 20px;
+    text-align: center;
+}
+
+.center{
+	text-align: center;
+}
+.mura-login-auth-heading{
+	color: #646464;
+}
+.mura-login-auth-img {
+    height: 52px;
+    margin-bottom: 6px;
+    width: auto;
+}
+.mura-login-auth-img-fb {
+    height: 44px;
+    margin: 2px 2px 6px;
+    width: auto;
+}
 </style>
 </head>
+<cfoutput>
 <body>
 	<div id="wrapper">
 		<cfif application.settingsManager.getSite(request.siteID).getEnableLockdown() eq "maintenance">
-			<div class="alert"><cfoutput>#application.settingsManager.getSite(request.siteID).getSite()#</cfoutput> is currently undergoing maintenance.</div>
+			<div class="alert">#application.settingsManager.getSite(request.siteID).getSite()# is currently undergoing maintenance.</div>
+				
 		<cfelseif application.settingsManager.getSite(request.siteID).getEnableLockdown() eq "development">
-			<form method="post" action="<cfif application.configBean.getLockdownHTTPS() eq true><cfoutput>#replacenocase(arguments.$.getContentRenderer().createHREF(siteid = request.siteid, filename = arguments.event.getScope().currentfilename, complete = true), "http:", "https:")#</cfoutput></cfif>">
-
-				<cfoutput>
-					<!--- Use Google oAuth Button --->
-					<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google')>
-						<div style="padding-bottom: 5px">
-							<a href="#$.getBean('googleLoginProvider').generateAuthUrl(session.urltoken)#">
-								<!--- <img src="/admin/assets/images/btn_google_signin_dark_normal_web@2x.png" /> --->
-								#$.rbKey('login.loginwithgoogle')#
-							</a>
-						</div>
-					</cfif>
-					<!--- Use Facebook oAuth Button --->
-					<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'facebook')>
-						<div style="padding-bottom: 5px">
-							<a href="#$.getBean('facebookLoginProvider').generateAuthUrl(session.urltoken)#">
-								#$.rbKey('login.loginwithfacebook')#
-							</a>
-						</div>
-					</cfif>
+			<form method="post" action="<cfif application.configBean.getLockdownHTTPS() eq true>#replacenocase(arguments.$.getContentRenderer().createHREF(siteid = request.siteid, filename = arguments.event.getScope().currentfilename, complete = true), "http:", "https:")#</cfif>">
 
 					<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google') or listFindNoCase($.globalConfig().getEnableOauth(), 'facebook') >
-						<h3>#$.rbKey('login.orloginwithyourcredentials')#</h3>
+						<!--- Use Google oAuth Button --->
+						<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google')>
+							<div style="padding-bottom: 5px" class="center">
+								<a href="#$.getBean('googleLoginProvider').generateAuthUrl(session.urltoken)#" title="#$.rbKey('login.loginwithgoogle')#">
+			                      <img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/btn_google_signin_light_normal_web@2x.png" class="mura-login-auth-img">
+								</a>
+							</div>
+						</cfif>
+						<!--- Use Facebook oAuth Button --->
+						<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'facebook')>
+							<div style="padding-bottom: 5px" class="center">
+								<a href="#$.getBean('facebookLoginProvider').generateAuthUrl(session.urltoken)#" title="#$.rbKey('login.loginwithfacebook')#">
+							       <img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/btn_facebook_continue@2x.png" class="mura-login-auth-img-fb">
+								</a>
+							</div>
+						</cfif>
+
+	          <div class="text-divider"><span>#$.rbKey('login.or')#</span></div>
+						<h3 class="center mura-login-auth-heading">#$.rbKey('login.loginwithcredentials')#</h3>
+
 					</cfif>
-				</cfoutput>
+				
 
 
 				<label for="locku">Username</label>
@@ -158,10 +198,11 @@ form p#error {
 				<cfif len(event.getValue('locks'))>
 					<p id="error">Login failed!</p>
 				</cfif>
-				<p id="submitWrap"><input type="submit" name="submit" value="Login" class="submit" /></p>
+				<p id="submitWrap"><input type="submit" name="submit" value="#$.rbKey('login.login')#" class="submit" /></p>
 			</form>
 		</cfif>
 	</div>
 </body>
+</cfoutput>
 </html>
 <cfabort>
