@@ -1151,7 +1151,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		catch (invalidParameters e){
 			param name="params.method" default="undefined";
-			return serializeResponse(statusCode=400,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='invalid_request','message'='Insufficient parameters'}});
+			return serializeResponse(statusCode=400,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='invalid_request','message'='Invalid parameters'}});
 		}
 
 		catch (invalidMethodCall e){
