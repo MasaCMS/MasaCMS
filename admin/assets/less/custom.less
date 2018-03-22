@@ -250,6 +250,31 @@
 
 }
 
+.text-divider {
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    margin-top: 20px;
+    position: relative;
+    text-align: center;
+}
+
+.text-divider::before,
+.text-divider::after {
+    content: '';
+    background: #ccc;
+    height: 1px;
+    display: block;
+    width: 100%;
+}
+
+.text-divider span {
+    font-size: 16px;
+    font-weight: 500;
+    padding: 10px 20px;
+    text-align: center;
+}
+
 /* input sets */
 
 .mura-input-set .btn,
@@ -705,7 +730,7 @@ form .mura-control-group > * + .help-block{
        width: 498px !important;
 
        .block-content{
-          padding: 60px 70px !important;
+          padding: 50px 70px !important;
        }
   }
 }
