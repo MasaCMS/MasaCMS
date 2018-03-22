@@ -7,7 +7,7 @@
 		<meta content="noindex, nofollow" name="robots">
 		<link href="../../../../..#application.configBean.getAdminDir()#/assets/css/admin.min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
 		<link href="../../skins/mura/dialog.css" rel="stylesheet" type="text/css" />
-		<cfset rs=application.contentManager.getComponents('00000000000000000000000000000000003',session.siteid)/>
+		<cfset rs=application.contentManager.getComponents(session.moduleid,session.siteid)/>
 	</head>
 	<body id="mura-select-component" class="mura-plugin">
 		<div class="cke_dialog">
