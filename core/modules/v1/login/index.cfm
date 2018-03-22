@@ -93,8 +93,8 @@
 						</cfif>
 
 						<form role="form" id="login" class="mura-login-form #this.loginFormClass# <cfif this.formWrapperClass neq "">#this.formWrapperClass#</cfif>" name="frmLogin" method="post" novalidate="novalidate">
-							<fieldset>
-								<legend>#variables.$.rbKey('user.pleaseenterauthcode')#</legend>
+							<div>
+								<h3>#variables.$.rbKey('user.pleaseenterauthcode')#</h3>
 								<!--- Username --->
 								<div class="req #this.loginFormGroupWrapperClass#">
 									<label for="txtUsername" class="#this.loginFormFieldLabelClass#">
@@ -129,36 +129,39 @@
 								<input type="hidden" name="doaction" value="login">
 								<input type="hidden" name="status" value="challenge">
 								<input type="hidden" name="attemptChallenge" value="true">
-							</fieldset>
+							</div>
 						</form>
 					</cfif>
 				<cfelse>
 					<form role="form" id="login" class="mura-login-form #this.loginFormClass# <cfif this.formWrapperClass neq "">#this.formWrapperClass#</cfif>" name="frmLogin" method="post" novalidate="novalidate">
-						<!--- Use Google oAuth Button --->
-						<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google')>
-							<div class="#this.loginFormGroupWrapperClass#">
-								<div class="#this.loginFormSubmitWrapperClass#">
-									<a href="#$.getBean('googleLoginProvider').generateAuthUrl(session.urltoken)#" title="#variables.$.rbKey('login.loginwithgoogle')#">
-				                      <img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/btn_google_signin_light_normal_web@2x.png" class="mura-login-auth-img-google">
-									</a>
-								</div>
-							</div>
-						</cfif>
-						<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'facebook')>
-							<div class="#this.loginFormGroupWrapperClass#">
-								<div class="#this.loginFormSubmitWrapperClass#">
-									<a href="#$.getBean('facebookLoginProvider').generateAuthUrl(session.urltoken)#" title="#variables.$.rbKey('login.loginwithfacebook')#">
-								       <img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/btn_facebook_continue@2x.png" class="mura-login-auth-img-facebook">	
-   									</a>
+
+						<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google') or listFindNoCase($.globalConfig().getEnableOauth(), 'facebook') >						
+								<div class="#this.loginFormGroupWrapperClass#">
+									<div class="#this.loginFormSubmitWrapperClass#">
+										<div class="mura-login-auth-wrapper">
+										<!--- Use Google oAuth Button --->
+										<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google')>
+											<a href="#$.getBean('googleLoginProvider').generateAuthUrl(session.urltoken)#" title="#variables.$.rbKey('login.loginwithgoogle')#">
+						                      <img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/btn_google_signin_light_normal_web@2x.png" class="mura-login-auth-img">
+											</a>
+										</cfif>
+										<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'facebook')>
+											<a href="#$.getBean('facebookLoginProvider').generateAuthUrl(session.urltoken)#" title="#variables.$.rbKey('login.loginwithfacebook')#">
+										       <img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/btn_facebook_continue@2x.png" class="mura-login-auth-img-fb">	
+			 									</a>
+										</cfif>
+									</div>
 								</div>
 							</div>
 						</cfif>
 						
-						<fieldset>
+						<div>
 							<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google') or listFindNoCase($.globalConfig().getEnableOauth(), 'facebook') >
-								<legend>#variables.$.rbKey('login.loginwithcredentials')#</legend>
+			              <div class="text-divider"><span>#variables.$.rbKey('login.or')#</span></div>
+										<h3>#variables.$.rbKey('login.loginwithcredentials')#</h3>
+
 							<cfelse>
-									<legend>#variables.$.rbKey('user.pleaselogin')#</legend>
+									<h3>#variables.$.rbKey('user.pleaselogin')#</h3>
 							</cfif>
 
 							<!--- Username --->
@@ -205,7 +208,7 @@
 							<input type="hidden" name="linkServID" value="#HTMLEditFormat(variables.$.event('linkServID'))#">
 							<input type="hidden" name="returnURL" value="#HTMLEditFormat(variables.$.event('returnURL'))#">
 							#variables.$.renderCSRFTokens(format='form',context='login')#
-						</fieldset>
+						</div>
 					</form>
 
 
@@ -215,8 +218,8 @@
 
 					<!--- Forgot Username / Password Form --->
 					<form name="form2" class="mura-send-login #this.forgotPasswordFormClass# <cfif this.formWrapperClass neq "">#this.formWrapperClass#</cfif>" method="post" id="sendLogin" novalidate="novalidate">
-						<fieldset>
-							<legend>#variables.$.rbKey('user.forgetusernameorpassword')#</legend>
+						<div>
+							<h3>#variables.$.rbKey('user.forgetusernameorpassword')#</h3>
 							<p>#variables.$.rbKey('user.forgotloginmessage')#</p>
 
 							<cfif isdefined('msg2')>
@@ -242,7 +245,7 @@
 							<input type="hidden" name="linkServID" value="#HTMLEditFormat(variables.$.event('linkServID'))#">
 							<input type="hidden" name="display" value="login">
 							<input type="hidden" name="returnURL" value="#HTMLEditFormat(variables.$.event('returnURL'))#">
-						</fieldset>
+						</div>
 					</form>
 
 					<!--- Not Registered? --->
