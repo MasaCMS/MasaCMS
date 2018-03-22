@@ -47,7 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfsilent>
 	<cfset content=rc.$.getBean('content').loadBy(contentid=rc.objectid)>
 	<cfset content.setType('Component')>
-	<cfset rc.rsComponents = application.contentManager.getComponentType(rc.siteid, 'Component')/>
+	<cfset rc.rsComponents = application.contentManager.getComponentType(rc.siteid, 'Component','00000000000000000000000000000000000')/>
 	<cfset hasModulePerm=rc.configuratormode neq 'backend' and rc.$.getBean('permUtility').getModulePerm('00000000000000000000000000000000003',rc.siteid)>
 </cfsilent>
 <cf_objectconfigurator>

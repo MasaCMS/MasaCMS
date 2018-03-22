@@ -1514,26 +1514,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getComponentType" output="false">
 	<cfargument name="siteid" type="string" required="true">
 	<cfargument name="type" type="string" required="true">
+	<cfargument name="moduleid" type="string" default="" required="true">
 	<cfset var rsComponentType = "">
 
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsComponentType')#">
-	select contentid, menutitle, responseChart FROM  tcontent
-	WHERE     	         (tcontent.Active = 1)
-			<!--- 		    AND (tcontent.DisplayStart <= #createodbcdatetime(now())#)
-					  AND (tcontent.DisplayStop >= #createodbcdatetime(now())# or tcontent.DisplayStop is null) --->
-					  AND (tcontent.Display = 2)
-					  AND (tcontent.Approved = 1)
-					  AND (tcontent.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>)
-					  AND (tcontent.type = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#"/>)
-
-					  OR
-					  (tcontent.Active = 1)
-					  AND (tcontent.Display = 1)
-					  AND (tcontent.Approved = 1)
-					  AND (tcontent.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>)
-					  AND (tcontent.type = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#"/>)
-
-	Order By title asc
+		select contentid, menutitle, responseChart FROM  tcontent
+		WHERE
+		(tcontent.Active = 1)
+		AND (tcontent.Display = 1 or tcontent.Display = 2)
+		AND (tcontent.Approved = 1)
+		AND (tcontent.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>)
+		AND (tcontent.type = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#"/>)
+		<cfif len(arguments.moduleid)>
+			AND (tcontent.moduleAssign like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.moduleid#%"/>)
+		</cfif>
+		Order By title asc
 	</cfquery>
 
 	<cfreturn rsComponentType />

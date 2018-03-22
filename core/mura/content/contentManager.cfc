@@ -833,9 +833,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cffunction name="getComponentType" output="false">
 		<cfargument name="siteid" type="string"/>
 		<cfargument name="type" type="string"/>
+		<cfargument name="moduleid" type="string" default="" required="true">
 		<cfset var rs ="" />
 
-		<cfset rs=variables.contentGateway.getComponentType(arguments.siteid,arguments.type) />
+		<cfset rs=variables.contentGateway.getComponentType(arguments.siteid,arguments.type,arguments.moduleid) />
 
 		<cfreturn rs />
 	</cffunction>
