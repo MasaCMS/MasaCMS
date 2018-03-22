@@ -156,7 +156,7 @@
 						
 						<fieldset>
 							<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google') or listFindNoCase($.globalConfig().getEnableOauth(), 'facebook') >
-								<legend>#variables.$.rbKey('login.orloginwithyourcredentials')#</legend>
+								<legend>#variables.$.rbKey('login.loginwithcredentials')#</legend>
 							<cfelse>
 									<legend>#variables.$.rbKey('user.pleaselogin')#</legend>
 							</cfif>

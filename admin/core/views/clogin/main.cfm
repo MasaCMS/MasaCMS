@@ -161,7 +161,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				              </cfif>
 				             </div> 
 
-							<h3 class="center mura-login-auth-heading">#rc.$.rbKey('login.orloginwithyourcredentials')#</h3>
+							<h3 class="center mura-login-auth-heading">#rc.$.rbKey('login.loginwithcredentials')#</h3>
 			              	</cfif>
 
 							<div class="mura-control-group">
