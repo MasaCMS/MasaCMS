@@ -289,6 +289,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.utility.logEvent("SiteID:#arguments.siteid# Site:#bean.getSite()# was deleted","mura-settings","Information",true) />
 	<cfset variables.DAO.delete(arguments.siteid) />
 	<cfset setSites() />
+	<cfset application.appInitialized=false>
 	<cftry>
 	<cfset variables.utility.deleteDir("#variables.configBean.getSiteDir()#/#arguments.siteid#/") />
 	<cfcatch></cfcatch>
