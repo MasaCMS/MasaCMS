@@ -36866,8 +36866,8 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
   content: "\f105";
 }
 .mura .nav-main > li > a {
-  padding-bottom: 18px;
-  padding-top: 18px;
+  padding-bottom: 14px;
+  padding-top: 14px;
 }
 .mura .nav-main li.open > a.nav-submenu:before {
   content: "\f107";
