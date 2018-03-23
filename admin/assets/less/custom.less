@@ -23,7 +23,7 @@
 .tabdrop .dropdown-menu > .active > a:hover,
 .tabdrop .dropdown-menu > .active > a:focus{
   background-color: transparent;
-  color: #ff3405;
+  color: #E44A35;
 }
 
 .block>.nav-tabs li.tabdrop .dropdown-menu a{
@@ -40,7 +40,7 @@
 
 .block>.nav-tabs li.tabdrop .dropdown-menu li.active a,
 .block>.nav-tabs li.tabdrop .dropdown-menu a:hover{
-  color: #ff3405 !important;
+  color: #E44A35 !important;
   background-color: transparent;
 }
 
@@ -704,7 +704,7 @@ form .mura-control-group > * + .help-block{
 #container-scaffold ul.breadcrumb li a:visited,
 #container-scaffold ul.breadcrumb li a:hover,
 #container-scaffold ul.breadcrumb li a:active{
-  color: #ff3405;
+  color: #E44A35;
   font-weight: normal;
   font-size:13px;
   margin-right: 8px;
@@ -1581,7 +1581,7 @@ ul.dropdown-menu{
           }
         > a.active{
           font-weight: normal;
-          color: #FF3405;
+          color: #E44A35;
         }
         > a:not(.active){
          color: #646464;
@@ -1789,17 +1789,41 @@ form .checkbox.inline
 }
 
 /* login and setup */
-.mura-login-auth-img{
-  height: 52px;
-  margin-bottom: 6px;
-  width: auto;
+.mura-login-auth-btn{
+  display: inline-block;
+  margin: 0 0 6px;
+  height: 40px;
+  width: 100%;
+
+  &.ggl{
+    background-color: #dc4e41;
+  }
+
+  &.fb{
+    background-color: #4267b2;
+  }
+
+  span{
+    color: #fff;
+    font-size: 16px;
+    text-align: left;
+    padding: 7px 0 0 12px;
+    display: inline-block;
+  }
+  i{
+    border-right: 1px solid #fff;
+    color: #fff;
+    height: 40px;
+    font-size: 28px;
+    float: left;
+    padding: 6px;
+    text-align: center;
+    width: 40px;
+  }
 }
-.mura-login-auth-img-fb{
-  height: 44px;
-  margin: 2px;
-  margin-bottom: 6px;
-  width: auto;
-}
+
+
+
 h3.mura-login-auth-heading{
   margin: 22px;
 }
@@ -1840,7 +1864,7 @@ h3.mura-login-auth-heading{
     .btn;
     .btn-block;
     border:none;
-    background-color: #ff3405;
+    background-color: #E44A35;
     color: #fff !important;
     height: 35px;
     margin-left: 0;
@@ -1926,7 +1950,7 @@ h3.mura-login-auth-heading{
     background-color: #FFF;
   }
   .progress-bar-danger{
-    background-color: #ff3405;
+    background-color: #E44A35;
     .border-radius(2px);
   }
   .nav-tabs{
@@ -1945,7 +1969,7 @@ h3.mura-login-auth-heading{
     font-weight: normal;
   }
   .nav-tabs li.active a{
-    color: #ff3405;
+    color: #E44A35;
   }
   .tab-content{
     padding: 0 0;

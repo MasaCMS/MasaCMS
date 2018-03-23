@@ -146,17 +146,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<form novalidate="novalidate" id="loginForm" name="frmLogin" method="post" action="index.cfm" onsubmit="return submitForm(this);">
 						  <cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google') or 
 						   		listFindNoCase($.globalConfig().getEnableOauth(), 'facebook')>
-								<div class="center">
+								<div class="mura-login-auth-wrapper">
 			              <!--- Use Google oAuth Button --->
 			              <cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google')>
-			                    <a href="#$.getBean('googleLoginProvider').generateAuthUrl(session.urltoken)#" title="#rc.$.rbKey('login.loginwithgoogle')#">
-			                      <img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/btn_google_signin_light_normal_web@2x.png" class="mura-login-auth-img">
+			                    <a href="#$.getBean('googleLoginProvider').generateAuthUrl(session.urltoken)#" title="#rc.$.rbKey('login.loginwithgoogle')#" class="mura-login-auth-btn ggl">
+			                    	<i class="mi-google"></i>
+			                    	<span>#rc.$.rbKey('login.loginwithgoogle')#</span>
 			                    </a>
 			              </cfif>
 			              <!--- Use Facebook oAuth Button --->
 			              <cfif listFindNoCase($.globalConfig().getEnableOauth(), 'facebook')>
-			                  <a href="#$.getBean('facebookLoginProvider').generateAuthUrl(session.urltoken)#" title="#rc.$.rbKey('login.loginwithfacebook')#">
-  			                      <img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/btn_facebook_continue@2x.png" class="mura-login-auth-img-fb">
+			                  <a href="#$.getBean('facebookLoginProvider').generateAuthUrl(session.urltoken)#" title="#rc.$.rbKey('login.loginwithfacebook')#" class="mura-login-auth-btn fb">
+			                  	<i class="mi-facebook"></i>
+			                  	<span>#rc.$.rbKey('login.loginwithfacebook')#</span>
 			                  </a>
 			              </cfif>
 			              <div class="text-divider"><span>#rc.$.rbKey('login.or')#</span></div>
@@ -267,7 +269,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								</cfsavecontent>
 									<p id="pw-response" class="#alertclass# clear-both">#pwresponse#</p>
 									<div class="mura-control-group">
-										<label>Email Address</label>
+										<label>#rc.$.rbKey('login.emailaddress')#</label>
 										<input id="email" name="email" type="text" autofocus="autofocus">
 									</div>
 							</div>

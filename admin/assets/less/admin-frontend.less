@@ -44,7 +44,7 @@
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
-// Bootstrap /* Bringing these in separately to enable name-spacing of bootstrap styles to avoid conflicts with Bootstrapped-based themes
+// Bootstrap /* Bringing these in separately to enable name-spacing of bootstrap styles to avoid conflicts with Bootstrapped-based themes */
 
 	@import "bootstrap/variables.less";
 	@import "bootstrap/mixins.less";
@@ -58,11 +58,11 @@
 
 	@feToolbarFontSize: 13px;
 	@feToolbarIconSize: 18px;
-	@feToolBarHeight: 50px;
+	@feToolBarHeight: 40px;
 	
 /* Toolbar overlap */
 html.mura-edit-mode > body {
-    margin-top: 50px;
+    margin-top: @feToolBarHeight;
 }
 
 /* global box-sizing reset */
