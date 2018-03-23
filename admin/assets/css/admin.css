@@ -29612,7 +29612,7 @@ a.mura .nav-module-specific .metadata-horizontal li:focus {
   margin-left: 4px;
 }
 .mura #tabFlat #navReportsToggle > i {
-  color: #ff3405 !important;
+  color: #E44A35 !important;
   font-size: 11px;
   margin-left: 5px;
 }
@@ -35650,7 +35650,7 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
   opacity: .75;
 }
 .mura .bg-primary {
-  background-color: #ff3405;
+  background-color: #E44A35;
 }
 .mura a.bg-primary:hover,
 .mura a.bg-primary:focus {
@@ -35703,7 +35703,7 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 }
 .mura .btn-primary {
   color: #fff;
-  background-color: #ff3405;
+  background-color: #E44A35;
   border-color: #ff3838;
 }
 .mura .btn-primary:focus,
@@ -35756,11 +35756,11 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 .mura .btn-primary.disabled.active,
 .mura .btn-primary[disabled].active,
 .mura fieldset[disabled] .btn-primary.active {
-  background-color: #ff3405;
+  background-color: #E44A35;
   border-color: #ff3838;
 }
 .mura .btn-primary .badge {
-  color: #ff3405;
+  color: #E44A35;
   background-color: #fff;
 }
 .mura .nav-module-specific * > .badge {
@@ -35775,7 +35775,7 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
   background-color: #f1f1f1;
 }
 .mura .label-primary {
-  background-color: #ff3405;
+  background-color: #E44A35;
 }
 .mura .label-primary[href]:hover,
 .mura .label-primary[href]:focus {
@@ -35789,10 +35789,10 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
   font-weight: normal;
 }
 .mura .badge-primary {
-  background-color: #ff3405;
+  background-color: #E44A35;
 }
 .mura .progress-bar-primary {
-  background-color: #ff3405;
+  background-color: #E44A35;
 }
 .mura .nav-pills > li > a {
   border: 1px solid #eee;
@@ -35812,7 +35812,7 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
   border: 1px solid #eee;
 }
 .mura .nav-pills > li.active > a > .badge {
-  color: #ff3405;
+  color: #E44A35;
 }
 .mura .nav-pills > li > a {
   padding: 4px 8px;
@@ -35873,7 +35873,7 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 }
 .mura .pager li > a:hover,
 .mura .pager li > a:focus {
-  color: #ff3405;
+  color: #E44A35;
 }
 .mura .pagination > li select {
   cursor: pointer;
@@ -35881,16 +35881,16 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 }
 .mura a.list-group-item:hover,
 .mura a.list-group-item:focus {
-  color: #ff3405;
+  color: #E44A35;
 }
 .mura .list-group-item.active,
 .mura .list-group-item.active:hover,
 .mura .list-group-item.active:focus {
-  background-color: #ff3405;
-  border-color: #ff3405;
+  background-color: #E44A35;
+  border-color: #E44A35;
 }
 .mura .list-group-item.active > .badge {
-  color: #ff3405;
+  color: #E44A35;
 }
 .mura .tooltip-inner {
   background-color: #333;
@@ -35917,8 +35917,8 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 }
 .mura .table-header-bg > thead > tr > th,
 .mura .table-header-bg > thead > tr > td {
-  background-color: #ff3405;
-  border-bottom-color: #ff3405;
+  background-color: #E44A35;
+  border-bottom-color: #E44A35;
 }
 .mura .mura-table-grid:not(.no-stripe) > tbody > tr:nth-of-type(odd) {
   background-color: #F6FAFE !important;
@@ -35944,7 +35944,7 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
   border-color: rgba(102, 153, 204, 0.8);
 }
 .mura .panel-primary > .panel-heading {
-  color: #ff3405;
+  color: #E44A35;
   background-color: #ffdbdb;
   border-color: rgba(102, 153, 204, 0.8);
 }
@@ -35953,7 +35953,7 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 }
 .mura .panel-primary > .panel-heading .badge {
   color: #ffdbdb;
-  background-color: #ff3405;
+  background-color: #E44A35;
 }
 .mura .panel-primary > .panel-heading a {
   font-weight: 400;
@@ -36022,14 +36022,14 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 .mura .block > .nav-tabs > li.active > a:hover,
 .mura .block > .nav-tabs > li.active > a:active,
 .mura .block > .nav-tabs > li.active > a:focus {
-  color: #ff3405 !important;
+  color: #E44A35 !important;
   background-color: #fff;
   border-color: transparent;
 }
 .mura .block > .nav-tabs > li > a:hover,
 .mura .block > .nav-tabs > li > a:active,
 .mura .block > .nav-tabs > li > a:focus {
-  color: #ff3405 !important;
+  color: #E44A35 !important;
 }
 .mura .irs-bar,
 .mura .irs-bar-edge,
@@ -36037,13 +36037,13 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 .mura .irs-to,
 .mura .irs-single,
 .mura .irs-grid-pol {
-  background: #ff3405;
+  background: #E44A35;
 }
 .mura .dropzone:hover {
-  border-color: #ff3405;
+  border-color: #E44A35;
 }
 .mura .dropzone:hover .dz-message {
-  color: #ff3405;
+  color: #E44A35;
 }
 .mura .datepicker {
   z-index: 1 !important;
@@ -36088,17 +36088,17 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 .mura .open .dropdown-toggle.datepicker table tr td span.active:hover,
 .mura .open .dropdown-toggle.datepicker table tr td span.active.disabled,
 .mura .open .dropdown-toggle.datepicker table tr td span.active.disabled:hover {
-  background-color: #ff3405;
-  border-color: #ff3405;
+  background-color: #E44A35;
+  border-color: #E44A35;
 }
 .mura div.tagsinput span.tag {
-  background-color: #ff3405;
+  background-color: #E44A35;
 }
 .mura .select2-container--default .select2-selection--multiple .select2-selection__choice {
-  background-color: #ff3405;
+  background-color: #E44A35;
 }
 .mura .select2-container--default .select2-results__option--highlighted[aria-selected] {
-  background-color: #ff3405;
+  background-color: #E44A35;
 }
 .mura .nav-tabs,
 .mura .nav-pills {
@@ -36119,7 +36119,7 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 .mura .tabdrop .dropdown-menu > .active > a:hover,
 .mura .tabdrop .dropdown-menu > .active > a:focus {
   background-color: transparent;
-  color: #ff3405;
+  color: #E44A35;
 }
 .mura .block > .nav-tabs li.tabdrop .dropdown-menu a {
   padding-left: 12px !important;
@@ -36133,7 +36133,7 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 }
 .mura .block > .nav-tabs li.tabdrop .dropdown-menu li.active a,
 .mura .block > .nav-tabs li.tabdrop .dropdown-menu a:hover {
-  color: #ff3405 !important;
+  color: #E44A35 !important;
   background-color: transparent;
 }
 .mura .block > .nav-tabs li.tabdrop .dropdown-menu li.active a {
@@ -36746,7 +36746,7 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 .mura #container-scaffold ul.breadcrumb li a:visited,
 .mura #container-scaffold ul.breadcrumb li a:hover,
 .mura #container-scaffold ul.breadcrumb li a:active {
-  color: #ff3405;
+  color: #E44A35;
   font-weight: normal;
   font-size: 13px;
   margin-right: 8px;
@@ -38572,7 +38572,7 @@ fieldset[disabled] .mura .sidebar-buttons .btn.active {
 .mura .sidebar .module ul.nav li > a.active,
 .mura .sidebar .well ul.nav li > a.active {
   font-weight: normal;
-  color: #FF3405;
+  color: #E44A35;
 }
 .mura .sidebar .module ul.nav li > a:not(.active),
 .mura .sidebar .well ul.nav li > a:not(.active) {
@@ -38756,16 +38756,34 @@ fieldset[disabled] .mura .sidebar-buttons .btn.active {
   margin-bottom: 0;
   padding-top: 7px;
 }
-.mura .mura-login-auth-img {
-  height: 52px;
-  margin-bottom: 6px;
-  width: auto;
+.mura .mura-login-auth-btn {
+  display: inline-block;
+  margin: 0 0 6px;
+  height: 40px;
+  width: 100%;
 }
-.mura .mura-login-auth-img-fb {
-  height: 44px;
-  margin: 2px;
-  margin-bottom: 6px;
-  width: auto;
+.mura .mura-login-auth-btn.ggl {
+  background-color: #dc4e41;
+}
+.mura .mura-login-auth-btn.fb {
+  background-color: #4267b2;
+}
+.mura .mura-login-auth-btn span {
+  color: #fff;
+  font-size: 16px;
+  text-align: left;
+  padding: 7px 0 0 12px;
+  display: inline-block;
+}
+.mura .mura-login-auth-btn i {
+  border-right: 1px solid #fff;
+  color: #fff;
+  height: 40px;
+  font-size: 28px;
+  float: left;
+  padding: 6px;
+  text-align: center;
+  width: 40px;
 }
 .mura h3.mura-login-auth-heading {
   margin: 22px;
@@ -38805,7 +38823,7 @@ fieldset[disabled] .mura .sidebar-buttons .btn.active {
   display: block;
   width: 100%;
   border: none;
-  background-color: #ff3405;
+  background-color: #E44A35;
   color: #fff !important;
   height: 35px;
   margin-left: 0;
@@ -38893,7 +38911,7 @@ fieldset[disabled] .mura .sidebar-buttons .btn.active {
 }
 .mura #csetup #page-container .progress-bar-danger,
 .mura #csetup #main-container .progress-bar-danger {
-  background-color: #ff3405;
+  background-color: #E44A35;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;
@@ -38918,7 +38936,7 @@ fieldset[disabled] .mura .sidebar-buttons .btn.active {
 }
 .mura #csetup #page-container .nav-tabs li.active a,
 .mura #csetup #main-container .nav-tabs li.active a {
-  color: #ff3405;
+  color: #E44A35;
 }
 .mura #csetup #page-container .tab-content,
 .mura #csetup #main-container .tab-content {
@@ -39035,7 +39053,7 @@ fieldset[disabled] .mura .sidebar-buttons .btn.active {
   margin-top: 15px;
 }
 .mura #mura-login .block-header {
-  background-color: #ff3405;
+  background-color: #E44A35;
 }
 .mura #mura-login .block-header h3 {
   margin: 0;
