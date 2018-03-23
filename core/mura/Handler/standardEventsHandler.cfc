@@ -83,7 +83,7 @@
 	<cfscript>
 		param name="request.returnFormat" default="HTML";
 
-		if(!listFindNoCase("HTML,JSON",request.returnFormat)){
+		if(!listFindNoCase("HTML,JSON,AMP",request.returnFormat)){
 			request.returnFormat="HTML";
 		}
 
@@ -947,4 +947,10 @@
 	<cfcontent reset="true">
 </cffunction>
 
+<cffunction name="standardAMPTranslator" output="false">
+	<cfargument name="$">
+	<cfscript>
+		$.event().getTranslator('standardHTML').translate(arguments.$);
+	</cfscript>
+</cffunction>
 </cfcomponent>
