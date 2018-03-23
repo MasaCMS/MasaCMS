@@ -192,7 +192,7 @@ to your own modified versions of Mura CMS.
 	</cfif>
 	<cfif listFind(session.mura.memberships,'S2')>
 		<cfif arguments.rc.action eq 'Delete'>
-			<cfset variables.fw.redirect(action="cSettings.list",path="./", queryString="appReload=1")>
+			<cfset variables.fw.redirect(action="cSettings.list",path="./", queryString="#esapiEncode('url',application.appreloadkey)#&reload=#esapiEncode('url',application.appreloadkey)#")>
 		<cfelse>
 			<cfset variables.fw.redirect(action="cSettings.list",path="./")>
 		</cfif>
