@@ -734,7 +734,7 @@
 		)>
 
 	<cfif (
-			request.returnFormat eq 'HTML'
+			request.returnFormat neq 'JSON'
 				and  arguments.event.getValue('muraForceFilename')
 				and contentFilename neq '404'
 				and len(requestedfilename)

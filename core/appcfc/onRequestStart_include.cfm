@@ -247,6 +247,7 @@ param name="sessionData.mura.requestcount" default=0;
 sessionData.mura.requestcount=sessionData.mura.requestcount+1;
 param name="sessionData.mura.csrfsecretkey" default=createUUID();
 param name="sessionData.mura.csrfusedtokens" default=structNew();
+param name="application.coreversion" default=application.configBean.getVersion();
 
 if (
 		request.muraSessionManagement
@@ -261,8 +262,6 @@ if (
 	application.pluginManager.executeScripts('onGlobalSessionStart');
 }
 application.pluginManager.executeScripts('onGlobalRequestStart');
-
-param name="application.coreversion" default=application.configBean.getVersion();
 
 // HSTS: https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security
 	getPageContext()
