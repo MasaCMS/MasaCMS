@@ -89,7 +89,7 @@ component extends="controller" output="false" {
 				if ( structKeyExists(arguments.rc,"parentid")
 				and len(arguments.rc.parentid) == 35
 				and arguments.rc.parentID == objectID ) {
-					obj.setParentID(arguments.rc.parentid);
+					obj.setParentID(obj.getparentid());
 				}
 				obj.setTopOrBottom("bottom").save();
 			}
