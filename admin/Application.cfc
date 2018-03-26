@@ -138,6 +138,14 @@ component extends="framework" output="false" {
 		url.muraAction=url.fuseaction;
 	}
 
+	function setFrameWorkBaseDir(){
+		if(isDefined('application.configBean') && len(application.configBean.getAdminDir())){
+			variables.framework.base="/muraWRM#application.configBean.getAdminDir()#/";
+		} else {
+			variables.framework.base="/muraWRM/admin/";
+		}
+	}
+
 	function setupApplication() output="false"{
 
 		param name="application.appInitialized" default=false;
@@ -161,15 +169,15 @@ component extends="framework" output="false" {
 			setBeanFactory( application.serviceFactory );
 		}
 
-		variables.framework.base="/muraWRM#application.configBean.getAdminDir()#/";
+		setFrameWorkBaseDir();
 
 	}
 
 	function onRequestStart() output="false"{
 
-		include "../core/appcfc/onRequestStart_include.cfm";
-		variables.framework.base="/muraWRM#application.configBean.getAdminDir()#/";
+		setFrameWorkBaseDir();
 
+		include "../core/appcfc/onRequestStart_include.cfm";
 
 		try{
 			if(not (structKeyExists(application.settingsManager,'validate') and application.settingsManager.validate() and isStruct(application.configBean.getAllValues()))){
@@ -259,7 +267,7 @@ component extends="framework" output="false" {
 			}
 		} catch(any e){}
 
-	    variables.framework.base="/muraWRM#application.configBean.getAdminDir()#/";
+		setFrameWorkBaseDir();
 
 		super.onRequestStart(argumentCollection=arguments);
 	}
