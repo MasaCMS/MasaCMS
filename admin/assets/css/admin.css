@@ -38523,6 +38523,10 @@ fieldset[disabled] .mura .sidebar-buttons .btn.active {
 .mura .dropdown-menu.next-n {
   min-width: 142px;
 }
+.mura #sidebar,
+.mura #side-overlay {
+  z-index: 1041;
+}
 .mura .sidebar h3 {
   font-size: 15px;
   margin-bottom: 8px;
