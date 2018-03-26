@@ -438,23 +438,20 @@ component extends="mura.bean.bean" entityname="dataCollection" hint="This provid
 						htmlString &= '<tr><td colspan="2" style="font-weight: bold">' & field.label & '</td></tr>';
 					} else {
 						if (StructKeyExists(formResult, field.name)) {
-							if(findNoCase('attachment', field.name) and isValid("UUID",formResult['#field.name#'])){
-								var redirectid=createUUID();
-								var userRedirect=getBean('userRedirect').set(
-									{
-										redirectid=redirectid,
-										url="#arguments.$.siteConfig().getResourcePath(complete=1)#/index.cfm/_api/render/file/?fileID=#formResult['#field.name#']#&method=attachment",
-										siteid=arguments.$.siteConfig('siteid'),
-										created=now()
+							field.value = esapiEncode('html', formResult[field.name]);
+						} else if (findNoCase('attachment', field.name)) {
+							var redirectid=createUUID();
+							var userRedirect=getBean('userRedirect').set(
+								{
+									redirectid=redirectid,
+									url="#arguments.$.siteConfig().getResourcePath(complete=1)#/index.cfm/_api/render/file/?fileID=#formResult['#field.name#_attachment']#&method=attachment",
+									siteid=arguments.$.siteConfig('siteid'),
+									created=now()
+								}).save();
 
-									}).save();
-
-
-								field.value &= '<a href="#arguments.$.siteConfig().getWebPath(complete=1)##arguments.$.siteConfig().getContentRenderer().getURLStem(arguments.$.siteConfig('siteid'),redirectid)#" target="_blank">Download</a>';
-							} else {
-								field.value = esapiEncode('html', formResult[field.name]);
-							}
+							field.value &= '<a href="#arguments.$.siteConfig().getWebPath(complete=1)##arguments.$.siteConfig().getContentRenderer().getURLStem(arguments.$.siteConfig('siteid'),redirectid)#" target="_blank">Download</a>';
 						}
+
 						htmlString &= '<tr><td style="vertical-align: top; min-width: 100px">' & field.label & '</td><td>' & field.value & '</td></tr>';
 					}
 				}
