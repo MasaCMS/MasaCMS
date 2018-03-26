@@ -22438,7 +22438,7 @@ fieldset[disabled] .ui-dialog .ui-dialog-buttonpane button.active {
 .ui-datepicker select {
   margin-bottom: 0;
   width: 45% !important;
-  font-size: 12px;
+  font-size: 13px;
   padding: 2px;
   height: auto;
   line-height: 1;
@@ -23033,18 +23033,6 @@ fieldset[disabled] .mura .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset .
 .mura .ui-dialog .btn {
   color: #666666 !important;
   font-weight: bold;
-}
-.bold-font {
-  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: bold;
-}
-.regular-font {
-  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: normal;
-}
-/* plain sans font  used for some UI buttons */
-.flat-font {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
 }
 .bold-font {
   font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -25247,7 +25235,7 @@ input[type="email"].mura #searchParams select {
   font-size: 14px;
 }
 .mura #mura-content > form .alert:not([class*="alert-"]) {
-  background-color: #0fafcd;
+  background-color: #4485f1;
   background-image: url(../images/alert-info@2x.png);
 }
 .mura #mura-content > form .alert:not([class*="alert-"]) i.mi-close {
@@ -28880,7 +28868,7 @@ a.mura .nav-module-specific .metadata-horizontal li:focus {
   font-weight: normal;
   border-radius: 0 !important;
   color: #000000;
-  font-size: 13px;
+  font-size: 14px;
   text-align: center;
   vertical-align: middle;
 }
@@ -29612,7 +29600,7 @@ a.mura .nav-module-specific .metadata-horizontal li:focus {
   margin-left: 4px;
 }
 .mura #tabFlat #navReportsToggle > i {
-  color: #E44A35 !important;
+  color: #e44a35 !important;
   font-size: 11px;
   margin-left: 5px;
 }
@@ -30163,7 +30151,7 @@ a.mura .nav-module-specific .metadata-horizontal li:focus {
   padding: 8px 10px;
   box-shadow: 0 2px 4px #333232;
   white-space: normal;
-  font-size: 12px;
+  font-size: 13px;
   text-align: left;
 }
 .mura .mura-quickEdit select.time {
@@ -30269,7 +30257,7 @@ a.mura .nav-module-specific .metadata-horizontal li:focus {
 .mura .mura-quickEdit select {
   margin-bottom: .75em;
   width: 141px !important;
-  font-size: 12px;
+  font-size: 13px;
   padding: 2px 2px !important;
   height: 24px !important;
   line-height: 1;
@@ -30546,7 +30534,7 @@ fieldset[disabled] .mura .mura-quickEdit .form-actions .btn.active {
   width: 160px;
   display: block;
   color: #fff;
-  font-size: 12px;
+  font-size: 13px;
   clear: right;
   text-align: left;
 }
@@ -30556,7 +30544,7 @@ fieldset[disabled] .mura .mura-quickEdit .form-actions .btn.active {
 }
 .mura .mura-quickEdit li input.datepicker {
   width: 156px;
-  font-size: 12px;
+  font-size: 13px;
   color: #333232;
   margin: 0 2px .75em 0;
   padding: 2px;
@@ -31123,13 +31111,13 @@ fieldset[disabled] .mura .mura-quickEdit .form-actions .btn.active {
 .mura .table tbody tr:hover th,
 .mura #mura-nodes dl:hover,
 .mura .mura-row:hover {
-  background-color: #eaf4fd;
+  background-color: rgba(70, 136, 241, 0.09);
 }
 .mura .mura-row.alt {
-  background-color: #eaf4fd;
+  background-color: #4688f1 3;
 }
 .mura .mura-row.alt:hover {
-  background-color: #fffff5;
+  background-color: rgba(70, 136, 241, 0.09);
 }
 .mura #ccategory .addNew a {
   border-bottom: 0px;
@@ -32301,7 +32289,7 @@ font-size: 12px;
 .mura .list-table .list-table-header {
   font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: bold;
-  background: #eaf4fd;
+  background: rgba(70, 136, 241, 0.09);
   background-image: linear-gradient(to bottom, #fffefe, #f5f5f5);
   color: #000;
   line-height: 18px;
@@ -32339,7 +32327,7 @@ font-size: 12px;
   font-style: italic;
 }
 .mura .list-table .list-table-items li.item:nth-child(even) {
-  background: #eaf4fd;
+  background: #4688f1 3;
 }
 .mura .list-table .list-table-items li.item ul {
   list-style: none;
@@ -34363,7 +34351,7 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 .mura .mura-list-grid dl dd i {
   font-size: 45px;
   float: left;
-  margin: 0 13px 0 0;
+  margin: 0 14px 0 0;
   vertical-align: middle;
 }
 .mura .mura-list-grid dl dd i.icon-calendar,
@@ -35550,13 +35538,13 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
   color: #69C;
 }
 .mura a.link-effect:before {
-  background-color: #3973ac;
+  background-color: #cccccc;
 }
 .mura a:hover {
-  color: #3973ac;
+  color: #cccccc;
 }
 .mura a:active {
-  color: #4485f1 !important;
+  color: #cccccc !important;
 }
 .mura a:focus {
   color: #4485f1;
@@ -35650,7 +35638,7 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
   opacity: .75;
 }
 .mura .bg-primary {
-  background-color: #E44A35;
+  background-color: #e44a35;
 }
 .mura a.bg-primary:hover,
 .mura a.bg-primary:focus {
@@ -35703,7 +35691,7 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 }
 .mura .btn-primary {
   color: #fff;
-  background-color: #E44A35;
+  background-color: #e44a35;
   border-color: #ff3838;
 }
 .mura .btn-primary:focus,
@@ -35756,11 +35744,11 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 .mura .btn-primary.disabled.active,
 .mura .btn-primary[disabled].active,
 .mura fieldset[disabled] .btn-primary.active {
-  background-color: #E44A35;
+  background-color: #e44a35;
   border-color: #ff3838;
 }
 .mura .btn-primary .badge {
-  color: #E44A35;
+  color: #e44a35;
   background-color: #fff;
 }
 .mura .nav-module-specific * > .badge {
@@ -35775,7 +35763,7 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
   background-color: #f1f1f1;
 }
 .mura .label-primary {
-  background-color: #E44A35;
+  background-color: #e44a35;
 }
 .mura .label-primary[href]:hover,
 .mura .label-primary[href]:focus {
@@ -35789,10 +35777,10 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
   font-weight: normal;
 }
 .mura .badge-primary {
-  background-color: #E44A35;
+  background-color: #e44a35;
 }
 .mura .progress-bar-primary {
-  background-color: #E44A35;
+  background-color: #e44a35;
 }
 .mura .nav-pills > li > a {
   border: 1px solid #eee;
@@ -35812,7 +35800,7 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
   border: 1px solid #eee;
 }
 .mura .nav-pills > li.active > a > .badge {
-  color: #E44A35;
+  color: #e44a35;
 }
 .mura .nav-pills > li > a {
   padding: 4px 8px;
@@ -35858,7 +35846,7 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
   background-color: #f5f5f5;
   box-shadow: none;
   -webkit-box-shadow: none;
-  color: #646464;
+  color: #4485f1;
 }
 .mura .pagination > .active > a,
 .mura .pagination > .active > span,
@@ -35869,11 +35857,11 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
   background-color: #ebebeb;
   box-shadow: none;
   -webkit-box-shadow: none;
-  color: #646464;
+  color: #4485f1;
 }
 .mura .pager li > a:hover,
 .mura .pager li > a:focus {
-  color: #E44A35;
+  color: #e44a35;
 }
 .mura .pagination > li select {
   cursor: pointer;
@@ -35881,16 +35869,16 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 }
 .mura a.list-group-item:hover,
 .mura a.list-group-item:focus {
-  color: #E44A35;
+  color: #e44a35;
 }
 .mura .list-group-item.active,
 .mura .list-group-item.active:hover,
 .mura .list-group-item.active:focus {
-  background-color: #E44A35;
-  border-color: #E44A35;
+  background-color: #e44a35;
+  border-color: #e44a35;
 }
 .mura .list-group-item.active > .badge {
-  color: #E44A35;
+  color: #e44a35;
 }
 .mura .tooltip-inner {
   background-color: #333;
@@ -35917,8 +35905,8 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 }
 .mura .table-header-bg > thead > tr > th,
 .mura .table-header-bg > thead > tr > td {
-  background-color: #E44A35;
-  border-bottom-color: #E44A35;
+  background-color: #e44a35;
+  border-bottom-color: #e44a35;
 }
 .mura .mura-table-grid:not(.no-stripe) > tbody > tr:nth-of-type(odd) {
   background-color: #F6FAFE !important;
@@ -35944,7 +35932,7 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
   border-color: rgba(102, 153, 204, 0.8);
 }
 .mura .panel-primary > .panel-heading {
-  color: #E44A35;
+  color: #e44a35;
   background-color: #ffdbdb;
   border-color: rgba(102, 153, 204, 0.8);
 }
@@ -35953,7 +35941,7 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 }
 .mura .panel-primary > .panel-heading .badge {
   color: #ffdbdb;
-  background-color: #E44A35;
+  background-color: #e44a35;
 }
 .mura .panel-primary > .panel-heading a {
   font-weight: 400;
@@ -35996,7 +35984,7 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 }
 .mura .css-radio-primary input:checked + span:after,
 .mura .switch-primary input:checked + span {
-  background-color: #69C;
+  background-color: #646464;
 }
 .mura .block > .nav-tabs > li.tabdrop > a:hover,
 .mura .block > .nav-tabs > li.tabdrop > a:focus,
@@ -36014,22 +36002,20 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
   overflow-y: hidden;
 }
 .mura .block > .nav-tabs > li a {
-  text-transform: uppercase;
-  letter-spacing: .05em;
-  font-weight: normal !important;
+  font-weight: bold !important;
 }
 .mura .block > .nav-tabs > li.active > a,
 .mura .block > .nav-tabs > li.active > a:hover,
 .mura .block > .nav-tabs > li.active > a:active,
 .mura .block > .nav-tabs > li.active > a:focus {
-  color: #E44A35 !important;
+  color: #e44a35 !important;
   background-color: #fff;
   border-color: transparent;
 }
 .mura .block > .nav-tabs > li > a:hover,
 .mura .block > .nav-tabs > li > a:active,
 .mura .block > .nav-tabs > li > a:focus {
-  color: #E44A35 !important;
+  color: #e44a35 !important;
 }
 .mura .irs-bar,
 .mura .irs-bar-edge,
@@ -36037,13 +36023,13 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 .mura .irs-to,
 .mura .irs-single,
 .mura .irs-grid-pol {
-  background: #E44A35;
+  background: #e44a35;
 }
 .mura .dropzone:hover {
-  border-color: #E44A35;
+  border-color: #e44a35;
 }
 .mura .dropzone:hover .dz-message {
-  color: #E44A35;
+  color: #e44a35;
 }
 .mura .datepicker {
   z-index: 1 !important;
@@ -36088,17 +36074,17 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 .mura .open .dropdown-toggle.datepicker table tr td span.active:hover,
 .mura .open .dropdown-toggle.datepicker table tr td span.active.disabled,
 .mura .open .dropdown-toggle.datepicker table tr td span.active.disabled:hover {
-  background-color: #E44A35;
-  border-color: #E44A35;
+  background-color: #e44a35;
+  border-color: #e44a35;
 }
 .mura div.tagsinput span.tag {
-  background-color: #E44A35;
+  background-color: #e44a35;
 }
 .mura .select2-container--default .select2-selection--multiple .select2-selection__choice {
-  background-color: #E44A35;
+  background-color: #e44a35;
 }
 .mura .select2-container--default .select2-results__option--highlighted[aria-selected] {
-  background-color: #E44A35;
+  background-color: #e44a35;
 }
 .mura .nav-tabs,
 .mura .nav-pills {
@@ -36119,7 +36105,7 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 .mura .tabdrop .dropdown-menu > .active > a:hover,
 .mura .tabdrop .dropdown-menu > .active > a:focus {
   background-color: transparent;
-  color: #E44A35;
+  color: #e44a35;
 }
 .mura .block > .nav-tabs li.tabdrop .dropdown-menu a {
   padding-left: 12px !important;
@@ -36133,7 +36119,7 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 }
 .mura .block > .nav-tabs li.tabdrop .dropdown-menu li.active a,
 .mura .block > .nav-tabs li.tabdrop .dropdown-menu a:hover {
-  color: #E44A35 !important;
+  color: #e44a35 !important;
   background-color: transparent;
 }
 .mura .block > .nav-tabs li.tabdrop .dropdown-menu li.active a {
@@ -36218,15 +36204,15 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
   padding: 10px 4px 1px;
 }
 .mura #header-navbar {
-  min-height: 42px;
-  height: 42px;
+  min-height: 58px;
+  height: 58px;
   padding-bottom: 0;
   padding-left: 10px;
   padding-right: 10px;
   background-color: #FFF;
 }
 .mura #header-navbar.content-mini {
-  padding-top: 5px;
+  padding-top: 13px;
 }
 .mura #header-navbar .mi-ellipsis-v {
   font-size: 14px;
@@ -36560,8 +36546,8 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
   border-radius: 0;
   color: #848484;
   font-size: 13px;
+  font-weight: bold;
   height: 35px !important;
-  text-transform: uppercase;
   vertical-align: top;
 }
 .mura .mura-actions .form-actions > .btn > i {
@@ -36746,7 +36732,7 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 .mura #container-scaffold ul.breadcrumb li a:visited,
 .mura #container-scaffold ul.breadcrumb li a:hover,
 .mura #container-scaffold ul.breadcrumb li a:active {
-  color: #E44A35;
+  color: #e44a35;
   font-weight: normal;
   font-size: 13px;
   margin-right: 8px;
@@ -38455,7 +38441,7 @@ fieldset[disabled] .mura .sidebar-buttons .btn.active {
   -webkit-text-stroke: 3px #00c964;
 }
 .mura .alert-info {
-  background-color: #0fafcd;
+  background-color: #4485f1;
   background-image: url(../images/alert-info@2x.png);
 }
 .mura .alert-info i.mi-close {
@@ -38572,7 +38558,7 @@ fieldset[disabled] .mura .sidebar-buttons .btn.active {
 .mura .sidebar .module ul.nav li > a.active,
 .mura .sidebar .well ul.nav li > a.active {
   font-weight: normal;
-  color: #E44A35;
+  color: #e44a35;
 }
 .mura .sidebar .module ul.nav li > a:not(.active),
 .mura .sidebar .well ul.nav li > a:not(.active) {
@@ -38823,7 +38809,7 @@ fieldset[disabled] .mura .sidebar-buttons .btn.active {
   display: block;
   width: 100%;
   border: none;
-  background-color: #E44A35;
+  background-color: #e44a35;
   color: #fff !important;
   height: 35px;
   margin-left: 0;
@@ -38911,7 +38897,7 @@ fieldset[disabled] .mura .sidebar-buttons .btn.active {
 }
 .mura #csetup #page-container .progress-bar-danger,
 .mura #csetup #main-container .progress-bar-danger {
-  background-color: #E44A35;
+  background-color: #e44a35;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;
@@ -38936,7 +38922,7 @@ fieldset[disabled] .mura .sidebar-buttons .btn.active {
 }
 .mura #csetup #page-container .nav-tabs li.active a,
 .mura #csetup #main-container .nav-tabs li.active a {
-  color: #E44A35;
+  color: #e44a35;
 }
 .mura #csetup #page-container .tab-content,
 .mura #csetup #main-container .tab-content {
@@ -39053,7 +39039,7 @@ fieldset[disabled] .mura .sidebar-buttons .btn.active {
   margin-top: 15px;
 }
 .mura #mura-login .block-header {
-  background-color: #E44A35;
+  background-color: #e44a35;
 }
 .mura #mura-login .block-header h3 {
   margin: 0;

@@ -141,13 +141,15 @@
 										<div class="mura-login-auth-wrapper">
 										<!--- Use Google oAuth Button --->
 										<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google')>
-											<a href="#$.getBean('googleLoginProvider').generateAuthUrl(session.urltoken)#" title="#variables.$.rbKey('login.loginwithgoogle')#">
-						                      <img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/btn_google_signin_light_normal_web@2x.png" class="mura-login-auth-img">
+											<a href="#$.getBean('googleLoginProvider').generateAuthUrl(session.urltoken)#" title="#variables.$.rbKey('login.loginwithgoogle')#" class="mura-login-auth-btn ggl">
+												<i class="fa fa-lg fa-google mi-google"></i>
+												<span>#variables.$.rbKey('login.loginwithgoogle')#</span>
 											</a>
 										</cfif>
 										<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'facebook')>
-											<a href="#$.getBean('facebookLoginProvider').generateAuthUrl(session.urltoken)#" title="#variables.$.rbKey('login.loginwithfacebook')#">
-										       <img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/btn_facebook_continue@2x.png" class="mura-login-auth-img-fb">	
+											<a href="#$.getBean('facebookLoginProvider').generateAuthUrl(session.urltoken)#" title="#variables.$.rbKey('login.loginwithfacebook')#" class="mura-login-auth-btn fb"> 
+					               	<i class="fa fa-lg fa-facebook mi-facebook"></i>
+			                  	<span>#variables.$.rbKey('login.loginwithfacebook')#</span>
 			 									</a>
 										</cfif>
 									</div>

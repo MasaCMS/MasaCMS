@@ -5,6 +5,7 @@
 
 <cfoutput>
 <title>#REReplace(application.settingsManager.getSite(request.siteID).getEnableLockdown(), "([a-z]{1})", "\U\1", "ONE" )# Mode</title>
+<link rel="stylesheet" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/fonts/font-awesome/css/font-awesome.css">
 </cfoutput>
 
 <style type="text/css">
@@ -130,20 +131,49 @@ form p#error {
 .center{
 	text-align: center;
 }
-.mura-login-auth-heading{
-	color: #646464;
+/* login and setup */
+.mura-login-auth-btn{
+  display: inline-block;
+  margin: 0 0 6px;
+  height: 40px;
+  text-align: left;
+ 	text-decoration: none;
+  width: 100%;
 }
-.mura-login-auth-img {
-    height: 52px;
-    margin-bottom: 6px;
-    width: auto;
+
+.mura-login-auth-btn.ggl{
+  background-color: #dc4e41;
 }
-.mura-login-auth-img-fb {
-    height: 44px;
-    margin: 2px 2px 6px;
-    width: auto;
+
+.mura-login-auth-btn.fb{
+  background-color: #4267b2;
 }
+
+.mura-login-auth-btn span{
+  color: #fff;
+  font-size: 16px;
+  text-align: left;
+  padding: 11px 0 0 12px;
+  display: inline-block;
+}
+.mura-login-auth-btn i{
+  border-right: 1px solid #fff;
+  color: #fff;
+  height: 40px;
+  font-size: 28px;
+  float: left;
+  padding: 6px;
+  text-align: center;
+  width: 40px;
+ 	font-family: 'FontAwesome';
+}
+
+h3.mura-login-auth-heading{
+  margin: 22px;
+}
+
 </style>
+
 </head>
 <cfoutput>
 <body>
@@ -155,19 +185,22 @@ form p#error {
 			<form method="post" action="<cfif application.configBean.getLockdownHTTPS() eq true>#replacenocase(arguments.$.getContentRenderer().createHREF(siteid = request.siteid, filename = arguments.event.getScope().currentfilename, complete = true), "http:", "https:")#</cfif>">
 
 					<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google') or listFindNoCase($.globalConfig().getEnableOauth(), 'facebook') >
+
 						<!--- Use Google oAuth Button --->
 						<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google')>
 							<div style="padding-bottom: 5px" class="center">
-								<a href="#$.getBean('googleLoginProvider').generateAuthUrl(session.urltoken)#" title="#$.rbKey('login.loginwithgoogle')#">
-			                      <img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/btn_google_signin_light_normal_web@2x.png" class="mura-login-auth-img">
+								<a href="#$.getBean('googleLoginProvider').generateAuthUrl(session.urltoken)#" title="#$.rbKey('login.loginwithgoogle')#" class="mura-login-auth-btn ggl">
+				        	<i class="icon icon-lg icon-google-plus mi-google"></i>
+				        	<span>#$.rbKey('login.loginwithgoogle')#</span>
 								</a>
 							</div>
 						</cfif>
 						<!--- Use Facebook oAuth Button --->
 						<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'facebook')>
 							<div style="padding-bottom: 5px" class="center">
-								<a href="#$.getBean('facebookLoginProvider').generateAuthUrl(session.urltoken)#" title="#$.rbKey('login.loginwithfacebook')#">
-							       <img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/btn_facebook_continue@2x.png" class="mura-login-auth-img-fb">
+								<a href="#$.getBean('facebookLoginProvider').generateAuthUrl(session.urltoken)#" title="#$.rbKey('login.loginwithfacebook')#" class="mura-login-auth-btn fb">
+					      	<i class="icon icon-lg icon-facebook mi-facebook"></i>
+					      	<span>#$.rbKey('login.loginwithfacebook')#</span>
 								</a>
 							</div>
 						</cfif>
@@ -176,8 +209,6 @@ form p#error {
 						<h3 class="center mura-login-auth-heading">#$.rbKey('login.loginwithcredentials')#</h3>
 
 					</cfif>
-				
-
 
 				<label for="locku">Username</label>
 				<input type="text" name="locku" id="locku" class="text" />
