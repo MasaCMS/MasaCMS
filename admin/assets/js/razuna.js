@@ -91,7 +91,6 @@
 	        close: razunaRemoveAll
        	});
 
-		$('#razunaModalWindow').css("position","absolute")
 
        	$('#razunaModalWindow').closest(".ui-dialog").addClass('razuna-dialog');
 
@@ -155,7 +154,7 @@
 
 
 										content+='				<tr class="rend">';
-										content+='					<td><strong>Size:</strong></td>';
+										content+='					<td style="width:60px"><strong>Size:</strong></td>';
 										content+='					<td><label class="radio inline">';
 										content+='						<input type="radio" id="razuna-image-size" name="razuna-selected-url" value="'+$(target).attr('data-' + razuna_servertype + '_url_thumb')+'"  data-height="'+$(target).attr('data-height')+'" data-width="'+$(target).attr('data-width')+'">Thumbnail</label>';
 										content+='					</td>';
