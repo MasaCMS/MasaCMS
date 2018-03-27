@@ -36759,20 +36759,6 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 .mura .nav-main-header {
   background-color: #2c2c2f;
 }
-@media screen and (min-width: 992px) {
-  .mura .nav-main-header {
-    background-color: transparent;
-  }
-  .mura .nav-main-header ul {
-    background-color: #555;
-  }
-  .mura .mura-focus-block {
-    width: 498px !important;
-  }
-  .mura .mura-focus-block .block-content {
-    padding: 50px 70px !important;
-  }
-}
 .mura .nav-main {
   font-size: 16px;
   padding-bottom: 15px;
@@ -38527,6 +38513,12 @@ fieldset[disabled] .mura .sidebar-buttons .btn.active {
 .mura #side-overlay {
   z-index: 1041;
 }
+.mura #sidebar-mobile-close {
+  font-size: 16px;
+  padding: 10px;
+  margin-right: -19px;
+  margin-top: -13px;
+}
 .mura .sidebar h3 {
   font-size: 15px;
   margin-bottom: 8px;
@@ -39193,6 +39185,15 @@ fieldset[disabled] .mura .sidebar-buttons .btn.active {
     margin-left: 0;
     margin-right: 8px;
   }
+  .mura #sidebar {
+    max-width: 767px !important;
+  }
+  .mura .nav-main {
+    font-size: 20px !important;
+  }
+  .mura .nav-main ul a {
+    font-size: 16px;
+  }
   .mura #sm-modify-view {
     float: left !important;
     margin-top: 12px !important;
@@ -39245,6 +39246,17 @@ fieldset[disabled] .mura .sidebar-buttons .btn.active {
   .mura .block-constrain > .content {
     padding: 15px!important;
   }
+  .mura .nav-header .header-search.header-search-xs-visible {
+    position: absolute;
+    top: 48px;
+    right: 0;
+    left: 0;
+    z-index: 999;
+    display: block;
+    border-top: 1px solid #f9f9f9;
+    width: 100% !important;
+    margin: 0 0 0 0;
+  }
 }
 @media (min-width: 768px) {
   .mura dd.display,
@@ -39261,6 +39273,18 @@ fieldset[disabled] .mura .sidebar-buttons .btn.active {
   .mura .nav-module-specific .btn-group .dropdown-menu {
     right: 0;
     left: auto;
+  }
+  .mura .nav-main-header {
+    background-color: transparent;
+  }
+  .mura .nav-main-header ul {
+    background-color: #555;
+  }
+  .mura .mura-focus-block {
+    width: 498px !important;
+  }
+  .mura .mura-focus-block .block-content {
+    padding: 50px 70px !important;
   }
   .mura .mura-footer .credits {
     margin-left: 248px;
@@ -39299,5 +39323,8 @@ fieldset[disabled] .mura .sidebar-buttons .btn.active {
   .mura .block-constrain > .content {
     padding-left: 0 !important;
     padding-right: 0 !important;
+  }
+  .mura #sidebar {
+    max-width: 250px;
   }
 }
