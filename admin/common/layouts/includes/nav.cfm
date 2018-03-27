@@ -62,22 +62,20 @@
             <!-- Side Header -->
             <div class="side-header side-content">
                 <!-- Layout API, functionality initialized in App() -> uiLayoutApi() -->
-                <button class="btn btn-link text-gray pull-right hidden-md hidden-lg" type="button" data-toggle="layout" data-action="sidebar_close">
+                <button id="sidebar-mobile-close" class="btn btn-link text-gray pull-right hidden-md hidden-lg" type="button" data-toggle="layout" data-action="sidebar_close">
                     <i class="mi-close"></i>
                 </button>
                 <!-- Themes functionality initialized in App() -> uiHandleTheme() -->
                 <div class="btn-group">
-                    <a id="brand-logo-lg" class="brand" href="http://www.getmura.com" title="Mura CMS" target="_blank">
+                    <span id="brand-logo-lg" class="brand" target="_blank">
                         <img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/mura-logo@2x.png" class="mura-logo">
-                    </a>
-                    <a id="brand-logo-min" class="brand" href="http://www.getmura.com" title="Mura CMS" target="_blank">
+                    </span>
+                    <span id="brand-logo-min" class="brand" target="_blank">
                         <img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/mura-icon@2x.png" class="mura-logo">
                         <span class="sidebar-mini-hide">
-                            <img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/mura-logo-text@2x.png" class="mura-logo-text">
+                            <img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/mura-logo-text@2x.png" class="mura-logo-text"> 
                         </span>
-                    </a>
-
-
+                    </span>
                 </div>
             </div>
             <!-- END Side Header -->
