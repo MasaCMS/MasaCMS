@@ -719,7 +719,8 @@ form .mura-control-group > * + .help-block{
 .nav-main-header {
   background-color: #2c2c2f;
 }
-@media screen and (min-width:992px) {
+
+@media screen and (min-width:@screen-md-min) {
   .nav-main-header {
     background-color: transparent;
   }
@@ -734,7 +735,25 @@ form .mura-control-group > * + .help-block{
        }
   }
 }
+@media screen and (max-width:@screen-sm-max) {
+  #sidebar{
+    max-width: 250px !important;
+  }
+}
+@media screen and (max-width:@screen-xs-max) {
+  #sidebar{
+    max-width: @screen-xs-max !important;
+  }
+}
+@media screen and (max-width:@screen-xs-max) {
+  .nav-main{
+    font-size: 20px !important;
+    ul a{
+      font-size: 16px;
+    }
+  }
 
+}
 .nav-main {
 
   font-size:16px;
@@ -1549,7 +1568,12 @@ ul.dropdown-menu{
 #side-overlay {
   z-index: 1041;
 }   
-
+#sidebar-mobile-close{
+  font-size: 16px;
+  padding: 10px;
+  margin-right: -19px;
+  margin-top: -13px;
+}
 .sidebar {
   h3{
     font-size: 15px;
