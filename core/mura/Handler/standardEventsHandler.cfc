@@ -823,7 +823,7 @@
 			request.cffpJS=true;
 
 			result.template=renderer.getTemplate();
-			result.metakeywords=renderer.getMetaKeyWords();
+			result.conanicalURL=renderer.getConanicalURL();
 			result.metadesc=renderer.getMetaDesc();
 
 			$.event('response',result);
@@ -922,8 +922,10 @@
 			structDelete(result,'errors');
 			structDelete(result,'instanceid');
 			structDelete(result,'primaryKey');
+			structDelete(result,'canonicalURL');
 			structDelete(result,'extenddatatable');
 			structDelete(result,'extenddata');
+			structDelete(result,'meta');
 			structDelete(result,'extendAutoComplete');
 			structDelete(result,'lastupdateby');
 			structDelete(result,'lastupdatebyid');
