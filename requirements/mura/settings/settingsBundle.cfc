@@ -453,30 +453,31 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var block = {} />
 		<cfset var find = 1 />
 		<cfset var path = "" />
+		<cfset var pathlist="" />
 		<cfset var pathArray = [] />
 		<cfset var filePoolID =getBean('settingsManager').getSite(arguments.siteid).getFilePoolID()>
 		<cfset var end="">
 
 		<cfloop condition="find gt 0">
-			<cfset block = {} />
-
 			<cfset find = refindNoCase('\/#filePoolID#\/assets',arguments.content,pos)>
 
-			<cfset block['find'] = find />
-
 			<cfif find>
-				<!---<cfset find = find+5 />--->
 				<cfset end = refind('\"',arguments.content,find) />
-				<cfset block['end'] = end />
 				<cfif end>
-					<cfset path = mid(arguments.content,find,end-find) />
-					<cfset pathArray = ListToArray( path,"/" ) />
-					<cfset block['pathArray'] = pathArray />
-					<cfset block['file'] = pathArray[ArrayLen(pathArray)] />
-					<cfset ArrayDeleteAt( pathArray,1 ) />
-					<cfset ArrayDeleteAt( pathArray,ArrayLen(pathArray) ) />
-					<cfset block['path'] = arrayToList( pathArray,"/" ) />
-					<cfset ArrayAppend( fileArray,block ) />
+					<cfset pathlist = mid(arguments.content,find,end-find) />
+					<cfloop list="#pathlist#" item="path">
+						<cfset path=trim(path)>
+						<cfif len(path)>
+							<cfset block = {} />
+							<cfset pathArray = ListToArray( path,"/" ) />
+							<cfset block['pathArray'] = pathArray />
+							<cfset block['file'] = pathArray[ArrayLen(pathArray)] />
+							<cfset ArrayDeleteAt( pathArray,1 ) />
+							<cfset ArrayDeleteAt( pathArray,ArrayLen(pathArray) ) />
+							<cfset block['path'] = arrayToList( pathArray,"/" ) />
+							<cfset ArrayAppend( fileArray,block ) />
+						</cfif>
+					</cfloop>
 				<cfelse>
 					<cfset find = 0 />
 				</cfif>
