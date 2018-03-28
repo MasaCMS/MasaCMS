@@ -465,7 +465,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset end = refind('\"',arguments.content,find) />
 				<cfif end>
 					<cfset pathlist = mid(arguments.content,find,end-find) />
-					<cfloop list="#pathlist#" item="path">
+					<cfloop list="#pathlist#" index="path">
 						<cfset path=trim(path)>
 						<cfif len(path)>
 							<cfset block = {} />
