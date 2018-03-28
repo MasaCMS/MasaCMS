@@ -20,7 +20,6 @@
 		<cfset getBean("pluginManager").announceEvent("onBeforeGlobalEmptyTrash",pluginEvent)>
 	</cfif>
 
-
 	<cfset request.muratransaction=request.muratransaction+1>
 
 	<cfloop query="rs">
@@ -368,10 +367,10 @@
 		select objectID,siteID,parentID,objectClass,objectType,objectSubType,objectLabel,deletedDate,deletedBy,deleteID,orderno
 		from ttrash where
 		1=1
-		<cfif structKeyExists(arguments,"sinceDate")>
+		<cfif structKeyExists(arguments,"sinceDate") and len(arguments.sinceDate)>
 		and deletedDate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.sinceDate#">
 		</cfif>
-		<cfif structKeyExists(arguments,"beforeDate")>
+		<cfif structKeyExists(arguments,"beforeDate") and  len(arguments.beforeDate)>
 		and deletedDate <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.beforeDate#">
 		</cfif>
 		<cfif structKeyExists(arguments,"objectID")>

@@ -68,7 +68,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="list" output="false">
 	<cfargument name="rc">
-
+	<cfparam name='rc.sinceDate' default="#LSdateFormat(dateAdd('d', -7, now()), session.dateKeyFormat)#">
+	<cfparam name='rc.beforeDate' default="#LSdateFormat(now(), session.dateKeyFormat)#">
 	<cfset arguments.rc.trashIterator=variables.trashManager.getIterator(argumentCollection=arguments.rc)>
 	<cfset arguments.rc.trashIterator.setNextN(20)>
 
@@ -76,7 +77,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="empty" output="false">
 	<cfargument name="rc">
-
 	<cfset variables.trashManager.empty(argumentCollection=arguments.rc)>
 	<cfset variables.fw.redirect(action="cTrash.list",append="siteID",path="./")>
 
