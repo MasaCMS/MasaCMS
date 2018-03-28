@@ -922,7 +922,7 @@
 			structDelete(result,'errors');
 			structDelete(result,'instanceid');
 			structDelete(result,'primaryKey');
-			structDelete(result,'canonicalURL');
+			structDelete(result,'metakeywords');
 			structDelete(result,'extenddatatable');
 			structDelete(result,'extenddata');
 			structDelete(result,'meta');
