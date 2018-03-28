@@ -53,7 +53,7 @@
 				<cfif rsGroups.recordcount>
 					<optgroup label="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'user.membergroups'))#">
 					<cfloop query="rsGroups">
-						<option value="#rsGroups.groupname#" <cfif listfind(rc.contentBean.getrestrictgroups(),rsGroups.groupname)>Selected</cfif>>#rsGroups.groupname#</option>
+						<option value="##rsGroups.userid##" <cfif listfind(rc.contentBean.getrestrictgroups(),rsGroups.groupname) or listfind(rc.contentBean.getrestrictgroups(),rsGroups.userid)>Selected</cfif>>#rsGroups.groupname#</option>
 					</cfloop>
 					</optgroup>
 				</cfif>
@@ -61,7 +61,7 @@
 				<cfif rsGroups.recordcount>
 					<optgroup label="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'user.adminusergroups'))#">
 					<cfloop query="rsGroups">
-						<option value="#rsGroups.groupname#" <cfif listfind(rc.contentBean.getrestrictgroups(),rsGroups.groupname)>Selected</cfif>>#rsGroups.groupname#</option>
+						<option value="#rsGroups.userid#" <cfif listfind(rc.contentBean.getrestrictgroups(),rsGroups.groupname) or listfind(rc.contentBean.getrestrictgroups(),rsGroups.userid)>Selected</cfif>>#rsGroups.groupname#</option>
 					</cfloop>
 					</optgroup>
 				</cfif>
