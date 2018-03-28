@@ -51,21 +51,31 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  <h1>Trash Bin</h1>
 
  <div class="nav-module-specific btn-group">
- <a class="btn" href="./?muraAction=cSettings.editSite&siteID=#esapiEncode('url',rc.siteID)#"><i class="mi-arrow-circle-left"></i> Back to Site Settings</a>
- <a class="btn" href="./?muraAction=cTrash.empty&siteID=#esapiEncode('url',rc.siteID)#" onclick="return confirmDialog('Empty Site Trash?', this.href);"><i class="mi-trash"></i>Empty Trash</a>
+ 	<a class="btn" href="./?muraAction=cSettings.editSite&siteID=#esapiEncode('url',rc.siteID)#"><i class="mi-arrow-circle-left"></i> Back to Site Settings</a>
+	<a class="btn" href="./?muraAction=cTrash.empty&siteID=#esapiEncode('url',rc.siteID)#&sinceDate=#esapiEncode('html_attr',$.event('sinceDate'))#&beforeDate=#esapiEncode('html_attr',$.event('beforeDate'))#" onclick="return confirmDialog('Empty Site Trash?', this.href);"><i class="mi-trash"></i>Empty Trash</a>
  </div>
 
  <div class="mura-item-metadata">
-	 <form class="form-inline" novalidate="novalidate" id="siteSearch" name="siteSearch" method="get">
-		 <div class="mura-search">
-			 <div class="mura-input-set">
-				 <input id="search" name="keywords" type="text" class="text" value="#esapiEncode('html_attr',rc.keywords)#" placeholder="Search Trash Bin">
-				 <button type="button" class="btn" onclick="submitForm(document.forms.siteSearch);"><i class="mi-search"></i></button>
-			 </div>
-		 </div>
-		 <input type="hidden" name="muraAction" value="cTrash.list">
-		 <input type="hidden" name="siteid" value="#esapiEncode('html_attr',rc.siteid)#">
-	 </form>
+	 <form class="form-inline" novalidate="novalidate" id="siteSearch" name="siteSearch" method="post">
+			<div class="mura-search">
+				<label>Search for Contents</label>
+				<div class="mura-input-set">
+					<input id="search" name="keywords" type="text" class="text" value="#esapiEncode('html_attr',rc.keywords)#" placeholder="Search Trash Bin">
+					<button type="button" class="btn" onclick="submitForm(document.forms.siteSearch);"><i class="mi-search"></i></button>
+				</div>
+				<label>Trash Date Range</label>
+				<div class="mura-control justify mura">
+					<label class="label-inline">
+						#application.rbFactory.getKeyValue(session.rb,"params.from")#
+						<input type="text" name="sinceDate" id="startDate" class="datepicker mura-custom-datepicker" placeholder="Start Date" value="#esapiEncode('html_attr',$.event('sinceDate'))#" />
+						#application.rbFactory.getKeyValue(session.rb,"params.to")#
+						<input type="text" name="beforeDate" id="endDate" class="datepicker mura-custom-datepicker" placeholder="End Date" value="#esapiEncode('html_attr',$.event('beforeDate'))#" />
+					</label>
+				</div>
+				<input type="hidden" name="muraAction" value="cTrash.list">
+				<input type="hidden" name="siteid" value="#esapiEncode('html_attr',rc.siteid)#">
+			</div>
+		</form>
  </div>
 
 </div> <!-- /.mura-header -->
@@ -90,10 +100,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 <tr>
 			 <td class="actions">
 				 <ul>
-					 <li class="edit"><a title="Edit" href="?muraAction=cTrash.detail&objectID=#trashItem.getObjectID()#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#esapiEncode('url',rc.pageNum)#"><i class="mi-pencil"></i></a></li>
+					 <li class="edit"><a title="Edit" href="?muraAction=cTrash.detail&objectID=#trashItem.getObjectID()#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#esapiEncode('url',rc.pageNum)#&sinceDate=#esapiEncode('url',$.event('sinceDate'))#&beforeDate=#esapiEncode('url',$.event('beforeDate'))#"><i class="mi-pencil"></i></a></li>
 				 </ul>
 			 </td>
-			 <td class="var-width"><a href="?muraAction=cTrash.detail&objectID=#trashItem.getObjectID()#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#esapiEncode('url',rc.pageNum)#">#esapiEncode('html',left(trashItem.getObjectLabel(),80))#</a></td>
+			 <td class="var-width"><a href="?muraAction=cTrash.detail&objectID=#trashItem.getObjectID()#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#esapiEncode('url',rc.pageNum)#&sinceDate=#esapiEncode('url',$.event('sinceDate'))#&beforeDate=#esapiEncode('url',$.event('beforeDate'))#">#esapiEncode('html',left(trashItem.getObjectLabel(),80))#</a></td>
 			 <td>#esapiEncode('html',trashItem.getObjectType())#</td>
 			 <td>#esapiEncode('html',trashItem.getObjectSubType())#</td>
 			 <td>#esapiEncode('html',trashItem.getSiteID())#</td>
@@ -113,12 +123,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					 <cfif rc.pageNum eq i>
 						 <li class="active"><a href="##">#i#</a></li>
 					 <cfelse>
-						 <li><a href="?muraAction=cTrash.list&siteid=#esapiEncode('url',rc.siteid)#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#i#">#i#</a></li>
+						 <li><a href="?muraAction=cTrash.list&siteid=#esapiEncode('url',rc.siteid)#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#i#&sinceDate=#esapiEncode('html_attr',$.event('sinceDate'))#&sinceDate=#esapiEncode('url',$.event('sinceDate'))#&beforeDate=#esapiEncode('url',$.event('beforeDate'))#">#i#</a></li>
 					 </cfif>
 
 				 </cfloop>
 				 <cfif rc.pageNum lt rc.trashIterator.pageCount()>
-								 <li><a href="?muraAction=cTrash.list&siteid=#esapiEncode('url',rc.siteid)#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#evaluate('rc.pageNum+1')#"><i class="mi-angle-right"></i></a></li>
+								 <li><a href="?muraAction=cTrash.list&siteid=#esapiEncode('url',rc.siteid)#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#evaluate('rc.pageNum+1')#&sinceDate=#esapiEncode('url',$.event('sinceDate'))#&beforeDate=#esapiEncode('url',$.event('beforeDate'))#"><i class="mi-angle-right"></i></a></li>
 				 </cfif>
 			 </ul>
 		 </cfif>

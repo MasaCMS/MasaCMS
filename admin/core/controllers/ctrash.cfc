@@ -63,6 +63,8 @@ component extends="controller" output="false" {
 	}
 
 	public function list(rc) output=false {
+		param name='rc.sinceDate' default="#LSdateFormat(dateAdd('d', -7, now()), session.dateKeyFormat)#";
+		param name='rc.beforeDate' default="#LSdateFormat(now(), session.dateKeyFormat)#";
 		arguments.rc.trashIterator=variables.trashManager.getIterator(argumentCollection=arguments.rc);
 		arguments.rc.trashIterator.setNextN(20);
 	}

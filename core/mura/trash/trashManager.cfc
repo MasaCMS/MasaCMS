@@ -368,10 +368,10 @@
 		select objectID,siteID,parentID,objectClass,objectType,objectSubType,objectLabel,deletedDate,deletedBy,deleteID,orderno
 		from ttrash where
 		1=1
-		<cfif structKeyExists(arguments,"sinceDate")>
+		<cfif structKeyExists(arguments,"sinceDate") and isdate(arguments.sinceDate)>
 		and deletedDate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.sinceDate#">
 		</cfif>
-		<cfif structKeyExists(arguments,"beforeDate")>
+		<cfif structKeyExists(arguments,"beforeDate") and isdate(arguments.beforeDate)>
 		and deletedDate <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.beforeDate#">
 		</cfif>
 		<cfif structKeyExists(arguments,"objectID")>
