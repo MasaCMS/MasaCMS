@@ -3,7 +3,7 @@
 	<div id="commentsPage">
 		<!--- MOAR --->
 		<cfif rc.p.startRow gt 1 and (len(rc.commentID) or len(rc.upperID))>
-			<div id="moreCommentsUpContainer"><a id="moreCommentsUp" class="btn btn-small" href="##" data-upperid="#rc.q.commentID[rc.p.startRow-1]#"><i class="mi-arrow-up"></i> More Comments</a></div>
+			<div id="moreCommentsUpContainer"><a id="moreCommentsUp" class="btn btn-small" href="##" data-upperid="#rc.q.commentID[rc.p.startRow-1]#"><i class="mi-arrow-up"></i> #$.rbKey('comments.morecomments')#</a></div>
 		</cfif>
 
 		<cfloop query="rc.q" startrow="#rc.p.startRow#" endrow="#rc.p.endRow#">
@@ -26,7 +26,7 @@
 				<dt>
 					#esapiEncode('html',rc.comment.getName())#
 					<cfif len(rc.comment.getParentID())>
-						<em>(in reply to: <a href="##" class="inReplyTo" data-parentid="#rc.comment.getParentID()#" data-contentid="#rc.comment.getContentID()#">#esapiEncode('html',rc.comment.getParent().getName())#</a>)</em>
+						<em>(#$.rbKey('comments.inreplyto')#: <a href="##" class="inReplyTo" data-parentid="#rc.comment.getParentID()#" data-contentid="#rc.comment.getContentID()#">#esapiEncode('html',rc.comment.getParent().getName())#</a>)</em>
 					</cfif>
 				</dt>
 				<dd class="comment">
@@ -40,7 +40,7 @@
 
 		<!--- MOAR --->
 		<cfif rc.p.endRow lt rc.q.recordCount and (len(rc.commentID) or len(rc.lowerID))>
-			<div id="moreCommentsDownContainer"><a id="moreCommentsDown" class="btn btn-small" href="##" data-lowerid="#rc.q.commentID[rc.p.endRow+1]#"><i class="mi-arrow-down"></i> More Comments</a></div>
+			<div id="moreCommentsDownContainer"><a id="moreCommentsDown" class="btn btn-small" href="##" data-lowerid="#rc.q.commentID[rc.p.endRow+1]#"><i class="mi-arrow-down"></i> #$.rbKey('comments.morecomments')#</a></div>
 		</cfif>
 	</div>
 </cfoutput>
