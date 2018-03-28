@@ -304,6 +304,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						select sum(track.points) track_total_score, track.contentid
 						from mxp_conversiontrack track
 						where track.created >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#dateAdd('m',-1,nowAdjusted)#">
+						and track.points > 0
 						group by track.contentid
 					) tracktotal on (tcontent.contentid=tracktotal.contentid)
 				</cfif>
