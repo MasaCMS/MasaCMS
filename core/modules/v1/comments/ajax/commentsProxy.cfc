@@ -193,7 +193,7 @@
 									#htmleditformat(local.commenterName)#
 								</cfif>
 								<cfif len(comment.getParentID())>
-									<em>(in reply to: <a href="##" class="mura-in-reply-to" data-parentid="#comment.getParentID()#">#comment.getParent().getName()#</a>)</em>
+									<em>(#$.rbKey('comments.inreplyto')#: <a href="##" class="mura-in-reply-to" data-parentid="#comment.getParentID()#">#comment.getParent().getName()#</a>)</em>
 								</cfif>
 								<cfif isEditor>
 								<div class="mura-comment-admin-button-wrapper #renderer.commentAdminButtonWrapperClass#">
@@ -237,7 +237,7 @@
 
 				<!--- MOAR --->
 				<cfif it.getPageIndex() lt it.pageCount()>
-					<div class="mura-comment-more-comments-container #renderer.commentMoreCommentsContainer#"><a id="mura-more-comments" class="#renderer.commentMoreCommentsDownClass#" href="##" data-pageno="#it.getPageIndex()+1#" data-siteid="#HTMLEditFormat($.event('siteID'))#">More Comments</a></div>
+					<div class="mura-comment-more-comments-container #renderer.commentMoreCommentsContainer#"><a id="mura-more-comments" class="#renderer.commentMoreCommentsDownClass#" href="##" data-pageno="#it.getPageIndex()+1#" data-siteid="#HTMLEditFormat($.event('siteID'))#">#$.rbKey('comments.morecomments')#</a></div>
 				</cfif>
 
 			</cfoutput>
