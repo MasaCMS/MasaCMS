@@ -1480,11 +1480,35 @@ component extends="mura.bean.beanExtendable" entityName="content" table="tconten
 	}
 
 	public boolean function getIsHome() {
-			return Right(variables.instance.parentid, 3) == 'end';
+		return Right(variables.instance.parentid, 3) == 'end';
+	}
+
+	public numeric function getDepth() {
+		return ListLen(variables.instance.path) - 1;
+	}
+
+	function setCanonicalURL(CanonicalURL){
+		if(isValid('URL',arguments.canonicalURL)){
+			variables.instance.metakeywords=arguments.canonicalURL;
 		}
 
-		public numeric function getDepth() {
-			return ListLen(variables.instance.path) - 1;
+		return this;
+	}
+
+	function getCanonicalURL(CanonicalURL){
+		if(isValid('URL',variables.instance.metakeywords)){
+			return variables.instance.metakeywords;
+		} else {
+			return '';
 		}
+	}
+
+	function getMetaKeywords(conditional=true){
+		if(!arguments.conditional || !isValid('URL',variables.instance.metakeywords)){
+			return variables.instance.metakeywords;
+		} else {
+			return '';
+		}
+	}
 
 }

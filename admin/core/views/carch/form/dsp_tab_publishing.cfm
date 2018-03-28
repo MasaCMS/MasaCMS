@@ -27,14 +27,15 @@
 
 		<cfif rc.moduleid eq '00000000000000000000000000000000000' and not len(tabAssignments) or listFindNocase(tabAssignments,'SEO')>
 			<div class="mura-control-group">
-			<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.description')#</label>
-			  <textarea name="metadesc" rows="3" id="metadesc">#esapiEncode('html',rc.contentBean.getMETADesc())#</textarea>
-				    </div>
+				<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.description')#</label>
+				<textarea name="metadesc" rows="3" id="metadesc">#esapiEncode('html',rc.contentBean.getMETADesc())#</textarea>
+			</div>
 
 			<div class="mura-control-group">
-			<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.keywords')#</label>
-			  <textarea name="metakeywords" rows="3" id="metakeywords">#esapiEncode('html',rc.contentBean.getMETAKEYWORDS())#</textarea>
+				<label>Canonical URL</label>
+				<input type="text" id="canonicalURL" name="canonicalURL" value="#esapiEncode('html_attr',rc.contentBean.getCanonicalURL())#"  maxlength="255">
   		</div>
+
   	</cfif>
 
 		<cfif application.settingsManager.getSite(rc.siteid).getextranet()>
