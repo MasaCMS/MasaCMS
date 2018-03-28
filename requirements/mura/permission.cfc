@@ -406,7 +406,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfelseif r.restrictGroups neq ''>
 						<cfloop list="#r.restrictGroups#" index="G">
 							<cfif listFind(sessionData.mura.memberships,"#G#;#variables.settingsManager.getSite(r.siteid).getPublicUserPoolID()#;1")
-									or listFind(sessionData.mura.memberships,"#G#;#variables.settingsManager.getSite(r.siteid).getPrivateUserPoolID()#;0")>
+									or listFind(sessionData.mura.memberships,"#G#;#variables.settingsManager.getSite(r.siteid).getPrivateUserPoolID()#;0")
+									or listFind(sessionData.mura.membershipids,G)>
 								<cfset r.allow=1>
 								<cfset r.perm="read">
 							</cfif>
@@ -435,7 +436,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset groupArray = listtoarray(arguments.grouplist) />
 				<cfloop from="1" to="#arrayLen(groupArray)#" index="I" step="1">
 					<cfif listFind(sessionData.mura.memberships,'#groupArray[I]#;#variables.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#;0')
-							or listFind(sessionData.mura.memberships,'#groupArray[I]#;#variables.settingsManager.getSite(arguments.siteid).getPublicUserPoolID()#;1')>
+							or listFind(sessionData.mura.memberships,'#groupArray[I]#;#variables.settingsManager.getSite(arguments.siteid).getPublicUserPoolID()#;1')
+							or listFind(sessionData.mura.membershipids,groupArray[I])>
 						<cfreturn true />
 					</cfif>
 				</cfloop>
