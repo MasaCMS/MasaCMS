@@ -52,7 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<div class="nav-module-specific btn-group">
 	<a class="btn" href="./?muraAction=cSettings.editSite&siteID=#esapiEncode('url',rc.siteID)#"><i class="mi-arrow-circle-left"></i> Back to Site Settings</a>
-	<a class="btn" href="./?muraAction=cTrash.empty&siteID=#esapiEncode('url',rc.siteID)#&sinceDate=#esapiEncode('html_attr',$.event('sinceDate'))#&beforeDate=#esapiEncode('html_attr',$.event('beforeDate'))#" onclick="return confirmDialog('Empty Site Trash?', this.href);"><i class="mi-trash"></i>Empty Trash</a>
+	<a class="btn" href="./?muraAction=cTrash.empty&siteID=#esapiEncode('url',rc.siteID)#&sinceDate=#esapiEncode('url',$.event('sinceDate'))#&beforeDate=#esapiEncode('url',$.event('beforeDate'))#" onclick="return confirmDialog('Empty Site Trash?', this.href);"><i class="mi-trash"></i>Empty Trash</a>
 	</div>
 
 	<div class="mura-item-metadata">
@@ -100,10 +100,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<tr>
 				<td class="actions">
 					<ul>
-						<li class="edit"><a title="Edit" href="?muraAction=cTrash.detail&objectID=#trashItem.getObjectID()#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#esapiEncode('url',rc.pageNum)#"><i class="mi-pencil"></i></a></li>
+						<li class="edit"><a title="Edit" href="?muraAction=cTrash.detail&objectID=#trashItem.getObjectID()#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#esapiEncode('url',rc.pageNum)#&sinceDate=#esapiEncode('url',$.event('sinceDate'))#&beforeDate=#esapiEncode('url',$.event('beforeDate'))#"><i class="mi-pencil"></i></a></li>
 					</ul>
 				</td>
-				<td class="var-width"><a href="?muraAction=cTrash.detail&objectID=#trashItem.getObjectID()#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#esapiEncode('url',rc.pageNum)#">#esapiEncode('html',left(trashItem.getObjectLabel(),80))#</a></td>
+				<td class="var-width"><a href="?muraAction=cTrash.detail&objectID=#trashItem.getObjectID()#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#esapiEncode('url',rc.pageNum)#&sinceDate=#esapiEncode('url',$.event('sinceDate'))#&beforeDate=#esapiEncode('url',$.event('beforeDate'))#">#esapiEncode('html',left(trashItem.getObjectLabel(),80))#</a></td>
 				<td>#esapiEncode('html',trashItem.getObjectType())#</td>
 				<td>#esapiEncode('html',trashItem.getObjectSubType())#</td>
 				<td>#esapiEncode('html',trashItem.getSiteID())#</td>
@@ -116,7 +116,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif rc.trashIterator.pageCount() gt 1>
 				<ul class="pagination">
 					<cfif rc.pageNum gt 1>
-									<li><a href="?muraAction=cTrash.list&siteid=#esapiEncode('url',rc.siteid)#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#evaluate('rc.pageNum-1')#"><i class="mi-angle-left"></i></a></li>
+									<li><a href="?muraAction=cTrash.list&siteid=#esapiEncode('url',rc.siteid)#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#evaluate('rc.pageNum-1')#&sinceDate=#esapiEncode('url',$.event('sinceDate'))#&beforeDate=#esapiEncode('url',$.event('beforeDate'))#"><i class="mi-angle-left"></i></a></li>
 					</cfif>
 					<cfloop from="1"  to="#rc.trashIterator.pageCount()#" index="i">
 
@@ -128,7 +128,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 					</cfloop>
 					<cfif rc.pageNum lt rc.trashIterator.pageCount()>
-									<li><a href="?muraAction=cTrash.list&siteid=#esapiEncode('url',rc.siteid)#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#evaluate('rc.pageNum+1')#"><i class="mi-angle-right"></i></a></li>
+						<li><a href="?muraAction=cTrash.list&siteid=#esapiEncode('url',rc.siteid)#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#evaluate('rc.pageNum+1')#&sinceDate=#esapiEncode('url',$.event('sinceDate'))#&beforeDate=#esapiEncode('url',$.event('beforeDate'))#"><i class="mi-angle-right"></i></a></li>
 					</cfif>
 				</ul>
 			</cfif>
