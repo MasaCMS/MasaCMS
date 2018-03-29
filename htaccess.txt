@@ -21,21 +21,14 @@ RewriteCond %{REQUEST_FILENAME} !-d
 # Instructions: http://docs.getmura.com/v6/installation-setup/how-to-add-a-servlet-mapping-for-your-siteid-to-tomcat/
 # -------------------------------------------------------------------------------
 
+# The same rewrite rule actually applies in either option listed below
+# However, configuration of the `settings.ini.cfm` file may vary
 # OPTION 1 :: WITHOUT SiteID
 # In /config/settings.ini.cfm, set both siteidinurls and indexfileinurls to 0
 # and reload the Mura application
-RewriteRule ^(.*) /index.cfm/$1 [NC,QSA,PT]
-
 # OPTION 2 :: WITH SiteID
 # In /config/settings.ini.cfm, set indexfileinurls to 0
-# and reload the Mura application
-#RewriteRule ^([a-zA-Z0-9_\-]{1,})/(.*) /$1/index.cfm/$2 [NC,QSA,PT]
-
-# OPTION 3 :: Advanced Configuration
-# To use the SiteID in the URL for SPECIFIC SITES ONLY, but not for all sites:
-# First, add a custom getURLStem() method to the Site's contentRenderer.cfc,
-# then ENABLE OPTION 1 above, adding a custom rewrite rule for each site:
-#RewriteRule ^YourSiteID/(.*) /sites/YourSiteID/index.cfm/$1 [NC,QSA,PT]
+RewriteRule ^(.*) /index.cfm/$1 [NC,QSA,PT]
 
 # 404 :: Redirect to 404.cfm with the requested URI as a query string
 # This assumes a custom file named 404.cfm exists in your root directory
