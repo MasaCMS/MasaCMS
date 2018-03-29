@@ -6,8 +6,8 @@
 	-->
 
 	<!-- AVAILABLE OPTIONS:
-	     Rule 1: index.cfm and siteid in URL disabled
-	     Rule 2: index.cfm in URL disabled
+	     Option 1: index.cfm and siteid in URL disabled
+	     Option 2: index.cfm in URL disabled
 	     SEO Rules: allow for separate sitemap and robots files per site
 	 -->
 
@@ -25,42 +25,29 @@
 			<rules>
 
 				<!--
-					Rule 1: URLs without SiteID or index.cfm
+					Option 1: URLs without SiteID or index.cfm
 					Usage:
 						- set enabled="true" below
-						- set Mura CMS Rule 2 to enabled="false"
 						- set these values in /config/settings.ini.cfm:
 							siteidinurls=0
 							indexfileinurls=0
 						- reload Mura CMS
+	
+					Option 2: URLs without index.cfm
+					Usage:
+						- set enabled="true" below
+						- set these values in /config/settings.ini.cfm:
+							siteidinurls=1
+							indexfileinurls=0
+						- reload Mura CMS
 				-->
-				<rule name="Mura CMS Rule 1: siteid and index.cfm" enabled="true">
+				<rule name="Mura CMS remove index.cfm" enabled="true">
 					<match url="^(.*)" ignoreCase="true" />
 					<conditions>
 						<add input="{REQUEST_FILENAME}" matchType="IsFile" ignoreCase="false" negate="true" />
 						<add input="{REQUEST_FILENAME}" matchType="IsDirectory" ignoreCase="false" negate="true" />
 					</conditions>
 					<action type="Rewrite" url="/index.cfm/{R:1}" appendQueryString="true" />
-				</rule>
-
-				<!--
-					Rule 2: URLs without index.cfm
-					Usage:
-						- set enabled="true" below
-						- set Mura CMS Rule 1 to enabled="false"
-						- set these values in /config/settings.ini.cfm:
-							siteidinurls=1
-							indexfileinurls=0
-						- reload Mura CMS
-				-->
-				<rule name="Mura CMS Rule 2: index.cfm" enabled="false">
-					<match url="^([a-zA-Z0-9_\-]{1,})/(.*)" ignoreCase="true" />
-					<conditions>
-						<add input="{REQUEST_FILENAME}" matchType="IsFile" ignoreCase="false" negate="true" />
-						<add input="{REQUEST_FILENAME}" matchType="IsDirectory" ignoreCase="false" negate="true" />
-						<add input="{QUERY_STRING}" pattern="(hash)" negate="true" />
-					</conditions>
-					<action type="Rewrite" url="/sites/{R:1}/index.cfm/{R:2}" appendQueryString="true" />
 				</rule>
 
 				<!--
