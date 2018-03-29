@@ -179,6 +179,7 @@ General Classes
 <cfset this.formCheckboxWrapperClass = "">
 <cfset this.formCheckboxClass = "">
 <cfset this.formCheckboxLabelClass = "checkbox">
+<cfset this.formRadioWrapperClass = "">
 <cfset this.formRadioClass = "">
 <cfset this.formRadioLabelClass = "radio">
 <cfset this.formButtonWrapperClass = "btn-group">
@@ -623,6 +624,7 @@ Display Objects
   	formCheckboxClass = this.formCheckboxClass,
   	formCheckboxLabelClass = this.formCheckboxLabelClass,
 		formCheckboxWrapperClass = this.formCheckboxWrapperClass,
+		formRadioWrapperClass = this.formRadioWrapperClass,
   	formRadioClass = this.formRadioClass,
   	formRadioLabelClass = this.formRadioLabelClass,
   	formButtonWrapperClass = this.formButtonWrapperClass,

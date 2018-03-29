@@ -152,6 +152,7 @@
 		//this.formCheckboxClass = "";
 		//this.formCheckboxLabelClass = "checkbox";
 		//this.formCheckboxWrapperClass = "";
+		//this.formRadioWrapperClass = "";
 		//this.formRadioClass = "";
 		//this.formRadioLabelClass = "radio";
 		//this.formButtonWrapperClass = "btn-group";

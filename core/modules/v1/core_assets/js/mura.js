@@ -3157,6 +3157,10 @@ var Mura=(function(){
           config.preloaderMarkup = '';
       }
 
+			if (typeof config.rb == 'undefined') {
+          config.rb={};
+      }
+
 			config.formdata=(typeof FormData != 'undefined') ? true : false;
 
       Mura.editing;
@@ -3237,7 +3241,6 @@ var Mura=(function(){
                   }
               }
           }, {
-              rb: {},
               generateOAuthToken: generateOAuthToken,
               entities: {},
               submitForm: submitForm,
@@ -16933,6 +16936,7 @@ rb: {
 	formcheckboxlabelclass:"checkbox",
 	formcheckboxwrapperclass:"",
 	formradioclass:"",
+	formradiowrapperclass:"",
 	formradiolabelclass:"radio",
 	formbuttonwrapperclass:"btn-group",
 	formbuttoninnerclass:"",
@@ -18272,8 +18276,12 @@ registerHelpers: function() {
 		return self.rb.formradioclass;
 	});
 
+	Mura.Handlebars.registerHelper('radioWrapperClass',function() {
+		return self.rb.formradiowrapperclass;
+	});
+
 	Mura.Handlebars.registerHelper('checkboxLabelClass',function() {
-		return self.rb.formchecklabelclass;
+		return self.rb.formcheckboxlabelclass;
 	});
 
 	Mura.Handlebars.registerHelper('checkboxClass',function() {
@@ -19936,36 +19944,30 @@ this["Mura"]["templates"]["checkbox"] = this.Mura.Handlebars.template({"1":funct
 },"7":function(container,depth0,helpers,partials,data) {
     return "</br>";
 },"9":function(container,depth0,helpers,partials,data,blockParams,depths) {
-    var stack1, helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.lambda, alias3=container.escapeExpression, alias4=helpers.helperMissing, alias5="function";
+    var stack1, helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=helpers.helperMissing, alias3="function", alias4=container.lambda, alias5=container.escapeExpression;
 
-  return "			<div"
-    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.checkboxWrapperClass : depth0),{"name":"if","hash":{},"fn":container.program(10, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + ">\r\n				<input source=\""
-    + alias3(alias2(((stack1 = (depths[1] != null ? depths[1].dataset : depths[1])) != null ? stack1.source : stack1), depth0))
+  return "			<div class=\""
+    + ((stack1 = ((helper = (helper = helpers.checkboxWrapperClass || (depth0 != null ? depth0.checkboxWrapperClass : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"checkboxWrapperClass","hash":{},"data":data}) : helper))) != null ? stack1 : "")
+    + "\">\r\n				<input source=\""
+    + alias5(alias4(((stack1 = (depths[1] != null ? depths[1].dataset : depths[1])) != null ? stack1.source : stack1), depth0))
     + "\" class=\""
-    + ((stack1 = ((helper = (helper = helpers.checkboxClass || (depth0 != null ? depth0.checkboxClass : depth0)) != null ? helper : alias4),(typeof helper === alias5 ? helper.call(alias1,{"name":"checkboxClass","hash":{},"data":data}) : helper))) != null ? stack1 : "")
+    + ((stack1 = ((helper = (helper = helpers.checkboxClass || (depth0 != null ? depth0.checkboxClass : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"checkboxClass","hash":{},"data":data}) : helper))) != null ? stack1 : "")
     + "\" type=\"checkbox\" name=\""
-    + alias3(alias2((depths[1] != null ? depths[1].name : depths[1]), depth0))
+    + alias5(alias4((depths[1] != null ? depths[1].name : depths[1]), depth0))
     + "\" id=\"field-"
-    + alias3(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias4),(typeof helper === alias5 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
+    + alias5(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
     + "\" value=\""
-    + alias3(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias4),(typeof helper === alias5 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
+    + alias5(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
     + "\" "
-    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.isselected : depth0),{"name":"if","hash":{},"fn":container.program(12, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "/>\r\n				<label class=\"checkbox\" class=\""
-    + ((stack1 = ((helper = (helper = helpers.checkboxLabelClass || (depth0 != null ? depth0.checkboxLabelClass : depth0)) != null ? helper : alias4),(typeof helper === alias5 ? helper.call(alias1,{"name":"checkboxLabelClass","hash":{},"data":data}) : helper))) != null ? stack1 : "")
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.isselected : depth0),{"name":"if","hash":{},"fn":container.program(10, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "/>\r\n				<label class=\""
+    + ((stack1 = ((helper = (helper = helpers.checkboxLabelClass || (depth0 != null ? depth0.checkboxLabelClass : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"checkboxLabelClass","hash":{},"data":data}) : helper))) != null ? stack1 : "")
     + "\" for=\"field-"
-    + alias3(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias4),(typeof helper === alias5 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
+    + alias5(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
     + "\">"
-    + alias3(((helper = (helper = helpers.label || (depth0 != null ? depth0.label : depth0)) != null ? helper : alias4),(typeof helper === alias5 ? helper.call(alias1,{"name":"label","hash":{},"data":data}) : helper)))
+    + alias5(((helper = (helper = helpers.label || (depth0 != null ? depth0.label : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"label","hash":{},"data":data}) : helper)))
     + "</label>\r\n			</div>\r\n";
 },"10":function(container,depth0,helpers,partials,data) {
-    var stack1, helper;
-
-  return " class=\""
-    + ((stack1 = ((helper = (helper = helpers.checkboxWrapperClass || (depth0 != null ? depth0.checkboxWrapperClass : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : (container.nullContext || {}),{"name":"checkboxWrapperClass","hash":{},"data":data}) : helper))) != null ? stack1 : "")
-    + "\"";
-},"12":function(container,depth0,helpers,partials,data) {
     return "checked='checked'";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data,blockParams,depths) {
     var stack1, helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=helpers.helperMissing, alias3="function";
@@ -19997,35 +19999,29 @@ this["Mura"]["templates"]["checkbox_static"] = this.Mura.Handlebars.template({"1
 },"7":function(container,depth0,helpers,partials,data) {
     return "</br>";
 },"9":function(container,depth0,helpers,partials,data,blockParams,depths) {
-    var stack1, helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.escapeExpression, alias3=helpers.helperMissing, alias4="function";
+    var stack1, helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
-  return "				<div"
-    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.checkboxWrapperClass : depth0),{"name":"if","hash":{},"fn":container.program(10, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + ">\r\n					<input type=\"checkbox\" name=\""
-    + alias2(container.lambda((depths[1] != null ? depths[1].name : depths[1]), depth0))
+  return "				<div class=\""
+    + ((stack1 = ((helper = (helper = helpers.checkboxWrapperClass || (depth0 != null ? depth0.checkboxWrapperClass : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"checkboxWrapperClass","hash":{},"data":data}) : helper))) != null ? stack1 : "")
+    + "\">\r\n					<input type=\"checkbox\" name=\""
+    + alias4(container.lambda((depths[1] != null ? depths[1].name : depths[1]), depth0))
     + "\" class=\""
-    + ((stack1 = ((helper = (helper = helpers.checkboxClass || (depth0 != null ? depth0.checkboxClass : depth0)) != null ? helper : alias3),(typeof helper === alias4 ? helper.call(alias1,{"name":"checkboxClass","hash":{},"data":data}) : helper))) != null ? stack1 : "")
+    + ((stack1 = ((helper = (helper = helpers.checkboxClass || (depth0 != null ? depth0.checkboxClass : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"checkboxClass","hash":{},"data":data}) : helper))) != null ? stack1 : "")
     + "\" id=\"field-"
-    + alias2(((helper = (helper = helpers.datarecordid || (depth0 != null ? depth0.datarecordid : depth0)) != null ? helper : alias3),(typeof helper === alias4 ? helper.call(alias1,{"name":"datarecordid","hash":{},"data":data}) : helper)))
+    + alias4(((helper = (helper = helpers.datarecordid || (depth0 != null ? depth0.datarecordid : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"datarecordid","hash":{},"data":data}) : helper)))
     + "\" value=\""
-    + alias2(((helper = (helper = helpers.value || (depth0 != null ? depth0.value : depth0)) != null ? helper : alias3),(typeof helper === alias4 ? helper.call(alias1,{"name":"value","hash":{},"data":data}) : helper)))
+    + alias4(((helper = (helper = helpers.value || (depth0 != null ? depth0.value : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"value","hash":{},"data":data}) : helper)))
     + "\" "
-    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.isselected : depth0),{"name":"if","hash":{},"fn":container.program(12, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.selected : depth0),{"name":"if","hash":{},"fn":container.program(12, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "/>\r\n					<label class=\"checkbox\" class=\""
-    + ((stack1 = ((helper = (helper = helpers.checkboxLabelClass || (depth0 != null ? depth0.checkboxLabelClass : depth0)) != null ? helper : alias3),(typeof helper === alias4 ? helper.call(alias1,{"name":"checkboxLabelClass","hash":{},"data":data}) : helper))) != null ? stack1 : "")
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.isselected : depth0),{"name":"if","hash":{},"fn":container.program(10, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.selected : depth0),{"name":"if","hash":{},"fn":container.program(10, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "/>\r\n					<label class=\""
+    + ((stack1 = ((helper = (helper = helpers.checkboxLabelClass || (depth0 != null ? depth0.checkboxLabelClass : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"checkboxLabelClass","hash":{},"data":data}) : helper))) != null ? stack1 : "")
     + "\" for=\"field-"
-    + alias2(((helper = (helper = helpers.datarecordid || (depth0 != null ? depth0.datarecordid : depth0)) != null ? helper : alias3),(typeof helper === alias4 ? helper.call(alias1,{"name":"datarecordid","hash":{},"data":data}) : helper)))
+    + alias4(((helper = (helper = helpers.datarecordid || (depth0 != null ? depth0.datarecordid : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"datarecordid","hash":{},"data":data}) : helper)))
     + "\">"
-    + alias2(((helper = (helper = helpers.label || (depth0 != null ? depth0.label : depth0)) != null ? helper : alias3),(typeof helper === alias4 ? helper.call(alias1,{"name":"label","hash":{},"data":data}) : helper)))
+    + alias4(((helper = (helper = helpers.label || (depth0 != null ? depth0.label : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"label","hash":{},"data":data}) : helper)))
     + "</label>\r\n				</div>\r\n";
 },"10":function(container,depth0,helpers,partials,data) {
-    var stack1, helper;
-
-  return " class=\""
-    + ((stack1 = ((helper = (helper = helpers.checkboxWrapperClass || (depth0 != null ? depth0.checkboxWrapperClass : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : (container.nullContext || {}),{"name":"checkboxWrapperClass","hash":{},"data":data}) : helper))) != null ? stack1 : "")
-    + "\"";
-},"12":function(container,depth0,helpers,partials,data) {
     return " checked='checked'";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data,blockParams,depths) {
     var stack1, helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=helpers.helperMissing, alias3="function";
@@ -20260,11 +20256,9 @@ this["Mura"]["templates"]["radio"] = this.Mura.Handlebars.template({"1":function
 },"9":function(container,depth0,helpers,partials,data,blockParams,depths) {
     var stack1, helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
-  return "				<label for=\"field-"
-    + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
-    + "\" test1=1 class=\""
-    + ((stack1 = ((helper = (helper = helpers.radioLabelClass || (depth0 != null ? depth0.radioLabelClass : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"radioLabelClass","hash":{},"data":data}) : helper))) != null ? stack1 : "")
-    + "\">\n				<input type=\"radio\" name=\""
+  return "				<div class=\""
+    + ((stack1 = ((helper = (helper = helpers.radioWrapperClass || (depth0 != null ? depth0.radioWrapperClass : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"radioWrapperClass","hash":{},"data":data}) : helper))) != null ? stack1 : "")
+    + "\">\n					<input type=\"radio\" name=\""
     + alias4(container.lambda((depths[1] != null ? depths[1].name : depths[1]), depth0))
     + "id\" class=\""
     + ((stack1 = ((helper = (helper = helpers.radioClass || (depth0 != null ? depth0.radioClass : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"radioClass","hash":{},"data":data}) : helper))) != null ? stack1 : "")
@@ -20274,9 +20268,13 @@ this["Mura"]["templates"]["radio"] = this.Mura.Handlebars.template({"1":function
     + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
     + "\" "
     + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.isselected : depth0),{"name":"if","hash":{},"fn":container.program(10, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "/>\n				"
+    + "/>\n					<label for=\"field-"
+    + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
+    + "\" test1=1 class=\""
+    + ((stack1 = ((helper = (helper = helpers.radioLabelClass || (depth0 != null ? depth0.radioLabelClass : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"radioLabelClass","hash":{},"data":data}) : helper))) != null ? stack1 : "")
+    + "\">"
     + alias4(((helper = (helper = helpers.label || (depth0 != null ? depth0.label : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"label","hash":{},"data":data}) : helper)))
-    + "</label>\n";
+    + "</label>\n				</div>\n";
 },"10":function(container,depth0,helpers,partials,data) {
     return "checked='checked'";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data,blockParams,depths) {
@@ -20311,11 +20309,9 @@ this["Mura"]["templates"]["radio_static"] = this.Mura.Handlebars.template({"1":f
 },"9":function(container,depth0,helpers,partials,data,blockParams,depths) {
     var stack1, helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
-  return "				<label for=\"field-"
-    + alias4(((helper = (helper = helpers.datarecordid || (depth0 != null ? depth0.datarecordid : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"datarecordid","hash":{},"data":data}) : helper)))
-    + "\" class=\""
-    + ((stack1 = ((helper = (helper = helpers.radioLabelClass || (depth0 != null ? depth0.radioLabelClass : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"radioLabelClass","hash":{},"data":data}) : helper))) != null ? stack1 : "")
-    + "\">\n				<input type=\"radio\" name=\""
+  return "				<div class=\""
+    + ((stack1 = ((helper = (helper = helpers.radioWrapperClass || (depth0 != null ? depth0.radioWrapperClass : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"radioWrapperClass","hash":{},"data":data}) : helper))) != null ? stack1 : "")
+    + "\">\n					<input type=\"radio\" name=\""
     + alias4(container.lambda((depths[1] != null ? depths[1].name : depths[1]), depth0))
     + "\" class=\""
     + ((stack1 = ((helper = (helper = helpers.radioClass || (depth0 != null ? depth0.radioClass : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"radioClass","hash":{},"data":data}) : helper))) != null ? stack1 : "")
@@ -20325,9 +20321,13 @@ this["Mura"]["templates"]["radio_static"] = this.Mura.Handlebars.template({"1":f
     + alias4(((helper = (helper = helpers.value || (depth0 != null ? depth0.value : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"value","hash":{},"data":data}) : helper)))
     + "\"  "
     + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.isselected : depth0),{"name":"if","hash":{},"fn":container.program(10, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "/>\n				"
+    + "/>\n					<label for=\"field-"
+    + alias4(((helper = (helper = helpers.datarecordid || (depth0 != null ? depth0.datarecordid : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"datarecordid","hash":{},"data":data}) : helper)))
+    + "\" class=\""
+    + ((stack1 = ((helper = (helper = helpers.radioLabelClass || (depth0 != null ? depth0.radioLabelClass : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"radioLabelClass","hash":{},"data":data}) : helper))) != null ? stack1 : "")
+    + "\">"
     + alias4(((helper = (helper = helpers.label || (depth0 != null ? depth0.label : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"label","hash":{},"data":data}) : helper)))
-    + "</label>\n";
+    + "</label>\n				</div>\n";
 },"10":function(container,depth0,helpers,partials,data) {
     return "checked='checked'";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data,blockParams,depths) {
