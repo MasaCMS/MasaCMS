@@ -420,7 +420,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfset directoryCreate(backupPath)/>
 					</cfif>
 
-					<cfif not fileExists(filePath)>
+					<cfif not fileExists(filePath) and fileExists(URLDecode('#assetdir#/#fileArray[i]['path']#/#fileArray[i]['file']#', 'utf-8'))>
 						<cfset fileCopy(URLDecode('#assetdir#/#fileArray[i]['path']#/#fileArray[i]['file']#', 'utf-8'), filePath) />
 					</cfif>
 				</cfloop>
@@ -455,6 +455,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var path = "" />
 		<cfset var pathlist="" />
 		<cfset var pathArray = [] />
+		<cfset var filehArray = [] />
 		<cfset var filePoolID =getBean('settingsManager').getSite(arguments.siteid).getFilePoolID()>
 		<cfset var end="">
 
@@ -470,6 +471,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfif len(path)>
 							<cfset block = {} />
 							<cfset pathArray = ListToArray( path,"/" ) />
+							<cfset fileArray = listToArray(pathArray[ArrayLen(pathArray)], '.')>
+							<cfif listLen(fileArray[ArrayLen(fileArray)],' ')>
+									<cfset fileArray[ArrayLen(fileArray)]=listFirst(fileArray[ArrayLen(fileArray)],' ')>
+									<cfset pathArray[ArrayLen(pathArray)]=arrayToList(fileArray, '.')>
+							</cfif>
 							<cfset block['pathArray'] = pathArray />
 							<cfset block['file'] = pathArray[ArrayLen(pathArray)] />
 							<cfset ArrayDeleteAt( pathArray,1 ) />
