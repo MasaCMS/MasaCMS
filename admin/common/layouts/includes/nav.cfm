@@ -396,7 +396,7 @@
                             </cfif>
                             <!--- copyright --->
                              <li>
-                                <a href="https://github.com/blueriver/MuraCMS/blob/develop/license.txt" target="_blank"><span><strong>Mura CMS</strong> &copy; #year(now())# Blue River Interactive Group. <em>Licensed under GNU General Public License Version 2.0 with exceptions</em></span></a>
+                                <a href="https://github.com/blueriver/MuraCMS/blob/develop/license.txt" target="_blank"><span><strong>Mura CMS</strong> &copy; #year(now())# blueriver <em>Licensed under GNU General Public License Version 2.0 with exceptions</em></span></a>
                             </li>
                         </ul>
                     </li>
