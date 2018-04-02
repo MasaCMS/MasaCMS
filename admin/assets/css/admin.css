@@ -1119,7 +1119,7 @@ html {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 body {
-  font-family: "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
   line-height: 1.6;
   color: #646464;
@@ -1218,7 +1218,7 @@ h6,
 .h4,
 .h5,
 .h6 {
-  font-family: "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: normal;
   line-height: 1.2;
   color: inherit;
@@ -6651,7 +6651,7 @@ button.close {
   position: absolute;
   z-index: 1070;
   display: block;
-  font-family: "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-style: normal;
   font-weight: normal;
   letter-spacing: normal;
@@ -6769,7 +6769,7 @@ button.close {
   display: none;
   max-width: 276px;
   padding: 1px;
-  font-family: "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-style: normal;
   font-weight: normal;
   letter-spacing: normal;
@@ -7330,7 +7330,7 @@ body {
   height: 100%;
 }
 body {
-  font-family: "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
   color: #646464;
   background-color: #f5f5f5;
@@ -7400,7 +7400,7 @@ h6,
 .h5,
 .h6 {
   margin: 0;
-  font-family: "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: normal;
   line-height: 1.2;
   color: inherit;
@@ -9613,7 +9613,7 @@ a.list-group-item:focus {
 }
 .popover-title {
   padding: 10px 10px 1px;
-  font-family: "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   background-color: #fff;
   border-bottom: none;
   border-radius: 1px 1px 0 0;
@@ -9678,7 +9678,7 @@ a.list-group-item:focus {
 .table:not([class*="mura-table-grid"]) > tbody > tr > th,
 .table:not([class*="mura-table-grid"]) > tfoot > tr > th {
   padding: 16px 10px 12px;
-  font-family: "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 15px;
   font-weight: 600;
   text-transform: uppercase;
@@ -19187,7 +19187,7 @@ a.bg-smooth-lighter:focus {
 }
 .jvectormap-tip {
   padding: 6px 8px;
-  font-family: "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   background: #2c2c2f;
   border: none;
   border-radius: 0;
@@ -19331,7 +19331,7 @@ div.tagsinput span.tag {
   height: 22px;
   line-height: 18px;
   color: #fff;
-  font-family: "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 600;
   background-color: #5c90d2;
   border: none;
@@ -19423,7 +19423,7 @@ div.tagsinput span.tag a:hover {
 .select2-container--default .select2-search--inline .select2-search__field {
   padding-right: 0;
   padding-left: 0;
-  font-family: "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   -webkit-box-shadow: none;
   box-shadow: none;
 }
@@ -19432,7 +19432,7 @@ div.tagsinput span.tag a:hover {
 }
 .select2-search--dropdown .select2-search__field {
   padding: 6px 12px;
-  font-family: "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   border-radius: 3px;
   -webkit-box-shadow: none;
   box-shadow: none;
