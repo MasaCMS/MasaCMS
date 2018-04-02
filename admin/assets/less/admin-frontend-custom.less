@@ -323,6 +323,44 @@
 			}
 		}
 	}
+	@media (max-width: (@screen-md-min - 1)) {
+		#frontEndTools > ul + ul#tools-changesets {
+			margin-left: 0 !important; 	
+			#cs-title-text{
+			    max-width: 100px;
+			    text-overflow: ellipsis!important;
+			    white-space: nowrap;
+			}
+			 > li a{
+				padding: 0 6px !important;
+			}
+		}
+		#frontEndTools > ul#tools-version{
+			margin-left: 0 !important;
+			 > li a{
+				padding: 0 7px !important;
+			}
+		}
+	}
+	@media (max-width: (@screen-sm-min + 21)) {
+		#frontEndTools > ul#tools-status{
+			padding-right: 2px !important;
+		}
+		#frontEndTools > ul#tools-user li#adminWelcome {
+			display:none;
+		}
+		#frontEndTools > ul#tools-changesets {
+			display:none;
+		}
+	}
+	@media (max-width: (@screen-sm-min - 150)) {
+		#frontEndTools > ul#tools-user li#adminLogOut{
+			margin-right: 0 !important;
+			a > span{
+				display:none;
+			}
+		} 
+	}
 
 	#frontEndTools > #adminDashboard {
 
