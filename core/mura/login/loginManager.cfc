@@ -193,6 +193,7 @@ If you did not request a new authorization, contact #contactEmail#.");
 			} else {
 				loginURL &= "?status=challenge&failedchallenge=#arguments.failedchallenge#&rememberMe=#arguments.rememberMe#&contentid=#arguments.contentid#&LinkServID=#arguments.linkServID#&returnURL=#urlEncodedFormat(arguments.returnUrl)#";
 			}
+
 			if ( request.muraAPIRequest ) {
 				request.muraJSONRedirectURL=loginURL;
 			} else {
@@ -304,6 +305,7 @@ If you did not request a new authorization, contact #contactEmail#.");
 		param name="arguments.data.linkServID" default="";
 		param name="arguments.data.isAdminLogin" default=false;
 		param name="arguments.data.compactDisplay" default=false;
+		param name="arguments.data.failedchallenge" default=false;
 		var sessionData=getSession();
 		if ( !isdefined('arguments.data.username') ) {
 			if ( request.muraAPIRequest ) {
@@ -318,16 +320,18 @@ If you did not request a new authorization, contact #contactEmail#.");
 				if ( rsUser.recordcount ) {
 					var $=getBean('$').init(arguments.data.siteid);
 					sessionData.mfa={
-					userid=rsuser.userid,
-					siteid=rsuser.siteid,
-					username=rsuser.username,
-					returnUrl=arguments.data.returnURL,
-					rememberMe=arguments.data.rememberMe,
-					contentid=arguments.data.contentid,
-					linkServID=arguments.data.linkServID,
-					isAdminLogin=arguments.data.isAdminLogin,
-					compactDisplay=arguments.data.compactDisplay,
-					deviceid=cookie.mxp_trackingid};
+						userid=rsuser.userid,
+						siteid=rsuser.siteid,
+						username=rsuser.username,
+						returnUrl=arguments.data.returnURL,
+						rememberMe=arguments.data.rememberMe,
+						contentid=arguments.data.contentid,
+						linkServID=arguments.data.linkServID,
+						isAdminLogin=arguments.data.isAdminLogin,
+						compactDisplay=arguments.data.compactDisplay,
+						deviceid=cookie.mxp_trackingid,
+						failedchallenge=arguments.data.failedchallenge
+					};
 					//  if the deviceid is supplied then check to see if the user has validated the device
 					if ( getBean('configBean').getValue(property='MFAPerDevice',defaultValue=false) ) {
 						var userDevice=$.getBean('userDevice').loadBy(userid=sessionData.mfa.userid,deviceid=sessionData.mfa.deviceid,siteid=sessionData.mfa.siteid);
