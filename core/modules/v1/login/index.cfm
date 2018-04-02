@@ -69,13 +69,28 @@
 			--->
 			#variables.$.content('summary')#
 
-			<cfif variables.$.event('status') eq 'failed'>
-				<cfif isDate(session.blockLoginUntil) and session.blockLoginUntil gt now()>
-				<cfset variables.$.event('isBlocked',true) />
-				<p id="loginMsg" class="#this.alertDangerClass#">#variables.$.rbKey('user.loginblocked')#</p>
-				<cfelse>
-				<p id="loginMsg" class="#this.alertDangerClass#">#variables.$.rbKey('user.loginfailed')#</p>
-				</cfif>
+			<cfset errorMessage = '' />
+			<cfif StructKeyExists(session, 'mfa') and Len(session.mfa.username)>
+				<cfset objStrikes = CreateObject('component', 'mura.user.userstrikes').init(session.mfa.username, application.configBean) />
+				<cfset isBlocked = objStrikes.isBlocked() />
+			<cfelse>
+				<cfset isBlocked = StructKeyExists(session, 'blockLoginUntil') and IsDate(session.blockLoginUntil) and session.blockLoginUntil gt Now() />
+			</cfif>
+
+			<cfif isBlocked>
+				<cfset errorMessage = variables.$.rbKey('login.blocked') />
+			<cfelseif variables.$.event('status') eq 'denied'>
+				<cfset errorMessage = variables.$.rbKey('login.denied') />
+			<cfelseif variables.$.event('status') eq 'failed'>
+				<cfset errorMessage = variables.$.rbKey('login.failed') />
+			<cfelseif variables.$.event('failedchallenge') eq 'true'>
+				<cfset errorMessage = variables.$.rbKey('login.incorrectauthorizationcode') />
+			</cfif>
+
+			<cfif Len(errorMessage)>
+				<div id="loginMsg" class="#this.alertDangerClass#">
+					#errorMessage#
+				</div>
 			</cfif>
 
 			<cfif not variables.$.event('isBlocked')>

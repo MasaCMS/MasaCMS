@@ -515,9 +515,8 @@
 				<cfif not arguments.$.getContentRenderer().validateCSRFTokens or arguments.$.validateCSRFTokens(context='login')>
 					<cfset var loginManager=arguments.$.getBean('loginManager')>
 					<cfif isBoolean(arguments.$.event('attemptChallenge')) and arguments.$.event('attemptChallenge')>
-						<cfif loginManager.handleChallengeAttempt(arguments.$)>
-							<cfset loginManager.completedChallenge(arguments.$)>
-						</cfif>
+						<cfset arguments.$.event('failedchallenge', !loginManager.handleChallengeAttempt(arguments.$)) />
+						<cfset loginManager.completedChallenge(arguments.$)>
 					<cfelseif isDefined('form.username') and isDefined('form.password')>
 						<cfset loginManager.login(arguments.$.event().getAllValues(),'')>
 					</cfif>
