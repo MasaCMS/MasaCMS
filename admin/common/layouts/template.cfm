@@ -184,7 +184,7 @@
 
 	<title>#esapiEncode('html',application.configBean.getTitle())#<cfif len(moduleTitle)> - #esapiEncode('html',moduleTitle)#</cfif></title>
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0">
-	<meta name="author" content="Blue River Interactive Group">
+	<meta name="author" content="blueriver">
 	<meta name="robots" content="noindex, nofollow, noarchive">
 	<meta http-equiv="cache control" content="no-cache, no-store, must-revalidate">
 
