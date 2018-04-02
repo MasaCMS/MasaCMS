@@ -148,7 +148,7 @@ component extends="ioc" hint="This provides the primary bean factory that all co
 
       var registeredEntity=getBean('entity').loadBy(name=arguments.entityname);
 
-      if(registeredEntity.exists() && registeredEntity.getDynamic() && getCurrentUser().isSuperUser()){
+      if(registeredEntity.exists() && registeredEntity.getDynamic() && registeredEntity.getCurrentUser().isSuperUser()){
 
         var entity=getBean(arguments.entityname);
 
