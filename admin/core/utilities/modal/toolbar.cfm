@@ -448,7 +448,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<cfset rsChangesets=application.changesetManager.getQuery(siteID=$.event('siteID'),published=0,sortby="PublishDate")>
 							<ul id="tools-changesets">
 
-								<li id="cs-title" class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown"><i>CS</i><cfif request.muraChangesetPreview>#esapiEncode('html',previewData.name)#<cfif isDate(previewData.publishDate)> (#LSDateFormat(previewData.publishDate,session.dateKeyFormat)#)</cfif><cfelse>None Selected</cfif><b class="caret"></b></a>
+								<li id="cs-title" class="dropdown"><a id="cs-title-text" class="dropdown-toggle" data-toggle="dropdown"><i>CS</i><cfif request.muraChangesetPreview>#esapiEncode('html',previewData.name)#<cfif isDate(previewData.publishDate)> (#LSDateFormat(previewData.publishDate,session.dateKeyFormat)#)</cfif><cfelse>None Selected</cfif><b class="caret"></b></a>
 									<ul class="dropdown-menu">
 										<li><a href="./?changesetid=">None</a></li>
 										<cfloop query="rsChangesets">
@@ -528,7 +528,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				<cfif $.currentUser().isLoggedIn()>
 					<ul id="tools-user">
-						<li id="adminLogOut"><a href="?doaction=logout" title="#application.rbFactory.getKeyValue(session.rb,'layout.logout')#"><i class="mi-sign-out"></i>#application.rbFactory.getKeyValue(session.rb,'layout.logout')#</a></li>
+						<li id="adminLogOut"><a href="?doaction=logout" title="#application.rbFactory.getKeyValue(session.rb,'layout.logout')#"><i class="mi-sign-out"></i><span>#application.rbFactory.getKeyValue(session.rb,'layout.logout')#</span></a></li>
 						<li id="adminWelcome"><i class="mi-user"></i> #esapiEncode("html","#session.mura.fname# #session.mura.lname#")#</li>
 					</ul>
 				</cfif>
