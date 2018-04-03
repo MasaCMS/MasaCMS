@@ -821,7 +821,14 @@
 
 			request.cffpJS=true;
 
-			result.template=renderer.getTemplate();
+			result.template=listToArray(renderer.getTemplate(),'.');
+			result.template=result.template[1];
+			result.childtemplate=listToArray(renderer.getChildTemplate(),'.');
+			if(arrayLen(result.childtemplate)){
+				result.childtemplate=result.childtemplate[1];
+			} else {
+				result.template;
+			}
 			result.conanicalURL=renderer.getConanicalURL();
 			result.metadesc=renderer.getMetaDesc();
 
