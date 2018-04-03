@@ -100,7 +100,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif rc.contentBean.getActive() and rc.contentBean.getIsOnDisplay()>
 		<cfset href = rc.contentBean.getURL()>
 	<cfelse>
-		<cfset href = rc.contentBean.getURL(queryString="previewid=#contentBean.getContentHistID()#")>
+		<cfset href = rc.contentBean.getURL(queryString="previewid=#rc.contentBean.getContentHistID()#")>
 	</cfif>
 </cfif>
 </cfsilent>
