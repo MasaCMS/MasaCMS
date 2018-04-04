@@ -104,7 +104,7 @@
 		border: 0 !important;
 		box-shadow: none !important;
 		cursor: pointer !important;
-		height: 24px !important;
+		height: 20px !important;
 		margin: 0 !important;
 		padding: 0 !important;
 		width: auto !important;
@@ -113,8 +113,8 @@
 
 	#frontEndToolsHandle img{
 		position: fixed !important;
-			left: 12px !important;
-			top: 8px !important;
+			left: 10px !important;
+			top: 10px !important;
 	}		
 	#frontEndToolsHandleText img{
 		position: fixed !important;
@@ -145,7 +145,7 @@
 		float: left !important;
 
 		&:first-child {
-			margin-left: 112px !important;
+			margin-left: 102px !important;
 			border-left: 0;
 		}
 
@@ -343,6 +343,9 @@
 		}
 	}
 	@media (max-width: (@screen-sm-min + 21)) {
+		#frontEndTools > ul#tools-version{
+			padding-left: 2px !important;
+		}	
 		#frontEndTools > ul#tools-status{
 			padding-right: 2px !important;
 		}
@@ -361,7 +364,17 @@
 			}
 		} 
 	}
+	@media (max-width: (@screen-sm-min - 350)) {
+		#frontEndTools > ul#tools-user li#adminLogOut{
+			display: none;
+		}
+	}	
+	#frontEndTools>ul#tools-version, 
+	#frontEndTools>ul#tools-status{
+		display: block !important;
+	} 
 
+	
 	#frontEndTools > #adminDashboard {
 
 		border-right: 0 !important;
@@ -386,8 +399,17 @@
 		margin-right: 2px !important;
 	}
 
-	#frontEndTools > #tools-user {
+	#frontEndTools > #tools-user,
+	#frontEndTools > #tools-version,
+	#frontEndTools > #tools-changesets {
+		margin-top: 1px !important;
+		&> li > a{
+			height: 38px !important;
+			line-height: 38px !important;
+		}
+	}	
 
+	#frontEndTools > #tools-user {
 		border: 0 !important;
 
 		> li {
@@ -511,7 +533,7 @@
 		padding-bottom: 2px;
 		padding-top: 0;
   	text-align: left !important;
-		top: @feToolBarHeight;
+		top: (@feToolBarHeight - 1);
 
 
 		li {
