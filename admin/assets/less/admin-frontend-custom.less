@@ -343,6 +343,9 @@
 		}
 	}
 	@media (max-width: (@screen-sm-min + 21)) {
+		#frontEndTools > ul#tools-version{
+			padding-left: 2px !important;
+		}	
 		#frontEndTools > ul#tools-status{
 			padding-right: 2px !important;
 		}
@@ -361,7 +364,17 @@
 			}
 		} 
 	}
+	@media (max-width: (@screen-sm-min - 350)) {
+		#frontEndTools > ul#tools-user li#adminLogOut{
+			display: none;
+		}
+	}	
+	#frontEndTools>ul#tools-version, 
+	#frontEndTools>ul#tools-status{
+		display: block !important;
+	} 
 
+	
 	#frontEndTools > #adminDashboard {
 
 		border-right: 0 !important;
