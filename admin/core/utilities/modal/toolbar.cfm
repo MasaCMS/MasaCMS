@@ -229,11 +229,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfsilent>
 		<cfoutput>
 		<div class="mura mura-toolbar">
-			<a id="frontEndToolsHandle" href="##" onclick="if (document.getElementById('frontEndTools').style.display == 'none') { createCookie('FETDISPLAY','block',5); } else { createCookie('FETDISPLAY','none',5); } toggleAdminToolbar(); return false;">
-				<img src="#variables.$.globalConfig("adminPath")#/assets/images/mura-logo-fe-icon@2x.png" />
-				<span id="frontEndToolsHandleText" style="display: #Cookie.fetDisplay#">
-					<img src="#variables.$.globalConfig("adminPath")#/assets/images/mura-logo-fe-text@2x.png" />
-				</span>
+			<a id="frontEndToolsHandle" href="##" onclick="if (document.getElementById('frontEndTools').style.display == 'none') { createCookie('FETDISPLAY','block',5); document.getElementById('mura-fe-logo').src='#variables.$.globalConfig("adminPath")#/assets/images/mura-logo-fe.svg';} else { createCookie('FETDISPLAY','none',5); document.getElementById('mura-fe-logo').src='#variables.$.globalConfig("adminPath")#/assets/images/mura-logo-fe-icon.svg'} toggleAdminToolbar(); return false;">
+				<img id="mura-fe-logo" src="#variables.$.globalConfig("adminPath")#/assets/images/mura-logo-fe<cfif Cookie.fetDisplay eq 'none'>-icon</cfif>.svg" />
 			</a>
 
 			<div id="frontEndTools" style="display: #Cookie.fetDisplay#">
