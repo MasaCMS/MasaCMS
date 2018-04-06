@@ -808,7 +808,11 @@ var Mura=(function(){
               el.addEventListener(
                   eventName,
                   function(event) {
-                      fn.call(el, event);
+										if(typeof fn.call == 'undefined'){
+											fn(event);
+										} else {
+											fn.call(el, event);
+										}
                   },
                   true
               );
@@ -1852,8 +1856,7 @@ var Mura=(function(){
                           $customaction(theForm);
                           return false;
                       } else {
-                          document.createElement('form').submit
-                              .call(theForm);
+                          document.createElement('form').submit.call(theForm);
                       }
                   } else {
                       var msg = '';
@@ -2796,14 +2799,22 @@ var Mura=(function(){
           if (obj.data('object') == 'container') {
               wireUpObject(obj);
               if (typeof resolve == 'function') {
-                  resolve.call(obj.node, obj);
+								if(typeof resolve.call == 'undefined'){
+                  resolve(obj);
+								} else {
+									resolve.call(obj.node, obj);
+								}
               }
           } else {
               if (!obj.data('async') && obj.data('render') ==
                   'client') {
                   wireUpObject(obj);
                   if (typeof resolve == 'function') {
-                      resolve.call(obj.node, obj);
+										if(typeof resolve.call == 'undefined'){
+                      resolve(obj);
+										} else {
+											resolve.call(obj.node, obj);
+										}
                   }
               } else {
                   //console.log(data);
@@ -2816,10 +2827,12 @@ var Mura=(function(){
                       success: function(resp) {
                           handleResponse(obj,
                               resp);
-                          if (typeof resolve ==
-                              'function') {
-                              resolve.call(obj.node,
-                                  obj);
+                          if (typeof resolve =='function') {
+														if(typeof resolve.call == 'undefined'){
+															resolve(obj);
+														} else {
+															resolve.call(obj.node, obj);
+														}
                           }
                       }
                   });
@@ -13839,11 +13852,31 @@ Mura.DOMSelection = Mura.Core.extend(
        */
       each: function(fn) {
           this.selection.forEach(function(el, idx, array) {
-              fn.call(el, el, idx, array);
+						if(typeof fn.call == 'undefined'){
+							fn(el, idx, array);
+						} else {
+							fn.call(el, el, idx, array);
+						}
           });
           return this;
       },
 
+			/**
+       * each - Runs function against each item in selection
+       *
+       * @param  {function} fn Method
+       * @return {Mura.DOMSelection} Self
+       */
+      forEach: function(fn) {
+          this.selection.forEach(function(el, idx, array) {
+						if(typeof fn.call == 'undefined'){
+							fn(el, idx, array);
+						} else {
+							fn.call(el, el, idx, array);
+						}
+          });
+          return this;
+      },
 
       /**
        * filter - Creates a new Mura.DomSelection instance contains selection values that pass filter function by returning true
@@ -13852,10 +13885,12 @@ Mura.DOMSelection = Mura.Core.extend(
        * @return {object}    New Mura.DOMSelection
        */
       filter: function(fn) {
-          return Mura(this.selection.filter(function(el,
-              idx, array) {
-              return fn.call(el, el, idx,
-                  array);
+          return Mura(this.selection.filter(function(el,idx, array) {
+						if(typeof fn.call == 'undefined'){
+							return fn(el, idx,array);
+						} else {
+							return fn.call(el, el, idx,array);
+						}
           }));
       },
 
@@ -13866,10 +13901,12 @@ Mura.DOMSelection = Mura.Core.extend(
        * @return {object}    New Mura.DOMSelection
        */
       map: function(fn) {
-          return Mura(this.selection.map(function(el, idx,
-              array) {
-              return fn.call(el, el, idx,
-                  array);
+          return Mura(this.selection.map(function(el, idx, array) {
+						if(typeof fn.call == 'undefined'){
+							return fn(el, idx, array);
+						} else {
+							return fn.call(el, el, idx, array);
+						}
           }));
       },
 
@@ -13884,8 +13921,11 @@ Mura.DOMSelection = Mura.Core.extend(
           initialValue = initialValue || 0;
           return this.selection.reduce(
               function(accumulator, item, idx, array) {
-                  return fn.call(item, accumulator,
-                      item, idx, array);
+								if(typeof fn.call == 'undefined'){
+									return fn(accumulator,item, idx, array);
+								} else {
+									return fn.call(item, accumulator,item, idx, array);
+								}
               },
               initialValue
           );
@@ -13972,15 +14012,18 @@ Mura.DOMSelection = Mura.Core.extend(
                                       selector
                                   ).each(
                                       function() {
-                                          fn
-                                              .call(
-                                                  this
-                                              );
+																				if(typeof fn.call =='undefined'){
+																					fn(this);
+																				} else {
+																					fn.call(this,this);
+																				}
                                       });
                               } else {
-                                  fn.call(
-                                      this
-                                  );
+																if(typeof fn.call =='undefined'){
+																	fn(this);
+																} else {
+																	fn.call(this,this);
+																}
                               }
                           });
                       },
@@ -14004,19 +14047,20 @@ Mura.DOMSelection = Mura.Core.extend(
                       function(event) {
                           if (selector) {
                               if (Mura(event.target)
-                                  .is(
-                                      selector
-                                  )) {
-                                  return fn.call(
-                                      event
-                                      .target,
-                                      event
-                                  );
+                                  .is(selector)) {
+																		if(typeof fn.call == 'undefined'){
+																			return fn(event);
+																		} else {
+																			return fn.call(event.target,event);
+																		}
+
                               }
                           } else {
-                              return fn.call(
-                                  self,
-                                  event);
+														if(typeof fn.call == 'undefined'){
+															return fn(event);
+														} else {
+															return fn.call(self,event);
+														}
                           }
 
                       },
@@ -16267,7 +16311,11 @@ Mura.EntityCollection=Mura.Entity.extend(
 	 */
 	each:function(fn){
 		this.properties.items.forEach( function(item,idx){
-			fn.call(item,item,idx);
+			if(typeof fn.call == 'undefined'){
+				fn(item,idx);
+			} else {
+				fn.call(item,item,idx);
+			}
 		});
 		return this;
 	},
@@ -16290,7 +16338,7 @@ Mura.EntityCollection=Mura.Entity.extend(
 	 */
 	sort:function(fn){
 		this.properties.items.sort(fn);
-          return this;
+    return this;
 	},
 
 	/**
@@ -16300,17 +16348,22 @@ Mura.EntityCollection=Mura.Entity.extend(
 	 * @return {Mura.EntityCollection}
 	 */
 	filter:function(fn){
-          var newProps={};
+	  var newProps={};
 
-          for(var p in this.properties){
-              if(this.properties.hasOwnProperty(p) && p != 'items' && p != 'links'){
-                  newProps[p]=this.properties[p];
-              }
-          }
+	  for(var p in this.properties){
+	      if(this.properties.hasOwnProperty(p) && p != 'items' && p != 'links'){
+	          newProps[p]=this.properties[p];
+	      }
+	  }
 
 		var collection=new Mura.EntityCollection(newProps,this._requestcontext);
+
 		return collection.set('items',this.properties.items.filter( function(item,idx){
-			return fn.call(item,item,idx);
+			if(typeof fn.call == 'undefined'){
+				return fn(item,idx);
+			} else {
+				return fn.call(item,item,idx);
+			}
 		}));
 	},
 
@@ -16322,7 +16375,11 @@ Mura.EntityCollection=Mura.Entity.extend(
 	 */
 	map:function(fn){
 		return this.properties.items.map( function(item,idx){
-			return fn.call(item,item,idx);
+			if(typeof fn.call == 'undefined'){
+				return fn(item,idx);
+			} else {
+				return fn.call(item,item,idx);
+			}
 		});
 	},
 
@@ -16337,10 +16394,14 @@ Mura.EntityCollection=Mura.Entity.extend(
      initialValue=initialValue||0;
 
      return this.properties.items.reduce(
-            function(accumulator,item,idx,array){
-    				return fn.call(item,accumulator,item,idx,array);
-    			},
-          initialValue
+        function(accumulator,item,idx,array){
+					if(typeof fn.call == 'undefined'){
+						return fn(accumulator,item,idx,array);
+					} else {
+						return fn.call(item,accumulator,item,idx,array);
+					}
+    		},
+        initialValue
       );
 	}
 });
@@ -16627,8 +16688,19 @@ Mura.Feed = Mura.Core.extend(
 		 *
 		 * @return {Mura.Feed}          Self
 		 */
-		andOpenGrouping: function(criteria) {
+		andOpenGrouping: function() {
 			this.queryString += '&andOpenGrouping[' + this.propIndex + ']';
+			this.propIndex++;
+			return this;
+		},
+
+		/**
+		 * orOpenGrouping - Starts new logical condition grouping
+		 *
+		 * @return {Mura.Feed}          Self
+		 */
+		orOpenGrouping: function() {
+			this.queryString += '&orOpenGrouping[' + this.propIndex + ']';
 			this.propIndex++;
 			return this;
 		},
@@ -16638,7 +16710,7 @@ Mura.Feed = Mura.Core.extend(
 		 *
 		 * @return {Mura.Feed}          Self
 		 */
-		closeGrouping: function(criteria) {
+		closeGrouping: function() {
 			this.queryString += '&closeGrouping[' + this.propIndex + ']';
 			this.propIndex++;
 			return this;
@@ -18735,7 +18807,12 @@ Core.prototype=
 		if(typeof this.prototype.handlers[eventName] != 'undefined'){
 			var handlers=this.prototype.handlers[eventName];
 			for(var handler in handlers){
-				handler.call(this);
+				if(typeof handler.call == 'undefined'){
+					handler(this);
+				} else {
+					handler.call(this,this);
+				}
+
 			}
 		}
 
@@ -20656,17 +20733,29 @@ Mura.UI=Mura.Core.extend(
 				if(typeof this.handlers[$eventName] != 'undefined'){
 					var $handlers=this.handlers[$eventName];
 					for(var i=0;i < $handlers.length;i++){
-						$handlers[i].call(this);
+						if(typeof $handlers[i].call == 'undefined'){
+							$handlers[i](this);
+						} else {
+							$handlers[i].call(this,this);
+						}
 					}
 				}
 
 				if(typeof this[eventName] == 'function'){
-					this[eventName].call(this);
+					if(typeof this[eventName].call == 'undefined'){
+						this[eventName](this);
+					} else {
+						this[eventName].call(this,this);
+					}
 				}
 				var fnName='on' + eventName.substring(0,1).toUpperCase() + eventName.substring(1,eventName.length);
 
 				if(typeof this[fnName] == 'function'){
-					this[fnName].call(this);
+					if(typeof this[fnName].call == 'undefined'){
+						this[fnName](this);
+					} else {
+						this[fnName].call(this,this);
+					}
 				}
 			}
 		}

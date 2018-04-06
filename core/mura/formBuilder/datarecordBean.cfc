@@ -28,9 +28,9 @@ and (c) must not alter any files in the following directories except in cases wh
 a separately distributed license.
 
 /admin/
-/tasks/
-/config/
-/core/mura/
+	/core/
+	/Application.cfc
+	/index.cfm
 
 You may copy and distribute such a combined work under the terms of GPL for Mura CMS, provided that you include
 the source code of that other code when and as the GNU GPL requires distribution of source code.
