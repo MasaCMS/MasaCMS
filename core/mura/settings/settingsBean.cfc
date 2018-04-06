@@ -1969,7 +1969,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 			return variables.dspincludepath;
 		} else {
 			variables.dspincludepath="#getIncludePath()#/includes";
-			if(!directoryExists(variables.dspincludepath)){
+			if(!directoryExists(expandPath(variables.dspincludepath))){
 				variables.dspincludepath=getIncludePath();
 			}
 			return variables.dspincludepath;
