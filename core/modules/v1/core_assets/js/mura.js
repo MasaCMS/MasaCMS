@@ -15073,7 +15073,15 @@ Mura.DOMSelection = Mura.Core.extend(
        * @return {object}
        */
       scrollTop: function() {
-          return document.body.scrollTop;
+				if (!this.selection.length) {
+						return 0;
+				}
+				var el = this.selection[0];
+				if(typeof el.scrollTop != 'undefined'){
+					el.scrollTop;
+				} else {
+					return  window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+				}
       },
 
       /**
@@ -18992,7 +19000,7 @@ Mura.RequestContext=Mura.Core.extend(
 {
 	init: function(request, response, requestHeaders) {
     this.requestObject=request;
-    this.reponseObject=response;
+    this.responseObject=response;
     this._request=new Mura.Request(request, response, requestHeaders);
     return this;
 	},
