@@ -118,10 +118,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					} else {
 						$("##displaylist").val($(this).html());
 					}
-
-					updateDraft();
 				});
 
+				updateDraft();
 				//siteManager.updateObjectPreview();
 
 			}

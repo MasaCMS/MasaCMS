@@ -130,6 +130,8 @@
 	  					classInput.val(width.val());
 	  				}
 
+						classInput.val($.trim(classInput.val()));
+						
 	  				if(inited && typeof updateDraft == 'function'){
 	  					updateDraft();
 	  				}
@@ -144,6 +146,8 @@
 		  				} else {
 		  					classInput.val(offset.val());
 		  				}
+
+							classInput.val($.trim(classInput.val()));
 
 		  				if(inited && typeof updateDraft == 'function'){
 		  					updateDraft();
@@ -160,6 +164,8 @@
 	  				} else {
 	  					classInput.val(cssclassInput.val());
 	  				}
+
+						classInput.val($.trim(classInput.val()));
 		  		}
 			}
 
