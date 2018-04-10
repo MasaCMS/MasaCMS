@@ -824,7 +824,7 @@
 			if(arrayLen(result.childtemplate)){
 				result.childtemplate=result.childtemplate[1];
 			} else {
-				result.template;
+				result.childtemplate=result.template;
 			}
 			result.conanicalURL=renderer.getConanicalURL();
 			result.metadesc=renderer.getMetaDesc();
