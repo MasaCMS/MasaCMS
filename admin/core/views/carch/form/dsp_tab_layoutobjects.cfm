@@ -79,8 +79,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
               <option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.inheritfromparent')#</option>
             </cfif>
             <cfloop query="rc.rsTemplates">
-              <cfif right(rc.rsTemplates.name,4) eq ".cfm">
-                      <option value="#rc.rsTemplates.name#" <cfif rc.contentBean.gettemplate() eq rc.rsTemplates.name>selected</cfif>>#rc.rsTemplates.name#</option>
+              <cfif listFindNocase('cfm,html,htm,hbs',listLast(rc.rsTemplates.name,'.'))>
+                <option value="#rc.rsTemplates.name#" <cfif rc.contentBean.gettemplate() eq rc.rsTemplates.name>selected</cfif>>#rc.rsTemplates.name#</option>
               </cfif>
             </cfloop>
           </select>
@@ -98,9 +98,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
               <select name="childTemplate" class="dropdown">
             <option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.none')#</option>
             <cfloop query="rc.rsTemplates">
-              <cfif right(rc.rsTemplates.name,4) eq ".cfm">
+              <cfif listFindNocase('cfm,html,htm,hbs',listLast(rc.rsTemplates.name,'.'))>
                 <cfoutput>
-                        <option value="#rc.rsTemplates.name#" <cfif rc.contentBean.getchildTemplate() eq rc.rsTemplates.name>selected</cfif>>#rc.rsTemplates.name#</option>
+                  <option value="#rc.rsTemplates.name#" <cfif rc.contentBean.getchildTemplate() eq rc.rsTemplates.name>selected</cfif>>#rc.rsTemplates.name#</option>
                 </cfoutput>
               </cfif>
             </cfloop>
