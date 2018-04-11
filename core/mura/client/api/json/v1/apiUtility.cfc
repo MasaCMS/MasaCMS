@@ -1602,11 +1602,16 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			}
 		}
 
+
 		var entity=$.getBean(arguments.entityName).set($.event().getAllValues());
 		var saveErrors=false;
 		var errors={};
 
 		var pk=entity.getPrimaryKey();
+
+		if(structKeyExists(arguments,pk)){
+			arguments.id=arguments[pk];
+		}
 
 		if(arguments.id=='new'){
 			$.event('id',createUUID());
