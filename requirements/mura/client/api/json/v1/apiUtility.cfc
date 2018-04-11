@@ -1456,7 +1456,11 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		var saveErrors=false;
 		var errors={};
 
-		var pk=entity.getPrimaryKey();
+		if(arguments.entityName=='feed'){
+			var pk="feedid";
+		} else {
+			var pk=entity.getPrimaryKey();
+		}
 
 		if(len($.event(pk)) && isValid('uuid',$.event(pk))){
 			arguments.id=$.event(pk);
@@ -2441,6 +2445,11 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 					}
 				}
 			} else {
+
+				if(len($.event('contentid')) && isValid('uuid',$.event('contentid'))){
+					$.event('id',$.event(pk));
+				}
+
 				var loadparams={contentid=$.event('id')};
 				entity.loadBy(argumentCollection=loadparams);
 
@@ -2463,6 +2472,10 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				var pk="feedid";
 			} else {
 				var pk=entity.getPrimaryKey();
+			}
+
+			if(len($.event(pk)) && isValid('uuid',$.event(pk))){
+				$.event('id',$.event(pk));
 			}
 
 			var loadparams={'#pk#'=$.event('id')};
