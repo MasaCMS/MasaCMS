@@ -1259,15 +1259,18 @@ select * from tplugins order by #arguments.orderby#
 <cfargument name="moduleID" required="true" default="" type="any">
 <cfargument name="index" required="true" default="0" type="any">
 	<cfset var siteID="">
-	<cfif variables.utility.checkForInstanceOf(arguments.currentEventObject,"mura.MuraScope")>
-		<cfset siteID=arguments.currentEventObject.event('siteID')>
-	<cfelse>
-		<cfset siteID=arguments.currentEventObject.getValue('siteID')>
-	</cfif>
-	<cfif arguments.index>
-		<cfset executeScript(arguments.eventToAnnounce,siteid,arguments.currentEventObject,arguments.index)>
-	<cfelse>
-		<cfset executeScripts(arguments.eventToAnnounce,siteid,arguments.currentEventObject,arguments.rsHandlers,arguments.moduleID)>
+	<!--- Don't fire unless pluginManager has been initted--->
+	<cfif isDefined('variables.utility')>
+		<cfif variables.utility.checkForInstanceOf(arguments.currentEventObject,"mura.MuraScope")>
+			<cfset siteID=arguments.currentEventObject.event('siteID')>
+		<cfelse>
+			<cfset siteID=arguments.currentEventObject.getValue('siteID')>
+		</cfif>
+		<cfif arguments.index>
+			<cfset executeScript(arguments.eventToAnnounce,siteid,arguments.currentEventObject,arguments.index)>
+		<cfelse>
+			<cfset executeScripts(arguments.eventToAnnounce,siteid,arguments.currentEventObject,arguments.rsHandlers,arguments.moduleID)>
+		</cfif>
 	</cfif>
 </cffunction>
 
@@ -1765,7 +1768,7 @@ select * from tplugins order by #arguments.orderby#
 					<cfset request.muraHandledEvents["#arguments.runat#"]=true>
 				</cfif>
 			</cfif>
-			
+
 			<cfif isDefined("variables.siteListeners.#siteIDadjusted#.#arguments.runat#")>
 
 					<cfset listenerStruct = variables.siteListeners[siteIDadjusted] />
