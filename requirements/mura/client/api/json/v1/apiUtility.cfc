@@ -1458,6 +1458,10 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		var pk=entity.getPrimaryKey();
 
+		if(structKeyExists(arguments,pk) && isValid('uuid',arguments[pk])){
+			arguments.id=arguments[pk];
+		}
+
 		if(arguments.id=='new'){
 			$.event('id',createUUID());
 			arguments.id=$.event('id');
