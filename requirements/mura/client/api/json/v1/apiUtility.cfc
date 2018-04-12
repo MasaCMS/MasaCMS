@@ -2999,12 +2999,14 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 				}
 
+				/*
 				if(listFindNoCase('folder,gallery,calendar,page',$.event('object'))){
 					result={
 						html=$.getContentRenderer().dspContentTypeBody(params=args.params)
 					};
 					break;
 				}
+				*/
 
 				result=$.dspObject(argumentCollection=args);
 
