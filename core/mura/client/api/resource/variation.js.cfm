@@ -13,7 +13,7 @@
 	<cfset application.rbFactory.resetSessionLocale()>
 </cfif>
 <cfcontent reset="true"><cfparam name="Cookie.fetDisplay" default="">
-<cfinclude template="/muraWRM/code/modules/v1/core_assets/js/mura.min.js">
+<cfinclude template="/muraWRM/core/modules/v1/core_assets/js/mura.min.js">
 
     /*
     	BEGIN Mura VARIATION TOOLS
