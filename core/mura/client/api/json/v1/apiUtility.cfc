@@ -2695,7 +2695,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			if(len($.event(pk)) && isValid('uuid',$.event(pk))){
 				$.event('id',$.event(pk));
 			}
-			
+
 			var loadparams={'#pk#'=$.event('id')};
 			entity.loadBy(argumentCollection=loadparams);
 
@@ -3225,12 +3225,14 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 				}
 
+				/*
 				if(listFindNoCase('folder,gallery,calendar,page',$.event('object'))){
 					result={
 						html=$.getContentRenderer().dspContentTypeBody(params=args.params)
 					};
 					break;
 				}
+				*/
 
 				result=$.dspObject(argumentCollection=args);
 
