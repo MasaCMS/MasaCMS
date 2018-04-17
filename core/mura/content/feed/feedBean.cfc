@@ -753,6 +753,9 @@ component extends="mura.bean.beanFeed" entityName="feed" table="tcontentfeeds" o
 		if(!(listFind(arguments.fields,'tcontent.contentid') || listFind(arguments.fields,'tcontent.contenthistid'))){
 			arguments.fields=listAppend(arguments.fields,'tcontent.contentid');
 		}
+		if(!listFind(arguments.fields,'tparent.type parentType')){
+			arguments.fields=listAppend(arguments.fields,'tparent.type parentType');
+		}
 
 		return arguments.fields;
 	}

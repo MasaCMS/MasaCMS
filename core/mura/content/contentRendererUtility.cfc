@@ -1585,6 +1585,7 @@
 				<cfset arguments.siteid=arguments.renderer.getMuraScope().event('siteID')>
 			</cfif>
 			<cfif arguments.siteid neq arguments.renderer.getMuraScope().event('siteID')>
+				<cfset arguments.complete=1>
 				<cfreturn getBean('settingsManager').getSite(arguments.siteid).getContentRenderer().createHREF(argumentCollection=arguments)>
 			</cfif>
 		</cfif>

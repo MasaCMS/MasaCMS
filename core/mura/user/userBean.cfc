@@ -239,9 +239,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.instance.UserID />
 </cffunction>
 
+<!---
 <cffunction name="getGroupID" output="false">
-	<cfreturn getUserID() />
+	<cfif variables.instance.type eq 2>
+		<cfreturn getUserID() />
+	<cfelse>
+		<cfparam name="variables.instance.groupid" default="">
+		<cfreturn variables.instance.groupid>
+	</cfif>
 </cffunction>
+--->
 
 <cffunction name="setLastUpdateBy" output="false">
 	<cfargument name="lastUpdateBy" type="String" />
