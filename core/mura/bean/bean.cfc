@@ -384,10 +384,10 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 			arguments.propertyValue=trim(arguments.propertyValue);
 		}
 
-		if(arguments.property != 'value' && isValid('variableName',arguments.property) && isDefined("this.set#arguments.property#")){
+		if(arguments.property != 'value' && isValid('variableName',replace(arguments.property,'.','-')) && isDefined("this.set#arguments.property#")){
 			var tempFunc=this["set#arguments.property#"];
 			tempFunc(arguments.propertyValue);
-		} else if (isValid('variableName',variables.entityName)) {
+		} else if (len(variables.entityName)) {
 			var props=getProperties();
 			if(structKeyExists(props,'#arguments.property#') && props['#arguments.property#'].datatype=='datetime'){
 				variables.instance["#arguments.property#"]=parseDateArg(arguments.propertyValue);
