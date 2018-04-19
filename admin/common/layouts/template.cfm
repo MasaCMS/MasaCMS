@@ -266,7 +266,7 @@
   <body id="#rc.originalcircuit#" class="mura-admin header-navbar-fixed<!-- no-constrain-->">
 
     <!-- Page Container -->
-    <div id="page-container" class="<cfif session.siteid neq '' and session.mura.isLoggedIn>sidebar-l</cfif> sidebar-o <cfif cookie.ADMINSIDEBAR is 'off'> sidebar-mini</cfif> side-overlay-hover side-scroll header-navbar-fixed">
+    <div id="page-container" class="<cfif session.siteid neq ''  and rc.$.currentUser().isLoggedIn() and rc.$.currentUser().isPrivateUser()>sidebar-l</cfif> sidebar-o <cfif cookie.ADMINSIDEBAR is 'off'> sidebar-mini</cfif> side-overlay-hover side-scroll header-navbar-fixed">
 
 		<cfif session.siteid neq ''  and rc.$.currentUser().isLoggedIn() and rc.$.currentUser().isPrivateUser()>
     <cfinclude template="includes/nav.cfm">
@@ -274,7 +274,7 @@
 		</cfif>
 
     <!-- Main Container -->
-    <main id="main-container" class="<cfif session.siteid neq '' and session.mura.isLoggedIn>block-constrain</cfif>">
+    <main id="main-container" class="<cfif session.siteid neq '' and rc.$.currentUser().isLoggedIn() and rc.$.currentUser().isPrivateUser()>block-constrain</cfif>">
 
     <!-- Page Content -->
     <div class="content">
