@@ -293,6 +293,18 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 					params['access_token']=headers['X-access_token'];
 				}
 
+				if( structKeyExists( headers, 'X-client-id' )){
+					params['client_id']=headers['X-client-id'];
+				}
+
+				if( structKeyExists( headers, 'X-client-secret' )){
+					params['client_secret']=headers['X-client-secret'];
+				}
+
+				if( structKeyExists( headers, 'X-access_token' )){
+					params['access_token']=headers['X-access-token'];
+				}
+
 				var isBasicAuth=false;
 				var isBasicAuthDirect=false;
 				if( structKeyExists( headers, 'Authorization' )){
