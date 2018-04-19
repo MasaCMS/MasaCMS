@@ -191,7 +191,7 @@
 			<cfelse>
 				<cfsavecontent variable="errorJSTxt">
 					<script type="text/javascript">
-						$(document).ready(function(){
+						Mura(function(){
 							window.location.hash="errors";
 						});
 					</script>
@@ -224,25 +224,27 @@
 
 	<!--- COMMENTS --->
 	<script>
-		$.fn.changeElementType = function(newType) {
-			var attrs = {};
+		Mura(funciton(){
+			$.fn.changeElementType = function(newType) {
+				var attrs = {};
 
-			$.each(this[0].attributes, function(idx, attr) {
-				attrs[attr.nodeName] = attr.value;
+				$.each(this[0].attributes, function(idx, attr) {
+					attrs[attr.nodeName] = attr.value;
+				});
+
+				var newelement = $("<" + newType + "/>", attrs).append($(this).contents());
+				this.replaceWith(newelement);
+				return newelement;
+			};
+
+			$(function(){
+				Mura.loader().loadjs(
+					"#variables.$.siteConfig('AssetPath')#/includes/display_objects/comments/js/comments.js",
+					function(){
+						initMuraComments({proxyPath:"#variables.$.siteConfig('AssetPath')#/includes/display_objects/comments/ajax/commentsProxy.cfc"});
+					}
+				);
 			});
-
-			var newelement = $("<" + newType + "/>", attrs).append($(this).contents());
-			this.replaceWith(newelement);
-			return newelement;
-		};
-
-		$(function(){
-			Mura.loader().loadjs(
-				"#variables.$.siteConfig('AssetPath')#/includes/display_objects/comments/js/comments.js",
-				function(){
-					initMuraComments({proxyPath:"#variables.$.siteConfig('AssetPath')#/includes/display_objects/comments/ajax/commentsProxy.cfc"});
-				}
-			);
 		});
 	</script>
 
@@ -285,7 +287,7 @@
 				<a id="mura-comment-post-comment-comment" style="display: none" class="#this.commentNewClass#" href="##mura-comment-post-comment">#variables.$.rbKey('comments.newcomment')#</a>
 
 				<!--- THE FORM --->
-				<form role="form" id="mura-comment-post-comment" class="#this.commentFormClass#" method="post" name="addComment" action="?nocache=1##mura-comments" novalidate="novalidate" onsubmit="return Mura.validateForm(this);">
+				<form role="form" id="mura-comment-post-comment" class="#this.commentFormClass#" method="post" name="addComment" novalidate="novalidate">
 					<fieldset>
 
 						<legend id="mura-comment-post-a-comment">#variables.$.rbKey('comments.postacomment')#</legend>
