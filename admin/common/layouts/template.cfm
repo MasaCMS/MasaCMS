@@ -180,20 +180,20 @@
 	</cfsilent>
 
 	<title>#esapiEncode('html',application.configBean.getTitle())#<cfif len(moduleTitle)> - #esapiEncode('html',moduleTitle)#</cfif></title>
-    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0">
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0">
 	<meta name="author" content="blueriver">
 	<meta name="robots" content="noindex, nofollow, noarchive">
 	<meta http-equiv="cache control" content="no-cache, no-store, must-revalidate">
 
-    <!-- Favicons -->
+	<!-- Favicons -->
 	<link rel="icon" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/ico/favicon.ico" type="image/x-icon" />
 	<link rel="shortcut icon" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/ico/favicon.ico" type="image/x-icon" />
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/ico/apple-touch-icon-114-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/ico/apple-touch-icon-72-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/ico/apple-touch-icon-57-precomposed.png">
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/ico/apple-touch-icon-144-precomposed.png">
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/ico/apple-touch-icon-114-precomposed.png">
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/ico/apple-touch-icon-72-precomposed.png">
+	<link rel="apple-touch-icon-precomposed" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/ico/apple-touch-icon-57-precomposed.png">
 
-    <!-- Stylesheets -->
+	<!-- Stylesheets -->
 
 	<!-- Admin CSS -->
 	<link href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/css/admin.min.css" rel="stylesheet" type="text/css" />
@@ -201,10 +201,10 @@
 	<!-- Spinner JS -->
 	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/spin.min.js" type="text/javascript"></script>
 
-    <!-- OneUI Core JS: jQuery, Bootstrap, slimScroll, scrollLock, Appear, CountTo, Placeholder, Cookie and App.js -->
-   	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/oneui.js"></script>
+	<!-- OneUI Core JS: jQuery, Bootstrap, slimScroll, scrollLock, Appear, CountTo, Placeholder, Cookie and App.js -->
+	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/oneui.js"></script>
 
-   	<!-- jQuery UI components -->
+	<!-- jQuery UI components -->
 	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery-ui.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery-ui-i18n.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery.collapsibleCheckboxTree.js?coreversion=#application.coreversion#" type="text/javascript"></script>
@@ -268,7 +268,7 @@
     <!-- Page Container -->
     <div id="page-container" class="<cfif session.siteid neq '' and session.mura.isLoggedIn>sidebar-l</cfif> sidebar-o <cfif cookie.ADMINSIDEBAR is 'off'> sidebar-mini</cfif> side-overlay-hover side-scroll header-navbar-fixed">
 
-		<cfif session.siteid neq '' and session.mura.isLoggedIn>
+		<cfif session.siteid neq ''  and rc.$.currentUser().isLoggedIn() and rc.$.currentUser().isPrivateUser()>
     <cfinclude template="includes/nav.cfm">
     <cfinclude template="includes/header.cfm">
 		</cfif>
@@ -361,13 +361,13 @@
 						$('##mura-header-search').show();
 					});
 
-					// site list filter		
+					// site list filter
 					var sitefilter = jQuery('##site-list-filter');
 					var sitelist = jQuery('ul##site-selector-list');
 					var sitelistw = jQuery(sitelist).width();
 					jQuery(sitelist).find('.ui-widget').click(function(){
 						return false;
-					})   
+					})
 					jQuery(sitefilter).click(function(){
 						return false;
 					});

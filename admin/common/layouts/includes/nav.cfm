@@ -71,14 +71,14 @@
                     <span id="brand-logo-min" class="brand" target="_blank">
                         <img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/mura-icon@2x.png" class="mura-logo">
                         <span class="sidebar-mini-hide">
-                            <img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/mura-logo-text@2x.png" class="mura-logo-text"> 
+                            <img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/mura-logo-text@2x.png" class="mura-logo-text">
                         </span>
                     </span>
                 </div>
             </div>
             <!-- END Side Header -->
         <!--- exclude from login view --->
-        <cfif session.siteid neq '' and session.mura.isLoggedIn>
+        <cfif session.siteid neq '' and rc.$.currentUser().isLoggedIn() and rc.$.currentUser().isPrivateUser()>
             <!--- sidebar --->
             <div class="side-content">
                 <!--- main navigation menu --->
