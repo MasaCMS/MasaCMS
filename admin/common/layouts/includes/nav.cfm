@@ -92,7 +92,7 @@
             <!-- END Side Header -->
 
         <!--- exclude from login view --->
-        <cfif session.siteid neq '' and session.mura.isLoggedIn>
+        <cfif session.siteid neq ''  and rc.$.currentUser().isLoggedIn() and rc.$.currentUser().isPrivateUser()>
 
             <!--- sidebar --->
             <div class="side-content">
@@ -398,7 +398,7 @@
                             </cfif>
                             <!--- site version --->
                             <li>
-                                <a class="no-link" href="##"> 
+                                <a class="no-link" href="##">
                                  <span><strong>#rc.$.rbKey('version.site')#</strong> #application.autoUpdater.getCurrentCompleteVersion(session.siteid)#</span>
                                 </a>
                             </li>
@@ -455,7 +455,7 @@
                             <!--- copyright --->
                              <li>
                                 <a href="https://github.com/blueriver/MuraCMS/blob/develop/license.txt" target="_blank"><span><strong>Mura CMS</strong> &copy; #year(now())# Blue River Interactive Group. <em>Licensed under GNU General Public License Version 2.0 with exceptions</em></span></a>
-                            </li>                           
+                            </li>
 
                         </ul>
                     </li>
