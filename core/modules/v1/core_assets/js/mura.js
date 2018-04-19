@@ -19604,6 +19604,24 @@ Mura.Request=Mura.Core.extend(
         if(typeof this.requestObject.headers['x-access_token'] != 'undefined'){
           params.headers['X-access_token']=this.requestObject.headers['x-access_token'];
         }
+				if(typeof this.requestObject.headers['x-client-id'] != 'undefined'){
+					params.headers['X-client-id']=this.requestObject.headers['x-client-id'];
+				}
+				if(typeof this.requestObject.headers['x-clien-id'] != 'undefined'){
+					params.headers['X-client-id']=this.requestObject.headers['x-client-id'];
+				}
+				if(typeof this.requestObject.headers['X-client_secret'] != 'undefined'){
+					params.headers['X-client-secret']=this.requestObject.headers['X-client-secret'];
+				}
+				if(typeof this.requestObject.headers['x-client-secret'] != 'undefined'){
+					params.headers['X-client-secret']=this.requestObject.headers['x-client-secret'];
+				}
+				if(typeof this.requestObject.headers['X-access-token'] != 'undefined'){
+					params.headers['X-access-token']=this.requestObject.headers['X-access-token'];
+				}
+				if(typeof this.requestObject.headers['x-access-token'] != 'undefined'){
+					params.headers['X-access-token']=this.requestObject.headers['x-access-token'];
+				}
         if(typeof this.requestObject.headers['Authorization'] != 'undefined'){
           params.headers['Authorization']=this.requestObject.headers['Authorization'];
         }
