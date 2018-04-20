@@ -224,7 +224,7 @@
 
 	<!--- COMMENTS --->
 	<script>
-		Mura(funciton(){
+		Mura(function(){
 			$.fn.changeElementType = function(newType) {
 				var attrs = {};
 
@@ -237,14 +237,12 @@
 				return newelement;
 			};
 
-			$(function(){
-				Mura.loader().loadjs(
-					"#variables.$.siteConfig('AssetPath')#/includes/display_objects/comments/js/comments.js",
-					function(){
-						initMuraComments({proxyPath:"#variables.$.siteConfig('AssetPath')#/includes/display_objects/comments/ajax/commentsProxy.cfc"});
-					}
-				);
-			});
+			Mura.loader().loadjs(
+				"#variables.$.siteConfig('AssetPath')#/includes/display_objects/comments/js/comments.js",
+				function(){
+					initMuraComments({proxyPath:"#variables.$.siteConfig('AssetPath')#/includes/display_objects/comments/ajax/commentsProxy.cfc"});
+				}
+			);
 		});
 	</script>
 
