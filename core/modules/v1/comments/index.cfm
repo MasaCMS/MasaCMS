@@ -237,14 +237,12 @@
 				return newelement;
 			};
 
-			$(function(){
-				Mura.loader().loadjs(
-					"#variables.$.siteConfig('corePath')#/modules/v1/comments/js/comments.js",
-					function(){
-						initMuraComments({proxyPath:"#variables.$.globalConfig('corePath')#/modules/v1/comments/ajax/commentsProxy.cfc"});
-					}
-				);
-			});
+			Mura.loader().loadjs(
+				"#variables.$.siteConfig('corePath')#/modules/v1/comments/js/comments.js",
+				function(){
+					initMuraComments({proxyPath:"#variables.$.globalConfig('corePath')#/modules/v1/comments/ajax/commentsProxy.cfc"});
+				}
+			);
 		});
 	</script>
 
