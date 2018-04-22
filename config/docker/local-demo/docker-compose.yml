@@ -31,7 +31,7 @@ services:
 
   #MySQL
   mura_demo_mysql:
-    image: mysql:latest
+    image: mysql:5.7
     environment:
         MYSQL_ROOT_PASSWORD: NOT_SECURE_CHANGE
         MYSQL_DATABASE: muradb
