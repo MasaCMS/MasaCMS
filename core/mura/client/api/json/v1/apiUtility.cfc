@@ -372,7 +372,8 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			structAppend(params,form);
 
 			if(structKeyExists(headers,'Content-Type')
-				&& headers['Content-Type'] == 'application/json'
+				&& len(headers['Content-Type']) >= 16
+				&& left(headers['Content-Type'], 16) == 'application/json'
 				&& isJSON(httpRequestData.content)){
 				structAppend(params,deserializeJSON(httpRequestData.content));
 			}
