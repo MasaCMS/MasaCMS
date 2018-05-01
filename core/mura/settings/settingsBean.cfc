@@ -1073,13 +1073,17 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 				}
 				break;
 			default:
-				rs=getBean('fileWriter').getDirectoryList( filter="*.cfm|*.html|*.htm|*.hbs", directory=getTemplateIncludeDir() );
-				qs=getQueryService();
-				qs.setAttributes(rs=rs);
-				qs.setDbType('query');
-				rs=qs.execute(sql="
-					select * from rs order by name
-				").getResult();
+				if(directoryExists(getTemplateIncludeDir())){
+					rs=getBean('fileWriter').getDirectoryList( filter="*.cfm|*.html|*.htm|*.hbs", directory=getTemplateIncludeDir() );
+					qs=getQueryService();
+					qs.setAttributes(rs=rs);
+					qs.setDbType('query');
+					rs=qs.execute(sql="
+						select * from rs order by name
+					").getResult();
+				} else {
+					rs=queryNew("empty");
+				}
 				break;
 		}
 		return rs;

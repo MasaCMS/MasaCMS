@@ -60,34 +60,40 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
       <!-- block content -->
       <div class="block-content">
-  <span id="extendset-container-tablayoutobjectstop" class="extendset-container"></span>
-
-            <div class="mura-control-group">
-
+  			<span id="extendset-container-tablayoutobjectstop" class="extendset-container"></span>
+        <div class="mura-control-group">
               <div class="half">
                 <div class="mura-control-group">
-                    <label>
+                  <label>
                       <span data-toggle="popover" title="" data-placement="right"
                       data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.layoutTemplate"))#"
                       data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.layouttemplate"))#">
                         #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.layouttemplate')#
                        <i class="mi-question-circle"></i></span>
-
-            </label>
-              <select name="template" class="dropdown">
-            <cfif rc.contentid neq '00000000000000000000000000000000001'>
-              <option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.inheritfromparent')#</option>
-            </cfif>
-            <cfloop query="rc.rsTemplates">
-              <cfif listFindNocase('cfm,html,htm,hbs',listLast(rc.rsTemplates.name,'.'))>
-                <option value="#rc.rsTemplates.name#" <cfif rc.contentBean.gettemplate() eq rc.rsTemplates.name>selected</cfif>>#rc.rsTemplates.name#</option>
-              </cfif>
-            </cfloop>
-          </select>
-        </div>
-        </div>
-              <div class="half">
-                <div class="mura-control-group">
+            			</label>
+		              <select name="template" class="dropdown">
+			            <cfif rc.contentid neq '00000000000000000000000000000000001'>
+			              <option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.inheritfromparent')#</option>
+			            </cfif>
+									<cfset templateArray=listToArray(rc.$.siteConfig('templateList'),'^')>
+									<cfif rc.moduleID eq  '00000000000000000000000000000000000' and arrayLen(templateArray)>
+										<cfloop from="1" to="#arrayLen(renderer.templateArray)#" index="t">
+			                <cfoutput>
+			                  <option value="#templateArray[t]#" <cfif rc.contentBean.gettemplate() eq templateArray[t]>selected</cfif>>#templateArray[t]#</option>
+			                </cfoutput>
+				            </cfloop>
+									<cfelse>
+				            <cfloop query="rc.rsTemplates">
+				              <cfif listFindNocase('cfm,html,htm,hbs',listLast(rc.rsTemplates.name,'.'))>
+				                <option value="#rc.rsTemplates.name#" <cfif rc.contentBean.gettemplate() eq rc.rsTemplates.name>selected</cfif>>#rc.rsTemplates.name#</option>
+				              </cfif>
+				            </cfloop>
+									</cfif>
+		          		</select>
+        			</div>
+        		</div>
+            <div class="half">
+              <div class="mura-control-group">
               <label>
                 <span data-toggle="popover" title="" data-placement="right"
                 data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.childTemplate"))#"
@@ -96,19 +102,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
                  <i class="mi-question-circle"></i></span>
               </label>
               <select name="childTemplate" class="dropdown">
-            <option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.none')#</option>
-            <cfloop query="rc.rsTemplates">
-              <cfif listFindNocase('cfm,html,htm,hbs',listLast(rc.rsTemplates.name,'.'))>
-                <cfoutput>
-                  <option value="#rc.rsTemplates.name#" <cfif rc.contentBean.getchildTemplate() eq rc.rsTemplates.name>selected</cfif>>#rc.rsTemplates.name#</option>
-                </cfoutput>
-              </cfif>
-            </cfloop>
-          </select>
+	            <option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.none')#</option>
+							<cfset templateArray=listToArray(rc.$.siteConfig('templateList'),'^')>
+							<cfif rc.moduleID eq  '00000000000000000000000000000000000' and arrayLen(templateArray)>
+								<cfloop from="1" to="#arrayLen(templateArray)#" index="t">
+	                <cfoutput>
+	                  <option value="#templateArray[t]#" <cfif rc.contentBean.getchildTemplate() eq templateArray[t]>selected</cfif>>#templateArray[t]#</option>
+	                </cfoutput>
+		            </cfloop>
+							<cfelse>
+								<cfloop query="rc.rsTemplates">
+		              <cfif listFindNocase('cfm,html,htm,hbs',listLast(rc.rsTemplates.name,'.'))>
+		                <cfoutput>
+		                  <option value="#rc.rsTemplates.name#" <cfif rc.contentBean.getchildTemplate() eq rc.rsTemplates.name>selected</cfif>>#rc.rsTemplates.name#</option>
+		                </cfoutput>
+		              </cfif>
+		            </cfloop>
+							</cfif>
+	          </select>
         </div>
-        </div>
-
       </div>
+    </div>
 
       <div class="mura-control-group">
         <label>
