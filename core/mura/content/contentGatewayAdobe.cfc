@@ -2352,7 +2352,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			select contentid from tcontentobjects
 			where
 			siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
-			and active=1
 			and objectid like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.objectID#%"/>
 			)
 			<cfif variables.configBean.getDbType() neq 'Oracle'>
