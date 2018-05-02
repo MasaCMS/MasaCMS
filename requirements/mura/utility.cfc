@@ -1327,7 +1327,7 @@ Blog: www.codfusion.com--->
 </cffunction>
 
 <cffunction name="scheduleTask" output="false">
-	<cfschedule attributeCollection=arguments>
+	<cfschedule attributeCollection="#arguments#">
 </cffunction>
 
 <cffunction name="legacyLogout" output="false">
