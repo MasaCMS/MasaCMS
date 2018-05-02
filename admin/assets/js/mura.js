@@ -15033,7 +15033,7 @@ Mura.DOMSelection = Mura.Core.extend(
       },
 
       /**
-       * width - Returns height of first element in selection or set width for elements in selection
+       * width - Returns width of first element in selection or set width for elements in selection
        *
        * @param  {number} width Width (optional)
        * @return {object}       Self
@@ -15065,6 +15065,24 @@ Mura.DOMSelection = Mura.Core.extend(
           }
 
           return getComputedStyle(el).width;
+      },
+
+			/**
+       * width - Returns outerWidth of first element in selection
+       *
+       * @return {number}
+       */
+      outerWidth: function() {
+          if (!this.selection.length) {
+              return 0;
+          }
+
+          var el = this.selection[0];
+					var width = el.offsetWidth;
+				  var style = getComputedStyle(el);
+
+				  width += parseInt(style.marginLeft) + parseInt(style.marginRight);
+				  return width;
       },
 
       /**
