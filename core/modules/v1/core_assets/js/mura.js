@@ -2004,11 +2004,9 @@ var Mura=(function(){
                                   MuraCheckForReCaptcha =
                                       function() {
                                           if (
-                                              typeof grecaptcha ==
-                                              'object' &&
-                                              !
-                                              self
-                                              .innerHTML
+																						typeof grecaptcha ==	'object'
+																						&& typeof grecaptcha.render != 'undefined'
+																						&&	!self.innerHTML
                                           ) {
 
                                               self
