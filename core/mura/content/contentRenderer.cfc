@@ -1012,7 +1012,7 @@ Display Objects
 	<!--- --->
 
 	<cfset nestedArgs.openCurrentOnly=true>
-	""
+
 	<cfif variables.event.getValue('contentBean').getType() eq 'Folder' or variables.event.getValue('contentBean').getType() eq 'Gallery'>
 		<cfif arraylen(this.crumbdata) gt (this.navParentIdx+this.navOffSet)>
 			<cfif arraylen(this.crumbdata) gt (this.navGrandParentIdx+this.navOffSet) and (this.crumbdata[this.navGrandParentIdx].type neq 'Folder' or this.crumbdata[this.navGrandParentIdx].type neq 'Gallery') and not variables.contentGateway.getCount(variables.event.getValue('siteID'),this.crumbdata[this.navSelfIdx].contentID)>
@@ -1085,7 +1085,7 @@ Display Objects
 
 	<cfset nestedArgs.openCurrentOnly=true>
 
-	<cfif not listFindNoCase('Gallery',variables.event.getValue('contentBean').getType())>
+	<cfif not listFindNoCase('Gallery,Folder',variables.event.getValue('contentBean').getType())>
 			<cfif arraylen(this.crumbdata) gt (this.navParentIdx+this.navOffSet)>
 				<cfif this.crumbdata[this.navParentIdx].type eq 'calendar'>
 					<cfset menutype='fixed'>
