@@ -47,126 +47,152 @@
 --->
 
 <cfsilent>
-<cfset request.layout=false>
-<cfset returnsets=structNew()>
-<cfif isDefined("session.mura.editBean") and isInstanceOf(session.mura.editBean, "mura.user.userBean") and session.mura.editBean.getUserID() eq rc.baseID>
-	<cfset userBean=session.mura.editBean>
-<cfelse>
-	<cfset userBean=application.userManager.read(userid=rc.baseID, siteid=rc.siteid)/>
-</cfif>
-<cfset structDelete(session.mura,"editBean")>
-<cfset extendSets=application.classExtensionManager.getSubTypeByName(rc.type,rc.subtype,rc.siteid).getExtendSets(inherit=true,container="Default",activeOnly=true) />
-<!---
-<cfif userBean.getType() eq 2>
+	<cfset request.layout=false>
+	<cfset returnsets=structNew()>
+	<cfif isDefined("session.mura.editBean") and isInstanceOf(session.mura.editBean, "mura.user.userBean") and session.mura.editBean.getUserID() eq rc.baseID>
+		<cfset userBean=session.mura.editBean>
+	<cfelse>
+		<cfset userBean=application.userManager.read(userid=rc.baseID, siteid=rc.siteid)/>
+	</cfif>
+	<cfset structDelete(session.mura,"editBean")>
+	<cfset extendSets=application.classExtensionManager.getSubTypeByName(rc.type,rc.subtype,rc.siteid).getExtendSets(inherit=true,container="Default",activeOnly=true) />
 	<cfset started=false />
-<cfelse>
-	<cfset started=true />
-</cfif
---->
-<cfset started=false />
-<cfset style="" />
+	<cfset style="" />
 </cfsilent>
+
 <cfsavecontent variable="returnsets.extended">
-<cfoutput>
-<cfif arrayLen(extendSets)>
-<cfloop from="1" to="#arrayLen(extendSets)#" index="s">	
-<cfset extendSetBean=extendSets[s]/>
-<cfif  userBean.getType() eq 2><cfset style=extendSetBean.getStyle()/><cfif not len(style)><cfset started=true/></cfif></cfif>
-	<span class="extendset" extendsetid="#extendSetBean.getExtendSetID()#" categoryid="#extendSetBean.getCategoryID()#" #style#>
-	<input name="extendSetID" type="hidden" value="#extendSetBean.getExtendSetID()#"/>
-	<div class="fieldset">
-		<h2>#extendSetBean.getName()#</h2>
-	<cfsilent>
-	<cfset attributesArray=extendSetBean.getAttributes() />
-	</cfsilent>
-	<cfloop from="1" to="#arrayLen(attributesArray)#" index="a">	
-		<cfset attributeBean=attributesArray[a]/>
-		<cfset attributeValue=userBean.getvalue(attributeBean.getName(),'useMuraDefault') />
-		<div class="control-group">
-	      	<label class="control-label">
-			<cfif len(attributeBean.getHint())>
-			<a href="##" rel="tooltip" title="#esapiEncode('html',attributeBean.gethint())#">#attributeBean.getLabel()# <i class="icon-question-sign"></i></a>
-			<cfelse>
-			#attributeBean.getLabel()#
-			</cfif>
-			<cfif attributeBean.getType() eq "File" and len(attributeValue) and attributeValue neq 'useMuraDefault'> 
+	<cfoutput>
+		<cfif arrayLen(extendSets)>
+			<cfloop from="1" to="#arrayLen(extendSets)#" index="s">	
+				<cfset extendSetBean=extendSets[s]/>
+				<cfif userBean.getType() eq 2><cfset style=extendSetBean.getStyle()/><cfif not len(style)><cfset started=true/></cfif></cfif>
+				<span class="extendset" extendsetid="#extendSetBean.getExtendSetID()#" categoryid="#extendSetBean.getCategoryID()#" #style#>
+					<input name="extendSetID" type="hidden" value="#extendSetBean.getExtendSetID()#"/>
+					<div class="fieldset">
+						<h2>#extendSetBean.getName()#</h2>
+						<cfsilent>
+							<cfset attributesArray=extendSetBean.getAttributes() />
+						</cfsilent>
 
-				<cfif listFindNoCase("png,jpg,jpeg",application.serviceFactory.getBean("fileManager").readMeta(attributeValue).fileExt)>
-					<a href="./index.cfm?muraAction=cArch.imagedetails&amp;userid=#userBean.getUserID()#&amp;siteid=#userBean.getSiteID()#&amp;fileid=#attributeValue#"><img id="assocImage" src="#application.configBean.getContext()#//index.cfm/_api/render/small/?fileid=#attributeValue#&amp;cacheID=#createUUID()#" /></a>
-				</cfif>
+						<cfloop from="1" to="#arrayLen(attributesArray)#" index="a">	
+							<cfset attributeBean=attributesArray[a]/>
+							<cfset attributeValue=userBean.getvalue(attributeBean.getName(),'useMuraDefault') />
+							<cfset readonly = attributeBean.getAdminOnly() and (not $.currentUser().isSuperUser() and not $.currentUser().isAdminUser()) />
 
-				<a href="#application.configBean.getContext()#/index.cfm/_api/render/file/?fileID=#attributeValue#" target="_blank">[#rbKey('user.download')#]</a> <input type="checkbox" value="true" name="extDelete#attributeBean.getAttributeID()#"/> #rbKey('user.delete')# </cfif>
-			</label>
-			<!--- if it's an hidden type attribute then flip it to be a textbox so it can be editable through the admin --->
-			<cfif attributeBean.getType() IS "Hidden">
-				<cfset attributeBean.setType( "TextBox" ) />
-			</cfif>	
-			<div class="controls">
-				#attributeBean.renderAttribute(attributeValue)#
-			</div>
-		</div>
-	</cfloop>
-	</div>
-	</span>
-</cfloop>
-</cfif>
-</cfoutput>
+							<!--- 
+								Hidden attributes should be editable via the back-end Admin area
+							--->
+							<cfif attributeBean.getType() eq "Hidden">
+								<cfset attributeBean.setType( "TextBox" ) />
+							</cfif>
+
+							<div class="control-group">
+								<label class="control-label">
+									<cfif len(attributeBean.getHint())>
+										<a href="##" rel="tooltip" title="#esapiEncode('html',attributeBean.gethint())#">
+											#esapiEncode('html', attributeBean.getLabel())# <i class="icon-question-sign"></i>
+										</a>
+									<cfelse>
+										#esapiEncode('html', attributeBean.getLabel())#
+									</cfif>
+								</label>
+
+								<div class="controls">
+									#attributeBean.renderAttribute(theValue=attributeValue, compactDisplay=rc.compactDisplay, size='medium', readonly=readonly)#
+
+									<cfif attributeBean.getType() eq "File" and len(attributeValue) and attributeValue neq 'useMuraDefault'> 
+										<cfif listFindNoCase("png,jpg,jpeg",application.serviceFactory.getBean("fileManager").readMeta(attributeValue).fileExt)>
+											<a href="./index.cfm?muraAction=cArch.imagedetails&amp;userid=#userBean.getUserID()#&amp;siteid=#userBean.getSiteID()#&amp;fileid=#attributeValue#">
+												<img id="assocImage" src="#application.configBean.getContext()#//index.cfm/_api/render/small/?fileid=#attributeValue#&amp;cacheID=#createUUID()#" />
+											</a>
+										</cfif>
+
+										<a href="#application.configBean.getContext()#/index.cfm/_api/render/file/?fileID=#attributeValue#" target="_blank">
+											[#rbKey('user.download')#]
+										</a> 
+										<input type="checkbox" value="true" name="extDelete#attributeBean.getAttributeID()#"/> #rbKey('user.delete')# 
+									</cfif>
+								</div>
+							</div>
+						</cfloop>
+					</div>
+				</span>
+			</cfloop>
+		</cfif>
+	</cfoutput>
 </cfsavecontent>
+
 <cfset returnsets.extended=trim(returnsets.extended)>
 <cfsilent>
-<cfset extendSets=application.classExtensionManager.getSubTypeByName(rc.type,rc.subtype,rc.siteid).getExtendSets(inherit=true,container="Basic",activeOnly=true) />
-<cfif userBean.getType() eq 2>
-	<cfset started=false />
-<cfelse>
-	<cfset started=true />
-</cfif>
-<cfset style="" />
+	<cfset extendSets=application.classExtensionManager.getSubTypeByName(rc.type,rc.subtype,rc.siteid).getExtendSets(inherit=true,container="Basic",activeOnly=true) />
+	<cfif userBean.getType() eq 2>
+		<cfset started=false />
+	<cfelse>
+		<cfset started=true />
+	</cfif>
+	<cfset style="" />
 </cfsilent>
 <cfsavecontent variable="returnsets.basic">
-<cfoutput>
-<cfif arrayLen(extendSets)>
-<cfloop from="1" to="#arrayLen(extendSets)#" index="s">	
-<cfset extendSetBean=extendSets[s]/>
-<cfif  userBean.getType() eq 2><cfset style=extendSetBean.getStyle()/><cfif not len(style)><cfset started=true/></cfif></cfif>
-	<span class="extendset" extendsetid="#extendSetBean.getExtendSetID()#" categoryid="#extendSetBean.getCategoryID()#" #style#>
-	<input name="extendSetID" type="hidden" value="#extendSetBean.getExtendSetID()#"/>
-	<div class="fieldset">
-		<h2>#extendSetBean.getName()#</h2>
-	<cfsilent>
-	<cfset attributesArray=extendSetBean.getAttributes() />
-	</cfsilent>
-	<cfloop from="1" to="#arrayLen(attributesArray)#" index="a">	
-		<cfset attributeBean=attributesArray[a]/>
-		<cfset attributeValue=userBean.getvalue(attributeBean.getName(),'useMuraDefault') />
-		<div class="control-group">
-	      	<label class="control-label">
-			<cfif len(attributeBean.getHint())>
-			<a href="##" rel="tooltip" title="#esapiEncode('html',attributeBean.gethint())#">#attributeBean.getLabel()# <i class="icon-question-sign"></i></a>
-			<cfelse>
-			#attributeBean.getLabel()#
-			</cfif>
-			<cfif attributeBean.getType() eq "File" and len(attributeValue) and attributeValue neq 'useMuraDefault'> 
+	<cfoutput>
+		<cfif arrayLen(extendSets)>
+			<cfloop from="1" to="#arrayLen(extendSets)#" index="s">	
+				<cfset extendSetBean=extendSets[s]/>
+				<cfif  userBean.getType() eq 2><cfset style=extendSetBean.getStyle()/><cfif not len(style)><cfset started=true/></cfif></cfif>
+				<span class="extendset" extendsetid="#extendSetBean.getExtendSetID()#" categoryid="#extendSetBean.getCategoryID()#" #style#>
+					<input name="extendSetID" type="hidden" value="#extendSetBean.getExtendSetID()#"/>
+					<div class="fieldset">
+						<h2>#esapiEncode('html', extendSetBean.getName())#</h2>
+						<cfsilent>
+							<cfset attributesArray=extendSetBean.getAttributes() />
+						</cfsilent>
+						<cfloop from="1" to="#arrayLen(attributesArray)#" index="a">	
+							<cfset attributeBean=attributesArray[a]/>
+							<cfset attributeValue=userBean.getvalue(attributeBean.getName(),'useMuraDefault') />
+							<cfset readonly = attributeBean.getAdminOnly() and (not $.currentUser().isSuperUser() and not $.currentUser().isAdminUser()) />
 
-				<cfif listFindNoCase("png,jpg,jpeg",application.serviceFactory.getBean("fileManager").readMeta(attributeValue).fileExt)>
-					<a href="./index.cfm?muraAction=cArch.imagedetails&amp;userid=#userBean.getUserID()#&amp;siteid=#userBean.getSiteID()#&amp;fileid=#attributeValue#"><img id="assocImage" src="#application.configBean.getContext()#/index.cfm/_api/render/small/?fileid=#attributeValue#&amp;cacheID=#createUUID()#" /></a>
-				</cfif>
+							<!--- 
+								Hidden attributes should be editable via the back-end Admin area
+							--->
+							<cfif attributeBean.getType() eq "Hidden">
+								<cfset attributeBean.setType( "TextBox" ) />
+							</cfif>
 
-				<a href="#application.configBean.getContext()#/index.cfm/_api/render/file/?fileID=#attributeValue#" target="_blank">[#rbKey('user.download')#]</a> <input type="checkbox" value="true" name="extDelete#attributeBean.getAttributeID()#"/> #rbKey('user.delete')#</cfif>
-			</label>
-			<!--- if it's an hidden type attribute then flip it to be a textbox so it can be editable through the admin --->
-			<cfif attributeBean.getType() IS "Hidden">
-				<cfset attributeBean.setType( "TextBox" ) />
-			</cfif>	
-			<div class="controls">
-				#attributeBean.renderAttribute(attributeValue)#
-			</div>
-		</div>
-	</cfloop>
-	</div>
-	</span>
-</cfloop>
-</cfif>
-</cfoutput>
+							<div class="control-group">
+								<label class="control-label">
+									<cfif len(attributeBean.getHint())>
+										<a href="##" rel="tooltip" title="#esapiEncode('html',attributeBean.gethint())#">
+											#esapiEncode('html', attributeBean.getLabel())# <i class="icon-question-sign"></i>
+										</a>
+									<cfelse>
+										#esapiEncode('html', attributeBean.getLabel())#
+									</cfif>
+								</label>
+
+								<div class="controls">
+									#attributeBean.renderAttribute(theValue=attributeValue, compactDisplay=rc.compactDisplay, size='medium', readonly=readonly)#
+
+									<cfif not readonly and attributeBean.getType() eq "File" and len(attributeValue) and attributeValue neq 'useMuraDefault'> 
+										<cfif listFindNoCase("png,jpg,jpeg",application.serviceFactory.getBean("fileManager").readMeta(attributeValue).fileExt)>
+											<a href="./index.cfm?muraAction=cArch.imagedetails&amp;userid=#userBean.getUserID()#&amp;siteid=#userBean.getSiteID()#&amp;fileid=#attributeValue#">
+												<img id="assocImage" src="#application.configBean.getContext()#/index.cfm/_api/render/small/?fileid=#attributeValue#&amp;cacheID=#createUUID()#" />
+											</a>
+										</cfif>
+
+										<a href="#application.configBean.getContext()#/index.cfm/_api/render/file/?fileID=#attributeValue#" target="_blank">
+											[#rbKey('user.download')#]
+										</a>
+										<input type="checkbox" value="true" name="extDelete#attributeBean.getAttributeID()#"/> #rbKey('user.delete')#
+									</cfif>
+								</div>
+
+
+							</div>
+						</cfloop>
+					</div>
+				</span>
+			</cfloop>
+		</cfif>
+	</cfoutput>
 </cfsavecontent>
 <cfset returnsets.basic=trim(returnsets.basic)>
 <cfoutput>#createObject("component","mura.json").encode(returnsets)#</cfoutput>

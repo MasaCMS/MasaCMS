@@ -52,15 +52,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn this />
 	</cffunction>
 
-	<cffunction name="getList" access="public" output="false" returntype="query">
+	<cffunction name="getList" output="false">
 		<cfargument name="sortBy" default="orderno">
 		<cfargument name="sortDirection" default="asc">
 		<cfargument name="cached" default="true" />
 		<cfset var rsSites = "" />
 
-		<cfif StructKeyExists(request, 'muraAppreloaded') or not StructKeyExists(variables, 'rsSites') or not arguments.cached>	
+		<cfif (StructKeyExists(request, 'muraAppreloaded') and isBoolean(request['muraAppreloaded']) && request['muraAppreloaded']) or not StructKeyExists(variables, 'rsSites#arguments.sortBy##arguments.sortDirection#') or not arguments.cached>
 			<cfquery name="rsSites">
-				SELECT * FROM tsettings ORDER BY 
+				SELECT * FROM tsettings ORDER BY
 				<cfif listFindNoCase("domain,site,orderno",arguments.sortBy)>
 					#arguments.sortBy#
 				<cfelse>
@@ -72,10 +72,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					asc
 				</cfif>
 			</cfquery>
-			<cfset variables.rsSites = rsSites />
+			<cfset variables["rsSites#arguments.sortBy##arguments.sortDirection#"] = rsSites />
 		</cfif>
-		
-		<cfreturn variables.rsSites />
+
+		<cfreturn variables["rsSites#arguments.sortBy##arguments.sortDirection#"] />
 	</cffunction>
 
 </cfcomponent>
