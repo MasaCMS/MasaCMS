@@ -13,7 +13,7 @@
 	<cfset application.rbFactory.resetSessionLocale()>
 </cfif>
 <cfcontent reset="true"><cfparam name="Cookie.fetDisplay" default="">
-<cfinclude template="/muraWRM/code/modules/v1/core_assets/js/mura.min.js">
+<cfinclude template="/muraWRM/core/modules/v1/core_assets/js/mura.min.js">
 
     /*
     	BEGIN Mura VARIATION TOOLS
@@ -24,6 +24,8 @@
       	var self=this;
       	var apiEndpoint="#$.siteConfig().getApi().getEndpoint()#";
       	var corepath="#$.siteConfig().getCorePath(complete=1)#";
+				var siteid="#$.siteConfig('siteid')#";
+				var rootpath="#$.siteConfig().getRootPath(complete=1)#";
       	var loginurl="#$.globalConfig().getAdminPath()#/?muraAction=clogin.main";
       	var content=null;
       	var variations=[];
@@ -108,6 +110,7 @@
     				content:content,
     				loginurl:loginurl,
     				variations:variations,
+						ga:content.ga,
     				origvariations:origvariations,
     				editableSelector:editableSelector,
     				siteid:content.siteid,
@@ -166,8 +169,8 @@
 
     			Mura
     				.loader()
-    				.loadcss(corepath + '/modules/core_assets/css/mura.7.0.min.css')
-    				.loadcss(corepath + '/modules/core_assets/css/mura.7.0.skin.css')
+    				.loadcss(corepath + '/modules/v1/core_assets/css/mura.7.0.min.css')
+    				.loadcss(corepath + '/modules/v1/core_assets/css/mura.7.0.skin.css')
     				.loadcss(themepath + '/css/theme/theme.min.css');
 
 
@@ -200,7 +203,11 @@
 
     			ga('create', content.ga.trackingid, 'auto','mxpGATracker');
 					ga('mxpGATracker.set', 'dataSource', 'MXP');
+					<cfoutput>
 					ga('mxpGATracker.set', 'userId', '#$.getBean('marketingManager').getTrackingid()#');
+					</cfoutput>
+					console.log(Mura.ga)
+					var gaTrackingVars=Mura.ga.trackingvars;
 
 					for(var p in gaTrackingVars){
 							if(gaTrackingVars.hasOwnProperty(p) && p.substring(0,1)=='d' && typeof gaTrackingVars[p] != 'string'){
@@ -329,6 +336,11 @@
     			console.log('mautic_trk=' + mautic_trk);
     			trackingparams+='&mautic_trk=' + encodeURIComponent(mautic_trk);
     		}
+
+				Mura.init({
+					rootpath:rootpath,
+					siteid:siteid
+				});
 
     		Mura.ajax({
     	        type:"GET",

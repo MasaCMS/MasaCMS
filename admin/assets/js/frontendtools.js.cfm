@@ -298,6 +298,9 @@
 			closeFrontEndToolsModal();
 
 			if(ispreview){
+
+				window.scrollTo(0, 0);
+
 				if(src.indexOf("?") == -1) {
 					src = src + '?muraadminpreview';
 				} else {

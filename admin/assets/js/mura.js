@@ -15033,7 +15033,7 @@ Mura.DOMSelection = Mura.Core.extend(
       },
 
       /**
-       * width - Returns height of first element in selection or set width for elements in selection
+       * width - Returns width of first element in selection or set width for elements in selection
        *
        * @param  {number} width Width (optional)
        * @return {object}       Self
@@ -15067,13 +15067,39 @@ Mura.DOMSelection = Mura.Core.extend(
           return getComputedStyle(el).width;
       },
 
+			/**
+       * width - Returns outerWidth of first element in selection
+       *
+       * @return {number}
+       */
+      outerWidth: function() {
+          if (!this.selection.length) {
+              return 0;
+          }
+
+          var el = this.selection[0];
+					var width = el.offsetWidth;
+				  var style = getComputedStyle(el);
+
+				  width += parseInt(style.marginLeft) + parseInt(style.marginRight);
+				  return width;
+      },
+
       /**
        * scrollTop - Returns the scrollTop of the current document
        *
        * @return {object}
        */
       scrollTop: function() {
-          return document.body.scrollTop;
+				if (!this.selection.length) {
+						return 0;
+				}
+				var el = this.selection[0];
+				if(typeof el.scrollTop != 'undefined'){
+					el.scrollTop;
+				} else {
+					return  window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+				}
       },
 
       /**
@@ -18992,7 +19018,7 @@ Mura.RequestContext=Mura.Core.extend(
 {
 	init: function(request, response, requestHeaders) {
     this.requestObject=request;
-    this.reponseObject=response;
+    this.responseObject=response;
     this._request=new Mura.Request(request, response, requestHeaders);
     return this;
 	},
@@ -19596,6 +19622,24 @@ Mura.Request=Mura.Core.extend(
         if(typeof this.requestObject.headers['x-access_token'] != 'undefined'){
           params.headers['X-access_token']=this.requestObject.headers['x-access_token'];
         }
+				if(typeof this.requestObject.headers['x-client-id'] != 'undefined'){
+					params.headers['X-client-id']=this.requestObject.headers['x-client-id'];
+				}
+				if(typeof this.requestObject.headers['x-clien-id'] != 'undefined'){
+					params.headers['X-client-id']=this.requestObject.headers['x-client-id'];
+				}
+				if(typeof this.requestObject.headers['X-client_secret'] != 'undefined'){
+					params.headers['X-client-secret']=this.requestObject.headers['X-client-secret'];
+				}
+				if(typeof this.requestObject.headers['x-client-secret'] != 'undefined'){
+					params.headers['X-client-secret']=this.requestObject.headers['x-client-secret'];
+				}
+				if(typeof this.requestObject.headers['X-access-token'] != 'undefined'){
+					params.headers['X-access-token']=this.requestObject.headers['X-access-token'];
+				}
+				if(typeof this.requestObject.headers['x-access-token'] != 'undefined'){
+					params.headers['X-access-token']=this.requestObject.headers['x-access-token'];
+				}
         if(typeof this.requestObject.headers['Authorization'] != 'undefined'){
           params.headers['Authorization']=this.requestObject.headers['Authorization'];
         }

@@ -372,7 +372,8 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			structAppend(params,form);
 
 			if(structKeyExists(headers,'Content-Type')
-				&& headers['Content-Type'] == 'application/json'
+				&& len(headers['Content-Type']) >= 16
+				&& left(headers['Content-Type'], 16) == 'application/json'
 				&& isJSON(httpRequestData.content)){
 				structAppend(params,deserializeJSON(httpRequestData.content));
 			}
@@ -395,6 +396,18 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 				if( structKeyExists( headers, 'X-access_token' )){
 					params['access_token']=headers['X-access_token'];
+				}
+
+				if( structKeyExists( headers, 'X-client-id' )){
+					params['client_id']=headers['X-client-id'];
+				}
+
+				if( structKeyExists( headers, 'X-client-secret' )){
+					params['client_secret']=headers['X-client-secret'];
+				}
+
+				if( structKeyExists( headers, 'X-access_token' )){
+					params['access_token']=headers['X-access-token'];
 				}
 
 				var isBasicAuth=false;
@@ -1602,11 +1615,20 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			}
 		}
 
+
 		var entity=$.getBean(arguments.entityName).set($.event().getAllValues());
 		var saveErrors=false;
 		var errors={};
 
-		var pk=entity.getPrimaryKey();
+		if(arguments.entityName=='feed'){
+			var pk="feedid";
+		} else {
+			var pk=entity.getPrimaryKey();
+		}
+
+		if(len($.event(pk)) && isValid('uuid',$.event(pk))){
+			arguments.id=$.event(pk);
+		}
 
 		if(arguments.id=='new'){
 			$.event('id',createUUID());
@@ -2655,6 +2677,10 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 					}
 				}
 			} else {
+				if(len($.event('contentid')) && isValid('uuid',$.event('contentid'))){
+					$.event('id',$.event(pk));
+				}
+
 				var loadparams={contentid=$.event('id')};
 				entity.loadBy(argumentCollection=loadparams);
 
@@ -2677,6 +2703,10 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				var pk="feedid";
 			} else {
 				var pk=entity.getPrimaryKey();
+			}
+
+			if(len($.event(pk)) && isValid('uuid',$.event(pk))){
+				$.event('id',$.event(pk));
 			}
 
 			var loadparams={'#pk#'=$.event('id')};
@@ -3208,12 +3238,14 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 				}
 
+				/*
 				if(listFindNoCase('folder,gallery,calendar,page',$.event('object'))){
 					result={
 						html=$.getContentRenderer().dspContentTypeBody(params=args.params)
 					};
 					break;
 				}
+				*/
 
 				result=$.dspObject(argumentCollection=args);
 

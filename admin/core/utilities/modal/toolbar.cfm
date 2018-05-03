@@ -369,7 +369,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 										</li>
 									<cfelseif useLayoutManager()>
 										<cfset tabAssignments=$.currentUser().getContentTabAssignments()>
-										<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Layout & Objects') or listFindNocase(tabAssignments,'Layout')>
+										<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Layout & Objects') or listFindNocase(tabAssignments,'Layout') or listFindNocase(tabAssignments,'Basic')>
 										<li id="adminQuickEdit">
 											<a onclick="return MuraInlineEditor.init();"><i class="mi-pencil"></i>
 												#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-layout')#
@@ -422,8 +422,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</cfif>
 							<!---</cfif>--->
 
-						<li><a href="#variables.adminLink#" title="#application.rbFactory.getKeyValue(session.rb,'layout.sitemanager')#" target="admin"><i class="mi-sitemap"></i></a></li>
-
+							<cfif $.currentUser().isPrivateUser()>
+								<li><a href="#variables.adminLink#" title="#application.rbFactory.getKeyValue(session.rb,'layout.sitemanager')#" target="admin"><i class="mi-sitemap"></i></a></li>
+							</cfif>
 
 						</ul>
 					</cfif>

@@ -57,11 +57,16 @@ component extends="mura.cfobject" output="false" hint="This provides locale spec
 		variables.locale = arguments.locale;
 		variables.configBean=getBean("configBean");
 		variables.settingsManager=getBean("settingsManager");
+
 		if ( !len(arguments.resourceDirectory) ) {
 			variables.resourceDirectory=getDirectoryFromPath(getCurrentTemplatePath()) & "resources/";
 		} else {
 			variables.resourceDirectory=arguments.resourceDirectory;
 		}
+		if(!listFind('/,\',right(variables.resourceDirectory,1))){
+			variables.resourceDirectory = variables.resourceDirectory  & '/';
+		}
+
 		return this;
 	}
 

@@ -382,7 +382,10 @@ function getThemeRenderer() output=false {
 	}
 
 	function rbKey(key, string locale="") output=false {
-		if ( isDefined('request.muraAdminRequest') && request.muraAdminRequest ) {
+		if(!isDefined('request.muraUseSiteBundles')){
+			request.muraUseSiteBundles=(isDefined('url.muraAction') && url.muraAction=='cArch.loadclassconfigurator') || !(isDefined('request.muraAdminRequest') && request.muraAdminRequest);
+		}
+		if ( !request.muraUseSiteBundles ) {
 			if ( len(arguments.locale) ) {
 				return application.rbFactory.getKeyValue(arguments.locale,arguments.key);
 			} else {

@@ -273,11 +273,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<div class="mura-control-group mura-related-internal">
 		<cfset started=false>
-		<cfif rc.rslist.recordcount>
 			<div id="draggableContainmentInternal" class="list-table search-results">
 				<div class="list-table-content-set">
 					<cfoutput><cfif len( contentPoolSiteIDs )>#$.getBean('settingsManager').getSite($.event('siteId')).getSite()#:</cfif>
-						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.searchresults')# (1-#min(rc.rslist.recordcount,100)# of #rc.rslist.recordcount#)</cfoutput>
+						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.searchresults')# <cfif rc.rslist.recordcount>(1-#min(rc.rslist.recordcount,100)# of #rc.rslist.recordcount#)</cfif></cfoutput>
 				</div>
 				<ul class="rcDraggable list-table-items">
 					<cfoutput query="rc.rslist" startrow="1" maxrows="100">
@@ -295,50 +294,49 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</li>
 						</cfif>
 					</cfoutput>
+					<cfif not started>
+						<cfoutput>
+							<li class="item">#application.rbFactory.getKeyValue(session.rb,'sitemanager.noresults')#</li>
+						</cfoutput>
+					</cfif>
 				</ul>
-			</div>
-		</cfif>
-		<cfif not started>
-			<cfoutput>
-				<div class="help-block-empty">#application.rbFactory.getKeyValue(session.rb,'sitemanager.noresults')#</div>
-			</cfoutput>
-		</cfif>
+		</div>
 
 		<!--- Cross-Site Related Search --->
 		<cfloop list="#contentPoolSiteIDs#" index="siteId">
+			<cfset started=false>
 			<cfif siteId neq $.event('siteid') and len($.event("keywords"))>
 				<cfset rc.rslist=getRelatedFeed($,siteId).getQuery()>
 				<cfset started=false>
-				<cfif rc.rslist.recordcount>
-					<div id="draggableContainmentInternal" class="list-table search-results">
-						<div class="list-table-content-set">
-							<cfoutput>#$.getBean('settingsManager').getSite(siteId).getSite()#:
-							#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.searchresults')# (1-#min(rc.rslist.recordcount,100)# of #rc.rslist.recordcount#)</cfoutput>
-						</div>
-						<ul class="rcDraggable list-table-items">
-							<cfoutput query="rc.rslist" startrow="1" maxrows="100">
-								<cfsilent>
-									<cfset crumbdata=application.contentManager.getCrumbList(rc.rslist.contentid, rc.rslist.siteid)/>
-									<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
-									<cfif verdict neq 'none'>
-										<cfset started=true>
-									</cfif>
-								</cfsilent>
-								<cfif verdict neq 'none'>
-								<!---<cfif arrayLen(crumbdata) and structKeyExists(crumbdata[1],"parentArray") and not listFind(arraytolist(crumbdata[1].parentArray),rc.contentid)>--->
-									<li class="item" data-content-type="#esapiEncode('html_attr','#rc.rslist.type#/#rc.rslist.subtype#')#" data-contentid="#rc.rslist.contentID#">
-										<button class="btn mura-rc-quickoption" type="button" value="#rc.rslist.contentID#"><i class="mi-plus"></i></button>  #$.dspZoomNoLinks(crumbdata=crumbdata, charLimit=90, minLevels=2)#
-									</li>
-								</cfif>
-							</cfoutput>
-						</ul>
+
+				<div id="draggableContainmentInternal" class="list-table search-results">
+					<div class="list-table-content-set">
+						<cfoutput>#$.getBean('settingsManager').getSite(siteId).getSite()#:
+						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.searchresults')# <cfif rc.rslist.recordcount>(1-#min(rc.rslist.recordcount,100)# of #rc.rslist.recordcount#)</cfif></cfoutput>
 					</div>
-				</cfif>
-				<cfif started>
-					<cfoutput>
-						<p>#application.rbFactory.getKeyValue(session.rb,'sitemanager.noresults')#</p>
-					</cfoutput>
-				</cfif>
+					<ul class="rcDraggable list-table-items">
+						<cfoutput query="rc.rslist" startrow="1" maxrows="100">
+							<cfsilent>
+								<cfset crumbdata=application.contentManager.getCrumbList(rc.rslist.contentid, rc.rslist.siteid)/>
+								<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
+								<cfif verdict neq 'none'>
+									<cfset started=true>
+								</cfif>
+							</cfsilent>
+							<cfif verdict neq 'none'>
+							<!---<cfif arrayLen(crumbdata) and structKeyExists(crumbdata[1],"parentArray") and not listFind(arraytolist(crumbdata[1].parentArray),rc.contentid)>--->
+								<li class="item" data-content-type="#esapiEncode('html_attr','#rc.rslist.type#/#rc.rslist.subtype#')#" data-contentid="#rc.rslist.contentID#">
+									<button class="btn mura-rc-quickoption" type="button" value="#rc.rslist.contentID#"><i class="mi-plus"></i></button>  #$.dspZoomNoLinks(crumbdata=crumbdata, charLimit=90, minLevels=2)#
+								</li>
+							</cfif>
+						</cfoutput>
+						<cfif not started>
+							<cfoutput>
+								<li class="item">#application.rbFactory.getKeyValue(session.rb,'sitemanager.noresults')#</li>
+							</cfoutput>
+						</cfif>
+					</ul>
+				</div>
 			</cfif>
 		</cfloop>
 	</div>

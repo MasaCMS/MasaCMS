@@ -384,7 +384,7 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 			arguments.propertyValue=trim(arguments.propertyValue);
 		}
 
-		if(arguments.property != 'value' && isValid('variableName',arguments.property) && isDefined("this.set#arguments.property#")){
+		if(arguments.property != 'value' && isValid('variableName',replace(arguments.property,'.','-')) && isDefined("this.set#arguments.property#")){
 			var tempFunc=this["set#arguments.property#"];
 			tempFunc(arguments.propertyValue);
 		} else if (len(variables.entityName)) {

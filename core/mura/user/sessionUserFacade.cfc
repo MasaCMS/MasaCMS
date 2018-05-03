@@ -147,6 +147,10 @@ component extends="mura.cfobject" output="false" hint="This provides access to t
 			}
 		}
 
+		public boolean function isSystemUser() output=false {
+			return isPrivateUser();
+		}
+
 		public boolean function isSuperUser() output=false {
 			if ( hasSession() ) {
 				return application.permUtility.isS2();

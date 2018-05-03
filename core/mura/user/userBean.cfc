@@ -239,9 +239,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.instance.UserID />
 </cffunction>
 
+<!---
 <cffunction name="getGroupID" output="false">
-	<cfreturn getUserID() />
+	<cfif variables.instance.type eq 2>
+		<cfreturn getUserID() />
+	<cfelse>
+		<cfparam name="variables.instance.groupid" default="">
+		<cfreturn variables.instance.groupid>
+	</cfif>
 </cffunction>
+--->
 
 <cffunction name="setLastUpdateBy" output="false">
 	<cfargument name="lastUpdateBy" type="String" />
@@ -288,15 +295,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="removeGroupID" output="false">
 	<cfargument name="groupID" type="String" />
-	<cfset var i=0>
-	<cfset var offset=0>
+	<cfset var i = 0 />
+	<cfset var listItem = 0 />
 
-	<cfif len(arguments.groupID)>
-		<cfloop from="1" to="#listLen(arguments.groupID)#" index="i">
-		<cfif listFindNoCase(variables.instance.groupID,listGetAt(arguments.groupID,i))>
-	    	<cfset variables.instance.groupID = listDeleteAt(variables.instance.groupID,i-offset) /> />
-	    	<cfset offset=offset+1>
-	    </cfif>
+	<cfif Len(arguments.groupID)>
+		<cfloop from="1" to="#ListLen(arguments.groupID)#" index="i">
+			<cfif ListFindNoCase(variables.instance.groupID, ListGetAt(arguments.groupID, i))>
+				<cfset listItem = ListFindNoCase(variables.instance.groupID, ListGetAt(arguments.groupID, i)) />
+				<cfset variables.instance.groupID = ListDeleteAt(variables.instance.groupID, listItem) />
+			</cfif>
 	    </cfloop>
 	</cfif>
 
