@@ -2823,7 +2823,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 								var self=el;
 								var checkForReCaptcha=function()
 									{
-									   if (typeof grecaptcha == 'object' )
+									   if (typeof grecaptcha == 'object' && typeof grecaptcha.render != 'undefined' )
 									   {
 									   	//console.log(self)
 									     grecaptcha.render(self.getAttribute('id'), {
