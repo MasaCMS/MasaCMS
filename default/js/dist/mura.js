@@ -4851,91 +4851,80 @@ return /******/ (function(modules) { // webpackBootstrap
                     }
                 },
 
-                function() {
-                    mura.reCAPTCHALanguage = mura.reCAPTCHALanguage ||
-                        'en';
+								function() {
+										Mura.reCAPTCHALanguage = Mura.reCAPTCHALanguage ||	'en';
 
-                    if (find(".g-recaptcha").length) {
-                        var fileref = document.createElement(
-                            'script')
-                        fileref.setAttribute("type",
-                            "text/javascript")
-                        fileref.setAttribute("src",
-                            "https://www.google.com/recaptcha/api.js?onload=checkForReCaptcha&render=explicit&hl=" +
-                            mura.reCAPTCHALanguage)
+										if (find(".g-recaptcha").length) {
+												var fileref = document.createElement('script')
+												fileref.setAttribute("type","text/javascript");
+												fileref.setAttribute(
+													"src",
+													"https://www.google.com/recaptcha/api.js?onload=MuraCheckForReCaptcha&render=explicit&hl=" +  Mura.reCAPTCHALanguage
+												);
 
-                        document.getElementsByTagName(
-                            "head")[0].appendChild(
-                            fileref)
+												document.getElementsByTagName("head")[0].appendChild(fileref);
+										}
 
-                    }
+										if (find(".g-recaptcha-container").length) {
+												loader().loadjs(
+														"https://www.google.com/recaptcha/api.js?onload=MuraCheckForReCaptcha&render=explicit&hl=" +
+														Mura.reCAPTCHALanguage,
+														function() {
+																find(
+																		".g-recaptcha-container"
+																).each(function(el) {
+																		var self =  el;
 
-                    if (find(".g-recaptcha-container").length) {
-                        loader().loadjs(
-                            "https://www.google.com/recaptcha/api.js?onload=checkForReCaptcha&render=explicit&hl=" +
-                            mura.reCAPTCHALanguage,
-                            function() {
-                                find(
-                                    ".g-recaptcha-container"
-                                ).each(function(el) {
-                                    var self =
-                                        el;
-                                    var
-                                        checkForReCaptcha =
-                                        function() {
-                                            if (
-                                                typeof grecaptcha ==
-                                                'object' &&
-                                                !
-                                                self
-                                                .innerHTML
-                                            ) {
+																		MuraCheckForReCaptcha =
+																				function() {
+																						if (
+																								typeof grecaptcha ==	'object'
+																								&& typeof grecaptcha.render != 'undefined'
+																								&&	!self.innerHTML
+																						) {
 
-                                                self
-                                                    .setAttribute(
-                                                        'data-widgetid',
-                                                        grecaptcha
-                                                        .render(
-                                                            self
-                                                            .getAttribute(
-                                                                'id'
-                                                            ), {
-                                                                'sitekey': self
-                                                                    .getAttribute(
-                                                                        'data-sitekey'
-                                                                    ),
-                                                                'theme': self
-                                                                    .getAttribute(
-                                                                        'data-theme'
-                                                                    ),
-                                                                'type': self
-                                                                    .getAttribute(
-                                                                        'data-type'
-                                                                    )
-                                                            }
-                                                        )
-                                                    );
-                                            } else {
-                                                root
-                                                    .setTimeout(
-                                                        function() {
-                                                            checkForReCaptcha
-                                                                ();
-                                                        },
-                                                        10
-                                                    );
-                                            }
-                                        }
+																								self
+																										.setAttribute(
+																												'data-widgetid',
+																												grecaptcha
+																												.render(
+																														self
+																														.getAttribute(
+																																'id'
+																														), {
+																																'sitekey': self
+																																		.getAttribute(
+																																				'data-sitekey'
+																																		),
+																																'theme': self
+																																		.getAttribute(
+																																				'data-theme'
+																																		),
+																																'type': self
+																																		.getAttribute(
+																																				'data-type'
+																																		)
+																														}
+																												)
+																										);
+																						} else {
+																								setTimeout(
+																												function() {
+																														MuraCheckForReCaptcha();
+																												},
+																												10
+																										);
+																						}
+																				}
 
-                                    checkForReCaptcha
-                                        ();
+																		MuraCheckForReCaptcha();
 
-                                });
-                            }
-                        );
+																});
+														}
+												);
 
-                    }
-                },
+										}
+								},
 
                 function() {
                     if (typeof resizeEditableObject ==
@@ -5989,7 +5978,7 @@ return /******/ (function(modules) { // webpackBootstrap
             '') {
             root.document.domain = config.rootdocumentdomain;
         }
-					
+
 				config.formdata=(typeof FormData != 'undefined') ? true : false;
 
         Mura.editing;
