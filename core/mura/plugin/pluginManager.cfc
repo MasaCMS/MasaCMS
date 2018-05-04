@@ -1959,7 +1959,7 @@ select * from tplugins order by #arguments.orderby#
 					<cfset request.muraHandledEvents["#arguments.runat#"]=true>
 				</cfif>
 			</cfif>
-			
+
 			<cfif len(arguments.objectid)
 					and isDefined('variables.siteListeners.#siteIDadjusted#.objects')
 					and structKeyExists(variables.siteListeners['#siteIDadjusted#'].objects,'#arguments.objectid#')
@@ -2686,7 +2686,7 @@ select * from tplugins order by #arguments.orderby#
 		group by moduleID, title, siteID
 		order by moduleID, title
 		<cfelse>
-		select pluginID, objectID, moduleID, siteID, name, title, displayObjectfile, docache, directory, displayMethod, configuratorInit, configuratorJS from variables.rsDisplayObjects
+		select distinct pluginID, objectID, moduleID, siteID, name, title, displayObjectfile, docache, directory, displayMethod, configuratorInit, configuratorJS from variables.rsDisplayObjects
 		where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
 		<cfif len(arguments.moduleID)>
 		and moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#">
