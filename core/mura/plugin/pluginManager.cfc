@@ -2678,23 +2678,24 @@ select * from tplugins order by #arguments.orderby#
 
 	<cfquery name="rs" dbtype="query">
 		<cfif arguments.modulesOnly>
-		select moduleID, siteID, title from variables.rsDisplayObjects
-		where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
-		<cfif len(arguments.moduleID)>
-		and moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#">
-		</cfif>
-		group by moduleID, title, siteID
-		order by moduleID, title
+			select moduleID, siteID, title from variables.rsDisplayObjects
+			where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
+			<cfif len(arguments.moduleID)>
+				and moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#">
+			</cfif>
+			group by moduleID, title, siteID
+			order by moduleID, title
 		<cfelse>
-		select distinct pluginID, objectID, moduleID, siteID, name, title, displayObjectfile, docache, directory, displayMethod, configuratorInit, configuratorJS from variables.rsDisplayObjects
-		where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
-		<cfif len(arguments.moduleID)>
-		and moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#">
-		</cfif>
-		<cfif arguments.configuratorsOnly>
-			and configuratorInit > ''
-		</cfif>
-		 order by moduleID, title, name
+			select pluginID, objectID, moduleID, siteID, name, title, displayObjectfile, docache, directory, displayMethod, configuratorInit, configuratorJS from variables.rsDisplayObjects
+			where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
+			<cfif len(arguments.moduleID)>
+				and moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#">
+			</cfif>
+			<cfif arguments.configuratorsOnly>
+				and configuratorInit > ''
+			</cfif>
+			group by pluginID, objectID, moduleID, siteID, name, title, displayObjectfile, docache, directory, displayMethod, configuratorInit, configuratorJS
+			order by moduleID, title, name
 		</cfif>
 	</cfquery>
 
