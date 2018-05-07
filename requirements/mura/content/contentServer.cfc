@@ -542,18 +542,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfcontent type="image/gif" variable="#toBinary('R0lGODlhAQABAPAAAAAAAAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==')#" reset="yes">
 		<cfreturn>
 	<cfelseif isDefined('url.fileid') and listLen(path,'/') gte 2 and (left(path,len(fileendpoint)) eq fileendpoint or left(path,len(legacyfileendpoint)) eq legacyfileendpoint)>
-		<cfswitch expression="#listGetAt(path,3,'/')#">
-			<cfcase value="file">
-				<cfparam name="url.method" default="inline">
-				<cfparam name="url.size" default="">
-				<cfreturn application.contentRenderer.renderFile(url.fileID,url.method,url.size)>
-			</cfcase>
+		<cfparam name="url.method" default="inline">
+		<cfparam name="url.size" default="#listGetAt(path,3,'/')#">
+		<cfswitch expression="#url.size#">
 			<cfcase value="small">
 				<cfreturn application.contentRenderer.renderSmall(url.fileID)>
 			</cfcase>
 			<cfcase value="medium">
 				<cfreturn application.contentRenderer.renderMedium(url.fileID)>
 			</cfcase>
+			<cfdefaultcase>
+				<cfreturn application.contentRenderer.renderFile(url.fileID,url.method,url.size)>
+			</cfdefaultcase>
 		</cfswitch>
 	<cfelseif left(path,len(sitemonitorendpoint)) eq sitemonitorendpoint>
 		<cfset var theTime=now()/>

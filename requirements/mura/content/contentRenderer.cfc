@@ -2083,6 +2083,7 @@ Display Objects
 	<cfargument name="height" default=""/>
 	<cfargument name="width" default=""/>
 	<cfargument name="secure" default="false">
+	<cfset arguments.direct=this.directImages>
 	<cfreturn getBean("fileManager").createHREFForImage(argumentCollection=arguments)>
 </cffunction>
 
