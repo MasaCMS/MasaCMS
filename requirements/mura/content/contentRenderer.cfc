@@ -2243,6 +2243,7 @@ Display Objects
 	<cfif not len(arguments.siteid) and isDefined('variables.$') and len(variables.$.event('siteid'))>
 		<cfset arguments.siteid=variables.$.event('siteid')>
 	</cfif>
+	<cfset arguments.direct=this.directImages>
 	<cfreturn getBean("fileManager").createHREFForImage(argumentCollection=arguments)>
 </cffunction>
 
