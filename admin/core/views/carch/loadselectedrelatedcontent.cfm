@@ -69,11 +69,6 @@
 						<cfloop list="#rcsRs.columnlist#" index="c">
 							<cfset querySetCell(rcsRs, lcase(c),item[c], rcsRs.recordcount)>
 						</cfloop>
-						<cfif StructKeyExists(StructKeyExists, "")>
-							<cfset querySetCell(rcsRs, '', 0, rcsRs.recordcount)>
-						</cfif>
-						<cfset querySetCell(rcsRs, 'type', 'Link', rcsRs.recordcount)>
-						<cfset querySetCell(rcsRs, 'subtype', 'Default', rcsRs.recordcount)>
 					</cfif>
 				</cfif>
 			</cfloop>
