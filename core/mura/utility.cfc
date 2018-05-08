@@ -292,6 +292,11 @@
 
 </cffunction>
 
+<cffunction name="createDir">
+	<cfargument name="baseDir" default="" required="yes">
+	<cfset variables.fileWriter.createDir(directory=arguments.baseDir)>
+</cffunction>
+
 <cffunction name="arrayFind">
 	<cfargument name="array" required="yes" type="array">
 	<cfargument name="stringa" required="yes" type="string">
