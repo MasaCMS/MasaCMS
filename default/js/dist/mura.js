@@ -2821,7 +2821,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 						function(){
 							find(".g-recaptcha-container" ).each(function(el){
 								var self=el;
-								var checkForReCaptcha=function()
+								checkForReCaptcha=function()
 									{
 									   if (typeof grecaptcha == 'object' && typeof grecaptcha.render != 'undefined' )
 									   {
