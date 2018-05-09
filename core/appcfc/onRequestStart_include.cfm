@@ -138,6 +138,15 @@ try {
 } catch (any cfcatch) {
 	application.loginManager.logout();
 }
+
+if (len(getSystemEnvironmentSetting('MURA_ENABLEDEVELOPMENTSETTINGS')) && structKeyExists(application, "settingsManager")){
+	var allSites = application.settingsManager.getSites();
+	for (var site in allSites) {
+		site.setEnableLockdown('');
+		site.setUseSSL('');
+	}
+}
+
 // settings.custom.vars.cfm reference is for backwards compatability
 if ( fileExists(expandPath("/muraWRM/config/settings.custom.vars.cfm")) ) {
 	include "/muraWRM/config/settings.custom.vars.cfm";
