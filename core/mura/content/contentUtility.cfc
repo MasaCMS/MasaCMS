@@ -927,7 +927,7 @@ Sincerely,
 	<cfargument name="contentID" type="string" />
 	<cfargument name="parentID" type="string" />
 	<cfargument name="recurse" type="boolean" required="true" default="false"/>
-	<cfargument name="appendTitle" type="boolean" required="true" default="true"/>
+	<cfargument name="appendTitle" type="boolean" required="true" default="false"/>
 	<cfargument name="path"/>
 	<cfargument name="setNotOnDisplay" type="boolean" required="true" default="false"/>
 	<cfset var rs1 = "">
