@@ -473,7 +473,7 @@ component extends="controller" output="false" {
 	 * @ouput false
 	 */
 	public function copy(rc) {
-		variables.contentManager.copy(arguments.rc.siteid,arguments.rc.contentID,arguments.rc.parentID,arguments.rc.copyAll, false, true);
+		variables.contentManager.copy(arguments.rc.siteid,arguments.rc.contentID,arguments.rc.parentID,arguments.rc.copyAll, true, true);
 		abort;
 	}
 

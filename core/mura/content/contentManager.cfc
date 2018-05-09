@@ -2214,7 +2214,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="contentID" type="string" />
 		<cfargument name="parentID" type="string" />
 		<cfargument name="recurse" type="boolean" required="true" default="false"/>
-		<cfargument name="appendTitle" type="boolean" required="true" default="false"/>
+		<cfargument name="appendTitle" type="boolean" required="true" default="true"/>
 		<cfargument name="setNotOnDisplay" type="boolean" required="true" default="false"/>
 
 		<cfreturn getBean('contentUtility').copy(arguments.siteID, arguments.contentID, arguments.parentID, arguments.recurse, arguments.appendTitle, "", arguments.setNotOnDisplay)>
