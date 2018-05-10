@@ -444,9 +444,9 @@ if(request.muraInDocker && (len(getSystemEnvironmentSetting('MURA_DATABASE')) ||
 
 		if(len(getSystemEnvironmentSetting('MURA_MEMCACHEDSESSIONSERVER'))){
 			this.cache.connections["muramemcachedsessions"] = {
-					class: 'org.lucee.extension.io.cache.memcache.MemCacheRaw'
-				, bundleName: 'memcached.extension'
-				, bundleVersion: '3.0.2.29'
+					class: "org.lucee.extension.io.cache.memcache.MemCacheRaw"
+				, bundleName: "memcached.extension"
+				, bundleVersion: "3.0.2.29"
 				, storage: true
 				, custom: {
 					"socket_timeout":"30",
@@ -465,7 +465,7 @@ if(request.muraInDocker && (len(getSystemEnvironmentSetting('MURA_DATABASE')) ||
 					"failover":"true",
 					"servers": getSystemEnvironmentSetting('MURA_MEMCACHEDSESSIONSERVER')
 				}
-				, default: ''
+				, "default": ""
 			};
 			this.sessionCluster = true;
 			this.sessionStorage = "muramemcachedsessions";

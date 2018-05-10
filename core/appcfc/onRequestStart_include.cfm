@@ -140,8 +140,8 @@ try {
 }
 
 if (len(getSystemEnvironmentSetting('MURA_ENABLEDEVELOPMENTSETTINGS')) && structKeyExists(application, "settingsManager")){
-	var allSites = application.settingsManager.getSites();
-	for (var site in allSites) {
+	allSites = application.settingsManager.getSites();
+	for (site in allSites) {
 		site.setEnableLockdown('');
 		site.setUseSSL('');
 	}
