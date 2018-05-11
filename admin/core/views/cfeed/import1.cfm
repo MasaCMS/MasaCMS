@@ -100,9 +100,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							
 								<cfoutput>
 									<div class="mura-layout-row mura-import-item clearfix">
-										<div class="mura-12">
+										<div class="mura-12">	
+											<label><input name="remoteID" value="#esapiEncode('html_attr',remoteID)#" type="checkbox" checked>&nbsp;&nbsp;#application.rbFactory.getKeyValue(session.rb,'collections.import')#&nbsp;&nbsp;</label>
 											<label><strong><a href="#esapiEncode('html_attr',items[i].link.xmlText)#" target="_blank">#esapiEncode('html',items[i].title.xmlText)#<cfif not rc.newBean.getIsNew()> [#application.rbFactory.getKeyValue(session.rb,'collections.update')#]</cfif></a></strong></label>
-											<label>&nbsp;&nbsp;#application.rbFactory.getKeyValue(session.rb,'collections.import')# <input name="remoteID" value="#esapiEncode('html_attr',remoteID)#" type="checkbox" checked></label>
 										</div>
 										<div class="mura-12">#items[i].description.xmlText#</div>
 									</div>
