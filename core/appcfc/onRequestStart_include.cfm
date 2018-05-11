@@ -139,11 +139,11 @@ try {
 	application.loginManager.logout();
 }
 
-if (len(getSystemEnvironmentSetting('MURA_ENABLEDEVELOPMENTSETTINGS')) && structKeyExists(application, "settingsManager")){
-	allSites = application.settingsManager.getSites();
-	for (site in allSites) {
-		site.setEnableLockdown('');
-		site.setUseSSL('');
+if (getSystemEnvironmentSetting('MURA_ENABLEDEVELOPMENTSETTINGS') == "true" && structKeyExists(application, "settingsManager")){
+	variables.allSitesEDS = application.settingsManager.getSites();
+	for (variables.siteEDS in variables.allSitesEDS) {
+		variables.allSitesEDS[variables.siteEDS].setEnableLockdown('');
+		variables.allSitesEDS[variables.siteEDS].setUseSSL('');
 	}
 }
 
