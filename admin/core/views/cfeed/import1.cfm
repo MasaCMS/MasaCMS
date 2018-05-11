@@ -43,8 +43,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfset rc.formatsupported=true>
 <cfinclude template="js.cfm">
-<cfoutput>
 
+<style type="text/css">
+	.mura-import-item img{
+		max-width: 200px !important;
+		margin-top: .5em !important;
+	}
+	.mura-import-item br:first-child,
+	.mura-import-item br:first-child + br{
+		display: none;
+	}
+</style>
+
+
+<cfoutput>
 <div class="mura-header">
 	<h1>#application.rbFactory.getKeyValue(session.rb,'collections.remotefeedimportselection')#</h1>
 	<cfinclude template="dsp_secondary_menu.cfm">
