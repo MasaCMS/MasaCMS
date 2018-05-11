@@ -1793,7 +1793,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		tcontent.Active = 1
 
-		and tcontent.moduleid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleid#">
+		and tcontent.moduleid in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.moduleid#">)
 
 				<cfif listFindNoCase("image,file",arguments.searchType)>
 					AND tcontent.siteID in (

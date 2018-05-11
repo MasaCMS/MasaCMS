@@ -51,5 +51,13 @@ component extends="mura.bean.beanORM" table="tcontentcategoryassign" entityname=
     property name="isfeature" datatype="int" default=0;
     property name="featureStart" datatype="datetime";
     property name="featureSop" datatype="datetime";
+		property name="categoryName" datatype="varchar" length=250 persistent=false;
+
+		function getLoadSQLColumnsAndTables(){
+			return "tcontentcategoryassign.*,tcontentcategories.name as categoryName
+				FROM tcontentcategoryassign
+				INNER JOIN tcontentcategories on (tcontentcategoryassign.categoryid=tcontentcategories.categoryid)
+			 ";
+		}
 
 }

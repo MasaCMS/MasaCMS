@@ -1596,7 +1596,7 @@ and parentID is null
 			</cfif>
 
 			<!--- see if parent exists (excluding home), using original parentID --->
-			<cfif contentBean.getParentID() neq "00000000000000000000000000000000001">
+			<cfif not listFind("00000000000000000000000000000000003,00000000000000000000000000000000001,00000000000000000000000000000000004,00000000000000000000000000000000099",contentBean.getParentID())>
 				<!--- if no parent, we create the parent --->
 				<cfset parentBean = getBean('content').loadBy(remoteID=contentBean.getParentID(),siteID=arguments.destinationSiteID ) />
 
@@ -1611,7 +1611,7 @@ and parentID is null
 					<cfset newContentBean.setParentID( parentBean.getContentID() ) />
 				</cfif>
 			<cfelse>
-				<cfset newContentBean.setParentID( "00000000000000000000000000000000001" ) />
+				<cfset newContentBean.setParentID( contentBean.getParentID() ) />
 			</cfif>
 
 			<cfset newContentBean.setSiteID( arguments.destinationSiteID ) />

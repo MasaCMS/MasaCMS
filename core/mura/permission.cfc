@@ -299,7 +299,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</cfcatch>
 						</cftry>
 					</cfif>
-				<cfelse><
+				<cfelse>
 					<cfset rsgroups=getModulePermQuery(arguments.moduleID,arguments.siteid) />
 				</cfif>
 

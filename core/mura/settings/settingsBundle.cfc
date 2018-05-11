@@ -579,7 +579,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<!---
 					<cfset variables.utility.deleteDir( variables.configBean.getValue('filedir') & '/'  & filePoolID & '/' & "assets"  )>
 					--->
-					<cfset variables.utility.deleteDir( variables.configBean.getValue('filedir') & '/'  & filePoolID & '/' & "cache"  )>
+					<cfset variables.utility.deleteDir( variables.configBean.getValue('filedir') & '/'  & filePoolID & "/cache"  )>
+					<cfset variables.utility.createDir( variables.configBean.getValue('filedir') & '/'  & filePoolID & "/cache"  )>
 				</cfif>
 				<cfif fileExists( getBundle() & "sitefiles.zip" )>
 					<cfset zipPath = getBundle() & "sitefiles.zip" />

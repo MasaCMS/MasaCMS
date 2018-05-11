@@ -150,7 +150,7 @@ component extends="controller" output="false" {
 
 		var componentStruct = getBean('content').loadBy(contentID=arguments.rc.contentid,siteid=rc.siteid ).getAllValues();
 		var componentJSON = {};
-		
+
 		componentJSON.body = componentStruct.body;
 		componentJSON = serializeJSON(componentJSON);
 
@@ -158,7 +158,7 @@ component extends="controller" output="false" {
 
 		rc.zipFileLocation = "#tempDir#/component-#zipTitle#.zip";
 		rc.zipTitle = zipTitle;
-				
+
 		fileWrite(tempDir & "/component.json",componentJSON);
 		zipTool.AddFiles(zipFilePath=rc.zipFileLocation,directory=tempDir,recurse="false",filter="*.json");
 	}
@@ -167,17 +167,17 @@ component extends="controller" output="false" {
 		var zipTool	= createObject("component","mura.Zip");
 		var tempDir=getTempDirectory();
 		var tempFolder = createUUID();
-				
+
 		if(structCount(form) && form.componentzip != '') {
 
 			if(form.title == "") {
 				rc.errormessage="Title is required";
 				return;
 			}
-			
-			directoryCreate("#tempDir#/#tempFolder#");		
+
+			directoryCreate("#tempDir#/#tempFolder#");
 			var uploadedFile = fileUpload("#tempDir#/#tempFolder#","form.componentzip","application/zip","overwrite");
-									
+
 			zipTool.Extract(zipFilePath="#tempDir#/#tempFolder#/#uploadedfile.serverfile#",extractPath="#tempDir#/#tempFolder#",overwriteFiles=true);
 
 			var componentJSON = fileRead("#tempDir#/#tempFolder#/component.json");
@@ -186,16 +186,16 @@ component extends="controller" output="false" {
 				rc.errormessage="Upload did not contain an exported Mura CMS component";
 				return;
 			}
-			
+
 			var componentStruct = deserializeJSON(componentJSON);
 			var newcomponentBean = getBean('content');
-			
+
 			newcomponentBean.set('type','Component');
 			newcomponentBean.set('siteid',rc.siteid);
 			newcomponentBean.set('moduleid','00000000000000000000000000000000003');
 			newcomponentBean.set('body',componentStruct.body);
 			newcomponentBean.set('title',form.title);
-						
+
 			newcomponentBean.save();
 			location("?muraAction=cArch.list&siteid=#rc.siteid#&topid=00000000000000000000000000000000003&moduleid=00000000000000000000000000000000003&activeTab=0",false);
 		}
