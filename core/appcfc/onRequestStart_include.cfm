@@ -138,6 +138,15 @@ try {
 } catch (any cfcatch) {
 	application.loginManager.logout();
 }
+
+if (getSystemEnvironmentSetting('MURA_ENABLEDEVELOPMENTSETTINGS') == "true" && structKeyExists(application, "settingsManager")){
+	variables.allSitesEDS = application.settingsManager.getSites();
+	for (variables.siteEDS in variables.allSitesEDS) {
+		variables.allSitesEDS[variables.siteEDS].setEnableLockdown('');
+		variables.allSitesEDS[variables.siteEDS].setUseSSL('');
+	}
+}
+
 // settings.custom.vars.cfm reference is for backwards compatability
 if ( fileExists(expandPath("/muraWRM/config/settings.custom.vars.cfm")) ) {
 	include "/muraWRM/config/settings.custom.vars.cfm";
