@@ -1093,6 +1093,9 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			switch(method){
 				case "GET":
 					if((isDefined('params.id') || (params.entityName=='content') && isDefined('params.contenthistid'))){
+						if(!isDefined('params.id') && (params.entityName=='content' && isDefined('params.contenthistid'))){
+							params.id=params.contenthistid;
+						}
 						if(params.id=='new') {
 							params.method='findNew';
 							result=findNew(argumentCollection=params);
@@ -1722,7 +1725,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			arguments.expand=false;
 		}
 
-		if(!(isDefined('variables.config.entities.#arguments.entityConfigName#.allowfieldselect') && !variables.config.entities[entityConfigName].allowfieldselect) && (isDefined('url.fields') && len(url.fields))){
+		if(!(isDefined('variables.config.entities.#arguments.entityConfigName#.allowfieldselect') && !variables.config.entities[entityConfigName].allowfieldselect) && (!arguments.expand && isDefined('url.fields') && len(url.fields))){
 			fields=url.fields;
 
 			if(!isAggregateQuery()){
@@ -2229,7 +2232,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			var started=false;
 
 			for(var p in arguments.params){
-				if(!listFindNoCase('muraPointInTime,liveOnly,feedid,maxItems,pageIndex,sort,itemsPerPage,sortBy,sortDirection,contentpoolid,shownavonly,showexcludesearch,includehomepage,feedname,',p)){
+				if(!listFindNoCase('muraPointInTime,liveOnly,feedid,maxItems,pageIndex,sort,itemsPerPage,sortBy,sortDirection,contentpoolid,shownavonly,showexcludesearch,includehomepage,feedname,expand',p)){
 					feed.addParam(column=p,criteria=arguments.params[p]);
 
 					if(started){
@@ -2282,7 +2285,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 						baseURL=baseURL & '=' & esapiEncode('url',params[p]);
 					}
 
-					if(!listFindNoCase('muraPointInTime,liveOnly,feedid,_cacheid,distinct,fields,entityname,method,maxItems,pageIndex,itemsPerPage,sortBy,sortDirection,contentpoolid,shownavonly,showexcludesearch,includehomepage,feedname',p)){
+					if(!listFindNoCase('expand,muraPointInTime,liveOnly,feedid,_cacheid,distinct,fields,entityname,method,maxItems,pageIndex,itemsPerPage,sortBy,sortDirection,contentpoolid,shownavonly,showexcludesearch,includehomepage,feedname',p)){
 						if(propName == 'sort'){
 							advancedsort=listAppend(advancedsort,arguments.params[p]);
 						} else if(!(entity.getEntityName()=='user' && propName=='isPublic')){
@@ -2770,7 +2773,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		var p='';
 		var baseURL=getEndPoint();
 		var id='';
-
+		var translatedPropKey='';
 		links.entities=baseURL;
 
 		/*
@@ -2820,8 +2823,14 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 					if(p.name=='site'){
 						links[p.name]="#baseurl#/site";
 					} else {
-						if(len(entity.getValue(entity.translatePropKey(p.column)))){
-							links[p.name]="#baseurl#/#p.cfc#/#entity.getValue(entity.translatePropKey(p.column))#";
+						translatedPropKey=entity.translatePropKey(p.column);
+						if(len(entity.getValue(translatedPropKey))){
+							if(p.cfc=='content' && translatedPropKey=='contenthistid'){
+								links[p.name]="#baseurl#/#p.cfc#/?contenthistid=#entity.getValue(translatedPropKey)#";
+							} else {
+								links[p.name]="#baseurl#/#p.cfc#/#entity.getValue(translatedPropKey)#";
+							}
+
 						}
 					}
 				}

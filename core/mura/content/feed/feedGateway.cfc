@@ -792,8 +792,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									total_points desc, total_score desc
 								</cfif>
 								,tcontent.releaseDate desc, tcontent.lastUpdate desc <!--- tie-breaker sort options for articles with the same MXP points/scores. Show the most recent one first. --->
+							<cfelseif arguments.feedBean.getOrderBy() eq 'random'>
+								<cfif dbType eq "mysql">
+									rand()
+								<cfelseif dbType eq "postgresql">
+									random()
+								<cfelseif dbType eq "mssql">
+									newID()
+								<cfelseif dbType eq "oracle">
+									dbms_random.value
+								</cfif>
 							<cfelse>
-								#REReplace(arguments.feedBean.getOrderBy(),"[^0-9A-Za-z\._,\-%//""'' ]","","all")#
+									#REReplace(arguments.feedBean.getOrderBy(),"[^0-9A-Za-z\._,\-%//""'' ]","","all")#
 							</cfif>
 						<cfelse>
 							<cfswitch expression="#arguments.feedBean.getSortBy()#">
