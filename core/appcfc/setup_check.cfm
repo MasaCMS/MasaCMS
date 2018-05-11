@@ -5,8 +5,12 @@ if ( request.muraInDocker) {
 		cfdbinfo(datasource="nodatabase",type='dbnames',name="rsdbnames");
 
 		if ( !ListFindNoCase(ValueList(rsdbnames.DATABASE_NAME), request.muraSysEnv.MURA_DATABASE) ) {
+			databaseName = request.muraSysEnv.MURA_DATABASE;
+			if (request.muraSysEnv.MURA_DBTYPE == 'mysql' && request.muraSysEnv.MURA_DATABASE contains '-') {
+				databaseName = "`#databaseName#`";
+			}
 			q = new Query(datasource="nodatabase");
-			q.execute(sql='CREATE DATABASE #request.muraSysEnv.MURA_DATABASE#');
+			q.execute(sql='CREATE DATABASE #databaseName#');
 
 			FORM['#application.setupSubmitButton#']=true;
 			FORM['#application.setupSubmitButtonComplete#']=true;
