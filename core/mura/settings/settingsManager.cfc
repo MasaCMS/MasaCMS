@@ -393,6 +393,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var foundSites=structNew()>
 	<cfset var siteTemplate=getBean('site')>
 	<cfset var i="">
+	<cfset var tracepoint1=''>
+	<cfset var tracepoint2=''>
 
 	<cfif arguments.missingOnly>
 		<cfset rs=getList() />
@@ -401,10 +403,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfset request.muraDeferredModuleAssets=[]>
+	<cfset tracepoint1=initTracepoint("Loading global modules")>
 	<cfset siteTemplate.discoverGlobalModules().discoverGlobalContentTypes()>
+	<cfset commitTracepoint(tracepoint1)>
 
 	<cfparam name="variables.sites" default="#structNew()#">
 
+	<cfset tracepoint1=initTracepoint("Checking required directories")>
 	<cfloop query="rs">
 		<cfif arguments.missingOnly and structKeyExists(variables.sites,'#rs.siteid#')>
 			<cfset builtSites['#rs.siteid#']=variables.sites['#rs.siteid#'] />
@@ -416,9 +421,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset variables.utility.createRequiredSiteDirectories(rs.siteid,builtSites['#rs.siteid#'].getDisplayPoolID()) />
 		</cfif>
  	</cfloop>
+	<cfset commitTracepoint(tracepoint1)>
 
 	<cfset variables.sites=builtSites>
 
+	<cfset tracepoint1=initTracepoint("Loading deferred global assets")>
 	<cfif arrayLen(request.muraDeferredModuleAssets)>
 		<cfloop from="1" to="#arrayLen(request.muraDeferredModuleAssets)#" index="i">
 				<cfif structKeyExists(request.muraDeferredModuleAssets[i],'modelDir') and len(request.muraDeferredModuleAssets[i].modelDir)>
@@ -426,11 +433,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 		</cfloop>
 	</cfif>
+	<cfset commitTracepoint(tracepoint1)>
 
+	<cfset tracepoint1=initTracepoint("Loading site modules")>
 	<cfloop query="rs">
+
 		<cfif structKeyExists(foundSites,'#rs.siteid#')>
 			<cfset builtSites['#rs.siteid#'].getRBFactory()>
-
+			<cfset tracepoint2=initTracepoint("Loading site: #rs.siteid#")>
 			<cfif arrayLen(request.muraDeferredModuleAssets)>
 				<cfloop from="1" to="#arrayLen(request.muraDeferredModuleAssets)#" index="i">
 						<cfif structKeyExists(request.muraDeferredModuleAssets[i],'config')>
@@ -449,8 +459,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				.discoverContentTypes()>
 
 			<cfset builtSites['#rs.siteid#'].discoverBeans()>
+			<cfset commitTracepoint(tracepoint2)>
 		</cfif>
  	</cfloop>
+	<cfset commitTracepoint(tracepoint1)>
 
 </cffunction>
 
