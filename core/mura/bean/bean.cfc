@@ -1358,37 +1358,45 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 	}
 
 	function registerAsEntity(){
-		var reg=getRegisteredEntity();
-		var dynamic=reg.getScaffold();
+		param name="request.muraRegisteredEntity" default={};
 
-		if(reg.getIsNew() || reg.getDynamic() || (dynamic != reg.getDynamic())){
+		if(!structKeyExists(request.muraRegisteredEntity,'#getEntityName()#')){
+			var tracePoint=initTracepoint("Registering Entity: #getEntityName()#");
+			var reg=getRegisteredEntity();
+			var dynamic=reg.getScaffold();
 
-			reg
-			.set('scaffold',getScaffold())
-			.set('dynamic',getDynamic())
-			.set('name',getEntityName())
-			.set('displayName',getEntityDisplayName())
-			.set('ishistorical',getIsHistorical());
+			if(reg.getIsNew() || reg.getDynamic() || (dynamic != reg.getDynamic())){
 
-			var md=GetMetaData(this);
+				reg
+				.set('scaffold',getScaffold())
+				.set('dynamic',getDynamic())
+				.set('name',getEntityName())
+				.set('displayName',getEntityDisplayName())
+				.set('ishistorical',getIsHistorical());
 
-			if(structKeyExists(md,'path')){
-				try{
-					if(reg.getDynamic()){
-						var code=reg.getCode();
-						reg.set('code',fileRead(expandpath(md.path)));
-					}
-				} catch(any e){}
+				var md=GetMetaData(this);
 
-				reg.set('path',md.path);
-			}
-			try{
-				if( reg.getIsNew() || ( reg.getDynamic() && code != reg.getCode() ) || ( dynamic != reg.getDynamic() ) ){
-					reg.save();
+				if(structKeyExists(md,'path')){
+					try{
+						if(reg.getDynamic()){
+							var code=reg.getCode();
+							reg.set('code',fileRead(expandpath(md.path)));
+						}
+					} catch(any e){}
+
+					reg.set('path',md.path);
 				}
-			} catch (any e){
-				writeLog(type="Error", file="exception", text="Error registering #md.path#");
+				try{
+					if( reg.getIsNew() || ( reg.getDynamic() && code != reg.getCode() ) || ( dynamic != reg.getDynamic() ) ){
+						reg.save();
+					}
+				} catch (any e){
+					writeLog(type="Error", file="exception", text="Error registering #md.path#");
+				}
 			}
+
+			request.muraRegisteredEntity['#getEntityName()#']=true;
+			commitTracePoint(tracePoint);
 		}
 	}
 

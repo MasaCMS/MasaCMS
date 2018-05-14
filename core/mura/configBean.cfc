@@ -1846,8 +1846,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var beanName=listLast(arguments.componentPath,'.')>
 	<cfset var entity="">
 
+
 	<cfif not structKeyExists(request.muraORMchecked,'#checkKey#')>
 		<!--- Catch instantiation errors --->
+		<cfset var tracePoint=initTracepoint("Loading bean: #arguments.componentPath#")>
 		<cftry>
 			<cfset var metadata=getMetaData(createObject('component','#arguments.componentPath#'))>
 
@@ -1909,12 +1911,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset getBean('settingsManager').getSite(local.i).getApi('json','v1').registerEntity(beanName,{
 						moduleid=arguments.moduleid,
 						public=isPublic,
-						fields=fields
+						fields=fields,
+						registered=true,
+						beanInstance=entity
 					})>
 				</cfloop>
 
 				<cfset request.muraORMchecked['#checkkey#']=true>
 		</cfif>
+		<cfset commitTracepoint(tracepoint)>
 	<cfelseif getServiceFactory().containsBean(beanName)>
 		<cfset var entity=getBean(beanName)>
 		<cfloop list="#arguments.siteid#" index="local.i">
@@ -1957,6 +1962,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset registerBeanDir(dir=listAppend(arguments.dir,rs.name,'/'),package=arguments.package & "." & rs.name,siteid=arguments.siteid,moduleid=arguments.moduleid,applyGlobal=arguments.applyGlobal)>
 				</cfif>
 			<cfelseif listLast(rs.name,'.') eq 'cfc'>
+				<cfset var tracePoint=initTracepoint("Registering Eventhandler: #package#.#beanName#")>
 				<cfset beanName=listFirst(rs.name,'.')>
 				<cfset beanInstance=createObject('component','#package#.#beanName#').init()>
 				<cfparam name="request.muraAppliedHandlers" default="#structNew()#">
@@ -1972,6 +1978,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfset beanInstance.onApplicationLoad($=$,m=$,Mura=$,event=$.event())>
 					</cfif>
 				</cfloop>
+				<cfset commitTracepoint(tracepoint)>
 			</cfif>
 		</cfloop>
 	</cfif>

@@ -203,7 +203,9 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			}
 	}
 
-	function registerEntity(entityName, config={public=false,fields=''},beanInstance='',registered=false){
+	function registerEntity(entityName, config={public=false,fields=''},beanInstance=''){
+
+
 
 		if(!isDefined('arguments.config.public')){
 			arguments.config.public=false;
@@ -219,9 +221,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			arguments.config.displayname=arguments.beanInstance.getEntityDisplayName();
 		}
 
-		if(!arguments.registered){
-			beanInstance.registerAsEntity();
-		}
+		beanInstance.registerAsEntity();
 
 		if(!structKeyExists(variables.config.entities['#arguments.entityName#'],'moduleid')){
 			variables.config.entities['#arguments.entityName#'].moduleid='00000000000000000000000000000000000';  //beanInstance.getRegisteredEntity().getEntityid();
@@ -241,6 +241,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				}
 			} catch(Any e){}
 		}
+
 	}
 
 	function registerLinkMethod(method){
