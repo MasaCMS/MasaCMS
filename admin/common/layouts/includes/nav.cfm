@@ -66,7 +66,7 @@
                 <!-- Themes functionality initialized in App() -> uiHandleTheme() -->
                 <div class="btn-group">
                     <span id="brand-logo-lg" class="brand" target="_blank">
-                        <img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/mura-logo@2x.png" class="mura-logo">
+                        <img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/mura-logo-admin@2x.png" class="mura-logo">
                     </span>
                     <span id="brand-logo-min" class="brand" target="_blank">
                         <img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/mura-icon@2x.png" class="mura-logo">
