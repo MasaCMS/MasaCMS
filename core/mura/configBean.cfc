@@ -1800,6 +1800,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="package">
 	<cfargument name="siteid" hint="Can be a list" default="">
 	<cfargument name="moduleid" default="00000000000000000000000000000000000">
+	<cfargument name="applyGlobal" default="true">
 	<cfset var rs="">
 	<cfif directoryExists(expandPath(arguments.dir))>
 		<cfif not isDefined('arguments.package') or isDefined('arguments.package') and not len(arguments.package)>
@@ -1818,7 +1819,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<!--- Registers handlers last so that that all entities defined will be available --->
 		<cfloop query="rs">
 			<cfif rs.type eq 'dir' and listFindNoCase('handlers,eventhandlers,event_handlers',rs.name)>
-				<cfset registerHandlerDir(dir=listAppend(arguments.dir,rs.name,'/'),package=arguments.package & "." & rs.name,siteid=arguments.siteid,moduleid=arguments.moduleid)>
+				<cfset registerHandlerDir(dir=listAppend(arguments.dir,rs.name,'/'),package=arguments.package & "." & rs.name,siteid=arguments.siteid,moduleid=arguments.moduleid,applyGlobal=arguments.applyGlobal)>
 			</cfif>
 		</cfloop>
 	</cfif>
@@ -1938,6 +1939,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="package">
 	<cfargument name="siteid" hint="Can be a list">
 	<cfargument name="moduleid" default="00000000000000000000000000000000000">
+	<cfargument name="applyGlobal" default="true">
 	<cfset var rs="">
 	<cfif directoryExists(expandPath(arguments.dir))>
 		<cfif not isDefined('arguments.package')>
@@ -1950,19 +1952,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfloop query="rs">
 			<cfif rs.type eq 'dir'>
 				<cfif listFindNoCase('handlers,eventHandlers',rs.name)>
-					<cfset registerHandlerDir(dir=listAppend(arguments.dir,rs.name,'/'),package=arguments.package & "." & rs.name,siteid=arguments.siteid,moduleid=arguments.moduleid)>
+					<cfset registerHandlerDir(dir=listAppend(arguments.dir,rs.name,'/'),package=arguments.package & "." & rs.name,siteid=arguments.siteid,moduleid=arguments.moduleid,applyGlobal=arguments.applyGlobal)>
 				<cfelse>
-					<cfset registerBeanDir(dir=listAppend(arguments.dir,rs.name,'/'),package=arguments.package & "." & rs.name,siteid=arguments.siteid,moduleid=arguments.moduleid)>
+					<cfset registerBeanDir(dir=listAppend(arguments.dir,rs.name,'/'),package=arguments.package & "." & rs.name,siteid=arguments.siteid,moduleid=arguments.moduleid,applyGlobal=arguments.applyGlobal)>
 				</cfif>
 			<cfelseif listLast(rs.name,'.') eq 'cfc'>
 				<cfset beanName=listFirst(rs.name,'.')>
 				<cfset beanInstance=createObject('component','#package#.#beanName#').init()>
-				<cfset var applyglobal=true>
-				<cfloop list="#arguments.siteid#" index="local.i">
-					<cfset getBean('pluginManager').addEventHandler(component=beanInstance,siteid=local.i,applyglobal=applyglobal)>
-					<cfset var applyglobal=true>
+				<cfparam name="request.muraAppliedHandlers" default="#structNew()#">
 
-					<cfif isDefined('beanInstance.onApplicationLoad')>
+				<cfloop list="#arguments.siteid#" index="local.i">
+					<cfif structKeyExists(request.muraAppliedHandlers,'#package#.#beanName#')>
+						<cfset arguments.applyGlobal=false>
+					</cfif>
+					<cfset getBean('pluginManager').addEventHandler(component=beanInstance,siteid=local.i,applyglobal=arguments.applyGlobal)>
+					<cfset request.muraAppliedHandlers['#package#.#beanName#']=true>
+					<cfif isDefined('beanInstance.onApplicationLoad') and arguments.applyGlobal>
 						<cfset $=getBean('$').init()>
 						<cfset beanInstance.onApplicationLoad($=$,m=$,Mura=$,event=$.event())>
 					</cfif>

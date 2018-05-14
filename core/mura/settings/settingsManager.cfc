@@ -400,15 +400,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset rs=getList(clearCache=true) />
 	</cfif>
 
-	<cfset request.muraDeferedModuleAssets=[]>
+	<cfset request.muraDeferredModuleAssets=[]>
 	<cfset siteTemplate.discoverGlobalModules().discoverGlobalContentTypes()>
-	<cfif arrayLen(request.muraDeferedModuleAssets)>
-		<cfloop from="1" to="#arrayLen(request.muraDeferedModuleAssets)#" index="i">
-				<cfif structKeyExists(request.muraDeferedModuleAssets[i],'modelDir')>
-						<cfset variables.configBean.registerBeanDir(dir=request.muraDeferedModuleAssets[i].modelDir,siteid=rs.siteid,package=request.muraDeferedModuleAssets[i].package,siteid=valuelist(rs.siteid))>
-				</cfif>
-		</cfloop>
-	</cfif>
 
 	<cfparam name="variables.sites" default="#structNew()#">
 
@@ -426,14 +419,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset variables.sites=builtSites>
 
+	<cfif arrayLen(request.muraDeferredModuleAssets)>
+		<cfloop from="1" to="#arrayLen(request.muraDeferredModuleAssets)#" index="i">
+				<cfif structKeyExists(request.muraDeferredModuleAssets[i],'modelDir') and len(request.muraDeferredModuleAssets[i].modelDir)>
+						<cfset variables.configBean.registerBeanDir(dir=request.muraDeferredModuleAssets[i].modelDir,siteid=rs.siteid,package=request.muraDeferredModuleAssets[i].package,siteid=valuelist(rs.siteid),applyGlobal=true)>
+				</cfif>
+		</cfloop>
+	</cfif>
+
 	<cfloop query="rs">
 		<cfif structKeyExists(foundSites,'#rs.siteid#')>
 			<cfset builtSites['#rs.siteid#'].getRBFactory()>
 
-			<cfif arrayLen(request.muraDeferedModuleAssets)>
-				<cfloop from="1" to="#arrayLen(request.muraDeferedModuleAssets)#" index="i">
-						<cfif structKeyExists(request.muraDeferedModuleAssets[i],'config')>
-							<cfset variables.configBean.getClassExtensionManager().loadConfigXML(request.muraDeferedModuleAssets[i].config,rs.siteid)>
+			<cfif arrayLen(request.muraDeferredModuleAssets)>
+				<cfloop from="1" to="#arrayLen(request.muraDeferredModuleAssets)#" index="i">
+						<cfif structKeyExists(request.muraDeferredModuleAssets[i],'config')>
+							<cfset variables.configBean.getClassExtensionManager().loadConfigXML(request.muraDeferredModuleAssets[i].config,rs.siteid)>
 						</cfif>
 				</cfloop>
 			</cfif>

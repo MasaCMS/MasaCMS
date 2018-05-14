@@ -1689,18 +1689,19 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		var objectfound=(arguments.conditional) ? false : true;
 		var expandedDir=expandPath(arguments.dir);
 		var utility=getBean('utility');
-		var defered={};
+		var deferred={};
 
 		if ( directoryExists(expandedDir) ) {
 			rs=getBean('fileWriter').getDirectoryList( directory=expandedDir, type="dir");
 
 			if(rs.recordcount){
 				if(get('isNew')){
-					param name="request.muraDeferedModuleAssets" default=[];
-					defered={};
+					param name="request.muradeferredModuleAssets" default=[];
+					deferred={};
 				}
 
 				for(var row=1;row <= rs.recordcount;row++){
+					config='';
 					if ( fileExists('#expandedDir#/#rs.name[row]#/config.xml.cfm') ) {
 						config=new mura.executor().execute('#arguments.dir#/#rs.name[row]#/config.xml.cfm');
 					} else if ( fileExists('#expandedDir#/#rs.name[row]#/config.xml') ) {
@@ -1761,7 +1762,6 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 							if ( len(tempVal) ) {
 								objectArgs.custom=tempVal;
 							}
-
 							tempVal=utility.getXMLKeyValue(baseXML,'displayObjectFile');
 							if ( len(tempVal) ) {
 								objectArgs.displayObjectFile=rs.name[row] & "/" & tempVal;
@@ -1785,7 +1785,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 							);
 
 							if(get('isNew')){
-								defered.config=config;
+								deferred.config=config;
 							} else {
 								variables.configBean.getClassExtensionManager().loadConfigXML(config,getValue('siteid'));
 							}
@@ -1794,11 +1794,14 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 
 					if(directoryExists('#rs.directory[row]#/#rs.name[row]#/model')) {
 						if(get('isNew')){
-							defered.modelDir="#arguments.dir#/#rs.name[row]#/model";
-							defered.package=arguments.package;
+							deferred.modelDir="#arguments.dir#/#rs.name[row]#/model";
+							deferred.package=arguments.package;
 						} else {
 							variables.configBean.registerBeanDir(dir='#arguments.dir#/#rs.name[row]#/model',siteid=getValue('siteid'),package=arguments.package);
 						}
+					} else if ( get('isNew') ){
+						deferred.modelDir="";
+						deferred.package="";
 					}
 
 					if ( directoryExists('#rs.directory[row]#/#rs.name[row]#/display_objects') ) {
@@ -1817,8 +1820,8 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 						variables.instance.rbFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(getRBFactory(),'#rs.directory[row]#/#rs.name[row]#/resourceBundles',getJavaLocale());
 					}
 
-					if(get('isNew') && (isDefined('defered.config') || isDefined('defered.registerModelDir'))){
-						arrayAppend(request.muraDeferedModuleAssets,defered);
+					if(get('isNew') && ( isDefined('deferred.config') || isDefined('deferred.modelDir') ) ){
+						arrayAppend(request.muradeferredModuleAssets,duplicate(deferred));
 					}
 				}
 			}
