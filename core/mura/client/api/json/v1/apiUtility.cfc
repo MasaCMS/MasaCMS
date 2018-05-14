@@ -203,7 +203,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			}
 	}
 
-	function registerEntity(entityName, config={public=false,fields=''}){
+	function registerEntity(entityName, config={public=false,fields=''},beanInstance='',registered=false){
 
 		if(!isDefined('arguments.config.public')){
 			arguments.config.public=false;
@@ -211,19 +211,23 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		variables.config.entities['#arguments.entityName#']=arguments.config;
 
-		var beanInstance=getBean(arguments.entityName);
-
-		if(!isDefined('arguments.config.displayname')){
-			arguments.config.displayname=beanInstance.getEntityDisplayName();
+		if(!(isDefined('arguments.beanInstance') && isObject(arguments.beanInstance))){
+			arguments.beanInstance=getBean(arguments.entityName);
 		}
 
-		beanInstance.registerAsEntity();
+		if(!isDefined('arguments.config.displayname')){
+			arguments.config.displayname=arguments.beanInstance.getEntityDisplayName();
+		}
+
+		if(!arguments.registered){
+			beanInstance.registerAsEntity();
+		}
 
 		if(!structKeyExists(variables.config.entities['#arguments.entityName#'],'moduleid')){
 			variables.config.entities['#arguments.entityName#'].moduleid='00000000000000000000000000000000000';  //beanInstance.getRegisteredEntity().getEntityid();
 		}
 
-		var properties=beanInstance.getProperties();
+		var properties=arguments.beanInstance.getProperties();
 		var serializer=getSerializer();
 
 		for(var p in properties){

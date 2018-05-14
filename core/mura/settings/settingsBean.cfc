@@ -253,7 +253,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		variables.instance.contentTypeLoopUpArray=[];
 		variables.instance.displayObjectLookup={};
 		variables.instance.displayObjectFilePathLookup={};
-		variables.instance.displayObjectLoopUpArray=[];
+		variables.instance.displayObjectLookUpArray=[];
 		variables.instance.htmlQueueFilePathLookup={};
 		variables.instance.showDashboard=0;
 		variables.instance.themeLookup={};
@@ -635,49 +635,55 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		return variables.instance.javaLocale;
 	}
 
-	public function getRBFactory() output=false {
+	public function getRBFactory(baseFactory='') output=false {
 		if ( !isObject(variables.instance.rbFactory) ) {
 
-			//Get core admin RB factory
-			if ( !isDefined('application.rbFactory') ) {
-				variables.tracepoint = initTracepoint("Instantiating resourceBundleFactory");
-				application.rbFactory = new mura.resourceBundle.resourceBundleFactory(expandPath("/mura/resourceBundle/resourceBundles"));
-				commitTracepoint(variables.tracepoint);
+			if(isDefined('arguments.baseFactory') && isObject(arguments.baseFactory)){
+				var tmpFactory = arguments.baseFactory;
+			} else {
+				//Get core admin RB factory
+				if ( !isDefined('application.rbFactory') ) {
+					variables.tracepoint = initTracepoint("Instantiating resourceBundleFactory");
+					application.rbFactory = new mura.resourceBundle.resourceBundleFactory(expandPath("/mura/resourceBundle/resourceBundles"));
+					commitTracepoint(variables.tracepoint);
+				}
+
+				var tmpFactory = application.rbFactory;
+
+				//Get core v1 module RB factory
+				var dirCoreV1 = '/muraWRM/core/modules/v1/core_assets/resource_bundles/';
+				if ( directoryExists(expandPath('/muraWRM/core/modules/v1/core_assets/resource_bundles/')) ) {
+					tmpFactory = createObject("component","mura.resourceBundle.resourceBundleFactory").init(tmpFactory,expandPath("/muraWRM/core/modules/v1/core_assets/resource_bundles/"),getJavaLocale());
+				}
+
+				//Get global level RB factory
+				if ( directoryExists(expandPath('/muraWRM/resourceBundles/')) ) {
+					tmpFactory = createObject("component","mura.resourceBundle.resourceBundleFactory").init(tmpFactory,expandPath("/muraWRM/resourceBundles/"),getJavaLocale());
+				} else if ( directoryExists(expandPath('/muraWRM/resource_bundles/')) ) {
+					tmpFactory = createObject("component","mura.resourceBundle.resourceBundleFactory").init(tmpFactory,expandPath("/muraWRM/resource_bundles/"),getJavaLocale());
+				}
 			}
 
-			var tmpFactory = application.rbFactory;
+			if(!get('isNew')){
+				//Get site level RB factory
+				if ( directoryExists('#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/resourceBundles/') ) {
+					tmpFactory = createObject("component","mura.resourceBundle.resourceBundleFactory").init(tmpFactory,"#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/resourceBundles/",getJavaLocale());
+				} else if ( directoryExists('#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/resource_bundles/') ) {
+					tmpFactory = createObject("component","mura.resourceBundle.resourceBundleFactory").init(tmpFactory,"#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/resource_bundles/",getJavaLocale());
+				} else if ( directoryExists('#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/includes/resourceBundles/') ) {
+					tmpFactory = createObject("component","mura.resourceBundle.resourceBundleFactory").init(tmpFactory,"#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/includes/resourceBundles/",getJavaLocale());
+				} else if ( directoryExists('#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/includes/resource_bundles/') ) {
+					tmpFactory = createObject("component","mura.resourceBundle.resourceBundleFactory").init(tmpFactory,"#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/includes/resource_bundles/",getJavaLocale());
+				}
 
-			//Get core v1 module RB factory
-			var dirCoreV1 = '/muraWRM/core/modules/v1/core_assets/resource_bundles/';
-			if ( directoryExists(expandPath('/muraWRM/core/modules/v1/core_assets/resource_bundles/')) ) {
-				tmpFactory = createObject("component","mura.resourceBundle.resourceBundleFactory").init(tmpFactory,expandPath("/muraWRM/core/modules/v1/core_assets/resource_bundles/"),getJavaLocale());
-			}
-
-			//Get global level RB factory
-			if ( directoryExists(expandPath('/muraWRM/resourceBundles/')) ) {
-				tmpFactory = createObject("component","mura.resourceBundle.resourceBundleFactory").init(tmpFactory,expandPath("/muraWRM/resourceBundles/"),getJavaLocale());
-			} else if ( directoryExists(expandPath('/muraWRM/resource_bundles/')) ) {
-				tmpFactory = createObject("component","mura.resourceBundle.resourceBundleFactory").init(tmpFactory,expandPath("/muraWRM/resource_bundles/"),getJavaLocale());
-			}
-
-			//Get site level RB factory
-			if ( directoryExists('#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/resourceBundles/') ) {
-				tmpFactory = createObject("component","mura.resourceBundle.resourceBundleFactory").init(tmpFactory,"#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/resourceBundles/",getJavaLocale());
-			} else if ( directoryExists('#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/resource_bundles/') ) {
-				tmpFactory = createObject("component","mura.resourceBundle.resourceBundleFactory").init(tmpFactory,"#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/resource_bundles/",getJavaLocale());
-			} else if ( directoryExists('#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/includes/resourceBundles/') ) {
-				tmpFactory = createObject("component","mura.resourceBundle.resourceBundleFactory").init(tmpFactory,"#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/includes/resourceBundles/",getJavaLocale());
-			} else if ( directoryExists('#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/includes/resource_bundles/') ) {
-				tmpFactory = createObject("component","mura.resourceBundle.resourceBundleFactory").init(tmpFactory,"#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/includes/resource_bundles/",getJavaLocale());
-			}
-
-			//Get theme level RB factory
-			var themeRBDir1=expandPath(getThemeIncludePath()) & "/resourceBundles/";
-			var themeRBDir2=expandPath(getThemeIncludePath()) & "/resource_bundles/";
-			if ( directoryExists(themeRBDir1) ) {
-				tmpFactory = createObject("component","mura.resourceBundle.resourceBundleFactory").init(tmpFactory,themeRBDir1,getJavaLocale());
-			} else if ( directoryExists(themeRBDir2) ) {
-				tmpFactory = createObject("component","mura.resourceBundle.resourceBundleFactory").init(tmpFactory,themeRBDir2,getJavaLocale());
+				//Get theme level RB factory
+				var themeRBDir1=expandPath(getThemeIncludePath()) & "/resourceBundles/";
+				var themeRBDir2=expandPath(getThemeIncludePath()) & "/resource_bundles/";
+				if ( directoryExists(themeRBDir1) ) {
+					tmpFactory = createObject("component","mura.resourceBundle.resourceBundleFactory").init(tmpFactory,themeRBDir1,getJavaLocale());
+				} else if ( directoryExists(themeRBDir2) ) {
+					tmpFactory = createObject("component","mura.resourceBundle.resourceBundleFactory").init(tmpFactory,themeRBDir2,getJavaLocale());
+				}
 			}
 
 			variables.instance.rbFactory = tmpFactory;
@@ -1097,7 +1103,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 			var qs = "";
 			var dir = "";
 
-			for ( dir in variables.instance.displayObjectLoopUpArray ) {
+			for ( dir in variables.instance.displayObjectLookUpArray ) {
 				dir=expandPath('#dir##trim(arguments.type)#');
 				if ( directoryExists(dir) ) {
 					rs=getBean('fileWriter').getDirectoryList( directory=dir ,type='dir');
@@ -1579,14 +1585,24 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		return this;
 	}
 
-	public function registerContentTypeDirs() output=false {
+	public function discoverGlobalContentTypes() output=false {
 		var lookupArray=[
-		'/muraWRM/core/content_types',
-		'/muraWRM/content_types',
-		getIncludePath()  & "/includes/content_types",
-		getIncludePath()  & "/content_types",
-		getThemeIncludePath(getValue('theme')) & "/content_types"
-	];
+			'/muraWRM/core/content_types',
+			'/muraWRM/content_types'
+		];
+		var dir="";
+		for ( dir in lookupArray ) {
+			registerContentTypeDir(dir=dir);
+		}
+		return this;
+	}
+
+	public function discoverContentTypes() output=false {
+		var lookupArray=[
+			getIncludePath()  & "/includes/content_types",
+			getIncludePath()  & "/content_types",
+			getThemeIncludePath(getValue('theme')) & "/content_types"
+		];
 		var dir="";
 		for ( dir in lookupArray ) {
 			registerContentTypeDir(dir=dir);
@@ -1673,11 +1689,17 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		var objectfound=(arguments.conditional) ? false : true;
 		var expandedDir=expandPath(arguments.dir);
 		var utility=getBean('utility');
+		var defered={};
 
 		if ( directoryExists(expandedDir) ) {
 			rs=getBean('fileWriter').getDirectoryList( directory=expandedDir, type="dir");
 
 			if(rs.recordcount){
+				if(get('isNew')){
+					param name="request.muraDeferedModuleAssets" default=[];
+					defered={};
+				}
+
 				for(var row=1;row <= rs.recordcount;row++){
 					if ( fileExists('#expandedDir#/#rs.name[row]#/config.xml.cfm') ) {
 						config=new mura.executor().execute('#arguments.dir#/#rs.name[row]#/config.xml.cfm');
@@ -1694,7 +1716,6 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 						} else {
 							var baseXML=config.mura;
 						}
-
 						if ( isDefined('baseXML.xmlAttributes.name') || isDefined('baseXML.name') ) {
 							objectArgs={
 											object=rs.name[row],
@@ -1758,16 +1779,28 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 									objectArgs[o]=baseXML.xmlAttributes[o];
 								}
 							}
+
 							registerDisplayObject(
-											argumentCollection=objectArgs
-										);
-							objectfound=true;
-							getBean('configBean').getClassExtensionManager().loadConfigXML(config,getValue('siteid'));
+								argumentCollection=objectArgs
+							);
+
+							if(get('isNew')){
+								defered.config=config;
+							} else {
+								variables.configBean.getClassExtensionManager().loadConfigXML(config,getValue('siteid'));
+							}
 						}
 					}
-					if ( directoryExists('#rs.directory[row]#/#rs.name[row]#/model') ) {
-						variables.configBean.registerBeanDir(dir='#arguments.dir#/#rs.name[row]#/model',siteid=getValue('siteid'),package=arguments.package);
+
+					if(directoryExists('#rs.directory[row]#/#rs.name[row]#/model')) {
+						if(get('isNew')){
+							defered.modelDir="#arguments.dir#/#rs.name[row]#/model";
+							defered.package=arguments.package;
+						} else {
+							variables.configBean.registerBeanDir(dir='#arguments.dir#/#rs.name[row]#/model',siteid=getValue('siteid'),package=arguments.package);
+						}
 					}
+
 					if ( directoryExists('#rs.directory[row]#/#rs.name[row]#/display_objects') ) {
 						registerDisplayObjectDir(dir='#arguments.dir#/#rs.name[row]#/display_objects');
 					}
@@ -1783,6 +1816,10 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 					if ( directoryExists('#rs.directory[row]#/#rs.name[row]#/resourceBundles') ) {
 						variables.instance.rbFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(getRBFactory(),'#rs.directory[row]#/#rs.name[row]#/resourceBundles',getJavaLocale());
 					}
+
+					if(get('isNew') && (isDefined('defered.config') || isDefined('defered.registerModelDir'))){
+						arrayAppend(request.muraDeferedModuleAssets,defered);
+					}
 				}
 			}
 
@@ -1790,7 +1827,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 				if ( !listFind('/,\',right(arguments.dir,1)) ) {
 					arguments.dir=arguments.dir & getBean('configBean').getFileDelim();
 				}
-				arrayPrepend(variables.instance.displayObjectLoopUpArray,arguments.dir);
+				arrayPrepend(variables.instance.displayObjectLookUpArray,arguments.dir);
 			}
 		}
 		return this;
@@ -1801,7 +1838,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 	}
 
 	public function getDispayObjectLookupArray() output=false {
-		return variables.instance.displayObjectLoopUpArray;
+		return variables.instance.displayObjectLookUpArray;
 	}
 
 	public function lookupDisplayObjectFilePath(filePath, customOnly="false") output=false {
@@ -1821,10 +1858,10 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		}
 		var dir="";
 		var result="";
-		var coreIndex=arrayLen(variables.instance.displayObjectLoopUpArray)-2;
+		var coreIndex=arrayLen(variables.instance.displayObjectLookUpArray)-2;
 		var dirIndex=0;
 		var utility=getBean('utility');
-		for ( dir in variables.instance.displayObjectLoopUpArray ) {
+		for ( dir in variables.instance.displayObjectLookUpArray ) {
 			dirIndex=dirIndex+1;
 			if ( !arguments.customonly || dirIndex < coreIndex ) {
 				result=dir & arguments.filePath;
@@ -1859,11 +1896,26 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		return this;
 	}
 
-	public function discoverDisplayObjects() output=false {
+	public function discoverGlobalModules() output=false {
 		var lookupArray=[
 			"/muraWRM/core/modules/v1",
 			"/muraWRM/modules",
-			"/muraWRM/display_objects",
+			"/muraWRM/display_objects"
+		];
+
+		var dir="";
+		var custom=true;
+		for ( dir in lookupArray ) {
+			custom= listFindNoCase('/muraWRM/modules,/muraWRM/display_objects',dir);
+			conditional=false;
+			registerDisplayObjectDir(dir=dir,conditional=conditional,custom=custom);
+		}
+
+		return this;
+	}
+
+	public function discoverModules() output=false {
+		var lookupArray=[
 			getIncludePath()  & "/includes/display_objects",
 			getIncludePath()  & "/includes/modules",
 			getIncludePath()  & "/includes/display_objects/custom",
@@ -1873,14 +1925,13 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 			getThemeIncludePath(getValue('theme')) & "/modules"
 		];
 
-
 		var dir="";
 		var dirIndex=0;
 		var custom=true;
 		var conditional=false;
 		for ( dir in lookupArray ) {
 			dirIndex=dirIndex+1;
-			custom=dirIndex > 2 || listFindNoCase('/muraWRM/modules,/muraWRM/display_objects',dir);
+			custom= listFindNoCase('/muraWRM/modules,/muraWRM/display_objects',dir);
 			conditional=false;
 			registerDisplayObjectDir(dir=dir,conditional=conditional,custom=custom);
 		}

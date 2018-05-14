@@ -391,11 +391,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rs="" />
 	<cfset var builtSites=structNew()>
 	<cfset var foundSites=structNew()>
+	<cfset var siteTemplate=getBean('site')>
+	<cfset var i="">
 
 	<cfif arguments.missingOnly>
 		<cfset rs=getList() />
 	<cfelse>
 		<cfset rs=getList(clearCache=true) />
+	</cfif>
+
+	<cfset request.muraDeferedModuleAssets=[]>
+	<cfset siteTemplate.discoverGlobalModules().discoverGlobalContentTypes()>
+	<cfif arrayLen(request.muraDeferedModuleAssets)>
+		<cfloop from="1" to="#arrayLen(request.muraDeferedModuleAssets)#" index="i">
+				<cfif structKeyExists(request.muraDeferedModuleAssets[i],'modelDir')>
+						<cfset variables.configBean.registerBeanDir(dir=request.muraDeferedModuleAssets[i].modelDir,siteid=rs.siteid,package=request.muraDeferedModuleAssets[i].package,siteid=valuelist(rs.siteid))>
+				</cfif>
+		</cfloop>
 	</cfif>
 
 	<cfparam name="variables.sites" default="#structNew()#">
@@ -417,8 +429,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfloop query="rs">
 		<cfif structKeyExists(foundSites,'#rs.siteid#')>
 			<cfset builtSites['#rs.siteid#'].getRBFactory()>
-			<cfset builtSites['#rs.siteid#'].registerContentTypeDirs()>
-			<cfset builtSites['#rs.siteid#'].discoverDisplayObjects()>
+
+			<cfif arrayLen(request.muraDeferedModuleAssets)>
+				<cfloop from="1" to="#arrayLen(request.muraDeferedModuleAssets)#" index="i">
+						<cfif structKeyExists(request.muraDeferedModuleAssets[i],'config')>
+							<cfset variables.configBean.getClassExtensionManager().loadConfigXML(request.muraDeferedModuleAssets[i].config,rs.siteid)>
+						</cfif>
+				</cfloop>
+			</cfif>
+
+			<cfset builtSites['#rs.siteid#']
+				.set('displayObjectLookup',duplicate(siteTemplate.get('displayObjectLookup')))
+				.set('displayObjectLookUpArray',duplicate(siteTemplate.get('displayObjectLookUpArray')))
+				.discoverModules()>
+
+			<cfset builtSites['#rs.siteid#']
+				.set('contentTypeLookUpArray',duplicate(siteTemplate.get('contentTypeLookUpArray')))
+				.discoverContentTypes()>
+
 			<cfset builtSites['#rs.siteid#'].discoverBeans()>
 		</cfif>
  	</cfloop>

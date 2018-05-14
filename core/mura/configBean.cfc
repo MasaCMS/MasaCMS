@@ -1917,11 +1917,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelseif getServiceFactory().containsBean(beanName)>
 		<cfset var entity=getBean(beanName)>
 		<cfloop list="#arguments.siteid#" index="local.i">
-			<cfset getBean('settingsManager').getSite(local.i).getApi('json','v1').registerEntity(beanName,{
+			<cfset getBean('settingsManager').getSite(local.i).getApi('json','v1').registerEntity(
+				entityName=beanName,
+				config={
 				moduleid=arguments.moduleid,
 				public=application.objectMappings['#entity.getEntityName()#'].public,
 				fields=fields
-			})>
+				},
+				beanInstance=entity,
+				registered=true
+			)>
 		</cfloop>
 	</cfif>
 
