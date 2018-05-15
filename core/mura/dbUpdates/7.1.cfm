@@ -4,12 +4,17 @@
     .addColumn(column="scaffolding",dataType="int");
 
     dbUtility.setTable("tclustercommands").addIndex("created");
+
+		dbUtility.setTable('tcontentfeeditems').addPrimaryKey('feedID,itemID');
+		dbUtility.setTable('tformresponsequestions').addPrimaryKey('responseID,formID,formfield');
+		dbUtility.setTable('tpermissions').addPrimaryKey('ContentID,GroupID,SiteID,Type');
+
 </cfscript>
 
 <cfquery name="rsCheck">
-select siteID from tsettings where siteid not in(
-	select siteid from tcontent where type='Module' and moduleID='00000000000000000000000000000000016'
-)
+	select siteID from tsettings where siteid not in(
+		select siteid from tcontent where type='Module' and moduleID='00000000000000000000000000000000016'
+	)
 </cfquery>
 
 <cfif rsCheck.recordcount>
