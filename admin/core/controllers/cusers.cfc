@@ -269,6 +269,8 @@ component persistent='false' accessors='true' output='false' extends='controller
 					structDelete(arguments.rc,'password2');
 					structDelete(arguments.rc,'passwordNoCache');
 					structDelete(arguments.rc,'email');
+					structDelete(arguments.rc,'inactive');
+					structDelete(arguments.rc,'isPublic');
 
 					if(arguments.rc.action eq "delete"){
 						arguments.rc.action="invalid";

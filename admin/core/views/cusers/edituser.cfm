@@ -436,12 +436,12 @@
 									</label>
 
 										<label class="radio inline">
-											<input name="isPublic" type="radio" class="radio inline" value="1"<cfif rc.tempIsPublic> Checked</cfif>>
+											<input <cfif lockedSuper>disabled </cfif>name="isPublic" type="radio" class="radio inline" value="1"<cfif rc.tempIsPublic> Checked</cfif>>
 											#rbKey('user.sitemember')#
 										</label>
 
 										<label class="radio inline">
-											<input name="isPublic" type="radio" class="radio inline" value="0"<cfif not rc.tempIsPublic> Checked</cfif>>
+											<input <cfif lockedSuper>disabled </cfif>name="isPublic" type="radio" class="radio inline" value="0"<cfif not rc.tempIsPublic> Checked</cfif>>
 											#rbKey('user.adminuser')#
 										</label>
 									</div>
@@ -639,10 +639,11 @@
 										#rbKey('user.inactive')#
 									</label>
 										<label class="radio inline">
-											<input name="InActive" type="radio" class="radio inline" value="0"<cfif rc.userBean.getInActive() eq 0 >Checked</cfif>>
+											<input <cfif lockedSuper>disabled </cfif>name="InActive" type="radio" class="radio inline" value="0"<cfif rc.userBean.getInActive() eq 0 >Checked</cfif>>
 											#rbKey('user.yes')#
 										</label>
-										<label class="radio inline"><input name="InActive" type="radio" class="radio inline" value="1"<cfif rc.userBean.getInActive() eq 1 >Checked</cfif>>
+										<label class="radio inline">
+											<input <cfif lockedSuper>disabled </cfif>name="InActive" type="radio" class="radio inline" value="1"<cfif rc.userBean.getInActive() eq 1 >Checked</cfif>>
 											#rbKey('user.no')#
 										</label>
 									</div>
