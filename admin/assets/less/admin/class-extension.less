@@ -22,22 +22,23 @@
 		clear: both;
 		
 		li {
-			.box-sizing(border-box);
-			width: 30%;
-			clear: both;
-			margin: 0 0 .25em;
-			background: @grayLighter;
-			padding: .25em .5em;
 			.border-radius(3px);
-			position: relative;
+			.box-sizing(border-box);
+			background: @grayLighter;
+			clear: both;
 			line-height: 28px;
+			margin: 0 0 .25em;
+			padding: .25em .5em;
+			position: relative;
+			width: 100%;
+			word-wrap:break-word;
 			z-index: 0;
 			
 			&.attr-edit { 
 				
-				width: 100%;
 				padding-top: @baseLineHeight; 
 				padding-left: 15px;
+				width: 100%;
 				
 				p { 
 					.bold-font;
@@ -47,9 +48,10 @@
 			    }
 				
 				.btns {
-					padding-right: @gridGutterWidth;
 					
-					i { font-size: 16px; }
+			    margin-top: -16px;
+			    padding-right: 0;
+			    padding-top: 0;
 					
 					}
 				
