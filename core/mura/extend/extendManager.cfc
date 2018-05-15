@@ -765,6 +765,10 @@ and tclassextendattributes.extendSetID in (<cfloop from="1" to="#setLen#" index=
 		</cfloop>)
 </cfif>
 and tclassextendattributes.type<>'File'
+
+<cfif isDefined('arguments.data.siteid') and len(arguments.data.siteid)>
+	and tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.data.siteid#">
+</cfif>
 </cfquery>
 
 <cfloop query="rs">
