@@ -36,9 +36,9 @@ services:
         MYSQL_ROOT_PASSWORD: NOT_SECURE_CHANGE
         MYSQL_DATABASE: muradb
     volumes:
-        - mura_mysql_data:/var/lib/mysql
+        - mura_mysql_7_0_data:/var/lib/mysql
     ports:
         - "55555:3306"
 
 volumes:
-    mura_mysql_data:
+    mura_mysql_7_0_data:

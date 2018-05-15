@@ -614,7 +614,7 @@
 			<cfelseif arguments.restrictgroups neq ''>
 				<cfset allowLink=False>
 				<cfloop list="#arguments.restrictgroups#" index="G">
-					<cfif listFind(sessionData.mura.memberships,'#G#;#application.settingsManager.getSite(event.getValue('siteID')).getPublicUserPoolID()#;1')>
+					<cfif listFind(sessionData.mura.memberships,'#G#;#application.settingsManager.getSite(event.getValue('siteID')).getPublicUserPoolID()#;1') or listFind(sessionData.mura.membershipids,g)>
 					<cfset allowLink=true>
 					</cfif>
 				</cfloop>
