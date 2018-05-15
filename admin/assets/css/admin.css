@@ -32398,25 +32398,26 @@ font-size: 12px;
   clear: both;
 }
 .mura #cextend .attr-list li {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  width: 30%;
-  clear: both;
-  margin: 0 0 .25em;
-  background: #f7f7f7;
-  padding: .25em .5em;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
-  position: relative;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  background: #f7f7f7;
+  clear: both;
   line-height: 28px;
+  margin: 0 0 .25em;
+  padding: .25em .5em;
+  position: relative;
+  width: 100%;
+  word-wrap: break-word;
   z-index: 0;
 }
 .mura #cextend .attr-list li.attr-edit {
-  width: 100%;
   padding-top: 18px;
   padding-left: 15px;
+  width: 100%;
 }
 .mura #cextend .attr-list li.attr-edit p {
   font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -32426,10 +32427,9 @@ font-size: 12px;
   padding-left: 0;
 }
 .mura #cextend .attr-list li.attr-edit .btns {
-  padding-right: 20px;
-}
-.mura #cextend .attr-list li.attr-edit .btns i {
-  font-size: 16px;
+  margin-top: -16px;
+  padding-right: 0;
+  padding-top: 0;
 }
 .mura #cextend .attr-list li.attr-edit .nav-pills {
   display: none;
