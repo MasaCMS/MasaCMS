@@ -428,191 +428,189 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 <cfset var utility=getBean('utility')>
 
 <cfif isDefined("arguments.data.extendSetID") and len(arguments.data.extendSetID)>
-<cfset setLen=listLen(arguments.data.extendSetID)/>
+	<cfset setLen=listLen(arguments.data.extendSetID)/>
 
-<cfif isdefined("arguments.data.remoteID")>
-	<cfset remoteID=left(arguments.data.remoteID,35)>
-</cfif>
+	<cfif isdefined("arguments.data.remoteID")>
+		<cfset remoteID=left(arguments.data.remoteID,35)>
+	</cfif>
 
-<cfif not isdefined("arguments.data.moduleID")>
-	<cfset arguments.data.moduleID="00000000000000000000000000000000004">
-</cfif>
+	<cfif not isdefined("arguments.data.moduleID")>
+		<cfset arguments.data.moduleID="00000000000000000000000000000000004">
+	</cfif>
 
-<cfif variables.configBean.getDBType() eq 'MSSQL'>
-	<cfset var tableModifier="with (nolock)">
-<cfelse>
-	<cfset var tableModifier="">
-</cfif>
+	<cfif variables.configBean.getDBType() eq 'MSSQL'>
+		<cfset var tableModifier="with (nolock)">
+	<cfelse>
+		<cfset var tableModifier="">
+	</cfif>
 
-<!--- process non-file attributes --->
-<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
-select attributeID,name,validation,message from tclassextendattributes #tableModifier# where
-ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
-		'#listgetat(arguments.data.extendSetID,s)#'<cfif s lt setlen>,</cfif>
-		</cfloop>)
-		and type <> 'File'
-</cfquery>
+	<!--- process non-file attributes --->
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
+	select attributeID,name,validation,message from tclassextendattributes #tableModifier# where
+	ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
+			'#listgetat(arguments.data.extendSetID,s)#'<cfif s lt setlen>,</cfif>
+			</cfloop>)
+			and type <> 'File'
+	</cfquery>
 
-<cfloop query="rs">
-	<cfset key="ext#rs.attributeID#"/>
+	<cfloop query="rs">
+		<cfset key="ext#rs.attributeID#"/>
 
-	<cfif structKeyExists(arguments.data,key)
-		or structKeyExists(arguments.data,rs.name)>
+		<cfif structKeyExists(arguments.data,key)
+			or structKeyExists(arguments.data,rs.name)>
 
-		<cfif structKeyExists(arguments.data,key) and len(arguments.data[key])>
-			<cfset theValue=arguments.data[key]>
-		<cfelseif structKeyExists(arguments.data,rs.name) and len(arguments.data[rs.name])>
-			<cfset theValue=arguments.data[rs.name]>
-		<cfelse>
-			<cfset theValue="">
-		</cfif>
+			<cfif structKeyExists(arguments.data,key) and len(arguments.data[key])>
+				<cfset theValue=arguments.data[key]>
+			<cfelseif structKeyExists(arguments.data,rs.name) and len(arguments.data[rs.name])>
+				<cfset theValue=arguments.data[rs.name]>
+			<cfelse>
+				<cfset theValue="">
+			</cfif>
 
-		<cfif len(theValue)>
-			<cfif listFindNoCase("Date,DateTime",rs.validation)>
-				<cfif lsisDate(theValue)>
-					<cftry>
-					<cfset theValue = lsparseDateTime(theValue) />
-					<cfcatch>
+			<cfif len(theValue)>
+				<cfif listFindNoCase("Date,DateTime",rs.validation)>
+					<cfif lsisDate(theValue)>
+						<cftry>
+						<cfset theValue = lsparseDateTime(theValue) />
+						<cfcatch>
+							<cfset theValue = parseDateTime(theValue) />
+						</cfcatch>
+						</cftry>
+					<cfelseif isDate(theValue)>
 						<cfset theValue = parseDateTime(theValue) />
-					</cfcatch>
-					</cftry>
-				<cfelseif isDate(theValue)>
-					<cfset theValue = parseDateTime(theValue) />
-				</cfif>
-			<cfelseif rs.validation eq "Numeric">
-				<cfif not isNumeric(theValue)>
-					<cfset theValue=''>
-				</cfif>
-			</cfif>
-		</cfif>
-
-		<cfquery>
-			delete from #arguments.dataTable#
-			where baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.baseID#">
-			and attributeID = <cfqueryparam cfsqltype="cf_sql_numeric"  value="#rs.attributeID#">
-		</cfquery>
-
-		<cfif len(theValue) or saveEmptyExtendedValues>
-			<cfquery>
-				insert into #arguments.dataTable# (baseID,attributeID,siteID,stringvalue,attributeValue,datetimevalue,numericvalue,remoteID
-				)
-				values (
-				<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.baseID#">,
-				<cfqueryparam cfsqltype="cf_sql_integer"  value="#rs.attributeID#">,
-				<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.data.siteID#">,
-				<cfqueryparam cfsqltype="cf_sql_varchar"  value="#utility.trimVarchar(theValue,250)#">,
-				<cfif not len(theValue)>
-					null,
-					null,
-					null
-				<cfelseif listFindNoCase("Date,DateTime",rs.validation)>
-					<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#theValue#">,
-					<cfqueryparam cfsqltype="cf_sql_timestamp" value="#theValue#">,
-					null
+					</cfif>
 				<cfelseif rs.validation eq "Numeric">
-					<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#theValue#">,
-					null,
-					<cfqueryparam cfsqltype="cf_sql_numeric"  value="#theValue#">
-				<cfelse>
-					<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#theValue#">,
-					null,
-					null
+					<cfif not isNumeric(theValue)>
+						<cfset theValue=''>
+					</cfif>
 				</cfif>
-				,
-				<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#remoteID#">
-				)
-			</cfquery>
-		</cfif>
-	</cfif>
-</cfloop>
-
-<!--- process file attributes --->
-<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
-select attributeID,name from tclassextendattributes #tableModifier# where
-ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
-		'#listgetat(arguments.data.extendSetID,s)#'<cfif s lt setlen>,</cfif>
-		</cfloop>)
-		and type = 'File'
-</cfquery>
-
-<cfloop query="rs">
-	<cfset key="ext#rs.attributeID#"/>
-	<cfset deletekey1="extDelete#rs.attributeID#"/>
-	<cfset deletekey2="extDelete#rs.name#"/>
-
-	<!--- if a new file has been submitted or a delete key exists, delete any existing file --->
-	<cfif (structKeyExists(arguments.data,key) and len(arguments.data[key]))
-		or (structKeyExists(arguments.data,rs.name) and len(arguments.data[rs.name]))
-		or structKeyExists(arguments.data,deletekey1)
-		or structKeyExists(arguments.data,deletekey2)>
-
-
-		<cfset fileID=getAttribute(arguments.baseID,rs.attributeID,arguments.dataTable)/>
-
-		<cfif len(fileID)>
-
-			<cfset fileManager.deleteIfNotUsed(fileID,arguments.baseID)/>
+			</cfif>
 
 			<cfquery>
-			delete from #arguments.dataTable#
-			where baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.baseID#">
-			and attributeID = <cfqueryparam cfsqltype="cf_sql_numeric"  value="#rs.attributeID#">
-		 	</cfquery>
-
-		 	<cfset fileID=""/>
-		</cfif>
-
-	</cfif>
-
-	<!--- if a new file has been submitted , save it --->
-	<cfif (structKeyExists(arguments.data,key) and len(arguments.data[key]))
-		or (structKeyExists(arguments.data,rs.name) and len(arguments.data[rs.name])) and not
-		(structKeyExists(arguments.data,deletekey1)
-		or structKeyExists(arguments.data,deletekey2))>
-
-		<cfif structKeyExists(arguments.data,key) and len(arguments.data[key])>
-			<cfset formField=key />
-		<cfelse>
-			<cfset formField=rs.name />
-		</cfif>
-
-		<!--- Check to see if it's a posted binary file--->
-		<cfif not isValid('UUID',arguments.data[formField])>
-			<cfif fileManager.isPostedFile(arguments.data[formField])>
-				<cffile action="upload" result="tempFile" filefield="#formField#" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
-			<!--- Else fake it to think it was a posted files--->
-			<cfelse>
-				<cfset tempFile=fileManager.emulateUpload(arguments.data[formField])>
-			</cfif>
-			<cfif not StructIsEmpty(tempFile)>
-				<cfset theFileStruct=fileManager.process(tempFile,arguments.data.siteID) />
-				<cfset fileID=fileManager.create(theFileStruct.fileObj,arguments.baseID,arguments.data.siteID,tempFile.ClientFile,tempFile.ContentType,tempFile.ContentSubType,tempFile.FileSize,arguments.data.moduleID,tempFile.ServerFileExt,theFileStruct.fileObjSmall,theFileStruct.fileObjMedium,createUUID(),theFileStruct.fileObjSource) />
-			<cfelse>
-				<cfset fileID="">
-			</cfif>
-		<cfelse>
-			<cfset fileID=arguments.data[formField]>
-		</cfif>
-
-		<cfif len(fileid)>
-			<cfquery >
-				insert into #arguments.dataTable# (baseID,attributeID,siteID,attributeValue,stringvalue,remoteID)
-				values (
-				<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.baseID#">,
-				<cfqueryparam cfsqltype="cf_sql_integer"  value="#rs.attributeID#">,
-				<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.data.siteID#">,
-				<cfqueryparam cfsqltype="cf_sql_varchar"  value="#fileID#">,
-				<cfqueryparam cfsqltype="cf_sql_varchar"  value="#fileID#">,
-				<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#remoteID#">
-				)
+				delete from #arguments.dataTable#
+				where baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.baseID#">
+				and attributeID = <cfqueryparam cfsqltype="cf_sql_numeric"  value="#rs.attributeID#">
 			</cfquery>
+
+			<cfif len(theValue) or saveEmptyExtendedValues>
+				<cfquery>
+					insert into #arguments.dataTable# (baseID,attributeID,siteID,stringvalue,attributeValue,datetimevalue,numericvalue,remoteID
+					)
+					values (
+					<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.baseID#">,
+					<cfqueryparam cfsqltype="cf_sql_integer"  value="#rs.attributeID#">,
+					<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.data.siteID#">,
+					<cfqueryparam cfsqltype="cf_sql_varchar"  value="#utility.trimVarchar(theValue,250)#">,
+					<cfif not len(theValue)>
+						null,
+						null,
+						null
+					<cfelseif listFindNoCase("Date,DateTime",rs.validation)>
+						<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#theValue#">,
+						<cfqueryparam cfsqltype="cf_sql_timestamp" value="#theValue#">,
+						null
+					<cfelseif rs.validation eq "Numeric">
+						<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#theValue#">,
+						null,
+						<cfqueryparam cfsqltype="cf_sql_numeric"  value="#theValue#">
+					<cfelse>
+						<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#theValue#">,
+						null,
+						null
+					</cfif>
+					,
+					<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#remoteID#">
+					)
+				</cfquery>
+			</cfif>
+		</cfif>
+	</cfloop>
+
+	<!--- process file attributes --->
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
+	select attributeID,name from tclassextendattributes #tableModifier# where
+	ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
+			'#listgetat(arguments.data.extendSetID,s)#'<cfif s lt setlen>,</cfif>
+			</cfloop>)
+			and type = 'File'
+	</cfquery>
+
+	<cfloop query="rs">
+		<cfset key="ext#rs.attributeID#"/>
+		<cfset deletekey1="extDelete#rs.attributeID#"/>
+		<cfset deletekey2="extDelete#rs.name#"/>
+
+		<!--- if a new file has been submitted or a delete key exists, delete any existing file --->
+		<cfif (structKeyExists(arguments.data,key) and len(arguments.data[key]))
+			or (structKeyExists(arguments.data,rs.name) and len(arguments.data[rs.name]))
+			or structKeyExists(arguments.data,deletekey1)
+			or structKeyExists(arguments.data,deletekey2)>
+
+
+			<cfset fileID=getAttribute(arguments.baseID,rs.attributeID,arguments.dataTable)/>
+
+			<cfif len(fileID)>
+
+				<cfset fileManager.deleteIfNotUsed(fileID,arguments.baseID)/>
+
+				<cfquery>
+				delete from #arguments.dataTable#
+				where baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.baseID#">
+				and attributeID = <cfqueryparam cfsqltype="cf_sql_numeric"  value="#rs.attributeID#">
+			 	</cfquery>
+
+			 	<cfset fileID=""/>
+			</cfif>
+
 		</cfif>
 
-	</cfif>
+		<!--- if a new file has been submitted , save it --->
+		<cfif (structKeyExists(arguments.data,key) and len(arguments.data[key]))
+			or (structKeyExists(arguments.data,rs.name) and len(arguments.data[rs.name])) and not
+			(structKeyExists(arguments.data,deletekey1)
+			or structKeyExists(arguments.data,deletekey2))>
 
-</cfloop>
+			<cfif structKeyExists(arguments.data,key) and len(arguments.data[key])>
+				<cfset formField=key />
+			<cfelse>
+				<cfset formField=rs.name />
+			</cfif>
 
+			<!--- Check to see if it's a posted binary file--->
+			<cfif not isValid('UUID',arguments.data[formField])>
+				<cfif fileManager.isPostedFile(arguments.data[formField])>
+					<cffile action="upload" result="tempFile" filefield="#formField#" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
+				<!--- Else fake it to think it was a posted files--->
+				<cfelse>
+					<cfset tempFile=fileManager.emulateUpload(arguments.data[formField])>
+				</cfif>
+				<cfif not StructIsEmpty(tempFile)>
+					<cfset theFileStruct=fileManager.process(tempFile,arguments.data.siteID) />
+					<cfset fileID=fileManager.create(theFileStruct.fileObj,arguments.baseID,arguments.data.siteID,tempFile.ClientFile,tempFile.ContentType,tempFile.ContentSubType,tempFile.FileSize,arguments.data.moduleID,tempFile.ServerFileExt,theFileStruct.fileObjSmall,theFileStruct.fileObjMedium,createUUID(),theFileStruct.fileObjSource) />
+				<cfelse>
+					<cfset fileID="">
+				</cfif>
+			<cfelse>
+				<cfset fileID=arguments.data[formField]>
+			</cfif>
 
+			<cfif len(fileid)>
+				<cfquery >
+					insert into #arguments.dataTable# (baseID,attributeID,siteID,attributeValue,stringvalue,remoteID)
+					values (
+					<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.baseID#">,
+					<cfqueryparam cfsqltype="cf_sql_integer"  value="#rs.attributeID#">,
+					<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.data.siteID#">,
+					<cfqueryparam cfsqltype="cf_sql_varchar"  value="#fileID#">,
+					<cfqueryparam cfsqltype="cf_sql_varchar"  value="#fileID#">,
+					<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#remoteID#">
+					)
+				</cfquery>
+			</cfif>
+
+		</cfif>
+
+	</cfloop>
 </cfif>
 
 </cffunction>

@@ -71,7 +71,7 @@ component extends="controller" output="false" {
 		var fileContent = "";
 		var fileManager=getBean("fileManager");
 		param default="" name="arguments.rc.action";
-		if ( arguments.rc.action == 'import' && arguments.rc.$.validateCSRFTokens(context=arguments.rc.moduleid) ) {
+		if ( arguments.rc.action == 'import' && arguments.rc.$.validateCSRFTokens(context='import') ) {
 			if ( structKeyExists(arguments.rc,"newfile") && len(arguments.rc.newfile) ) {
 				file = fileManager.upload( "newFile" );
 				fileContent=fileRead("#file.serverdirectory#/#file.serverfile#");
