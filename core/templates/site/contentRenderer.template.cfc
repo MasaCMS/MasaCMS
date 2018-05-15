@@ -164,6 +164,7 @@
 		//this.formButtonBackLabel = "Back";
 		//this.formButtonCancelLabel = "Cancel";
 		//this.formButtonCancelClass = "form-cancel btn-primary pull-right";
+		//this.formRequiredLabel = "Required";
 
 		//this.enablemuratag=true;
 		//this.bodyMetaImageSizeArgs={size="medium"};

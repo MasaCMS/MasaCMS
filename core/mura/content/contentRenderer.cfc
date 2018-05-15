@@ -191,6 +191,7 @@ General Classes
 <cfset this.formButtonBackLabel = "Back">
 <cfset this.formButtonCancelLabel = "Cancel">
 <cfset this.formButtonCancelClass = "form-cancel btn-primary pull-right">
+<cfset this.formRequiredLabel= "Required">
 
 
 <!--- Images --->
@@ -635,7 +636,8 @@ Display Objects
 		formButtonBackClass = this.formButtonBackClass,
 		formButtonBackLabel = this.formButtonBackLabel,
 		formButtonCancelLabel = this.formButtonCancelLabel,
-		formButtonCancelClass = this.formButtonCancelClass
+		formButtonCancelClass = this.formButtonCancelClass,
+		formRequiredLabel = this.formRequiredLabel
   }>
 
 </cffunction>

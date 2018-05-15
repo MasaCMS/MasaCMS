@@ -17086,7 +17086,8 @@ rb: {
 	formbuttonbackclass:"form-nav",
 	formbuttonbacklabel : "Back",
 	formbuttoncancelclass:"form-cancel btn-primary pull-right",
-	formbuttoncancellabel :"Cancel"
+	formbuttoncancellabel :"Cancel",
+	formrequiredlabel:"Required"
 },
 render:function(){
 
@@ -18427,6 +18428,10 @@ registerHelpers: function() {
 
 	Mura.Handlebars.registerHelper('checkboxWrapperClass',function() {
 		return self.rb.formcheckboxwrapperclass;
+	});
+
+	Mura.Handlebars.registerHelper('formRequiredLabel',function() {
+		return self.rb.formrequiredlabel;
 	});
 
 	Mura.Handlebars.registerHelper('formClass',function() {
@@ -20119,7 +20124,11 @@ this["Mura"]["templates"]["checkbox"] = this.Mura.Handlebars.template({"1":funct
 
   return container.escapeExpression(((helper = (helper = helpers.label || (depth0 != null ? depth0.label : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : (container.nullContext || {}),{"name":"label","hash":{},"data":data}) : helper)));
 },"5":function(container,depth0,helpers,partials,data) {
-    return " <ins>Required</ins>";
+    var helper;
+
+  return " <ins>"
+    + container.escapeExpression(((helper = (helper = helpers.formRequiredLabel || (depth0 != null ? depth0.formRequiredLabel : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : (container.nullContext || {}),{"name":"formRequiredLabel","hash":{},"data":data}) : helper)))
+    + "</ins>";
 },"7":function(container,depth0,helpers,partials,data) {
     return "</br>";
 },"9":function(container,depth0,helpers,partials,data,blockParams,depths) {
@@ -20174,7 +20183,11 @@ this["Mura"]["templates"]["checkbox_static"] = this.Mura.Handlebars.template({"1
 
   return container.escapeExpression(((helper = (helper = helpers.label || (depth0 != null ? depth0.label : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : (container.nullContext || {}),{"name":"label","hash":{},"data":data}) : helper)));
 },"5":function(container,depth0,helpers,partials,data) {
-    return " <ins>Required</ins>";
+    var helper;
+
+  return " <ins>"
+    + container.escapeExpression(((helper = (helper = helpers.formRequiredLabel || (depth0 != null ? depth0.formRequiredLabel : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : (container.nullContext || {}),{"name":"formRequiredLabel","hash":{},"data":data}) : helper)))
+    + "</ins>";
 },"7":function(container,depth0,helpers,partials,data) {
     return "</br>";
 },"9":function(container,depth0,helpers,partials,data,blockParams,depths) {
@@ -20228,7 +20241,11 @@ this["Mura"]["templates"]["dropdown"] = this.Mura.Handlebars.template({"1":funct
 
   return container.escapeExpression(((helper = (helper = helpers.label || (depth0 != null ? depth0.label : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : (container.nullContext || {}),{"name":"label","hash":{},"data":data}) : helper)));
 },"5":function(container,depth0,helpers,partials,data) {
-    return " <ins>Required</ins>";
+    var helper;
+
+  return " <ins>"
+    + container.escapeExpression(((helper = (helper = helpers.formRequiredLabel || (depth0 != null ? depth0.formRequiredLabel : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : (container.nullContext || {}),{"name":"formRequiredLabel","hash":{},"data":data}) : helper)))
+    + "</ins>";
 },"7":function(container,depth0,helpers,partials,data) {
     return "</br>";
 },"9":function(container,depth0,helpers,partials,data) {
@@ -20277,7 +20294,11 @@ this["Mura"]["templates"]["dropdown_static"] = this.Mura.Handlebars.template({"1
 
   return container.escapeExpression(((helper = (helper = helpers.label || (depth0 != null ? depth0.label : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : (container.nullContext || {}),{"name":"label","hash":{},"data":data}) : helper)));
 },"5":function(container,depth0,helpers,partials,data) {
-    return " <ins>Required</ins>";
+    var helper;
+
+  return " <ins>"
+    + container.escapeExpression(((helper = (helper = helpers.formRequiredLabel || (depth0 != null ? depth0.formRequiredLabel : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : (container.nullContext || {}),{"name":"formRequiredLabel","hash":{},"data":data}) : helper)))
+    + "</ins>";
 },"7":function(container,depth0,helpers,partials,data) {
     return "</br>";
 },"9":function(container,depth0,helpers,partials,data) {
@@ -20336,7 +20357,11 @@ this["Mura"]["templates"]["error"] = this.Mura.Handlebars.template({"1":function
 },"useData":true});
 
 this["Mura"]["templates"]["file"] = this.Mura.Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
-    return " <ins>Required</ins>";
+    var helper;
+
+  return " <ins>"
+    + container.escapeExpression(((helper = (helper = helpers.formRequiredLabel || (depth0 != null ? depth0.formRequiredLabel : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : (container.nullContext || {}),{"name":"formRequiredLabel","hash":{},"data":data}) : helper)))
+    + "</ins>";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
@@ -20429,7 +20454,11 @@ this["Mura"]["templates"]["radio"] = this.Mura.Handlebars.template({"1":function
 
   return container.escapeExpression(((helper = (helper = helpers.label || (depth0 != null ? depth0.label : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : (container.nullContext || {}),{"name":"label","hash":{},"data":data}) : helper)));
 },"5":function(container,depth0,helpers,partials,data) {
-    return " <ins>Required</ins>";
+    var helper;
+
+  return " <ins>"
+    + container.escapeExpression(((helper = (helper = helpers.formRequiredLabel || (depth0 != null ? depth0.formRequiredLabel : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : (container.nullContext || {}),{"name":"formRequiredLabel","hash":{},"data":data}) : helper)))
+    + "</ins>";
 },"7":function(container,depth0,helpers,partials,data) {
     return "</br>";
 },"9":function(container,depth0,helpers,partials,data,blockParams,depths) {
@@ -20482,7 +20511,11 @@ this["Mura"]["templates"]["radio_static"] = this.Mura.Handlebars.template({"1":f
 
   return container.escapeExpression(((helper = (helper = helpers.label || (depth0 != null ? depth0.label : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : (container.nullContext || {}),{"name":"label","hash":{},"data":data}) : helper)));
 },"5":function(container,depth0,helpers,partials,data) {
-    return " <ins>Required</ins>";
+    var helper;
+
+  return " <ins>"
+    + container.escapeExpression(((helper = (helper = helpers.formRequiredLabel || (depth0 != null ? depth0.formRequiredLabel : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : (container.nullContext || {}),{"name":"formRequiredLabel","hash":{},"data":data}) : helper)))
+    + "</ins>";
 },"7":function(container,depth0,helpers,partials,data) {
     return "</br>";
 },"9":function(container,depth0,helpers,partials,data,blockParams,depths) {
@@ -20666,7 +20699,11 @@ this["Mura"]["templates"]["textarea"] = this.Mura.Handlebars.template({"1":funct
 
   return container.escapeExpression(((helper = (helper = helpers.label || (depth0 != null ? depth0.label : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : (container.nullContext || {}),{"name":"label","hash":{},"data":data}) : helper)));
 },"5":function(container,depth0,helpers,partials,data) {
-    return " <ins>Required</ins>";
+    var helper;
+
+  return " <ins>"
+    + container.escapeExpression(((helper = (helper = helpers.formRequiredLabel || (depth0 != null ? depth0.formRequiredLabel : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : (container.nullContext || {}),{"name":"formRequiredLabel","hash":{},"data":data}) : helper)))
+    + "</ins>";
 },"7":function(container,depth0,helpers,partials,data) {
     return "</br>";
 },"9":function(container,depth0,helpers,partials,data) {
@@ -20718,7 +20755,11 @@ this["Mura"]["templates"]["textfield"] = this.Mura.Handlebars.template({"1":func
 
   return container.escapeExpression(((helper = (helper = helpers.label || (depth0 != null ? depth0.label : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : (container.nullContext || {}),{"name":"label","hash":{},"data":data}) : helper)));
 },"5":function(container,depth0,helpers,partials,data) {
-    return " <ins>Required</ins>";
+    var helper;
+
+  return " <ins>"
+    + container.escapeExpression(((helper = (helper = helpers.formRequiredLabel || (depth0 != null ? depth0.formRequiredLabel : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : (container.nullContext || {}),{"name":"formRequiredLabel","hash":{},"data":data}) : helper)))
+    + "</ins>";
 },"7":function(container,depth0,helpers,partials,data) {
     return "</br>";
 },"9":function(container,depth0,helpers,partials,data) {
