@@ -261,6 +261,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			from #dataTable# #tableModifier#
 			inner join tclassextendattributes #tableModifier# On (#dataTable#.attributeID=tclassextendattributes.attributeID)
 			where #dataTable#.baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getBaseID()#">
+			<cfif len(getSiteID())>
+				and tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSiteID()#">
+			</cfif>
 			<cfif not saveEmptyExtendedValues>
 				and #dataTable#.attributeValue is not null
 			</cfif>

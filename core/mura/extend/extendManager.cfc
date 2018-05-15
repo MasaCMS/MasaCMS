@@ -446,11 +446,12 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 
 	<!--- process non-file attributes --->
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
-	select attributeID,name,validation,message from tclassextendattributes #tableModifier# where
-	ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
-			'#listgetat(arguments.data.extendSetID,s)#'<cfif s lt setlen>,</cfif>
-			</cfloop>)
-			and type <> 'File'
+		select attributeID,name,validation,message from tclassextendattributes #tableModifier# where
+		ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
+				'#listgetat(arguments.data.extendSetID,s)#'<cfif s lt setlen>,</cfif>
+				</cfloop>)
+		and type <> 'File'
+		and siteid=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.data.siteid#">
 	</cfquery>
 
 	<cfloop query="rs">
@@ -528,11 +529,12 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 
 	<!--- process file attributes --->
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
-	select attributeID,name from tclassextendattributes #tableModifier# where
-	ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
-			'#listgetat(arguments.data.extendSetID,s)#'<cfif s lt setlen>,</cfif>
-			</cfloop>)
+			select attributeID,name from tclassextendattributes #tableModifier# where
+			ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
+					'#listgetat(arguments.data.extendSetID,s)#'<cfif s lt setlen>,</cfif>
+					</cfloop>)
 			and type = 'File'
+			and siteid=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.data.siteid#">
 	</cfquery>
 
 	<cfloop query="rs">
@@ -682,6 +684,10 @@ and baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.preserveI
 and tclassextendattributes.extendSetID not in (<cfloop from="1" to="#setLen#" index="s">
 		'#listgetat(arguments.data.extendSetID,s)#'<cfif s lt setlen>,</cfif>
 		</cfloop>)
+</cfif>
+
+<cfif isDefined('arguments.data.siteid') and len(arguments.data.siteid)>
+	and tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.data.siteid#">
 </cfif>
 </cfquery>
 
