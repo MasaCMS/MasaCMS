@@ -77,6 +77,8 @@
 		}
 		tabLabelList = ListAppend(tabLabelList,rbKey('user.advanced'));
 		tabList = ListAppend(tabList,"tabAdvanced");
+
+		lockedSuper=(rc.userBean.exists() and rc.userBean.get('s2') and not rc.$.getCurrentUser().isSuperUser());
 	</cfscript>
 </cfsilent>
 
@@ -102,7 +104,9 @@
 	</cfif>
 </cfif>
 
-<cfif not structIsEmpty(rc.userBean.getErrors())>
+<cfif lockedSuper>
+	<div class="alert alert-info"><span>#rc.$.rbKey("user.locksupers")#</span></div>
+<cfelseif not structIsEmpty(rc.userBean.getErrors())>
 	<div class="alert alert-error"><span>#application.utility.displayErrors(rc.userBean.getErrors())#</span></div>
 </cfif>
 
@@ -168,7 +172,7 @@
 							<!--- Email + Phone --->
 							<div class="mura-control-group">
 								<label for="email">#rbKey('user.email')#*</label>
-								<input id="email" name="email" type="text" value="#esapiEncode('html',rc.userBean.getemail())#" required="true" validate="email" message="#rbKey('user.emailvalidate')#">
+								<input <cfif lockedSuper>disabled</cfif> id="email" name="email" type="text" value="#esapiEncode('html',rc.userBean.getemail())#" required="true" validate="email" message="#rbKey('user.emailvalidate')#">
 								</div>
 
 							<div class="mura-control-group">
@@ -179,23 +183,25 @@
 							<!--- Username --->
 							<div class="mura-control-group">
 								<label for="username">#rbKey('user.username')#*</label>
-								<input id="username"  name="usernameNoCache" type="text" value="#esapiEncode('html',rc.userBean.getusername())#" required="true" message="The 'Username' field is required" autocomplete="off">
+								<input <cfif lockedSuper>disabled</cfif> id="username"  name="usernameNoCache" type="text" value="#esapiEncode('html',rc.userBean.getusername())#" required="true" message="The 'Username' field is required" autocomplete="off">
 							</div>
+							<cfif not lockedSuper>
 
-							<cfif isBoolean($.globalConfig('strongpasswords')) and $.globalConfig('strongpasswords')>
-								<div class="help-block-inline">#$.rbKey('user.passwordstrengthhelptext')#</div>
-							</cfif>
+								<cfif isBoolean($.globalConfig('strongpasswords')) and $.globalConfig('strongpasswords')>
+									<div class="help-block-inline">#$.rbKey('user.passwordstrengthhelptext')#</div>
+								</cfif>
 
-							<!--- Password --->
-							<div class="mura-control-group">
-								<label for="passwordNoCache">#rbKey('user.newpassword')#**</label>
-								<input id="passwordNoCache" name="passwordNoCache" autocomplete="off" validate="match" matchfield="password2" type="password" value=""  message="#rbKey('user.passwordmatchvalidate')#">
+								<!--- Password --->
+								<div class="mura-control-group">
+									<label for="passwordNoCache">#rbKey('user.newpassword')#**</label>
+									<input id="passwordNoCache" name="passwordNoCache" autocomplete="off" validate="match" matchfield="password2" type="password" value=""  message="#rbKey('user.passwordmatchvalidate')#">
+									</div>
+
+								<div class="mura-control-group">
+									<label for="password2">#rbKey('user.newpasswordconfirm')#**</label>
+									<input id="password2" name="password2" autocomplete="off" type="password" value=""  message="#rbKey('user.passwordconfirm')#">
 								</div>
-
-							<div class="mura-control-group">
-								<label for="password2">#rbKey('user.newpasswordconfirm')#**</label>
-								<input id="password2" name="password2" autocomplete="off" type="password" value=""  message="#rbKey('user.passwordconfirm')#">
-							</div>
+							</cfif>
 
 							<!--- Image --->
 							<div class="mura-control-group">
@@ -738,12 +744,13 @@
 				#tabContent#
 				<div class="load-inline tab-preloader"></div>
 				<script>$('.tab-preloader').spin(spinnerArgs2);</script>
+
 				<div class="mura-actions">
 					<div class="form-actions">
 						<cfif rc.userid eq ''>
 							<button type="button" class="btn mura-primary" onclick="userManager.submitForm(document.forms.form1,'add');"><i class="mi-check-circle"></i>#rbKey('user.add')#</button>
 						<cfelse>
-							<button type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(rbKey('user.deleteuserconfirm'))#');"><i class="mi-trash"></i>#rbKey('user.delete')#</button>
+							<cfif not lockedSuper><button type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(rbKey('user.deleteuserconfirm'))#');"><i class="mi-trash"></i>#rbKey('user.delete')#</button></cfif>
 							<button type="button" class="btn mura-primary" onclick="userManager.submitForm(document.forms.form1,'update');"><i class="mi-check-circle"></i>#rbKey('user.update')#</button>
 						</cfif>
 					</div>

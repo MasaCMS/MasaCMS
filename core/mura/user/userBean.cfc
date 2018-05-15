@@ -141,7 +141,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.uKey="" />
 	<cfset variables.instance.passedProtect=true />
 	<cfset variables.instance.extendDataTable="tclassextenddatauseractivity" />
-    <cfset variables.instance.errors=structnew() />
+  <cfset variables.instance.errors=structnew() />
 	<cfset variables.instance.isNew=1 />
 	<cfset variables.instance.tablist="" />
 	<cfset variables.instance.newFile="" />
@@ -417,6 +417,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var extErrors=structNew() />
 	<cfset var passwordRegex="(?=^.{7,15}$)(?=.*\d)(?![.\n])(?=.*[a-zA-Z]).*$">
 
+	<cfparam name="variables.instance.lockSupers" default="false">
+
 	<cfset variables.instance.errors=structNew()>
 
 	<cfif len(variables.instance.siteID)>
@@ -431,21 +433,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif trim(variables.instance.siteid) neq "">
 
-		<cfif variables.instance.type eq 2 and len(variables.instance.password) and yesNoFormat(variables.configBean.getValue("strongPasswords"))>
+		<cfif variables.instance.type eq 2 >
 
-			<cfif not reFind(variables.configBean.getValue("strongPasswordRegex"),variables.instance.password) or variables.instance.username eq variables.instance.password>
-				<cfset variables.instance.errors.password=variables.settingsManager.getSite(variables.instance.siteID).getRBFactory().getKey("user.passwordstrengthvalidate") />
+			<cfif len(variables.instance.password) and yesNoFormat(variables.configBean.getValue("strongPasswords"))>
+
+				<cfif not reFind(variables.configBean.getValue("strongPasswordRegex"),variables.instance.password) or variables.instance.username eq variables.instance.password>
+					<cfset variables.instance.errors.password=variables.settingsManager.getSite(variables.instance.siteID).getRBFactory().getKey("user.passwordstrengthvalidate") />
+				</cfif>
+
 			</cfif>
 
-		</cfif>
+			<cfif(variables.instance.username eq "" or not checkUsername())>
+				<cfset variables.instance.errors.username=variables.settingsManager.getSite(variables.instance.siteID).getRBFactory().getResourceBundle().messageFormat( variables.settingsManager.getSite(variables.instance.siteID).getRBFactory().getKey("user.usernamevalidate") , variables.instance.username ) />
+			</cfif>
 
-		<cfif variables.instance.type eq 2 and (variables.instance.username eq "" or not checkUsername())>
-			<cfset variables.instance.errors.username=variables.settingsManager.getSite(variables.instance.siteID).getRBFactory().getResourceBundle().messageFormat( variables.settingsManager.getSite(variables.instance.siteID).getRBFactory().getKey("user.usernamevalidate") , variables.instance.username ) />
-		</cfif>
-
-		<cfif variables.instance.type eq 2 and variables.instance.email eq "" >
-			<cfset variables.instance.errors.email=variables.settingsManager.getSite(variables.instance.siteID).getRBFactory().getKey("user.emailrequired") />
-		</cfif>
+			<cfif variables.instance.email eq "" >
+				<cfset variables.instance.errors.email=variables.settingsManager.getSite(variables.instance.siteID).getRBFactory().getKey("user.emailrequired") />
+			</cfif>
+	</cfif>
 
 		<!--- If captcha data has been submitted validate it --->
 		<cfif not (not len(variables.instance.hKey) or variables.instance.hKey eq hash(variables.instance.uKey))>
