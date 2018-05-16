@@ -5,9 +5,19 @@
 
     dbUtility.setTable("tclustercommands").addIndex("created");
 
+
 		dbUtility.setTable('tcontentfeeditems').addPrimaryKey('feedID,itemID');
-		dbUtility.setTable('tformresponsequestions').addPrimaryKey('responseID,formID,formfield');
-		dbUtility.setTable('tpermissions').addPrimaryKey('ContentID,GroupID,SiteID,Type');
+
+		try{
+				dbUtility.setTable('tformresponsequestions').addPrimaryKey('responseID,formID,formfield');
+		} catch(Any e){
+			writeLog(serializeJSON(e));
+		}
+		try{
+			dbUtility.setTable('tpermissions').addPrimaryKey('ContentID,GroupID,SiteID,Type');
+		} catch(Any e){
+			writeLog(serializeJSON(e));
+		}
 
 </cfscript>
 

@@ -295,9 +295,9 @@ CREATE TABLE [dbo].[tformresponsepackets] (
 GO
 
 CREATE TABLE [dbo].[tformresponsequestions] (
-	[responseID] [char] (35) NULL ,
-	[formID] [char] (35) NULL ,
-	[formField] [nvarchar] (50) NULL ,
+	[responseID] [char] (35) NOT NULL ,
+	[formID] [char] (35) NOT NULL ,
+	[formField] [nvarchar] (50) NOT NULL ,
 	[formValue] [nvarchar] (max) NULL ,
 	[pollValue] [nvarchar] (255) NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
@@ -332,10 +332,10 @@ CREATE TABLE [dbo].[tmailinglistmembers] (
 GO
 
 CREATE TABLE [dbo].[tpermissions] (
-	[ContentID] [char] (35) NULL ,
-	[GroupID] [char] (35) NULL ,
-	[SiteID] [nvarchar] (25) NULL ,
-	[Type] [nvarchar] (50) NULL
+	[ContentID] [char] (35) NOT NULL ,
+	[GroupID] [char] (35) NOT NULL ,
+	[SiteID] [nvarchar] (25) NOT NULL ,
+	[Type] [nvarchar] (50) NOT NULL
 ) ON [PRIMARY]
 GO
 

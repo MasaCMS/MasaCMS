@@ -313,9 +313,9 @@ CREATE TABLE tformresponsepackets (
 ) ;
 
 CREATE TABLE tformresponsequestions (
-  responseID char(35)  default NULL,
-  formID char(35)  default NULL,
-  formField varchar(50)  default NULL,
+  responseID char(35)  NOT NULL,
+  formID char(35)  NOT NULL,
+  formField varchar(50)  NOT NULL,
   formValue longtext,
   pollValue varchar(255)  default NULL
 ) ;
@@ -351,10 +351,10 @@ CREATE TABLE tmailinglistmembers (
 ) ;
 
 CREATE TABLE tpermissions (
-  ContentID char(35)  default NULL,
-  GroupID char(35)  default NULL,
-  SiteID varchar(25)  default NULL,
-  Type varchar(50)  default NULL
+  ContentID char(35)  NOT NULL,
+  GroupID char(35) NOT NULL,
+  SiteID varchar(25) NOT NULL,
+  Type varchar(50) NOT NULL
 ) ;
 
 CREATE TABLE tredirects (

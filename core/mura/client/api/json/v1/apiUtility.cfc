@@ -1,7 +1,7 @@
 component extends="mura.cfobject" hint="This provides JSON/REST API functionality" {
 
 	function init(siteid){
-
+		var tracepoint=initTracePoint("Instantiating API Utility for: #siteid#");
 		variables.siteid=arguments.siteid;
 
 		var configBean=getBean('configBean');
@@ -86,6 +86,8 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		if(getBean('configBean').getValue(property='variations',defaultValue=false)){
 			registerEntity('variationTargeting',{public=false,moduleid='00000000000000000000000000000000000'});
 		}
+
+		commitTracePoint(tracepoint);
 		return this;
 	}
 

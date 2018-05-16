@@ -553,9 +553,9 @@ CREATE TABLE `tformresponsepackets` (
 --
 
 CREATE TABLE `tformresponsequestions` (
-  `responseID` char(35) character set utf8 default NULL,
-  `formID` char(35) character set utf8 default NULL,
-  `formField` varchar(50) character set utf8 default NULL,
+  `responseID` char(35) character set utf8 NOT NULL,
+  `formID` char(35) character set utf8 NOT NULL,
+  `formField` varchar(50) character set utf8 NOT NULL,
   `formValue` longtext,
   `pollValue` varchar(255) character set utf8 default NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -638,10 +638,10 @@ CREATE TABLE `tmailinglistmembers` (
 --
 
 CREATE TABLE `tpermissions` (
-  `ContentID` char(35) character set utf8 default NULL,
-  `GroupID` char(35) character set utf8 default NULL,
-  `SiteID` varchar(25) character set utf8 default NULL,
-  `Type` varchar(50) character set utf8 default NULL
+  `ContentID` char(35) character set utf8 NOT NULL,
+  `GroupID` char(35) character set utf8 NOT NULL,
+  `SiteID` varchar(25) character set utf8 NOT NULL,
+  `Type` varchar(50) character set utf8 NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
