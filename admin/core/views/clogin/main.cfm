@@ -93,7 +93,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<span>#errorMessage#</span>
 					</div>
 				</cfif>
-					
+
 				<!--- Do not change the html comment below --->
 				<!-- mura-primary-login-token -->
 
@@ -141,7 +141,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</cfif>
 					<cfelse>
 						<form novalidate="novalidate" id="loginForm" name="frmLogin" method="post" action="index.cfm" onsubmit="return submitForm(this);">
-						  <cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google') or 
+						  <cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google') or
 						   		listFindNoCase($.globalConfig().getEnableOauth(), 'facebook')>
 								<div class="mura-login-auth-wrapper">
 			              <!--- Use Google oAuth Button --->
@@ -160,7 +160,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			              </cfif>
 			              <div class="text-divider"><span>#rc.$.rbKey('login.or')#</span></div>
 										<h3 class="center mura-login-auth-heading">#rc.$.rbKey('login.loginwithcredentials')#</h3>
-       					</div> 
+       					</div>
 			        </cfif>
 
 							<div class="mura-control-group">
@@ -180,15 +180,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     								<!--- <label>Language</label> --->
     								<label></label>
     				      	<select name="rb">
-    									<option value="en">English</option>
-    									<option value="de"<cfif cookie.rb eq "de"> selected</cfif>>Deutsch</option>
-    									<option value="nl"<cfif cookie.rb eq "nl"> selected</cfif>>Dutch</option>
-    									<option value="fr"<cfif cookie.rb eq "fr"> selected</cfif>>Fran&ccedil;ais</option>
-    									<option value="hu"<cfif cookie.rb eq "hu"> selected</cfif>>Hungarian</option>
-    									<option value="it"<cfif cookie.rb eq "it"> selected</cfif>>Italian</option>
-    									<option value="pt"<cfif cookie.rb eq "pt"> selected</cfif>>Portuguese</option>
-                      <option value="ru"<cfif cookie.rb eq "ru"> selected</cfif>>Русский</option>
-    									<option value="es"<cfif cookie.rb eq "es"> selected</cfif>>Spanish</option>
+    									<option value="en_US">English</option>
+											<!---<option value="zh_CN"<cfif cookie.rb eq "zh_CN"> selected</cfif>>Chinese</option>--->
+											<option value="da_DK"<cfif cookie.rb eq "da_DK"> selected</cfif>>Danish</option>
+    									<option value="de_DE"<cfif cookie.rb eq "de_DE"> selected</cfif>>Deutsch</option>
+    									<option value="nl_NL"<cfif cookie.rb eq "nl_NL"> selected</cfif>>Dutch</option>
+											<option value="fil_PH"<cfif cookie.rb eq "fil_PH"> selected</cfif>>Filipino</option>
+    									<option value="fr_FR"<cfif cookie.rb eq "fr_FR"> selected</cfif>>Fran&ccedil;ais</option>
+    									<option value="hu_HU"<cfif cookie.rb eq "hu_HU"> selected</cfif>>Hungarian</option>
+											<option value="id_ID"<cfif cookie.rb eq "id_ID"> selected</cfif>>Indonesian</option>
+    									<option value="it_IT"<cfif cookie.rb eq "it_IT"> selected</cfif>>Italian</option>
+    									<option value="pt_PT"<cfif cookie.rb eq "pt_PT"> selected</cfif>>Portuguese</option>
+                      <option value="ru_RU"<cfif cookie.rb eq "ru_RU"> selected</cfif>>Русский</option>
+    									<option value="es_ES"<cfif cookie.rb eq "es_ES"> selected</cfif>>Spanish</option>
     								</select>
     						  	</div>
 							<cfelse>
@@ -201,16 +205,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									<!--- <label>Language</label> --->
 									<label></label>
 								  <select name="rb">
-										<option value="en">English</option>
-										<option value="de"<cfif cookie.rb eq "de"> selected</cfif>>Deutsch</option>
-										<option value="nl"<cfif cookie.rb eq "nl"> selected</cfif>>Dutch</option>
-										<option value="fr"<cfif cookie.rb eq "fr"> selected</cfif>>Fran&ccedil;ais</option>
-										<option value="hu"<cfif cookie.rb eq "hu"> selected</cfif>>Hungarian</option>
-										<option value="it"<cfif cookie.rb eq "it"> selected</cfif>>Italian</option>
-										<!---<option value="no"<cfif cookie.rb eq "no"> selected</cfif>>Norwegian</option>--->
-										<option value="pt"<cfif cookie.rb eq "pt"> selected</cfif>>Portuguese</option>
-										<option value="es"<cfif cookie.rb eq "es"> selected</cfif>>Spanish</option>
-										<!---<option value="es">Spanish</option>--->
+										<option value="en_US">English</option>
+										<!---<option value="zh_CN"<cfif cookie.rb eq "zh_CN"> selected</cfif>>Chinese</option>--->
+										<option value="da_DK"<cfif cookie.rb eq "da_DK"> selected</cfif>>Danish</option>
+										<option value="de_DE"<cfif cookie.rb eq "de_DE"> selected</cfif>>Deutsch</option>
+										<option value="nl_NL"<cfif cookie.rb eq "nl_NL"> selected</cfif>>Dutch</option>
+										<option value="fil_PH"<cfif cookie.rb eq "fil_PH"> selected</cfif>>Filipino</option>
+										<option value="fr_FR"<cfif cookie.rb eq "fr_FR"> selected</cfif>>Fran&ccedil;ais</option>
+										<option value="hu_HU"<cfif cookie.rb eq "hu_HU"> selected</cfif>>Hungarian</option>
+										<option value="id_ID"<cfif cookie.rb eq "id_ID"> selected</cfif>>Indonesian</option>
+										<option value="it_IT"<cfif cookie.rb eq "it_IT"> selected</cfif>>Italian</option>
+										<option value="pt_PT"<cfif cookie.rb eq "pt_PT"> selected</cfif>>Portuguese</option>
+										<option value="ru_RU"<cfif cookie.rb eq "ru_RU"> selected</cfif>>Русский</option>
+										<option value="es_ES"<cfif cookie.rb eq "es_ES"> selected</cfif>>Spanish</option>
 									</select>
 								</div>
 
