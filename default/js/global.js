@@ -1040,9 +1040,9 @@ var initMura=function(config){
             function(){
               $(scope).find( ".g-recaptcha-container" ).each(function(){
                 var self=this;
-                var checkForReCaptcha=function()
+                checkForReCaptcha=function()
                   {
-                     if (typeof grecaptcha == 'object' )
+                     if (typeof grecaptcha == 'object' && typeof grecaptcha.render != 'undefined' )
                      {
                        grecaptcha.render($(self).attr('id'), {
                             'sitekey' : $(self).data('sitekey'),
