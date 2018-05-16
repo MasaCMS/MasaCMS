@@ -49,8 +49,7 @@ component extends="controller" output="false" {
 
 	public function before(rc) output=false {
 		if ( !(
-				listFind(session.mura.memberships,'Admin;#variables.settingsManager.getSite(arguments.rc.siteid).getPrivateUserPoolID()#;0')
-				or listFind(session.mura.memberships,'S2')
+					listFind(session.mura.memberships,'S2')
 				) ) {
 			secure(arguments.rc);
 		}

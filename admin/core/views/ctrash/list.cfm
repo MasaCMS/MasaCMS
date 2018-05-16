@@ -64,9 +64,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<div class="mura-control justify mura">
 					<label class="label-inline">
 						#application.rbFactory.getKeyValue(session.rb,"params.from")#
-						<input type="text" name="sinceDate" id="startDate" class="datepicker mura-custom-datepicker" placeholder="Start Date" value="#esapiEncode('html_attr',$.event('sinceDate'))#" />
+						<input type="text" name="sinceDate" id="startDate" class="datepicker mura-custom-datepicker" placeholder="Start Date" value="#LSDateFormat($.event('sinceDate'),session.dateKeyFormat)#" />
 						#application.rbFactory.getKeyValue(session.rb,"params.to")#
-						<input type="text" name="beforeDate" id="endDate" class="datepicker mura-custom-datepicker" placeholder="End Date" value="#esapiEncode('html_attr',$.event('beforeDate'))#" />
+						<input type="text" name="beforeDate" id="endDate" class="datepicker mura-custom-datepicker" placeholder="End Date" value="#LSDateFormat($.event('beforeDate'),session.dateKeyFormat)#" />
 					</label>
 				</div>
 				<input type="hidden" name="muraAction" value="cTrash.list">

@@ -363,7 +363,13 @@
 
 <cffunction name="getQuery" output="false">
 	<cfset var rs="">
-
+	<cfset var bean=getBean('bean')>
+	<cfparam name="arguments.deletedDate" default="">
+	<cfparam name="arguments.sinceDate" default="">
+	<cfparam name="arguments.beforeDate" default="">
+	<cfset arguments.deletedDate=bean.parseDateArg(arguments.deletedDate)>
+	<cfset arguments.sinceDate=bean.parseDateArg(arguments.sinceDate)>
+	<cfset arguments.beforeDate=bean.parseDateArg(arguments.beforeDate)>
 	<cfquery name="rs">
 		select objectID,siteID,parentID,objectClass,objectType,objectSubType,objectLabel,deletedDate,deletedBy,deleteID,orderno
 		from ttrash where
