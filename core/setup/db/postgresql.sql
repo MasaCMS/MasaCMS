@@ -155,7 +155,8 @@ CREATE TABLE tcontentfeedadvancedparams (
 CREATE TABLE tcontentfeeditems (
 	feedID char(35) NOT NULL ,
 	itemID char(35) NOT NULL ,
-	type varchar(50) NULL
+	type varchar(50) NULL,
+	CONSTRAINT PK_tcontentfeeditems PRIMARY KEY (feedID,itemID)
 );
 
 CREATE TABLE tcontentfeeds (
@@ -293,7 +294,8 @@ CREATE TABLE tformresponsequestions (
 	formID char(35) NOT NULL ,
 	formField varchar(50) NOT NULL ,
 	formValue text NULL ,
-	pollValue varchar(255) NULL
+	pollValue varchar(255) NULL,
+	CONSTRAINT PK_tformresponsepackets PRIMARY KEY (responseID,formID,formField)
 );
 
 CREATE TABLE tglobals (
@@ -325,7 +327,8 @@ CREATE TABLE tpermissions (
 	ContentID char(35) NOT NULL ,
 	GroupID char(35) NOT NULL ,
 	SiteID varchar(25) NOT NULL ,
-	Type varchar(50) NOT NULL
+	Type varchar(50) NOT NULL,
+	CONSTRAINT PK_tpermissions PRIMARY KEY (ContentID,GroupID,SiteID,Type)
 );
 
 CREATE TABLE tredirects (

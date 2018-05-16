@@ -301,7 +301,8 @@ CREATE TABLE `tcontentfeedadvancedparams` (
 CREATE TABLE `tcontentfeeditems` (
   `feedID` char(35) NOT NULL default '',
   `itemID` char(35) NOT NULL default '',
-  `type` varchar(50) default NULL
+  `type` varchar(50) default NULL,
+	PRIMARY KEY  (`feedID`,`itemID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -557,7 +558,8 @@ CREATE TABLE `tformresponsequestions` (
   `formID` char(35) character set utf8 NOT NULL,
   `formField` varchar(50) character set utf8 NOT NULL,
   `formValue` longtext,
-  `pollValue` varchar(255) character set utf8 default NULL
+  `pollValue` varchar(255) character set utf8 default NULL,
+	PRIMARY KEY  (`responseID`,`formID`,`formField`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -641,7 +643,8 @@ CREATE TABLE `tpermissions` (
   `ContentID` char(35) character set utf8 NOT NULL,
   `GroupID` char(35) character set utf8 NOT NULL,
   `SiteID` varchar(25) character set utf8 NOT NULL,
-  `Type` varchar(50) character set utf8 NOT NULL
+  `Type` varchar(50) character set utf8 NOT NULL,
+	PRIMARY KEY  (`ContentID`,`GroupID`,`SiteID`,`Type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --

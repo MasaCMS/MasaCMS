@@ -877,6 +877,33 @@ ALTER TABLE [dbo].[tusers] WITH NOCHECK ADD
 	)  ON [PRIMARY]
 GO
 
+ALTER TABLE [dbo].[tpermissions] WITH NOCHECK ADD
+	CONSTRAINT [PK_tpermissions] PRIMARY KEY  CLUSTERED
+	(
+		[ContentID],
+		[GroupID],
+		[SiteID],
+		[Type]
+	)  ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[tcontentfeeditems] WITH NOCHECK ADD
+	CONSTRAINT [PK_tcontentfeeditems] PRIMARY KEY  CLUSTERED
+	(
+		[feedID],
+		[itemID]
+	)  ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[tformresponsequestions] WITH NOCHECK ADD
+	CONSTRAINT [PK_tformresponsequestions] PRIMARY KEY  CLUSTERED
+	(
+		[responseID],
+		[formID],
+		[formfield]
+	)  ON [PRIMARY]
+GO
+
  CREATE  INDEX [IX_tcontent] ON [dbo].[tcontent]([ContentID]) ON [PRIMARY]
 GO
 
