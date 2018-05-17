@@ -162,21 +162,21 @@ if ( application.setupComplete ) {
 	variables.tracepoint=variables.tracer.initTracepoint("Instantiating DI1");
 
 	if(directoryExists(expandPath("/mura/content/file/imagecfc"))){
-	    	directoryDelete(expandPath("/mura/content/file/imagecfc") ,true);
-	    }
+  	directoryDelete(expandPath("/mura/content/file/imagecfc") ,true);
+  }
 
-	    if(fileExists(expandPath("/mura/content/file/image.cfc"))){
-	    	fileDelete(expandPath("/mura/content/file/image.cfc"));
-	    }
+  if(fileExists(expandPath("/mura/content/file/image.cfc"))){
+  	fileDelete(expandPath("/mura/content/file/image.cfc"));
+  }
 
-		application.configBean=new mura.configBean().set(variables.iniProperties);
+	application.configBean=new mura.configBean().set(variables.iniProperties);
 
-		variables.serviceFactory=new mura.bean.beanFactory("/mura",{
-				recurse=true,
-				exclude=["/.","/mura/autoUpdater/global","/mura/configBean.cfc","/mura/bean/beanFactory.cfc","/mura/cache/provider","/mura/moment.cfc","/mura/client/oath"],
-				strict=application.configBean.getStrictFactory(),
-				transientPattern = "(Iterator|Bean|executor|MuraScope|Event|dbUtility|extendObject)$"
-				});
+	variables.serviceFactory=new mura.bean.beanFactory("/mura",{
+			recurse=true,
+			exclude=["/.","/mura/autoUpdater/global","/mura/configBean.cfc","/mura/bean/beanFactory.cfc","/mura/cache/provider","/mura/moment.cfc","/mura/client/oath"],
+			strict=application.configBean.getStrictFactory(),
+			transientPattern = "(Iterator|Bean|executor|MuraScope|Event|dbUtility|extendObject)$"
+			});
 
 		if(!isDefined('application.serviceFactory')){
 			application.serviceFactory=variables.serviceFactory;
@@ -219,7 +219,7 @@ if ( application.setupComplete ) {
 			So if there is not any theme installed then pull down the default one
 		*/
 		if ( application.configBean.getCreateRequiredDirectories() ) {
-
+			variables.tracePoint1=initTracePoint("Check for default theme");
 			if(!isdefined('application.serviceFactory')){
 				application.serviceFactory=variables.serviceFactory;
 			}
@@ -244,7 +244,7 @@ if ( application.setupComplete ) {
 
 			if ( !local.hasTheme ) {
 				//WriteDump('no theme');abort;
-
+				variables.tracePoint2=initTracePoint("Installing Default theme");
 				if ( structKeyExists(request.muraSysEnv,'MURA_DEFAULTTHEMEURL') ) {
 					application.configBean.setDefaultThemeURL(request.muraSysEnv['MURA_DEFAULTTHEMEURL']);
 				}
@@ -270,11 +270,12 @@ if ( application.setupComplete ) {
 					local.themeRS=local.fileWriter.getDirectoryList(directory="#application.configBean.getWebRoot()#/themes",recurse=false,type="dir");
 					local.fileWriter.renameDir(directory="#application.configBean.getWebRoot()#/themes/#local.themeRS.name#",newDirectory="#application.configBean.getWebRoot()#/themes/default");
 					fileDelete("#application.configBean.getWebRoot()#/#local.themeZip#");
-
+					commitTracePoint(variables.tracepoint2);
 				} catch (any error) {
 					writeLog(type="Error", file="exception", text="Error pullling theme from remote: #serializeJSON(error.stacktrace)#");
 				}
 			}
+			commitTracePoint(variables.tracePoint1);
 		}
 
 		variables.serviceFactory.declareBean("beanValidator", "mura.bean.beanValidator", true);
@@ -450,21 +451,17 @@ if ( application.setupComplete ) {
 		application.encryptionKey=application.configBean.getValue('encryptionKey');
 	}
 
-	variables.rsRequirements=application.serviceFactory.getBean('fileWriter').getDirectoryList(directory="#variables.basedir#/requirements/");
-
-	for(i=1;i <= variables.rsRequirements.recordcount;i++){
-		if ( variables.rsRequirements['type'][i] == "dir" && variables.rsRequirements['name'][i] != '.svn' && !structKeyExists(this.mappings,"/#variables.rsRequirements['name'][i]#") ) {
-			local.fileWriter.appendFile(file="#variables.basedir#/config/mappings.cfm", output='<cfset this.mappings["/#variables.rsRequirements['name'][i]#"] = variables.basedir & "/requirements/#variables.rsRequirements['name'][i]#">');
-		}
-	}
-
 	if ( application.configBean.getValue("autoDiscoverPlugins") && !isdefined("url.safemode") ) {
+		variables.tracePoint=initTracePoint("Discovering Plugins");
 		application.pluginManager.discover();
+		commitTracePoint(variables.tracePoint);
 	}
 	application.cfstatic=structNew();
 	application.appInitialized=true;
 	application.appInitializedTime=now();
+	variables.tracePoint=initTracePoint("Broadcasting Init:application.broadcastInit #application.broadcastInit#");
 	application.clusterManager.reload(broadcast=application.broadcastInit);
+	commitTracePoint(variables.tracePoint);
 	application.broadcastInit=true;
 
 	structDelete(application,"muraAdmin");
@@ -483,8 +480,8 @@ if ( application.setupComplete ) {
 	}
 	try {
 		if ( isBoolean(variables.iniProperties.ping) && variables.iniProperties.ping ) {
+			variables.tracePoint=initTracePoint("Setting Ping Scheduled Task");
 			local.updateurl = "http://" & listFirst(cgi.http_host,":") & application.configBean.getContext() & "/index.cfm/_api/sitemonitor/";
-
 			application.serviceFactory.getBean('utility').scheduleTask(
 				action = "update",
 				task = "#variables.siteMonitorTask#",
@@ -497,7 +494,7 @@ if ( application.setupComplete ) {
 				interval = "900",
 				requestTimeOut = "600"
 			);
-
+			commitTracePoint(variables.tracePoint);
 		}
 	} catch (any cfcatch) {
 	}
@@ -651,6 +648,7 @@ if ( application.setupComplete ) {
 	//END CONFIG DIR MANAGEMENT
 
 	if ( application.configBean.getCreateRequiredDirectories() ) {
+		variables.tracePoint=initTracepoint("Checking required directories");
 		if ( !directoryExists("#application.configBean.getWebRoot()#/plugins") ) {
 			try {
 				local.fileWriter.createDir( mode=777, directory="#application.configBean.getWebRoot()#/plugins" );
@@ -676,6 +674,7 @@ if ( application.setupComplete ) {
 		if ( !fileExists(variables.basedir & "/core/vendor/cfformprotect/cffp.ini.cfm") ) {
 			local.fileWriter.copyFile(source="#variables.basedir#/core/templates/cffp.ini.template.cfm", destination="#variables.basedir#/core/vendor/cfformprotect/cffp.ini.cfm");
 		}
+		commitTracePoint(variables.tracePoint);
 	}
 	if ( !structKeyExists(application,"plugins") ) {
 		application.plugins=structNew();
@@ -741,7 +740,7 @@ if ( application.setupComplete ) {
 	structDelete(application,"pluginstemp");
 	//  Fire local onApplicationLoad events
 	variables.rsSites=application.settingsManager.getList();
-
+	variables.tracePoint1=initTracePoint("Loading Themes");
 	for(i=1;i <= variables.rsSites.recordcount;i++){
 		variables.siteBean=application.settingsManager.getSite(variables.rsSites['siteid'][i]);
 		variables.themedir=expandPath(variables.siteBean.getThemeIncludePath());
@@ -808,8 +807,10 @@ if ( application.setupComplete ) {
 		}
 
 	}
+	commitTracePoint(variables.tracePoint1);
 
 	if(!application.configBean.getValue(property='readonly',defaultValue=false)){
+		variables.tracePoint=initTracePoint("Updating Legacy URL data");
 		qs=new Query();
 
 		variables.legacyURLs=qs.execute(sql="select contenthistID, contentID,parentId,siteID,filename,urlTitle,filename from tcontent where type in ('File','Link')
@@ -844,9 +845,11 @@ if ( application.setupComplete ) {
 				throw( message="An error occurred trying to create a filename for #variables.item.getFilename()#" );
 			}
 		}
+		commitTracePoint(variables.tracePoint);
 	}
 
 	//  Clean root admin directory
+	variables.tracePoint=initTracePoint("Clean admin directory");
 	local.fileWriter=application.serviceFactory.getBean('fileWriter');
 	local.rs=local.fileWriter.getDirectoryList(expandPath('/muraWRM#application.configBean.getAdminDir()#/'));
 	local.tempDir=expandPath('/muraWRM#application.configBean.getAdminDir()#/temp/');
@@ -866,6 +869,7 @@ if ( application.setupComplete ) {
 			}
 		}
 	}
+	commitTracePoint(variables.tracePoint);
 
 	application.sessionTrackingThrottle=false;
 
