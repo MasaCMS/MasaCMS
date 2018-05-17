@@ -92,7 +92,7 @@
 
 		
 			<cfcatch type="any">
-				<cfset sErr="Error during creation of MySQL datbase: #cfcatch.message# - #cfcatch.detail#">
+				<cfset sErr="Error during creation of MySQL database: #cfcatch.message# - #cfcatch.detail#">
 			
 			</cfcatch>
 		

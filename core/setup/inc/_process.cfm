@@ -55,9 +55,9 @@ to your own modified versions of Mura CMS.
   <cfset dbCreated = false />
 
   <!--- remove datasource for now entered if we are supposed to create one (bsoylu 6/7/2010)  --->
-  <cfif Form.production_datasource NEQ "" AND IsDefined("Form.auto_create") AND IsBoolean(Form.auto_create) AND Form.auto_create>
+  <!--- <cfif Form.production_datasource NEQ "" AND IsDefined("Form.auto_create") AND IsBoolean(Form.auto_create) AND not Form.auto_create>
     <cfset FORM.production_datasource="">
-  </cfif>
+  </cfif> --->
 
   <cfset queryAttrs={
     datasource="#FORM.production_datasource#",
@@ -71,7 +71,7 @@ to your own modified versions of Mura CMS.
   </cfif>
   <cftry>
     <!--- do not run if we do not have a datasource (bsoylu 6/6/2010)  --->
-    <cfif Form.production_datasource NEQ "">
+    <cfif Form.production_datasource NEQ "" and IsDefined("Form.auto_create") AND IsBoolean(Form.auto_create) AND not Form.auto_create>
       <!--- try to run a basic query --->
       <cfquery attributeCollection="#queryAttrs#">
         SELECT COUNT( contentid )
@@ -82,9 +82,12 @@ to your own modified versions of Mura CMS.
     <cfelseif Form.production_datasource EQ "" AND IsDefined("Form.auto_create") AND IsBoolean(Form.auto_create) AND Form.auto_create>
       <!--- set this to create DB (bsoylu 6/6/2010)  --->
       <cfset errorType = "database" />
-    <cfelse>
+    <cfelseif Form.production_datasource EQ "" AND IsDefined("Form.auto_create") AND IsBoolean(Form.auto_create) AND NOT Form.auto_create>
       <!--- no datasource has been specified (bsoylu 6/6/2010)  --->
       <cfset errorType = "datasource" />
+    <cfelse>
+      <!--- If we need to create a database & datasource --->
+      <cfset errorType = "database" />
     </cfif>
     <!--- purposly pose an error since the user decided to try and build the database --->
     <!---
@@ -164,7 +167,8 @@ to your own modified versions of Mura CMS.
             sArgs.DatabaseServer=Form.production_databaseserver; //TODO: need to add form field
             sArgs.UserName=Form.production_dbusername;
             sArgs.Password=Form.production_dbpassword;
-            sArgs.DatasourceName=Form.production_databasename;
+            sArgs.DatasourceName= FORM.production_datasource ? : Form.production_databasename;
+            sArgs.DatabaseName= FORM.production_datasource ? : Form.production_databasename;
             //call ds creation, will automatically create corresponding DB with the same name as the DS
             sReturn=objDOA.fDSCreate(argumentCollection=sArgs);
             // (bsoylu 6/6/2010) display error message
@@ -173,8 +177,8 @@ to your own modified versions of Mura CMS.
               bProcessWithMessage = false;
             } else {
               // (bsoylu 6/7/2010) the default ds name is the App name, so we reset here
-              FORM.production_datasource = Form.production_databasename;
-              queryAttrs.datasource = Form.production_databasename;
+              FORM.production_datasource = FORM.production_datasource ? : Form.production_databasename;
+              queryAttrs.datasource = FORM.production_datasource ? : Form.production_databasename;
             };
           </cfscript>
 

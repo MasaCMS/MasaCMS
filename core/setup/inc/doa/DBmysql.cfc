@@ -4,7 +4,7 @@
 	<cffunction name="fDBCreate" returntype="String"  access="package" hint="creates a blank database. return empty string if success, or error message.">
 		<cfargument name="DatasourceName" default="#Application.ApplicationName#" required="false" type="string" hint="name of the datasource through which we will need to connect.">
 		<cfargument name="DatabaseName" default="#Application.ApplicationName#" required="false" type="string" hint="name of the database to be created">
-		<cfargument name="sOptions" type="string" default="" hint="additional optons to be passed into data base creation">
+		<cfargument name="sOptions" type="string" default="" hint="additional options to be passed into data base creation">
 	
 		<cfscript>
 			var sErr = "";
