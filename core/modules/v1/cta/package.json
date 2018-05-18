@@ -1,0 +1,20 @@
+{
+  "name": "mxp-cta",
+  "version": "1.0.0",
+  "description": "Call to action display object",
+  "main": "js/mura.displayobject.cta.js",
+  "dependencies": {},
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-handlebars": "^1.0.0",
+    "grunt-contrib-uglify": "^2.2.0",
+    "grunt-text-replace": "^0.4.0",
+    "handlebars": "^4.0.6"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
