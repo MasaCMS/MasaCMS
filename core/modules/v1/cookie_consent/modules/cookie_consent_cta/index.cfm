@@ -9,14 +9,16 @@
 			});
 		</script>
 	<cfelse>
-		<form class="mura-cta__cookie_consent">
-			<input type="hidden" name="accept_cookies" value="true">
+		<div class="mura-cta__cookie_consent_wrapper">
 			<div class="mura-cta__cookie_consent_message">
 				#m.setDynamicContent(m.getBean('content').loadBy(title='Cookie Consent',type='Component').getBody())#
 			</div>
 			<div class="mura-cta__cookie_consent_controls">
-				<button type="submit" class="#this.cookieConsentButtonClass# mura-cta__cookie_consent_btn">#m.rbKey('cookie_consent_cta.gotit')#</button>
+				<form class="mura-cta__cookie_consent">
+					<input type="hidden" name="accept_cookies" value="true">
+					<button type="submit" class="#this.cookieConsentButtonClass# mura-cta__cookie_consent_btn">#m.rbKey('cookie_consent_cta.gotit')#</button>
+				</form>
 			</div>
-		</form>
+		</div>
 	</cfif>
 </cfoutput>
