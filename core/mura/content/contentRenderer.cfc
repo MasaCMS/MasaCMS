@@ -275,7 +275,7 @@ Display Objects
 
 <!--- cookie_consent/modules/cookie_consent_cta/index.cfm --->
 <cfset this.cookieConsentButtonClass="btn btn-primary">
-<cfset this.cookieConsentType='bar'>
+<cfset this.cookieConsentType='drawer'>
 <cfset this.cookieConsentEnabled=false>
 
 

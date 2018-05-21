@@ -12,7 +12,7 @@
 					);
 			});
 			</script>
-		<cfelse>
+		<cfelseif this.cookieConsentType eq 'bar'>
 			<script>
 			Mura(function(){
 					Mura('body').appendDisplayObject(

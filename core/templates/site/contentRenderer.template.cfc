@@ -258,7 +258,7 @@
 
 		//cookie_consent/modules/cookie_consent_cta/index.cfm
 		this.cookieConsentEnabled=false;
-		this.cookieConsentType='bar';
+		this.cookieConsentType='drawer';
 		this.cookieConsentButtonClass="";
 
 		//dsp_categories_nest.cfm
