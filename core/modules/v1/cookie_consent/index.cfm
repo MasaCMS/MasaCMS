@@ -1,6 +1,4 @@
 <cfif not isdefined('cookie.mura_accept_cookies')>
-	<cfset cookieConsentComponent=m.getBean('content').loadBy(title='Cookie Consent',type='Component')>
-	<cfif cookieConsentComponent.exists()>
 		<cfif this.cookieConsentType eq 'drawer'>
 			<script>
 			Mura(function(){
@@ -29,5 +27,4 @@
 			});
 			</script>
 		</cfif>
-	</cfif>
 </cfif>

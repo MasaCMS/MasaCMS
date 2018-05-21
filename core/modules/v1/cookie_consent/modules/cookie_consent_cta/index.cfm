@@ -9,9 +9,15 @@
 			});
 		</script>
 	<cfelse>
+		<cfset cookieConsentComponent=m.getBean('content')>
+		<cfset cookieConsentComponent.loadBy(title='Cookie Consent',type='Component')>
 		<div class="mura-cta__cookie_consent_wrapper">
 			<div class="mura-cta__cookie_consent_message">
-				#m.setDynamicContent(m.getBean('content').loadBy(title='Cookie Consent',type='Component').getBody())#
+				<cfif cookieConsentComponent.exists()>
+					#m.setDynamicContent(cookieConsentComponent.getBody())#
+				<cfelse>
+					<p>A component named <strong>'Cookie Consent'</strong> does not exist within your site. You must either create it or set <strong>this.cookieConsentEnabled=false;</strong> in your theme or site contentRenderer.cfc.</p>
+				</cfif>
 			</div>
 			<div class="mura-cta__cookie_consent_controls">
 				<form class="mura-cta__cookie_consent">
