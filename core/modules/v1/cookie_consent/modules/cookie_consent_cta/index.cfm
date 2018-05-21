@@ -16,7 +16,7 @@
 				<cfif cookieConsentComponent.exists()>
 					#m.setDynamicContent(cookieConsentComponent.getBody())#
 				<cfelse>
-					<p>A component named <strong>'Cookie Consent'</strong> does not exist within your site. You must either create it or set <strong>this.cookieConsentEnabled=false;</strong> in your theme or site contentRenderer.cfc.</p>
+					<p>A component named <strong>'Cookie Consent'</strong> does not exist within your site. You must either create one or set <strong>this.cookieConsentEnabled=false;</strong> in your site or theme contentRenderer.cfc to turn off this feature.</p>
 				</cfif>
 			</div>
 			<div class="mura-cta__cookie_consent_controls">
