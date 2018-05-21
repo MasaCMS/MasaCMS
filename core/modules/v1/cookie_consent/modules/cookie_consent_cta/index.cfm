@@ -12,11 +12,10 @@
 		<form class="mura-cta__cookie_consent">
 			<input type="hidden" name="accept_cookies" value="true">
 			<div class="mura-cta__cookie_consent_message">
-				<p>#m.rbKey('cookie_consent_cta.statement')#</p>
+				#m.setDynamicContent(m.getBean('content').loadBy(title='Cookie Consent',type='Component').getBody())#
 			</div>
 			<div class="mura-cta__cookie_consent_controls">
-				<button type="submit" class="btn btn-primary mura-cta__cookie_consent_btn">#m.rbKey('cookie_consent_cta.gotit')#</button>
-				#m.rbKey('cookie_consent_cta.or')# <a class="mura-cta__cookie_consent_more" href="#m.createHREF(filename='privacy-statement',complete=true)#">#m.rbKey('cookie_consent_cta.moreinfo')#</a>
+				<button type="submit" class="#this.cookieConsentButtonClass# mura-cta__cookie_consent_btn">#m.rbKey('cookie_consent_cta.gotit')#</button>
 			</div>
 		</form>
 	</cfif>

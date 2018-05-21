@@ -56,6 +56,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     } else {
       if(typeof root.Mura != 'function'){
         root.mura = root.m = root.Mura = function(cmd){root.queuedMuraCmds.push(cmd);};
+				<cfif this.cookieConsentEnabled>root.Mura(function(){Mura('body').appendDisplayObject({object:'cookie_consent',queue:false});});</cfif>
       }
       setTimeout(root.deferMuraInit);
     }

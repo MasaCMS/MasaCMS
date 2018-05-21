@@ -256,6 +256,11 @@
 		this.approveCommentLinkClass="";
 		this.deleteCommentLinkClass="";
 
+		//cookie_consent/modules/cookie_consent_cta/index.cfm
+		this.cookieConsentEnabled=false;
+		this.cookieConsentType='bar';
+		this.cookieConsentButtonClass="";
+
 		//dsp_categories_nest.cfm
 		this.categoriesNestCheckboxClass="";
 

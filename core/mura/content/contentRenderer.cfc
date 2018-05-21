@@ -273,6 +273,12 @@ Display Objects
 <cfset this.commentMoreCommentsContainer=this.generalWrapperClass>
 <cfset this.commentMoreCommentsContainer=this.generalWrapperBodyClass>
 
+<!--- cookie_consent/modules/cookie_consent_cta/index.cfm --->
+<cfset this.cookieConsentButtonClass="btn btn-primary">
+<cfset this.cookieConsentType='bar'>
+<cfset this.cookieConsentEnabled=false>
+
+
 <!--- Comments/dsp_comment.cfm --->
 <cfset this.emailLinkClass="btn">
 <cfset this.commentsLinkClass="btn">
