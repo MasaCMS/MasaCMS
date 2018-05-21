@@ -695,7 +695,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 	}
 
 	public function setRBFactory(rbFactory) output=false {
-		if ( !isObject(arguments.rbFactory) ) {
+		if ( isObject(arguments.rbFactory) ) {
 			variables.instance.rbFactory=arguments.rbFactory;
 		}
 		return this;
@@ -1801,6 +1801,8 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 									objectArgs[o]=baseXML.xmlAttributes[o];
 								}
 							}
+
+							objectfound=true;
 
 							registerDisplayObject(
 								argumentCollection=objectArgs
