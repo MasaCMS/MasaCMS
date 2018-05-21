@@ -9,7 +9,7 @@
 			});
 		</script>
 	<cfelse>
-		<form>
+		<form class="mura-cta__cookie_consent">
 			<input type="hidden" name="accept_cookies" value="true">
 			<p>
 				#m.rbKey('cookie_consent_cta.statement')#
