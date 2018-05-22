@@ -117,7 +117,7 @@
         <div class="mura-panel-heading" role="tab" id="heading-1">
           <h4 class="mura-panel-title">
             <a role="button" data-toggle="collapse" data-parent="##configurator-panels" href="##panel-1" aria-expanded="true" aria-controls="panel-1">
-              What?
+              #application.rbFactory.getKeyValue(session.rb,'cta.what')#
             </a>
           </h4>
         </div>
@@ -125,10 +125,10 @@
           <div class="mura-panel-body">
             <div class="mura-control-group">
               <div class="mura-control-group">
-                    <label class="mura-control-label">Select Component</label>
+                    <label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectcomponent')#</label>
                     <select id="componentid" name="componentid" class="objectParam">
                         <option value="notconfigured">
-                            Select Component
+                            #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectcomponent')#
                         </option>
                         <cfloop query="rc.rsComponents">
                             <cfset title=rc.rsComponents.menutitle>
@@ -142,10 +142,10 @@
                     </cfif>
                 </div>
                 <div class="mura-control-group">
-                    <label class="mura-control-label">Select Form</label>
+                    <label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectform')#</label>
                     <select id="formid" name="formid" class="objectParam">
                         <option value="notconfigured">
-                            Select Form
+                            #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectform')#
                         </option>
                         <cfloop query="rc.rsForms">
                             <cfset title=rc.rsForms.menutitle>
@@ -168,7 +168,7 @@
         <div class="mura-panel-heading" role="tab" id="heading-2">
           <h4 class="mura-panel-title">
             <a class="collapsed" role="button" data-toggle="collapse" data-parent="##configurator-panels" href="##panel-2" aria-expanded="false" aria-controls="panel-2">
-              When?
+              #application.rbFactory.getKeyValue(session.rb,'cta.when')#
             </a>
           </h4>
         </div>
@@ -176,23 +176,23 @@
           <div class="mura-panel-body">
             <div class="mura-control-group">
                 <div class="mura-control-group">
-                    <label class="mura-control-label">Visits before CTA appears</label>
+                    <label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'cta.visitsbeforectaappears')#</label>
                     <input name="visits" type="number" class="objectParam" value="#esapiEncode('html_attr',objectparams.visits)#">
                 </div>
                 <div class="mura-control-group">
-                    <label class="mura-control-label">CTA appears for X visits (0=unlimited)</label>
+                    <label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'cta.ctaappearsforxvisits')#</label>
                     <input name="displays" type="number" class="objectParam" value="#esapiEncode('html_attr',objectparams.displays)#">
                 </div>
                 <div class="mura-control-group">
-                    <label class="mura-control-label">Display CTA after X seconds</label>
+                    <label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'cta.displayctaafterxseconds')#</label>
                     <input name="delay" type="number" class="objectParam" value="#esapiEncode('html_attr',objectparams.delay)#">
                 </div>
                 <div class="mura-control-group">
-                    <label class="mura-control-label">Scroll depth before CTA appears (<span id="scrolllabel"></span>)</label>
+                    <label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'cta.scroldepthbeforectaappears')# (<span id="scrolllabel"></span>)</label>
                     <input name="scroll" id="scroll" min="0" max="100" step="5" type="range" class="objectParam" value="#esapiEncode('html_attr',objectparams.scroll)#"><br/>
                 </div>
                 <div class="mura-control-group">
-                    <label class="mura-control-label">CTA will restart after</label>
+                    <label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'cta.ctawillrestartafter')#</label>
                     <select name="resetinterval" class="objectParam">
                         <cfset options=['Session','Day','Week','Month']>
                         <cfloop array="#options#" item="option">
@@ -210,7 +210,7 @@
         <div class="mura-panel-heading" role="tab" id="heading-3">
           <h4 class="mura-panel-title">
             <a class="collapsed" role="button" data-toggle="collapse" data-parent="##configurator-panels" href="##panel-3" aria-expanded="false" aria-controls="panel-3">
-              How?
+              #application.rbFactory.getKeyValue(session.rb,'cta.how')#
             </a>
           </h4>
         </div>
@@ -221,12 +221,12 @@
                 <!--- Begin Rendering Options --->
 
                 <div class="mura-control-group">
-                    <label class="mura-control-label">Type</label>
+                    <label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'cta.type')#</label>
                     <select id="type" name="type" class="objectParam">
-                        <option value="modal"<cfif "modal" eq objectparams.type> selected</cfif>>Modal</option>
-                        <option value="bar"<cfif "bar" eq objectparams.type> selected</cfif>>Bar</option>
-                        <option value="drawer"<cfif "drawer" eq objectparams.type> selected</cfif>>Drawer</option>
-                        <option value="inline"<cfif "inline" eq objectparams.type> selected</cfif>>Inline</option>
+                        <option value="modal"<cfif "modal" eq objectparams.type> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'cta.modal')#</option>
+                        <option value="bar"<cfif "bar" eq objectparams.type> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'cta.bar')#</option>
+                        <option value="drawer"<cfif "drawer" eq objectparams.type> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'cta.drawer')#</option>
+                        <option value="inline"<cfif "inline" eq objectparams.type> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'cta.inline')#</option>
                     </select>
                 </div>
                 <!---
@@ -237,29 +237,29 @@
                 <div id="modal-option-container" class="render-option-container" style="display:none">
 
                     <div class="mura-control-group">
-                        <label class="mura-control-label">Animate</label>
+                        <label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'cta.animate')#</label>
                         <select id="animate" name="animate">
-                            <option value="ttb"<cfif 'ttb' eq objectparams.animate> selected</cfif>>Top to Bottom</option>
-                            <option value="btt"<cfif 'btt' eq objectparams.animate> selected</cfif>>Bottom to Top</option>
+                            <option value="ttb"<cfif 'ttb' eq objectparams.animate> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'cta.toptobottom')#</option>
+                            <option value="btt"<cfif 'btt' eq objectparams.animate> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'cta.bottomtotop')#</option>
                         </select>
                     </div>
 
                     <div class="mura-control-group">
-                        <label class="mura-control-label">Animation Speed</label>
+                        <label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'cta.animationspeed')#</label>
                         <select id="animatespeed" name="animatespeed">
                             <cfset options=['slow','medium','fast']>
                             <cfloop array="#options#" item="option">
-                                <option value="#lcase(option)#"<cfif option eq objectparams.animatespeed> selected</cfif>>#option#</option>
+                                <option value="#lcase(option)#"<cfif option eq objectparams.animatespeed> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'cta.#option#')#</option>
                             </cfloop>
                         </select>
                     </div>
 
                     <div class="mura-control-group">
-                        <label class="mura-control-label">Width</label>
+                        <label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'cta.width')#</label>
                         <select id="width" name="width">
-                            <option value="sm"<cfif 'sm' eq objectparams.width> selected</cfif>>Small</option>
-                            <option value="md"<cfif 'md' eq objectparams.width> selected</cfif>>Medium</option>
-                            <option value="lg"<cfif 'lg' eq objectparams.width> selected</cfif>>Large</option>
+                            <option value="sm"<cfif 'sm' eq objectparams.width> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'cta.small')#</option>
+                            <option value="md"<cfif 'md' eq objectparams.width> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'cta.medium')#</option>
+                            <option value="lg"<cfif 'lg' eq objectparams.width> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'cta.large')#</option>
                         </select>
                     </div>
 
@@ -270,41 +270,41 @@
                 <div id="drawer-option-container" class="render-option-container" style="display:none">
 
                     <div class="mura-control-group">
-                        <label class="mura-control-label">Horizonal Alignment (X)</label>
+                        <label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'cta.horizontalalignment')#</label>
                         <select id="drawer-anchorx" name="anchorx">
                             <cfset options=['left','right']>
                             <cfloop array="#options#" item="option">
-                                <option value="#lcase(option)#"<cfif option eq objectparams.anchorx or objectparams.anchorx eq 'center' and option eq 'right'> selected</cfif>>#option#</option>
+                                <option value="#lcase(option)#"<cfif option eq objectparams.anchorx or objectparams.anchorx eq 'center' and option eq 'right'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'cta.#option#')#</option>
                             </cfloop>
                         </select>
                     </div>
 
                     <div class="mura-control-group">
-                        <label class="mura-control-label">Vertical Alignment (Y)</label>
+                        <label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'cta.verticalalignment')#</label>
                         <select id="drawer-anchory" name="anchory">
                             <cfset options=['top','bottom']>
                             <cfloop array="#options#" item="option">
-                                <option value="#lcase(option)#"<cfif option eq objectparams.anchory or objectparams.anchory eq 'center' and option eq 'bottom'> selected</cfif>>#option#</option>
+                                <option value="#lcase(option)#"<cfif option eq objectparams.anchory or objectparams.anchory eq 'center' and option eq 'bottom'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'cta.#option#')#</option>
                             </cfloop>
                         </select>
                     </div>
 
                     <div class="mura-control-group">
-                        <label class="mura-control-label">Animation Speed</label>
+                        <label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'cta.animationspeed')#</label>
                         <select name="animatespeed">
                             <cfset options=['slow','medium','fast']>
                             <cfloop array="#options#" item="option">
-                                <option value="#lcase(option)#"<cfif option eq objectparams.animatespeed> selected</cfif>>#option#</option>
+                                <option value="#lcase(option)#"<cfif option eq objectparams.animatespeed> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'cta.#option#')#</option>
                             </cfloop>
                         </select>
                     </div>
 
                     <div class="mura-control-group">
-                        <label class="mura-control-label">Width</label>
+                        <label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'cta.width')#</label>
                         <select name="width">
-                            <option value="sm"<cfif 'sm' eq objectparams.width> selected</cfif>>Small</option>
-                            <option value="md"<cfif 'md' eq objectparams.width> selected</cfif>>Medium</option>
-                            <option value="lg"<cfif 'lg' eq objectparams.width> selected</cfif>>Large</option>
+                            <option value="sm"<cfif 'sm' eq objectparams.width> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'cta.small')#</option>
+                            <option value="md"<cfif 'md' eq objectparams.width> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'cta.medium')#</option>
+                            <option value="lg"<cfif 'lg' eq objectparams.width> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'cta.large')#</option>
                         </select>
                     </div>
 
@@ -316,11 +316,11 @@
 
 
                     <div class="mura-control-group">
-                        <label class="mura-control-label">Animation Speed</label>
+                        <label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'cta.animationspeed')#</label>
                         <select name="animatespeed">
                             <cfset options=['slow','medium','fast']>
                             <cfloop array="#options#" item="option">
-                                <option value="#lcase(option)#"<cfif option eq objectparams.animatespeed> selected</cfif>>#option#</option>
+                                <option value="#lcase(option)#"<cfif option eq objectparams.animatespeed> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'cta.#option#')#</option>
                             </cfloop>
                         </select>
                     </div>
