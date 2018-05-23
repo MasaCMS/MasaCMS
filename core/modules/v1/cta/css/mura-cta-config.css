@@ -1,0 +1,273 @@
+/* set position and zindex */
+.mura-cta,
+.mura-cta * {
+	box-sizing: border-box;
+}
+
+.mura-cta {
+	position: relative;
+	z-index: 9999;
+}
+
+
+.mura-cta-empty {
+	position: relative;
+	bottom: 5px;
+	overflow: hidden;
+	padding: .75rem 1.25rem;
+	margin-bottom: 1rem;
+	margin-left: 5px;
+	margin-right: 5px;
+	margin-top: 8px;
+	border: 1px solid transparent;
+	border-radius: .25rem;
+	background-color: #d9edf7;
+	border-color: #bcdff1;
+	color: #31708f;
+	display: block;
+	font-size: 16px;
+}
+
+.mura-cta-empty::before {
+	content: 'Call To Action:';
+	position: relative;
+	display: inline;
+}
+
+.mura-cta-empty::after {
+	content: attr(data-mura-cta-type-label);
+	position: relative;
+	display: inline;
+	font-weight: bold;
+	text-transform: uppercase;
+	margin-left: 10px;
+}
+
+/* ==============================
+.mura-cta__container
+============================== */
+.mura-cta__container {
+	position: fixed;
+	display: flex;
+	flex-wrap: nowrap;
+	max-width: 100%;
+	flex-direction: column;
+}
+
+/* data-anchorx */
+[data-mura-cta-anchorx="left"] { left: 0; justify-content: flex-start;}
+[data-mura-cta-anchorx="right"] { right: 0; justify-content: flex-end; }
+[data-mura-cta-anchorx="center"] { left: 0; right: 0; justify-content: center; }
+
+/* data-anchory */
+[data-mura-cta-anchory="top"] { top: 0; }
+[data-mura-cta-anchory="bottom"] { bottom: 0; }
+[data-mura-cta-anchory="center"] { top: 0; bottom: 0; }
+
+
+/* modal container background */
+.mura-cta__container--modal {
+	background-color: rgba(0,0,0,.5);
+}
+
+/* dont display modal container if empty */
+.mura-cta__container--modal:empty {
+	display: none;
+}
+
+/* .mura-sidebar-state fix */
+.mura-sidebar-state__pushed--right .mura-cta__container {
+	padding-right: 300px;
+}
+
+/* .mura-edit-mode fix */
+.mura-edit-mode .mura-cta__container {
+	padding-top: 32px;
+}
+
+
+/* ==============================
+.mura-cta__item
+============================== */
+.mura-cta__item {
+	flex: none;
+	position: relative;
+	max-width: 100%;
+	animation-timing-function: linear;
+}
+
+[data-mura-cta-type="modal"],
+[data-mura-cta-type="drawer"],
+[data-mura-cta-type="inline"] {
+	padding: 30px;
+}
+
+/* ------------------------------
+.mura-cta__item (data-animatespeed)
+------------------------------ */
+[data-mura-cta-animatespeed="slow"] { animation-duration: 900ms; }
+[data-mura-cta-animatespeed="medium"] { animation-duration: 600ms; }
+[data-mura-cta-animatespeed="fast"] { animation-duration: 300ms; }
+
+
+/* ------------------------------
+.mura-cta__item (keyframes + config)
+------------------------------ */
+@keyframes drawer-rtl {
+	0% {
+		transform: translateX(100%);
+	}
+	100% {
+		transform: none;
+	}
+}
+@keyframes drawer-ltr {
+	0% {
+		transform: translateX(-100%);
+	}
+	100% {
+		transform: none;
+	}
+}
+@keyframes modal-btt {
+	0% {
+		top: 100%;
+	}
+	100% {
+		top: 0;
+	}
+}
+@keyframes modal-ttb {
+	0% {
+		bottom: 100%;
+	}
+	100% {
+		bottom: 0;
+	}
+}
+
+@keyframes bar-btt {
+	0% {
+		transform: translateY(100%);
+	}
+	100% {
+		transform: translateY(0);
+	}
+}
+
+@keyframes inline-fade {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+/* drawer animates */
+[data-mura-cta-type="drawer"][data-mura-cta-animate="rtl"] { animation-name: drawer-rtl; }
+[data-mura-cta-type="drawer"][data-mura-cta-animate="ltr"] { animation-name: drawer-ltr; }
+
+/* modal animates */
+[data-mura-cta-type="modal"][data-mura-cta-animate="btt"] { animation-name: modal-btt; }
+[data-mura-cta-type="modal"][data-mura-cta-animate="ttb"] { animation-name: modal-ttb; }
+
+/* bar animates */
+[data-mura-cta-type="bar"][data-mura-cta-animate="btt"] { animation-name: bar-btt; }
+
+/* inline animates */
+[data-mura-cta-type="inline"] { animation: inline-fade 300ms; }
+
+/* ------------------------------
+.mura-cta__item (align-self config)
+------------------------------ */
+[data-mura-cta-anchory="bottom"][data-mura-cta-anchorx="left"] .mura-cta__item { align-self: flex-start; }
+[data-mura-cta-anchory="bottom"][data-mura-cta-anchorx="right"] .mura-cta__item { align-self: flex-end; }
+[data-mura-cta-anchory="bottom"][data-mura-cta-anchorx="center"] .mura-cta__item { align-self: auto; }
+
+[data-mura-cta-anchory="top"][data-mura-cta-anchorx="left"] .mura-cta__item { align-self: flex-start; }
+[data-mura-cta-anchory="top"][data-mura-cta-anchorx="right"] .mura-cta__item { align-self: flex-end; }
+[data-mura-cta-anchory="top"][data-mura-cta-anchorx="center"] .mura-cta__item { align-self: auto; }
+
+[data-mura-cta-anchorx="center"][data-mura-cta-anchory="center"] .mura-cta__item { align-self: center; }
+
+
+/* ==============================
+.mura-cta__item__wrapper
+============================== */
+.mura-cta__item__wrapper {
+	/* required */
+	max-width: 100%;
+	position: relative;
+	margin: 0 auto;
+
+	/* themeable options */
+	background-color: #fff;
+	padding: 30px; /* size of inside dismiss button */
+	box-shadow: 0 0 20px 0 rgba(0,0,0,.5);
+}
+
+/* ------------------------------
+.mura-cta__item (data-size)
+------------------------------ */
+[data-mura-cta-size="sm"] { width: 400px; }
+[data-mura-cta-size="md"] { width: 600px; }
+[data-mura-cta-size="lg"] { width: 800px; }
+[data-mura-cta-size="full"] { width: 100%; }
+
+
+/* ==============================
+.mura-cta__item__content
+============================== */
+
+.mura-cta__item__content::after {
+	content: '';
+	display: table;
+	clear: both;
+}
+
+.mura-cta__item__content .mura-object {
+	margin-right: 0;
+	float: none;
+	width: auto;
+}
+
+/* reset margin of things in the content (paragraph margins, etc) */
+.mura-cta__item__content > *:first-child { margin-top: 0; }
+.mura-cta__item__content > *:last-child { margin-bottom: 0; }
+
+
+/* ==============================
+.mura-cta__item__dismiss
+============================== */
+.mura-cta__item__dismiss {
+	display: block;
+	position: absolute;
+	height: 30px;
+	width: 30px;
+	top: 0;
+	right: 0;
+}
+
+.mura-cta__item__dismiss:hover  {
+	cursor: pointer;
+}
+
+.mura-cta__item__dismiss::before,
+.mura-cta__item__dismiss::after {
+	content: '';
+	height: 15px;
+	display: block;
+	position: absolute;
+	z-index: 1;
+	top: 50%;
+	left: 50%;
+	right: 0;
+	bottom: 0;
+
+	background-color: #000;
+	width: 2px;
+}
+
+.mura-cta__item__dismiss::before { transform: translate(-50%,-50%) rotate(45deg); }
+.mura-cta__item__dismiss::after { transform: translate(-50%,-50%) rotate(-45deg); }
