@@ -17079,7 +17079,7 @@ rb: {
 	formbuttoninnerclass:"",
 	formbuttonclass:"btn btn-default",
 	formrequiredwrapperclass:"",
-	formbuttomsubmitclass :"form-submit",
+	formbuttonsubmitclass :"form-submit",
 	formbuttonsubmitlabel : "Submit",
 	formbuttonnextclass:"form-nav",
 	formbuttonnextlabel : "Next",
@@ -17403,7 +17403,7 @@ renderPaging:function() {
 	mura(".paging-container-" + self.context.objectid,self.context.formEl).empty();
 
 	if(self.formJSON.form.pages.length == 1) {
-		mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:self.currentpage+1,label:submitlabel,"class":self.rb.formbuttomsubmitclass}));
+		mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:self.currentpage+1,label:submitlabel,"class":self.rb.formbuttonsubmitclass}));
 	}
 	else {
 		if(self.currentpage == 0) {
@@ -17415,7 +17415,7 @@ renderPaging:function() {
 				mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:self.currentpage+1,label:self.rb.formbuttonnextlabel,"class":self.rb.formbuttomnextclass}));
 			}
 			else {
-				mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:self.currentpage+1,label:submitlabel,"class":self.rb.formbuttomsubmitclass}));
+				mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:self.currentpage+1,label:submitlabel,"class":self.rb.formbuttonsubmitclass}));
 			}
 		}
 

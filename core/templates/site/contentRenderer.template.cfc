@@ -156,7 +156,8 @@
 		//this.formButtonInnerClass="";
 		//this.formButtonClass = "btn btn-default";
 		//this.formRequiredWrapperClass="";
-		//this.formButtomSubmitclass = "form-submit  btn-primary";
+		//this.formButtonSubmitclass = "form-submit  btn-primary";
+		//this.formButtomSubmitclass = this.formButtonSubmitclass; //deprecated
 		//this.formButtonSubmitLabel = "Submit";
 		//this.formButtonNextClass = "form-nav";
 		//this.formButtonNextLabel = "Next";
