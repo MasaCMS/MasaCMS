@@ -183,7 +183,8 @@ General Classes
 <cfset this.formButtonInnerClass="">
 <cfset this.formButtonClass = "btn btn-default">
 <cfset this.formRequiredWrapperClass = "">
-<cfset this.formButtomSubmitclass = "form-submit  btn-primary">
+<cfset this.formButtonSubmitclass = "form-submit  btn-primary">
+<cfset this.formButtomSubmitclass = this.formButtonSubmitclass>
 <cfset this.formButtonSubmitLabel = "Submit">
 <cfset this.formButtonNextlClass = "form-nav">
 <cfset this.formButtonNextLabel = "Next">
@@ -637,6 +638,7 @@ Display Objects
   	formButtonClass = this.formButtonClass,
   	formRequiredWrapperClass = this.formRequiredWrapperClass,
 		formButtomSubmitclass = this.formButtomSubmitclass,
+		formButtonSubmitclass = this.formButtonSubmitclass,
 		formButtonSubmitLabel = this.formButtonSubmitLabel,
 		formButtonNextlClass = this.formButtonNextlClass,
 		formButtonNextLabel = this.formButtonNextLabel,
