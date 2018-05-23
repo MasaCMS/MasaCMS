@@ -689,7 +689,7 @@ if ( application.setupComplete ) {
 
 	projectSiteID=application.configBean.getValue(property='ProjectSiteID',defaultValue='default');
 
-	if(!application.settingsManager.siteExists(projectSiteID)){
+	if(projectSiteID != 'default'  && !application.settingsManager.siteExists(projectSiteID)){
 
 		domain=listFirst(cgi.http_host,":");
 
