@@ -1,7 +1,7 @@
 <cfoutput>
 	<cfparam name="objectparams.ctaid" default="#objectparams.instanceid#">
-	<cfif len(m.event('accept_cookies'))>
-		<cfset m.getBean('utility').setCookie(name='MURA_ACCEPT_COOKIES',value=true)>
+	<cfif len(m.event('consent'))>
+		<cfset m.getBean('utility').setCookie(name='MURA_CONSENT',value="YES+#dateformat(now(),'yyyymmdd')#-#hour(now())#-#minute(now())#")>
 		<script>
 			Mura(function(){
 					Mura('##mura-cta-#esapiEncode('javascript',objectparams.ctaid)#')
@@ -21,7 +21,7 @@
 			</div>
 			<div class="mura-cta__cookie_consent_controls">
 				<form class="mura-cta__cookie_consent">
-					<input type="hidden" name="accept_cookies" value="true">
+					<input type="hidden" name="consent" value="true">
 					<button type="submit" class="#this.cookieConsentButtonClass# mura-cta__cookie_consent_btn">#m.rbKey('cookie_consent_cta.gotit')#</button>
 				</form>
 			</div>

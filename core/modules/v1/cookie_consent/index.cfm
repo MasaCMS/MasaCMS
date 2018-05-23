@@ -1,4 +1,4 @@
-<cfif not isdefined('cookie.mura_accept_cookies')>
+<cfif not isdefined('cookie.mura_consent')>
 	<cfoutput>
 		<cfif this.cookieConsentType eq 'drawer'>
 			<script>
