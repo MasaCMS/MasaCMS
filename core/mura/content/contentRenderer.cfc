@@ -1393,11 +1393,11 @@ Display Objects
 		<cfset tracePoint=initTracePoint("#filePath#display_objects/nav/dsp_tag_cloud.cfm")>
 		<cfinclude template="#filePath#display_objects/nav/dsp_tag_cloud.cfm" />
 	<cfelseif fileExists(expandPath("/muraWRM/modules/nav/dsp_tag_cloud.cfm"))>
-		<cfset tracePoint=initTracePoint("/modules/nav/dsp_tag_cloud.cfm")>
-		<cfinclude template="/muraWRM/display_objects/nav/dsp_tag_cloud.cfm" />
-	<cfelseif fileExists(expandPath("/muraWRM/modules/nav/dsp_tag_cloud.cfm"))>
 		<cfset tracePoint=initTracePoint("/muraWRM/modules/nav/dsp_tag_cloud.cfm")>
 		<cfinclude template="/muraWRM/modules/nav/dsp_tag_cloud.cfm" />
+	<cfelseif fileExists(expandPath("/muraWRM/display_objects/nav/dsp_tag_cloud.cfm"))>
+		<cfset tracePoint=initTracePoint("/modules/nav/dsp_tag_cloud.cfm")>
+		<cfinclude template="/muraWRM/display_objects/nav/dsp_tag_cloud.cfm" />
 	<cfelse>
 		<cfset tracePoint=initTracePoint("/core/modules/v1/nav/dsp_tag_cloud.cfm")>
 		<cfinclude template="/muraWRM/core/modules/v1/nav/dsp_tag_cloud.cfm" />
