@@ -198,7 +198,7 @@ component extends="mura.cfobject" output="false" {
 		rs=qs.execute(sql="select max(entered) as lastRequest
 				from tsessiontracking
 				where originalUrlToken= :originalUrlToken
-				and urlToken <> : urlToken
+				and urlToken <> :urlToken
 				and entered < :entered").getResult();
 
 
