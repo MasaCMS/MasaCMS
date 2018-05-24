@@ -87,7 +87,7 @@
 		<div class="mura-control-group">
 
 			<!--- View All / Unassigned Only --->
-				<a class="btn" href="#buildURL(action='cusers.listusers', querystring='siteid=#esapiEncode('url',rc.siteid)#&ispublic=#esapiEncode('url',rc.ispublic)#&unassigned=#esapiEncode('url',rc.unassigned)#')#" onclick="actionModal();">
+				<a class="btn" href="#buildURL(action='cusers.listusers', querystring='siteid=#esapiEncode('url',rc.siteid)#&ispublic=#esapiEncode('url',rc.ispublic)#&unassigned=#esapiEncode('url',rc.unassigned)?0:1#')#" onclick="actionModal();">
 					<i class="mi-filter"></i>
 					<cfif rc.unassigned EQ 0>
 						#rbKey('user.viewunassignedonly')#
