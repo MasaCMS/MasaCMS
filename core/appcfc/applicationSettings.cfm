@@ -496,7 +496,7 @@ this.sameformfieldsasarray=evalSetting(getINIProperty('sameformfieldsasarray',fa
 
 // Custom Java library paths with dynamic loading
 try {
-	variables.loadPaths = ListToArray(getINIProperty('javaSettingsLoadPaths','#variables.baseDir#/core/vendor/lib'));
+	variables.loadPaths = listToArray(listPrepend('#variables.baseDir#/core/vendor/lib', getINIProperty('javaSettingsLoadPaths')));
 } catch(any e) {
 	variables.loadPaths = ['#variables.baseDir#/core/vendor/lib'];
 }
