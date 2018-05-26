@@ -636,54 +636,53 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 	}
 
 	public function getRBFactory(baseFactory='') output=false {
-		if ( !isObject(variables.instance.rbFactory) ) {
-
-			if(isDefined('arguments.baseFactory') && isObject(arguments.baseFactory)){
-				var tmpFactory = arguments.baseFactory;
-			} else {
-				//Get core admin RB factory
-				if ( !isDefined('application.rbFactory') ) {
-					variables.tracepoint = initTracepoint("Instantiating resourceBundleFactory");
-					application.rbFactory = new mura.resourceBundle.resourceBundleFactory(expandPath("/mura/resourceBundle/resourceBundles"));
-					commitTracepoint(variables.tracepoint);
-				}
-
-				var tmpFactory = application.rbFactory;
-
-				//Get core v1 module RB factory
-				var dirCoreV1 = '/muraWRM/core/modules/v1/core_assets/resource_bundles/';
-				if ( directoryExists(expandPath('/muraWRM/core/modules/v1/core_assets/resource_bundles/')) ) {
-					tmpFactory = createObject("component","mura.resourceBundle.resourceBundleFactory").init(tmpFactory,expandPath("/muraWRM/core/modules/v1/core_assets/resource_bundles/"),getJavaLocale());
-				}
-
-				//Get global level RB factory
-				if ( directoryExists(expandPath('/muraWRM/resourceBundles/')) ) {
-					tmpFactory = createObject("component","mura.resourceBundle.resourceBundleFactory").init(tmpFactory,expandPath("/muraWRM/resourceBundles/"),getJavaLocale());
-				} else if ( directoryExists(expandPath('/muraWRM/resource_bundles/')) ) {
-					tmpFactory = createObject("component","mura.resourceBundle.resourceBundleFactory").init(tmpFactory,expandPath("/muraWRM/resource_bundles/"),getJavaLocale());
-				}
+		
+		if(isDefined('arguments.baseFactory') && isObject(arguments.baseFactory)){
+			var tmpFactory = arguments.baseFactory;
+		} else {
+			//Get core admin RB factory
+			if ( !isDefined('application.rbFactory') ) {
+				variables.tracepoint = initTracepoint("Instantiating resourceBundleFactory");
+				application.rbFactory = new mura.resourceBundle.resourceBundleFactory(expandPath("/mura/resourceBundle/resourceBundles"));
+				commitTracepoint(variables.tracepoint);
 			}
 
-			if(!get('isNew')){
-				//Get site level RB factory
-				if ( directoryExists('#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/resourceBundles/') ) {
-					tmpFactory = createObject("component","mura.resourceBundle.resourceBundleFactory").init(tmpFactory,"#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/resourceBundles/",getJavaLocale());
-				} else if ( directoryExists('#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/resource_bundles/') ) {
-					tmpFactory = createObject("component","mura.resourceBundle.resourceBundleFactory").init(tmpFactory,"#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/resource_bundles/",getJavaLocale());
-				} else if ( directoryExists('#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/includes/resourceBundles/') ) {
-					tmpFactory = createObject("component","mura.resourceBundle.resourceBundleFactory").init(tmpFactory,"#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/includes/resourceBundles/",getJavaLocale());
-				} else if ( directoryExists('#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/includes/resource_bundles/') ) {
-					tmpFactory = createObject("component","mura.resourceBundle.resourceBundleFactory").init(tmpFactory,"#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/includes/resource_bundles/",getJavaLocale());
-				}
+			var tmpFactory = application.rbFactory;
 
-				//Get theme level RB factory
-				var themeRBDir1=expandPath(getThemeIncludePath()) & "/resourceBundles/";
-				var themeRBDir2=expandPath(getThemeIncludePath()) & "/resource_bundles/";
-				if ( directoryExists(themeRBDir1) ) {
-					tmpFactory = createObject("component","mura.resourceBundle.resourceBundleFactory").init(tmpFactory,themeRBDir1,getJavaLocale());
-				} else if ( directoryExists(themeRBDir2) ) {
-					tmpFactory = createObject("component","mura.resourceBundle.resourceBundleFactory").init(tmpFactory,themeRBDir2,getJavaLocale());
-				}
+			//Get core v1 module RB factory
+			var dirCoreV1 = '/muraWRM/core/modules/v1/core_assets/resource_bundles/';
+			if ( directoryExists(expandPath('/muraWRM/core/modules/v1/core_assets/resource_bundles/')) ) {
+				tmpFactory = createObject("component","mura.resourceBundle.resourceBundleFactory").init(tmpFactory,expandPath("/muraWRM/core/modules/v1/core_assets/resource_bundles/"),getJavaLocale());
+			}
+
+			//Get global level RB factory
+			if ( directoryExists(expandPath('/muraWRM/resourceBundles/')) ) {
+				tmpFactory = createObject("component","mura.resourceBundle.resourceBundleFactory").init(tmpFactory,expandPath("/muraWRM/resourceBundles/"),getJavaLocale());
+			} else if ( directoryExists(expandPath('/muraWRM/resource_bundles/')) ) {
+				tmpFactory = createObject("component","mura.resourceBundle.resourceBundleFactory").init(tmpFactory,expandPath("/muraWRM/resource_bundles/"),getJavaLocale());
+			}
+		}
+
+		if(!get('isNew')){
+			//Get site level RB factory
+			if ( directoryExists('#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/resourceBundles/') ) {
+				tmpFactory = createObject("component","mura.resourceBundle.resourceBundleFactory").init(tmpFactory,"#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/resourceBundles/",getJavaLocale());
+			} else if ( directoryExists('#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/resource_bundles/') ) {
+				tmpFactory = createObject("component","mura.resourceBundle.resourceBundleFactory").init(tmpFactory,"#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/resource_bundles/",getJavaLocale());
+			} else if ( directoryExists('#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/includes/resourceBundles/') ) {
+				tmpFactory = createObject("component","mura.resourceBundle.resourceBundleFactory").init(tmpFactory,"#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/includes/resourceBundles/",getJavaLocale());
+			} else if ( directoryExists('#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/includes/resource_bundles/') ) {
+				tmpFactory = createObject("component","mura.resourceBundle.resourceBundleFactory").init(tmpFactory,"#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/includes/resource_bundles/",getJavaLocale());
+			}
+
+			//Get theme level RB factory
+			var themeRBDir1=expandPath(getThemeIncludePath()) & "/resourceBundles/";
+			var themeRBDir2=expandPath(getThemeIncludePath()) & "/resource_bundles/";
+
+			if ( directoryExists(themeRBDir1) ) {
+				tmpFactory = createObject("component","mura.resourceBundle.resourceBundleFactory").init(tmpFactory,themeRBDir1,getJavaLocale());
+			} else if ( directoryExists(themeRBDir2) ) {
+				tmpFactory = createObject("component","mura.resourceBundle.resourceBundleFactory").init(tmpFactory,themeRBDir2,getJavaLocale());
 			}
 
 			variables.instance.rbFactory = tmpFactory;
