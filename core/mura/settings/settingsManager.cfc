@@ -325,8 +325,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfquery>
 
 		<cfif rs.recordcount>
-			<cfthrow message="The SiteID you entered is already being used.">
-			<cfabort>
+			<cfparam name="arguments.data.autocreated" default="false">
+			<cfif isBoolean(arguments.data.autocreated) and arguments.data.autocreated>
+				<cfreturn>
+			<cfelse>
+				<cfthrow message="The SiteID you entered is already being used.">
+				<cfabort>
+			</cfif>
 		</cfif>
 
 		<cfif directoryExists("#variables.configBean.getSiteDir()#/#bean.getSiteID()#")>

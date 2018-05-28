@@ -701,10 +701,11 @@ if ( application.setupComplete ) {
 			siteid=projectSiteID,
 			domain=domain,
 			site=application.configBean.getValue(property='title',defaultValue='Mura CMS'),
-			orderno=1
+			orderno=1,
+			autocreated=true
 			});
 
-		if(projectSiteID != 'default'){
+		if(projectSiteID != 'default' && application.settingsManager.getSite('default').getOrderNo() lt 2){
 			application.settingsManager.update({
 				siteid='default',
 				orderno=2
