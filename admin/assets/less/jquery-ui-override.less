@@ -130,14 +130,24 @@
 .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset .ui-button{
   background-color: #EEE;
   border: none;
-  color: #fff;
+  color: #fff !important;
+  font-weight: 400;
+  padding: .4em 1.1em;
 }
+
 .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset .ui-button.ui-state-hover{
   background-color: #DDDEDD;
   background-position: 0 0;
 }
 .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset .ui-button .ui-state-hover{
   background-color:#FFF;
+}
+
+/* prevent unwrapped text from showing next to dialog close icon */
+.ui-dialog .ui-dialog-titlebar-close{
+    height: 16px;
+    width: 16px;
+    overflow: hidden;
 }
 
 .ui-dialog .ui-dialog-titlebar-close,
