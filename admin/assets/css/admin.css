@@ -23295,6 +23295,7 @@ i {
 ===================================== */
   /* compact view / configurators */
   /* set some sort of class somewhere to trigger the flyout - at the moment it uses 'mura-regions-state__pushed--right' */
+  /* prevent unwrapped text from showing next to dialog close icon */
   /* table striping */
   /* tabdrop menu */
   /* adjust as needed so the tab text displays */
@@ -35453,7 +35454,9 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 .mura .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset .ui-button {
   background-color: #EEE;
   border: none;
-  color: #fff;
+  color: #fff !important;
+  font-weight: 400;
+  padding: .4em 1.1em;
 }
 .mura .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset .ui-button.ui-state-hover {
   background-color: #DDDEDD;
@@ -35461,6 +35464,11 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 }
 .mura .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset .ui-button .ui-state-hover {
   background-color: #FFF;
+}
+.mura .ui-dialog .ui-dialog-titlebar-close {
+  height: 16px;
+  width: 16px;
+  overflow: hidden;
 }
 .mura .ui-dialog .ui-dialog-titlebar-close,
 .mura .ui-dialog .ui-dialog-titlebar-close:focus,
