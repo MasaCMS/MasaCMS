@@ -44,7 +44,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfsilent>
 	<cfset rc.rsObjects = application.contentManager.getSystemObjects(rc.siteid)/>
 	<cfquery name="rc.rsObjects" dbtype="query">
-		select * from rc.rsObjects where object like '%nav%' and object != 'folder_nav'
+		select * from rc.rsObjects where object like '%nav%'
 	</cfquery>
 	<cfset content=rc.$.getBean("content").loadBy(contentID=rc.objectid)>
 	<cfparam name="objectParams.taggroup" default="">
@@ -59,7 +59,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.selectnavigation')#
 				</option>
 				<cfloop query="rc.rsObjects">
-					<option <cfif rc.object eq rc.rsobjects.object  or (rc.object eq 'folder_nav' and rc.rsobjects.object eq 'standard_nav')>selected </cfif>title="#esapiEncode('html_attr',rc.rsObjects.name)#" value="#esapiEncode('javascript',rc.rsobjects.object)#">
+					<option <cfif rc.object eq rc.rsobjects.object>selected </cfif>title="#esapiEncode('html_attr',rc.rsObjects.name)#" value="#esapiEncode('javascript',rc.rsobjects.object)#">
 						#esapiEncode('html',rc.rsObjects.name)#
 					</option>
 				</cfloop>
