@@ -52,7 +52,7 @@ component extends="mura.cfobject" output="false" hint="This provides locale spec
 	variables.settingsManager="";
 	variables.locale="";
 
-	public function init(required any parentFactory="", required any resourceDirectory="", required any locale="en_us") output=false {
+	public function init(required any parentFactory="", required any resourceDirectory="", required any locale="en_US") output=false {
 		variables.parentFactory = arguments.parentFactory;
 		variables.locale = arguments.locale;
 		variables.configBean=getBean("configBean");
@@ -86,7 +86,9 @@ component extends="mura.cfobject" output="false" hint="This provides locale spec
 	}
 
 	public function getKeyValue(required locale="#variables.locale#", key, required boolean useMuraDefault="false") output=false {
+
 		var keyValue=getResourceBundle(arguments.locale).getKeyValue(arguments.key,true);
+
 		if ( keyValue != "muraKeyEmpty" ) {
 			return keyValue;
 		} else if ( isObject(variables.parentFactory) ) {
