@@ -69,7 +69,7 @@
 
 
 		// GENERAL
-		this.layoutmanager=false;
+		this.layoutmanager=true;
 		this.legacyobjects=false;
 		this.validateCSRFTokens=true; //This will eventually default to true
 		this.jsLib = "jquery";

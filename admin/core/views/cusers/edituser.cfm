@@ -189,7 +189,7 @@
 							<cfif isBoolean($.globalConfig('strongpasswords')) and $.globalConfig('strongpasswords')>
 								<div class="help-block-inline">#$.rbKey('user.passwordstrengthhelptext')#</div>
 							</cfif>
-							
+
 							<!--- Password --->
 							<div class="mura-control-group">
 								<label for="passwordNoCache">#rbKey('user.newpassword')#**</label>
