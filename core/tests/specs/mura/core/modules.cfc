@@ -49,7 +49,7 @@ component extends="testbox.system.BaseSpec"{
 			it(
 		 		title="Should be able to render key from resource_bundles directory",
 			 	body=function(data) {
-				 	expect(data.response ).toBe('success');
+				 	expect(data.response ).toBe('success1');
 				},
 				data={
 					response=response
@@ -61,7 +61,19 @@ component extends="testbox.system.BaseSpec"{
 			it(
 				title="Should be able to render key from resource_bundles directory in sub module",
 				body=function(data) {
-					expect(data.response ).toBe('success');
+					expect(data.response ).toBe('success2');
+				},
+				data={
+					response=response
+				}
+			);
+
+			response=$.rbkey('layout.contentmanager');
+
+			it(
+				title="Should be able to render key from core resource bundles",
+				body=function(data) {
+					expect(data.response ).toBe('Content');
 				},
 				data={
 					response=response
