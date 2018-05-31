@@ -70,7 +70,9 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 	<cfsilent>
-		<cfparam name="cookie.ADMINSIDEBAR" default="off">
+		<cfif not IsDefined("cookie.ADMINSIDEBAR")>
+			<cfset application.utility.setCookie(name="ADMINSIDEBAR",value="off")>
+		</cfif>
 		<cfparam name="request.action" default="core:cplugin.plugin">
 		<cfparam name="rc.originalfuseaction" default="#listLast(listLast(request.action,":"),".")#">
 		<cfparam name="rc.originalcircuit"  default="#listFirst(listLast(request.action,":"),".")#">
