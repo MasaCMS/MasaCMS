@@ -1,4 +1,9 @@
-<cfparam name="objectparams.response" default="failure">
+<cfscript>
+	param name="objectparams.response" default="failure";
+	if(!listFindNoCase('success,failure',objectparams.response)){
+		objectparams.response="failure";
+	}
+</cfscript>
 <cfoutput>
-#esapiEncode('html',objectparams.response)#
+#objectparams.response#
 </cfoutput>

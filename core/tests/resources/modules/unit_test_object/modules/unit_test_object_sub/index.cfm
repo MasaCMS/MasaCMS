@@ -1,4 +1,4 @@
 <cfparam name="objectparams.response" default="failure">
 <cfoutput>
-#esapiEncode('html',objectparams.response)#
+<cfif objectparams.response eq "success">success<cfelse>failure</cfif>
 </cfoutput>
