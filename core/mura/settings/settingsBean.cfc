@@ -644,7 +644,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 				//Get core admin RB factory
 				if (!isDefined('application.rbFactory') ) {
 					variables.tracepoint = initTracepoint("Instantiating resourceBundleFactory");
-					tmpFactory.rbFactory = new mura.resourceBundle.resourceBundleFactory();
+					application.rbFactory = new mura.resourceBundle.resourceBundleFactory();
 					commitTracepoint(variables.tracepoint);
 				}
 
