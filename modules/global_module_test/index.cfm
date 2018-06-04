@@ -1,4 +1,4 @@
-<cfparam name="objectparams.repsonse" default="failure">
+<cfparam name="objectparams.response" default="failure">
 <cfoutput>
-#objectparams.response#
+#esapiEncode('html',objectparams.response)#
 </cfoutput>
