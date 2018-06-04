@@ -80,6 +80,103 @@ component extends="testbox.system.BaseSpec"{
 				}
 			);
 
+			response=$.rbkey('globalmodule.mycustomkey');
+
+			it(
+				title="Should be able to render key from global modules resource bundles",
+				body=function(data) {
+					expect(data.response ).toBe('success');
+				},
+				data={
+					response=response
+				}
+			);
+
+			response=$.rbkey('sitemodule.mycustomkey');
+
+			it(
+				title="Should be able to render key from site modules resource bundles",
+				body=function(data) {
+					expect(data.response ).toBe('success');
+				},
+				data={
+					response=response
+				}
+			);
+
+			response=$.rbkey('global.mycustomkey');
+
+			it(
+				title="Should be able to render key from root resource bundles",
+				body=function(data) {
+					expect(data.response ).toBe('success');
+				},
+				data={
+					response=response
+				}
+			);
+
+			response=$.rbkey('thememodule.mycustomkey');
+
+			it(
+				title="Should be able to render key from theme module resource bundles",
+				body=function(data) {
+					expect(data.response ).toBe('success');
+				},
+				data={
+					response=response
+				}
+			);
+
+			response=$.rbkey('themeroot.mycustomkey');
+
+			it(
+				title="Should be able to render key from theme root resource bundles",
+				body=function(data) {
+					expect(data.response ).toBe('success');
+				},
+				data={
+					response=response
+				}
+			);
+
+			response=$.dspObject(object="global_module_test",objectparams={response="success"});
+
+			it(
+				title="Should be able to render global level module",
+				body=function(data) {
+					expect(data.response ).toBe('success');
+				},
+				data={
+					response=response
+				}
+			);
+
+			response=$.dspObject(object="theme_module_test",objectparams={response="success"});
+
+			it(
+				title="Should be able to render theme level module",
+				body=function(data) {
+					expect(data.response ).toBe('success');
+				},
+				data={
+					response=response
+				}
+			);
+
+			response=$.dspObject(object="site_module_test",objectparams={response="success"});
+
+			it(
+				title="Should be able to render site level module",
+				body=function(data) {
+					expect(data.response ).toBe('success');
+				},
+				data={
+					response=response
+				}
+			);
+
+
 		});
 
 	}
