@@ -1,1 +1,1 @@
-<mura name="Global Unit Test Module"></mura>
+<mura name="Global Unit Test Module" contenttypes=""></mura>
