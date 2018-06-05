@@ -47,16 +47,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <script>
 (function(root,config){
 	root.queuedMuraCmds=[];
-	root.queuedMuraReopenCmds=[];
+	root.queuedMuraPreInitCmds=[];
 	root.deferMuraInit=function(){
 		if(typeof root.Mura != 'undefined' && typeof root.Mura.init == 'function'){
-			for(var cmd in root.queuedMuraReopenCmds){root.Mura(root.queuedMuraReopenCmds[cmd]);}
+			for(var cmd in root.queuedMuraPreInitCmds){root.Mura(root.queuedMuraPreInitCmds[cmd]);}
 			root.Mura.init(config);
 			for(var cmd in root.queuedMuraCmds){root.Mura(root.queuedMuraCmds[cmd]);}
 		} else {
 			if(typeof root.Mura != 'function'){
 				root.mura = root.m = root.Mura = function(cmd){root.queuedMuraCmds.push(cmd);};
-				root.Mura.reopen=function(cmd){root.queuedMuraReopenCmds.push(cmd);};
+				root.Mura.preInit=function(cmd){root.queuedMuraPreInitCmds.push(cmd);};
 				<cfif this.cookieConsentEnabled>root.Mura(function(){Mura('body').appendDisplayObject({object:'cookie_consent',queue:false});});</cfif>
 			}
 			setTimeout(root.deferMuraInit);
