@@ -618,6 +618,7 @@ var Mura=(function(){
   var holdingReadyAltered = false;
   var holdingQueueReleased = false;
   var holdingQueue = [];
+	var holdingPreInitQueue =[];
 
   /*
   if(typeof jQuery != 'undefined' && typeof jQuery.holdReady != 'undefined'){
@@ -3206,6 +3207,11 @@ var Mura=(function(){
           config.useHTML5DateInput=false;
       }
 
+			if (typeof config.cookieConsentEnabled == 'undefined') {
+          config.cookieConsentEnabled=false;
+      }
+
+
 			config.formdata=(typeof FormData != 'undefined') ? true : false;
 
       Mura.editing;
@@ -3227,7 +3233,21 @@ var Mura=(function(){
         Mura._requestcontext=Mura.getRequestContext();
       }
 
+			if(typeof window.document != 'undefined'){
+				if(Array.isArray(window.queuedMuraCmds) && window.queuedMuraCmds.length){
+					holdingQueue=window.queuedMuraCmds.concat(holdingQueue);
+					window.queuedMuraCmds=[];
+				}
+
+				if(Array.isArray(window.queuedMuraPreInitCmds) && window.queuedMuraPreInitCmds.length){
+					holdingPreInitQueue=window.queuedMuraPreInitCmds.concat(holdingPreInitQueue);
+					window.queuedMuraPreInitCmds=[];
+				}
+			}
+
       Mura(function() {
+
+					for(var cmd in holdingPreInitQueue){holdingPreInitQueue[cmd](Mura);}
 
           if(typeof window.document != 'undefined'){
 
@@ -3259,6 +3279,8 @@ var Mura=(function(){
 
             processMarkup(document);
 
+						if(Mura.cookieConsentEnabled){Mura(function(){Mura('body').appendDisplayObject({object:'cookie_consent',queue:false});});}
+
             Mura(document)
                 .on("keydown", function(event) {
                     loginCheck(event.which);
@@ -3288,7 +3310,7 @@ var Mura=(function(){
                   }
               }
           }, {
-							preInit:function(fn){Mura(fn)},
+							preInit:function(fn){if(holdingReady){holdingPreInitQueue.push(fn)}else{Mura(fn)}},
               generateOAuthToken: generateOAuthToken,
               entities: {},
               submitForm: submitForm,

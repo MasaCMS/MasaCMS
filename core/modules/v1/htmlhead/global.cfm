@@ -42,50 +42,64 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfif request.returnformat neq 'amp' and not $.siteConfig('isRemote')>
+<cfif this.deferMuraJS>
 <cfoutput>
-<script type="text/javascript" src="#$.globalConfig('context')#/core/modules/v1/core_assets/js/mura.min.js?v=#$.globalConfig('version')#" #$.getMuraJSDeferredString()#></script>
+<script type="text/javascript" src="#$.globalConfig('context')#/core/modules/v1/core_assets/js/mura.min.js?v=#$.globalConfig('version')#" defer="defer"></script>
 <script>
-(function(root,config){
-	root.queuedMuraCmds=[];
-	root.queuedMuraPreInitCmds=[];
-	root.deferMuraInit=function(){
-		if(typeof root.Mura != 'undefined' && typeof root.Mura.init == 'function'){
-			for(var cmd in root.queuedMuraPreInitCmds){root.Mura(root.queuedMuraPreInitCmds[cmd]);}
-			root.Mura.init(config);
-			for(var cmd in root.queuedMuraCmds){root.Mura(root.queuedMuraCmds[cmd]);}
-		} else {
-			if(typeof root.Mura != 'function'){
-				root.mura = root.m = root.Mura = function(cmd){root.queuedMuraCmds.push(cmd);};
-				root.Mura.preInit=function(cmd){root.queuedMuraPreInitCmds.push(cmd);};
-				<cfif this.cookieConsentEnabled>root.Mura(function(){Mura('body').appendDisplayObject({object:'cookie_consent',queue:false});});</cfif>
-			}
-			setTimeout(root.deferMuraInit);
-		}
-	}
-	root.deferMuraInit();
-	}
+(function(root,config){root.queuedMuraCmds=[],root.queuedMuraPreInitCmds=[],root.deferMuraInit=function(){void 0!==root.Mura&&"function"==typeof root.Mura.init?root.Mura.init(config):("function"!=typeof root.Mura&&(root.mura=root.m=root.Mura=function(o){root.queuedMuraCmds.push(o)},root.Mura.preInit=function(o){root.queuedMuraPreInitCmds.push(o)}),setTimeout(root.deferMuraInit))},root.deferMuraInit();}
 )(this,{
-	loginURL:"#variables.$.siteConfig('LoginURL')#",
-	siteid:"#variables.$.event('siteID')#",
-	contentid:"#variables.$.content('contentid')#",
-	contenthistid:"#variables.$.content('contenthistid')#",
-	parentid:"#variables.$.content('parentid')#",
-	context:"#variables.$.globalConfig('context')#",
-	nocache:#val($.event('nocache'))#,
-	assetpath:"#variables.$.siteConfig('assetPath')#",
-	corepath:"#variables.$.globalConfig('corepath')#",
-	themepath:"#variables.$.siteConfig('themeAssetPath')#",
-	reCAPTCHALanguage:"#$.siteConfig('reCAPTCHALanguage')#",
-	preloaderMarkup: "#esapiEncode('javascript',this.preloaderMarkup)#",
-	mobileformat: #esapiEncode('javascript',$.event('muraMobileRequest'))#,
-	windowdocumentdomain: "#application.configBean.getWindowDocumentDomain()#",
-	layoutmanager:#variables.$.getContentRenderer().useLayoutManager()#,
-	type:"#esapiEncode('javascript',variables.$.content('type'))#",
-	subtype:"#esapiEncode('javascript',variables.$.content('subtype'))#",
-	queueObjects: #esapiEncode('javascript',this.queueObjects)#,
-	rb:#variables.$.siteConfig().getAPI('json','v1').getSerializer().serialize(variables.$.getClientRenderVariables())#,
-	#trim(variables.$.siteConfig('JSDateKeyObjInc'))#
+loginURL:"#variables.$.siteConfig('LoginURL')#",
+siteid:"#variables.$.event('siteID')#",
+contentid:"#variables.$.content('contentid')#",
+contenthistid:"#variables.$.content('contenthistid')#",
+parentid:"#variables.$.content('parentid')#",
+context:"#variables.$.globalConfig('context')#",
+nocache:#val($.event('nocache'))#,
+assetpath:"#variables.$.siteConfig('assetPath')#",
+corepath:"#variables.$.globalConfig('corepath')#",
+themepath:"#variables.$.siteConfig('themeAssetPath')#",
+reCAPTCHALanguage:"#$.siteConfig('reCAPTCHALanguage')#",
+preloaderMarkup: "#esapiEncode('javascript',this.preloaderMarkup)#",
+mobileformat: #esapiEncode('javascript',$.event('muraMobileRequest'))#,
+windowdocumentdomain: "#application.configBean.getWindowDocumentDomain()#",
+layoutmanager:#variables.$.getContentRenderer().useLayoutManager()#,
+type:"#esapiEncode('javascript',variables.$.content('type'))#",
+subtype:"#esapiEncode('javascript',variables.$.content('subtype'))#",
+queueObjects: #esapiEncode('javascript',this.queueObjects)#,
+cookieConsentEnabled:<cfif this.cookieConsentEnabled>1<cfelse>0</cfif>,
+rb:#variables.$.siteConfig().getAPI('json','v1').getSerializer().serialize(variables.$.getClientRenderVariables())#,
+#trim(variables.$.siteConfig('JSDateKeyObjInc'))#
 });
 </script>
 </cfoutput>
+<cfelse>
+<cfoutput>
+<script type="text/javascript" src="#$.globalConfig('context')#/core/modules/v1/core_assets/js/mura.min.js?v=#$.globalConfig('version')#"></script>
+<script>
+Mura.init({
+loginURL:"#variables.$.siteConfig('LoginURL')#",
+siteid:"#variables.$.event('siteID')#",
+contentid:"#variables.$.content('contentid')#",
+contenthistid:"#variables.$.content('contenthistid')#",
+parentid:"#variables.$.content('parentid')#",
+context:"#variables.$.globalConfig('context')#",
+nocache:#val($.event('nocache'))#,
+assetpath:"#variables.$.siteConfig('assetPath')#",
+corepath:"#variables.$.globalConfig('corepath')#",
+themepath:"#variables.$.siteConfig('themeAssetPath')#",
+reCAPTCHALanguage:"#$.siteConfig('reCAPTCHALanguage')#",
+preloaderMarkup: "#esapiEncode('javascript',this.preloaderMarkup)#",
+mobileformat: #esapiEncode('javascript',$.event('muraMobileRequest'))#,
+windowdocumentdomain: "#application.configBean.getWindowDocumentDomain()#",
+layoutmanager:#variables.$.getContentRenderer().useLayoutManager()#,
+type:"#esapiEncode('javascript',variables.$.content('type'))#",
+subtype:"#esapiEncode('javascript',variables.$.content('subtype'))#",
+queueObjects: #esapiEncode('javascript',this.queueObjects)#,
+cookieConsentEnabled:<cfif this.cookieConsentEnabled>1<cfelse>0</cfif>,
+rb:#variables.$.siteConfig().getAPI('json','v1').getSerializer().serialize(variables.$.getClientRenderVariables())#,
+#trim(variables.$.siteConfig('JSDateKeyObjInc'))#
+});
+</script>
+</cfoutput>
+</cfif>
 </cfif>
