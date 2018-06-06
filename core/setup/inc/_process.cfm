@@ -167,8 +167,15 @@ to your own modified versions of Mura CMS.
             sArgs.DatabaseServer=Form.production_databaseserver; //TODO: need to add form field
             sArgs.UserName=Form.production_dbusername;
             sArgs.Password=Form.production_dbpassword;
-            sArgs.DatasourceName= FORM.production_datasource ? : Form.production_databasename;
-            sArgs.DatabaseName= FORM.production_datasource ? : Form.production_databasename;
+
+						if(isDefined('FORM.production_datasource') && len(FORM.production_datasource)){
+							sArgs.DatasourceName = FORM.production_datasource;
+							sArgs.DatabaseName = FORM.production_datasource;
+						} else {
+							sArgs.DatasourceName = Form.production_databasename;
+							sArgs.DatabaseName = FORM.production_databasename;
+						}
+
             //call ds creation, will automatically create corresponding DB with the same name as the DS
             sReturn=objDOA.fDSCreate(argumentCollection=sArgs);
             // (bsoylu 6/6/2010) display error message
@@ -177,8 +184,13 @@ to your own modified versions of Mura CMS.
               bProcessWithMessage = false;
             } else {
               // (bsoylu 6/7/2010) the default ds name is the App name, so we reset here
-              FORM.production_datasource = FORM.production_datasource ? : Form.production_databasename;
-              queryAttrs.datasource = FORM.production_datasource ? : Form.production_databasename;
+							if(isDefined('FORM.production_datasource ') && len(FORM.production_datasource)){
+								FORM.production_datasource = FORM.production_datasource;
+								queryAttrs.datasource = FORM.production_datasource;
+							} else {
+								FORM.production_datasource = FORM.production_databasename;
+								queryAttrs.datasource = FORM.production_databasename;
+							}
             };
           </cfscript>
 
