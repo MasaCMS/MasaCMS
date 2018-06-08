@@ -66,4 +66,16 @@ component extends="mura.bean.beanORM" table="tcontentcategoryassign" entityname=
 				LEFT JOIN tcontentcategories parentCategory on (category.parentid=parentCategory.categoryid)";
 		}
 
+		function getKidsIterator(){
+			return getBean('category').getFeed().where().prop('parentid').isEQ(get('parentid')).getIterator();
+		}
+
+		function getKids(){
+			return getKidsIterator();
+		}
+
+		function getKidQuery(){
+			return getKidsIterator().getQuery();
+		}
+
 }

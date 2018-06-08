@@ -153,7 +153,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif len(arguments.javalocale)>
 			<cfreturn arguments.javalocale>
 		<cfelse>
-			<cfparam name="sessionData.rb" default="en">
+			<cfparam name="sessionData.rb" default="en_US">
 			<cfreturn application.rbFactory.getKeyValue(sessionData.rb,'dashboard.session.unknown')>
 		</cfif>
 
@@ -781,7 +781,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfcase>
 
 			<cfdefaultcase>
-				<cfparam name="sessionData.rb" default="en">
+				<cfparam name="sessionData.rb" default="en_US">
 				<cfreturn application.rbFactory.getKeyValue(sessionData.rb,'dashboard.sessionData.unknown')>
 			</cfdefaultcase>
 

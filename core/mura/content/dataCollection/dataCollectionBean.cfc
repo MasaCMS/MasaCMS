@@ -403,10 +403,15 @@ component extends="mura.bean.bean" entityname="dataCollection" hint="This provid
 			sendto=listAppend(sendto,getFormBean().getResponseSendTo());
 		}
 
+		var bodyStruct = '';
 		var mailer=getBean('mailer');
 
-		// If body is JSON, break response into an HTML table and send HTML email
 		if (isJSON(getFormBean().getBody())) {
+			bodyStruct = deserializeJSON(getFormBean().getBody());
+		}
+
+		// If body is JSON, break response into an HTML table and send HTML email
+		if (IsStruct(bodyStruct) && isDefined('bodyStruct.form.pages')) {
 			var bodyStruct = deserializeJSON(getFormBean().getBody());
 			var pagesArray = bodyStruct.form.pages;
 

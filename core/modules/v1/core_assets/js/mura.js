@@ -244,21 +244,11 @@ module.exports = function (it) {
 
 /***/ }),
 /* 10 */
-/***/ (function(module, exports) {
-
-module.exports = function (it) {
-  if (typeof it != 'function') throw TypeError(it + ' is not a function!');
-  return it;
-};
-
-
-/***/ }),
-/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(process) {
 __webpack_require__(130);
-__webpack_require__(358);
+__webpack_require__(359);
 
 /**
  * Creates a new Mura
@@ -628,6 +618,7 @@ var Mura=(function(){
   var holdingReadyAltered = false;
   var holdingQueueReleased = false;
   var holdingQueue = [];
+	var holdingPreInitQueue =[];
 
   /*
   if(typeof jQuery != 'undefined' && typeof jQuery.holdReady != 'undefined'){
@@ -1154,14 +1145,21 @@ var Mura=(function(){
    * @return {void}
    * @memberof {class} Mura
    */
-  function createCookie(name, value, days) {
-      if (days) {
-          var date = new Date();
-          date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-          var expires = "; expires=" + date.toGMTString();
-      } else var expires = "";
-      document.cookie = name + "=" + value + expires + "; path=/";
-  }
+	 function createCookie(name, value, days) {
+ 		if(days) {
+ 			var date = new Date();
+ 			date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+ 			var expires = "; expires=" + date.toGMTString();
+ 		} else {
+ 			var expires = "";
+ 		}
+ 		if(typeof location != 'undefined' && location.protocol == 'https:'){
+ 			secure='; secure';
+ 		} else {
+ 			secure='';
+ 		}
+ 		document.cookie = name + "=" + value + expires + "; path=/" + secure;
+ 	}
 
   /**
    * readCookie - Reads cookie value
@@ -3209,6 +3207,11 @@ var Mura=(function(){
           config.useHTML5DateInput=false;
       }
 
+			if (typeof config.cookieConsentEnabled == 'undefined') {
+          config.cookieConsentEnabled=false;
+      }
+
+
 			config.formdata=(typeof FormData != 'undefined') ? true : false;
 
       Mura.editing;
@@ -3230,7 +3233,21 @@ var Mura=(function(){
         Mura._requestcontext=Mura.getRequestContext();
       }
 
+			if(typeof window.document != 'undefined'){
+				if(Array.isArray(window.queuedMuraCmds) && window.queuedMuraCmds.length){
+					holdingQueue=window.queuedMuraCmds.concat(holdingQueue);
+					window.queuedMuraCmds=[];
+				}
+
+				if(Array.isArray(window.queuedMuraPreInitCmds) && window.queuedMuraPreInitCmds.length){
+					holdingPreInitQueue=window.queuedMuraPreInitCmds.concat(holdingPreInitQueue);
+					window.queuedMuraPreInitCmds=[];
+				}
+			}
+
       Mura(function() {
+
+					for(var cmd in holdingPreInitQueue){holdingPreInitQueue[cmd](Mura);}
 
           if(typeof window.document != 'undefined'){
 
@@ -3262,6 +3279,8 @@ var Mura=(function(){
 
             processMarkup(document);
 
+						if(Mura.cookieConsentEnabled){Mura(function(){Mura('body').appendDisplayObject({object:'cookie_consent',queue:false});});}
+
             Mura(document)
                 .on("keydown", function(event) {
                     loginCheck(event.which);
@@ -3291,6 +3310,7 @@ var Mura=(function(){
                   }
               }
           }, {
+							preInit:function(fn){if(holdingReady){holdingPreInitQueue.push(fn)}else{Mura(fn)}},
               generateOAuthToken: generateOAuthToken,
               entities: {},
               submitForm: submitForm,
@@ -3374,6 +3394,16 @@ var Mura=(function(){
 module.exports=Mura;
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(347)))
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports) {
+
+module.exports = function (it) {
+  if (typeof it != 'function') throw TypeError(it + ' is not a function!');
+  return it;
+};
+
 
 /***/ }),
 /* 12 */
@@ -3530,7 +3560,7 @@ module.exports = function (it) {
 /***/ (function(module, exports, __webpack_require__) {
 
 // optional / simple context binding
-var aFunction = __webpack_require__(10);
+var aFunction = __webpack_require__(11);
 module.exports = function (fn, that, length) {
   aFunction(fn);
   if (that === undefined) return fn;
@@ -5083,7 +5113,7 @@ exports.f = Object.getOwnPropertySymbols;
 
 // https://tc39.github.io/proposal-setmap-offrom/
 var $export = __webpack_require__(0);
-var aFunction = __webpack_require__(10);
+var aFunction = __webpack_require__(11);
 var ctx = __webpack_require__(20);
 var forOf = __webpack_require__(34);
 
@@ -5147,7 +5177,7 @@ module.exports = function (key) {
 
 // 7.3.20 SpeciesConstructor(O, defaultConstructor)
 var anObject = __webpack_require__(1);
-var aFunction = __webpack_require__(10);
+var aFunction = __webpack_require__(11);
 var SPECIES = __webpack_require__(5)('species');
 module.exports = function (O, D) {
   var C = anObject(O).constructor;
@@ -5522,7 +5552,7 @@ module.exports = function () {
 "use strict";
 
 // 25.4.1.5 NewPromiseCapability(C)
-var aFunction = __webpack_require__(10);
+var aFunction = __webpack_require__(11);
 
 function PromiseCapability(C) {
   var resolve, reject;
@@ -6150,7 +6180,7 @@ module.exports = function (iter, ITERATOR) {
 /* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var aFunction = __webpack_require__(10);
+var aFunction = __webpack_require__(11);
 var toObject = __webpack_require__(9);
 var IObject = __webpack_require__(49);
 var toLength = __webpack_require__(8);
@@ -6186,7 +6216,7 @@ module.exports = function (that, callbackfn, aLen, memo, isRight) {
 
 "use strict";
 
-var aFunction = __webpack_require__(10);
+var aFunction = __webpack_require__(11);
 var isObject = __webpack_require__(4);
 var invoke = __webpack_require__(103);
 var arraySlice = [].slice;
@@ -7141,21 +7171,23 @@ exports.logger = _logger2['default'];
 
 /* WEBPACK VAR INJECTION */(function(global) {window = global || window;
 
-Mura=__webpack_require__(11);
+Mura=__webpack_require__(10);
 
-__webpack_require__(357);
+__webpack_require__(358);
+__webpack_require__(361);
 __webpack_require__(360);
-__webpack_require__(359);
 __webpack_require__(349);
-__webpack_require__(352);
-__webpack_require__(350);
 __webpack_require__(353);
+__webpack_require__(350);
 __webpack_require__(354);
-__webpack_require__(356);
-__webpack_require__(351);
-__webpack_require__(363);
 __webpack_require__(355);
-__webpack_require__(362);
+__webpack_require__(357);
+__webpack_require__(351);
+__webpack_require__(365);
+__webpack_require__(356);
+__webpack_require__(364);
+__webpack_require__(352);
+__webpack_require__(363);
 
 if(Mura.isInNode()){
 	Mura._request=__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"request\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
@@ -7733,7 +7765,7 @@ $export($export.P + $export.F * !__webpack_require__(21)([].some, true), 'Array'
 "use strict";
 
 var $export = __webpack_require__(0);
-var aFunction = __webpack_require__(10);
+var aFunction = __webpack_require__(11);
 var toObject = __webpack_require__(9);
 var fails = __webpack_require__(3);
 var $sort = [].sort;
@@ -8740,7 +8772,7 @@ var ctx = __webpack_require__(20);
 var classof = __webpack_require__(48);
 var $export = __webpack_require__(0);
 var isObject = __webpack_require__(4);
-var aFunction = __webpack_require__(10);
+var aFunction = __webpack_require__(11);
 var anInstance = __webpack_require__(33);
 var forOf = __webpack_require__(34);
 var speciesConstructor = __webpack_require__(65);
@@ -9021,7 +9053,7 @@ $export($export.S + $export.F * !(USE_NATIVE && __webpack_require__(59)(function
 
 // 26.1.1 Reflect.apply(target, thisArgument, argumentsList)
 var $export = __webpack_require__(0);
-var aFunction = __webpack_require__(10);
+var aFunction = __webpack_require__(11);
 var anObject = __webpack_require__(1);
 var rApply = (__webpack_require__(2).Reflect || {}).apply;
 var fApply = Function.apply;
@@ -9044,7 +9076,7 @@ $export($export.S + $export.F * !__webpack_require__(3)(function () {
 // 26.1.2 Reflect.construct(target, argumentsList [, newTarget])
 var $export = __webpack_require__(0);
 var create = __webpack_require__(36);
-var aFunction = __webpack_require__(10);
+var aFunction = __webpack_require__(11);
 var anObject = __webpack_require__(1);
 var isObject = __webpack_require__(4);
 var fails = __webpack_require__(3);
@@ -10364,7 +10396,7 @@ var $export = __webpack_require__(0);
 var flattenIntoArray = __webpack_require__(101);
 var toObject = __webpack_require__(9);
 var toLength = __webpack_require__(8);
-var aFunction = __webpack_require__(10);
+var aFunction = __webpack_require__(11);
 var arraySpeciesCreate = __webpack_require__(68);
 
 $export($export.P, 'Array', {
@@ -10687,7 +10719,7 @@ $export($export.S, 'Math', {
 
 var $export = __webpack_require__(0);
 var toObject = __webpack_require__(9);
-var aFunction = __webpack_require__(10);
+var aFunction = __webpack_require__(11);
 var $defineProperty = __webpack_require__(7);
 
 // B.2.2.2 Object.prototype.__defineGetter__(P, getter)
@@ -10706,7 +10738,7 @@ __webpack_require__(6) && $export($export.P + __webpack_require__(60), 'Object',
 
 var $export = __webpack_require__(0);
 var toObject = __webpack_require__(9);
-var aFunction = __webpack_require__(10);
+var aFunction = __webpack_require__(11);
 var $defineProperty = __webpack_require__(7);
 
 // B.2.2.3 Object.prototype.__defineSetter__(P, setter)
@@ -10837,7 +10869,7 @@ var global = __webpack_require__(2);
 var core = __webpack_require__(23);
 var microtask = __webpack_require__(80)();
 var OBSERVABLE = __webpack_require__(5)('observable');
-var aFunction = __webpack_require__(10);
+var aFunction = __webpack_require__(11);
 var anObject = __webpack_require__(1);
 var anInstance = __webpack_require__(33);
 var redefineAll = __webpack_require__(40);
@@ -11232,7 +11264,7 @@ metadata.exp({ hasOwnMetadata: function hasOwnMetadata(metadataKey, target /* , 
 
 var $metadata = __webpack_require__(28);
 var anObject = __webpack_require__(1);
-var aFunction = __webpack_require__(10);
+var aFunction = __webpack_require__(11);
 var toMetaKey = $metadata.key;
 var ordinaryDefineOwnMetadata = $metadata.set;
 
@@ -13607,7 +13639,7 @@ process.umask = function() { return 0; };
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var Mura=__webpack_require__(11);
+var Mura=__webpack_require__(10);
 /**
  * Creates a new Mura.Cache
  * @name Mura.Cache
@@ -13722,7 +13754,7 @@ Mura.datacache=new Mura.Cache();
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var Mura=__webpack_require__(11);
+var Mura=__webpack_require__(10);
 
 /**
 * Creates a new Mura.entities.Content
@@ -13823,7 +13855,7 @@ Mura.entities.Content = Mura.Entity.extend(
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var Mura=__webpack_require__(11);
+var Mura=__webpack_require__(10);
 
 /**
  * Creates a new Mura.DOMSelection
@@ -15496,8 +15528,31 @@ Mura.DOMSelection = Mura.Core.extend(
 /* 352 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var Mura=__webpack_require__(10);
+/**
+ * Creates a new Mura.DisplayObject.Embed
+ * @name  Mura.DisplayObject.Embed
+ * @class
+ * @extends Mura.UI
+ * @memberof  Mura
+ */
 
-var Mura=__webpack_require__(11);
+Mura.DisplayObject.Embed=Mura.UI.extend(
+/** @lends Mura.DisplayObject.Embed.prototype */
+{
+	render:function(){
+		this.context.targetEl.innerHTML=Mura.templates['embed'](this.context);
+		this.trigger('afterRender');
+	}
+});
+
+
+/***/ }),
+/* 353 */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var Mura=__webpack_require__(10);
 
 /**
 * Creates a new Mura.Entity
@@ -16267,11 +16322,11 @@ Mura.Entity = Mura.Core.extend(
 
 
 /***/ }),
-/* 353 */
+/* 354 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var Mura=__webpack_require__(11);
+var Mura=__webpack_require__(10);
 
 /**
  * Creates a new Mura.EntityCollection
@@ -16473,11 +16528,11 @@ Mura.EntityCollection=Mura.Entity.extend(
 
 
 /***/ }),
-/* 354 */
+/* 355 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var Mura=__webpack_require__(11);
+var Mura=__webpack_require__(10);
 
 /**
  * Creates a new Mura.Feed
@@ -17019,11 +17074,11 @@ Mura.Feed = Mura.Core.extend(
 
 
 /***/ }),
-/* 355 */
+/* 356 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var Mura=__webpack_require__(11);
+var Mura=__webpack_require__(10);
 /**
  * Creates a new Mura.DisplayObject.Form
  * @name  Mura.DisplayObject.Form
@@ -18517,11 +18572,11 @@ Mura.DisplayObject.form=Mura.DisplayObject.Form;
 
 
 /***/ }),
-/* 356 */
+/* 357 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var Mura=__webpack_require__(11);
+var Mura=__webpack_require__(10);
 
 //https://github.com/malko/l.js
 /*
@@ -18853,11 +18908,11 @@ if(typeof window.document != 'undefined'){
 
 
 /***/ }),
-/* 357 */
+/* 358 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var Mura=__webpack_require__(11);
+var Mura=__webpack_require__(10);
 
 /**
 * Creates a new Mura.Core
@@ -18924,7 +18979,7 @@ Mura.Core=Core;
 
 
 /***/ }),
-/* 358 */
+/* 359 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {if(typeof window.document != 'undefined'){
@@ -19054,11 +19109,11 @@ Mura.Core=Core;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(52)))
 
 /***/ }),
-/* 359 */
+/* 360 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var Mura=__webpack_require__(11);
+var Mura=__webpack_require__(10);
 
 /**
 * Creates a new Mura.RequestContext
@@ -19562,11 +19617,11 @@ Mura.RequestContext=Mura.Core.extend(
 
 
 /***/ }),
-/* 360 */
+/* 361 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var Mura=__webpack_require__(11);
+var Mura=__webpack_require__(10);
 
 /**
 * Creates a new Mura.Request
@@ -20109,10 +20164,10 @@ Mura.Request=Mura.Core.extend(
 
 
 /***/ }),
-/* 361 */
+/* 362 */
 /***/ (function(module, exports, __webpack_require__) {
 
-this["Mura"]=__webpack_require__(11);
+this["Mura"]=__webpack_require__(10);
 this["Mura"]["templates"] = this["Mura"]["templates"] || {};
 
 this["Mura"]["templates"]["checkbox"] = this.Mura.Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
@@ -20810,11 +20865,11 @@ this["Mura"]["templates"]["view"] = this.Mura.Handlebars.template({"1":function(
 },"useData":true});
 
 /***/ }),
-/* 362 */
+/* 363 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var Mura=__webpack_require__(11);
+var Mura=__webpack_require__(10);
 var Handlebars=__webpack_require__(346);
 Mura.Handlebars=Handlebars.create();
 Mura.templatesLoaded=false;
@@ -20845,15 +20900,38 @@ Mura.templates['embed']=function(context){
   return context.source;
 }
 
-__webpack_require__(361);
+__webpack_require__(362);
 
 
 /***/ }),
-/* 363 */
+/* 364 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Mura=__webpack_require__(10);
+/**
+ * Creates a new Mura.DisplayObject.Text
+ * @name  Mura.DisplayObject.Text
+ * @class
+ * @extends Mura.UI
+ * @memberof  Mura
+ */
+
+Mura.DisplayObject.Text=Mura.UI.extend(
+/** @lends Mura.DisplayObject.Text.prototype */
+{
+	render:function(){
+		this.context.targetEl.innerHTML=Mura.templates['text'](this.context);
+		this.trigger('afterRender');
+	}
+});
+
+
+/***/ }),
+/* 365 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var Mura =__webpack_require__(11);
+var Mura =__webpack_require__(10);
 
 /**
  * Creates a new Mura.UI instance

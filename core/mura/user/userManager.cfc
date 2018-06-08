@@ -570,7 +570,7 @@
 		</cfif>
 
 		<cfif userBean.getPassword() eq ''>
-		<cfset userBean.setPassword(variables.userUtility.getRandomPassword(6,"Alpha","no"))/>
+		<cfset userBean.setPassword(variables.userUtility.getRandomPassword(12,"alphanumeric","yes"))/>
 		</cfif>
 
 		<cfset pluginEvent.setValue("siteID", userBean.getSiteID())>

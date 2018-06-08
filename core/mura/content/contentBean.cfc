@@ -1457,7 +1457,7 @@ component extends="mura.bean.beanExtendable" entityName="content" table="tconten
 	public function getStatus() output=false {
 		var status = '';
 		param name="sessionData" default={};
-		param name="sessionData.rb" default="en";
+		param name="sessionData.rb" default="en_US";
 		switch ( getStatusID() ) {
 			case  0:
 				status = application.rbFactory.getKeyValue(sessionData.rb,"sitemanager.content.draft");

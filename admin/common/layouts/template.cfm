@@ -67,7 +67,9 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 	<cfsilent>
-		<cfparam name="cookie.ADMINSIDEBAR" default="off">
+		<cfif not IsDefined("cookie.ADMINSIDEBAR")>
+			<cfset application.utility.setCookie(name="ADMINSIDEBAR",value="off")>
+		</cfif>
 		<cfparam name="request.action" default="core:cplugin.plugin">
 		<cfparam name="rc.originalfuseaction" default="#listLast(listLast(request.action,":"),".")#">
 		<cfparam name="rc.originalcircuit"  default="#listFirst(listLast(request.action,":"),".")#">
@@ -201,8 +203,11 @@
 	<!-- Spinner JS -->
 	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/spin.min.js" type="text/javascript"></script>
 
-	<!-- OneUI Core JS: jQuery, Bootstrap, slimScroll, scrollLock, Appear, CountTo, Placeholder, Cookie and App.js -->
-	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/oneui.js"></script>
+	<!-- jQuery -->
+	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+
+	<!-- OneUI Core JS: Bootstrap, slimScroll, scrollLock, Appear, CountTo, Placeholder, Cookie and App.js -->
+	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/oneui.min.js"></script>
 
 	<!-- jQuery UI components -->
 	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery-ui.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
@@ -295,7 +300,7 @@
      					<cfif not listFindNoCase('defaultpasswordnotice,cachenotice',alert)>
      						<div<cfif len(alerts['#alert#'].type)> class="alert alert-#esapiEncode('html',alerts['#alert#'].type)#"<cfelse> class="alert alert-error"</cfif>>
 	     						<span>
-				           	<a href="##" data-alertid="#alert#" class="close alert-dismiss" data-dismiss="alert"><i class="mi-close"></i></a>
+				           	<a data-alertid="#alert#" class="close alert-dismiss" data-dismiss="alert"><i class="mi-close"></i></a>
   	   						</span>
 		            </div>
 		     				#alerts['#alert#'].text#
@@ -303,27 +308,27 @@
      				</cfloop>
      			</cfif>
 
-     			<cfif rc.renderMuraAlerts>
-     				<cfif isdefined('session.hasdefaultpassword') and not structKeyExists(session.mura.alerts['#session.siteID#'],'defaultpasswordnotice')>
-     					<div class="alert alert-error">
-     						<span>
-			           	<a href="##" data-alertid="defaultpasswordnotice" class="close alert-dismiss" data-dismiss="alert"><i class="mi-close"></i></a>
-     						#rc.$.rbKey("layout.defaultpasswordnotice")#
-     						</span>
+					<cfif rc.renderMuraAlerts>
+						<cfif isdefined('session.hasdefaultpassword') and not structKeyExists(session.mura.alerts['#session.siteID#'],'defaultpasswordnotice')>
+							<div class="alert alert-error">
+								<span>
+									<a data-alertid="defaultpasswordnotice" class="close alert-dismiss" data-dismiss="alert"><i class="mi-close"></i></a>
+									#rc.$.rbKey("layout.defaultpasswordnotice")#
+								</span>
 							</div>
-	     			</cfif>
+						</cfif>
 
-	     			<cfif not len(application.settingsManager.getSite(session.siteID).getEnableLockdown())
-	     						and not application.settingsManager.getSite(session.siteID).getCache()
-	     						and not structKeyExists(session.mura.alerts['#session.siteID#'],'cachenotice')>
-			           	<div class="alert alert-warning">
-		     						<span>
-					           	<a href="##" data-alertid="cachenotice" class="close alert-dismiss" data-dismiss="alert"><i class="mi-close"></i></a>
-			           		#rc.$.rbKey("layout.cachenotice")#
-		     						</span>
-			           </div>
-		           	</cfif>
-     			</cfif>
+						<cfif not len(application.settingsManager.getSite(session.siteID).getEnableLockdown())
+							and not application.settingsManager.getSite(session.siteID).getCache()
+								and not structKeyExists(session.mura.alerts['#session.siteID#'],'cachenotice')>
+									<div class="alert alert-warning">
+										<span>
+											<a data-alertid="cachenotice" class="close alert-dismiss" data-dismiss="alert"><i class="mi-close"></i></a>
+											#rc.$.rbKey("layout.cachenotice")#
+										</span>
+									</div>
+								</cfif>
+							</cfif>
 
 
          	</cfif>
@@ -450,7 +455,6 @@
 									},
 									success: function(){
 										$(_alert).parent('.alert').fadeOut();
-										//$('##system-notice').html(data);
 									}
 								}
 							);

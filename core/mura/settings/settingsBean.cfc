@@ -635,16 +635,16 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		return variables.instance.javaLocale;
 	}
 
-	public function getRBFactory(baseFactory='') output=false {
-		if ( !isObject(variables.instance.rbFactory) || isDefined('arguments.baseFactory') && isObject(arguments.baseFactory)) {
+	public function getRBFactory() output=false {
+		if (!isObject(variables.instance.rbFactory)) {
 
-			if(isDefined('arguments.baseFactory') && isObject(arguments.baseFactory)){
-				var tmpFactory = arguments.baseFactory;
+			if(isDefined('request.muraBaseRBFactory') && isObject(request.muraBaseRBFactory)){
+					var tmpFactory = request.muraBaseRBFactory;
 			} else {
 				//Get core admin RB factory
-				if ( !isDefined('application.rbFactory') ) {
+				if (!isDefined('application.rbFactory') ) {
 					variables.tracepoint = initTracepoint("Instantiating resourceBundleFactory");
-					application.rbFactory = new mura.resourceBundle.resourceBundleFactory(expandPath("/mura/resourceBundle/resourceBundles"));
+					application.rbFactory = new mura.resourceBundle.resourceBundleFactory();
 					commitTracepoint(variables.tracepoint);
 				}
 
@@ -687,8 +687,10 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 				}
 
 				variables.instance.rbFactory = tmpFactory;
-
+				//writeDump(getKey("layout.contentmanager"));abort;
 				//Additional module level RB factories will be added when discovering modules
+			} else {
+				variables.instance.rbFactory = tmpFactory;
 			}
 
 		}

@@ -410,6 +410,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset request.muraDeferredModuleAssets=[]>
 	<cfset tracepoint1=initTracepoint("Loading global modules")>
 	<cfset siteTemplate.discoverGlobalModules().discoverGlobalContentTypes()>
+	<cfset request.muraBaseRBFactory=siteTemplate.getRBFactory()>
 	<cfset commitTracepoint(tracepoint1)>
 
 	<cfparam name="variables.sites" default="#structNew()#">
@@ -457,7 +458,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset builtSites['#rs.siteid#']
 				.set('displayObjectLookup',duplicate(siteTemplate.get('displayObjectLookup')))
 				.set('displayObjectLookUpArray',duplicate(siteTemplate.get('displayObjectLookUpArray')))
-				.setRBFactory(siteTemplate.getRBFactory())
 				.discoverModules()>
 
 			<cfset builtSites['#rs.siteid#']

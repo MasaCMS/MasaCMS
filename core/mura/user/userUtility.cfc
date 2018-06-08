@@ -430,7 +430,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var autoresetpasswords=variables.configBean.getValue("autoresetpasswords")>
 
 		<cfif autoresetpasswords>
-			<cfset arguments.userBean.setPassword(getRandomPassword()) />
+			<cfset arguments.userBean.setPassword(getRandomPassword(12,"alphanumeric","yes")) />
 			<cfset arguments.userBean.save() />
 		</cfif>
 		<cfset struser=arguments.userBean.getAllValues()>

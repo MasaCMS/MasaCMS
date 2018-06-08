@@ -51,7 +51,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfset variables.filePath = "#expandPath("/muraWRM")##variables.configBean.getAdminDir()#/core/utilities/formbuilder/templates" />
 		<cfset variables.templatePath = "/muraWRM#variables.configBean.getAdminDir()#/core/utilities/formbuilder/templates" />
-		<cfset variables.fields["en"] = StructNew()>
+		<cfset variables.fields["en_US"] = StructNew()>
 
 		<cfreturn this/>
 	</cffunction>
@@ -184,7 +184,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cffunction name="getDialog" output="false">
 		<cfargument name="dialog" required="true" type="string" />
-		<cfargument name="locale" required="false" type="string" default="en" />
+		<cfargument name="locale" required="false" type="string" default="en_US" />
 		<cfargument name="reload" required="false" type="boolean" default="false" />
 
 		<cfset var dialogTemplate		= lcase( rereplace(arguments.dialog,"[^[:alnum:]|-]","","all") & ".cfm" ) />
@@ -311,7 +311,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="excludeformid" required="false" type="string" default="" />
 
 		<cfset var rs="">
-			
+
 		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 			select contentid,title from tcontent
 			where type='Form'

@@ -115,7 +115,7 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 							}
 						}
 					}
-
+				
 					//writeDump(var=arguments.MissingMethodArguments);
 					//writeDump(var=synthedFunctions[arguments.MissingMethodName].exp,abort=true);
 					return evaluate(synthedFunctions[arguments.MissingMethodName].exp);
@@ -841,10 +841,10 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 
 										//Add has many methods to entity
 			       	 			//getBean("#prop.cfc#").loadBy(argumentCollection=structAppend(arguments.MissingMethodArguments,synthArgs(application.objectMappings[variables.entityName].synthedFunctions["has#prop.name#"].args),false)).recordcount
-				       	 		application.objectMappings[variables.entityName].synthedFunctions['get#prop.name#Iterator']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=prop.name,fkcolumn="primaryKey",loadkey=prop.loadkey,cfc=prop.cfc,returnFormat="iterator",functionType='getEntityIterator'}};
+				       	 		application.objectMappings[variables.entityName].synthedFunctions['get#prop.name#Iterator']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=prop.name,fkcolumn=prop.fkcolumn,loadkey=prop.loadkey,cfc=prop.cfc,returnFormat="iterator",functionType='getEntityIterator'}};
 										application.objectMappings[variables.entityName].synthedFunctions['get#prop.name#']=application.objectMappings[variables.entityName].synthedFunctions['get#prop.name#Iterator'];
-				       	 		application.objectMappings[variables.entityName].synthedFunctions['get#prop.name#Query']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=prop.name,fkcolumn="primaryKey",loadkey=prop.loadkey,cfc=prop.cfc,returnFormat="query",functionType='getEntityQuery'}};
-				       	 		application.objectMappings[variables.entityName].synthedFunctions['has#prop.name#']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments).recordcount',args={prop=prop.name,fkcolumn="primaryKey",loadkey=prop.loadkey,cfc=prop.cfc,returnFormat="query",functionType='hasEntity'}};
+				       	 		application.objectMappings[variables.entityName].synthedFunctions['get#prop.name#Query']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=prop.name,fkcolumn=prop.fkcolumn,loadkey=prop.loadkey,cfc=prop.cfc,returnFormat="query",functionType='getEntityQuery'}};
+				       	 		application.objectMappings[variables.entityName].synthedFunctions['has#prop.name#']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments).recordcount',args={prop=prop.name,fkcolumn=prop.fkcolumn,loadkey=prop.loadkey,cfc=prop.cfc,returnFormat="query",functionType='hasEntity'}};
 				       	 		application.objectMappings[variables.entityName].synthedFunctions['add#prop.name#']={exp='addObject(arguments.MissingMethodArguments[1])',args={prop=prop.name,functionType='addEntity'}};
 				       	 		application.objectMappings[variables.entityName].synthedFunctions['remove#prop.name#']={exp='removeObject(arguments.MissingMethodArguments[1])',args={prop=prop.name,functionType='removeEntity'}};
 
