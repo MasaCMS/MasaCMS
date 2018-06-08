@@ -640,7 +640,7 @@ Blog: www.codfusion.com--->
 				</cfif>
 			</cfif>
 
-			<cfif isDefined('sessionTokens.jsessionid') and (arguments.reset or not isDefined('cookie.jsessionid'))>
+			<cfif isDefined('sessionTokens.jsessionid') and (isBoolean(arguments.reset) and arguments.reset or not isDefined('cookie.jsessionid'))>
 				<cfif application.configBean.getSessionCookiesExpires() EQ "" OR application.configBean.getSessionCookiesExpires() EQ "session">
 					<cfset setCookieLegacy(name="JSESSIONID", value=sessionTokens.jsessionid, encodevalue=false) />
 				<cfelse>
