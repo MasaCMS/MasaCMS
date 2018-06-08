@@ -839,7 +839,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset nowAdjusted=variables.utility.datetimeToTimespanInterval(nowAdjusted,createTimespan(0,0,5,0))>
 
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
-		SELECT categoryparent.name parentname, tcontentcategories.parentID, tcontentcategories.categoryID, tcontentcategories.filename, Count(tcontent.contenthistID) as "Count", tcontentcategories.name 
+		SELECT categoryparent.name parentname, tcontentcategories.parentID, tcontentcategories.categoryID, tcontentcategories.filename, Count(tcontent.contenthistID) as "Count", tcontentcategories.name
 		from tcontent
 		inner join tcontentcategoryassign
 			ON (tcontent.contenthistID=tcontentcategoryassign.contentHistID
@@ -921,9 +921,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				)
 			 </cfif>
 
-			  group by tcontentcategories.name,tcontentcategories.categoryID,tcontentcategories.filename
-			  order by tcontentcategories.name asc
-
+			  group by categoryparent.name, tcontentcategories.name,tcontentcategories.categoryID,tcontentcategories.filename
+			  order by <cfif len(arguments.categorypathid)>categoryparent.name asc, tcontentcategories.name asc<cfelse>tcontentcategories.name asc</cfif>
 		</cfquery>
 
 		<cfreturn rs>
