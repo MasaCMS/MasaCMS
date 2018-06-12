@@ -706,12 +706,16 @@ function transformFields(fields){
 function transformFieldName(fieldname){
 	arguments.fieldname=trim(arguments.fieldname);
 
+	if(arguments.fieldname==application.objectMappings[getEntityName()].table & ".*"){
+		return arguments.fieldname;
+	}
+
 	if ( listLen(arguments.fieldname,'.') == 2 ) {
 		var fieldArray=listToArray(arguments.fieldname,'.');
 		if(structKeyExists(application.objectMappings,fieldArray[1])){
 			arguments.fieldname=application.objectMappings[fieldArray[1]].table & '.' & fieldArray[2];
 		}
-	} else {
+	} else if(structKeyExists(application.objectMappings[getEntityName()],arguments.fieldname)){
 		arguments.fieldname=application.objectMappings[getEntityName()].table & '.' & arguments.fieldname;
 	}
 
