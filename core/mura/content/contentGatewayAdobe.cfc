@@ -921,7 +921,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				)
 			 </cfif>
 
-			  group by categoryparent.name, tcontentcategories.name,tcontentcategories.categoryID,tcontentcategories.filename
+			  group by categoryparent.name, tcontentcategories.parentID, tcontentcategories.name,tcontentcategories.categoryID,tcontentcategories.filename
 			  order by <cfif len(arguments.categorypathid)>categoryparent.name asc, tcontentcategories.name asc<cfelse>tcontentcategories.name asc</cfif>
 		</cfquery>
 
