@@ -872,13 +872,13 @@ CREATE TABLE `tuseraddresses` (
 
 CREATE TABLE `tusers` (
   `UserID` char(35) character set utf8 NOT NULL default '',
-  `GroupName` varchar(50) character set utf8 default NULL,
+  `GroupName` varchar(255) character set utf8 default NULL,
   `Fname` varchar(50) character set utf8 default NULL,
   `Lname` varchar(50) character set utf8 default NULL,
-  `UserName` varchar(50) character set utf8 default NULL,
+  `UserName` varchar(255) character set utf8 default NULL,
   `Password` varchar(50) character set utf8 default NULL,
   `PasswordCreated` datetime default NULL,
-  `Email` varchar(50) character set utf8 default NULL,
+  `Email` varchar(255) character set utf8 default NULL,
   `Company` varchar(50) character set utf8 default NULL,
   `JobTitle` varchar(50) character set utf8 default NULL,
   `mobilePhone` varchar(50) character set utf8 default NULL,

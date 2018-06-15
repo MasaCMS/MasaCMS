@@ -45,57 +45,63 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="objectparams.displayRSS" default="false">
 <cfparam name="useRss" default="#objectparams.displayRSS#">
 <cfif not isValid('uuid',arguments.objectid)>
-	<cfset variables.crumbIterator=variables.$.content().getCrumbIterator()>
+	<cfset crumbIterator=$.content().getCrumbIterator()>
 
-	<cfloop condition="variables.crumbIterator.hasNext()">
-		<cfset variables.crumb=variables.crumbIterator.next()>
-		<cfif listFindNoCase('Folder',variables.crumb.getType())>
-			<cfset arguments.objectid=variables.crumb.getContentID()>
+	<cfloop condition="crumbIterator.hasNext()">
+		<cfset crumb=crumbIterator.next()>
+		<cfif listFindNoCase('Folder',crumb.getType())>
+			<cfset arguments.objectid=crumb.getContentID()>
 			<cfbreak>
 		</cfif>
 	</cfloop>
 </cfif>
-<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" name="variables.rsSection">select contentid,filename,menutitle,target,restricted,restrictgroups,type,sortBy,sortDirection from tcontent where siteid='#variables.$.event('siteID')#' and contentid='#arguments.objectid#' and approved=1 and active=1 and display=1</cfquery>
-<cfif rsSection.recordcount>
-<cfsilent>
-<cfif rsSection.type neq "Calendar">
-<cfset variables.today=now() />
-<cfelse>
-<cfset variables.today=createDate(variables.$.event('year'),variables.$.event('month'),1) />
-</cfif>
-<cfset variables.rs=variables.$.getBean('contentGateway').getKidsCategorySummary(variables.$.event('siteID'),arguments.objectid,variables.$.event('relatedID'),today,variables.rsSection.type)>
-
-<cfset variables.viewAllURL="#variables.$.siteConfig('context')##getURLStem(variables.$.event('siteID'),rsSection.filename)#">
-<cfif len(variables.$.event('relatedID'))>
-	<cfset variables.viewAllURL=variables.viewAllURL & "?relatedID=#HTMLEditFormat(variables.$.event('relatedID'))#">
-</cfif>
-</cfsilent>
-<cfif variables.rs.recordcount>
-
-<cfoutput>
-<div class="svCatSummary mura-category-summary #this.navWrapperClass#">
-<cfif len(this.navCategoryWrapperBodyClass)><div class="#this.navCategoryWrapperBodyClass#"></cfif>
-<#variables.$.getHeaderTag('subHead1')#>#variables.$.rbKey('list.categories')#</#variables.$.getHeaderTag('subHead1')#>
-<ul class="#this.ulTopClass#"><cfloop query="variables.rs">
+<cfset section=$.getBean('content').loadBy(contentid=arguments.objectid)>
+<cfif section.exists()>
 	<cfsilent>
-	<cfif len(variables.rs.filename)>
-		<cfset variables.categoryURL="#variables.$.siteConfig('context')##getURLStem(variables.$.event('siteID'),variables.rsSection.filename & '/category/' & variables.rs.filename)#">
-		<cfif len(variables.$.event('relatedID'))>
-			<cfset variables.categoryURL=variables.categoryURL & "?relatedID=#HTMLEditFormat(variables.$.event('relatedID'))#">
-		</cfif>
+	<cfif section.gettype() neq "Calendar">
+	<cfset today=now() />
 	<cfelse>
-		<cfset categoryURL="#variables.$.siteConfig('context')##getURLStem(variables.$.event('siteID'),rsSection.filename)#?categoryID=#rs.categoryID#">
-		<cfif len(variables.$.event('relatedID'))>
-			<cfset categoryURL=categoryURL & "&relatedID=#HTMLEditFormat(variables.$.event('relatedID'))#">
-		</cfif>
+	<cfset today=createDate($.event('year'),$.event('month'),1) />
 	</cfif>
-	</cfsilent>
-	<cfset class=iif(rs.currentrow eq 1,de('first'),de(''))>
-		<li class="#this.navLiClass#<cfif len(class)> #class#</cfif><cfif listFind(variables.$.event('categoryID'),variables.rs.categoryID)> #this.liCurrentClass#</cfif>"><a <cfif listFind(variables.$.event('categoryID'),variables.rs.categoryID)>class="#this.aCurrentClass#"<cfelse>class="#this.aNotCurrentClass#"</cfif> href="#categoryURL#">#variables.rs.name# <span>(#variables.rs.count#)</span></a><cfif useRss><a class="rss" href="#variables.$.globalConfig('context')#/tasks/feed/index.cfm?siteid=#variables.$.event('siteID')#&contentID=#variables.rsSection.contentid#&categoryID=#variables.rs.categoryID#" <cfif listFind(variables.$.event('categoryID'),variables.rs.categoryID)>class="#this.aCurrentClass#"<cfelse>class="#this.aNotCurrentClass#"</cfif>>RSS</a></cfif></li>
-	</cfloop>
-	<li class="last #this.navLiClass#"><a href="#variables.viewAllURL#" <cfif not len(variables.$.event('categoryID'))>class="#this.aCurrentClass#"<cfelse>class="#this.aNotCurrentClass#"</cfif>>#$.rbKey('list.viewall')#</a><cfif useRss><a class="rss" href="#variables.$.globalConfig('context')#/tasks/feed/index.cfm?siteid=#variables.$.event('siteID')#&contentID=#variables.rsSection.contentid#">RSS</a></cfif></li>
-</ul>
-</div>
-<cfif len(this.navCategoryWrapperBodyClass)></div></cfif>
-</cfoutput>
-</cfif></cfif>
+	<cfset rs=section.getKidsCategoryQuery()>
+
+	<cfset viewAllURL="#$.siteConfig('context')##getURLStem($.event('siteID'),section.getFilename())#">
+	<cfif len($.event('relatedID'))>
+		<cfset viewAllURL=viewAllURL & "?relatedID=#HTMLEditFormat($.event('relatedID'))#">
+	</cfif>
+</cfsilent>
+	<cfif rs.recordcount>
+	<cfoutput>
+	<div class="svCatSummary mura-category-summary #this.navWrapperClass#">
+	<cfif len(this.navCategoryWrapperBodyClass)><div class="#this.navCategoryWrapperBodyClass#"></cfif>
+	<#$.getHeaderTag('subHead1')#>#$.rbKey('list.categories')#</#$.getHeaderTag('subHead1')#>
+	<ul class="#this.ulTopClass#"><cfloop query="rs">
+		<cfsilent>
+		<cfif len(rs.filename)>
+			<cfset categoryURL="#$.siteConfig('context')##getURLStem($.event('siteID'),section.getFilename() & '/category/' & rs.filename)#">
+			<cfif len($.event('relatedID'))>
+				<cfset categoryURL=categoryURL & "?relatedID=#HTMLEditFormat($.event('relatedID'))#">
+			</cfif>
+		<cfelse>
+			<cfset categoryURL="#$.siteConfig('context')##getURLStem($.event('siteID'),section.getFilename())#?categoryID=#rs.categoryID#">
+			<cfif len($.event('relatedID'))>
+				<cfset categoryURL=categoryURL & "&relatedID=#HTMLEditFormat($.event('relatedID'))#">
+			</cfif>
+		</cfif>
+		</cfsilent>
+		<cfset class=iif(rs.currentrow eq 1,de('first'),de(''))>
+			<li class="#this.navLiClass#<cfif len(class)> #class#</cfif><cfif listFind($.event('categoryID'),rs.categoryID)> #this.liCurrentClass#</cfif>">
+				<a <cfif listFind($.event('categoryID'),rs.categoryID)>class="#this.aCurrentClass#"<cfelse>class="#this.aNotCurrentClass#"</cfif> href="#categoryURL#">#rs.name# <span>(#rs.count#)</span></a>
+				<cfif useRss>
+					<a class="rss" href="#$.globalConfig('context')#/index.cfm/feed/v1/?siteid=#$.event('siteID')#&contentID=#section.getContentID()#&categoryID=#rs.categoryID#"
+					<cfif listFind($.event('categoryID'),rs.categoryID)>class="#this.aCurrentClass#"<cfelse>class="#this.aNotCurrentClass#"</cfif>>RSS</a>
+				</cfif>
+			</li>
+		</cfloop>
+		<li class="last #this.navLiClass#"><a href="#viewAllURL#" <cfif not len($.event('categoryID'))>class="#this.aCurrentClass#"<cfelse>class="#this.aNotCurrentClass#"</cfif>>#$.rbKey('list.viewall')#</a><cfif useRss><a class="rss" href="#$.globalConfig('context')#/index.cfm/feed/v1/?siteid=#$.event('siteID')#&contentID=#rsSection.contentid#">RSS</a></cfif></li>
+	</ul>
+	</div>
+	<cfif len(this.navCategoryWrapperBodyClass)></div></cfif>
+	</cfoutput>
+	</cfif>
+</cfif>

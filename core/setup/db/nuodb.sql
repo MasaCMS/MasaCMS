@@ -578,13 +578,13 @@ create index IX_tuseraddresses_4 on tuseraddresses (userID);
 
 CREATE TABLE tusers (
   UserID char(35) NOT NULL default '',
-  GroupName varchar(50) default NULL,
+  GroupName varchar(255) default NULL,
   Fname varchar(50) default NULL,
   Lname varchar(50) default NULL,
-  UserName varchar(50) default NULL,
+  UserName varchar(255) default NULL,
   Password varchar(50) default NULL,
   PasswordCreated timestamp default NULL,
-  Email varchar(50) default NULL,
+  Email varchar(255) default NULL,
   Company varchar(50) default NULL,
   JobTitle varchar(50) default NULL,
   mobilePhone varchar(50) default NULL,

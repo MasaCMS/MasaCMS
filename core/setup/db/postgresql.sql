@@ -458,13 +458,13 @@ CREATE TABLE tuseraddresses (
 
 CREATE TABLE tusers (
 	UserID char(35) NOT NULL ,
-	GroupName varchar(50) NULL ,
+	GroupName varchar(255) NULL ,
 	Fname varchar(50) NULL ,
 	Lname varchar(50) NULL ,
-	UserName varchar(50) NULL ,
+	UserName varchar(255) NULL ,
 	Password varchar(50) NULL ,
 	PasswordCreated timestamp NULL ,
-	Email varchar(100) NULL ,
+	Email varchar(255) NULL ,
 	Company varchar(50) NULL ,
 	JobTitle varchar(50) NULL ,
 	mobilePhone varchar(50) NULL ,

@@ -337,21 +337,21 @@ component extends="mura.cfobject" output="false" hint="This provides resource bu
 		if ( !isdefined('sessionData.locale') ) {
 			sessionData.locale="en_US";
 		}
-		savecontent variable="variables.jsDateKey" {
-				writeOutput('<script type="text/javascript">
-	var dtExample="#variables.datekeyExample#";
-	var dtCh="#dtCh#";
-	var dtFormat =[#dtFormat#];
-	var dtLocale="#replace(sessionData.locale,'_','-')#";
-	</script>');
+	savecontent variable="variables.jsDateKey" {
+writeOutput('<script type="text/javascript">
+var dtExample="#variables.datekeyExample#";
+var dtCh="#dtCh#";
+var dtFormat =[#dtFormat#];
+var dtLocale="#replace(sessionData.locale,'_','-')#";
+</script>');
 		}
 
-		savecontent variable="variables.jsDateKeyObjInc" {
-				writeOutput('dtExample:"#variables.datekeyExample#",
-	dtCh:"#dtCh#",
-	dtFormat:[#dtFormat#],
-	dtLocale:"#replace(sessionData.locale,'_','-')#"');
-		}
+savecontent variable="variables.jsDateKeyObjInc" {
+writeOutput('dtExample:"#variables.datekeyExample#",
+dtCh:"#dtCh#",
+dtFormat:[#dtFormat#],
+dtLocale:"#replace(sessionData.locale,'_','-')#"');
+}
 	}
 
 	public function getJsDateKeyObjInc() output=false {
