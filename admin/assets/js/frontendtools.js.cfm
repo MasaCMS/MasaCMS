@@ -242,7 +242,10 @@
 			var editableObj=utility(a).closest(".mura-object,.mura-async-object");
 		}
 
-		var lcaseObject=editableObj.data('object').toLowerCase();
+		var lcaseObject=editableObj.data('object');
+		if(typeof lcaseObject=='string'){
+			lcaseObject=lcaseObject.toLowerCase();
+		}
 
 		if((lcaseObject=='form' || lcaseObject=='component') && editableObj.data('notconfigurable')){
 			if(Mura.isUUID(editableObj.data('objectid'))){
@@ -1084,7 +1087,10 @@
 
 						item.find('.mura-object').each(initObject);
 					} else {
-						var lcaseObject=item.data('object').toLowerCase();
+						var lcaseObject=item.data('object');
+						if(typeof lcaseObject=='string'){
+							lcaseObject=lcaseObject.toLowerCase();
+						}
 						var region=item.closest('.mura-region-local');
 
 						if(region && region.length ){
@@ -1997,7 +2003,10 @@
 			'mailing_list_master':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}}
 		},
 		objectHasConfigurator:function(displayObject){
-			var lcaseObject=displayObject.data('object').toLowerCase();
+			var lcaseObject=displayObject.data('object');
+			if(typeof lcaseObject=='string'){
+				lcaseObject=lcaseObject.toLowerCase();
+			}
 			var check;
 
 			if(!displayObject.hasClass){
