@@ -276,9 +276,24 @@ component extends="controller" output="false" {
 	}
 
 	public function editLive(rc) output=false {
-		var content=arguments.rc.$.getBean('content').loadBy(contentid=arguments.rc.contentid,siteid=arguments.rc.siteid);
+		param name="arguments.rc.type" default='';
+		param name="arguments.rc.title" default='';
+
+		if(len(arguments.rc.title)){
+			if(listFindNoCase('form,component',arguments.rc.type)){
+				var content=arguments.rc.$.getBean('content').loadBy(title=arguments.rc.title,siteid=arguments.rc.siteid,type=arguments.rc.type);
+			} else {
+				var content=arguments.rc.$.getBean('content').loadBy(title=arguments.rc.title,siteid=arguments.rc.siteid);
+			}
+		} else {
+			var content=arguments.rc.$.getBean('content').loadBy(contentid=arguments.rc.contentid,siteid=arguments.rc.siteid);
+		}
 		content.setType(arguments.rc.type);
-		location(url="#content.getEditURL(compactDisplay='true')#&instanceid=#esapiEncode('url',arguments.rc.instanceid)#", addtoken=false );
+		if(content.exists()){
+			location(url="#content.getEditURL(compactDisplay='true')#&instanceid=#esapiEncode('url',arguments.rc.instanceid)#", addtoken=false );
+		} else {
+			location(url="./");
+		}
 	}
 
 	public function edit(rc) output=false {

@@ -148,12 +148,11 @@
 					MuraInlineEditor.isDirty=true;
 				}
 
-
 				Mura.resetAsyncObject(item.node);
 				item.addClass('mura-active');
 				Mura.processAsyncObject(item.node).then(function(){
 					closeFrontEndToolsModal();
-					if(parameters.reinit){
+					if(parameters.reinit && !item.data('notconfigurable')){
 						openFrontEndToolsModal(item.node);
 					}
 				});
@@ -237,12 +236,24 @@
 		var editableObj=utility(a);
 		var targetFrame='modal';
 
-		if(!src){
-			if(utility(a).hasClass("mura-object")){
-			var editableObj=utility(a);
+		if(utility(a).hasClass("mura-object")){
+		var editableObj=utility(a);
+		} else {
+			var editableObj=utility(a).closest(".mura-object,.mura-async-object");
+		}
+
+		var lcaseObject=editableObj.data('object').toLowerCase();
+
+		if((lcaseObject=='form' || lcaseObject=='component') && editableObj.data('notconfigurable')){
+			if(Mura.isUUID(editableObj.data('objectid'))){
+					src=adminLoc + '?muraAction=carch.editlive&compactDisplay=true&contentid=' + encodeURIComponent(editableObj.data('objectid')) + '&type='+ encodeURIComponent(editableObj.data('object')) + '&siteid='+  Mura.siteid + '&instanceid=' + encodeURIComponent(editableObj.data('instanceid'));
 			} else {
-				var editableObj=utility(a).closest(".mura-object,.mura-async-object");
+					src=adminLoc + '?muraAction=carch.editlive&compactDisplay=true&title=' + encodeURIComponent(editableObj.data('objectid')) + '&type='+ encodeURIComponent(editableObj.data('object')) + '&siteid=' + Mura.siteid + '&instanceid=' + encodeURIComponent(editableObj.data('instanceid'));
 			}
+
+		}
+
+		if(!src){
 				/*
 			This reloads the element in the dom to ensure that all the latest
 			values are present
@@ -1053,7 +1064,6 @@
 				function initObject(){
 					var item=Mura(this);
 					var objectParams;
-
 					item.addClass("mura-active");
 
 					if(Mura.type =='Variation'){
@@ -1074,6 +1084,7 @@
 
 						item.find('.mura-object').each(initObject);
 					} else {
+						var lcaseObject=item.data('object').toLowerCase();
 						var region=item.closest('.mura-region-local');
 
 						if(region && region.length ){
@@ -1097,7 +1108,37 @@
 									item.find('.mura-object').each(initObject);
 								}
 							}
-						}
+
+						} else if (lcaseObject=='form' || lcaseObject=='component'){
+							var region=Mura('##mura-editable-attribute-body');
+
+							if(region.length && region.data('perm')){
+								objectParams=item.data();
+								if(window.MuraInlineEditor.objectHasConfigurator(item) || (!window.Mura.layoutmanager && window.MuraInlineEditor.objectHasEditor(objectParams)) ){
+									item.addClass('mura-active');
+									item.hover(
+										Mura.initDraggableObject_hoverin,
+										Mura.initDraggableObject_hoverout
+									);
+									item.data('notconfigurable',true);
+									item.children('.frontEndToolsModal').remove();
+									item.prepend(window.Mura.layoutmanagertoolbar);
+
+									item.find(".frontEndToolsModal").on(
+										'click',
+										function(event){
+											event.preventDefault();
+											openFrontEndToolsModal(this);
+										}
+									);
+
+									item.find("img").each(function(){MuraInlineEditor.checkforImageCroppers(this);});
+
+									item.find('.mura-object').each(initObject);
+								}
+							}
+
+					}
 
 					}
 				}
@@ -1956,6 +1997,9 @@
 			'mailing_list_master':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}}
 		},
 		objectHasConfigurator:function(displayObject){
+			var lcaseObject=displayObject.data('object').toLowerCase();
+			var check;
+
 			if(!displayObject.hasClass){
 				return true;
 			}
@@ -1963,11 +2007,13 @@
 				return true;
 			}
 
-			var check=displayObject.closest('.mura-region-local');
+			if(lcaseObject!='form' && lcaseObject!='component'){
+				var check=displayObject.closest('.mura-region-local');
 
-			if(!check.length){
-				displayObject.removeClass('mura-active');
-				return false
+				if(!check.length){
+					displayObject.removeClass('mura-active');
+					return false
+				}
 			}
 
 			check=displayObject.parent().closest('.mura-object');
