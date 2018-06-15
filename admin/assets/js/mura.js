@@ -2529,6 +2529,10 @@ var Mura=(function(){
                       Mura.initDraggableObject(self);
                   }
               } else {
+									var lcaseObject=obj.data('object');
+									if(typeof lcaseObject=='string'){
+										lcaseObject=lcaseObject.toLowerCase();
+									}
                   var region = Mura(self).closest(
                       ".mura-region-local");
                   if (region && region.length) {
@@ -2564,7 +2568,54 @@ var Mura=(function(){
                               Mura.initDraggableObject(self);
                           }
                       }
-                  }
+										} else if (lcaseObject=='form' || lcaseObject=='component'){
+											var region=Mura('#mura-editable-attribute-body');
+
+											if(region.length && region.data('perm')){
+												objectParams=obj.data();
+												if(window.MuraInlineEditor.objectHasConfigurator(obj) || (!window.Mura.layoutmanager && window.MuraInlineEditor.objectHasEditor(objectParams)) ){
+													obj.addClass('mura-active');
+													obj.hover(
+														Mura.initDraggableObject_hoverin,
+														Mura.initDraggableObject_hoverout
+													);
+													obj.data('notconfigurable',true);
+													obj.children('.frontEndToolsModal').remove();
+													obj.prepend(window.Mura.layoutmanagertoolbar);
+
+													obj.find(".frontEndToolsModal").on(
+														'click',
+														function(event){
+															event.preventDefault();
+															openFrontEndToolsModal(this);
+														}
+													);
+
+													obj.find("img").each(function(){MuraInlineEditor.checkforImageCroppers(this);});
+
+													obj
+															.addClass('mura-active')
+															.hover(
+																	function(e) {
+																			//e.stopPropagation();
+																			Mura('.mura-active-target')
+																					.removeClass(
+																							'mura-active-target'
+																					);
+																			Mura(this).addClass(
+																					'mura-active-target'
+																			);
+																	},
+																	function(e) {
+																			//e.stopPropagation();
+																			Mura(this).removeClass(
+																					'mura-active-target'
+																			);
+																	}
+															);
+														}
+												}
+											}
               }
           }
       }
