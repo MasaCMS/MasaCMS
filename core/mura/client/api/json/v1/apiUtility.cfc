@@ -3270,6 +3270,10 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				} else {
 					if($.useLayoutManager() && isdefined('result.html') && result.render=='server'){
 						result={render='server',async=true,html=trim('#$.dspObject_include(theFile='object/meta.cfm',params=args.params)#<div class="mura-object-content">#result.html#</div>')};
+						if(listFindNoCase('component,form',args.object)){
+							param name="args.params.perm" default=0;
+							result.perm=args.params.perm;
+						}
 					}
 				}
 		}

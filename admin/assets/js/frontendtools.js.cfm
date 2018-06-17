@@ -1116,9 +1116,8 @@
 							}
 
 						} else if (lcaseObject=='form' || lcaseObject=='component'){
-							var region=Mura('##mura-editable-attribute-body');
 
-							if(region.length && region.data('perm')){
+							if(item.data('perm')){
 								objectParams=item.data();
 								if(window.MuraInlineEditor.objectHasConfigurator(item) || (!window.Mura.layoutmanager && window.MuraInlineEditor.objectHasEditor(objectParams)) ){
 									item.addClass('mura-active');

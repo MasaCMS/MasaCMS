@@ -2569,9 +2569,8 @@ var Mura=(function(){
                           }
                       }
 										} else if (lcaseObject=='form' || lcaseObject=='component'){
-											var region=Mura('#mura-editable-attribute-body');
 
-											if(region.length && region.data('perm')){
+											if(obj.data('perm')){
 												objectParams=obj.data();
 												if(window.MuraInlineEditor.objectHasConfigurator(obj) || (!window.Mura.layoutmanager && window.MuraInlineEditor.objectHasEditor(objectParams)) ){
 													obj.addClass('mura-active');
