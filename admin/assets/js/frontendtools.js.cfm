@@ -237,26 +237,32 @@
 		var targetFrame='modal';
 
 		if(utility(a).hasClass("mura-object")){
-		var editableObj=utility(a);
+			var tempCheck=utility(a);
 		} else {
-			var editableObj=utility(a).closest(".mura-object,.mura-async-object");
+			var tempCheck=utility(a).closest(".mura-object,.mura-async-object");
 		}
 
-		var lcaseObject=editableObj.data('object');
+		var lcaseObject=tempCheck.data('object');
 		if(typeof lcaseObject=='string'){
 			lcaseObject=lcaseObject.toLowerCase();
 		}
 
-		if((lcaseObject=='form' || lcaseObject=='component') && editableObj.data('notconfigurable')){
-			if(Mura.isUUID(editableObj.data('objectid'))){
-					src=adminLoc + '?muraAction=carch.editlive&compactDisplay=true&contentid=' + encodeURIComponent(editableObj.data('objectid')) + '&type='+ encodeURIComponent(editableObj.data('object')) + '&siteid='+  Mura.siteid + '&instanceid=' + encodeURIComponent(editableObj.data('instanceid'));
+		if((lcaseObject=='form' || lcaseObject=='component') && tempCheck.data('notconfigurable')){
+			if(Mura.isUUID(tempCheck.data('objectid'))){
+					src=adminLoc + '?muraAction=carch.editlive&compactDisplay=true&contentid=' + encodeURIComponent(tempCheck.data('objectid')) + '&type='+ encodeURIComponent(tempCheck.data('object')) + '&siteid='+  Mura.siteid + '&instanceid=' + encodeURIComponent(tempCheck.data('instanceid'));
 			} else {
-					src=adminLoc + '?muraAction=carch.editlive&compactDisplay=true&title=' + encodeURIComponent(editableObj.data('objectid')) + '&type='+ encodeURIComponent(editableObj.data('object')) + '&siteid=' + Mura.siteid + '&instanceid=' + encodeURIComponent(editableObj.data('instanceid'));
+					src=adminLoc + '?muraAction=carch.editlive&compactDisplay=true&title=' + encodeURIComponent(tempCheck.data('objectid')) + '&type='+ encodeURIComponent(tempCheck.data('object')) + '&siteid=' + Mura.siteid + '&instanceid=' + encodeURIComponent(tempCheck.data('instanceid'));
 			}
 
 		}
 
 		if(!src){
+			if(utility(a).hasClass("mura-object")){
+			var editableObj=utility(a);
+			} else {
+				var editableObj=utility(a).closest(".mura-object,.mura-async-object");
+			}
+
 				/*
 			This reloads the element in the dom to ensure that all the latest
 			values are present
