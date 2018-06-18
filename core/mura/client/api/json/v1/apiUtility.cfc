@@ -2166,8 +2166,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		}
 
-		if(isDefined('arguments.params.sort') && len(arguments.params.sort)
-			&& !(isDefined('arguments.params.sort') && len(arguments.params.sort))){
+		if(!(isDefined('arguments.params.sort') && len(arguments.params.sort))){
 			for(i1 in listToArray(arguments.ids)){
 				for(i2 in returnArray){
 					if(i2.id==i1){
