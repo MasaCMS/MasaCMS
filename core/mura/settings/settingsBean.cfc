@@ -1633,7 +1633,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		return variables.instance.contentTypeLoopUpArray;
 	}
 
-	public function registerContentTypeDir(dir) output=false {
+	public function registerContentTypeDir(dir,package="") output=false {
 		var rs="";
 		var config="";
 		var expandedDir=expandPath(arguments.dir);
