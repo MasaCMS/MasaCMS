@@ -772,10 +772,10 @@ component extends="mura.bean.beanFeed" entityName="feed" table="tcontentfeeds" o
 			if(structKeyExists(application.objectMappings,fieldArray[1])){
 				arguments.fieldname=application.objectMappings[fieldArray[1]].table & '.' & fieldArray[2];
 			}
-		} else if(structKeyExists(application.objectMappings[getEntityName()],arguments.fieldname)){
+		} else if(structKeyExists(application.objectMappings[getEntityName()].columns,arguments.fieldname)){
 			arguments.fieldname=application.objectMappings[getEntityName()].table & '.' & arguments.fieldname;
 		}
-
+	
 		return arguments.fieldname;
 	}
 
