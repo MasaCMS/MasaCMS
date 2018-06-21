@@ -1729,7 +1729,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		var vals={};
 
 		if(isAggregateQuery()){
-			arguments.expand=false;
+			arguments.expanded=false;
 		}
 
 		if(!(isDefined('variables.config.entities.#arguments.entityConfigName#.allowfieldselect') && !variables.config.entities[entityConfigName].allowfieldselect) && (!arguments.expanded && isDefined('url.fields') && len(url.fields))){
@@ -1779,7 +1779,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 			vals=temp;
 		} else {
-			vals=structCopy(arguments.entity.getAllValues(expand=arguments.expand));
+			vals=structCopy(arguments.entity.getAllValues(expand=arguments.expanded));
 			structDelete(vals,'addObjects');
 			structDelete(vals,'removeObjects');
 			structDelete(vals,'sourceiterator');
