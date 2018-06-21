@@ -1779,7 +1779,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 			vals=temp;
 		} else {
-			vals=structCopy(arguments.entity.getAllValues(expand=false));
+			vals=structCopy(arguments.entity.getAllValues(expand=true));
 			structDelete(vals,'addObjects');
 			structDelete(vals,'removeObjects');
 			structDelete(vals,'sourceiterator');
