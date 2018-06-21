@@ -68,6 +68,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.legacyobjects=true>
 <cfset this.deferMuraJS=false>
 <cfset this.hideRestrictedNav=false>
+<cfset this.templateArray=[]>
 
 <!--- Set these to a boolean value to override settings.ini.cfm value--->
 <cfset this.siteIDInURLS="">
