@@ -289,11 +289,9 @@ component extends="controller" output="false" {
 			var content=arguments.rc.$.getBean('content').loadBy(contentid=arguments.rc.contentid,siteid=arguments.rc.siteid);
 		}
 		content.setType(arguments.rc.type);
-		if(content.exists()){
-			location(url="#content.getEditURL(compactDisplay='true')#&instanceid=#esapiEncode('url',arguments.rc.instanceid)#", addtoken=false );
-		} else {
-			location(url="./");
-		}
+
+		location(url="#content.getEditURL(compactDisplay='true')#&instanceid=#esapiEncode('url',arguments.rc.instanceid)#", addtoken=false );
+
 	}
 
 	public function edit(rc) output=false {
