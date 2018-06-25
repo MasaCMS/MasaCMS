@@ -1721,6 +1721,14 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		returnStruct.saveErrors=saveErrors;
 		returnStruct.errors=errors;
 
+		if( request.muraAPIRequestMode=='json'
+			&& entity.getEntityName()=='User'
+			&& !entity.hasErrors()
+			&& $.currentUser().isLoggedIn()
+			&& $.currentUser('userid') == entity.getUserID()){
+			$.getBean('userUtility').loginByUserID(userid=entity.getUserID(),siteid=entity.getSiteID());
+		}
+
 		return returnStruct;
 	}
 
