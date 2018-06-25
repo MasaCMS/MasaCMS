@@ -761,6 +761,9 @@ component extends="mura.bean.beanFeed" entityName="feed" table="tcontentfeeds" o
 	}
 
 	function transformFieldName(fieldname){
+		if(!structKeyExists(application.objectMappings[getEntityName()],'columns')){
+			loadTableMetaData();
+		}
 		arguments.fieldname=trim(arguments.fieldname);
 
 		if(arguments.fieldname==application.objectMappings[getEntityName()].table & ".*"){
@@ -775,7 +778,7 @@ component extends="mura.bean.beanFeed" entityName="feed" table="tcontentfeeds" o
 		} else if(structKeyExists(application.objectMappings[getEntityName()].columns,arguments.fieldname)){
 			arguments.fieldname=application.objectMappings[getEntityName()].table & '.' & arguments.fieldname;
 		}
-	
+
 		return arguments.fieldname;
 	}
 
