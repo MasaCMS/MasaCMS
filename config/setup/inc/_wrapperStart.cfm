@@ -66,7 +66,9 @@ to your own modified versions of Mura CMS.
 <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400italic,600,700%7COpen+Sans:300,400,400italic,600,700">
 <!-- Admin CSS -->
 <link href="#context#/admin/assets/css/admin.min.css" rel="stylesheet" type="text/css" />
-<!-- OneUI Core JS: jQuery, Bootstrap, slimScroll, scrollLock, Appear, CountTo, Placeholder, Cookie and App.js -->
++<!-- jQuery -->
++<script src="#context#/admin/assets/js/jquery/jquery.min.js"></script>
++<!-- OneUI Core JS: Bootstrap, slimScroll, scrollLock, Appear, CountTo, Placeholder, Cookie and App.js -->
 <script src="#context#/admin/assets/js/oneui.min.js"></script>
 </head>
 <body id="csetup" class="header-navbar-fixed">
