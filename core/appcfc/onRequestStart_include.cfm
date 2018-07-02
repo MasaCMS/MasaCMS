@@ -270,9 +270,13 @@ if (
 application.pluginManager.executeScripts('onGlobalRequestStart');
 
 // HSTS: https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security
+local.HSTSMaxAge=application.configBean.getValue(property='HSTSMaxAge',defaultValue=1200);
+
+if(local.HSTSMaxAge){
 	getPageContext()
 		.getResponse()
 		.setHeader('Strict-Transport-Security', 'max-age=#application.configBean.getValue(property='HSTSMaxAge',defaultValue=1200)#');
+}
 
 	getPageContext()
 		.getResponse()

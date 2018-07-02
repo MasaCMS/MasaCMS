@@ -1151,7 +1151,8 @@
 					<cfset editableControl.isConfigurator=true>
 				</cfcase>
 				<cfcase value="component,form">
-					<cfset showEditable=listFindNoCase("editor,author",application.permUtility.getDisplayObjectPerm(arguments.siteID,arguments.object,arguments.objectID))>
+					<cfset arguments.params.perm=listFindNoCase("editor,author",application.permUtility.getDisplayObjectPerm(arguments.siteID,arguments.object,arguments.objectID))>
+					<cfset showEditable=arguments.params.perm>
 					<cfif showEditable>
 						<cfset historyID = $.getBean("contentGateway").getContentHistIDFromContentID(contentID=arguments.objectID,siteID=arguments.siteID)>
 						<cfif arguments.object eq "component">

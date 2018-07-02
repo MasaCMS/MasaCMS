@@ -278,12 +278,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif variables.configBean.getValue('assetdir') neq variables.configBean.getSiteDir()>
 				<cfset zipDir = variables.configBean.getValue('assetdir') & '/' & filePoolID />
 				<cffile action="write" file="#zipDir#/blank.txt" output="empty file" />
-				<cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#assetfiles.zip",directory=zipDir,recurse="true",sinceDate=arguments.sinceDate,excludeDirs="cache")>
+				<!--- <cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#assetfiles.zip",directory=zipDir,recurse="true",sinceDate=arguments.sinceDate,excludeDirs="cache")> --->
+				<cfzip action="zip" source="#zipDir#" file="#variables.backupDir#assetfiles.zip" recurse="true">
+				<cfzip action="delete" file="#variables.backupDir#assetfiles.zip" entryPath="cache">
 			</cfif>
 			<cfif variables.configBean.getValue('filedir') neq variables.configBean.getSiteDir()>
 				<cfset zipDir = variables.configBean.getValue('filedir') & '/' & filePoolID />
 				<cffile action="write" file="#zipDir#/blank.txt" output="empty file" />
-				<cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#filefiles.zip",directory=zipDir,recurse="true",sinceDate=arguments.sinceDate,excludeDirs="assets")>
+				<!--- <cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#filefiles.zip",directory=zipDir,recurse="true",sinceDate=arguments.sinceDate,excludeDirs="assets")> --->
+				<cfzip action="zip" source="#zipDir#" file="#variables.backupDir#filefiles.zip" recurse="true">
+				<cfzip action="delete" file="#variables.backupDir#filefiles.zip" entryPath="assets">
 
 				<cfif len(deleteList)>
 					<cfset variables.zipTool.deleteFiles(zipFilePath="#variables.backupDir#filefiles.zip",files="#deleteList#")>
@@ -579,40 +583,54 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<!---
 					<cfset variables.utility.deleteDir( variables.configBean.getValue('filedir') & '/'  & filePoolID & '/' & "assets"  )>
 					--->
+					<cftry>
 					<cfset variables.utility.deleteDir( variables.configBean.getValue('filedir') & '/'  & filePoolID & "/cache"  )>
 					<cfset variables.utility.createDir( variables.configBean.getValue('filedir') & '/'  & filePoolID & "/cache"  )>
+					<cfset variables.utility.createDir( variables.configBean.getValue('filedir') & '/'  & filePoolID & "/cache/file"  )>
+					<cfcatch></cfcatch>
+					</cftry>
 				</cfif>
 				<cfif fileExists( getBundle() & "sitefiles.zip" )>
 					<cfset zipPath = getBundle() & "sitefiles.zip" />
 
 					<cfif not fileExists( getBundle() & "filefiles.zip" )>
 						<cfset destDir = variables.configBean.getValue('filedir') & '/' & filePoolID />
-						<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=destDir, overwriteFiles=true, extractDirs="cache")>
+						<cfzip file="#zipPath#" action="unzip" overwrite="true" destination="#destDir#" entrypath="cache">
+						<!---<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=destDir, overwriteFiles=true, extractDirs="cache")>--->
 					</cfif>
 
 					<cfif not fileExists( getBundle() & "assetfiles.zip" )>
 						<cfset destDir = variables.configBean.getValue('assetdir') & '/' & filePoolID />
-						<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=destDir, overwriteFiles=true, extractDirs="assets")>
+						<cfzip file="#zipPath#" action="unzip" overwrite="true" destination="#destDir#" entrypath="assets">
+						<!---<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=destDir, overwriteFiles=true, extractDirs="assets")>--->
 					</cfif>
 				</cfif>
 				<cfif fileExists( getBundle() & "assetfiles.zip" )>
 					<cfset zipPath = getBundle() & "assetfiles.zip" />
 					<cfset destDir = variables.configBean.getValue('assetdir') & '/' & filePoolID />
-					<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=destDir, overwriteFiles=true)>
+					<cfzip file="#zipPath#" action="unzip" overwrite="true" destination="#destDir#">
+					<!---<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=destDir, overwriteFiles=true)>--->
 				</cfif>
 				<cfif fileExists( getBundle() & "filefiles.zip" )>
 					<cfset zipPath = getBundle() & "filefiles.zip" />
 					<cfset destDir = variables.configBean.getValue('filedir') & '/' & filePoolID />
-					<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=destDir, overwriteFiles=true)>
+					<cfzip file="#zipPath#" action="unzip" overwrite="true" destination="#destDir#">
+					<!---<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=destDir, overwriteFiles=true)>--->
 				</cfif>
 			</cfif>
 			<cfif arguments.renderingMode eq "all">
 				<cfset zipPath = getBundle() & "sitefiles.zip" />
-				<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=siteRoot, overwriteFiles=true, excludeDirs="cache|assets")>
+				<cfzip file="#zipPath#" action="unzip" overwrite="true" destination="#destDir#" entrypath="cache">
+				<cfzip file="#zipPath#" action="unzip" overwrite="true" destination="#destDir#" entrypath="assets">
+				<!---<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=siteRoot, overwriteFiles=true, excludeDirs="cache|assets")>--->
 			<cfelseif arguments.renderingMode eq "theme" and len(arguments.themeDir)>
 				<cfset zipPath = getBundle() & "sitefiles.zip" />
+				<cfzip file="#zipPath#" action="unzip" overwrite="true" destination="#siteRoot#" entrypath="includes/themes/#arguments.themeDir#">
+				<cfzip file="#zipPath#" action="unzip" overwrite="true" destination="#siteRoot#" entrypath="themes/#arguments.themeDir#">
+				<!---
 				<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=siteRoot, overwriteFiles=true, extractDirs="includes/themes/#arguments.themeDir#")>
 				<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=siteRoot, overwriteFiles=true, extractDirs="themes/#arguments.themeDir#")>
+				--->
 			</cfif>
 		</cfif>
 
@@ -629,7 +647,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset variables.fileWriter.createDir(directory=getBundle() & "plugins")>
 			</cfif>
 
-			<cfset variables.zipTool.Extract(zipFilePath=getBundle() & "pluginfiles.zip",extractPath=getBundle() & "plugins", overwriteFiles=true)>
+			<cfzip file="#getBundle()#pluginfiles.zip" action="unzip" overwrite="true" destination="#getBundle()#plugins">
+			<!---<cfset variables.zipTool.Extract(zipFilePath=getBundle() & "pluginfiles.zip",extractPath=getBundle() & "plugins", overwriteFiles=true)>--->
 
 			<cfloop query="rstplugins">
 

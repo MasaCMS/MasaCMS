@@ -192,6 +192,10 @@ component extends="mura.cfobject" displayname="Iterator" output="false" hint="Th
 		return pageCount;
 	}
 
+	public function getPageCount() output=false {
+		return pageCount();
+	}
+
 	/**
 	 * For Lucee compatibility use getRecordCount()
 	 */
@@ -343,6 +347,6 @@ component extends="mura.cfobject" displayname="Iterator" output="false" hint="Th
 		variables.pageQueries=structNew();
 		return this;
 	}
-	
+
 
 }

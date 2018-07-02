@@ -75,7 +75,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			            <cfif rc.contentid neq '00000000000000000000000000000000001'>
 			              <option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.inheritfromparent')#</option>
 			            </cfif>
-									<cfset templateArray=listToArray(rc.$.siteConfig('templateList'),'^')>
+									<cfset renderer=rc.$.getContentRenderer()>
+									<cfif isDefined('renderer.templateArray') and isArray(renderer.templateArray)>
+										<cfset templateArray=renderer.templateArray>
+									<cfelse>
+										<cfset templateArray=listToArray(rc.$.siteConfig('templateList'),'^')>
+									</cfif>
 									<cfif rc.moduleID eq  '00000000000000000000000000000000000' and arrayLen(templateArray)>
 										<cfloop from="1" to="#arrayLen(renderer.templateArray)#" index="t">
 			                <cfoutput>

@@ -468,13 +468,13 @@ GO
 
 CREATE TABLE [dbo].[tusers] (
 	[UserID] [char] (35) NOT NULL ,
-	[GroupName] [nvarchar] (50) NULL ,
+	[GroupName] [nvarchar] (255) NULL ,
 	[Fname] [nvarchar] (50) NULL ,
 	[Lname] [nvarchar] (50) NULL ,
-	[UserName] [nvarchar] (50) NULL ,
+	[UserName] [nvarchar] (255) NULL ,
 	[Password] [nvarchar] (50) NULL ,
 	[PasswordCreated] [datetime] NULL ,
-	[Email] [nvarchar] (100) NULL ,
+	[Email] [nvarchar] (255) NULL ,
 	[Company] [nvarchar] (50) NULL ,
 	[JobTitle] [nvarchar] (50) NULL ,
 	[mobilePhone] [nvarchar] (50) NULL ,

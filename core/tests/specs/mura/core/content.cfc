@@ -202,6 +202,19 @@ component extends="testbox.system.BaseSpec"{
 
 						}
 					);
+
+					//#2904
+					it(
+						title="Should be add param on field that exists in tcontent and tparent",
+				 		body=function() {
+							try{
+					 			var it=$.getBean('Feed').where().prop('type').isEq('File').getIterator();
+								expect( 1 ).toBeTrue();
+							} catch (Any e){
+									expect( 0 ).toBeTrue();
+							}
+						}
+					);
 				});
 			}
 

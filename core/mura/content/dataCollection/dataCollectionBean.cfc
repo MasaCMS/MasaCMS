@@ -412,7 +412,6 @@ component extends="mura.bean.bean" entityname="dataCollection" hint="This provid
 
 		// If body is JSON, break response into an HTML table and send HTML email
 		if (IsStruct(bodyStruct) && isDefined('bodyStruct.form.pages')) {
-			var bodyStruct = deserializeJSON(getFormBean().getBody());
 			var pagesArray = bodyStruct.form.pages;
 
 			// I'm using an array here to keep the same order as the pagesArray,
