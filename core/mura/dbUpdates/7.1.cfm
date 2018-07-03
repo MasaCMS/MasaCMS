@@ -5,8 +5,11 @@
 
     dbUtility.setTable("tclustercommands").addIndex("created");
 
-
-		dbUtility.setTable('tcontentfeeditems').addPrimaryKey('feedID,itemID');
+		try{
+			dbUtility.setTable('tcontentfeeditems').addPrimaryKey('feedID,itemID');
+		} catch(Any e){
+			writeLog(serializeJSON(e));
+		}
 
 		try{
 				dbUtility.setTable('tformresponsequestions').addPrimaryKey('responseID,formID,formfield');
