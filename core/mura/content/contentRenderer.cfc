@@ -2306,7 +2306,7 @@ Display Objects
 	<cfargument name="returnFormat" default="string">
 	<cfargument name="label" default="">
 	<cfif not isNumeric(arguments.columnID)>
-		<cfset arguments.columnid=listFindNoCase( variables.$.siteConfig('columnNames'), arguments.region, '^')>
+		<cfset arguments.columnid=listFindNoCase( variables.$.siteConfig('columnNames'), arguments.columnID, '^')>
 	</cfif>
 	<cfset arguments.renderer=this>
 	<cfset arguments.layoutmanager=this.layoutmanager>
