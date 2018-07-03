@@ -208,13 +208,15 @@ CKEDITOR.editorConfig = function( config )
 	config.oembed_WrapperClass = 'embeddedContent';
 
 <cfoutput>
-	// filebrowser settings needed for inline edit mode
-	var connectorpath = '#application.configBean.getContext()#/core/vendor/ckfinder/ckfinder.html';
-	config.filebrowserBrowseUrl = connectorpath;
-	config.filebrowserImageBrowseUrl = connectorpath + '?type=Images';
-	config.filebrowserUploadUrl = connectorpath;
-	config.filebrowserImageUploadUrl = connectorpath + '?type=Images';
-
+	<cfif isDefined('session.siteid') and application.permUtility.getModulePerm("00000000000000000000000000000000000",session.siteid)>
+		// filebrowser settings needed for inline edit mode
+		var connectorpath = '#application.configBean.getContext()#/core/vendor/ckfinder/ckfinder.html';
+		config.filebrowserBrowseUrl = connectorpath;
+		config.filebrowserImageBrowseUrl = connectorpath + '?type=Images';
+		config.filebrowserUploadUrl = connectorpath;
+		config.filebrowserImageUploadUrl = connectorpath + '?type=Images';
+	</cfif>
+	
 	<cfset secure=$.getBean('utility').isHTTPS()>
 
 	<!--- contentsCss --->
