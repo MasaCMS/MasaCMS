@@ -297,6 +297,8 @@
 		<cfset var returnString=''>
 		<cfset var r=''>
 		<cfset var thePubDate=''>
+		<cfset var renderContent=isDefined('url.content') and isBoolean(url.content) and url.content>
+		<cfset var renderer="">
 
 		<cfcontent reset="true"><cfheader name="content-type" value="text/xml;charset=UTF-8">
 		<cfsavecontent variable="returnString"><cfoutput><?xml version="1.0" ?>
@@ -314,35 +316,41 @@
 				<cfset item=arguments.iterator.next()>
 				<cfset request.servletEvent = createObject("component","mura.servletEvent").init() />
 				<cfset $=request.servletEvent.getValue('MuraScope')>
-				<!---
-				<cfset request.currentFilename=item.getFilename()>
-				<cfset request.currentFilenameAdjusted=item.getFilename()>
-				<cfset request.muraDynamicContentError=false>
-				<cfset $.announceEvent('onSiteRequestStart')>
-				<cfset $.event('contentBean',item) />
-				<cfset $.event('crumbdata',item.getCrumbArray()) />
-				<cfset $.getHandler("standardSetContentRenderer").handle($)>
-				<cfset $.getContentREnderer().showInlineEditor=false>
-				<cfset $.getHandler("standardSetPermissions").handle($)>
-				<cfset $.getHandler("standardSetIsOnDisplay").handle($)>
-				<cfset $.announceEvent('onRenderStart')>
-				<cfset r=$.event('r')>
-				<cfset r.allow=1>
+				<cfset renderer=$.getContentRenderer()>
+				<cfset renderer.showAdminToolBar=false/>
+				<cfset renderer.showMemberToolBar=false/>
+				<cfset renderer.showEditableObjects=false/>
+				<cfset renderer.showInlineEditor=false/>
 
-				<cfif not r.restrict or (r.restrict and r.allow)>
-					<cftry>
-						<cfset itemcontent=trim($.addCompletePath($.dspBody(pageTitle='',bodyAttribute='body', crumblist=0,showMetaImage=0),item.getSiteID()))>
-						<cfif request.muraDynamicContentError>
-							<cfset itemcontent="">
-						<cfelse>
-							<cfset itemcontent = $.addCompletePath(itemcontent,item.getSiteID())>
-						</cfif>
-						<cfcatch><cfset itemcontent=""></cfcatch>
-					</cftry>
-				<cfelse>
-					<cfset itemcontent="">
+				<cfif renderContent>
+					<cfset request.currentFilename=item.getFilename()>
+					<cfset request.currentFilenameAdjusted=item.getFilename()>
+					<cfset request.muraDynamicContentError=false>
+					<cfset $.announceEvent('onSiteRequestStart')>
+					<cfset $.event('contentBean',item) />
+					<cfset $.event('crumbdata',item.getCrumbArray()) />
+					<cfset $.getHandler("standardSetContentRenderer").handle($)>
+
+					<cfset $.getHandler("standardSetPermissions").handle($)>
+					<cfset $.getHandler("standardSetIsOnDisplay").handle($)>
+					<cfset $.announceEvent('onRenderStart')>
+					<cfset r=$.event('r')>
+					<cfset r.allow=1>
+
+					<cfif not r.restrict or (r.restrict and r.allow)>
+						<cftry>
+							<cfset itemcontent=trim($.setDynamicContent($.content('body')))>
+							<cfif request.muraDynamicContentError>
+								<cfset itemcontent="">
+							<cfelse>
+								<cfset itemcontent = $.addCompletePath(itemcontent,item.getSiteID())>
+							</cfif>
+							<cfcatch><cfset itemcontent=""></cfcatch>
+						</cftry>
+					<cfelse>
+						<cfset itemcontent="">
+					</cfif>
 				</cfif>
-				--->
 				<cfset itemdescription=trim($.setDynamicContent(item.getValue('summary')))>
 
 				<cfif feed.getallowhtml() eq 0>
@@ -369,9 +377,9 @@
 					</cfif>---><guid isPermaLink="false">#item.getValue('contentID')#</guid>
 					<pubDate>#GetHttpTimeString(thePubDate)#</pubDate>
 					<description>#XMLFormat(itemdescription)#</description>
-					<cfloop query="rsCats"><category>#XMLFormat(rsCats.name)#</category>
-					</cfloop><!---<cfif item.getType() eq "Page" and len(itemcontent)><content:encoded><![CDATA[#itemcontent#]]></content:encoded>
-					</cfif>---><cfif len(item.getFileID())><cfset fileMeta=application.serviceFactory.getBean("fileManager").readMeta(item.getValue('fileID'))><enclosure url="#XMLFormat('#application.settingsManager.getSite(item.getValue('siteid')).getScheme()#://#application.settingsManager.getSite(item.getValue('siteID')).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/index.cfm/_api/render/file/?fileID=#item.getValue('fileID')#&fileEXT=.#item.getValue('fileEXT')#')#" length="#item.getValue('fileSize')#" type="#fileMeta.ContentType#/#fileMeta.ContentSubType#" /></cfif>
+					<cfloop query="rsCats"><category>#XMLFormat(rsCats.name)#</category></cfloop>
+					<cfif renderContent and len(itemcontent)><content:encoded><![CDATA[#itemcontent#]]></content:encoded></cfif>
+					<cfif len(item.getFileID())><cfset fileMeta=application.serviceFactory.getBean("fileManager").readMeta(item.getValue('fileID'))><enclosure url="#XMLFormat('#application.settingsManager.getSite(item.getValue('siteid')).getScheme()#://#application.settingsManager.getSite(item.getValue('siteID')).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/index.cfm/_api/render/file/?fileID=#item.getValue('fileID')#&fileEXT=.#item.getValue('fileEXT')#')#" length="#item.getValue('fileSize')#" type="#fileMeta.ContentType#/#fileMeta.ContentSubType#" /></cfif>
 				</item>
 		</cfloop></channel>
 		</rss></cfoutput>
@@ -379,6 +387,7 @@
 
 		<cfreturn returnString>
 	</cffunction>
+
 
 	<cffunction name="rss092" output="false">
 		<cfargument name="feed">
@@ -393,7 +402,7 @@
 		<cfset var returnString=''>
 		<cfset var $=application.serviceFactory.getBean('$').init(arguments.feed.getSiteID())>
 		<cfset var thePubDate="">
-			
+
 		<cfcontent reset="true"><cfheader name="content-type" value="text/xml;charset=UTF-8">
 		<cfsavecontent variable="returnString"><cfoutput><?xml version="1.0" ?>
 		<rss version="0.92"
