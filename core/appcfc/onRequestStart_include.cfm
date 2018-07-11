@@ -114,6 +114,11 @@ if ( isDefined("onApplicationStart") ) {
 	}
 }
 
+//Clear out secrets
+for(secret in listToArray(structKeyList(request.muraSecrets))){
+	structDelete(request.muraSysEnv,'#secret#');
+}
+
 application.userManager.setUserStructDefaults();
 sessionData=application.userManager.getSession();
 if ( isDefined("url.showTrace") && isBoolean(url.showTrace) ) {

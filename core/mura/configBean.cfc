@@ -405,7 +405,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getReadOnlyDbUsername" output="false">
-	<cfreturn variables.instance.readOnlyDbUsername />
+	<cfif len(variables.instance.readOnlyDbPassword)>
+		<cfreturn variables.instance.readOnlyDbUsername />
+	<cfelse>
+		<cfreturn ''>
+	</cfif>
 </cffunction>
 
 <cffunction name="setReadOnlyDbUsername" output="false">
@@ -597,7 +601,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getDbUsername" output="false">
 	<cfargument name="mode" default="" />
-	<cfreturn variables.instance.dbUsername />
+	<cfif len(variables.instance.DbPassword)>
+		<cfreturn variables.instance.DbUsername />
+	<cfelse>
+		<cfreturn ''>
+	</cfif>
 </cffunction>
 
 <cffunction name="setDbUsername" output="false">
@@ -1719,10 +1727,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				 password=getReadOnlyDbPassword()},
 				 false)>
 
-		<cfif not len(arguments.username)>
+		<cfif not (len(arguments.username) and len(arguments.password))>
 			<cfset structDelete(arguments,'username')>
-		</cfif>
-		<cfif not len(arguments.password)>
 			<cfset structDelete(arguments,'password')>
 		</cfif>
 	</cfif>

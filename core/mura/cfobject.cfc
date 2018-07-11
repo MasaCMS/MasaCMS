@@ -251,6 +251,10 @@ component output="false" hint="This provides base functionality to all Mura core
 			if(arguments.readOnly){
 				return getBean('configBean').getReadOnlyQRYAttrs(argumentCollection=arguments);
 			} else {
+				if(!isDefined('arguments.password') || !len(arguments.password)){
+					structDelete(arguments,'username');
+					structDelete(arguments,'password');
+				}
 				structDelete(arguments,'readOnly');
 				return arguments;
 			}

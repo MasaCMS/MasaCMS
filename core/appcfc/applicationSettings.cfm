@@ -70,6 +70,22 @@ param name="request.muraSessionManagement" default=true;
 param name="request.muraPointInTime" default="";
 param name="request.muraTemplateMissing" default=false;
 param name="request.muraSysEnv" default="#createObject('java','java.lang.System').getenv()#";
+param name="request.muraSecrets" default={};
+// Set request.secrets from MURA_PROJECT_SECRETS_FILE environment variable.
+if (structKeyExists(request.muraSysEnv, "MURA_PROJECT_SECRETS_FILE")) {
+    // Confirm that file exist and is JSON
+    if (fileExists(request.muraSysEnv["MURA_PROJECT_SECRETS_FILE"])) {
+        secrets = FileRead(request.muraSysEnv["MURA_PROJECT_SECRETS_FILE"]);
+				if(isJSON(secrets)){
+					secrets=deserializeJSON(secrets);
+	     		request.muraSecrets=secrets;
+	        tempVars = {};
+	        structAppend(tempVars, request.muraSysEnv);
+	        structAppend(tempVars, secrets);
+	        request.muraSysEnv = tempVars;
+				}
+    }
+}
 
 request.muraInDocker=len(getSystemEnvironmentSetting('MURA_DATASOURCE'));
 this.configPath=getDirectoryFromPath(getCurrentTemplatePath());
