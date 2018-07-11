@@ -103,7 +103,7 @@ if ( application.setupComplete ) {
 
 	for(variables.p in listToArray(variables.iniSections.settings)){
 		variables.envVar='MURA_#UCASE(variables.p)#';
-		if(!structKeyExists(request.muraSecrets,variables.envVar)){
+		//if(!structKeyExists(request.muraSecrets,variables.envVar)){
 			if ( structKeyExists(request.muraSysEnv,variables.envVar) ) {
 				variables.iniProperties[variables.p]=request.muraSysEnv[variables.envVar];
 			} else {
@@ -118,12 +118,12 @@ if ( application.setupComplete ) {
 				variables.iniProperties[variables.p]=mid(variables.iniProperties[variables.p],3,len(variables.iniProperties[variables.p])-4);
 				variables.iniProperties[variables.p] = evaluate(variables.iniProperties[variables.p]);
 			}
-		}
+		//}
 	}
 
 	for(variables.p in listToArray(variables.iniSections[ variables.iniProperties.mode])){
 		variables.envVar='MURA_#UCASE(variables.p)#';
-		if(!structKeyExists(request.muraSecrets,variables.envVar)){
+		//if(!structKeyExists(request.muraSecrets,variables.envVar)){
 			if ( structKeyExists(request.muraSysEnv,variables.envVar) ) {
 				variables.iniProperties[variables.p]=request.muraSysEnv[variables.envVar];
 			} else {
@@ -138,7 +138,7 @@ if ( application.setupComplete ) {
 				variables.iniProperties[variables.p]=mid(variables.iniProperties[variables.p],3,len(variables.iniProperties[variables.p])-4);
 				variables.iniProperties[variables.p] = evaluate(variables.iniProperties[variables.p]);
 			}
-		}
+		//}
 	}
 
 
@@ -150,10 +150,11 @@ if ( application.setupComplete ) {
 	} catch (any cfcatch) {
 	}
 
-	//Clear out secrets
+	/* Potentially Clear Out Secrets, also in onRequestStart_include
 	for(secret in listToArray(structKeyList(request.muraSecrets))){
 		structDelete(request.muraSysEnv,'#secret#');
 	}
+	*/
 
 	variables.iniProperties.webroot = expandPath("/muraWRM");
 	variables.mode = variables.iniProperties.mode;

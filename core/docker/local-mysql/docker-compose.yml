@@ -23,19 +23,21 @@ services:
       MURA_DBCONNECTIONSTRING: "jdbc:mysql://mura_mysql:3306/muradb?useUnicode=true&characterEncoding=UTF-8&useLegacyDatetimeCode=true"
       MURA_DBCLASS: com.mysql.jdbc.Driver
       MURA_DBUSERNAME: root
-      MURA_DBPASSWORD: This should come from projectsecrets
+      MURA_DBPASSWORD: FROM_ENV
       MURA_DBHOST: mura_mysql
       MURA_DBPORT: 3306
       MURA_SITEIDINURLS: "false"
       MURA_INDEXFILEINURLS: "false"
       MURA_TESTBOX: "true"
-      MURA_PROJECT_SECRETS_FILE: /run/secrets/projectsecrets
+      MURA_PROJECT_SECRETS: projectsecrets
+      MURA_GLOBAL_SECRETS: globalsecrets
     volumes:
-        - ../../../:/app
+      - ../../../:/app
     ports:
-        - "8080:8080"
+      - "8080:8080"
     secrets:
-        - projectsecrets
+      - projectsecrets
+      - globalsecrets
 
   #MySQL
   mura_mysql:
@@ -54,3 +56,5 @@ volumes:
 secrets:
   projectsecrets:
     file: ./projectsecrets.json
+  globalsecrets:
+    file: ./globalsecrets.json

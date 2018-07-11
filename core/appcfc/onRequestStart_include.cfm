@@ -114,10 +114,11 @@ if ( isDefined("onApplicationStart") ) {
 	}
 }
 
-//Clear out secrets
+/* Potentially Clear Out Secrets, also in onApplicationStart_include
 for(secret in listToArray(structKeyList(request.muraSecrets))){
 	structDelete(request.muraSysEnv,'#secret#');
 }
+*/
 
 application.userManager.setUserStructDefaults();
 sessionData=application.userManager.getSession();

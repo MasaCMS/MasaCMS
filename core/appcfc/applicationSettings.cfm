@@ -71,21 +71,37 @@ param name="request.muraPointInTime" default="";
 param name="request.muraTemplateMissing" default=false;
 param name="request.muraSysEnv" default="#createObject('java','java.lang.System').getenv()#";
 param name="request.muraSecrets" default={};
-// Set request.secrets from MURA_PROJECT_SECRETS_FILE environment variable.
-if (structKeyExists(request.muraSysEnv, "MURA_PROJECT_SECRETS_FILE")) {
+
+if (structKeyExists(request.muraSysEnv, "MURA_PROJECT_SECRETS")) {
     // Confirm that file exist and is JSON
-    if (fileExists(request.muraSysEnv["MURA_PROJECT_SECRETS_FILE"])) {
-        secrets = FileRead(request.muraSysEnv["MURA_PROJECT_SECRETS_FILE"]);
+    if (fileExists('/run/secrets/' & request.muraSysEnv["MURA_PROJECT_SECRETS"])) {
+        secrets = FileRead('/run/secrets/' & request.muraSysEnv["MURA_PROJECT_SECRETS"]);
 				if(isJSON(secrets)){
 					secrets=deserializeJSON(secrets);
-	     		request.muraSecrets=secrets;
-	        tempVars = {};
-	        structAppend(tempVars, request.muraSysEnv);
-	        structAppend(tempVars, secrets);
-	        request.muraSysEnv = tempVars;
+		     	StructAppend(request.muraSecrets,secrets);
 				}
     }
 }
+
+if (structKeyExists(request.muraSysEnv, "MURA_GLOBAL_SECRETS")) {
+    // Confirm that file exist and is JSON
+    if (fileExists('/run/secrets/' & request.muraSysEnv["MURA_GLOBAL_SECRETS"])) {
+        secrets = FileRead('/run/secrets/' & request.muraSysEnv["MURA_GLOBAL_SECRETS"]);
+				if(isJSON(secrets)){
+					secrets=deserializeJSON(secrets);
+		     	StructAppend(request.muraSecrets,secrets);
+				}
+    }
+}
+
+if(!StructIsEmpty(request.muraSecrets)){
+	tempVars={};
+	structAppend(tempVars, request.muraSysEnv);
+	structAppend(tempVars, request.muraSecrets);
+	request.muraSysEnv = tempVars;
+}
+
+structDelete(request,'muraSecrets');
 
 request.muraInDocker=len(getSystemEnvironmentSetting('MURA_DATASOURCE'));
 this.configPath=getDirectoryFromPath(getCurrentTemplatePath());
