@@ -149,7 +149,7 @@ if (getSystemEnvironmentSetting('MURA_ENABLEDEVELOPMENTSETTINGS') == "true" && s
 	variables.allSitesEDS = application.settingsManager.getSites();
 	for (variables.siteEDS in variables.allSitesEDS) {
 		variables.allSitesEDS[variables.siteEDS].setEnableLockdown('');
-		variables.allSitesEDS[variables.siteEDS].setUseSSL('');
+		variables.allSitesEDS[variables.siteEDS].setUseSSL(0);
 	}
 }
 
