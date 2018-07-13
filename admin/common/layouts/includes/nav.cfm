@@ -324,7 +324,7 @@
                             </li>
                             <!--- component API --->
                             <li>
-                                <a id="navProg-API" href="http://www.getmura.com/component-api/7.0/" target="_blank"><i class="mi-bookmark"></i>Component API</a>
+                                <a id="navProg-API" href="http://www.getmura.com/component-api/7.1/" target="_blank"><i class="mi-bookmark"></i>Component API</a>
                             </li>
                             <!--- professional support --->
                             <li>
