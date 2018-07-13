@@ -104,25 +104,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		  <div class="block-content">
 
 	<h2>
-					<i class="#subtype.getIconClass(includeDefault=true)# mi-lg"></i>
+		<i class="#subtype.getIconClass(includeDefault=true)# mi-lg"></i>
 		#application.classExtensionManager.getTypeAsString(subType.getType())# / #subType.getSubType()#
 	</h2>
 
-	<h3>
-		#rc.$.rbKey('sitemanager.extension.extendedattributesets')#
-		<cfif arrayLen(extendSets) gt 1>
-			(
-				<a href="javascript:;" style="display:none;" id="saveSort" onclick="extendManager.saveExtendSetSort('attr-set');return false;">
-								<i class="mi-check"></i>
-					#rc.$.rbKey('sitemanager.extension.saveorder')#
-				</a>
-				<a href="javascript:;" id="showSort" onclick="extendManager.showSaveSort('attr-set');return false;">
-								<i class="mi-arrows"></i>
-					#rc.$.rbKey('sitemanager.extension.reorder')#
-				</a>
-			)
-		</cfif>
-	</h3>
+	<h3>#rc.$.rbKey('sitemanager.extension.extendedattributesets')#</h3>
+
+	<cfif arrayLen(extendSets) gt 1>
+		<ul class="nav nav-pills">
+			<li><a href="javascript:;" class="btn" style="display:none;" id="saveSort" onclick="extendManager.saveExtendSetSort('attr-set');return false;">
+							<i class="mi-check"></i>
+				#rc.$.rbKey('sitemanager.extension.saveorder')#
+			</a></li>
+			<li><a href="javascript:;" class="btn" id="showSort" onclick="extendManager.showSaveSort('attr-set');return false;">
+				<i class="mi-arrows"></i>
+				#rc.$.rbKey('sitemanager.extension.reorder')#
+			</a>
+			</li>
+		</ul>
+	</cfif>
 
 	<cfif arrayLen(extendSets)>
 		<ul id="attr-set" class="attr-list">
