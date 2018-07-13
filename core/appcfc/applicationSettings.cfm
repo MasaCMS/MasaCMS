@@ -72,10 +72,10 @@ param name="request.muraTemplateMissing" default=false;
 param name="request.muraSysEnv" default="#createObject('java','java.lang.System').getenv()#";
 param name="request.muraSecrets" default={};
 
-if (structKeyExists(request.muraSysEnv, "MURA_PROJECT_SECRETS")) {
+if (structKeyExists(request.muraSysEnv, "MURA_GLOBAL_SECRETS")) {
     // Confirm that file exist and is JSON
-    if (fileExists('/run/secrets/' & request.muraSysEnv["MURA_PROJECT_SECRETS"])) {
-        secrets = FileRead('/run/secrets/' & request.muraSysEnv["MURA_PROJECT_SECRETS"]);
+    if (fileExists('/run/secrets/' & request.muraSysEnv["MURA_GLOBAL_SECRETS"])) {
+        secrets = FileRead('/run/secrets/' & request.muraSysEnv["MURA_GLOBAL_SECRETS"]);
 				if(isJSON(secrets)){
 					secrets=deserializeJSON(secrets);
 		     	StructAppend(request.muraSecrets,secrets);
@@ -83,10 +83,10 @@ if (structKeyExists(request.muraSysEnv, "MURA_PROJECT_SECRETS")) {
     }
 }
 
-if (structKeyExists(request.muraSysEnv, "MURA_GLOBAL_SECRETS")) {
+if (structKeyExists(request.muraSysEnv, "MURA_PROJECT_SECRETS")) {
     // Confirm that file exist and is JSON
-    if (fileExists('/run/secrets/' & request.muraSysEnv["MURA_GLOBAL_SECRETS"])) {
-        secrets = FileRead('/run/secrets/' & request.muraSysEnv["MURA_GLOBAL_SECRETS"]);
+    if (fileExists('/run/secrets/' & request.muraSysEnv["MURA_PROJECT_SECRETS"])) {
+        secrets = FileRead('/run/secrets/' & request.muraSysEnv["MURA_PROJECT_SECRETS"]);
 				if(isJSON(secrets)){
 					secrets=deserializeJSON(secrets);
 		     	StructAppend(request.muraSecrets,secrets);
