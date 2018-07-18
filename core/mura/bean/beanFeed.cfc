@@ -639,13 +639,13 @@ function leftJoin(entityName) output=false {
 	var p="";
 	for ( p in entity.getHasManyPropArray() ) {
 		if ( p.cfc == arguments.relatedEntity ) {
-			addJoin('inner',application.objectMappings[arguments.relatedEntity].table,'#entity.getTable()#.#entity.getValue(entity.translatePropKey(p.column))#=#application.objectMappings[arguments.relatedEntity].table#.#entity.translatePropKey(p.loadkey)#');
+			addJoin('left',application.objectMappings[arguments.relatedEntity].table,'#entity.getTable()#.#entity.getValue(entity.translatePropKey(p.column))#=#application.objectMappings[arguments.relatedEntity].table#.#entity.translatePropKey(p.loadkey)#');
 			return this;
 		}
 	}
 	for ( p in entity.getHasOnePropArray() ) {
 		if ( p.cfc == arguments.relatedEntity ) {
-			addJoin('inner',application.objectMappings[arguments.relatedEntity].table,'#entity.getTable()#.#entity.getValue(entity.translatePropKey(p.column))#=#application.objectMappings[arguments.relatedEntity].table#.#entity.translatePropKey(p.loadkey)#');
+			addJoin('left',application.objectMappings[arguments.relatedEntity].table,'#entity.getTable()#.#entity.getValue(entity.translatePropKey(p.column))#=#application.objectMappings[arguments.relatedEntity].table#.#entity.translatePropKey(p.loadkey)#');
 			return this;
 		}
 	}
@@ -896,19 +896,10 @@ function getEndRow() output=false {
 				and #variables.instance.table#.lastupdate=activeTable.lastupdatemax
 			 )
 		</cfif>
+
 		<!--- Join to implied tables based on field prefix --->
 		<cfloop list="#jointables#" index="jointable">
-			<cfset started=false>
-			<cfif arrayLen(variables.instance.joins)>
-				<cfloop from="1" to="#arrayLen(variables.instance.joins)#" index="local.i">
-					<cfif variables.instance.joins[local.i].table eq jointable>
-						<cfset started=true>
-						<!--- has explicit join clause--->
-						<cfbreak>
-					</cfif>
-				</cfloop>
-			</cfif>
-			<cfif not started>
+			<cfif not hasJoin(jointable)>
 				inner join #jointable# on (#variables.instance.table#.#variables.instance.keyField#=#jointable#.#variables.instance.keyField#)
 			</cfif>
 		</cfloop>
