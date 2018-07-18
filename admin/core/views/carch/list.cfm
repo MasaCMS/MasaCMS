@@ -746,7 +746,7 @@
 					return {
 						siteid:'#esapiEncode('javascript',session.siteID)#',
 						moduleid:'#esapiEncode('javascript',$.event("moduleid"))#',
-						topid:'#esapiEncode('javascript',session["#$.event("moduleid")#"].topid)#',
+						topid:'#esapiEncode('javascript',session["m#$.event("moduleid")#"].topid)#',
 						sortby:'#esapiEncode('javascript',session.flatViewArgs["#session.siteID#"].sortby)#',
 						sortdirection:'#esapiEncode('javascript',session.flatViewArgs["#session.siteID#"].sortdirection)#',
 						page:'#esapiEncode('javascript',session.flatViewArgs["#session.siteID#"].page)#',

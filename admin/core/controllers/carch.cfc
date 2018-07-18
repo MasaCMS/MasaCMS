@@ -86,22 +86,24 @@ component extends="controller" output="false" {
 			} else if ( !len(arguments.rc.moduleid) ) {
 				arguments.rc.moduleid=session.moduleid;
 			}
-			if ( !structKeyExists(session,'00000000000000000000000000000000000') ) {
-				session['00000000000000000000000000000000000']={topid="00000000000000000000000000000000001"};
+			if ( !structKeyExists(session,'m00000000000000000000000000000000000') ) {
+				session['m00000000000000000000000000000000000']={topid="00000000000000000000000000000000001"};
 			}
-			if ( !structKeyExists(session,'00000000000000000000000000000000003') ) {
-				session['00000000000000000000000000000000003']={topid="00000000000000000000000000000000003"};
+			if ( !structKeyExists(session,'m00000000000000000000000000000000003') ) {
+				session['m00000000000000000000000000000000003']={topid="00000000000000000000000000000000003"};
 			}
-			if ( !structKeyExists(session,'00000000000000000000000000000000004') ) {
-				session['00000000000000000000000000000000004']={topid="00000000000000000000000000000000004"};
+			if ( !structKeyExists(session,'m00000000000000000000000000000000004') ) {
+				session['m00000000000000000000000000000000004']={topid="00000000000000000000000000000000004"};
 			}
-			if ( !structKeyExists(session,'00000000000000000000000000000000099') ) {
-				session['00000000000000000000000000000000099']={topid="00000000000000000000000000000000099"};
+			if ( !structKeyExists(session,'m00000000000000000000000000000000099') ) {
+				session['m00000000000000000000000000000000099']={topid="00000000000000000000000000000000099"};
 			}
+
 			if ( !isDefined("arguments.rc.topid") || !len(arguments.rc.topid) ) {
-				arguments.rc.topid=session['#session.moduleid#'].topid;
+				arguments.rc.topid=session['m#session.moduleid#'].topid;
 			}
-			session['#session.moduleid#']={topid=arguments.rc.topid};
+
+			session['m#session.moduleid#']={topid=arguments.rc.topid};
 		}
 	}
 
