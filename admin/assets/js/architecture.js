@@ -468,8 +468,8 @@ buttons: {
 		}
 		document.getElementById('newZoom').style.display = '';
 		document.getElementById('newZoomLink').style.display = '';
-
-		if(navperm != 'none' && moduleid != '00000000000000000000000000000000099') {
+	
+		if(navperm != 'none' && moduleid != '00000000000000000000000000000000099' && type.toLowerCase() != 'module') {
 
 			document.getElementById('newCopyLink').href = 'javascript:siteManager.copyThis(\'' + siteid + '\', \'' + contentid + '\',\'false\')';
 			document.getElementById('newCopyAllLink').href = 'javascript:siteManager.copyThis(\'' + siteid + '\', \'' + contentid + '\',\'true\')';
