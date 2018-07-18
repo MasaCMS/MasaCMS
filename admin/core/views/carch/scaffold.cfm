@@ -357,6 +357,7 @@
 					:name="property.name"
 					:data-validate="property.validate ? property.validate : null"
 					:data-validate-message="property.validatemessage ? property.validatemessage : null"
+					rows="10"
 					>{{model[property.name] ? model[property.name] : property.default}}</textarea>
 			</div>
 		</div>
@@ -374,7 +375,7 @@
 					:name="property.name"
 					:data-validate="property.validate ? property.validate : null"
 					:data-validate-message="property.validatemessage ? property.validatemessage : null"
-					>{{model[property.name] ? model[property.name] : property.default}}</textarea>
+					rows="10">{{model[property.name] ? model[property.name] : property.default}}</textarea>
 			</div>
 		</div>
 	</template>

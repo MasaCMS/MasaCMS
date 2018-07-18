@@ -796,6 +796,7 @@ function getEndRow() output=false {
 	<cfset var jointableS="">
 	<cfset var dbType=getDbType()>
 	<cfset var tableModifier="">
+	<cfset var transformCriteria="">
 
 	<cfif getDbType() eq "MSSQL">
 		<cfset tableModifier="with (nolock)">
@@ -898,7 +899,7 @@ function getEndRow() output=false {
 		<!--- Join to implied tables based on field prefix --->
 		<cfloop list="#jointables#" index="jointable">
 			<cfset started=false>
-			<cfif arrayLen(variables.instance.jointables)>
+			<cfif arrayLen(variables.instance.joins)>
 				<cfloop from="1" to="#arrayLen(variables.instance.joins)#" index="local.i">
 					<cfif variables.instance.joins[local.i].table eq jointable>
 						<cfset started=true>
@@ -931,7 +932,7 @@ function getEndRow() output=false {
 		</cfif>
 
 		<cfif variables.instance.params.recordcount>
-		<cfset started = false />
+		<cfset started = false>
 		<cfloop query="variables.instance.params">
 			<cfset param=createObject("component","mura.queryParam").init(variables.instance.params.relationship,
 					variables.instance.params.field,
@@ -962,22 +963,50 @@ function getEndRow() output=false {
 					<cfset openGrouping=true />
 				<cfelseif listFindNoCase("closeGrouping,)",param.getRelationship())>
 					)
-					<cfset openGrouping=false />
+					<cfset openGrouping=false>
 				<cfelseif not openGrouping>
 					#param.getRelationship()#
 				</cfif>
 
 				<cfset started = true />
-
 				<cfset isListParam=listFindNoCase("IN,NOT IN",param.getCondition())>
+
 				<cfif len(param.getField())>
 					#param.getFieldStatement()#
 					<cfif param.getCriteria() eq 'null'>
 						#param.getCondition()# NULL
 					<cfelse>
-						#param.getCondition()# <cfif isListParam>(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#" null="#iif(param.getCriteria() eq 'null',de('true'),de('false'))#"><cfif isListParam>)</cfif>
+						#param.getCondition()#
+
+						<!---
+							Support to recognize if the param criteria is prefix with a table or entityname
+							Vague CF10 support
+						--->
+						<cfif listLen(param.getCriteria(),'.') eq 2>
+							<cfset transformCriteria=listToArray(param.getCriteria(),'.')>
+							<!--- Check if it's an entity make sure schema data is loaded --->
+							<cfif getServiceFactory().containsBean('#transformCriteria[1]#')>
+								<cfset local.related=getBean('#transformCriteria[1]#')>
+								<cfif isDefined('local.related.getFeed')>
+									<cfset local.related.getFeed().loadTableMetaData()>
+								</cfif>
+							</cfif>
+							<!--- Is it the name of an entity --->
+							<cfif structKeyExists(application.objectMappings,'#transformCriteria[1]#') and structKeyExists(application.objectMappings['#transformCriteria[1]#'].columns,'#transformCriteria[2]#')>
+								#application.objectMappings['#transformCriteria[1]#'].table#.#sanitizedValue(transformCriteria[2])#
+							<cfelse>
+								<!--- Is it the name of table that has been joined --->
+								<cfif application.objectMappings[ getEntityName()].table eq transformCriteria[1] or hasJoin(transformCriteria[1])>
+									#transformCriteria[1]#.#sanitizedValue(transformCriteria[2])#
+								<cfelse>
+									<cfif isListParam>(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#" null="#iif(param.getCriteria() eq 'null',de('true'),de('false'))#"><cfif isListParam>)</cfif>
+								</cfif>
+							</cfif>
+						<cfelse>
+							<cfif isListParam>(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#" null="#iif(param.getCriteria() eq 'null',de('true'),de('false'))#"><cfif isListParam>)</cfif>
+						</cfif>
 					</cfif>
-					<cfset openGrouping=false />
+					<cfset openGrouping=false>
 				</cfif>
 			</cfif>
 		</cfloop>
