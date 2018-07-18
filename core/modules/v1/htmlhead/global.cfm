@@ -66,7 +66,6 @@ layoutmanager:#variables.$.getContentRenderer().useLayoutManager()#,
 type:"#esapiEncode('javascript',variables.$.content('type'))#",
 subtype:"#esapiEncode('javascript',variables.$.content('subtype'))#",
 queueObjects: #esapiEncode('javascript',this.queueObjects)#,
-cookieConsentEnabled:<cfif this.cookieConsentEnabled>1<cfelse>0</cfif>,
 rb:#variables.$.siteConfig().getAPI('json','v1').getSerializer().serialize(variables.$.getClientRenderVariables())#,
 #trim(variables.$.siteConfig('JSDateKeyObjInc'))#
 });
@@ -95,11 +94,13 @@ layoutmanager:#variables.$.getContentRenderer().useLayoutManager()#,
 type:"#esapiEncode('javascript',variables.$.content('type'))#",
 subtype:"#esapiEncode('javascript',variables.$.content('subtype'))#",
 queueObjects: #esapiEncode('javascript',this.queueObjects)#,
-cookieConsentEnabled:<cfif this.cookieConsentEnabled>1<cfelse>0</cfif>,
 rb:#variables.$.siteConfig().getAPI('json','v1').getSerializer().serialize(variables.$.getClientRenderVariables())#,
 #trim(variables.$.siteConfig('JSDateKeyObjInc'))#
 });
 </script>
 </cfoutput>
+</cfif>
+<cfif this.cookieConsentEnabled>
+<cfoutput>#$.dspObject_Include(thefile='cookie_consent/index.cfm')#</cfoutput>
 </cfif>
 </cfif>

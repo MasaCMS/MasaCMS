@@ -1,7 +1,7 @@
 <cfoutput>
 	<cfparam name="objectparams.ctaid" default="#objectparams.instanceid#">
 	<cfif len(m.event('consent'))>
-		<cfset m.getBean('utility').setCookie(name='MURA_CONSENT',value="YES+#dateformat(now(),'yyyymmdd')#-#hour(now())#-#minute(now())#")>
+		<cfset m.getBean('utility').setCookie(name='MURA_CONSENT',value="YES+#dateformat(now(),'yyyymmdd')#-#hour(now())#-#minute(now())#",httponly=false)>
 		<script>
 			Mura(function(){
 					Mura('##mura-cta-#esapiEncode('javascript',objectparams.ctaid)#')

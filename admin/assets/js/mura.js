@@ -3207,6 +3207,10 @@ var Mura=(function(){
           config.context = '';
       }
 
+			if (!config.rootpath) {
+          config.rootpath = config.context;
+      }
+
       if (!config.assetpath) {
           config.assetpath = config.context + "/" + config.siteid;
       }
@@ -3346,6 +3350,8 @@ var Mura=(function(){
 
 
             processMarkup(document);
+
+						Mura.markupInitted=true;
 
 						if(Mura.cookieConsentEnabled){Mura(function(){Mura('body').appendDisplayObject({object:'cookie_consent',queue:false});});}
 
@@ -11273,13 +11279,21 @@ Mura.DOMSelection = Mura.Core.extend(
                       Mura.createUUID()
                   );
 
-                  Mura(this).append(el);
+									var self=this;
 
-                  Mura.processDisplayObject(
-                      el,true,true).then(
-                      resolve, reject
-                  );
+									function watcher(){
+										if(Mura.markupInitted){
+											Mura(self).append(el);
+											Mura.processDisplayObject(
+													el,true,true).then(
+													resolve, reject
+											);
+										} else {
+											setTimeout(watcher);
+										}
+									}
 
+									watcher();
               });
           });
       },
@@ -11327,12 +11341,21 @@ Mura.DOMSelection = Mura.Core.extend(
                       Mura.createUUID()
                   );
 
-                  Mura(this).prepend(el);
+                  var self=this;
 
-                  Mura.processDisplayObject(
-                      el,true,true).then(
-                      resolve, reject
-                  );
+									function watcher(){
+										if(Mura.markupInitted){
+											Mura(self).append(el);
+											Mura.processDisplayObject(
+													el,true,true).then(
+													resolve, reject
+											);
+										} else {
+											setTimeout(watcher);
+										}
+									}
+
+									watcher();
 
               });
           });
@@ -13096,7 +13119,7 @@ var Mura=__webpack_require__(10);
 
 /**
  * Creates a new Mura.EntityCollection
- * @name  Mura.Entity.EntityCollection
+ * @name  Mura.EntityCollection
  * @class
  * @extends Mura.Entity
  * @memberof  Mura

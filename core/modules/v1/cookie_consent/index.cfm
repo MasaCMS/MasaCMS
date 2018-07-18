@@ -1,7 +1,7 @@
-<cfif not isdefined('cookie.mura_consent')>
-	<cfoutput>
-			<script>
-			Mura(function(){
+<cfoutput>
+	<script>
+		Mura(function(){
+				if(!Mura.readCookie('MURA_CONSENT')){
 					Mura('body').appendDisplayObject(
 						{
 							object:'cta',
@@ -12,7 +12,7 @@
 							width:'#this.cookieConsentWidth#'
 						}
 					);
-			});
-			</script>
-	</cfoutput>
-</cfif>
+				}
+		});
+	</script>
+</cfoutput>
