@@ -8,14 +8,6 @@
 			});
 		</script>
 	<cfelse>
-		<cfif getServiceFactory().containsBean('marketingManager')>
-			<script>
-				Mura(function(){
-					var trackingID = "#$.content('contentid')#cookie_consent_cta";
-					Mura.trackingMetadata[trackingID]=#serializeJSON($.getBean('marketingManager').getTrackingProperties($))#;
-				});
-			</script>
-		</cfif>
 		<cfset cookieConsentComponent=m.getBean('content')>
 		<cfset cookieConsentComponent.loadBy(title='Cookie Consent',type='Component')>
 		<div class="mura-cta__cookie_consent_wrapper">
