@@ -2036,6 +2036,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cfscript>
+
+//Make sure queries set with configBean don't act like Mura ORN customDatasoure.
+function hasCustomDatasource(){
+	return false;
+}
+
 function addEventHandler(component){
 	if(!isObject(arguments.component) && isStruct(arguments.component)){
 		for(var e in arguments.component){
