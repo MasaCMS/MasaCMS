@@ -138,7 +138,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	});
 	</cfoutput>
 
-	$(document).unload(function(){
+	$(document).on('unload',function(){
 		if(!siteManager.formSubmitted && siteManager.requestedURL != '')
 		{
 			conditionalExit();

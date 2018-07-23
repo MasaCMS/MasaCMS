@@ -3,7 +3,7 @@ version: '2.1'
 services:
   #Mura Server
   mura_mysql_cfml:
-    image: ortussolutions/commandbox:latest
+    image: ortussolutions/commandbox:3.9.2
     environment:
       URL_REWRITES: "true"
       PORT: 8080

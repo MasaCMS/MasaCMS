@@ -721,8 +721,15 @@ function createCookie(name, value, days) {
 		var date = new Date();
 		date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
 		var expires = "; expires=" + date.toGMTString();
-	} else var expires = "";
-	document.cookie = name + "=" + value + expires + "; path=/";
+	} else {
+		var expires = "";
+	}
+	if(typeof location != 'undefined' && location.protocol == 'https:'){
+		secure='; secure';
+	} else {
+		secure='';
+	}
+	document.cookie = name + "=" + value + expires + "; path=/" + secure;
 }
 
 function readCookie(name) {
@@ -992,7 +999,7 @@ function openFileMetaData(contenthistid,fileid,siteid,property) {
 				var pars = 'muraAction=cArch.loadfilemetadata&fileid=' + fileid + '&property=' + property  + '&contenthistid=' + contenthistid + '&siteid=' + siteid + '&cacheid=' + Math.random();
 				$("#newFileMetaContainer .load-inline").spin(spinnerArgs2);
 
-				$.get(url + "?" + pars).done(function(data) {
+				Mura.get(url + "?" + pars).then(function(data) {
 
 					if(data.indexOf('mura-primary-login-token') != -1) {
 						location.href = './';
@@ -1030,7 +1037,8 @@ function openFileMetaData(contenthistid,fileid,siteid,property) {
 
 					$('.filemeta:first').focus();
 
-				}).error(function(data){
+				},
+				function(data){
 					$('#newFileMetaContainer').html(data.responseText);
 					$("#newFileMetaContainer").dialog("option", "position", getDialogPosition());
 				});
