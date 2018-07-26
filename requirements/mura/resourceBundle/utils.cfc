@@ -296,63 +296,90 @@ component extends="mura.cfobject" output="false" hint="This provides resource bu
 		}
 	}
 
+	//Since these locales use unicode in their short date format they need to use the en versions
+	variables.localeLookup={
+		"zh-HK"={
+			dtCh="-",
+			dtFormat="1,0,2",
+			dateKeyFormat="dd-mm-yyyy"
+		},
+		"zh-TW"={
+			dtCh="/",
+			dtFormat="2,0,1",
+			dateKeyFormat="yyyy/mm/dd"
+		},
+		"ru"={
+			dtCh=".",
+			dtFormat="1,0,2",
+			dateKeyFormat="dd.mm.yyyy"
+		},
+		"tr"={
+			dtCh=".",
+			dtFormat="1,0,2",
+			dateKeyFormat="dd.mm.yyyy"
+		},
+		"uk"={
+			dtCh="/",
+			dtFormat="1,0,2",
+			dateKeyFormat="dd/mm/yyyy"
+		}
+	};
+
 	public function setJSDateKeys() output=false {
 		//  make sure that a locale and language resouce bundle have been set in the users session
-		var f="";
-		var dtCh="";
-		var dtFormat="";
-		var formatTest=LSDateFormat(createDate(2018,11,10),'short');
 		var sessionData=getSession();
-		variables.jsDateKey="";
-		variables.dateKeyFormat="";
-		variables.datekeyExample="";
-		//  now we create a date so we can parse it and figure out the date format and then create a date validation key
-		if ( find(".",formatTest) ) {
-			dtCh=	".";
-		} else if ( find("-",formatTest) ) {
-			dtCh=	"-";
-		} else {
-			dtCh=	"/";
-		}
-		dtFormat="";
-
-		for(f in ListToArray(formatTest,dtCh)){
-			if ( listFind("2018,18",f) ) {
-				variables.dateKeyFormat=listAppend(variables.dateKeyFormat,"YYYY",dtCh);
-			} else if ( f == 11 ) {
-				variables.dateKeyFormat=listAppend(variables.dateKeyFormat,"MM",dtCh);
-			} else {
-				variables.dateKeyFormat=listAppend(variables.dateKeyFormat,"DD",dtCh);
-			}
-		}
-
-		dtFormat=listAppend(dtFormat,listFind(formatTest,"11",dtCh) -1);
-		dtFormat=listAppend(dtFormat,listFind(formatTest,"10",dtCh) -1);
-		if ( listFind(formatTest,"2018",dtCh) ) {
-			dtFormat=listAppend(dtFormat,listFind(formatTest,"2018",dtCh) -1);
-		} else if ( listFind(formatTest,"18",dtCh) ) {
-			dtFormat=listAppend(dtFormat,listFind(formatTest,"18",dtCh) -1);
-		}
-		variables.datekeyExample=lsDateFormat(createDate(2018,11,10),variables.datekeyFormat);
 		if ( !isdefined('sessionData.locale') ) {
 			sessionData.locale="en_US";
 		}
-		savecontent variable="variables.jsDateKey" {
-				writeOutput('<script type="text/javascript">
-	var dtExample="#variables.datekeyExample#";
-	var dtCh="#dtCh#";
-	var dtFormat =[#dtFormat#];
-	var dtLocale="#replace(sessionData.locale,'_','-')#";
-	</script>');
+		var targetLocale=replace(sessionData.locale,'_','-');
+		variables.jsDateKey="";
+		variables.dateKeyFormat="";
+		variables.datekeyExample="";
+
+		if(!structKeyExists(variables.localeLookup,targetLocale)){
+			var f="";
+			var dtCh="";
+			var dtFormat="";
+			var formatTest=LSDateFormat(createDate(2024,11,10),'short');
+
+			//  now we create a date so we can parse it and figure out the date format and then create a date validation key
+			if ( find(".",formatTest) ) {
+				dtCh=	".";
+			} else if ( find("-",formatTest) ) {
+				dtCh=	"-";
+			} else {
+				dtCh=	"/";
+			}
+			dtFormat="";
+
+			dtFormat=listAppend(dtFormat,listFind(formatTest,"11",dtCh) -1);
+			dtFormat=listAppend(dtFormat,listFind(formatTest,"10",dtCh) -1);
+			if ( listFind(formatTest,"2024",dtCh) ) {
+				dtFormat=listAppend(dtFormat,listFind(formatTest,"2024",dtCh) -1);
+			} else if ( listFind(formatTest,"24",dtCh) ) {
+				dtFormat=listAppend(dtFormat,listFind(formatTest,"24",dtCh) -1);
+			}
+
+			for(f in ListToArray(formatTest,dtCh)){
+				if ( listFind("2024,24",f) ) {
+					variables.dateKeyFormat=listAppend(variables.dateKeyFormat,"YYYY",dtCh);
+				} else if ( f == 11 ) {
+					variables.dateKeyFormat=listAppend(variables.dateKeyFormat,"MM",dtCh);
+				} else {
+					variables.dateKeyFormat=listAppend(variables.dateKeyFormat,"DD",dtCh);
+				}
+			}
+
+		} else {
+				dtCh=	variables.localeLookup['#targetLocale#'].dtCh;
+				dtFormat=	variables.localeLookup['#targetLocale#'].dtFormat;
+				variables.dateKeyFormat=variables.localeLookup['#targetLocale#'].dateKeyFormat;
 		}
 
-		savecontent variable="variables.jsDateKeyObjInc" {
-				writeOutput('dtExample:"#variables.datekeyExample#",
-	dtCh:"#dtCh#",
-	dtFormat:[#dtFormat#],
-	dtLocale:"#replace(sessionData.locale,'_','-')#"');
-		}
-	}
+		variables.datekeyExample=lsDateFormat(createDate(2024,11,10),variables.datekeyFormat);
+		variables.jsDateKey='<script type="text/javascript">var dtExample="#variables.datekeyExample#", dtCh="#dtCh#", dtFormat =[#dtFormat#], dtLocale="#targetLocale#";</script>';
+		variables.jsDateKeyObjInc='dtExample:"#variables.datekeyExample#",#chr(13)##chr(10)#dtCh:"#dtCh#",#chr(13)##chr(10)#dtFormat:[#dtFormat#],#chr(13)##chr(10)#dtLocale:"#targetLocale#"';
+}
 
 	public function getJsDateKeyObjInc() output=false {
 		return variables.jsDateKeyObjInc;
