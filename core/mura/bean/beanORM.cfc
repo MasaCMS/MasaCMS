@@ -430,7 +430,11 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 					}
 
 					qs.execute(sql=sql);
-					purgeCache();
+
+					if(getUseCache()){
+						purgeCache();
+					}
+
 					postUpdate();
 
 					pluginManager.announceEvent(eventToAnnounce='onAfter#variables.entityName#Update',currentEventObject=event,objectid=get(get('primaryKey')));
@@ -498,7 +502,10 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 					}
 
 					qs.execute(sql=sql);
-					purgeCache();
+
+					if(getUseCache()){
+						purgeCache();
+					}
 
 					var doesExist=exists();
 
@@ -688,7 +695,9 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 			qs.execute(sql='delete from #getTable()# where #getPrimaryKey()# = :primarykey');
 		}
 
-		purgeCache();
+		if(getUseCache()){
+			purgeCache();
+		}
 
 		postDelete();
 

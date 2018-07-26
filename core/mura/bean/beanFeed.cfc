@@ -960,7 +960,7 @@ function getEndRow() output=false {
 				</cfif>
 
 				<cfset started = true />
-				<cfset isListParam=listFindNoCase("IN,NOT IN",param.getCondition())>
+				<cfset isListParam=listFindNoCase("IN,NOT IN,NOTIN",param.getCondition())>
 
 				<cfif len(param.getField())>
 					#param.getFieldStatement()#
