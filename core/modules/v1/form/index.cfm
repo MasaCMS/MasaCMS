@@ -39,7 +39,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif IsValid('uuid', arguments.objectid)>
 		<cfset local.formBean = $.getBean('content').loadBy( contentid=arguments.objectid ) />
 	<cfelse>
-		<cfset local.formBean = $.getBean('content').loadBy( title=arguments.objectid ) />
+		<cfset local.formBean = $.getBean('content').loadBy( title=arguments.objectid, type='Form') />
 	</cfif>
 	<cfset $.event('formBean',local.formBean)>
 	<cfset variables.formOutput=application.pluginManager.renderEvent("onForm#local.formBean.getSubType()#BodyRender",variables.event)>

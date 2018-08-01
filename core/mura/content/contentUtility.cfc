@@ -317,15 +317,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfswitch expression="#arguments.field#">
 			<cfcase value="filename">
 				and filename = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fieldValue#"/>
-				and type in ('Folder','Page','Calendar','Gallery','Link','File')
+				and moduleid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getModuleID()#"/>
 			</cfcase>
 			<cfcase value="title">
 				and title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fieldValue#"/>
-				and type in ('Folder','Page','Calendar','Gallery','File','Link','Component','Form')
+				and moduleid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getModuleID()#"/>
 			</cfcase>
 			<cfcase value="urltitle">
 				and urltitle like <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fieldValue#"/>
-				and type in ('Folder','Page','Calendar','Gallery','File','Link')
+				and moduleid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getModuleID()#"/>
 			</cfcase>
 			<cfcase value="remoteID">
 				and remoteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fieldValue#"/>
