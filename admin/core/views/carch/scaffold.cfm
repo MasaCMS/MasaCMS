@@ -95,7 +95,7 @@
 						</li>
 				</ul>
 			</span>
-			<div  v-if="!data.list" class="scaffolder-loader load-inline"></div>
+			<div  v-if="!data.list" class="scaffolder-list-loader load-inline"></div>
 			<div v-if="data.list">
 				<table width="100%" class="table table-striped table-condensed table-bordered mura-table-grid" id="scaffold-table">
 
