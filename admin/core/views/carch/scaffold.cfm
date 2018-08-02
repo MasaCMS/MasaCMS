@@ -98,9 +98,7 @@
 			<div  v-if="!data.list" class="scaffolder-list-loader load-inline"></div>
 			<div v-if="data.list">
 				<table width="100%" class="table table-striped table-condensed table-bordered mura-table-grid" id="scaffold-table">
-
 					<thead>
-
 						<tr id="scaffold-filterby">
 							<th class="actions"></th>
 							<th class="var-width" v-for="item in data.listview">

@@ -530,7 +530,7 @@ Mura(function() {
 		mounted: function() {
 			// processes related 'many' children
 			this.$parent.state = [];
-			$('.scaffolder-list-loader').spin(spinnerArgs2);
+			this.showLoader();
 		},
 		methods: {
 			openEndpoint:function(){
@@ -540,35 +540,48 @@ Mura(function() {
 					window.open(MuraScaffold.getEndpoint() + this.$props.entityname, '_blank');
 				}
 			},
+			showLoader:function(){
+				delete this.data.list;
+				setTimeout(function(){$('.scaffolder-list-loader').spin(spinnerArgs2);},10)
+			},
 			goToAssembler: function(entityname){
 				location.href="./?muraAction=scaffold.assembler&entityname=" + entityname;
 			},
 			showForm: function(entityname,entityid,parentid){
+				this.showLoader();
 				Scaffolder.showForm(entityname,entityid,parentid);
 			},
 			applyFilter: function( event ) {
+				this.showLoader();
 				Scaffolder.applyFilter( event );
 			},
 			removeFilter:function(){
 			  Mura(".filter").val('');
+				this.showLoader();
 			  Scaffolder.applyFilter();
 			},
 			applyKeyFilter: function( event ) {
+				this.showLoader();
 				Scaffolder.applyKeyFilter( event );
 			},
 			applySortBy: function( col ) {
+				this.showLoader();
 				Scaffolder.applySortBy( col );
 			},
 			applyPage: function( action ) {
+				this.showLoader();
 				Scaffolder.applyPage( action );
 			},
 			applyItemsPer: function( e ) {
+				this.showLoader();
 				Scaffolder.applyItemsPer( e.target.value );
 			},
 			showAll: function() {
+				this.showLoader();
 				Scaffolder.showList('entity');
 			},
 			showList: function(name) {
+				this.showLoader();
 				Scaffolder.showList(name);
 			},
 			formatDate:function(dateString){
@@ -1019,7 +1032,7 @@ Mura(function() {
 			},
 			applyKeyFilter: function( e ) {
 				if(e.keyCode == 13){
-					MuraScaffold.this.currentView = 'scaffold-form-template';( this.doList,this.entityname,this.itemsper,this.sortBy,this.sortDir );
+					MuraScaffold.feed( this.doList,this.entityname,this.itemsper,this.sortBy,this.sortDir );
 				}
 			},
 			applyItemsPer: function( itemsper ) {
