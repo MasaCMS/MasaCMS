@@ -202,7 +202,7 @@ Mura(function() {
 								data.collection = collection;
 								data.list=collection.getAll().items;
 								data.links=collection.getAll().links;
-
+								data.loaded=true;
 								listener(data);
 							});
 						});
@@ -523,14 +523,23 @@ Mura(function() {
 	,
 	});
 
-
 	Vue.component('scaffold-list-template', {
 		template: '#scaffold-list-template',
 		props: ['entityname','data','state','currentparent','issuperuser'],
 		mounted: function() {
 			// processes related 'many' children
 			this.$parent.state = [];
-			this.showLoader();
+			this.entityTransitionLoader();
+		},
+		data:function(){
+			return {
+				listtransition:false
+			}
+		},
+		watch: {
+			 data: function () {
+				 this.listtransition=false;
+			 }
 		},
 		methods: {
 			openEndpoint:function(){
@@ -540,48 +549,52 @@ Mura(function() {
 					window.open(MuraScaffold.getEndpoint() + this.$props.entityname, '_blank');
 				}
 			},
-			showLoader:function(){
+			entityTransitionLoader:function(){
 				delete this.data.list;
-				setTimeout(function(){$('.scaffolder-list-loader').spin(spinnerArgs2);},10)
+				setTimeout(function(){$('.scaffolder-list-entity-loader').spin(spinnerArgs2);},10)
+			},
+			listTransitionLoader:function(){
+				this.listtransition=true;
+				setTimeout(function(){$('.scaffolder-list-transition-loader').spin(spinnerArgs2);},10)
 			},
 			goToAssembler: function(entityname){
 				location.href="./?muraAction=scaffold.assembler&entityname=" + entityname;
 			},
 			showForm: function(entityname,entityid,parentid){
-				this.showLoader();
 				Scaffolder.showForm(entityname,entityid,parentid);
 			},
 			applyFilter: function( event ) {
-				this.showLoader();
+				this.listTransitionLoader();
 				Scaffolder.applyFilter( event );
 			},
 			removeFilter:function(){
 			  Mura(".filter").val('');
-				this.showLoader();
+				this.listTransitionLoader();
 			  Scaffolder.applyFilter();
 			},
 			applyKeyFilter: function( event ) {
-				this.showLoader();
-				Scaffolder.applyKeyFilter( event );
+				if(event.keyCode == 13){
+					this.listTransitionLoader();
+					Scaffolder.applyKeyFilter( event );
+				}
 			},
 			applySortBy: function( col ) {
-				this.showLoader();
+				this.listTransitionLoader();
 				Scaffolder.applySortBy( col );
 			},
 			applyPage: function( action ) {
-				this.showLoader();
+				this.listTransitionLoader();
 				Scaffolder.applyPage( action );
 			},
 			applyItemsPer: function( e ) {
-				this.showLoader();
+				this.listTransitionLoader();
 				Scaffolder.applyItemsPer( e.target.value );
 			},
 			showAll: function() {
-				this.showLoader();
-				Scaffolder.showList('entity');
+				this.showList('entity');
 			},
 			showList: function(name) {
-				this.showLoader();
+				this.entityTransitionLoader();
 				Scaffolder.showList(name);
 			},
 			formatDate:function(dateString){
@@ -607,7 +620,6 @@ Mura(function() {
 		props: ['property','model','entity','mparent','properties'],
 		mounted: function() {
 			// processes related 'many' children
-			this.loaded=false;
 
 			MuraScaffold.feed( this.proplist,this.property.relatesto );
 		},
@@ -767,7 +779,8 @@ Mura(function() {
 			entityid: "",
 			currentView: 'scaffold-form-template',
 			currentparent: {},
-			issuperuser:window.IsSuperUser
+			issuperuser:window.IsSuperUser,
+			listtransition:false
 		},
 		mounted: function() {
 			//this.hide();
@@ -972,7 +985,7 @@ Mura(function() {
 				MuraScaffold.feed( this.doList,entityname,this.itemsper,this.sortBy,this.sortDir );
 			},
 			doList: function( data ) {
-				this.data = data;
+				this.data=data;
 				this.data.issuperuser=window.IsSuperUser;
 				this.currentView = 'scaffold-list-template';
 			},

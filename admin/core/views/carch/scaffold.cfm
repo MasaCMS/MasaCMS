@@ -67,6 +67,7 @@
 	</template>
 
 	<template id="scaffold-list-template">
+
 		<div>
 			<div class="btn-group pull-right">
 				<a v-if="currentparent && currentparent.properties" @click="showForm(currentparent.properties.entityname,currentparent.properties.id)" class="btn"><i class="mi-arrow-circle-left"></i> Back</a>
@@ -95,7 +96,7 @@
 						</li>
 				</ul>
 			</span>
-			<div  v-if="!data.list" class="scaffolder-list-loader load-inline"></div>
+			<div  v-if="!data.list" class="scaffolder-list-entity-loader load-inline"></div>
 			<div v-if="data.list">
 				<table width="100%" class="table table-striped table-condensed table-bordered mura-table-grid" id="scaffold-table">
 					<thead>
@@ -124,7 +125,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr v-if="data.list.length" v-for="(object,index) in data.list">
+						<tr v-if="data.list.length && !listtransition" v-for="(object,index) in data.list">
 								<td class="actions">
 								<a class="show-actions" href="javascript:;" <!---ontouchstart="this.onclick();"---> onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
 								<div class="actions-menu hide">
@@ -153,7 +154,9 @@
 					</tbody>
 				</table>
 
-				<div v-if="!data.list.length" class="help-block-empty">No items available.</div>
+				<div  v-if="listtransition" class="scaffolder-list-transition-loader load-inline"></div>
+
+				<div v-if="!data.list.length && !listtransition" class="help-block-empty">No items available.</div>
 
 				<span v-if="entityname != 'entity'">
 					<span v-if="currentparent && currentparent.properties">
