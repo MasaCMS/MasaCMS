@@ -530,6 +530,7 @@ Mura(function() {
 		mounted: function() {
 			// processes related 'many' children
 			this.$parent.state = [];
+			$('.scaffolder-loader').spin(spinnerArgs2);
 		},
 		methods: {
 			openEndpoint:function(){

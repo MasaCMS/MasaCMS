@@ -10,8 +10,6 @@
 <script src="#$.globalConfig('rootPath')#/core/vendor/vue/vue.js"></script>
 <script src="#$.globalConfig('rootPath')#/admin/assets/js/scaffold/scaffolder.js"></script>
 
-<div id="load-spin" style="display: none;"><div id="load-spin-spinner"></div></div>
-
 <div class="block-content">
 
 	<div id="container-scaffold">
@@ -81,6 +79,8 @@
 				</cfif>
 			</div> <!-- /.btn-group -->
 
+
+
 			<span v-if="entityname">
 				<ul class="breadcrumb" v-if="entityname=='entity'">
 						<li><strong><a @click="showAll" onclick="return false;" href="##"><i class="mi-cubes"></i>Custom Entities</a></strong></li>
@@ -95,7 +95,7 @@
 						</li>
 				</ul>
 			</span>
-
+			<div  v-if="!data.list" class="scaffolder-loader load-inline"></div>
 			<div v-if="data.list">
 				<table width="100%" class="table table-striped table-condensed table-bordered mura-table-grid" id="scaffold-table">
 
@@ -124,7 +124,6 @@
 							<th v-if="entityname == 'entity'">Dynamic</th>
 							<th v-else></th>
 						</tr>
-
 					</thead>
 					<tbody>
 						<tr v-if="data.list.length" v-for="(object,index) in data.list">
