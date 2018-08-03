@@ -149,7 +149,7 @@
 										<span v-else v-text="object[item.name]"></span>
 								</td>
 								<td v-if="entityname == 'entity' && object.dynamic"><i class="mi-check"></i></td>
-								<td v-else></td>
+								<td v-else><i class="mi-minus"></i></td>
 						</tr>
 					</tbody>
 				</table>
