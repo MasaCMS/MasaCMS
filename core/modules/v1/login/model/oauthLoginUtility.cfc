@@ -67,7 +67,7 @@ component extends="mura.cfobject" accessors=true output=false {
 
     // Copy across user's info from oAuth if it is a brand new user
 		if (userBean.getIsNew()) {
-			userBean.setState('');
+			userBean.setState(''); //This is prevent the state value from triggering an address
 			userBean.setPassword(createUUID());
 			userBean.setUsername(arguments.oAuth.username); //Unique?
 			userBean.setRemoteId(arguments.oAuth.id);
@@ -80,14 +80,21 @@ component extends="mura.cfobject" accessors=true output=false {
 		// Set baselines for lockdown check
 		var isNewAdmin = false;
 		var isNewSuperUser = false;
-		var createUserMemberships = false;
 
 		// If user's email domain is in the allowedAdminDomain list, add them to admin group.
 		var allowedAdminDomain = m.getBean('configBean').getAllowedAdminDomain();
 		oAuth.domain = listLast(oAuth.email, '@');
 		if (listFindNoCase(allowedAdminDomain, arguments.oAuth.domain)) {
 			userBean.setIsPublic('0');
-			createUserMemberships = true;
+		}
+
+		var adminGroupId = m.getBean('user').loadby(GroupName='Admin').get('UserId');
+
+		var allowedAdminGroupEmailList = m.getBean('configBean').getAllowedAdminGroupEmailList();
+		if (listFindNoCase(allowedAdminGroupEmailList, arguments.oAuth.email)) {
+			userBean.setIsPublic('0');
+			userBean.setGroupID(groupid=adminGroupId,append=true);
+			isNewAdmin = true;
 		}
 
 		// If user's email address is in the allowedS2EmailList, make them superuser and add them to admin group.
@@ -95,34 +102,27 @@ component extends="mura.cfobject" accessors=true output=false {
 		if (listFindNoCase(allowedS2EmailList, arguments.oAuth.email)) {
 			userBean.setIsPublic('0');
 			userBean.setS2('1');
-			isNewSuperUser = true;
-			createUserMemberships = true;
-		}
-
-		var adminGroupId = m.getBean('user').loadby(GroupName='Admin').get('UserId');
-		if (createUserMemberships) {
-			userId = userBean.get('userId');
 			userBean.setGroupID(groupid=adminGroupId,append=true);
-			isNewAdmin = true;
+			isNewSuperUser = true;
 		}
 
 		var isAdmin = listFindNoCase(userBean.getGroupId(), adminGroupId) || isNewAdmin;
 		var isSuperUser = userBean.getS2() == '1' || isNewSuperUser;
 		var isExistingUser = userBean.getIsNew() == 0;
 
-		var enableLockdown = application.settingsManager.getSite('authproject71').getEnableLockdown();
+		var enableLockdown = m.siteConfig().getEnableLockdown();
 
 		if (enableLockdown == 'development' || enableLockdown == 'maintenance') {
 			// If site is in development mode, only allow pre-existing user accounts through. An exception to this is new super users.
 			if ( (enableLockdown == "development" && isExistingUser) || isSuperUser) {
-				application.utility.setCookie(name="passedLockdown", value=true, expires='session');
+				m.getBean('utility').setCookie(name="passedLockdown", value=true, expires='session');
 				userBean.save();
 				userBean.login();
 			} else if ( enableLockdown == "maintenance" && isAdmin) {
-					// If the site is in maintenance mode, only allow admin user accounts through.
-					application.utility.setCookie(name="passedLockdown", value=true, expires='session');
-					userBean.save();
-					userBean.login();
+				// If the site is in maintenance mode, only allow admin user accounts through.
+				m.getBean('utility').setCookie(name="passedLockdown", value=true, expires='session');
+				userBean.save();
+				userBean.login();
 			}
 		} else {
 			// Site is in production mode
