@@ -551,11 +551,11 @@ Mura(function() {
 			},
 			entityTransitionLoader:function(){
 				delete this.data.list;
-				setTimeout(function(){$('.scaffolder-list-entity-loader').spin(spinnerArgs2);},10)
+				setTimeout(function(){$('.scaffolder-list-entity-loader > .load-inline').spin(spinnerArgs2);},10)
 			},
 			listTransitionLoader:function(){
 				this.listtransition=true;
-				setTimeout(function(){$('.scaffolder-list-transition-loader').spin(spinnerArgs2);},10)
+				setTimeout(function(){$('.scaffolder-list-transition-loader  > .load-inline').spin(spinnerArgs2);},10)
 			},
 			goToAssembler: function(entityname){
 				location.href="./?muraAction=scaffold.assembler&entityname=" + entityname;
@@ -985,6 +985,7 @@ Mura(function() {
 				MuraScaffold.feed( this.doList,entityname,this.itemsper,this.sortBy,this.sortDir );
 			},
 			doList: function( data ) {
+				data.listtransition=false;
 				this.data=data;
 				this.data.issuperuser=window.IsSuperUser;
 				this.currentView = 'scaffold-list-template';

@@ -96,7 +96,7 @@
 						</li>
 				</ul>
 			</span>
-			<div  v-if="!data.list" class="scaffolder-list-entity-loader load-inline"></div>
+			<div  v-if="!data.list" class="scaffolder-list-entity-loader"><div class="load-inline"></div></div>
 			<div v-if="data.list">
 				<table width="100%" class="table table-striped table-condensed table-bordered mura-table-grid" id="scaffold-table">
 					<thead>
@@ -154,7 +154,7 @@
 					</tbody>
 				</table>
 
-				<div  v-if="listtransition" class="scaffolder-list-transition-loader load-inline"></div>
+				<div v-if="listtransition" class="scaffolder-list-transition-loader"><div class="load-inline"></div></div>
 
 				<div v-if="!data.list.length && !listtransition" class="help-block-empty">No items available.</div>
 
