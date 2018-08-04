@@ -72,7 +72,8 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		registerEntity('comment',{
 			public=true,
 			moduleid='00000000000000000000000000000000015',
-			fields="entered,isspam,flagcount,parentid,name,isapproved,kids,isdeleted,userid,subscribe,isnew,contentid,path,siteid,id,remoteid,contenthistid"});
+			fields="entered,isspam,flagcount,parentid,name,isapproved,kids,isdeleted,userid,subscribe,isnew,contentid,path,siteid,id,remoteid,contenthistid"
+		});
 
 		registerEntity('user',{public=false,moduleid='00000000000000000000000000000000008'});
 		registerEntity('group',{public=false,moduleid='00000000000000000000000000000000008'});
