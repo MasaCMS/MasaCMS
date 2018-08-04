@@ -69,6 +69,11 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			fields="links,images,parentid,moduleid,path,contentid,contenthistid,changesetid,siteid,active,approved,title,menutitle,summary,tags,type,subtype,displayStart,displayStop,display,filename,url,assocurl,isNew,remoteid,remoteurl"
 		});
 
+		registerEntity('comment',{
+			public=true,
+			moduleid='00000000000000000000000000000000015',
+			fields="entered,isspam,flagcount,parentid,name,isapproved,kids,isdeleted,userid,subscribe,isnew,contentid,path,siteid,id,remoteid,contenthistid"});
+
 		registerEntity('user',{public=false,moduleid='00000000000000000000000000000000008'});
 		registerEntity('group',{public=false,moduleid='00000000000000000000000000000000008'});
 		registerEntity('address',{public=false,moduleid='00000000000000000000000000000000008'});
@@ -79,7 +84,6 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		registerEntity('file',{public=false,moduleid='00000000000000000000000000000000000'});
 		registerEntity('fileMetaData',{public=false,moduleid='00000000000000000000000000000000000'});
 		registerEntity('changesetCategoryAssignment',{public=false,moduleid='00000000000000000000000000000000000'});
-		registerEntity('comment',{public=true,moduleid='00000000000000000000000000000000015'});
 		registerEntity('stats',{public=false,moduleid='00000000000000000000000000000000000'});
 		//registerEntity('entity',{public=false,moduleid='00000000000000000000000000000000000',fields="entityid,name,dynamic,scaffold,bundleable,displayname",allowfieldselect=false});
 

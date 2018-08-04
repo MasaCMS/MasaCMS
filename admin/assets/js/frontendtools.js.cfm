@@ -236,6 +236,7 @@
 		var editableObj=utility(a);
 		var targetFrame='modal';
 
+		//This is an advance look at the protential configurable object to see if it's a non-configurable component for form
 		if(utility(a).hasClass("mura-object")){
 			var tempCheck=utility(a);
 		} else {
@@ -247,6 +248,7 @@
 			lcaseObject=lcaseObject.toLowerCase();
 		}
 
+		//If the it's a form of component that's not configurable then go straight to edit it
 		if((lcaseObject=='form' || lcaseObject=='component') && tempCheck.data('notconfigurable')){
 			if(Mura.isUUID(tempCheck.data('objectid'))){
 					src=adminLoc + '?muraAction=carch.editlive&compactDisplay=true&contentid=' + encodeURIComponent(tempCheck.data('objectid')) + '&type='+ encodeURIComponent(tempCheck.data('object')) + '&siteid='+  Mura.siteid + '&instanceid=' + encodeURIComponent(tempCheck.data('instanceid'));
@@ -256,6 +258,7 @@
 
 		}
 
+		//If there's no direct src to goto then we're going to assume it's a display object configurator
 		if(!src){
 			if(utility(a).hasClass("mura-object")){
 			var editableObj=utility(a);
@@ -263,9 +266,9 @@
 				var editableObj=utility(a).closest(".mura-object,.mura-async-object");
 			}
 
-				/*
-			This reloads the element in the dom to ensure that all the latest
-			values are present
+			/*
+				This reloads the element in the dom to ensure that all the latest
+				values are present
 			*/
 
 			editableObj=Mura('[data-instanceid="' + editableObj.data('instanceid') + '"]');
@@ -378,7 +381,7 @@
 
 				utility("##frontEndToolsModalBody").css("top",(utility(document).scrollTop()+80) + "px")
 				resizeFrontEndToolsModal(frontEndModalHeight);
-			} else{
+			} else {
 
 				if(Mura.type=='Variation' && Mura.remoteid){
 					src+='&remoteid=' + encodeURIComponent(Mura.remoteid);
