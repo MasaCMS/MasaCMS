@@ -80,6 +80,12 @@ component extends="mura.cfobject" {
 			public=true,
 			fields="parentid,moduleid,path,contentid,contenthistid,changesetid,siteid,active,approved,title,menutitle,summary,tags,type,subtype,displayStart,displayStop,display,filename,url,assocurl,isNew"
 		});
+		
+		registerEntity('comment',{
+			public=true,
+			moduleid='00000000000000000000000000000000015',
+			fields="entered,isspam,flagcount,parentid,name,isapproved,kids,isdeleted,userid,subscribe,isnew,contentid,path,siteid,id,remoteid,contenthistid"
+		});
 
 		registerEntity('user',{public=false,moduleid='00000000000000000000000000000000008'});
 		registerEntity('group',{public=false,moduleid='00000000000000000000000000000000008'});
@@ -91,7 +97,6 @@ component extends="mura.cfobject" {
 		registerEntity('file',{public=true,moduleid='00000000000000000000000000000000000'});
 		registerEntity('fileMetaData',{public=true,moduleid='00000000000000000000000000000000000'});
 		registerEntity('changesetCategoryAssignment',{public=true,moduleid='00000000000000000000000000000000000'});
-		registerEntity('comment',{public=true,moduleid='00000000000000000000000000000000015'});
 		registerEntity('stats',{public=true,moduleid='00000000000000000000000000000000000'});
 
 		return this;
