@@ -10,7 +10,7 @@ component extends="baseLoginProvider" accessors=true output=false {
 		authUrl &= "client_id=#variables.configBean.getGoogleClientID()#&";
 		authUrl &= "response_type=code&";
 		authUrl &= "scope=openid%20profile%20email&";
-		authUrl &= "redirect_uri=#urlEncodedFormat(variables.utility.getRequestProtocol() & variables.utility.getRequestHost() & variables.configBean.getServerPort() & variables.configBean.getContext() & '?google')#&";
+		authUrl &= "redirect_uri=#urlEncodedFormat(getCallbackURL())#&";
 		authUrl &= "state=#urlEncodedFormat(state)#&";
 		authUrl &= "nonce=#createUUID()#"; //UUID on session scope?? Potential problems.
 
@@ -66,12 +66,10 @@ component extends="baseLoginProvider" accessors=true output=false {
 
 	//Credit: http://www.sitekickr.com/blog/http-post-oauth-coldfusion
 	private function getAuthToken(code) {
-		var callback=variables.utility.getRequestProtocol() & variables.utility.getRequestHost() & variables.configBean.getServerPort() & variables.configBean.getContext() & '?google';
-
 		var postBody = "code=" & UrlEncodedFormat(arguments.code) & "&";
 			 postBody = postBody & "client_id=" & UrlEncodedFormat(variables.configBean.getGoogleClientID()) & "&";
 			 postBody = postBody & "client_secret=" & UrlEncodedFormat(variables.configBean.getGoogleClientSecret()) & "&";
-			 postBody = postBody & "redirect_uri=" & UrlEncodedFormat(callback) & "&";
+			 postBody = postBody & "redirect_uri=" & UrlEncodedFormat(getCallbackURL()) & "&";
 			 postBody = postBody & "grant_type=authorization_code";
 
 			var h = new http();
