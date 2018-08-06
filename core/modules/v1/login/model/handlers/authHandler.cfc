@@ -33,22 +33,25 @@ component extends="mura.cfobject" {
 
   function handleCallback(){
     //Attempt authentication
-
     if(getServiceFactory().containsBean(url.loginProvider & 'loginProvider')){
       var result = getBean(url.loginProvider & 'loginProvider').validateResult(url.code, url.error, url.state, session.urltoken);
-    }
-
-    //If authentication successful, redirect user to intended target, or home if no target exists
-
-    if( result.status ){
-      if(isDefined('session.mura.returnURL') && len(session.mura.returnURL)){
-        location(url="#session.mura.returnURL#", addToken="no");
-        } else {
-        location(url=getBean('configBean').getContext(), addToken="no");
-      }
-    }
-
-
+	    //If authentication successful, redirect user to intended target, or home if no target exists
+	    if( result.status ){
+	      if(isDefined('session.mura.returnURL') && len(session.mura.returnURL)){
+					if(request.returnFormat eq 'JSON'){
+						request.muraJSONRedirectURL=session.mura.returnURL;
+					} else {
+						location(url="#session.mura.returnURL#", addToken="no");
+					}
+	      } else {
+					if(request.returnFormat eq 'JSON'){
+						request.muraJSONRedirectURL=getBean('configBean').getContext();
+					} else {
+						location(url=getBean('configBean').getContext(), addToken="no");
+					}
+	      }
+	    }
+		}
   }
 
   // onLoginPromptRender
