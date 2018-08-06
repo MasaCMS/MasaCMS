@@ -9,7 +9,7 @@ component extends="mura.cfobject" accessors=true output=false {
 	}
 
 	function getCallbackURL(){
-		variables.utility.getRequestProtocol() & "://" &  variables.utility.getRequestHost() & variables.configBean.getServerPort() & variables.configBean.getContext() & '/?loginProvider=#variables.providerName#';
+		return variables.utility.getRequestProtocol() & "://" &  variables.utility.getRequestHost() & variables.configBean.getServerPort() & variables.configBean.getContext() & '/?loginProvider=#variables.providerName#';
 	}
 
 	function setReturnURL(){
