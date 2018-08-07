@@ -3033,6 +3033,12 @@ select * from rs order by name
 				<cfset handlerData.pluginName=eventHandler.getPluginName()>
 			<cfelseif len(eventHandler.getValue('pluginName'))>
 				<cfset handlerData.pluginName=eventHandler.getValue('pluginName')>
+			<cfelseif isDefined("eventHandler.moduleName")>
+				<cfset handlerData.pluginName=eventHandler.moduleName>
+			<cfelseif isDefined("eventHandler.getModuleName")>
+				<cfset handlerData.pluginName=eventHandler.getModuleName()>
+			<cfelseif len(eventHandler.getValue('moduleName'))>
+				<cfset handlerData.pluginName=eventHandler.getValue('moduleName')>
 			<cfelse>
 				<cfset handlerData.pluginName='undefined'>
 			</cfif>
