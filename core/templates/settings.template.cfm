@@ -9,6 +9,7 @@ adminssl=false
 allowautoupdates=true
 allowedIndexFiles=index.cfm,index.json,index.html
 allowlocalfiles=false
+alwaysUseLocalRenderer=false
 assetdir=
 assetpath=
 autodiscoverplugins=false
