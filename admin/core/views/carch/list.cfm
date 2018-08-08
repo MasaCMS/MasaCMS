@@ -655,14 +655,14 @@
   									  </a>
 
 
-  								  <cfif application.permUtility.getModulePerm("00000000000000000000000000000000003",session.siteid)>
+  								  <cfif listFindNocase('editor,author',application.permUtility.getPerm("00000000000000000000000000000000003",session.siteid))>
 
   									  <a class="site-manager-mod btn<cfif rc.moduleid eq "00000000000000000000000000000000003"> active</cfif>" data-moduleid="00000000000000000000000000000000003" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"layout.components"))#" href="##" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#esapiEncode('javascript',rc.siteid)#','','00000000000000000000000000000000003','','','Component',1)});">
   										  <i class="mi-align-justify"></i> #application.rbFactory.getKeyValue(session.rb,"layout.components")#
   									  </a>
 
   								  </cfif>
-  								  <cfif application.settingsManager.getSite(session.siteid).getDataCollection() and  application.permUtility.getModulePerm("00000000000000000000000000000000004",session.siteid)>
+  								  <cfif application.settingsManager.getSite(session.siteid).getDataCollection() and  listFindNocase('editor,author',application.permUtility.getPerm("00000000000000000000000000000000004",session.siteid))>
 
   									  <a class="site-manager-mod btn<cfif rc.moduleid eq "00000000000000000000000000000000004"> active</cfif>" data-moduleid="00000000000000000000000000000000004" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"layout.forms"))#" href="##" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#esapiEncode('javascript',rc.siteid)#','','00000000000000000000000000000000004','','','Form',1)});">
   										<i class="mi-toggle-on"></i> #application.rbFactory.getKeyValue(session.rb,"layout.forms")#
