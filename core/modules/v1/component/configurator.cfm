@@ -45,7 +45,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset content=rc.$.getBean('content').loadBy(contentid=rc.objectid)>
 	<cfset content.setType('Component')>
 	<cfset rc.rsComponents = application.contentManager.getComponentType(rc.siteid, 'Component','00000000000000000000000000000000000')/>
-	<cfset hasModulePerm=rc.configuratormode neq 'backend' and rc.$.getBean('permUtility').getModulePerm('00000000000000000000000000000000003',rc.siteid)>
+	<cfset hasModulePerm=rc.configuratormode neq 'backend' and listFindNocase('editor,author',rc.$.getBean('permUtility').getPerm('00000000000000000000000000000000003',rc.siteid))>
 </cfsilent>
 <cf_objectconfigurator>
 <cfoutput>

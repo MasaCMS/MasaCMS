@@ -42,7 +42,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 --->
 
-	<cfset hasModulePerm=rc.configuratormode neq 'backend' and rc.$.getBean('permUtility').getModulePerm('00000000000000000000000000000000004',rc.siteid)>
+	<cfset hasModulePerm=rc.configuratormode neq 'backend' and listFindNocase('editor,author',rc.$.getBean('permUtility').getPerm('00000000000000000000000000000000004',rc.siteid))>
 
 	<cfparam name="objectParams.view" default="">
 
