@@ -108,7 +108,11 @@
 								<cfsilent>
 			            <cfset perm=application.permUtility.getGroupPerm(rc.rslist.userid,rc.contentid,rc.siteid)/>
 									<cfif isModule and listFindNoCase('inherit,none',perm)>
-										<cfset perm="deny">
+										<cfif rc.moduleid eq "00000000000000000000000000000000000">
+											<cfset perm="read">
+										<cfelse>
+											<cfset perm="deny">
+										</cfif>
 									</cfif>
 								</cfsilent>
 		            <tr>
@@ -145,7 +149,13 @@
 							<cfsilent>
 				   			<cfset perm=application.permUtility.getGroupPerm(rc.rslist.userid,rc.contentid,rc.siteid)/>
 								<cfif isModule and listFindNoCase('inherit,none',perm)>
-									<cfset perm="deny">
+									<cfif isModule and listFindNoCase('inherit,none',perm)>
+										<cfif rc.moduleid eq "00000000000000000000000000000000000">
+											<cfset perm="read">
+										<cfelse>
+											<cfset perm="deny">
+										</cfif>
+									</cfif>
 								</cfif>
 							</cfsilent>
 			        <tr>
