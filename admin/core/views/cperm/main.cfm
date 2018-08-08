@@ -47,7 +47,7 @@
 <cfset rc.crumbdata=application.contentManager.getCrumbList(rc.contentid,rc.siteid)>
 <cfset chains=$.getBean('approvalChainManager').getChainFeed(rc.siteID).getIterator()>
 <cfset assignment=$.getBean('approvalChainAssignment').loadBy(siteID=rc.siteID, contentID=rc.contentID)>
-<cfset isModule=(rc.moduleid eq rc.contentid)>
+<cfset isModule=(rc.moduleid eq rc.contentid) or rc.contentid eq '00000000000000000000000000000000001'>
 <cfset colspan=6>
 <cfif rc.moduleID eq '00000000000000000000000000000000000'>
   <cfset colspan=colspan+1>
@@ -86,7 +86,7 @@
 		        <th>#application.rbFactory.getKeyValue(session.rb,'permissions.editor')#</th>
 		        <th>#application.rbFactory.getKeyValue(session.rb,'permissions.author')#</th>
 		        <cfif not isModule><th>#application.rbFactory.getKeyValue(session.rb,'permissions.inherit')#</th></cfif>
-		        <cfif isModule><th>#application.rbFactory.getKeyValue(session.rb,'permissions.readonly')#</th></cfif>
+		        <cfif rc.moduleid eq "00000000000000000000000000000000000"><th>#application.rbFactory.getKeyValue(session.rb,'permissions.readonly')#</th></cfif>
 		        <th>#application.rbFactory.getKeyValue(session.rb,'permissions.deny')#</th>
 		        <th class="var-width">#application.rbFactory.getKeyValue(session.rb,'permissions.group')#</th>
 		      </tr>
@@ -98,7 +98,7 @@
 		          <td><input type="radio" class="checkbox"disabled></td>
 		          <td><input type="radio" class="checkbox"disabled></td>
 		          <cfif not isModule><td><input type="radio" class="checkbox"disabled></td></cfif>
-		          <cfif isModule><td><input type="radio" class="checkbox" disabled></td></cfif>
+		          <cfif rc.moduleid eq "00000000000000000000000000000000000"><td><input type="radio" class="checkbox" disabled></td></cfif>
 		          <td nowrap class="var-width">Admin</td>
 		        </tr>
 		    </cfif>
@@ -116,7 +116,7 @@
 		            <td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="editor" <cfif perm eq 'Editor'>checked</cfif>></td>
 		            <td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="author" <cfif perm eq 'Author'>checked</cfif>></td>
 		            <cfif not isModule><td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="none" <cfif perm eq 'None'>checked</cfif><cfif isModule>disabled</cfif>></td></cfif>
-		            <cfif isModule><td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="read" <cfif perm eq 'Read'>checked</cfif>></td></cfif>
+		            <cfif rc.moduleid eq "00000000000000000000000000000000000"><td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="read" <cfif perm eq 'Read'>checked</cfif>></td></cfif>
 		            <td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="deny" <cfif perm eq 'Deny'>checked</cfif>></td>
 		            <td nowrap class="var-width">#esapiEncode('html',rc.rslist.GroupName)#</td>
 		            </tr>
@@ -137,7 +137,7 @@
 		        <th>#application.rbFactory.getKeyValue(session.rb,'permissions.editor')#</th>
 		        <th>#application.rbFactory.getKeyValue(session.rb,'permissions.author')#</th>
 		        <cfif not isModule><th>#application.rbFactory.getKeyValue(session.rb,'permissions.inherit')#</th></cfif>
-		        <cfif isModule><th>#application.rbFactory.getKeyValue(session.rb,'permissions.readonly')#</th></cfif>
+		        <cfif rc.moduleid eq "00000000000000000000000000000000000"><th>#application.rbFactory.getKeyValue(session.rb,'permissions.readonly')#</th></cfif>
 		        <th>#application.rbFactory.getKeyValue(session.rb,'permissions.deny')#</th>
 		        <th class="var-width">#application.rbFactory.getKeyValue(session.rb,'permissions.group')#</th>
 		        </tr>
@@ -153,7 +153,7 @@
 			          <td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="editor" <cfif perm eq 'Editor'>checked</cfif>></td>
 			    			<td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="author" <cfif perm eq 'Author'>checked</cfif>></td>
 			   				<cfif not isModule><td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="none" <cfif perm eq 'None'>checked</cfif><cfif isModule>disabled</cfif>></td></cfif>
-			    			<cfif isModule><td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="read" <cfif perm eq 'Read'>checked</cfif>></td></cfif>
+			    			<cfif rc.moduleid eq "00000000000000000000000000000000000"><td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="read" <cfif perm eq 'Read'>checked</cfif>></td></cfif>
 			    			<td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="deny" <cfif perm eq 'Deny'>checked</cfif>></td>
 								<td nowrap class="var-width">#esapiEncode('html',rc.rslist.GroupName)#</td>
 			        </tr>
