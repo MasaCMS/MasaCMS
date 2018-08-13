@@ -147,13 +147,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getAttribute" output="false">
-<cfargument name="key">
-<cfargument name="useMuraDefault" type="boolean" required="true" default="false">
-<cfset var rs="" />
-<cfset var tempDate="">
-<cfset var index=0>
-<cfset var nameKey="name_" & hash(lcase(arguments.key))>
-<cfset var idKey="id_" & arguments.key>
+	<cfargument name="key">
+	<cfargument name="useMuraDefault" type="boolean" required="true" default="false">
+	<cfset var rs="" />
+	<cfset var tempDate="">
+	<cfset var index=0>
+	<cfset var nameKey="name_" & hash(lcase(arguments.key))>
+	<cfset var idKey="id_" & arguments.key>
 
 	<cfif structKeyExists(variables.instance.nameLookUp,nameKey)>
 		<cfset index=variables.instance.nameLookUp[nameKey]>
@@ -163,7 +163,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif index>
 		<cfif len(variables.instance.data.baseID[index])>
-			<cfif  listFindNoCase("date,datetime",variables.instance.data.validation[index])>
+			<cfif listFindNoCase("date,datetime",variables.instance.data.validation[index])>
 				<cfset tempDate=variables.instance.data.attributeValue[index]>
 				<cftry>
 					<cfreturn parseDateTime(tempDate) />
@@ -217,7 +217,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>,
 				tclassextendattributes.attributeID,tclassextendattributes.defaultValue,tclassextendattributes.extendSetID,
 
-				#getDataTable()#.attributeValue
+				#getDataTable()#.attributeValue, #dataTable#.datetimevalue
 
 				from #getDataTable()# #tableModifier#
 				inner join tclassextendattributes #tableModifier# On (#getDataTable()#.attributeID=tclassextendattributes.attributeID)
@@ -256,7 +256,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>,
 			tclassextendattributes.attributeID,tclassextendattributes.defaultValue,tclassextendattributes.extendSetID,
 
-			#dataTable#.attributeValue
+			#dataTable#.attributeValue, #dataTable#.datetimevalue
 
 			from #dataTable# #tableModifier#
 			inner join tclassextendattributes #tableModifier# On (#dataTable#.attributeID=tclassextendattributes.attributeID)
@@ -272,12 +272,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif len(getType()) and len(getSubType()) and len(getSiteID())>
 		<cfquery name="rsCombine" dbtype="query">
-			select baseID, name, type, validation, label, attributeID, defaultValue, extendSetID<cfif variables.configBean.getDBType() neq "oracle">, attributeValue</cfif>
+			select baseID, name, type, validation, label, attributeID, defaultValue, extendSetID, datetimevalue<cfif variables.configBean.getDBType() neq "oracle">, attributeValue</cfif>
 			from rsExtended
 
 			union all
 
-			select '' baseID, attributename as name, type, validation, label, attributeID, defaultValue, extendSetID<cfif variables.configBean.getDBType() neq "oracle">, '' attributeValue</cfif>
+			select '' baseID, attributename as name, type, validation, label, attributeID, defaultValue, extendSetID, '' datetimevalue<cfif variables.configBean.getDBType() neq "oracle">, '' attributeValue</cfif>
 			from rsDefinitions
 			where siteID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSiteID()#">
 			and (
@@ -362,21 +362,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 <cffunction name="convertDataToStruct" output="false">
-<cfargument name="rs">
-
+	<cfargument name="rs">
 	<cfset var extData=structNew() />
-	<cfset var tempDate="" />
 	<cfif arguments.rs.recordcount>
 		<cfset extData.extendSetID=valueList(arguments.rs.extendSetID)>
 		<cfset extData.data=structNew()>
 
 		<cfloop query="arguments.rs">
 			<cfif len(arguments.rs.baseID)>
-				<cfif listFindNoCase("date,datetime",arguments.rs.validation) and len(arguments.rs.attributeValue)>
-					<cfset tempDate=arguments.rs.attributeValue>
+				<cfif listFindNoCase("date,datetime",arguments.rs.validation) and (len(arguments.rs.attributeValue) or len(arguments.rs.dateTimeValue))>
 					<cftry>
-						<cfset extData.data['#arguments.rs.name#']=parseDateTime(tempDate)>
-						<cfcatch><cfset extData.data['#arguments.rs.name#']=tempDate></cfcatch>
+						<cfset extData.data['#arguments.rs.name#']=parseDateTime(arguments.rs.datetimeValue)>
+						<cfcatch>
+							<cftry>
+								<cfset extData.data['#arguments.rs.name#']=parseDateTime(arguments.rs.attributeValue)>
+								<cfcatch>
+									<cfset extData.data['#arguments.rs.name#']=arguments.rs.attributeValue>
+								</cfcatch>
+							</cftry>
+						</cfcatch>
 					</cftry>
 				<cfelse>
 					<cfset extData.data['#arguments.rs.name#']=arguments.rs.attributeValue>
