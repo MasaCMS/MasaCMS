@@ -272,12 +272,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif len(getType()) and len(getSubType()) and len(getSiteID())>
 		<cfquery name="rsCombine" dbtype="query">
-			select baseID, name, type, validation, label, attributeID, defaultValue, extendSetID, datetimevalue<cfif variables.configBean.getDBType() neq "oracle">, attributeValue</cfif>
+			select baseID, name, type, validation, label, attributeID, defaultValue, extendSetID<cfif variables.configBean.getDBType() neq "oracle">, attributeValue</cfif>
 			from rsExtended
 
 			union all
 
-			select '' baseID, attributename as name, type, validation, label, attributeID, defaultValue, extendSetID, '' datetimevalue<cfif variables.configBean.getDBType() neq "oracle">, '' attributeValue</cfif>
+			select '' baseID, attributename as name, type, validation, label, attributeID, defaultValue, extendSetID<cfif variables.configBean.getDBType() neq "oracle">, '' attributeValue</cfif>
 			from rsDefinitions
 			where siteID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSiteID()#">
 			and (
@@ -299,6 +299,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 
 		</cfquery>
+
+		<cfset queryAddColumn(rsCombine,"datetimevalue","cf_sql_Timestamp",arrayNew(1))>
+		<cfloop query='rsExtended'>
+			<cfloop query='rsCombine'>
+				<cfif rsExtended.attributeID eq rsCombine.attributeID>
+					<cfset querySetCell(rsCombine, "datetimevalue", rsExtended.datetimevalue, rsCombine.currentrow)>
+					<cfbreak>
+				</cfif>
+			</cfloop>
+		</cfloop>
 
 		<!--- Can't union in clob attribute value so they are manually added after the fact --->
 		<cfif variables.configBean.getDBType() eq "oracle">
