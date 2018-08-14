@@ -205,7 +205,7 @@
 				<div class="help-block-inline">
 					"^" Delimiter, e.g. 1^2^3
 				</div>
-			<input type="text" v-model="data.optionvaluelistF"
+			<input type="text" v-model="data.optionvaluelist"
 				name="optionvaluelist">
 		</div>
 
