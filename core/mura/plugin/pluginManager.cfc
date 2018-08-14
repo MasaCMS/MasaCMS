@@ -1288,7 +1288,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfif arguments.index>
 		<cfreturn renderScript(runat=arguments.eventToRender,siteid=siteid,event=arguments.currentEventObject,index=arguments.index,objectid=arguments.objectid)>
 	<cfelse>
-		<cfreturn renderScript(runat=arguments.eventToRender,siteid=siteid,event=arguments.currentEventObject,rsHandlers=arguments.rsHandlers,moduleID=arguments.moduleID,objectid=arguments.objectid)>
+		<cfreturn renderScripts(runat=arguments.eventToRender,siteid=siteid,event=arguments.currentEventObject,rsHandlers=arguments.rsHandlers,moduleID=arguments.moduleID,objectid=arguments.objectid)>
 	</cfif>
 
 </cffunction>
