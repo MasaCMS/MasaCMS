@@ -3,7 +3,7 @@
 [![Crowdin](https://d322cqt584bo4o.cloudfront.net/muracms/localized.svg)](https://translate.getmura.com/project/muracms)
 [![Docs](https://img.shields.io/badge/view%20docs-readthedocs-blue.svg?style=flat-square)](http://docs.getmura.com/)
 
-[Mura](http://www.getmura.com) is a digital experience platform, created by [blueriver](http://www.blueriver.com). Mura wasdesigned to create Flow in the digital experience for Contant Managers, Content Contributors, Marketers and Developers. 
+[Mura](http://www.getmura.com) is a digital experience platform, created by [blueriver](http://www.blueriver.com). Mura was designed to build ambitious web, business-to-business and business-to-employee applications, and create Flow in the digital experience for Content Managers, Content Contributors, Marketers and Developers. 
 
 ## For those with Docker installed:
 
