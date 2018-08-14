@@ -1,13 +1,13 @@
-# MuraCMS
+# Mura Digital Experience Platform
 [![Build Status](https://travis-ci.org/blueriver/MuraCMS.svg?branch=master "master")](https://travis-ci.org/blueriver/MuraCMS)
 [![Crowdin](https://d322cqt584bo4o.cloudfront.net/muracms/localized.svg)](https://translate.getmura.com/project/muracms)
 [![Docs](https://img.shields.io/badge/view%20docs-readthedocs-blue.svg?style=flat-square)](http://docs.getmura.com/)
 
-Mura CMS is an open source content management system for CFML, created by [Blue River Interactive Group](http://www.getmura.com). Mura has been designed to be used by marketing departments, web designers and developers.
+[Mura](http://www.getmura.com) is a digital experience platform, created by [blueriver](http://www.blueriver.com). Mura wasdesigned to create Flow in the digital experience for Contant Managers, Content Contributors, Marketers and Developers. 
 
 ## For those with Docker installed:
 
-### Mura CMS Resources
+### Mura Resources
 
 * http://www.getmura.com
 * https://groups.google.com/forum/#!forum/mura-cms-developers
@@ -16,7 +16,7 @@ Mura CMS is an open source content management system for CFML, created by [Blue 
 
 ### Official Docker Image
 
-For production there is an official docker image available at <https://hub.docker.com/r/blueriver/muracms/>
+For production there is an official docker image available at <https://hub.docker.com/r/blueriver/mura/>
 
 ### Using Docker with Source Code
 
