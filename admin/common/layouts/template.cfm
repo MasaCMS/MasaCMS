@@ -68,7 +68,7 @@
 
 	<cfsilent>
 		<cfif not IsDefined("cookie.ADMINSIDEBAR")>
-			<cfset application.utility.setCookie(name="ADMINSIDEBAR",value="off")>
+			<cfset application.utility.setCookie(name="ADMINSIDEBAR",value="off",httponly=false)>
 		</cfif>
 		<cfparam name="request.action" default="core:cplugin.plugin">
 		<cfparam name="rc.originalfuseaction" default="#listLast(listLast(request.action,":"),".")#">
