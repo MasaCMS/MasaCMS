@@ -1285,7 +1285,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfelse>
 		<cfset siteID=arguments.currentEventObject.getValue('siteID')>
 	</cfif>
-	<cfif arguments.index>
+	<cfif arguments.index or len(arguments.objectid)>
 		<cfreturn renderScript(runat=arguments.eventToRender,siteid=siteid,event=arguments.currentEventObject,index=arguments.index,objectid=arguments.objectid)>
 	<cfelse>
 		<cfreturn renderScripts(runat=arguments.eventToRender,siteid=siteid,event=arguments.currentEventObject,rsHandlers=arguments.rsHandlers,moduleID=arguments.moduleID,objectid=arguments.objectid)>
@@ -2025,12 +2025,12 @@ select * from tplugins order by #arguments.orderby#
 
 					</cfif>
 			</cfif>
-			<cfif isDefined("variables.siteListeners.#siteIDadjusted#.#arguments.runat#")>
+			<cfif arguments.index and isDefined("variables.siteListeners.#siteIDadjusted#.#arguments.runat#")>
 
 					<cfset listenerStruct = variables.siteListeners[siteIDadjusted] />
 					<cfset listenerArray=listenerStruct[arguments.runat] />
 
-					<cfif arrayLen(listenerArray)>
+					<cfif arrayLen(listenerArray) and arrayLen(listenerArray) gte arguments.index>
 
 									<cfset eventHandler=variables.eventHandlers[listenerArray[arguments.index].index]>
 									<cfif isNumeric(eventHandler)>
@@ -2151,9 +2151,9 @@ select * from tplugins order by #arguments.orderby#
 				</cfif>
 			</cfif>
 		</cfif>
-		<cfif isDefined("variables.globalListeners.#arguments.runat#")>
+		<cfif arguments.index and isDefined("variables.globalListeners.#arguments.runat#")>
 			<cfset listenerArray=variables.globalListeners[arguments.runat]>
-			<cfif arrayLen(listenerArray)>
+			<cfif arrayLen(listenerArray) and arrayLen(listenerArray) gte arguments.index>
 				<cfset eventHandler=variables.eventHandlers[listenerArray[arguments.index].index]>
 				<cfif isNumeric(eventHandler)>
 					<cfset scriptIndex=eventHandler>
