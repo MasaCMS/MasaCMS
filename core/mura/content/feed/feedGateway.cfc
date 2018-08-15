@@ -510,7 +510,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 												<cfif param.getCriteria() neq 'null'>
 													<cfif param.getCondition() neq "like">
-														<cfset castfield=variables.configBean.getClassExtensionManager().getCastString(param.getField(),arguments.feedBean.getsiteid(),param.getDatatype())>
+														<cfif isDate(param.getCriteria()) or isNumeric(param.getCriteria())>
+															<cfset castfield=variables.configBean.getClassExtensionManager().getCastString(param.getField(),arguments.feedBean.getsiteid())>
+															<cfif castfield eq 'datetimevalue'>
+																<cfset param.setDatatype('datetime')>
+															<cfelseif castfield eq 'numericvalue'>
+																<cfset param.setDatatype('Numeric')>
+															</cfif>
+														<cfelse>
+															<cfset castfield=variables.configBean.getClassExtensionManager().getCastString(param.getField(),arguments.feedBean.getsiteid(),param.getDatatype())>
+														</cfif>
 													</cfif>
 
 													<cfif param.getCondition() eq 'like' and variables.configBean.getDbCaseSensitive()>

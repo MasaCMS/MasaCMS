@@ -386,6 +386,11 @@
 								and
 								<cfif param.getCondition() neq "like">
 									<cfset castfield=variables.configBean.getClassExtensionManager().getCastString(param.getField(),params.getsiteid())>
+									<cfif castfield eq 'datetimevalue'>
+										<cfset param.setDatatype('datetime')>
+									<cfelseif castfield eq 'numericvalue'>
+										<cfset param.setDatatype('Numeric')>
+									</cfif>
 								</cfif>
 								<cfif param.getCondition() eq "like" and variables.configBean.getDbCaseSensitive()>
 									upper(#castfield#)
