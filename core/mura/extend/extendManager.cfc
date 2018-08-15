@@ -1119,7 +1119,10 @@ and tclassextendattributes.type='File'
 <cfset var rs="">
 <cfif variables.configBean.getStrictExtendedData()>
 	<cfif not structKeyExists(arguments,"datatype")>
-		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
+		<cfparam name="request.muradatatypechecks" default="#structNew()#">
+
+		<cfif not structKeyExists(request.muradatatypechecks,'#arguments.attribute#')>
+			<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 				select validation from tclassextendattributes
 				where
 				<cfif isNumeric(arguments.attribute)>
@@ -1128,8 +1131,15 @@ and tclassextendattributes.type='File'
 					siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
 					and name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.attribute#">
 				</cfif>
-		</cfquery>
-		<cfset arguments.datatype=rs.validation>
+			</cfquery>
+			<cfif rs.recordcount>
+				<cfset request.muradatatypechecks['#arguments.attribute#']=rs.validation>
+			<cfelse>
+				<cfset request.muradatatypechecks['#arguments.attribute#']="stringvalue">
+			</cfif>
+		</cfif>
+
+		<cfset arguments.datatype=request.muradatatypechecks['#arguments.attribute#']>
 	</cfif>
 	<cfswitch expression="#arguments.datatype#">
 	<cfcase value="Numeric">
