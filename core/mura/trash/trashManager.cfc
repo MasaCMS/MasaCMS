@@ -375,10 +375,10 @@
 		from ttrash where
 		1=1
 		<cfif structKeyExists(arguments,"sinceDate") and isdate(arguments.sinceDate)>
-		and deletedDate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.sinceDate#">
+		and deletedDate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.sinceDate),month(arguments.sinceDate),day(arguments.sinceDate),0,0,0)#">
 		</cfif>
 		<cfif structKeyExists(arguments,"beforeDate") and isdate(arguments.beforeDate)>
-		and deletedDate <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.beforeDate#">
+		and deletedDate <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.beforeDate),month(arguments.beforeDate),day(arguments.beforeDate),23,59,59)#">
 		</cfif>
 		<cfif structKeyExists(arguments,"objectID")>
 		and objectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.objectID#">
