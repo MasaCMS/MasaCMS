@@ -25,6 +25,8 @@
 		<cfparam name="attributes.params.cssclass" default="">
 		<cfparam name="attributes.params.label" default="">
 		<cfparam name="attributes.params.object" default="">
+		<cfparam name="attributes.params.bgimage" default="">
+		<cfparam name="attributes.params.bgcolor" default="">
 		<cfparam name="attributes.params.isbodyobject" default="false">
 	</cfsilent>
 
@@ -95,8 +97,23 @@
 					#application.rbFactory.getKeyValue(session.rb,'collections.cssclass')#
 				</label>
 				<input name="cssclass" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.cssclass)#" maxlength="255">
+				<input name="class" type="hidden" class="objectParam" value="#esapiEncode('html_attr',attributes.params.class)#"/>
 			</div>
-	<input name="class" type="hidden" class="objectParam" value="#esapiEncode('html_attr',attributes.params.class)#"/>
+			<!---
+			<div class="mura-control-group">
+				<label>
+					#application.rbFactory.getKeyValue(session.rb,'collections.bgcolor')#
+				</label>
+				<input name="bgcolor" class="objectParam colorpicker" type="text" value="#esapiEncode('html_attr',attributes.params.bgcolor)#" maxlength="255">
+			</div>
+			<div class="mura-control-group">
+				<label>
+					#application.rbFactory.getKeyValue(session.rb,'collections.bgimage')#
+				</label>
+				<button type="button" class="btn mura-ckfinder" data-target="bgimage" data-type="image" data-completepath=false>Select Background Image</button>
+				<input name="bgimage" class="objectParam" type="hidden" value="#esapiEncode('html_attr',attributes.params.bgimage)#" maxlength="255">
+			</div>
+			--->
 	</cfoutput>
 	</div>
 	<script>
@@ -166,7 +183,7 @@
 	  					classInput.val(cssclassInput.val());
 	  				}
 
-						classInput.val($.trim(classInput.val())); 
+						classInput.val($.trim(classInput.val()));
 		  		}
 			}
 

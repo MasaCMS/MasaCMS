@@ -839,6 +839,7 @@ function setColorPickers(target) {
 		}).on('changeColor', function(e) {
 			var rgb=e.color.toRGB();
 			$(this).val('rgba('+rgb.r+','+rgb.g+','+rgb.b+','+rgb.a+')');
+			$(this).trigger('change')
 		});
 	});
 }

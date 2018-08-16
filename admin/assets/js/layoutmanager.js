@@ -155,8 +155,8 @@
 
 	function initDraggableObject_hoverout(e){
 		//e.stopPropagation();
+		Mura(this).removeClass('mura-active-target').calculateStyles();
 
-		Mura(this).removeClass('mura-active-target').removeAttr('style');
 	}
 
 	function initDraggableObject(item) {
@@ -608,7 +608,7 @@
 	}
 	function deInitLayoutManager(){
 		Mura.editing=false;
-		
+
 		Mura('body').addClass('mura-sidebar-state__hidden--right');
 		Mura('body').removeClass('mura-sidebar-state__pushed--right');
 

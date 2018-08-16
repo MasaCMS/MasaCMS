@@ -2428,6 +2428,9 @@ var Mura=(function(){
                       obj.data('rendertemplate', context.rendertemplate);
                   }
 
+									obj.css("background-color",obj.data('bgcolor'));
+									obj.css("backgroundImage",'url(' + obj.data('bgimageurl') + ')');
+
                   if (typeof Mura.DisplayObject[template] !=
                       'undefined') {
                       context.html = '';
@@ -2790,6 +2793,8 @@ var Mura=(function(){
       if (!self.getAttribute('data-instanceid')) {
           self.setAttribute('data-instanceid', createUUID());
       }
+
+			obj.calculateStyles(),
 
       //if(obj.data('async')){
       obj.addClass("mura-async-object");
@@ -7726,7 +7731,7 @@ this["Mura"]["templates"]["success"] = this.Mura.Handlebars.template({"compiler"
     var stack1, helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=helpers.helperMissing, alias3="function";
 
   return "<div class=\""
-    + ((stack1 = ((helper = (helper = helpers.formSuccessWrapperClass || (depth0 != null ? depth0.formSuccessWrapperClass : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"formSuccessWrapperClass","hash":{},"data":data}) : helper))) != null ? stack1 : "")
+    + ((stack1 = ((helper = (helper = helpers.formResponseWrapperClass || (depth0 != null ? depth0.formResponseWrapperClass : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"formResponseWrapperClass","hash":{},"data":data}) : helper))) != null ? stack1 : "")
     + "\">"
     + ((stack1 = ((helper = (helper = helpers.responsemessage || (depth0 != null ? depth0.responsemessage : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"responsemessage","hash":{},"data":data}) : helper))) != null ? stack1 : "")
     + "</div>\n";
@@ -9008,7 +9013,7 @@ rb: {
 	formfieldwrapperclass: "control-group",
 	formfieldlabelclass:"control-label",
 	formerrorwrapperclass: "",
-	formsuccesswrapperclass: "",
+	formresponsewrapperclass: "",
 	formgeneralcontrolclass:"form-control",
 	forminputclass:"form-control",
 	formselectclass:"form-control",
@@ -10349,8 +10354,16 @@ registerHelpers: function() {
 	});
 
 	Mura.Handlebars.registerHelper('formSuccessWrapperClass',function() {
-		if(self.rb.formsuccesswrapperclass){
-			return 'mura-response-success' + ' ' + self.rb.formsuccesswrapperclass;
+		if(self.rb.formresponsewrapperclass){
+			return 'mura-response-success' + ' ' + self.rb.formresponsewrapperclass;
+		} else {
+			return 'mura-response-success';
+		}
+	});
+
+	Mura.Handlebars.registerHelper('formResponseWrapperClass',function() {
+		if(self.rb.formresponsewrapperclass){
+			return 'mura-response-success' + ' ' + self.rb.formresponsewrapperclass;
 		} else {
 			return 'mura-response-success';
 		}
@@ -11646,31 +11659,50 @@ Mura.DOMSelection = Mura.Core.extend(
                   return getComputedStyle(this.selection[
                       0]);
               } catch (e) {
+									console.log(e)
                   return {};
               }
           } else if (typeof ruleName == 'object') {
               this.each(function(el) {
                   try {
                       for (var p in ruleName) {
-                          el.style[p] = ruleName[
-                              p];
+                          el.style[p] = ruleName[p];
                       }
-                  } catch (e) {}
+                  } catch (e) {console.log(e)}
               });
           } else if (typeof value != 'undefined') {
               this.each(function(el) {
                   try {
                       el.style[ruleName] = value;
-                  } catch (e) {}
+                  } catch (e) {console.log(e)}
               });
               return this;
           } else {
               try {
                   return getComputedStyle(this.selection[
                       0])[ruleName];
-              } catch (e) {}
+              } catch (e) {console.log(e)}
           }
       },
+
+			/**
+			 * calculateStyles - Looks at data attrs and sets appropriate styles
+			 *
+			 * @return {object}  Self
+			 */
+			calculateStyles: function() {
+					this.each(function(el) {
+						var obj=Mura(el);
+						obj.removeAttr('style');
+						if(obj.data('bgcolor')){
+							obj.css("background-color",obj.data('bgcolor'));
+						}
+						if(obj.data('bgimage')){
+							obj.css("background-image",'url(' + obj.data('bgimage') + ')');
+						}
+					});
+					return this;
+			},
 
       /**
        * text - Gets or sets the text content of each element in the selection
