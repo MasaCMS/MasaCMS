@@ -148,12 +148,15 @@
 				<div class="mura-panel-body">
 						<div class="container">
 							<div class="mura-control-group">
-								<div class="alert alert-info">
-									Select elements below to style
+								<div class="panel-gds-box" id="panel-gds-outer" data-gdsel="panel-style-outer"><span>Outer</span>
+									<cfif request.hasmetaoptions>
+										<div class="panel-gds-box" id="panel-gds-meta" data-gdsel="panel-style-meta"><span>Meta</span></div>
+									</cfif>
+									<div class="panel-gds-box" id="panel-gds-inner" data-gdsel="panel-style-content"><span>Content</span></div>
 								</div>
 								<div class="mura-panel-group" id="style-panels" role="tablist" aria-multiselectable="true">
 									<div class="mura-panel panel">
-										<div class="mura-panel-heading" role="tab" id="heading-style-outer">
+										<div id="heading-style-outer" class="mura-panel-heading" role="tab">
 											<h4 class="mura-panel-title">
 												<a class="collapsed" role="button" data-toggle="collapse" data-parent="##style-panels" href="##panel-style-outer" aria-expanded="false" aria-controls="panel-style-outer">
 													Outer
@@ -170,7 +173,7 @@
 												</div>
 												<div class="mura-control-group">
 													<label>
-														#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.customoutercssclasses')#
+														CSS Classes
 													</label>
 													<input name="cssclass" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.cssclass)#" maxlength="255">
 													<input name="class" type="hidden" class="objectParam" value="#esapiEncode('html_attr',attributes.params.class)#"/>
@@ -180,7 +183,7 @@
 									</div>
 									<cfif request.hasmetaoptions>
 									<div class="mura-panel panel">
-										<div class="mura-panel-heading" role="tab" id="heading-style-meta">
+										<div id="heading-style-meta" class="mura-panel-heading" role="tab">
 										<h4 class="mura-panel-title">
 											<a class="collapsed" role="button" data-toggle="collapse" data-parent="##style-panels" href="##panel-style-meta" aria-expanded="false" aria-controls="panel-style-meta">
 												Inner Meta
@@ -205,7 +208,8 @@
 										</div>
 									</div>
 									</cfif>
-									<div class="mura-panel-heading" role="tab" id="heading-style-content">
+								<div class="mura-panel panel">
+									<div id="heading-style-content" class="mura-panel-heading" role="tab">
 										<h4 class="mura-panel-title">
 											<a class="collapsed" role="button" data-toggle="collapse" data-parent="##style-panels" href="##panel-style-content" aria-expanded="false" aria-controls="panel-style-content">
 												Inner Content
@@ -248,8 +252,8 @@
 								</div>
 								<input name="backgroundImageRaw" type="hidden" id="backgroundImageRaw">
 								<input name="backgroundImage" id="backgroundImage" class="objectStyle" type="hidden" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundImage)#" maxlength="255">
-								--->
 							</div>
+								--->
 					</div>
 				</div> <!--- /end  mura-panel-collapse --->
 			</div> <!--- /end  mura-panel-body --->
@@ -281,6 +285,22 @@
 			$('input[name="cssclass"],select[name="alignment"],select[name="width"],select[name="offset"]').on('change', function() {
 				setPlacementVisibility();
 			});
+
+			$('.panel-gds-box').on('click',function(){
+				var gdspanel = $(this).attr('data-gdsel');
+				var gdstarget = $('#' + gdspanel);
+
+				$('.panel-gds-box').removeClass('active');
+				$(this).addClass('active');
+
+				$('#style-panels').find('.panel-collapse.in').removeClass('in');
+				$(gdstarget).addClass('in');
+
+				return false;
+			})
+
+			$('#style-panels .mura-panel-heading').hide();
+			$('#panel-gds-outer').trigger('click');
 
 			function setPlacementVisibility(){
 				var classInput=$('input[name="class"]');
@@ -368,3 +388,26 @@
 <cfelse>
 
 </cfif>
+
+<style type="text/css">
+	.panel-gds-box{
+		box-shadow: inset 0 0 0 2px #565656;
+    cursor: pointer;
+    margin: 8px 0;
+    padding: 6px 10px;
+	}
+	.panel-gds-box span{
+		font-size: 12px;
+    font-weight: 400;
+    color: #f3f3f3;
+    line-height: 1.2;
+	}
+
+	#panel-gds-meta + #panel-gds-inner{
+		margin-top: 10px;
+	}
+	.panel-gds-box.active{
+		box-shadow: inset 0 0 0 2px #bbbbbb;
+	}
+
+</style>
