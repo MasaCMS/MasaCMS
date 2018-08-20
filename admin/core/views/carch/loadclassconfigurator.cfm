@@ -49,6 +49,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfparam name="rc.parentid" default="">
 	<cfparam name="rc.contenthistid" default="">
 	<cfparam name="rc.objectid" default=""/>
+	<cfparam name="rc.configuratorMode" default="frontend">
+
 	<cfset contentRendererUtility=rc.$.getBean('contentRendererUtility')>
 	<cfset rc.classid=listLast(replace(rc.classid, "\", "/", "ALL"),"/")>
 	<cfset rc.container=listLast(replace(rc.container, "\", "/", "ALL"),"/")>
@@ -59,6 +61,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<cfset objectParams={}>
 	</cfif>
+	<cfparam name="objectParams.cssstyles" default="#structNew()#">
+	<cfparam name="objectParams.metacssstyles" default="#structNew()#">
+	<cfparam name="objectParams.contentcssstyles" default="#structNew()#">
 	<cfset data=structNew()>
 	<cfset filefound=false>
 	<cfset $=rc.$>
@@ -105,7 +110,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfcase>
 		<cfdefaultcase>
 			<cfif rc.$.useLayoutManager()>
-				<cf_objectconfigurator></cf_objectconfigurator>
+				<cf_objectconfigurator basictab=false></cf_objectconfigurator>
 			<cfelse>
 				<cfoutput>
 					<div class="help-block-empty">This display object is not configurable.</div>

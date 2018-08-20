@@ -44,8 +44,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfsilent>
 	<cfparam name="objectParams.sourcetype" default="custom">
 	<cfparam name="objectParams.source" default="">
-	<cfset hasModuleAccess=rc.configuratormode neq 'backend' and rc.$.getBean('permUtility').getModulePerm('00000000000000000000000000000000003',rc.siteid)>
-	<cfset content=rc.$.getBean('content').loadBy(contenthistid=rc.contenthistid)>
+	<cfset content=rc.$.getBean('content').loadBy(contentid=rc.objectid)>
+	<cfset content.setType('Component')>
+	<cfset rc.rsComponents = application.contentManager.getComponentType(rc.siteid, 'Component','00000000000000000000000000000000000')/>
+	<cfset hasModulePerm=rc.configuratormode neq 'backend' and listFindNocase('editor,author',rc.$.getBean('permUtility').getPerm('00000000000000000000000000000000003',rc.siteid))>
 </cfsilent>
 <cfsavecontent variable="data.html">
 <cf_objectconfigurator params="#objectparams#">
@@ -60,10 +62,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<select class="objectParam" name="sourcetype">
 					<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectcontentsource')#</option>
 					<option <cfif objectParams.sourcetype eq 'custom'>selected </cfif>value="custom">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.custom')#</option>
-					<option <cfif objectParams.sourcetype eq 'boundattribute'>selected </cfif>value="boundattribute">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.boundattribute')#</option>
-					<!---
 					<option <cfif objectParams.sourcetype eq 'component'>selected </cfif>value="component">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.component')#</option>
-					--->
+					<option <cfif objectParams.sourcetype eq 'boundattribute'>selected </cfif>value="boundattribute">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.boundattribute')#</option>
 				</select>
 				<button id="editSource" class="btn"><i class="mi-pencil"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.edit')#</button>
 			</div>
@@ -71,13 +71,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectcomponent')#</label>
 				<cfset rs=rc.$.getBean('contentManager').getList(args={moduleid='00000000000000000000000000000000003',siteid=session.siteid})>
 				<select name="source" id="component">
-					<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectcomponent')#</option>
-					<cfloop query="rs">
-						<option value="#rs.contentid#"<cfif rs.contentid eq objectParams.source> selected</cfif>>#esapiEncode('html',rs.title)#</option>
+					<option value="{object:'component',objectid:'unconfigured'}">
+						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectcomponent')#
+					</option>`
+					<cfloop query="rc.rsComponents">
+						<cfset title=rc.rsComponents.menutitle>
+						<option <cfif rc.objectid eq rc.rsComponents.contentid and rc.object eq 'component'>selected </cfif>title="#esapiEncode('html_attr',title)#" value="#rc.rsComponents.contentid#">
+							#esapiEncode('html',title)#
+						</option>
 					</cfloop>
 				</select>
 
-				<cfif hasModuleAccess>
+				<cfif hasModulePerm>
 					<button class="btn" id="editBtnComponent"><i class="mi-plus-circle"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.createnew')#</button>
 				</cfif>
 			</div>
@@ -123,10 +128,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</select>
 			</div>
 		</div>
+		</div>
 
 		<!--- Include global config object options --->
 		<cfinclude template="#$.siteConfig().lookupDisplayObjectFilePath('object/configurator.cfm')#">
-	</div>
+
 	<cfparam name="objectParams.render" default="server">
 	<input type="hidden" class="objectParam" name="render" value="#esapiEncode('html_attr',objectParams.render)#">
 	<input type="hidden" class="objectParam" name="async" value="#esapiEncode('html_attr',objectParams.async)#">

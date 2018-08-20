@@ -59,9 +59,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<input type="hidden" class="objectParam" name="async" value="false">
 		</div>
 	</div>
+
+	</div>
 	<!--- Include global config object options --->
 	<cfinclude template="#$.siteConfig().lookupDisplayObjectFilePath('object/configurator.cfm')#">
-</div>
+
 </cfoutput>
 </cf_objectconfigurator>
 </cfsavecontent>

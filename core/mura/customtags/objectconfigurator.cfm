@@ -21,20 +21,46 @@
 		</cfif>
 
 		<cfparam name="attributes.configurable" default="true">
+		<cfparam name="request.hasbasicoptions" default="false">
+	 	<cfparam name="attributes.basictab" default="true">
+		<cfparam name="request.hasmetaoptions" default="false">
 		<cfparam name="attributes.params.class" default="">
 		<cfparam name="attributes.params.cssclass" default="">
+		<cfparam name="attributes.params.metacssclass" default="">
+		<cfparam name="attributes.params.metacssid" default="">
+		<cfparam name="attributes.params.contentcssclass" default="">
+		<cfparam name="attributes.params.contentcssid" default="">
+		<cfparam name="attributes.params.cssid" default="">
 		<cfparam name="attributes.params.label" default="">
 		<cfparam name="attributes.params.object" default="">
-		<cfparam name="attributes.params.bgimage" default="">
-		<cfparam name="attributes.params.bgcolor" default="">
+		<cfparam name="attributes.params.cssstyles.backgroundImage" default="">
+		<cfparam name="attributes.params.cssstyles.backgroundColor" default="rgba(255,0,0,0)">
 		<cfparam name="attributes.params.isbodyobject" default="false">
+		<cfif not request.hasbasicoptions>
+		<cfset request.hasbasicoptions=attributes.basictab>
+		</cfif>
+
 	</cfsilent>
 
 	<cfif $.getContentRenderer().useLayoutManager() and not listFindNoCase('folder,gallery,calendar',attributes.params.object) and not (IsBoolean(attributes.params.isbodyobject) and attributes.params.isbodyobject)>
 	<cfoutput>
-
-
+	<cfset request.muraconfiguratortag=true>
 	<div id="availableObjectContainer"<cfif not attributes.configurable> style="display:none"</cfif>>
+
+		<div class="mura-panel-group" id="configurator-panels" role="tablist" aria-multiselectable="true">
+		<!--- panel basic --->
+		<cfif request.hasbasicoptions>
+		<div class="mura-panel panel">
+			<div class="mura-panel-heading" role="tab" id="heading-basic">
+				<h4 class="mura-panel-title">
+					<a class="collapse" role="button" data-toggle="collapse" data-parent="##configurator-panels" href="##panel-basic" aria-expanded="true" aria-controls="panel-basic">
+						Basic
+					</a>
+				</h4>
+			</div>
+			<div id="panel-basic" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading-basic">
+				<div class="mura-panel-body">
+		</cfif>
 	</cfoutput>
 	</cfif>
 <cfelseif thisTag.ExecutionMode eq 'end'>
@@ -42,84 +68,215 @@
 
 	<cfif $.getContentRenderer().useLayoutManager()>
 
-	</div>
 	<cfoutput>
-			<cfif not listFindNoCase('folder,gallery,calendar',attributes.params.object) and not (IsBoolean(attributes.params.isbodyobject) and attributes.params.isbodyobject)>
-			<div class="mura-control-group">
-					<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.alignment')#</label>
-					<select name="alignment">
-						<option value="">--</option>
-					<option value="mura-left"<cfif listFind(attributes.params.class,'mura-left',' ')> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.left')#</option>
-					<!---<option value="mura-center"<cfif listFind(attributes.params.class,'mura-center',' ')> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.center')#</option>--->
-					<option value="mura-right"<cfif listFind(attributes.params.class,'mura-right',' ')> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.right')#</option>
-					</select>
+		<cfif not listFindNoCase('folder,gallery,calendar',attributes.params.object) and not (IsBoolean(attributes.params.isbodyobject) and attributes.params.isbodyobject)>
+		<cfif request.hasmetaoptions or request.hasbasicoptions>
+				</div> <!--- /end  mura-panel-collapse --->
+			</div> <!--- /end  mura-panel-body --->
+		</div> <!--- /end panel --->
+		</cfif>
+		<!--- Postioning--->
+		<div class="mura-panel panel">
+			<div class="mura-panel-heading" role="tab" id="heading-positioning">
+				<h4 class="mura-panel-title">
+					<a class="collapsed" role="button" data-toggle="collapse" data-parent="##configurator-panels" href="##panel-positioning" aria-expanded="false" aria-controls="panel-positioning">
+						Position
+					</a>
+				</h4>
 			</div>
-			<!---
-			<div id="offsetcontainer" class="mura-control-group" style="display:none">
-      	<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.offset')#</label>
-				<select name="offset">
-					<option value="">--</option>
-					<option value="mura-offset-by-one"<cfif listFind(attributes.params.class,'mura-offset-by-one',' ')> selected</cfif>>One Twelfth</option>
-					<option value="mura-offset-by-two"<cfif listFind(attributes.params.class,'mura-offset-by-two',' ')> selected</cfif>>One Sixth</option>
-					<option value="mura-offset-by-three"<cfif listFind(attributes.params.class,'mura-offset-by-three',' ')> selected</cfif>>One Fourth</option>
-					<option value="mura-offset-by-four"<cfif listFind(attributes.params.class,'mura-offset-by-four',' ')> selected</cfif>>One Third</option>
-					<option value="mura-offset-by-five"<cfif listFind(attributes.params.class,'mura-offset-by-five',' ')> selected</cfif>>Five Twelfths</option>
-					<option value="mura-offset-by-six"<cfif listFind(attributes.params.class,'mura-offset-by-six',' ')> selected</cfif>>One Half</option>
-					<option value="mura-offset-by-seven"<cfif listFind(attributes.params.class,'mura-offset-by-seven',' ')> selected</cfif>>Seven Twelfths</option>
-					<option value="mura-offset-by-eight"<cfif listFind(attributes.params.class,'mura-offset-by-eight',' ')> selected</cfif>>Two Thirds</option>
-					<option value="mura-offset-by-nine"<cfif listFind(attributes.params.class,'mura-offset-by-nine',' ')> selected</cfif>>Three Fourths</option>
-					<option value="mura-offset-by-ten"<cfif listFind(attributes.params.class,'mura-offset-by-ten',' ')> selected</cfif>>Five Sixths</option>
-					<option value="mura-offset-by-eleven"<cfif listFind(attributes.params.class,'mura-offset-by-eleven',' ')> selected</cfif>>Eleven Twelfths</option>
-				</select>
+			<div id="panel-positioning" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-positioning">
+				<div class="mura-panel-body">
+					<div class="mura-control-group">
+							<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.alignment')#</label>
+							<select name="alignment">
+							<option value="">--</option>
+							<option value="mura-left"<cfif listFind(attributes.params.class,'mura-left',' ')> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.left')#</option>
+							<!---<option value="mura-center"<cfif listFind(attributes.params.class,'mura-center',' ')> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.center')#</option>--->
+							<option value="mura-right"<cfif listFind(attributes.params.class,'mura-right',' ')> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.right')#</option>
+							</select>
+					</div>
+					<!---
+					<div id="offsetcontainer" class="mura-control-group" style="display:none">
+		      	<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.offset')#</label>
+						<select name="offset">
+							<option value="">--</option>
+							<option value="mura-offset-by-one"<cfif listFind(attributes.params.class,'mura-offset-by-one',' ')> selected</cfif>>One Twelfth</option>
+							<option value="mura-offset-by-two"<cfif listFind(attributes.params.class,'mura-offset-by-two',' ')> selected</cfif>>One Sixth</option>
+							<option value="mura-offset-by-three"<cfif listFind(attributes.params.class,'mura-offset-by-three',' ')> selected</cfif>>One Fourth</option>
+							<option value="mura-offset-by-four"<cfif listFind(attributes.params.class,'mura-offset-by-four',' ')> selected</cfif>>One Third</option>
+							<option value="mura-offset-by-five"<cfif listFind(attributes.params.class,'mura-offset-by-five',' ')> selected</cfif>>Five Twelfths</option>
+							<option value="mura-offset-by-six"<cfif listFind(attributes.params.class,'mura-offset-by-six',' ')> selected</cfif>>One Half</option>
+							<option value="mura-offset-by-seven"<cfif listFind(attributes.params.class,'mura-offset-by-seven',' ')> selected</cfif>>Seven Twelfths</option>
+							<option value="mura-offset-by-eight"<cfif listFind(attributes.params.class,'mura-offset-by-eight',' ')> selected</cfif>>Two Thirds</option>
+							<option value="mura-offset-by-nine"<cfif listFind(attributes.params.class,'mura-offset-by-nine',' ')> selected</cfif>>Three Fourths</option>
+							<option value="mura-offset-by-ten"<cfif listFind(attributes.params.class,'mura-offset-by-ten',' ')> selected</cfif>>Five Sixths</option>
+							<option value="mura-offset-by-eleven"<cfif listFind(attributes.params.class,'mura-offset-by-eleven',' ')> selected</cfif>>Eleven Twelfths</option>
+						</select>
+					</div>
+					--->
+					<div class="mura-control-group">
+						<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.width')#</label>
+						<select name="width">
+							<option value="">--</option>
+							<option value="mura-one"<cfif listFind(attributes.params.class,'mura-one',' ')> selected</cfif>>One Twelfth</option>
+							<option value="mura-two"<cfif listFind(attributes.params.class,'mura-two',' ')> selected</cfif>>One Sixth</option>
+							<option value="mura-three"<cfif listFind(attributes.params.class,'mura-three',' ')> selected</cfif>>One Fourth</option>
+							<option value="mura-four"<cfif listFind(attributes.params.class,'mura-four',' ')> selected</cfif>>One Third</option>
+							<option value="mura-five"<cfif listFind(attributes.params.class,'mura-five',' ')> selected</cfif>>Five Twelfths</option>
+							<option value="mura-six"<cfif listFind(attributes.params.class,'mura-six',' ')> selected</cfif>>One Half</option>
+							<option value="mura-seven"<cfif listFind(attributes.params.class,'mura-seven',' ')> selected</cfif>>Seven Twelfths</option>
+							<option value="mura-eight"<cfif listFind(attributes.params.class,'mura-eight',' ')> selected</cfif>>Two Thirds</option>
+							<option value="mura-nine"<cfif listFind(attributes.params.class,'mura-nine',' ')> selected</cfif>>Three Fourths</option>
+							<option value="mura-ten"<cfif listFind(attributes.params.class,'mura-ten',' ')> selected</cfif>>Five Sixths</option>
+							<option value="mura-eleven"<cfif listFind(attributes.params.class,'mura-eleven',' ')> selected</cfif>>Eleven Twelfths</option>
+							<option value="mura-twelve"<cfif listFind(attributes.params.class,'mura-twelve',' ')> selected</cfif>>Full</option>
+						</select>
+					</div>
+				</div> <!--- /end  mura-panel-collapse --->
+			</div> <!--- /end  mura-panel-body --->
+		</div> <!--- /end panel --->
+
+		<div class="mura-panel panel">
+			<div class="mura-panel-heading" role="tab" id="heading-style">
+				<h4 class="mura-panel-title">
+					<a class="collapsed" role="button" data-toggle="collapse" data-parent="##configurator-panels" href="##panel-style" aria-expanded="false" aria-controls="panel-style">
+						Style
+					</a>
+				</h4>
 			</div>
-			--->
-			<div class="mura-control-group">
-				<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.width')#</label>
-				<select name="width">
-					<option value="">--</option>
-					<option value="mura-one"<cfif listFind(attributes.params.class,'mura-one',' ')> selected</cfif>>One Twelfth</option>
-					<option value="mura-two"<cfif listFind(attributes.params.class,'mura-two',' ')> selected</cfif>>One Sixth</option>
-					<option value="mura-three"<cfif listFind(attributes.params.class,'mura-three',' ')> selected</cfif>>One Fourth</option>
-					<option value="mura-four"<cfif listFind(attributes.params.class,'mura-four',' ')> selected</cfif>>One Third</option>
-					<option value="mura-five"<cfif listFind(attributes.params.class,'mura-five',' ')> selected</cfif>>Five Twelfths</option>
-					<option value="mura-six"<cfif listFind(attributes.params.class,'mura-six',' ')> selected</cfif>>One Half</option>
-					<option value="mura-seven"<cfif listFind(attributes.params.class,'mura-seven',' ')> selected</cfif>>Seven Twelfths</option>
-					<option value="mura-eight"<cfif listFind(attributes.params.class,'mura-eight',' ')> selected</cfif>>Two Thirds</option>
-					<option value="mura-nine"<cfif listFind(attributes.params.class,'mura-nine',' ')> selected</cfif>>Three Fourths</option>
-					<option value="mura-ten"<cfif listFind(attributes.params.class,'mura-ten',' ')> selected</cfif>>Five Sixths</option>
-					<option value="mura-eleven"<cfif listFind(attributes.params.class,'mura-eleven',' ')> selected</cfif>>Eleven Twelfths</option>
-					<option value="mura-twelve"<cfif listFind(attributes.params.class,'mura-twelve',' ')> selected</cfif>>Full</option>
-				</select>
-			</div>
-			</cfif>
-			<div class="mura-control-group">
-				<label>
-					#application.rbFactory.getKeyValue(session.rb,'collections.cssclass')#
-				</label>
-				<input name="cssclass" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.cssclass)#" maxlength="255">
-				<input name="class" type="hidden" class="objectParam" value="#esapiEncode('html_attr',attributes.params.class)#"/>
-			</div>
-			<!---
-			<div class="mura-control-group">
-				<label>
-					#application.rbFactory.getKeyValue(session.rb,'collections.bgcolor')#
-				</label>
-				<input name="bgcolor" class="objectParam colorpicker" type="text" value="#esapiEncode('html_attr',attributes.params.bgcolor)#" maxlength="255">
-			</div>
-			<div class="mura-control-group">
-				<label>
-					#application.rbFactory.getKeyValue(session.rb,'collections.bgimage')#
-				</label>
-				<button type="button" class="btn mura-ckfinder" data-target="bgimage" data-type="image" data-completepath=false>Select Background Image</button>
-				<input name="bgimage" class="objectParam" type="hidden" value="#esapiEncode('html_attr',attributes.params.bgimage)#" maxlength="255">
-			</div>
-			--->
+			<div id="panel-style" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-style">
+				<div class="mura-panel-body">
+						<div class="container">
+							<div class="mura-control-group">
+								<div class="alert alert-info">
+									Select elements below to style
+								</div>
+								<div class="mura-panel-group" id="style-panels" role="tablist" aria-multiselectable="true">
+									<div class="mura-panel panel">
+										<div class="mura-panel-heading" role="tab" id="heading-style-outer">
+											<h4 class="mura-panel-title">
+												<a class="collapsed" role="button" data-toggle="collapse" data-parent="##style-panels" href="##panel-style-outer" aria-expanded="false" aria-controls="panel-style-outer">
+													Outer
+												</a>
+											</h4>
+										</div>
+										<div id="panel-style-outer" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-style-outer">
+											<div class="mura-panel-body">
+												<div class="mura-control-group">
+													<label>
+														CSS ID
+													</label>
+													<input name="cssid" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.cssid)#" maxlength="255">
+												</div>
+												<div class="mura-control-group">
+													<label>
+														#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.customoutercssclasses')#
+													</label>
+													<input name="cssclass" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.cssclass)#" maxlength="255">
+													<input name="class" type="hidden" class="objectParam" value="#esapiEncode('html_attr',attributes.params.class)#"/>
+												</div>
+											</div>
+										</div>
+									</div>
+									<cfif request.hasmetaoptions>
+									<div class="mura-panel panel">
+										<div class="mura-panel-heading" role="tab" id="heading-style-meta">
+										<h4 class="mura-panel-title">
+											<a class="collapsed" role="button" data-toggle="collapse" data-parent="##style-panels" href="##panel-style-meta" aria-expanded="false" aria-controls="panel-style-meta">
+												Inner Meta
+											</a>
+										</h4>
+										</div>
+										<div id="panel-style-meta" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-style-meta">
+											<div class="mura-panel-body">
+												<div class="mura-control-group">
+													<label>
+														CSS ID
+													</label>
+													<input name="metacssid" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.metacssid)#" maxlength="255">
+												</div>
+												<div class="mura-control-group">
+													<label>
+														CSS Classes
+													</label>
+													<input name="metacssclass" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.metacssclass)#" maxlength="255">
+												</div>
+											</div>
+										</div>
+									</div>
+									</cfif>
+									<div class="mura-panel-heading" role="tab" id="heading-style-content">
+										<h4 class="mura-panel-title">
+											<a class="collapsed" role="button" data-toggle="collapse" data-parent="##style-panels" href="##panel-style-content" aria-expanded="false" aria-controls="panel-style-content">
+												Inner Content
+											</a>
+										</h4>
+									</div>
+								<div id="panel-style-content" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-style-content">
+									<div class="mura-panel-body">
+										<div class="mura-control-group">
+											<label>
+												CSS ID
+											</label>
+											<input name="contentcssid" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.contentcssid)#" maxlength="255">
+										</div>
+										<div class="mura-control-group">
+											<label>
+												CSS Classes
+											</label>
+											<input name="contentcssclass" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.contentcssclass)#" maxlength="255">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+							<!---
+							<div class="mura-control-group">
+								<label>
+									#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.backgroundcolor')#
+								</label>
+								<input name="backgroundColor" class="objectStyle colorpicker" type="text" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundColor)#" maxlength="255">
+							</div>
+							<div class="mura-control-group">
+								<label>
+									#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.backgroundimage')#
+								</label>
+								<div class="btn-group" role="group">
+									<button type="button" class="btn mura-ckfinder" data-target="backgroundImageRaw" data-type="image" data-completepath=false>Select</button>
+									<button type="button" id="backgroundImageClear" class="btn">Clear</button>
+								</div>
+								<input name="backgroundImageRaw" type="hidden" id="backgroundImageRaw">
+								<input name="backgroundImage" id="backgroundImage" class="objectStyle" type="hidden" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundImage)#" maxlength="255">
+								--->
+							</div>
+					</div>
+				</div> <!--- /end  mura-panel-collapse --->
+			</div> <!--- /end  mura-panel-body --->
+		</div> <!--- /end panel --->
+	</cfif>
+	</div><!--- /end panels --->
 	</cfoutput>
-	</div>
+</div> <!--- /end availableObjectContainer --->
 	<script>
 		$(function(){
 
 			var inited=false;
+			$('#backgroundImageRaw').on('change',function(){
+					$('#backgroundImage').val('url(' + $(this).val() + ')').trigger('change');
+			})
+
+			$('#backgroundImage').on('change',function(){
+				if($(this).val()){
+					$('#backgroundImageClear').hide();
+				} else {
+					$('#backgroundImageClear').show();
+				}
+			});
+
+			$('#backgroundImageClear').on('click',function(){
+					$('#backgroundImage').val('').trigger('change');
+			})
 
 			$('input[name="cssclass"],select[name="alignment"],select[name="width"],select[name="offset"]').on('change', function() {
 				setPlacementVisibility();

@@ -117,10 +117,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div>
 		<div class="mura-layout-row" id="layoutcontainer">
 		</div>
-
+		
+		</div>
 		<!--- Include global config object options --->
 		<cfinclude template="#$.siteConfig().lookupDisplayObjectFilePath('object/configurator.cfm')#">
-	</div>
+
 
 	<script>
 		$(function(){

@@ -102,21 +102,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 
 		<cfif objectParams.object eq 'collection'>
-			<div class="mura-control-group">
+			<div class="mura-control-group container-viewalllink">
 				<label class="mura-control-label">
 					#application.rbFactory.getKeyValue(session.rb,'collections.viewalllink')#
 				</label>
 				<input name="viewalllink" class="objectParam" type="text" value="#esapiEncode('html_attr',feed.getViewAllLink())#" maxlength="255">
 			</div>
 			<div class="mura-control-group">
-				<label class="mura-control-label">
+				<label class="mura-control-label container-viewalllabel">
 					#application.rbFactory.getKeyValue(session.rb,'collections.viewalllabel')#
 				</label>
 				<input name="viewalllabel" class="objectParam" type="text" value="#esapiEncode('html_attr',feed.getViewAllLabel())#" maxlength="100">
 			</div>
-		</cfif>
-
-		<cfif objectParams.object eq 'collection'>
 			<div class="mura-control-group">
 				<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'collections.maxitems')#</label>
 				<select name="maxItems" data-displayobjectparam="maxItems" class="objectParam">
@@ -126,7 +123,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<option value="100000" <cfif feed.getMaxItems() eq 100000>selected</cfif>>All</option>
 				</select>
 			</div>
-			<div class="mura-control-group">
+			<div class="mura-control-group container-nextn">
 			    <label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'collections.itemsperpage')#</label>
 				<select name="nextN" data-displayobjectparam="nextN" class="objectParam">
 					<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="r">
@@ -136,36 +133,37 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</select>
 			</div>
 			<cfif objectparams.sourcetype eq "relatedcontent" and objectparams.source eq 'reverse'>
-			<div class="mura-control-group">
-				<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'collections.sortby')#</label>
-				<select name="sortby" class="objectParam">
-				<option value="orderno" <cfif objectparams.sortby eq 'orderno'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.manual")#</option>
-				<option value="releaseDate" <cfif objectparams.sortby eq 'releaseDate'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.releasedate")#</option>
-				<option value="lastUpdate" <cfif objectparams.sortby eq 'lastUpdate'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.updatedate")#</option>
-				<option value="created" <cfif objectparams.sortby eq 'created'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.created")#</option>
-				<option value="menuTitle" <cfif objectparams.sortby eq 'menuTitle'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.menutitle")#</option>
-				<option value="title" <cfif objectparams.sortby eq 'title'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.longtitle")#</option>
-				<option value="rating" <cfif objectparams.sortby eq 'rating'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.rating")#</option>
-				<cfif rc.$.getServiceFactory().containsBean('marketingManager')>
-					<option value="mxpRelevance" <cfif objectparams.sortby eq 'mxpRelevance'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.mxpRelevance')#</option>
-				</cfif>
-				<option value="comments" <cfif objectparams.sortby eq 'comments'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.comments")#</option>
-				<cfset rsExtend=application.configBean.getClassExtensionManager().getExtendedAttributeList(rc.siteid)>
-				<cfloop query="rsExtend">
-				  <option value="#esapiEncode('html_attr',rsExtend.attribute)#" <cfif objectparams.sortby eq rsExtend.attribute>selected</cfif>>#esapiEncode('html',rsExtend.Type)#/#esapiEncode('html',rsExtend.subType)# - #esapiEncode('html',rsExtend.attribute)#</option>
-				</cfloop>
-				</select>
-			</div>
-			<div class="mura-control-group sort-container" style="display:none">
-				<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'collections.sortdirection')#</label>
-				<select name="sortdirection" class="sort-param">
-					<option value="asc" <cfif objectparams.sortDirection eq 'asc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.ascending")#</option>
-					<option value="desc" <cfif objectparams.sortDirection  eq 'desc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.descending")#</option>
-				</select>
-			</div>
+				<div class="mura-control-group">
+					<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'collections.sortby')#</label>
+					<select name="sortby" class="objectParam">
+					<option value="orderno" <cfif objectparams.sortby eq 'orderno'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.manual")#</option>
+					<option value="releaseDate" <cfif objectparams.sortby eq 'releaseDate'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.releasedate")#</option>
+					<option value="lastUpdate" <cfif objectparams.sortby eq 'lastUpdate'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.updatedate")#</option>
+					<option value="created" <cfif objectparams.sortby eq 'created'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.created")#</option>
+					<option value="menuTitle" <cfif objectparams.sortby eq 'menuTitle'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.menutitle")#</option>
+					<option value="title" <cfif objectparams.sortby eq 'title'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.longtitle")#</option>
+					<option value="rating" <cfif objectparams.sortby eq 'rating'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.rating")#</option>
+					<cfif rc.$.getServiceFactory().containsBean('marketingManager')>
+						<option value="mxpRelevance" <cfif objectparams.sortby eq 'mxpRelevance'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.mxpRelevance')#</option>
+					</cfif>
+					<option value="comments" <cfif objectparams.sortby eq 'comments'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.comments")#</option>
+					<cfset rsExtend=application.configBean.getClassExtensionManager().getExtendedAttributeList(rc.siteid)>
+					<cfloop query="rsExtend">
+					  <option value="#esapiEncode('html_attr',rsExtend.attribute)#" <cfif objectparams.sortby eq rsExtend.attribute>selected</cfif>>#esapiEncode('html',rsExtend.Type)#/#esapiEncode('html',rsExtend.subType)# - #esapiEncode('html',rsExtend.attribute)#</option>
+					</cfloop>
+					</select>
+				</div>
+				<div class="mura-control-group sort-container" style="display:none">
+					<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'collections.sortdirection')#</label>
+					<select name="sortdirection" class="sort-param">
+						<option value="asc" <cfif objectparams.sortDirection eq 'asc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.ascending")#</option>
+						<option value="desc" <cfif objectparams.sortDirection  eq 'desc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.descending")#</option>
+					</select>
+				</div>
 			</cfif>
 		</cfif>
 	<cfelse>
+		<!--- REMOTE FEEDS --->
 		<cfset displaySummaries=yesNoFormat(feed.getValue("displaySummaries"))>
 		<div class="mura-control-group">
 			<label class="mura-control-label">
