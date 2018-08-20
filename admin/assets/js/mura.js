@@ -11726,7 +11726,7 @@ Mura.DOMSelection = Mura.Core.extend(
 							meta.css(obj.data('metacssstyles'));
 						}
 
-						if(obj.data('contentcssclass') || obj.data('contentcssid') ||obj.data('contentcssstyles')){
+						if(obj.data('contentcssclass') || obj.data('contentcssid') || obj.data('contentcssstyles')){
 							var content=obj.find('.mura-object-content').first();
 						}
 						if(obj.data('contentcssid')){

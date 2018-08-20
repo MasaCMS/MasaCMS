@@ -54,7 +54,7 @@
 			<div class="mura-panel-heading" role="tab" id="heading-basic">
 				<h4 class="mura-panel-title">
 					<a class="collapse" role="button" data-toggle="collapse" data-parent="##configurator-panels" href="##panel-basic" aria-expanded="true" aria-controls="panel-basic">
-						Basic
+						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.basic')#
 					</a>
 				</h4>
 			</div>
@@ -80,7 +80,7 @@
 			<div class="mura-panel-heading" role="tab" id="heading-positioning">
 				<h4 class="mura-panel-title">
 					<a class="collapsed" role="button" data-toggle="collapse" data-parent="##configurator-panels" href="##panel-positioning" aria-expanded="false" aria-controls="panel-positioning">
-						Position
+						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.position')#
 					</a>
 				</h4>
 			</div>
