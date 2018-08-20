@@ -182,79 +182,79 @@
 										</div>
 									</div>
 									<cfif request.hasmetaoptions>
-									<div class="mura-panel panel">
-										<div id="heading-style-meta" class="mura-panel-heading" role="tab">
-										<h4 class="mura-panel-title">
-											<a class="collapsed" role="button" data-toggle="collapse" data-parent="##style-panels" href="##panel-style-meta" aria-expanded="false" aria-controls="panel-style-meta">
-												Inner Meta
-											</a>
-										</h4>
+										<div class="mura-panel panel">
+											<div id="heading-style-meta" class="mura-panel-heading" role="tab">
+											<h4 class="mura-panel-title">
+												<a class="collapsed" role="button" data-toggle="collapse" data-parent="##style-panels" href="##panel-style-meta" aria-expanded="false" aria-controls="panel-style-meta">
+													Inner Meta
+												</a>
+											</h4>
+											</div>
+											<div id="panel-style-meta" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-style-meta">
+												<div class="mura-panel-body">
+													<div class="mura-control-group">
+														<label>
+															CSS ID
+														</label>
+														<input name="metacssid" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.metacssid)#" maxlength="255">
+													</div>
+													<div class="mura-control-group">
+														<label>
+															CSS Classes
+														</label>
+														<input name="metacssclass" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.metacssclass)#" maxlength="255">
+													</div>
+												</div>
+											</div>
 										</div>
-										<div id="panel-style-meta" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-style-meta">
+									</cfif>
+									<div class="mura-panel panel">
+										<div id="heading-style-content" class="mura-panel-heading" role="tab">
+											<h4 class="mura-panel-title">
+												<a class="collapsed" role="button" data-toggle="collapse" data-parent="##style-panels" href="##panel-style-content" aria-expanded="false" aria-controls="panel-style-content">
+													Inner Content
+												</a>
+											</h4>
+										</div>
+										<div id="panel-style-content" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-style-content">
 											<div class="mura-panel-body">
 												<div class="mura-control-group">
 													<label>
 														CSS ID
 													</label>
-													<input name="metacssid" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.metacssid)#" maxlength="255">
+													<input name="contentcssid" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.contentcssid)#" maxlength="255">
 												</div>
 												<div class="mura-control-group">
 													<label>
 														CSS Classes
 													</label>
-													<input name="metacssclass" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.metacssclass)#" maxlength="255">
+													<input name="contentcssclass" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.contentcssclass)#" maxlength="255">
 												</div>
 											</div>
-										</div>
-									</div>
-									</cfif>
-								<div class="mura-panel panel">
-									<div id="heading-style-content" class="mura-panel-heading" role="tab">
-										<h4 class="mura-panel-title">
-											<a class="collapsed" role="button" data-toggle="collapse" data-parent="##style-panels" href="##panel-style-content" aria-expanded="false" aria-controls="panel-style-content">
-												Inner Content
-											</a>
-										</h4>
-									</div>
-								<div id="panel-style-content" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-style-content">
-									<div class="mura-panel-body">
-										<div class="mura-control-group">
-											<label>
-												CSS ID
-											</label>
-											<input name="contentcssid" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.contentcssid)#" maxlength="255">
-										</div>
-										<div class="mura-control-group">
-											<label>
-												CSS Classes
-											</label>
-											<input name="contentcssclass" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.contentcssclass)#" maxlength="255">
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-							<!---
-							<div class="mura-control-group">
-								<label>
-									#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.backgroundcolor')#
-								</label>
-								<input name="backgroundColor" class="objectStyle colorpicker" type="text" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundColor)#" maxlength="255">
+						<!---
+						<div class="mura-control-group">
+							<label>
+								#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.backgroundcolor')#
+							</label>
+							<input name="backgroundColor" class="objectStyle colorpicker" type="text" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundColor)#" maxlength="255">
+						</div>
+						<div class="mura-control-group">
+							<label>
+								#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.backgroundimage')#
+							</label>
+							<div class="btn-group" role="group">
+								<button type="button" class="btn mura-ckfinder" data-target="backgroundImageRaw" data-type="image" data-completepath=false>Select</button>
+								<button type="button" id="backgroundImageClear" class="btn">Clear</button>
 							</div>
-							<div class="mura-control-group">
-								<label>
-									#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.backgroundimage')#
-								</label>
-								<div class="btn-group" role="group">
-									<button type="button" class="btn mura-ckfinder" data-target="backgroundImageRaw" data-type="image" data-completepath=false>Select</button>
-									<button type="button" id="backgroundImageClear" class="btn">Clear</button>
-								</div>
-								<input name="backgroundImageRaw" type="hidden" id="backgroundImageRaw">
-								<input name="backgroundImage" id="backgroundImage" class="objectStyle" type="hidden" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundImage)#" maxlength="255">
-							</div>
-								--->
-					</div>
+							<input name="backgroundImageRaw" type="hidden" id="backgroundImageRaw">
+							<input name="backgroundImage" id="backgroundImage" class="objectStyle" type="hidden" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundImage)#" maxlength="255">
+						</div>
+							--->
 				</div> <!--- /end  mura-panel-collapse --->
 			</div> <!--- /end  mura-panel-body --->
 		</div> <!--- /end panel --->
