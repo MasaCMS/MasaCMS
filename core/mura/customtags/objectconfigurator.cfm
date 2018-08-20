@@ -150,7 +150,7 @@
 							<div class="mura-control-group">
 								<div class="panel-gds-box" id="panel-gds-outer" data-gdsel="panel-style-outer"><span>Outer</span>
 									<cfif request.hasmetaoptions>
-										<div class="panel-gds-box" id="panel-gds-meta" data-gdsel="panel-style-meta"><span>Label</span></div>
+										<div class="panel-gds-box" id="panel-gds-meta" data-gdsel="panel-style-meta"><span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.label')#</span></div>
 									</cfif>
 									<div class="panel-gds-box" id="panel-gds-inner" data-gdsel="panel-style-content"><span>Content</span></div>
 								</div>
