@@ -2428,9 +2428,6 @@ var Mura=(function(){
                       obj.data('rendertemplate', context.rendertemplate);
                   }
 
-									obj.css("background-color",obj.data('bgcolor'));
-									obj.css("backgroundImage",'url(' + obj.data('bgimageurl') + ')');
-
                   if (typeof Mura.DisplayObject[template] !=
                       'undefined') {
                       context.html = '';
