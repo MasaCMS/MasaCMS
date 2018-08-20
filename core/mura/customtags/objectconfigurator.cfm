@@ -232,10 +232,10 @@
 												</div>
 											</div>
 										</div>
-									</div>
-								</div>
-							</div>
-						</div>
+									</div> <!--- /end panel --->
+								</div> <!--- /end panel group --->
+							</div> <!--- /end mura control group --->
+						</div> <!--- /end container --->
 						<!---
 						<div class="mura-control-group">
 							<label>
@@ -255,8 +255,8 @@
 							<input name="backgroundImage" id="backgroundImage" class="objectStyle" type="hidden" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundImage)#" maxlength="255">
 						</div>
 							--->
-				</div> <!--- /end  mura-panel-collapse --->
-			</div> <!--- /end  mura-panel-body --->
+				</div> <!--- /end  mura-panel-body --->
+			</div> <!--- /end  mura-panel-collapse --->
 		</div> <!--- /end panel --->
 	</cfif>
 	</div><!--- /end panels --->
