@@ -173,7 +173,7 @@
 												</div>
 												<div class="mura-control-group">
 													<label>
-														CSS Classes
+														CSS Class
 													</label>
 													<input name="cssclass" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.cssclass)#" maxlength="255">
 													<input name="class" type="hidden" class="objectParam" value="#esapiEncode('html_attr',attributes.params.class)#"/>
@@ -200,7 +200,7 @@
 													</div>
 													<div class="mura-control-group">
 														<label>
-															CSS Classes
+															CSS Class
 														</label>
 														<input name="metacssclass" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.metacssclass)#" maxlength="255">
 													</div>
@@ -226,7 +226,7 @@
 												</div>
 												<div class="mura-control-group">
 													<label>
-														CSS Classes
+														CSS Class
 													</label>
 													<input name="contentcssclass" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.contentcssclass)#" maxlength="255">
 												</div>
