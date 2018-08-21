@@ -299,7 +299,7 @@
 				return false;
 			})
 
-			$('#style-panels .mura-panel-heading').hide();
+			$('#style-panels').addClass('no-header');
 			$('#panel-gds-outer').trigger('click');
 
 			function setPlacementVisibility(){
@@ -364,7 +364,6 @@
 		  		}
 			}
 
-
 			setPlacementVisibility();
 
 			$('#globalSettingsBtn').click(function(){
@@ -390,6 +389,24 @@
 </cfif>
 
 <style type="text/css">
+	.configurator-wrapper #configuratorContainer .mura-panel-group .mura-control-group .mura-panel-group{
+		margin-bottom: 0 !important;
+	}
+	.configurator-wrapper #configuratorContainer .mura-panel-group .mura-control-group .mura-panel-group .mura-panel-body{
+		padding-bottom: 2px !important;
+		padding-top: 2px !important;
+	}
+	.configurator-wrapper #configuratorContainer .mura-panel-group .mura-control-group .mura-panel-group .mura-panel-body .mura-control-group:last-child{
+		margin-bottom: 0 !important;
+		padding-bottom: 0 !important;
+	}
+	.configurator-wrapper #configuratorContainer .mura-panel-group.no-header .mura-panel-heading{
+		display: none !important;
+		margin: 0 !important;
+		padding: 0 !important;
+		height: 0 !important;
+	}
+
 	.panel-gds-box{
 		box-shadow: inset 0 0 0 2px #565656;
     cursor: pointer;
