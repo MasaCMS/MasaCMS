@@ -299,7 +299,7 @@
 				return false;
 			})
 
-			$('#style-panels .mura-panel-heading').hide();
+			$('#style-panels').addClass('no-header');
 			$('#panel-gds-outer').trigger('click');
 
 			function setPlacementVisibility(){
@@ -364,7 +364,6 @@
 		  		}
 			}
 
-
 			setPlacementVisibility();
 
 			$('#globalSettingsBtn').click(function(){
@@ -388,26 +387,3 @@
 <cfelse>
 
 </cfif>
-
-<style type="text/css">
-	.panel-gds-box{
-		box-shadow: inset 0 0 0 2px #565656;
-    cursor: pointer;
-    margin: 8px 0;
-    padding: 6px 10px;
-	}
-	.panel-gds-box span{
-		font-size: 12px;
-    font-weight: 400;
-    color: #f3f3f3;
-    line-height: 1.2;
-	}
-
-	#panel-gds-meta + #panel-gds-inner{
-		margin-top: 10px;
-	}
-	.panel-gds-box.active{
-		box-shadow: inset 0 0 0 2px #bbbbbb;
-	}
-
-</style>

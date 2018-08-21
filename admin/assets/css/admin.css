@@ -35033,6 +35033,8 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
   margin-left: -18px;
   margin-right: -34px;
   /* /mura-panel*/
+  /* nested panels */
+  /* /nested panels */
 }
 .mura body.configurator-wrapper #configuratorContainer .mura-panel-group .mura-panel {
   border: none;
@@ -35070,6 +35072,41 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 .mura body.configurator-wrapper #configuratorContainer .mura-panel-group .mura-panel .mura-panel-title a:active,
 .mura body.configurator-wrapper #configuratorContainer .mura-panel-group .mura-panel .mura-panel-title a:focus {
   color: inherit !important;
+}
+.mura body.configurator-wrapper #configuratorContainer .mura-panel-group .mura-control-group .mura-panel-group {
+  margin-bottom: 0 !important;
+}
+.mura body.configurator-wrapper #configuratorContainer .mura-panel-group .mura-control-group .mura-panel-group .mura-panel-body {
+  padding-bottom: 2px !important;
+  padding-top: 2px !important;
+}
+.mura body.configurator-wrapper #configuratorContainer .mura-panel-group .mura-control-group .mura-panel-group .mura-panel-body .mura-control-group:last-child {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+.mura body.configurator-wrapper #configuratorContainer .mura-panel-group.no-header .mura-panel-heading {
+  display: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  height: 0 !important;
+}
+.mura body.configurator-wrapper #configuratorContainer .mura-panel-group .panel-gds-box {
+  box-shadow: inset 0 0 0 2px #565656;
+  cursor: pointer;
+  margin: 8px 0;
+  padding: 6px 10px;
+}
+.mura body.configurator-wrapper #configuratorContainer .mura-panel-group .panel-gds-box span {
+  font-size: 12px;
+  font-weight: 400;
+  color: #f3f3f3;
+  line-height: 1.2;
+}
+.mura body.configurator-wrapper #configuratorContainer .mura-panel-group .panel-gds-box.active {
+  box-shadow: inset 0 0 0 2px #bbbbbb;
+}
+.mura body.configurator-wrapper #configuratorContainer .mura-panel-group #panel-gds-meta + #panel-gds-inner {
+  margin-top: 10px;
 }
 .mura body.configurator-wrapper #configuratorContainer label,
 .mura body.configurator-wrapper #configuratorContainer .control-label,
