@@ -3,8 +3,6 @@
 .gitmodules
 installation.txt
 license.txt
-web.config.txt
-htaccess.txt
 README.md
 Mura_CMS_contribution_agreement.pdf
 docker-compose.yml
