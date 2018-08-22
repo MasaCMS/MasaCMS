@@ -490,6 +490,8 @@ $( document ).ready(function() {
 				{name:'varchar',label: 'VarChar'},
 				{name:'text',label: 'Text'},
 				{name:'int',label: 'Int'},
+				{name:'float',label: 'Float'},
+				{name:'double',label: 'Double'},
 				{name:'int',label: 'Boolean'},
 				{name:'datetime',label: 'DateTime'},
 				{name:'any',label: 'Any'}
