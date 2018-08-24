@@ -15,14 +15,6 @@ form {
 			}
 		}
 	}
-	
-	.req label { 
-	    
-	    > ins { // Used to insert the word required for screen readers/accessibility
-			position: absolute;
-			left: -9999px;
-		}
-	}
 
 	.form-submit{
 		margin-top: 12px;
@@ -45,3 +37,8 @@ form {
 	display: none;
 }
 
+@media not speech {
+	form .req label > ins {
+	  display:none;
+	}
+}

@@ -1,33 +1,33 @@
 // Breadcrumbs
 
 .mura-breadcrumb {
-	
+
 	list-style: none;
-	
+
 	li {
 		display: inline-block;
 	}
-	
+
 }
 
 // Nav Sequential, Nav Next-N
 .mura-nav-sequential,
 .mura-next-n {
-	
+
 	ul {
 		list-style: none;
-		
+
 		li {
 		display: inline;
-		
+
 			a {
 				text-decoration: none;
 				}
-		
+
 			}
-		
+
 		}
-	
+
 	}
 
 
@@ -44,16 +44,16 @@
 
 	li { display: inline; }
 
-	span {
-		left: -9999px;
-		position: absolute;
-		width: 990px;
-	}
-
 	.not-popular { font-size: .9em; }
 	.not-very-popular { font-size: 1.2em; }
 	.somewhat-popular { font-size: 1.6em; }
 	.popular { font-size: 1.9em; }
 	.very-popular { font-size: 2.1em; }
 	.ultra-popular { font-size: 2.6em; }
+}
+
+@media not speech {
+	.mura-tag-cloud ol span {
+	  display:none;
+	}
 }
