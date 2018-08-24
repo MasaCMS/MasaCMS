@@ -81,7 +81,139 @@ hr {
 	z-index: 2;
 }
 
-@media only screen and (min-width: 540px) {
+@media only screen and (min-width: 540px) and (max-width: 767px) {
+
+	.mura-grid-one .mura-collection-item {
+		width: 100%;
+		float: left;
+		box-sizing: border-box;
+	}0
+
+	.mura-grid-two .mura-collection-item {
+		width: 50%;
+		float: left;
+		box-sizing: border-box;
+	}
+
+	.mura-grid-three .mura-collection-item {
+		width: 33.33%;
+		float: left;
+		box-sizing: border-box;
+	}
+
+	.mura-grid-four .mura-collection-item {
+		width: 50%;
+		float: left;
+		box-sizing: border-box;
+	}
+
+	.mura-grid-five .mura-collection-item {
+		width: 33.33%;
+		float: left;
+		box-sizing: border-box;
+	}
+
+	.mura-grid-six .mura-collection-item {
+		width: 33.33%;
+		float: left;
+		box-sizing: border-box;
+	}
+
+	.mura-grid-seven .mura-collection-item {
+		width: 25%;
+		float: left;
+		box-sizing: border-box;
+	}
+
+	.mura-grid-eight .mura-collection-item {
+		width: 25%;
+		float: left;
+		box-sizing: border-box;
+	}
+
+	.mura-grid-nine .mura-collection-item {
+		width: 20%;
+		float: left;
+		box-sizing: border-box;
+	}
+
+	/* large item */
+	.mura-grid-custom .mura-collection-item {
+		width: 100%;
+		display: block;
+	}
+
+	/* other items */
+	.mura-grid-custom .mura-collection-item + .mura-collection-item {
+		width: 33.33%;
+		float: left;
+		box-sizing: border-box;
+	}
+
+	.mura-collection::after {
+		content: '';
+		display: table;
+		clear: both;
+	}
+
+	.mura-grid-one .mura-collection-item:nth-child(1n+2) {
+		clear: left;
+	}
+
+	.mura-grid-two .mura-collection-item:nth-child(2n+3) {
+		clear: left;
+	}
+
+	.mura-grid-three .mura-collection-item:nth-child(3n+4) {
+		clear: left;
+	}
+
+	.mura-grid-four .mura-collection-item:nth-child(2n+3) {
+		clear: left;
+	}
+
+	.mura-grid-five .mura-collection-item:nth-child(4n+4) {
+		clear: left;
+	}
+
+	.mura-grid-six .mura-collection-item:nth-child(3n+4) {
+		clear: left;
+	}
+
+	.mura-grid-seven .mura-collection-item:nth-child(4n+5) {
+		clear: left;
+	}
+
+	.mura-grid-eight .mura-collection-item:nth-child(4n+5) {
+		clear: left;
+	}
+
+	.mura-grid-nine .mura-collection-item:nth-child(5n+6) {
+		clear: left;
+	}
+
+	.mura-grid-custom .mura-collection-item:nth-child(2) {
+		clear: left;
+	}
+
+	.mura-grid-custom .mura-collection-item:nth-child(3n+5) {
+		clear: left;
+	}
+
+	.mura-grid-four .mura-collection-item__holder,
+	.mura-grid-two .mura-collection-item__holder,
+	.mura-grid-five .mura-collection-item__holder,
+	.mura-grid-three .mura-collection-item__holder,
+	.mura-grid-six .mura-collection-item__holder,
+	.mura-grid-seven .mura-collection-item__holder,
+	.mura-grid-eight .mura-collection-item__holder,
+	.mura-grid-nine .mura-collection-item__holder,
+	.mura-grid-custom .mura-collection-item__holder  {
+		padding: 10px;
+	}
+}
+
+@media only screen and (min-width: 768px) {
 
 	.mura-grid-one .mura-collection-item {
 		width: 100%;
