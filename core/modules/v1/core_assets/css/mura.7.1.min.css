@@ -906,7 +906,7 @@ hr {
     float: left;
     box-sizing: border-box;
   }
-  0 .mura-grid-two .mura-collection-item {
+  .mura-grid-two .mura-collection-item {
     width: 50%;
     float: left;
     box-sizing: border-box;
