@@ -927,22 +927,22 @@ hr {
     box-sizing: border-box;
   }
   .mura-grid-six .mura-collection-item {
-    width: 16.67%;
+    width: 33.33%;
     float: left;
     box-sizing: border-box;
   }
   .mura-grid-seven .mura-collection-item {
-    width: 14.29%;
+    width: 25%;
     float: left;
     box-sizing: border-box;
   }
   .mura-grid-eight .mura-collection-item {
-    width: 12.9%;
+    width: 25%;
     float: left;
     box-sizing: border-box;
   }
   .mura-grid-nine .mura-collection-item {
-    width: 11.11%;
+    width: 20%;
     float: left;
     box-sizing: border-box;
   }
@@ -974,19 +974,19 @@ hr {
   .mura-grid-four .mura-collection-item:nth-child(2n+3) {
     clear: left;
   }
-  .mura-grid-five .mura-collection-item:nth-child(5n+6) {
+  .mura-grid-five .mura-collection-item:nth-child(4n+4) {
     clear: left;
   }
-  .mura-grid-six .mura-collection-item:nth-child(6n+7) {
+  .mura-grid-six .mura-collection-item:nth-child(3n+4) {
     clear: left;
   }
-  .mura-grid-seven .mura-collection-item:nth-child(7n+8) {
+  .mura-grid-seven .mura-collection-item:nth-child(4n+5) {
     clear: left;
   }
-  .mura-grid-eight .mura-collection-item:nth-child(8n+9) {
+  .mura-grid-eight .mura-collection-item:nth-child(4n+5) {
     clear: left;
   }
-  .mura-grid-nine .mura-collection-item:nth-child(9n+10) {
+  .mura-grid-nine .mura-collection-item:nth-child(5n+6) {
     clear: left;
   }
   .mura-grid-custom .mura-collection-item:nth-child(2) {
