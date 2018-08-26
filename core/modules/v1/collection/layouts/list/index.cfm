@@ -50,7 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 #variables.$.dspObject_include(
 	theFile='collection/includes/dsp_content_list.cfm',
 	type=arguments.objectParams.sourcetype,
-	iterator=variables.iterator,
+	iterator=iterator,
 	imageSize=arguments.objectParams.imageSize,
 	imageWidth=arguments.objectParams.imageWidth,
 	imageHeight=arguments.objectParams.imageHeight,

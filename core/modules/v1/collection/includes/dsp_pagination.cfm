@@ -65,7 +65,7 @@
 		</cfif>
 	<cfelse>
 		<cfset variables.currentNextNIndex = 1>
-		<cfset variables.iterator.setPage(1)>
+		<cfset iterator.setPage(1)>
 	</cfif>
 	<cfset variables.nextN = variables.$.getBean('utility').getNextN(arguments.iterator.getQuery(),arguments.nextN,variables.currentNextNIndex)>
 </cfsilent>
