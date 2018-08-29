@@ -302,8 +302,8 @@
 	     						<span>
 				           	<a data-alertid="#alert#" class="close alert-dismiss" data-dismiss="alert"><i class="mi-close"></i></a>
   	   						</span>
-		            </div>
-		     				#alerts['#alert#'].text#
+		     					#alerts['#alert#'].text#
+								</div>
 		     			</cfif>
      				</cfloop>
      			</cfif>
