@@ -69,6 +69,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.deferMuraJS=false>
 <cfset this.hideRestrictedNav=false>
 <cfset this.templateArray=[]>
+<cfset this.styleLookup={
+		'textAlign'='text-align',
+		'backgroundImage'='background-image',
+		'backgroundColor'='background-color',
+		'backgroundOrigin'='background-Origin',
+		'backgroundPostition'='background-postition',
+		'marginTop'='margin-top',
+		'marginLeft'='margin-left',
+		'marginBottom'='margin-bottom',
+		'marginRight'='margin-right',
+		'paddingTop'='padding-top',
+		'paddingLeft'='padding-left',
+		'paddingBottom'='padding-bottom',
+		'paddingRight'='padding-right'
+	}>
 
 <!--- Set these to a boolean value to override settings.ini.cfm value--->
 <cfset this.siteIDInURLS="">
@@ -3102,6 +3117,28 @@ Display Objects
 			return '';
 		}
 	}
+
+	public function renderCssStyles(styles) {
+		var returnString="";
+
+
+		if(isJSON(arguments.styles)){
+			arguments.styles=deserializeJSON(arguments.styles);
+		}
+
+		if(isStruct(arguments.styles)){
+			for(var s in arguments.styles){
+				if(structKeyExists(this.styleLookup,'#s#')){
+					returnString=returnString & ' ' & this.styleLookup['#s#'] & ':' & arguments.styles[s] & ';';
+				} else {
+					returnString=returnString & ' ' & s & ':' & arguments.styles[s] & ';';
+				}
+			}
+		}
+
+		return returnString;
+	}
 </cfscript>
+
 
 </cfcomponent>

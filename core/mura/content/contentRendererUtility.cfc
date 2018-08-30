@@ -910,6 +910,7 @@
 		<cfargument name="returnformat" default="html">
 
 		<cfset var openingDiv='<div class="mura-object'>
+		<cfset var $=arguments.renderer.getMuraScope()>
 
 		<cfparam name="arguments.objectparams.instanceid" default="#createUUID()#">
 		<cfparam name="arguments.objectparams.render" default="server">
@@ -922,7 +923,6 @@
 		<cfset structDelete(arguments.objectParams,'undefined')>
 
 		<cfif arguments.bodyRender>
-			<cfset var $=arguments.renderer.getMuraScope()>
 			<cfif $.content('subtype') eq 'Default'>
 				<cfset arguments.objectParams.objectname=$.content('type')>
 			<cfelse>
@@ -964,7 +964,9 @@
 			<cfset openingDiv=openingDiv & " " & arguments.objectParams.class>
 		</cfif>
 
-		<cfset openingDiv=openingDiv & '" data-object="#esapiEncode('html_attr',lcase(arguments.object))#" data-objectid="#esapiEncode('html_attr',arguments.objectid)#" data-instanceid="#arguments.objectparams.instanceid#"'>
+		<cfparam name="arguments.objectparams.cssstyles" default="">
+
+		<cfset openingDiv=openingDiv & '" data-object="#esapiEncode('html_attr',lcase(arguments.object))#" data-objectid="#esapiEncode('html_attr',arguments.objectid)#" data-instanceid="#arguments.objectparams.instanceid#" style="#$.renderCssStyles(objectparams.cssstyles)#"'>
 
 		<cfloop collection="#arguments.objectparams#" item="local.i">
 			<cfif len(local.i) and not listFindNoCase('runtime,object,objectid,instanceid',local.i)>
@@ -984,11 +986,14 @@
 			</cfif>
 
 			<cfset arguments.content=trim(arguments.content)>
+			<cfparam name="arguments.objectparams.contentcssclass" default="">
+			<cfparam name="arguments.objectparams.contentcssid" default="">
+			<cfparam name="arguments.objectparams.contentcssstyles" default="">
 
 			<cfif arguments.returnFormat eq 'struct'>
 				<cfif len(arguments.content)>
 					<cfreturn {
-								header=openingDiv & '<div class="mura-object-content">',
+								header=openingDiv & '<div id="#esapiEncode('html_attr',trim(arguments.objectparams.contentcssid))#" class="#esapiEncode('html_attr',trim('mura-object-content #arguments.objectparams.contentcssclass#'))#" style="#$.renderCssStyles(objectparams.contentcssstyles)#">',
 								footer="</div></div>"
 							}>
 				<cfelse>
@@ -999,7 +1004,7 @@
 				</cfif>
 			<cfelse>
 				<cfif len(arguments.content)>
-					<cfreturn openingDiv & '<div class="mura-object-content">' & arguments.content & '</div></div>'>
+					<cfreturn openingDiv & '<div id="#esapiEncode('html_attr',trim(arguments.objectparams.contentcssid))#" class="#esapiEncode('html_attr',trim('mura-object-content #arguments.objectparams.contentcssclass#'))#" style="#$.renderCssStyles(objectparams.contentcssstyles)#">' & arguments.content & '</div></div>'>
 				<cfelse>
 					<cfreturn openingDiv & '</div>'>
 				</cfif>
