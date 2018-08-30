@@ -33,8 +33,34 @@
 		<cfparam name="attributes.params.cssid" default="">
 		<cfparam name="attributes.params.label" default="">
 		<cfparam name="attributes.params.object" default="">
+
+		<cfif not (isDefined("attributes.params.cssstyles") and isStruct(attributes.params.cssstyles))>
+			<cfif isDefined("attributes.params.cssstyles") and isJSON(attributes.params.cssstyles)>
+				<cfset attributes.params.cssstyles=deserializeJSON(attributes.params.cssstyles)>
+			<cfelse>
+				<cfset attributes.params.cssstyles={}>
+			</cfif>
+		</cfif>
+
+		<cfif not (isDefined("attributes.params.metacssstyles") and isStruct(attributes.params.metacssstyles))>
+			<cfif isDefined("attributes.params.metacssstyles") and isJSON(attributes.params.metacssstyles)>
+				<cfset attributes.params.metacssstyles=deserializeJSON(attributes.params.metacssstyles)>
+			<cfelse>
+				<cfset attributes.params.metacssstyles={}>
+			</cfif>
+		</cfif>
+		<cfif not (isDefined("attributes.params.contentcssstyles") and isStruct(attributes.params.contentcssstyles))>
+			<cfif isDefined("objectParams.contentcssstyles") and isJSON(attributes.params.contentcssstyles)>
+				<cfset attributes.params.contentcssstyles=deserializeJSON(attributes.params.contentcssstyles)>
+			<cfelse>
+				<cfset attributes.params.contentcssstyles={}>
+			</cfif>
+		</cfif>
+
 		<cfparam name="attributes.params.cssstyles.backgroundImage" default="">
 		<cfparam name="attributes.params.cssstyles.backgroundColor" default="rgba(255,0,0,0)">
+
+
 		<cfparam name="attributes.params.isbodyobject" default="false">
 		<cfif not request.hasbasicoptions>
 		<cfset request.hasbasicoptions=attributes.basictab>
