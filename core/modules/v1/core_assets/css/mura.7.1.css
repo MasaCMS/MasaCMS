@@ -765,224 +765,253 @@ li .cke_skin_mura table {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
-  flex-wrap: wrap;
   box-sizing: border-box;
 }
-.mura-region-local,
-.mura-region-inherited {
+.mura-region-inherited,
+.mura-region-local {
   width: 100%;
-  margin-right: 0;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  box-sizing: border-box;
+  float: left;
+  /* Utilities
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+  /* For devices larger than 400px */
+  /* For devices larger than 550px */
+  /* Utilities
+	–––––––––––––––––––––––––––––––––––––––––––––––––– */
 }
-.mura-flex {
-  width: 100%;
-  margin-right: 0;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  box-sizing: border-box;
-}
-.svAsset + .mura-region .mura-region-local,
-.svAsset + .mura-region .mura-region-local {
+.mura-region-inherited box-sizing:border-box .svAsset + .mura-region .mura-region-local,
+.mura-region-local box-sizing:border-box .svAsset + .mura-region .mura-region-local,
+.mura-region-inherited .svAsset + .mura-region .mura-region-local,
+.mura-region-local .svAsset + .mura-region .mura-region-local {
   float: none;
 }
-.mura-object {
+.mura-region-inherited .mura-object,
+.mura-region-local .mura-object {
   width: 100%;
   box-sizing: border-box;
 }
-.mura-column:last-child,
-.mura-object:last-child {
+.mura-region-inherited .mura-column:last-child,
+.mura-region-local .mura-column:last-child,
+.mura-region-inherited .mura-object:last-child,
+.mura-region-local .mura-object:last-child {
   margin-right: 0;
 }
-.mura-one {
-  width: 8.33%;
-}
-.mura-two {
-  width: 16.66%;
-}
-.mura-three {
-  width: 25%;
-}
-.mura-four {
-  width: 33.33%;
-}
-.mura-five {
-  width: 41.66%;
-}
-.mura-six {
-  width: 50%;
-}
-.mura-seven {
-  width: 58.33%;
-}
-.mura-eight {
-  width: 66.66%;
-}
-.mura-nine {
-  width: 75%;
-}
-.mura-ten {
-  width: 83.33%;
-}
-.mura-eleven {
-  width: 91.66%;
-}
-.mura-twelve {
-  width: 100%;
-}
-.mura-one-third {
-  width: 33.33%;
-}
-.mura-two-thirds {
-  width: 66.66%;
-}
-.mura-one-half {
-  width: 50%;
-}
-/* Utilities
-–––––––––––––––––––––––––––––––––––––––––––––––––– */
-.mura-full-width {
+.mura-region-inherited .mura-full-width,
+.mura-region-local .mura-full-width {
   width: 100%;
   box-sizing: border-box;
 }
-.mura-max-full-width {
+.mura-region-inherited .mura-max-full-width,
+.mura-region-local .mura-max-full-width {
   max-width: 100%;
   box-sizing: border-box;
 }
-.mura-pull-right,
-.mura-right {
+.mura-region-inherited .mura-pull-right,
+.mura-region-local .mura-pull-right,
+.mura-region-inherited .mura-right,
+.mura-region-local .mura-right {
   text-align: right;
   float: right;
   margin-left: auto;
 }
-.mura-pull-left,
-.mura-left {
+.mura-region-inherited .mura-pull-left,
+.mura-region-local .mura-pull-left,
+.mura-region-inherited .mura-left,
+.mura-region-local .mura-left {
   text-align: left;
   float: left;
   margin-right: auto;
 }
-.mura-center {
+.mura-region-inherited .mura-center,
+.mura-region-local .mura-center {
   margin: 0 auto;
 }
-.mura-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
-.mura-container .mura-object {
-  margin-right: 0;
-}
-.mura-region-loose .mura-object {
+.mura-region-inherited .mura-object,
+.mura-region-local .mura-object {
   float: left;
   display: block;
   box-sizing: border-box;
 }
-.mura-region-loose .mura-region-local,
-.mura-region-loose .mura-region-inherited {
+.mura-region-inherited .mura-region-local,
+.mura-region-local .mura-region-local,
+.mura-region-inherited .mura-region-inherited,
+.mura-region-local .mura-region-inherited {
   width: 100%;
   margin-right: 0;
   display: block;
   box-sizing: border-box;
 }
-.mura-region-loose .mura-region-local,
-.mura-region-loose .mura-region-inherited {
-  /* For devices larger than 400px */
-  /* For devices larger than 550px */
-  /* Utilities
-		–––––––––––––––––––––––––––––––––––––––––––––––––– */
-}
 @media (min-width: 400px) {
-  .mura-region-loose .mura-region-local .mura-container,
-  .mura-region-loose .mura-region-inherited .mura-container {
+  .mura-region-inherited .mura-container,
+  .mura-region-local .mura-container {
     width: 85%;
     padding: 0;
   }
 }
 @media (min-width: 550px) {
-  .mura-region-loose .mura-region-local,
-  .mura-region-loose .mura-region-inherited {
-    /*
-		  .mura-object {
-		    margin-right: 2%;
-			} // should be 4%, but if not in a container, objects won't align
-
-		  .mura-column:last-child,
-		  .mura-object:last-child {
-		    margin-right: 0;
-			}
-		  .mura-one.mura-object                    { width: 4.66666666667%; }
-		  .mura-two.mura-object                    { width: 13.3333333333%; }
-		  .mura-three.mura-object                  { width: 22%;            }
-		  .mura-four.mura-object                   { width: 30.6666666667%; }
-		  .mura-five.mura-object                   { width: 39.3333333333%; }
-		  .mura-six.mura-object                    { width: 48%;            }
-		  .mura-seven.mura-object                  { width: 56.6666666667%; }
-		  .mura-eight.mura-object                  { width: 65.3333333333%; }
-		  .mura-nine.mura-object                   { width: 74.0%;          }
-		  .mura-ten.mura-object                    { width: 82.6666666667%; }
-		  .mura-eleven.mura-object                 { width: 91.3333333333%; }
-		  .mura-twelve.mura-object                 { width: 100%; margin-left: 0; }
-
-		  .mura-one-third.mura-object               { width: 30.6666666667%; }
-		  .mura-two-thirds.mura-object              { width: 65.3333333333%; }
-		  .mura-one-half.mura-object                { width: 48%; }
-
-
-
-			.mura-one.mura-object                    { width: 8.33%; }
-			.mura-two.mura-object                    { width: 16.66%; }
-			.mura-three.mura-object                  { width: 25%;            }
-			.mura-four.mura-object                   { width: 33.33%; }
-			.mura-five.mura-object                   { width: 41.66%; }
-			.mura-six.mura-object                    { width: 50%;            }
-			.mura-seven.mura-object                  { width: 58.33%; }
-			.mura-eight.mura-object                  { width: 66.66%; }
-			.mura-nine.mura-object                   { width: 75%;          }
-			.mura-ten.mura-object                    { width: 83.33%; }
-			.mura-eleven.mura-object                 { width: 91.66%; }
-			.mura-twelve.mura-object                 { width: 100% }
-
-			.mura-one-third.mura-object               { width: 33.33%; }
-			.mura-two-thirds.mura-object              { width: 66.66%; }
-			.mura-one-half.mura-object                { width: 50%; }
-			*/
-  }
-  .mura-region-loose .mura-region-local .mura-container,
-  .mura-region-loose .mura-region-inherited .mura-container {
+  .mura-region-inherited .mura-container,
+  .mura-region-local .mura-container {
     width: 80%;
   }
+  .mura-region-inherited .mura-object,
+  .mura-region-local .mura-object {
+    margin-right: 2%;
+  }
+  .mura-region-inherited .mura-column:last-child,
+  .mura-region-local .mura-column:last-child,
+  .mura-region-inherited .mura-object:last-child,
+  .mura-region-local .mura-object:last-child {
+    margin-right: 0;
+  }
+  .mura-region-inherited .mura-one.mura-object,
+  .mura-region-local .mura-one.mura-object {
+    width: 4.66666666667%;
+  }
+  .mura-region-inherited .mura-two.mura-object,
+  .mura-region-local .mura-two.mura-object {
+    width: 13.3333333333%;
+  }
+  .mura-region-inherited .mura-three.mura-object,
+  .mura-region-local .mura-three.mura-object {
+    width: 22%;
+  }
+  .mura-region-inherited .mura-four.mura-object,
+  .mura-region-local .mura-four.mura-object {
+    width: 30.6666666667%;
+  }
+  .mura-region-inherited .mura-five.mura-object,
+  .mura-region-local .mura-five.mura-object {
+    width: 39.3333333333%;
+  }
+  .mura-region-inherited .mura-six.mura-object,
+  .mura-region-local .mura-six.mura-object {
+    width: 48%;
+  }
+  .mura-region-inherited .mura-seven.mura-object,
+  .mura-region-local .mura-seven.mura-object {
+    width: 56.6666666667%;
+  }
+  .mura-region-inherited .mura-eight.mura-object,
+  .mura-region-local .mura-eight.mura-object {
+    width: 65.3333333333%;
+  }
+  .mura-region-inherited .mura-nine.mura-object,
+  .mura-region-local .mura-nine.mura-object {
+    width: 74.0%;
+  }
+  .mura-region-inherited .mura-ten.mura-object,
+  .mura-region-local .mura-ten.mura-object {
+    width: 82.6666666667%;
+  }
+  .mura-region-inherited .mura-eleven.mura-object,
+  .mura-region-local .mura-eleven.mura-object {
+    width: 91.3333333333%;
+  }
+  .mura-region-inherited .mura-twelve.mura-object,
+  .mura-region-local .mura-twelve.mura-object {
+    width: 100%;
+    margin-left: 0;
+  }
+  .mura-region-inherited .mura-one-third.mura-object,
+  .mura-region-local .mura-one-third.mura-object {
+    width: 30.6666666667%;
+  }
+  .mura-region-inherited .mura-two-thirds.mura-object,
+  .mura-region-local .mura-two-thirds.mura-object {
+    width: 65.3333333333%;
+  }
+  .mura-region-inherited .mura-one-half.mura-object,
+  .mura-region-local .mura-one-half.mura-object {
+    width: 48%;
+  }
+  .mura-region-inherited .mura-one.mura-object,
+  .mura-region-local .mura-one.mura-object {
+    width: 8.33%;
+  }
+  .mura-region-inherited .mura-two.mura-object,
+  .mura-region-local .mura-two.mura-object {
+    width: 16.66%;
+  }
+  .mura-region-inherited .mura-three.mura-object,
+  .mura-region-local .mura-three.mura-object {
+    width: 25%;
+  }
+  .mura-region-inherited .mura-four.mura-object,
+  .mura-region-local .mura-four.mura-object {
+    width: 33.33%;
+  }
+  .mura-region-inherited .mura-five.mura-object,
+  .mura-region-local .mura-five.mura-object {
+    width: 41.66%;
+  }
+  .mura-region-inherited .mura-six.mura-object,
+  .mura-region-local .mura-six.mura-object {
+    width: 50%;
+  }
+  .mura-region-inherited .mura-seven.mura-object,
+  .mura-region-local .mura-seven.mura-object {
+    width: 58.33%;
+  }
+  .mura-region-inherited .mura-eight.mura-object,
+  .mura-region-local .mura-eight.mura-object {
+    width: 66.66%;
+  }
+  .mura-region-inherited .mura-nine.mura-object,
+  .mura-region-local .mura-nine.mura-object {
+    width: 75%;
+  }
+  .mura-region-inherited .mura-ten.mura-object,
+  .mura-region-local .mura-ten.mura-object {
+    width: 83.33%;
+  }
+  .mura-region-inherited .mura-eleven.mura-object,
+  .mura-region-local .mura-eleven.mura-object {
+    width: 91.66%;
+  }
+  .mura-region-inherited .mura-twelve.mura-object,
+  .mura-region-local .mura-twelve.mura-object {
+    width: 100%;
+  }
+  .mura-region-inherited .mura-one-third.mura-object,
+  .mura-region-local .mura-one-third.mura-object {
+    width: 33.33%;
+  }
+  .mura-region-inherited .mura-two-thirds.mura-object,
+  .mura-region-local .mura-two-thirds.mura-object {
+    width: 66.66%;
+  }
+  .mura-region-inherited .mura-one-half.mura-object,
+  .mura-region-local .mura-one-half.mura-object {
+    width: 50%;
+  }
 }
-.mura-region-loose .mura-region-local .mura-full-width,
-.mura-region-loose .mura-region-inherited .mura-full-width {
+.mura-region-inherited .mura-full-width,
+.mura-region-local .mura-full-width {
   width: 100%;
   box-sizing: border-box;
 }
-.mura-region-loose .mura-region-local .mura-max-full-width,
-.mura-region-loose .mura-region-inherited .mura-max-full-width {
+.mura-region-inherited .mura-max-full-width,
+.mura-region-local .mura-max-full-width {
   max-width: 100%;
   box-sizing: border-box;
 }
-.mura-region-loose .mura-region-local .mura-pull-right,
-.mura-region-loose .mura-region-inherited .mura-pull-right,
-.mura-region-loose .mura-region-local .mura-right,
-.mura-region-loose .mura-region-inherited .mura-right {
+.mura-region-inherited .mura-pull-right,
+.mura-region-local .mura-pull-right,
+.mura-region-inherited .mura-right,
+.mura-region-local .mura-right {
   float: right;
 }
-.mura-region-loose .mura-region-local .mura-pull-left,
-.mura-region-loose .mura-region-inherited .mura-pull-left,
-.mura-region-loose .mura-region-local .mura-left,
-.mura-region-loose .mura-region-inherited .mura-left {
+.mura-region-inherited .mura-pull-left,
+.mura-region-local .mura-pull-left,
+.mura-region-inherited .mura-left,
+.mura-region-local .mura-left {
   float: left;
 }
-.mura-region-loose .mura-region-local .mura-center,
-.mura-region-loose .mura-region-inherited .mura-center {
+.mura-region-inherited .mura-center,
+.mura-region-local .mura-center {
   margin: 0 auto;
 }
-.mura-region-loose .mura-region-local .mura-center.mura-object,
-.mura-region-loose .mura-region-inherited .mura-center.mura-object {
+.mura-region-inherited .mura-center.mura-object,
+.mura-region-local .mura-center.mura-object {
   float: none;
 }
 /* Misc
