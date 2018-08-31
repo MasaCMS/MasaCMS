@@ -66,6 +66,7 @@ mfa=false
 mfaperdevice=false
 mfasendauthcode=true
 notifywithversionlink=true
+offline404=true
 ormautomanagesession=false
 ormcfclocation=
 ormdatasource=

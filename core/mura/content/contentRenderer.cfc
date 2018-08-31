@@ -1888,7 +1888,9 @@ Display Objects
 	<cfelseif status eq 'offline'>
 		<cfset $.noIndex()>
 		<cfset eventOutput=application.pluginManager.renderEvent("onContentOfflineRender",$)>
-		<cfheader statuscode="404" statustext="Content Not Found" />
+		<cfif $.globalConfig().getValue(property="offline404", defaultValue="true")>
+			<cfheader statuscode="404" statustext="Content Not Found" />
+		</cfif>
 		<cfif len(eventOutput)>
 		<cfoutput>#eventOutput#</cfoutput>
 		<cfelse>
