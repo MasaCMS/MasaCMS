@@ -961,7 +961,8 @@ jQuery(document).ready(function(){
 					</cfloop>
 					<option value="100000" <cfif rc.feedBean.getMaxItems() eq 100000>selected</cfif>>ALL</option>
 				</select>
-
+				</div>
+				<div class="mura-control-group">
 				<label>#application.rbFactory.getKeyValue(session.rb,'collections.version')#</label>
 				<select name="version">
 					<cfloop list="RSS 0.920,RSS 2.0,Atom" index="v">

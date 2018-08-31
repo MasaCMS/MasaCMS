@@ -1638,10 +1638,18 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		if(arguments.entityName=='feed'){
 			var pk="feedid";
 		} else {
-			var pk=entity.getPrimaryKey();
+			if(arguments.entityName=='content'){
+				 if(!len($.event('contenthistid')) && len($.event('contentid'))){
+						var pk='contentid';
+				} else {
+						var pk='contenthistid';
+				}
+			} else {
+				var pk=entity.getPrimaryKey();
+			}
 		}
 
-		if(len($.event(pk)) && isValid('uuid',$.event(pk))){
+		if(len($.event(pk)) && (isValid('uuid',$.event(pk)) || $.event(pk)=='00000000000000000000000000000000001') ){
 			arguments.id=$.event(pk);
 		}
 
