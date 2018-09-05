@@ -123,7 +123,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfif rc.pageNum eq i>
 							<li class="active"><a href="##">#i#</a></li>
 						<cfelse>
-							<li><a href="?muraAction=cTrash.list&siteid=#esapiEncode('url',rc.siteid)#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#i#">#i#</a></li>
+							<li><a href="?muraAction=cTrash.list&siteid=#esapiEncode('url',rc.siteid)#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#i#&sinceDate=#esapiEncode('url',$.event('sinceDate'))#&beforeDate=#esapiEncode('url',$.event('beforeDate'))#">#i#</a></li>
 						</cfif>
 
 					</cfloop>
