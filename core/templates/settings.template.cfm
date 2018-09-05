@@ -112,3 +112,4 @@ tracksessioninnewthread=true
 usedefaultsmtpserver=true
 usefilemode=false
 windowdocumentdomain=
+createRequiredDirectories=false
