@@ -25,7 +25,6 @@ For production there is an official docker image available at <https://hub.docke
 ```
 git clone https://github.com/blueriver/MuraCMS.git
 cd MuraCMS
-git checkout 7.1
 docker-compose -f core/docker/local-demo/docker-compose.yml up
 ```
 
@@ -34,7 +33,6 @@ docker-compose -f core/docker/local-demo/docker-compose.yml up
 ```
 git clone https://github.com/blueriver/MuraCMS.git
 cd MuraCMS
-git checkout 7.1
 docker-compose -f core/docker/local-mysql/docker-compose.yml up
 ```
 
