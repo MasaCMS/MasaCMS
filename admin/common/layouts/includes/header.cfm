@@ -47,7 +47,7 @@
 	<cfparam name="rc.originalfuseAction" default="">
 	<cfparam name="rc.originalcircuit" default="">
 	<cfparam name="rc.moduleid" default="">
-	<cfif not application.configBean.getSessionHistory() or application.configBean.getSessionHistory() gte 30>
+	<cfif not application.configBean.getSessionHistory() or application.configBean.getSessionHistory() gte 180>
 		<cfparam name="session.dashboardSpan" default="30">
 	<cfelse>
 		<cfparam name="session.dashboardSpan" default="#application.configBean.getSessionHistory()#">

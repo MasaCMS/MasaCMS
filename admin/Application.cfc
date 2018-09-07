@@ -338,13 +338,13 @@ component extends="framework" output="false" {
 			}
 		}
 
-		if(not application.configBean.getSessionHistory()  or application.configBean.getSessionHistory() gte 30){
+		if(not application.configBean.getSessionHistory() or application.configBean.getSessionHistory() gte 180){
 			param name="session.dashboardSpan" default="30";
 		} else {
 			param name="session.dashboardSpan" default="#application.configBean.getSessionHistory()#";
 		}
 
-		if(not application.configBean.getSessionHistory()  or application.configBean.getSessionHistory() gte 30){
+		if(not application.configBean.getSessionHistory() or application.configBean.getSessionHistory() gte 180){
 			session.dashboardSpan=30;
 		} else {
 			session.dashboardSpan=application.configBean.getSessionHistory();
