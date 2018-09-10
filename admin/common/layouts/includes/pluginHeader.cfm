@@ -45,7 +45,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="rc.originalfuseaction" default="#listLast(listLast(request.action,":"),".")#">
 <cfparam name="rc.originalcircuit"  default="#listFirst(listLast(request.action,":"),".")#">
 <cfparam name="rc.moduleid" default="">
-<cfif not application.configBean.getSessionHistory() or application.configBean.getSessionHistory() gte 30>
+<cfif not application.configBean.getSessionHistory() or application.configBean.getSessionHistory() gte 180>
 	<cfparam name="session.dashboardSpan" default="30">
 <cfelse>
 	<cfparam name="session.dashboardSpan" default="#application.configBean.getSessionHistory()#">

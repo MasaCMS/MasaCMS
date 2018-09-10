@@ -42,7 +42,7 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfif session.siteid neq ''>
-<cfif not application.configBean.getSessionHistory() or application.configBean.getSessionHistory() gte 30>
+<cfif not application.configBean.getSessionHistory() or application.configBean.getSessionHistory() gte 180>
 	<cfparam name="session.dashboardSpan" default="30">
 <cfelse>
 	<cfparam name="session.dashboardSpan" default="#application.configBean.getSessionHistory()#">
