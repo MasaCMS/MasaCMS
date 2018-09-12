@@ -1,5 +1,5 @@
 <cfif not m.currentUser().isLoggedIn() and not len(m.event('returnURL'))>
-  <cfset m.redirect("./?display=login&returnURL=#esapiEncode('url',m.getCurrentURL())#")>
+  <cfset m.redirect(location="./?display=login&returnURL=#esapiEncode('url',m.getCurrentURL())#",statuscode=302)>
 <cfelse>
   <cfscript>
       if(m.event('grant_type')=='implicit'){
