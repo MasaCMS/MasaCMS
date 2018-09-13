@@ -292,6 +292,7 @@
 		$(function(){
 
 			var inited=false;
+			/*
 			$('#backgroundImageRaw').on('change',function(){
 					$('#backgroundImage').val('url(' + $(this).val() + ')').trigger('change');
 			})
@@ -307,7 +308,7 @@
 			$('#backgroundImageClear').on('click',function(){
 					$('#backgroundImage').val('').trigger('change');
 			})
-
+			*/
 			$('input[name="cssclass"],select[name="alignment"],select[name="width"],select[name="offset"]').on('change', function() {
 				setPlacementVisibility();
 			});
