@@ -68,7 +68,7 @@
 
 	</cfsilent>
 
-	<cfif $.getContentRenderer().useLayoutManager() and not listFindNoCase('folder,gallery,calendar',attributes.params.object) and not (IsBoolean(attributes.params.isbodyobject) and attributes.params.isbodyobject)>
+	<cfif $.getContentRenderer().useLayoutManager()>
 	<cfoutput>
 	<cfset request.muraconfiguratortag=true>
 	<div id="availableObjectContainer"<cfif not attributes.configurable> style="display:none"</cfif>>
@@ -95,12 +95,13 @@
 	<cfif $.getContentRenderer().useLayoutManager()>
 
 	<cfoutput>
-		<cfif not listFindNoCase('folder,gallery,calendar',attributes.params.object) and not (IsBoolean(attributes.params.isbodyobject) and attributes.params.isbodyobject)>
+
 		<cfif request.hasmetaoptions or request.hasbasicoptions>
 				</div> <!--- /end  mura-panel-collapse --->
 			</div> <!--- /end  mura-panel-body --->
 		</div> <!--- /end panel --->
 		</cfif>
+		<cfif not listFindNoCase('folder,gallery,calendar',attributes.params.object) and not (IsBoolean(attributes.params.isbodyobject) and attributes.params.isbodyobject)>
 		<!--- Postioning--->
 		<div class="mura-panel panel">
 			<div class="mura-panel-heading" role="tab" id="heading-positioning">
@@ -161,7 +162,7 @@
 				</div> <!--- /end  mura-panel-collapse --->
 			</div> <!--- /end  mura-panel-body --->
 		</div> <!--- /end panel --->
-
+		</cfif>
 		<div class="mura-panel panel">
 			<div class="mura-panel-heading" role="tab" id="heading-style">
 				<h4 class="mura-panel-title">
@@ -284,7 +285,6 @@
 				</div> <!--- /end  mura-panel-body --->
 			</div> <!--- /end  mura-panel-collapse --->
 		</div> <!--- /end panel --->
-	</cfif>
 	</div><!--- /end panels --->
 	</cfoutput>
 </div> <!--- /end availableObjectContainer --->
