@@ -67,11 +67,11 @@
 		<label for="#variables.record.datarecordid#"><input id="#variables.record.datarecordid#" name="#arguments.prefix##arguments.field.name#" type="checkbox"<cfif variables.record.isselected eq 1> CHECKED</cfif> value="#variables.record.value#">#variables.record.label#
 		</div>
 	</cfloop>
+	</cfif>
+	</div>
 	<cfif  arguments.field.isrequired>
 		<input type="hidden" name="#arguments.prefix##arguments.field.name#" data-required="true"<cfif len(arguments.field.validatemessage)> data-message="#replace(arguments.field.validatemessage,"""","&quot;","all")#"</cfif>/>
 	</cfif>
-</cfif>
-	</div>
 	</cfoutput>
 </cfsavecontent>
 </cfsilent><cfoutput>#variables.strField#</cfoutput>
