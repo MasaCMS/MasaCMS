@@ -1,11 +1,1 @@
-.mura__edit__controls{
-	background-color: #d498d0;
-	float:right;
-	margin: 0 !important;
-	padding: 0 !important;
-	height: 100% !important;	
-}
-
-.mura__edit__controls__objects{
-	background-color: #d498d0;	
-}
+.mura__edit__controls{background-color:#454545;float:right;margin:0!important;padding:0!important;width:300px;height:100vh!important;text-transform:none}.mura__edit__controls .mura__edit__controls__scrollable{height:inherit;width:inherit;overflow:auto}.mura__edit__controls .btn{border:1px solid transparent!important;box-shadow:none!important;cursor:pointer!important;font-size:14px!important;height:32px!important;letter-spacing:normal!important;line-height:1.42857143!important;padding:6px 12px!important;text-align:center!important;text-shadow:none!important;touch-action:manipulation!important;user-select:none!important;-webkit-user-select:none!important;vertical-align:middle!important;white-space:nowrap!important;-webkit-appearance:button!important}.mura__edit__controls .btn i{margin-right:4px!important}.mura__edit__controls .mura__edit__controls__objects{background-color:#454545;min-height:120px;padding:0}

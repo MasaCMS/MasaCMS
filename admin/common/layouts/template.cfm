@@ -200,9 +200,6 @@
 	<!-- Admin CSS -->
 	<link href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/css/admin.min.css" rel="stylesheet" type="text/css" />
 
-	<!--- TEMP SHIM FOR 7.2 DEV --->
-	<link href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/css/mura72shim.css" rel="stylesheet" type="text/css" />
-
 	<!-- Spinner JS -->
 	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/spin.min.js" type="text/javascript"></script>
 
