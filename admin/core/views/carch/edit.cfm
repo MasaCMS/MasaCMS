@@ -709,8 +709,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfinclude template="edit_new.cfm">
 
 
-
-
+<!--- todo: apply these conditions to panels --->
 
 		<!-- tab content -->
 		<div class="block-content tab-content">

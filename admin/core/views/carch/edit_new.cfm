@@ -10,23 +10,105 @@
 				<div id="mura-edit-tabs" class="mura__edit__controls__tabs">
 
 					<div class="mura-panel-group" id="content-panels" role="tablist" aria-multiselectable="true">
+
+						<!--- basic --->
 						<div class="mura-panel panel">
 							<div class="mura-panel-heading" role="tab" id="heading-basic">
-								<h4 class="mura-panel-title"><a href="##panel-basic">Basic</a></h4>
-
-									<div id="panel-basic" class="panel-collapse" role="tabpanel" aria-labelledby="heading-basic" aria-expanded="false" style="height: 0px;">
+								<h4 class="mura-panel-title"><a class="collapse" role="button" data-toggle="collapse" data-parent="##content-panels" href="##panel-basic" aria-expanded="true" aria-controls="panel-basic">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.basic")#</a></h4>
+									<div id="panel-basic" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-basic" aria-expanded="false" style="height: 0px;">
 										<div class="mura-panel-body">
 
-											<div class="mura-control-group">
-											  <label>Credits</label>
-											  <input type="text" id="credits" name="credits" value="" maxlength="255">
-											</div>
+											<cfinclude template="form/dsp_panel_basic.cfm">
 
 										</div>
 									</div>
 
 							</div>
-						</div>
+						</div> 
+						<!--- /basic --->
+
+						<!--- publishing --->
+						<div class="mura-panel panel">
+							<div class="mura-panel-heading" role="tab" id="heading-basic">
+								<h4 class="mura-panel-title"><a class="collapse" role="button" data-toggle="collapse" data-parent="##content-panels" href="##panel-publishing" aria-expanded="true" aria-controls="panel-publishing">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.publishing")#</a></h4>
+									<div id="panel-publishing" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-basic" aria-expanded="false" style="height: 0px;">
+										<div class="mura-panel-body">
+
+											<cfinclude template="form/dsp_panel_publishing.cfm">
+
+										</div>
+									</div>
+
+							</div>
+						</div> 
+						<!--- /publishing --->
+
+						<!--- layout --->
+						<div class="mura-panel panel">
+							<div class="mura-panel-heading" role="tab" id="heading-basic">
+								<h4 class="mura-panel-title"><a class="collapse" role="button" data-toggle="collapse" data-parent="##content-panels" href="##panel-layout" aria-expanded="true" aria-controls="panel-layout">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.layoutobjects")#</a></h4>
+									<div id="panel-layout" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-basic" aria-expanded="false" style="height: 0px;">
+										<div class="mura-panel-body">
+
+											<cfinclude template="form/dsp_panel_layout.cfm">
+
+										</div>
+									</div>
+
+							</div>
+						</div> 
+						<!--- /layout --->
+
+
+						<!--- tags --->
+						<div class="mura-panel panel">
+							<div class="mura-panel-heading" role="tab" id="heading-basic">
+								<h4 class="mura-panel-title"><a class="collapse" role="button" data-toggle="collapse" data-parent="##content-panels" href="##panel-tags" aria-expanded="true" aria-controls="panel-tags">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.tags")#</a></h4>
+									<div id="panel-tags" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-basic" aria-expanded="false" style="height: 0px;">
+										<div class="mura-panel-body">
+
+											<cfinclude template="form/dsp_panel_tags.cfm">
+
+										</div>
+									</div>
+
+							</div>
+						</div> 
+						<!--- /tags --->
+
+						<!--- related content --->
+						<div class="mura-panel panel">
+							<div class="mura-panel-heading" role="tab" id="heading-basic">
+								<h4 class="mura-panel-title"><a class="collapse" role="button" data-toggle="collapse" data-parent="##content-panels" href="##panel-relatedcontent" aria-expanded="true" aria-controls="panel-relatedcontent">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.relatedcontent")#</a></h4>
+									<div id="panel-relatedcontent" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-basic" aria-expanded="false" style="height: 0px;">
+										<div class="mura-panel-body">
+
+											<cfinclude template="form/dsp_panel_related_content.cfm">
+
+										</div>
+									</div>
+
+							</div>
+						</div> 
+						<!--- /related content --->
+
+						<!--- advanced --->
+						<div class="mura-panel panel">
+							<div class="mura-panel-heading" role="tab" id="heading-basic">
+								<h4 class="mura-panel-title"><a class="collapse" role="button" data-toggle="collapse" data-parent="##content-panels" href="##panel-advanced" aria-expanded="true" aria-controls="panel-advanced">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.advanced")#</a></h4>
+									<div id="panel-advanced" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-basic" aria-expanded="false" style="height: 0px;">
+										<div class="mura-panel-body">
+
+											<cfinclude template="form/dsp_panel_advanced.cfm">
+
+										</div>
+									</div>
+
+							</div>
+						</div> 
+						<!--- /advanced --->
+
+
 					</div>	
 
 				</div>
