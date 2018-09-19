@@ -1,3 +1,12 @@
+<!--- temp: todo - remove switch once dev complete, see end of file --->
+<cfif rc.rscount.menuTitle is 'sandbox'>
+	<cfinclude template="edit_new.cfm">
+<cfelse>
+
+
+
+
+
 <!--- This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
@@ -702,15 +711,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfloop>
 		</ul>
 
-
-
-
-		<!--- temp: move contents to sidebar --->
-		<cfinclude template="edit_new.cfm">
-
-
-<!--- todo: apply these conditions to panels --->
-
 		<!-- tab content -->
 		<div class="block-content tab-content">
 			#tabContent#
@@ -864,3 +864,8 @@ try{
 		<cfinclude template="form/dsp_full.cfm">
 	</div>
 </cfif>
+
+
+</cfif>
+<!--- todo remove this - see start of file --->
+
