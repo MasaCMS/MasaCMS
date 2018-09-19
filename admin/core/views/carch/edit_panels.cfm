@@ -1,14 +1,5 @@
 <cfoutput>
 
-<!--- accordion effect for side panels --->
-<script type="text/javascript">
-$(document).ready(function(){
-	$('##content-panels .mura-panel-title a').not('.collapsed').on('click',function(){
-	   $(this).parents('.mura-panel').siblings('.mura-panel').find('.panel-collapse.in').removeClass('in');
-	});
-});
-</script>
-
 <!--- new sidebar markup --->
 	<div class="mura__edit__controls">
 		<div class="mura__edit__controls__scrollable">
