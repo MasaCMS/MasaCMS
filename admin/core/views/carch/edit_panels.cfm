@@ -23,15 +23,15 @@ $(document).ready(function(){
 								<h4 class="mura-panel-title">
 									<a class="collapse" role="button" data-toggle="collapse" data-parent="##content-panels" href="##panel-basic" aria-expanded="true" aria-controls="panel-basic">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.basic")#</a>
 								</h4>
-									<div id="panel-basic" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-basic" aria-expanded="false" style="height: 0px;">
-										<div class="mura-panel-body">
-
-											<cfinclude template="form/dsp_panel_basic.cfm">
-
-										</div>
-									</div>
-
 							</div>
+							<div id="panel-basic" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-basic" aria-expanded="false" style="height: 0px;">
+								<div class="mura-panel-body">
+
+									<cfinclude template="form/dsp_panel_basic.cfm">
+
+								</div>
+							</div>
+
 						</div> 
 						<!--- /basic --->
 
@@ -41,15 +41,15 @@ $(document).ready(function(){
 								<h4 class="mura-panel-title">
 									<a class="collapse" role="button" data-toggle="collapse" data-parent="##content-panels" href="##panel-publishing" aria-expanded="false" aria-controls="panel-publishing">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.publishing")#</a>
 								</h4>
-									<div id="panel-publishing" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-publishing" aria-expanded="false" style="height: 0px;">
-										<div class="mura-panel-body">
-
-											<cfinclude template="form/dsp_panel_publishing.cfm">
-
-										</div>
-									</div>
-
 							</div>
+								<div id="panel-publishing" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-publishing" aria-expanded="false" style="height: 0px;">
+									<div class="mura-panel-body">
+
+										<cfinclude template="form/dsp_panel_publishing.cfm">
+
+									</div>
+								</div>
+
 						</div> 
 						<!--- /publishing --->
 
@@ -59,15 +59,15 @@ $(document).ready(function(){
 								<h4 class="mura-panel-title">
 									<a class="collapse" role="button" data-toggle="collapse" data-parent="##content-panels" href="##panel-layout" aria-expanded="false" aria-controls="panel-layout">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.layoutobjects")#</a>
 								</h4>
-									<div id="panel-layout" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-layout" aria-expanded="false" style="height: 0px;">
-										<div class="mura-panel-body">
-
-											<cfinclude template="form/dsp_panel_layout.cfm">
-
-										</div>
-									</div>
-
 							</div>
+								<div id="panel-layout" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-layout" aria-expanded="false" style="height: 0px;">
+									<div class="mura-panel-body">
+
+										<cfinclude template="form/dsp_panel_layout.cfm">
+
+									</div>
+								</div>
+
 						</div> 
 						<!--- /layout --->
 
@@ -78,15 +78,15 @@ $(document).ready(function(){
 								<h4 class="mura-panel-title">
 									<a class="collapse" role="button" data-toggle="collapse" data-parent="##content-panels" href="##panel-tags" aria-expanded="false" aria-controls="panel-tags">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.tags")#</a>
 								</h4>
-									<div id="panel-tags" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-tags" aria-expanded="false" style="height: 0px;">
-										<div class="mura-panel-body">
-
-											<cfinclude template="form/dsp_panel_tags.cfm">
-
-										</div>
-									</div>
-
 							</div>
+							<div id="panel-tags" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-tags" aria-expanded="false" style="height: 0px;">
+								<div class="mura-panel-body">
+
+									<cfinclude template="form/dsp_panel_tags.cfm">
+
+								</div>
+							</div>
+
 						</div> 
 						<!--- /tags --->
 
@@ -96,15 +96,15 @@ $(document).ready(function(){
 								<h4 class="mura-panel-title">
 									<a class="collapse" role="button" data-toggle="collapse" data-parent="##content-panels" href="##panel-relatedcontent" aria-expanded="false" aria-controls="panel-relatedcontent">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.relatedcontent")#</a>
 								</h4>
-									<div id="panel-relatedcontent" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-relatedcontent" aria-expanded="false" style="height: 0px;">
-										<div class="mura-panel-body">
-
-											<cfinclude template="form/dsp_panel_related_content.cfm">
-
-										</div>
-									</div>
-
 							</div>
+								<div id="panel-relatedcontent" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-relatedcontent" aria-expanded="false" style="height: 0px;">
+									<div class="mura-panel-body">
+
+										<cfinclude template="form/dsp_panel_related_content.cfm">
+
+									</div>
+								</div>
+
 						</div> 
 						<!--- /related content --->
 
@@ -114,15 +114,15 @@ $(document).ready(function(){
 								<h4 class="mura-panel-title">
 									<a class="collapse" role="button" data-toggle="collapse" data-parent="##content-panels" href="##panel-advanced" aria-expanded="false" aria-controls="panel-advanced">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.advanced")#</a>
 								</h4>
-									<div id="panel-advanced" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-advanced" aria-expanded="false" style="height: 0px;">
-										<div class="mura-panel-body">
-
-											<cfinclude template="form/dsp_panel_advanced.cfm">
-
-										</div>
-									</div>
-
 							</div>
+							<div id="panel-advanced" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-advanced" aria-expanded="false" style="height: 0px;">
+								<div class="mura-panel-body">
+
+									<cfinclude template="form/dsp_panel_advanced.cfm">
+
+								</div>
+							</div>
+
 						</div> 
 						<!--- /advanced --->
 
