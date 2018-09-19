@@ -3,7 +3,7 @@
 <!--- accordion effect for side panels --->
 <script type="text/javascript">
 $(document).ready(function(){
-	$('##content-panels .mura-panel-title a').on('click',function(){
+	$('##content-panels .mura-panel-title a').not('.collapsed').on('click',function(){
 	   $(this).parents('.mura-panel').siblings('.mura-panel').find('.panel-collapse.in').removeClass('in');
 	});
 });
