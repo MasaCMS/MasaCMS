@@ -47,16 +47,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <div id="tabBasic" class="tab-pane active">
 
-	<!-- block -->
-	<div class="block block-bordered">
-		<!-- block header -->
-	  <div class="block-header">
-			<h3 class="block-title">Basic Settings</h3>
-	  </div>
-	  <!-- /block header -->
-
-		<!-- block content -->
-		<div class="block-content">
 
 	<span id="extendset-container-tabbasictop" class="extendset-container"></span>
 
@@ -418,8 +408,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<span id="extendset-container-tabbasicbottom" class="extendset-container"></span>
 
-		</div> <!--- /.block-content --->
-	</div> <!--- /.block --->
 </div> <!--- /.tab-pane --->
 
 	<script>

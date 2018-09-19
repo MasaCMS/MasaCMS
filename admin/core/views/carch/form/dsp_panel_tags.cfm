@@ -45,16 +45,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset tabList=listAppend(tabList,"tabTags")>
 <div id="tabTags" class="tab-pane">
 
-	<!-- block -->
-  <div class="block block-bordered">
-  	<!-- block header -->
-    <div class="block-header">
-			<h3 class="block-title">Tags</h3>
-    </div>
-    <!-- /block header -->
-
-		<!-- block content -->
-		<div class="block-content">
 
 		<span id="extendset-container-tabtagstop" class="extendset-container"></span>
 		<cfoutput>
@@ -131,7 +121,5 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<span id="extendset-container-tags" class="extendset-container"></span>
 		<span id="extendset-container-tabtagsbottom" class="extendset-container"></span>
 
-		</div> <!--- /.block-content --->
-	</div> <!--- /.block --->
 </div> <!--- /.tab-pane --->
 </cfoutput>

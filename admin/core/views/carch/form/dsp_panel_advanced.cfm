@@ -47,16 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <div id="tabAdvanced" class="tab-pane">
 
-		<!-- block -->
-	  <div class="block block-bordered">
-	  	<!-- block header -->
-	    <div class="block-header">
-				<h3 class="block-title">Advanced Settings</h3>
-	    </div>
-	    <!-- /block header -->
 
-			<!-- block content -->
-			<div class="block-content">
 	<span id="extendset-container-tabadvancedtop" class="extendset-container"></span>
 
 	<div class="mura-control-group">
@@ -176,7 +167,5 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<span id="extendset-container-advanced" class="extendset-container"></span>
 	<span id="extendset-container-tabadvancedbottom" class="extendset-container"></span>
 
-		</div> <!--- /.block-content --->
-	</div> <!--- /.block --->
 </div> <!--- /.tab-pane --->
 </cfoutput>

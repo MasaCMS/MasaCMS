@@ -50,16 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
   <div id="tabLayoutObjects" class="tab-pane">
 
-    <!-- block -->
-    <div class="block block-bordered">
-      <!-- block header -->
-      <div class="block-header">
-			   <h3 class="block-title">Layout &amp; Objects</h3>
-      </div>
-      <!-- /block header -->
 
-      <!-- block content -->
-      <div class="block-content">
   			<span id="extendset-container-tablayoutobjectstop" class="extendset-container"></span>
         <div class="mura-control-group">
               <div class="half">
@@ -251,8 +242,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   <span id="extendset-container-layoutobjects" class="extendset-container"></span>
   <span id="extendset-container-tablayoutobjectsbottom" class="extendset-container"></span>
 
-    </div> <!--- /.block-content --->
-  </div> <!--- /.block --->
 </div> <!--- /.tab-pane --->
   <cfinclude template="../dsp_configuratorJS.cfm">
 </cfoutput>

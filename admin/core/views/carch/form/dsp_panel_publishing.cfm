@@ -2,18 +2,7 @@
 <cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.publishing"))/>
 <cfset tabList=listAppend(tabList,"tabPublishing")>
 <cfoutput>
-<div id="tabPublishing" class="tab-pane">
-
-	<!-- block -->
-  <div class="block block-bordered">
-  	<!-- block header -->
-    <div class="block-header">
-			<h3 class="block-title">Publishing</h3>
-    </div>
-    <!-- /block header -->
-
-	<!-- block content -->
-	<div class="block-content">
+<div id="tabPublishing" class="`pane">
 
 	<span id="extendset-container-tabpublishingtop" class="extendset-container"></span>
 
@@ -241,7 +230,5 @@
 
    <span id="extendset-container-tabpublishingbottom" class="extendset-container"></span>
 
-		</div> <!--- /.block-content --->
-	</div> <!--- /.block --->
 </div> <!--- /.tab-pane --->
 </cfoutput>
