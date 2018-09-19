@@ -506,16 +506,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfinclude template="form/dsp_tab_basic.cfm">
 	</cfif>
 
-<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Publishing')>
-	<cfinclude template="form/dsp_tab_publishing.cfm">
-<cfelse>
-	<input type="hidden" name="ommitPublishingTab" value="true">
-	<cfoutput><input type="hidden" name="parentid" value="#esapiEncode('html_attr',rc.parentid)#"></cfoutput>
-</cfif>
-
-	<cfif rc.moduleid eq '00000000000000000000000000000000000' and (not rc.$.getContentRenderer().useLayoutManager() and listFindNoCase('Page,Folder,Gallery,Calender',rc.type) and (not len(tabAssignments) or listFindNocase(tabAssignments,'List Display Options')))>
-		<cfinclude template="form/dsp_tab_listdisplayoptions.cfm">
-	</cfif>
 
 	<cfswitch expression="#rc.type#">
 	<cfcase value="Page,Folder,Calendar,Gallery">

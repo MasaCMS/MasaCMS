@@ -17,9 +17,20 @@
 							</div>
 							<div id="panel-basic" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-basic" aria-expanded="false" style="height: 0px;">
 								<div class="mura-panel-body">
-
-									<cfinclude template="form/dsp_panel_basic.cfm">
-
+									<!--- form type --->
+									<cfif rc.type eq "Form">
+										<cfif rc.contentBean.getIsNew() and not (isdefined("url.formType") and url.formType eq "editor")>
+											<cfset rc.contentBean.setBody( application.serviceFactory.getBean('formBuilderManager').createJSONForm( rc.contentBean.getContentID() ) ) />
+										</cfif>
+										<cfif isJSON(rc.contentBean.getBody())>
+											<cfinclude template="form/dsp_panel_formbuilder.cfm">
+										<cfelse>
+											<cfinclude template="form/dsp_panel_basic.cfm">
+										</cfif>
+									<!--- all other types --->
+									<cfelse>
+										<cfinclude template="form/dsp_panel_basic.cfm">
+									</cfif>
 								</div>
 							</div>
 
@@ -27,23 +38,42 @@
 						<!--- /basic --->
 
 						<!--- publishing --->
-						<div class="mura-panel panel">
-							<div class="mura-panel-heading" role="tab" id="heading-publishing">
-								<h4 class="mura-panel-title">
-									<a class="collapse" role="button" data-toggle="collapse" data-parent="##content-panels" href="##panel-publishing" aria-expanded="false" aria-controls="panel-publishing">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.publishing")#</a>
-								</h4>
-							</div>
-								<div id="panel-publishing" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-publishing" aria-expanded="false" style="height: 0px;">
-									<div class="mura-panel-body">
-
-										<cfinclude template="form/dsp_panel_publishing.cfm">
-
-									</div>
+						<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Publishing')>
+							<div class="mura-panel panel">
+								<div class="mura-panel-heading" role="tab" id="heading-publishing">
+									<h4 class="mura-panel-title">
+										<a class="collapse" role="button" data-toggle="collapse" data-parent="##content-panels" href="##panel-publishing" aria-expanded="false" aria-controls="panel-publishing">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.publishing")#</a>
+									</h4>
 								</div>
-
-						</div> 
+									<div id="panel-publishing" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-publishing" aria-expanded="false" style="height: 0px;">
+										<div class="mura-panel-body">
+											<cfinclude template="form/dsp_panel_publishing.cfm">
+										</div>
+									</div>
+							</div> 
+						<cfelse>
+							<input type="hidden" name="ommitPublishingTab" value="true">
+							<cfoutput><input type="hidden" name="parentid" value="#esapiEncode('html_attr',rc.parentid)#"></cfoutput>
+						</cfif>		
 						<!--- /publishing --->
 
+						<!--- list display options --->
+						<cfif rc.moduleid eq '00000000000000000000000000000000000' and (not rc.$.getContentRenderer().useLayoutManager() and listFindNoCase('Page,Folder,Gallery,Calender',rc.type) and (not len(tabAssignments) or listFindNocase(tabAssignments,'List Display Options')))>
+							<div class="mura-panel panel">
+								<div class="mura-panel-heading" role="tab" id="heading-listdisplayoptions">
+									<h4 class="mura-panel-title">
+										<a class="collapse" role="button" data-toggle="collapse" data-parent="##content-panels" href="##panel-listdisplayoptions" aria-expanded="false" aria-controls="panel-listdisplayoptions">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.listdisplayoptions")#</a>
+									</h4>
+								</div>
+									<div id="panel-listdisplayoptions" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-listdisplayoptions" aria-expanded="false" style="height: 0px;">
+										<div class="mura-panel-body">
+											<cfinclude template="form/dsp_panel_listdisplayoptions.cfm">
+										</div>
+									</div>
+							</div> 
+						</cfif>
+						<!--- /list display options --->
+						
 						<!--- layout --->
 						<div class="mura-panel panel">
 							<div class="mura-panel-heading" role="tab" id="heading-layout">
@@ -53,9 +83,7 @@
 							</div>
 								<div id="panel-layout" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-layout" aria-expanded="false" style="height: 0px;">
 									<div class="mura-panel-body">
-
 										<cfinclude template="form/dsp_panel_layout.cfm">
-
 									</div>
 								</div>
 
@@ -72,9 +100,7 @@
 							</div>
 							<div id="panel-tags" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-tags" aria-expanded="false" style="height: 0px;">
 								<div class="mura-panel-body">
-
 									<cfinclude template="form/dsp_panel_tags.cfm">
-
 								</div>
 							</div>
 
@@ -90,9 +116,7 @@
 							</div>
 								<div id="panel-relatedcontent" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-relatedcontent" aria-expanded="false" style="height: 0px;">
 									<div class="mura-panel-body">
-
 										<cfinclude template="form/dsp_panel_related_content.cfm">
-
 									</div>
 								</div>
 
@@ -108,15 +132,12 @@
 							</div>
 							<div id="panel-advanced" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-advanced" aria-expanded="false" style="height: 0px;">
 								<div class="mura-panel-body">
-
 									<cfinclude template="form/dsp_panel_advanced.cfm">
-
 								</div>
 							</div>
 
 						</div> 
 						<!--- /advanced --->
-
 
 					</div>	
 
