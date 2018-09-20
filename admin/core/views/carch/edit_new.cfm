@@ -485,150 +485,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cfoutput>
 
-<cfset tabLabelList=""/>
-<cfset tabList="">
-
-<!--- set up tab content --->
-<cfsavecontent variable="tabContent">
-
-	<cfswitch expression="#rc.type#">
-	<cfcase value="Page,Folder,Calendar,Gallery">
-		<cfif rc.moduleid eq '00000000000000000000000000000000000' and (not len(tabAssignments) or listFindNocase(tabAssignments,'Layout & Objects'))>
-			<cfif listFind(session.mura.memberships,'S2IsPrivate')>
-				<cfinclude template="form/dsp_tab_layoutobjects.cfm">
-			</cfif>
-		</cfif>
-		<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Categorization')>
-			<cfif application.categoryManager.getCategoryCount(rc.siteID)>
-				<cfinclude template="form/dsp_tab_categories.cfm">
-			</cfif>
-		</cfif>
-		<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Tags')>
-			<cfinclude template="form/dsp_tab_tags.cfm">
-		</cfif>
-		<cfif rc.moduleid eq '00000000000000000000000000000000000' and (not len(tabAssignments) or listFindNocase(tabAssignments,'Related Content'))>
-			<cfinclude template="form/dsp_tab_related_content.cfm">
-		<cfelse>
-			<input type="hidden" name="ommitRelatedContentTab" value="true">
-		</cfif>
-	</cfcase>
-	<cfcase value="Link,File">
-		<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Categorization')>
-			<cfif application.categoryManager.getCategoryCount(rc.siteid)>
-				<cfinclude template="form/dsp_tab_categories.cfm">
-			</cfif>
-		</cfif>
-		<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Tags')>
-			<cfinclude template="form/dsp_tab_tags.cfm">
-		</cfif>
-		<cfif rc.moduleid eq '00000000000000000000000000000000000' and (not len(tabAssignments) or listFindNocase(tabAssignments,'Related Content'))>
-			<cfinclude template="form/dsp_tab_related_content.cfm">
-		<cfelse>
-			<input type="hidden" name="ommitRelatedContentTab" value="true">
-		</cfif>
-	</cfcase>
-	<cfcase value="Variation">
-		<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Categorization')>
-			<cfif application.categoryManager.getCategoryCount(rc.siteID)>
-				<cfinclude template="form/dsp_tab_categories.cfm">
-			</cfif>
-		</cfif>
-		<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Tags')>
-			<cfinclude template="form/dsp_tab_tags.cfm">
-		</cfif>
-	</cfcase>
-	<cfcase value="Component">
-		<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Categorization')>
-			<cfif application.categoryManager.getCategoryCount(rc.siteID)>
-				<cfinclude template="form/dsp_tab_categories.cfm">
-			</cfif>
-		</cfif>
-		<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Tags')>
-			<cfinclude template="form/dsp_tab_tags.cfm">
-		</cfif>
-		<cfif application.configBean.getValue(property='showUsageTabs',defaultValue=true) and (not len(tabAssignments) or listFindNocase(tabAssignments,'Usage Report'))>
-			<cfif not rc.contentBean.getIsNew()>
-				<cfinclude template="form/dsp_tab_usage.cfm">
-			</cfif>
-		</cfif>
-	</cfcase>
-	<cfcase value="Form">
-		<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Categorization')>
-			<cfif application.categoryManager.getCategoryCount(rc.siteID)>
-				<cfinclude template="form/dsp_tab_categories.cfm">
-			</cfif>
-		</cfif>
-		<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Tags')>
-			<cfinclude template="form/dsp_tab_tags.cfm">
-		</cfif>
-		<cfif application.configBean.getValue(property='showUsageTabs',defaultValue=true) and (not len(tabAssignments) or listFindNocase(tabAssignments,'Usage Report'))>
-			<cfif not rc.contentBean.getIsNew()>
-				<cfinclude template="form/dsp_tab_usage.cfm">
-			</cfif>
-		</cfif>
-	</cfcase>
-</cfswitch>
-
-<cfif listFindNoCase(rc.$.getBean('contentManager').ExtendableList,rc.type)>
-	<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Extended Attributes')>
-		<cfset extendSets=application.classExtensionManager.getSubTypeByName(rc.type,rc.contentBean.getSubType(),rc.siteid).getExtendSets(activeOnly=true) />
-		<cfinclude template="form/dsp_tab_extended_attributes.cfm">
-	</cfif>
-</cfif>
-
-<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Advanced')>
-	<cfif listFind(session.mura.memberships,'S2IsPrivate')>
-		<cfinclude template="form/dsp_tab_advanced.cfm">
-	<cfelse>
-		<input type="hidden" name="ommitAdvancedTab" value="true">
-	</cfif>
-</cfif>
-
-<cfif arrayLen(pluginEventMappings)>
-	<cfoutput>
-		<cfset renderedEvents = '' />
-		<cfset eventIdx = 0 />
-		<cfloop from="1" to="#arrayLen(pluginEventMappings)#" index="i">
-			<cfset eventToRender = pluginEventMappings[i].eventName />
-
-			<cfif ListFindNoCase(renderedEvents, eventToRender)>
-				<cfset eventIdx++ />
-			<cfelse>
-				<cfset renderedEvents = ListAppend(renderedEvents, eventToRender) />
-				<cfset eventIdx=1 />
-			</cfif>
-
-			<cfset renderedEvent=$.getBean('pluginManager').renderEvent(eventToRender=eventToRender,currentEventObject=$,index=eventIdx)>
-			<cfif len(trim(renderedEvent))>
-				<cfset tabLabel = Len($.event('tabLabel')) && !ListFindNoCase(tabLabelList, $.event('tabLabel')) ? $.event('tabLabel') : pluginEventMappings[i].pluginName />
-				<cfset tabLabelList=listAppend(tabLabelList, tabLabel)/>
-				<cfset tabID="tab" & $.createCSSID(tabLabel)>
-				<cfif ListFind(tabList,tabID)>
-					<cfset tabID = tabID & i />
-				</cfif>
-				<cfset tabList=listAppend(tabList,tabID)>
-				<cfset pluginEvent.setValue("tabList",tabLabelList)>
-				<div id="#tabID#" class="tab-pane">
-					<div class="block block-bordered">
-						<div class="block-header">
-					<h3 class="block-title">#tabLabel#</h3>
-						</div>
-						<!-- /block header -->
-
-					  	<!-- block content -->
-					  	<div class="block-content">
-							#renderedEvent#
-						</div>
-					</div>
-				</div>
-			</cfif>
-		</cfloop>
-	</cfoutput>
-</cfif>
-
-</cfsavecontent>
-<!--- /tabcontent --->
-
 	<cfoutput>
 		<cfif rc.contentBean.exists() and rc.compactDisplay eq "true" and not ListFindNoCase(nodeLevelList & ",Variation",rc.type)>
 			<div class="alert alert-info">
@@ -648,20 +504,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<div class="block block-constrain">
 
-	<!-- tabs -->
-		<ul class="mura-tabs nav-tabs" data-toggle="tabs">
-			<cfloop from="1" to="#listlen(tabList)#" index="t">
-			<cfset currentTab=listGetAt(tabList,t)>
-			<li<cfif listFindNoCase("tabExtendedAttributes,tabListDisplayOptions",currentTab)> class="hide"<cfelseif t eq 1> class="active"</cfif>  id="#currentTab#LI"><a href="###currentTab#"><span>#listGetAt(tabLabelList,t)#</span></a></li>
-			</cfloop>
-		</ul>
-
 		<!--- content editing sidebar --->
 		<cfinclude template="edit_panels.cfm">
 
 		<!-- tab content -->
 		<div class="block-content tab-content">
-			#tabContent#
+
+			<!--- MARK --->
+			<!--- TODO: title, body here --->
 
 			<div class="load-inline tab-preloader"></div>
 

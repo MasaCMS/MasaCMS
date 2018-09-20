@@ -115,15 +115,67 @@
 						</cfswitch>
 						<!--- /layoutobjects,categories,related_content,tags,usage  --->
 
-
-
-
-
+						<!--- extended attributes --->
+						<cfif listFindNoCase(rc.$.getBean('contentManager').ExtendableList,rc.type)>
+							<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Extended Attributes')>
+								<cfset extendSets=application.classExtensionManager.getSubTypeByName(rc.type,rc.contentBean.getSubType(),rc.siteid).getExtendSets(activeOnly=true) />
+								<cfinclude template="form/dsp_panel_extended_attributes.cfm">
+							</cfif>
+						</cfif>
+						<!--- /extended attributes --->
 
 						<!--- advanced --->
-						<cfinclude template="form/dsp_panel_advanced.cfm">
+						<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Advanced')>
+							<cfif listFind(session.mura.memberships,'S2IsPrivate')>
+								<cfinclude template="form/dsp_panel_advanced.cfm">
+							<cfelse>
+								<input type="hidden" name="ommitAdvancedTab" value="true">
+							</cfif>
+						</cfif>
 						<!--- /advanced --->
 
+						<!--- plugin rendering --->
+						<cfif arrayLen(pluginEventMappings)>
+							<cfoutput>
+								<cfset renderedEvents = '' />
+								<cfset eventIdx = 0 />
+								<cfloop from="1" to="#arrayLen(pluginEventMappings)#" index="i">
+									<cfset eventToRender = pluginEventMappings[i].eventName />
+
+									<cfif ListFindNoCase(renderedEvents, eventToRender)>
+										<cfset eventIdx++ />
+									<cfelse>
+										<cfset renderedEvents = ListAppend(renderedEvents, eventToRender) />
+										<cfset eventIdx=1 />
+									</cfif>
+
+									<cfset renderedEvent=$.getBean('pluginManager').renderEvent(eventToRender=eventToRender,currentEventObject=$,index=eventIdx)>
+									<cfif len(trim(renderedEvent))>
+										<cfset tabLabel = Len($.event('tabLabel')) && !ListFindNoCase(tabLabelList, $.event('tabLabel')) ? $.event('tabLabel') : pluginEventMappings[i].pluginName />
+										<cfset tabLabelList=listAppend(tabLabelList, tabLabel)/>
+										<cfset tabID="tab" & $.createCSSID(tabLabel)>
+										<cfif ListFind(tabList,tabID)>
+											<cfset tabID = tabID & i />
+										</cfif>
+										<cfset tabList=listAppend(tabList,tabID)>
+										<cfset pluginEvent.setValue("tabList",tabLabelList)>
+										<div class="mura-panel panel">
+											<div class="mura-panel-heading" role="tab" id="heading-#tabID#">
+												<h4 class="mura-panel-title">
+													<a class="collapse" role="button" data-toggle="collapse" data-parent="##content-panels" href="##panel-#tabID#" aria-expanded="false" aria-controls="panel-#tabID#">#tablabel#</a>
+												</h4>
+											</div>
+											<div id="panel-#tabID#" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-#tabID#" aria-expanded="false" style="height: 0px;">
+												<div class="mura-panel-body">
+													#renderedEvent#
+												</div>
+											</div>
+										</div>
+									</cfif>
+								</cfloop>
+							</cfoutput>
+						</cfif>
+						<!--- /plugin rendering --->
 					</div>	
 
 				</div>
