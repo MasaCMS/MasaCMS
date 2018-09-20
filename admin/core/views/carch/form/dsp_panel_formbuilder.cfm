@@ -41,74 +41,73 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
+<cfset tabList=listAppend(tabList,"tabBasic")>
 <cfinclude template="head_formbuilder.cfm">
+	<cfoutput>
+	<div class="mura-panel panel">
+		<div class="mura-panel-heading" role="tab" id="heading-basic">
+			<h4 class="mura-panel-title">
+				<a class="collapse" role="button" data-toggle="collapse" data-parent="##content-panels" href="##panel-basic" aria-expanded="true" aria-controls="panel-basic">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.basic")#</a>
+			</h4>
+		</div>
+		<div id="panel-basic" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-basic" aria-expanded="false" style="height: 0px;">
+			<div class="mura-panel-body">
 
-<cfoutput>
+			<span id="extendset-container-tabbasictop" class="extendset-container"></span>
 
-<div class="mura-panel panel">
-	<div class="mura-panel-heading" role="tab" id="heading-basic">
-		<h4 class="mura-panel-title">
-			<a class="collapse" role="button" data-toggle="collapse" data-parent="##content-panels" href="##panel-basic" aria-expanded="true" aria-controls="panel-basic">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.basic")#</a>
-		</h4>
-	</div>
-	<div id="panel-basic" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-basic" aria-expanded="false" style="height: 0px;">
-		<div class="mura-panel-body">
+			<input type="hidden" id="menuTitle" name="menuTitle" value="">
+				<div class="mura-control-group">
+					<label>
+				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.title')#
+			</label>
+				<input type="text" id="title" name="title" value="#esapiEncode('html_attr',rc.contentBean.getTitle())#"  maxlength="255" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.titlerequired')#">
+			</div>
 
-		<span id="extendset-container-tabbasictop" class="extendset-container"></span>
+			<cfif rc.type neq 'Form' and  rc.type neq 'Component' >
+				<div class="mura-control-group">
+					<label>
+				<a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.contentSummary"))#">
+					#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.summary")#
+						 <i class="mi-question-circle"></i></a>
+				<a href="##" id="editSummaryLink" onclick="javascript: toggleDisplay('editSummary','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#'); editSummary();return false">
+					[#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.expand")#]
+				</a>
+			</label>
+					<div class="mura-control justify" id="editSummary" style="display:none;">
+				<cfoutput><textarea name="summary" id="summary" cols="96" rows="10"><cfif application.configBean.getValue("htmlEditorType") neq "none" or len(rc.contentBean.getSummary())>#esapiEncode('html',rc.contentBean.getSummary())#<cfelse><p></p></cfif></textarea></cfoutput>
+			</div>
+		</div>
+			</cfif>
 
-		<input type="hidden" id="menuTitle" name="menuTitle" value="">
-			<div class="mura-control-group">
-				<label>
-			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.title')#
-		</label>
-			<input type="text" id="title" name="title" value="#esapiEncode('html_attr',rc.contentBean.getTitle())#"  maxlength="255" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.titlerequired')#">
+				<div class="mura-control-group">
+					<label>
+				#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.content")#
+			</label>
+					<div id="bodyContainer" class="mura-control justify">
+				<cfinclude template="dsp_formbuilder.cfm">
+			</div>
 		</div>
 
-		<cfif rc.type neq 'Form' and  rc.type neq 'Component' >
-			<div class="mura-control-group">
-				<label>
-			<a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.contentSummary"))#">
-				#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.summary")#
-					 <i class="mi-question-circle"></i></a>
-			<a href="##" id="editSummaryLink" onclick="javascript: toggleDisplay('editSummary','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#'); editSummary();return false">
-				[#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.expand")#]
-			</a>
-		</label>
-				<div class="mura-control justify" id="editSummary" style="display:none;">
-			<cfoutput><textarea name="summary" id="summary" cols="96" rows="10"><cfif application.configBean.getValue("htmlEditorType") neq "none" or len(rc.contentBean.getSummary())>#esapiEncode('html',rc.contentBean.getSummary())#<cfelse><p></p></cfif></textarea></cfoutput>
-		</div>
-	</div>
-		</cfif>
+			<span id="extendSetsBasic"></span>
 
-			<div class="mura-control-group">
-				<label>
-			#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.content")#
-		</label>
-				<div id="bodyContainer" class="mura-control justify">
-			<cfinclude template="dsp_formbuilder.cfm">
-		</div>
-	</div>
+			<cfif rc.type eq 'Form'>
+				<div class="mura-control-group">
+					<label>
+				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.confirmationmessage')#
+			</label>
+				<textarea name="responseMessage" rows="6">#esapiEncode('html',rc.contentBean.getresponseMessage())#</textarea>
+			</div>
+				<div class="mura-control-group">
+					<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.responsesendto')#
+			</label>
+				<input type="text" name="responseSendTo" value="#esapiEncode('html_attr',rc.contentBean.getresponseSendTo())#">
+			</div>
+			</cfif>
 
-		<span id="extendSetsBasic"></span>
+			<span id="extendset-container-basic" class="extendset-container"></span>
+			<span id="extendset-container-tabbasicbottom" class="extendset-container"></span>
 
-		<cfif rc.type eq 'Form'>
-			<div class="mura-control-group">
-				<label>
-			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.confirmationmessage')#
-		</label>
-			<textarea name="responseMessage" rows="6">#esapiEncode('html',rc.contentBean.getresponseMessage())#</textarea>
+			</div>
 		</div>
-			<div class="mura-control-group">
-				<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.responsesendto')#
-		</label>
-			<input type="text" name="responseSendTo" value="#esapiEncode('html_attr',rc.contentBean.getresponseSendTo())#">
-		</div>
-		</cfif>
-
-		<span id="extendset-container-basic" class="extendset-container"></span>
-		<span id="extendset-container-tabbasicbottom" class="extendset-container"></span>
-
-		</div>
-	</div>
-</div> 
+	</div> 
 </cfoutput>

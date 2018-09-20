@@ -41,6 +41,8 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
+<cfset tabList=listAppend(tabList,"tabLayoutObjects")>
+
 <cfloop from="1" to="#application.settingsManager.getSite($.event('siteID')).getColumnCount()#" index="i">
   <cfparam name="request.rsContentObjects#i#.recordcount" default=0>
 </cfloop>

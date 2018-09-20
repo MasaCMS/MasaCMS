@@ -43,6 +43,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfset event=request.event>
 <cfinclude template="js.cfm">
+<cfset tabList="">
 <cfset variables.pluginEvent=createObject("component","mura.event").init(event.getAllValues())/>
 <cfif rc.contentBean.getType() eq 'Gallery'>
 	<cfset pageLevelList="Page,Folder,Calendar,Gallery"/>
@@ -56,7 +57,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset hasChangesets=application.settingsManager.getSite(rc.siteID).getHasChangesets()>
 <cfset stats=rc.contentBean.getStats()>
 <cfset rc.perm=application.permUtility.getnodePerm(rc.crumbdata)>
-
 <cfif rc.parentID eq "" and not rc.contentBean.getIsNew()>
 	<cfset rc.parentID=rc.contentBean.getParentID()>
 </cfif>
