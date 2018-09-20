@@ -79,14 +79,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div>
 			</cfif>
 
+			<cfsavecontent variable="bodyContent">
 				<div class="mura-control-group">
 					<label>
-				#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.content")#
-			</label>
+						#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.content")#
+					</label>
 					<div id="bodyContainer" class="mura-control justify">
-				<cfinclude template="dsp_formbuilder.cfm">
-			</div>
-		</div>
+						<cfinclude template="dsp_formbuilder.cfm">
+					</div>
+				</div>
+			</cfsavecontent>	
 
 			<span id="extendSetsBasic"></span>
 

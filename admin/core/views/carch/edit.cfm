@@ -1,5 +1,8 @@
-<!--- temp: todo - remove switch once dev complete, see end of file --->
-<cfif rc.rscount.menuTitle is 'sandbox'>
+<!--- temp: todo - rewrite or remove switch once dev complete, see end of file --->
+<cfif rc.rscount.menuTitle neq 'home'
+		and rc.type neq 'Link'
+		and rc.type neq 'File'
+		and rc.type neq 'Calendar'>
 	<cfinclude template="edit_new.cfm">
 <cfelse>
 

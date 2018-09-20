@@ -44,6 +44,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset event=request.event>
 <cfinclude template="js.cfm">
 <cfset tabList="">
+<cfset bodyContent="">
 <cfset variables.pluginEvent=createObject("component","mura.event").init(event.getAllValues())/>
 <cfif rc.contentBean.getType() eq 'Gallery'>
 	<cfset pageLevelList="Page,Folder,Calendar,Gallery"/>
@@ -510,8 +511,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<!-- tab content -->
 		<div class="block-content tab-content">
 
-			<!--- MARK --->
-			<!--- TODO: title, body here --->
+			<div id="mura-content-title-render">#esapiEncode('html_attr',rc.contentBean.gettitle())#</div>
+			<div id="mura-content-body-render">#bodyContent#</div>
 
 			<div class="load-inline tab-preloader"></div>
 

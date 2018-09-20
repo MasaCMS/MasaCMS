@@ -207,121 +207,123 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 				--->
 
-
 				<cfif listFindNoCase(rc.$.getBean('contentManager').HTMLBodyList,rc.type)>
 					<cfset rsPluginEditor=application.pluginManager.getScripts("onHTMLEdit",rc.siteID)>
-					<div id="bodyContainer" class="body-container mura-control-group" style="display:none;">
-					<label>
-			      		#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.content")#
-			      	</label>
-					<cfif rsPluginEditor.recordcount>
-						#application.pluginManager.renderScripts("onHTMLEdit",rc.siteid,pluginEvent,rsPluginEditor)#
-					<cfelse>
-						<cfif application.configBean.getValue("htmlEditorType") eq "fckeditor">
-							<cfscript>
-								fckEditor = createObject("component", "mura.fckeditor");
-								fckEditor.instanceName	= "body";
-								fckEditor.value			= '#rc.contentBean.getBody()#';
-								fckEditor.basePath		= "#application.configBean.getContext()#/wysiwyg/";
-								fckEditor.config.EditorAreaCSS	= '#application.settingsManager.getSite(rc.siteid).getThemeAssetPath()#/css/editor.css';
-								fckEditor.config.StylesXmlPath = '#application.settingsManager.getSite(rc.siteid).getThemeAssetPath()#/css/fckstyles.xml';
-								fckEditor.width			= "98%";
-								fckEditor.height		= 550;
-								fckEditor.config.DefaultLanguage=lcase(session.rb);
-								fckEditor.config.AutoDetectLanguage=false;
-								if (rc.moduleID eq "00000000000000000000000000000000000"){
-								fckEditor.config.BodyId		="primary";
-								}
-								if (len(application.settingsManager.getSite(rc.siteID).getGoogleAPIKey())){
-								fckEditor.config.GoogleMaps_Key =application.settingsManager.getSite(rc.siteID).getGoogleAPIKey();
-								} else {
-								fckEditor.config.GoogleMaps_Key ='none';
-								}
-								fckEditor.toolbarset 	= '#iif(rc.type eq "Form",de("Form"),de("Default"))#';
 
-								if(fileExists("#expandPath(application.settingsManager.getSite(rc.siteid).getThemeIncludePath())#/js/fckconfig.js.cfm"))
-								{
-								fckEditor.config["CustomConfigurationsPath"]=esapiEncode('url','#application.settingsManager.getSite(rc.siteid).getThemeAssetPath()#/js/fckconfig.js.cfm?EditorType=#rc.type#');
-								}
-
-								fckEditor.create(); // create the editor.
-							</cfscript>
-							<script type="text/javascript">
-							var loadEditorCount = 0;
-
-							function FCKeditor_OnComplete( editorInstance ) {
-								<cfif rc.preview eq 1>
-							   	preview('#rc.contentBean.getURL(complete=1,queryString="previewid=#rc.contentBean.getcontenthistid()#")#','');
-								</cfif>
-								htmlEditorOnComplete(editorInstance);
-							}
-
-							<cfif rc.contentBean.getSummary() neq '' and rc.contentBean.getSummary() neq "<p></p>">
-							toggleDisplay('editSummary','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');
-							editSummary();
-							</cfif>
-							</script>
-						<cfelseif application.configBean.getValue("htmlEditorType") eq "none">
-							<textarea name="body" id="body">#esapiEncode('html',rc.contentBean.getBody())#</textarea>
-						<cfelse>
-							<textarea name="body" id="body"><cfif len(rc.contentBean.getBody())>#esapiEncode('html',rc.contentBean.getBody())#<cfelse><p></p></cfif></textarea>
-							<script type="text/javascript">
-							var loadEditorCount = 0;
-							<cfif rc.preview eq 1>var previewLaunched= false;</cfif>
-
-							hideBodyEditor=function(){
-								if(typeof CKEDITOR.instances.body != 'undefined'){
-									CKEDITOR.instances.body.updateElement();
-									CKEDITOR.instances.body.destroy();
-								}
-								jQuery(".body-container").hide();
-							}
-
-							showBodyEditor=function(){
-								if(typeof CKEDITOR.instances.body == 'undefined'){
-									jQuery(".body-container").show();
-
-									jQuery('##body').ckeditor(
-									{ toolbar:<cfif rc.type eq "Form">'Form'<cfelse>'Default'</cfif>,
-									height:'550',
-									customConfig : 'config.js.cfm'
-									},
-										function(editorInstance){
-											htmlEditorOnComplete(editorInstance);
-											showPreview();
+						<!--- set up body content --->
+						<cfsavecontent variable="bodyContent">
+							<div id="bodyContainer" class="body-container mura-control-group" style="display:none;">
+							<label>
+					      		#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.content")#
+					      	</label>
+							<cfif rsPluginEditor.recordcount>
+								#application.pluginManager.renderScripts("onHTMLEdit",rc.siteid,pluginEvent,rsPluginEditor)#
+							<cfelse>
+								<cfif application.configBean.getValue("htmlEditorType") eq "fckeditor">
+									<cfscript>
+										fckEditor = createObject("component", "mura.fckeditor");
+										fckEditor.instanceName	= "body";
+										fckEditor.value			= '#rc.contentBean.getBody()#';
+										fckEditor.basePath		= "#application.configBean.getContext()#/wysiwyg/";
+										fckEditor.config.EditorAreaCSS	= '#application.settingsManager.getSite(rc.siteid).getThemeAssetPath()#/css/editor.css';
+										fckEditor.config.StylesXmlPath = '#application.settingsManager.getSite(rc.siteid).getThemeAssetPath()#/css/fckstyles.xml';
+										fckEditor.width			= "98%";
+										fckEditor.height		= 550;
+										fckEditor.config.DefaultLanguage=lcase(session.rb);
+										fckEditor.config.AutoDetectLanguage=false;
+										if (rc.moduleID eq "00000000000000000000000000000000000"){
+										fckEditor.config.BodyId		="primary";
 										}
-									);
-								}
-							}
+										if (len(application.settingsManager.getSite(rc.siteID).getGoogleAPIKey())){
+										fckEditor.config.GoogleMaps_Key =application.settingsManager.getSite(rc.siteID).getGoogleAPIKey();
+										} else {
+										fckEditor.config.GoogleMaps_Key ='none';
+										}
+										fckEditor.toolbarset 	= '#iif(rc.type eq "Form",de("Form"),de("Default"))#';
 
-							jQuery(document).ready(function(){
-								<cfif not isExtended>
-								showBodyEditor();
-								</cfif>
-								if (!hasSummary && !hasBody){
-									setTimeout(function(){
-										showPreview();
-									}, 2000);
-								}
-							});
+										if(fileExists("#expandPath(application.settingsManager.getSite(rc.siteid).getThemeIncludePath())#/js/fckconfig.js.cfm"))
+										{
+										fckEditor.config["CustomConfigurationsPath"]=esapiEncode('url','#application.settingsManager.getSite(rc.siteid).getThemeAssetPath()#/js/fckconfig.js.cfm?EditorType=#rc.type#');
+										}
 
-							function showPreview(){
-								<cfif rc.preview eq 1>
-									if(!previewLaunched){
-								<cfif listFindNoCase("File",rc.type)>
-									preview('#rc.contentBean.getURL(secure=rc.$.getBean("utility").isHTTPs(),complete=1,queryString="previewid=#rc.contentBean.getcontenthistid()#")#');
-								<cfelse>
-									preview('#rc.contentBean.getURL(secure=rc.$.getBean("utility").isHTTPs(),complete=1,queryString="previewid=#rc.contentBean.getcontenthistid()#")#');
-								</cfif>
-									previewLaunched=true;
+										fckEditor.create(); // create the editor.
+									</cfscript>
+									<script type="text/javascript">
+									var loadEditorCount = 0;
+
+									function FCKeditor_OnComplete( editorInstance ) {
+										<cfif rc.preview eq 1>
+									   	preview('#rc.contentBean.getURL(complete=1,queryString="previewid=#rc.contentBean.getcontenthistid()#")#','');
+										</cfif>
+										htmlEditorOnComplete(editorInstance);
 									}
-								</cfif>
-							}
-							</script>
-						</cfif>
-					</cfif>
-				</div>
 
+									<cfif rc.contentBean.getSummary() neq '' and rc.contentBean.getSummary() neq "<p></p>">
+									toggleDisplay('editSummary','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');
+									editSummary();
+									</cfif>
+									</script>
+								<cfelseif application.configBean.getValue("htmlEditorType") eq "none">
+									<textarea name="body" id="body">#esapiEncode('html',rc.contentBean.getBody())#</textarea>
+								<cfelse>
+									<textarea name="body" id="body"><cfif len(rc.contentBean.getBody())>#esapiEncode('html',rc.contentBean.getBody())#<cfelse><p></p></cfif></textarea>
+									<script type="text/javascript">
+									var loadEditorCount = 0;
+									<cfif rc.preview eq 1>var previewLaunched= false;</cfif>
+
+									hideBodyEditor=function(){
+										if(typeof CKEDITOR.instances.body != 'undefined'){
+											CKEDITOR.instances.body.updateElement();
+											CKEDITOR.instances.body.destroy();
+										}
+										jQuery(".body-container").hide();
+									}
+
+									showBodyEditor=function(){
+										if(typeof CKEDITOR.instances.body == 'undefined'){
+											jQuery(".body-container").show();
+
+											jQuery('##body').ckeditor(
+											{ toolbar:<cfif rc.type eq "Form">'Form'<cfelse>'Default'</cfif>,
+											height:'550',
+											customConfig : 'config.js.cfm'
+											},
+												function(editorInstance){
+													htmlEditorOnComplete(editorInstance);
+													showPreview();
+												}
+											);
+										}
+									}
+
+									jQuery(document).ready(function(){
+										<cfif not isExtended>
+										showBodyEditor();
+										</cfif>
+										if (!hasSummary && !hasBody){
+											setTimeout(function(){
+												showPreview();
+											}, 2000);
+										}
+									});
+
+									function showPreview(){
+										<cfif rc.preview eq 1>
+											if(!previewLaunched){
+										<cfif listFindNoCase("File",rc.type)>
+											preview('#rc.contentBean.getURL(secure=rc.$.getBean("utility").isHTTPs(),complete=1,queryString="previewid=#rc.contentBean.getcontenthistid()#")#');
+										<cfelse>
+											preview('#rc.contentBean.getURL(secure=rc.$.getBean("utility").isHTTPs(),complete=1,queryString="previewid=#rc.contentBean.getcontenthistid()#")#');
+										</cfif>
+											previewLaunched=true;
+											}
+										</cfif>
+									}
+									</script>
+								</cfif>
+							</cfif>
+						</div>
+					</cfsavecontent>
 
 				<cfelseif rc.type eq 'Link'>
 					<div class="mura-control-group">
