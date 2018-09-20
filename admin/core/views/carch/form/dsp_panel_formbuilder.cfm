@@ -44,11 +44,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfinclude template="head_formbuilder.cfm">
 
 <cfoutput>
-<div id="tabBasic" class="tab-pane active">
+
+<div class="mura-panel panel">
+	<div class="mura-panel-heading" role="tab" id="heading-basic">
+		<h4 class="mura-panel-title">
+			<a class="collapse" role="button" data-toggle="collapse" data-parent="##content-panels" href="##panel-basic" aria-expanded="true" aria-controls="panel-basic">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.basic")#</a>
+		</h4>
+	</div>
+	<div id="panel-basic" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-basic" aria-expanded="false" style="height: 0px;">
+		<div class="mura-panel-body">
 
 		<span id="extendset-container-tabbasictop" class="extendset-container"></span>
 
-	<input type="hidden" id="menuTitle" name="menuTitle" value="">
+		<input type="hidden" id="menuTitle" name="menuTitle" value="">
 			<div class="mura-control-group">
 				<label>
 			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.title')#
@@ -84,17 +92,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<span id="extendSetsBasic"></span>
 
 		<cfif rc.type eq 'Form'>
-			<!---
-			<div class="mura-control-group">
-				<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formpresentation')#</label>
-				<div class="mura-control justify">
-					<label for="rc" class="checkbox inline">
-								<input name="responseChart" id="rc" type="checkbox" value="1" <cfif rc.contentBean.getresponseChart() eq 1>checked </cfif> class="checkbox">
-						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.ispoll')#
-					</label>
-				</div>
-			</div>
-			--->
 			<div class="mura-control-group">
 				<label>
 			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.confirmationmessage')#
@@ -111,4 +108,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<span id="extendset-container-basic" class="extendset-container"></span>
 		<span id="extendset-container-tabbasicbottom" class="extendset-container"></span>
 
-</div> <!--- /.tab-pane ---></cfoutput>
+		</div>
+	</div>
+</div> 
+</cfoutput>

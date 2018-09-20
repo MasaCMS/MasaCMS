@@ -9,134 +9,119 @@
 					<div class="mura-panel-group" id="content-panels" role="tablist" aria-multiselectable="true">
 
 						<!--- basic --->
-						<div class="mura-panel panel">
-							<div class="mura-panel-heading" role="tab" id="heading-basic">
-								<h4 class="mura-panel-title">
-									<a class="collapse" role="button" data-toggle="collapse" data-parent="##content-panels" href="##panel-basic" aria-expanded="true" aria-controls="panel-basic">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.basic")#</a>
-								</h4>
-							</div>
-							<div id="panel-basic" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-basic" aria-expanded="false" style="height: 0px;">
-								<div class="mura-panel-body">
-									<!--- form type --->
-									<cfif rc.type eq "Form">
-										<cfif rc.contentBean.getIsNew() and not (isdefined("url.formType") and url.formType eq "editor")>
-											<cfset rc.contentBean.setBody( application.serviceFactory.getBean('formBuilderManager').createJSONForm( rc.contentBean.getContentID() ) ) />
-										</cfif>
-										<cfif isJSON(rc.contentBean.getBody())>
-											<cfinclude template="form/dsp_panel_formbuilder.cfm">
-										<cfelse>
-											<cfinclude template="form/dsp_panel_basic.cfm">
-										</cfif>
-									<!--- all other types --->
-									<cfelse>
-										<cfinclude template="form/dsp_panel_basic.cfm">
-									</cfif>
-								</div>
-							</div>
-
-						</div> 
+						<cfif rc.type eq "Form">
+							<cfif rc.contentBean.getIsNew() and not (isdefined("url.formType") and url.formType eq "editor")>
+								<cfset rc.contentBean.setBody( application.serviceFactory.getBean('formBuilderManager').createJSONForm( rc.contentBean.getContentID() ) ) />
+							</cfif>
+							<cfif isJSON(rc.contentBean.getBody())>
+								<cfinclude template="form/dsp_panel_formbuilder.cfm">
+							<cfelse>
+								<cfinclude template="form/dsp_panel_basic.cfm">
+							</cfif>
+						<cfelse>
+							<cfinclude template="form/dsp_panel_basic.cfm">
+						</cfif>
 						<!--- /basic --->
 
 						<!--- publishing --->
-						<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Publishing')>
-							<div class="mura-panel panel">
-								<div class="mura-panel-heading" role="tab" id="heading-publishing">
-									<h4 class="mura-panel-title">
-										<a class="collapse" role="button" data-toggle="collapse" data-parent="##content-panels" href="##panel-publishing" aria-expanded="false" aria-controls="panel-publishing">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.publishing")#</a>
-									</h4>
-								</div>
-									<div id="panel-publishing" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-publishing" aria-expanded="false" style="height: 0px;">
-										<div class="mura-panel-body">
-											<cfinclude template="form/dsp_panel_publishing.cfm">
-										</div>
-									</div>
-							</div> 
-						<cfelse>
-							<input type="hidden" name="ommitPublishingTab" value="true">
-							<cfoutput><input type="hidden" name="parentid" value="#esapiEncode('html_attr',rc.parentid)#"></cfoutput>
+						<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Publishing')>						
+								<cfinclude template="form/dsp_panel_publishing.cfm">
 						</cfif>		
 						<!--- /publishing --->
 
 						<!--- list display options --->
 						<cfif rc.moduleid eq '00000000000000000000000000000000000' and (not rc.$.getContentRenderer().useLayoutManager() and listFindNoCase('Page,Folder,Gallery,Calender',rc.type) and (not len(tabAssignments) or listFindNocase(tabAssignments,'List Display Options')))>
-							<div class="mura-panel panel">
-								<div class="mura-panel-heading" role="tab" id="heading-listdisplayoptions">
-									<h4 class="mura-panel-title">
-										<a class="collapse" role="button" data-toggle="collapse" data-parent="##content-panels" href="##panel-listdisplayoptions" aria-expanded="false" aria-controls="panel-listdisplayoptions">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.listdisplayoptions")#</a>
-									</h4>
-								</div>
-									<div id="panel-listdisplayoptions" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-listdisplayoptions" aria-expanded="false" style="height: 0px;">
-										<div class="mura-panel-body">
-											<cfinclude template="form/dsp_panel_listdisplayoptions.cfm">
-										</div>
-									</div>
-							</div> 
+							<cfinclude template="form/dsp_panel_listdisplayoptions.cfm">
 						</cfif>
 						<!--- /list display options --->
-						
-						<!--- layout --->
-						<div class="mura-panel panel">
-							<div class="mura-panel-heading" role="tab" id="heading-layout">
-								<h4 class="mura-panel-title">
-									<a class="collapse" role="button" data-toggle="collapse" data-parent="##content-panels" href="##panel-layout" aria-expanded="false" aria-controls="panel-layout">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.layoutobjects")#</a>
-								</h4>
-							</div>
-								<div id="panel-layout" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-layout" aria-expanded="false" style="height: 0px;">
-									<div class="mura-panel-body">
-										<cfinclude template="form/dsp_panel_layout.cfm">
-									</div>
-								</div>
 
-						</div> 
-						<!--- /layout --->
-
-
-						<!--- tags --->
-						<div class="mura-panel panel">
-							<div class="mura-panel-heading" role="tab" id="heading-tags">
-								<h4 class="mura-panel-title">
-									<a class="collapse" role="button" data-toggle="collapse" data-parent="##content-panels" href="##panel-tags" aria-expanded="false" aria-controls="panel-tags">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.tags")#</a>
-								</h4>
-							</div>
-							<div id="panel-tags" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-tags" aria-expanded="false" style="height: 0px;">
-								<div class="mura-panel-body">
+						<!--- layoutobjects,categories,related_content,tags,usage --->
+						<cfswitch expression="#rc.type#">
+							<cfcase value="Page,Folder,Calendar,Gallery">
+								<cfif rc.moduleid eq '00000000000000000000000000000000000' and (not len(tabAssignments) or listFindNocase(tabAssignments,'Layout & Objects'))>
+									<cfif listFind(session.mura.memberships,'S2IsPrivate')>
+										<cfinclude template="form/dsp_panel_layoutobjects.cfm">
+									</cfif>
+								</cfif>
+								<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Categorization')>
+									<cfif application.categoryManager.getCategoryCount(rc.siteID)>
+										<cfinclude template="form/dsp_panel_categories.cfm">
+									</cfif>
+								</cfif>
+								<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Tags')>
 									<cfinclude template="form/dsp_panel_tags.cfm">
-								</div>
-							</div>
+								</cfif>
+								<cfif rc.moduleid eq '00000000000000000000000000000000000' and (not len(tabAssignments) or listFindNocase(tabAssignments,'Related Content'))>
+									<cfinclude template="form/dsp_panel_related_content.cfm">
+								<cfelse>
+									<input type="hidden" name="ommitRelatedContentTab" value="true">
+								</cfif>
+							</cfcase>
+							<cfcase value="Link,File">
+								<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Categorization')>
+									<cfif application.categoryManager.getCategoryCount(rc.siteid)>
+										<cfinclude template="form/dsp_panel_categories.cfm">
+									</cfif>
+								</cfif>
+								<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Tags')>
+									<cfinclude template="form/dsp_panel_tags.cfm">
+								</cfif>
+								<cfif rc.moduleid eq '00000000000000000000000000000000000' and (not len(tabAssignments) or listFindNocase(tabAssignments,'Related Content'))>
+									<cfinclude template="form/dsp_panel_related_content.cfm">
+								<cfelse>
+									<input type="hidden" name="ommitRelatedContentTab" value="true">
+								</cfif>
+							</cfcase>
+							<cfcase value="Variation">
+								<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Categorization')>
+									<cfif application.categoryManager.getCategoryCount(rc.siteID)>
+										<cfinclude template="form/dsp_panel_categories.cfm">
+									</cfif>
+								</cfif>
+								<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Tags')>
+									<cfinclude template="form/dsp_panel_tags.cfm">
+								</cfif>
+							</cfcase>
+							<cfcase value="Component">
+								<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Categorization')>
+									<cfif application.categoryManager.getCategoryCount(rc.siteID)>
+										<cfinclude template="form/dsp_panel_categories.cfm">
+									</cfif>
+								</cfif>
+								<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Tags')>
+									<cfinclude template="form/dsp_panel_tags.cfm">
+								</cfif>
+								<cfif application.configBean.getValue(property='showUsageTabs',defaultValue=true) and (not len(tabAssignments) or listFindNocase(tabAssignments,'Usage Report'))>
+									<cfif not rc.contentBean.getIsNew()>
+										<cfinclude template="form/dsp_panel_usage.cfm">
+									</cfif>
+								</cfif>
+							</cfcase>
+							<cfcase value="Form">
+								<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Categorization')>
+									<cfif application.categoryManager.getCategoryCount(rc.siteID)>
+										<cfinclude template="form/dsp_panel_categories.cfm">
+									</cfif>
+								</cfif>
+								<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Tags')>
+									<cfinclude template="form/dsp_panel_tags.cfm">
+								</cfif>
+								<cfif application.configBean.getValue(property='showUsageTabs',defaultValue=true) and (not len(tabAssignments) or listFindNocase(tabAssignments,'Usage Report'))>
+									<cfif not rc.contentBean.getIsNew()>
+										<cfinclude template="form/dsp_panel_usage.cfm">
+									</cfif>
+								</cfif>
+							</cfcase>
+						</cfswitch>
+						<!--- /layoutobjects,categories,related_content,tags,usage  --->
 
-						</div> 
-						<!--- /tags --->
 
-						<!--- related content --->
-						<div class="mura-panel panel">
-							<div class="mura-panel-heading" role="tab" id="heading-relatedcontent">
-								<h4 class="mura-panel-title">
-									<a class="collapse" role="button" data-toggle="collapse" data-parent="##content-panels" href="##panel-relatedcontent" aria-expanded="false" aria-controls="panel-relatedcontent">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.relatedcontent")#</a>
-								</h4>
-							</div>
-								<div id="panel-relatedcontent" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-relatedcontent" aria-expanded="false" style="height: 0px;">
-									<div class="mura-panel-body">
-										<cfinclude template="form/dsp_panel_related_content.cfm">
-									</div>
-								</div>
 
-						</div> 
-						<!--- /related content --->
+
+
 
 						<!--- advanced --->
-						<div class="mura-panel panel">
-							<div class="mura-panel-heading" role="tab" id="heading-advanced">
-								<h4 class="mura-panel-title">
-									<a class="collapse" role="button" data-toggle="collapse" data-parent="##content-panels" href="##panel-advanced" aria-expanded="false" aria-controls="panel-advanced">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.advanced")#</a>
-								</h4>
-							</div>
-							<div id="panel-advanced" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-advanced" aria-expanded="false" style="height: 0px;">
-								<div class="mura-panel-body">
-									<cfinclude template="form/dsp_panel_advanced.cfm">
-								</div>
-							</div>
-
-						</div> 
+						<cfinclude template="form/dsp_panel_advanced.cfm">
 						<!--- /advanced --->
 
 					</div>	

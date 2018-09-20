@@ -491,22 +491,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <!--- set up tab content --->
 <cfsavecontent variable="tabContent">
 
-	<!--- form type --->
-	<cfif rc.type eq "Form">
-		<cfif rc.contentBean.getIsNew() and not (isdefined("url.formType") and url.formType eq "editor")>
-			<cfset rc.contentBean.setBody( application.serviceFactory.getBean('formBuilderManager').createJSONForm( rc.contentBean.getContentID() ) ) />
-		</cfif>
-		<cfif isJSON(rc.contentBean.getBody())>
-			<cfinclude template="form/dsp_tab_formbuilder.cfm">
-		<cfelse>
-			<cfinclude template="form/dsp_tab_basic.cfm">
-		</cfif>
-	<!--- all other types --->
-	<cfelse>
-		<cfinclude template="form/dsp_tab_basic.cfm">
-	</cfif>
-
-
 	<cfswitch expression="#rc.type#">
 	<cfcase value="Page,Folder,Calendar,Gallery">
 		<cfif rc.moduleid eq '00000000000000000000000000000000000' and (not len(tabAssignments) or listFindNocase(tabAssignments,'Layout & Objects'))>

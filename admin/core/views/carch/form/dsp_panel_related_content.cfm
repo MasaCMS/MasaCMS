@@ -48,14 +48,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset relatedContentSets = subtype.getRelatedContentSets()>
 
 <cfoutput>
-<div id="tabRelatedcontent" class="tab-pane">
-
-
-	<span id="extendset-container-tabrelatedcontenttop" class="extendset-container"></span>
-	
-		<div id="selectRelatedContent"><!--- target for ajax ---></div>
-			<div id="selectedRelatedContent" class="mura-control-group">
+	<div class="mura-panel panel">
+		<div class="mura-panel-heading" role="tab" id="heading-relatedcontent">
+			<h4 class="mura-panel-title">
+				<a class="collapse" role="button" data-toggle="collapse" data-parent="##content-panels" href="##panel-relatedcontent" aria-expanded="false" aria-controls="panel-relatedcontent">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.relatedcontent")#</a>
+			</h4>
 		</div>
-		<input id="relatedContentSetData" type="hidden" name="relatedContentSetData" value="" />	
-</div> <!--- /.tab-pane --->
+		<div id="panel-relatedcontent" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-relatedcontent" aria-expanded="false" style="height: 0px;">
+			<div class="mura-panel-body">
+				<span id="extendset-container-tabrelatedcontenttop" class="extendset-container"></span>
+				<div id="selectRelatedContent"><!--- target for ajax ---></div>
+				<div id="selectedRelatedContent" class="mura-control-group">
+			</div>
+			<input id="relatedContentSetData" type="hidden" name="relatedContentSetData" value="" />	
+		</div>
+	</div>
+</div> 
 </cfoutput>
