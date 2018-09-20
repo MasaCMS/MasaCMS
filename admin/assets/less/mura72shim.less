@@ -4,7 +4,7 @@
 	margin: 0 !important;
 	padding: 0 !important;
 	width: 300px;
-	height: 100vh !important;	
+	min-height: 84vh !important;	
 	text-transform: none;
 
 	.mura__edit__controls__scrollable{
@@ -362,3 +362,29 @@
 
 } /* .mura__edit__controls */
 
+.block-constrain#mura-content-body-block{
+	min-height: 84vh !important;
+	margin-top: 0 !important;
+	padding-top: 0 !important;
+}
+
+#mura-content-body-block .tab-content{
+    clear: none;
+    width: ~"calc(100% - 350px)";
+    min-height: 84vh !important;
+
+    .mura-control-group textarea+.cke{
+    	width: 100%;
+    }
+}
+#mura-content-title-render{
+	font-size: 24px;
+	font-weight: 900;
+	margin-bottom: 12px;
+	margin-top: 12px;
+}
+#mura-content-body-render{
+	#bodyContainer label{
+		display: none;
+	}
+}

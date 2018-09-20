@@ -503,7 +503,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<!--- start output --->
 	<cfoutput>
 
-	<div class="block block-constrain">
+	<div class="block block-constrain" id="mura-content-body-block">
 
 		<!--- content editing sidebar --->
 		<cfinclude template="edit_panels.cfm">
