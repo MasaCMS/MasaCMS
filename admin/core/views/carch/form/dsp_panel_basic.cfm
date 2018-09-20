@@ -326,6 +326,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfsavecontent>
 
 				<cfelseif rc.type eq 'Link'>
+					<cfsavecontent variable="bodyContent">
 					<div class="mura-control-group">
 					     <label>
 				      		#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.url")#
@@ -353,8 +354,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			     	 	</div>
 						</cfif>
 			     	</div>
+			     </cfsavecontent>	
 				<cfelseif rc.type eq 'File'>
-					<cfinclude template="dsp_file_selector.cfm">
+					<cfsavecontent variable="bodyContent">
+						<cfinclude template="dsp_file_selector.cfm">
+					</cfsavecontent>
 				</cfif>
 
 				<cfif rc.type eq 'Component'>
