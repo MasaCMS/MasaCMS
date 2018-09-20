@@ -1797,12 +1797,37 @@ var Mura=(function(){
               }
 
               if (rules.length) {
-                  validations.properties[theField.getAttribute('name')] =
-                      rules;
-                  data[theField.getAttribute('name')] = theField.value;
+                validations.properties[theField.getAttribute('name')] = rules;
+
+								//if(!Array.isArray(data[theField.getAttribute('name')])){
+									data[theField.getAttribute('name')]=[];
+								//}
+
+								for (var v = 0; v < frmInputs.length; v++) {
+									if(frmInputs[v].getAttribute('name')==theField.getAttribute('name')){
+										if(frmInputs[v].getAttribute('type').toLowerCase()=='checkbox'
+											|| frmInputs[v].getAttribute('type').toLowerCase()=='radio'
+										) {
+
+											if(frmInputs[v].checked){
+													data[theField.getAttribute('name')].push(frmInputs[v].value);
+											}
+
+										} else if(typeof frmInputs[v].value != 'undefined' && frmInputs[v].value != '') {
+											data[theField.getAttribute('name')].push(frmInputs[v].value)
+										}
+									}
+								}
               }
           }
       }
+
+			for(var p in data){
+				if(data.hasOwnProperty(p)){
+					data[p]=data[p].join();
+				}
+			}
+			
       var frmTextareas = theForm.getElementsByTagName("textarea");
       for (f = 0; f < frmTextareas.length; f++) {
 
