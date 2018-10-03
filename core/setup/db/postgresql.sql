@@ -295,7 +295,7 @@ CREATE TABLE tformresponsequestions (
 	formField varchar(50) NOT NULL ,
 	formValue text NULL ,
 	pollValue varchar(255) NULL,
-	CONSTRAINT PK_tformresponsepackets PRIMARY KEY (responseID,formID,formField)
+	CONSTRAINT PK_tformresponsequestions PRIMARY KEY (responseID,formID,formField)
 );
 
 CREATE TABLE tglobals (
