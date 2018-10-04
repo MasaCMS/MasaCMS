@@ -2371,7 +2371,7 @@
 							contentid: Mura.contentid,
 							parentid: Mura.parentid,
 							moduleid: Mura.moduleid,
-							id: Mura.contenthistid,
+							id: Mura.contenthistid
 						}
 						).save().then(function(){
 							saveSelectors();
