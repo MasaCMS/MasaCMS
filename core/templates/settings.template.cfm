@@ -112,4 +112,5 @@ title=Mura CMS
 tracksessioninnewthread=true
 usedefaultsmtpserver=true
 usefilemode=false
+variations=false
 windowdocumentdomain=

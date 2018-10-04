@@ -193,7 +193,7 @@
     				Mura.origvariations=[];
     			}
 
-				<cfif getServiceFactory().containsBean('marketingManager')>
+				<cfif getServiceFactory().containsBean('marketingManager') and len($.siteConfig('gaTrackingID'))>
     			if(typeof ga == 'undefined'){
     			  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
     			  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -203,10 +203,12 @@
 
     			ga('create', content.ga.trackingid, 'auto','mxpGATracker');
 					ga('mxpGATracker.set', 'dataSource', 'MXP');
+					<cfif len($.getBean('marketingManager').getTrackingid())>
 					<cfoutput>
 					ga('mxpGATracker.set', 'userId', '#$.getBean('marketingManager').getTrackingid()#');
 					</cfoutput>
-					console.log(Mura.ga)
+					</cfif>
+					//console.log(Mura.ga)
 					var gaTrackingVars=Mura.ga.trackingvars;
 
 					for(var p in gaTrackingVars){
