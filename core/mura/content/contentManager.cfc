@@ -1076,15 +1076,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset newBean.setTitle(newBean.getmenutitle())>
 			</cfif>
 
-			<cfif listFindNoCase('Variation,Component,Form,Module',newBean.getType()) or newBean.getmenuTitle() eq ''>
+			<cfif listFindNoCase('Variation,Component,Form,Module',newBean.getType()) or newBean.getmenuTitle() eq '' or newBean.getModuleID() neq '00000000000000000000000000000000000'>
 				<cfset newBean.setmenutitle(newBean.getTitle())>
 			</cfif>
 
-			<cfif listFindNoCase('Variation,Component,Form,Module',newBean.getType()) or newBean.getURLTitle() eq ''>
+			<cfif listFindNoCase('Variation,Component,Form,Module',newBean.getType()) or newBean.getURLTitle() eq '' or newBean.getModuleID() neq '00000000000000000000000000000000000'>
 				<cfset newBean.setURLTitle(getBean('contentUtility').formatFilename(newBean.getmenutitle()))>
 			</cfif>
 
-			<cfif listFindNoCase('Variation,Component,Form,Module',newBean.getType()) or newBean.getHTMLTitle() eq ''>
+			<cfif listFindNoCase('Variation,Component,Form,Module',newBean.getType()) or newBean.getHTMLTitle() eq '' or newBean.getModuleID() neq '00000000000000000000000000000000000'>
 				<cfset newBean.setHTMLTitle(newBean.getTitle())>
 			</cfif>
 

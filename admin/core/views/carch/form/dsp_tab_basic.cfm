@@ -71,15 +71,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			    	data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.title"))#"
 			    	>
 			    	#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.title")# <i class="mi-question-circle"></i></span>
-			    </label>
-			   	<cfset hasSEOTab=rc.moduleid eq '00000000000000000000000000000000000' and (not len(tabAssignments) or listFindNocase(tabAssignments,'SEO'))>
+		    </label>
+		   	<cfset hasSEOTab=rc.moduleid eq '00000000000000000000000000000000000' and (not len(tabAssignments) or listFindNocase(tabAssignments,'SEO'))>
+
 				<input type="text" id="title" name="title" value="#esapiEncode('html_attr',rc.contentBean.gettitle())#"  maxlength="255" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.titlerequired')#" <cfif hasSEOTab and not rc.contentBean.getIsNew()>onkeypress="openDisplay('editAdditionalTitles','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');"</cfif>>
-				<div class="mura-control justify">
-					<button type="button" id="showTitles" name="showTitles" class="btn">Show Additional Content Titles</button>
-				</div>
-				<div id="alertTitleSuccess" class="help-block" style="display:none;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.seotitlescleared')# </div>
 
 				<cfif hasSEOTab>
+					<div class="mura-control justify">
+						<button type="button" id="showTitles" name="showTitles" class="btn">Show Additional Content Titles</button>
+					</div>
+
+					<div id="alertTitleSuccess" class="help-block" style="display:none;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.seotitlescleared')# </div>
+
 					<div class="help-block" id="editAdditionalTitles" style="display:none;">
 						<p>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.AdditionalTitlesnote")#</p><br />
 						<button type="button" id="resetTitles" name="resetTitles" class="btn">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.clearseotitles')#</button>
@@ -121,7 +124,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					    	data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.htmlTitle"))#"
 					    	data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.htmltitle"))#"
 					    	>
-					    				#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.htmltitle")#
+					    		#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.htmltitle")#
 							 <i class="mi-question-circle"></i>
 						</label>
 						<input type="text" id="htmlTitle" name="htmlTitle" value="#esapiEncode('html_attr',rc.contentBean.getHTMLTitle())#"  maxlength="255">
