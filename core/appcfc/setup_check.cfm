@@ -1,27 +1,32 @@
 <cfscript>
 if ( request.muraInDocker) {
 	// MySQL, MSSQL
-	if( request.muraSysEnv.MURA_DBTYPE == 'MySQL' || request.muraSysEnv.MURA_DBTYPE == 'MSSQL'){
-		if(isDefined('this.datasources.nodatabase') && len(getSystemEnvironmentSetting('MURA_DATABASE'))){
-			cfdbinfo(datasource="nodatabase",type='dbnames',name="rsdbnames");
 
-			if ( !ListFindNoCase(ValueList(rsdbnames.DATABASE_NAME), request.muraSysEnv.MURA_DATABASE) ) {
-				databaseName = request.muraSysEnv.MURA_DATABASE;
-				if (request.muraSysEnv.MURA_DBTYPE == 'mysql' && request.muraSysEnv.MURA_DATABASE contains '-') {
-					databaseName = "`#databaseName#`";
-				}
-				q = new Query(datasource="nodatabase");
-				q.execute(sql='CREATE DATABASE #databaseName#');
+	if(isDefined('this.datasources.nodatabase') && len(getSystemEnvironmentSetting('MURA_DATABASE'))){
+		cfdbinfo(datasource="nodatabase",type='dbnames',name="rsdbnames");
 
-				FORM['#application.setupSubmitButton#']=true;
-				FORM['#application.setupSubmitButtonComplete#']=true;
-				FORM['setupSubmitButton']=true;
-				FORM['action']='doSetup';
+		if ( !ListFindNoCase(ValueList(rsdbnames.DATABASE_NAME), request.muraSysEnv.MURA_DATABASE) ) {
+			databaseName = request.muraSysEnv.MURA_DATABASE;
+			if (request.muraSysEnv.MURA_DBTYPE == 'mysql' && request.muraSysEnv.MURA_DATABASE contains '-') {
+				databaseName = "`#databaseName#`";
 			}
+			q = new Query(datasource="nodatabase");
+
+			try {
+					q.execute(sql='CREATE DATABASE #databaseName#');
+			} catch(any e) {
+					writeLog(type="Error", file="exception", text="Error trying to create DB, it may already exist");
+			}
+
+			FORM['#application.setupSubmitButton#']=true;
+			FORM['#application.setupSubmitButtonComplete#']=true;
+			FORM['setupSubmitButton']=true;
+			FORM['action']='doSetup';
 		}
-	} else if( request.muraSysEnv.MURA_DBTYPE == 'postgresql'){
+	}
+	if( request.muraSysEnv.MURA_DBTYPE == 'postgresql'){
 		qs=new Query();
-		
+
 		if(!qs.execute(sql="select table_name from information_schema.tables where table_schema = current_schema() and lower(table_name)='tcontent'").getResult().recordcount){
 			FORM['#application.setupSubmitButton#']=true;
 			FORM['#application.setupSubmitButtonComplete#']=true;
