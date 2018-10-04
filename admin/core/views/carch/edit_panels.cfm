@@ -58,16 +58,17 @@ $(document).ready(function(){
 			if(jQuery("#content-panels .panel-matched").length == 0){			
 				jQuery("#content-panels label:contains('" + fstr + "')").addClass('content-matched');
 				jQuery("#content-panels .mura-control-group").not(":has('label.content-matched')").hide();
-				jQuery("#content-panels label.content-matched").parents(".mura-control-group").show().parents(".panel-collapse:not(.in)").siblings(".mura-panel-heading").find("a.collapse").trigger("click");
+				jQuery("#content-panels label.content-matched").parents(".mura-control-group").show().parents(".panel-collapse:not(.in)").collapse("show");
 				}
-				jQuery("#content-panels").find(".collapse").not(":has('label.content-matched')").collapse("hide");
+				jQuery("#content-panels .collapse").not(":has('label.content-matched')").collapse("hide");
+				// end check for panel-matched
 			}
 
 		// reset on zero length
 		} else {
-			jQuery("#content-panels").find(".content-matched").removeClass("content-matched");			
-			jQuery("#content-panels").find(".mura-control-group").show();
-			jQuery("#content-panels").find(".collapse").collapse("hide");
+			jQuery("#content-panels .content-matched").removeClass("content-matched");			
+			jQuery("#content-panels .collapse").collapse("hide","fast");
+			jQuery("#content-panels .mura-control-group").show("slow");
 		}
 	} 
 
