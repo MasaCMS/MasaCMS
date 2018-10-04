@@ -41,10 +41,58 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
+
+<script>
+$(document).ready(function(){	
+	
+	filterSettings=function(fstr){
+		// if string provided
+		if(fstr.length > 0){
+			// minimum string length for action
+			if(fstr.length > 2){
+			// if matching a panel name
+			jQuery("#content-panels .panel-matched").removeClass("panel-matched");
+			// jQuery("#content-panels a.collapse:contains('" + fstr + "')").parents(".mura-panel-heading").siblings(".panel-collapse").addClass("panel-matched").collapse("show").find(".mura-control-group").show();
+
+			// matching content of panels
+			if(jQuery("#content-panels .panel-matched").length == 0){			
+				jQuery("#content-panels label:contains('" + fstr + "')").addClass('content-matched');
+				jQuery("#content-panels .mura-control-group").not(":has('label.content-matched')").hide();
+				jQuery("#content-panels label.content-matched").parents(".mura-control-group").show().parents(".panel-collapse:not(.in)").siblings(".mura-panel-heading").find("a.collapse").trigger("click");
+				}
+				jQuery("#content-panels").find(".collapse").not(":has('label.content-matched')").collapse("hide");
+			}
+
+		// reset on zero length
+		} else {
+			jQuery("#content-panels").find(".content-matched").removeClass("content-matched");			
+			jQuery("#content-panels").find(".mura-control-group").show();
+			jQuery("#content-panels").find(".collapse").collapse("hide");
+		}
+	} 
+
+	// apply filter by typing, with delay
+	jQuery("#mura__edit__settings__filter__input").keyup(function(){
+		var timeout = null;
+		clearTimeout(timeout);
+    timeout = setTimeout(function () {
+			jQuery("#content-panels").find('.content-matched').removeClass('content-matched');
+			var filterStr = jQuery("#mura__edit__settings__filter__input").val(); 	
+			//	console.log(filterStr);
+				filterSettings(filterStr)	;		
+    }, 500);
+	});
+});
+</script>
+
 <cfoutput>
 
-<!--- new sidebar markup --->
 	<div class="mura__edit__controls">
+		<!--- filter settings --->
+		<div id="mura__edit__settings__filter">
+  		<input type="text" class="form-control" id="mura__edit__settings__filter__input" placeholder="Filter settings">
+		</div>
+		<!--- accordion panels --->
 		<div class="mura__edit__controls__scrollable">
 			<div class="mura__edit__controls__objects">
 				<div id="mura-edit-tabs" class="mura__edit__controls__tabs">
