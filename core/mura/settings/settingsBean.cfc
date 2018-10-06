@@ -1424,10 +1424,10 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		if ( getValue('isRemote') && len(getValue('resourceDomain')) ) {
 			var configBean=getBean('configBean');
 			if ( arguments.useProtocol ) {
-				if ( getValue('resourceSSL') ) {
+				if ( getValue('resourceSSL') || getValue('useSSL')  ) {
 					return "https://" & getValue('resourceDomain') & configBean.getServerPort() & configBean.getContext();
 				} else {
-					return "http://" & getValue('resourceDomain') & configBean.getServerPort() & configBean.getContext();
+					return getScheme() & '://' & getValue('resourceDomain') & configBean.getServerPort() & configBean.getContext();
 				}
 			} else {
 				return "//" & getValue('resourceDomain') & configBean.getServerPort() & configBean.getContext();
