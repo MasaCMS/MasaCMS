@@ -45,7 +45,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfparam name="Cookie.fetDisplay" default="">
 	<cfif variables.$.content('type') eq 'Variation'>
 		<cfoutput>
-		<link href="#variables.$.siteConfig('adminPath')#/assets/css/admin-frontend.min.css" rel="stylesheet" type="text/css" />
+		<link href="#variables.$.siteConfig().getAdminPath(complete=1)#/assets/css/admin-frontend.min.css" rel="stylesheet" type="text/css" />
 
 		<script>
 			window.Mura=window.Mura || window.mura || {};
@@ -75,8 +75,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfoutput>
 	<cfelse>
 		<cfoutput>
-		<link href="#variables.$.siteConfig('adminPath')#/assets/css/admin-frontend.min.css" rel="stylesheet" type="text/css" />
-		<script type="text/javascript" src="#variables.$.siteConfig('adminPath')#/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#"></script>
+		<link href="#variables.$.siteConfig().getAdminPath(complete=1)#/assets/css/admin-frontend.min.css" rel="stylesheet" type="text/css" />
+		<script type="text/javascript" src="#variables.$.siteConfig().getAdminPath(complete=1)#/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#"></script>
 
 		<script>
 			var hasMuraLoader=(typeof Mura != 'undefined' && (typeof Mura.loader != 'undefined' || typeof window.queuedMuraCmds != 'undefined'));
@@ -84,34 +84,34 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				if(hasMuraLoader){
 					Mura(function(){
 						Mura.loader().loadjs(
-							'#variables.$.siteConfig("corepath")#/vendor/ckeditor/ckeditor.js'
+							'#variables.$.siteConfig().getCorePath(complete=1)#/vendor/ckeditor/ckeditor.js'
 						);
 					});
 				} else {
-					$.getScript('#variables.$.siteConfig("corepath")#/vendor/ckeditor/ckeditor.js');
+					$.getScript('#variables.$.siteConfig().getCorePath(complete=1)#/vendor/ckeditor/ckeditor.js');
 				}
 
-				window.CKEDITOR_BASEPATH = '#variables.$.siteConfig("corepath")#/vendor/ckeditor/';
+				window.CKEDITOR_BASEPATH = '#variables.$.siteConfig().getCorePath(complete=1)#/vendor/ckeditor/';
 			}
 
 			<cfif not $.getContentRenderer().useLayoutManager()>
 			if(!window.CKFinder){
 				if(hasMuraLoader){
 					Mura(function(){
-						Mura.loader().loadjs('#variables.$.siteConfig("corepath")#/vendor/ckfinder/ckfinder.js');
+						Mura.loader().loadjs('#variables.$.siteConfig().getCorePath(complete=1)#/vendor/ckfinder/ckfinder.js');
 					});
 				} else {
-					$.getScript('#variables.$.siteConfig("corepath")#/vendor/ckfinder/ckfinder.js');
+					$.getScript('#variables.$.siteConfig().getCorePath(complete=1)#/vendor/ckfinder/ckfinder.js');
 				}
 			}
 			</cfif>
 
 			if(hasMuraLoader){
 				Mura(function(){
-					Mura.loader().loadjs('#variables.$.siteConfig("adminPath")#/assets/js/frontendtools.js.cfm?siteid=#esapiEncode("url",variables.$.event("siteid"))#&contenthistid=#$.content("contenthistid")#&coreversion=#application.coreversion#&showInlineEditor=#getShowInlineEditor()#&cacheid=' + Math.random());
+					Mura.loader().loadjs('#variables.$.siteConfig().getAdminPath(complete=1)#/assets/js/frontendtools.js.cfm?siteid=#esapiEncode("url",variables.$.event("siteid"))#&contenthistid=#$.content("contenthistid")#&coreversion=#application.coreversion#&showInlineEditor=#getShowInlineEditor()#&cacheid=' + Math.random());
 				});
 			} else {
-				$.getScript('#variables.$.siteConfig("adminPath")#/assets/js/frontendtools.js.cfm?siteid=#esapiEncode("url",variables.$.event("siteid"))#&contenthistid=#$.content("contenthistid")#&coreversion=#application.coreversion#&showInlineEditor=#getShowInlineEditor()#&cacheid=' + Math.random());
+				$.getScript('#variables.$.siteConfig().getAdminPath(complete=1)#/assets/js/frontendtools.js.cfm?siteid=#esapiEncode("url",variables.$.event("siteid"))#&contenthistid=#$.content("contenthistid")#&coreversion=#application.coreversion#&showInlineEditor=#getShowInlineEditor()#&cacheid=' + Math.random());
 			}
 		</script>
 
@@ -132,7 +132,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif getShowToolbar()>
 		<cfsilent>
-			<cfset variables.adminBase=variables.$.globalConfig("adminPath")/>
+			<cfset variables.adminBase=variables.$.siteConfig().getAdminPath(complete=1)/>
 			<cfset variables.$.event('muraAdminBaseURL',variables.adminBase)>
 			<cfset variables.targetHook=generateEditableHook()>
 
