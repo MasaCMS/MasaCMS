@@ -1403,11 +1403,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 	}
 
 	public function getEndpoint(secure="#getValue('useSSL')#", complete="0", domain="", useProtocol="1") output=false {
-		if(getValue('isRemote')){
-			return getResourcePath(argumentCollection=arguments);
-		} else {
-			return getWebPath(argumentCollection=arguments);
-		}
+		return getRootPath(argumentCollection=arguments);
 	}
 
 	public function getRootPath(secure="#getValue('useSSL')#", complete="0", domain="", useProtocol="1") output=false {
