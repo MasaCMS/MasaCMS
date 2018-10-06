@@ -155,7 +155,7 @@ Mura(function(){
 		&& Mura.editing){
 			Mura.deInitLayoutManager();
 	}
-	Mura.loader().load('#variables.$.globalConfig("adminpath")#/assets/js/layoutmanager.js',
+	Mura.loader().load('#variables.$.siteConfig().getAdminPath(complete=1)#/assets/js/layoutmanager.js',
 		function(){
 			<cfif $.content('type') eq 'Variation'>
 			if(!Mura('.mxp-editable').length){
@@ -191,7 +191,7 @@ Mura(function(){
 			});
 			//Mura('.mura-region.mura-editable').attr('style','clear:both;');
 			Mura.rb.saveasdraft='#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.saveasdraft"))#';
-			Mura.adminpath='#variables.$.globalConfig("adminPath")#';
+			Mura.adminpath='#variables.$.siteConfig().getAdminPath(complete=1)#';
 		}
 	);
 });

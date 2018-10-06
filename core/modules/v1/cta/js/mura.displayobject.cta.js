@@ -265,6 +265,13 @@ this["mura"]["templates"]["cta"] = window.mura.Handlebars.template({"compiler":[
     display: function() {
         if (!this.displayed) {
             this.displayed = true;
+
+						var cta = Mura('#mura-cta-' + this.context.instanceid);
+
+		        if (cta.length) {
+		            cta.find('.mura-cta__item__dismiss').trigger('click');
+		        }
+
             this.recordDisplay();
 
             if (this.context.type === 'inline') {
@@ -328,30 +335,36 @@ this["mura"]["templates"]["cta"] = window.mura.Handlebars.template({"compiler":[
             var isEmpty = true;
 
             if (this.context.nestedobject && this.context.nestedobject != 'notconfigured') {
+							if(!cta.find('[data-ctaid="' + this.context.instanceid + '"]').length){
                 cta.find('.mura-cta__item__content').appendDisplayObject({
                     object: this.context.nestedobject,
 										ctaid: this.context.instanceid,
                     queue: false
                 });
-                isEmpty = false;
+							}
+							isEmpty = false;
             }
             if (this.context.componentid && this.context.componentid != 'notconfigured') {
-                cta.find('.mura-cta__item__content').appendDisplayObject({
-                    object: 'component',
-                    objectid: this.context.componentid,
-										ctaid: this.context.instanceid,
-                    queue: false
-                });
-                isEmpty = false;
+								if(!cta.find('[data-ctaid="' + this.context.instanceid + '"]').length){
+									cta.find('.mura-cta__item__content').appendDisplayObject({
+											object: 'component',
+											objectid: this.context.componentid,
+											ctaid: this.context.instanceid,
+											queue: false
+									});
+								}
+								isEmpty = false;
             }
             if (this.context.formid && this.context.formid != 'notconfigured') {
+							if(!cta.find('[data-ctaid="' + this.context.instanceid + '"]').length){
                 cta.find('.mura-cta__item__content').appendDisplayObject({
                     object: 'form',
                     objectid: this.context.formid,
 										ctaid: this.context.instanceid,
                     queue: false
                 });
-                isEmpty = false;
+							}
+							isEmpty = false;
             }
 
             if (isEmpty) {

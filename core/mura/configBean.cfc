@@ -1748,7 +1748,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getAdminPath" output="false">
 	<cfargument name="useProtocol" default="1">
-	<cfif len( getValue('admindomain') )>
+	<cfargument name="domain" default="#getValue('admindomain')#">
+	<cfif len( arguments.domain )>
 		<cfif arguments.useProtocol>
 			<cfreturn getScheme() & '://' & getValue('admindomain') & getServerPort() & getValue('context') & getValue('adminDir')>
 		<cfelse>
