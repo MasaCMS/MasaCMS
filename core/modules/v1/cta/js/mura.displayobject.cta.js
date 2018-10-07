@@ -335,7 +335,7 @@ this["mura"]["templates"]["cta"] = window.mura.Handlebars.template({"compiler":[
             var isEmpty = true;
 
             if (this.context.nestedobject && this.context.nestedobject != 'notconfigured') {
-							if(!cta.find('[data-ctaid="' + this.context.instanceid + '"]').length){
+							if(!cta.find('[data-ctaid="' + this.context.instanceid + '"][data-object="' + this.context.nestedobject + '"]').length){
                 cta.find('.mura-cta__item__content').appendDisplayObject({
                     object: this.context.nestedobject,
 										ctaid: this.context.instanceid,
@@ -345,7 +345,7 @@ this["mura"]["templates"]["cta"] = window.mura.Handlebars.template({"compiler":[
 							isEmpty = false;
             }
             if (this.context.componentid && this.context.componentid != 'notconfigured') {
-								if(!cta.find('[data-ctaid="' + this.context.instanceid + '"]').length){
+								if(!cta.find('[data-ctaid="' + this.context.instanceid + '"][data-object="component"]').length){
 									cta.find('.mura-cta__item__content').appendDisplayObject({
 											object: 'component',
 											objectid: this.context.componentid,
@@ -356,7 +356,7 @@ this["mura"]["templates"]["cta"] = window.mura.Handlebars.template({"compiler":[
 								isEmpty = false;
             }
             if (this.context.formid && this.context.formid != 'notconfigured') {
-							if(!cta.find('[data-ctaid="' + this.context.instanceid + '"]').length){
+							if(!cta.find('[data-ctaid="' + this.context.instanceid + '"][data-object="form"]').length){
                 cta.find('.mura-cta__item__content').appendDisplayObject({
                     object: 'form',
                     objectid: this.context.formid,
