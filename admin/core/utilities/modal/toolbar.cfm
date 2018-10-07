@@ -229,8 +229,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfsilent>
 		<cfoutput>
 		<div class="mura mura-toolbar">
-			<a id="frontEndToolsHandle" href="##" onclick="if (document.getElementById('frontEndTools').style.display == 'none') { createCookie('FETDISPLAY','block',5); document.getElementById('mura-fe-logo').src='#variables.$.globalConfig("adminPath")#/assets/images/mura-logo-fe.svg';} else { createCookie('FETDISPLAY','none',5); document.getElementById('mura-fe-logo').src='#variables.$.globalConfig("adminPath")#/assets/images/mura-logo-fe-icon.svg'} toggleAdminToolbar(); return false;">
-				<img id="mura-fe-logo" src="#variables.$.globalConfig("adminPath")#/assets/images/mura-logo-fe<cfif Cookie.fetDisplay eq 'none'>-icon</cfif>.svg" />
+			<a id="frontEndToolsHandle" href="##" onclick="if (document.getElementById('frontEndTools').style.display == 'none') { createCookie('FETDISPLAY','block',5); document.getElementById('mura-fe-logo').src='#variables.$.siteConfig().getAdminPath(complete=1)#/assets/images/mura-logo-fe.svg';} else { createCookie('FETDISPLAY','none',5); document.getElementById('mura-fe-logo').src='#variables.$.siteConfig().getAdminPath(complete=1)#/assets/images/mura-logo-fe-icon.svg'} toggleAdminToolbar(); return false;">
+				<img id="mura-fe-logo" src="#variables.$.siteConfig().getAdminPath(complete=1)#/assets/images/mura-logo-fe<cfif Cookie.fetDisplay eq 'none'>-icon</cfif>.svg" />
 			</a>
 
 			<div id="frontEndTools" style="display: #Cookie.fetDisplay#">
@@ -516,7 +516,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif listFindNoCase(session.mura.memberships,'S2IsPrivate')>
 					<cfif $.siteConfig().getValue(property='showDashboard',defaultValue=0)>
 						<ul id="adminDashboard">
-							<li><a href="#$.globalConfig('adminPath')#/?muraAction=cDashboard.main&siteid=#esapiEncode('url',$.event('siteid'))#&span=1" title="Dashboard" target="admin"><i class="mi-dashboard"></i> Dashboard</a></li>
+							<li><a href="#$.siteConfig().getAdminPath(complete=1)#/?muraAction=cDashboard.main&siteid=#esapiEncode('url',$.event('siteid'))#&span=1" title="Dashboard" target="admin"><i class="mi-dashboard"></i> Dashboard</a></li>
 						</ul>
 					</cfif>
 				</cfif>
