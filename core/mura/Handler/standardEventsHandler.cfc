@@ -881,7 +881,7 @@
 				contentid=$.content('contentid'),
 				contenthistid=$.content('contenthistid'),
 				siteID=$.event('siteID'),
-				context=$.globalConfig('context'),
+				context=$.siteConfig().getRootPath(complete=1),
 				nocache=$.event('nocache'),
 				assetpath=$.siteConfig().getAssetPath(complete=1),
 				corepath=$.siteConfig().getCorePath(complete=1),
