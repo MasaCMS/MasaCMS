@@ -429,7 +429,6 @@
 		<cfargument name="renderer">
 		<cfargument name="filterVarsList" default="">
 		<cfset var qrystr=''>
-		<cfset var host=''>
 		<cfset var item = "" />
 		<cfset var _filterVarsList='NOCACHE,PATH,DELETECOMMENTID,APPROVEDCOMMENTID,LOADLIST,INIT,SITEID,DISPLAY,#ucase(application.appReloadKey)#,#filterVars#'>
 
@@ -461,14 +460,10 @@
 		</cfif>
 
 		<cfif arguments.complete>
-			<cfif application.utility.isHTTPS()>
-				<cfset host='https://#arguments.domain##arguments.renderer.getMuraScope().siteConfig('ServerPort')#'>
-			<cfelse>
-				<cfset host='#arguments.renderer.getMuraScope().siteConfig('scheme')#://#arguments.domain##arguments.renderer.getMuraScope().siteConfig('ServerPort')#'>
-			</cfif>
+			<cfreturn arguments.renderer.getMuraScope().siteConfig().getWebPath(secure=application.utility.isHTTPS(),complete=1) & arguments.renderer.getURLStem(request.servletEvent.getValue('siteID'),request.servletEvent.getValue('currentFilename')) & qrystr>
+		<cfelse>
+			<cfreturn arguments.renderer.getMuraScope().siteConfig('context') & arguments.renderer.getURLStem(request.servletEvent.getValue('siteID'),request.servletEvent.getValue('currentFilename')) & qrystr >
 		</cfif>
-
-		<cfreturn host & arguments.renderer.getMuraScope().siteConfig('context') & arguments.renderer.getURLStem(request.servletEvent.getValue('siteID'),request.servletEvent.getValue('currentFilename')) & qrystr >
 
 	</cffunction>
 
