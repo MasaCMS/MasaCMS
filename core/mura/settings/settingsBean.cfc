@@ -1364,11 +1364,18 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 	}
 
 	public function getAdminPath(useProtocol="1",complete="0",domain="",secure="#getValue('useSSL')#") output=false {
-		if (len(application.configBean.getAdminDomain()) ) {
-			arguments.domain=application.configBean.getAdminDomain();
+		if(len(application.configBean.getAdminDomain())){
+			arguments.useProtocol=1;
+			arguments.complete=1;
+			return application.configBean.getAdminPath(argumentCollection=arguments);
+		} else {
+			if(application.configBean.getAdminSSL()){
+				arguments.useProtocol=1;
+				arguments.complete=1;
+			}
+			return getResourcePath(argumentCollection=arguments) & application.configBean.getAdminDir();
 		}
 
-		return getResourcePath(argumentCollection=arguments) & application.configBean.getAdminDir();
 	}
 
 	public function getWebPath(secure="#getValue('useSSL')#", complete="0", domain="", useProtocol="1") output=false {
