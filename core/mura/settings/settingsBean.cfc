@@ -1364,7 +1364,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 	}
 
 	public function getAdminPath(useProtocol="1",complete="0",domain="",secure="#getValue('useSSL')#") output=false {
-		if(len(application.configBean.getAdminDomain())){
+		if(!(getValue('isRemote') && len(getValue('resourceDomain'))) && len(application.configBean.getAdminDomain())){
 			arguments.useProtocol=1;
 			arguments.complete=1;
 			return application.configBean.getAdminPath(argumentCollection=arguments);
@@ -1451,7 +1451,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 	}
 
 	public function getCorePath(secure="#getValue('useSSL')#", complete="0", useProtocol="1") output=false {
-		if(len(application.configBean.getAdminDomain())){
+		if(!(getValue('isRemote') && len(getValue('resourceDomain'))) && len(application.configBean.getAdminDomain())){
 			arguments.useProtocol=1;
 			arguments.complete=1;
 			return application.configBean.getCorePath(argumentCollection=arguments);
@@ -1465,7 +1465,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 	}
 
 	public function getPluginsPath(secure="#getValue('useSSL')#", complete="0", useProtocol="1") output=false {
-		if(len(application.configBean.getAdminDomain())){
+		if(!(getValue('isRemote') && len(getValue('resourceDomain'))) && len(application.configBean.getAdminDomain())){
 			arguments.useProtocol=1;
 			arguments.complete=1;
 			return application.configBean.getPluginPath(argumentCollection=arguments);
