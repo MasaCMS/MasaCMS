@@ -1451,11 +1451,31 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 	}
 
 	public function getCorePath(secure="#getValue('useSSL')#", complete="0", useProtocol="1") output=false {
-		return getResourcePath(argumentCollection=arguments) & "/core";
+		if(len(application.configBean.getAdminDomain())){
+			arguments.useProtocol=1;
+			arguments.complete=1;
+			return application.configBean.getCorePath(argumentCollection=arguments);
+		} else {
+			if(application.configBean.getAdminSSL()){
+				arguments.useProtocol=1;
+				arguments.complete=1;
+			}
+			return getResourcePath(argumentCollection=arguments) & "/core";
+		}
 	}
 
 	public function getPluginsPath(secure="#getValue('useSSL')#", complete="0", useProtocol="1") output=false {
-		return getResourcePath(argumentCollection=arguments) & "/plugins";
+		if(len(application.configBean.getAdminDomain())){
+			arguments.useProtocol=1;
+			arguments.complete=1;
+			return application.configBean.getPluginPath(argumentCollection=arguments);
+		} else {
+			if(application.configBean.getAdminSSL()){
+				arguments.useProtocol=1;
+				arguments.complete=1;
+			}
+			return getResourcePath(argumentCollection=arguments) & "/plugins";
+		}
 	}
 
 	public function getAccessControlOriginDomainList() output=false {
