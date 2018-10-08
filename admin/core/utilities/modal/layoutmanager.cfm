@@ -102,7 +102,7 @@
 					</div>
 				</div>
 				--->
-				<iframe src="" data-preloadsrc="#$.siteConfig().getAdminPath(complete=$.siteConfig('isRemote'))#?muraAction=carch.frontendconfigurator&siteid=#$.content('siteid')#&preloadOnly=true&layoutmanager=true&compactDisplay=true&cacheid=#createUUID()#" id="frontEndToolsSidebariframe" scrolling="false" frameborder="0" style="overflow:hidden;width:100%;" name="frontEndToolsSidebariframe">
+				<iframe src="" data-preloadsrc="#$.siteConfig().getAdminPath(complete=completeurls)#?muraAction=carch.frontendconfigurator&siteid=#$.content('siteid')#&preloadOnly=true&layoutmanager=true&compactDisplay=true&cacheid=#createUUID()#" id="frontEndToolsSidebariframe" scrolling="false" frameborder="0" style="overflow:hidden;width:100%;" name="frontEndToolsSidebariframe">
 				</iframe>
 
 			</div>
@@ -155,7 +155,7 @@ Mura(function(){
 		&& Mura.editing){
 			Mura.deInitLayoutManager();
 	}
-	Mura.loader().load('#variables.$.siteConfig().getAdminPath(complete=$.siteConfig('isRemote'))#/assets/js/layoutmanager.js',
+	Mura.loader().load('#variables.$.siteConfig().getAdminPath(complete=completeurls)#/assets/js/layoutmanager.js',
 		function(){
 			<cfif $.content('type') eq 'Variation'>
 			if(!Mura('.mxp-editable').length){
@@ -191,7 +191,7 @@ Mura(function(){
 			});
 			//Mura('.mura-region.mura-editable').attr('style','clear:both;');
 			Mura.rb.saveasdraft='#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.saveasdraft"))#';
-			Mura.adminpath='#variables.$.siteConfig().getAdminPath(complete=$.siteConfig('isRemote'))#';
+			Mura.adminpath='#variables.$.siteConfig().getAdminPath(complete=completeurls)#';
 		}
 	);
 });
