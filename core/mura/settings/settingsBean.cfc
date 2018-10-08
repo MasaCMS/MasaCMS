@@ -1245,12 +1245,12 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		return application.settingsManager.read(argumentCollection=arguments);
 	}
 
-	public function getScheme() output=false {
-		return (YesNoFormat(getValue('useSSL'))  || getBean('utility').isHTTPS()) ? 'https' : 'http';
+	public function getScheme(secure=false) output=false {
+		return (arguments.secure || YesNoFormat(getValue('useSSL'))  || getBean('utility').isHTTPS()) ? 'https' : 'http';
 	}
 
-	public function getProtocol() output=false {
-		return UCase(getScheme());
+	public function getProtocol(secure=false) output=false {
+		return UCase(getScheme(arguments.secure));
 	}
 
 	public function getRazunaSettings() output=false {
@@ -1398,7 +1398,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 				if ( arguments.secure ) {
 					return 'https://' & arguments.domain & getServerPort() & getContext();
 				} else {
-					return getScheme() & '://' & arguments.domain & getServerPort() & getContext();
+					return getScheme(arguments.secure) & '://' & arguments.domain & getServerPort() & getContext();
 				}
 			} else {
 				return '//' & arguments.domain & getServerPort() & getContext();
@@ -1416,7 +1416,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		return getResourcePath(argumentCollection=arguments);
 	}
 
-	public function getResourcePath(complete="0", domain="", useProtocol="1") output=false {
+	public function getResourcePath(complete="0", domain="", useProtocol="1",secure="#getValue('useSSL')#") output=false {
 
 		if ( len(request.muraPreviewDomain) && isValidDomain(domain=request.muraPreviewDomain,mode='complete') ) {
 			arguments.domain=request.muraPreviewDomain;
@@ -1431,10 +1431,10 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		if ( getValue('isRemote') && len(getValue('resourceDomain')) ) {
 			var configBean=getBean('configBean');
 			if ( arguments.useProtocol ) {
-				if ( getValue('resourceSSL') || getValue('useSSL')  ) {
+				if (getValue('resourceSSL') || getValue('useSSL')  ) {
 					return "https://" & getValue('resourceDomain') & configBean.getServerPort() & configBean.getContext();
 				} else {
-					return getScheme() & '://' & getValue('resourceDomain') & configBean.getServerPort() & configBean.getContext();
+					return getScheme(arguments.secure) & '://' & getValue('resourceDomain') & configBean.getServerPort() & configBean.getContext();
 				}
 			} else {
 				return "//" & getValue('resourceDomain') & configBean.getServerPort() & configBean.getContext();
@@ -1451,27 +1451,17 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 	}
 
 	public function getCorePath(secure="#getValue('useSSL')#", complete="0", useProtocol="1") output=false {
-		if(!(getValue('isRemote') && len(getValue('resourceDomain'))) && len(application.configBean.getAdminDomain())){
+		if(application.configBean.getAdminSSL()){
 			arguments.complete=1;
-			return application.configBean.getCorePath(argumentCollection=arguments);
-		} else {
-			if(application.configBean.getAdminSSL()){
-				arguments.complete=1;
-			}
-			return getResourcePath(argumentCollection=arguments) & "/core";
 		}
+		return getResourcePath(argumentCollection=arguments) & "/core";
 	}
 
 	public function getPluginsPath(secure="#getValue('useSSL')#", complete="0", useProtocol="1") output=false {
-		if(!(getValue('isRemote') && len(getValue('resourceDomain'))) && len(application.configBean.getAdminDomain())){
+		if(application.configBean.getAdminSSL()){
 			arguments.complete=1;
-			return application.configBean.getPluginsPath(argumentCollection=arguments);
-		} else {
-			if(application.configBean.getAdminSSL()){
-				arguments.complete=1;
-			}
-			return getResourcePath(argumentCollection=arguments) & "/plugins";
 		}
+		return getResourcePath(argumentCollection=arguments) & "/plugins";
 	}
 
 	public function getAccessControlOriginDomainList() output=false {

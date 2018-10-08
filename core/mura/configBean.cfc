@@ -1743,7 +1743,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getScheme" output="false">
-	<cfreturn (YesNoFormat(getValue('adminSSL')) || getBean('utility').isHTTPS()) ? 'https' : 'http' />
+	<cfargument name="secure" default="#getValue('adminSSL')#">
+	<cfreturn (arguments.secure || YesNoFormat(getValue('adminSSL')) || getBean('utility').isHTTPS()) ? 'https' : 'http' />
 </cffunction>
 
 <cffunction name="getAdminPath" output="false">
@@ -1763,12 +1764,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getPluginsPath" output="false">
 	<cfargument name="useProtocol" default="1">
+	<cfargument name="secure" default="#getValue('adminSSL')#">
 	<cfif len(variables.instance.pluginsPath)>
 		<cfreturn variables.instance.pluginsPath>
 	<cfelse>
 		<cfif len( getValue('admindomain') )>
 			<cfif arguments.useProtocol>
-				<cfreturn getScheme() & '://' & getValue('admindomain') & getServerPort() & getValue('context') & "/plugins">
+				<cfreturn getScheme(arguments.secure) & '://' & getValue('admindomain') & getServerPort() & getValue('context') & "/plugins">
 			<cfelse>
 				<cfreturn '//' & getValue('admindomain') & getServerPort() & getValue('context') & "/plugins">
 			</cfif>
@@ -1780,13 +1782,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getCorePath" output="false">
 	<cfargument name="useProtocol" default="1">
+	<cfargument name="secure" default="#getValue('adminSSL')#">
 
 	<cfif len(variables.instance.corepath)>
 		<cfreturn variables.instance.corepath>
 	<cfelse>
 		<cfif len( getValue('admindomain') )>
 			<cfif arguments.useProtocol>
-				<cfreturn getScheme() & '://' & getValue('admindomain') & getServerPort() & getValue('context') & "/core">
+				<cfreturn getScheme(arguments.secure) & '://' & getValue('admindomain') & getServerPort() & getValue('context') & "/core">
 			<cfelse>
 				<cfreturn '//' & getValue('admindomain') & getServerPort() & getValue('context') & "/core">
 			</cfif>
@@ -1798,6 +1801,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getRequirementsPath" output="false">
 	<cfargument name="useProtocol" default="1">
+	<cfargument name="secure" default="#getValue('adminSSL')#">
 	<cfreturn getCorePath(argumentCollection=arguments) & "/externals">
 </cffunction>
 
