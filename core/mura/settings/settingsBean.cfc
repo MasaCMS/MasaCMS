@@ -1246,7 +1246,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 	}
 
 	public function getScheme() output=false {
-		return YesNoFormat(getValue('useSSL')) ? 'https' : 'http';
+		return (YesNoFormat(getValue('useSSL'))  || getBean('utility').isHTTPS()) ? 'https' : 'http';
 	}
 
 	public function getProtocol() output=false {
@@ -1410,6 +1410,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 	}
 
 	public function getResourcePath(complete="0", domain="", useProtocol="1") output=false {
+
 		if ( len(request.muraPreviewDomain) && isValidDomain(domain=request.muraPreviewDomain,mode='complete') ) {
 			arguments.domain=request.muraPreviewDomain;
 		}

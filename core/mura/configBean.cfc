@@ -1743,7 +1743,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getScheme" output="false">
-	<cfreturn YesNoFormat(getValue('adminSSL')) ? 'https' : 'http' />
+	<cfreturn (YesNoFormat(getValue('adminSSL')) || getBean('utility').isHTTPS()) ? 'https' : 'http' />
 </cffunction>
 
 <cffunction name="getAdminPath" output="false">
