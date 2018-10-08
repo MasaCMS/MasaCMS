@@ -212,8 +212,6 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 	function registerEntity(entityName, config={public=false,fields=''},beanInstance=''){
 
-
-
 		if(!isDefined('arguments.config.public')){
 			arguments.config.public=false;
 		}
@@ -398,6 +396,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			}
 
 			if(!request.muraSessionManagement){
+
 				if( structKeyExists( headers, 'X-client_id' )){
 					params['client_id']=headers['X-client_id'];
 				}
@@ -448,6 +447,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 					if(rsuser.recordcount){
 						userUtility.loginByUserID(rsuser.userid,rsuser.siteid);
 					} else {
+						responseObject.setHeader( 'WWW-Authenticate', 'Basic' );
 						throw(type="authorization");
 					}
 				} else {
@@ -457,9 +457,12 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 						structDelete(url,'access_token');
 						if(!token.exists() || !listFind('client_credentials,authorization_code',token.getGrantType())){
 							params.method='Not Available';
+							responseObject.setHeader( 'WWW-Authenticate', 'Bearer error="invalid_access_token"' );
+							responseObject.setHeader( 'WWW-Authenticate', 'Bearer' );
 							throw(type='invalidAccessToken');
 						} else if (token.isExpired()){
 							params.method='Not Available';
+							responseObject.setHeader( 'WWW-Authenticate', 'Bearer error="invalid_access_token"' );
 							throw(type='accessTokenExpired');
 						} else {
 							if(isJSON(token.getData())){
@@ -469,12 +472,14 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 								if(!oauthclient.exists()){
 									params.method='undefined';
+									responseObject.setHeader( 'WWW-Authenticate', 'Bearer error="invalid_access_token"' );
 									throw(type='invalidAccessToken');
 								} else {
 									var clientAccount=token.getUser();
 
 									if(!clientAccount.exists()){
 										params.method='undefined';
+										responseObject.setHeader( 'WWW-Authenticate', 'Bearer error="invalid_access_token"' );
 										throw(type='invalidAccessToken');
 									} else {
 										clientAccount.login();
@@ -491,16 +496,30 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 						structDelete(url,'client_id');
 						structDelete(url,'client_secret');
 						structDelete(url,'refresh_token');
+
+						if(arrayLen(pathInfo) == 6
+							&& listFind('oauth,oauth2',pathInfo[5])
+							||
+								arrayLen(pathInfo) == 5
+								&& (
+									listFind('oauth,oauth2',pathInfo[4]) || listFind('oauth,oauth2',pathInfo[5])
+								)
+						){
+							responseObject.setHeader( 'WWW-Authenticate', 'Bearer error="invalid_client_credentials"' );
+						} else {
+							responseObject.setHeader( 'WWW-Authenticate', 'Basic' );
+						}
+
 						throw(type='authorization');
 					} else {
 						var oauthclient=getBean('oauthClient').loadBy(clientid=params.client_id);
-
 
 						if(!oauthclient.exists()){
 							params.method='Not Available';
 							params={
 								method='getOAuthToken'
 							};
+							responseObject.setHeader( 'WWW-Authenticate', 'Bearer error="invalid_client_credentials"' );
 							throw(type='authorization');
 						} else {
 
@@ -530,6 +549,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 									if(oauthclient.getGrantType()!='authorization_code' || oauthclient.getClientSecret() != params.client_secret){
 										structDelete(params,'client_id');
 										structDelete(params,'client_secret');
+										responseObject.setHeader( 'WWW-Authenticate', 'Bearer error="invalid_authorization_code"' );
 										throw(type='authorization');
 									}
 
@@ -542,7 +562,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 										params={
 											method='getOAuthToken'
 										};
-
+										responseObject.setHeader( 'WWW-Authenticate', 'Bearer error="invalid_authorization_code"' );
 										throw(type='authorization');
 									} else {
 										result=serializeResponse(
@@ -563,6 +583,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 										params={
 											method='getOAuthToken'
 										};
+										responseObject.setHeader( 'WWW-Authenticate', 'Bearer error="invalid_client_credentials"' );
 										throw(type='authorization');
 									}
 
@@ -575,6 +596,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 										params={
 											method='getOAuthToken'
 										};
+										responseObject.setHeader( 'WWW-Authenticate', 'Bearer error="invalid_client_credentials"' );
 										throw(type='authorization');
 									} else {
 										var token=oauthclient.generateToken(granttype='password',userid=rsUser.userid);
@@ -609,16 +631,18 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 										params={
 											method='getOAuthToken'
 										};
+										responseObject.setHeader( 'WWW-Authenticate', 'Bearer error="invalid_client_credentials"' );
 										throw(type='authorization');
 									}
 
 									var token=oauthclient.generateToken(granttype='client_credentials');
 									var clientAccount=token.getUser();
-
+									
 									if(!clientAccount.exists()){
 										params={
 											method='getOAuthToken'
 										};
+										responseObject.setHeader( 'WWW-Authenticate', 'Bearer error="invalid_client_credentials"' );
 										throw(type='authorization');
 									} else {
 										if(oauth2){
@@ -652,6 +676,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 										params={
 											method='getOAuthToken'
 										};
+										responseObject.setHeader( 'WWW-Authenticate', 'Bearer error="invalid_client_refresh_token"' );
 										throw(type='authorization');
 									}
 
@@ -666,6 +691,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 										params={
 											method='getOAuthToken'
 										};
+										responseObject.setHeader( 'WWW-Authenticate', 'Bearer error="invalid_client_credentials"' );
 										throw(type='invalid_token');
 									}
 
@@ -703,6 +729,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 									params={
 										method='getOAuthToken'
 									};
+									responseObject.setHeader( 'WWW-Authenticate', 'Bearer error="invalid_grant_type' );
 									throw(type='authorization');
 								}
 							} else {
@@ -715,6 +742,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 									params={
 										method='getOAuthToken'
 									};
+									responseObject.setHeader( 'WWW-Authenticate', 'Bearer error="invalid_client_credentials"' );
 									throw(type='authorization');
 								}
 
