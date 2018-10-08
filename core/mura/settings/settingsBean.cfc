@@ -1468,7 +1468,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		if(!(getValue('isRemote') && len(getValue('resourceDomain'))) && len(application.configBean.getAdminDomain())){
 			arguments.useProtocol=1;
 			arguments.complete=1;
-			return application.configBean.getPluginPath(argumentCollection=arguments);
+			return application.configBean.getPluginsPath(argumentCollection=arguments);
 		} else {
 			if(application.configBean.getAdminSSL()){
 				arguments.useProtocol=1;
