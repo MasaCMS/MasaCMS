@@ -637,7 +637,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 									var token=oauthclient.generateToken(granttype='client_credentials');
 									var clientAccount=token.getUser();
-									
+
 									if(!clientAccount.exists()){
 										params={
 											method='getOAuthToken'
@@ -735,18 +735,27 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 							} else {
 								//USING CLIENT_ID AND CLIENT_SECRET AS BASIC AUTH
 								//ONLY WORKS WITH CLIENTS WITH CLIENT_CREDENTIALS GRANTTYPE
-								structDelete(params,'client_id');
-								structDelete(params,'client_secret');
 
 								if(!isBasicAuth){
 									params={
 										method='getOAuthToken'
 									};
+									structDelete(params,'client_id');
+									structDelete(params,'client_secret');
 									responseObject.setHeader( 'WWW-Authenticate', 'Bearer error="invalid_client_credentials"' );
 									throw(type='authorization');
 								}
 
-								oauthclient.getUser().login();
+								if(oauthclient.getClientSecret()==params.client_secret){
+									structDelete(params,'client_id');
+									structDelete(params,'client_secret');
+									oauthclient.getUser().login();
+								} else {
+									structDelete(params,'client_id');
+									structDelete(params,'client_secret');
+									responseObject.setHeader( 'WWW-Authenticate', 'Basic' );
+									throw(type="authorization");
+								}
 							}
 						}
 					}
