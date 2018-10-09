@@ -746,7 +746,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 									throw(type='authorization');
 								}
 
-								if(oauthclient.getClientSecret()==params.client_secret){
+								if(oauthclient.getGrantType()=='basic' && oauthclient.getClientSecret()==params.client_secret){
 									structDelete(params,'client_id');
 									structDelete(params,'client_secret');
 									oauthclient.getUser().login();
