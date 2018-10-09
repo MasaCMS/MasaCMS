@@ -825,6 +825,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfscript>
 </cffunction>
 
+<!--- This is no longer used --->
 <cffunction name="getAccessControlOriginList">
 	<cfscript>
 		if(!isDefined("variables.AccessControlOriginList")){

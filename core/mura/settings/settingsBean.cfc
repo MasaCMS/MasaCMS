@@ -1484,6 +1484,13 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 				thelist = listAppend(thelist,application.configBean.getAdminDomain());
 			}
 		}
+
+		if ( getValue("isRemote") && len(getValue("resourceDomain")) ) {
+			if ( !ListFindNoCase(thelist, getValue("resourceDomain")) ) {
+				thelist = listAppend(thelist,getValue("resourceDomain"));
+			}
+		}
+
 		if ( len(getValue('domainAlias')) ) {
 			for(i in listToArray(getValue('domainAlias'),lineBreak) ){
 				if ( !ListFindNoCase(thelist, i ) ) {
@@ -1494,6 +1501,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		return thelist;
 	}
 
+	//This is no longer used
 	public function getAccessControlOriginList() output=false {
 		var thelist="http://#getValue('domain')#,https://#getValue('domain')#";
 		var adminSSL=application.configBean.getAdminSSL();
