@@ -36,4 +36,24 @@ component extends="mura.bean.beanORM" entityName='oauthToken' table="toauthtoken
         return (getExpiresIn() <= 0);
     }
 
+		function getTokenInfo(){
+			var data=get('data');
+			if(isJSON(data)){
+				data=deserializeJSON(data);
+				if(isStruct(data) && isDefined('data.mura')){
+					var data=data.mura;
+					structDelete(data,'csrfsecretkey');
+					structDelete(data,'csrfusedtokens');
+					structDelete(data,'isloggedin');
+					structDelete(data,'lastlogin');
+					structDelete(data,'password');
+					return data;
+				} else {
+					return {};
+				}
+			} else {
+				return {};
+			}
+		}
+
 }
