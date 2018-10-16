@@ -377,6 +377,9 @@ if ( application.setupComplete ) {
 		} catch (any cfcatch) {}
 	}
 
+
+ 	param name="application.rendererProperties" default={};
+		
 	application.objectMappings={};
 	application.objectMappings.bundleableBeans="";
 	application.objectMappings.versionedBeans="";

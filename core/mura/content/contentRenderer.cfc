@@ -699,6 +699,11 @@ Display Objects
 
 <cffunction name="postMergeInit" output="false">
 	<cfscript>
+		if(isValid('variableName',variables.event.getValue('siteID')) && isDefined('application.rendererProperties.#variables.event.getValue('siteID')#')){
+			for ( var key in application.rendererProperties['#variables.event.getValue('siteID')#'] ) {
+				this.injectMethod('#key#',application.rendererProperties['#variables.event.getValue('siteID')#'][key]);
+			}
+		}
 		this.asyncObjects=request.muraFrontEndRequest && (this.asyncObjects || this.layoutmanager);
 		this.asyncRender=!this.asyncObjects;
 		return this;
