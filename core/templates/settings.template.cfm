@@ -35,6 +35,7 @@ defaultthemeurl=https://github.com/blueriver/MuraBootstrap4/archive/master.zip
 enablemuratag=true
 encryptionkey=
 errortemplate=/muraWRM/core/templates/error.html
+externalconfig=
 filedir=
 fmshowapplicationroot=true
 fmshowsitefiles=true

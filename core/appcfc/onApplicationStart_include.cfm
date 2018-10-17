@@ -377,9 +377,6 @@ if ( application.setupComplete ) {
 		} catch (any cfcatch) {}
 	}
 
-
- 	param name="application.rendererProperties" default={};
-		
 	application.objectMappings={};
 	application.objectMappings.bundleableBeans="";
 	application.objectMappings.versionedBeans="";
@@ -904,6 +901,60 @@ if ( application.setupComplete ) {
 				fileDelete(local.rs.directory[local.i] & "/" & local.rs.name[local.i]);
 			}
 		}
+	}
+
+	param name="application.muraExternalConfig" default={};
+
+
+	if (len(application.configBean.getValue('externalConfig'))) {
+
+		if(isValid('url',application.configBean.getValue('externalConfig'))){
+			local.httpService=application.configBean.getHTTPService();
+			local.httpService.setMethod("get");
+			local.httpService.setCharset("utf-8");
+			local.httpService.setURL(application.configBean.getValue('externalConfig'));
+			config=local.httpService.send().getPrefix();
+		} else if (fileExists(application.configBean.getValue('externalConfig'))) {
+			config=fileRead(application.configBean.getValue('externalConfig'),'utf-8');
+		}
+
+		if(isJSON(config)){
+			application.muraExternalConfig=deserializeJSON(config);
+		}
+	}
+
+	if(isDefined('application.muraExternalConfig.global.modules') && isStruct(application.muraExternalConfig.global.modules)){
+		modules=application.muraExternalConfig.global.modules;
+		sites=application.configBean.getBean('settingsManager').getSites();
+		for(m in modules){
+			if(isStruct(modules['#m#'])){
+				module=modules['#m#']
+				module.object=m;
+				module.external=true;
+				for(s in sites){
+					sites['#s#'].registerDisplayObject(argumentCollection=module);
+				}
+
+			}
+		}
+	}
+
+	if(isDefined('application.muraExternalConfig.sites') && isStruct(application.muraExternalConfig.sites)){
+		sites=application.configBean.getBean('settingsManager').getSites();
+		for(s in sites){
+			if(isValid('url',s) && isDefined('application.muraExternalConfig.sites.#s#') && isStruct(application.muraExternalConfig.sites['#s#'])){
+				modules=application.muraExternalConfig.sites['#s#'];
+				for(m in modules){
+					if(isStruct(modules['#m#'])){
+						module=modules['#m#']
+						module.object=m;
+						module.external=true;
+						sites['#s#'].registerDisplayObject(argumentCollection=module);
+					}
+				}
+			}
+		}
+
 	}
 
 	application.sessionTrackingThrottle=false;

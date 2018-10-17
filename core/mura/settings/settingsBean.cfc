@@ -1569,7 +1569,34 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		return getBean('configBean').getVersion();
 	}
 
-	public function registerDisplayObject(object, name="", displaymethod="", displayObjectFile="", configuratorInit="", configuratorJS="", contenttypes="", omitcontenttypes="", condition="true", legacyObjectFile="", custom="true", iconclass="mi-cog", cacheoutput="true") output=false {
+	public function registerDisplayObject(object, name="", displaymethod="", displayObjectFile="", configuratorInit="", configuratorJS="", contenttypes="", omitcontenttypes="", condition="true", legacyObjectFile="", custom="true", iconclass="mi-cog", cacheoutput="true", external="false" ,configurator="") output=false {
+
+		if(!structKeyExists(arguments,'condition')){
+			arguments.condition=true;
+		}
+		if(!structKeyExists(arguments,'contenttypes')){
+			arguments.contenttypes="";
+		}
+		if(!structKeyExists(arguments,'omitcontenttypes')){
+			arguments.omitcontenttypes='';
+		}
+		if(!structKeyExists(arguments,'iconclass')){
+			arguments.iconclass="mi-cog";
+		}
+		if(!structKeyExists(arguments,'custom')){
+			arguments.custom="mi-cog";
+		}
+		if(!structKeyExists(arguments,'cacheoutput')){
+			arguments.cacheoutput=true;
+		}
+		//Used with external modules
+		if(!structKeyExists(arguments,'external')){
+			arguments.external=false;
+		}
+		if(!structKeyExists(arguments,'configurator')){
+			arguments.configurator="";
+		}
+
 		arguments.objectid=arguments.object;
 		variables.instance.displayObjectLookup['#arguments.object#']=arguments;
 		return this;
