@@ -928,7 +928,7 @@ if ( application.setupComplete ) {
 		sites=application.configBean.getBean('settingsManager').getSites();
 		for(m in modules){
 			if(isStruct(modules['#m#'])){
-				module=modules['#m#']
+				module=modules['#m#'];
 				module.object=m;
 				module.displayObjectFile="external/index.cfm";
 				module.external=true;
@@ -947,7 +947,7 @@ if ( application.setupComplete ) {
 				modules=application.muraExternalConfig.sites['#s#'];
 				for(m in modules){
 					if(isStruct(modules['#m#'])){
-						module=modules['#m#']
+						module=modules['#m#'];
 						module.object=m;
 						module.displayObjectFile="external/index.cfm";
 						module.external=true;
