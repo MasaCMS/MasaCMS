@@ -120,13 +120,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					 <cfif rc.pageNum eq i>
 						 <li class="active"><a href="##">#i#</a></li>
 					 <cfelse>
-						 <li><a href="?muraAction=cTrash.list&siteid=#esapiEncode('url',rc.siteid)#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#i#&sinceDate=#esapiEncode('html_attr',$.event('sinceDate'))#&sinceDate=#esapiEncode('url',$.event('sinceDate'))#&beforeDate=#esapiEncode('url',$.event('beforeDate'))#">#i#</a></li>
+						 <li><a href="?muraAction=cTrash.list&siteid=#esapiEncode('url',rc.siteid)#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#i#&sinceDate=#esapiEncode('url',$.event('sinceDate'))#&beforeDate=#esapiEncode('url',$.event('beforeDate'))#">#i#</a></li>
 					 </cfif>
 
 				 </cfloop>
+				<cfif rc.pageNum lt rc.trashIterator.pageCount()>
 					<li>
-						<a href="?muraAction=cTrash.list&siteid=#esapiEncode('url',rc.siteid)#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#i#&sinceDate=#esapiEncode('url',$.event('sinceDate'))#&beforeDate=#esapiEncode('url',$.event('beforeDate'))#">#i#</a>
-			 		</li>
+						<a href="?muraAction=cTrash.list&siteid=#esapiEncode('url',rc.siteid)#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#pageNum + 1#&sinceDate=#esapiEncode('url',$.event('sinceDate'))#&beforeDate=#esapiEncode('url',$.event('beforeDate'))#"><i class="mi-angle-right"></i></a>
+					</li>
+				</cfif>
 			 </ul>
 		 </cfif>
 		 <cfelse>
