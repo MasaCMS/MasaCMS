@@ -942,7 +942,7 @@ if ( application.setupComplete ) {
 	if(isDefined('application.muraExternalConfig.sites') && isStruct(application.muraExternalConfig.sites)){
 		sites=application.configBean.getBean('settingsManager').getSites();
 		for(s in sites){
-			if(isValid('url',s) && isDefined('application.muraExternalConfig.sites.#s#') && isStruct(application.muraExternalConfig.sites['#s#'])){
+			if(isValid('variableName',s) && isDefined('application.muraExternalConfig.sites.#s#') && isStruct(application.muraExternalConfig.sites['#s#'])){
 				modules=application.muraExternalConfig.sites['#s#'];
 				for(m in modules){
 					if(isStruct(modules['#m#'])){
