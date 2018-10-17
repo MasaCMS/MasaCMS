@@ -909,11 +909,11 @@ if ( application.setupComplete ) {
 	if (len(application.configBean.getValue('externalConfig'))) {
 
 		if(isValid('url',application.configBean.getValue('externalConfig'))){
-			local.httpService=application.configBean.getHTTPService();
-			local.httpService.setMethod("get");
-			local.httpService.setCharset("utf-8");
-			local.httpService.setURL(application.configBean.getValue('externalConfig'));
-			config=local.httpService.send().getPrefix();
+			httpService=application.configBean.getHTTPService();
+			httpService.setMethod("get");
+			httpService.setCharset("utf-8");
+			httpService.setURL(application.configBean.getValue('externalConfig'));
+			config=httpService.send().getPrefix().filecontent;
 		} else if (fileExists(application.configBean.getValue('externalConfig'))) {
 			config=fileRead(application.configBean.getValue('externalConfig'),'utf-8');
 		}
@@ -930,6 +930,7 @@ if ( application.setupComplete ) {
 			if(isStruct(modules['#m#'])){
 				module=modules['#m#']
 				module.object=m;
+				module.displayObjectFile="external/index.cfm";
 				module.external=true;
 				for(s in sites){
 					sites['#s#'].registerDisplayObject(argumentCollection=module);
@@ -948,6 +949,7 @@ if ( application.setupComplete ) {
 					if(isStruct(modules['#m#'])){
 						module=modules['#m#']
 						module.object=m;
+						module.displayObjectFile="external/index.cfm";
 						module.external=true;
 						sites['#s#'].registerDisplayObject(argumentCollection=module);
 					}

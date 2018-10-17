@@ -3,7 +3,7 @@
 	objectparams.async=true;
 	configuratorMarkup='';
 
-	if(isValid("url" objectConfig.configurator)){
+	if(isValid("url", objectConfig.configurator)){
 		httpService=application.configBean.getHTTPService();
 		lhttpService.setMethod("get");
 		httpService.setCharset("utf-8");
