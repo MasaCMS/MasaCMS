@@ -14,7 +14,15 @@
 	}
 </cfscript>
 <cfif len(configuratorMarkup)>
-		<cf_objectconfigurator params="#objectparams#">#configuratorMarkup#</cf_objectconfigurator>
+		<cf_objectconfigurator params="#objectparams#">
+			#configuratorMarkup#
+			<script>
+			Mura(function(){
+				siteManager.requestDisplayObjectParams(function(params){});
+			});
+			</script>
+		</cf_objectconfigurator>
 <cfelse>
-	<cf_objectconfigurator basictab=false></cf_objectconfigurator>
+	<cf_objectconfigurator basictab=false>
+	</cf_objectconfigurator>
 </cfif>
