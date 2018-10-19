@@ -43,7 +43,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 	<cfparam name="Cookie.fetDisplay" default="">
-	<cfset completeurls=(variables.$.content('type') eq 'Variation' or variables.$.siteConfig('isRemote'))>
+	<cfset completeurls=(variables.$.content('type') eq 'Variation' or variables.$.siteConfig('isRemote') or len(variables.$.globalConfig('admindomain')))>
 	<cfif variables.$.content('type') eq 'Variation'>
 		<cfoutput>
 		<link href="#variables.$.siteConfig().getAdminPath(complete=completeurls)#/assets/css/admin-frontend.min.css" rel="stylesheet" type="text/css" />
