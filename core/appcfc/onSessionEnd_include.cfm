@@ -61,9 +61,11 @@ if ( isDefined("arguments.ApplicationScope") ) {
 	param name="request.muraDynamicContentError" default=false;
 	param name="request.muraPreviewDomain" default="";
 	param name="request.muraOutputCacheOffset" default="";
+	request.muraSessionManagement=false;
+
 	if(isDefined('arguments.SessionScope')){
 		try {
-			session=arguments.SessionScope;
+			request.muraSessionPlaceholder=arguments.SessionScope;
 			application=arguments.ApplicationScope;
 			local.pluginEvent=createObject("component","mura.event").init();
 			local.pluginEvent.setValue("ApplicationScope",arguments.ApplicationScope);
