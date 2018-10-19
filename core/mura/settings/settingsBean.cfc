@@ -1364,6 +1364,10 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 	}
 
 	public function getAdminPath(useProtocol="1",complete="0",domain="",secure="#getValue('useSSL')#") output=false {
+		if(len(application.configBean.getAdminDomain())){
+			arguments.domain=application.configBean.getAdminDomain();
+			arguments.complete=1;
+		}
 		if(!(getValue('isRemote') && len(getValue('resourceDomain'))) && len(application.configBean.getAdminDomain())){
 			arguments.useProtocol=1;
 			arguments.complete=1;
