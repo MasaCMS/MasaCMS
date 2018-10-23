@@ -135,6 +135,53 @@ main > .content > :first-child:not(.alert){
   margin-left: 8px;
 }
 
+// editing panels
+// form elements w/ label
+
+#content-panels{
+
+.mura-control-group > label + textarea:not([class*="mura-constrain"]),
+.mura-control-group > label + * + textarea:not([class*="mura-constrain"]),
+.mura-control-group > label + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]),
+.mura-control-group > label + * + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]),
+.mura-control-group > label + input[type=password],
+.mura-control-group > label + * + input[type=password],
+.mura-control-group > label + input[type=file],
+.mura-control-group > label + * + input[type=file],
+.mura-control-group > label + select:not([class*="time"]):not([class*="mura-constrain"]),
+.mura-control-group > label + * + select:not([class*="time"]):not([class*="mura-constrain"]){
+  .form-control;
+  .make-xs-column(12);
+  font-size: 13px;
+}
+
+// constrain width elements
+.mura-control-group > label + input[type=text].mura-constrain,
+.mura-control-group > label + * + input[type=text].mura-constrain,
+.mura-control-group > label + select.mura-constrain,
+.mura-control-group > label + * + select.mura-constrain,
+.mura-control-group > label + textarea.mura-constrain,
+.mura-control-group > label + * + textarea.mura-constrain{
+  .form-control;
+  .make-sm-column(2.6);
+}
+
+.mura-control-group > label + input[type=text].mura-constrain.mura-numeric,
+.mura-control-group > label + * + input[type=text].mura-constrain.mura-numeric,
+.mura-control-group > label + select.mura-constrain.mura-numeric,
+.mura-control-group > label + * + select.mura-constrain.mura-numeric,
+.mura-control-group > label + textarea.mura-constrain.mura-numeric,
+.mura-control-group > label + * + textarea.mura-constrain.mura-numeric{
+  .make-sm-column(1);
+  min-width: 60px !important;
+}
+
+.mura-control-group .mura-constrain + .mura-constrain{
+  margin-left: 8px;
+}
+
+} /* /.content-panels */
+
 // sidebar form elements
 .sidebar .mura-control-group > label + textarea,
 .sidebar .mura-control-group > label + * + textarea,
