@@ -2787,8 +2787,9 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		if(arguments.entityName=='contentnav'){
 			arguments.entityName='content';
+			$.event('entityName','content');
 		}
-		
+
 		var entity=$.getBean(arguments.entityName);
 
 		if($.event('entityName')=='content'){
