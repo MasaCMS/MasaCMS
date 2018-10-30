@@ -13158,14 +13158,16 @@ Mura.Request=Mura.Core.extend(
       return this.requestHeaders;
     },
     nodeRequest:function(params){
-
+			var debug=typeof Mura.debug != 'undefined' && Mura.debug;
       self=this;
 
       if(typeof this.requestObject != 'undefined'){
         params.headers['User-Agent']='MuraJS';
         if(typeof this.requestObject.headers['cookie'] != 'undefined'){
-          console.log('pre cookies:');
-          console.log(this.requestObject.headers['cookie']);
+					if(debug){
+						console.log('pre cookies:');
+	          console.log(this.requestObject.headers['cookie']);
+					}
           params.headers['Cookie']=this.requestObject.headers['cookie'];
         }
         if(typeof this.requestObject.headers['x-client_id'] != 'undefined'){
@@ -13400,6 +13402,7 @@ Mura.Request=Mura.Core.extend(
       }
     },
     xhrRequest:function(params){
+			var debug=typeof Mura.debug != 'undefined' && Mura.debug;
 
       for(var h in Mura.requestHeaders){
           if(Mura.requestHeaders.hasOwnProperty(h)){
@@ -13465,7 +13468,7 @@ Mura.Request=Mura.Core.extend(
 
                   params.success(data, req);
               } else {
-								if(typeof req.responseText != 'undefined'){
+								if(debug && typeof req.responseText != 'undefined'){
 									console.log(req.responseText);
 								}
 
