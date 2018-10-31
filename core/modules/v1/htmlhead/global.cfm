@@ -48,9 +48,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <script type="text/javascript" src="#$.globalConfig('context')#/core/modules/v1/core_assets/js/mura.min.js?v=#$.globalConfig('version')#" defer="defer"></script>
 </cfif>
 <script>
-<cfif $.siteConfig('isRemote')>
-!window.Mura && document.write(unescape('%3Cscript type="text/javascript" src="#$.globalConfig('context')#/core/modules/v1/core_assets/js/mura.min.js?v=#$.globalConfig('version')#" defer="defer"%3E%3C/script%3E'));
-</cfif>
 (function(root,config){root.queuedMuraCmds=[],root.queuedMuraPreInitCmds=[],root.deferMuraInit=function(){void 0!==root.Mura&&"function"==typeof root.Mura.init?root.Mura.init(config):("function"!=typeof root.Mura&&(root.mura=root.m=root.Mura=function(o){root.queuedMuraCmds.push(o)},root.Mura.preInit=function(o){root.queuedMuraPreInitCmds.push(o)}),setTimeout(root.deferMuraInit))},root.deferMuraInit();}
 )(this,{
 loginURL:"#variables.$.siteConfig('LoginURL')#",
