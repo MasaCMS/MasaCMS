@@ -117,7 +117,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div>
 		<div class="mura-layout-row" id="layoutcontainer">
 		</div>
-		
+
 		</div>
 		<!--- Include global config object options --->
 		<cfinclude template="#$.siteConfig().lookupDisplayObjectFilePath('object/configurator.cfm')#">
@@ -223,7 +223,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				var params=siteManager.availableObject.params;
 
-			  	params.layout=params.layout || 'default';
+			  params.layout=params.layout || 'default';
 
 				//console.log(params)
 
@@ -237,6 +237,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					success:function(response){
 						$('##layoutcontainer').html(response);
 						$('.mura ##configurator select').niceSelect();
+						$('##layoutcontainer .mura-file-selector').fileselector();
 					}
 				})
 			}
