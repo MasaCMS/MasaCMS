@@ -34,6 +34,8 @@ component extends="mura.cfobject" {
   function handleCallback(){
     //Attempt authentication
     if(getServiceFactory().containsBean(url.loginProvider & 'loginProvider')){
+			param name='url.error' default='';
+			param name='url.state' default='';
       var result = getBean(url.loginProvider & 'loginProvider').validateResult(url.code, url.error, url.state, session.urltoken);
 	    //If authentication successful, redirect user to intended target, or home if no target exists
 	    if( result.status ){
