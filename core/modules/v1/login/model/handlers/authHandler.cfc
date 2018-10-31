@@ -47,7 +47,11 @@ component extends="mura.cfobject" {
 					if(request.returnFormat eq 'JSON'){
 						request.muraJSONRedirectURL=getBean('configBean').getContext();
 					} else {
-						location(url=getBean('configBean').getContext(), addToken="no");
+						if(len(getBean('configBean').getContext())){
+							location(url=getBean('configBean').getContext(), addToken="no");
+						} else {
+							location(url="./", addToken="no");
+						}
 					}
 	      }
 	    }
