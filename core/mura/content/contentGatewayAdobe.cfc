@@ -328,8 +328,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfargument name="tag" type="string" required="yes" default="" >
 			<cfargument name="aggregation" type="boolean" required="yes" default="false" >
 			<cfargument name="applyPermFilter" type="boolean" required="yes" default="false" >
+			<cfargument name="taggroup" type="string" required="yes" default="" >
+			<cfargument name="useCategoryIntersect" default="false">
 
-			<cfset var rs = getKids(arguments.moduleID, arguments.siteid, arguments.parentID, arguments.type, arguments.today, arguments.size, arguments.keywords, arguments.hasFeatures, arguments.sortBy, arguments.sortDirection, arguments.categoryID, arguments.relatedID, arguments.tag, arguments.aggregation,arguments.applyPermFilter)>
+			<cfset var rs = getKids(arguments.moduleID, arguments.siteid, arguments.parentID, arguments.type, arguments.today, arguments.size, arguments.keywords, arguments.hasFeatures, arguments.sortBy, arguments.sortDirection, arguments.categoryID, arguments.relatedID, arguments.tag, arguments.aggregation,arguments.applyPermFilter,arguments.taggroup,arguments.useCategoryIntersect)>
 			<cfset var it = getBean("contentIterator")>
 			<cfset it.setQuery(rs)>
 			<cfreturn it/>
