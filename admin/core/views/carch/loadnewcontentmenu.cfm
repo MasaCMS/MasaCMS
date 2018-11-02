@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfset $=application.serviceFactory.getBean('$').init(rc.siteID)>
 <cfset renderer=$.getContentRenderer().primaryContentTypes>
-<cfif isDefined('renderer') and len(renderer.primaryContentTypes)>
+<cfif isDefined('renderer.primaryContentTypes') and len(renderer.primaryContentTypes)>
 	<cfset typeList=renderer.primaryContentTypes>
 <cfelse>
 	<cfset typeList="Page,Link,File,Folder,Calendar">
