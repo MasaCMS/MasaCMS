@@ -18112,7 +18112,7 @@ render:function(){
 		this.context.mode = 'form';
 	}
 
-	var ident = "mura-form-" + this.context.objectid;
+	var ident = "mura-form-" + this.context.instanceid;
 
 	this.context.formEl = "#" + ident;
 
