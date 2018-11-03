@@ -90,11 +90,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						Mura.loader().loadjs(
 							'#variables.$.siteConfig().getCorePath(complete=completeurls)#/vendor/ckeditor/ckeditor.js'
 						);
-						Mura('.mura-toolbar').show();
 					});
 				} else {
 					$.getScript('#variables.$.siteConfig().getCorePath(complete=completeurls)#/vendor/ckeditor/ckeditor.js');
-					$('.mura-toolbar').show();
 				}
 
 				window.CKEDITOR_BASEPATH = '#variables.$.siteConfig().getCorePath(complete=completeurls)#/vendor/ckeditor/';
@@ -105,11 +103,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				if(hasMuraLoader){
 					Mura(function(){
 						Mura.loader().loadjs('#variables.$.siteConfig().getCorePath(complete=completeurls)#/vendor/ckfinder/ckfinder.js');
-						Mura('.mura-toolbar').show();
 					});
 				} else {
 					$.getScript('#variables.$.siteConfig().getCorePath(complete=completeurls)#/vendor/ckfinder/ckfinder.js');
-					$('.mura-toolbar').show();
 				}
 			}
 			</cfif>
