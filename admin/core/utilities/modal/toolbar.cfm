@@ -71,6 +71,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				Mura.loader().loadjs(
 						'#variables.$.siteConfig().getAdminPath(complete=completeurls)#/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#',
 						'#variables.$.siteConfig().getAdminPath(complete=completeurls)#/assets/js/frontendtools.js.cfm?siteid=#esapiEncode("url",variables.$.event("siteid"))#&contenthistid=#$.content("contenthistid")#&coreversion=#application.coreversion#&showInlineEditor=#getShowInlineEditor()#&contentType=Variation&cacheid=' + Math.random());
+
+				Mura('.mura-toolbar').show();
+
 			});
 		</script>
 		</cfoutput>
@@ -87,9 +90,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						Mura.loader().loadjs(
 							'#variables.$.siteConfig().getCorePath(complete=completeurls)#/vendor/ckeditor/ckeditor.js'
 						);
+						Mura('.mura-toolbar').show();
 					});
 				} else {
 					$.getScript('#variables.$.siteConfig().getCorePath(complete=completeurls)#/vendor/ckeditor/ckeditor.js');
+					$('.mura-toolbar').show();
 				}
 
 				window.CKEDITOR_BASEPATH = '#variables.$.siteConfig().getCorePath(complete=completeurls)#/vendor/ckeditor/';
@@ -100,9 +105,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				if(hasMuraLoader){
 					Mura(function(){
 						Mura.loader().loadjs('#variables.$.siteConfig().getCorePath(complete=completeurls)#/vendor/ckfinder/ckfinder.js');
+						Mura('.mura-toolbar').show();
 					});
 				} else {
 					$.getScript('#variables.$.siteConfig().getCorePath(complete=completeurls)#/vendor/ckfinder/ckfinder.js');
+					$('.mura-toolbar').show();
 				}
 			}
 			</cfif>
@@ -110,9 +117,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			if(hasMuraLoader){
 				Mura(function(){
 					Mura.loader().loadjs('#variables.$.siteConfig().getAdminPath(complete=completeurls)#/assets/js/frontendtools.js.cfm?siteid=#esapiEncode("url",variables.$.event("siteid"))#&contenthistid=#$.content("contenthistid")#&coreversion=#application.coreversion#&showInlineEditor=#getShowInlineEditor()#&cacheid=' + Math.random());
+					Mura('.mura-toolbar').show();
 				});
 			} else {
 				$.getScript('#variables.$.siteConfig().getAdminPath(complete=completeurls)#/assets/js/frontendtools.js.cfm?siteid=#esapiEncode("url",variables.$.event("siteid"))#&contenthistid=#$.content("contenthistid")#&coreversion=#application.coreversion#&showInlineEditor=#getShowInlineEditor()#&cacheid=' + Math.random());
+				$('.mura-toolbar').show();
 			}
 		</script>
 
@@ -229,7 +238,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		</cfsilent>
 		<cfoutput>
-		<div class="mura mura-toolbar">
+		<div class="mura mura-toolbar" style="display:none;">
 			<a id="frontEndToolsHandle" href="##" onclick="if (document.getElementById('frontEndTools').style.display == 'none') { createCookie('FETDISPLAY','block',5); document.getElementById('mura-fe-logo').src='#variables.$.siteConfig().getAdminPath(complete=completeurls)#/assets/images/mura-logo-fe.svg';} else { createCookie('FETDISPLAY','none',5); document.getElementById('mura-fe-logo').src='#variables.$.siteConfig().getAdminPath(complete=completeurls)#/assets/images/mura-logo-fe-icon.svg'} toggleAdminToolbar(); return false;">
 				<img id="mura-fe-logo" src="#variables.$.siteConfig().getAdminPath(complete=completeurls)#/assets/images/mura-logo-fe<cfif Cookie.fetDisplay eq 'none'>-icon</cfif>.svg" />
 			</a>
