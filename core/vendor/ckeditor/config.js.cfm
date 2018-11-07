@@ -309,19 +309,31 @@ CKEDITOR.on( 'dialogDefinition', function( ev ) {
 			}
 
     	if (pwEl != null){ // if iframe/full edit
-				var editor = this.getParentEditor() // set up logic for iframe centering
-					,dlgFrameTop = parent.document.getElementById(window.name).offsetTop
-					,dlgScrollTop = $(top).scrollTop()
-					,dlgFrameOffset =  dlgFrameTop - dlgScrollTop
-					,dlgDocumentHeight = $(top).height()
-					,dlgPopupHeight = this.getSize().height
-					,dlgNewTop = (dlgDocumentHeight/2) - (dlgPopupHeight/2) - dlgFrameOffset
-					,objCurrentPos = this.getPosition();
-					if (dlgNewTop < 0) { // pad top if small iframe
-						dlgNewTop = 5;
-					}
-					this.move( objCurrentPos.x, dlgNewTop ,false ); // set the position
-			 	  this._.moved = 1; // prevent ck location memory
+				var currentPosition = this.getPosition();
+				var windowScrolledTo = $(top).scrollTop();
+				var modalContainerPosition = $(pwEl).parent().position();
+				var modalContainerHeight = $(pwEl).parent().height();
+				var dialogHeight = this.getSize().height;
+				var viewPortHeight = $(top).innerHeight();
+			
+				// calculate the range the dialog can be
+				var modalContainerTopVisible = windowScrolledTo - modalContainerPosition.top <= 0;
+				var topEdge = modalContainerTopVisible ? 0 : windowScrolledTo - modalContainerPosition.top;
+				var modalContainerBottomVisible = (windowScrolledTo + viewPortHeight) >= (modalContainerPosition.top + modalContainerHeight);
+				var bottomEdge = modalContainerBottomVisible ? modalContainerHeight : (windowScrolledTo + viewPortHeight) - modalContainerPosition.top;
+				
+				// position the dialog
+				if ( (currentPosition.y < topEdge )  ) { // align with the top edge of the modal continer
+					this.move(currentPosition.x,topEdge,false);
+				}
+
+				if ( currentPosition.y + dialogHeight > bottomEdge ) { // align with the bottom edge
+					// make sure not to move it out at the top
+					var newPosition = bottomEdge - dialogHeight < topEdge ? topEdge : bottomEdge - dialogHeight;
+					this.move(currentPosition.x,newPosition,false);
+				}
+
+			 	this._.moved = 1; // prevent ck location memory
     	}
     });
 });
