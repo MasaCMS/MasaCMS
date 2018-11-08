@@ -1527,7 +1527,7 @@ and parentID is null
 		<cfargument name="siteSynced" type="boolean" default="false">
 		<cfargument name="feedIDList" type="string" default="">
 		<cfargument name="contentIDList" type="string" default="">
-		<cfargument name="approved" type="any" default="1">
+		<cfargument name="approved" type="any" default="0">
 
 		<cfset var contentBean = "" />
 		<cfset var newContentBean = "" />
