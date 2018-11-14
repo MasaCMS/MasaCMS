@@ -81,9 +81,6 @@ node_modules/
 /sites/default/js/node_modules/
 /sites/default/model/
 
-# create sites &/or directories beginning with 'demo' or 'temp' without tracking them
+# ignore directories beginning with 'demo-' or 'temp-'
 demo-*/
 temp-*/
-bs3
-MuraBundle_default_2015_03_30_12_29.zip
-mxp-site-bundle.zip
