@@ -91,6 +91,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			 <th>Date Deleted</th>
 			 <th class="hidden-xs">Deleted By</th>
 		 </tr>
+		 <cfif not isNumeric(rc.pageNum)>
+			 <cfset rc.pagenum=1>
+		 </cfif>
 		 <cfset rc.trashIterator.setPage(rc.pageNum)>
 		 <cfloop condition="rc.trashIterator.hasNext()">
 		 <cfset trashItem=rc.trashIterator.next()>
@@ -126,7 +129,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				 </cfloop>
 				<cfif rc.pageNum lt rc.trashIterator.pageCount()>
 					<li>
-						<a href="?muraAction=cTrash.list&siteid=#esapiEncode('url',rc.siteid)#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#pageNum + 1#&sinceDate=#esapiEncode('url',$.event('sinceDate'))#&beforeDate=#esapiEncode('url',$.event('beforeDate'))#"><i class="mi-angle-right"></i></a>
+						<a href="?muraAction=cTrash.list&siteid=#esapiEncode('url',rc.siteid)#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#evaluate('rc.pageNum+1')#&sinceDate=#esapiEncode('url',$.event('sinceDate'))#&beforeDate=#esapiEncode('url',$.event('beforeDate'))#"><i class="mi-angle-right"></i></a>
 					</li>
 				</cfif>
 			 </ul>

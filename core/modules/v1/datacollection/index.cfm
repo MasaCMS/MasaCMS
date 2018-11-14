@@ -83,6 +83,8 @@
     <cfelse>
         <cfif not bean.getIsNew()>
         	<cfif bean.getIsOnDisplay()>
+					<cfset $.event('objectid',bean.getContentid())>
+					<cfset $.event('formid',bean.getContentid())>
 	    		<cfset variables.rsForm=bean.getAllValues()>
 		          #$.getBean('dataCollectionBean')
 		            .set($.event().getAllValues())

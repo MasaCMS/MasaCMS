@@ -14,14 +14,13 @@ if ( request.muraInDocker) {
 
 			try {
 					q.execute(sql='CREATE DATABASE #databaseName#');
+					FORM['#application.setupSubmitButton#']=true;
+					FORM['#application.setupSubmitButtonComplete#']=true;
+					FORM['setupSubmitButton']=true;
+					FORM['action']='doSetup';
 			} catch(any e) {
 					writeLog(type="Error", file="exception", text="Error trying to create DB, it may already exist");
 			}
-
-			FORM['#application.setupSubmitButton#']=true;
-			FORM['#application.setupSubmitButtonComplete#']=true;
-			FORM['setupSubmitButton']=true;
-			FORM['action']='doSetup';
 		}
 	}
 	if( request.muraSysEnv.MURA_DBTYPE == 'postgresql'){

@@ -1527,6 +1527,7 @@ and parentID is null
 		<cfargument name="siteSynced" type="boolean" default="false">
 		<cfargument name="feedIDList" type="string" default="">
 		<cfargument name="contentIDList" type="string" default="">
+		<cfargument name="approved" type="any" default="0">
 
 		<cfset var contentBean = "" />
 		<cfset var newContentBean = "" />
@@ -1572,6 +1573,9 @@ and parentID is null
 		<cfset contentBean = getBean('content').loadBy(contentID=arguments.contentID,siteID=arguments.sourceSiteID ) />
 
 
+		<cfif not isBoolean(arguments.approved)>
+			<cfset arguments.approved=1>
+		</cfif>
 
 		<!--- does source page exist? --->
 		<cfif contentBean.getIsNew()>
@@ -1601,7 +1605,7 @@ and parentID is null
 				<cfset parentBean = getBean('content').loadBy(remoteID=contentBean.getParentID(),siteID=arguments.destinationSiteID ) />
 
 				<cfif parentBean.getIsNew()>
-					<cfset duplicateExternalContent( contentBean.getParentID(),arguments.destinationSiteID,arguments.sourceSiteID,false,arguments.siteSynced,arguments.feedIDList,arguments.contentIDList ) />
+					<cfset duplicateExternalContent( contentBean.getParentID(),arguments.destinationSiteID,arguments.sourceSiteID,false,arguments.siteSynced,arguments.feedIDList,arguments.contentIDList,arguments.approved ) />
 					<cfset parentBean = getBean('content').loadBy(remoteID=contentBean.getParentID(),siteID=arguments.destinationSiteID ) />
 
 					<cfset newContentBean.setParentID( parentBean.getContentID() ) />
@@ -1616,7 +1620,10 @@ and parentID is null
 
 			<cfset newContentBean.setSiteID( arguments.destinationSiteID ) />
 			<cfset newContentBean.setRemoteID( arguments.contentID ) />
-			<cfset newContentBean.setApproved( 1 ) />
+
+			<cfif arguments.approved>
+				<cfset newContentBean.setApproved( 1 ) />
+			</cfif>
 
 			<cfif len( newContentBean.getFileID() )>
 				<cfset rsfileData = getBean('fileManager').readMeta(newContentBean.getFileID())>
@@ -1644,13 +1651,13 @@ and parentID is null
 
 						<cfswitch expression="#rsObjects.object#">
 							<cfcase value="Component,form">
-								<cfset duplicateExternalContent(rsObjects.objectID,arguments.destinationSiteID,arguments.sourceSiteID,false,true,arguments.feedIDList,arguments.contentIDList) />
+								<cfset duplicateExternalContent(rsObjects.objectID,arguments.destinationSiteID,arguments.sourceSiteID,false,true,arguments.feedIDList,arguments.contentIDList,arguments.approved) />
 							</cfcase>
 							<cfcase value="feed">
 								<cfset arguments.feedIDList = listAppend(arguments.feedIDList,rsObjects.objectID) />
 							</cfcase>
 							<cfcase value="plugin">
-								<cfset duplicateExternalContent(rsObjects.objectID,arguments.destinationSiteID,arguments.sourceSiteID,false,true,arguments.feedIDList,arguments.contentIDList) />
+								<cfset duplicateExternalContent(rsObjects.objectID,arguments.destinationSiteID,arguments.sourceSiteID,false,true,arguments.feedIDList,arguments.contentIDList,arguments.approved) />
 
 
 								<cfif len( rsObjects.params ) and isJSON( rsObjects.params )>
@@ -1722,7 +1729,7 @@ and parentID is null
 			<cfloop condition="childrenIterator.hasPrevious()">
 				<cfset childContentBean = childrenIterator.previous() />
 
-				<cfset duplicateExternalContent(childContentBean.getContentID(),arguments.destinationSiteID,arguments.sourceSiteID,true,arguments.siteSynced,arguments.feedIDList,arguments.contentIDList ) />
+				<cfset duplicateExternalContent(childContentBean.getContentID(),arguments.destinationSiteID,arguments.sourceSiteID,true,arguments.siteSynced,arguments.feedIDList,arguments.contentIDList,arguments.approved ) />
 			</cfloop>
 		</cfif>
 
