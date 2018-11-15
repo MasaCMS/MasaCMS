@@ -738,7 +738,12 @@ select * from tplugins order by #arguments.orderby#
 
 				<cfif isXml(configXML)>
 					<cfif not hasPlugin(listLast(rsRequirements.name,"_"),"",false)>
-						<cfset deployDirectory(directory=rsRequirements.name,autoDeploy=false)>
+						<cfset var siteids=''>
+						<cfif structKeyExists(configXML.plugin,"defaultsiteids")
+							and len(configXML.plugin.defaultsiteids.xmlText)>
+							<cfset siteids=configXML.plugin.defaultsiteids.xmlText>
+						</cfif>
+						<cfset deployDirectory(directory=rsRequirements.name,autoDeploy=false,siteid=siteids)>
 					<cfelseif structKeyExists(configXML.plugin,"autoUpdate")
 							and isBoolean(configXML.plugin.autoUpdate.xmlText)
 							and isBoolean(configXML.plugin.autoUpdate.xmlText)

@@ -46,12 +46,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset completeurls=(variables.$.content('type') eq 'Variation' or variables.$.siteConfig('isRemote'))>
 	<cfif variables.$.content('type') eq 'Variation'>
 		<cfoutput>
-		<link href="#variables.$.siteConfig().getAdminPath(complete=completeurls)#/assets/css/admin-frontend.min.css" rel="stylesheet" type="text/css" />
-
 		<script>
 			window.Mura=window.Mura || window.mura || {};
 
 			Mura(function(){
+				Mura.loader().loadcss('#variables.$.siteConfig().getAdminPath(complete=completeurls)#/assets/css/admin-frontend.min.css');
 
 				if(!window.CKEDITOR){
 					Mura.loader().loadjs(
@@ -79,10 +78,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfoutput>
 	<cfelse>
 		<cfoutput>
-		<link href="#variables.$.siteConfig().getAdminPath(complete=completeurls)#/assets/css/admin-frontend.min.css" rel="stylesheet" type="text/css" />
 		<script type="text/javascript" src="#variables.$.siteConfig().getAdminPath(complete=completeurls)#/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#"></script>
 		<script>
 			var hasMuraLoader=(typeof Mura != 'undefined' && (typeof Mura.loader != 'undefined' || typeof window.queuedMuraCmds != 'undefined'));
+
+			if(hasMuraLoader){
+				Mura(function(){
+						Mura.loader().loadcss('#variables.$.siteConfig().getAdminPath(complete=completeurls)#/assets/css/admin-frontend.min.css');
+				})
+			} else {
+				 $("head").append("<link rel='stylesheet' type='text/css' href='#variables.$.siteConfig().getAdminPath(complete=completeurls)#/assets/css/admin-frontend.min.css'>");
+			}
 			if(!window.CKEDITOR){
 				if(hasMuraLoader){
 					Mura(function(){

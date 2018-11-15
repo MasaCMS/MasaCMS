@@ -50,8 +50,8 @@ WEB-INF/
 /plugins/
 /temp/
 node_modules/
-/requirements/docbox/
-/requirements/testbox/
+/core/vendor/docbox/
+/core/vendor/testbox/
 /modules/dynamic_entities
 
 # ignored 'config' directory files
