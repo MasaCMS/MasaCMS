@@ -1415,6 +1415,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
         structAppend(temp,arguments.params);
         structDelete(temp,'method');
 				structDelete(temp,'_cacheid');
+				structDelete(temp,'cacheid');
 
         for(var p in temp){
             if(find('[',p)){
@@ -2407,7 +2408,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 						baseURL=baseURL & '=' & esapiEncode('url',params[p]);
 					}
 
-					if(!listFindNoCase('expand,muraPointInTime,liveOnly,feedid,_cacheid,distinct,fields,entityname,method,maxItems,pageIndex,itemsPerPage,sortBy,sortDirection,contentpoolid,shownavonly,showexcludesearch,includehomepage,feedname',p)){
+					if(!listFindNoCase('expand,muraPointInTime,liveOnly,feedid,cacheid,_cacheid,distinct,fields,entityname,method,maxItems,pageIndex,itemsPerPage,sortBy,sortDirection,contentpoolid,shownavonly,showexcludesearch,includehomepage,feedname',p)){
 						if(propName == 'sort'){
 							advancedsort=listAppend(advancedsort,arguments.params[p]);
 						} else if(!(entity.getEntityName()=='user' && propName=='isPublic')){

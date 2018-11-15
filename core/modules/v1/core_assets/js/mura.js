@@ -3315,6 +3315,13 @@ var Mura=(function(){
 
       Mura.editing;
 
+			var initForDataOnly=false;
+
+			if(typeof config.processMarkup != 'undefined'){
+				initForDataOnly=typeof config.processMarkup != 'function' && !config.processMarkup;
+				delete config.processMarkup;
+			}
+
       extend(Mura, config);
 
 			Mura.trackingMetadata={};
@@ -3346,62 +3353,65 @@ var Mura=(function(){
 				}
 			}
 
-      Mura(function() {
+			if(!initForDataOnly){
+	      Mura(function() {
 
-					for(var cmd in holdingPreInitQueue){
-						if(typeof holdingPreInitQueue[cmd] == 'function'){
-							holdingPreInitQueue[cmd](Mura);
-						} else {
-							console.log("PreInit queue item not a function");
-							console.log(holdingPreInitQueue[cmd]);
+						for(var cmd in holdingPreInitQueue){
+							if(typeof holdingPreInitQueue[cmd] == 'function'){
+								holdingPreInitQueue[cmd](Mura);
+							} else {
+								console.log("PreInit queue item not a function");
+								console.log(holdingPreInitQueue[cmd]);
+							}
 						}
-					}
 
-          if(typeof window !='undefined' && typeof window.document != 'undefined'){
+	          if(typeof window !='undefined' && typeof window.document != 'undefined'){
 
-            var hash = location.hash;
+	            var hash = location.hash;
 
-            if (hash) {
-                hash = hash.substring(1);
-            }
+	            if (hash) {
+	                hash = hash.substring(1);
+	            }
 
-            urlparams = setLowerCaseKeys(getQueryStringParams(location.search));
+	            urlparams = setLowerCaseKeys(getQueryStringParams(location.search));
 
-            if (hashparams.nextnid) {
-                Mura('.mura-async-object[data-nextnid="' +
-                    hashparams.nextnid + '"]').each(
-                    function() {
-                        Mura(this).data(hashparams);
-                    });
-            } else if (hashparams.objectid) {
-                Mura('.mura-async-object[data-nextnid="' +
-                    hashparams.objectid + '"]').each(
-                    function() {
-                        Mura(this).data(hashparams);
-                    });
-            }
-
-
-            Mura(window).on('hashchange', handleHashChange);
+	            if (hashparams.nextnid) {
+	                Mura('.mura-async-object[data-nextnid="' +
+	                    hashparams.nextnid + '"]').each(
+	                    function() {
+	                        Mura(this).data(hashparams);
+	                    });
+	            } else if (hashparams.objectid) {
+	                Mura('.mura-async-object[data-nextnid="' +
+	                    hashparams.objectid + '"]').each(
+	                    function() {
+	                        Mura(this).data(hashparams);
+	                    });
+	            }
 
 
-            processMarkup(document);
+	            Mura(window).on('hashchange', handleHashChange);
 
-						Mura.markupInitted=true;
 
-						if(Mura.cookieConsentEnabled){Mura(function(){Mura('body').appendDisplayObject({object:'cookie_consent',queue:false});});}
+	            processMarkup(document);
 
-            Mura(document)
-                .on("keydown", function(event) {
-                    loginCheck(event.which);
-                });
+							Mura.markupInitted=true;
 
-            Mura(document).trigger('muraReady');
-          }
+							if(Mura.cookieConsentEnabled){Mura(function(){Mura('body').appendDisplayObject({object:'cookie_consent',queue:false});});}
 
-      });
+	            Mura(document)
+	                .on("keydown", function(event) {
+	                    loginCheck(event.which);
+	                });
 
-      readyInternal(initReadyQueue);
+							Mura('label.mura-editable-label').show();
+	            Mura(document).trigger('muraReady');
+	          }
+
+	      });
+
+	      readyInternal(initReadyQueue);
+			}
 
       return Mura
   }
@@ -12822,10 +12832,10 @@ module.exports = __webpack_require__(334);
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(process) {if(!(typeof process !== 'undefined' && {}.toString.call(process) === '[object process]' || typeof document =='undefined')){
-	__webpack_require__(335);
+__webpack_require__(335);
 }
 
-Mura=__webpack_require__(10);
+const Mura=__webpack_require__(10);
 
 __webpack_require__(336);
 __webpack_require__(337);
@@ -13931,7 +13941,7 @@ Mura.RequestContext=Mura.Core.extend(
                   async: true,
                   type: 'get',
                   url: Mura.apiEndpoint +
-                      'findCurrentUser?fields=' + params.fields + '&_cacheid=' +
+                      'findCurrentUser?fields=' + params.fields + 'cacheid=' +
                       Math.random(),
                   success: function(resp) {
                       if (typeof resolve ==
@@ -13967,7 +13977,7 @@ Mura.RequestContext=Mura.Core.extend(
       params.entityname = params.entityname || 'content';
       params.siteid = params.siteid || Mura.siteid;
       params.method = params.method || 'findQuery';
-      params['_cacheid'] == Math.random();
+      params['cacheid'] == Math.random();
 
       return new Promise(function(resolve, reject) {
 
@@ -14478,7 +14488,7 @@ Mura.Entity = Mura.Core.extend(
                     entityname: self.get('entityname'),
                     method: 'findNew',
                     siteid: self.get('siteid'),
-                    '_cacheid': Math.random()
+                    'cacheid': Math.random()
                 },
                 params
             );
@@ -14510,7 +14520,7 @@ Mura.Entity = Mura.Core.extend(
                       entityname: self.get('entityname'),
                       method: 'checkSchema',
                       siteid: self.get('siteid'),
-                      '_cacheid': Math.random()
+                      'cacheid': Math.random()
                   },
                 success: function(  resp) {
                     if (resp.data != 'undefined'  ) {
@@ -14544,7 +14554,7 @@ Mura.Entity = Mura.Core.extend(
                                     entityname: self.get('entityname'),
                                     method: 'checkSchema',
                                     siteid: self.get('siteid'),
-                                    '_cacheid': Math.random()
+                                    'cacheid': Math.random()
                                 }, {
                                     'csrf_token': resp.data.csrf_token,
                                     'csrf_token_expires': resp.data.csrf_token_expires
@@ -14594,7 +14604,7 @@ Mura.Entity = Mura.Core.extend(
 												deleteSchema: deleteSchema,
                         method: 'undeclareEntity',
                         siteid: self.get('siteid'),
-                        '_cacheid': Math.random()
+                        'cacheid': Math.random()
                       },
                 success: function(  resp) {
                     if (resp.data != 'undefined'  ) {
@@ -14628,7 +14638,7 @@ Mura.Entity = Mura.Core.extend(
                                     entityname: self.get('entityname'),
                                     method: 'undeclareEntity',
                                     siteid: self.get('siteid'),
-                                    '_cacheid': Math.random()
+                                    'cacheid': Math.random()
                                 }, {
                                     'csrf_token': resp.data.csrf_token,
                                     'csrf_token_expires': resp.data.csrf_token_expires
@@ -14691,7 +14701,7 @@ Mura.Entity = Mura.Core.extend(
                     entityname: self.get('entityname').toLowerCase(),
                     method: 'findQuery',
                     siteid: self.get( 'siteid'),
-                    '_cacheid': Math.random(),
+                    'cacheid': Math.random(),
                 },
                 params
             );
@@ -15348,7 +15358,7 @@ Mura.Feed = Mura.Core.extend(
 	/** @lends Mura.Feed.prototype */
 	{
 		init: function(siteid, entityname, requestcontext) {
-			this.queryString = entityname + '/?_cacheid=' + Math.random();
+			this.queryString = entityname + '/?cacheid=' + Math.random();
 			this.propIndex = 0;
 
 			this._requestcontext=requestcontext || Mura._requestcontext;
@@ -18112,7 +18122,7 @@ render:function(){
 		this.context.mode = 'form';
 	}
 
-	var ident = "mura-form-" + this.context.objectid;
+	var ident = "mura-form-" + this.context.instanceid;
 
 	this.context.formEl = "#" + ident;
 

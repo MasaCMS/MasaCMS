@@ -432,10 +432,11 @@ if ( application.setupComplete ) {
 		variables.tracepoint=variables.tracer.initTracepoint("Instantiating #variables.i#");
 		try {
 			application["#variables.i#"]=application.serviceFactory.getBean("#variables.i#");
-		} catch (any cfcatch) {
+		} catch (any error) {
+			writeLog(type="Error", file="exception", text="Error instantiating '#variables.i#': #serializeJSON(error.stacktrace)#");
 			if ( application.configBean.getDebuggingEnabled() ) {
 				writeDump( var=variables.i );
-				writeDump( var=cfcatch, abort=true );
+				writeDump( var=error, abort=true );
 			}
 		}
 		variables.tracer.commitTracepoint(variables.tracepoint);
@@ -958,6 +959,18 @@ if ( application.setupComplete ) {
 		}
 
 	}
+
+	/*
+	if(isDefined('application.muraExternalConfig.global.entities') && isArray(application.muraExternalConfig.global.entities)){
+		entities=application.muraExternalConfig.global.entities;
+		rsSites=application.configBean.getBean('settingsManager').getList();
+		for(entity in entities){
+			if(isJSON(entity)){
+				getServiceFactory().declareBean(json=entity,siteid=valueList(rsSites.siteid));
+			}
+		}
+	}
+	*/
 
 	application.sessionTrackingThrottle=false;
 

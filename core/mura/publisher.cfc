@@ -1878,6 +1878,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfquery>
 
 				<cfloop query="rstformresponsequestions">
+					<cftry>
 					<cfquery datasource="#arguments.toDSN#">
 						insert into tformresponsequestions (responseid,formid,formField,formValue,pollValue)
 						values (
@@ -1888,6 +1889,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstformresponsequestions.pollValue neq '',de('no'),de('yes'))#" value="#rstformresponsequestions.pollValue#">
 						)
 					</cfquery>
+					<cfcatch>
+						<cfset local.error={
+							responseID=rstformresponsequestions.responseID,
+							formID=rstformresponsequestions.formID,
+							formField=rstformresponsequestions.formField,
+							formValue=rstformresponsequestions.formValue,
+							pollValue=rstformresponsequestions.pollValue
+						}>
+						<cflog log="application" text="bundle error - rstformresponsequestions: #serializeJSON(local.error)#">
+					</cfcatch>
+					</cftry>
 				</cfloop>
 			</cfif>
 

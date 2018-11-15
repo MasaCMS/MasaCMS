@@ -434,8 +434,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var attStruct = {} />
 	<cfset var i = 0 />
 
-	<cfset extensionData = duplicate(variables.instance) />
-	<cfset structDelete(extensionData,"errors") />
+	<cftry>
+		<cfset extensionData = duplicate(variables.instance) />
+		<cfset structDelete(extensionData,"errors") />
+		<cfcatch></cfcatch>
+	</cftry>
+
 	<cfset extensionData.attributes = [] />
 
 	<cfloop from="1" to="#ArrayLen(atts)#" index="i">

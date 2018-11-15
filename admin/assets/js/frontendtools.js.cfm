@@ -29,13 +29,13 @@
 
 	<cfif len($.globalConfig('admindomain'))>
 		var adminDomain="#$.globalConfig('admindomain')#";
-	<cfelseif $.siteConfig().getValue('isRemote') and  len($.siteConfig().getValue('resourceDomain'))>
+	<cfelseif $.siteConfig().getValue('isRemote')>
 		var adminDomain="#$.siteConfig().getValue('resourceDomain')#";
 	<cfelse>
 		var adminDomain="";
 	</cfif>
 
-	<cfif len($.globalConfig('admindomain')) or $.event('contenttype') eq 'variation'>
+	<cfif len($.globalConfig('admindomain')) or $.event('contenttype') eq 'variation' or ($.siteConfig('isRemote') and len($.siteConfig().getValue('resourceDomain')))>
 		var adminProxyLoc="#$.siteConfig().getAdminPath(complete=1)#/assets/js/porthole/proxy.html";
 		var adminLoc="#$.siteConfig().getAdminPath(complete=1)#/";
 		var frontEndProxyLoc= location.protocol + "//" + location.hostname;

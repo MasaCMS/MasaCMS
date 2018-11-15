@@ -213,8 +213,8 @@ component extends="mura.cfobject" output="false" {
 		var rs = "";
 		var qs = new Query();
 		qs.setDbType('query');
-
-		rs=qs.execute(sql="select fname,lname from arguments.rsSession where userID > ''").getResult();
+		qs.setAttributes(rsSession=arguments.rsSession);
+		rs=qs.execute(sql="select fname,lname from rsSession where userID > ''").getResult();
 
 		if ( rs.recordcount ) {
 			return rs.fname & " " & rs.lname;
@@ -227,8 +227,8 @@ component extends="mura.cfobject" output="false" {
 		var rs = "";
 		var qs = new Query();
 		qs.setDbType('query');
-
-		rs=qs.execute(sql="select user_agent from arguments.rsSession where user_agent > ''").getResult();
+		qs.setAttributes(rsSession=arguments.rsSession);
+		rs=qs.execute(sql="select user_agent from rsSession where user_agent > ''").getResult();
 
 		if ( rs.recordcount ) {
 			return rs.user_agent;
