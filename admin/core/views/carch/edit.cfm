@@ -43,6 +43,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfset event=request.event>
 <cfinclude template="js.cfm">
+<cfset tabList="">
+<cfset bodyContent="">
 <cfset variables.pluginEvent=createObject("component","mura.event").init(event.getAllValues())/>
 <cfif rc.contentBean.getType() eq 'Gallery'>
 	<cfset pageLevelList="Page,Folder,Calendar,Gallery"/>
@@ -56,30 +58,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset hasChangesets=application.settingsManager.getSite(rc.siteID).getHasChangesets()>
 <cfset stats=rc.contentBean.getStats()>
 <cfset rc.perm=application.permUtility.getnodePerm(rc.crumbdata)>
-
 <cfif rc.parentID eq "" and not rc.contentBean.getIsNew()>
 	<cfset rc.parentID=rc.contentBean.getParentID()>
 </cfif>
-
-
 
 <cfif rc.contentBean.getIsNew()>
 	<cfif isDefined('rc.title') and len(rc.title)>
 		<cfset rc.contentBean.setTitle(rc.title)>
 	</cfif>
-
 	<cfif isDefined('rc.remoteid') and len(rc.remoteid)>
 		<cfset rc.contentBean.setRemoteID(rc.remoteid)>
 	</cfif>
-
 	<cfif isDefined('rc.type') and len(rc.type)>
 		<cfset rc.contentBean.setType(rc.type)>
 	</cfif>
-
 	<cfif isDefined('rc.subtype') and len(rc.subtype)>
 		<cfset rc.contentBean.setSubType(rc.subtype)>
 	</cfif>
-
 </cfif>
 
 <cfset rc.parentBean=$.getBean('content').loadBy(contentid=rc.parentID)>
@@ -337,19 +332,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<i class="mi-list-alt"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangeset"))#
 					</cfif>
 				</button>
-
-				<!---
-				<cfif not currentChangeset.getIsNew()>
-					<button type="button" class="btn" onclick="document.contentForm.approved.value=0;document.contentForm.removePreviousChangeset.value='true';document.contentForm.changesetID.value='#rc.contentBean.getChangesetID()#';if(siteManager.ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}">
-					<cfif requiresApproval>
-						<i class="mi-list-alt"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetoexistingchangesetandsendforapproval"))#
-					<cfelse>
-						<i class="mi-list-alt"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetoexistingchangeset"))#
-					</cfif>
-					</button>
-				</cfif>
-				--->
 			</cfif>
+
 			<cfif rc.perm eq 'editor' and not $.siteConfig('EnforceChangesets')>
 				<button type="button" class="btn<cfif not ((hasChangesets and (not currentChangeset.getIsNew() or pendingChangesets.recordcount)) or len(rc.contentBean.getChangesetID()))> mura-primary</cfif>" onclick="document.contentForm.approved.value=1;if(siteManager.ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}">
 					<cfif requiresApproval>
@@ -359,11 +343,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfif>
 				</button>
 			</cfif>
+
 			</div>
 		</div>
 
 	</cfoutput>
-	</cfsavecontent>
+	</cfsavecontent> <!--- /end action buttons --->
 </cfsilent>
 
 <!--- check to see if the site has reached it's maximum amount of pages --->
@@ -407,8 +392,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<div class="mura-item-metadata">
 		<div class="label-group">
 			<cfif not rc.contentBean.getIsNew()>
-
-
 
 				<cfif listFindNoCase(rc.$.getBean('contentManager').TreeLevelList,rc.type)>
 					<cfset rsRating=application.raterManager.getAvgRating(rc.contentBean.getcontentID(),rc.contentBean.getSiteID()) />
@@ -466,212 +449,42 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfinclude template="dsp_status.cfm">
 
-	<cfif not rc.contentBean.getIsNew()>
-
-
-		<cfset draftcheck=application.contentManager.getDraftPromptData(rc.contentBean.getContentID(),rc.contentBean.getSiteID())>
-
-		<cfif yesNoFormat(draftcheck.showdialog) and len(draftcheck.historyid) and draftcheck.historyid neq rc.contentBean.getContentHistID()>
-			<div class="alert alert-info">
-				<span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.inline')#: <strong><a href="./?#replace(cgi.query_string,'#rc.contentBean.getContentHistID()#','#draftcheck.historyid#')#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.gotolatest')#</a></strong></span>
-			</div>
-		</cfif>
-	</cfif>
-
-	<cfif hasChangesets and (not currentChangeset.getIsNew() or pendingChangesets.recordcount)>
+<cfif not rc.contentBean.getIsNew()>
+	<cfset draftcheck=application.contentManager.getDraftPromptData(rc.contentBean.getContentID(),rc.contentBean.getSiteID())>
+	<cfif yesNoFormat(draftcheck.showdialog) and len(draftcheck.historyid) and draftcheck.historyid neq rc.contentBean.getContentHistID()>
 		<div class="alert alert-info">
-			<span>
-				<cfif pendingChangesets.recordcount>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetnodenotify")#:<br>
-				<ul class="alert-list">
-				<cfloop query="pendingChangesets"><li><a href="?muraAction=cArch.edit&moduleID=#esapiEncode('url',rc.moduleID)#&siteID=#esapiEncode('url',rc.siteID)#&topID=#esapiEncode('url',rc.topID)#&contentID=#esapiEncode('url',rc.contentID)#&return=#esapiEncode('url',rc.return)#&contentHistID=#pendingChangesets.contentHistID#&parentID=#esapiEncode('url',rc.parentID)#&startrow=#esapiEncode('url',rc.startrow)#&type=#esapiEncode('url',rc.type)#&compactDisplay=#esapiEncode('url',rc.compactDisplay)#">#esapiEncode('html',pendingChangesets.changesetName)#</a></li></cfloop>
-				</ul>
-				</cfif>
-				<cfif not currentChangeset.getIsNew()>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetversionnotify")#: <strong>#esapiEncode('html',currentChangeset.getName())#</strong></cfif>
-			</span>
+			<span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.inline')#: <strong><a href="./?#replace(cgi.query_string,'#rc.contentBean.getContentHistID()#','#draftcheck.historyid#')#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.gotolatest')#</a></strong></span>
 		</div>
 	</cfif>
+</cfif>
 
-	<cfif len(rc.contentBean.getNotes())>
-		<div class="alert alert-info">
-			<span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.notes")#: #esapiEncode('html',rc.contentBean.getNotes())#</span>
-		</div>
-	</cfif>
+<cfif hasChangesets and (not currentChangeset.getIsNew() or pendingChangesets.recordcount)>
+	<div class="alert alert-info">
+		<span>
+			<cfif pendingChangesets.recordcount>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetnodenotify")#:<br>
+			<ul class="alert-list">
+			<cfloop query="pendingChangesets"><li><a href="?muraAction=cArch.edit&moduleID=#esapiEncode('url',rc.moduleID)#&siteID=#esapiEncode('url',rc.siteID)#&topID=#esapiEncode('url',rc.topID)#&contentID=#esapiEncode('url',rc.contentID)#&return=#esapiEncode('url',rc.return)#&contentHistID=#pendingChangesets.contentHistID#&parentID=#esapiEncode('url',rc.parentID)#&startrow=#esapiEncode('url',rc.startrow)#&type=#esapiEncode('url',rc.type)#&compactDisplay=#esapiEncode('url',rc.compactDisplay)#">#esapiEncode('html',pendingChangesets.changesetName)#</a></li></cfloop>
+			</ul>
+			</cfif>
+			<cfif not currentChangeset.getIsNew()>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetversionnotify")#: <strong>#esapiEncode('html',currentChangeset.getName())#</strong></cfif>
+		</span>
+	</div>
+</cfif>
 
-	<!--- This is plugin message targeting --->
-	<span id="msg">
-	<cfif not listFindNoCase("Component,Form,Variation",rc.type)>#application.pluginManager.renderEvent("onContentEditMessageRender", pluginEvent)#</cfif>
-	#application.pluginManager.renderEvent("on#rc.contentBean.getType()#EditMessageRender", pluginEvent)#
-	#application.pluginManager.renderEvent("on#rc.contentBean.getType()##rc.contentBean.getSubType()#EditMessageRender", pluginEvent)#
-	</span>
+<cfif len(rc.contentBean.getNotes())>
+	<div class="alert alert-info">
+		<span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.notes")#: #esapiEncode('html',rc.contentBean.getNotes())#</span>
+	</div>
+</cfif>
 
-	</cfoutput>
+<!--- This is plugin message targeting --->
+<span id="msg">
+<cfif not listFindNoCase("Component,Form,Variation",rc.type)>#application.pluginManager.renderEvent("onContentEditMessageRender", pluginEvent)#</cfif>
+#application.pluginManager.renderEvent("on#rc.contentBean.getType()#EditMessageRender", pluginEvent)#
+#application.pluginManager.renderEvent("on#rc.contentBean.getType()##rc.contentBean.getSubType()#EditMessageRender", pluginEvent)#
+</span>
 
-	<cfset tabLabelList=""/>
-	<cfset tabList="">
-	<!--- set up tab content --->
-	<cfsavecontent variable="tabContent">
-
-		<cfif rc.type neq "Form">
-			<cfinclude template="form/dsp_tab_basic.cfm">
-		<cfelse>
-			<cfif rc.contentBean.getIsNew() and not (isdefined("url.formType") and url.formType eq "editor")>
-				<cfset rc.contentBean.setBody( application.serviceFactory.getBean('formBuilderManager').createJSONForm( rc.contentBean.getContentID() ) ) />
-			</cfif>
-			<cfif isJSON(rc.contentBean.getBody())>
-				<cfinclude template="form/dsp_tab_formbuilder.cfm">
-			<cfelse>
-				<cfinclude template="form/dsp_tab_basic.cfm">
-			</cfif>
-		</cfif>
-
-	<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Publishing')>
-		<cfinclude template="form/dsp_tab_publishing.cfm">
-	<cfelse>
-		<input type="hidden" name="ommitPublishingTab" value="true">
-		<cfoutput><input type="hidden" name="parentid" value="#esapiEncode('html_attr',rc.parentid)#"></cfoutput>
-	</cfif>
-
-		<cfif rc.moduleid eq '00000000000000000000000000000000000' and (not rc.$.getContentRenderer().useLayoutManager() and listFindNoCase('Page,Folder,Gallery,Calender',rc.type) and (not len(tabAssignments) or listFindNocase(tabAssignments,'List Display Options')))>
-			<cfinclude template="form/dsp_tab_listdisplayoptions.cfm">
-		</cfif>
-
-		<cfswitch expression="#rc.type#">
-		<cfcase value="Page,Folder,Calendar,Gallery">
-			<cfif rc.moduleid eq '00000000000000000000000000000000000' and (not len(tabAssignments) or listFindNocase(tabAssignments,'Layout & Objects'))>
-				<cfif listFind(session.mura.memberships,'S2IsPrivate')>
-					<cfinclude template="form/dsp_tab_layoutobjects.cfm">
-				</cfif>
-			</cfif>
-			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Categorization')>
-				<cfif application.categoryManager.getCategoryCount(rc.siteID)>
-					<cfinclude template="form/dsp_tab_categories.cfm">
-				</cfif>
-			</cfif>
-			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Tags')>
-				<cfinclude template="form/dsp_tab_tags.cfm">
-			</cfif>
-			<cfif rc.moduleid eq '00000000000000000000000000000000000' and (not len(tabAssignments) or listFindNocase(tabAssignments,'Related Content'))>
-				<cfinclude template="form/dsp_tab_related_content.cfm">
-			<cfelse>
-				<input type="hidden" name="ommitRelatedContentTab" value="true">
-			</cfif>
-		</cfcase>
-		<cfcase value="Link,File">
-			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Categorization')>
-				<cfif application.categoryManager.getCategoryCount(rc.siteid)>
-					<cfinclude template="form/dsp_tab_categories.cfm">
-				</cfif>
-			</cfif>
-			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Tags')>
-				<cfinclude template="form/dsp_tab_tags.cfm">
-			</cfif>
-			<cfif rc.moduleid eq '00000000000000000000000000000000000' and (not len(tabAssignments) or listFindNocase(tabAssignments,'Related Content'))>
-				<cfinclude template="form/dsp_tab_related_content.cfm">
-			<cfelse>
-				<input type="hidden" name="ommitRelatedContentTab" value="true">
-			</cfif>
-		</cfcase>
-		<cfcase value="Variation">
-			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Categorization')>
-				<cfif application.categoryManager.getCategoryCount(rc.siteID)>
-					<cfinclude template="form/dsp_tab_categories.cfm">
-				</cfif>
-			</cfif>
-			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Tags')>
-				<cfinclude template="form/dsp_tab_tags.cfm">
-			</cfif>
-		</cfcase>
-		<cfcase value="Component">
-			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Categorization')>
-				<cfif application.categoryManager.getCategoryCount(rc.siteID)>
-					<cfinclude template="form/dsp_tab_categories.cfm">
-				</cfif>
-			</cfif>
-			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Tags')>
-				<cfinclude template="form/dsp_tab_tags.cfm">
-			</cfif>
-			<cfif application.configBean.getValue(property='showUsageTabs',defaultValue=true) and (not len(tabAssignments) or listFindNocase(tabAssignments,'Usage Report'))>
-				<cfif not rc.contentBean.getIsNew()>
-					<cfinclude template="form/dsp_tab_usage.cfm">
-				</cfif>
-			</cfif>
-		</cfcase>
-		<cfcase value="Form">
-			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Categorization')>
-				<cfif application.categoryManager.getCategoryCount(rc.siteID)>
-					<cfinclude template="form/dsp_tab_categories.cfm">
-				</cfif>
-			</cfif>
-			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Tags')>
-				<cfinclude template="form/dsp_tab_tags.cfm">
-			</cfif>
-			<cfif application.configBean.getValue(property='showUsageTabs',defaultValue=true) and (not len(tabAssignments) or listFindNocase(tabAssignments,'Usage Report'))>
-				<cfif not rc.contentBean.getIsNew()>
-					<cfinclude template="form/dsp_tab_usage.cfm">
-				</cfif>
-			</cfif>
-		</cfcase>
-	</cfswitch>
-
-	<cfif listFindNoCase(rc.$.getBean('contentManager').ExtendableList,rc.type)>
-		<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Extended Attributes')>
-			<cfset extendSets=application.classExtensionManager.getSubTypeByName(rc.type,rc.contentBean.getSubType(),rc.siteid).getExtendSets(activeOnly=true) />
-			<cfinclude template="form/dsp_tab_extended_attributes.cfm">
-		</cfif>
-	</cfif>
-
-	<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Advanced')>
-		<cfif listFind(session.mura.memberships,'S2IsPrivate')>
-			<cfinclude template="form/dsp_tab_advanced.cfm">
-		<cfelse>
-			<input type="hidden" name="ommitAdvancedTab" value="true">
-		</cfif>
-	</cfif>
-
-	<cfif arrayLen(pluginEventMappings)>
-		<cfoutput>
-			<cfset renderedEvents = '' />
-			<cfset eventIdx = 0 />
-			<cfloop from="1" to="#arrayLen(pluginEventMappings)#" index="i">
-				<cfset eventToRender = pluginEventMappings[i].eventName />
-
-				<cfif ListFindNoCase(renderedEvents, eventToRender)>
-					<cfset eventIdx++ />
-				<cfelse>
-					<cfset renderedEvents = ListAppend(renderedEvents, eventToRender) />
-					<cfset eventIdx=1 />
-				</cfif>
-
-				<cfset renderedEvent=$.getBean('pluginManager').renderEvent(eventToRender=eventToRender,currentEventObject=$,index=eventIdx)>
-				<cfif len(trim(renderedEvent))>
-					<cfset tabLabel = Len($.event('tabLabel')) && !ListFindNoCase(tabLabelList, $.event('tabLabel')) ? $.event('tabLabel') : pluginEventMappings[i].pluginName />
-					<cfset tabLabelList=listAppend(tabLabelList, tabLabel)/>
-					<cfset tabID="tab" & $.createCSSID(tabLabel)>
-					<cfif ListFind(tabList,tabID)>
-						<cfset tabID = tabID & i />
-					</cfif>
-					<cfset tabList=listAppend(tabList,tabID)>
-					<cfset pluginEvent.setValue("tabList",tabLabelList)>
-					<div id="#tabID#" class="tab-pane">
-						<div class="block block-bordered">
-							<div class="block-header">
-						<h3 class="block-title">#tabLabel#</h3>
-							</div>
-							<!-- /block header -->
-
-						  	<!-- block content -->
-						  	<div class="block-content">
-								#renderedEvent#
-							</div>
-						</div>
-					</div>
-				</cfif>
-			</cfloop>
-		</cfoutput>
-	</cfif>
-
-	</cfsavecontent>
-	<!--- /tabcontent --->
+</cfoutput>
 
 	<cfoutput>
 		<cfif rc.contentBean.exists() and rc.compactDisplay eq "true" and not ListFindNoCase(nodeLevelList & ",Variation",rc.type)>
@@ -690,21 +503,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<!--- start output --->
 	<cfoutput>
 
+	<div class="block block-constrain" id="mura-content-body-block">
 
-
-	<div class="block block-constrain">
-
-	<!-- tabs -->
-		<ul class="mura-tabs nav-tabs" data-toggle="tabs">
-			<cfloop from="1" to="#listlen(tabList)#" index="t">
-			<cfset currentTab=listGetAt(tabList,t)>
-			<li<cfif listFindNoCase("tabExtendedAttributes,tabListDisplayOptions",currentTab)> class="hide"<cfelseif t eq 1> class="active"</cfif>  id="#currentTab#LI"><a href="###currentTab#"><span>#listGetAt(tabLabelList,t)#</span></a></li>
-			</cfloop>
-		</ul>
+		<!--- content editing sidebar --->
+		<cfinclude template="edit_panels.cfm">
 
 		<!-- tab content -->
 		<div class="block-content tab-content">
-			#tabContent#
+
+			<div id="mura-content-title-render">#esapiEncode('html_attr',rc.contentBean.gettitle())#</div>
+			<div id="mura-content-body-render">#bodyContent#</div>
 
 			<div class="load-inline tab-preloader"></div>
 
@@ -727,7 +535,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif assignChangesets>
 		<cfinclude template="form/dsp_changesets.cfm">
 	</cfif>
-
 
 <script type="text/javascript">
 
@@ -800,6 +607,7 @@ try{
 	window.top.document.addEventListener("keydown", checkForSave , false);
 } catch (e){};
 </script>
+
 	<input name="approved" type="hidden" value="0">
 	<input name="muraPreviouslyApproved" type="hidden" value="#rc.contentBean.getApproved()#">
 	<input id="removePreviousChangeset" name="removePreviousChangeset" type="hidden" value="false">
