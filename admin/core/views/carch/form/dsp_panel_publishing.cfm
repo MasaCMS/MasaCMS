@@ -68,10 +68,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<textarea name="metadesc" rows="3" id="metadesc">#esapiEncode('html',rc.contentBean.getMETADesc())#</textarea>
 					</div>
 
+				<cfif application.configBean.getValue(property='keepMetaKeywords',defaultValue=false)>
+					<div class="mura-control-group">
+						<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.keywords')#</label>
+						<textarea name="metakeywords" rows="3" id="metakeywords">#esapiEncode('html',rc.contentBean.getMetaKeywords())#</textarea>
+					</div>
+				<cfelse>
 					<div class="mura-control-group">
 						<label>Canonical URL</label>
 						<input type="text" id="canonicalURL" name="canonicalURL" value="#esapiEncode('html_attr',rc.contentBean.getCanonicalURL())#"  maxlength="255">
 		  		</div>
+				</cfif>
 
 		  	</cfif>
 
