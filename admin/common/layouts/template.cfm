@@ -268,7 +268,7 @@
 	</cfif>
   </head>
   <!--- use class no-constrain to remove fixed-width on inner containers --->
-  <body id="#rc.originalcircuit#" class="mura-admin header-navbar-fixed<!-- no-constrain-->">
+  <body id="#rc.originalcircuit#" class="mura-admin header-navbar-fixed no-constrain">
 
     <!-- Page Container -->
     <div id="page-container" class="<cfif session.siteid neq ''  and rc.$.currentUser().isLoggedIn() and rc.$.currentUser().isPrivateUser()>sidebar-l</cfif> sidebar-o <cfif cookie.ADMINSIDEBAR is 'off'> sidebar-mini</cfif> side-overlay-hover side-scroll header-navbar-fixed">
