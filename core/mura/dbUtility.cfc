@@ -33,6 +33,12 @@
 	<cfreturn variables.utility.queryRowToStruct(rscheck,1)>
 </cffunction>
 
+<cffunction name="setDbType" output="false">
+	<cfargument name="dbType">
+	<cfset variables.dbType=arguments.dbType>
+	<cfreturn this>
+</cffunction>
+
 <!------------- TABLE ----------------->
 <cffunction name="setTable" output="false">
 	<cfargument name="table">
