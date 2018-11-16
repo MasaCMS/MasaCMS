@@ -485,9 +485,6 @@
 
 				});
 
-			// resizable editing panel
-			$('##mura-content .mura__edit__controls').resizable({handles:'w'});
-
 			mura.init({
 			context:'#esapiEncode("javascript",rc.$.globalConfig('context'))#',
 			themepath:'#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#',

@@ -1,9 +1,11 @@
 .mura__edit__controls{
 	background-color: #454545;
-	float:right;
+	float: right;
 	margin: 0 !important;
 	padding: 0 !important;
 	width: 300px;
+	max-width: ~"calc(100% - 350px)" !important;
+
 	min-height: 100vh !important;	
 	text-transform: none;
 
@@ -27,8 +29,9 @@
 	
 	.mura__edit__controls__scrollable{
 	height: inherit;
-	    width: inherit;
-	    overflow: auto;
+	width: 100%;
+	min-width: 300px;
+	overflow: auto;
 	}    
 
 	 .btn{
