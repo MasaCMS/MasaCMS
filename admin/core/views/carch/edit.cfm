@@ -1,12 +1,3 @@
-<!--- temp: todo - rewrite or remove switch once dev complete, see end of file --->
-<cfif rc.rscount.menuTitle neq 'home'>
-	<cfinclude template="edit_new.cfm">
-<cfelse>
-
-
-
-
-
 <!--- This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
@@ -864,8 +855,3 @@ try{
 		<cfinclude template="form/dsp_full.cfm">
 	</div>
 </cfif>
-
-
-</cfif>
-<!--- todo remove this - see start of file --->
-
