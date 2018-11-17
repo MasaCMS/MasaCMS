@@ -202,7 +202,7 @@ function loadTableMetaData() output=false {
 		application.objectMappings[variables.instance.entityName] = structNew();
 	}
 	if ( !structKeyExists(application.objectMappings[variables.instance.entityName], "columns") ) {
-		application.objectMappings[variables.instance.entityName].columns = getBean('dbUtility').columns(table=variables.instance.table);
+		application.objectMappings[variables.instance.entityName].columns = getEntity().getDbUtility().columns(table=variables.instance.table);
 	}
 	if ( !structKeyExists(application.objectMappings[variables.instance.entityName], "columnlist") ) {
 		application.objectMappings[variables.instance.entityName].columnlist = structKeyList(application.objectMappings[variables.instance.entityName].columns);
