@@ -73,6 +73,10 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 		return this;
 	}
 
+	function getDbUtility(){
+		return getBean('dbUtility');
+	}
+
 	function OnMissingMethod(string MissingMethodName,Struct MissingMethodArguments){
 		var prefix=left(arguments.MissingMethodName,3);
 		var synthedFunctions = getSynthedFunctions();
@@ -115,7 +119,7 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 							}
 						}
 					}
-				
+
 					//writeDump(var=arguments.MissingMethodArguments);
 					//writeDump(var=synthedFunctions[arguments.MissingMethodName].exp,abort=true);
 					return evaluate(synthedFunctions[arguments.MissingMethodName].exp);
