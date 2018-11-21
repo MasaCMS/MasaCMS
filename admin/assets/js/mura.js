@@ -786,7 +786,7 @@ var Mura=(function(){
               '&client_id=' + encodeURIComponent(
                   client_id) + '&client_secret=' +
               encodeURIComponent(client_secret) +
-              '&cacheid=' + Math.random()).then(function(
+              '&_cacheid=' + Math.random()).then(function(
               resp) {
               if (resp.data != 'undefined') {
                   resolve(resp.data);
@@ -13941,7 +13941,7 @@ Mura.RequestContext=Mura.Core.extend(
                   async: true,
                   type: 'get',
                   url: Mura.apiEndpoint +
-                      'findCurrentUser?fields=' + params.fields + 'cacheid=' +
+                      'findCurrentUser?fields=' + params.fields + '_cacheid=' +
                       Math.random(),
                   success: function(resp) {
                       if (typeof resolve ==
@@ -13977,7 +13977,7 @@ Mura.RequestContext=Mura.Core.extend(
       params.entityname = params.entityname || 'content';
       params.siteid = params.siteid || Mura.siteid;
       params.method = params.method || 'findQuery';
-      params['cacheid'] == Math.random();
+      params['_cacheid'] == Math.random();
 
       return new Promise(function(resolve, reject) {
 
@@ -14488,7 +14488,7 @@ Mura.Entity = Mura.Core.extend(
                     entityname: self.get('entityname'),
                     method: 'findNew',
                     siteid: self.get('siteid'),
-                    'cacheid': Math.random()
+                    '_cacheid': Math.random()
                 },
                 params
             );
@@ -14520,7 +14520,7 @@ Mura.Entity = Mura.Core.extend(
                       entityname: self.get('entityname'),
                       method: 'checkSchema',
                       siteid: self.get('siteid'),
-                      'cacheid': Math.random()
+                      '_cacheid': Math.random()
                   },
                 success: function(  resp) {
                     if (resp.data != 'undefined'  ) {
@@ -14554,7 +14554,7 @@ Mura.Entity = Mura.Core.extend(
                                     entityname: self.get('entityname'),
                                     method: 'checkSchema',
                                     siteid: self.get('siteid'),
-                                    'cacheid': Math.random()
+                                    '_cacheid': Math.random()
                                 }, {
                                     'csrf_token': resp.data.csrf_token,
                                     'csrf_token_expires': resp.data.csrf_token_expires
@@ -14604,7 +14604,7 @@ Mura.Entity = Mura.Core.extend(
 												deleteSchema: deleteSchema,
                         method: 'undeclareEntity',
                         siteid: self.get('siteid'),
-                        'cacheid': Math.random()
+                        '_cacheid': Math.random()
                       },
                 success: function(  resp) {
                     if (resp.data != 'undefined'  ) {
@@ -14638,7 +14638,7 @@ Mura.Entity = Mura.Core.extend(
                                     entityname: self.get('entityname'),
                                     method: 'undeclareEntity',
                                     siteid: self.get('siteid'),
-                                    'cacheid': Math.random()
+                                    '_cacheid': Math.random()
                                 }, {
                                     'csrf_token': resp.data.csrf_token,
                                     'csrf_token_expires': resp.data.csrf_token_expires
@@ -14701,7 +14701,7 @@ Mura.Entity = Mura.Core.extend(
                     entityname: self.get('entityname').toLowerCase(),
                     method: 'findQuery',
                     siteid: self.get( 'siteid'),
-                    'cacheid': Math.random(),
+                    '_cacheid': Math.random(),
                 },
                 params
             );
@@ -15358,7 +15358,7 @@ Mura.Feed = Mura.Core.extend(
 	/** @lends Mura.Feed.prototype */
 	{
 		init: function(siteid, entityname, requestcontext) {
-			this.queryString = entityname + '/?cacheid=' + Math.random();
+			this.queryString = entityname + '/?_cacheid=' + Math.random();
 			this.propIndex = 0;
 
 			this._requestcontext=requestcontext || Mura._requestcontext;
