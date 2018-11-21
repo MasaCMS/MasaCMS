@@ -213,8 +213,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			AND active = 1
 		</cfquery>
 
-		<cfif len(rs.responseDisplayFields)>
-			<cfreturn replace(rs.responseDisplayFields, "^", ",","all") />
+		<cfset var responseDisplayFields=listFirst(rs.responseDisplayFields,'~')>
+		
+		<cfif len(responseDisplayFields)>
+			<cfreturn replace(responseDisplayFields, "^", ",","all") />
 		<cfelse>
 			<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 				select distinct formField from tformresponsequestions
