@@ -18504,12 +18504,11 @@ renderPaging:function() {
 					data['csrf_token']=resp.data['csrf_token'];
 
 					Mura.post(
-                        Mura.apiEndpoint + '?method=processAsyncObject',
-                        data)
-                        .then(function(resp){
-                            if(typeof resp.data.errors == 'object' && !Mura.isEmptyObject(resp.data.errors)){
+            Mura.apiEndpoint + '?method=processAsyncObject',
+            data).then(function(resp){
+              if(typeof resp.data.errors == 'object' && !Mura.isEmptyObject(resp.data.errors)){
 								self.showErrors( resp.data.errors );
-                            } else if(typeof resp.data.redirect != 'undefined') {
+            	} else if(typeof resp.data.redirect != 'undefined') {
 								if(resp.data.redirect && resp.data.redirect != location.href){
 									location.href=resp.data.redirect;
 								} else {
@@ -18517,9 +18516,9 @@ renderPaging:function() {
 								}
 							} else {
 								self.currentpage = mura(button).data('page');
-                                self.renderForm();
-                            }
-                        }
+                self.renderForm();
+              }
+            }
 					);
 				}
 			});
@@ -18995,14 +18994,18 @@ showErrors: function( errors ) {
 		}
 	}
 
-	//var html = Mura.templates['error'](errorData);
-	//console.log(errorData);
-
 	mura(self.context.formEl).find('.g-recaptcha-container').each(function(el){
 		grecaptcha.reset(el.getAttribute('data-widgetid'));
 	});
 
-	//mura(".error-container-" + self.context.objectid,self.context.formEl).html(html);
+	var errorsSel=mura(this.context.formEl).find('.mura-response-error');
+
+	if(errorsSel.length){
+		errorsSel=errorsSel.first().node;
+		if(typeof errorsSel.scrollIntoView != 'undefined'){
+			errorsSel.scrollIntoView(true);
+		}
+	}
 },
 
 
