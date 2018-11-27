@@ -62,7 +62,6 @@ main > .content > :first-child:not(.alert){
   padding-right: 0;
 }
 
-
 // forms
 
 #mura-content > form{
@@ -136,87 +135,86 @@ main > .content > :first-child:not(.alert){
 }
 
 // editing panels
-// form elements w/ label
+.mura__edit__controls{
 
-#content-panels{
+  // form elements w/ label
+  .mura-control-group > label + textarea:not([class*="mura-constrain"]),
+  .mura-control-group > label + * + textarea:not([class*="mura-constrain"]),
+  .mura-control-group > label + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]),
+  .mura-control-group > label + * + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]),
+  .mura-control-group > label + input[type=password],
+  .mura-control-group > label + * + input[type=password],
+  .mura-control-group > label + input[type=file],
+  .mura-control-group > label + * + input[type=file],
+  .mura-control-group > label + select:not([class*="time"]):not([class*="mura-constrain"]),
+  .mura-control-group > label + * + select:not([class*="time"]):not([class*="mura-constrain"]){
+    .form-control;
+    .make-xs-column(12);
+    font-size: 13px;
+  }
 
-.mura-control-group > label + textarea:not([class*="mura-constrain"]),
-.mura-control-group > label + * + textarea:not([class*="mura-constrain"]),
-.mura-control-group > label + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]),
-.mura-control-group > label + * + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]),
-.mura-control-group > label + input[type=password],
-.mura-control-group > label + * + input[type=password],
-.mura-control-group > label + input[type=file],
-.mura-control-group > label + * + input[type=file],
-.mura-control-group > label + select:not([class*="time"]):not([class*="mura-constrain"]),
-.mura-control-group > label + * + select:not([class*="time"]):not([class*="mura-constrain"]){
-  .form-control;
-  .make-xs-column(12);
-  font-size: 13px;
-}
+  // constrain width elements
+  .mura-control-group > label + input[type=text].mura-constrain,
+  .mura-control-group > label + * + input[type=text].mura-constrain,
+  .mura-control-group > label + select.mura-constrain,
+  .mura-control-group > label + * + select.mura-constrain,
+  .mura-control-group > label + textarea.mura-constrain,
+  .mura-control-group > label + * + textarea.mura-constrain{
+    .form-control;
+    .make-sm-column(2.6);
+  }
 
-// constrain width elements
-.mura-control-group > label + input[type=text].mura-constrain,
-.mura-control-group > label + * + input[type=text].mura-constrain,
-.mura-control-group > label + select.mura-constrain,
-.mura-control-group > label + * + select.mura-constrain,
-.mura-control-group > label + textarea.mura-constrain,
-.mura-control-group > label + * + textarea.mura-constrain{
-  .form-control;
-  .make-sm-column(2.6);
-}
+  .mura-control-group > label + input[type=text].mura-constrain.mura-numeric,
+  .mura-control-group > label + * + input[type=text].mura-constrain.mura-numeric,
+  .mura-control-group > label + select.mura-constrain.mura-numeric,
+  .mura-control-group > label + * + select.mura-constrain.mura-numeric,
+  .mura-control-group > label + textarea.mura-constrain.mura-numeric,
+  .mura-control-group > label + * + textarea.mura-constrain.mura-numeric{
+    .make-sm-column(1);
+    min-width: 60px !important;
+  }
 
-.mura-control-group > label + input[type=text].mura-constrain.mura-numeric,
-.mura-control-group > label + * + input[type=text].mura-constrain.mura-numeric,
-.mura-control-group > label + select.mura-constrain.mura-numeric,
-.mura-control-group > label + * + select.mura-constrain.mura-numeric,
-.mura-control-group > label + textarea.mura-constrain.mura-numeric,
-.mura-control-group > label + * + textarea.mura-constrain.mura-numeric{
-  .make-sm-column(1);
-  min-width: 60px !important;
-}
+  .mura-control-group .mura-constrain + .mura-constrain{
+    margin-left: 8px;
+  }
 
-.mura-control-group .mura-constrain + .mura-constrain{
-  margin-left: 8px;
-}
+  } /* /.mura__edit__controls */
 
-} /* /.content-panels */
+  // sidebar form elements
+  .sidebar .mura-control-group > label + textarea,
+  .sidebar .mura-control-group > label + * + textarea,
+  .sidebar .mura-control-group > label + input[type=text],
+  .sidebar .mura-control-group > label + * + input[type=text],
+  .sidebar .mura-control-group > label + input[type=password],
+  .sidebar .mura-control-group > label + * + input[type=password],
+  .sidebar .mura-control-group > label + input[type=file],
+  .sidebar .mura-control-group > label + * + input[type=file],
+  .sidebar .mura-control-group > label + select:not([class*="time"]),
+  .sidebar .mura-control-group > label + * + select:not([class*="time"]){
+    padding: 4px 8px;
+    height: 2em;
+    .make-sm-column(12);
+  }
 
-// sidebar form elements
-.sidebar .mura-control-group > label + textarea,
-.sidebar .mura-control-group > label + * + textarea,
-.sidebar .mura-control-group > label + input[type=text],
-.sidebar .mura-control-group > label + * + input[type=text],
-.sidebar .mura-control-group > label + input[type=password],
-.sidebar .mura-control-group > label + * + input[type=password],
-.sidebar .mura-control-group > label + input[type=file],
-.sidebar .mura-control-group > label + * + input[type=file],
-.sidebar .mura-control-group > label + select:not([class*="time"]),
-.sidebar .mura-control-group > label + * + select:not([class*="time"]){
-  padding: 4px 8px;
-  height: 2em;
-  .make-sm-column(12);
-}
+  .mura-control-group > label + .datepicker{
+    .form-control;
+    .make-sm-column(2.6);
+  }
+  .mura-control-group .mura-interval-end input[type=text]{
+    .form-control;
+    .make-sm-column(3);
+  }
 
-.mura-control-group > label + .datepicker{
-  .form-control;
-  .make-sm-column(2.6);
-}
-.mura-control-group .mura-interval-end input[type=text]{
-  .form-control;
-  .make-sm-column(3);
-}
+  .pagination > li select{
+    .form-control;
+    height: 24px;
+    padding: 1px 6px;
+    font-size: 12px;
+    line-height: 1.2;
+  }
+  // inline groups
+  .mura-control-inline{
 
-.pagination > li select{
-  .form-control;
-  height: 24px;
-  padding: 1px 6px;
-  font-size: 12px;
-  line-height: 1.2;
-}
-// inline groups
-.mura-control-inline{
-  
   > label {
   float:left;
   padding-right: 8px;
@@ -256,99 +254,99 @@ main > .content > :first-child:not(.alert){
     padding-top: 13px;
     margin-left: 8px;
   }
-}
+  }
 
-.label-inline{
+  .label-inline{
   input, select{
     margin-left: 8px;
     margin-right: 8px;
   }
-}
+  }
 
-// checkboxes / radio buttons
+  // checkboxes / radio buttons
 
-.mura-control-group > .checkbox-group,
-.mura-control-group > .radio-group{
+  .mura-control-group > .checkbox-group,
+  .mura-control-group > .radio-group{
   .make-xs-column(12);
   .make-sm-column(9);
-}
+  }
 
-// ckeditor fields
+  // ckeditor fields
 
-.mura-control-group textarea + .cke{
+  .mura-control-group textarea + .cke{
   .make-sm-column(9);
   padding-left:0px;
   padding-right:0px;
-}
+  }
 
-// datepicker fields
+  // datepicker fields
 
-#main input[type=text].datepicker,
-.mura-content select.mura-repeat-option{
+  #main input[type=text].datepicker,
+  .mura-content select.mura-repeat-option{
   .form-control;  
   .make-sm-column(3);
-}
-select.time{
+  }
+  select.time{
   .form-control;  
   .make-sm-column(1);
   .make-xs-column(3);
   margin-left: 8px;
   min-width: 70px;
   padding-right: 8px;
-}
+  }
 
-// search param fields
+  // search param fields
 
-#searchParams input[type=text],
-#searchParams select{
+  #searchParams input[type=text],
+  #searchParams select{
   .form-control;  
   .make-xs-column(2); 
   margin-right: 12px; 
   padding: 0 3px;
   height: 24px;
-}
+  }
 
-// form alerts
-#mura-content > form .alert:not([class*="alert-"]){
+  // form alerts
+  #mura-content > form .alert:not([class*="alert-"]){
   .alert-info;
-}
+  }
 
-// tabs
-.mura-tab-links, 
-.mura-tabs{
+  // tabs
+  .mura-tab-links, 
+  .mura-tabs{
   .nav; 
-}
-/* hide tab header controls for now */
-.tab-pane .block-options{
+  }
+  /* hide tab header controls for now */
+  .tab-pane .block-options{
   display:none;
-}
+  }
 
-// image details
-#mura-content #image-details .mura-control-group label + .btn-group{
+  // image details
+  #mura-content #image-details .mura-control-group label + .btn-group{
   .make-sm-column(12);
   padding: 15px 0;
-}
-#mura-content #image-details .mura-control-group .load-inline{
+  }
+  #mura-content #image-details .mura-control-group .load-inline{
   .make-sm-column(12);
-}
+  }
 
-// panels
-.mura-panel-group{
+  // panels
+  .mura-panel-group{
   .panel-group;
-}
-.mura-panel{
+  }
+  .mura-panel{
   .panel;
   .panel-default;
-}
-.mura-panel-body{
+  }
+  .mura-panel-body{
   .panel-body;
-}
-.mura-panel-heading{
+  }
+  .mura-panel-heading{
   .panel-heading;
-}
-.mura-panel-title{
+  }
+  .mura-panel-title{
   .panel-title;
-}
+  }
 
 /* 7.2 SIDEBAR CONTROLS */
 .mura__edit__controls{
@@ -360,13 +358,11 @@ select.time{
   }
 
   // ckeditor fields
-
   .mura-control-group textarea + .cke{
     .make-xs-column(12);
     padding-left:0px;
     padding-right:0px;
   }
-
 
   // form elements w/ label
   .mura-control-group > label + textarea:not([class*="mura-constrain"]),
@@ -383,15 +379,21 @@ select.time{
     font-size: 13px;
   }
 
+  select.time,
+  .mura-control-group select.time,
+  .mura-control-group select.time:focus{
+    .make-xs-column(3);
+    margin-right: 8px;
+    padding-right: 8px;
+    min-width: 70px;
+  }
+
 } /* /.mura__edit__controls */
 
-
-
 /* LEGACY MURA / BS2 CLASS MAPPING */
-
 // headings
 h1:not([class]){
-	.page-heading;
+  .page-heading;
 }
 
 // alert classes
@@ -481,22 +483,21 @@ h1:not([class]){
   .btn-default;
 }
 
-
 // form layout
 
 // form controls
 .tab-pane .fieldset .control-group{
-	.form-group;
-	.row;
+  .form-group;
+  .row;
   margin-left: 0;
   margin-right: 0;
 }
 // labels
 .form-horizontal .control-label{
-	.col-xs-3;
+  .col-xs-3;
 }
 .form-horizontal .controls{
-	.col-xs-9;
+  .col-xs-9;
 }
 
 // secondary nav 
@@ -526,7 +527,7 @@ h1:not([class]){
 
 // table layout
 .mura-table-grid{
-	.table-striped;
+  .table-striped;
 }
 
 #custom-images-container{

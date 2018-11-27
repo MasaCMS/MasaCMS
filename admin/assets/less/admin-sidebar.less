@@ -15,7 +15,7 @@
 
 			input[type=text]{
 				background-color: #333;
-				border:none;
+				border:none;	
 				border-radius:0;
 				color: #d8d8d8;
 				cursor: pointer;
@@ -97,7 +97,7 @@
 				background-image:none;
 				text-shadow:none;
 			}
-
+			.btn-default,
 			.btn:not([class*="btn-"]){
 				border-radius:2px;
 				background-image:none;
@@ -109,11 +109,23 @@
 			  margin: 8px 0 4px 0;
 		   }
 
-				.btn:not([class*="btn-"]) + *{
-					float: left;
-					clear: left;
-					margin-top: 8px;
+			.mura-input-set{
+
+				.btn.active,
+				.btn-default:hover,
+				.btn:not([class*="btn-"]):hover,
+				.btn.active:hover{
+					background-color: #565656;
+					color: #f3f3f3;
 				}
+
+			}
+
+			.btn:not([class*="btn-"]) + *{
+				float: left;
+				clear: left;
+				margin-top: 8px;
+			}
 
 		   label + .btn:not([class*="btn-"]),
 		   label > div + .btn:not([class*="btn-"]){
@@ -245,7 +257,9 @@
 
 			select,
 			select:focus,
+			textarea,
 			input[type=date],
+			input[type=file],
 			input[type=datetime],
 			input[type=datetime-local],
 			input[type=image],
@@ -257,7 +271,17 @@
 			input[type=text],
 			input[type=url],
 			input[type=week],
-			textarea {
+			textarea, 
+		  .mura-control-group > label + textarea:not([class*="mura-constrain"]),
+		  .mura-control-group > label + * + textarea:not([class*="mura-constrain"]),
+		  .mura-control-group > label + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]),
+		  .mura-control-group > label + * + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]),
+		  .mura-control-group > label + input[type=password],
+		  .mura-control-group > label + * + input[type=password],
+		  .mura-control-group > label + input[type=file],
+		  .mura-control-group > label + * + input[type=file],
+		  .mura-control-group > label + select:not([class*="time"]):not([class*="mura-constrain"]),
+		  .mura-control-group > label + * + select:not([class*="time"]):not([class*="mura-constrain"]){
 				margin: .5em 0;
 				width: 100%;
 				background-color: #333;
@@ -268,6 +292,22 @@
 				cursor: pointer;
 				outline: none;
 				outline-offset: 0;
+			}
+
+			textarea{
+				min-height: 6em;
+			}
+
+			#assocFileContainer{
+				min-height: 130px;
+	
+				.mura-file-selector-newfile{
+			    border-radius: 2px;
+			    margin-left: -3px;
+			    float: left;
+			    margin-top: 6px;
+				}
+	
 			}
 
 			/* custom styles for date inputs */

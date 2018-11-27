@@ -33,7 +33,7 @@
 <cfoutput>
 	<div data-name="#esapiEncode('html_attr',attributes.name)#" data-property="#esapiEncode('html_attr',attributes.property)#" data-fileid="#esapiEncode('html_attr',attributes.bean.getValue(attributes.property))#" data-filetype="#esapiEncode('html_attr',filetype)#" data-contentid="#attributes.bean.getcontentid()#" data-siteid="#attributes.bean.getSiteID()#" class="mura-file-selector #attributes.class#">			
 		<div class="mura-input-set mura-file-selector-tabs" data-toggle="buttons-radio">
-			<button type="button" style="display:none">placeholder</button>
+			<button type="button" style="display:none" class="input-set-placeholder">placeholder</button>
 			<button type="button" class="btn btn-default mura-file-type-selector active" value="Upload"><i class="mi-upload"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.fileselector.viaupload')#</button>
 			<button type="button" class="btn btn-default mura-file-type-selector" value="URL"><i class="mi-download"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.fileselector.viaurl')#</button>
 			<button type="button" class="btn btn-default mura-file-type-selector" value="Existing"><i class="mi-file-picture-o"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.fileselector.selectexisting')#</button>
