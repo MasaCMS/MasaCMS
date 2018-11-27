@@ -447,6 +447,7 @@
 					// run on window resize
 					$(window).on('resize',function(){
 						setBlockHeight();
+						resizeTabPane();
 					});
 
 					// tabdrop: trigger on page load w/ slight delay
