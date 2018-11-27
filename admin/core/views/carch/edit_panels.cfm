@@ -88,7 +88,7 @@ $(document).ready(function(){
 
 <cfoutput>
 
-	<div class="mura__edit__controls">
+	<div class="mura__edit__controls" style="width: #cookie.ADMINCONTROLWIDTH#px">
 		<!--- filter settings --->
 		<div id="mura__edit__settings__filter">
   		<input type="text" class="form-control" id="mura__edit__settings__filter__input" placeholder="Filter settings">

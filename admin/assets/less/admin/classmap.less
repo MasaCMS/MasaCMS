@@ -351,7 +351,7 @@ select.time{
 }
 
 /* 7.2 SIDEBAR CONTROLS */
-#content-panels{
+.mura__edit__controls{
 
   // checkboxes / radio buttons
   .mura-control-group > .checkbox-group,
@@ -363,8 +363,27 @@ select.time{
 
   .mura-control-group textarea + .cke{
     .make-xs-column(12);
+    padding-left:0px;
+    padding-right:0px;
   }
-}
+
+
+  // form elements w/ label
+  .mura-control-group > label + textarea:not([class*="mura-constrain"]),
+  .mura-control-group > label + * + textarea:not([class*="mura-constrain"]),
+  .mura-control-group > label + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]),
+  .mura-control-group > label + * + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]),
+  .mura-control-group > label + input[type=password],
+  .mura-control-group > label + * + input[type=password],
+  .mura-control-group > label + input[type=file],
+  .mura-control-group > label + * + input[type=file],
+  .mura-control-group > label + select:not([class*="time"]):not([class*="mura-constrain"]),
+  .mura-control-group > label + * + select:not([class*="time"]):not([class*="mura-constrain"]){
+    .make-sm-column(12);
+    font-size: 13px;
+  }
+
+} /* /.mura__edit__controls */
 
 
 

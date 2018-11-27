@@ -70,6 +70,9 @@
 		<cfif not IsDefined("cookie.ADMINSIDEBAR")>
 			<cfset application.utility.setCookie(name="ADMINSIDEBAR",value="off",httponly=false)>
 		</cfif>
+		<cfif not IsDefined("cookie.ADMINCONTROLWIDTH")>
+			<cfset application.utility.setCookie(name="ADMINCONTROLWIDTH",value="300",httponly=false)>
+		</cfif>
 		<cfparam name="request.action" default="core:cplugin.plugin">
 		<cfparam name="rc.originalfuseaction" default="#listLast(listLast(request.action,":"),".")#">
 		<cfparam name="rc.originalcircuit"  default="#listFirst(listLast(request.action,":"),".")#">
@@ -347,7 +350,7 @@
     <cfif request.action neq "core:cLogin.main" and isDefined("session.siteid")>
 				<script>
 				$(document).ready(function(){
-					// persist sidebar selection
+					// persist side navigation expand/collapse 
 					$('*[data-action=sidebar_mini_toggle]').click(function(){
 						if($('##page-container').hasClass('sidebar-mini')){
 			 			createCookie('ADMINSIDEBAR','off',5);

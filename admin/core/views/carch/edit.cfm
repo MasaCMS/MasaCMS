@@ -132,18 +132,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		handles:'w',
 		maxWidth: 640,
 		minWidth: 300,
-		// alsoResize: ".tab-content",
 		resize: function (event,ui) {
         ui.position.left = ui.originalPosition.left;
         ui.size.width = (ui.size.width
             - ui.originalSize.width )
             + ui.originalSize.width;
-
-           var newW = $('##mura-content-body-block').width() - $('.mura__edit__controls').width() - 50;
-          $('##mura-content-body-block .tab-content').css('width',newW);
-     	}	
+        resizeTabPane();    
+     	},
+		stop: function(event,ui){
+			var acw = $(this).width();
+ 			createCookie('ADMINCONTROLWIDTH',acw,5);						
+		}		
 	});
 	
+	var resizeTabPane = function(){
+	   var newW = $('##mura-content-body-block').width() - $('.mura__edit__controls').width() - 50;
+      $('##mura-content-body-block .tab-content').css('width',newW);
+	}
+	resizeTabPane();
+
 	});
 	</cfoutput>
 
