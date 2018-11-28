@@ -45,6 +45,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <script>
 $(document).ready(function(){	
 	
+
 	filterSettings=function(fstr){
 		// if string provided
 		if(fstr.length > 0){
@@ -83,6 +84,10 @@ $(document).ready(function(){
 				filterSettings(filterStr)	;		
     }, 500);
 	});
+
+	// focus on input filter on page load
+	jQuery("#mura__edit__settings__filter__input").focus(); 	
+
 });
 </script>
 
