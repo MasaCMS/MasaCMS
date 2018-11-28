@@ -65,7 +65,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif rc.moduleid eq '00000000000000000000000000000000000' and not len(tabAssignments) or listFindNocase(tabAssignments,'SEO')>
 					<div class="mura-control-group">
 						<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.description')#</label>
-						<textarea name="metadesc" rows="3" id="metadesc">#esapiEncode('html',rc.contentBean.getMETADesc())#</textarea>
+						<textarea name="metadesc" id="metadesc">#esapiEncode('html',rc.contentBean.getMETADesc())#</textarea>
 					</div>
 
 				<cfif application.configBean.getValue(property='keepMetaKeywords',defaultValue=false)>
