@@ -67,6 +67,34 @@ i.jpg, i.jpeg, i.gif, i.png{
   float: right;
   margin-left: .3em;
 }
+.mi-spin {
+  -webkit-animation: mi-spin 2s infinite linear;
+  animation: mi-spin 2s infinite linear;
+}
+.mi-pulse {
+  -webkit-animation: mi-spin 1s infinite steps(8);
+  animation: mi-spin 1s infinite steps(8);
+}
+@-webkit-keyframes mi-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}
+@keyframes mi-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}
 .mi-rotate-90 {
   filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
   -webkit-transform: rotate(90deg);
