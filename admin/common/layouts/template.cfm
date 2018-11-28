@@ -239,6 +239,9 @@
 	<script type="text/javascript" src="#application.configBean.getContext()#/core/vendor/colorpicker/js/bootstrap-colorpicker.js?coreversion=#application.coreversion#"></script>
 	<link href="#application.configBean.getContext()#/core/vendor/colorpicker/css/colorpicker.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
 
+	<!-- nice-select: select box replacement (sidebar controls) -->
+	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery.nice-select.min.js" type="text/javascript"></script>
+
 	<!-- JSON -->
 	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/json2.js" type="text/javascript"></script>
 
@@ -333,7 +336,6 @@
 								</cfif>
 							</cfif>
 
-
          	</cfif>
          		<cfif request.action neq "core:cLogin.main">
          			<div id="mura-content">
@@ -388,6 +390,9 @@
 					}
 					// run on page load
 					resizeTabPane();
+
+					//nice-select 
+					$('.mura__edit__controls .mura-control-group select').niceSelect();
 
 					// header-search
 					$('##mura-header-search-reveal').click(
