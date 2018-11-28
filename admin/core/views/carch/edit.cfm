@@ -511,6 +511,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<!-- tab content -->
 		<div class="block-content tab-content">
 
+			<div id="mura-content-metadata"><i class="mi-question-circle"></i></div>
 			<div id="mura-content-title-render">#esapiEncode('html_attr',rc.contentBean.gettitle())#</div>
 			<div id="mura-content-body-render">#bodyContent#</div>
 
