@@ -59,7 +59,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
       			<span id="extendset-container-tablayoutobjectstop" class="extendset-container"></span>
             <div class="mura-control-group">
-                  <div class="half">
+
                     <div class="mura-control-group">
                       <label>
                           <span data-toggle="popover" title="" data-placement="right"
@@ -93,8 +93,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     									</cfif>
     		          		</select>
             			</div>
-            		</div>
-                <div class="half">
+
                   <div class="mura-control-group">
                   <label>
                     <span data-toggle="popover" title="" data-placement="right"
@@ -124,8 +123,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     	          </select>
             </div>
           </div>
-        </div>
-
+          
           <div class="mura-control-group">
             <label>
               <span data-toggle="popover" title="" data-placement="right"
