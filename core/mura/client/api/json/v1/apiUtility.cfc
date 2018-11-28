@@ -31,6 +31,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			entities={
 				'contentnav'={
 					public=true,
+					moduleid='00000000000000000000000000000000000',
 					fields="links,images,parentid,moduleid,path,contentid,contenthistid,changesetid,siteid,active,approved,title,menutitle,summary,tags,type,subtype,displayStart,displayStop,display,filename,url,assocurl,isNew,remoteurl,remoteid"
 				}
 			}
