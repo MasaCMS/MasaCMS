@@ -148,10 +148,12 @@
 			.mura-control-group{
 				margin-bottom: 12px;
 
-				label + textarea{
+
+				&>label+textarea:not([class*=mura-constrain]){
 					min-height: 6em;
 					max-width: 100%;
 					min-width: 100%;
+
 				}
 
 			}
