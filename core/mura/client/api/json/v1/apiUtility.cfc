@@ -1689,6 +1689,11 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		var $=getBean('$').init(arguments.siteid);
 
+		if(arguments.entityname=='contentnav'){
+			arguments.entityname='content';
+			$.event('entityname','content');
+		}
+
 		if(listFindNoCase('user,group',arguments.entityName)){
 			var vals=$.event().getAllValues();
 			var hasUserModuleAcces=getBean('permUtility').getModulePerm(variables.config.entities.user.moduleid,arguments.siteid);
@@ -2039,6 +2044,12 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 	function findNew(entityName,siteid,expand=''){
 
 		var $=getBean('$').init(arguments.siteid);
+
+		if(arguments.entityname=='contentnav'){
+			arguments.entityname='content';
+			$.event('entityname','content');
+		}
+
 		var entity=$.getBean(arguments.entityName);
 
 		if(arguments.entityName=='feed'){
