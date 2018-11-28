@@ -349,6 +349,55 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	</cfoutput>
 	</cfsavecontent> <!--- /end action buttons --->
+
+	<!-- meta info -->
+	<cfsavecontent variable="metaTooltip">
+		<cfoutput>
+		<cfif not rc.contentBean.getIsNew()>
+				<cfif listFindNoCase(rc.$.getBean('contentManager').TreeLevelList,rc.type)>
+					<cfset rsRating=application.raterManager.getAvgRating(rc.contentBean.getcontentID(),rc.contentBean.getSiteID()) />
+					<cfif rsRating.recordcount>
+						<span class="meta-label">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.votes")#: <span><cfif rsRating.recordcount>#rsRating.theCount#<cfelse>0</cfif></span></span>
+						<span class="meta-label">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.averagerating")#: <img id="ratestars" src="assets/images/rater/star_#application.raterManager.getStarText(rsRating.theAvg)#.gif" alt="#rsRating.theAvg# stars" border="0"></span>
+					</cfif>
+				</cfif>
+			<cfif rc.type eq "file" and rc.contentBean.getMajorVersion()>
+					<span class="meta-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.version.file')#: <span>#rc.contentBean.getMajorVersion()#.#rc.contentBean.getMinorVersion()#</span></span>
+			</cfif>
+			</cfif>
+			<span class="meta-label">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.update")#: <span>#LSDateFormat(parseDateTime(rc.contentBean.getlastupdate()),session.dateKeyFormat)# #LSTimeFormat(parseDateTime(rc.contentBean.getlastupdate()),"short")#</span></span>
+			<span class="meta-label">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.status")#:
+				<span>
+
+					<cfif not rc.contentBean.getIsNew()>
+						<cfif rc.contentBean.getactive() gt 0 and rc.contentBean.getapproved() gt 0>
+							<cfif len(rc.contentBean.getApprovalStatus())>
+								<a href="##" onclick="return viewStatusInfo('#esapiEncode('javascript',rc.contentBean.getContentHistID())#','#esapiEncode('javascript',rc.contentBean.getSiteID())#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.published")#</a>
+							<cfelse>
+								#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.published")#
+							</cfif>
+						<cfelseif len(rc.contentBean.getApprovalStatus()) and (requiresApproval or showApprovalStatus) >
+							<a href="##" onclick="return viewStatusInfo('#esapiEncode('javascript',rc.contentBean.getContentHistID())#','#esapiEncode('javascript',rc.contentBean.getSiteID())#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.#rc.contentBean.getApprovalStatus()#")#</a>
+						<cfelseif rc.contentBean.getapproved() lt 1>
+							<cfif len(rc.contentBean.getChangesetID())>
+								#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.queued")#
+							<cfelse>
+								#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.draft")#
+							</cfif>
+						<cfelse>
+							#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.archived")#
+						</cfif>
+					<cfelse>
+						#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.draft")#
+					</cfif>
+				</span>
+			</span>
+			<cfset started=false>
+			<span class="meta-label">
+				#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#: <span>#esapiEncode('html',rc.type)#</span>
+			</span>
+		</cfoutput>
+	</cfsavecontent>	<!--- /end meta info --->
 </cfsilent>
 
 <!--- check to see if the site has reached it's maximum amount of pages --->
@@ -385,59 +434,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<!--- secondary menu --->
 	<cfif rc.compactDisplay neq "true" or not listFindNoCase(nodeLevelList,rc.type)>
 		<cfinclude template="dsp_secondary_menu.cfm">
-	</cfif>
-
-		<!--- metadata labels --->
-	<cfif rc.compactDisplay neq "true">
-	<div class="mura-item-metadata">
-		<div class="label-group">
-			<cfif not rc.contentBean.getIsNew()>
-
-				<cfif listFindNoCase(rc.$.getBean('contentManager').TreeLevelList,rc.type)>
-					<cfset rsRating=application.raterManager.getAvgRating(rc.contentBean.getcontentID(),rc.contentBean.getSiteID()) />
-					<cfif rsRating.recordcount>
-						<span class="label">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.votes")#: <strong><cfif rsRating.recordcount>#rsRating.theCount#<cfelse>0</cfif></strong></li>
-						<span class="label">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.averagerating")#: <img id="ratestars" src="assets/images/rater/star_#application.raterManager.getStarText(rsRating.theAvg)#.gif" alt="#rsRating.theAvg# stars" border="0"></span>
-					</cfif>
-				</cfif>
-			<cfif rc.type eq "file" and rc.contentBean.getMajorVersion()>
-					<span class="label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.version.file')#: <strong>#rc.contentBean.getMajorVersion()#.#rc.contentBean.getMinorVersion()#</strong></span>
-			</cfif>
-			</cfif>
-			<span class="label">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.update")#: <strong>#LSDateFormat(parseDateTime(rc.contentBean.getlastupdate()),session.dateKeyFormat)# #LSTimeFormat(parseDateTime(rc.contentBean.getlastupdate()),"short")#</strong></span>
-			<span class="label">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.status")#:
-				<strong>
-
-					<cfif not rc.contentBean.getIsNew()>
-						<cfif rc.contentBean.getactive() gt 0 and rc.contentBean.getapproved() gt 0>
-							<cfif len(rc.contentBean.getApprovalStatus())>
-								<a href="##" onclick="return viewStatusInfo('#esapiEncode('javascript',rc.contentBean.getContentHistID())#','#esapiEncode('javascript',rc.contentBean.getSiteID())#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.published")#</a>
-							<cfelse>
-								#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.published")#
-							</cfif>
-						<cfelseif len(rc.contentBean.getApprovalStatus()) and (requiresApproval or showApprovalStatus) >
-							<a href="##" onclick="return viewStatusInfo('#esapiEncode('javascript',rc.contentBean.getContentHistID())#','#esapiEncode('javascript',rc.contentBean.getSiteID())#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.#rc.contentBean.getApprovalStatus()#")#</a>
-						<cfelseif rc.contentBean.getapproved() lt 1>
-							<cfif len(rc.contentBean.getChangesetID())>
-								#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.queued")#
-							<cfelse>
-								#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.draft")#
-							</cfif>
-						<cfelse>
-							#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.archived")#
-						</cfif>
-					<cfelse>
-						#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.draft")#
-					</cfif>
-				</strong>
-			</span>
-			<cfset started=false>
-			<span class="label">
-				#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#: <strong>#esapiEncode('html',rc.type)#</strong>
-			</span>
-		</div><!-- /.label-group -->
-	</div><!-- /.mura-item-metadata -->
-
 	</cfif>
 
 	<!--- crumbdata --->
@@ -511,7 +507,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<!-- tab content -->
 		<div class="block-content tab-content">
 
-			<div id="mura-content-metadata"><i class="mi-question-circle"></i></div>
+			<div id="mura-content-metadata">
+				<span data-toggle="popover" title="" data-placement="right"	data-content="#esapiEncode('html_attr',metaTooltip)#" data-original-title="">
+  				<i class="mi-question-circle-o"></i>
+				</span>
+  		</div>
 			<div id="mura-content-title-render">#esapiEncode('html_attr',rc.contentBean.gettitle())#</div>
 			<div id="mura-content-body-render">#bodyContent#</div>
 
