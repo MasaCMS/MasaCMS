@@ -30,6 +30,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			publicMethods="undeclareEntity,declareEntity,checkSchema,findOne,findMany,findAll,findProperties,findNew,findQuery,save,delete,findCrumbArray,generateCSRFTokens,validateEmail,login,logout,submitForm,findCalendarItems,validate,processAsyncObject,findRelatedContent,getURLForImage,findVersionHistory,findCurrentUser,swagger",
 			entities={
 				'contentnav'={
+					public=true,
 					fields="links,images,parentid,moduleid,path,contentid,contenthistid,changesetid,siteid,active,approved,title,menutitle,summary,tags,type,subtype,displayStart,displayStop,display,filename,url,assocurl,isNew,remoteurl,remoteid"
 				}
 			}
