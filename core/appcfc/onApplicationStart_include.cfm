@@ -294,7 +294,6 @@ if ( application.setupComplete ) {
 		variables.serviceFactory.addAlias("eventManager","pluginManager");
 		variables.serviceFactory.addAlias("permUtility","permission");
 		variables.serviceFactory.addAlias("content","contentBean");
-		variables.serviceFactory.addAlias("contentnav","contentNavBean");
 		variables.serviceFactory.addAlias("contentCategoryAssign","contentCategoryAssignBean");
 		variables.serviceFactory.addAlias("HTMLExporter","contentHTMLExporter");
 		variables.serviceFactory.addAlias("feed","feedBean");
