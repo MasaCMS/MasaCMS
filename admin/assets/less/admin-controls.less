@@ -108,17 +108,27 @@
 			  margin: 8px 0 4px 0;
 		   }
 
-
 			.btn:not([class*="btn-"]) + *{
 				float: left;
 				clear: left;
 				margin-top: 8px;
 			}
 
-		   label + .btn:not([class*="btn-"]),
-		   label > div + .btn:not([class*="btn-"]){
-		   	margin-top: 8px;
-		   }
+			label + .btn:not([class*="btn-"]),
+			label > div + .btn:not([class*="btn-"]){
+				margin-top: 8px;
+			}
+
+			label.checkbox.inline,
+			label.radio.inline{
+			  width:auto;
+			  padding-left: 20px !important;
+			  margin-top: 0;
+			}
+
+			label.radio.inline{
+			  padding-left: 17px;
+			}
 
 			.mura-input-set{
 
@@ -147,7 +157,6 @@
 
 			.mura-control-group{
 				margin-bottom: 12px;
-
 
 				&>label+textarea:not([class*=mura-constrain]){
 					min-height: 6em;
@@ -264,6 +273,10 @@
 				line-height: 1.2;
 			}
 
+			.mura-control-group label.time-repeat{
+				width: 75px;
+			}
+
 			select,
 			select:focus,
 			input[type=date],
@@ -277,6 +290,7 @@
 			input[type=tel],
 			input[type=range],
 			input[type=text],
+			input[type=text].mura-repeat-option,
 			input[type=url],
 			input[type=week],
 			textarea, 
@@ -302,6 +316,10 @@
 				outline-offset: 0;
 			}
 
+			input[type=text].mura-repeat-option{
+				margin: 0 0;
+			}
+			
 			#assocFileContainer{
 				min-height: 130px;
 	
@@ -420,6 +438,11 @@
 			padding-left:0;
 			margin: 0;
 			clear:both;
+			}
+
+			.mura-control-group .mura-control.highlight,
+			.mura-control.highlight{
+			  background: #565656;
 			}
 
 	} /* .mura__edit__controls__objects */

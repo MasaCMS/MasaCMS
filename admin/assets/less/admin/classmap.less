@@ -169,45 +169,45 @@ main > .content > :first-child:not(.alert){
   // inline groups
   .mura-control-inline{
 
-  > label {
-  float:left;
-  padding-right: 8px;
-  padding-top: 8px;
-  }
-  > input{
-  .make-sm-column(3);
-  .form-control;
-  }
-  > select{
-  .make-sm-column(3);
-  .form-control;
-  }
-
-  > input + select,
-  > select + input,
-  > select + label,
-  > input + label{
-  margin-left: 8px !important;
-  }
-
-  > button {
-  .btn;
-  height: 36px;
-
-    &.btn-sm{
-      padding: 2px 7px;
-      font-size: 12px;
-      height: 23px;
-      margin-top: 8px;
+    > label {
+    float:left;
+    padding-right: 8px;
+    padding-top: 8px;
     }
-  }
-  > i{
-    display: block;
-    float: left;
-    width: 24px;
-    padding-top: 13px;
-    margin-left: 8px;
-  }
+    > input{
+    .make-sm-column(3);
+    .form-control;
+    }
+    > select{
+    .make-sm-column(3);
+    .form-control;
+    }
+
+    > input + select,
+    > select + input,
+    > select + label,
+    > input + label{
+    margin-left: 8px !important;
+    }
+
+    > button {
+    .btn;
+    height: 36px;
+
+      &.btn-sm{
+        padding: 2px 7px;
+        font-size: 12px;
+        height: 23px;
+        margin-top: 8px;
+      }
+    }
+    > i{
+      display: block;
+      float: left;
+      width: 24px;
+      padding-top: 13px;
+      margin-left: 8px;
+    }
   }
 
   .label-inline{
@@ -301,67 +301,6 @@ main > .content > :first-child:not(.alert){
   .mura-panel-title{
   .panel-title;
   }
-
-/* 7.2 SIDEBAR CONTROLS */
-.mura__edit__controls{
-
-  // checkboxes / radio buttons
-  .mura-control-group > .checkbox-group,
-  .mura-control-group > .radio-group{
-    .make-xs-column(12);
-  }
-
-  // ckeditor fields
-  .mura-control-group textarea + .cke{
-    .make-xs-column(12);
-    padding-left:0px;
-    padding-right:0px;
-  }
-
-  // form elements w/ label
-  .mura-control-group > label + textarea:not([class*="mura-constrain"]),
-  .mura-control-group > label + * + textarea:not([class*="mura-constrain"]),
-  .mura-control-group > label + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]),
-  .mura-control-group > label + * + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]),
-  .mura-control-group > label + input[type=password],
-  .mura-control-group > label + * + input[type=password],
-  .mura-control-group > label + input[type=file],
-  .mura-control-group > label + * + input[type=file],
-  .mura-control-group > label + select:not([class*="time"]):not([class*="mura-constrain"]),
-  .mura-control-group > label + * + select:not([class*="time"]):not([class*="mura-constrain"]){
-    .make-sm-column(12);
-    font-size: 13px;
-  }
-
-  div.nice-select.time,
-  select.time,
-  .mura-control-group select.time,
-  .mura-control-group select.time:focus{
-    .make-xs-column(3);
-    margin-right: 8px;
-    padding-right: 8px;
-    min-width: 70px;
-    clear:none;
-  }
-
-  input.datepicker{
-    .make-xs-column(6);
-    margin-right: 8px;
-    padding-right: 8px;
-    min-width: 70px;
-    clear:none;
-
-    + select.time{
-      clear:both;
-
-      + div.nice-select{
-        clear:both;
-      }
-    
-    }
-  }
-
-} /* /.mura__edit__controls */
 
 /* LEGACY MURA / BS2 CLASS MAPPING */
 // headings
@@ -511,10 +450,22 @@ h1:not([class]){
 }
 
 
-// editing panels
+/* 7.2 SIDEBAR CONTROLS */
 .mura__edit__controls{
+  .mura__edit__controls__objects{ 
+ 
+   // checkboxes / radio buttons
+    .mura-control-group > .checkbox-group,
+    .mura-control-group > .radio-group{
+      .make-xs-column(12);
+    }
 
-  .mura__edit__controls__objects{
+    // ckeditor fields
+    .mura-control-group textarea + .cke{
+      .make-xs-column(12);
+      padding-left:0px;
+      padding-right:0px;
+    }
 
     // form elements w/ label
     .mura-control-group > label + textarea:not([class*="mura-constrain"]),
@@ -527,7 +478,105 @@ h1:not([class]){
     .mura-control-group > label + * + input[type=file],
     .mura-control-group > label + select:not([class*="time"]):not([class*="mura-constrain"]),
     .mura-control-group > label + * + select:not([class*="time"]):not([class*="mura-constrain"]){
-      .form-control;
+      .make-sm-column(12);
+      font-size: 13px;
+    }
+
+    div.nice-select.mura-repeat-option,
+    div.nice-select.time,
+    select.time,
+    .mura-control-group select.time,
+    .mura-control-group select.time:focus{
+      .make-xs-column(3);
+      margin-right: 8px;
+      padding-right: 8px;
+      min-width: 70px;
+      clear:none;
+    }
+
+    label.time-repeat + input[type=text].mura-repeat-option{
+      .make-sm-column(1.5);
+    }
+
+    input.datepicker{
+      .make-xs-column(6);
+      margin-right: 8px;
+      padding-right: 8px;
+      min-width: 70px;
+      clear:none;
+
+      + select.time{
+        clear:both;
+
+        + div.nice-select{
+          clear:both;
+        }
+      
+      }
+    }
+
+   // inline groups
+    .mura-control-inline{
+
+        > label {
+        float:left;
+        padding-right: 8px;
+        padding-top: 8px;
+        }
+        > input{
+        .make-sm-column(2);
+        .form-control;
+        }
+        > select{
+        .make-sm-column(2);
+        .form-control;
+        }
+
+        > input + select,
+        > select + input,
+        > select + label,
+        > input + label{
+        margin-left: 8px !important;
+        }
+
+        > button {
+        .btn;
+        height: 36px;
+
+          &.btn-sm{
+            padding: 2px 7px;
+            font-size: 12px;
+            height: 23px;
+            margin-top: 8px;
+          }
+        }
+        > i{
+          display: block;
+          float: left;
+          width: 24px;
+          padding-top: 13px;
+          margin-left: 8px;
+        }
+      }
+
+      .label-inline{
+      input, select{
+        margin-left: 8px;
+        margin-right: 8px;
+      }
+    }
+
+    // form elements w/ label
+    .mura-control-group > label + textarea:not([class*="mura-constrain"]),
+    .mura-control-group > label + * + textarea:not([class*="mura-constrain"]),
+    .mura-control-group > label + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]),
+    .mura-control-group > label + * + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]),
+    .mura-control-group > label + input[type=password],
+    .mura-control-group > label + * + input[type=password],
+    .mura-control-group > label + input[type=file],
+    .mura-control-group > label + * + input[type=file],
+    .mura-control-group > label + select:not([class*="time"]):not([class*="mura-constrain"]),
+    .mura-control-group > label + * + select:not([class*="time"]):not([class*="mura-constrain"]){
       .make-xs-column(12);
       font-size: 13px;
     }
@@ -539,7 +588,6 @@ h1:not([class]){
     .mura-control-group > label + * + select.mura-constrain,
     .mura-control-group > label + textarea.mura-constrain,
     .mura-control-group > label + * + textarea.mura-constrain{
-      .form-control;
       .make-sm-column(2.6);
     }
 
@@ -561,10 +609,8 @@ h1:not([class]){
       .make-sm-column(6);
     }
     .mura-control-group .mura-interval-end input[type=text]{
-      .form-control;
       .make-sm-column(3);
     }
 
-  } /* /..mura__edit__controls__objects */
-
+  } /* /.mura__edit__controls__objects */
 } /* /.mura__edit__controls */
