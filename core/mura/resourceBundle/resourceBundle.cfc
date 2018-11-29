@@ -110,18 +110,12 @@ component extends="mura.cfobject" output="false" hint="This provides access to l
 		var thisLang=listFirst(variables.Locale,"_");
 		var thisDir=GetDirectoryFromPath(variables.rbFile);
 		var thisFile=getFileFromPath(variables.rbFile);
-		var thisRBfile=thisDir & listFirst(thisFile,".") & "_"& variables.Locale & "." & listLast(thisFile,".");
+		var thisRBfile=thisDir & variables.Locale & ".properties";
 		var local=structNew();
 		var linecheck=false;
 
 		if (NOT fileExists(thisRBfile))// still nothing? strip thisRBfile back to base rb
-			thisRBfile=thisDir & thisLang & "." & listLast(thisFile,".");
-
-		if (NOT fileExists(thisRBfile)) //try just the language
-			thisRBfile=thisDir & listFirst(thisFile,".") & "_"& thisLang & "." & listLast(thisFile,".");
-
-		if (NOT fileExists(thisRBfile))// still nothing? strip thisRBfile back to base rb
-			thisRBFile=variables.rbFile;
+			thisRBfile=thisDir & thisLang & ".properties";
 
 		if (fileExists(thisRBFile)) { // final check, if this fails the file is not where it should be
 			isOK=true;
