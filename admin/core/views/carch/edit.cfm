@@ -607,6 +607,25 @@ saveDraftPrompt=function(){
 try{
 	window.top.document.addEventListener("keydown", checkForSave , false);
 } catch (e){};
+
+// Click to edit title
+var titleBlock = document.getElementById('mura-content-title-render');
+titleBlock.onclick = function(event){
+
+	if (!(titleBlock.className == 'editing')){
+
+		var holder = document.createElement('input');
+		holder.style.width = titleBlock.clientWidth + 'px';
+		holder.style.height = titleBlock.clientHeight + 'px';
+		holder.value = titleBlock.innerHTML; 
+		titleBlock.innerHTML = '';
+		titleBlock.appendChild(holder);
+		titleBlock.className = 'editing';
+		holder.focus();
+
+	}
+
+}
 </script>
 
 	<input name="approved" type="hidden" value="0">

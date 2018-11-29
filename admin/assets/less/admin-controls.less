@@ -319,7 +319,7 @@
 			input[type=text].mura-repeat-option{
 				margin: 0 0;
 			}
-			
+
 			#assocFileContainer{
 				min-height: 130px;
 	
@@ -490,11 +490,27 @@
 }
 
 #mura-content-title-render{
-	font-size: 24px;
-	font-weight: 900;
-	margin-bottom: 12px;
-	margin-top: 12px;
+    float: left;
+    font-size: 24px;
+    font-weight: 900;
+    height: 36px;
+    margin-bottom: 12px;
+    margin-top: 12px;
+    padding: 0;
+    width: calc(100% - 35px)!important;
+    cursor: pointer;
+
+	input{
+		cursor: auto;
+		font-size: 24px;
+		font-weight: 900;
+		border: none;
+		overflow: hidden;
+		padding-left: 0;
+		padding-top: 4px;
+	}
 }
+
 #mura-content-body-render{
 	#bodyContainer label{
 		display: none;
