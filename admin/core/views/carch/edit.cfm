@@ -633,6 +633,7 @@ titleBlock.onclick = function(event){
 // Update live title when editing input
 realTitle.onkeyup = function(event){
 	titleBlock.innerHTML = realTitle.value;
+	titleBlock.className = '';
 }
 
 </script>
