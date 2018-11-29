@@ -608,12 +608,12 @@ try{
 	window.top.document.addEventListener("keydown", checkForSave , false);
 } catch (e){};
 
-// Click to edit title
+// Click to edit live title
 var titleBlock = document.getElementById('mura-content-title-render');
+var realTitle = document.getElementById('title');
 titleBlock.onclick = function(event){
 
 	if (!(titleBlock.className == 'editing')){
-
 		var holder = document.createElement('input');
 		holder.style.width = titleBlock.clientWidth + 'px';
 		holder.style.height = titleBlock.clientHeight + 'px';
@@ -622,10 +622,19 @@ titleBlock.onclick = function(event){
 		titleBlock.appendChild(holder);
 		titleBlock.className = 'editing';
 		holder.focus();
-
+		holder.onkeyup = function(event){
+			var newTitle = holder.value;
+			var realTitle = document.getElementById('title');
+			realTitle.value = newTitle;
+			openDisplay('editAdditionalTitles','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');
+		}
 	}
-
 }
+// Update live title when editing input
+realTitle.onkeyup = function(event){
+	titleBlock.innerHTML = realTitle.value;
+}
+
 </script>
 
 	<input name="approved" type="hidden" value="0">
