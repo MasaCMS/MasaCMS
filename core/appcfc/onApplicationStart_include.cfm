@@ -442,7 +442,7 @@ if ( application.setupComplete ) {
 		rsSites=application.configBean.getBean('settingsManager').getList();
 		for(entity in entities){
 			if(isJSON(entity)){
-				getServiceFactory().declareBean(json=entity,siteid=valueList(rsSites.siteid));
+				getServiceFactory().declareBean(json=entity,siteid=valueList(rsSites.siteid),registerOnly=true);
 			}
 		}
 	}
