@@ -44,7 +44,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 */
 component extends="ioc" hint="This provides the primary bean factory that all component instances are instantiated within"{
 
-    public any function declareBean( string beanName, string dottedPath, boolean isSingleton = true, struct overrides = { }, string json='' , siteid='', registerOnly=false) {
+    public any function declareBean( string beanName, string dottedPath, boolean isSingleton = true, struct overrides = { }, string json='' , siteid='', fromExternalConfig=false) {
       if(isDefined('arguments.beanName') && isJSON(arguments.beanName)){
         arguments.json=arguments.beanName;
       }
@@ -127,7 +127,7 @@ component extends="ioc" hint="This provides the primary bean factory that all co
           .set('code',result)
           .save();
 
-					if(isDefined('arguments.registerOnly') && !arguments.registerOnly){
+					if(!isDefined('arguments.fromExternalConfig') || !arguments.fromExternalConfig){
 	          var rsSites=getBean('settingsManager').getList();
 	          createDynamicEntity(entity.entityname,result,valueList(rsSites.siteid));
 	          application.appInitialized=false;

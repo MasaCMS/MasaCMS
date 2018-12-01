@@ -437,12 +437,14 @@ if ( application.setupComplete ) {
 		}
 	}
 
-	if(isDefined('application.muraExternalConfig.global.entities') && isArray(application.muraExternalConfig.global.entities)){
+	if(	isdefined('url.applyDBUpdates')
+			&& isDefined('application.muraExternalConfig.global.entities')
+			&& isArray(application.muraExternalConfig.global.entities)
+		){
 		entities=application.muraExternalConfig.global.entities;
-		rsSites=application.configBean.getBean('settingsManager').getList();
 		for(entity in entities){
 			if(isJSON(entity)){
-				getServiceFactory().declareBean(json=entity,siteid=valueList(rsSites.siteid),registerOnly=true);
+				getServiceFactory().declareBean(json=entity,fromExternalConfig=true);
 			}
 		}
 	}
