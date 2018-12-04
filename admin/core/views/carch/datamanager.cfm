@@ -72,7 +72,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset rc.action=""/>
 </cfif>
 <cfset rc.rsDataInfo=application.contentManager.getDownloadselect(rc.contentid,rc.siteid) />
-<cfset rc.fieldnames=application.dataCollectionManager.getCurrentFieldList(rc.contentid)/>>
 </cfsilent>
 
 	
@@ -122,14 +121,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div class="block block-bordered">
 		  <div class="block-content">
 					<cfif rc.action eq "edit">
-					<cfinclude template="data_manager/dsp_edit.cfm">
+						<cfset rc.fieldnames=application.dataCollectionManager.getCurrentFieldList(rc.contentid)/>
+						<cfinclude template="data_manager/dsp_edit.cfm">
 					<cfelseif rc.action eq "display">
-					<cfinclude template="data_manager/dsp_display.cfm">
+						<cfset rc.fieldnames=application.dataCollectionManager.getFullFieldList(rc.contentid)/>
+						<cfinclude template="data_manager/dsp_display.cfm">
 					<cfelse>
-					<cfinclude template="data_manager/dsp_response.cfm">
+						<cfset rc.fieldnames=application.dataCollectionManager.getCurrentFieldList(rc.contentid)/>
+						<cfinclude template="data_manager/dsp_response.cfm">
 					</cfif>
 			</div> <!-- /.block-content -->
 		</div> <!-- /.block-bordered -->
 	</div> <!-- /.block-constrain -->
 </cfif>	
-	
