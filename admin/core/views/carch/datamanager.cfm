@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -33,12 +33,12 @@ Your custom code
 	/Application.cfc
 	/index.cfm
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfsilent>
@@ -72,15 +72,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset rc.action=""/>
 </cfif>
 <cfset rc.rsDataInfo=application.contentManager.getDownloadselect(rc.contentid,rc.siteid) />
-<cfset rc.fieldnames=application.dataCollectionManager.getCurrentFieldList(rc.contentid)/>>
 </cfsilent>
 
-	
+
 <cfset isNewForm = false />
 
 <cfif isJSON( rc.contentBean.getBody())>
 	<cfset local.formJSON = deserializeJSON( rc.contentBean.getBody() )>
-	
+
 	<cftry>
 		<cfif structKeyExists(local.formJSON.form,"muraormentities") and structKeyExists(local.formJSON.form.formattributes,"muraormentities") and local.formJSON.form.formattributes.muraormentities eq true>
 			<cfset isNewForm = true />
@@ -96,7 +95,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif isNewForm>
 	<cfset objectname = rereplacenocase( rc.contentBean.getValue('filename'),"[^[:alnum:]]","","all" ) />
-	
+
 	<cfinclude template="dsp_secondary_menu.cfm">
 	<cfoutput>
 	<ul class="metadata"><li>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.title')#: <strong>#rc.contentBean.gettitle()#</strong></li>
@@ -105,7 +104,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfinclude template="data_manager/dsp_ormform.cfm">
 <cfelse>
 	<cfoutput>
-	
+
 	<div class="mura-header">
 		<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.managedata')#</h1>
 		<cfinclude template="dsp_secondary_menu.cfm">
@@ -117,19 +116,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div><!-- /.mura-item-metadata -->
 	</div> <!-- /.mura-header -->
 	</cfoutput>
-	
+
 	<div class="block block-constrain">
 		<div class="block block-bordered">
 		  <div class="block-content">
 					<cfif rc.action eq "edit">
+					<cfset rc.fieldnames=application.dataCollectionManager.getCurrentFieldList(rc.contentid)/>
 					<cfinclude template="data_manager/dsp_edit.cfm">
 					<cfelseif rc.action eq "display">
+					<cfset rc.fieldnames=application.dataCollectionManager.getFullFieldList(rc.contentid)/>
 					<cfinclude template="data_manager/dsp_display.cfm">
 					<cfelse>
+					<cfset rc.fieldnames=application.dataCollectionManager.getCurrentFieldList(rc.contentid)/>
 					<cfinclude template="data_manager/dsp_response.cfm">
 					</cfif>
 			</div> <!-- /.block-content -->
 		</div> <!-- /.block-bordered -->
 	</div> <!-- /.block-constrain -->
-</cfif>	
-	
+</cfif>
