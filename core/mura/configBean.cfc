@@ -191,7 +191,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.adminDir="/admin"/>
 <cfset variables.instance.allowedIndexFiles="index.cfm,index.json,index.html"/>
 <cfset variables.instance.HSTSMaxAge=1200/>
-<cfset variables.instance.siteDir=""/>
+<cfset variables.instance.siteDir="sites"/>
 <cfset variables.instance.legacyAppcfcSupport=false>
 <cfset variables.instance.showUsageTags=true>
 <cfset variables.instance.offline404=true>
@@ -248,9 +248,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cfloop>
 
-	<cfif directoryExists(expandPath('/muraWRM/sites/')) and not directoryExists(expandPath('/muraWRM/default/'))>
-		<cfset variables.instance.siteDir='sites'>
-	<cfelse>
+	<cfif not directoryExists(expandPath('/muraWRM/sites/')) and directoryExists(expandPath('/muraWRM/default/'))>
 		<cfset variables.instance.siteDir=''>
 	</cfif>
 

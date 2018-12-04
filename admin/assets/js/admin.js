@@ -752,22 +752,30 @@ function setHTMLEditors() {
 	for(i = 0; i < allPageTags.length; i++) {
 		if(allPageTags[i].className == "htmlEditor") {
 
-			var instance = CKEDITOR.instances[allPageTags[i].id];
-			if(typeof(instance) != 'undefined' && instance != null) {
-				CKEDITOR.remove(instance);
+			if(!allPageTags[i].getAttribute('mura-inprocess')){
+				allPageTags[i].setAttribute('mura-inprocess','true');
+
+				var instance = CKEDITOR.instances[allPageTags[i].id];
+				if(typeof(instance) != 'undefined' && instance != null) {
+					CKEDITOR.remove(instance);
+				}
+
+				if($(document.getElementById(allPageTags[i].id)).val() == '') {
+					$(document.getElementById(allPageTags[i].id)).val("<p></p>")
+				}
+
+				var toolbar= allPageTags[i].getAttribute('data-toolbar') || 'Default';
+
+				$(document.getElementById(allPageTags[i].id)).ckeditor({
+						toolbar: toolbar,
+						customConfig: 'config.js.cfm'
+					},
+					function(editorInstance){
+						allPageTags[i].removeAttribute('mura-inprocess');
+						htmlEditorOnComplete(editorInstance)
+					}
+				);
 			}
-
-			if($(document.getElementById(allPageTags[i].id)).val() == '') {
-				$(document.getElementById(allPageTags[i].id)).val("<p></p>")
-			}
-
-			var toolbar= allPageTags[i].getAttribute('data-toolbar') || 'Default';
-
-			$(document.getElementById(allPageTags[i].id)).ckeditor({
-				toolbar: toolbar,
-				customConfig: 'config.js.cfm'
-			}, htmlEditorOnComplete);
-
 		}
 	}
 }

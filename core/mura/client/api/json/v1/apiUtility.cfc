@@ -30,7 +30,9 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			publicMethods="undeclareEntity,declareEntity,checkSchema,findOne,findMany,findAll,findProperties,findNew,findQuery,save,delete,findCrumbArray,generateCSRFTokens,validateEmail,login,logout,submitForm,findCalendarItems,validate,processAsyncObject,findRelatedContent,getURLForImage,findVersionHistory,findCurrentUser,swagger",
 			entities={
 				'contentnav'={
-					fields="links,images,parentid,moduleid,path,contentid,contenthistid,changesetid,siteid,active,approved,title,menutitle,summary,tags,type,subtype,displayStart,displayStop,display,filename,url,assocurl,isNew,remoteurl,remoteid"
+					public=true,
+					moduleid='00000000000000000000000000000000000',
+					fields="links,images,parentid,moduleid,path,contentid,contenthistid,changesetid,siteid,active,approved,title,menutitle,summary,tags,type,subtype,displayStart,displayStop,display,filename,url,assocurl,isNew,remoteid,remoteurl"
 				}
 			}
 		};
@@ -1688,6 +1690,12 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 	function save(siteid,entityname,id='new',expand=''){
 
 		var $=getBean('$').init(arguments.siteid);
+		var csrfcontext=arguments.id;
+
+		if(arguments.entityname=='contentnav'){
+			arguments.entityname='content';
+			$.event('entityname','content');
+		}
 
 		if(listFindNoCase('user,group',arguments.entityName)){
 			var vals=$.event().getAllValues();
@@ -1714,7 +1722,6 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				structDelete(vals,'email');
 			}
 		}
-
 
 		var entity=$.getBean(arguments.entityName).set($.event().getAllValues());
 		var saveErrors=false;
@@ -1757,7 +1764,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			var loadByparams={'#pk#'=arguments.id};
 		}
 
-		if(!request.muraSessionManagement || $.validateCSRFTokens(context=arguments.id)){
+		if(!request.muraSessionManagement || $.validateCSRFTokens(context=csrfcontext)){
 			if(arguments.entityName=='content' && $.event('type')=='Variation'){
 				entity.loadBy(argumentCollection=loadByparams).set(
 						$.event().getAllValues()
@@ -2039,6 +2046,12 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 	function findNew(entityName,siteid,expand=''){
 
 		var $=getBean('$').init(arguments.siteid);
+
+		if(arguments.entityname=='contentnav'){
+			arguments.entityname='content';
+			$.event('entityname','content');
+		}
+
 		var entity=$.getBean(arguments.entityName);
 
 		if(arguments.entityName=='feed'){
@@ -2785,6 +2798,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 	function delete(entityName,id,siteid){
 
 		var $=getBean('$').init(arguments.siteid);
+		var csrfcontext=arguments.id;
 
 		if(arguments.entityName=='contentnav'){
 			arguments.entityName='content';
@@ -2803,7 +2817,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 						throw(type="authorization");
 					}
 
-					if(!request.muraSessionManagement || $.validateCSRFTokens(context=arguments.id)){
+					if(!request.muraSessionManagement || $.validateCSRFTokens(context=csrfcontext)){
 						entity.deleteVersion();
 					}
 				}
@@ -2820,7 +2834,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 						throw(type="authorization");
 					}
 
-					if(!request.muraSessionManagement || $.validateCSRFTokens(context=arguments.id)){
+					if(!request.muraSessionManagement || $.validateCSRFTokens(context=csrfcontext)){
 						entity.delete();
 					} else {
 						throw(type="invalidTokens");
@@ -2848,7 +2862,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 						throw(type="authorization");
 					}
 
-				if(!request.muraSessionManagement || $.validateCSRFTokens(context=arguments.id)){
+				if(!request.muraSessionManagement || $.validateCSRFTokens(context=csrfcontext)){
 					entity.delete();
 				} else {
 					throw(type="invalidTokens");

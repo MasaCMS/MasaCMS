@@ -1623,6 +1623,8 @@ and parentID is null
 
 			<cfif arguments.approved>
 				<cfset newContentBean.setApproved( 1 ) />
+			<cfelse>
+				<cfset newContentBean.setApproved( 0 ) />
 			</cfif>
 
 			<cfif len( newContentBean.getFileID() )>

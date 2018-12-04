@@ -188,13 +188,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfloop>
 
 	<cfif (arguments.feedBean.getSortBy() eq 'mxpRelevance' or listFirst(arguments.feedBean.getOrderBy(),' ') eq 'mxpRelevance' ) and not (arguments.countOnly)>
-		<cfif not isdefined('session.mura.mxp')>
+		<cfif not isDefined('session.mura.mxp')>
 			<cfset session.mura.mxp=getBean('marketingManager').getDefaults()>
 		</cfif>
 		<cfparam name="session.mura.mxp.trackingProperties.personaid" default=''>
 		<cfparam name="session.mura.mxp.trackingProperties.stageid" default=''>
+
+		<cfset var personaid=session.mura.mxp.trackingProperties.personaid>
+		<cfset var stageid=session.mura.mxp.trackingProperties.stageid>
+
+		<cfif isDefined('url.personaid')>
+			<cfset personaid=url.personaid>
+			<cfset stageid=''>
+		</cfif>
+
+		<cfif isDefined('form.personaid')>
+			<cfset personaid=form.personaid>
+			<cfset stageid=''>
+		</cfif>
+
 		<cfset var mxpRelevanceSort=true>
 	<cfelse>
+		<cfset var personaid="">
+		<cfset var stageid="">
 		<cfset var mxpRelevanceSort=false>
 	</cfif>
 
@@ -265,7 +281,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfif>
 
 					<cfif mxpRelevanceSort>
-					,tracktotal.track_total_score as total_score, (stagetotal.stage_points + personatotal.persona_points) as total_points
+					,tracktotal.track_total_score as total_score, (<cfif len(stageid)>stagetotal.stage_points + </cfif>personatotal.persona_points) as total_points
 					</cfif>
 				<cfelse>
 					count(*) as count
@@ -321,17 +337,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					left join (
 						select sum(persona.points) persona_points, persona.contenthistid
 						from mxp_personapoints persona
-						where persona.personaid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#session.mura.mxp.trackingProperties.personaid#">
+						where persona.personaid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#personaid#">
 						group by persona.contenthistid
 					) personatotal on (tcontent.contenthistid = personatotal.contenthistid)
 
-					left join (
-						select sum(stage.points) stage_points, stage.contenthistid
-						from mxp_stagepoints stage
-						where stage.stageid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#session.mura.mxp.trackingProperties.stageid#">
-						group by stage.contenthistid
-					) stagetotal on (tcontent.contenthistid = stagetotal.contenthistid)
-
+					<cfif len(stageid)>
+						left join (
+							select sum(stage.points) stage_points, stage.contenthistid
+							from mxp_stagepoints stage
+							where stage.stageid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#stageid#">
+							group by stage.contenthistid
+						) stagetotal on (tcontent.contenthistid = stagetotal.contenthistid)
+					</cfif>
 					left join (
 						select sum(track.points) track_total_score, track.contentid
 						from mxp_conversiontrack track

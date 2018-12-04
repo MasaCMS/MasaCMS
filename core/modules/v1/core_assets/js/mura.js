@@ -494,6 +494,17 @@ var Mura=(function(){
     return Mura._requestcontext.undeclareEntity(entityName,deleteSchema);
   }
 
+	/**
+   * openGate - Open's content gate when using MXP
+   *
+   * @param  {string} contentid Optional: default's to Mura.contentid
+   * @return {Promise}
+   * @memberof {class} Mura
+   */
+  function openGate(contentid) {
+    return Mura._requestcontext.openGate(contentid);
+  }
+
   /**
    * logout - Logs user out
    *
@@ -786,7 +797,7 @@ var Mura=(function(){
               '&client_id=' + encodeURIComponent(
                   client_id) + '&client_secret=' +
               encodeURIComponent(client_secret) +
-              '&cacheid=' + Math.random()).then(function(
+              '&_cacheid=' + Math.random()).then(function(
               resp) {
               if (resp.data != 'undefined') {
                   resolve(resp.data);
@@ -2040,7 +2051,7 @@ var Mura=(function(){
                       fileref.setAttribute("type","text/javascript");
                       fileref.setAttribute(
                         "src",
-                        "https://www.google.com/recaptcha/api.js?onload=MuraCheckForReCaptcha&render=explicit&hl=" +  Mura.reCAPTCHALanguage
+                        "https://www.recaptcha.net/recaptcha/api.js?onload=MuraCheckForReCaptcha&render=explicit&hl=" +  Mura.reCAPTCHALanguage
                       );
 
                       document.getElementsByTagName("head")[0].appendChild(fileref);
@@ -2048,7 +2059,7 @@ var Mura=(function(){
 
                   if (find(".g-recaptcha-container").length) {
                       loader().loadjs(
-                          "https://www.google.com/recaptcha/api.js?onload=MuraCheckForReCaptcha&render=explicit&hl=" +
+                          "https://www.recaptcha.net/recaptcha/api.js?onload=MuraCheckForReCaptcha&render=explicit&hl=" +
                           Mura.reCAPTCHALanguage,
                           function() {
                               find(
@@ -3503,7 +3514,8 @@ var Mura=(function(){
               mode: 'json',
               declareEntity:declareEntity,
               undeclareEntity:undeclareEntity,
-              buildDisplayRegion:buildDisplayRegion
+              buildDisplayRegion:buildDisplayRegion,
+							openGate:openGate
           }
       );
 
@@ -13030,6 +13042,23 @@ Core.prototype=
 	{
 	init:function(){
 	},
+
+	/**
+	 * invoke - Invokes a method
+	 *
+	 * @param  {string} funcName Method to call
+	 * @param  {object} params Arguments to submit to method
+	 * @return {any}
+	 */
+	invoke:function(funcName,params){
+		var self = this;
+		params=params || {};
+
+		if(this[funcName]=='function'){
+			return this[funcName].apply(this,params);
+		}
+	},
+
 	/**
 	 * trigger - Triggers custom event on Mura objects
 	 *
@@ -13941,7 +13970,7 @@ Mura.RequestContext=Mura.Core.extend(
                   async: true,
                   type: 'get',
                   url: Mura.apiEndpoint +
-                      'findCurrentUser?fields=' + params.fields + 'cacheid=' +
+                      'findCurrentUser?fields=' + params.fields + '_cacheid=' +
                       Math.random(),
                   success: function(resp) {
                       if (typeof resolve ==
@@ -13977,7 +14006,7 @@ Mura.RequestContext=Mura.Core.extend(
       params.entityname = params.entityname || 'content';
       params.siteid = params.siteid || Mura.siteid;
       params.method = params.method || 'findQuery';
-      params['cacheid'] == Math.random();
+      params['_cacheid'] == Math.random();
 
       return new Promise(function(resolve, reject) {
 
@@ -14045,6 +14074,71 @@ Mura.RequestContext=Mura.Core.extend(
       });
 
   },
+
+	/**
+	* openGate - Open's content gate when using MXP
+	*
+	* @param  {string} contentid Optional: default's to Mura.contentid
+	* @return {Promise}
+	* @memberof {class
+	*/
+	openGate:function(contentid) {
+		var self=this;
+		contentid=contentid || Mura.contentid;
+		if(contentid){
+			if(Mura.mode.toLowerCase() == 'rest'){
+				return new Promise(function(resolve, reject) {
+					self.request({
+							async: true,
+							type: 'POST',
+							url: Mura.apiEndpoint + '/gatedasset/open',
+							data:{
+								contentid: contentid
+							},
+							success: function(resp) {
+								if (typeof resolve =='function' && typeof resp.data != 'undefined') {
+									resolve(resp.data);
+								} else if (typeof reject =='function' && typeof resp.error != 'undefined') {
+									resolve(resp);
+								} else if (typeof resolve =='function'){
+									resolve(resp);
+								}
+							}
+						}
+					);
+				});
+			} else {
+				return new Promise(function(resolve, reject) {
+						self.request({
+								type: 'POST',
+								url: Mura.apiEndpoint + '?method=generateCSRFTokens',
+								data: {context: contentid},
+								success: function(resp) {
+									self.request({
+										async: true,
+										type: 'POST',
+										url: Mura.apiEndpoint + '/gatedasset/open',
+										data:{
+											contentid: contentid
+										},
+										success: function(resp) {
+											if (typeof resolve =='function' && typeof resp.data != 'undefined') {
+												resolve(resp.data);
+											} else if (typeof reject =='function' && typeof resp.error != 'undefined') {
+												resolve(resp);
+											} else if (typeof resolve =='function'){
+												resolve(resp);
+											}
+										}
+									}
+									);
+								}
+						});
+				});
+			}
+		}
+	},
+
 
   /**
    * logout - Logs user out
@@ -14311,6 +14405,120 @@ Mura.Entity = Mura.Core.extend(
 			return this;
 		},
 
+		/**
+		 * getEnpoint - Returns API endpoint for entity type
+		 *
+		 * @return {string} All Headers
+		 */
+		getApiEndPoint:function(){
+			return  Mura.apiEndpoint + this.get('entityname') + '/';
+		},
+
+		/**
+		 * invoke - Invokes a method
+		 *
+		 * @param  {string} funcName Method to call
+		 * @param  {object} params Arguments to submit to method
+		 * @param  {string} method GET or POST
+		 * @return {any} 
+		 */
+		invoke:function(funcName,params,method){
+			var self = this;
+
+			if(typeof method=='undefined' && typeof params=='string'){
+				method=params;
+				params={};
+			}
+
+			params=params || {};
+			method=method || "post";
+
+			if(this[funcName]=='function'){
+				return this[funcName].apply(this,params);
+			}
+
+			return new Promise(function(resolve,reject) {
+					self._requestcontext.request({
+						type: method.toLowerCase(),
+						url: self.getApiEndPoint() + funcName,
+						data: Mura.extend(params,{
+								'_cacheid': Math.random()
+							}),
+						success: function(resp) {
+							if (resp.data != 'undefined'  ) {
+									if (typeof resolve ==  'function') {
+											resolve(resp.data);
+									}
+							} else {
+									if (
+											typeof reject == 'function'
+									) {
+											reject(resp);
+									}
+							}
+						},
+						error: function(resp) {
+							resp=Mura.parseString(resp.response);
+							if (typeof reject == 'function'){
+									reject(resp);
+							}
+						}
+				});
+			});
+		},
+
+		/**
+		 * invokeWithCSRF - Proxies method call to remote api, but first generates CSRF tokens based on funcName
+		 *
+		 * @param  {string} funcName Method to call
+		 * @param  {object} params Arguments to submit to method
+		 * @param  {string} method GET or POST
+		 * @return {Promise} All Headers
+		 */
+		invokeWithCSRF:function(funcName,params,method){
+			if(Mura.mode.toLowerCase() == 'rest'){
+				return new Promise(function(resolve,reject) {
+					return self.invoke(
+						funcName,
+						Mura.extend(params,resp.data),
+						method
+					).then(resolve,reject);
+				});
+			} else {
+				var self = this;
+				return new Promise(function(resolve,reject) {
+					self._requestcontext.request({
+							type: 'post',
+							url: Mura.apiEndpoint + '?method=generateCSRFTokens',
+							data: {
+									siteid: self.get('siteid'),
+									context: funcName
+							},
+							success: function(resp) {
+								if (resp.data != 'undefined'  ) {
+									self.invoke(
+										funcName,
+										Mura.extend(params,resp.data),
+										method
+									).then(resolve,reject);
+								} else {
+									if (typeof reject == 'function'){
+											reject(resp);
+									}
+								}
+							},
+							error: function(resp) {
+								resp=Mura.parseString(resp.response);
+								if (typeof reject == 'function'){
+										reject(resp);
+								}
+							}
+					});
+				});
+
+			}
+		},
+
     /**
      * exists - Returns if the entity was previously saved
      *
@@ -14488,7 +14696,7 @@ Mura.Entity = Mura.Core.extend(
                     entityname: self.get('entityname'),
                     method: 'findNew',
                     siteid: self.get('siteid'),
-                    'cacheid': Math.random()
+                    '_cacheid': Math.random()
                 },
                 params
             );
@@ -14520,7 +14728,7 @@ Mura.Entity = Mura.Core.extend(
                       entityname: self.get('entityname'),
                       method: 'checkSchema',
                       siteid: self.get('siteid'),
-                      'cacheid': Math.random()
+                      '_cacheid': Math.random()
                   },
                 success: function(  resp) {
                     if (resp.data != 'undefined'  ) {
@@ -14554,7 +14762,7 @@ Mura.Entity = Mura.Core.extend(
                                     entityname: self.get('entityname'),
                                     method: 'checkSchema',
                                     siteid: self.get('siteid'),
-                                    'cacheid': Math.random()
+                                    '_cacheid': Math.random()
                                 }, {
                                     'csrf_token': resp.data.csrf_token,
                                     'csrf_token_expires': resp.data.csrf_token_expires
@@ -14604,7 +14812,7 @@ Mura.Entity = Mura.Core.extend(
 												deleteSchema: deleteSchema,
                         method: 'undeclareEntity',
                         siteid: self.get('siteid'),
-                        'cacheid': Math.random()
+                        '_cacheid': Math.random()
                       },
                 success: function(  resp) {
                     if (resp.data != 'undefined'  ) {
@@ -14638,7 +14846,7 @@ Mura.Entity = Mura.Core.extend(
                                     entityname: self.get('entityname'),
                                     method: 'undeclareEntity',
                                     siteid: self.get('siteid'),
-                                    'cacheid': Math.random()
+                                    '_cacheid': Math.random()
                                 }, {
                                     'csrf_token': resp.data.csrf_token,
                                     'csrf_token_expires': resp.data.csrf_token_expires
@@ -14701,7 +14909,7 @@ Mura.Entity = Mura.Core.extend(
                     entityname: self.get('entityname').toLowerCase(),
                     method: 'findQuery',
                     siteid: self.get( 'siteid'),
-                    'cacheid': Math.random(),
+                    '_cacheid': Math.random(),
                 },
                 params
             );
@@ -15358,7 +15566,7 @@ Mura.Feed = Mura.Core.extend(
 	/** @lends Mura.Feed.prototype */
 	{
 		init: function(siteid, entityname, requestcontext) {
-			this.queryString = entityname + '/?cacheid=' + Math.random();
+			this.queryString = entityname + '/?_cacheid=' + Math.random();
 			this.propIndex = 0;
 
 			this._requestcontext=requestcontext || Mura._requestcontext;
@@ -18504,12 +18712,11 @@ renderPaging:function() {
 					data['csrf_token']=resp.data['csrf_token'];
 
 					Mura.post(
-                        Mura.apiEndpoint + '?method=processAsyncObject',
-                        data)
-                        .then(function(resp){
-                            if(typeof resp.data.errors == 'object' && !Mura.isEmptyObject(resp.data.errors)){
+            Mura.apiEndpoint + '?method=processAsyncObject',
+            data).then(function(resp){
+              if(typeof resp.data.errors == 'object' && !Mura.isEmptyObject(resp.data.errors)){
 								self.showErrors( resp.data.errors );
-                            } else if(typeof resp.data.redirect != 'undefined') {
+            	} else if(typeof resp.data.redirect != 'undefined') {
 								if(resp.data.redirect && resp.data.redirect != location.href){
 									location.href=resp.data.redirect;
 								} else {
@@ -18517,9 +18724,9 @@ renderPaging:function() {
 								}
 							} else {
 								self.currentpage = mura(button).data('page');
-                                self.renderForm();
-                            }
-                        }
+                self.renderForm();
+              }
+            }
 					);
 				}
 			});
@@ -18995,14 +19202,18 @@ showErrors: function( errors ) {
 		}
 	}
 
-	//var html = Mura.templates['error'](errorData);
-	//console.log(errorData);
-
 	mura(self.context.formEl).find('.g-recaptcha-container').each(function(el){
 		grecaptcha.reset(el.getAttribute('data-widgetid'));
 	});
 
-	//mura(".error-container-" + self.context.objectid,self.context.formEl).html(html);
+	var errorsSel=mura(this.context.formEl).find('.mura-response-error');
+
+	if(errorsSel.length){
+		errorsSel=errorsSel.first().node;
+		if(typeof errorsSel.scrollIntoView != 'undefined'){
+			errorsSel.scrollIntoView(true);
+		}
+	}
 },
 
 
