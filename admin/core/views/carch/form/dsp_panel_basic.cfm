@@ -228,7 +228,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 										fckEditor.config.EditorAreaCSS	= '#application.settingsManager.getSite(rc.siteid).getThemeAssetPath()#/css/editor.css';
 										fckEditor.config.StylesXmlPath = '#application.settingsManager.getSite(rc.siteid).getThemeAssetPath()#/css/fckstyles.xml';
 										fckEditor.width			= "98%";
-										fckEditor.height		= 550;
+										fckEditor.height		= "50vh";
 										fckEditor.config.DefaultLanguage=lcase(session.rb);
 										fckEditor.config.AutoDetectLanguage=false;
 										if (rc.moduleID eq "00000000000000000000000000000000000"){
@@ -285,7 +285,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 											jQuery('##body').ckeditor(
 											{ toolbar:<cfif rc.type eq "Form">'Form'<cfelse>'Default'</cfif>,
-											height:'550',
+											height:'50vh',
 											customConfig : 'config.js.cfm'
 											},
 												function(editorInstance){
