@@ -1,3 +1,8 @@
+/* variables */
+
+@editcalcheight: ~"calc(100vh - 216px)";
+@editcalcwidth: ~"calc(100% - 350px)";
+
 .mura__edit__controls{
 	background-color: #454545;
 	float: right;
@@ -5,8 +10,8 @@
 	padding: 0 !important;
 	width: 300px;
 	min-width: 300px;
-	max-width: ~"calc(100% - 350px)" !important;
-	min-height: 84vh !important;	
+	max-width: @editcalcwidth !important;
+	min-height: @editcalcheight !important;	
 	text-transform: none;
 
 	#mura__edit__settings__filter{
@@ -450,8 +455,15 @@
 
 } /* .mura__edit__controls */
 
+/* sidebar-tab class on body alters layout slightly */
+body.sidebar-tab{
+	.block-content{
+ 	 padding-bottom: 0 !important;
+	}
+}
+
 .block-constrain#mura-content-body-block{
-	min-height: 84vh !important;
+	min-height: @editcalcheight !important;
 	margin-top: 0 !important;
 	padding-top: 0 !important;
 	padding-bottom: 0 !important;
@@ -459,8 +471,8 @@
 
 #mura-content-body-block .tab-content{
     clear: none;
-    width: ~"calc(100% - 350px)";
-    min-height: 84vh !important;
+    width: @editcalcwidth;
+    min-height: @editcalcheight !important;
 
     .mura-control-group textarea+.cke{
     	width: 100%;

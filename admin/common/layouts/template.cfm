@@ -82,6 +82,7 @@
 		<cfparam name="rc.renderMuraAlerts" default="#application.configBean.getValue(property='renderMuraAlerts',defaultValue=true)#">
 		<cfparam name="rc.activepanel" default="0">
 		<cfparam name="rc.siteid" default="#session.siteID#">
+		<cfparam name="rc.bodyclass" default="">
 		<cfparam name="application.coreversion" default="#application.configBean.getVersion()#">
 		<!--- default site id --->
 		<cfif not len(rc.siteID)>
@@ -95,6 +96,7 @@
 				<cfswitch expression="#rc.moduleID#">
 				<cfcase value="00000000000000000000000000000000000,00000000000000000000000000000000003,00000000000000000000000000000000004,00000000000000000000000000000000099">
 					<cfset moduleTitle="Site Content"/>
+					<cfset rc.bodyclass = 'sidebar-tab'>
 				</cfcase>
 				<cfdefaultcase>
 					<cfif rc.originalfuseaction eq "imagedetails">
@@ -274,7 +276,7 @@
 	</cfif>
   </head>
   <!--- use class no-constrain to remove fixed-width on inner containers --->
-  <body id="#rc.originalcircuit#" class="mura-admin header-navbar-fixed no-constrain">
+  <body id="#rc.originalcircuit#" class="mura-admin header-navbar-fixed no-constrain #trim(rc.bodyclass)#">
 
     <!-- Page Container -->
     <div id="page-container" class="<cfif session.siteid neq ''  and rc.$.currentUser().isLoggedIn() and rc.$.currentUser().isPrivateUser()>sidebar-l</cfif> sidebar-o <cfif cookie.ADMINSIDEBAR is 'off'> sidebar-mini</cfif> side-overlay-hover side-scroll header-navbar-fixed">
