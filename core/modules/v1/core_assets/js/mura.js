@@ -14394,18 +14394,18 @@ Mura.Entity = Mura.Core.extend(
 		 * @return {string} All Headers
 		 */
 		getApiEndPoint:function(){
-			return  Mura.apiEndpoint + '/' + this.get('entityname') + '/';
+			return  Mura.apiEndpoint + this.get('entityname') + '/';
 		},
 
 		/**
-		 * proxyFunc - Proxies method call to remote api
+		 * invoke - Proxies method call to remote api
 		 *
 		 * @param  {string} funcName Method to call
 		 * @param  {object} params Arguments to submit to method
 		 * @param  {string} method GET or POST
 		 * @return {Promise} All Headers
 		 */
-		proxyFunc:function(funcName,params,method){
+		invoke:function(funcName,params,method){
 			var self = this;
 
 			if(typeof method=='undefined' && typeof params=='string'){
@@ -14426,19 +14426,76 @@ Mura.Entity = Mura.Core.extend(
 						success: function(  resp) {
 							if (resp.data != 'undefined'  ) {
 									if (typeof resolve ==  'function') {
-											resolve(self);
+											resolve(resp);
 									}
 							} else {
-									self.set('errors',resp.error);
 									if (
 											typeof reject == 'function'
 									) {
-											reject(self);
+											reject(resp);
 									}
+							}
+						},
+						error: function(resp) {
+							resp=Mura.parseString(resp.response);
+							if (typeof reject == 'function'){
+									reject(resp);
 							}
 						}
 				});
 			});
+		},
+
+		/**
+		 * invokeWithCSRF - Proxies method call to remote api, but first generates CSRF tokens based on funcName
+		 *
+		 * @param  {string} funcName Method to call
+		 * @param  {object} params Arguments to submit to method
+		 * @param  {string} method GET or POST
+		 * @return {Promise} All Headers
+		 */
+		invokeWithCSRF:function(funcName,params,method){
+			if(Mura.mode.toLowerCase() == 'rest'){
+				return new Promise(function(resolve,reject) {
+					return self.invoke(
+						funcName,
+						Mura.extend(params,resp.data),
+						method
+					).then(resolve,reject);
+				});
+			} else {
+				var self = this;
+				return new Promise(function(resolve,reject) {
+					self._requestcontext.request({
+							type: 'post',
+							url: Mura.apiEndpoint + '?method=generateCSRFTokens',
+							data: {
+									siteid: self.get('siteid'),
+									context: funcName
+							},
+							success: function(resp) {
+								if (resp.data != 'undefined'  ) {
+									self.invoke(
+										funcName,
+										Mura.extend(params,resp.data),
+										method
+									).then(resolve,reject);
+								} else {
+									if (typeof reject == 'function'){
+											reject(resp);
+									}
+								}
+							},
+							error: function(resp) {
+								resp=Mura.parseString(resp.response);
+								if (typeof reject == 'function'){
+										reject(resp);
+								}
+							}
+					});
+				});
+
+			}
 		},
 
     /**
