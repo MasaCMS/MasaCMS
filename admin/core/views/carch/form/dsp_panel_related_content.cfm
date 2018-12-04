@@ -41,33 +41,25 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.relatedcontent"))/>
 <cfset tabList=listAppend(tabList,"tabRelatedcontent")>
-
 <cfset subtype = application.classExtensionManager.getSubTypeByName(rc.contentBean.getType(), rc.contentBean.getSubType(), rc.contentBean.getSiteID())>
 <cfset relatedContentSets = subtype.getRelatedContentSets()>
 
 <cfoutput>
-<div id="tabRelatedcontent" class="tab-pane">
-
-		<!-- block -->
-	  <div class="block block-bordered">
-	  	<!-- block header -->
-	    <div class="block-header">
-					<h3 class="block-title">Related Content</h3>
-	    </div>
-	    <!-- /block header -->
-			
-			<!-- block content -->
-			<div class="block-content">
-
-	<span id="extendset-container-tabrelatedcontenttop" class="extendset-container"></span>
-	
-		<div id="selectRelatedContent"><!--- target for ajax ---></div>
-			<div id="selectedRelatedContent" class="mura-control-group">
+	<div class="mura-panel panel">
+		<div class="mura-panel-heading" role="tab" id="heading-relatedcontent">
+			<h4 class="mura-panel-title">
+				<a class="collapse" role="button" data-toggle="collapse" data-parent="##content-panels" href="##panel-relatedcontent" aria-expanded="false" aria-controls="panel-relatedcontent">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.relatedcontent")#</a>
+			</h4>
 		</div>
-		<input id="relatedContentSetData" type="hidden" name="relatedContentSetData" value="" />	
-		</div> <!--- /.block-content --->
-	</div> <!--- /.block --->		
-</div> <!--- /.tab-pane --->
+		<div id="panel-relatedcontent" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-relatedcontent" aria-expanded="false" style="height: 0px;">
+			<div class="mura-panel-body">
+				<span id="extendset-container-tabrelatedcontenttop" class="extendset-container"></span>
+				<div id="selectRelatedContent"><!--- target for ajax ---></div>
+				<div id="selectedRelatedContent" class="mura-control-group">
+			</div>
+			<input id="relatedContentSetData" type="hidden" name="relatedContentSetData" value="" />	
+		</div>
+	</div>
+</div> 
 </cfoutput>

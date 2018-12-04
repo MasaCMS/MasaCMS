@@ -136,15 +136,9 @@
 		<script type="text/javascript" src="#application.configBean.getContext()#/core/vendor/colorpicker/js/bootstrap-colorpicker.js?coreversion=#application.coreversion#"></script>
 		<link href="#application.configBean.getContext()#/core/vendor/colorpicker/css/colorpicker.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
 
-		<!-- nice-select: select box replacement (sidebar configurator only) -->
+		<!-- nice-select: select box replacement (sidebar controls) -->
 		<cfif rc.sourceFrame neq 'modal'>
-	    <link rel="stylesheet" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/css/nice-select.min.css">
 			<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery.nice-select.min.js" type="text/javascript"></script>
-	    <script type="text/javascript">
-	    	$(document).ready(function() {
-				//$('.mura ##configurator select').niceSelect();
-			});
-	    </script>
 		</cfif>
 		<!-- /nice-select -->
 

@@ -41,25 +41,17 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-
-<cfsilent>
-<cfset rsUsage=application.contentGateway.getUsage(rc.contentID,session.siteid) />
-</cfsilent>
-<cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.usagereport"))/>
+<cfset rsUsage=application.contentGateway.getUsage(rc.contentID,session.siteid)>
 <cfset tabList=listAppend(tabList,"tabUsagereport")>
 <cfoutput>
-<div id="tabUsagereport" class="tab-pane">
-
-    <!-- block -->
-    <div class="block block-bordered">
-      <!-- block header -->
-      <div class="block-header">
-			   <h3 class="block-title">Usage Report</h3>
-      </div>
-      <!-- /block header -->
-
-      <!-- block content -->
-      <div class="block-content">
+<div class="mura-panel panel">
+  <div class="mura-panel-heading" role="tab" id="heading-usagereport">
+    <h4 class="mura-panel-title">
+      <a class="collapse" role="button" data-toggle="collapse" data-parent="##content-panels" href="##panel-usagereport" aria-expanded="false" aria-controls="panel-usagereport">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.usagereport")#</a>
+    </h4>
+  </div>
+    <div id="panel-usagereport" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-usagereport" aria-expanded="false" style="height: 0px;">
+      <div class="mura-panel-body">
     <span id="extendset-container-tabusagereporttop" class="extendset-container"></span>
 
     <div class="mura-control-group">
@@ -93,7 +85,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     <span id="extendset-container-usagereport" class="extendset-usagereport"></span>
     <span id="extendset-container-tabusagereportbottom" class="extendset-container"></span>
 
-    </div> <!--- /.block-content --->
-  </div> <!--- /.block --->
-</div> <!--- /.tab-pane --->
+    </div>
+  </div>
+</div> 
 </cfoutput>

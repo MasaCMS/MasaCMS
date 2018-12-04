@@ -71,6 +71,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				Mura.loader().loadjs(
 						'#variables.$.siteConfig().getAdminPath(complete=completeurls)#/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#',
 						'#variables.$.siteConfig().getAdminPath(complete=completeurls)#/assets/js/frontendtools.js.cfm?siteid=#esapiEncode("url",variables.$.event("siteid"))#&contenthistid=#$.content("contenthistid")#&coreversion=#application.coreversion#&showInlineEditor=#getShowInlineEditor()#&contentType=Variation&cacheid=' + Math.random());
+
+				Mura('.mura-toolbar').show();
+
 			});
 		</script>
 		</cfoutput>
@@ -78,7 +81,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfoutput>
 		<link href="#variables.$.siteConfig().getAdminPath(complete=completeurls)#/assets/css/admin-frontend.min.css" rel="stylesheet" type="text/css" />
 		<script type="text/javascript" src="#variables.$.siteConfig().getAdminPath(complete=completeurls)#/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#"></script>
-
 		<script>
 			var hasMuraLoader=(typeof Mura != 'undefined' && (typeof Mura.loader != 'undefined' || typeof window.queuedMuraCmds != 'undefined'));
 			if(!window.CKEDITOR){
@@ -91,10 +93,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				} else {
 					$.getScript('#variables.$.siteConfig().getCorePath(complete=completeurls)#/vendor/ckeditor/ckeditor.js');
 				}
-
 				window.CKEDITOR_BASEPATH = '#variables.$.siteConfig().getCorePath(complete=completeurls)#/vendor/ckeditor/';
 			}
-
 			<cfif not $.getContentRenderer().useLayoutManager()>
 			if(!window.CKFinder){
 				if(hasMuraLoader){
@@ -106,31 +106,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				}
 			}
 			</cfif>
-
 			if(hasMuraLoader){
 				Mura(function(){
 					Mura.loader().loadjs('#variables.$.siteConfig().getAdminPath(complete=completeurls)#/assets/js/frontendtools.js.cfm?siteid=#esapiEncode("url",variables.$.event("siteid"))#&contenthistid=#$.content("contenthistid")#&coreversion=#application.coreversion#&showInlineEditor=#getShowInlineEditor()#&cacheid=' + Math.random());
+					Mura('.mura-toolbar').show();
 				});
 			} else {
 				$.getScript('#variables.$.siteConfig().getAdminPath(complete=completeurls)#/assets/js/frontendtools.js.cfm?siteid=#esapiEncode("url",variables.$.event("siteid"))#&contenthistid=#$.content("contenthistid")#&coreversion=#application.coreversion#&showInlineEditor=#getShowInlineEditor()#&cacheid=' + Math.random());
+				$('.mura-toolbar').show();
 			}
 		</script>
-
-
 		<!---[if LT IE9]>
 		   <style type="text/css">
-
 		   ##frontEndToolsModalContainer {
 		         background: transparent;
 		          filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=##00000085,endColorstr=##00000085);
 		          zoom: 1;
 		       }
-
 		    </style>
 		<![endif]--->
 		</cfoutput>
 	</cfif>
-
 	<cfif getShowToolbar()>
 		<cfsilent>
 			<cfset variables.adminBase=variables.$.siteConfig().getAdminPath(complete=completeurls)/>
@@ -229,14 +225,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		</cfsilent>
 		<cfoutput>
-		<div class="mura mura-toolbar">
+		<div class="mura mura-toolbar" style="display:none;">
 			<a id="frontEndToolsHandle" href="##" onclick="if (document.getElementById('frontEndTools').style.display == 'none') { createCookie('FETDISPLAY','block',5); document.getElementById('mura-fe-logo').src='#variables.$.siteConfig().getAdminPath(complete=completeurls)#/assets/images/mura-logo-fe.svg';} else { createCookie('FETDISPLAY','none',5); document.getElementById('mura-fe-logo').src='#variables.$.siteConfig().getAdminPath(complete=completeurls)#/assets/images/mura-logo-fe-icon.svg'} toggleAdminToolbar(); return false;">
 				<img id="mura-fe-logo" src="#variables.$.siteConfig().getAdminPath(complete=completeurls)#/assets/images/mura-logo-fe<cfif Cookie.fetDisplay eq 'none'>-icon</cfif>.svg" />
 			</a>
-
 			<div id="frontEndTools" style="display: #Cookie.fetDisplay#">
 				<cfif $.currentUser().isLoggedIn() and not request.contentBean.getIsNew()>
-
 					<ul id="tools-status"<cfif variables.isLocked> class="status-locked"</cfif>>
 						<li id="adminStatus">
 							<cfif $.content('active') gt 0 and  $.content('approved')  gt 0>
@@ -253,7 +247,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 										#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.published")#
 									</a>
 								</cfif>
-
 								<!--- wildcard: approved, published --->
 							<cfelseif len($.content('approvalStatus')) and $.content().requiresApproval() >
 								<a href="#variables.approvalrequestlink#" data-configurator="true" #variables.targetHook#>
@@ -275,7 +268,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.draft")#
 								</a>
 								</cfif>
-
 							<cfelse>
 								<a href="#variables.approvalrequestlink#" data-configurator="true" #variables.targetHook#>
 									<i class="mi-history status-archived"></i>
@@ -284,7 +276,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								</a>
 							</cfif>
 						</li>
-
 						<cfif listFindNoCase('editor,author',request.r.perm)>
 							<!---<cfset edittype=($.content('type') eq 'Variation')?'var':'inline'>--->
 							<cfset edittype='inline'>
@@ -302,7 +293,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 											</cfif>
 											</a>
 										</li>
-
 									</cfif>
 									<cfif $.content('type') eq 'Variation' and (request.r.perm  eq 'editor' or listFind(session.mura.memberships,'S2'))>
 										<li class="mura-edit-toolbar-vartargeting"><a class="mura-#edittype#-updatetargeting"><i class="mi-check"></i> Update</a></li>
@@ -337,7 +327,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 											</ul>
 										</li>
 									</cfif>
-
 									<cfif $.content('type') eq 'Variation'>
 										<li><a class="mura-#edittype#-undo mura-edit-toolbar-content"><i class="mi-undo"></i> Undo</a></li>
 									</cfif>
@@ -347,7 +336,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</cfif>
 					</ul>
 				</cfif>
-
 				<cfif not request.contentBean.getIsNew()>
 					<cfif ListFindNoCase('editor,author',request.r.perm)>
 						<ul id="tools-version">
@@ -359,7 +347,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							--->
 							<li id="adminEditPage" class="dropdown"><a class="dropdown-toggle"><i class="mi-pencil"></i><b class="caret"></b></a>
 								<ul class="dropdown-menu">
-
 								<cfif this.showInlineEditor>
 									<cfif $.content('type') eq 'Variation'>
 										<li id="adminQuickEdit">
@@ -384,7 +371,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 											</a>
 										</li>
 									</cfif>
-
 									<li id="adminFullEdit">
 										<a href="#variables.editLink#"<cfif variables.dolockcheck> data-configurator="true"</cfif> #variables.targetHook#>
 											<cfif $.content('type') eq 'Variation'>
@@ -422,19 +408,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<li id="adminPreview-suspend" class="suspend" style="display:none;"<!--- class="dropdown"--->><a href="##" title="" onclick="return false;"><i class="mi-mobile"></i></a></li>
 							</cfif>
 							<!---</cfif>--->
-
 							<cfif $.currentUser().isPrivateUser()>
 								<li><a href="#variables.adminLink#" title="#application.rbFactory.getKeyValue(session.rb,'layout.sitemanager')#" target="admin"><i class="mi-sitemap"></i></a></li>
 							</cfif>
-
 						</ul>
 					</cfif>
-
 					<!--- BEGIN CHANGESETS --->
 					<cfif $.siteConfig('HasChangeSets')>
-
 						<cfset customMenu=variables.$.renderEvent('onExperienceToolbarRender')>
-
 						<cfif len(customMenu)>
 							#customMenu#
 						<cfelse>
@@ -443,7 +424,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</cfif>
 							<cfset rsChangesets=application.changesetManager.getQuery(siteID=$.event('siteID'),published=0,sortby="PublishDate")>
 							<ul id="tools-changesets">
-
 								<li id="cs-title" class="dropdown"><a id="cs-title-text" class="dropdown-toggle" data-toggle="dropdown"><i>CS</i><cfif request.muraChangesetPreview>#esapiEncode('html',previewData.name)#<cfif isDate(previewData.publishDate)> (#LSDateFormat(previewData.publishDate,session.dateKeyFormat)#)</cfif><cfelse>None Selected</cfif><b class="caret"></b></a>
 									<ul class="dropdown-menu">
 										<li><a href="./?changesetid=">None</a></li>
@@ -456,7 +436,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 										</cfloop>
 									</ul>
 								</li>
-
 								<cfif request.muraChangesetPreview>
 									<cfset previewData=$.currentUser("ChangesetPreviewData")>
 									<cfset changesetMembers=application.changesetManager.getAssignmentsIterator(changesetID=previewData.changesetID,moduleID='00000000000000000000000000000000000')>
@@ -476,7 +455,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 										</ul>
 									</cfif>
 								</li>
-
 								<!--- I can't figure out how to trigger the tooltip but here are the icons for each status:
 									In Selected Changeset - mi-check
 									In Earlier Changeset - mi-code-fork
@@ -511,9 +489,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif len(afterMenu)>
 						#afterMenu#
 					</cfif>
-
 				</cfif>
-
 				<cfif listFindNoCase(session.mura.memberships,'S2IsPrivate')>
 					<cfif $.siteConfig().getValue(property='showDashboard',defaultValue=0)>
 						<ul id="adminDashboard">
@@ -521,14 +497,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</ul>
 					</cfif>
 				</cfif>
-
 				<cfif $.currentUser().isLoggedIn()>
 					<ul id="tools-user">
 						<li id="adminLogOut"><a href="?doaction=logout" title="#application.rbFactory.getKeyValue(session.rb,'layout.logout')#"><i class="mi-sign-out"></i><span>#application.rbFactory.getKeyValue(session.rb,'layout.logout')#</span></a></li>
 						<li id="adminWelcome"><i class="mi-user"></i> #esapiEncode("html","#session.mura.fname# #session.mura.lname#")#</li>
 					</ul>
 				</cfif>
-
 				<!---
 				<cfif this.layoutmanager and $.currentUser().isLoggedIn() and not request.contentBean.getIsNew()>
 					<cfinclude template="layoutmanager.cfm">
@@ -541,5 +515,4 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cfoutput>
 </cfif>
-
 <cfoutput><div class="mura" id="frontEndToolsModalTarget"></div></cfoutput>

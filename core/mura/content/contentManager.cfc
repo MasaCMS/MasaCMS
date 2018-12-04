@@ -2632,8 +2632,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfargument name="aggregation" type="boolean" required="yes" default="false" >
 			<cfargument name="applyPermFilter" type="boolean" required="yes" default="false" >
 			<cfargument name="taggroup" type="string" required="yes" default="" >
+			<cfargument name="useCategoryIntersect" default="false">
 
-			<cfreturn variables.contentGateway.getKids(arguments.moduleID, arguments.siteid, arguments.parentID, arguments.type, arguments.today, arguments.size, arguments.keywords, arguments.hasFeatures, arguments.sortBy, arguments.sortDirection, arguments.categoryID, arguments.relatedID, arguments.tag, arguments.aggregation,arguments.applyPermFilter,arguments.taggroup)>
+			<cfreturn variables.contentGateway.getKids(arguments.moduleID, arguments.siteid, arguments.parentID, arguments.type, arguments.today, arguments.size, arguments.keywords, arguments.hasFeatures, arguments.sortBy, arguments.sortDirection, arguments.categoryID, arguments.relatedID, arguments.tag, arguments.aggregation,arguments.applyPermFilter,arguments.taggroup,arguments.useCategoryIntersect)>
 	</cffunction>
 
 	<cffunction name="getKidsIterator" output="false">
@@ -2653,8 +2654,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfargument name="aggregation" type="boolean" required="yes" default="false" >
 			<cfargument name="applyPermFilter" type="boolean" required="yes" default="false" >
 			<cfargument name="taggroup" type="string" required="yes" default="" >
+			<cfargument name="useCategoryIntersect" default="false">
 
-			<cfreturn variables.contentGateway.getKidsIterator(arguments.moduleID, arguments.siteid, arguments.parentID, arguments.type, arguments.today, arguments.size, arguments.keywords, arguments.hasFeatures, arguments.sortBy, arguments.sortDirection, arguments.categoryID, arguments.relatedID, arguments.tag, arguments.aggregation,arguments.applyPermFilter,arguments.taggroup)>
+			<cfreturn variables.contentGateway.getKidsIterator(arguments.moduleID, arguments.siteid, arguments.parentID, arguments.type, arguments.today, arguments.size, arguments.keywords, arguments.hasFeatures, arguments.sortBy, arguments.sortDirection, arguments.categoryID, arguments.relatedID, arguments.tag, arguments.aggregation,arguments.applyPermFilter,arguments.taggroup,arguments.useCategoryIntersect)>
 	</cffunction>
 
 	<cffunction name="getIterator" output="false">

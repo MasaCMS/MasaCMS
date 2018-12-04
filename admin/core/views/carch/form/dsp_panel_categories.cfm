@@ -41,52 +41,49 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.categorization"))/>
 <cfset tabList=listAppend(tabList,"tabCategorization")>
 <cfoutput>
-	<div id="tabCategorization" class="tab-pane">
+<div class="mura-panel panel">
+	<div class="mura-panel-heading" role="tab" id="heading-categories">
+		<h4 class="mura-panel-title">
+			<a class="collapse" role="button" data-toggle="collapse" data-parent="##content-panels" href="##panel-categories" aria-expanded="false" aria-controls="panel-categories">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.categorization")#</a>
+		</h4>
+	</div>
+		<div id="panel-categories" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-categories" aria-expanded="false" style="height: 0px;">
+			<div class="mura-panel-body">
 
-		<!-- block -->
-	  <div class="block block-bordered">
-	  	<!-- block header -->
-	    <div class="block-header">
-					<h3 class="block-title">Categories</h3>
-	    </div>
-	    <!-- /block header -->
+				<span id="extendset-container-tabcategorizationtop" class="extendset-container"></span>
 
-			<!-- block content -->
-			<div class="block-content">
-		<span id="extendset-container-tabcategorizationtop" class="extendset-container"></span>
+					<div class="mura-control-group">
+						<div class="mura-grid stripe">
+							<dl class="mura-grid-hdr">
+								<dt class="categorytitle">
+										#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.availablecategories')#
+								</dt>
+								<dd class="categoryassignmentwrapper">
+									<!--- <a title="#application.rbFactory.getKeyValue(session.rb,'tooltip.categoryfeatureassignment')#" rel="tooltip" href="##"> --->
+												#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.feature')#<!---  <i class="mi-question-circle"></i>
+									</a> --->
+								</dd>
+							</dl><!--- /.mura-grid-hdr --->
+								<cfset rc.rsCategoryAssign=application.contentManager.getCategoriesByHistID(rc.contentBean.getContentHistID()) />
+								<cf_dsp_categories_nest
+									siteID="#rc.siteID#"
+									parentID=""
+									nestLevel="0"
+									contentBean="#rc.contentBean#"
+									rsCategoryAssign="#rc.rsCategoryAssign#">
 
-			<div class="mura-control-group">
-				<div class="mura-grid stripe">
-					<dl class="mura-grid-hdr">
-						<dt class="categorytitle">
-								#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.availablecategories')#
-						</dt>
-						<dd class="categoryassignmentwrapper">
-							<!--- <a title="#application.rbFactory.getKeyValue(session.rb,'tooltip.categoryfeatureassignment')#" rel="tooltip" href="##"> --->
-										#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.feature')#<!---  <i class="mi-question-circle"></i>
-							</a> --->
-						</dd>
-					</dl><!--- /.mura-grid-hdr --->
-						<cfset rc.rsCategoryAssign=application.contentManager.getCategoriesByHistID(rc.contentBean.getContentHistID()) />
-						<cf_dsp_categories_nest
-							siteID="#rc.siteID#"
-							parentID=""
-							nestLevel="0"
-							contentBean="#rc.contentBean#"
-							rsCategoryAssign="#rc.rsCategoryAssign#">
+						</div><!--- /.mura-grid --->
+					</div>
 
-				</div><!--- /.mura-grid --->
-			</div>
+				<span id="extendset-container-categorization" class="extendset-container"></span>
+				<span id="extendset-container-tabcategorizationbottom" class="extendset-container"></span>
 
-		<span id="extendset-container-categorization" class="extendset-container"></span>
-		<span id="extendset-container-tabcategorizationbottom" class="extendset-container"></span>
+		</div>
+	</div>
+</div> 
 
-		</div> <!--- /.block-content --->
-	</div> <!--- /.block --->
-</div> <!--- /.tab-pane --->
 </cfoutput>
 <script>
 	siteManager.initCategoryAssignments();

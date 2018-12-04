@@ -34,6 +34,8 @@ component extends="mura.cfobject" {
   function handleCallback(){
     //Attempt authentication
     if(getServiceFactory().containsBean(url.loginProvider & 'loginProvider')){
+			param name='url.error' default='';
+			param name='url.state' default='';
       var result = getBean(url.loginProvider & 'loginProvider').validateResult(url.code, url.error, url.state, session.urltoken);
 	    //If authentication successful, redirect user to intended target, or home if no target exists
 	    if( result.status ){
@@ -47,7 +49,11 @@ component extends="mura.cfobject" {
 					if(request.returnFormat eq 'JSON'){
 						request.muraJSONRedirectURL=getBean('configBean').getContext();
 					} else {
-						location(url=getBean('configBean').getContext(), addToken="no");
+						if(len(getBean('configBean').getContext())){
+							location(url=getBean('configBean').getContext(), addToken="no");
+						} else {
+							location(url="./", addToken="no");
+						}
 					}
 	      }
 	    }

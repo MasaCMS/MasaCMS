@@ -70,6 +70,9 @@
 		<cfif not IsDefined("cookie.ADMINSIDEBAR")>
 			<cfset application.utility.setCookie(name="ADMINSIDEBAR",value="off",httponly=false)>
 		</cfif>
+		<cfif not IsDefined("cookie.ADMINCONTROLWIDTH")>
+			<cfset application.utility.setCookie(name="ADMINCONTROLWIDTH",value="300",httponly=false)>
+		</cfif>
 		<cfparam name="request.action" default="core:cplugin.plugin">
 		<cfparam name="rc.originalfuseaction" default="#listLast(listLast(request.action,":"),".")#">
 		<cfparam name="rc.originalcircuit"  default="#listFirst(listLast(request.action,":"),".")#">
@@ -79,6 +82,7 @@
 		<cfparam name="rc.renderMuraAlerts" default="#application.configBean.getValue(property='renderMuraAlerts',defaultValue=true)#">
 		<cfparam name="rc.activepanel" default="0">
 		<cfparam name="rc.siteid" default="#session.siteID#">
+		<cfparam name="rc.bodyclass" default="">
 		<cfparam name="application.coreversion" default="#application.configBean.getVersion()#">
 		<!--- default site id --->
 		<cfif not len(rc.siteID)>
@@ -92,6 +96,7 @@
 				<cfswitch expression="#rc.moduleID#">
 				<cfcase value="00000000000000000000000000000000000,00000000000000000000000000000000003,00000000000000000000000000000000004,00000000000000000000000000000000099">
 					<cfset moduleTitle="Site Content"/>
+					<cfset rc.bodyclass = 'sidebar-tab'>
 				</cfcase>
 				<cfdefaultcase>
 					<cfif rc.originalfuseaction eq "imagedetails">
@@ -236,6 +241,9 @@
 	<script type="text/javascript" src="#application.configBean.getContext()#/core/vendor/colorpicker/js/bootstrap-colorpicker.js?coreversion=#application.coreversion#"></script>
 	<link href="#application.configBean.getContext()#/core/vendor/colorpicker/css/colorpicker.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
 
+	<!-- nice-select: select box replacement (sidebar controls) -->
+	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery.nice-select.min.js" type="text/javascript"></script>
+
 	<!-- JSON -->
 	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/json2.js" type="text/javascript"></script>
 
@@ -268,7 +276,7 @@
 	</cfif>
   </head>
   <!--- use class no-constrain to remove fixed-width on inner containers --->
-  <body id="#rc.originalcircuit#" class="mura-admin header-navbar-fixed<!-- no-constrain-->">
+  <body id="#rc.originalcircuit#" class="mura-admin header-navbar-fixed no-constrain #trim(rc.bodyclass)#">
 
     <!-- Page Container -->
     <div id="page-container" class="<cfif session.siteid neq ''  and rc.$.currentUser().isLoggedIn() and rc.$.currentUser().isPrivateUser()>sidebar-l</cfif> sidebar-o <cfif cookie.ADMINSIDEBAR is 'off'> sidebar-mini</cfif> side-overlay-hover side-scroll header-navbar-fixed">
@@ -330,7 +338,6 @@
 								</cfif>
 							</cfif>
 
-
          	</cfif>
          		<cfif request.action neq "core:cLogin.main">
          			<div id="mura-content">
@@ -347,17 +354,47 @@
     <cfif request.action neq "core:cLogin.main" and isDefined("session.siteid")>
 				<script>
 				$(document).ready(function(){
-					// persist sidebar selection
+					// persist side navigation expand/collapse 
 					$('*[data-action=sidebar_mini_toggle]').click(function(){
 						if($('##page-container').hasClass('sidebar-mini')){
 			 			createCookie('ADMINSIDEBAR','off',5);
 						} else {
 			 			createCookie('ADMINSIDEBAR','on',5);
 						}
+						resizeTabPane();
 					});
 
 					// persist open nav items
 					$('##sidebar .nav-main li ul li a.active').parents('li').parents('ul').parents('li').addClass('open');
+
+					// resizable editing panel
+					$('##mura-content .mura__edit__controls').resizable({
+						handles:'w',
+						maxWidth: 640,
+						minWidth: 300,
+						resize: function (event,ui) {
+				        ui.position.left = ui.originalPosition.left;
+				        ui.size.width = (ui.size.width
+				            - ui.originalSize.width )
+				            + ui.originalSize.width;
+				        resizeTabPane();    
+				     	},
+						stop: function(event,ui){
+							var acw = $(this).width();
+				 			createCookie('ADMINCONTROLWIDTH',acw,5);						
+						}		
+					});
+					
+					// set width of pane relative to side controls
+					var resizeTabPane = function(){
+					   var newW = $('##mura-content-body-block').width() - $('.mura__edit__controls').width() - 50;
+				      $('##mura-content-body-block .tab-content').css('width',newW);
+					}
+					// run on page load
+					resizeTabPane();
+
+					//nice-select 
+					$('.mura__edit__controls .mura-control-group select').niceSelect();
 
 					// header-search
 					$('##mura-header-search-reveal').click(
@@ -417,6 +454,7 @@
 					// run on window resize
 					$(window).on('resize',function(){
 						setBlockHeight();
+						resizeTabPane();
 					});
 
 					// tabdrop: trigger on page load w/ slight delay
@@ -490,6 +528,7 @@
 			themepath:'#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#',
 			siteid:<cfif isDefined('session.siteid') and len(session.siteid)>'#esapiEncode("javascript",session.siteid)#'<cfelse>'default'</cfif>
 			});
+
 			</script>
 
 		</cfif>

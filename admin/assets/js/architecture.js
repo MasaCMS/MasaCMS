@@ -930,7 +930,7 @@ buttons: {
 			external =true;
 		}
 
-		var pars = 'muraAction=cArch.loadSelectedRelatedContent&compactDisplay=true&contenthistid=' + contenthistid + '&type=' + type + '&subtype=' + subtype + '&siteid=' + siteid + '&relatedcontentsetid=' + relatedcontentsetid + '&relateditems=' + relateditems + '&external=' + external +'&cacheid=' + Math.random();
+		var pars = 'muraAction=cArch.loadSelectedRelatedContent&compactDisplay=true&contenthistid=' + contenthistid + '&type=' + type + '&subtype=' + subtype + '&siteid=' + siteid + '&relatedcontentsetid=' + relatedcontentsetid + '&relateditems=' + encodeURIComponent(relateditems) + '&external=' + external +'&cacheid=' + Math.random();
 
 		var d = $('#selectedRelatedContent');
 		d.html('<div class="load-inline"></div>');

@@ -44,9 +44,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <!--- removing galleries
 <cfset typeList="Page,Link,File,Folder,Calendar,Gallery">
 --->
-<cfset typeList="Page,Link,File,Folder,Calendar">
 <cfset $=application.serviceFactory.getBean('$').init(rc.siteID)>
-
+<cfset renderer=$.getContentRenderer()>
+<cfif isDefined('renderer.primaryContentTypes') and len(renderer.primaryContentTypes)>
+	<cfset typeList=renderer.primaryContentTypes>
+<cfelse>
+	<cfset typeList="Page,Link,File,Folder,Calendar">
+</cfif>
 <cfset parentBean=$.getBean('content').loadBy(contentID=rc.contentID)>
 <cfset $availableSubTypes=application.classExtensionManager.getSubTypeByName(parentBean.getType(),parentBean.getSubType(),parentBean.getSiteID()).getAvailableSubTypes()>
 <cfset rsSubTypes=application.classExtensionManager.getSubTypes(siteID=rc.siteID,activeOnly=true) />
