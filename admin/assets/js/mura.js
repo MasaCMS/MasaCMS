@@ -13048,7 +13048,7 @@ Core.prototype=
 	 *
 	 * @param  {string} funcName Method to call
 	 * @param  {object} params Arguments to submit to method
-	 * @return {Promise} All Headers
+	 * @return {any}
 	 */
 	invoke:function(funcName,params){
 		var self = this;
@@ -14415,12 +14415,12 @@ Mura.Entity = Mura.Core.extend(
 		},
 
 		/**
-		 * invoke - Proxies method call to remote api
+		 * invoke - Invokes a method
 		 *
 		 * @param  {string} funcName Method to call
 		 * @param  {object} params Arguments to submit to method
 		 * @param  {string} method GET or POST
-		 * @return {Promise} All Headers
+		 * @return {any} 
 		 */
 		invoke:function(funcName,params,method){
 			var self = this;

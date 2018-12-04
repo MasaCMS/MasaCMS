@@ -232,7 +232,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif len(responseDisplayFields)>
 			<cfreturn replace(responseDisplayFields, "^", ",","all") />
 		<cfelse>
-			<cfreturn getFullFieldList(rs.formField) />
+			<cfreturn getFullFieldList(arguments.formid) />
 		</cfif>
 	</cffunction>
 
