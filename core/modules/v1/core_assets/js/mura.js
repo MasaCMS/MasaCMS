@@ -13042,6 +13042,23 @@ Core.prototype=
 	{
 	init:function(){
 	},
+
+	/**
+	 * invoke - Invokes a method
+	 *
+	 * @param  {string} funcName Method to call
+	 * @param  {object} params Arguments to submit to method
+	 * @return {Promise} All Headers
+	 */
+	invoke:function(funcName,params){
+		var self = this;
+		params=params || {};
+
+		if(this[funcName]=='function'){
+			return this[funcName].apply(this,params);
+		}
+	},
+
 	/**
 	 * trigger - Triggers custom event on Mura objects
 	 *
@@ -14416,6 +14433,10 @@ Mura.Entity = Mura.Core.extend(
 			params=params || {};
 			method=method || "post";
 
+			if(this[funcName]=='function'){
+				return this[funcName].apply(this,params);
+			}
+
 			return new Promise(function(resolve,reject) {
 					self._requestcontext.request({
 						type: method.toLowerCase(),
@@ -14423,10 +14444,10 @@ Mura.Entity = Mura.Core.extend(
 						data: Mura.extend(params,{
 								'_cacheid': Math.random()
 							}),
-						success: function(  resp) {
+						success: function(resp) {
 							if (resp.data != 'undefined'  ) {
 									if (typeof resolve ==  'function') {
-											resolve(resp);
+											resolve(resp.data);
 									}
 							} else {
 									if (
