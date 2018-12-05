@@ -44,6 +44,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset event=request.event>
 <cfinclude template="js.cfm">
 <cfset tabList="">
+<cfset tabLabelList="">
 <cfset bodyContent="">
 <cfset variables.pluginEvent=createObject("component","mura.event").init(event.getAllValues())/>
 <cfif rc.contentBean.getType() eq 'Gallery'>
