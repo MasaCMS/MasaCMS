@@ -1,6 +1,7 @@
 /* variables */
 
 @editcalcheight: ~"calc(100vh - 216px)";
+@editscrollheight: ~"calc(100vh - 233px)";
 @editcalcwidth: ~"calc(100% - 350px)";
 
 .mura__edit__controls{
@@ -33,7 +34,7 @@
 	}
 	
 	.mura__edit__controls__scrollable{
-	height: inherit;
+	height: @editscrollheight;
 	width: 100%;
 	min-width: 300px;
 	overflow: auto;

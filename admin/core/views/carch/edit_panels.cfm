@@ -94,12 +94,13 @@ $(document).ready(function(){
 <cfoutput>
 
 	<div class="mura__edit__controls" style="width: #cookie.ADMINCONTROLWIDTH#px">
-		<!--- filter settings --->
-		<div id="mura__edit__settings__filter">
-  		<input type="text" class="form-control" id="mura__edit__settings__filter__input" placeholder="Filter settings">
-		</div>
 		<!--- accordion panels --->
 		<div class="mura__edit__controls__scrollable">
+			<!--- filter settings --->
+			<div id="mura__edit__settings__filter">
+	  		<input type="text" class="form-control" id="mura__edit__settings__filter__input" placeholder="Filter settings">
+			</div>
+			<!--- settings --->
 			<div class="mura__edit__controls__objects">
 				<div id="mura-edit-tabs" class="mura__edit__controls__tabs">
 
