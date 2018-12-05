@@ -97,7 +97,6 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 					left join tapprovalrequests on (tcontent.contenthistid=tapprovalrequests.contenthistid)
 					where
 					tcontent.contenthistid in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.sourceIterator.getPageIDList()#">)
-					and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 				</cfquery>
 
 				<cfset arguments.sourceIterator.setPageQuery("page#arguments.sourceIterator.getPageIndex()#",rsPage)>
@@ -120,7 +119,6 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 					left join tfiles on (tcontent.fileid=tfiles.fileid)
 					left join tapprovalrequests on (tcontent.contenthistid=tapprovalrequests.contenthistid)
 					where tcontent.contenthistid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentHistID#" />
-					and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 				</cfquery>
 			</cfif>
 		</cfif>
