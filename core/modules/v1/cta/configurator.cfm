@@ -332,13 +332,13 @@
                 </div>
             </div>
 
-            <cfparam name="attributes.params.cssclass" default="">
-            <div class="mura-control-group">
-				<label>
-					#application.rbFactory.getKeyValue(session.rb,'collections.cssclass')#
-				</label>
-				<input name="cssclass" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.cssclass)#" maxlength="255">
-			</div>
+      	<cfparam name="attributes.params.instanceclass" default="">
+	      <div class="mura-control-group">
+					<label>
+						#application.rbFactory.getKeyValue(session.rb,'collections.cssclass')#
+					</label>
+					<input name="instanceclass" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.instanceclass)#" maxlength="255">
+					</div>
           </div>
         </div>
       </div> <!--- /end panel 3 --->
