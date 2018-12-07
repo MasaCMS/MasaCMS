@@ -54,9 +54,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div>
 		<div id="panel-relatedcontent" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-relatedcontent" aria-expanded="false" style="height: 0px;">
 			<div class="mura-panel-body">
-				<span id="extendset-container-tabrelatedcontenttop" class="extendset-container"></span>
-				<div id="selectRelatedContent"><!--- target for ajax ---></div>
-				<div id="selectedRelatedContent" class="mura-control-group">
+
+
+				<!--- 'big ui' flyout panel --->
+				<!--- todo: resource bundle key for 'manage related content' --->
+				<div class="bigui" id="bigui__related" data-label="Manage Related Content">
+					<div class="bigui__title">#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.relatedcontent"))#</div>
+					<div class="bigui__controls">
+
+						<span id="extendset-container-tabrelatedcontenttop" class="extendset-container"></span>
+						<div id="selectRelatedContent"><!--- target for ajax ---></div>
+						<div id="selectedRelatedContent" class="mura-control-group">
+
+					</div>
+				</div> <!--- /.bigui --->
+
 			</div>
 			<input id="relatedContentSetData" type="hidden" name="relatedContentSetData" value="" />	
 		</div>
