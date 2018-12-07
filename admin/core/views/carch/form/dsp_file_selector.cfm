@@ -15,13 +15,13 @@
 	</cfif>
 	</label>
 	<cfif not fileLockedBySomeElse>
+
 		<cfif  rc.type eq 'File'
 			and (rc.type eq 'File' and not rc.contentBean.getIsNew())>
 			<p id="msg-file-locked" class="help-block"<cfif not fileLockedByYou> style="display:none;"</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.youvelockedfile')# <a class="mura-file-unlock" href="##"<cfif not fileLockedByYou> style="display:none;"</cfif>><i class="mi-unlock"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlockfile')#</a>
 			</p>
 		</cfif>
 
-		<cfset imageOnly=rc.ptype eq 'Gallery' or rc.type neq 'File'>
 		<cf_fileselector name="newfile" property="fileid" bean="#rc.contentBean#" deleteKey="deleteFile" compactDisplay="#rc.compactDisplay#" locked="#len(stats.getLockID())#" examplefileext="#examplefileext#" >
 
 	<cfelse>
