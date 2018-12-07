@@ -41,56 +41,6 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-
-<script>
-$(document).ready(function(){	
-	
-
-	filterSettings=function(fstr){
-		// if string provided
-		if(fstr.length > 0){
-			// minimum string length for action
-			if(fstr.length > 2){
-			// if matching a panel name
-			jQuery("#content-panels .panel-matched").removeClass("panel-matched");
-			// jQuery("#content-panels a.collapse:contains('" + fstr + "')").parents(".mura-panel-heading").siblings(".panel-collapse").addClass("panel-matched").collapse("show").find(".mura-control-group").show();
-
-			// matching content of panels
-			if(jQuery("#content-panels .panel-matched").length == 0){			
-				jQuery("#content-panels label:contains('" + fstr + "')").addClass('content-matched');
-				jQuery("#content-panels .mura-control-group").not(":has('label.content-matched')").hide();
-				jQuery("#content-panels label.content-matched").parents(".mura-control-group").show().parents(".panel-collapse:not(.in)").collapse("show");
-				}
-				jQuery("#content-panels .collapse").not(":has('label.content-matched')").collapse("hide");
-				// end check for panel-matched
-			}
-
-		// reset on zero length
-		} else {
-			jQuery("#content-panels .content-matched").removeClass("content-matched");			
-			jQuery("#content-panels .collapse").collapse("hide","fast");
-			jQuery("#content-panels .mura-control-group").show("slow");
-		}
-	} 
-
-	// apply filter by typing, with delay
-	jQuery("#mura__edit__settings__filter__input").keyup(function(){
-		var timeout = null;
-		clearTimeout(timeout);
-    timeout = setTimeout(function () {
-			jQuery("#content-panels").find('.content-matched').removeClass('content-matched');
-			var filterStr = jQuery("#mura__edit__settings__filter__input").val(); 	
-			//	console.log(filterStr);
-				filterSettings(filterStr)	;		
-    }, 500);
-	});
-
-	// focus on input filter on page load
-	jQuery("#mura__edit__settings__filter__input").focus(); 	
-
-});
-</script>
-
 <cfoutput>
 
 	<div class="mura__edit__controls" style="width: #cookie.ADMINCONTROLWIDTH#px">
@@ -122,7 +72,7 @@ $(document).ready(function(){
 						<!--- /basic --->
 
 						<!--- publishing --->
-						<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Publishing')>						
+						<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Publishing')>	
 								<cfinclude template="form/dsp_panel_publishing.cfm">
 						</cfif>		
 						<!--- /publishing --->
@@ -273,7 +223,7 @@ $(document).ready(function(){
 							</cfoutput>
 						</cfif>
 						<!--- /plugin rendering --->
-					</div>	
+					</div>	<!--- /.mura__edit__controls__scrollable --->
 
 				</div>
 			</div>
@@ -281,3 +231,51 @@ $(document).ready(function(){
 	</div>
 
 </cfoutput>
+
+<script>
+$(document).ready(function(){	
+	
+	filterSettings=function(fstr){
+		// if string provided
+		if(fstr.length > 0){
+			// minimum string length for action
+			if(fstr.length > 2){
+			// if matching a panel name
+			jQuery("#content-panels .panel-matched").removeClass("panel-matched");
+			// jQuery("#content-panels a.collapse:contains('" + fstr + "')").parents(".mura-panel-heading").siblings(".panel-collapse").addClass("panel-matched").collapse("show").find(".mura-control-group").show();
+
+			// matching content of panels
+			if(jQuery("#content-panels .panel-matched").length == 0){			
+				jQuery("#content-panels label:contains('" + fstr + "')").addClass('content-matched');
+				jQuery("#content-panels .mura-control-group").not(":has('label.content-matched')").hide();
+				jQuery("#content-panels label.content-matched").parents(".mura-control-group").show().parents(".panel-collapse:not(.in)").collapse("show");
+				}
+				jQuery("#content-panels .collapse").not(":has('label.content-matched')").collapse("hide");
+				// end check for panel-matched
+			}
+
+		// reset on zero length
+		} else {
+			jQuery("#content-panels .content-matched").removeClass("content-matched");			
+			jQuery("#content-panels .collapse").collapse("hide","fast");
+			jQuery("#content-panels .mura-control-group").show("slow");
+		}
+	} 
+
+	// apply filter by typing, with delay
+	jQuery("#mura__edit__settings__filter__input").keyup(function(){
+		var timeout = null;
+		clearTimeout(timeout);
+    timeout = setTimeout(function () {
+			jQuery("#content-panels").find('.content-matched').removeClass('content-matched');
+			var filterStr = jQuery("#mura__edit__settings__filter__input").val(); 	
+			//	console.log(filterStr);
+				filterSettings(filterStr)	;		
+    }, 500);
+	});
+
+	// focus on input filter on page load
+	jQuery("#mura__edit__settings__filter__input").focus(); 	
+
+});
+</script>

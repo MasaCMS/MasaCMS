@@ -508,6 +508,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<!-- tab content -->
 		<div class="block-content tab-content">
 
+			<!--- 'big ui' flyout panel --->
+			<div class="mura__edit__bigui">
+				<div class="mura__edit__bigui__wrapper">
+					<div class="mura__edit__bigui__title">BIG UI TITLE</div>
+					<div class="mura__edit__bigui__controls"><p>BIG UI CONTENT</p></div>
+				</div>
+			</div> <!--- /.mura__edit__bigui --->
+
 			<div id="mura-content-metadata">
 				<span data-toggle="popover" title="" data-placement="right"	data-content="#esapiEncode('html_attr',metaTooltip)#" data-original-title="">
   				<i class="mi-question-circle-o"></i>
