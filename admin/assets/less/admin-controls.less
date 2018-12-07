@@ -466,7 +466,7 @@
 } /* /.mura__edit__controls */
 
 	/* "big ui" flyout panel */
-	.mura__edit__bigui{
+	.bigui{
     display: none                       ;
     position: absolute;
     top: 0;
@@ -477,13 +477,13 @@
     z-index: 97!important;
     overflow: auto;
 
-    .mura__edit__bigui__wrapper{
+    .bigui__wrapper{
   	    background-color: #fff;
   	    height: ~"calc(100% - 15px)";
   	    width: 100%;
     		padding: 17px 25px;
 
-    	.mura__edit__bigui__close{
+    	.bigui__close{
     		    width: auto;
     				float: right;
 
@@ -511,14 +511,21 @@
 				}
     	}
 	    
-	    .mura__edit__bigui__title{
+	    .bigui__title{
 	    	.contentTitle;
 	    }
-	    .mura__edit__bigui__controls{
+	    .bigui__controls{
 	    	padding: 0;
 
 	    }
-    } /* /.mura__edit__bigui__wrapper */
+			.bigui__close{
+				.btn;
+				.mura-primary;
+				cursor: pointer;
+				padding: 5px 12px;
+			}
+
+    } /* /.bigui__wrapper */
 
 		.btn.active.focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn:active:focus, .btn:focus {
 			    outline: none !important !important;
@@ -544,7 +551,7 @@
 			  }
 			}
 
-	} /* /.mura__edit__bigui */ 
+	} /* /.bigui */ 
 
 /* sidebar-tab class on body alters layout slightly */
 body.sidebar-tab{

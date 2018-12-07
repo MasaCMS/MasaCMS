@@ -22,13 +22,19 @@
 			</p>
 		</cfif>
 
-		<div class="mura-control-group">
-			<div id="bigui__img__button" class="btn">Select Image</div>
-		</div>
-
-		<div id="bigui__img__content">
-			<cf_fileselector name="newfile" property="fileid" bean="#rc.contentBean#" deleteKey="deleteFile" compactDisplay="#rc.compactDisplay#" locked="#len(stats.getLockID())#" examplefileext="#examplefileext#" >
-		</div>
+		<!--- 'big ui' flyout panel --->
+		<!--- todo gw: resource bundle key --->
+		<a class="bigui__launch btn" data-rel="bigui__associmg" href="##">Select Image</a>
+		<div class="bigui" id="bigui__associmg">
+			<div class="bigui__wrapper">
+					<!--- todo gw: resource bundle key --->
+					<a class="bigui__close"><i class="mi-check"></i> Done</a>
+				<div class="bigui__title">#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.selectimage"))#</div>
+				<div class="bigui__controls">
+						<cf_fileselector name="newfile" property="fileid" bean="#rc.contentBean#" deleteKey="deleteFile" compactDisplay="#rc.compactDisplay#" locked="#len(stats.getLockID())#" examplefileext="#examplefileext#" >
+				</div>
+			</div>
+		</div> <!--- /.bigui --->
 
 	<cfelse>
 		<!--- Locked by someone else --->
