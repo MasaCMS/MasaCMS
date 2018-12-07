@@ -694,8 +694,6 @@ realTitle.onkeyup = function(event){
 		<cfinclude template="form/dsp_full.cfm">
 	</div>
 </cfif>
-<<<<<<< HEAD
-=======
 
 <script type="text/javascript">
 	$(document).ready(function(){	
@@ -730,4 +728,3 @@ realTitle.onkeyup = function(event){
 
 	});
 </script>
->>>>>>> 0446916535ecb25ca31841cf114cb51db5f13260
