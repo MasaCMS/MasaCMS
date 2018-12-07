@@ -430,7 +430,7 @@
 		<cfargument name="filterVarsList" default="">
 		<cfset var qrystr=''>
 		<cfset var item = "" />
-		<cfset var _filterVarsList='NOCACHE,PATH,DELETECOMMENTID,APPROVEDCOMMENTID,LOADLIST,INIT,SITEID,DISPLAY,#ucase(application.appReloadKey)#,#filterVars#'>
+		<cfset var _filterVarsList='METHOD,NOCACHE,PATH,DELETECOMMENTID,APPROVEDCOMMENTID,LOADLIST,INIT,SITEID,DISPLAY,#ucase(application.appReloadKey)#,#filterVars#'>
 
 		<cfif len(arguments.filterVarsList)>
 			<cfset _filterVarsList=_filterVarsList & ',' & arguments.filterVarsList>
