@@ -699,6 +699,12 @@ realTitle.onkeyup = function(event){
 	$(document).ready(function(){	
 
 		$('.bigui').each(function(){
+			var idstr = $(this).attr('id');
+			var labelstr = $(this).attr('data-label');
+			$(this).before('<a class="bigui__launch btn" data-rel="' + idstr + '" href="##">' + labelstr + '</a>');
+		<!--- todo: resource bundle key for 'done' --->
+			$(this).prepend('<a class="bigui__close">Done <i class="mi-angle-right"></i></a>')
+			$(this).wrapInner('<div class="bigui__wrapper"></div>');
 			$(this).detach().appendTo('#mura-content-body-block .tab-content');
 		})
 
