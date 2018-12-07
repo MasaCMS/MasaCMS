@@ -232,7 +232,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cfoutput>
 
-<script>
+<script type="text/javascript">
 $(document).ready(function(){	
 	
 	filterSettings=function(fstr){

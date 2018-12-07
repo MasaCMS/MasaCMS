@@ -22,7 +22,13 @@
 			</p>
 		</cfif>
 
-		<cf_fileselector name="newfile" property="fileid" bean="#rc.contentBean#" deleteKey="deleteFile" compactDisplay="#rc.compactDisplay#" locked="#len(stats.getLockID())#" examplefileext="#examplefileext#" >
+		<div class="mura-control-group">
+			<div id="bigui__img__button" class="btn">Select Image</div>
+		</div>
+
+		<div id="bigui__img__content">
+			<cf_fileselector name="newfile" property="fileid" bean="#rc.contentBean#" deleteKey="deleteFile" compactDisplay="#rc.compactDisplay#" locked="#len(stats.getLockID())#" examplefileext="#examplefileext#" >
+		</div>
 
 	<cfelse>
 		<!--- Locked by someone else --->

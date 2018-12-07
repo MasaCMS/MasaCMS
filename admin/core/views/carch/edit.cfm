@@ -511,8 +511,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<!--- 'big ui' flyout panel --->
 			<div class="mura__edit__bigui">
 				<div class="mura__edit__bigui__wrapper">
-					<div class="mura__edit__bigui__title">BIG UI TITLE</div>
-					<div class="mura__edit__bigui__controls"><p>BIG UI CONTENT</p></div>
+					<div class="mura__edit__bigui__close">
+						<!--- todo gw: resource bundle key --->
+						<div class="mura-back-btn btn mura-primary"><i class="mi-check"></i> Done</div>
+					</div>
+					<div class="mura__edit__bigui__title"></div>
+					<div class="mura__edit__bigui__controls"></div>
 				</div>
 			</div> <!--- /.mura__edit__bigui --->
 
@@ -702,3 +706,24 @@ realTitle.onkeyup = function(event){
 		<cfinclude template="form/dsp_full.cfm">
 	</div>
 </cfif>
+
+<script type="text/javascript">
+	$(document).ready(function(){	
+		
+		launchBigUI = function(titlestr='',contentdiv=''){
+			// title = text string
+			$('.mura__edit__bigui__title').html(titlestr);
+			// contents = div containing markup
+			$('.mura__edit__bigui__controls').html('');	
+			$(contentdiv).detach().appendTo('.mura__edit__bigui__controls');
+			$('.mura__edit__bigui').show();
+		}
+
+		$('#bigui__img__button').on('click',function(){				
+				var uititle = '<cfoutput>#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.selectimage"))#</cfoutput>';
+				var uicontent = $('#bigui__img__content');
+				launchBigUI(uititle,uicontent);
+		});
+
+	});
+</script>
