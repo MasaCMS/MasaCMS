@@ -694,3 +694,37 @@ realTitle.onkeyup = function(event){
 		<cfinclude template="form/dsp_full.cfm">
 	</div>
 </cfif>
+
+<script type="text/javascript">
+	$(document).ready(function(){	
+
+		// create hidden BigUI with button, close link
+		var renderBigUI = function(el){
+			var idstr = $(el).attr('id');
+			var labelstr = $(el).attr('data-label');
+			$(el).before('<a class="bigui__launch btn" data-rel="' + idstr + '" href="##">' + labelstr + '</a>');
+			<!--- todo: resource bundle key for 'done' --->
+			$(el).prepend('<a class="bigui__close">Done <i class="mi-angle-right"></i></a>')
+			$(el).wrapInner('<div class="bigui__wrapper"></div>');
+			$(el).detach().appendTo('#mura-content-body-block .tab-content');
+		}
+
+		// set up all BigUI elements
+		$('.bigui').each(function(){
+			renderBigUI($(this));
+		})
+
+		$('.bigui__launch').on('click',function(){
+			var rel = $(this).attr('data-rel');
+			$('.bigui').hide();
+			$('#' + rel).show();
+			return false;
+		});
+
+		$('.bigui__close').on('click',function(){
+			$(this).parents('.bigui').hide();
+		})
+
+
+	});
+</script>
