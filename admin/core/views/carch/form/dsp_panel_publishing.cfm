@@ -171,37 +171,50 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 				<cfif application.settingsManager.getSite(rc.siteid).getlocking() neq 'all'>
 					<div class="mura-control-group">
-			      		<label>
-				  			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentparent')#:
-				  			<span id="mover1" class="text">
-				  				<cfif arrayLen(rc.crumbData) gt 1>
-					      			<cfif rc.contentBean.getIsNew()>
-					      				"#rc.crumbData[1].menutitle#"<cfelse>"#rc.crumbData[2].menutitle#"
-				  					</cfif>
-				  				</cfif>
-								<button id="selectParent" name="selectParent" class="btn">
-									#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectnewparent')#
-								</button>
-							</span>
-					    <span id="mover2" style="display:none"><input type="hidden" name="parentid" value="#esapiEncode('html_attr',rc.parentid)#"></span>
-		      			</label>
-						<script>
-							jQuery(document).ready(function(){
-								$('##selectParent').click(function(e){
-									e.preventDefault();
-									siteManager.loadSiteParents(
-										'#esapiEncode('javascript',rc.siteid)#'
-										,'#esapiEncode('javascript',rc.contentid)#'
-										,'#esapiEncode('javascript',rc.parentid)#'
-										,''
-										,1
-									);
-									return false;
-								});
-							});
-						</script>
+	      		<label>
+		  			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentparent')#:
+      			</label>
+      			<div class="mura-control justify">
+		  				<cfif arrayLen(rc.crumbData) gt 1>
+		  					<div id="newparent-label">
+			      			"<span><cfif rc.contentBean.getIsNew()>#rc.crumbData[1].menutitle#<cfelse>#rc.crumbData[2].menutitle#</cfif></span>"
+			  				</div>
+		  				</cfif>
 
+							<!--- 'big ui' flyout panel --->
+							<div class="bigui" id="bigui__selectparent" data-label="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectnewparent'))#">
+								<div class="bigui__title">#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectnewparent'))#</div>
+								<div class="bigui__controls">
+									<!--- new parent UI gets loaded here --->
+							    <span id="mover2" style="display:none"><input type="hidden" name="parentid" value="#esapiEncode('html_attr',rc.parentid)#"></span>
+								</div>
+							</div> <!--- /.bigui --->
+				    
+							<script>
+								jQuery(document).ready(function(){
+										siteManager.loadSiteParents(
+											'#esapiEncode('javascript',rc.siteid)#'
+											,'#esapiEncode('javascript',rc.contentid)#'
+											,'#esapiEncode('javascript',rc.parentid)#'
+											,''
+											,1
+										);
+
+										// populate current parent text when changed
+										jQuery(document).on('click', '##mover2 input[name="parentid"]',function(){
+											var newparent = jQuery(this).parents('tr').find('ul.navZoom li:last-child').text().trim();
+											jQuery('##newparent-label > span').html(newparent);
+										})
+										jQuery(document).on('click', '##mover2 td.var-width',function(){
+											var parentradio = jQuery(this).parents('tr').find('td.actions input[name="parentid"]');
+											jQuery(parentradio).trigger('click');
+										})
+								});
+							</script>
+
+						</div>
 					</div> <!--- /end mura-control-group --->
+
 				<cfelse>
 				 	<input type="hidden" name="parentid" value="#esapiEncode('html_attr',rc.parentid)#">
 				</cfif>
