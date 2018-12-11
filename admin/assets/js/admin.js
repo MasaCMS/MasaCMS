@@ -58,7 +58,7 @@ function loadObject(url, target, message) {
 			}
 		}
 	}
-
+ 
 	document.getElementById(tg).innerHTML = message;
 
 	if(window.XMLHttpRequest) {
