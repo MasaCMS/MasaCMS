@@ -431,9 +431,10 @@ if ( application.setupComplete ) {
 		} else if (fileExists(application.configBean.getValue('externalConfig'))) {
 			config=fileRead(application.configBean.getValue('externalConfig'),'utf-8');
 		}
-
 		if(isJSON(config)){
 			application.muraExternalConfig=deserializeJSON(config);
+		} else {
+			writeLog(type="Error", file="exception", text="Error reading external config from  '#application.configBean.getValue('externalConfig')#': #config#");
 		}
 	}
 
