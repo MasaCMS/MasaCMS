@@ -101,11 +101,18 @@
 				if(parameters["targetFrame"]=='sidebar' && document.getElementById('mura-sidebar-editor').style.display=='none'){
 					Mura('##mura-sidebar-configurator').show();
 				}
-
-				if(parameters["targetFrame"]=='sidebar'){
-					sidebarProxy.post({cmd:'setObjectParams',params:data});
-				} else {
-					modalProxy.post({cmd:'setObjectParams',params:data});
+				if(typeof parameters.callback == 'undefined'){
+					if(parameters["targetFrame"]=='sidebar'){
+						sidebarProxy.post({cmd:'setObjectParams',params:data});
+					} else {
+						modalProxy.post({cmd:'setObjectParams',params:data});
+					}
+				} else{
+					if(parameters["targetFrame"]=='sidebar'){
+						sidebarProxy.post({cmd:parameters.callback,params:data});
+					} else {
+						modalProxy.post({cmd:parameters.callback,params:data});
+					}
 				}
 			} else if(parameters["cmd"] == "deleteObject"){
 				Mura('[data-instanceid="' + parameters["instanceid"] + '"]').remove();

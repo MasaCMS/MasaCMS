@@ -18,7 +18,7 @@
 			<cfoutput>#configuratorMarkup#</cfoutput>
 			<script>
 			Mura(function(){
-				siteManager.requestDisplayObjectParams(function(params){});
+				siteManager.requestDisplayObjectParams(function(params){},'sidebar');
 			});
 			</script>
 		</cf_objectconfigurator>
