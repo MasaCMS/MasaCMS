@@ -15,7 +15,7 @@
 </cfscript>
 <cfif len(configuratorMarkup)>
 		<cf_objectconfigurator params="#objectparams#">
-			#configuratorMarkup#
+			<cfoutput>#configuratorMarkup#</cfoutput>
 			<script>
 			Mura(function(){
 				siteManager.requestDisplayObjectParams(function(params){});
