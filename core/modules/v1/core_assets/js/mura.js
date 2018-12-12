@@ -13757,11 +13757,17 @@ Mura.RequestContext=Mura.Core.extend(
               type: 'get',
               url: Mura.apiEndpoint + '/content/_path/' + filename + '?' + query.join('&'),
               success: function(resp) {
-                if (typeof resolve == 'function') {
-                  var item = new Mura.entities.Content({},self);
-                  item.set(resp.data);
-                  resolve(item);
-                }
+								if (typeof resp.data.redirect != 'undefined' && typeof resp.data.contentid == 'undefined') {
+				          if (resp.data.redirect && resp.data.redirect != location.href) {
+				              location.href = resp.data.redirect;
+				          } else {
+				              location.reload(true);
+				          }
+								} else {
+									var item = new Mura.entities.Content({},self);
+									item.set(resp.data);
+									resolve(item);
+								}
               },
 							error: function(resp) {
 								if (typeof resp.data != 'undefined' && typeof resolve == 'function') {
