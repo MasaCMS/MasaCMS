@@ -194,6 +194,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		}
 		// run on page load
 		showSelectedCats();
+		// run on change of selection
+		$('#mura-grid-categories #mura-nodes li .categorytitle input[type=checkbox]').on('click',function(){
+			showSelectedCats();
+		})
 
 	});
 </script>
