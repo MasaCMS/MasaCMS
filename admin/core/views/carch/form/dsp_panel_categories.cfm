@@ -101,8 +101,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	var stripeCategories=function() {
 			var counter=0;
-			//alert($('#tabCategorization dl').length)
-			$('#tabCategorization dl').each(
+			//alert($('#bigui__categories dl').length)
+			$('#bigui__categories dl').each(
 				function(index) {
 					//alert(index)
 					if(index && !$(this).parents('ul.categorylist:hidden').length)
@@ -156,7 +156,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfloop from="1" to="#to#" index="i">
 					<cfset item=replace(listGetAt(cat.getPath(),i),"'","","all")>
 					<cfif not listFind(itemlist,item)>
-						<cfoutput>$('##tabCategorization li[data-categoryid="#item#"]').find('span.hasChildren:first').trigger('click');</cfoutput>
+						<cfoutput>$('##bigui__categories li[data-categoryid="#item#"]').find('span.hasChildren:first').trigger('click');</cfoutput>
 					<cfset itemlist=listAppend(itemList,item)>
 					</cfif>
 

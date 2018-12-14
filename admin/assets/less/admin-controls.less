@@ -44,10 +44,10 @@
 	}
 	
 	.mura__edit__controls__scrollable{
-	height: @editscrollheight;
-	width: 100%;
-	min-width: 300px;
-	overflow: auto;
+		height: @editscrollheight;
+		width: 100%;
+		min-width: 300px;
+		overflow: auto;
 	}    
 
 	 .btn{
@@ -470,6 +470,8 @@
 	.bigui{
     display: none                       ;
     position: absolute;
+    top: 0;
+    left: -24px;
     right: 0;
     bottom: 0;
     width: ~"calc(100% + 49px)";
@@ -524,11 +526,11 @@
 				padding: 5px 12px;
 			}
 
-		.navZoom li{
-			cursor: default;
-		}
+			.navZoom li{
+				cursor: default;
+			}
 
-    } /* /.bigui__wrapper */
+    } /* /.bigui__wrapper */		
 
 		.btn.active.focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn:active:focus, .btn:focus {
 			    outline: none !important !important;
@@ -555,6 +557,93 @@
 			}
 
 	} /* /.bigui */ 
+
+
+#bigui__categories{
+	.categoryAssignment li ul {
+		margin: 0 !important;
+	}			
+	.mura-grid{
+		 li {
+	      float: none;
+	      cursor: default;
+        .clearfix();
+	   } 
+		 dl { 
+			  float: none;
+				width: 100%;
+		    height: 28px;
+			}
+			dt{
+		    width: ~"calc(100% - 75px)";
+	      line-height: 28px;
+	      border-right: none;      					
+	    }
+			dd{
+		    width: 75px;
+	      border-left: 1px solid @tableBorder;
+	      border-right: none;
+	      float: right;					
+    	}
+		  .mura-grid-hdr {
+		    dt, dd { 
+		    	.bold-font; 
+		    }
+		    dt { 
+		      padding-left: 12px !important;
+		      }
+		  }
+		  
+		  #mura-nodes {
+		    
+		    // !important needed to override .mura-grid styles
+		    
+		    li li dt { padding-left: 2em !important; }
+		    li li li dt { padding-left: 3em !important; }
+		    li li li li dt { padding-left: 4em !important; }
+		    li li li li li dt { padding-left: 5em !important; }
+		    li li li li li li dt { padding-left: 6em !important; }
+		    li li li li li li li li dt { padding-left: 7em !important; }
+		    li li li li li li li li li dt { padding-left: 8em !important; }
+		    li li li li li li li li li li dt { padding-left: 9em !important; }
+		    li li li li li li li li li li li dt { padding-left: 10em !important; }
+		    li li li li li li li li li li li li dt { padding-left: 11em !important; }
+		      
+		    dt {
+		    
+		      > span {
+		      
+		        .inline-block;
+		        cursor: default;
+		        width: 10px;
+		        margin-left: 1em;
+		        margin-right: 2px;
+		        }
+		        
+		        > label {
+		        
+		        cursor: pointer;
+		        margin-bottom: 0;
+		        .inline-block;
+		        line-height: 28px;
+		        font-weight: normal;
+		        
+		        }
+
+		      }   
+		   
+		      .categorytitle label input[type=checkbox]{
+		        float:left;
+		        margin:7px 4px 7px 0;
+		      }
+
+		      .categorytitle > .hasChildren { 
+		      margin-left: 1em; 
+		      }
+
+		    }		    	
+		}
+	} /* /#bigui_categories */		
 
 /* sidebar-tab class on body alters layout slightly */
 body.sidebar-tab{
