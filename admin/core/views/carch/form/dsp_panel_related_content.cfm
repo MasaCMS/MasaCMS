@@ -81,20 +81,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	$(document).ready(function(){
 
 		// display selected related content in text format
-		var showSelectedRC = function(){	
+		var showSelectedRC = function(delayMs=0){	
 			var rcList = '';
-			// create list of selected content
-			$('#selectedRelatedContent .list-table').each(function(){
-				rcText = $(this).find('.list-table-content-set').text();
-				rcLen = $(this).find('.list-table-items li.item').not('.empty').not('.noShow').length;
-				rcList = rcList + '<li>' + rcText + ': ' + rcLen + '</li>';
-			})
+			setTimeout(function(){
+					// create list of selected content
+					$('#selectedRelatedContent .list-table').each(function(){
+						rcText = $(this).find('.list-table-content-set').text();
+						rcLen = $(this).find('.list-table-items li.item').not('.empty').not('.noShow').length;
+						rcList = rcList + '<li>' + rcText + ': ' + rcLen + '</li>';
+					})
 
-			if (rcList.trim().length > 0){
-				$('#relcontent__selected').html('<p>Selected Related Content</p><ul>' + rcList + '</ul>');
-			} else {
-				$('#relcontent__selected').html('<p>No related content selected<p>');
-			}
+					if (rcList.trim().length > 0){
+						$('#relcontent__selected').html('<p>Selected Related Content</p><ul>' + rcList + '</ul>');
+					} else {
+						$('#relcontent__selected').html('<p>No related content selected<p>');
+					}
+				}
+			, delayMs);
 
 		}
 		// run on page load
@@ -105,8 +108,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		})
 		// run on click of delete link
 		$('#bigui__related .list-table-items li.item a.delete').click(function(event){
-					showSelectedRC();
+					showSelectedRC(500);
 		});
+		// run on click of quickedit assignment checkbox
+		$(document).on('click','#bigui__related #mura-rc-quickedit .mura-rc-quickassign',function(){	
+				showSelectedRC(500);
+		});		
+
+
+		// DEBUG
+		// show click event target
+		// $(document).click(function(event) {
+  //   	var text = $(event.target).text();
+  //   	console.log(text);
+  //   	console.log($(event.target));
+		// });
 
 	});
 </script>
