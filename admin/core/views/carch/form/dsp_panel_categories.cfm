@@ -190,6 +190,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					catList = catList + '<li>' + appendStr + '</li>';
 				}
 			})
+			<!--- todo: resource bundle values for text --->
 			if (catList.trim().length > 0){
 				$('#categories__selected').html('<p>Selected Categories</p><ul>' + catList + '</ul>');
 			} else {
