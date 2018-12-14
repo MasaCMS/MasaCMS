@@ -88,7 +88,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					$('#selectedRelatedContent .list-table').each(function(){
 						rcText = $(this).find('.list-table-content-set').text();
 						rcLen = $(this).find('.list-table-items li.item').not('.empty').not('.noShow').length;
-						rcList = rcList + '<li>' + rcText + ': ' + rcLen + '</li>';
+						if (rcLen > 0){
+							rcList = rcList + '<li>' + rcText + ': ' + rcLen + '</li>';
+						}
 					})
 
 					if (rcList.trim().length > 0){
