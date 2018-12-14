@@ -54,6 +54,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				<span id="extendset-container-tabcategorizationtop" class="extendset-container"></span>
 
+				<ul id="categories__selected"></ul>
 
 		<!--- 'big ui' flyout panel --->
 		<!--- todo: resource bundle key for 'edit categories' --->
@@ -62,7 +63,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<div class="bigui__controls">
 
 					<div class="mura-control-group">
-						<div class="mura-grid stripe">
+						<div class="mura-grid stripe" id="mura-grid-categories">
 							<dl class="mura-grid-hdr">
 								<dt class="categorytitle">
 										#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.availablecategories')#
@@ -167,6 +168,32 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		catsInited=true;
 
 		stripe('stripe');
+
+		// display selected categories in text format
+		var showSelectedCats = function(){	
+			var catlist = '';
+			var delim = '&nbsp;&raquo;&nbsp;';
+			// create list of selected categories
+			$('#mura-grid-categories #mura-nodes li .categorytitle label').each(function(){
+				if($(this).find('input[type=checkbox]').prop('checked')){
+					var appendStr = '';
+					$(this).parentsUntil($('#mura-nodes'), 'li').each(function(){
+						var labelText = $(this).find('> dl > dt > label').text();
+						if(labelText.trim().length > 0){
+							var curStr = appendStr;
+							appendStr = labelText.trim();
+							if (curStr.trim().length > 0){
+							 appendStr = appendStr + delim + curStr;
+							}
+						}
+					});
+					catlist = catlist + '<li>' + appendStr + '</li>';
+				}
+			})
+			$('#categories__selected').html(catlist);
+		}
+		// run on page load
+		showSelectedCats();
 
 	});
 </script>
