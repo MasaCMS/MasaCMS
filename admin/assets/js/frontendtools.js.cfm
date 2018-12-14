@@ -77,7 +77,11 @@
 			} else if(parameters["cmd"] == "close"){
 				closeFrontEndToolsModal();
 			} else if(parameters["cmd"] == "setLocation"){
-				window.location=decodeURIComponent(parameters["location"]);
+				var newLocation=decodeURIComponent(parameters["location"]);
+				window.location=newLocation;
+				if(newLocation.indexOf('##') > -1){
+					window.location.reload();
+				}
 			} else if(parameters["cmd"] == "setHeight"){
 				if(parameters["targetFrame"]=='sidebar'){
 					resizeFrontEndToolsSidebar(decodeURIComponent(parameters["height"]));
