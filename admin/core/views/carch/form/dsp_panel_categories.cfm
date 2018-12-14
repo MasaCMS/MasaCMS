@@ -57,8 +57,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<div id="categories__selected"></div>
 
 		<!--- 'big ui' flyout panel --->
-		<!--- todo: resource bundle key for 'edit categories' --->
-		<div class="bigui" id="bigui__categories" data-label="Edit Categories">
+		<!--- todo: resource bundle key for 'manage categories' --->
+		<div class="bigui" id="bigui__categories" data-label="Manage Categories">
 			<div class="bigui__title">#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.availablecategories'))#</div>
 			<div class="bigui__controls">
 

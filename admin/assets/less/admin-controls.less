@@ -481,8 +481,9 @@
     .bigui__wrapper{
   	    background-color: #fff;
   	    height: ~"calc(100% - 15px)";
-  	    width: 100%;
+  	    overflow-y: auto;
     		padding: 17px 25px;
+  	    width: 100%;
 
     	.bigui__close{
     		    width: auto;
@@ -645,7 +646,9 @@
 		}
 	} /* /#bigui_categories */		
 
-#categories__selected{
+/* selected item lists for big ui panels */
+#categories__selected, 
+#relcontent__selected{
 		p{
 			padding: 12px 0 12px 0px;
 		}
