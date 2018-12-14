@@ -54,7 +54,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				<span id="extendset-container-tabcategorizationtop" class="extendset-container"></span>
 
-				<ul id="categories__selected"></ul>
+				<div id="categories__selected"></div>
 
 		<!--- 'big ui' flyout panel --->
 		<!--- todo: resource bundle key for 'edit categories' --->
@@ -171,7 +171,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		// display selected categories in text format
 		var showSelectedCats = function(){	
-			var catlist = '';
+			var catList = '';
 			var delim = '&nbsp;&raquo;&nbsp;';
 			// create list of selected categories
 			$('#mura-grid-categories #mura-nodes li .categorytitle label').each(function(){
@@ -187,10 +187,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							}
 						}
 					});
-					catlist = catlist + '<li>' + appendStr + '</li>';
+					catList = catList + '<li>' + appendStr + '</li>';
 				}
 			})
-			$('#categories__selected').html(catlist);
+			if (catList.trim().length > 0){
+				$('#categories__selected').html('<p>Selected Categories</p><ul>' + catList + '</ul>');
+			} else {
+				$('#categories__selected').html('<p>No categories selected<p>');
+			}
+
 		}
 		// run on page load
 		showSelectedCats();

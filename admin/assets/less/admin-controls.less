@@ -645,16 +645,20 @@
 		}
 	} /* /#bigui_categories */		
 
-#categories__selected li{
-	direction: rtl;
-	list-style: none;
-	overflow: hidden;
-	padding-left: 12px;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	width: 100%;
-
-}
+#categories__selected{
+		p{
+			padding: 12px 0 12px 0px;
+		}
+		ul > li{
+			direction: rtl;
+			list-style: none;
+			overflow: hidden;
+			padding-left: 12px;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			width: 100%;
+		}
+	}
 
 /* sidebar-tab class on body alters layout slightly */
 body.sidebar-tab{
