@@ -81,9 +81,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	$(document).ready(function(){
 
 		// display selected related content in text format
-		var showSelectedRC = function(delayMs=0){	
+		var showSelectedRC = function(){	
 			var rcList = '';
-			setTimeout(function(){
 					// create list of selected content
 					$('#selectedRelatedContent .list-table').each(function(){
 						rcText = $(this).find('.list-table-content-set').text();
@@ -100,32 +99,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						$('#relcontent__selected').html('<p>No related content selected<p>');
 					}
 				}
-			, delayMs);
 
-		}
 		// run on page load
 		showSelectedRC();
 		// run on click of heading
 		$('#heading-relatedcontent').on('click',function(){
 			showSelectedRC();
 		})
-		// run on click of delete link
-		$('#bigui__related .list-table-items li.item a.delete').click(function(event){
-					showSelectedRC(500);
+		// run when bigui is opened, until closed
+		$('a.bigui__launch').on('click',function(){
+	    rcTimer = setInterval(function(){
+		    showSelectedRC();
+			}, 1000);
 		});
-		// run on click of quickedit assignment checkbox
-		$(document).on('click','#bigui__related #mura-rc-quickedit .mura-rc-quickassign',function(){	
-				showSelectedRC(500);
-		});		
-
-
-		// DEBUG
-		// show click event target
-		// $(document).click(function(event) {
-  //   	var text = $(event.target).text();
-  //   	console.log(text);
-  //   	console.log($(event.target));
-		// });
+		$('#bigui__related a.bigui__close').on('click',function(){
+	    clearInterval(rcTimer);
+		});
 
 	});
 </script>
+
