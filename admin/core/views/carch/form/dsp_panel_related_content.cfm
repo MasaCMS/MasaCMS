@@ -86,7 +86,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					// create list of selected content
 					$('#selectedRelatedContent .list-table').each(function(){
 						rcText = $(this).find('.list-table-content-set').text();
-						rcLen = $(this).find('.list-table-items li.item').not('.empty').not('.noShow').length;
+						rcLen = $(this).find('.list-table-items li.item').not('.empty').not('.noShow').not('.ui-sortable-placeholder').length;
 						if (rcLen > 0){
 							rcList = rcList + '<li>' + rcText + ': ' + rcLen + '</li>';
 						}
