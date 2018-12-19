@@ -168,78 +168,89 @@ version 2 without this exception.  You may, if you choose, apply this exception 
             <cfelse>
               <div class="mura-control-group">
                 <label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentobjects')#</label>
-                <div id="editObjects">
-                <script>
-                 var availableObjectSuffix='';
-                </script>
-                <div id="availableObjectsContainer">
-                <dl>
-                  <dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.availablecontentobjects')#</dt>
-                  <dd>
-                    <select name="classSelector" onchange="siteManager.loadObjectClass('#esapiEncode("Javascript",rc.siteid)#',this.value,'','#rc.contentBean.getContentID()#','#esapiEncode("Javascript",rc.parentID)#','#rc.contentBean.getContentHistID()#',0);"  id="dragme">
-                      <option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectobjecttype')#</option>
-                      <option value="system">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.system')#</option>
-                      <option value="navigation">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.navigation')#</option>
-                      <cfif application.settingsManager.getSite(rc.siteid).getemailbroadcaster()>
-                      <option value="mailingList">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mailinglists')#</option>
-                      </cfif>
-                      <cfif application.settingsManager.getSite(rc.siteid).getAdManager()>
-                      <option value="adzone">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.adregions')#</option>
-                      </cfif>
-                        <!--- <option value="category">Categories</option> --->
-                      <option value="folder">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.Folders')#</option>
-                      <option value="calendar">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.calendars')#</option>
-                      <option value="gallery">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.galleries')#</option>
-                      <option value="component">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.components')#</option>
-                      <cfif application.settingsManager.getSite(rc.siteid).getDataCollection()>
-                        <option value="form">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forms')#</option>
-                      </cfif>
-                      <cfif application.settingsManager.getSite(rc.siteid).getHasfeedManager()>
-                      <option value="localFeed">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.localindexes')#</option>
-                      <option value="slideshow">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.localindexslideshows')#</option>
-                      <option value="remoteFeed">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotefeeds')#</option>
-                      </cfif>
-                      <cfif fileExists("#application.configBean.getWebRoot()#/#rc.siteid#/includes/display_objects/custom/admin/dsp_objectClassLabel.cfm")>
-                      <cfinclude template="/#application.configBean.getWebRootMap()#/#rc.siteID#/includes/display_objects/custom/admin/dsp_objectClassLabel.cfm" >
-                      </cfif>
-                      <option value="plugins">#application.rbFactory.getKeyValue(session.rb,'layout.plugins')#</option>
-                    </select>
-                  </dd>
-                </dl>
-                <div id="classList"></div>
-            </div><!--- /#availableObjects --->
-            <div id="availableRegions">
-              <cfloop from="1" to="#application.settingsManager.getSite(rc.siteid).getcolumnCount()#" index="r">
-                <div class="region">
-                        <div class="btn-group btn-group-vertical"> <a class="objectNav btn" onclick="siteManager.addDisplayObject('availableObjects' + availableObjectSuffix,#r#,true);"> <i class="mi-caret-right"></i></a> <a class="objectNav btn" onclick="siteManager.deleteDisplayObject(#r#);"> <i class="mi-caret-left"></i></a> </div>
-                  <cfif listlen(application.settingsManager.getSite(rc.siteid).getcolumnNames(),"^") gte r>
-                    <dl>
-                    <dt>#listgetat(application.settingsManager.getSite(rc.siteid).getcolumnNames(),r,"^")#
-                      <cfelse>
-                    <dt>
-                    Region #r#
-                  </cfif>
-          #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentobjects')#
-                  </dt>
-                  <cfset variables["objectlist#r#"]="">
-                  <dd>
-                    <select name="selectedObjects#r#" id="selectedObjects#r#" class="multiSelect displayRegions" multiple="multiple" size="4" data-regionid="#r#">
-                      <cfloop query="request.rsContentObjects#r#">
-                        <option  value="#request["rsContentObjects#r#"].object#~#esapiEncode('html',request["rsContentObjects#r#"].name)#~#request["rsContentObjects#r#"].objectid#~#esapiEncode('html',request["rsContentObjects#r#"].params)#">
-                        #request["rsContentObjects#r#"].name#
+                <!--- 'big ui' flyout panel --->
+                <!--- todo: resource bundle key for 'manage objects' --->
+                <div class="bigui" id="bigui__layoutobjects" data-label="#esapiEncode('html_attr', 'Manage Objects')#">
+                  <div class="bigui__title">#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentobjects'))#</div>
+                  
+                  <div class="bigui__controls">
 
-                        </option>
-                        <cfset variables["objectlist#r#"]=listappend(variables["objectlist#r#"],"#request["rsContentObjects#r#"].object#~#esapiEncode('html',request["rsContentObjects#r#"].name)#~#request["rsContentObjects#r#"].objectid#~#esapiEncode('html',request["rsContentObjects#r#"].params)#","^")>
+                        <div id="editObjects">
+                        <script>
+                         var availableObjectSuffix='';
+                        </script>
+                        <div id="availableObjectsContainer">
+                        <dl>
+                          <dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.availablecontentobjects')#</dt>
+                          <dd>
+                            <select name="classSelector" onchange="siteManager.loadObjectClass('#esapiEncode("Javascript",rc.siteid)#',this.value,'','#rc.contentBean.getContentID()#','#esapiEncode("Javascript",rc.parentID)#','#rc.contentBean.getContentHistID()#',0);"  id="dragme">
+                              <option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectobjecttype')#</option>
+                              <option value="system">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.system')#</option>
+                              <option value="navigation">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.navigation')#</option>
+                              <cfif application.settingsManager.getSite(rc.siteid).getemailbroadcaster()>
+                              <option value="mailingList">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mailinglists')#</option>
+                              </cfif>
+                              <cfif application.settingsManager.getSite(rc.siteid).getAdManager()>
+                              <option value="adzone">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.adregions')#</option>
+                              </cfif>
+                                <!--- <option value="category">Categories</option> --->
+                              <option value="folder">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.Folders')#</option>
+                              <option value="calendar">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.calendars')#</option>
+                              <option value="gallery">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.galleries')#</option>
+                              <option value="component">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.components')#</option>
+                              <cfif application.settingsManager.getSite(rc.siteid).getDataCollection()>
+                                <option value="form">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forms')#</option>
+                              </cfif>
+                              <cfif application.settingsManager.getSite(rc.siteid).getHasfeedManager()>
+                              <option value="localFeed">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.localindexes')#</option>
+                              <option value="slideshow">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.localindexslideshows')#</option>
+                              <option value="remoteFeed">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotefeeds')#</option>
+                              </cfif>
+                              <cfif fileExists("#application.configBean.getWebRoot()#/#rc.siteid#/includes/display_objects/custom/admin/dsp_objectClassLabel.cfm")>
+                              <cfinclude template="/#application.configBean.getWebRootMap()#/#rc.siteID#/includes/display_objects/custom/admin/dsp_objectClassLabel.cfm" >
+                              </cfif>
+                              <option value="plugins">#application.rbFactory.getKeyValue(session.rb,'layout.plugins')#</option>
+                            </select>
+                          </dd>
+                        </dl>
+                        <div id="classList"></div>
+                    </div><!--- /#availableObjects --->
+                    <div id="availableRegions">
+                      <cfloop from="1" to="#application.settingsManager.getSite(rc.siteid).getcolumnCount()#" index="r">
+                        <div class="region">
+                                <div class="btn-group btn-group-vertical"> <a class="objectNav btn" onclick="siteManager.addDisplayObject('availableObjects' + availableObjectSuffix,#r#,true);"> <i class="mi-caret-right"></i></a> <a class="objectNav btn" onclick="siteManager.deleteDisplayObject(#r#);"> <i class="mi-caret-left"></i></a> </div>
+                          <cfif listlen(application.settingsManager.getSite(rc.siteid).getcolumnNames(),"^") gte r>
+                            <dl>
+                            <dt>#listgetat(application.settingsManager.getSite(rc.siteid).getcolumnNames(),r,"^")#
+                              <cfelse>
+                            <dt>
+                            Region #r#
+                          </cfif>
+                  #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentobjects')#
+                          </dt>
+                          <cfset variables["objectlist#r#"]="">
+                          <dd>
+                            <select name="selectedObjects#r#" id="selectedObjects#r#" class="multiSelect displayRegions" multiple="multiple" size="4" data-regionid="#r#">
+                              <cfloop query="request.rsContentObjects#r#">
+                                <option  value="#request["rsContentObjects#r#"].object#~#esapiEncode('html',request["rsContentObjects#r#"].name)#~#request["rsContentObjects#r#"].objectid#~#esapiEncode('html',request["rsContentObjects#r#"].params)#">
+                                #request["rsContentObjects#r#"].name#
+
+                                </option>
+                                <cfset variables["objectlist#r#"]=listappend(variables["objectlist#r#"],"#request["rsContentObjects#r#"].object#~#esapiEncode('html',request["rsContentObjects#r#"].name)#~#request["rsContentObjects#r#"].objectid#~#esapiEncode('html',request["rsContentObjects#r#"].params)#","^")>
+                              </cfloop>
+                            </select>
+                            <input type="hidden" name="objectList#r#" id="objectList#r#" value="#variables["objectlist#r#"]#">
+                          </dd>
+                          </dl>
+                                <div class="btn-group btn-group-vertical"> <a class="objectNav btn" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.up')#" onclick="siteManager.moveDisplayObjectUp(#r#);"> <i class="mi-caret-up"></i></a> <a class="objectNav btn" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.down')#" onclick="siteManager.moveDisplayObjectDown(#r#);"> <i class="mi-caret-down"></i></a> </div>
+                        </div> <!--- /.region --->
                       </cfloop>
-                    </select>
-                    <input type="hidden" name="objectList#r#" id="objectList#r#" value="#variables["objectlist#r#"]#">
-                  </dd>
-                  </dl>
-                        <div class="btn-group btn-group-vertical"> <a class="objectNav btn" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.up')#" onclick="siteManager.moveDisplayObjectUp(#r#);"> <i class="mi-caret-up"></i></a> <a class="objectNav btn" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.down')#" onclick="siteManager.moveDisplayObjectDown(#r#);"> <i class="mi-caret-down"></i></a> </div>
-                </div> <!--- /.region --->
-              </cfloop>
-            </div> <!--- /#availableRegions --->
-          </div> <!--- /#editObjects--->
+                    </div> <!--- /#availableRegions --->
+                  </div> <!--- /#editObjects--->
+
+                  </div>
+                </div> <!--- /.bigui --->
+
               </div> <!--- /.mura-control-group --->
         </cfif>
 

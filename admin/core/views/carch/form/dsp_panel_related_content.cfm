@@ -55,6 +55,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div id="panel-relatedcontent" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-relatedcontent" aria-expanded="false" style="height: 0px;">
 			<div class="mura-panel-body">
 
+					<span id="extendset-container-tabrelatedcontenttop" class="extendset-container"></span>
+					<div id="relcontent__selected"></div>
 
 				<!--- 'big ui' flyout panel --->
 				<!--- todo: resource bundle key for 'manage related content' --->
@@ -62,7 +64,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<div class="bigui__title">#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.relatedcontent"))#</div>
 					<div class="bigui__controls">
 
-						<span id="extendset-container-tabrelatedcontenttop" class="extendset-container"></span>
 						<div id="selectRelatedContent"><!--- target for ajax ---></div>
 						<div id="selectedRelatedContent" class="mura-control-group">
 
@@ -75,3 +76,46 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</div>
 </div> 
 </cfoutput>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+
+		// display selected related content in text format
+		var showSelectedRC = function(){	
+			var rcList = '';
+					// create list of selected content
+					$('#selectedRelatedContent .list-table').each(function(){
+						rcText = $(this).find('.list-table-content-set').text();
+						rcLen = $(this).find('.list-table-items li.item').not('.empty').not('.noShow').not('.ui-sortable-placeholder').length;
+						if (rcLen > 0){
+							rcList = rcList + '<li>' + rcText + ': ' + rcLen + '</li>';
+						}
+					})
+
+					if (rcList.trim().length > 0){
+					<!--- todo: resource bundle values for text --->
+						$('#relcontent__selected').html('<p>Selected Related Content</p><ul>' + rcList + '</ul>');
+					} else {
+						$('#relcontent__selected').html('<p>No related content selected<p>');
+					}
+				}
+
+		// run on page load
+		showSelectedRC();
+		// run on click of heading
+		$('#heading-relatedcontent').on('click',function(){
+			showSelectedRC();
+		})
+		// run when bigui is opened, until closed
+		$('a.bigui__launch').on('click',function(){
+	    rcTimer = setInterval(function(){
+		    showSelectedRC();
+			}, 1000);
+		});
+		$('#bigui__related a.bigui__close').on('click',function(){
+	    clearInterval(rcTimer);
+		});
+
+	});
+</script>
+

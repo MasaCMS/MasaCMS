@@ -3,6 +3,7 @@
 @editcalcheight: ~"calc(100vh - 216px)";
 @editscrollheight: ~"calc(100vh - 233px)";
 @editcalcwidth: ~"calc(100% - 350px)";
+@controlstextcolor: #f3f3f3;
   
 .contentTitle{
     font-size: 24px;
@@ -14,7 +15,7 @@
 
 .mura__edit__controls{
 	background-color: #454545;
-	color: #f3f3f3;
+	color: @controlstextcolor;
 	float: right;
 	margin: 0 !important;
 	padding: 0 !important;
@@ -44,10 +45,10 @@
 	}
 	
 	.mura__edit__controls__scrollable{
-	height: @editscrollheight;
-	width: 100%;
-	min-width: 300px;
-	overflow: auto;
+		height: @editscrollheight;
+		width: 100%;
+		min-width: 300px;
+		overflow: auto;
 	}    
 
 	 .btn{
@@ -118,7 +119,7 @@
 				border-radius:2px;
 				background-image:none;
 				text-shadow:none;
-			  color: #f3f3f3;
+			  color: @controlstextcolor;
 			  background-color: #333;
 			  border-color: transparent;
 			  float: left;
@@ -154,7 +155,7 @@
 				.btn:not([class*="btn-"]):hover,
 				.btn.active:hover{
 					background-color: #565656;
-					color: #f3f3f3;
+					color: @controlstextcolor;
 				}
 
 			}
@@ -269,7 +270,7 @@
 				.panel-gds-box span{
 					font-size: 12px;
 			    font-weight: 400;
-			    color: #f3f3f3;
+			    color: @controlstextcolor;
 			    line-height: 1.2;
 				}
 				.panel-gds-box.active{
@@ -286,7 +287,7 @@
 			.mura-control-label{
 				font-size: 14px;
 				font-weight: normal;
-				color: #f3f3f3;
+				color: @controlstextcolor;
 				line-height: 1.2;
 			}
 
@@ -429,26 +430,70 @@
 				}
 			}
 
-			#sortableFields #displayListSort{
-				padding: 0 !important;
-				border: none !important;
-				margin-bottom: 12px !important;
-			}
-			#sortableFields #displayListSort li:before{
-			  content: "\f0c9";
-			  font-family: FontAwesome;
-			  color: #737373;
-			  float: right;
+			#feedCustomImageOptions .half{
+				padding-right: 12px;
+				+.half{
+					padding-right: 0;
+					padding-left: 12px;
+				}
+
 			}
 
-			#sortableFields #displayListSort li{
-				background-color: #565656;
-				text-shadow:none;
-					box-shadow:none;
-				font-size: 14px;
-				padding: 8px 12px;
-			  color: #d8d8d8;
+			#availableFields, #availableGroups, .dragMsg{
+	  		color: @controlstextcolor;
+
+				span{
+		  		color: @controlstextcolor;
+				}
+
+		  }
+
+			#sortableFields, .sortableFields, #sortableGroups, .sortableGroups {
+
+				.dragMsg, .dragMsg span{
+			  		color: @controlstextcolor;
+			  	}
+
+				#availableListSort,
+				#contentAvailableListSort,
+				#groupAvailableListSort,
+			  #contentDisplayListSort,
+			  #displayListSort,
+			  #groupAssignmentListSort,
+			  #groupAvailableListSort {
+
+					li {
+						text-overflow: ellipsis;
+						width: 100%;
+						overflow: hidden;
+					}
+				}
+
+
+				#displayListSort{
+						padding: 0 !important;
+						border: none !important;
+						margin-bottom: 12px !important;
+							
+							li:before{
+							  content: "\f0c9";
+							  font-family: FontAwesome;
+							  color: #737373;
+							  float: right;
+							}
+							li{
+								background-color: #565656;
+								text-shadow:none;
+									box-shadow:none;
+								font-size: 14px;
+								padding: 8px 12px;
+							  color: #d8d8d8;
+							}
+					}
+
 			}
+
+
 
 			ul.configurator-options{
 			list-style-type:none;
@@ -462,13 +507,18 @@
 			  background: #565656;
 			}
 
+	/* "big ui" launch button (auto-generated) */
+  .bigui__launch.btn{
+  	margin: 8px 0 32px 0;
+  }
+
 	} /* .mura__edit__controls__objects */
 
 } /* /.mura__edit__controls */
 
 	/* "big ui" flyout panel */
 	.bigui{
-    display: none                       ;
+    display: none;
     position: absolute;
     top: 0;
     left: -24px;
@@ -476,13 +526,14 @@
     bottom: 0;
     width: ~"calc(100% + 49px)";
     z-index: 97!important;
-    overflow: auto;
+    overflow: visible;
 
     .bigui__wrapper{
   	    background-color: #fff;
   	    height: ~"calc(100% - 15px)";
-  	    width: 100%;
+  	    overflow-y: auto;
     		padding: 17px 25px;
+  	    width: 100%;
 
     	.bigui__close{
     		    width: auto;
@@ -526,11 +577,20 @@
 				padding: 5px 12px;
 			}
 
-		.navZoom li{
-			cursor: default;
-		}
+			.navZoom li{
+				cursor: default;
+			}
 
-    } /* /.bigui__wrapper */
+
+			#availableObjectsContainer, #availableRegions{
+				min-width: 380px;
+				float: left;
+			}
+			#availableObjectsContainer{
+				padding-left: 35px;
+			}	
+
+    } /* /.bigui__wrapper */		
 
 		.btn.active.focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn:active:focus, .btn:focus {
 			    outline: none !important !important;
@@ -541,7 +601,7 @@
 				background-image: none;
 				border-color: transparent;
 				border-radius: 2px;	
-				color: #f3f3f3;
+				color: @controlstextcolor;
 			}
 
 			.btn-primary,
@@ -557,6 +617,110 @@
 			}
 
 	} /* /.bigui */ 
+
+
+#bigui__categories{
+	.categoryAssignment li ul {
+		margin: 0 !important;
+	}			
+	.mura-grid{
+		 li {
+	      float: none;
+	      cursor: default;
+        .clearfix();
+	   } 
+		 dl { 
+			  float: none;
+				width: 100%;
+		    height: 28px;
+			}
+			dt{
+		    width: ~"calc(100% - 75px)";
+	      line-height: 28px;
+	      border-right: none;      					
+	    }
+			dd{
+		    width: 75px;
+	      border-left: 1px solid @tableBorder;
+	      border-right: none;
+	      float: right;					
+    	}
+		  .mura-grid-hdr {
+		    dt, dd { 
+		    	.bold-font; 
+		    }
+		    dt { 
+		      padding-left: 12px !important;
+		      }
+		  }
+		  
+		  #mura-nodes {
+		    
+		    // !important needed to override .mura-grid styles
+		    
+		    li li dt { padding-left: 2em !important; }
+		    li li li dt { padding-left: 3em !important; }
+		    li li li li dt { padding-left: 4em !important; }
+		    li li li li li dt { padding-left: 5em !important; }
+		    li li li li li li dt { padding-left: 6em !important; }
+		    li li li li li li li li dt { padding-left: 7em !important; }
+		    li li li li li li li li li dt { padding-left: 8em !important; }
+		    li li li li li li li li li li dt { padding-left: 9em !important; }
+		    li li li li li li li li li li li dt { padding-left: 10em !important; }
+		    li li li li li li li li li li li li dt { padding-left: 11em !important; }
+		      
+		    dt {
+		    
+		      > span {
+		      
+		        .inline-block;
+		        cursor: default;
+		        width: 10px;
+		        margin-left: 1em;
+		        margin-right: 2px;
+		        }
+		        
+		        > label {
+		        
+		        cursor: pointer;
+		        margin-bottom: 0;
+		        .inline-block;
+		        line-height: 28px;
+		        font-weight: normal;
+		        
+		        }
+
+		      }   
+		   
+		      .categorytitle label input[type=checkbox]{
+		        float:left;
+		        margin:7px 4px 7px 0;
+		      }
+
+		      .categorytitle > .hasChildren { 
+		      margin-left: 1em; 
+		      }
+
+		    }		    	
+		}
+	} /* /#bigui_categories */		
+
+/* selected item lists for big ui panels */
+#categories__selected, 
+#relcontent__selected{
+		p{
+			padding: 12px 0 12px 0px;
+		}
+		ul > li{
+			direction: rtl;
+			list-style: none;
+			overflow: hidden;
+			padding-left: 12px;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			width: 100%;
+		}
+	}
 
 /* sidebar-tab class on body alters layout slightly */
 body.sidebar-tab{
@@ -635,5 +799,31 @@ body.sidebar-tab{
 #mura-content-body-render{
 	#bodyContainer label{
 		display: none;
+	}
+}
+
+/* modal window in legacy layout view */
+#carch .ui-dialog{
+ .objectParam.nice-select{
+    background-color: #fff;
+    color: #646464;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    
+    ul.list,
+    .option{
+	   	background-color: #fff !important;
+	    color: #646464 !important;
+    }
+    .option.focus,
+		.option.selected.focus,
+		.option:hover {
+		    background-color: #4485f1 !important;
+		    color: #fff !important;
+		}
+
+ }	
+ .ui-dialog-buttonpane .ui-dialog-buttonset .ui-button:first-child{
+  .mura-primary;
 	}
 }

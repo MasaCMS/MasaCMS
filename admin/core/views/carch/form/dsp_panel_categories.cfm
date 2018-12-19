@@ -54,15 +54,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				<span id="extendset-container-tabcategorizationtop" class="extendset-container"></span>
 
+				<div id="categories__selected"></div>
 
 		<!--- 'big ui' flyout panel --->
-		<!--- todo: resource bundle key for 'edit categories' --->
-		<div class="bigui" id="bigui__categories" data-label="Edit Categories">
+		<!--- todo: resource bundle key for 'manage categories' --->
+		<div class="bigui" id="bigui__categories" data-label="Manage Categories">
 			<div class="bigui__title">#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.availablecategories'))#</div>
 			<div class="bigui__controls">
 
 					<div class="mura-control-group">
-						<div class="mura-grid stripe">
+						<div class="mura-grid stripe" id="mura-grid-categories">
 							<dl class="mura-grid-hdr">
 								<dt class="categorytitle">
 										#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.availablecategories')#
@@ -101,8 +102,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	var stripeCategories=function() {
 			var counter=0;
-			//alert($('#tabCategorization dl').length)
-			$('#tabCategorization dl').each(
+			//alert($('#bigui__categories dl').length)
+			$('#bigui__categories dl').each(
 				function(index) {
 					//alert(index)
 					if(index && !$(this).parents('ul.categorylist:hidden').length)
@@ -156,7 +157,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfloop from="1" to="#to#" index="i">
 					<cfset item=replace(listGetAt(cat.getPath(),i),"'","","all")>
 					<cfif not listFind(itemlist,item)>
-						<cfoutput>$('##tabCategorization li[data-categoryid="#item#"]').find('span.hasChildren:first').trigger('click');</cfoutput>
+						<cfoutput>$('##bigui__categories li[data-categoryid="#item#"]').find('span.hasChildren:first').trigger('click');</cfoutput>
 					<cfset itemlist=listAppend(itemList,item)>
 					</cfif>
 
@@ -167,6 +168,42 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		catsInited=true;
 
 		stripe('stripe');
+
+		// display selected categories in text format
+		var showSelectedCats = function(){	
+			var catList = '';
+			var delim = '&nbsp;&raquo;&nbsp;';
+			// create list of selected categories
+			$('#mura-grid-categories #mura-nodes li .categorytitle label').each(function(){
+				if($(this).find('input[type=checkbox]').prop('checked')){
+					var appendStr = '';
+					$(this).parentsUntil($('#mura-nodes'), 'li').each(function(){
+						var labelText = $(this).find('> dl > dt > label').text();
+						if(labelText.trim().length > 0){
+							var curStr = appendStr;
+							appendStr = labelText.trim();
+							if (curStr.trim().length > 0){
+							 appendStr = appendStr + delim + curStr;
+							}
+						}
+					});
+					catList = catList + '<li>' + appendStr + '</li>';
+				}
+			})
+			<!--- todo: resource bundle values for text --->
+			if (catList.trim().length > 0){
+				$('#categories__selected').html('<p>Selected Categories</p><ul>' + catList + '</ul>');
+			} else {
+				$('#categories__selected').html('<p>No categories selected<p>');
+			}
+
+		}
+		// run on page load
+		showSelectedCats();
+		// run on change of selection
+		$('#mura-grid-categories #mura-nodes li .categorytitle input[type=checkbox]').on('click',function(){
+			showSelectedCats();
+		})
 
 	});
 </script>
