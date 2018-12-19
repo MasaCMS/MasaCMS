@@ -235,19 +235,58 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 
 			<cfif listFind("Page,Folder,Calendar,Gallery,Link,File,Link",rc.type)>
-				<div class="mura-control-group">
-					<label>
-			      		#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expires')#
-			      	</label>
-			     	<cf_datetimeselector name="expires" datetime="#rc.contentBean.getExpires()#" defaulthour="23" defaultminute="59">
-					<div class="mura-control justify" id="expires-notify">
-						<label for="dspexpiresnotify" class="checkbox">
-							<input type="checkbox" name="dspExpiresNotify" id="dspexpiresnotify" onclick="siteManager.loadExpiresNotify('#esapiEncode('javascript',rc.siteid)#','#esapiEncode('javascript',rc.contenthistid)#','#esapiEncode('javascript',rc.parentid)#');"  class="checkbox">
-								#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expiresnotify')#
-						</label>
+
+			<div class="mura-control-group">
+				<label>#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expires'))#</label>
+				<div class="mura-control justify">
+					<div id="expire-label">Expires: never</div>
+
+				<!--- 'big ui' flyout panel --->
+				<!--- todo: resource bundle key for 'manage expiration' --->
+				<div class="bigui" id="bigui__expireschedule" data-label="#esapiEncode('html_attr', 'Manage Expiration')#">
+					<div class="bigui__title">#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expires'))#</div>
+					<div class="bigui__controls">
+
+						<div class="mura-control-group" id="expireschedule-selector">
+							<label><!---placeholder do not delete ---></label>
+					     	<cf_datetimeselector name="expires" datetime="#rc.contentBean.getExpires()#" defaulthour="23" defaultminute="59">
+							<div class="mura-control justify" id="expires-notify">
+								<label for="dspexpiresnotify" class="checkbox">
+									<input type="checkbox" name="dspExpiresNotify" id="dspexpiresnotify" onclick="siteManager.loadExpiresNotify('#esapiEncode('javascript',rc.siteid)#','#esapiEncode('javascript',rc.contenthistid)#','#esapiEncode('javascript',rc.parentid)#');"  class="checkbox">
+										#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expiresnotify')#
+								</label>
+							</div>
+						<div class="mura-control-group" id="selectExpiresNotify" style="display: none;"></div>
+						</div> <!--- /end mura-control-group --->
 					</div>
-				</div> <!--- /end mura-control-group --->
-				<div class="mura-control-group" id="selectExpiresNotify" style="display: none;"></div>
+				</div> <!--- /.bigui --->
+
+				</div>
+			</div>	
+
+			<!--- todo: resource bundle key for 'Expires' --->
+			<script type="text/javascript">
+				function showSelectedExp(){
+					var expStr = 'Never';
+					if ($('##mura-datepicker-expires').val() != ''){
+						expStr = $('##mura-datepicker-expires').val() + ' ' 
+										+ $('##mura-expiresHour').val() + ':' 
+										+ $('##mura-expiresMinute option:selected').html() + ' '
+										+ $('##mura-expiresDayPart option:selected').html();					
+					}
+					$('##expire-label').html('Expires: ' + expStr);
+				}
+
+				$(document).ready(function(){
+					// run on page load
+					showSelectedExp();
+					// run on change of any schedule element
+					$('##expireschedule-selector *').on('change',function(){
+						showSelectedExp();
+					})
+				});				
+			</script>
+		  		
 			</cfif>
 
 			<cfif not listFindNoCase('Component,Form,Variation',rc.type) and rc.contentid neq '00000000000000000000000000000000001'>
