@@ -527,7 +527,11 @@ var Mura=(function(){
    */
   function getEntity(entityname, siteid) {
       siteid=siteid || Mura.siteid;
-      return Mura._requestcontext.getEntity(entityname, siteid);
+			if(typeof Mura._requestcontext=='undefined'){
+				return Mura.getRequestContext().getEntity(entityname, siteid);
+			} else {
+				return Mura._requestcontext.getEntity(entityname, siteid);
+			}
   }
 
   /**
@@ -13757,7 +13761,7 @@ Mura.RequestContext=Mura.Core.extend(
               type: 'get',
               url: Mura.apiEndpoint + '/content/_path/' + filename + '?' + query.join('&'),
               success: function(resp) {
-								if (typeof resp.data.redirect != 'undefined' && typeof resp.data.contentid == 'undefined') {
+								if (resp != null && typeof resp.data != 'undefined' && typeof resp.data.redirect != 'undefined' && typeof resp.data.contentid == 'undefined') {
 				          if (resp.data.redirect && resp.data.redirect != location.href) {
 				              location.href = resp.data.redirect;
 				          } else {
@@ -13770,7 +13774,7 @@ Mura.RequestContext=Mura.Core.extend(
 								}
               },
 							error: function(resp) {
-								if (typeof resp.data != 'undefined' && typeof resolve == 'function') {
+								if (resp != null && typeof resp.data != 'undefined' && typeof resp.data != 'undefined' && typeof resolve == 'function') {
 									var item = new Mura.Entity({},self);
 									item.set(resp.data);
 									resolve(item);
@@ -13794,12 +13798,12 @@ Mura.RequestContext=Mura.Core.extend(
   getEntity:function(entityname, siteid) {
       if (typeof entityname == 'string') {
           var properties = {
-              entityname: entityname
+              entityname: entityname.substr(0, 1).toUpperCase() + entityname.substr(1)
           };
           properties.siteid = siteid || Mura.siteid;
       } else {
           properties = entityname;
-          properties.entityname = properties.entityname || 'content';
+          properties.entityname = properties.entityname || 'Content';
           properties.siteid = properties.siteid || Mura.siteid;
       }
 
@@ -13832,9 +13836,9 @@ Mura.RequestContext=Mura.Core.extend(
 							entityConfig: encodeURIComponent(JSON.stringify(entityConfig))
 						},
             success: function(resp) {
-							if (typeof resolve =='function' && typeof resp.data != 'undefined') {
+							if (typeof resolve =='function' && resp != null && typeof resp.data != 'undefined') {
 								resolve(resp.data);
-							} else if (typeof reject =='function' && typeof resp.error != 'undefined') {
+							} else if (typeof reject =='function' && resp != null && typeof resp.error != 'undefined') {
 								resolve(resp);
 							} else if (typeof resolve =='function'){
 								resolve(resp);
@@ -13861,9 +13865,9 @@ Mura.RequestContext=Mura.Core.extend(
 											'csrf_token_expires': resp.data.csrf_token_expires
 										},
 										success: function(resp) {
-												if (typeof resolve =='function' && typeof resp.data != 'undefined') {
+												if (typeof resolve =='function' && resp != null && typeof resp.data != 'undefined') {
 													resolve(resp.data);
-												} else if (typeof reject =='function' && typeof resp.error != 'undefined') {
+												} else if (typeof reject =='function' && resp != null && typeof resp.error != 'undefined') {
 													resolve(resp);
 												} else if (typeof resolve =='function'){
 													resolve(resp);
@@ -13898,9 +13902,9 @@ Mura.RequestContext=Mura.Core.extend(
 							deleteSchema : deleteSchema
 						},
             success: function(resp) {
-							if (typeof resolve =='function' && typeof resp.data != 'undefined') {
+							if (typeof resolve =='function' && resp != null && typeof resp.data != 'undefined') {
 								resolve(resp.data);
-							} else if (typeof reject =='function' && typeof resp.error != 'undefined') {
+							} else if (typeof reject =='function' && resp != null && typeof resp.error != 'undefined') {
 								resolve(resp);
 							} else if (typeof resolve =='function'){
 								resolve(resp);
@@ -13928,9 +13932,9 @@ Mura.RequestContext=Mura.Core.extend(
 											'csrf_token_expires': resp.data.csrf_token_expires
 										},
 										success: function(resp) {
-												if (typeof resolve =='function' && typeof resp.data != 'undefined') {
+												if (typeof resolve =='function' && resp != null && typeof resp.data != 'undefined') {
 													resolve(resp.data);
-												} else if (typeof reject =='function' && typeof resp.error != 'undefined') {
+												} else if (typeof reject =='function' && resp != null && typeof resp.error != 'undefined') {
 													resolve(resp);
 												} else if (typeof resolve =='function'){
 													resolve(resp);
