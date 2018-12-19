@@ -438,6 +438,7 @@
 				}
 
 			}
+
 			#availableFields, #availableGroups, .dragMsg{
 	  		color: @controlstextcolor;
 
@@ -449,48 +450,50 @@
 
 			#sortableFields, .sortableFields, #sortableGroups, .sortableGroups {
 
-			.dragMsg, .dragMsg span{
-		  		color: @controlstextcolor;
-		  	}
+				.dragMsg, .dragMsg span{
+			  		color: @controlstextcolor;
+			  	}
 
-			#availableListSort,
-			#contentAvailableListSort,
-			#groupAvailableListSort,
-		  #contentDisplayListSort,
-		  #displayListSort,
-		  #groupAssignmentListSort,
-		  #groupAvailableListSort {
+				#availableListSort,
+				#contentAvailableListSort,
+				#groupAvailableListSort,
+			  #contentDisplayListSort,
+			  #displayListSort,
+			  #groupAssignmentListSort,
+			  #groupAvailableListSort {
 
-				li {
-					text-overflow: ellipsis;
-					width: 100%;
-					overflow: hidden;
+					li {
+						text-overflow: ellipsis;
+						width: 100%;
+						overflow: hidden;
+					}
 				}
+
+
+				#displayListSort{
+						padding: 0 !important;
+						border: none !important;
+						margin-bottom: 12px !important;
+							
+							li:before{
+							  content: "\f0c9";
+							  font-family: FontAwesome;
+							  color: #737373;
+							  float: right;
+							}
+							li{
+								background-color: #565656;
+								text-shadow:none;
+									box-shadow:none;
+								font-size: 14px;
+								padding: 8px 12px;
+							  color: #d8d8d8;
+							}
+					}
+
 			}
 
 
-			#displayListSort{
-					padding: 0 !important;
-					border: none !important;
-					margin-bottom: 12px !important;
-						
-						li:before{
-						  content: "\f0c9";
-						  font-family: FontAwesome;
-						  color: #737373;
-						  float: right;
-						}
-						li{
-							background-color: #565656;
-							text-shadow:none;
-								box-shadow:none;
-							font-size: 14px;
-							padding: 8px 12px;
-						  color: #d8d8d8;
-						}
-				}
-
-			}
 
 			ul.configurator-options{
 			list-style-type:none;
@@ -577,6 +580,15 @@
 			.navZoom li{
 				cursor: default;
 			}
+
+
+			#availableObjectsContainer, #availableRegions{
+				min-width: 380px;
+				float: left;
+			}
+			#availableObjectsContainer{
+				padding-left: 35px;
+			}	
 
     } /* /.bigui__wrapper */		
 
