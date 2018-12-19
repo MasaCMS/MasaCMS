@@ -71,11 +71,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</select>
 		</div>
 
-		<div id="feedCustomImageOptions" class="mura-control-group half"<cfif rc.contentBean.getImageSize() neq "custom"> style="display:none"</cfif>>
-      <label>#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#</label>
-			<input name="imageWidth" data-displayobjectparam="imageWidth" type="text" value="#rc.contentBean.getImageWidth()#" />
-      <label>#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</label>
-    	<input name="imageHeight" data-displayobjectparam="imageHeight" type="text" value="#rc.contentBean.getImageHeight()#" />
+		<div id="feedCustomImageOptions" class="mura-control-group"<cfif rc.contentBean.getImageSize() neq "custom"> style="display:none"</cfif>>
+			<span class="half">
+	      <label>#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#</label>
+				<input name="imageWidth" data-displayobjectparam="imageWidth" type="text" value="#rc.contentBean.getImageWidth()#" />
+			</span>
+			<span class="half">
+	      <label>#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</label>
+	    	<input name="imageHeight" data-displayobjectparam="imageHeight" type="text" value="#rc.contentBean.getImageHeight()#" />
+			</span>
 		</div>
 
 			<div class="mura-control-group" id="availableFields">

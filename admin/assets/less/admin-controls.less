@@ -3,6 +3,7 @@
 @editcalcheight: ~"calc(100vh - 216px)";
 @editscrollheight: ~"calc(100vh - 233px)";
 @editcalcwidth: ~"calc(100% - 350px)";
+@controlstextcolor: #f3f3f3;
   
 .contentTitle{
     font-size: 24px;
@@ -14,7 +15,7 @@
 
 .mura__edit__controls{
 	background-color: #454545;
-	color: #f3f3f3;
+	color: @controlstextcolor;
 	float: right;
 	margin: 0 !important;
 	padding: 0 !important;
@@ -118,7 +119,7 @@
 				border-radius:2px;
 				background-image:none;
 				text-shadow:none;
-			  color: #f3f3f3;
+			  color: @controlstextcolor;
 			  background-color: #333;
 			  border-color: transparent;
 			  float: left;
@@ -154,7 +155,7 @@
 				.btn:not([class*="btn-"]):hover,
 				.btn.active:hover{
 					background-color: #565656;
-					color: #f3f3f3;
+					color: @controlstextcolor;
 				}
 
 			}
@@ -269,7 +270,7 @@
 				.panel-gds-box span{
 					font-size: 12px;
 			    font-weight: 400;
-			    color: #f3f3f3;
+			    color: @controlstextcolor;
 			    line-height: 1.2;
 				}
 				.panel-gds-box.active{
@@ -286,7 +287,7 @@
 			.mura-control-label{
 				font-size: 14px;
 				font-weight: normal;
-				color: #f3f3f3;
+				color: @controlstextcolor;
 				line-height: 1.2;
 			}
 
@@ -429,25 +430,66 @@
 				}
 			}
 
-			#sortableFields #displayListSort{
-				padding: 0 !important;
-				border: none !important;
-				margin-bottom: 12px !important;
+			#feedCustomImageOptions .half{
+				padding-right: 12px;
+				+.half{
+					padding-right: 0;
+					padding-left: 12px;
+				}
+
 			}
-			#sortableFields #displayListSort li:before{
-			  content: "\f0c9";
-			  font-family: FontAwesome;
-			  color: #737373;
-			  float: right;
+			#availableFields, #availableGroups, .dragMsg{
+	  		color: @controlstextcolor;
+
+				span{
+		  		color: @controlstextcolor;
+				}
+
+		  }
+
+			#sortableFields, .sortableFields, #sortableGroups, .sortableGroups {
+
+			.dragMsg, .dragMsg span{
+		  		color: @controlstextcolor;
+		  	}
+
+			#availableListSort,
+			#contentAvailableListSort,
+			#groupAvailableListSort,
+		  #contentDisplayListSort,
+		  #displayListSort,
+		  #groupAssignmentListSort,
+		  #groupAvailableListSort {
+
+				li {
+					text-overflow: ellipsis;
+					width: 100%;
+					overflow: hidden;
+				}
 			}
 
-			#sortableFields #displayListSort li{
-				background-color: #565656;
-				text-shadow:none;
-					box-shadow:none;
-				font-size: 14px;
-				padding: 8px 12px;
-			  color: #d8d8d8;
+
+			#displayListSort{
+					padding: 0 !important;
+					border: none !important;
+					margin-bottom: 12px !important;
+						
+						li:before{
+						  content: "\f0c9";
+						  font-family: FontAwesome;
+						  color: #737373;
+						  float: right;
+						}
+						li{
+							background-color: #565656;
+							text-shadow:none;
+								box-shadow:none;
+							font-size: 14px;
+							padding: 8px 12px;
+						  color: #d8d8d8;
+						}
+				}
+
 			}
 
 			ul.configurator-options{
@@ -547,7 +589,7 @@
 				background-image: none;
 				border-color: transparent;
 				border-radius: 2px;	
-				color: #f3f3f3;
+				color: @controlstextcolor;
 			}
 
 			.btn-primary,
