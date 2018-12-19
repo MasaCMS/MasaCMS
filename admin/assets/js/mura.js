@@ -13761,7 +13761,7 @@ Mura.RequestContext=Mura.Core.extend(
               type: 'get',
               url: Mura.apiEndpoint + '/content/_path/' + filename + '?' + query.join('&'),
               success: function(resp) {
-								if (resp != null && typeof resp.data != 'undefined' && typeof resp.data.redirect != 'undefined' && typeof resp.data.contentid == 'undefined') {
+								if (resp != null && typeof location != 'undefined' && typeof resp.data != 'undefined' && typeof resp.data.redirect != 'undefined' && typeof resp.data.contentid == 'undefined') {
 				          if (resp.data.redirect && resp.data.redirect != location.href) {
 				              location.href = resp.data.redirect;
 				          } else {
