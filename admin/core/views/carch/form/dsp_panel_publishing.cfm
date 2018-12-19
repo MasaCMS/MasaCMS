@@ -268,7 +268,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<script type="text/javascript">
 				function showSelectedExp(){
 					var expStr = 'Never';
-					var notifyCt = $('##expiresnotify option:selected').not(':empty').length;
+					var notifyCt = $('##expiresnotify option:selected[value!=""]').not(':empty').length;
 					if ($('##mura-datepicker-expires').val() != ''){
 						expStr = $('##mura-datepicker-expires').val() + ' ' 
 										+ $('##mura-expiresHour').val() + ':' 
