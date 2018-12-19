@@ -311,17 +311,71 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</select>
 				</div>
 				<div id="editFeatureDates" <cfif rc.contentBean.getisfeature() NEQ 2>style="display: none;"</cfif>>
-					<div class="mura-control-group">
-						<label class="date-span">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.from')#</label>
-							<cf_datetimeselector name="featureStart" datespanclass="time" datetime="#rc.contentBean.getFeatureStart()#">
-					</div>
-					<div class="mura-control-group">
-							<label class="date-span">
-							#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.to')#
-							</label>
-							<cf_datetimeselector name="featureStop" datespanclass="time" datetime="#rc.contentBean.getFeatureStop()#" defaulthour="23" defaultminute="59">
-					</div>
+
+					<div id="featureschedule-label"></div>
+					<!--- 'big ui' flyout panel --->
+					<!--- todo: resource bundle key for 'manage schedule' --->
+					<div class="bigui" id="bigui__featureschedule" data-label="#esapiEncode('html_attr', 'Manage Schedule')#">
+						<div class="bigui__title">#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.schedule'))#</div>
+						<div class="bigui__controls">
+
+							<div id="featureschedule-selector">
+								<div class="mura-control-group">
+									<label class="date-span">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.from')#</label>
+										<cf_datetimeselector name="featureStart" datespanclass="time" datetime="#rc.contentBean.getFeatureStart()#">
+								</div>
+								<div class="mura-control-group">
+										<label class="date-span">
+										#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.to')#
+										</label>
+										<cf_datetimeselector name="featureStop" datespanclass="time" datetime="#rc.contentBean.getFeatureStop()#" defaulthour="23" defaultminute="59">
+								</div>
+
+							</div>
+						</div>
+					</div> <!--- /.bigui --->
+
 				</div>
+
+				<!--- todo: resource bundle key for 'Expires' --->
+				<script type="text/javascript">
+					function showSelectedFeat(){
+						var featStr = '';
+						var startDate = $('##mura-datepicker-featureStart').val();
+						var stopDate = $('##mura-datepicker-featureStop').val();
+						console.log(startDate);
+						if (startDate != ''){
+							var featStr = startDate 
+							+ ' ' + $('##mura-featureStartHour option:selected').html()
+							+ ':' + $('##mura-featureStartMinute option:selected').html()
+							+ ' ' + $('##mura-featureStartDayPart option:selected').html();
+	
+							if (stopDate != ''){
+								var featStr = featStr +  ' to ' + stopDate 
+								+ ' ' + $('##mura-featureStopHour option:selected').html()
+								+ ':' + $('##mura-featureStopMinute option:selected').html()
+								+ ' ' + $('##mura-featureStopDayPart option:selected').html();
+							}
+	
+						}
+
+						console.log(featStr);
+
+						$('##featureschedule-label').html(featStr);
+					}
+
+					$(document).ready(function(){
+						// run on page load
+						setTimeout(function(){
+							showSelectedFeat();
+						}, 300);
+						// run on change of any schedule element
+						$('##featureschedule-selector *').on('change',function(){
+							showSelectedFeat();
+						})
+					});				
+				</script>
+
 			</cfif>
 
 			<div class="mura-control-group">
