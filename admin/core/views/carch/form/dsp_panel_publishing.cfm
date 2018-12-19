@@ -252,11 +252,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					     	<cf_datetimeselector name="expires" datetime="#rc.contentBean.getExpires()#" defaulthour="23" defaultminute="59">
 							<div class="mura-control justify" id="expires-notify">
 								<label for="dspexpiresnotify" class="checkbox">
-									<input type="checkbox" name="dspExpiresNotify" id="dspexpiresnotify" onclick="siteManager.loadExpiresNotify('#esapiEncode('javascript',rc.siteid)#','#esapiEncode('javascript',rc.contenthistid)#','#esapiEncode('javascript',rc.parentid)#');"  class="checkbox">
+									<input type="checkbox" name="dspExpiresNotify" id="dspexpiresnotify" onclick="siteManager.loadExpiresNotify('#esapiEncode('javascript',rc.siteid)#','#esapiEncode('javascript',rc.contenthistid)#','#esapiEncode('javascript',rc.parentid)#');"  class="checkbox"<cfif application.contentUtility.getNotify(rc.crumbdata).recordCount> checked</cfif>>
 										#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expiresnotify')#
 								</label>
 							</div>
-						<div class="mura-control-group" id="selectExpiresNotify" style="display: none;"></div>
+						<div class="mura-control-group" id="selectExpiresNotify"<cfif application.contentUtility.getNotify(rc.crumbdata).recordCount eq 0> style="display: none;"</cfif>></div>
 						</div> <!--- /end mura-control-group --->
 					</div>
 				</div> <!--- /.bigui --->
@@ -268,18 +268,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<script type="text/javascript">
 				function showSelectedExp(){
 					var expStr = 'Never';
+					var notifyCt = $('##expiresnotify option:selected').not(':empty').length;
 					if ($('##mura-datepicker-expires').val() != ''){
 						expStr = $('##mura-datepicker-expires').val() + ' ' 
 										+ $('##mura-expiresHour').val() + ':' 
 										+ $('##mura-expiresMinute option:selected').html() + ' '
 										+ $('##mura-expiresDayPart option:selected').html();					
 					}
+					 if ($('##dspexpiresnotify').is(':checked') && notifyCt > 0){
+					 	expStr += '<br>Notifying: ' + notifyCt;
+					 }
 					$('##expire-label').html('Expires: ' + expStr);
 				}
 
 				$(document).ready(function(){
+					// load notification list if previously selected
+					<cfif application.contentUtility.getNotify(rc.crumbdata).recordCount>
+						siteManager.loadExpiresNotify('#esapiEncode('javascript',rc.siteid)#','#esapiEncode('javascript',rc.contenthistid)#','#esapiEncode('javascript',rc.parentid)#');						
+					</cfif>
 					// run on page load
-					showSelectedExp();
+					setTimeout(function(){
+						showSelectedExp();
+					}, 300);
 					// run on change of any schedule element
 					$('##expireschedule-selector *').on('change',function(){
 						showSelectedExp();
