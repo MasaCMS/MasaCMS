@@ -775,7 +775,11 @@ component extends="mura.bean.beanExtendable" entityName="content" table="tconten
 				and isNumeric(arguments.displayInterval.endafter)
 				or arguments.displayInterval.end == 'never' ) {
 					var tempdate=now();
-					var current=getValue('displayStop');
+					if(isDate(getValue('displayStop'))){
+						var current=getValue('displayStop');
+					} else {
+						var current=tempdate;
+					}
 					setValue('displayStop',dateAdd('yyyy',100,createDateTime(year(tempdate), month(tempdate), day(tempdate), hour(current), minute(current), 0)));
 				}
 			}
