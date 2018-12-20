@@ -343,7 +343,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						var featStr = '';
 						var startDate = $('##mura-datepicker-featureStart').val();
 						var stopDate = $('##mura-datepicker-featureStop').val();
-						console.log(startDate);
 						if (startDate != ''){
 							var featStr = startDate 
 							+ ' ' + $('##mura-featureStartHour option:selected').html()
@@ -358,8 +357,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							}
 	
 						}
-
-						console.log(featStr);
 
 						$('##featureschedule-label').html(featStr);
 					}
