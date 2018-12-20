@@ -774,7 +774,9 @@ component extends="mura.bean.beanExtendable" entityName="content" table="tconten
 				and isDefined('arguments.displayInterval.endafter')
 				and isNumeric(arguments.displayInterval.endafter)
 				or arguments.displayInterval.end == 'never' ) {
-					setValue('displayStop',dateAdd('yyyy',100,now()));
+					var tempdate=now();
+					var current=getValue('displayStop');
+					setValue('displayStop',dateAdd('yyyy',100,createDateTime(year(tempdate), month(tempdate), day(tempdate), hour(current), minute(current), 0)));
 				}
 			}
 			if ( isDefined('arguments.displayInterval.end') && arguments.displayInterval.end == 'on'
