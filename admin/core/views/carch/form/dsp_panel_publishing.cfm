@@ -123,6 +123,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							    	>
 							      #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.isnav')#
 					    		 <i class="mi-question-circle"></i>
+					    		</span> 
 			      	</label>
 				</div> <!--- /end mura-control-group --->
 
@@ -144,6 +145,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					    		>
 					     		#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.newwindow')#
 					     		 <i class="mi-question-circle"></i>
+					     	</span>	 
 			     	</label>
 				</div> <!--- /end mura-control-group --->
 
@@ -159,8 +161,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					    	>
 			      		#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.releasedate')#
 				      	 <i class="mi-question-circle"></i>
-			      	</label>
-			      	<cf_datetimeselector name="releaseDate" datetime="#rc.contentBean.getReleaseDate()#">
+				      </span>
+			      </label>
+			      <cf_datetimeselector name="releaseDate" datetime="#rc.contentBean.getReleaseDate()#">
 				</div> <!--- /end mura-control-group --->
 			</cfif>
 
