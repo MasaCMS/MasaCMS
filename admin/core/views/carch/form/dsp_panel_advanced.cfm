@@ -53,16 +53,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div class="mura-panel-body">
 			<span id="extendset-container-tabadvancedtop" class="extendset-container"></span>
 
-			<div class="mura-control-group">
-			      <label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentid')#</label>
-			      <cfif len(rc.contentID) and len(rc.contentBean.getcontentID())>#rc.contentBean.getcontentID()#<cfelse>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notavailable')#</cfif>
-		    </div>
-			<cfif listFind("Gallery,Link,Folder,Page,Calendar",rc.type)>
-				<div class="mura-control-group">
-			      <label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.currentfilename')#</label>
-			      <cfif rc.contentBean.getContentID() eq "00000000000000000000000000000000001">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.emptystring')#<cfelseif len(rc.contentID) and len(rc.contentBean.getcontentID())>#rc.contentBean.getFilename()#<cfelse>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notavailable')#</cfif>
-			   </div>
-			</cfif>
 			<cfif rc.type eq 'Component'>
 				<div class="mura-control-group">
 			      	<label>
