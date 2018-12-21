@@ -18330,7 +18330,7 @@ rb: {
 	formbuttonnextlabel : "Next",
 	formbuttonbackclass:"form-nav",
 	formbuttonbacklabel : "Back",
-	formbuttoncancelclass:"form-cancel btn-primary pull-right",
+	formbuttoncancelclass:"btn-primary pull-right",
 	formbuttoncancellabel :"Cancel",
 	formrequiredlabel:"Required"
 },
@@ -18640,38 +18640,38 @@ renderForm: function( ) {
 },
 
 renderPaging:function() {
+
 	var self = this;
 	var submitlabel=(typeof self.formJSON.form.formattributes != 'undefined' && typeof self.formJSON.form.formattributes.submitlabel != 'undefined' && self.formJSON.form.formattributes.submitlabel) ? self.formJSON.form.formattributes.submitlabel : self.rb.formbuttonsubmitlabel;
 
 	mura(".error-container-" + self.context.objectid,self.context.formEl).empty();
-
 	mura(".paging-container-" + self.context.objectid,self.context.formEl).empty();
 
 	if(self.formJSON.form.pages.length == 1) {
-		mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:self.currentpage+1,label:submitlabel,"class":self.rb.formbuttonsubmitclass}));
+		mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:self.currentpage+1,label:submitlabel,"class":Mura.trim("mura-form-submit mura-form-submit " + self.rb.formbuttonsubmitclass)}));
 	}
 	else {
 		if(self.currentpage == 0) {
-			mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:1,label:self.rb.formbuttonnextlabel,"class":"form-nav"}));
+			mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:1,label:self.rb.formbuttonnextlabel,"class":Mura.trim("mura-form-nav mura-form-next " + self.rb.formbuttonnextclass)}));
 		} else {
-			mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:self.currentpage-1,label:self.rb.formbuttonbacklabel,"class":self.rb.formbuttombackclass}));
+			mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:self.currentpage-1,label:self.rb.formbuttonbacklabel,"class":Mura.trim("mura-form-nav mura-form-back " + self.rb.formbuttonbackclass)}));
 
 			if(self.currentpage+1 < self.formJSON.form.pages.length) {
-				mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:self.currentpage+1,label:self.rb.formbuttonnextlabel,"class":self.rb.formbuttomnextclass}));
+				mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:self.currentpage+1,label:self.rb.formbuttonnextlabel,"class":Mura.trim("mura-form-nav mura-form-next " + self.rb.formbuttonnextclass)}));
 			}
 			else {
-				mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:self.currentpage+1,label:submitlabel,"class":self.rb.formbuttonsubmitclass}));
+				mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:self.currentpage+1,label:submitlabel,"class":Mura.trim("mura-form-nav mura-form-submit " + self.rb.formbuttonsubmitclass)}));
 			}
 		}
 
 		if(self.backlink != undefined && self.backlink.length)
-			mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:self.currentpage+1,label:self.rb.formbuttoncancellabel,"class":self.rb.formbuttomcancelclass}));
+			mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:self.currentpage+1,label:self.rb.formbuttoncancellabel,"class":Mura.trim("mura-form-nav mura-form-cancel " + self.rb.formbuttoncancelclass)}));
 	}
 
-	mura(".form-submit",self.context.formEl).click( function() {
+	mura(".mura-form-submit",self.context.formEl).click( function() {
 		self.submitForm();
 	});
-	mura(".form-cancel",self.context.formEl).click( function() {
+	mura(".mura-form-cancel",self.context.formEl).click( function() {
 		self.getTableData( self.backlink );
 	});
 
@@ -18704,26 +18704,27 @@ renderPaging:function() {
 			);
 		} else {
 			var data=Mura.deepExtend({}, self.data, self.context);
-              data.validateform=true;
+      data.validateform=true;
 			data.formid=data.objectid;
 			data.siteid=data.siteid || Mura.siteid;
 			data.fields=self.getPageFieldList();
 
 			Mura.ajax({
-                type: 'post',
-                url: Mura.apiEndpoint +
-                    '?method=generateCSRFTokens',
-                data: {
-                    siteid: data.siteid,
-                    context: data.formid
-                },
-                success: function(resp) {
+	      type: 'post',
+	      url: Mura.apiEndpoint +
+	          '?method=generateCSRFTokens',
+	      data: {
+	          siteid: data.siteid,
+	          context: data.formid
+	      },
+	      success: function(resp) {
 					data['csrf_token_expires']=resp.data['csrf_token_expires'];
 					data['csrf_token']=resp.data['csrf_token'];
 
 					Mura.post(
             Mura.apiEndpoint + '?method=processAsyncObject',
-            data).then(function(resp){
+            data
+					).then(function(resp){
               if(typeof resp.data.errors == 'object' && !Mura.isEmptyObject(resp.data.errors)){
 								self.showErrors( resp.data.errors );
             	} else if(typeof resp.data.redirect != 'undefined') {
@@ -18734,6 +18735,9 @@ renderPaging:function() {
 								}
 							} else {
 								self.currentpage = mura(button).data('page');
+								if(self.currentpage >= self.formJSON.form.pages.length){
+									self.currentpage=self.formJSON.form.pages.length-1;
+								}
                 self.renderForm();
               }
             }
@@ -18752,7 +18756,7 @@ renderPaging:function() {
 		*/
 	};
 
-	mura(".form-nav",self.context.formEl).off('click',formNavHandler).on('click',formNavHandler);
+	mura(".mura-form-nav",self.context.formEl).off('click',formNavHandler).on('click',formNavHandler);
 },
 
 setDataValues: function() {
