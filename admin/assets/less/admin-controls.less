@@ -43,6 +43,7 @@
 				padding: 8px 12px;
 			}
 	}
+
 	
 	.mura__edit__controls__scrollable{
 		height: @editscrollheight;
@@ -235,6 +236,13 @@
 					}
 
 				} /* /mura-panel*/
+				
+				.help-block, 
+				form .help-block{
+				  background-color: #646464!important;
+				  color: #f9f9f9 !important;
+				  border: 1px solid #555 !important;
+				}
 
 				/* nested panels */
 				.mura-control-group .mura-panel-group{
@@ -751,25 +759,26 @@ body.sidebar-tab{
 }
 
 #mura-content-metadata{
-    max-width: 20px;
-    float: right;
-    margin: 15px 0 12px 12px;
-    i{
-    	font-size: 26px;
-    }
+	padding: 12px;
 }
 
 .meta-label{
-  clear: both;
+  clear: right;
   display: block;
   float: left;
-  font-weight: 700;
   font-size: 14px;
-  padding-bottom: 4px;
-  width: 100%;
+  padding: 2px 12px 2px 0;
+  max-width: 280px;
+  width: 50%;
+  min-width: 220px;
 
   > span{
     font-weight: 100;
+  }
+  &.meta-label-wide{
+  	max-width: 100%;
+  	min-width: 100%;
+  	clear: both;
   }
 }
 

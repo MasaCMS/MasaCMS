@@ -52,6 +52,68 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</div>
 	<div id="panel-basic" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-basic" aria-expanded="false" style="height: 0px;">
 		<div class="mura-panel-body">
+			<!--- metadata --->
+			<div class="help-block" id="mura-content-metadata">
+				<cfif not rc.contentBean.getIsNew()>
+						<cfif listFindNoCase(rc.$.getBean('contentManager').TreeLevelList,rc.type)>
+							<cfset rsRating=application.raterManager.getAvgRating(rc.contentBean.getcontentID(),rc.contentBean.getSiteID()) />
+							<cfif rsRating.recordcount>
+								<span class="meta-label">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.votes")#: <span><cfif rsRating.recordcount>#rsRating.theCount#<cfelse>0</cfif></span></span>
+								<span class="meta-label">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.averagerating")#: <img id="ratestars" src="assets/images/rater/star_#application.raterManager.getStarText(rsRating.theAvg)#.gif" alt="#rsRating.theAvg# stars" border="0"></span>
+							</cfif>
+						</cfif>
+					<cfif rc.type eq "file" and rc.contentBean.getMajorVersion()>
+							<span class="meta-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.version.file')#: <span>#rc.contentBean.getMajorVersion()#.#rc.contentBean.getMinorVersion()#</span></span>
+					</cfif>
+					</cfif>
+					<span class="meta-label">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.update")#: <span>#LSDateFormat(parseDateTime(rc.contentBean.getlastupdate()),session.dateKeyFormat)# #LSTimeFormat(parseDateTime(rc.contentBean.getlastupdate()),"short")#</span></span>
+					<span class="meta-label">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.status")#:
+						<span>
+
+							<cfif not rc.contentBean.getIsNew()>
+								<cfif rc.contentBean.getactive() gt 0 and rc.contentBean.getapproved() gt 0>
+									<cfif len(rc.contentBean.getApprovalStatus())>
+										<a href="##" onclick="return viewStatusInfo('#esapiEncode('javascript',rc.contentBean.getContentHistID())#','#esapiEncode('javascript',rc.contentBean.getSiteID())#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.published")#</a>
+									<cfelse>
+										#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.published")#
+									</cfif>
+								<cfelseif len(rc.contentBean.getApprovalStatus()) and (requiresApproval or showApprovalStatus) >
+									<a href="##" onclick="return viewStatusInfo('#esapiEncode('javascript',rc.contentBean.getContentHistID())#','#esapiEncode('javascript',rc.contentBean.getSiteID())#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.#rc.contentBean.getApprovalStatus()#")#</a>
+								<cfelseif rc.contentBean.getapproved() lt 1>
+									<cfif len(rc.contentBean.getChangesetID())>
+										#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.queued")#
+									<cfelse>
+										#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.draft")#
+									</cfif>
+								<cfelse>
+									#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.archived")#
+								</cfif>
+							<cfelse>
+								#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.draft")#
+							</cfif>
+						</span>
+					</span>
+					<cfset started=false>
+<!--- 					<span class="meta-label">
+						#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#: <span>#esapiEncode('html',rc.type)#</span>
+					</span> --->
+
+			<cfif listFind("Gallery,Link,Folder,Page,Calendar",rc.type)>
+				<span class="meta-label">
+		      #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.currentfilename')#: 
+		      <span><cfif rc.contentBean.getContentID() eq "00000000000000000000000000000000001">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.emptystring')#<cfelseif len(rc.contentID) and len(rc.contentBean.getcontentID())>#rc.contentBean.getFilename()#<cfelse>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notavailable')#</cfif>
+				   </span>
+			   </span>
+			</cfif>
+			<span class="meta-label meta-label-wide">
+		      #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentid')#: 
+		      <span><cfif len(rc.contentID) and len(rc.contentBean.getcontentID())>#rc.contentBean.getcontentID()#<cfelse>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notavailable')#</cfif>
+			    </span>
+		    </span>
+
+
+				<div class="clearfix"></div>
+  		</div> <!--- /metadata .help-block --->
 
 				<span id="extendset-container-tabbasictop" class="extendset-container"></span>
 
@@ -94,6 +156,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								    	>
 								    				#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.menutitle")#
 									 <i class="mi-question-circle"></i>
+									</span>
 									</label>
 									<input type="text" id="menuTitle" name="menuTitle" value="#esapiEncode('html_attr',rc.contentBean.getmenuTitle())#"  maxlength="255">
 								</div>
@@ -106,6 +169,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								    	>
 								    				#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.urltitle")#
 										 <i class="mi-question-circle"></i>
+										</span>
 									</label>
 									<input type="text" id="urlTitle" name="urlTitle" value="#esapiEncode('html_attr',rc.contentBean.getURLTitle())#"  maxlength="255">
 								</div>
@@ -118,6 +182,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								    	>
 								    				#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.htmltitle")#
 										 <i class="mi-question-circle"></i>
+										</span>
 									</label>
 									<input type="text" id="htmlTitle" name="htmlTitle" value="#esapiEncode('html_attr',rc.contentBean.getHTMLTitle())#"  maxlength="255">
 								</div>
