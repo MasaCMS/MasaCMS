@@ -18150,6 +18150,86 @@ Mura.DOMSelection = Mura.Core.extend(
           return this;
       },
 
+			/**
+			 * renderEditableAttr- Returns a string with editable attriute markup markup.
+			 *
+			 * @param  {object} params Keys: name, type, required, validation, message, label
+			 * @return {self}
+			 */
+			makeEditableAttr:function(params){
+
+				if (!this.selection.length) {
+						return this;
+				}
+
+				var value=this.selection[0].innerHTML;
+
+				params=params || {};
+
+				if(!params.name){
+					return this;
+				}
+
+				params.type=params.type || "text";
+
+				if(typeof params.required == 'undefined'){
+					params.required=false;
+				}
+				if(typeof params.validation == 'undefined'){
+					params.validation='';
+				}
+				if(typeof params.message == 'undefined'){
+					params.message='';
+				}
+				if(typeof params.label == 'undefined'){
+					params.label=params.name;
+				}
+
+				var outerClass="mura-editable mura-inactive";
+				var innerClass="mura-inactive mura-editable-attribute";
+
+				if(params.type=="htmlEditor"){
+					outerClass += " mura-region mura-region-loose";
+					innerClass += " mura-region-local";
+				} else {
+					outerClass += " inline";
+					innerClass += " inline";
+				}
+
+				var innerClass="mura-inactive mura-editable-attribute";
+
+				/*
+				<div class="mura-editable mura-inactive inline">
+				<label class="mura-editable-label" style="">TITLE</label>
+				<div contenteditable="false" id="mura-editable-attribute-title" class="mura-inactive mura-editable-attribute inline" data-attribute="title" data-type="text" data-required="false" data-message="" data-label="title">About</div>
+				</div>
+
+				<div class="mura-region mura-region-loose mura-editable mura-inactive">
+				<label class="mura-editable-label" style="">BODY</label>
+				<div contenteditable="false" id="mura-editable-attribute-body" class="mura-region-local mura-inactive mura-editable-attribute" data-attribute="body" data-type="htmlEditor" data-required="false" data-message="" data-label="body" data-loose="true" data-perm="true" data-inited="false"></div>
+				</div>
+				*/
+
+				var markup='<div class="' + outerClass + '">';
+				markup +='<label class="mura-editable-label" style="display:none">' + params.label.toUpperCase() + '</label>';
+				markup +='<div contenteditable="false" id="mura-editable-attribute-' + params.name +' class="' + innerClass + '" ';
+				markup += ' data-attribute="' + params.name + '" ';
+				markup += ' data-type="' + params.type + '" ';
+				markup += ' data-required="' + params.required + '" ';
+				markup += ' data-message="' + params.message + '" ';
+				markup += ' data-label="' + params.label + '"';
+				if(params.type == 'htmlEditor'){
+					markup += ' data-loose="true" data-perm="true" data-inited="false"';
+				}
+				markup += '>' + value + '</div></div>';
+
+				this.selection[0].innerHTML=markup;
+				Mura.evalScripts(this.selection[0]);
+
+				return this;
+
+			},
+
       /**
       * processDisplayRegion - Renders and processes the display region data returned from Mura.renderFilename()
       *
@@ -18648,7 +18728,7 @@ renderPaging:function() {
 	mura(".paging-container-" + self.context.objectid,self.context.formEl).empty();
 
 	if(self.formJSON.form.pages.length == 1) {
-		mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:self.currentpage+1,label:submitlabel,"class":Mura.trim("mura-form-submit mura-form-submit " + self.rb.formbuttonsubmitclass)}));
+		mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:self.currentpage+1,label:submitlabel,"class":Mura.trim("mura-form-submit " + self.rb.formbuttonsubmitclass)}));
 	}
 	else {
 		if(self.currentpage == 0) {
@@ -18671,12 +18751,18 @@ renderPaging:function() {
 	mura(".mura-form-submit",self.context.formEl).click( function() {
 		self.submitForm();
 	});
+
 	mura(".mura-form-cancel",self.context.formEl).click( function() {
 		self.getTableData( self.backlink );
 	});
 
 
 	var formNavHandler=function() {
+
+		if(Mura(this).is('.mura-form-submit')){
+			return;
+		}
+
 		self.setDataValues();
 
 		var keepGoing=self.onPageSubmit.call(self.context.targetEl);
