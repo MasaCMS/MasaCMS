@@ -18740,7 +18740,7 @@ renderPaging:function() {
 				mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:self.currentpage+1,label:self.rb.formbuttonnextlabel,"class":Mura.trim("mura-form-nav mura-form-next " + self.rb.formbuttonnextclass)}));
 			}
 			else {
-				mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:self.currentpage+1,label:submitlabel,"class":Mura.trim("mura-form-nav mura-form-submit " + self.rb.formbuttonsubmitclass)}));
+				mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:self.currentpage+1,label:submitlabel,"class":Mura.trim("mura-form-submit " + self.rb.formbuttonsubmitclass)}));
 			}
 		}
 
@@ -18748,18 +18748,20 @@ renderPaging:function() {
 			mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:self.currentpage+1,label:self.rb.formbuttoncancellabel,"class":Mura.trim("mura-form-nav mura-form-cancel " + self.rb.formbuttoncancelclass)}));
 	}
 
-	mura(".mura-form-submit",self.context.formEl).click( function() {
+	var submitHandler=function() {
 		self.submitForm();
-	});
+	};
+
+	mura(".mura-form-submit",self.context.formEl).off('click',submitHandler).on('click',submitHandler);
 
 	mura(".mura-form-cancel",self.context.formEl).click( function() {
 		self.getTableData( self.backlink );
 	});
 
 
-	var formNavHandler=function() {
+	var formNavHandler=function(e) {
 
-		if(Mura(this).is('.mura-form-submit')){
+		if(Mura(e.target).is('.mura-form-submit')){
 			return;
 		}
 
