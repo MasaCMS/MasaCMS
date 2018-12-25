@@ -48,8 +48,10 @@
 		var adminLoc="#$.globalConfig('context')##$.globalConfig('adminDir')#/";
 		var frontEndProxyLoc="";
 	</cfif>
-	var onAdminMessage=function(messageEvent){
+	var instanceid=Mura.createUUID();
 
+	var onAdminMessage=function(messageEvent){
+		console.log(instanceid)
 		if (
 			<cfif len($.globalConfig('admindomain'))>
 				messageEvent.origin == 'http://' + adminDomain + "#$.globalConfig('serverPort')#"
@@ -595,20 +597,25 @@
 		utility(".frontEndToolsModal").each(
 			function(el){
 
-				utility(this).on('click',function(event){
+				var initToolbar=function(event){
 					event.preventDefault();
 					openFrontEndToolsModal(this);
-				}
-			);
+				};
+
+				utility(this).off('click',initToolbar).on('click',initToolbar);
 		});
 
 		utility(".editableObject").each(function(){
 			resizeEditableObject(this);
 		});
 
-		initModalProxy();
+		if(typeof modalProxy == 'undefined'){
+			initModalProxy();
+		}
 		<cfif $.getContentRenderer().useLayoutManager()>
-		initSidebarProxy();
+		if(typeof sidebarProxy == 'undefined'){
+			initSidebarProxy();
+		}
 		</cfif>
 
 		if(frontEndModalIE8){
@@ -1100,18 +1107,20 @@
 					var objectParams;
 					item.addClass("mura-active");
 
+					var openToolbar=function(event){
+						event.preventDefault();
+						console.log("fet:" + 1106)
+						openFrontEndToolsModal(this);
+					};
+
 					if(Mura.type =='Variation'){
 						objectParams=item.data();
 						item.children('.frontEndToolsModal').remove();
 						item.prepend(window.Mura.layoutmanagertoolbar );
 
-						item.find(".frontEndToolsModal").on(
-							'click',
-							function(event){
-								event.preventDefault();
-								openFrontEndToolsModal(this);
-							}
-						);
+						item.find(".frontEndToolsModal")
+							.off("click",openToolbar)
+							.on("click",openToolbar);
 
 
 						item.find("img").each(function(){MuraInlineEditor.checkforImageCroppers(this);});
@@ -1131,13 +1140,9 @@
 									item.children('.frontEndToolsModal').remove();
 									item.prepend(window.Mura.layoutmanagertoolbar);
 
-									item.find(".frontEndToolsModal").on(
-										'click',
-										function(event){
-											event.preventDefault();
-											openFrontEndToolsModal(this);
-										}
-									);
+									item.find(".frontEndToolsModal")
+										.off("click",openToolbar)
+										.on("click",openToolbar);
 
 
 									item.find("img").each(function(){MuraInlineEditor.checkforImageCroppers(this);});
@@ -1160,13 +1165,9 @@
 									item.children('.frontEndToolsModal').remove();
 									item.prepend(window.Mura.layoutmanagertoolbar);
 
-									item.find(".frontEndToolsModal").on(
-										'click',
-										function(event){
-											event.preventDefault();
-											openFrontEndToolsModal(this);
-										}
-									);
+									item.find(".frontEndToolsModal")
+										.off("click",openToolbar)
+										.on("click",openToolbar);
 
 									item.find("img").each(function(){MuraInlineEditor.checkforImageCroppers(this);});
 
@@ -1186,13 +1187,9 @@
 					item.addClass("mura-active");
 					item.children('.frontEndToolsModal').remove();
 					item.prepend(window.Mura.layoutmanagertoolbar);
-					item.find(".frontEndToolsModal").on(
-						'click',
-						function(event){
-							event.preventDefault();
-							openFrontEndToolsModal(this);
-						}
-					);
+					item.find(".frontEndToolsModal")
+						.off("click",openToolbar)
+						.on("click",openToolbar);
 				});
 
 				Mura.initLayoutManager();
