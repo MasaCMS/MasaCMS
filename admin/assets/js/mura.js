@@ -680,6 +680,7 @@ var Mura=(function(){
           readyInternal(fn);
       });
 
+			holdingQueue=[];
   }
 
   function holdReady(hold) {
@@ -2172,7 +2173,7 @@ var Mura=(function(){
               },
 
               function() {
-                  if (typeof urlparams.Muraadminpreview !=
+                  if (typeof urlparams.muraadminpreview !=
                       'undefined') {
                       find("a").each(function() {
                           var h = this.getAttribute(
@@ -2639,13 +2640,14 @@ var Mura=(function(){
 													obj.children('.frontEndToolsModal').remove();
 													obj.prepend(window.Mura.layoutmanagertoolbar);
 
-													obj.find(".frontEndToolsModal").on(
-														'click',
-														function(event){
+													var openToolbar=function(event){
 															event.preventDefault();
 															openFrontEndToolsModal(this);
-														}
-													);
+														};
+
+													obj.find(".frontEndToolsModal").each(function(){
+														Mura(this).off('click',openToolbar).on('click',openToolbar);
+													})
 
 													obj.find("img").each(function(){MuraInlineEditor.checkforImageCroppers(this);});
 
