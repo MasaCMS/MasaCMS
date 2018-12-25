@@ -51,7 +51,7 @@
 	var instanceid=Mura.createUUID();
 
 	var onAdminMessage=function(messageEvent){
-		
+
 		if (
 			<cfif len($.globalConfig('admindomain'))>
 				messageEvent.origin == 'http://' + adminDomain + "#$.globalConfig('serverPort')#"
@@ -438,7 +438,7 @@
 			editableObj.addClass('mura-object-selected');
 			src+='&cacheid=' + Math.random();
 
-			console.log(src)
+			//console.log(src)
 			utility('##frontEndToolsSidebariframe').attr('src',src);
 			MuraInlineEditor.sidebarAction('showconfigurator');
 		}
@@ -1109,7 +1109,7 @@
 
 					var openToolbar=function(event){
 						event.preventDefault();
-						console.log("fet:" + 1106)
+						//console.log("fet:" + 1106)
 						openFrontEndToolsModal(this);
 					};
 
