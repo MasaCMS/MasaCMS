@@ -51,7 +51,7 @@
 	var instanceid=Mura.createUUID();
 
 	var onAdminMessage=function(messageEvent){
-		console.log(instanceid)
+		
 		if (
 			<cfif len($.globalConfig('admindomain'))>
 				messageEvent.origin == 'http://' + adminDomain + "#$.globalConfig('serverPort')#"
