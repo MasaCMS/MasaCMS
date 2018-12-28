@@ -3,6 +3,7 @@
  * For licensing, see LICENSE.md or http://ckeditor.com/license
  */
 ! function() {
+
     var t, e, n, i, s, a, r, o, c, u, l, d, h, p, f, g, m, v, b, y, x, w, C, T, k, I, E;
     C = function() {
             "use strict";
@@ -1304,7 +1305,7 @@
                                 i = t
                             }(E),
                             function() {
-                                u.fn.quail || ! function(t) {
+                                (u && typeof u.fn != 'undefined' && u.fn.quail )|| ! function(t) {
                                     Function.prototype.bind = Function.prototype.bind || function(t) {
                                         if ("function" != typeof this) throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
                                         var e = Array.prototype.slice,
