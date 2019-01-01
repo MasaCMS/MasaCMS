@@ -172,7 +172,18 @@ CKEDITOR.editorConfig = function( config )
 
 	<!--- /Toolbars --->
 
-	config.extraPlugins = 'SelectComponent,Selectlink,leaflet,tableresize,onchange,justify,find,bidi,div,showblocks,forms,templates,pagebreak,codemirror,widget,lineutils,dialog,oembed,sourcedialog,fakeobjects,dialogui,showprotected,balloonpanel,a11ychecker,dialogadvtab';
+	config.extraPlugins = 'SelectComponent,Selectlink,leaflet,tableresize,onchange,justify,find,bidi,div,showblocks,forms,templates,pagebreak,codemirror,widget,lineutils,dialog,oembed,sourcedialog,fakeobjects,dialogui,showprotected,balloonpanel,dialogadvtab,a11ychecker';
+
+	if(typeof jQuery == 'undefined'){
+		config.toolbar_QuickEdit[0].items.shift()
+		config.toolbar_htmlEditor[0].items.shift()
+		config.toolbar_FormBuilder[0].items.shift()
+		config.toolbar_Form[0].items.shift()
+		config.toolbar_Default[0].items.shift()
+		var ep=config.extraPlugins.split(",");
+		ep.pop();
+		config.extraPlugins=ep.join()
+	}
 
 	<cfif len($.siteConfig().getRazunaSettings().getApiKey())>
 		config.extraPlugins += ',razuna';
@@ -216,7 +227,7 @@ CKEDITOR.editorConfig = function( config )
 		config.filebrowserUploadUrl = connectorpath;
 		config.filebrowserImageUploadUrl = connectorpath + '?type=Images';
 	</cfif>
-	
+
 	<cfset secure=$.getBean('utility').isHTTPS()>
 
 	<!--- contentsCss --->
@@ -315,13 +326,13 @@ CKEDITOR.on( 'dialogDefinition', function( ev ) {
 				var modalContainerHeight = $(pwEl).parent().height();
 				var dialogHeight = this.getSize().height;
 				var viewPortHeight = $(top).innerHeight();
-			
+
 				// calculate the range the dialog can be
 				var modalContainerTopVisible = windowScrolledTo - modalContainerPosition.top <= 0;
 				var topEdge = modalContainerTopVisible ? 0 : windowScrolledTo - modalContainerPosition.top;
 				var modalContainerBottomVisible = (windowScrolledTo + viewPortHeight) >= (modalContainerPosition.top + modalContainerHeight);
 				var bottomEdge = modalContainerBottomVisible ? modalContainerHeight : (windowScrolledTo + viewPortHeight) - modalContainerPosition.top;
-				
+
 				// position the dialog
 				if ( (currentPosition.y < topEdge )  ) { // align with the top edge of the modal continer
 					this.move(currentPosition.x,topEdge,false);
