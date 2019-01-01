@@ -16241,6 +16241,19 @@ Mura.DOMSelection = Mura.Core.extend(
 				this.node = null;
 				this.length = 0;
 			}
+
+			if(typeof Mura.supportPassive == 'undefined'){
+				Mura.supportsPassive = false;
+				try {
+					var opts = Object.defineProperty({}, 'passive', {
+						get: function() {
+						  Mura.supportsPassive = true;
+						}
+					});
+					window.addEventListener("testPassive", null, opts);
+					window.removeEventListener("testPassive", null, opts);
+				} catch (e) {}
+			}
 		},
 
 	/**
@@ -16413,7 +16426,14 @@ Mura.DOMSelection = Mura.Core.extend(
 	 * @param	{function} fn				description
 	 * @return {Mura.DOMSelection} Self
 	 */
-	on: function(eventName, selector, fn) {
+	on: function(eventName, selector, fn, EventListenerOptions) {
+		if(typeof EventListenerOptions == 'undefined'){
+			if(typeof fn != 'undefined' && typeof fn != 'function'){
+				EventListenerOptions=fn;
+			} else {
+				EventListenerOptions=true;
+			}
+		}
 		if (typeof selector == 'function') {
 			fn = selector;
 			selector = '';
@@ -16475,7 +16495,7 @@ Mura.DOMSelection = Mura.Core.extend(
 										}
 									}
 								},
-								true
+								EventListenerOptions
 						);
 				}
 		});
@@ -16490,10 +16510,11 @@ Mura.DOMSelection = Mura.Core.extend(
 	 * @return {object}						Self
 	 */
 	hover: function(handlerIn, handlerOut) {
-		this.on('mouseover', handlerIn);
-		this.on('mouseout', handlerOut);
-		this.on('touchstart', handlerIn);
-		this.on('touchend', handlerOut);
+		var EventListenerOptions=Mura.supportsPassive ? { passive: true } : false;
+		this.on('mouseover', handlerIn, EventListenerOptions);
+		this.on('mouseout', handlerOut, EventListenerOptions);
+		this.on('touchstart', handlerIn, EventListenerOptions);
+		this.on('touchend', handlerOut, EventListenerOptions);
 		return this;
 	},
 
