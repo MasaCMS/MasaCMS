@@ -308,7 +308,9 @@
 
 					Mura(target).closest('.mura-region-local').data('dirty', true);
 
-					initDraggableObject(target);
+					if(Mur(target).hasClass('mura-object')){
+						initDraggableObject(target);
+					}
 					elDropHandled = true;
 					disabledEventPropagation(e);
 
