@@ -310,6 +310,8 @@
 
 					if(Mura(target).hasClass('mura-object')){
 						initDraggableObject(target);
+					} else {
+						initLooseDropTarget(this)
 					}
 					elDropHandled = true;
 					disabledEventPropagation(e);
