@@ -160,8 +160,15 @@
 	}
 
 	function initDraggableObject(item) {
+		var obj=Mura(item);
 
-		Mura(item)
+		if(obj.data('object')=='container'){
+			var EventListenerOptions=true;
+		} else {
+			var EventListenerOptions;
+		}
+
+		obj
 			.off('dragenter', initDraggableObject_dragstart)
 			.off('dragover', initDraggableObject_dragover)
 			.off('drop', initDraggableObject_drop)
@@ -173,7 +180,8 @@
 			.on('drop', initDraggableObject_drop).attr('draggable', true)
 			.hover(
 				initDraggableObject_hoverin,
-				initDraggableObject_hoverout
+				initDraggableObject_hoverout,
+				EventListenerOptions
 			);
 	}
 
