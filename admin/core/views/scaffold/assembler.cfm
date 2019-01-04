@@ -121,7 +121,7 @@
 
 		</div> <!-- /.block-content.tab-content -->
 
-		<div class="mura-actions">
+		<div class="mura-actions" style="display:none">
 			<div class="form-actions" v-if="currentView==='assembler-template'">
 				<button v-if="this.entityissaved" @click='clickDelete' class="btn"><i class="mi-trash"></i> Delete</button>
 				<button v-if="model.entityname != '' && model.table != ''" @click='clickSave' class="btn mura-primary"><i class="mi-check-circle"></i> Save</button>

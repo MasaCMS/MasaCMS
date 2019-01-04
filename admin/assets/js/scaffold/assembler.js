@@ -834,4 +834,6 @@ $( document ).ready(function() {
 		}
 	});
 
+	setTimeout(function(){ Mura('.mura-actions').show() }, 250);
+
 });

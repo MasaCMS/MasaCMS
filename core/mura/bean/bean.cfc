@@ -798,12 +798,12 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 					       	 		prop.required=false;
 					       	 	}
 
-					       	 	if(prop.fieldtype eq 'id'){
-									setPropAsIDColumn(prop);
-									if(!getIsHistorical() || prop.name !='histid'){
-										application.objectMappings[variables.entityName].primaryKey=prop.name;
-									}
-					      }
+						       	if(prop.fieldtype eq 'id'){
+											setPropAsIDColumn(prop);
+											if(!getIsHistorical() || prop.name !='histid'){
+												application.objectMappings[variables.entityName].primaryKey=prop.name;
+											}
+							      }
 
 			       	 	if(!structKeyExists(prop,"dataType")){
 			       	 		if(structKeyExists(prop,"ormtype")){
@@ -822,6 +822,12 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 
 								if(structKeyExists(prop,'relatesTo')){
 									prop.cfc=prop.relatesTo;
+								}
+
+								if(structKeyExists(prop,'optionlist') && len(prop.optionlist)){
+									if(!structKeyExists(prop,'optionvaluelist') || !len(prop.optionvaluelist)){
+										prop.optionvaluelist=prop.optionlist;
+									}
 								}
 
 			       	 	if(structKeyExists(prop,'cfc')){
