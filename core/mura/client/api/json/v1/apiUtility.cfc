@@ -2087,6 +2087,10 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		var entity=$.getBean(arguments.entityName);
 
+		if(arguments.entityName=='group'){
+			entity.setType(1);
+		}
+
 		if(arguments.entityName=='feed'){
 			var pk="feedid";
 		} else {
@@ -2100,7 +2104,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			throw(type="authorization");
 		}
 
-		var returnStruct=getFilteredValues(entity,true,entity.getEntityName(),arguments.siteid,arguments.expand,pk);
+		var returnStruct=getFilteredValues(entity,true,entity.getEntityName(),arguments.siteid,arguments.expand,pk,true);
 
 		if(isDefined('url.ishuman')){
 			request.cffpJS=true;
