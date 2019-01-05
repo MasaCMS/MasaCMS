@@ -305,6 +305,7 @@ if ( application.setupComplete ) {
 		variables.serviceFactory.addAlias("category","categoryBean");
 		variables.serviceFactory.addAlias("categoryFeed","categoryFeedBean");
 		variables.serviceFactory.addAlias("userFeed","userFeedBean");
+		variables.serviceFactory.addAlias("groupFeed","userFeedBean");
 		variables.serviceFactory.addAlias("comment","contentCommentBean");
 		variables.serviceFactory.addAlias("commentFeed","contentCommentFeedBean");
 		variables.serviceFactory.addAlias("stats","contentStatsBean");

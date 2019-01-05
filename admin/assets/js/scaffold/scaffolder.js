@@ -56,6 +56,7 @@ Mura(function() {
 					data.entity = entity;
 
 					entity.get('properties').then(function(properties){
+
 						data.properties = properties.properties.properties;
 
 						self.processProperties(data);
@@ -617,11 +618,19 @@ Mura(function() {
 
 	Vue.component('scaffold-related-many-one', {
 		template: '#scaffold-related-many-one',
-		props: ['property','model','entity','mparent','properties'],
+		props: ['property','model','entity'],
 		mounted: function() {
 			// processes related 'many' children
 
 			MuraScaffold.feed( this.proplist,this.property.relatesto );
+		},
+		data: function(){
+			return {
+				data: {},
+				mparent: {},
+				properties: [],
+				loaded: false
+			}
 		},
 		methods: {
 			proplist: function( data ) {
@@ -953,7 +962,7 @@ Mura(function() {
 				}
 
 				this.state.push( stateitem );
-*/
+				*/
 				MuraScaffold.get( this.doForm,entityname,entityid ? entityid : 'new' );
 			},
 			doForm: function( data ) {

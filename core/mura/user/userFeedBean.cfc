@@ -142,6 +142,10 @@ component extends="mura.bean.beanFeed" entityName="user" output="false" hint="Th
 			it=getBean("beanIterator");
 		}
 
+		if(variables.instance.type==1){
+			it.setEntityName('group');
+		}
+
 		it.setQuery(rs,variables.instance.nextN);
 		return it;
 	}

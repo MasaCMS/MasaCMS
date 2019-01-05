@@ -265,9 +265,10 @@
 				<select
 					v-model="data.fkcolumn"
 					name="fkcolumn"
+					@change="onFKColumnChange"
 					>
-					<option value="" :selected="!data.fkcolumn || data.fkcolumn == ''">Primary Key</option>
-					<option v-for="(option,index) in this.relatedprops" v-if="option.fieldtype='id' || option.fieldtype=='index'" :value="option.name" :selected="option.fkcolumn == option.name ? 'selected' : 'null'">{{option.name}}</option>
+					<option value="" :selected="!data.fkcolumn || data.fkcolumn == ''">{{(data.fieldtype=='one-to-many')?'Primary Key' : 'Select Column'}}</option>
+					<option v-for="(option,index) in this.relatedprops" v-if="option.fieldtype='id' || option.fieldtype=='index'" :value="option.name" :selected="option.fkcolumn == option.name ? 'selected' : 'null'">{{option.displayname}}</option>
 				</select>
 			</div>
 

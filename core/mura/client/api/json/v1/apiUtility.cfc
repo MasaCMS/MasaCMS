@@ -62,7 +62,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 	    registerEntity('site',{
 	    	public=true,
-			fields="links,domain,siteid",
+			fields="links,links,domain,siteid",
 			allowfieldselect=false
 		});
 
@@ -74,11 +74,15 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		registerEntity('comment',{
 			public=true,
 			moduleid='00000000000000000000000000000000015',
-			fields="entered,isspam,flagcount,parentid,name,isapproved,kids,isdeleted,userid,subscribe,isnew,contentid,path,siteid,id,remoteid,contenthistid"
+			fields="links,entered,isspam,flagcount,parentid,name,isapproved,kids,isdeleted,userid,subscribe,isnew,contentid,path,siteid,id,remoteid,contenthistid"
 		});
 
 		registerEntity('user',{public=false,moduleid='00000000000000000000000000000000008'});
-		registerEntity('group',{public=false,moduleid='00000000000000000000000000000000008'});
+		registerEntity('group',{
+			public=false,
+			moduleid='00000000000000000000000000000000008',
+			fields="links,userid,groupname,ispublic,siteid,type,subtype,remoteid"
+		});
 		registerEntity('address',{public=false,moduleid='00000000000000000000000000000000008'});
 		registerEntity('changeset',{public=false,moduleid='00000000000000000000000000000000014'});
 		registerEntity('feed',{public=false,moduleid='00000000000000000000000000000000011'});
@@ -218,17 +222,27 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			arguments.config.public=false;
 		}
 
+		if(isDefined('arguments.config.fields')
+			&&len(arguments.config.fields)
+			&& !listFindNoCase(arguments.config.fields,'links')){
+			arguments.config.fields=listAppend(arguments.config.fields,'links');
+		}
+
 		variables.config.entities['#arguments.entityName#']=arguments.config;
 
 		if(!(isDefined('arguments.beanInstance') && isObject(arguments.beanInstance))){
 			arguments.beanInstance=getBean(arguments.entityName);
 		}
 
+		if(arguments.entityName=='group'){
+			beanInstance.setType(1);
+			beanInstance.getProperties();
+			beanInstance.registerAsEntity();
+		}
+
 		if(!isDefined('arguments.config.displayname')){
 			arguments.config.displayname=arguments.beanInstance.getEntityDisplayName();
 		}
-
-		beanInstance.registerAsEntity();
 
 		if(!structKeyExists(variables.config.entities['#arguments.entityName#'],'moduleid')){
 			variables.config.entities['#arguments.entityName#'].moduleid='00000000000000000000000000000000000';  //beanInstance.getRegisteredEntity().getEntityid();
@@ -1355,6 +1369,11 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 	function findProperties(entityname,properties=''){
 		var exampleEntity=getBean(arguments.entityname);
+
+		if(arguments.entityName=='group'){
+			exampleEntity.setType(1);
+		}
+
 		var props=exampleEntity.getProperties();
 		var propArray=listToArray(arguments.properties);
 		var returnArray=[];
@@ -1362,17 +1381,24 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		var config=getEntityConfig(arguments.entityname);
 
 		param name="config.public" default=false;
+		param name="config.fields" default="";
 
 		if(arrayLen(propArray)){
 			for(var p in propArray){
-				if(props[p].persistent || structKeyExists(props[p],'cfc')){
-					arrayAppend(returnArray,applyPropertyFormat(props[p]));
+				p=lcase(p);
+				if(!len(config.fields) || listFindNoCase(config.fields,p)){
+					if(props[p].persistent || structKeyExists(props[p],'cfc')){
+						arrayAppend(returnArray,applyPropertyFormat(props[p]));
+					}
 				}
 			}
 		} else {
 			for(var p in props){
-				if(props[p].persistent || structKeyExists(props[p],'cfc')){
-					arrayAppend(returnArray,applyPropertyFormat(props[p]));
+				p=lcase(p);
+				if(!len(config.fields) || listFindNoCase(config.fields,p)){
+					if(props[p].persistent || structKeyExists(props[p],'cfc')){
+						arrayAppend(returnArray,applyPropertyFormat(props[p]));
+					}
 				}
 			}
 		}
@@ -1402,6 +1428,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		result.links.swagger_json=getEndpoint() & "/swagger?mode=json&entities=" & arguments.entityname;
 		result.links.swagger_rest=getEndpoint() & "/swagger?mode=rest&entities=" & arguments.entityname;
+		result.links.self="#getEndPoint()#/#arguments.entityname#/properties";
 
 		if(getCurrentUser().isAdminUser() || getCurrentUser().isSuperUser()){
 			result.table=exampleEntity.getTable();
@@ -1904,6 +1931,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			structDelete(vals,'extenddata');
 			structDelete(vals,'extendAutoComplete');
 			structDelete(vals,'saveErrors');
+			structDelete(vals,'password');
 			if(listFindNoCase("user,group",arguments.entityConfigName)){
 				structDelete(vals,'sourceiterator');
 				structDelete(vals,'ukey');
@@ -1930,6 +1958,10 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			if(!arrayLen(fields) || arrayFind(fields,'url')){
 				vals.url=entity.getURL(complete=true);
 			}
+		}
+
+		if(listFindNoCase('group,user',arguments.entityConfigName)){
+			vals.type=(entity.getType()==1) ? 'group' : 'user';
 		}
 
 		vals['entityname']=arguments.entityConfigName;
@@ -2134,6 +2166,11 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			} else {
 				var exampleEntity=getBean(i);
 			}
+
+			if(i=='group'){
+				exampleEntity.setType(1);
+			}
+
 			exampleEntity.getEntityName();
 		} catch(any e){
 			WriteDump(e);abort;
@@ -2161,12 +2198,15 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		param name="arguments.params" default=url;
 
 		var $=getBean('$').init(arguments.siteid);
-		var exampleEntity='';
 		var item='';
 
 		checkForChangesetRequest(arguments.entityName,arguments.siteid);
 
 		var entity=$.getBean(arguments.entityName);
+
+		if(arguments.entityName=='group'){
+			entity.setType(1);
+		}
 
 		if(!allowAccess(entity,$)){
 			throw(type="authorization");
@@ -2179,16 +2219,19 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		var feed=entity.getFeed();
 
 		if(arguments.entityName=='group'){
+			entity.setType(1);
 			feed.setType(1);
 		}
 
 		if(arguments.entityName=='entity'){
 			var allowedEntities=[];
 
-			for(var i in variables.config.entities)
-			if(allowAccess(i,$,false) && ($.event('scaffold')=='' || $.event('scaffold')==1 && allowAction($.getBean(i),$)) ){
-				arrayAppend(allowedEntities,i);
+			for(var i in variables.config.entities){
+				if(allowAccess(i,$,false) && ($.event('scaffold')=='' || $.event('scaffold')==1 && allowAction($.getBean(i),$)) ){
+					arrayAppend(allowedEntities,i);
+				}
 			}
+
 			feed.where().prop('name').isIn(arrayToList(allowedEntities));
 		}
 
@@ -2337,6 +2380,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 			if(arguments.entityName=='group'){
 				feed.setType(1);
+				entity.setType(1);
 			}
 		}
 
@@ -2479,6 +2523,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			var iterator=feed.getIterator(applyPermFilter=$.siteConfig('extranet'));
 
 			setIteratorProps(iterator=iterator);
+
 			var returnArray=iteratorToArray(iterator=iterator,siteid=arguments.siteid,expand=arguments.expand,$=$,expanded=arguments.expanded);
 			return packageIteratorArray(iterator=iterator,itArray=returnArray,method='findQuery',baseURL=baseURL,expanded=arguments.expanded);
 		}
@@ -3534,38 +3579,46 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				});
 		}
 
+		var entityConfig=getEntityConfig(entity.getEntityName());
+		var allowedFields='';
+
+		if(isDefined('entityConfig.fields')){
+			allowedFields=entityConfig.fields;
+		}
+
 		for(p in properties){
-			if(properties['#p#'].persistent
-				&& (
-					!structKeyExists(properties['#p#'],'fkcolumn')
-					 || properties['#p#'].fkcolumn != 'primarykey'
-					 )
-				&& !(arguments.idInPath && p==arguments.entity.getPrimaryKey())
-				){
+			if(!len(allowedFields) || listFindNoCase(allowedFields,p)){
+				if(properties['#p#'].persistent
+					&& (
+						!structKeyExists(properties['#p#'],'fkcolumn')
+						 || properties['#p#'].fkcolumn != 'primarykey'
+						 )
+					&& !(arguments.idInPath && p==arguments.entity.getPrimaryKey())
+					){
 
-				item={};
+					item={};
 
-				if(structKeyExists(properties['#p#'],'fkcolumn')){
-					item["name"]=lcase(properties['#p#'].fkcolumn);
-				} else {
-					item["name"]=lcase(properties['#p#'].name);
-				}
-
-				if(!structKeyExists(map,item.name)){
-					item["in"]= arguments._in;
-
-					if(arguments.method=='save'){
-						item["required"]= properties['#p#'].required;
+					if(structKeyExists(properties['#p#'],'fkcolumn')){
+						item["name"]=lcase(properties['#p#'].fkcolumn);
 					} else {
-						item["required"]= false;
+						item["name"]=lcase(properties['#p#'].name);
 					}
 
-					structAppend(item,getSwaggerPropertyDataType(properties['#p#'].datatype),true);
-					arrayAppend(response,item);
+					if(!structKeyExists(map,item.name)){
+						item["in"]= arguments._in;
 
-					map['#item.name#']=true;
+						if(arguments.method=='save'){
+							item["required"]= properties['#p#'].required;
+						} else {
+							item["required"]= false;
+						}
+
+						structAppend(item,getSwaggerPropertyDataType(properties['#p#'].datatype),true);
+						arrayAppend(response,item);
+
+						map['#item.name#']=true;
+					}
 				}
-
 			}
 		}
 
@@ -3583,16 +3636,26 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 
 		for(p in properties){
-			if(properties['#p#'].persistent
-				&& (
-					!structKeyExists(properties['#p#'],'fkcolumn')
-					 || properties['#p#'].fkcolumn != 'primarykey'
-				)){
 
-				if(structKeyExists(properties['#p#'],'fkcolumn')){
-					response['#lcase(properties['#p#'].fkcolumn)#']=getSwaggerPropertyDataType(properties['#p#'].datatype);
-				} else {
-					response['#lcase(properties['#p#'].name)#']=getSwaggerPropertyDataType(properties['#p#'].datatype);
+			var entityConfig=getEntityConfig(entity.getEntityName());
+			var allowedFields='';
+
+			if(isDefined('entityConfig.fields')){
+				allowedFields=entityConfig.fields;
+			}
+
+			if(!len(allowedFields) || listFindNoCase(allowedFields,p)){
+				if(properties['#p#'].persistent
+					&& (
+						!structKeyExists(properties['#p#'],'fkcolumn')
+						 || properties['#p#'].fkcolumn != 'primarykey'
+					)){
+
+					if(structKeyExists(properties['#p#'],'fkcolumn')){
+						response['#lcase(properties['#p#'].fkcolumn)#']=getSwaggerPropertyDataType(properties['#p#'].datatype);
+					} else {
+						response['#lcase(properties['#p#'].name)#']=getSwaggerPropertyDataType(properties['#p#'].datatype);
+					}
 				}
 			}
 		}
@@ -3671,6 +3734,10 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			if(i != 'contentnav'){
 				if($.getServiceFactory().containsBean(i)){
 					entity=$.getBean(i);
+
+					if(i=='group'){
+						entity.setType(1);
+					}
 
 					if((!len(arguments.params.entities) || listFindNoCase(arguments.params.entities,i)) && len(entity.getPrimaryKey()) && allowAccess(entity,$,false)){
 
