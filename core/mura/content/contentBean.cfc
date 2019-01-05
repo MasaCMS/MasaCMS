@@ -1279,7 +1279,7 @@ component extends="mura.bean.beanExtendable" entityName="content" table="tconten
 		if ( arguments.compactDisplay ) {
 			arguments.compactDisplay='true';
 		}
-		returnStr= "#variables.configBean.getAdminPath(complete=arguments.complete)#/?muraAction=cArch.edit&contenthistid=#getContentHistId()#&contentid=#getContentId()#&type=#getValue('type')#&siteid=#getValue('siteid')#&topid=#topID#&parentid=#getValue('parentid')#&moduleid=#getValue('moduleid')#&compactdisplay=#arguments.compactdisplay#";
+		returnStr= "#variables.configBean.getAdminPath(complete=arguments.complete)#/?muraAction=cArch.edit&contenthistid=#esapiEncode('url',getContentHistId())#&contentid=#esapiEncode('url',getContentId())#&type=#esapiEncode('url',getValue('type'))#&siteid=#esapiEncode('url',getValue('siteid'))#&topid=#esapiEncode('url',topID)#&parentid=#esapiEncode('url',getValue('parentid'))#&moduleid=#esapiEncode('url',getValue('moduleid'))#&compactdisplay=#esapiEncode('url',arguments.compactdisplay)#";
 		if ( structKeyExists(arguments,"tab") ) {
 			returnStr=returnStr & "##" & arguments.tab;
 		}

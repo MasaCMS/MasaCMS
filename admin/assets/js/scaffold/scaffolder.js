@@ -51,6 +51,11 @@ Mura(function() {
 				.then(function(entity) {
 					//Read properties for UI.
 
+					if(typeof entity.properties.links.edit != 'undefined'){
+						location.href=entity.properties.links.edit;
+						return
+					}
+
 					data.model = entity.getAll();
 					data.model._displaylist = [];
 					data.entity = entity;
@@ -83,6 +88,11 @@ Mura(function() {
 				.loadBy('id',ident) // 3rd argument = params
 				.then(function(entity) {
 					//Read properties for UI.
+
+					if(typeof entity.properties.links.edit != 'undefined'){
+						location.href=entity.properties.links.edit;
+						return
+					}
 
 					data.model = entity.getAll();
 					data.model._displaylist = [];

@@ -782,6 +782,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	function getEntityDisplayName(){
 		return getEntityName();
 	}
+
+	function getEditURL(){
+		if(get('type')==1){
+			return getBean('settingsManager').getSite(get('siteid')).getAdminPath(complete=1) & '/?muraAction=cusers.editgroup&siteid=' & esapiEncode('url',get('siteid')) & '&userid=' & esapiEncode('url',get('userid'));
+		} else {
+			return getBean('settingsManager').getSite(get('siteid')).getAdminPath(complete=1) & '/?muraAction=cusers.edituser&siteid=' &esapiEncode('url',get('siteid')) & '&userid=' & esapiEncode('url',get('userid'));
+		}
+	}
 </cfscript>
 
 </cfcomponent>

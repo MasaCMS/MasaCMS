@@ -1613,7 +1613,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 				break;
 			case 'site':
-				if($.currentUser().isSuperUser()){
+				if(getCurrentUser().isSuperUser()){
 					return true;
 				} else {
 					return false;
@@ -1624,7 +1624,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			case 'address':
 				if(getBean('permUtility').getModulePerm(variables.config.entities['#arguments.bean.getEntityName()#'].moduleid,variables.siteid)){
 					return true;
-				} else if (arguments.bean.getValue('userid')==$.currentUser('userid')){
+				} else if (arguments.bean.getValue('userid')==getCurrentUser('userid')){
 					return true;
 				} else {
 					return false;
@@ -1864,7 +1864,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		return returnStruct;
 	}
 
-	function getFilteredValues(entity,expanded=false,entityConfigName,siteid,expandLinks='',pk=''){
+	function getFilteredValues(entity,expanded=false,entityConfigName,siteid,expandLinks='',pk='',editablecheck=false){
 		var fields='';
 		var vals={};
 
@@ -1948,7 +1948,8 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		}
 
 		if(!arrayLen(fields) || arrayFind(fields,'links')){
-			vals.links=getLinks(entity);
+			arguments.editablecheck=(isDefined('url.id') && vals.id==url.id || arguments.editablecheck)? true :false;
+			vals.links=getLinks(entity,arguments.editablecheck);
 		}
 
 		if(listFindNoCase('content,contentnav',arguments.entityConfigName)){
@@ -2065,7 +2066,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			}
 		}
 
-		var returnStruct=getFilteredValues(entity,arguments.expanded,arguments.entityName,arguments.siteid,arguments.expand,pk);
+		var returnStruct=getFilteredValues(entity=entity,expanded=arguments.expanded,entityConfigName=arguments.entityName,siteid=arguments.siteid,expandLinks=arguments.expand,pk=pk,editablecheck=true);
 
 		if(isDefined('url.ishuman')){
 			request.cffpJS=true;
@@ -2955,7 +2956,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 	}
 
-	function getLinks(entity){
+	function getLinks(entity,editablecheck=false){
 		var links={};
 		var p='';
 		var baseURL=getEndPoint();
@@ -2969,7 +2970,16 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			//links['memberships']="#baseurl#?method=findQuery&siteid=#entity.getSiteID()#&entityName=user&groupid=#entity.getUserID()#";
 		}
 		*/
+
 		if(entity.getEntityName() != 'bean'){
+			if(arguments.editablecheck &&  getCurrentUser().isLoggedIn() && getCurrentUser().isSystemUser()){
+				if(allowAction(entity,getBean('m').init(entity.getSiteid()))){
+					var editURL=entity.getEditURL();
+					if(len(editURL)){
+						links['edit']=editURL;
+					}
+				}
+			}
 			links['all']="#baseurl#/#entity.getEntityName()#";
 			links['properties']="#baseurl#/#entity.getEntityName()#/properties";
 
