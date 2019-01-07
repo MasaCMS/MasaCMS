@@ -1505,7 +1505,9 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		if(isObject(arguments.bean)){
 			if(!isDefined('arguments.bean.getEntityName')){
-				throw(type='invalidParameters');
+				if(!isDefined('arguments.bean.get') || !len(arguments.bean.get('entityName'))){
+					throw(type='invalidParameters');
+				}
 			}
 			var entityName=arguments.bean.getEntityName();
 		} else {
@@ -1556,7 +1558,9 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 	function AllowAction(bean,$){
 
 		if(!isDefined('arguments.bean.getEntityName')){
-			throw(type='invalidParameters');
+			if(!isDefined('arguments.bean.get') || !len(arguments.bean.get('entityName'))){
+				throw(type='invalidParameters');
+			}
 		}
 
 		if(arguments.bean.getEntityName() == 'content' && listFindNoCase('Form,Component,Variation',arguments.$.event('type'))){
