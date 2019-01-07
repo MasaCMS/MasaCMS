@@ -2317,6 +2317,18 @@ var Mura=(function(){
 			return processDisplayObject(obj, false, true);
 	}
 
+	function destroyDisplayObjects(){
+		for (var property in Mura.displayObjectInstances) {
+			if (Mura.displayObjectInstances.hasOwnProperty(property)) {
+				var obj=Mura.displayObjectInstances[property];
+				if(typeof obj.destroy == 'function'){
+					obj.destroy();
+				}
+				delete Mura.displayObjectInstances[property];
+			}
+		}
+	}
+
 	function wireUpObject(obj, response, attempt) {
 
 		attempt= attempt || 0;
@@ -2370,6 +2382,9 @@ var Mura=(function(){
 
 						if (typeof Mura.DisplayObject[template] != 'undefined') {
 							context.html = '';
+							if(typeof Mura.displayObjectInstances[obj.data('instanceid')] != 'undefined'){
+								Mura.displayObjectInstances[obj.data('instanceid')].destroy();
+							}
 							obj.html(Mura.templates.content(context));
 							obj.prepend(Mura.templates.meta(context));
 							context.targetEl = obj.children('.mura-object-content').node;
@@ -2412,6 +2427,9 @@ var Mura=(function(){
 
 				if (typeof Mura.DisplayObject[template] == 'function') {
 					context.html = '';
+					if(typeof Mura.displayObjectInstances[obj.data('instanceid')] != 'undefined'){
+						Mura.displayObjectInstances[obj.data('instanceid')].destroy();
+					}
 					obj.html(Mura.templates.content(context));
 					obj.prepend(Mura.templates.meta(context));
 					context.targetEl = obj.children('.mura-object-content').node;
@@ -3238,6 +3256,9 @@ var Mura=(function(){
 		}
 
 		if(!initForDataOnly){
+
+			destroyDisplayObjects();
+
 			Mura(function() {
 				for(var cmd in holdingPreInitQueue){
 					if(typeof holdingPreInitQueue[cmd] == 'function'){
@@ -3273,7 +3294,6 @@ var Mura=(function(){
 
 
 					Mura(window).on('hashchange', handleHashChange);
-
 
 					processMarkup(document);
 
@@ -3369,6 +3389,7 @@ var Mura=(function(){
 			hashCode: hashCode,
 			DisplayObject: {},
 			displayObjectInstances: {},
+			destroyDisplayObjects: destroyDisplayObjects,
 			holdReady: holdReady,
 			trackEvent: trackEvent,
 			recordEvent: trackEvent,
@@ -17756,7 +17777,6 @@ Mura.UI=Mura.Core.extend(
   {
 	rb:{},
 	context:{},
-	isomorphic:false,
 	onAfterRender:function(){},
 	onBeforeRender:function(){},
 	trigger:function(eventName){
@@ -17820,6 +17840,10 @@ Mura.UI=Mura.Core.extend(
 
 	hydrate:function(){
 
+	},
+
+	destroy:function(){
+		
 	},
 
 	init:function(args){
@@ -19422,7 +19446,7 @@ var Mura=__webpack_require__(10);
  */
 
 Mura.UI.Collection=Mura.UI.extend(
-/** @lends Mura.DisplayObject.Collection.prototype */
+/** @lends Mura.UI.Collection.prototype */
 {
 	renderClient:function(){
 		this.context.targetEl.innerHTML=this.context.html;
