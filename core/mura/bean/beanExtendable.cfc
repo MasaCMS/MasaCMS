@@ -180,6 +180,7 @@ component extends="mura.bean.bean" output="false" hint="This provides functional
 
 				qs=getQueryService();
 				qs.setDbType('query');
+				qs.setAttributes(rsDefinitions=rsDefinitions);
 				qs.addParam( name="name", cfsqltype="cf_sql_varchar", value=arguments.name );
 
 				rsExtendSet=qs.execute(sql="SELECT DISTINCT extendsetid FROM rsDefinitions WHERE extendsetname = :name").getResult();
@@ -190,6 +191,7 @@ component extends="mura.bean.bean" output="false" hint="This provides functional
 
 				qs=getQueryService();
 				qs.setDbType('query');
+				qs.setAttributes(rsData=rsData);
 				qs.addParam( name="id", cfsqltype="cf_sql_varchar", value=rsExtendSet.extendsetid );
 
 				rsAttributes=qs.execute(sql="SELECT * FROM rsData WHERE extendsetid = :id").getResult();
