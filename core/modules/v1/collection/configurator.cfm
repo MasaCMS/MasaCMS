@@ -49,6 +49,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfparam name="objectParams.forcelayout" default="false">
 	<cfparam name="objectParams.sortby" default="Title">
 	<cfparam name="objectParams.sortdirection" default="ASC">
+	<cfparam name="objectParams.render" default="server">
+	<cfparam name="objectParams.async" default="false">
 	<cfset hasFeedManagerAccess=rc.configuratormode neq 'backend' and rc.$.getBean('permUtility').getModulePerm('00000000000000000000000000000000011',rc.siteid)>
 </cfsilent>
 <cfsavecontent variable="data.html">

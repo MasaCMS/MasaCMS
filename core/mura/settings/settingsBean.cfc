@@ -1124,6 +1124,14 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 				}
 			}
 
+			var externalLayoutArray=getContentRenderer().collectionLayoutArray;
+
+			if(arrayLen(externalLayoutArray)){
+				for(var l in externalLayoutArray){
+					queryAddRow(rsFinal,{name=collectionLayoutArray[l]});
+				}
+			}
+
 			qs=getQueryService();
 			qs.setAttributes(rsFinal=rsFinal);
 			qs.setDbType('query');

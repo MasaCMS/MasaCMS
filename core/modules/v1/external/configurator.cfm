@@ -1,6 +1,6 @@
 <cfscript>
 	objectparams.render='client';
-	objectparams.async=true;
+	objectparams.async=false;
 	configuratorMarkup='';
 
 	if(isValid("url", objectConfig.configurator)){
