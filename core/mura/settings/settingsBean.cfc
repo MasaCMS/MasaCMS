@@ -1128,7 +1128,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 
 			if(arrayLen(externalLayoutArray)){
 				for(var l in externalLayoutArray){
-					queryAddRow(rsFinal,{name=collectionLayoutArray[l]});
+					queryAddRow(rsFinal,{name=l});
 				}
 			}
 
