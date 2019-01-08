@@ -2385,7 +2385,7 @@ var Mura=(function(){
 							if(typeof Mura.displayObjectInstances[obj.data('instanceid')] != 'undefined'){
 								Mura.displayObjectInstances[obj.data('instanceid')].destroy();
 							}
-							obj.html(Mura.templates.content(context));
+							obj.html(Mura.templates.content({html:''}));
 							obj.prepend(Mura.templates.meta(context));
 							context.targetEl = obj.children('.mura-object-content').node;
 							Mura.displayObjectInstances[obj.data('instanceid')]=new Mura.DisplayObject[template](context);
@@ -2430,7 +2430,7 @@ var Mura=(function(){
 					if(typeof Mura.displayObjectInstances[obj.data('instanceid')] != 'undefined'){
 						Mura.displayObjectInstances[obj.data('instanceid')].destroy();
 					}
-					obj.html(Mura.templates.content(context));
+					obj.html(Mura.templates.content({html:''}));
 					obj.prepend(Mura.templates.meta(context));
 					context.targetEl = obj.children('.mura-object-content').node;
 					Mura.displayObjectInstances[obj.data('instanceid')]=new Mura.DisplayObject[template](context);
@@ -14979,11 +14979,11 @@ Mura.entities.Content = Mura.Entity.extend(
 	 * @return {Mura.EntityCollection}
 	 */
 	getRelatedContent:function(relatedContentSetName,params){
+		var self=this;
 		return new Promise(function(resolve,reject) {
 			var query = [];
-			var self=this;
 			params = params || {};
-			params.siteid = this.get('siteid') || Mura.siteid;
+			params.siteid = self.get('siteid') || Mura.siteid;
 			for (var key in params) {
 				if (key != 'entityname' && key != 'filename' && key != 'siteid' && key != 'method') {
 					query.push(encodeURIComponent(key) + '=' + encodeURIComponent(params[key]));
@@ -14992,7 +14992,7 @@ Mura.entities.Content = Mura.Entity.extend(
 			self._requestcontext.request({
 				type: 'get',
 				url: Mura.apiEndpoint +
-					'/content/' + self.get('contentid') + '/' + relatedContentSetName + '?' +
+					'/content/' + self.get('contentid') + '/relatedcontent/' + relatedContentSetName + '?' +
 					query.join('&'),
 				params: params,
 				success: function(resp) {
@@ -19448,18 +19448,115 @@ var Mura=__webpack_require__(10);
 Mura.UI.Collection=Mura.UI.extend(
 /** @lends Mura.UI.Collection.prototype */
 {
+
+	layoutInstance:'',
+
+	getLayoutInstance:function(){
+		if(this.layoutInstance){
+			this.layoutInstance.destroy();
+		}
+		this.layoutInstance=new Mura.Module[this.context.layout](this.context);
+		return this.layoutInstance;
+	},
+
+	getCollection:function(){
+		if(typeof this.context.feed != 'undefined' && typeof this.context.feed.getQuery != 'undefined'){
+			return this.context.feed.getQuery();
+		} else {
+			this.context.source=this.context.source || '';
+
+			if(typeof this.context.nextn != 'undefined'){
+				this.context.itemsperpage=this.context.nextn;
+			}
+
+			if(typeof this.context.maxitems == 'undefined'){
+				this.context.maxitems=20;
+			}
+
+			if(typeof this.context.itemsperpage != 'undefined'){
+				this.context.itemsperpage=this.context.nextn;
+			}
+
+			if(this.context.sourcetype=='relatedcontent'){
+				if(this.context.source=='custom'){
+					if(typeof this.context.items == 'array'){
+						this.context.items=this.context.items.join();
+					}
+					return Mura.get(Mura.apiEndpoint + '/?entityname=content&method=findMany&id=' + this.context.items,{
+						itemsperpage:this.context.itemsperpage,
+						maxitems:this.context.maxitems
+					}).then((response)=>{
+						return new Promise(function(resolve,reject) {
+								resolve(new Mura.EntityCollection(resp.data,self._requestcontext));
+						})
+					});
+				} else if(this.context.source=='reverse'){
+					return Mura.getEntity('content')
+						.set({
+							'contentid':Mura.contentid,
+							'id':Mura.contentid
+						}).getRelatedContent('reverse',{
+							itemsperpage:this.context.itemsperpage,
+							maxitems:this.context.maxitems,
+							sortby:this.context.sortby
+						})
+				} else {
+					return Mura.getEntity('content')
+						.set({
+							'contentid':Mura.contentid,
+							'id':Mura.contentid
+						}).getRelatedContent(this.context.source,{
+							itemsperpage:this.context.itemsperpage,
+							maxitems:this.context.maxitems
+						})
+				}
+			} else if(this.context.sourcetype=='children'){
+				return Mura.getFeed('content')
+					.where()
+					.prop('parentid').isEQ(Mura.contentid)
+					.maxItems(100)
+					.itemsPerPage(this.context.itemsperpage)
+					.getQuery();
+			} else {
+				return Mura.getFeed('content')
+					.where()
+					.prop('feedid').isEQ(this.context.source)
+					.maxItems(this.context.maxitems)
+					.itemsPerPage(this.context.itemsperpage)
+					.getQuery();
+			}
+		}
+	},
+
 	renderClient:function(){
-		this.context.targetEl.innerHTML=this.context.html;
+		if (typeof Mura.Module[this.context.layout] != 'undefined'){
+			this.getCollection().then((collection)=>{
+				this.context.collection=collection;
+				this.getLayoutInstance().renderClient();
+			})
+		} else {
+			this.context.targetEl.innerHTML="This collection has an undefined layout";
+		}
 		this.trigger('afterRender');
 	},
 
 	renderServer:function(){
-		this.context.html=this.html || '';
-		return this.context.html;
+		if(this.context.html){
+			return this.context.html;
+		} else if (typeof Mura.Module[this.layout] != 'undefined'){
+			return (async ()=>{
+				return await (()=>{
+					this.context.collection=this.getCollection();
+					return this.getLayoutInstance().renderServer();
+				})()
+			})()
+		} else {
+			return "This collection has an undefined layout";
+		}
 	}
 });
 
-Mura.DisplayObject.Collection=Mura.UI.Collection;
+Mura.Module.Collection=Mura.UI.Collection;
 
 
 /***/ }),
