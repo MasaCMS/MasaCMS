@@ -1127,8 +1127,15 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 			var externalLayoutArray=getContentRenderer().collectionLayoutArray;
 
 			if(arrayLen(externalLayoutArray)){
+				var existingLookup={};
+				for(var i=1;i<=rsFinal.recordcount;i++){
+					existingLookup[rsFinal.name[i]]=true;
+				}
+
 				for(var l in externalLayoutArray){
-					queryAddRow(rsFinal,{name=l});
+					if(!structKeyExists(existingLookup,l)){
+						queryAddRow(rsFinal,{name=l});
+					}
 				}
 			}
 
