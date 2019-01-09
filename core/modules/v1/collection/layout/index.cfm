@@ -64,27 +64,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset isExternal= $.siteConfig().getDisplayObject(objectParams.layout).external>
 		</cfif>
 		<cfif not objectParams.forcelayout>
-		<div class="mura-control-group">
-			<label class="mura-control-label">
-				#application.rbFactory.getKeyValue(session.rb,'collections.layout')#
-			</label>
-			<cfset layouts=rc.$.siteConfig().getLayouts('collection/layouts')>
-			<cfset layout=feed.getLayout()>
-			<cfset layout=(len(layout)) ? layout :' default'>
-			<select name="layout" class="objectParam">
-				<option value="default"<cfif feed.getLayout() eq "default"> selected</cfif>>Default</option>
-				<cfloop query="layouts">
-					<cfif layouts.name neq 'default'>
-					<option value="#layouts.name#"<cfif feed.getLayout() eq layouts.name> selected</cfif>>#reReplace(layouts.name, "\b([a-zA-Z])(\w{2,})\b", "\U\1\E\2", "all")#</option>
-					</cfif>
-				</cfloop>
-			</select>
-		</div>
-		<cfelse>
-			<cfset layout=feed.getLayout()>
-			<cfset layout=(len(layout)) ? layout :' default'>
-			<input type="hidden" name="layout" class="objectParam" value="#esapiEncode('html_attr',layout)#">
+			<div class="mura-control-group">
+				<label class="mura-control-label">
+					#application.rbFactory.getKeyValue(session.rb,'collections.layout')#
+				</label>
+				<cfset layouts=rc.$.siteConfig().getLayouts('collection/layouts')>
+				<cfset layout=feed.getLayout()>
+				<cfset layout=(len(layout)) ? layout :' default'>
+				<select id="layoutSel">
+					<option value="default"<cfif feed.getLayout() eq "default"> selected</cfif>>Default</option>
+					<cfloop query="layouts">
+						<cfif layouts.name neq 'default'>
+						<option value="#layouts.name#"<cfif feed.getLayout() eq layouts.name> selected</cfif>>#reReplace(layouts.name, "\b([a-zA-Z])(\w{2,})\b", "\U\1\E\2", "all")#</option>
+						</cfif>
+					</cfloop>
+				</select>
+			</div>
 		</cfif>
+
+		<cfset layout=feed.getLayout()>
+		<cfset layout=(len(layout)) ? layout :' default'>
+		<input type="hidden" name="layout" class="objectParam" value="#esapiEncode('html_attr',layout)#">
 
 		<!---- Begin layout based configuration --->
 		<cfif isExternal>
@@ -123,8 +123,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfif>
 		<script>
-			$('select[name="layout"]').on('change',setLayoutOptions);
-			$('input[name="render"]').trigger('change');
+			$('##layoutSel').on('change',setLayoutOptions);
+			if(typeof configuratorInited != 'undefined'){
+				$('input[name="render"]').trigger('change');
+			}
+			configuratorInited=true;
 		</script>
 		<!---  End layout based configuration --->
 
