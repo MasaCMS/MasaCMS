@@ -15494,6 +15494,17 @@ Mura.Feed = Mura.Core.extend(
 		},
 
 		/**
+			* orOpenGrouping - Starts new logical condition OR grouping
+			*
+			* @return {Mura.Feed}          Self
+			*/
+		 orOpenGrouping: function() {
+			 this.queryString += '&orOpenGrouping' + encodeURIComponent('[' + this.propIndex + ']');
+			 this.propIndex++;
+			 return this;
+		 },
+
+		/**
 		 * openGrouping - Starts new logical condition grouping
 		 *
 		 * @return {Mura.Feed}          Self
