@@ -65,6 +65,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif objectParams.sourcetype neq 'remotefeed'>
 	<cfif $.siteConfig().hasDisplayObject(objectParams.layout) and $.siteConfig().getDisplayObject(objectParams.layout).external>
 		<cfset objectParams.render="client">
+	<cfelseif objectparams.layout eq 'default' and  $.siteConfig().hasDisplayObject('list') and $.siteConfig().getDisplayObject('list').external>
+		<cfset objectParams.render="client">
 	<cfelse>
 		<cfset objectParams.render="server">
 	</cfif>

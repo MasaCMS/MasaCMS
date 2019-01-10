@@ -19459,6 +19459,7 @@ var Mura=__webpack_require__(10);
 Mura.UI.Collection=Mura.UI.extend(
 /** @lends Mura.UI.Collection.prototype */
 {
+	defaultLayout: "List",
 
 	layoutInstance:'',
 
@@ -19540,6 +19541,13 @@ Mura.UI.Collection=Mura.UI.extend(
 	},
 
 	renderClient:function(){
+		if(typeof Mura.Module[this.context.layout] == 'undefined'){
+			this.context.layout=Mura.firstToUpperCase(this.context.layout);
+		}
+		if(typeof Mura.Module[this.context.layout] == 'undefined'
+	 		&& Mura.Module[this.defaultLayout] != 'undefined'){
+				this.context.layout=this.defaultLayout;
+		}
 		if (typeof Mura.Module[this.context.layout] != 'undefined'){
 			this.getCollection().then((collection)=>{
 				this.context.collection=collection;
@@ -19552,15 +19560,14 @@ Mura.UI.Collection=Mura.UI.extend(
 	},
 
 	renderServer:function(){
+		return '';
 		if(this.context.html){
 			return this.context.html;
 		} else if (typeof Mura.Module[this.layout] != 'undefined'){
-			return (async ()=>{
-				return await (()=>{
-					this.context.collection=this.getCollection();
-					return this.getLayoutInstance().renderServer();
-				})()
-			})()
+			this.getCollection().then((collection)=>{
+				this.context.collection=collection;
+				return this.getLayoutInstance().renderServer();
+			});
 		} else {
 			return "This collection has an undefined layout";
 		}

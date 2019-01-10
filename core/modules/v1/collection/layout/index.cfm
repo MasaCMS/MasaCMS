@@ -62,6 +62,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset isExternal=false>
 		<cfif $.siteConfig().hasDisplayObject(objectParams.layout)>
 			<cfset isExternal= $.siteConfig().getDisplayObject(objectParams.layout).external>
+		<cfelseif objectparams.layout eq 'default'>
+			<cfset isExternal= $.siteConfig().hasDisplayObject('list') and $.siteConfig().getDisplayObject('list').external>
+			<cfset feed.setLayout('list')>
 		</cfif>
 		<cfif not objectParams.forcelayout>
 			<div class="mura-control-group">
@@ -90,7 +93,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif isExternal>
 			<cfscript>
 				configuratorMarkup='';
-				objectConfig=$.siteConfig().getDisplayObject(objectParams.layout);
+				objectConfig=$.siteConfig().getDisplayObject(layout);
 				if(isValid("url", objectConfig.configurator)){
 					httpService=application.configBean.getHTTPService();
 					lhttpService.setMethod("get");
