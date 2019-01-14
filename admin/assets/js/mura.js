@@ -988,20 +988,6 @@ var Mura=(function(){
 				str += data.inherited.items[i].header;
 				if(typeof data.inherited.items[i].html != 'undefined' && data.inherited.items[i].html){
 					str += data.inherited.items[i].html;
-				} else if (Mura.isInNode()) {
-					var template=data.inherited.items[i].clienttemplate || data.inherited.items[i].object;
-					var properNameCheck = firstToUpperCase(template);
-
-					if (typeof Mura.DisplayObject[properNameCheck] != 'undefined') {
-						template = properNameCheck;
-					}
-
-					if(typeof Mura.DisplayObject[template] != 'undefined') {
-						var html=new Mura.DisplayObject[template](data.inherited.items[i]).renderServer();
-						if(html){
-							str += Mura.templates['meta'](data.inherited.items[i]) + Mura.templates['content']({html:html})
-						}
-					}
 				}
 				str += data.inherited.items[i].footer;
 			}
@@ -1016,20 +1002,6 @@ var Mura=(function(){
 				str += data.local.items[i].header;
 				if(typeof data.local.items[i].html != 'undefined' && data.local.items[i].html){
 					str += data.local.items[i].html;
-				} else if (Mura.isInNode()) {
-					var template=data.local.items[i].clienttemplate || data.local.items[i].object;
-					var properNameCheck = firstToUpperCase(template);
-
-					if (typeof Mura.DisplayObject[properNameCheck] != 'undefined') {
-						template = properNameCheck;
-					}
-
-					if(typeof Mura.DisplayObject[template] != 'undefined') {
-						var html=new Mura.DisplayObject[template](data.local.items[i]).renderServer();
-						if(html){
-							str += Mura.templates['meta'](data.local.items[i]) + Mura.templates['content']({html:html})
-						}
-					}
 				}
 				str += data.local.items[i].footer;
 			}
@@ -2414,7 +2386,6 @@ var Mura=(function(){
 				}
 		} else {
 			var context = obj.data();
-
 			if (obj.data('object') == 'container') {
 				obj.prepend(Mura.templates.meta(context));
 			} else {
@@ -2671,7 +2642,6 @@ var Mura=(function(){
 	}
 
 	function processDisplayObject(el, queue, rerender, resolveFn) {
-
 		var obj = (el.node) ? el : Mura(el);
 
 		if (obj.data('queue') != null) {
@@ -2742,12 +2712,16 @@ var Mura=(function(){
 
 				if(!rerender && obj.data('render')=='client' && obj.children('.mura-object-content').length){
 					var context=obj.data();
+					if(typeof context.instanceid != 'undefined' && typeof Mura.hydrationData[context.instanceid] != 'undefined'){
+						Mura.extend(context,Mura.hydrationData[context.instanceid]);
+					}
 					var template=obj.data('clienttemplate') || obj.data('object');
 					var properNameCheck = firstToUpperCase(template);
 
 					if (typeof Mura.DisplayObject[properNameCheck] != 'undefined') {
 						template = properNameCheck;
 					}
+
 					if(typeof Mura.DisplayObject[template] != 'undefined'){
 						context.targetEl = obj.children('.mura-object-content').node;
 						Mura.displayObjectInstances[obj.data('instanceid')]=new Mura.DisplayObject[template](context);
@@ -3125,6 +3099,13 @@ var Mura=(function(){
 
 	function init(config) {
 
+		if(typeof config.content != 'undefined'){
+			if(typeof config.content.get == 'undefined'){
+				config.content=getEntity('content').set(config.content);
+			}
+			Mura.extend(config,config.content.get('config'));
+		}
+
 		if (config.rootpath) {
 			config.context = config.rootpath;
 		}
@@ -3227,6 +3208,25 @@ var Mura=(function(){
 		extend(Mura, config);
 
 		Mura.trackingMetadata={};
+		Mura.hydrationData={}
+
+		if(typeof config.content != 'undefined' && config.content.get('displayregions')){
+		for(var r in config.content.properties.displayregions){
+				if( config.content.properties.displayregions.hasOwnProperty(r)){
+					var data=config.content.properties.displayregions[r];
+					if(typeof data.inherited != 'undefined' && typeof data.inherited.items != 'undefined'){
+						for(var d in data.inherited.items){
+							Mura.hydrationData[data.inherited.items[d].instanceid]=data.inherited.items[d];
+						}
+					}
+					if(typeof data.local != 'undefined' && typeof data.local.items != 'undefined'){
+						for(var d in data.local.items){
+							Mura.hydrationData[data.local.items[d].instanceid]=data.local.items[d];
+						}
+					}
+				}
+			}
+		}
 
 		Mura.dateformat=generateDateFormat();
 
@@ -19489,18 +19489,20 @@ Mura.UI.Collection=Mura.UI.extend(
 				this.context.itemsperpage=this.context.nextn;
 			}
 
-			if(this.context.sourcetype=='relatedcontent'){
+			if(typeof this.context.rawcollection != 'undefined'){
+				return new Promise((resolve,reject)=>{
+					resolve(new Mura.EntityCollection(this.context.rawcollection,self._requestcontext))
+				});
+			} else if(this.context.sourcetype=='relatedcontent'){
 				if(this.context.source=='custom'){
-					if(typeof this.context.items == 'array'){
+					if(typeof this.context.items != 'undefined'){
 						this.context.items=this.context.items.join();
 					}
-					return Mura.get(Mura.apiEndpoint + '/?entityname=content&method=findMany&id=' + this.context.items,{
+					return Mura.get(Mura.apiEndpoint + 'content/' + this.context.items + ',_',{
 						itemsperpage:this.context.itemsperpage,
 						maxitems:this.context.maxitems
-					}).then((response)=>{
-						return new Promise(function(resolve,reject) {
-								resolve(new Mura.EntityCollection(resp.data,self._requestcontext));
-						})
+					}).then((resp)=>{
+						return new Mura.EntityCollection(resp.data,Mura._requestcontext);
 					});
 				} else if(this.context.source=='reverse'){
 					return Mura.getEntity('content')
@@ -19560,18 +19562,17 @@ Mura.UI.Collection=Mura.UI.extend(
 	},
 
 	renderServer:function(){
+		//has implementation in ui.serverutils
 		return '';
-		if(this.context.html){
-			return this.context.html;
-		} else if (typeof Mura.Module[this.layout] != 'undefined'){
-			this.getCollection().then((collection)=>{
-				this.context.collection=collection;
-				return this.getLayoutInstance().renderServer();
-			});
-		} else {
-			return "This collection has an undefined layout";
+	},
+
+	destroy:function(){
+		//has implementation in ui.serverutils
+		if(this.layoutInstance){
+			this.layoutInstance.destroy();
 		}
 	}
+
 });
 
 Mura.Module.Collection=Mura.UI.Collection;
