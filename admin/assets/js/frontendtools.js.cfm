@@ -1097,7 +1097,12 @@
 
 			<cfif $.getContentRenderer().useLayoutManager()>
 			if(window.Mura.layoutmanager){
-
+				var openToolbar=function(event){
+					event.preventDefault();
+					//console.log("fet:" + 1106)
+					openFrontEndToolsModal(this);
+				};
+				
 				Mura("img").each(function(){MuraInlineEditor.checkforImageCroppers(this);});
 
 				MuraInlineEditor.setAnchorSaveChecks(document);
@@ -1107,11 +1112,7 @@
 					var objectParams;
 					item.addClass("mura-active");
 
-					var openToolbar=function(event){
-						event.preventDefault();
-						//console.log("fet:" + 1106)
-						openFrontEndToolsModal(this);
-					};
+
 
 					if(Mura.type =='Variation'){
 						objectParams=item.data();
