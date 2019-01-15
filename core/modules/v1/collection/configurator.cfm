@@ -218,9 +218,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			}
 
 			setLayoutOptions=function(){
-				$('input[name="layout"]').val($('##layoutSel').val())
 				siteManager.updateAvailableObject();
-				alert($('input[name="layout"]'.val())
 				siteManager.availableObject.params.source = siteManager.availableObject.params.source || '';
 
 				var params=siteManager.availableObject.params;

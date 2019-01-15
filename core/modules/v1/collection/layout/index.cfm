@@ -78,7 +78,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset layouts=rc.$.siteConfig().getLayouts('collection/layouts')>
 				<cfset layout=feed.getLayout()>
 				<cfset layout=(len(layout)) ? layout :' default'>
-				<select name="layout" class="objectParam">
+				<select name="layoutSel" id="layoutSel">
 					<option value="default"<cfif feed.getLayout() eq "default"> selected</cfif>>Default</option>
 					<cfloop query="layouts">
 						<cfif layouts.name neq 'default'>
@@ -91,7 +91,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfset layout=feed.getLayout()>
 		<cfset layout=(len(layout)) ? layout :' default'>
-		<!---<input type="hidden" name="layout" class="objectParam" value="#esapiEncode('html_attr',layout)#">--->
+		<input type="hidden" name="layout" class="objectParam" value="#esapiEncode('html_attr',layout)#">
 
 		<!---- Begin layout based configuration --->
 		<cfif isExternal>
@@ -129,17 +129,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 			</cfif>
 		</cfif>
-		<!---
 		<script>
 			$(()=>{
-				$('##layoutSel').on('change',setLayoutOptions);
+				$('##layoutSel').on('change',function() {
+					$('input[name="layout"]').val($('##layoutSel').val())
+					setLayoutOptions();
+				});
 				if(typeof configuratorInited != 'undefined'){
 					$('input[name="render"]').trigger('change');
 				}
 				configuratorInited=true;
 			});
 		</script>
-		--->
 		<!---  End layout based configuration --->
 
 		<cfif objectParams.object eq 'collection'>
