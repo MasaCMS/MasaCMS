@@ -64,7 +64,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset isExternal= $.siteConfig().getDisplayObject(objectParams.layout).external>
 		<cfelseif objectparams.layout eq 'default'>
 			<cfset isExternal= $.siteConfig().hasDisplayObject('list') and $.siteConfig().getDisplayObject('list').external>
-			<cfset feed.setLayout('list')>
+			<!---
+			<cfif isExternal>
+				<cfset feed.setLayout('list')>
+			</cfif>
+			--->
 		</cfif>
 		<cfif not objectParams.forcelayout>
 			<div class="mura-control-group">
