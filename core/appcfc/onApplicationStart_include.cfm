@@ -378,6 +378,7 @@ if ( application.setupComplete ) {
 		} catch (any cfcatch) {}
 	}
 
+
 	application.objectMappings={};
 	application.objectMappings.bundleableBeans="";
 	application.objectMappings.versionedBeans="";
@@ -451,7 +452,9 @@ if ( application.setupComplete ) {
 		}
 	}
 
+	request.muraattachormlinks=true;
 	application.serviceFactory.loadDynamicEntities();
+	request.muraattachormlinks=false;
 
 	application.appAutoUpdated=false;
 
@@ -477,6 +480,8 @@ if ( application.setupComplete ) {
 		application.mura=application.serviceFactory.getBean('mura');
 	}
 
+	request.muraattachormlinks=true;
+
 	//  End beanServicePlaceHolders
 	variables.temp='';
 	application.badwords = ReReplaceNoCase(trim(variables.temp), "," , "|" , "ALL");
@@ -490,6 +495,7 @@ if ( application.setupComplete ) {
 	if ( fileExists(ExpandPath("/muraWRM/config/settings.custom.managers.cfm")) ) {
 		include "/muraWRM/config/settings.custom.managers.cfm";
 	}
+
 	variables.basedir=expandPath("/muraWRM");
 	variables.mapprefix="";
 	if ( len(application.configBean.getValue('encryptionKey')) ) {
