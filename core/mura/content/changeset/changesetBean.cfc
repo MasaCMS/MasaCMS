@@ -25,6 +25,9 @@ component extends="mura.bean.bean" entityName="changeset" table="tchangesets" ou
 
 	public function init() output=false {
 		super.init(argumentCollection=arguments);
+
+		var sessionData=getSession();
+
 		variables.instance.changesetID="";
 		variables.instance.siteID="";
 		variables.instance.name="";
@@ -42,9 +45,9 @@ component extends="mura.bean.bean" entityName="changeset" table="tchangesets" ou
 		variables.instance.categoryID="";
 		variables.instance.tags="";
 		variables.instance.errors=structNew();
-		if ( isDefined("variables.sessionData.mura") && variables.sessionData.mura.isLoggedIn ) {
-			variables.instance.LastUpdateBy = left(variables.sessionData.mura.fname & " " & variables.sessionData.mura.lname,50);
-			variables.instance.LastUpdateByID = variables.sessionData.mura.userID;
+		if ( isDefined("sessionData.mura") && sessionData.mura.isLoggedIn ) {
+			variables.instance.LastUpdateBy = left(sessionData.mura.fname & " " & sessionData.mura.lname,50);
+			variables.instance.LastUpdateByID = sessionData.mura.userID;
 		} else {
 			variables.instance.LastUpdateBy = "";
 			variables.instance.LastUpdateByID = "";
@@ -140,6 +143,11 @@ component extends="mura.bean.bean" entityName="changeset" table="tchangesets" ou
 	}
 
 	public function save() output=false {
+		var sessionData=getSession();
+		if (isDefined('sessionData.mura') && sessionData.mura.isLoggedIn ) {
+			set('LastUpdateBy',left(sessionData.mura.fname & " " &  sessionData.mura.lname,50));
+			set('LastUpdateByID',sessionData.mura.userID);
+		}
 		setAllValues(variables.changesetManager.save(this).getAllValues());
 		return this;
 	}

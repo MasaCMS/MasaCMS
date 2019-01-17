@@ -274,6 +274,8 @@ component extends="mura.bean.beanExtendable" entityName="content" table="tconten
 		var releasehour="";
 		var expireshour="";
 		var prop="";
+		var sessionData=getSession();
+
 		if ( isQuery(arguments.content) && arguments.content.recordcount ) {
 
 			for(prop in listToArray(arguments.content.columnlist)){
@@ -1340,6 +1342,7 @@ component extends="mura.bean.beanExtendable" entityName="content" table="tconten
 		var chain="";
 		var i="";
 		var permUtility=getBean('permUtility');
+		var sessionData=getSession();
 		var privateUserPool=getBean('settingsManager').getSite(getValue('siteid')).getPrivateUserPoolID();
 		if ( !arguments.applyExemptions || !( permUtility.isS2() || permUtility.isUserInGroup('admin',privateUserPool,0) ) ) {
 			while ( crumbs.hasNext() ) {
@@ -1462,7 +1465,7 @@ component extends="mura.bean.beanExtendable" entityName="content" table="tconten
 
 	public function getStatus() output=false {
 		var status = '';
-		param name="sessionData" default={};
+		var sessionData=getSession();
 		param name="sessionData.rb" default="en_US";
 		switch ( getStatusID() ) {
 			case  0:
