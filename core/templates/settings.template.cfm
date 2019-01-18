@@ -40,6 +40,7 @@ filedir=
 fmshowapplicationroot=true
 fmshowsitefiles=true
 forceadminssl=true
+forceDirectoryStructure=true
 hashurls=false
 haslockablenodes=false
 HSTSMaxAge=1200

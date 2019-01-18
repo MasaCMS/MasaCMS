@@ -196,6 +196,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.showUsageTags=true>
 <cfset variables.instance.offline404=true>
 <cfset variables.instance.externalConfig="">
+<cfset variables.instance.forceDirectoryStructure=true>
 
 <cffunction name="OnMissingMethod" output="false" hint="Handles missing method exceptions.">
 <cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />
