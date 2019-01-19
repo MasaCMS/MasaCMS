@@ -2512,7 +2512,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 										}
 									}
 
-									if(isDefined('entity.getExtendedData') || entity.hasProperty(propName)){
+									if(isDefined('entity.getExtendedData') || entity.hasColumn(propName)){
 										feed.addParam(column=propName,criteria=criteria,condition=condition,relationship=relationship);
 									} else {
 										throw(type="invalidParameters");
