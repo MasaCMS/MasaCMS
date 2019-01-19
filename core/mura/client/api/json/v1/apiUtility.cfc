@@ -662,7 +662,6 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 											statusCode=200,
 											response={'apiversion'=getApiVersion(),
 											'method'=params.method,
-											'params'=getParamsWithOutMethod(params),
 											'data'={
 												'token_type'='Bearer',
 												'access_token'=token.getToken(),
@@ -714,7 +713,6 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 	 											statusCode=200,
 	 											response={'apiversion'=getApiVersion(),
 	 											'method'=params.method,
-	 											'params'=getParamsWithOutMethod(params),
 	 											'data'={
 													'token_type'='Bearer',
 													'access_token'=token.getToken(),
@@ -774,7 +772,6 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 											 statusCode=200,
 											 response={'apiversion'=getApiVersion(),
 											 'method'=params.method,
-											 'params'=getParamsWithOutMethod(params),
 											 'data'={
 	 											'token_type'='Bearer',
 	 											'access_token'=token.getToken(),
@@ -1321,6 +1318,10 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				responseObject.setStatus(arguments.statusCode);
 			}
 		} catch (Any e){}
+
+		if(application.configBean.getValue(property='suppressAPIParams',defaultValue=true) && isDefined('response.params')){
+			structDelete(response,'params');
+		}
 
 		if(isDefined('arguments.response.data.shunter') && arguments.response.data.shunter){
 			if(isDefined('arguments.response.data.layout')){
@@ -2511,7 +2512,12 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 										}
 									}
 
-									feed.addParam(column=propName,criteria=criteria,condition=condition,relationship=relationship);
+									if(isDefined('entity.getExtendedData') || entity.hasColumn(propName)){
+										feed.addParam(column=propName,criteria=criteria,condition=condition,relationship=relationship);
+									} else {
+										throw(type="invalidParameters");
+									}
+
 									relationship='and';
 							}
 						}

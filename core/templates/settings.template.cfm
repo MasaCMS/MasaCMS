@@ -108,6 +108,7 @@ sortpermission=editor
 strictfactory=true
 strongpasswordregex=(?=^.{7,15}$)(?=.*\d)(?![.\n])(?=.*[a-zA-Z]).*$
 strongpasswords=false
+suppressAPIParams=true
 tempdir=
 testbox=false
 title=Mura CMS
