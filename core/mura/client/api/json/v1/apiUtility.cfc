@@ -1280,6 +1280,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		}
 
 		catch (invalidMethodCall e){
+			param name="params.method" default="undefined";
 			params.method='invalid';
 			return serializeResponse(statusCode=400,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='invalid_request','message'="Invalid method call"}});
 		}
