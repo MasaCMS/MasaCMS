@@ -1256,48 +1256,74 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		catch (authorization e){
 			param name="params.method" default="undefined";
+			if(!isDefined('#params.method#')){
+				params.method='invalid';
+			}
 			return serializeResponse(statusCode=401,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='invalid_request','message'='Insufficient Account Permissions'}});
 		}
 
 		catch (invalidAccessToken e){
 			param name="params.method" default="undefined";
+			if(!isDefined('#params.method#')){
+				params.method='invalid';
+			}
 			return serializeResponse(statusCode=401,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='invalid_token','message'='Invalid Access Token'}});
 		}
 
 		catch (accessTokenExpired e){
 			param name="params.method" default="undefined";
+			if(!isDefined('#params.method#')){
+				params.method='invalid';
+			}
 			return serializeResponse(statusCode=401,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='invalid_token','message'='Access Token Expired'}});
 		}
 
 		catch (disabled e){
 			param name="params.method" default="undefined";
+			if(!isDefined('#params.method#')){
+				params.method='invalid';
+			}
 			return serializeResponse(statusCode=400,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='invalid_request','message'='The JSON API disabled'}});
 		}
 
 		catch (invalidParameters e){
 			param name="params.method" default="undefined";
+			if(!isDefined('#params.method#')){
+				params.method='invalid';
+			}
 			return serializeResponse(statusCode=400,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='invalid_request','message'='Invalid parameters'}});
 		}
 
 		catch (invalidMethodCall e){
-			params.method='invalid';
+			param name="params.method" default="undefined";
+			if(!isDefined('#params.method#')){
+				params.method='invalid';
+			}
 			return serializeResponse(statusCode=400,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='invalid_request','message'="Invalid method call"}});
 		}
 
 		catch (badRequest e){
 			param name="params.method" default="undefined";
+			if(!isDefined('#params.method#')){
+				params.method='invalid';
+			}
 			return serializeResponse(statusCode=400,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='invalid_request','message'="Bad Request"}});
 		}
 
 		catch (invalidTokens e){
 			param name="params.method" default="undefined";
+			if(!isDefined('#params.method#')){
+				params.method='invalid';
+			}
 			return serializeResponse(statusCode=400,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='invalid_request','message'="Invalid CSRF tokens"}});
 		}
 
 		catch (Any e){
 			writeLog(type="Error", file="exception", text="#e.stacktrace#");
 			param name="params.method" default="undefined";
-
+			if(!isDefined('#params.method#')){
+				params.method='invalid';
+			}
 			if(getBean('configBean').getDebuggingEnabled()){
 				return serializeResponse(statusCode=500,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='server_error','message'="Unhandled Exception",'stacktrace'=e}});
 			} else {
