@@ -554,40 +554,47 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var legacyfeedendpoint="/tasks/feed">
 	<cfset var legacyfileendpoint="/tasks/render/">
 	<cfset var legacywidgetendpoint="/tasks/widgets/">
+	<cfset var siteid="default">
 
 	<cfif (left(arguments.path,len(jsonendpoint)) eq jsonendpoint or left(arguments.path,len(ajaxendpoint)) eq ajaxendpoint)>
 		<cfset request.muraAPIRequest=true>
 		<cfif listLen(arguments.path,'/') gte 4>
-			<cfreturn getBean('settingsManager').getSite(listGetAt(arguments.path,4,'/')).getApi('json','v1').processRequest(arguments.path)>
+			<cfset siteid=listGetAt(arguments.path,4,'/')>
 		<cfelseif isDefined('form.siteid')>
-			<cfreturn getBean('settingsManager').getSite(form.siteid).getApi('json','v1').processRequest(arguments.path)>
+			<cfset siteid=form.siteid>
 		<cfelseif isDefined('url.siteid')>
-			<cfreturn getBean('settingsManager').getSite(url.siteid).getApi('json','v1').processRequest(arguments.path)>
-		<cfelse>
-			<cfreturn getBean('settingsManager').getSite('default').getApi('json','v1').processRequest(arguments.path)>
+			<cfset siteid=url.siteid>
 		</cfif>
+		<cfif not getBean('settingsManager').siteExists(siteid)>
+			<cfset siteid="default">
+		</cfif>
+		<cfreturn getBean('settingsManager').getSite(siteid).getApi('json','v1').processRequest(arguments.path)>
 	<cfelseif left(arguments.path,len(restendpoint)) eq restendpoint or left(arguments.path,len(restendpoint)) eq restendpoint>
 		<cfset request.muraAPIRequest=true>
 		<cfset request.muraAPIRequestMode='rest'>
 		<cfif listLen(arguments.path,'/') gte 4>
-			<cfreturn getBean('settingsManager').getSite(listGetAt(arguments.path,4,'/')).getApi('json','v1').processRequest(arguments.path)>
+			<cfset siteid=listGetAt(arguments.path,4,'/')>
 		<cfelseif isDefined('form.siteid')>
-			<cfreturn getBean('settingsManager').getSite(form.siteid).getApi('json','v1').processRequest(arguments.path)>
+			<cfset siteid=form.siteid>
 		<cfelseif isDefined('url.siteid')>
-			<cfreturn getBean('settingsManager').getSite(url.siteid).getApi('json','v1').processRequest(arguments.path)>
-		<cfelse>
-			<cfreturn getBean('settingsManager').getSite('default').getApi('json','v1').processRequest(arguments.path)>
+			<cfset siteid=url.siteid>
 		</cfif>
+		<cfif not getBean('settingsManager').siteExists(siteid)>
+			<cfset siteid="default">
+		</cfif>
+		<cfreturn getBean('settingsManager').getSite(siteid).getApi('json','v1').processRequest(arguments.path)>
 	<cfelseif isDefined('url.feedid') and (left(arguments.path,len(feedendpoint)) eq feedendpoint or left(arguments.path,len(legacyfeedendpoint)) eq legacyfeedendpoint)>
 		<cfif listLen(arguments.path,'/') gte 4>
-			<cfreturn getBean('settingsManager').getSite(listGetAt(arguments.path,4,'/')).getApi('feed','v1').processRequest(arguments.path)>
+			<cfset siteid=listGetAt(arguments.path,4,'/')>
 		<cfelseif isDefined('form.siteid')>
-			<cfreturn getBean('settingsManager').getSite(form.siteid).getApi('feed','v1').processRequest(arguments.path)>
+			<cfset siteid=form.siteid>
 		<cfelseif isDefined('url.siteid')>
-			<cfreturn getBean('settingsManager').getSite(url.siteid).getApi('feed','v1').processRequest(arguments.path)>
-		<cfelse>
-			<cfreturn getBean('settingsManager').getSite('default').getApi('feed','v1').processRequest(arguments.path)>
+			<cfset siteid=url.siteid>
 		</cfif>
+		<cfif not getBean('settingsManager').siteExists(siteid)>
+			<cfset siteid="default">
+		</cfif>
+		<cfreturn getBean('settingsManager').getSite(siteid).getApi('feed','v1').processRequest(arguments.path)>
 	<cfelseif isDefined('url.siteid') and left(arguments.path,len(variationendpoint)) eq variationendpoint and getBean('configBean').getValue(property='variations',defaultValue=false)>
 		<cfreturn new mura.executor().execute('/mura/client/api/resource/variation.js.cfm')>
 	<cfelseif isDefined('url.emailid') and left(path,len(emailendpoint)) eq emailendpoint>

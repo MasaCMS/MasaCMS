@@ -868,6 +868,10 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 				param name="params.siteid" default=variables.siteid;
 
+				if(!getBean('settingsManager').siteExists(params.siteid)){
+					throw(type="invalidParameters");
+				}
+
 				if(isDefined('#params.method#')){
 
 					result=evaluate('#params.method#(argumentCollection=params)');
@@ -888,6 +892,17 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 			if(arrayLen(pathInfo)){
 				params.siteid=pathInfo[1];
+			} else {
+				throw(type="invalidParameters");
+			}
+
+			var siteManager=getBean('settingsManager');
+			if(!siteManager.siteExists(params.siteid)){
+				throw(type="invalidParameters");
+			} else if (isdefined('url.siteid') && !siteManager.siteExists(url.siteid)) {
+				throw(type="invalidParameters");
+			} else if (isdefined('form.siteid') && !siteManager.siteExists(form.siteid)) {
+				throw(type="invalidParameters");
 			}
 
 			if(arrayLen(pathInfo) > 1){
