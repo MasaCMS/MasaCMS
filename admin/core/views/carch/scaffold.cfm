@@ -177,7 +177,7 @@
 				</span>
 
 				<ul v-if="data.list.length" class="pagination">
-
+					<li><strong>{{data.collection.get('startindex')}}</strong> to <strong>{{data.collection.get('endindex')}}</strong> of <strong>{{data.collection.get('totalitems')}}</strong></li>
 					<li><a v-if="data.links.first" @click="applyPage('first')">
 						<i class="mi-angle-double-left"></i>
 					</a></li>
