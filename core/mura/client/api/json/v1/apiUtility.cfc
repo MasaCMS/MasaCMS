@@ -27,7 +27,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		variables.config={
 			linkMethods=[],
-			publicMethods="undeclareEntity,declareEntity,checkSchema,findOne,findMany,findAll,findProperties,findNew,findQuery,save,delete,findCrumbArray,generateCSRFTokens,validateEmail,login,logout,submitForm,findCalendarItems,validate,processAsyncObject,findRelatedContent,getURLForImage,findVersionHistory,findCurrentUser,swagger",
+			publicMethods="undeclareEntity,declareEntity,checkSchema,findOne,findMany,findAll,findPermissions,findProperties,findNew,findQuery,save,delete,findCrumbArray,generateCSRFTokens,validateEmail,login,logout,submitForm,findCalendarItems,validate,processAsyncObject,findRelatedContent,getURLForImage,findVersionHistory,findCurrentUser,swagger",
 			entities={
 				'contentnav'={
 					public=true,
@@ -988,7 +988,12 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				if(arrayLen(pathInfo) > 2){
 					if(len(pathInfo[3])==35){
 						params.id=pathInfo[3];
-						if(arrayLen(pathInfo) >= 4 && params.entityName=='content' && pathInfo[4]=='relatedcontent'){
+						if(arrayLen(pathInfo) == 4 && pathInfo[4]=='permissions'){
+							result=findPermissions(argumentCollection=params);
+							result=serializeResponse(statusCode=200,response={'apiversion'=getApiVersion(),'method'='findPermissions','data'=result});
+							return result;
+
+						} else if(arrayLen(pathInfo) >= 4 && params.entityName=='content' && pathInfo[4]=='relatedcontent'){
 							var $=getBean('$').init(params.siteid);
 							params.method='findRelatedContent';
 							url.id=params.id;
@@ -1007,7 +1012,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 							}
 
 							result=findRelatedContent(argumentCollection=params);
-							result=serializeResponse(statusCode=200,response={'apiversion'=getApiVersion(),'method'='findRelatedContent','params'=getParamsWithOutMethod(params),'data'=result});
+							result=serializeResponse(statusCode=200,response={'apiversion'=getApiVersion(),'method'='findRelatedContent','data'=result});
 							return result;
 						}
 
@@ -1140,7 +1145,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 								method=httpRequestData.method;
 							}
 						}
-					} else if(listFind('new,properties',pathInfo[3])){
+					} else if(listFind('new,properties,permissions',pathInfo[3])){
 						params.id=pathInfo[3];
 					} else if (isValid('variableName',pathInfo[3]) && isDefined('application.objectmappings.#params.entityName#.remoteFunctions.#pathInfo[3]#')) {
 						params.method=pathInfo[3];
@@ -1226,6 +1231,9 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 						} else if(params.id=='properties') {
 								params.method='findProperties';
 								result=findProperties(argumentCollection=params);
+						} else if(params.id=='permissions') {
+								params.method='findPermissions';
+								result=findPermissions(argumentCollection=params);
 						} else if(listLen(params.id) > 1){
 							params.ids=params.id;
 							params.method='findMany';
@@ -2020,16 +2028,41 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		return vals;
 	}
 
+	function findPermissions(entityName,id,siteid){
+		var $=getBean('$').init(arguments.siteid);
+		var entity=getBean('entity');
+
+		if(arguments.entityName=='content'){
+			var pk = 'contentid';
+		} else {
+			var pk = entity.getPrimaryKey();
+		}
+
+		var loadArgs={
+			'#pk#'=arguments.id,
+			'siteid'=arguments.siteid
+		};
+
+		entity.loadBy(argumentCollection=loadArgs);
+
+		return entity.getPermissions();
+	}
+
 	function findCurrentUser(entityName,id,siteid,render=false,variation=false,expand=''){
 		var $=getBean('$').init(arguments.siteid);
-
-		return findOne(
+		var user=findOne(
 			entityName='user',
 			id=$.currentUser('userid'),
 			siteid=arguments.siteid,
 			expand=arguments.expand,
 			method='findCurrentUser'
 		);
+		var sessionData=getSession();
+
+		user.memberships=listToArray(sessionData.mura.memberships);
+		user.membershipids=listToArray(sessionData.mura.membershipids);
+
+		return user;
 	}
 
 	function findOne(entityName,id,siteid,render=false,variation=false,expand='',method='findOne',expanded=false){
@@ -2234,8 +2267,11 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			scaffold=exampleEntity.getScaffold(),
 			orderby=exampleEntity.getOrderBy(),
 			links={
-				endpoint=getEndPoint() & "/" & i,properties=getEndPoint() & "/" & i & "/properties"}
-			};
+				endpoint=getEndPoint() & "/" & i,
+				properties=getEndPoint() & "/" & i & "/properties",
+				permissions=getEndPoint() & "/" & i & "/permissions"
+			}
+		};
 
 		if($.getCurrentUser().isAdminUser()){
 			itemStruct.table=exampleEntity.getTable();
@@ -3038,10 +3074,12 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			links['all']="#baseurl#/#entity.getEntityName()#";
 			links['properties']="#baseurl#/#entity.getEntityName()#/properties";
 
+
 			if(entity.getEntityName()=='content'){
 				links['self']="#baseurl#/content/#entity.getContentID()#";
 				links['history']="#baseurl#/content/#entity.getContentID()#/history";
 				links['rendered']="#baseurl#/content/_path/#entity.getFilename()#";
+
 				if(entity.getType()=='Variation'){
 					links['self']=links['rendered'];
 				} else {
@@ -3059,6 +3097,12 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 			if(listFindNoCase('feed,contentFeed',entity.getEntityName())){
 				links['feed']="#baseurl#/content/?feedid=#entity.getFeedID()#";
+			}
+
+			if(entity.getEntityName()=='content'){
+				links['permissions']="#baseurl#/#entity.getEntityName()#/#entity.get('contentid')#/permissions";
+			} else {
+				links['permissions']="#baseurl#/#entity.getEntityName()#/#entity.get(entity.getPrimaryKey())#/permissions";
 			}
 
 			if(arrayLen(entity.getHasManyPropArray())){

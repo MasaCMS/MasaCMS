@@ -1455,4 +1455,28 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 		return getBean('entity').loadBy(name=getEntityName());
 	}
 
+	function getPermissions(){
+		var permissions={
+			read=false,
+			delete=false,
+			save=false
+		};
+
+		if(get('siteid') != ''){
+			var m=getBean('m').init(get('siteid'));
+			var api=m.siteConfig().getApi(type="json", version="v1");
+			var permUtility=getBean('permUtility');
+			if(!getPublicAPI() && !(allowRead(m) || api.allowAccess(this,m))){
+				return permissions;
+			} else {
+				permissions.save=(allowSave(m) || api.allowAction(this,m));
+				permissions.delete=(allowDelete(m) || api.allowAction(this,m));
+				permissions.read=true;
+				return permissions;
+			}
+		} else {
+			return permissions;
+		}
+	}
+
 }

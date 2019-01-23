@@ -253,17 +253,6 @@ module.exports = function (it) {
 /* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
-// 7.1.13 ToObject(argument)
-var defined = __webpack_require__(24);
-module.exports = function (it) {
-  return Object(defined(it));
-};
-
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
 /* WEBPACK VAR INJECTION */(function(process) {
 //require("babel-polyfill");
 //require("./polyfill");
@@ -3419,6 +3408,17 @@ module.exports=Mura;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(128)))
 
 /***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 7.1.13 ToObject(argument)
+var defined = __webpack_require__(24);
+module.exports = function (it) {
+  return Object(defined(it));
+};
+
+
+/***/ }),
 /* 11 */
 /***/ (function(module, exports) {
 
@@ -3554,7 +3554,7 @@ exports.f = __webpack_require__(6) ? gOPD : function getOwnPropertyDescriptor(O,
 
 // 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
 var has = __webpack_require__(15);
-var toObject = __webpack_require__(9);
+var toObject = __webpack_require__(10);
 var IE_PROTO = __webpack_require__(70)('IE_PROTO');
 var ObjectProto = Object.prototype;
 
@@ -3698,7 +3698,7 @@ module.exports = function (KEY, exec) {
 // 6 -> Array#findIndex
 var ctx = __webpack_require__(20);
 var IObject = __webpack_require__(48);
-var toObject = __webpack_require__(9);
+var toObject = __webpack_require__(10);
 var toLength = __webpack_require__(8);
 var asc = __webpack_require__(87);
 module.exports = function (TYPE, $create) {
@@ -3761,7 +3761,7 @@ if (__webpack_require__(6)) {
   var has = __webpack_require__(15);
   var classof = __webpack_require__(50);
   var isObject = __webpack_require__(4);
-  var toObject = __webpack_require__(9);
+  var toObject = __webpack_require__(10);
   var isArrayIter = __webpack_require__(84);
   var create = __webpack_require__(38);
   var getPrototypeOf = __webpack_require__(18);
@@ -5628,7 +5628,7 @@ module.exports = function (original, length) {
 "use strict";
 // 22.1.3.6 Array.prototype.fill(value, start = 0, end = this.length)
 
-var toObject = __webpack_require__(9);
+var toObject = __webpack_require__(10);
 var toAbsoluteIndex = __webpack_require__(37);
 var toLength = __webpack_require__(8);
 module.exports = function fill(value /* , start = 0, end = @length */) {
@@ -6250,7 +6250,7 @@ module.exports.f = function getOwnPropertyNames(it) {
 var getKeys = __webpack_require__(36);
 var gOPS = __webpack_require__(54);
 var pIE = __webpack_require__(49);
-var toObject = __webpack_require__(9);
+var toObject = __webpack_require__(10);
 var IObject = __webpack_require__(48);
 var $assign = Object.assign;
 
@@ -6449,7 +6449,7 @@ module.exports = function (iterator, fn, value, entries) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var aFunction = __webpack_require__(11);
-var toObject = __webpack_require__(9);
+var toObject = __webpack_require__(10);
 var IObject = __webpack_require__(48);
 var toLength = __webpack_require__(8);
 
@@ -6485,7 +6485,7 @@ module.exports = function (that, callbackfn, aLen, memo, isRight) {
 "use strict";
 // 22.1.3.3 Array.prototype.copyWithin(target, start, end = this.length)
 
-var toObject = __webpack_require__(9);
+var toObject = __webpack_require__(10);
 var toAbsoluteIndex = __webpack_require__(37);
 var toLength = __webpack_require__(8);
 
@@ -7301,11 +7301,11 @@ var _exception = __webpack_require__(51);
 
 var _exception2 = _interopRequireDefault(_exception);
 
-var _helpers = __webpack_require__(354);
+var _helpers = __webpack_require__(355);
 
-var _decorators = __webpack_require__(362);
+var _decorators = __webpack_require__(363);
 
-var _logger = __webpack_require__(364);
+var _logger = __webpack_require__(365);
 
 var _logger2 = _interopRequireDefault(_logger);
 
@@ -7948,7 +7948,7 @@ __webpack_require__(26)('getOwnPropertyDescriptor', function () {
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.9 Object.getPrototypeOf(O)
-var toObject = __webpack_require__(9);
+var toObject = __webpack_require__(10);
 var $getPrototypeOf = __webpack_require__(18);
 
 __webpack_require__(26)('getPrototypeOf', function () {
@@ -7963,7 +7963,7 @@ __webpack_require__(26)('getPrototypeOf', function () {
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.14 Object.keys(O)
-var toObject = __webpack_require__(9);
+var toObject = __webpack_require__(10);
 var $keys = __webpack_require__(36);
 
 __webpack_require__(26)('keys', function () {
@@ -9191,7 +9191,7 @@ $export($export.S, 'Date', { now: function () { return new Date().getTime(); } }
 "use strict";
 
 var $export = __webpack_require__(0);
-var toObject = __webpack_require__(9);
+var toObject = __webpack_require__(10);
 var toPrimitive = __webpack_require__(23);
 
 $export($export.P + $export.F * __webpack_require__(3)(function () {
@@ -9316,7 +9316,7 @@ $export($export.S, 'Array', { isArray: __webpack_require__(55) });
 
 var ctx = __webpack_require__(20);
 var $export = __webpack_require__(0);
-var toObject = __webpack_require__(9);
+var toObject = __webpack_require__(10);
 var call = __webpack_require__(108);
 var isArrayIter = __webpack_require__(84);
 var toLength = __webpack_require__(8);
@@ -9440,7 +9440,7 @@ $export($export.P + $export.F * __webpack_require__(3)(function () {
 
 var $export = __webpack_require__(0);
 var aFunction = __webpack_require__(11);
-var toObject = __webpack_require__(9);
+var toObject = __webpack_require__(10);
 var fails = __webpack_require__(3);
 var $sort = [].sort;
 var test = [1, 2, 3];
@@ -10776,7 +10776,7 @@ __webpack_require__(33)('includes');
 // https://tc39.github.io/proposal-flatMap/#sec-Array.prototype.flatMap
 var $export = __webpack_require__(0);
 var flattenIntoArray = __webpack_require__(122);
-var toObject = __webpack_require__(9);
+var toObject = __webpack_require__(10);
 var toLength = __webpack_require__(8);
 var aFunction = __webpack_require__(11);
 var arraySpeciesCreate = __webpack_require__(87);
@@ -10805,7 +10805,7 @@ __webpack_require__(33)('flatMap');
 // https://tc39.github.io/proposal-flatMap/#sec-Array.prototype.flatten
 var $export = __webpack_require__(0);
 var flattenIntoArray = __webpack_require__(122);
-var toObject = __webpack_require__(9);
+var toObject = __webpack_require__(10);
 var toLength = __webpack_require__(8);
 var toInteger = __webpack_require__(25);
 var arraySpeciesCreate = __webpack_require__(87);
@@ -11023,7 +11023,7 @@ $export($export.S, 'Object', {
 "use strict";
 
 var $export = __webpack_require__(0);
-var toObject = __webpack_require__(9);
+var toObject = __webpack_require__(10);
 var aFunction = __webpack_require__(11);
 var $defineProperty = __webpack_require__(7);
 
@@ -11042,7 +11042,7 @@ __webpack_require__(6) && $export($export.P + __webpack_require__(64), 'Object',
 "use strict";
 
 var $export = __webpack_require__(0);
-var toObject = __webpack_require__(9);
+var toObject = __webpack_require__(10);
 var aFunction = __webpack_require__(11);
 var $defineProperty = __webpack_require__(7);
 
@@ -11061,7 +11061,7 @@ __webpack_require__(6) && $export($export.P + __webpack_require__(64), 'Object',
 "use strict";
 
 var $export = __webpack_require__(0);
-var toObject = __webpack_require__(9);
+var toObject = __webpack_require__(10);
 var toPrimitive = __webpack_require__(23);
 var getPrototypeOf = __webpack_require__(18);
 var getOwnPropertyDescriptor = __webpack_require__(17).f;
@@ -11086,7 +11086,7 @@ __webpack_require__(6) && $export($export.P + __webpack_require__(64), 'Object',
 "use strict";
 
 var $export = __webpack_require__(0);
-var toObject = __webpack_require__(9);
+var toObject = __webpack_require__(10);
 var toPrimitive = __webpack_require__(23);
 var getPrototypeOf = __webpack_require__(18);
 var getOwnPropertyDescriptor = __webpack_require__(17).f;
@@ -12737,7 +12737,7 @@ module.exports = __webpack_require__(334);
 __webpack_require__(335);
 }
 
-const Mura=__webpack_require__(10);
+const Mura=__webpack_require__(9);
 
 __webpack_require__(336);
 __webpack_require__(337);
@@ -12755,6 +12755,7 @@ __webpack_require__(348);
 __webpack_require__(349);
 __webpack_require__(350);
 __webpack_require__(351);
+__webpack_require__(352);
 
 if(Mura.isInNode()){
 	/*
@@ -12901,7 +12902,7 @@ if(typeof window !='undefined' && typeof window.document != 'undefined'){
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var Mura=__webpack_require__(10);
+var Mura=__webpack_require__(9);
 
 /**
 * Creates a new Mura.Core
@@ -12986,7 +12987,7 @@ Mura.Core=Core;
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var Mura=__webpack_require__(10);
+var Mura=__webpack_require__(9);
 
 /**
 * Creates a new Mura.Request
@@ -13462,7 +13463,7 @@ Mura.Request=Mura.Core.extend(
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var Mura=__webpack_require__(10);
+var Mura=__webpack_require__(9);
 
 /**
 * Creates a new Mura.RequestContext
@@ -13596,6 +13597,10 @@ Mura.RequestContext=Mura.Core.extend(
 			properties = entityname;
 			properties.entityname = properties.entityname || 'Content';
 			properties.siteid = properties.siteid || Mura.siteid;
+		}
+
+		properties.links={
+			permissions:Mura.apiEndpoint + properties.entityname + "/permissions"
 		}
 
 		if (Mura.entities[properties.entityname]) {
@@ -14008,7 +14013,7 @@ Mura.RequestContext=Mura.Core.extend(
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var Mura=__webpack_require__(10);
+var Mura=__webpack_require__(9);
 /**
  * Creates a new Mura.Cache
  * @name Mura.Cache
@@ -14120,7 +14125,7 @@ Mura.datacache=new Mura.Cache();
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var Mura=__webpack_require__(10);
+var Mura=__webpack_require__(9);
 
 /**
 * Creates a new Mura.Entity
@@ -14350,7 +14355,12 @@ Mura.Entity = Mura.Core.extend(
 								resolve(returnObj);
 							}
 						},
-						error: reject
+						error: function(resp){
+							resp=Mura.parseString(resp.response);
+							if (typeof reject == 'function'){
+								reject(resp);
+							}
+						}
 					});
 				});
 			}
@@ -14509,11 +14519,14 @@ Mura.Entity = Mura.Core.extend(
 										reject(self);
 									}
 								}
+							},
+							error: function(resp) {
+								this.success(Mura.parseString(resp.response));
 							}
 						});
 					},
 					error: function(resp) {
-						this.success(resp );
+						this.success(Mura.parseString(resp.response));
 					}
 				});
 			}
@@ -14552,6 +14565,9 @@ Mura.Entity = Mura.Core.extend(
 								reject(self);
 							}
 						}
+					},
+					error:function(resp){
+						this.success(Mura.parseString(resp.response));
 					}
 				});
 			} else {
@@ -14591,7 +14607,7 @@ Mura.Entity = Mura.Core.extend(
 						});
 					},
 					error: function(resp) {
-						this.success(resp );
+						this.success(Mura.parseString(resp.response));
 					}
 				});
 			}
@@ -14644,6 +14660,11 @@ Mura.Entity = Mura.Core.extend(
 					if (typeof resolve == 'function') {
 						resolve(self);
 					}
+			},function(resp){
+				resp=Mura.parseString(resp.response);
+				if (typeof reject == 'function'){
+					reject(resp);
+				}
 			});
 		});
 	},
@@ -14920,7 +14941,7 @@ Mura.Entity = Mura.Core.extend(
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var Mura=__webpack_require__(10);
+var Mura=__webpack_require__(9);
 
 /**
 * Creates a new Mura.entities.Content
@@ -15014,7 +15035,94 @@ Mura.entities.Content = Mura.Entity.extend(
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var Mura=__webpack_require__(10);
+var Mura=__webpack_require__(9);
+
+/**
+* Creates a new Mura.entities.User
+* @name Mura.entities.User
+* @class
+* @extends Mura.Entity
+* @memberof Mura
+* @param	{object} properties Object containing values to set into object
+* @return {Mura.Entity}
+*/
+
+Mura.entities.User = Mura.Entity.extend(
+/** @lends Mura.entities.User.prototype */
+{
+	/**
+	 * isInGroup - Returns is the CURRENT USER is in a group
+	 *
+	 * @param	{string} group	Name of group
+	 * @param	{boolean} isPublic	If you want to check public or private (system) groups
+	 * @return {boolean}
+	 */
+	isInGroup:function(group,siteid,isPublic){
+		siteid=siteid || Mura.siteid;
+		var a=this.get('memberships');
+		if(!Array.isArray(a)){
+			console.log('Method design for use with currentuser() only');
+			return false;
+		}
+		if(typeof isPublic !='undefined'){
+			return a.indexOf(group + ";" + siteid + ";" + isPublic) >= 0;
+		} else {
+			return a.indexOf(group + ";" + siteid + ";0") >= 0 || a.indexOf(group + ";" + siteid + ";1") >= 0;
+		}
+	},
+
+	/**
+	 * isSuperUser - Returns is the CURRENT USER is a super user
+	 *
+	 * @return {boolean}
+	 */
+	isSuperUser:function(){
+		var a=this.get('memberships');
+		if(!Array.isArray(a)){
+			console.log('Method design for use with currentuser() only');
+			return false;
+		}
+		return a.indexOf('S2') >= 0;
+	},
+
+	/**
+	 * isAdminUser - Returns is the CURRENT USER is a super user
+	 *
+	 * @return {boolean}
+	 */
+	isAdminUser:function(siteid){
+		siteid=siteid || Mura.siteid;
+		var a=this.get('memberships');
+		if(!Array.isArray(a)){
+			console.log('Method design for use with currentuser() only');
+			return false;
+		}
+		return (this.isSuperUser() || a.indexOf("Admin;" + siteid + ";0") >= 0);
+	},
+
+	/**
+	 * isSystemUser - Returns is the CURRENT USER is a super user
+	 *
+	 * @return {boolean}
+	 */
+	isSystemUser:function(siteid){
+		siteid=siteid || Mura.siteid;
+		var a=this.get('memberships');
+		if(!Array.isArray(a)){
+			console.log('Method design for use with currentuser() only');
+			return false;
+		}
+		return (this.isAdminUser() || a.indexOf("S2IsPrivate;" + siteid ) >= 0);
+	}
+});
+
+
+/***/ }),
+/* 343 */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var Mura=__webpack_require__(9);
 
 /**
  * Creates a new Mura.EntityCollection
@@ -15218,11 +15326,11 @@ Mura.EntityCollection=Mura.Entity.extend(
 
 
 /***/ }),
-/* 343 */
+/* 344 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var Mura=__webpack_require__(10);
+var Mura=__webpack_require__(9);
 
 /**
  * Creates a new Mura.Feed
@@ -15765,8 +15873,11 @@ Mura.Feed = Mura.Core.extend(
 							reject(resp);
 						}
 					},
-					error:  function(resp) {
-						this.success(resp );
+					error: function(resp) {
+						resp=Mura.parseString(resp.response);
+						if (typeof reject == 'function'){
+							reject(resp);
+						}
 					}
 				});
 			});
@@ -15775,11 +15886,11 @@ Mura.Feed = Mura.Core.extend(
 
 
 /***/ }),
-/* 344 */
+/* 345 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var Mura=__webpack_require__(10);
+var Mura=__webpack_require__(9);
 
 //https://github.com/malko/l.js
 /*
@@ -16111,11 +16222,11 @@ if(typeof window !='undefined' && typeof window.document != 'undefined'){
 
 
 /***/ }),
-/* 345 */
+/* 346 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var Mura=__webpack_require__(10);
+var Mura=__webpack_require__(9);
 
 /**
  * Creates a new Mura.DOMSelection
@@ -17769,11 +17880,11 @@ Mura.DOMSelection = Mura.Core.extend(
 
 
 /***/ }),
-/* 346 */
+/* 347 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var Mura =__webpack_require__(10);
+var Mura =__webpack_require__(9);
 
 /**
  * Creates a new Mura.UI instance
@@ -17870,11 +17981,11 @@ Mura.UI=Mura.Core.extend(
 
 
 /***/ }),
-/* 347 */
+/* 348 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var Mura=__webpack_require__(10);
+var Mura=__webpack_require__(9);
 /**
  * Creates a new Mura.UI.Form
  * @name	Mura.UI.Form
@@ -19380,10 +19491,10 @@ Mura.DisplayObject.Form=Mura.UI.Form;
 
 
 /***/ }),
-/* 348 */
+/* 349 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Mura=__webpack_require__(10);
+var Mura=__webpack_require__(9);
 /**
  * Creates a new Mura.UI.Text
  * @name  Mura.UI.Text
@@ -19415,10 +19526,10 @@ Mura.DisplayObject.Text=Mura.UI.Text;
 
 
 /***/ }),
-/* 349 */
+/* 350 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Mura=__webpack_require__(10);
+var Mura=__webpack_require__(9);
 /**
  * Creates a new Mura.UI.Embed
  * @name  Mura.UI.Embed
@@ -19444,10 +19555,10 @@ Mura.DisplayObject.Embed=Mura.UI.Embed;
 
 
 /***/ }),
-/* 350 */
+/* 351 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Mura=__webpack_require__(10);
+var Mura=__webpack_require__(9);
 /**
  * Creates a new Mura.UI.Collection
  * @name  Mura.UI.Collection
@@ -19579,12 +19690,12 @@ Mura.Module.Collection=Mura.UI.Collection;
 
 
 /***/ }),
-/* 351 */
+/* 352 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var Mura=__webpack_require__(10);
-var Handlebars=__webpack_require__(352);
+var Mura=__webpack_require__(9);
+var Handlebars=__webpack_require__(353);
 Mura.Handlebars=Handlebars.create();
 Mura.templatesLoaded=false;
 Handlebars.noConflict();
@@ -19612,20 +19723,20 @@ Mura.templates['embed']=function(context){
 	return context.source;
 }
 
-__webpack_require__(368);
-
-
-/***/ }),
-/* 352 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// Create a simple path alias to allow browserify to resolve
-// the runtime on a supported path.
-module.exports = __webpack_require__(353)['default'];
+__webpack_require__(369);
 
 
 /***/ }),
 /* 353 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// Create a simple path alias to allow browserify to resolve
+// the runtime on a supported path.
+module.exports = __webpack_require__(354)['default'];
+
+
+/***/ }),
+/* 354 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19647,7 +19758,7 @@ var base = _interopRequireWildcard(_handlebarsBase);
 // Each of these augment the Handlebars object. No need to setup here.
 // (This is done to easily share code between commonjs and browse envs)
 
-var _handlebarsSafeString = __webpack_require__(365);
+var _handlebarsSafeString = __webpack_require__(366);
 
 var _handlebarsSafeString2 = _interopRequireDefault(_handlebarsSafeString);
 
@@ -19659,11 +19770,11 @@ var _handlebarsUtils = __webpack_require__(30);
 
 var Utils = _interopRequireWildcard(_handlebarsUtils);
 
-var _handlebarsRuntime = __webpack_require__(366);
+var _handlebarsRuntime = __webpack_require__(367);
 
 var runtime = _interopRequireWildcard(_handlebarsRuntime);
 
-var _handlebarsNoConflict = __webpack_require__(367);
+var _handlebarsNoConflict = __webpack_require__(368);
 
 var _handlebarsNoConflict2 = _interopRequireDefault(_handlebarsNoConflict);
 
@@ -19698,7 +19809,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 354 */
+/* 355 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19710,31 +19821,31 @@ exports.registerDefaultHelpers = registerDefaultHelpers;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _helpersBlockHelperMissing = __webpack_require__(355);
+var _helpersBlockHelperMissing = __webpack_require__(356);
 
 var _helpersBlockHelperMissing2 = _interopRequireDefault(_helpersBlockHelperMissing);
 
-var _helpersEach = __webpack_require__(356);
+var _helpersEach = __webpack_require__(357);
 
 var _helpersEach2 = _interopRequireDefault(_helpersEach);
 
-var _helpersHelperMissing = __webpack_require__(357);
+var _helpersHelperMissing = __webpack_require__(358);
 
 var _helpersHelperMissing2 = _interopRequireDefault(_helpersHelperMissing);
 
-var _helpersIf = __webpack_require__(358);
+var _helpersIf = __webpack_require__(359);
 
 var _helpersIf2 = _interopRequireDefault(_helpersIf);
 
-var _helpersLog = __webpack_require__(359);
+var _helpersLog = __webpack_require__(360);
 
 var _helpersLog2 = _interopRequireDefault(_helpersLog);
 
-var _helpersLookup = __webpack_require__(360);
+var _helpersLookup = __webpack_require__(361);
 
 var _helpersLookup2 = _interopRequireDefault(_helpersLookup);
 
-var _helpersWith = __webpack_require__(361);
+var _helpersWith = __webpack_require__(362);
 
 var _helpersWith2 = _interopRequireDefault(_helpersWith);
 
@@ -19751,7 +19862,7 @@ function registerDefaultHelpers(instance) {
 
 
 /***/ }),
-/* 355 */
+/* 356 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19797,7 +19908,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 356 */
+/* 357 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19898,7 +20009,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 357 */
+/* 358 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19930,7 +20041,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 358 */
+/* 359 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19966,7 +20077,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 359 */
+/* 360 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19999,7 +20110,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 360 */
+/* 361 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20018,7 +20129,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 361 */
+/* 362 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20058,7 +20169,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 362 */
+/* 363 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20070,7 +20181,7 @@ exports.registerDefaultDecorators = registerDefaultDecorators;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _decoratorsInline = __webpack_require__(363);
+var _decoratorsInline = __webpack_require__(364);
 
 var _decoratorsInline2 = _interopRequireDefault(_decoratorsInline);
 
@@ -20081,7 +20192,7 @@ function registerDefaultDecorators(instance) {
 
 
 /***/ }),
-/* 363 */
+/* 364 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20117,7 +20228,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 364 */
+/* 365 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20171,7 +20282,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 365 */
+/* 366 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20193,7 +20304,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 366 */
+/* 367 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20507,7 +20618,7 @@ function executeDecorators(fn, prog, container, depths, data, blockParams) {
 
 
 /***/ }),
-/* 367 */
+/* 368 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20535,10 +20646,10 @@ module.exports = exports['default'];
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(67)))
 
 /***/ }),
-/* 368 */
+/* 369 */
 /***/ (function(module, exports, __webpack_require__) {
 
-this["Mura"]=__webpack_require__(10);
+this["Mura"]=__webpack_require__(9);
 this["Mura"]["templates"] = this["Mura"]["templates"] || {};
 
 this["Mura"]["templates"]["checkbox_static"] = this.Mura.Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
