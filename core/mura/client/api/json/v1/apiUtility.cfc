@@ -2058,9 +2058,16 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			method='findCurrentUser'
 		);
 		var sessionData=getSession();
-
-		user.memberships=listToArray(sessionData.mura.memberships);
-		user.membershipids=listToArray(sessionData.mura.membershipids);
+		
+		if(isDefined("sessionData.mura")){
+			user.memberships=listToArray(sessionData.mura.memberships);
+			user.membershipids=listToArray(sessionData.mura.membershipids);
+			user.isloggedin=sessionData.mura.isLoggedIn;
+		} else {
+			user.memberships=[];
+			user.membershipids=[];
+			user.isloggedin=false;
+		}
 
 		return user;
 	}

@@ -15051,7 +15051,7 @@ Mura.entities.User = Mura.Entity.extend(
 /** @lends Mura.entities.User.prototype */
 {
 	/**
-	 * isInGroup - Returns is the CURRENT USER is in a group
+	 * isInGroup - Returns if the CURRENT USER is in a group
 	 *
 	 * @param	{string} group	Name of group
 	 * @param	{boolean} isPublic	If you want to check public or private (system) groups
@@ -15072,7 +15072,7 @@ Mura.entities.User = Mura.Entity.extend(
 	},
 
 	/**
-	 * isSuperUser - Returns is the CURRENT USER is a super user
+	 * isSuperUser - Returns if the CURRENT USER is a super user
 	 *
 	 * @return {boolean}
 	 */
@@ -15086,7 +15086,7 @@ Mura.entities.User = Mura.Entity.extend(
 	},
 
 	/**
-	 * isAdminUser - Returns is the CURRENT USER is a super user
+	 * isAdminUser - Returns if the CURRENT USER is a admin user
 	 *
 	 * @return {boolean}
 	 */
@@ -15101,7 +15101,7 @@ Mura.entities.User = Mura.Entity.extend(
 	},
 
 	/**
-	 * isSystemUser - Returns is the CURRENT USER is a super user
+	 * isSystemUser - Returns if the CURRENT USER is a system/adminstrative user
 	 *
 	 * @return {boolean}
 	 */
@@ -15113,6 +15113,20 @@ Mura.entities.User = Mura.Entity.extend(
 			return false;
 		}
 		return (this.isAdminUser() || a.indexOf("S2IsPrivate;" + siteid ) >= 0);
+	},
+
+	/**
+	 * isLoggedIn - Returns if the CURRENT USER is logged in
+	 *
+	 * @return {boolean}
+	 */
+	isLoggedIn:function(){
+		var a=this.get('isloggedin');
+		if(a===''){
+			return false;
+		} else {
+			return a;
+		}
 	}
 });
 
