@@ -17979,7 +17979,7 @@ Mura.UI=Mura.Core.extend(
 	},
 
 	destroy:function(){
-		
+
 	},
 
 	init:function(args){
