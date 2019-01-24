@@ -43,6 +43,8 @@ component extends='mura.cfobject' hint="This provides content calendar utility m
     , tag='#variables.$.event('tag')#'
     , siteid='#variables.$.event('siteid')#'
     , returnFormat='query'
+		, showNavOnly=0
+		, showExcludeSearch=0
   ) {
     var tp = variables.$.initTracePoint('mura.content.contentCalendarUtilityBean.getCalendarItems');
     var local = {};
@@ -83,6 +85,8 @@ component extends='mura.cfobject' hint="This provides content calendar utility m
       .setMaxItems(0) // get all records
       .setNextN(0) // no pagination
       .setSiteID(arguments.siteid)
+			.setshowNavOnly(arguments.showNavOnly)
+			.setshowExcludeSearch(arguments.showExcludeSearch)
       .addParam(
         relationship='AND'
         ,field='tcontent.parentid'

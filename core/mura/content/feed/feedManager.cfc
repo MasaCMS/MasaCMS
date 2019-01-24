@@ -138,6 +138,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforeFeedCreate",currentEventObject=pluginEvent,objectid=feedBean.getFeedID())>
 
 	<cfif structIsEmpty(feedBean.getErrors())>
+		<cfset feedBean.setLastUpdate(now())>
 		<cfset feedBean.setLastUpdateBy(left(sessionData.mura.fname & " " & sessionData.mura.lname,50) ) />
 		<cfif not (structKeyExists(arguments.data,"feedID") and len(arguments.data.feedID))>
 			<cfset feedBean.setFeedID("#createUUID()#") />
@@ -368,6 +369,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif structIsEmpty(feedBean.getErrors())>
 		<cfset variables.globalUtility.logEvent("feedID:#feedBean.getfeedID()# Name:#feedBean.getName()# was updated","mura-content","Information",true) />
+		<cfset feedBean.setLastUpdate(now())>
 		<cfset feedBean.setLastUpdateBy(left(sessionData.mura.fname & " " & sessionData.mura.lname,50) ) />
 		<cfset variables.feedDAO.update(feedBean) />
 		<cfset purgeFeedCache(feedBean=feedBean)>

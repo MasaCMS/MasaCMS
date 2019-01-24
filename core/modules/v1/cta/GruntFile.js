@@ -7,7 +7,7 @@ module.exports = function(grunt) {
                   'js/src/templates.js': ['js/src/templates/*.hbs']
               },
               options: {
-                   namespace: 'mura.templates',
+                   namespace: 'Mura.templates',
                    processName: function(filePath) {
                     var name=filePath.split('/');
                     name=name[name.length-1];

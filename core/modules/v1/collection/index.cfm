@@ -63,6 +63,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cfsilent>
 <cfif objectParams.sourcetype neq 'remotefeed'>
+	<cfif $.siteConfig().hasDisplayObject(objectParams.layout) and $.siteConfig().getDisplayObject(objectParams.layout).external>
+		<cfset objectParams.render="client">
+	<cfelseif objectparams.layout eq 'default' and  $.siteConfig().hasDisplayObject('list') and $.siteConfig().getDisplayObject('list').external>
+		<cfset objectParams.render="client">
+	<cfelse>
+		<cfset objectParams.render="server">
+	</cfif>
+	<cfif objectParams.render neq 'client'>
 	<cfsilent>
 		<cfset variables.pagination=''>
 		<cfswitch expression="#objectParams.sourceType#">
@@ -188,7 +196,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif not len(objectParams.sortDirection)>
 					<cfset objectParams.sortDirection=$.content('sortDirection')>
 				</cfif>
-				
+
 				<cfset iterator=$.content().set(objectParams).setType('Folder').getKidsIterator(argumentCollection=objectParams)>
 				<cfset iterator.setNextN(objectParams.nextn)>
 				<cfset iterator.setStartRow(variables.$.event('startrow'))>
@@ -226,6 +234,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfoutput>#variables.dspObject_include(thefile='collection/includes/dsp_empty.cfm',objectid=objectParams.source,objectParams=objectParams)#</cfoutput>
 		</cfif>
 	</cfoutput>
+	</cfif>
 <cfelse>
 	<cfoutput>#variables.dspObject_include(thefile='feed/index.cfm',objectid=objectParams.source,objectParams=objectParams)#</cfoutput>
 </cfif>

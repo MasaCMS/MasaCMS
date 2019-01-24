@@ -184,6 +184,8 @@
 							, categoryid: '#esapiEncode('javascript',variables.$.event('categoryid'))#'
 							, tag: '#esapiEncode('javascript',variables.$.event('tag'))#'
 							, format: 'fullcalendar'
+							, showNavOnly: 0
+							, showExcludeSearch: 0
 						}
 						, color: '#this.calendarcolors[colorIndex].background#'
 						, textColor: '#this.calendarcolors[colorIndex].text#'

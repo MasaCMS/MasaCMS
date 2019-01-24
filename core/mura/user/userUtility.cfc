@@ -393,7 +393,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 							<cfif userBean.getUsername() neq ''>
 								<cfif autoresetpasswords>
-									<cfset userBean.setPassword(getRandomPassword()) />
+									<cfset userBean.setPassword(getRandomPassword(12,"alphanumeric","yes")) />
 									<cfset userBean.save() />
 								</cfif>
 

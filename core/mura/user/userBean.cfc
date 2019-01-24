@@ -71,7 +71,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="siteID" type="string" default=""/>
 <cfproperty name="subscribe" type="numeric" default="1"/>
 <cfproperty name="notes" type="string" default=""/>
-<cfproperty name="groupID" type="string" default=""/>
 <cfproperty name="categoryID" type="string" default=""/>
 <cfproperty name="primaryAddressID" type="string" default=""/>
 <cfproperty name="addressID" type="string" default=""/>
@@ -719,6 +718,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
+<cffunction name="setType" output="false">
+	<cfargument name="type">
+	<cfif not isNumeric(arguments.type)>
+		<cfif arguments.type eq 'group'>
+			<cfset variables.instance.type=1>
+		<cfelse>
+			<cfset variables.instance.type=2>
+		</cfif>
+	<cfelse>
+		<cfset variables.instance.type=arguments.type>
+	</cfif>
+
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="login" output="false">
 	<cfset getBean('userUtility').loginByUserID(userid=getValue('userid'),siteid=getValue('siteid'))>
 	<cfreturn this>
@@ -748,5 +762,34 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getLastName" output="false">
 	<cfreturn getValue('lname')>
 </cffunction>
+
+<cfscript>
+	function getEntityName(){
+
+		param name="variables.entityName" default="user";
+		param name="variables.instance.type" default=2;
+
+		if(get('type')==1 && variables.entityName=='user'){
+			variables.entityName='group';
+		}
+		if(get('type')==2 && variables.entityName=='group'){
+			variables.entityName='user';
+		}
+
+		return variables.entityName;
+	}
+
+	function getEntityDisplayName(){
+		return getEntityName();
+	}
+
+	function getEditURL(){
+		if(get('type')==1){
+			return getBean('settingsManager').getSite(get('siteid')).getAdminPath(complete=1) & '/?muraAction=cusers.editgroup&siteid=' & esapiEncode('url',get('siteid')) & '&userid=' & esapiEncode('url',get('userid'));
+		} else {
+			return getBean('settingsManager').getSite(get('siteid')).getAdminPath(complete=1) & '/?muraAction=cusers.edituser&siteid=' &esapiEncode('url',get('siteid')) & '&userid=' & esapiEncode('url',get('userid'));
+		}
+	}
+</cfscript>
 
 </cfcomponent>

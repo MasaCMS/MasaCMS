@@ -202,6 +202,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn rs>
 	</cffunction>
 
+	<cffunction name="getFullFieldList" returntype="string" output="true" access="public">
+		<cfargument name="formID" type="string">
+		<cfset var rs="">
+
+		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
+			select distinct formField from tformresponsequestions
+			where formID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.formID#">
+			order by formField asc
+		</cfquery>
+
+		<cfreturn valueList(rs.formField) />
+
+	</cffunction>
+
 	<cffunction name="getCurrentFieldList" returntype="string" output="true" access="public">
 		<cfargument name="formID" type="string">
 		<cfset var rs="">
@@ -213,16 +227,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			AND active = 1
 		</cfquery>
 
-		<cfif len(rs.responseDisplayFields)>
-			<cfreturn replace(rs.responseDisplayFields, "^", ",","all") />
-		<cfelse>
-			<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
-				select distinct formField from tformresponsequestions
-				where formID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.formID#">
-				order by formField asc
-			</cfquery>
+		<cfset var responseDisplayFields=listFirst(rs.responseDisplayFields,'~')>
 
-			<cfreturn valueList(rs.formField) />
+		<cfif len(responseDisplayFields)>
+			<cfreturn replace(responseDisplayFields, "^", ",","all") />
+		<cfelse>
+			<cfreturn getFullFieldList(arguments.formid) />
 		</cfif>
 	</cffunction>
 

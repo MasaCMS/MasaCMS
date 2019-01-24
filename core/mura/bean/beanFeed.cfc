@@ -168,9 +168,8 @@ function setMaxItems(any maxItems) output=false {
 
 function setFields(fields) output=false {
 	loadTableMetaData();
-
+	var tempArray=[];
 	if(len(arguments.fields)){
-		var tempArray=[];
 		for(var p in listToArray(arguments.fields)){
 			if(structKeyExists(application.objectMappings[getEntityName()].columns,trim(p))){
 				arrayAppend(tempArray,transformFieldName(p));
@@ -202,7 +201,7 @@ function loadTableMetaData() output=false {
 		application.objectMappings[variables.instance.entityName] = structNew();
 	}
 	if ( !structKeyExists(application.objectMappings[variables.instance.entityName], "columns") ) {
-		application.objectMappings[variables.instance.entityName].columns = getBean('dbUtility').columns(table=variables.instance.table);
+		application.objectMappings[variables.instance.entityName].columns = getEntity().getDbUtility().columns(table=variables.instance.table);
 	}
 	if ( !structKeyExists(application.objectMappings[variables.instance.entityName], "columnlist") ) {
 		application.objectMappings[variables.instance.entityName].columnlist = structKeyList(application.objectMappings[variables.instance.entityName].columns);
@@ -292,7 +291,7 @@ function addParam(required string field="", required string relationship="and", 
 	if ( !len(arguments.dataType) ) {
 		loadTableMetaData();
 		if ( !structKeyExists(variables, "dbUtility") ) {
-			variables.dbUtility = getBean('dbUtility');
+			variables.dbUtility = getEntity().getDbUtility();
 		}
 		var tempField=listLast(arguments.field,'.');
 		if ( structKeyExists(application.objectMappings[variables.instance.entityName].columns,tempField) ) {

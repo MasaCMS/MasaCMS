@@ -46,10 +46,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  */
 component extends="mura.iterator.queryIterator" output="false" hint="This provides user iterating functionality" {
 	variables.userBean ="";
+	variables.entityName ="user";
 	variables.recordIDField="userID";
 
 	public function getEntityName() output=false {
-		return "user";
+		return variables.entityName;
+	}
+
+	public function setEntityName(entityName) output=false {
+		variables.entityName=arguments.entityName;
+		return this;
 	}
 
 	public function packageRecord() output=false {

@@ -110,9 +110,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getFieldStatement">
 	<cfif variables.condition eq 'like' and application.configBean.getDbCaseSensitive()>
-		<cfreturn "upper(" & variables.field & ")"/>
+		<cfreturn "upper(" & REReplace(variables.field,"[^0-9A-Za-z\._,\- ]\*","","all") & ")"/>
 	<cfelse>
-		<cfreturn variables.field />
+		<cfreturn REReplace(variables.field,"[^0-9A-Za-z\._,\- ]\*","","all") />
 	</cfif>
 </cffunction>
 

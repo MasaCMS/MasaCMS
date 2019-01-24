@@ -404,13 +404,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 
 			<cfif arguments.sortby eq 'mxpRelevance' and not doKids>
-				<cfif not isdefiend('session.mura.mxp')>
+				<cfif not isDefined('session.mura.mxp')>
 					<cfset session.mura.mxp=getBean('marketingManager').getDefaults()>
 				</cfif>
 				<cfparam name="session.mura.mxp.trackingProperties.personaid" default=''>
 				<cfparam name="session.mura.mxp.trackingProperties.stageid" default=''>
+
+				<cfset var personaid=session.mura.mxp.trackingProperties.personaid>
+				<cfset var stageid=session.mura.mxp.trackingProperties.stageid>
+
+				<cfif isDefined('url.personaid')>
+					<cfset personaid=url.personaid>
+					<cfset stageid=''>
+				</cfif>
+
+				<cfif isDefined('form.personaid')>
+					<cfset personaid=form.personaid>
+					<cfset stageid=''>
+				</cfif>
+
 				<cfset var mxpRelevanceSort=true>
 			<cfelse>
+				<cfset var personaid="">
+				<cfset var stageid="">
 				<cfset var mxpRelevanceSort=false>
 			</cfif>
 
@@ -433,7 +449,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 
 				<cfif mxpRelevanceSort>
-				,tracktotal.track_total_score as total_score, (stagetotal.stage_points + personatotal.persona_points) as total_points
+				,tracktotal.track_total_score as total_score, (<cfif len(stageid)>stagetotal.stage_points + </cfif>personatotal.persona_points) as total_points
 				</cfif>
 				FROM <cfif len(altTable)>#alttable#</cfif> tcontent #tableModifier#
 
@@ -450,16 +466,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					left join (
 						select sum(persona.points) persona_points, persona.contenthistid
 						from mxp_personapoints persona
-						where persona.personaid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#session.mura.mxp.trackingProperties.personaid#">
+						where persona.personaid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#personaid#">
 						group by persona.contenthistid
 					) personatotal on (tcontent.contenthistid = personatotal.contenthistid)
 
-					left join (
-						select sum(stage.points) stage_points, stage.contenthistid
-						from mxp_stagepoints stage
-						where stage.stageid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#session.mura.mxp.trackingProperties.stageid#">
-						group by stage.contenthistid
-					) stagetotal on (tcontent.contenthistid = stagetotal.contenthistid)
+					<cfif len(stageid)>
+						left join (
+							select sum(stage.points) stage_points, stage.contenthistid
+							from mxp_stagepoints stage
+							where stage.stageid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#stageid#">
+							group by stage.contenthistid
+						) stagetotal on (tcontent.contenthistid = stagetotal.contenthistid)
+					</cfif>
 
 					left join (
 						select sum(track.points) track_total_score, track.contentid
@@ -2157,14 +2175,30 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset arguments.relatedContentSetID='00000000000000000000000000000000000'>
 	</cfif>
 
-	<cfif arguments.sortby eq 'mxpRelevance'>
-		<cfif not isdefiend('session.mura.mxp')>
+	<cfif arguments.sortby eq 'mxpRelevance' >
+		<cfif not isDefined('session.mura.mxp')>
 			<cfset session.mura.mxp=getBean('marketingManager').getDefaults()>
 		</cfif>
 		<cfparam name="session.mura.mxp.trackingProperties.personaid" default=''>
 		<cfparam name="session.mura.mxp.trackingProperties.stageid" default=''>
+
+		<cfset var personaid=session.mura.mxp.trackingProperties.personaid>
+		<cfset var stageid=session.mura.mxp.trackingProperties.stageid>
+
+		<cfif isDefined('url.personaid')>
+			<cfset personaid=url.personaid>
+			<cfset stageid=''>
+		</cfif>
+
+		<cfif isDefined('form.personaid')>
+			<cfset personaid=form.personaid>
+			<cfset stageid=''>
+		</cfif>
+
 		<cfset var mxpRelevanceSort=true>
 	<cfelse>
+		<cfset var personaid="">
+		<cfset var stageid="">
 		<cfset var mxpRelevanceSort=false>
 	</cfif>
 
@@ -2175,7 +2209,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	tfiles.fileSize,tfiles.fileExt,tcontent.path, tcontent.siteid, tcontent.contenthistid, tcr.contentid as relatedFromContentID,
 	tcr.relatedContentSetID, tcr.orderNo, tcontent.displayInterval, tcontent.display
 	<cfif mxpRelevanceSort>
-	,tracktotal.track_total_score as total_score, (stagetotal.stage_points + personatotal.persona_points) as total_points
+	,tracktotal.track_total_score as total_score, (<cfif len(stageid)>stagetotal.stage_points + </cfif>personatotal.persona_points) as total_points
 	</cfif>
 	FROM  tcontent Left Join tfiles ON (tcontent.fileID=tfiles.fileID)
 
@@ -2183,16 +2217,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		left join (
 			select sum(persona.points) persona_points, persona.contenthistid
 			from mxp_personapoints persona
-			where persona.personaid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#session.mura.mxp.trackingProperties.personaid#">
+			where persona.personaid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#personaid#">
 			group by persona.contenthistid
 		) personatotal on (tcontent.contenthistid = personatotal.contenthistid)
 
-		left join (
-			select sum(stage.points) stage_points, stage.contenthistid
-			from mxp_stagepoints stage
-			where stage.stageid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#session.mura.mxp.trackingProperties.stageid#">
-			group by stage.contenthistid
-		) stagetotal on (tcontent.contenthistid = stagetotal.contenthistid)
+		<cfif len(stageid)>
+			left join (
+				select sum(stage.points) stage_points, stage.contenthistid
+				from mxp_stagepoints stage
+				where stage.stageid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#stageid#">
+				group by stage.contenthistid
+			) stagetotal on (tcontent.contenthistid = stagetotal.contenthistid)
+		</cfif>
 
 		left join (
 			select sum(track.points) track_total_score, track.contentid

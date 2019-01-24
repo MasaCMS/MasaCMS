@@ -246,6 +246,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var primaryKey		= "" />
 		<cfset var rowid			= "" />
 		<cfset var sessionData=getSession()>
+		<cfset var httpService="">
 
 		<cfif not StructKeyExists( arguments.dataset,"datasetID" )>
 			<cfthrow message="#mmRBF.getKeyValue(sessionData.rb,"formbuilder.invaliddataset")#" >
@@ -256,14 +257,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfreturn arguments.dataset />
 			</cfcase>
 			<cfcase value="remote">
-                <cfhttp url="#dataset.source#" result="srcData" >
+				<cfscript>
+					httpService=getHttpService();
+					httpService.setMethod('get');
+					httpService.setURL(dataset.source);
+					srcData=httpService.send().getPrefix();
+				</cfscript>
 
 				<cfif isJSON(srcData.filecontent)>
-                    <cfset arguments.dataset = deserializeJSON(srcData.filecontent) />
-                </cfif>
-
-                <cfreturn arguments.dataset />
-            </cfcase>
+					<cfset arguments.dataset = deserializeJSON(srcData.filecontent) />
+					<cfif isDefined('arguments.dataset.data')>
+						<cfset arguments.dataset=arguments.dataset.data>
+					</cfif>
+				</cfif>
+				
+				<cfreturn arguments.dataset />
+			</cfcase>
 			<cfcase value="muraorm">
 
 				<cfset dataBean = $.getBean( arguments.dataset.source ) />

@@ -26,9 +26,7 @@
 <cffunction name="version" output="false">
 	<cfset var rscheck="">
 
-	<cfdbinfo
-		name="rsCheck"
-		type="version">
+	<cfdbinfo attributeCollection="#getQueryAttrs(name='rsCheck',type='version')#">
 
 	<cfreturn variables.utility.queryRowToStruct(rscheck,1)>
 </cffunction>
@@ -44,7 +42,7 @@
 	<cfargument name="table" default="#variables.table#">
 
 	<cfif tableExists(arguments.table)>
-		<cfquery>
+		<cfquery attributeCollection="#getQueryAttrs()#">
 			DROP TABLE #arguments.table#
 		</cfquery>
 		<cfset structDelete(variables.tableLookUp,arguments.table)>
@@ -69,18 +67,15 @@
 	<cfset var tableStruct={}>
 
 	<cfif variables.dbtype eq 'postgresql'>
-		<cfquery name="rscheck" >
+		<cfquery attributeCollection="#getQueryAttrs(name='rscheck')#">
 			select table_name from information_schema.tables where table_schema = current_schema()
 		</cfquery>
 	<cfelseif variables.dbtype eq 'oracle'>
-		<cfquery name="rscheck">
+		<cfquery attributeCollection="#getQueryAttrs(name='rscheck')#">
 			select TABLE_NAME from user_tables
 		</cfquery>
 	<cfelse>
-		<cfdbinfo
-			pattern="%"
-			name="rsCheck"
-			type="tables">
+		<cfdbinfo attributeCollection="#getQueryAttrs(pattern='%',name='rsCheck',type='tables')#">
 	</cfif>
 
 	<cfloop query="rscheck">
@@ -100,8 +95,7 @@
 	<cfif not structKeyExists(variables.tableMetaDataLookUp,arguments.table)>
 		<cfswitch expression="#variables.dbtype#">
 			<cfcase value="oracle">
-				<cfquery
-				name="rs">
+				<cfquery attributeCollection="#getQueryAttrs(name='rs')#">
 					SELECT column_name,
 					data_length column_size,
 					data_type type_name,
@@ -142,8 +136,7 @@
 			</cfcase>
 			--->
 			<cfcase value="mssql,postgresql">
-			<cfquery
-				name="rs">
+			<cfquery attributeCollection="#getQueryAttrs(name='rs')#">
 					select column_name,
 					character_maximum_length column_size,
 					data_type type_name,
@@ -155,10 +148,7 @@
 			</cfquery>
 			</cfcase>
 			<cfdefaultcase>
-				<cfdbinfo
-				name="rs"
-				table="#qualifySchema(arguments.table)#"
-				type="columns">
+				<cfdbinfo attributeCollection="#getQueryAttrs(name='rs',table='#qualifySchema(arguments.table)#',type='columns')#">
 			</cfdefaultcase>
 		</cfswitch>
 
@@ -175,22 +165,22 @@
 	<cfif columnExists(arguments.column,arguments.table)>
 	<cfswitch expression="#variables.dbtype#">
 		<cfcase value="mssql">
-			<cfquery>
+			<cfquery attributeCollection="#getQueryAttrs()#">
 			ALTER TABLE #arguments.table# DROP COLUMN #arguments.column#
 			</cfquery>
 		</cfcase>
 		<cfcase value="mysql,nuodb">
-			<cfquery>
+			<cfquery attributeCollection="#getQueryAttrs()#">
 			ALTER TABLE #arguments.table# DROP COLUMN #arguments.column#
 			</cfquery>
 		</cfcase>
 		<cfcase value="postgresql">
-			<cfquery>
+			<cfquery attributeCollection="#getQueryAttrs()#">
 			ALTER TABLE #arguments.table# DROP COLUMN #arguments.column#
 			</cfquery>
 		</cfcase>
 		<cfcase value="oracle">
-			<cfquery>
+			<cfquery attributeCollection="#getQueryAttrs()#">
 			ALTER TABLE #arguments.table# DROP COLUMN #arguments.column#
 			</cfquery>
 		</cfcase>
@@ -253,7 +243,7 @@
 
 		<cfswitch expression="#variables.dbtype#">
 		<cfcase value="mssql">
-			<cfquery>
+			<cfquery attributeCollection="#getQueryAttrs()#">
 				<cfif not hasTable>
 					CREATE TABLE #arguments.table# (
 				<cfelse>
@@ -280,7 +270,7 @@
 			</cfquery>
 		</cfcase>
 		<cfcase value="mysql">
-			<cfquery>
+			<cfquery attributeCollection="#getQueryAttrs()#">
 				<cfif not hasTable>
 					CREATE TABLE #arguments.table# (
 				<cfelse>
@@ -323,7 +313,7 @@
 			</cfquery>
 		</cfcase>
 		<cfcase value="postgresql">
-			<cfquery>
+			<cfquery attributeCollection="#getQueryAttrs()#">
 				<cfif not hasTable>
 					CREATE TABLE #arguments.table# (
 				<cfelse>
@@ -350,7 +340,7 @@
 			</cfquery>
 		</cfcase>
 		<cfcase value="nuodb">
-			<cfquery>
+			<cfquery attributeCollection="#getQueryAttrs()#">
 				<cfif not hasTable>
 					CREATE TABLE #arguments.table# (
 				<cfelse>
@@ -381,7 +371,7 @@
 			</cfquery>
 		</cfcase>
 		<cfcase value="oracle">
-			<cfquery>
+			<cfquery attributeCollection="#getQueryAttrs()#">
 				<cfif not hasTable>
 					CREATE TABLE #arguments.table# (
 				<cfelse>
@@ -412,11 +402,11 @@
 
 			<cftry>
 				<cfif not arguments.nullable>
-					<cfquery>
+					<cfquery attributeCollection="#getQueryAttrs()#">
 						ALTER TABLE #arguments.table# MODIFY (#arguments.column# NOT NULL ENABLE)
 					</cfquery>
 				<cfelse>
-					<cfquery>
+					<cfquery attributeCollection="#getQueryAttrs()#">
 						ALTER TABLE #arguments.table# MODIFY (#arguments.column# NOT NULL DISABLE)
 					</cfquery>
 				</cfif>
@@ -428,27 +418,27 @@
 				<cfset var trg_name=left('trg_#arguments.table#_#arguments.column#',30)>
 
 				<cftry>
-				 <cfquery>
+				 <cfquery attributeCollection="#getQueryAttrs()#">
 					DROP SEQUENCE #seq_name#
 				</cfquery>
 				<cfcatch></cfcatch>
 				</cftry>
 
-				<cfquery>
+				<cfquery attributeCollection="#getQueryAttrs()#">
 					CREATE SEQUENCE #seq_name#
 					MINVALUE 1
 					START WITH 1
 					INCREMENT BY 1
 					CACHE 10
 				</cfquery>
-				<cfquery>
+				<cfquery attributeCollection="#getQueryAttrs()#">
 					create or replace TRIGGER #trg_name# BEFORE INSERT ON #arguments.table#
 					FOR EACH ROW
 					BEGIN
 					    SELECT  #seq_name#.NEXTVAL INTO :new.#arguments.column# FROM DUAL;
 					END;
 				</cfquery>
-				<cfquery>
+				<cfquery attributeCollection="#getQueryAttrs()#">
 					ALTER TRIGGER #trg_name# ENABLE
 				</cfquery>
 				<cfset addPrimaryKey(argumentCollection=arguments)>
@@ -489,12 +479,12 @@
 	<cfif tableExists(arguments.table) and columnExists(arguments.column,arguments.table)>
 		<cfswitch expression="#variables.dbtype#">
 			<cfcase value="mssql">
-				<cfquery>
+				<cfquery attributeCollection="#getQueryAttrs()#">
 					ALTER TABLE #arguments.table# ALTER COLUMN #arguments.column# #transformDataType(arguments.datatype,arguments.length)# <cfif not arguments.nullable> not null <cfelse> null </cfif>
 				</cfquery>
 			</cfcase>
 			<cfcase value="mysql">
-				<cfquery>
+				<cfquery attributeCollection="#getQueryAttrs()#">
 					ALTER TABLE #arguments.table#
 					<cfif version().database_productname eq 'H2'>
 						ALTER
@@ -520,7 +510,7 @@
 				</cfquery>
 			</cfcase>
 			<cfcase value="postgresql">
-				<cfquery>
+				<cfquery attributeCollection="#getQueryAttrs()#">
 					ALTER TABLE #arguments.table# ALTER COLUMN #arguments.column# TYPE <cfif arguments.autoincrement>SERIAL<cfelse>#transformDataType(arguments.datatype,arguments.length)#</cfif>;
 					<cfif not arguments.nullable>
 					ALTER TABLE #arguments.table# ALTER COLUMN #arguments.column# SET NOT NULL;
@@ -536,32 +526,32 @@
 					<cfif columnExists(table=arguments.table,column=tempName)>
 						<cfset dropColumn(table=arguments.table,column=tempName)>
 					</cfif>
-					<cfquery>
+					<cfquery attributeCollection="#getQueryAttrs()#">
 						ALTER TABLE #arguments.table# ADD COLUMN #tempName# #transformDataType(arguments.datatype,arguments.length)# <cfif arguments.autoincrement>integer generated always as identity (seq_#arguments.table#)<cfelse><cfif not arguments.nullable> not null </cfif>
 						<cfif not(not arguments.nullable and arguments.default eq 'null') and arguments.datatype neq 'datetime'>
 							default <cfif arguments.default eq 'null' or listFindNoCase('int,tinyint,boolean,float,double',arguments.datatype)>#arguments.default#<cfelse>'#arguments.default#'</cfif></cfif>
 						</cfif>
 					</cfquery>
-					<cfquery>
+					<cfquery attributeCollection="#getQueryAttrs()#">
 						UPDATE #arguments.table# set #tempName#=#arguments.column#
 					</cfquery>
 					<cftry>
-						<cfquery>
+						<cfquery attributeCollection="#getQueryAttrs()#">
 						ALTER TABLE #arguments.table# DROP COLUMN #arguments.column#
 					</cfquery>
 					<cfcatch><cfdump var="#cfcatch#" abort></cfcatch>
 					</cftry>
 
-					<cfquery>
+					<cfquery attributeCollection="#getQueryAttrs()#">
 						ALTER TABLE #arguments.table# ADD COLUMN #arguments.column# #transformDataType(arguments.datatype,arguments.length)# <cfif arguments.autoincrement>integer generated always as identity (seq_#arguments.table#)<cfelse><cfif not arguments.nullable> not null </cfif>
 						<cfif not(not arguments.nullable and arguments.default eq 'null') and arguments.datatype neq 'datetime'>
 							default <cfif arguments.default eq 'null' or listFindNoCase('int,tinyint,boolean,float,double',arguments.datatype)>#arguments.default#<cfelse>'#arguments.default#'</cfif></cfif>
 						</cfif>
 					</cfquery>
-					<cfquery>
+					<cfquery attributeCollection="#getQueryAttrs()#">
 						UPDATE #arguments.table# set #arguments.column#=#tempName#
 					</cfquery>
-					<cfquery>
+					<cfquery attributeCollection="#getQueryAttrs()#">
 						ALTER TABLE #arguments.table# DROP COLUMN #tempName#
 					</cfquery>
 				</cftransaction>
@@ -572,10 +562,10 @@
 					<cfif columnExists(table=arguments.table,column=tempName)>
 						<cfset dropColumn(table=arguments.table,column=tempName)>
 					</cfif>
-					<cfquery>
+					<cfquery attributeCollection="#getQueryAttrs()#">
 						ALTER TABLE #arguments.table# RENAME COLUMN #arguments.column# to #tempName#
 					</cfquery>
-					<cfquery>
+					<cfquery attributeCollection="#getQueryAttrs()#">
 						ALTER TABLE #arguments.table# ADD #arguments.column# #transformDataType(arguments.datatype,arguments.length)#
 						<cfif not(not arguments.nullable and arguments.default eq 'null') and arguments.datatype neq 'datetime'>
 							default <cfif arguments.default eq 'null' or listFindNoCase('int,tinyint,boolean,float,double',arguments.datatype)>#arguments.default#<cfelse>'#arguments.default#'</cfif>
@@ -584,21 +574,21 @@
 
 					<cftry>
 						<cfif not arguments.nullable>
-							<cfquery>
+							<cfquery attributeCollection="#getQueryAttrs()#">
 								ALTER TABLE #arguments.table# MODIFY (#arguments.column# NOT NULL ENABLE)
 							</cfquery>
 						<cfelse>
-							<cfquery>
+							<cfquery attributeCollection="#getQueryAttrs()#">
 								ALTER TABLE #arguments.table# MODIFY (#arguments.column# NOT NULL DISABLE)
 							</cfquery>
 						</cfif>
 						<cfcatch></cfcatch>
 					</cftry>
 
-					<cfquery>
+					<cfquery attributeCollection="#getQueryAttrs()#">
 						UPDATE #arguments.table# SET #arguments.column#=#tempName#
 					</cfquery>
-					<cfquery>
+					<cfquery attributeCollection="#getQueryAttrs()#">
 						ALTER TABLE #arguments.table# DROP COLUMN #tempName#
 					</cfquery>
 				</cftransaction>
@@ -623,18 +613,18 @@
 	<cfif tableExists(arguments.table) and columnExists(arguments.column,arguments.table)>
 		<cfswitch expression="#variables.dbtype#">
 			<cfcase value="mssql">
-				<cfquery>
+				<cfquery attributeCollection="#getQueryAttrs()#">
 					EXEC sp_rename '#arguments.table#.[#arguments.column#]', '#arguments.newcolumn#', 'COLUMN'
 				</cfquery>
 			</cfcase>
 			<cfcase value="mysql">
 				<cfset columnData=columnMetaData(argumentCollection=arguments)>
-				<cfquery>
+				<cfquery attributeCollection="#getQueryAttrs()#">
 					ALTER TABLE #arguments.table# change #arguments.column# #arguments.newcolumn# <cfif columnData.autoincrement>INT(10) NOT NULL AUTO_INCREMENT<cfelse>#transformDataType(columnData.datatype,columnData.length)# <cfif not columnData.nullable> not null </cfif> default <cfif columnData.default eq 'null' or listFindNoCase('int,tinyint',columnData.datatype)>#columnData.default#<cfelse>'#columnData.default#'</cfif></cfif>
 				</cfquery>
 			</cfcase>
 			<cfcase value="postgresql">
-				<cfquery>
+				<cfquery attributeCollection="#getQueryAttrs()#">
 					ALTER TABLE #arguments.table# RENAME COLUMN #arguments.column# TO #arguments.newcolumn#
 				</cfquery>
 			</cfcase>
@@ -645,16 +635,16 @@
 				<cfset columnDataAdjusted.table=arguments.table >
 				<cfset addColumn(argumentCollection=columnDataAdjusted)>
 
-				<cfquery>
+				<cfquery attributeCollection="#getQueryAttrs()#">
 					update #arguments.table# set #arguments.column# = #arguments.newColumn#
 				</cfquery>
 
-				<cfquery>
+				<cfquery attributeCollection="#getQueryAttrs()#">
 					alter table drop column #arguments.column#
 				</cfquery>
 			</cfcase>
 			<cfcase value="oracle">
-				<cfquery>
+				<cfquery attributeCollection="#getQueryAttrs()#">
 					ALTER TABLE #arguments.table# RENAME COLUMN #arguments.column# to #arguments.newColumn#
 				</cfquery>
 			</cfcase>
@@ -695,7 +685,7 @@
 				</cfcase>
 				<cfcase value="text,longtext">
 					<cftry>
-						<cfquery name="MSSQLversion">
+						<cfquery attributeCollection="#getQueryAttrs(name='MSSQLversion')#">
 							SELECT CONVERT(varchar(100), SERVERPROPERTY('ProductVersion')) as version
 						</cfquery>
 						<cfset MSSQLversion=listFirst(MSSQLversion.version,".")>
@@ -704,7 +694,7 @@
 
 					<cftry>
 						<cfif not MSSQLversion>
-							<cfquery name="MSSQLversion">
+							<cfquery attributeCollection="#getQueryAttrs(name='MSSQLversion')#">
 								EXEC sp_MSgetversion
 							</cfquery>
 
@@ -1098,22 +1088,22 @@
 		<cftry>
 			<cfswitch expression="#variables.dbtype#">
 			<cfcase value="mssql,nuodb">
-				<cfquery>
+				<cfquery attributeCollection="#getQueryAttrs()#">
 				CREATE INDEX #transformIndexName(argumentCollection=arguments)# ON #arguments.table# (#arguments.column#)
 				</cfquery>
 			</cfcase>
 			<cfcase value="mysql">
-				<cfquery>
+				<cfquery attributeCollection="#getQueryAttrs()#">
 				CREATE INDEX #transformIndexName(argumentCollection=arguments)# ON #arguments.table# (#arguments.column#)
 				</cfquery>
 			</cfcase>
 			<cfcase value="postgresql">
-				<cfquery>
+				<cfquery attributeCollection="#getQueryAttrs()#">
 				CREATE INDEX #transformIndexName(argumentCollection=arguments)# ON #arguments.table# (#arguments.column#)
 				</cfquery>
 			</cfcase>
 			<cfcase value="oracle">
-				<cfquery>
+				<cfquery attributeCollection="#getQueryAttrs()#">
 				CREATE INDEX #transformIndexName(argumentCollection=arguments)# ON #arguments.table# (#arguments.column#)
 				</cfquery>
 			</cfcase>
@@ -1133,22 +1123,22 @@
 	<cfif indexExists(arguments.column,arguments.table)>
 		<cfswitch expression="#variables.dbtype#">
 			<cfcase value="mssql">
-				<cfquery>
+				<cfquery attributeCollection="#getQueryAttrs()#">
 				DROP INDEX #transformIndexName(argumentCollection=arguments)# on #arguments.table#
 				</cfquery>
 			</cfcase>
 			<cfcase value="mysql">
-				<cfquery>
+				<cfquery attributeCollection="#getQueryAttrs()#">
 				DROP INDEX #transformIndexName(argumentCollection=arguments)# on #arguments.table#
 				</cfquery>
 			</cfcase>
 			<cfcase value="postgresql">
-				<cfquery>
+				<cfquery attributeCollection="#getQueryAttrs()#">
 				DROP INDEX #transformIndexName(argumentCollection=arguments)# on #arguments.table#
 				</cfquery>
 			</cfcase>
 			<cfcase value="oracle,nuodb">
-				<cfquery>
+				<cfquery attributeCollection="#getQueryAttrs()#">
 				DROP INDEX #transformIndexName(argumentCollection=arguments)#
 				</cfquery>
 			</cfcase>
@@ -1179,10 +1169,7 @@
 	<cfset var rs="">
 
 	<cfif not structKeyExists(variables.tableIndexLookUp,arguments.table)>
-	<cfdbinfo
-		name="rs"
-		table="#qualifySchema(arguments.table)#"
-		type="index">
+	<cfdbinfo attributeCollection="#getQueryAttrs(name='rs',table='#qualifySchema(arguments.table)#',type='index')#">
 	<cfset variables.tableIndexLookUp[arguments.table]= buildIndexMetaData(rs,arguments.table)>
 	</cfif>
 
@@ -1250,10 +1237,7 @@
 	<cfargument name="table" default="#variables.table#">
 	<cfset var rscheck="">
 
-	<cfdbinfo
-		name="rsCheck"
-		table="#qualifySchema(arguments.table)#"
-		type="index">
+	<cfdbinfo attributeCollection="#getQueryAttrs(name='rsCheck',table='#qualifySchema(arguments.table)#',type='index')#">
 
 	<cfquery name="rsCheck" dbtype="query">
 		select * from rsCheck where lower(rsCheck.INDEX_NAME) like '%primary%'
@@ -1268,10 +1252,7 @@
 	<cfargument name="table" default="#variables.table#">
 	<cfset var rscheck="">
 
-	<cfdbinfo
-		name="rsCheck"
-		table="#qualifySchema(arguments.table)#"
-		type="index">
+	<cfdbinfo attributeCollection="#getQueryAttrs(name='rsCheck',table='#qualifySchema(arguments.table)#',type='index')#">
 
 	<cfquery name="rsCheck" dbtype="query">
 		select * from rsCheck where lower(rsCheck.INDEX_NAME) like 'primary%'
@@ -1286,10 +1267,7 @@
 	<cfargument name="table" default="#variables.table#">
 	<cfset var rscheck="">
 
-	<cfdbinfo
-		name="rsCheck"
-		table="#qualifySchema(arguments.table)#"
-		type="index">
+	<cfdbinfo attributeCollection="#getQueryAttrs(name='rsCheck',table='#qualifySchema(arguments.table)#',type='index')#">
 
 	<cfquery name="rsCheck" dbtype="query">
 		select * from rsCheck where lower(rsCheck.INDEX_NAME) like 'primary%'
@@ -1307,25 +1285,25 @@
 	<cfif not primaryKeyExists(arguments.table)>
 		<cfswitch expression="#variables.dbtype#">
 			<cfcase value="mssql">
-				<cfquery>
+				<cfquery attributeCollection="#getQueryAttrs()#">
 					ALTER TABLE #arguments.table#
 						ADD CONSTRAINT pk_#arguments.table# PRIMARY KEY (#arguments.column#)
 				</cfquery>
 			</cfcase>
 			<cfcase value="mysql,nuodb">
-				<cfquery>
+				<cfquery attributeCollection="#getQueryAttrs()#">
 					ALTER TABLE #arguments.table#
 	    			ADD PRIMARY KEY (#arguments.column#)
 				</cfquery>
 			</cfcase>
 			<cfcase value="postgresql">
-				<cfquery>
+				<cfquery attributeCollection="#getQueryAttrs()#">
 					ALTER TABLE #arguments.table#
 	    			ADD CONSTRAINT pk_#arguments.table# PRIMARY KEY (#arguments.column#)
 				</cfquery>
 			</cfcase>
 			<cfcase value="oracle">
-				<cfquery>
+				<cfquery attributeCollection="#getQueryAttrs()#">
 					ALTER TABLE #arguments.table#
 					ADD CONSTRAINT pk_#arguments.table# PRIMARY KEY (#arguments.column#)
 				</cfquery>
@@ -1342,25 +1320,25 @@
 	<cfif primaryKeyExists(arguments.table)>
 		<cfswitch expression="#variables.dbtype#">
 			<cfcase value="mssql">
-				<cfquery>
+				<cfquery attributeCollection="#getQueryAttrs()#">
 					ALTER TABLE #arguments.table#
 					DROP CONSTRAINT #primaryKeyConstraintName(arguments.table)#
 				</cfquery>
 			</cfcase>
 			<cfcase value="mysql,nuodb">
-				<cfquery>
+				<cfquery attributeCollection="#getQueryAttrs()#">
 					ALTER TABLE #arguments.table#
 	    			DROP PRIMARY KEY
 				</cfquery>
 			</cfcase>
 			<cfcase value="postgresql">
-				<cfquery>
+				<cfquery attributeCollection="#getQueryAttrs()#">
 					ALTER TABLE #arguments.table#
 					DROP CONSTRAINT #primaryKeyConstraintName(arguments.table)#
 				</cfquery>
 			</cfcase>
 			<cfcase value="oracle">
-				<cfquery>
+				<cfquery attributeCollection="#getQueryAttrs()#">
 					ALTER TABLE #arguments.table#
 					DROP CONSTRAINT #primaryKeyConstraintName(arguments.table)#
 				</cfquery>
@@ -1429,7 +1407,7 @@
 							fkColumn=arguments.column
 						)>
 		<cfset addIndex(arguments.column,arguments.table)>
-		<cfquery>
+		<cfquery attributeCollection="#getQueryAttrs()#">
 			ALTER TABLE #arguments.table#
 			ADD CONSTRAINT fk_#arguments.fktable#_#arguments.fkcolumn#
 			FOREIGN KEY (#arguments.column#)
@@ -1459,7 +1437,7 @@
 							fkTable=arguments.table,
 							fkColumn=arguments.column
 						)>
-		<cfquery>
+		<cfquery attributeCollection="#getQueryAttrs()#">
 			ALTER TABLE #arguments.table#
 			DROP <cfif variables.dbtype eq 'MySQL'>FOREIGN KEY<cfelse>CONSTRAINT</cfif> fk_#arguments.fktable#_#arguments.fkcolumn#
 		</cfquery>
@@ -1492,10 +1470,7 @@
 	<cfargument name="table" default="#variables.table#">
 	<cfset var rscheck="">
 
-	<cfdbinfo
-		name="rsCheck"
-		table="#qualifySchema(arguments.table)#"
-		type="foreignKeys">
+	<cfdbinfo attributeCollection="#getQueryAttrs(name='rsCheck',table='#qualifySchema(arguments.table)#',type='foreignKeys')#">
 
 	<cfreturn buildForeignKeyMetaData(
 		rs = rsCheck,
@@ -1578,7 +1553,7 @@ function _parseInt(String){
 
 	<cfif variables.dbtype eq "postgresql">
 		<cfif variables.dbSchema eq "">
-			<cfquery name="rs">
+			<cfquery attributeCollection="#getQueryAttrs(name='rs')#">
 				SELECT current_schema() AS schema
 			</cfquery>
 			<cfset variables.dbSchema = rs.schema>

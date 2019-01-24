@@ -53,55 +53,98 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset feed=rc.$.getBean("feed").loadBy(feedID=objectParams.source)>
 <cfset feed.set(objectParams)>
 <cfparam name="objectParams.sourcetype" default="local">
-
+<cfparam name="objectParams.render" default="server">
+<cfparam name="objectParams.async" default="false">
+<cfset isExternal=false>
 </cfsilent>
 <cfoutput>
 	<cfif objectParams.sourcetype neq "remotefeed">
+		<cfset isExternal=false>
+		<cfif $.siteConfig().hasDisplayObject(objectParams.layout)>
+			<cfset isExternal= $.siteConfig().getDisplayObject(objectParams.layout).external>
+		<cfelseif objectparams.layout eq 'default'>
+			<cfset isExternal= $.siteConfig().hasDisplayObject('list') and $.siteConfig().getDisplayObject('list').external>
+			<!---
+			<cfif isExternal>
+				<cfset feed.setLayout('list')>
+			</cfif>
+			--->
+		</cfif>
 		<cfif not objectParams.forcelayout>
-		<div class="mura-control-group">
-			<label class="mura-control-label">
-				#application.rbFactory.getKeyValue(session.rb,'collections.layout')#
-			</label>
-			<cfset layouts=rc.$.siteConfig().getLayouts('collection/layouts')>
-			<cfset layout=feed.getLayout()>
-			<cfset layout=(len(layout)) ? layout :' default'>
-			<select name="layout" class="objectParam">
-				<option value="default"<cfif feed.getLayout() eq "default"> selected</cfif>>Default</option>
-				<cfloop query="layouts">
-					<cfif layouts.name neq 'default'>
-					<option value="#layouts.name#"<cfif feed.getLayout() eq layouts.name> selected</cfif>>#reReplace(layouts.name, "\b([a-zA-Z])(\w{2,})\b", "\U\1\E\2", "all")#</option>
-					</cfif>
-				</cfloop>
-			</select>
-		</div>
-		<cfelse>
-			<cfset layout=feed.getLayout()>
-			<cfset layout=(len(layout)) ? layout :' default'>
-			<input type="hidden" name="layout" class="objectParam" value="#esapiEncode('html_attr',layout)#">
+			<div class="mura-control-group">
+				<label class="mura-control-label">
+					#application.rbFactory.getKeyValue(session.rb,'collections.layout')#
+				</label>
+				<cfset layouts=rc.$.siteConfig().getLayouts('collection/layouts')>
+				<cfset layout=feed.getLayout()>
+				<cfset layout=(len(layout)) ? layout :' default'>
+				<select name="layoutSel" id="layoutSel">
+					<option value="default"<cfif feed.getLayout() eq "default"> selected</cfif>>Default</option>
+					<cfloop query="layouts">
+						<cfif layouts.name neq 'default'>
+						<option value="#layouts.name#"<cfif feed.getLayout() eq layouts.name> selected</cfif>>#reReplace(layouts.name, "\b([a-zA-Z])(\w{2,})\b", "\U\1\E\2", "all")#</option>
+						</cfif>
+					</cfloop>
+				</select>
+			</div>
 		</cfif>
 
+		<cfset layout=feed.getLayout()>
+		<cfset layout=(len(layout)) ? layout :' default'>
+		<input type="hidden" name="layout" class="objectParam" value="#esapiEncode('html_attr',layout)#">
+
 		<!---- Begin layout based configuration --->
-		<cfset configFile=rc.$.siteConfig().lookupDisplayObjectFilePath('collection/layouts/#layout#/configurator.cfm')>
-		<cfif fileExists(expandPath(configFile))>
-			<cfinclude template="#configFile#">
+		<cfif isExternal>
+			<cfscript>
+				configuratorMarkup='';
+				objectConfig=$.siteConfig().getDisplayObject(layout);
+				if(isValid("url", objectConfig.configurator)){
+					httpService=application.configBean.getHTTPService();
+					lhttpService.setMethod("get");
+					httpService.setCharset("utf-8");
+					httpService.setURL(objectConfig.configurator);
+					configuratorMarkup=httpService.send().getPrefix();
+				} else if(len(objectConfig.configurator)){
+					configuratorMarkup=objectConfig.configurator;
+				}
+			</cfscript>
+			<cfif len(configuratorMarkup)>
+				<cfoutput>#configuratorMarkup#</cfoutput>
+			</cfif>
+			<input name="render" type="hidden" class="objectParam" value="client">
 		<cfelse>
-			<cfset configFile=rc.$.siteConfig('includePath') & "/includes/display_objects/custom/collection/layouts/#layout#/configurator.cfm">
+			<input name="render" type="hidden" class="objectParam" value="server">
+			<cfset configFile=rc.$.siteConfig().lookupDisplayObjectFilePath('collection/layouts/#layout#/configurator.cfm')>
 			<cfif fileExists(expandPath(configFile))>
 				<cfinclude template="#configFile#">
 			<cfelse>
-				<cfset configFile=rc.$.siteConfig('includePath') & "/includes/display_objects/collection/layouts/#layout#/configurator.cfm">
+				<cfset configFile=rc.$.siteConfig('includePath') & "/includes/display_objects/custom/collection/layouts/#layout#/configurator.cfm">
 				<cfif fileExists(expandPath(configFile))>
 					<cfinclude template="#configFile#">
+				<cfelse>
+					<cfset configFile=rc.$.siteConfig('includePath') & "/includes/display_objects/collection/layouts/#layout#/configurator.cfm">
+					<cfif fileExists(expandPath(configFile))>
+						<cfinclude template="#configFile#">
+					</cfif>
 				</cfif>
 			</cfif>
 		</cfif>
 		<script>
-			$('select[name="layout"]').on('change',setLayoutOptions);
+			$(()=>{
+				$('##layoutSel').on('change',function() {
+					$('input[name="layout"]').val($('##layoutSel').val())
+					setLayoutOptions();
+				});
+				if(typeof configuratorInited != 'undefined'){
+					$('input[name="render"]').trigger('change');
+				}
+				configuratorInited=true;
+			});
 		</script>
 		<!---  End layout based configuration --->
 
-
 		<cfif objectParams.object eq 'collection'>
+			<cfif not isExternal>
 			<div class="mura-control-group container-viewalllink">
 				<label class="mura-control-label">
 					#application.rbFactory.getKeyValue(session.rb,'collections.viewalllink')#
@@ -114,6 +157,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</label>
 				<input name="viewalllabel" class="objectParam" type="text" value="#esapiEncode('html_attr',feed.getViewAllLabel())#" maxlength="100">
 			</div>
+			</cfif>
 			<div class="mura-control-group">
 				<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'collections.maxitems')#</label>
 				<select name="maxItems" data-displayobjectparam="maxItems" class="objectParam">
@@ -164,6 +208,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	<cfelse>
 		<!--- REMOTE FEEDS --->
+		<input name="render" type="hidden" class="objectParam" value="server"/>
 		<cfset displaySummaries=yesNoFormat(feed.getValue("displaySummaries"))>
 		<div class="mura-control-group">
 			<label class="mura-control-label">

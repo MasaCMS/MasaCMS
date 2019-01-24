@@ -57,7 +57,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfquery>
 
 			<cfloop query="rs">
-				<cfset newbody=replace(BODY,"#arguments.find#","#arguments.replace#","ALL")>
+				<cfset newbody=replaceNoCase(BODY,"#arguments.find#","#arguments.replace#","ALL")>
 				<cfquery datasource="#arguments.datasource#">
 					update tcontent set body=<cfqueryparam value="#newBody#" cfsqltype="cf_sql_longvarchar" > where contenthistid='#contenthistid#'
 				</cfquery>
@@ -68,7 +68,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfquery>
 
 			<cfloop query="rs">
-				<cfset newSummary=replace(summary,"#arguments.find#","#arguments.replace#","ALL")>
+				<cfset newSummary=replaceNoCase(summary,"#arguments.find#","#arguments.replace#","ALL")>
 				<cfquery datasource="#arguments.datasource#">
 					update tcontent set summary=<cfqueryparam value="#newSummary#" cfsqltype="cf_sql_longvarchar" > where contenthistid='#contenthistid#'
 				</cfquery>
@@ -4016,7 +4016,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfloop query="rs">
 			<cfif rs.type eq "dir">
 				<cftry>
-					<cfset newDir="#replace('#rs.directory##fileDelim#',arguments.baseDir,arguments.destDir)##rs.name##fileDelim#">
+					<cfset newDir="#replaceNoCase('#rs.directory##fileDelim#',arguments.baseDir,arguments.destDir)##rs.name##fileDelim#">
 					<cfif not directoryExists(newDir)>
 						<cfset fileWriter.createDir(directory=newDir)>
 					</cfif>
@@ -4025,7 +4025,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfelse>
 				<!--- <cftry> --->
 
-					<cfset fileWriter.copyFile(source="#rs.directory##fileDelim##rs.name#", destination=replace('#rs.directory##fileDelim#',arguments.baseDir,arguments.destDir))>
+					<cfset fileWriter.copyFile(source="#rs.directory##fileDelim##rs.name#", destination=replaceNoCase('#rs.directory##fileDelim#',arguments.baseDir,arguments.destDir))>
 
 					<cfset newFile=listFirst(rs.name,".")>
 
@@ -4035,7 +4035,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfset newFile=keys.get(newFile) & "." & listLast(rs.name,".")>
 					</cfif>
 
-					<cfset fileWriter.renameFile(source="#replace('#rs.directory##fileDelim#',arguments.baseDir,arguments.destDir)##rs.name#", destination="#replace('#rs.directory##fileDelim#',arguments.baseDir,arguments.destDir)##newFile#")>
+					<cfset fileWriter.renameFile(source="#replaceNoCase('#rs.directory##fileDelim#',arguments.baseDir,arguments.destDir)##rs.name#", destination="#replaceNoCase('#rs.directory##fileDelim#',arguments.baseDir,arguments.destDir)##newFile#")>
 				<!--- 	<cfcatch></cfcatch>
 				</cftry> --->
 			</cfif>
