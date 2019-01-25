@@ -41,18 +41,22 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfset tabList=listAppend(tabList,"tabAdvanced")>
+<cfset tabList=listAppend(tabList,"tabRemote")>
 <cfoutput>
 <div class="mura-panel panel">
-	<div class="mura-panel-heading" role="tab" id="heading-advanced">
+	<div class="mura-panel-heading" role="tab" id="heading-remote">
 		<h4 class="mura-panel-title">
-			<a class="collapse" role="button" data-toggle="collapse" data-parent="##content-panels" href="##panel-advanced" aria-expanded="false" aria-controls="panel-advanced">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.advanced")#</a>
+			<!--- todo: change rb key from 'advanced' to remote --->
+			<a class="collapse" role="button" data-toggle="collapse" data-parent="##content-panels" href="##panel-remote" aria-expanded="false" aria-controls="panel-remote">Remote <!--- #application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.advanced")# ---></a>
 		</h4>
 	</div>
-	<div id="panel-advanced" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-advanced" aria-expanded="false" style="height: 0px;">
+	<div id="panel-remote" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-remote" aria-expanded="false" style="height: 0px;">
 		<div class="mura-panel-body">
-			<span id="extendset-container-tabadvancedtop" class="extendset-container"></span>
+			<!--- todo: add these containers and this tab to available regions --->
+			<span id="extendset-container-tabremotetop" class="extendset-container"></span>
 
+
+<!--- todo: move these fields: ssl --->
 			<cfif rc.type eq 'Component'>
 				<div class="mura-control-group">
 			      	<label>
@@ -110,6 +114,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			        </div>
 			</cfif>
 
+<!--- todo this field for components/forms - move to ...? --->
 			<cfif application.settingsManager.getSite(rc.siteid).getCache() and rc.type eq 'Component' or rc.type eq 'Form'>
 				<div class="mura-control-group">
 					<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.docachelabel')#</label>
@@ -119,13 +124,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		       </div>
 			</cfif>
 
-			<cfif  rc.contentid neq '00000000000000000000000000000000001' and listFind(session.mura.memberships,'S2')>
-				<div class="mura-control-group">
-					<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.locknodelabel')#</label>
-					<label for="islocked" class="checkbox"><input name="isLocked" id="islocked" type="CHECKBOX" value="1" <cfif rc.contentBean.getIsLocked() eq "">checked <cfelseif rc.contentBean.getIsLocked() eq 1>checked</cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.locknode')#</label>
-			    </div>
-			</cfif>
-
+<!--- todo move this --->
 			<!--- Remote Information --->
 			<cfif (rc.type neq 'Component' and rc.type neq 'Form') and rc.contentBean.getcontentID() neq '00000000000000000000000000000000001'>
 				<h2>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remoteinformation')#</h2>
@@ -157,8 +156,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 			<!--- /Remote Information --->
 
-			<span id="extendset-container-advanced" class="extendset-container"></span>
-			<span id="extendset-container-tabadvancedbottom" class="extendset-container"></span>
+			<span id="extendset-container-remote" class="extendset-container"></span>
+			<span id="extendset-container-tabremotebottom" class="extendset-container"></span>
 		</div>
 	</div>
 </div> 

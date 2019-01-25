@@ -65,9 +65,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<cfinclude template="form/dsp_panel_formbuilder.cfm">
 							<cfelse>
 								<cfinclude template="form/dsp_panel_basic.cfm">
+								<cfinclude template="form/dsp_panel_summary.cfm">
+								<cfinclude template="form/dsp_panel_assocfile.cfm">
 							</cfif>
 						<cfelse>
 							<cfinclude template="form/dsp_panel_basic.cfm">
+							<cfinclude template="form/dsp_panel_summary.cfm">
+							<cfinclude template="form/dsp_panel_assocfile.cfm">
 						</cfif>
 						<!--- /basic --->
 
@@ -77,11 +81,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</cfif>		
 						<!--- /publishing --->
 
-						<!--- list display options --->
-						<cfif rc.moduleid eq '00000000000000000000000000000000000' and (not rc.$.getContentRenderer().useLayoutManager() and listFindNoCase('Page,Folder,Gallery,Calender',rc.type) and (not len(tabAssignments) or listFindNocase(tabAssignments,'List Display Options')))>
-							<cfinclude template="form/dsp_panel_listdisplayoptions.cfm">
-						</cfif>
-						<!--- /list display options --->
+						<!--- scheduling --->
+<!--- todo: add Publishing to tab assignments list, change value here --->
+						<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Publishing')>	
+								<cfinclude template="form/dsp_panel_scheduling.cfm">
+						</cfif>		
+						<!--- /scheduling --->
 
 						<!--- layoutobjects,categories,related_content,tags,usage --->
 						<cfswitch expression="#rc.type#">
@@ -172,15 +177,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</cfif>
 						<!--- /extended attributes --->
 
-						<!--- advanced --->
-						<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Advanced')>
+						<!--- Remote --->
+						<!--- todo: change "advanced" to "remote" in other locations --->
+						<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Remote')>
 							<cfif listFind(session.mura.memberships,'S2IsPrivate')>
-								<cfinclude template="form/dsp_panel_advanced.cfm">
+								<cfinclude template="form/dsp_panel_Remote.cfm">
 							<cfelse>
-								<input type="hidden" name="ommitAdvancedTab" value="true">
+								<!--- todo correct "ommit" --> "omit" --->
+								<input type="hidden" name="ommitRemoteTab" value="true">
 							</cfif>
 						</cfif>
-						<!--- /advanced --->
+						<!--- /Remote --->
 
 						<!--- plugin rendering --->
 						<cfif arrayLen(pluginEventMappings)>

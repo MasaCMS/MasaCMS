@@ -52,79 +52,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<div id="panel-listdisplayoptions" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-listdisplayoptions" aria-expanded="false" style="height: 0px;">
 		<div class="mura-panel-body">
 
+			<!--- todo remove this from list of available tabs / containers --->
+			<!--- this tab is being combined with the new "layout" tab --->
 			<span id="extendset-container-tablistdisplayoptionstop" class="extendset-container"></span>
+			<span id="extendset-container-listdisplayoptions" class="extendset-container"></span>
+			<span id="extendset-container-tablistdisplayoptionsbottom" class="extendset-container"></span>
 
-			<div class="mura-control-group">
-		  	<label>#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</label>
-				<select name="imageSize" data-displayobjectparam="imageSize" onchange="if(this.value=='custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide();jQuery('##feedCustomImageOptions').find(':input').val('AUTO');}">
-				<cfloop list="Small,Medium,Large" index="i">
-					<option value="#lcase(i)#"<cfif i eq rc.contentBean.getImageSize()> selected</cfif>>#I#</option>
-				</cfloop>
-
-				<cfset imageSizes=application.settingsManager.getSite(rc.siteid).getCustomImageSizeIterator()>
-										
-				<cfloop condition="imageSizes.hasNext()">
-					<cfset image=imageSizes.next()>
-					<option value="#lcase(image.getName())#"<cfif image.getName() eq rc.contentBean.getImageSize()> selected</cfif>>#esapiEncode('html',image.getName())#</option>
-				</cfloop>
-					<option value="custom"<cfif "custom" eq rc.contentBean.getImageSize()> selected</cfif>>Custom</option>
-			</select>
 		</div>
-
-		<div id="feedCustomImageOptions" class="mura-control-group"<cfif rc.contentBean.getImageSize() neq "custom"> style="display:none"</cfif>>
-			<span class="half">
-	      <label>#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#</label>
-				<input name="imageWidth" data-displayobjectparam="imageWidth" type="text" value="#rc.contentBean.getImageWidth()#" />
-			</span>
-			<span class="half">
-	      <label>#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</label>
-	    	<input name="imageHeight" data-displayobjectparam="imageHeight" type="text" value="#rc.contentBean.getImageHeight()#" />
-			</span>
-		</div>
-
-			<div class="mura-control-group" id="availableFields">
-			<label>
-				<span class="half">Available Fields</span> <span class="half">Selected Fields</span>
-			</label>
-		
-			<div id="sortableFields">
-			<p class="dragMsg">
-				<span class="dragFrom half">Drag Fields from Here&hellip;</span><span class="half">&hellip;and Drop Them Here.</span>
-			</p>							
-		
-			<cfset displayList=rc.contentBean.getDisplayList()>
-			<cfset availableList=rc.contentBean.getAvailableDisplayList()>		
-			<ul id="contentAvailableListSort" class="contentDisplayListSortOptions">
-				<cfloop list="#availableList#" index="i">
-					<li class="ui-state-default">#trim(i)#</li>
-				</cfloop>
-			</ul>
-			<ul id="contentDisplayListSort" class="contentDisplayListSortOptions">
-				<cfloop list="#displayList#" index="i">
-					<li class="ui-state-highlight">#trim(i)#</li>
-				</cfloop>
-			</ul>
-			<input type="hidden" id="contentDisplayList" value="#displayList#" name="displayList"/>			
-			<script>
-				//Removed from jQuery(document).ready() because it would not fire in ie7 frontend editing.
-				siteManager.setContentDisplayListSort();
-			</script>
-		</div>
-    </div>
-
-		<div class="mura-control-group">
-			<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.recordsperpage')#</label> 
-			<select name="nextN" class="dropdown">
-				<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="r">
-					<option value="#r#" <cfif r eq rc.contentBean.getNextN()>selected</cfif>>#r#</option>
-				</cfloop>
-			</select>
-		</div>
-
-		<span id="extendset-container-listdisplayoptions" class="extendset-container"></span>
-		<span id="extendset-container-tablistdisplayoptionsbottom" class="extendset-container"></span>
-
-	</div>
 	</div>
 </div>
 </cfoutput>

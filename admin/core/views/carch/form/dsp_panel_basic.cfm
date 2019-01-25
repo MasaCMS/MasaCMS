@@ -52,72 +52,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</div>
 	<div id="panel-basic" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-basic" aria-expanded="false" style="height: 0px;">
 		<div class="mura-panel-body">
-			<!--- metadata --->
-			<div class="help-block" id="mura-content-metadata">
-				<cfif not rc.contentBean.getIsNew()>
-						<cfif listFindNoCase(rc.$.getBean('contentManager').TreeLevelList,rc.type)>
-							<cfset rsRating=application.raterManager.getAvgRating(rc.contentBean.getcontentID(),rc.contentBean.getSiteID()) />
-							<cfif rsRating.recordcount>
-								<span class="meta-label">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.votes")#: <span><cfif rsRating.recordcount>#rsRating.theCount#<cfelse>0</cfif></span></span>
-								<span class="meta-label">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.averagerating")#: <img id="ratestars" src="assets/images/rater/star_#application.raterManager.getStarText(rsRating.theAvg)#.gif" alt="#rsRating.theAvg# stars" border="0"></span>
-							</cfif>
-						</cfif>
-					<cfif rc.type eq "file" and rc.contentBean.getMajorVersion()>
-							<span class="meta-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.version.file')#: <span>#rc.contentBean.getMajorVersion()#.#rc.contentBean.getMinorVersion()#</span></span>
-					</cfif>
-					</cfif>
-					<span class="meta-label">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.update")#: <span>#LSDateFormat(parseDateTime(rc.contentBean.getlastupdate()),session.dateKeyFormat)# #LSTimeFormat(parseDateTime(rc.contentBean.getlastupdate()),"short")#</span></span>
-					<span class="meta-label">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.status")#:
-						<span>
-
-							<cfif not rc.contentBean.getIsNew()>
-								<cfif rc.contentBean.getactive() gt 0 and rc.contentBean.getapproved() gt 0>
-									<cfif len(rc.contentBean.getApprovalStatus())>
-										<a href="##" onclick="return viewStatusInfo('#esapiEncode('javascript',rc.contentBean.getContentHistID())#','#esapiEncode('javascript',rc.contentBean.getSiteID())#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.published")#</a>
-									<cfelse>
-										#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.published")#
-									</cfif>
-								<cfelseif len(rc.contentBean.getApprovalStatus()) and (requiresApproval or showApprovalStatus) >
-									<a href="##" onclick="return viewStatusInfo('#esapiEncode('javascript',rc.contentBean.getContentHistID())#','#esapiEncode('javascript',rc.contentBean.getSiteID())#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.#rc.contentBean.getApprovalStatus()#")#</a>
-								<cfelseif rc.contentBean.getapproved() lt 1>
-									<cfif len(rc.contentBean.getChangesetID())>
-										#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.queued")#
-									<cfelse>
-										#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.draft")#
-									</cfif>
-								<cfelse>
-									#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.archived")#
-								</cfif>
-							<cfelse>
-								#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.draft")#
-							</cfif>
-						</span>
-					</span>
-					<cfset started=false>
-<!--- 					<span class="meta-label">
-						#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#: <span>#esapiEncode('html',rc.type)#</span>
-					</span> --->
-
-			<cfif listFind("Gallery,Link,Folder,Page,Calendar",rc.type)>
-				<span class="meta-label">
-		      #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.currentfilename')#: 
-		      <span><cfif rc.contentBean.getContentID() eq "00000000000000000000000000000000001">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.emptystring')#<cfelseif len(rc.contentID) and len(rc.contentBean.getcontentID())>#rc.contentBean.getFilename()#<cfelse>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notavailable')#</cfif>
-				   </span>
-			   </span>
-			</cfif>
-			<span class="meta-label meta-label-wide">
-		      #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentid')#: 
-		      <span><cfif len(rc.contentID) and len(rc.contentBean.getcontentID())>#rc.contentBean.getcontentID()#<cfelse>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notavailable')#</cfif>
-			    </span>
-		    </span>
-
-
-				<div class="clearfix"></div>
-  		</div> <!--- /metadata .help-block --->
-
+			
 				<span id="extendset-container-tabbasictop" class="extendset-container"></span>
-
-				<cfinclude template="dsp_type_selector.cfm">
 
 				<cfswitch expression="#rc.type#">
 					<cfcase value="Page,Folder,Calendar,Gallery,File,Link">
@@ -202,76 +138,66 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfdefaultcase>
 				</cfswitch>
 
-				<cfif ListFindNoCase("Page,Folder,Calendar,Gallery,Link",rc.type)>
-					<cfinclude template="dsp_file_selector.cfm">
-				</cfif>
+				<!--- content type/subtype --->
+				<cfinclude template="dsp_type_selector.cfm">
 
-				<cfif not ListFindNoCase('Form,Component',rc.type) >
-						<div class="mura-control-group summaryContainer" style="display:none;">
-					      	<label>
-							    	<span data-toggle="popover" title="" data-placement="right"
-							    	data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.contentSummary"))#"
-							    	data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.summary"))#"
-							    	>
-							    		#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.summary")# <i class="mi-question-circle"></i></span>
-				      		<!---<a href="##" id="editSummaryLink" onclick="javascript: toggleDisplay('editSummary','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#'); editSummary();return false">
-				      			[#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.expand")#]
-				      		</a>--->
-				      	</label>
-					      	<div id="editSummary" class="summaryContainer" style="display:none;">
-							<cfoutput>
-								<textarea name="summary" id="summary" cols="96" rows="10"><cfif application.configBean.getValue("htmlEditorType") neq "none" or len(rc.contentBean.getSummary())>#esapiEncode('html',rc.contentBean.getSummary())#<cfelse><p></p></cfif></textarea>
-							</cfoutput>
-						</div>
+				<!--- content parent --->
+				<cfif ((rc.parentid neq '00000000000000000000000000000000001' and application.settingsManager.getSite(rc.siteid).getlocking() neq 'all') or (rc.parentid eq '00000000000000000000000000000000001' and application.settingsManager.getSite(rc.siteid).getlocking() eq 'none')) and rc.contentid neq '00000000000000000000000000000000001'>
 
-					</div>
+					<cfif application.settingsManager.getSite(rc.siteid).getlocking() neq 'all'>
+						<div class="mura-control-group">
+				      		<label>
+					  			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentparent')#:
+			      			</label>
+			      			<div class="mura-control justify">
+				  				<cfif arrayLen(rc.crumbData) gt 1>
+				  					<div id="newparent-label">
+					      			"<span><cfif rc.contentBean.getIsNew()>#rc.crumbData[1].menutitle#<cfelse>#rc.crumbData[2].menutitle#</cfif></span>"
+					  				</div>
+				  				</cfif>
 
-					<script>
+								<!--- 'big ui' flyout panel --->
+								<div class="bigui" id="bigui__selectparent" data-label="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectnewparent'))#">
+									<div class="bigui__title">#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectnewparent'))#</div>
+									<div class="bigui__controls">
+										<!--- new parent UI gets loaded here --->
+								    <span id="mover2" style="display:none"><input type="hidden" name="parentid" value="#esapiEncode('html_attr',rc.parentid)#"></span>
+									</div>
+								</div> <!--- /.bigui --->
+							    
+								<script>
+									jQuery(document).ready(function(){
+										siteManager.loadSiteParents(
+											'#esapiEncode('javascript',rc.siteid)#'
+											,'#esapiEncode('javascript',rc.contentid)#'
+											,'#esapiEncode('javascript',rc.parentid)#'
+											,''
+											,1
+										);
 
-						hideSummaryEditor=function(){
-							if(typeof CKEDITOR.instances.summary != 'undefined'){
-								CKEDITOR.instances.summary.updateElement();
-								CKEDITOR.instances.summary.destroy();
-							}
-							jQuery(".summaryContainer").hide();
-							summaryLoaded=true;
-						}
+										// populate current parent text when changed
+										jQuery(document).on('click', '##mover2 input[name="parentid"]',function(){
+											var newparent = jQuery(this).parents('tr').find('ul.navZoom li:last-child').text().trim();
+											jQuery('##newparent-label > span').html(newparent);
+										})
+										jQuery(document).on('click', '##mover2 td.var-width',function(){
+											var parentradio = jQuery(this).parents('tr').find('td.actions input[name="parentid"]');
+											jQuery(parentradio).trigger('click');
+										})
+									});
+								</script>
+							</div> <!--- /end mura-control .justify --->
+						</div> <!--- /end mura-control-group --->
 
-						showSummaryEditor=function(){
-							if(typeof CKEDITOR.instances.summary == 'undefined'){
-								jQuery(".summaryContainer").show();
-								jQuery('##summary').ckeditor(
-					     		{ toolbar:'Summary',
-					     			height:'150',
-					     		  	customConfig : 'config.js.cfm'
-								},
-								function(editorInstance){
-									htmlEditorOnComplete(editorInstance);
-									if (!hasBody){
-										showPreview();
-									}
-								}
-					     	);
-							}
-						}
-						<cfif not isExtended>
-						showSummaryEditor();
-						</cfif>
-					</script>
-				</cfif>
+					<cfelse>
+					 	<input type="hidden" name="parentid" value="#esapiEncode('html_attr',rc.parentid)#">
+					</cfif> <!--- /end content parent --->
 
-				<!----
-				<cfif rc.contentBean.getType() eq 'Variation'>
-					<div class="mura-control-group">
-						<label>
-							Custom Initialization Javascript
-							<!---#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.editableregiontargeting')#--->
-						</label>
-						<textarea name="initjs" id="initjs" rows="10">#esapiEncode('html',rc.contentBean.getVariationTargeting().getInitJS())#</textarea>
-					</div>
-				</cfif>
-				--->
+				<cfelse>
+					<input type="hidden" name="parentid" value="#esapiEncode('html_attr',rc.parentid)#">
+				</cfif> <!--- /end content parent --->
 
+				<!--- body --->
 				<cfif listFindNoCase(rc.$.getBean('contentManager').HTMLBodyList,rc.type)>
 					<cfset rsPluginEditor=application.pluginManager.getScripts("onHTMLEdit",rc.siteID)>
 
@@ -425,7 +351,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfinclude template="dsp_file_selector.cfm">
 					</cfsavecontent>
 				</cfif>
+				<!--- /end body --->
 
+
+<!--- todo these fields below need new homes --->
+
+				<!--- component module assignments --->
 				<cfif rc.type eq 'Component'>
 					<div class="mura-control-group">
 					    <label>
