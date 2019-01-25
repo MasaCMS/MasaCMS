@@ -18057,6 +18057,7 @@ Mura.UI.Form=Mura.UI.extend(
 		formrequiredwrapperclass:"",
 		formbuttonsubmitclass :"form-submit",
 		formbuttonsubmitlabel : "Submit",
+		formbuttonsubmitwaitlabel : "Please Wait...",
 		formbuttonnextclass:"form-nav",
 		formbuttonnextlabel : "Next",
 		formbuttonbackclass:"form-nav",
@@ -18754,9 +18755,9 @@ Mura.UI.Form=Mura.UI.extend(
 
 		delete self.data.isNew;
 
-		Mura(self.context.formEl)
-			.find('form')
-			.trigger('formSubmit');
+		var frm=Mura(self.context.formEl).find('form');
+		frm.find('.mura-form-submit').html(self.rb.formbuttonsubmitwaitlabel);
+		frm.trigger('formSubmit');
 
 		if(self.ormform) {
 			//console.log('a!');
@@ -18896,7 +18897,8 @@ Mura.UI.Form=Mura.UI.extend(
 		var frm=Mura(this.context.formEl);
 		var frmErrors=frm.find(".error-container-" + self.context.objectid);
 
-		Mura(this.context.formEl).find('.mura-response-error').remove();
+		frm.find('.mura-form-submit').html(self.rb.formbuttonsubmitlabel);
+		frm.find('.mura-response-error').remove();
 
 		console.log(errors);
 
