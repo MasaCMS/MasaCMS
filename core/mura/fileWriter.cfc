@@ -85,11 +85,24 @@
 		<cfargument name="destination">
 		<cfargument name="mode" required="true" default="#variables.defaultFileMode#">
 		<cflock name="mfw#hash(arguments.source)#" type="exclusive" timeout="5">
-			<cfif variables.useMode >
-				<cffile action="copy" mode="#arguments.mode#" source="#arguments.source#" destination="#arguments.destination#" />
-			<cfelse>
-				<cffile action="copy" source="#arguments.source#" destination="#arguments.destination#" />
-			</cfif>
+			<cftry>
+				<cfif variables.useMode >
+					<cffile action="copy" mode="#arguments.mode#" source="#arguments.source#" destination="#arguments.destination#" />
+				<cfelse>
+					<cffile action="copy" source="#arguments.source#" destination="#arguments.destination#" />
+				</cfif>
+				<cfcatch>
+					<cfset sleep(RandRange(500, 1000))>
+					<cfif fileExists(arguments.destination)>
+						<cfset fileDelete(arguments.destination)>
+					</cfif>
+					<cfif variables.useMode >
+						<cffile action="copy" mode="#arguments.mode#" source="#arguments.source#" destination="#arguments.destination#" />
+					<cfelse>
+						<cffile action="copy" source="#arguments.source#" destination="#arguments.destination#" />
+					</cfif>
+				</cfcatch>
+			</cftry>
 		</cflock>
 		<cfreturn this />
 	</cffunction>
