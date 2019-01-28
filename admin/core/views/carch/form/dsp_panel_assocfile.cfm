@@ -50,9 +50,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<a class="collapse" role="button" data-toggle="collapse" data-parent="##content-panels" href="##panel-assoc" aria-expanded="true" aria-controls="panel-assoc">
 				<!--- todo better rb keys for these --->
 				<cfif rc.ptype eq 'Gallery' or rc.type neq 'File'>
-			  		#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectimage')#
+			  		#listLast(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectimage'),' ')#
 				<cfelse>
-					#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectfile')#
+					#listLast(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectfile'),' ')#
 				</cfif>
 			</a>
 		</h4>
