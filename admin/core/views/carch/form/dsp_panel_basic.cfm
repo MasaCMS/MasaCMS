@@ -55,6 +55,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 				<span id="extendset-container-tabbasictop" class="extendset-container"></span>
 
+				<!--- type/subtype --->
+				<cfinclude template="dsp_type_selector.cfm">
+
+				<!--- title --->
 				<cfswitch expression="#rc.type#">
 					<cfcase value="Page,Folder,Calendar,Gallery,File,Link">
 						<div class="mura-control-group">
@@ -67,9 +71,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						    </label>
 						   	<cfset hasSEOTab=rc.moduleid eq '00000000000000000000000000000000000' and (not len(tabAssignments) or listFindNocase(tabAssignments,'SEO'))>
 							<input type="text" id="title" name="title" value="#esapiEncode('html_attr',rc.contentBean.gettitle())#"  maxlength="255" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.titlerequired')#" <cfif hasSEOTab and not rc.contentBean.getIsNew()>onkeypress="openDisplay('editAdditionalTitles','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');"</cfif>>
-							<div class="mura-control justify">
-								<button type="button" id="showTitles" name="showTitles" class="btn">Show Additional Content Titles</button>
-							</div>
 							<div id="alertTitleSuccess" class="help-block" style="display:none;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.seotitlescleared')# </div>
 
 							<cfif hasSEOTab>
@@ -137,9 +138,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			     		</div>
 					</cfdefaultcase>
 				</cfswitch>
-
-				<!--- content type/subtype --->
-				<cfinclude template="dsp_type_selector.cfm">
+				<!--- /title --->
 
 				<!--- content parent --->
 				<cfif ((rc.parentid neq '00000000000000000000000000000000001' and application.settingsManager.getSite(rc.siteid).getlocking() neq 'all') or (rc.parentid eq '00000000000000000000000000000000001' and application.settingsManager.getSite(rc.siteid).getlocking() eq 'none')) and rc.contentid neq '00000000000000000000000000000000001'>
@@ -422,7 +421,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<script>
 		jQuery(document).ready(function(){
 
-			$('##mura-seo-titles').hide();
 			$('##showTitles').click(function(e){
 				$(this).parents('div.mura-control').hide();
 				$('##alertTitleSuccess').hide();
