@@ -15398,12 +15398,24 @@ Mura.Feed = Mura.Core.extend(
 		/**
 		 * contentPoolID - Sets items per page
 		 *
-		 * @param  {number} contentPoolID Items per page
+		 * @param  {string} contentPoolID Items per page
 		 * @return {Mura.Feed}              Self
 		 */
 		contentPoolID: function(contentPoolID) {
 			this.queryString += '&contentpoolid=' + encodeURIComponent(
 				contentPoolID);
+			return this;
+		},
+
+		/**
+		 * contentPoolID - Sets items per page
+		 *
+		 * @param  {string} feedID Items per page
+		 * @return {Mura.Feed}              Self
+		 */
+		feedID: function(feedID) {
+			this.queryString += '&feedid=' + encodeURIComponent(
+				feedID);
 			return this;
 		},
 
