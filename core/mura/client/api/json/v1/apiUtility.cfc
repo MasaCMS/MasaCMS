@@ -2469,6 +2469,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		var checkProp='';
 		var feedIDParam='';
 		var queryArray=listToArray(arguments.queryString,'&');
+		var started=false;
 
 		if(arguments.entityName=='content'){
 			for(p in queryArray){
@@ -2556,7 +2557,6 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			}
 
 			var relationship='and';
-			var started=false;
 			var advancedsort='';
 
 			for(var p in queryParams){
