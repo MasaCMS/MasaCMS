@@ -156,7 +156,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				      	 <i class="mi-question-circle"></i>
 				      </span>
 			      </label>
-			      <cf_datetimeselector name="releaseDate" datetime="#rc.contentBean.getReleaseDate()#">
+			      <cf_datetimeselector name="releaseDate" datetime="#rc.contentBean.getReleaseDate()#" timeselectwrapper="true">
 				</div> <!--- /end mura-control-group --->
 			</cfif>	<!--- /end release date --->
 
