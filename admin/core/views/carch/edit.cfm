@@ -615,7 +615,9 @@ titleBlock.onclick = function(event){
 			if (!($('##panel-basic').hasClass('in'))){
 				$('##heading-basic h4 a').trigger('click');
 			}
+			<cfif not rc.contentBean.getIsNew()>
 			openDisplay('editAdditionalTitles','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');
+			</cfif>
 		}
 	}
 }
