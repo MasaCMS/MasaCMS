@@ -611,6 +611,10 @@ titleBlock.onclick = function(event){
 			var newTitle = holder.value;
 			var realTitle = document.getElementById('title');
 			realTitle.value = newTitle;
+			// todo: open basic tab when changing title div
+			if (!($('##panel-basic').hasClass('in'))){
+				$('##heading-basic h4 a').trigger('click');
+			}
 			openDisplay('editAdditionalTitles','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');
 		}
 	}
