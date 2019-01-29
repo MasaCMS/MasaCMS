@@ -87,13 +87,52 @@ CKEDITOR.editorConfig = function( config )
 	config.pasteFromWordRemoveStyles = true;
  	config.floatSpacePinnedOffsetY = 32;
 	config.toolbarStartupExpanded=true;
-	config.toolbarCanCollapse = true;
+	config.toolbarCanCollapse = false;
 	config.startupShowBorders = false;
 	// Hide title attriute
 	config.title = false;
 
 	<!--- Toolbars --->
 
+		config.toolbar_Default = [
+        {name: 'group0', items:['Styles','Format']},
+        {name: 'group1', items:['Bold','Italic','Underline','RemoveFormat']},
+        {name: 'group2', items:['NumberedList','BulletedList','Outdent','Indent','Blockquote']},
+        {name: 'group3', items:['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']},
+        {name: 'group4', items:['Link','Unlink','Anchor']},
+        {name: 'group5', items:['PasteText','PasteFromWord','-','Image','oembed','leaflet','-','Table','HorizontalRule','SpecialChar','-','Selectlink','SelectComponent',<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
+        {name: 'group6', items:['Find','A11ychecker','Source','Maximize']}
+  		];
+
+		config.toolbar_QuickEdit = [
+      {name: 'group0', items:['Styles','Format']},
+      {name: 'group1', items:['Bold','Italic','Underline','RemoveFormat']},
+      {name: 'group2', items:['NumberedList','BulletedList','Outdent','Indent','Blockquote']},
+      {name: 'group3', items:['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']},
+      {name: 'group4', items:['Link','Unlink','Anchor']},
+      '/',
+      {name: 'group5', items:['PasteText','PasteFromWord','-','Image','oembed','leaflet','-','Table','HorizontalRule','SpecialChar','-','Selectlink','SelectComponent',<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
+      {name: 'group6', items:['Find','A11ychecker','Source','Maximize']}
+		];
+
+ 		config.toolbar_Summary = [
+			{name: 'group0', items: ['Bold','Italic','Underline','RemoveFormat','-','NumberedList','BulletedList','-','Link','Unlink']},
+			{name: 'group1', items: ['PasteText','PasteFromWord','-','Image','-','SpecialChar']},
+			{name: 'group2', items: ['A11ychecker','Source']}
+		];
+
+		config.toolbar_Form = [
+      {name: 'group0', items:['Styles','Format']},
+      {name: 'group1', items:['Bold','Italic','Underline','RemoveFormat']},
+      {name: 'group2', items:['NumberedList','BulletedList','Outdent','Indent','Blockquote']},
+      {name: 'group3', items:['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']},
+      {name: 'group4', items:['Link','Unlink','Anchor']},
+      {name: 'group5', items:['PasteText','PasteFromWord','-','Image','oembed','leaflet','-','Table','HorizontalRule','SpecialChar','-','Selectlink','SelectComponent',<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
+      {name: 'group6', items:['Find','A11ychecker','Source','Maximize']},
+			{name: 'group11', items: ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField']},
+		];
+
+<!---
 		config.toolbar_Default = [
 			{name: 'group1', items:['A11ychecker','Source']},
 			{name: 'group2', items:['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print']},
@@ -149,6 +188,7 @@ CKEDITOR.editorConfig = function( config )
 			{name: 'group11', items: ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField']},
 			{name: 'group12', items: ['Styles','Format','-','Maximize','ShowBlocks','About']}
 		];
+--->		
 
 		config.toolbar_Basic = [
 			{name: 'group1', items: ['Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink']}
@@ -172,18 +212,7 @@ CKEDITOR.editorConfig = function( config )
 
 	<!--- /Toolbars --->
 
-	config.extraPlugins = 'SelectComponent,Selectlink,leaflet,tableresize,onchange,justify,find,bidi,div,showblocks,forms,templates,pagebreak,codemirror,widget,lineutils,dialog,oembed,sourcedialog,fakeobjects,dialogui,showprotected,balloonpanel,dialogadvtab,a11ychecker';
-
-	if(typeof jQuery == 'undefined'){
-		config.toolbar_QuickEdit[0].items.shift()
-		config.toolbar_htmlEditor[0].items.shift()
-		config.toolbar_FormBuilder[0].items.shift()
-		config.toolbar_Form[0].items.shift()
-		config.toolbar_Default[0].items.shift()
-		var ep=config.extraPlugins.split(",");
-		ep.pop();
-		config.extraPlugins=ep.join()
-	}
+	config.extraPlugins = 'SelectComponent,Selectlink,leaflet,tableresize,onchange,justify,find,bidi,div,showblocks,forms,templates,pagebreak,codemirror,widget,lineutils,dialog,oembed,sourcedialog,fakeobjects,dialogui,showprotected,balloonpanel,a11ychecker,dialogadvtab';
 
 	<cfif len($.siteConfig().getRazunaSettings().getApiKey())>
 		config.extraPlugins += ',razuna';
@@ -227,7 +256,7 @@ CKEDITOR.editorConfig = function( config )
 		config.filebrowserUploadUrl = connectorpath;
 		config.filebrowserImageUploadUrl = connectorpath + '?type=Images';
 	</cfif>
-
+	
 	<cfset secure=$.getBean('utility').isHTTPS()>
 
 	<!--- contentsCss --->
@@ -275,7 +304,6 @@ CKEDITOR.editorConfig = function( config )
 		<cfelseif fileExists(expandPath($.siteConfig("includePath") & '/js/editor/config.js') )>
 			config.customConfig='#$.siteConfig().getAssetPath(useProtocol=0,secure=secure,complete=1,domain=cgi.server_name)#/js/editor/config.js';
 		</cfif>
-
 
 	config.defaultLanguage='#listFirst($.siteConfig('JavaLocale'),'_')#';
 
@@ -326,13 +354,13 @@ CKEDITOR.on( 'dialogDefinition', function( ev ) {
 				var modalContainerHeight = $(pwEl).parent().height();
 				var dialogHeight = this.getSize().height;
 				var viewPortHeight = $(top).innerHeight();
-
+			
 				// calculate the range the dialog can be
 				var modalContainerTopVisible = windowScrolledTo - modalContainerPosition.top <= 0;
 				var topEdge = modalContainerTopVisible ? 0 : windowScrolledTo - modalContainerPosition.top;
 				var modalContainerBottomVisible = (windowScrolledTo + viewPortHeight) >= (modalContainerPosition.top + modalContainerHeight);
 				var bottomEdge = modalContainerBottomVisible ? modalContainerHeight : (windowScrolledTo + viewPortHeight) - modalContainerPosition.top;
-
+				
 				// position the dialog
 				if ( (currentPosition.y < topEdge )  ) { // align with the top edge of the modal continer
 					this.move(currentPosition.x,topEdge,false);
