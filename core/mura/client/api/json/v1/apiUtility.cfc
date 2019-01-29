@@ -2470,19 +2470,21 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		var feedIDParam='';
 		var queryArray=listToArray(arguments.queryString,'&');
 
-		for(p in queryArray){
-			if(left(p,6)=='feedid'){
-				checkProp=urlDecode(listFirst(p,'='));
-				if(find('[',checkProp)){
-					propName=listFirst(checkProp,'[');
-					propIndex=listFirst(listlast(checkProp,'['),']');
-					structDelete(arguments,propName & propIndex);
-				} else {
-					propName=p;
-				}
-				if(propName=='feedid'){
-					$.event('feedid',listLast(p,'='));
-					feedIDParam=p;
+		if(arguments.entityName=='content'){
+			for(p in queryArray){
+				if(left(p,6)=='feedid'){
+					checkProp=urlDecode(listFirst(p,'='));
+					if(find('[',checkProp)){
+						propName=listFirst(checkProp,'[');
+						propIndex=listFirst(listlast(checkProp,'['),']');
+						structDelete(arguments,propName & propIndex);
+					} else {
+						propName=p;
+					}
+					if(propName=='feedid'){
+						$.event('feedid',listLast(p,'='));
+						feedIDParam=p;
+					}
 				}
 			}
 		}
