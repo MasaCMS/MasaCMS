@@ -61,8 +61,9 @@
   		 <i class="mi-question-circle"></i></span>
   	</label>
 		<select name="display" id="mura-display" onchange="javascript: this.selectedIndex==2?toggleDisplay2('editDates',true):toggleDisplay2('editDates',false);">
-		<option value="1"  <cfif rc.contentBean.getdisplay() EQ 1> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#</option>
-		<option value="0"  <cfif rc.contentBean.getdisplay() EQ 0> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.no')#</option>
+			<!--- todo: rb keys for 'always', 'never' --->
+		<option value="1"  <cfif rc.contentBean.getdisplay() EQ 1> selected</cfif>>Always<!--- #application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')# ---></option>
+		<option value="0"  <cfif rc.contentBean.getdisplay() EQ 0> selected</cfif>>Never<!--- #application.rbFactory.getKeyValue(session.rb,'sitemanager.no')# ---></option>
 		<option value="2"  <cfif rc.contentBean.getdisplay() EQ 2> selected</CFIF>>
 			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.perschedule')#
 		</option>
@@ -519,10 +520,10 @@
 							+ 'Repeating ' 
 							+ $('##displayIntervalType option:selected').html();
 		
-		if ( $('##displayIntervalEnd').val() == 'on' ){
+		if ( $('##displayIntervalEnd').val() == 'on' && $('##displayIntervalEndOn').val() != ''){
 				csStr += ' until ' + $('##displayIntervalEndOn').val();
 		} 
-		else if ( $('##displayIntervalEnd').val() == 'after' ){
+		else if ( $('##displayIntervalEnd').val() == 'after'  && $('##displayIntervalEndAfter').val() >= 1){
 				csStr += ' x ' + $('##displayIntervalEndAfter').val();
 		}
 
