@@ -2465,7 +2465,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		var propName='';
 		var propIndex=0;
 		var p='';
-		var i=''
+		var i='';
 		var checkProp='';
 		var feedIDParam='';
 		var queryArray=listToArray(arguments.queryString,'&');
