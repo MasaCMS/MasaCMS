@@ -84,11 +84,26 @@
 		<cfargument name="source">
 		<cfargument name="destination">
 		<cfargument name="mode" required="true" default="#variables.defaultFileMode#">
-		<cfif variables.useMode >
-			<cffile action="copy" mode="#arguments.mode#" source="#arguments.source#" destination="#arguments.destination#" />
-		<cfelse>
-			<cffile action="copy" source="#arguments.source#" destination="#arguments.destination#" />
-		</cfif>
+		<cflock name="mfw#hash(arguments.source)#" type="exclusive" timeout="5">
+			<cftry>
+				<cfif variables.useMode >
+					<cffile action="copy" mode="#arguments.mode#" source="#arguments.source#" destination="#arguments.destination#" />
+				<cfelse>
+					<cffile action="copy" source="#arguments.source#" destination="#arguments.destination#" />
+				</cfif>
+				<cfcatch>
+					<cfset sleep(RandRange(500, 1000))>
+					<cfif fileExists(arguments.destination)>
+						<cfset fileDelete(arguments.destination)>
+					</cfif>
+					<cfif variables.useMode >
+						<cffile action="copy" mode="#arguments.mode#" source="#arguments.source#" destination="#arguments.destination#" />
+					<cfelse>
+						<cffile action="copy" source="#arguments.source#" destination="#arguments.destination#" />
+					</cfif>
+				</cfcatch>
+			</cftry>
+		</cflock>
 		<cfreturn this />
 	</cffunction>
 
@@ -96,15 +111,17 @@
 		<cfargument name="source">
 		<cfargument name="destination">
 		<cfargument name="mode" required="true" default="#variables.defaultFileMode#">
-		<cfif variables.useMode >
-			<cffile action="copy" mode="#arguments.mode#" source="#arguments.source#" destination="#arguments.destination#" />
-			<cftry><cffile action="delete" file="#arguments.source#" /><cfcatch></cfcatch></cftry>
-			<!---<cffile action="move" mode="#arguments.mode#" source="#arguments.source#" destination="#arguments.destination#" />--->
-		<cfelse>
-			<cffile action="copy" source="#arguments.source#" destination="#arguments.destination#" />
-			<cftry><cffile action="delete" file="#arguments.source#" /><cfcatch></cfcatch></cftry>
-			<!---<cffile action="move" source="#arguments.source#" destination="#arguments.destination#" />--->
-		</cfif>
+		<cflock name="mfw#hash(arguments.source)#" type="exclusive" timeout="5">
+			<cfif variables.useMode >
+				<cffile action="copy" mode="#arguments.mode#" source="#arguments.source#" destination="#arguments.destination#" />
+				<cftry><cffile action="delete" file="#arguments.source#" /><cfcatch></cfcatch></cftry>
+				<!---<cffile action="move" mode="#arguments.mode#" source="#arguments.source#" destination="#arguments.destination#" />--->
+			<cfelse>
+				<cffile action="copy" source="#arguments.source#" destination="#arguments.destination#" />
+				<cftry><cffile action="delete" file="#arguments.source#" /><cfcatch></cfcatch></cftry>
+				<!---<cffile action="move" source="#arguments.source#" destination="#arguments.destination#" />--->
+			</cfif>
+		</cflock>
 		<cfreturn this />
 	</cffunction>
 
@@ -112,11 +129,13 @@
 		<cfargument name="source">
 		<cfargument name="destination">
 		<cfargument name="mode" required="true" default="#variables.defaultFileMode#">
-		<cfif variables.useMode >
-			<cffile action="rename" mode="#arguments.mode#" source="#arguments.source#" destination="#arguments.destination#" />
-		<cfelse>
-			<cffile action="rename" source="#arguments.source#" destination="#arguments.destination#" />
-		</cfif>
+		<cflock name="mfw#hash(arguments.source)#" type="exclusive" timeout= "5">
+			<cfif variables.useMode >
+				<cffile action="rename" mode="#arguments.mode#" source="#arguments.source#" destination="#arguments.destination#" />
+			<cfelse>
+				<cffile action="rename" source="#arguments.source#" destination="#arguments.destination#" />
+			</cfif>
+		</cflock>
 		<cfreturn this />
 	</cffunction>
 
@@ -197,11 +216,13 @@
 		<cfargument name="file">
 		<cfargument name="output">
 		<cfargument name="mode" required="true" default="#variables.defaultFileMode#">
-		<cfif variables.useMode >
-			<cffile action="append" mode="#arguments.mode#" file="#arguments.file#" output="#arguments.output#"/>
-		<cfelse>
-			<cffile action="append" file="#arguments.file#" output="#arguments.output#" />
-		</cfif>
+		<cflock name="mfw#hash(arguments.file)#" type="exclusive" timeout="5">
+			<cfif variables.useMode >
+				<cffile action="append" mode="#arguments.mode#" file="#arguments.file#" output="#arguments.output#"/>
+			<cfelse>
+				<cffile action="append" file="#arguments.file#" output="#arguments.output#" />
+			</cfif>
+		</cflock>
 		<cfreturn this />
 	</cffunction>
 

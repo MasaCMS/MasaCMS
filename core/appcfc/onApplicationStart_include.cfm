@@ -305,6 +305,7 @@ if ( application.setupComplete ) {
 		variables.serviceFactory.addAlias("category","categoryBean");
 		variables.serviceFactory.addAlias("categoryFeed","categoryFeedBean");
 		variables.serviceFactory.addAlias("userFeed","userFeedBean");
+		variables.serviceFactory.addAlias("groupFeed","userFeedBean");
 		variables.serviceFactory.addAlias("comment","contentCommentBean");
 		variables.serviceFactory.addAlias("commentFeed","contentCommentFeedBean");
 		variables.serviceFactory.addAlias("stats","contentStatsBean");
@@ -377,6 +378,7 @@ if ( application.setupComplete ) {
 		} catch (any cfcatch) {}
 	}
 
+
 	application.objectMappings={};
 	application.objectMappings.bundleableBeans="";
 	application.objectMappings.versionedBeans="";
@@ -431,9 +433,10 @@ if ( application.setupComplete ) {
 		} else if (fileExists(application.configBean.getValue('externalConfig'))) {
 			config=fileRead(application.configBean.getValue('externalConfig'),'utf-8');
 		}
-
 		if(isJSON(config)){
 			application.muraExternalConfig=deserializeJSON(config);
+		} else {
+			writeLog(type="Error", file="exception", text="Error reading external config from  '#application.configBean.getValue('externalConfig')#': #config#");
 		}
 	}
 
@@ -449,7 +452,9 @@ if ( application.setupComplete ) {
 		}
 	}
 
+	request.muraattachormlinks=true;
 	application.serviceFactory.loadDynamicEntities();
+	request.muraattachormlinks=false;
 
 	application.appAutoUpdated=false;
 
@@ -475,6 +480,8 @@ if ( application.setupComplete ) {
 		application.mura=application.serviceFactory.getBean('mura');
 	}
 
+	request.muraattachormlinks=true;
+
 	//  End beanServicePlaceHolders
 	variables.temp='';
 	application.badwords = ReReplaceNoCase(trim(variables.temp), "," , "|" , "ALL");
@@ -488,6 +495,7 @@ if ( application.setupComplete ) {
 	if ( fileExists(ExpandPath("/muraWRM/config/settings.custom.managers.cfm")) ) {
 		include "/muraWRM/config/settings.custom.managers.cfm";
 	}
+
 	variables.basedir=expandPath("/muraWRM");
 	variables.mapprefix="";
 	if ( len(application.configBean.getValue('encryptionKey')) ) {

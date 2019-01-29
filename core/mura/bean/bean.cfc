@@ -798,12 +798,12 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 					       	 		prop.required=false;
 					       	 	}
 
-					       	 	if(prop.fieldtype eq 'id'){
-									setPropAsIDColumn(prop);
-									if(!getIsHistorical() || prop.name !='histid'){
-										application.objectMappings[variables.entityName].primaryKey=prop.name;
-									}
-					      }
+						       	if(prop.fieldtype eq 'id'){
+											setPropAsIDColumn(prop);
+											if(!getIsHistorical() || prop.name !='histid'){
+												application.objectMappings[variables.entityName].primaryKey=prop.name;
+											}
+							      }
 
 			       	 	if(!structKeyExists(prop,"dataType")){
 			       	 		if(structKeyExists(prop,"ormtype")){
@@ -822,6 +822,12 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 
 								if(structKeyExists(prop,'relatesTo')){
 									prop.cfc=prop.relatesTo;
+								}
+
+								if(structKeyExists(prop,'optionlist') && len(prop.optionlist)){
+									if(!structKeyExists(prop,'optionvaluelist') || !len(prop.optionvaluelist)){
+										prop.optionvaluelist=prop.optionlist;
+									}
 								}
 
 			       	 	if(structKeyExists(prop,'cfc')){
@@ -844,7 +850,6 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 										arrayAppend(application.objectMappings[variables.entityName].hasMany, prop);
 
 										//Add has many methods to entity
-			       	 			//getBean("#prop.cfc#").loadBy(argumentCollection=structAppend(arguments.MissingMethodArguments,synthArgs(application.objectMappings[variables.entityName].synthedFunctions["has#prop.name#"].args),false)).recordcount
 				       	 		application.objectMappings[variables.entityName].synthedFunctions['get#prop.name#Iterator']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=prop.name,fkcolumn=prop.fkcolumn,loadkey=prop.loadkey,cfc=prop.cfc,returnFormat="iterator",functionType='getEntityIterator'}};
 										application.objectMappings[variables.entityName].synthedFunctions['get#prop.name#']=application.objectMappings[variables.entityName].synthedFunctions['get#prop.name#Iterator'];
 				       	 		application.objectMappings[variables.entityName].synthedFunctions['get#prop.name#Query']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=prop.name,fkcolumn=prop.fkcolumn,loadkey=prop.loadkey,cfc=prop.cfc,returnFormat="query",functionType='getEntityQuery'}};
@@ -866,8 +871,12 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 										//If it's a relationship to a core entity then add the synthesized method to the core entity's mappings
 				       	 		if(listFindNoCase('content,user,feed,category,address,site,comment',prop.cfc)){
 
+											param name="application.objectMappings.#prop.cfc#.hasMany" default=[];
+											param name="application.objectMappings.#prop.cfc#.hasOne" default=[];
+
 				       	 			if(prop.fieldtype eq 'many-to-many'){
 												//Add has many methods to the core entity
+												//appendHasRef(application.objectMappings[prop.cfc].hasMany, {name=pluralizeHasRefName(variables.entityName),cfc=variables.entityName,loadkey=prop.fkcolumn,column=prop.loadkey},'hasMany');
 				       	 				application.objectMappings[prop.cfc].synthedFunctions['get#variables.entityName#Iterator']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=variables.entityName,fkcolumn=prop.fkcolumn,loadkey=prop.loadkey,inverse=true,siteid=true,cfc="#variables.entityName#",returnFormat="iterator",functionType='getEntityIterator'}};
 												application.objectMappings[prop.cfc].synthedFunctions['get#prop.name#']=application.objectMappings[prop.cfc].synthedFunctions['get#variables.entityName#Iterator'];
 												application.objectMappings[prop.cfc].synthedFunctions['get#variables.entityName#Query']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=variables.entityName,fkcolumn=prop.fkcolumn,loadkey=prop.loadkey,inverse=true,siteid=true,cfc="#variables.entityName#",returnFormat="query",functionType='getEntityQuery'}};
@@ -877,25 +886,32 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 
 				       	 			} else {
 												//Add has one methods to the core entity
+												//appendHasRef(application.objectMappings[prop.cfc].hasOne,{name=variables.entityName,cfc=variables.entityName,loadkey=prop.fkcolumn,column=prop.loadkey},'hasOne');
 				       	 				application.objectMappings[prop.cfc].synthedFunctions['get#variables.entityName#']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=variables.entityName,fkcolumn="#prop.fkcolumn#",loadkey=prop.loadkey,inverse=true,siteid=true,cfc="#variables.entityName#",returnFormat="this",functionType='getEntity'}};
 				       	 				//application.objectMappings[prop.cfc].synthedFunctions['set#variables.entityName#']={exp='setValue("#prop.fkcolumn#",arguments.MissingMethodArguments[1].getValue(arguments.MissingMethodArguments[1].getValue("#prop.fkcolumn#"))',args={prop=variables.entityName,functionType='setEntity'}};
 				       	 			}
 
 				       	 		} else {
+
+											param name="application.objectMappings.#prop.cfc#.hasMany" default=[];
+											param name="application.objectMappings.#prop.cfc#.hasOne" default=[];
+
 											if(prop.fieldtype eq 'many-to-many'){
 												//Only add method to other entity if is is not already defined
 												//Add has many methods to the core entity
+												//appendHasRef(application.objectMappings[prop.cfc].hasMany, {name=variables.entityName,cfc=variables.entityName,loadkey=prop.fkcolumn,column=prop.loadkey});
 				       	 				param name="application.objectMappings.#prop.cfc#.synthedFunctions.get#variables.entityName#Iterator" default={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=variables.entityName,fkcolumn=prop.fkcolumn,loadkey=prop.loadkey,inverse=true,siteid=true,cfc="#variables.entityName#",returnFormat="iterator",functionType='getEntityIterator'}};
-												param name="aapplication.objectMappings.#prop.cfc#.synthedFunctions.get#prop.name#" default=application.objectMappings[prop.cfc].synthedFunctions['get#variables.entityName#Iterator'];
-												param name="aapplication.objectMappings.#prop.cfc#.synthedFunctions.get#variables.entityName#Query" default={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=variables.entityName,fkcolumn=prop.fkcolumn,loadkey=prop.loadkey,inverse=true,siteid=true,cfc="#variables.entityName#",returnFormat="query",functionType='getEntityQuery'}};
+												param name="application.objectMappings.#prop.cfc#.synthedFunctions.get#prop.name#" default=application.objectMappings[prop.cfc].synthedFunctions['get#variables.entityName#Iterator'];
+												param name="application.objectMappings.#prop.cfc#.synthedFunctions.get#variables.entityName#Query" default={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=variables.entityName,fkcolumn=prop.fkcolumn,loadkey=prop.loadkey,inverse=true,siteid=true,cfc="#variables.entityName#",returnFormat="query",functionType='getEntityQuery'}};
 					       	 			//application.objectMappings[prop.cfc].synthedFunctions['has#variables.entityName#']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments).recordcount',args={prop=variables.entityName,fkcolumn=prop.fkcolumn,cfc="#variables.entityName#",returnFormat="query",functionType='hasEntity'}};
-					       	 			param name="aapplication.objectMappings.#prop.cfc#.synthedFunctions.add#variables.entityName#" default={exp='addObject(arguments.MissingMethodArguments[1])',args={prop=variables.entityName,functionType='addEntity'}};
-					       	 			param name="aapplication.objectMappings.#prop.cfc#.synthedFunctions.remove#variables.entityName#" default={exp='removeObject(arguments.MissingMethodArguments[1])',args={prop=variables.entityName,functionType='removeEntity'}};
+					       	 			param name="application.objectMappings.#prop.cfc#.synthedFunctions.add#variables.entityName#" default={exp='addObject(arguments.MissingMethodArguments[1])',args={prop=variables.entityName,functionType='addEntity'}};
+					       	 			param name="application.objectMappings.#prop.cfc#.synthedFunctions.remove#variables.entityName#" default={exp='removeObject(arguments.MissingMethodArguments[1])',args={prop=variables.entityName,functionType='removeEntity'}};
 
 				       	 			} else {
 												//Only add method to other entity if is is not already defined
 												//Add has one methods to the core entity
-				       	 				param name="aapplication.objectMappings.#prop.cfc#.synthedFunctions.get#variables.entityName#" default={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=variables.entityName,fkcolumn="#prop.fkcolumn#",loadkey=prop.loadkey,inverse=true,siteid=true,cfc="#variables.entityName#",returnFormat="this",functionType='getEntity'}};
+												//appendHasRef(application.objectMappings[prop.cfc].hasOne, {name=variables.entityName,cfc=variables.entityName,loadkey=prop.fkcolumn,column=prop.loadkey});
+				       	 				param name="application.objectMappings.#prop.cfc#.synthedFunctions.get#variables.entityName#" default={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=variables.entityName,fkcolumn="#prop.fkcolumn#",loadkey=prop.loadkey,inverse=true,siteid=true,cfc="#variables.entityName#",returnFormat="this",functionType='getEntity'}};
 				       	 				//application.objectMappings[prop.cfc].synthedFunctions['set#variables.entityName#']={exp='setValue("#prop.fkcolumn#",arguments.MissingMethodArguments[1].getValue(arguments.MissingMethodArguments[1].getValue("#prop.fkcolumn#"))',args={prop=variables.entityName,functionType='setEntity'}};
 				       	 			}
 										}
@@ -919,7 +935,11 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 										//If it's a relationship to a core entity then add the synthesized method to the core entity's mappings
 			       	 			if(listFindNoCase('content,user,feed,category,address,site,comment',prop.cfc)){
 
+											param name="application.objectMappings.#prop.cfc#.hasMany" default=[];
+											param name="application.objectMappings.#prop.cfc#.hasOne" default=[];
+
 			       	 				if(prop.fieldtype eq 'many-to-one'){
+												//appendHasRef(application.objectMappings[prop.cfc].hasMany, {name=pluralizeHasRefName(variables.entityName),cfc=variables.entityName,loadkey=prop.fkcolumn,column=prop.loadkey},'hasMany');
 												//Add has many methods to the core entity
 			       	 					application.objectMappings[prop.cfc].synthedFunctions['get#variables.entityName#Iterator']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=variables.entityName,fkcolumn=prop.fkcolumn,loadkey=prop.loadkey,inverse=true,siteid=true,cfc=variables.entityName,returnFormat="iterator",functionType='getEntityIterator'}};
 												application.objectMappings[prop.cfc].synthedFunctions['get#variables.entityName#']=application.objectMappings[prop.cfc].synthedFunctions['get#variables.entityName#Iterator'];
@@ -930,6 +950,7 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 
 			       	 				} else {
 												//Add has one methods to the core entity
+												//appendHasRef(application.objectMappings[prop.cfc].hasOne, {name=variables.entityName,cfc=variables.entityName,loadkey=prop.fkcolumn,column=prop.loadkey},'hasOne');
 					       	 			application.objectMappings[prop.cfc].synthedFunctions['get#variables.entityName#']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=variables.entityName,fkcolumn=prop.fkcolumn,loadkey=prop.loadkey,inverse=true,siteid=true,cfc=variables.entityName,returnFormat="this",functionType='getEntity'}};
 					       	 			//application.objectMappings[prop.cfc].synthedFunctions['set#variables.entityName#']={exp='setValue("#prop.fkcolumn#",arguments.MissingMethodArguments[1].getValue(arguments.MissingMethodArguments[1].getValue("#prop.fkcolumn#"))',args={prop=variables.entityName,functionType='setEntity'}};
 				       	 			}
@@ -937,6 +958,7 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 											if(prop.fieldtype eq 'many-to-one'){
 												//Only add method to other entity if is is not already defined
 												//Add has many methods to the core entity
+												//appendHasRef(application.objectMappings[prop.cfc].hasMany, {name=variables.entityName,cfc=variables.entityName,loadkey=prop.fkcolumn,column=prop.loadkey});
 			       	 					param name="application.objectMappings.#prop.cfc#.synthedFunctions.get#variables.entityName#Iterator" default={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=variables.entityName,fkcolumn=prop.fkcolumn,loadkey=prop.loadkey,inverse=true,siteid=true,cfc=variables.entityName,returnFormat="iterator",functionType='getEntityIterator'}};
 												param name="application.objectMappings.#prop.cfc#.synthedFunctions.get#variables.entityName#" default=application.objectMappings[prop.cfc].synthedFunctions['get#variables.entityName#Iterator'];
 				       	 				param name="application.objectMappings.#prop.cfc#.synthedFunctions.get#variables.entityName#Query" default={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=variables.entityName,fkcolumn=prop.fkcolumn,loadkey=prop.loadkey,inverse=true,siteid=true,cfc=variables.entityName,returnFormat="query",functionType='getEntityQuery'}};
@@ -947,6 +969,7 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 			       	 				} else {
 												//Only add method to other entity if is is not already defined
 												//Add has one methods to the core entity
+												//appendHasRef(application.objectMappings[prop.cfc].hasOne, {name=variables.entityName,cfc=variables.entityName,loadkey=prop.fkcolumn,column=prop.loadkey});
 					       	 			param name="application.objectMappings.#prop.cfc#.synthedFunctions.get#variables.entityName#" default={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=variables.entityName,fkcolumn=prop.fkcolumn,loadkey=prop.loadkey,inverse=true,siteid=true,cfc=variables.entityName,returnFormat="this",functionType='getEntity'}};
 					       	 			//application.objectMappings[prop.cfc].synthedFunctions['set#variables.entityName#']={exp='setValue("#prop.fkcolumn#",arguments.MissingMethodArguments[1].getValue(arguments.MissingMethodArguments[1].getValue("#prop.fkcolumn#"))',args={prop=variables.entityName,functionType='setEntity'}};
 				       	 			}
@@ -1003,6 +1026,30 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 		//writeDump(var=application.objectMappings[variables.entityName].properties,abort=true);
 
 		return application.objectMappings[variables.entityName].properties;
+	}
+
+	function appendHasRef(hasArray,ref,type){
+		var found=false;
+		param name="request.muraattachormlinks" default=false;
+		if(!request.muraattachormlinks || !(structKeyExists(arguments.ref,'name') && len(arguments.ref.name ))){
+			return;
+		}
+		for(var i in arguments.hasArray){
+			if(structKeyExists(i,'name') && i.name == arguments.ref.name
+			|| structKeyExists(i,'cfc') && i.cfc == arguments.ref.cfc){
+				return;
+			}
+		}
+
+		arrayAppend(arguments.hasArray,arguments.ref);
+	}
+
+	function pluralizeHasRefName(name){
+		if(right(arguments.name,1) != 's'){
+			return arguments.name & 's';
+		} else {
+			arguments.name;
+		}
 	}
 
 	private function setPropAsIDColumn(prop,isPrimaryKey=true){
@@ -1406,6 +1453,30 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 
 	function getRegisteredEntity(){
 		return getBean('entity').loadBy(name=getEntityName());
+	}
+
+	function getPermissions(){
+		var permissions={
+			read=false,
+			delete=false,
+			save=false
+		};
+
+		if(get('siteid') != ''){
+			var m=getBean('m').init(get('siteid'));
+			var api=m.siteConfig().getApi(type="json", version="v1");
+			var permUtility=getBean('permUtility');
+			if(!getPublicAPI() && !(allowRead(m) || api.allowAccess(this,m))){
+				return permissions;
+			} else {
+				permissions.save=(allowSave(m) || api.allowAction(this,m));
+				permissions.delete=(allowDelete(m) || api.allowAction(this,m));
+				permissions.read=true;
+				return permissions;
+			}
+		} else {
+			return permissions;
+		}
 	}
 
 }

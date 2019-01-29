@@ -70,6 +70,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.deferMuraJS=false>
 <cfset this.hideRestrictedNav=false>
 <cfset this.templateArray=[]>
+<cfset this.collectionLayoutArray=[]>
 <cfset this.styleLookup={
 		'textAlign'='text-align',
 		'textDecoration'='text-decoration',
@@ -233,6 +234,7 @@ General Classes
 <cfset this.formButtonSubmitclass = "form-submit  btn-primary">
 <cfset this.formButtomSubmitclass = this.formButtonSubmitclass>
 <cfset this.formButtonSubmitLabel = "Submit">
+<cfset this.formButtonSubmitWaitLabel = "Please Wait...">
 <cfset this.formButtonNextlClass = "form-nav">
 <cfset this.formButtonNextLabel = "Next">
 <cfset this.formButtonBackClass = "form-nav">
@@ -687,6 +689,7 @@ Display Objects
 		formButtomSubmitclass = this.formButtomSubmitclass,
 		formButtonSubmitclass = this.formButtonSubmitclass,
 		formButtonSubmitLabel = this.formButtonSubmitLabel,
+		formButtonSubmitWaitLabel = this.formButtonSubmitWaitLabel,
 		formButtonNextlClass = this.formButtonNextlClass,
 		formButtonNextLabel = this.formButtonNextLabel,
 		formButtonBackClass = this.formButtonBackClass,

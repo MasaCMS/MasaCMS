@@ -771,7 +771,9 @@ function setHTMLEditors() {
 						customConfig: 'config.js.cfm'
 					},
 					function(editorInstance){
-						allPageTags[i].removeAttribute('mura-inprocess');
+						if(typeof allPageTags[i] != 'undefined' && typeof allPageTags[i].removeAttribute != 'undefined'){
+							allPageTags[i].removeAttribute('mura-inprocess');
+						}
 						htmlEditorOnComplete(editorInstance)
 					}
 				);

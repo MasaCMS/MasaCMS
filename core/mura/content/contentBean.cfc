@@ -274,6 +274,8 @@ component extends="mura.bean.beanExtendable" entityName="content" table="tconten
 		var releasehour="";
 		var expireshour="";
 		var prop="";
+		var sessionData=getSession();
+
 		if ( isQuery(arguments.content) && arguments.content.recordcount ) {
 
 			for(prop in listToArray(arguments.content.columnlist)){
@@ -774,7 +776,13 @@ component extends="mura.bean.beanExtendable" entityName="content" table="tconten
 				and isDefined('arguments.displayInterval.endafter')
 				and isNumeric(arguments.displayInterval.endafter)
 				or arguments.displayInterval.end == 'never' ) {
-					setValue('displayStop',dateAdd('yyyy',100,now()));
+					var tempdate=now();
+					if(isDate(getValue('displayStop'))){
+						var current=getValue('displayStop');
+					} else {
+						var current=tempdate;
+					}
+					setValue('displayStop',dateAdd('yyyy',100,createDateTime(year(tempdate), month(tempdate), day(tempdate), hour(current), minute(current), 0)));
 				}
 			}
 			if ( isDefined('arguments.displayInterval.end') && arguments.displayInterval.end == 'on'
@@ -1273,7 +1281,7 @@ component extends="mura.bean.beanExtendable" entityName="content" table="tconten
 		if ( arguments.compactDisplay ) {
 			arguments.compactDisplay='true';
 		}
-		returnStr= "#variables.configBean.getAdminPath(complete=arguments.complete)#/?muraAction=cArch.edit&contenthistid=#getContentHistId()#&contentid=#getContentId()#&type=#getValue('type')#&siteid=#getValue('siteid')#&topid=#topID#&parentid=#getValue('parentid')#&moduleid=#getValue('moduleid')#&compactdisplay=#arguments.compactdisplay#";
+		returnStr= "#variables.configBean.getAdminPath(complete=arguments.complete)#/?muraAction=cArch.edit&contenthistid=#esapiEncode('url',getContentHistId())#&contentid=#esapiEncode('url',getContentId())#&type=#esapiEncode('url',getValue('type'))#&siteid=#esapiEncode('url',getValue('siteid'))#&topid=#esapiEncode('url',topID)#&parentid=#esapiEncode('url',getValue('parentid'))#&moduleid=#esapiEncode('url',getValue('moduleid'))#&compactdisplay=#esapiEncode('url',arguments.compactdisplay)#";
 		if ( structKeyExists(arguments,"tab") ) {
 			returnStr=returnStr & "##" & arguments.tab;
 		}
@@ -1334,6 +1342,7 @@ component extends="mura.bean.beanExtendable" entityName="content" table="tconten
 		var chain="";
 		var i="";
 		var permUtility=getBean('permUtility');
+		var sessionData=getSession();
 		var privateUserPool=getBean('settingsManager').getSite(getValue('siteid')).getPrivateUserPoolID();
 		if ( !arguments.applyExemptions || !( permUtility.isS2() || permUtility.isUserInGroup('admin',privateUserPool,0) ) ) {
 			while ( crumbs.hasNext() ) {
@@ -1456,7 +1465,7 @@ component extends="mura.bean.beanExtendable" entityName="content" table="tconten
 
 	public function getStatus() output=false {
 		var status = '';
-		param name="sessionData" default={};
+		var sessionData=getSession();
 		param name="sessionData.rb" default="en_US";
 		switch ( getStatusID() ) {
 			case  0:

@@ -1593,6 +1593,7 @@ and parentID is null
 			<cfset StructDelete(sArgs,"ContentID")/>
 			<cfset StructDelete(sArgs,"ParentID")/>
 			<cfset StructDelete(sArgs,"SiteID")/>
+			<cfset StructDelete(sArgs,"isnew")/>
 
 			<cfset newContentBean.set( content=sArgs ) />
 			<cfif rsRelated.recordCount>

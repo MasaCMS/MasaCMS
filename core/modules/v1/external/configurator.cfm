@@ -1,6 +1,6 @@
 <cfscript>
 	objectparams.render='client';
-	objectparams.async=true;
+	objectparams.async=false;
 	configuratorMarkup='';
 
 	if(isValid("url", objectConfig.configurator)){
@@ -15,10 +15,10 @@
 </cfscript>
 <cfif len(configuratorMarkup)>
 		<cf_objectconfigurator params="#objectparams#">
-			#configuratorMarkup#
+			<cfoutput>#configuratorMarkup#</cfoutput>
 			<script>
 			Mura(function(){
-				siteManager.requestDisplayObjectParams(function(params){});
+				siteManager.requestDisplayObjectParams(function(params){},'sidebar');
 			});
 			</script>
 		</cf_objectconfigurator>

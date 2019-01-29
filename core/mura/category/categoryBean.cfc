@@ -222,7 +222,7 @@ component extends="mura.bean.bean" entityName="category" table="tcontentcategori
 
 	public function getEditUrl(required any compactDisplay="false") output=false {
 		var returnStr="";
-		returnStr= "#variables.configBean.getAdminPath()#/?muraAction=cCategory.edit&categoryID=#variables.instance.categoryID#&parentID=#variables.instance.parentID#&siteid=#variables.instance.siteID#&compactDisplay=#arguments.compactdisplay#";
+		returnStr= "#variables.configBean.getAdminPath()#/?muraAction=cCategory.edit&categoryID=#esapiEncode('url',variables.instance.categoryID)#&parentID=#esapiEncode('url',variables.instance.parentID)#&siteid=#esapiEncode('url',variables.instance.siteID)#&compactDisplay=#esapiEncode('url',arguments.compactdisplay)#";
 		return returnStr;
 	}
 

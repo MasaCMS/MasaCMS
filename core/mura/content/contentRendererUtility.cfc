@@ -127,7 +127,7 @@
 
 						return '<div class="mura-region mura-region-loose mura-editable mura-inactive#inline#">
 							<label class="mura-editable-label" style="display:none;">#ucase(arguments.label)#</label>
-							<div contenteditable="false" id="mura-editable-attribute-#arguments.attribute#" class="#cssClass#" #dataString#>#arguments.value#</div>
+							<div id="mura-editable-attribute-#arguments.attribute#" class="#cssClass#" #dataString#>#arguments.value#</div>
 							</div>';
 					} else {
 
@@ -135,7 +135,7 @@
 
 						return '<div class="mura-editable mura-inactive#inline#">
 							<label class="mura-editable-label" style="display:none;">#ucase(arguments.label)#</label>
-							<div contenteditable="false" id="mura-editable-attribute-#arguments.attribute#" class="#cssClass#" #dataString#>#arguments.value#</div>
+							<div id="mura-editable-attribute-#arguments.attribute#" class="#cssClass#" #dataString#>#arguments.value#</div>
 							</div>';
 
 					}
@@ -430,7 +430,7 @@
 		<cfargument name="filterVarsList" default="">
 		<cfset var qrystr=''>
 		<cfset var item = "" />
-		<cfset var _filterVarsList='NOCACHE,PATH,DELETECOMMENTID,APPROVEDCOMMENTID,LOADLIST,INIT,SITEID,DISPLAY,#ucase(application.appReloadKey)#,#filterVars#'>
+		<cfset var _filterVarsList='METHOD,NOCACHE,PATH,DELETECOMMENTID,APPROVEDCOMMENTID,LOADLIST,INIT,SITEID,DISPLAY,#ucase(application.appReloadKey)#,#filterVars#'>
 
 		<cfif len(arguments.filterVarsList)>
 			<cfset _filterVarsList=_filterVarsList & ',' & arguments.filterVarsList>

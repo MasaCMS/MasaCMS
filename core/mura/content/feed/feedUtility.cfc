@@ -204,6 +204,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var data = "" />
 	<cfset var temp = 0 />
 	<cfset var response=structNew() />
+	<cfset response.maxItems = 0>
 
 	<cftry>
 		<cfhttp attributeCollection='#getHTTPAttrs(result="temp",
@@ -227,24 +228,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif isXML(data)>
 		<cfset response.xml=XMLParse(data)/>
 		<cfif StructKeyExists(response.xml, "rss")>
-	       	<cfset response.channelTitle =  response.xml.rss.channel.title.xmlText>
-	       	<cfif isdefined("response.xml.rss.channel.item")>
-	       		<cfset response.itemArray = response.xml.rss.channel.item>
-        		<cfset response.maxItems = arrayLen(response.itemArray) />
+			<cfset response.channelTitle =  response.xml.rss.channel.title.xmlText>
+			<cfif isdefined("response.xml.rss.channel.item")>
+				<cfset response.itemArray = response.xml.rss.channel.item>
+				<cfset response.maxItems = arrayLen(response.itemArray) />
 			<cfelse>
 				<cfset response.maxItems = 0 />
 			</cfif>
 			<cfset response.type = "rss" />
-    	<cfelseif StructKeyExists(response.xml, "rdf:RDF")>
-	       	<cfset response.channelArray = XMLSearch(response.xml, "//:channel")>
-	      	<cfset response.channelTitle =  response.channelArray[1].title.xmlText>
-	      	<cfset response.itemArray = XMLSearch(response.channelArray[1], "//:item")>
-	     	<cfset response.maxItems = arrayLen(response.itemArray) />
-	    	<cfset response.type = "rdf" />
-     	<cfelseif StructKeyExists(response.xml, "feed")>
+		<cfelseif StructKeyExists(response.xml, "rdf:RDF")>
+			<cfset response.channelArray = XMLSearch(response.xml, "//:channel")>
+			<cfset response.channelTitle =  response.channelArray[1].title.xmlText>
+			<cfset response.itemArray = XMLSearch(response.channelArray[1], "//:item")>
+			<cfset response.maxItems = arrayLen(response.itemArray) />
+			<cfset response.type = "rdf" />
+		<cfelseif StructKeyExists(response.xml, "feed")>
 			<cfset response.channelTitle =  response.xml.feed.title.xmlText>
 			<cfif isdefined("response.xml.feed.entry")>
-				<cfset response.itemArray = response.xml.feed.entry>
+			<cfset response.itemArray = response.xml.feed.entry>
 				<cfset response.maxItems = arrayLen(response.itemArray) />
 			<cfelse>
 				<cfset response.maxItems = 0 />

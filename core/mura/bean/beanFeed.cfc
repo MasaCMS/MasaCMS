@@ -168,9 +168,8 @@ function setMaxItems(any maxItems) output=false {
 
 function setFields(fields) output=false {
 	loadTableMetaData();
-
+	var tempArray=[];
 	if(len(arguments.fields)){
-		var tempArray=[];
 		for(var p in listToArray(arguments.fields)){
 			if(structKeyExists(application.objectMappings[getEntityName()].columns,trim(p))){
 				arrayAppend(tempArray,transformFieldName(p));
