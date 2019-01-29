@@ -2058,7 +2058,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			method='findCurrentUser'
 		);
 		var sessionData=getSession();
-		
+
 		if(isDefined("sessionData.mura")){
 			user.memberships=listToArray(sessionData.mura.memberships);
 			user.membershipids=listToArray(sessionData.mura.membershipids);
@@ -2462,6 +2462,30 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		checkForChangesetRequest(arguments.entityName,arguments.siteid);
 
+		var propName='';
+		var propIndex=0;
+		var p='';
+		var i=''
+		var checkProp='';
+		var feedIDParam='';
+
+		for(p in listToArray(arguments.queryString,'&')){
+			if(left(p,6)=='feedid'){
+				checkProp=urlDecode(listFirst(p,'='));
+				if(find('[',checkProp)){
+					propName=listFirst(checkProp,'[');
+					propIndex=listFirst(listlast(checkProp,'['),']');
+					structDelete(arguments,propName & propIndex);
+				} else {
+					propName=p;
+				}
+				if(propName=='feedid'){
+					$.event('feedid',listLast(p,'='));
+					feedIDParam=p;
+				}
+			}
+		}
+
 		if(arguments.entityName=='content' && len($.event('feedid'))){
 			var feed=$.getBean('feed').loadBy(feedid=$.event('feedid'));
 			var entity=$.getBean(arguments.entityName);
@@ -2506,7 +2530,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			var started=false;
 
 			for(var p in arguments.params){
-				if(!listFindNoCase('muraPointInTime,liveOnly,feedid,maxItems,pageIndex,sort,itemsPerPage,sortBy,sortDirection,contentpoolid,shownavonly,showexcludesearch,includehomepage,feedname,expand',p)){
+				if(!(len(feedIDParam) && feedIDParam != p) && !listFindNoCase('muraPointInTime,liveOnly,feedid,maxItems,pageIndex,sort,itemsPerPage,sortBy,sortDirection,contentpoolid,shownavonly,showexcludesearch,includehomepage,feedname,expand',p)){
 					feed.addParam(column=p,criteria=arguments.params[p]);
 
 					if(started){
@@ -2521,15 +2545,13 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		} else {
 			var queryParams=[];
 
-			for(var i in listToArray(arguments.queryString,'&')){
-				var checkProp=urlDecode(listFirst(i,'='));
+			for(i in listToArray(arguments.queryString,'&')){
+				checkProp=urlDecode(listFirst(i,'='));
 				if(checkProp!='pageIndex'){
 					ArrayAppend(queryParams, checkProp);
 				}
 			}
 
-			var propName='';
-			var propIndex=0;
 			var relationship='and';
 			var started=false;
 			var advancedsort='';
@@ -2559,7 +2581,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 						baseURL=baseURL & '=' & esapiEncode('url',params[p]);
 					}
 
-					if(!listFindNoCase('expand,muraPointInTime,liveOnly,feedid,cacheid,_cacheid,distinct,fields,entityname,method,maxItems,pageIndex,itemsPerPage,sortBy,sortDirection,contentpoolid,shownavonly,showexcludesearch,includehomepage,feedname',p)){
+					if(!(len(feedIDParam) && feedIDParam != p) && !listFindNoCase('expand,muraPointInTime,liveOnly,feedid,cacheid,_cacheid,distinct,fields,entityname,method,maxItems,pageIndex,itemsPerPage,sortBy,sortDirection,contentpoolid,shownavonly,showexcludesearch,includehomepage,feedname',p)){
 						if(propName == 'sort'){
 							advancedsort=listAppend(advancedsort,arguments.params[p]);
 						} else if(!(entity.getEntityName()=='user' && propName=='isPublic')){
