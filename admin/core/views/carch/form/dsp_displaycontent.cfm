@@ -68,9 +68,8 @@
 			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.perschedule')#
 		</option>
 	</select>
-</div>
 
-<div id="editDates"<cfif rc.contentBean.getdisplay() NEQ 2> style="display: none;"</cfif>>
+<div id="editDates"<cfif rc.contentBean.getdisplay() NEQ 2> style="display: none;"</cfif> class="mura-control justify">
 
 	<cfset displayInterval=rc.contentBean.getDisplayInterval().getAllValues()>
 	<cfif rc.ptype eq 'Calendar' and not rc.contentBean.exists()>
@@ -91,8 +90,9 @@
 
 				<div id="displayschedule-selector">
 
+					<!--- todo: rb key for 'starts' --->
 					<div class="mura-control-group">
-						<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.schedule')#</label>
+						<label>Starts<!--- #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.schedule')# ---></label>
 						<cf_datetimeselector name="displayStart" datetime="#rc.contentBean.getDisplayStart(timezone=displayInterval.timezone)#">
 						<cfif rc.ptype eq 'Calendar'>
 						<label id="displayIntervalToLabel" class="time">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.to')#</label>
@@ -141,8 +141,11 @@
 					</cfif>
 					<div class="mura-repeat-options mura-control-group" <cfif rc.ptype eq 'Calendar'>style="display:none"</cfif>>
 						<div class="mura-control-inline">
+							<!--- todo: rb key for 'repeats' --->
+							<label>Repeats</label>		
 							<select id="displayIntervalType" name="displayIntervalType" class="mura-repeat-option">
-								<cfloop list="daily,weekly,bi-weekly,monthly,weekdays,weekends,week1,week2,week3,week4,weeklast,yearly" index="i">
+							<!--- todo: rb key for 'never' --->
+								<cfloop list="never,daily,weekly,bi-weekly,monthly,weekdays,weekends,week1,week2,week3,week4,weeklast,yearly" index="i">
 								<option value="#i#"<cfif displayInterval.type eq i> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayInterval.#i#')#</option>
 								</cfloop>
 							</select>
@@ -220,7 +223,7 @@
 		</div>
 	</div> <!--- /.bigui --->
 
-<div>
+<div><!--- /end editDates --->
 	<script>
 	$(function(){
 		<cfif rc.ptype eq 'Calendar'>
@@ -540,5 +543,6 @@
 	});
 
 </script>
+</div>
 </div>
 </cfoutput>

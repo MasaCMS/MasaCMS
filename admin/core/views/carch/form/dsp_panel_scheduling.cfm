@@ -55,22 +55,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 			<span id="extendset-container-tabscheduletop" class="extendset-container"></span>
 
-		  	<cfif listFindNoCase('Page,Folder,Calendar,Gallery,File,Link',rc.type)>
-				<!--- release date --->
-				<div class="mura-control-group">
-				    <label>
-				    	<span data-toggle="popover" title="" data-placement="right"
-					    	data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.contentReleaseDate"))#"
-					    	data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.releasedate"))#"
-					    	>
-			      		#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.releasedate')#
-				      	 <i class="mi-question-circle"></i>
-				      </span>
-			      </label>
-			      <cf_datetimeselector name="releaseDate" datetime="#rc.contentBean.getReleaseDate()#">
-				</div> <!--- /end mura-control-group --->
-			</cfif>	
-
 			<!--- display yes/no/schedule --->
 			<cfif ((rc.parentid neq '00000000000000000000000000000000001' and application.settingsManager.getSite(rc.siteid).getlocking() neq 'all') or (rc.parentid eq '00000000000000000000000000000000001' and application.settingsManager.getSite(rc.siteid).getlocking() eq 'none')) and rc.contentid neq '00000000000000000000000000000000001'>
 
@@ -159,9 +143,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		  		
 			</cfif>
 			<!--- /end expiration --->
-				<span id="extendset-container-schedule" class="extendset-container"></span>
 
-				<span id="extendset-container-tabschedulebottom" class="extendset-container"></span>
+			<!--- release date --->
+		  	<cfif listFindNoCase('Page,Folder,Calendar,Gallery,File,Link',rc.type)>
+				<div class="mura-control-group">
+				    <label>
+				    	<span data-toggle="popover" title="" data-placement="right"
+					    	data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.contentReleaseDate"))#"
+					    	data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.releasedate"))#"
+					    	>
+			      		#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.releasedate')#
+				      	 <i class="mi-question-circle"></i>
+				      </span>
+			      </label>
+			      <cf_datetimeselector name="releaseDate" datetime="#rc.contentBean.getReleaseDate()#">
+				</div> <!--- /end mura-control-group --->
+			</cfif>	<!--- /end release date --->
+
+			<span id="extendset-container-schedule" class="extendset-container"></span>
+
+			<span id="extendset-container-tabschedulebottom" class="extendset-container"></span>
 
 		</div>
 	</div>
