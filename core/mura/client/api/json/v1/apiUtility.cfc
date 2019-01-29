@@ -2468,8 +2468,9 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		var i=''
 		var checkProp='';
 		var feedIDParam='';
+		var queryArray=listToArray(arguments.queryString,'&');
 
-		for(p in listToArray(arguments.queryString,'&')){
+		for(p in queryArray){
 			if(left(p,6)=='feedid'){
 				checkProp=urlDecode(listFirst(p,'='));
 				if(find('[',checkProp)){
@@ -2545,7 +2546,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		} else {
 			var queryParams=[];
 
-			for(i in listToArray(arguments.queryString,'&')){
+			for(i in queryArray){
 				checkProp=urlDecode(listFirst(i,'='));
 				if(checkProp!='pageIndex'){
 					ArrayAppend(queryParams, checkProp);
