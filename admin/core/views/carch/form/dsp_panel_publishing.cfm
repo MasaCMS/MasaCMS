@@ -54,6 +54,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<span id="extendset-container-tabpublishingtop" class="extendset-container"></span>
 
+			<!--- release date --->
+		  	<cfif listFindNoCase('Page,Folder,Calendar,Gallery,File,Link',rc.type)>
+				<div class="mura-control-group">
+				    <label>
+				    	<span data-toggle="popover" title="" data-placement="right"
+					    	data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.contentReleaseDate"))#"
+					    	data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.releasedate"))#"
+					    	>
+			      		#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.releasedate')#
+				      	 <i class="mi-question-circle"></i>
+				      </span>
+			      </label>
+			      <cf_datetimeselector name="releaseDate" datetime="#rc.contentBean.getReleaseDate()#" timeselectwrapper="true">
+				</div> <!--- /end mura-control-group --->
+			</cfif>	<!--- /end release date --->
+
 		  	<cfif listFindNoCase('Page,Folder,Calendar,Gallery,File,Link',rc.type)>
 
  				<!--- navigation --->
@@ -227,7 +243,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<label for="islocked" class="checkbox"><input name="isLocked" id="islocked" type="CHECKBOX" value="1" <cfif rc.contentBean.getIsLocked() eq "">checked <cfelseif rc.contentBean.getIsLocked() eq 1>checked</cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.locknode')#</label>
 			    </div>
 			</cfif>
-			
+
 			<!--- expiration --->
 			<cfif listFind("Page,Folder,Calendar,Gallery,Link,File,Link",rc.type)>
 
@@ -294,22 +310,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		  		
 			</cfif>
 			<!--- /end expiration --->
-
-			<!--- release date --->
-		  	<cfif listFindNoCase('Page,Folder,Calendar,Gallery,File,Link',rc.type)>
-				<div class="mura-control-group">
-				    <label>
-				    	<span data-toggle="popover" title="" data-placement="right"
-					    	data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.contentReleaseDate"))#"
-					    	data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.releasedate"))#"
-					    	>
-			      		#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.releasedate')#
-				      	 <i class="mi-question-circle"></i>
-				      </span>
-			      </label>
-			      <cf_datetimeselector name="releaseDate" datetime="#rc.contentBean.getReleaseDate()#" timeselectwrapper="true">
-				</div> <!--- /end mura-control-group --->
-			</cfif>	<!--- /end release date --->
 
 		   <span id="extendset-container-publishing" class="extendset-container"></span>
 
