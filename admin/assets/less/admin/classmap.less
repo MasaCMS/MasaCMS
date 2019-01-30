@@ -235,11 +235,16 @@ main > .content > :first-child:not(.alert){
 
   // datepicker fields
 
-  #main input[type=text].datepicker,
+  input[type=text].datepicker,
   .mura-content select.mura-repeat-option{
   .form-control;  
   .make-sm-column(3);
   }
+  input[type=text].mura-repeat-option.numeric{
+    .form-control;  
+    .make-sm-column(1.5);
+  }
+
   select.time{
   .form-control;  
   .make-sm-column(1);

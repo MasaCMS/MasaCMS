@@ -62,6 +62,7 @@
   	</label>
 		<select name="display" id="mura-display" onchange="javascript: this.selectedIndex==2?toggleDisplay2('editDates',true):toggleDisplay2('editDates',false);">
 			<!--- todo: rb keys for 'always', 'never' --->
+			<!--- todo: should 'always' be an option for calendar items (formerly "yes")? What schedule does it set? --->
 		<option value="1"  <cfif rc.contentBean.getdisplay() EQ 1> selected</cfif>>Always<!--- #application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')# ---></option>
 		<option value="0"  <cfif rc.contentBean.getdisplay() EQ 0> selected</cfif>>Never<!--- #application.rbFactory.getKeyValue(session.rb,'sitemanager.no')# ---></option>
 		<option value="2"  <cfif rc.contentBean.getdisplay() EQ 2> selected</CFIF>>
@@ -101,6 +102,10 @@
 						</cfif>
 					
 					</div>
+					<!--- /end starts --->
+
+					<!--- timezone --->
+					<!--- todo: enable and test --->
 					<cfif len(rc.$.globalConfig('tzRegex'))>
 					<div id="mura-tz-container" class="mura-control-group span4" style="display:none">
 						<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.timezone')#</label>
@@ -127,8 +132,10 @@
 					</cfif>
 					<input type="hidden" name="displayInterval" id="displayInterval" value="#esapiEncode('html_attr',rc.contentBean.getDisplayInterval(serialize=true))#">
 					<input name="convertDisplayTimeZone" type="hidden" value="true">
+					<!--- /end timezone --->
 
 					<div class="mura-control-group">
+						<!--- all day --->
 						<cfif rc.ptype eq 'Calendar'>
 							<label class="checkbox" for="displayIntervalAllDay">
 								<input type="checkbox" id="displayIntervalAllDay" name="displayIntervalllDay" value="1" <cfif displayInterval.allday> checked</cfif>/>&nbsp;&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.allday')#
@@ -136,10 +143,14 @@
 						<cfelse>
 							<input type="hidden" id="displayIntervalAllDay" name="displayIntervalllDay" value="0"/>
 						</cfif>
-							<label for="displayIntervalRepeats" class="checkbox">
-								<input type="checkbox" class="mura-repeat-option" id="displayIntervalRepeats" value="1" name="displayIntervalRepeats"<cfif displayInterval.repeats> checked</cfif>>&nbsp;&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.repeats')#
-							</label>
-						</div>
+
+						<!--- repeats --->
+						<label for="displayIntervalRepeats" class="checkbox">
+							<input type="checkbox" class="mura-repeat-option" id="displayIntervalRepeats" value="1" name="displayIntervalRepeats"<cfif displayInterval.repeats> checked</cfif>>&nbsp;&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.repeats')#
+						</label>
+					</div>
+
+					<!--- repeat schedule --->
 					<div class="mura-repeat-options mura-control-group" style="display:none">
 						<div class="mura-control-inline">
 							<select id="displayIntervalType" name="displayIntervalType" class="mura-repeat-option">
@@ -149,7 +160,7 @@
 							</select>
 							<label class="time-repeat">
 							&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.every')#</label>
-							<input type="text" id="displayIntervalEvery" name="displayIntervalEvery" value="#esapiEncode('html_attr',displayInterval.every)#" class="mura-repeat-option">
+							<input type="text" id="displayIntervalEvery" name="displayIntervalEvery" value="#esapiEncode('html_attr',displayInterval.every)#" class="mura-repeat-option numeric">
 
 							<label class="time-repeat">
 							<span class="mura-interval-every-label" id="mura-interval-every-label-weeks" style="display:none">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.weeks')#</span>
@@ -175,27 +186,30 @@
 					</div>
 					<!--- /end days of week --->
 
-					<div class="mura-repeat-options mura-control-group" style="display:none">
-						<label class="time-repeat">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.ends')#: </label>
-						<select id="displayIntervalEnd" name="displayIntervalEnd" class="mura-repeat-option time">
-							<option value="never" <cfif displayInterval.end eq 'never'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.never')#</option>
-							<option value="after"<cfif displayInterval.end eq 'after'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.after')#</option>
-							<option value="on"<cfif displayInterval.end eq 'on'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.on')#</option>
-						</select>
-							<span class="mura-interval-end" id="mura-interval-end-after" style="display:none">
-								<input type="text" id="displayIntervalEndAfter" name="displayIntervalEndAfter" value="#esapiEncode('html_attr',displayInterval.endafter)#" class="mura-repeat-option" size="3">
-						<label class="time-repeat">
-								#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.occurrences')#
-						</label>
-							</span>
-							<span class="mura-interval-end" id="mura-interval-end-on" style="display:none">
-								<input type="text" id="displayIntervalEndOn" name="displayIntervalEndOn" class="mura-repeat-option datepicker mura-datepickerdisplayIntervalEndOn" value="#LSDateFormat(displayInterval.endon,session.dateKeyFormat)#" maxlength="12"/>
-								<cfif rc.ptype neq 'Calendar'>
-								<cf_datetimeselector name="displayStop" datetime="#rc.contentBean.getDisplayStop(timezone=displayInterval.timezone)#" defaulthour="23" defaultminute="59">
-								</cfif>
-							</span>
-					</div>
 				</div>
+
+				<!--- ends --->
+				<div class="mura-control-group">
+					<label>#ReReplace(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.ends'),"\b(\w)","\u\1","ALL")#</label>
+					<select id="displayIntervalEnd" name="displayIntervalEnd" class="mura-repeat-option time" style="margin-left: 0;">
+						<option value="never" <cfif displayInterval.end eq 'never'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.never')#</option>
+						<option value="on"<cfif displayInterval.end eq 'on'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.on')#</option>
+						<option value="after"<cfif displayInterval.end eq 'after'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.after')#</option>
+					</select>
+						<span class="mura-interval-end" id="mura-interval-end-after" style="display:none">
+							<input type="text" id="displayIntervalEndAfter" name="displayIntervalEndAfter" value="#esapiEncode('html_attr',displayInterval.endafter)#" class="mura-repeat-option numeric" size="3">
+					<label class="time-repeat">
+							#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.occurrences')#
+					</label>
+						</span>
+						<span class="mura-interval-end" id="mura-interval-end-on" style="display:none">
+							<input type="text" id="displayIntervalEndOn" name="displayIntervalEndOn" class="mura-repeat-option datepicker mura-datepickerdisplayIntervalEndOn" value="#LSDateFormat(displayInterval.endon,session.dateKeyFormat)#" maxlength="12"/>
+							<cfif rc.ptype neq 'Calendar'>
+							<cf_datetimeselector name="displayStop" datetime="#rc.contentBean.getDisplayStop(timezone=displayInterval.timezone)#" defaulthour="23" defaultminute="59">
+							</cfif>
+						</span>
+					</div>
+					<!--- /end ends --->
 
 				<cfif rc.type eq 'Calendar'>
 					<div class="mura-control-group">
@@ -328,6 +342,10 @@
 				if(type=='after'){
 					$('##mura-interval-end-after').show();
 					pushDisplayStopOut();
+					if(!($('##displayIntervalRepeats')).is(':checked')){
+						$('##displayIntervalRepeats').trigger('click');
+					}
+
 				} else if(type=='on'){
 					$('##mura-interval-end-on').show();
 
@@ -493,6 +511,8 @@
 		$('##displayIntervalType').on('change',toggleRepeatOptions);
 		$('##displayIntervalEnd').on('change',setEndOption);
 		$('##mura-datepicker-displayStart').change(setEndOption);
+
+		//todo - can a text input be :checked?
 
 		var repeats=$('input[name="displayIntervalEvery"]').is(':checked');
 
