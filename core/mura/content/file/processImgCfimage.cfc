@@ -242,12 +242,12 @@
 		<cfelse>
 			<cfset ImageAspectRatio = ThisImage.Width / ThisImage.height />
 			<cfset NewAspectRatio = arguments.Width / arguments.height />
-
+			<!--- Tweaked to always do an imageWrite() to ensure image is properly written on S3--->
 			<cfif ImageAspectRatio eq NewAspectRatio>
 				<cfif ThisImage.width gt arguments.width>
 					<cfset ImageResize(ThisImage,arguments.width,'',variables.instance.imageInterpolation)>
-					<cfset ImageWrite(ThisImage,arguments.image,variables.instance.imageQuality)>
 				</cfif>
+				<cfset ImageWrite(ThisImage,arguments.image,variables.instance.imageQuality)>
 			<cfelseif ImageAspectRatio lt NewAspectRatio>
 				<cfset ImageResize(ThisImage,arguments.width,'',variables.instance.imageInterpolation)>
 				<cfset CropY = (ThisImage.height - arguments.height)/2 />
@@ -257,6 +257,8 @@
 				<cfset ImageResize(ThisImage,'',arguments.height,variables.instance.imageInterpolation)>
 				<cfset CropX = (ThisImage.width - arguments.width)/2 />
 				<cfset ImageCrop(ThisImage, CropX, 0, arguments.width, arguments.height) />
+				<cfset ImageWrite(ThisImage,arguments.image,variables.instance.imageQuality)>
+			<cfelse>
 				<cfset ImageWrite(ThisImage,arguments.image,variables.instance.imageQuality)>
 			</cfif>
 		</cfif>
