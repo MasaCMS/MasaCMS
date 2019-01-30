@@ -189,7 +189,7 @@
 				</div>
 
 				<!--- ends --->
-				<div class="mura-control-group">
+				<div class="mura-control-group<cfif rc.ptype eq 'Calendar'> mura-repeat-options</cfif>"<cfif rc.ptype eq 'Calendar'> style="display:none;"</cfif>>
 					<label>#ReReplace(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.ends'),"\b(\w)","\u\1","ALL")#</label>
 					<select id="displayIntervalEnd" name="displayIntervalEnd" class="mura-repeat-option time" style="margin-left: 0;">
 						<option value="never" <cfif displayInterval.end eq 'never'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.never')#</option>
