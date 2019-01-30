@@ -76,7 +76,7 @@
 		<cfset displayInterval.repeats=0>
 		<cfset displayInterval.allday=1>
 	<cfelseif rc.ptype neq 'Calendar'>
-		<cfset displayInterval.repeats=1>
+		<cfset displayInterval.repeats=0>
 		<cfset displayInterval.allday=0>
 	</cfif>
 
@@ -94,10 +94,12 @@
 					<div class="mura-control-group">
 						<label>Starts<!--- #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.schedule')# ---></label>
 						<cf_datetimeselector name="displayStart" datetime="#rc.contentBean.getDisplayStart(timezone=displayInterval.timezone)#">
+						
 						<cfif rc.ptype eq 'Calendar'>
-						<label id="displayIntervalToLabel" class="time">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.to')#</label>
-						<cf_datetimeselector name="displayStop" datetime="#rc.contentBean.getDisplayStop(timezone=displayInterval.timezone)#" defaulthour="23" defaultminute="59">
+							<label id="displayIntervalToLabel" class="time">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.to')#</label>
+							<cf_datetimeselector name="displayStop" datetime="#rc.contentBean.getDisplayStop(timezone=displayInterval.timezone)#" defaulthour="23" defaultminute="59">
 						</cfif>
+					
 					</div>
 					<cfif len(rc.$.globalConfig('tzRegex'))>
 					<div id="mura-tz-container" class="mura-control-group span4" style="display:none">
@@ -126,26 +128,22 @@
 					<input type="hidden" name="displayInterval" id="displayInterval" value="#esapiEncode('html_attr',rc.contentBean.getDisplayInterval(serialize=true))#">
 					<input name="convertDisplayTimeZone" type="hidden" value="true">
 
-					<cfif rc.ptype eq 'Calendar'>
-						<div class="mura-control-group">
+					<div class="mura-control-group">
+						<cfif rc.ptype eq 'Calendar'>
 							<label class="checkbox" for="displayIntervalAllDay">
 								<input type="checkbox" id="displayIntervalAllDay" name="displayIntervalllDay" value="1" <cfif displayInterval.allday> checked</cfif>/>&nbsp;&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.allday')#
 							</label>
+						<cfelse>
+							<input type="hidden" id="displayIntervalAllDay" name="displayIntervalllDay" value="0"/>
+						</cfif>
 							<label for="displayIntervalRepeats" class="checkbox">
 								<input type="checkbox" class="mura-repeat-option" id="displayIntervalRepeats" value="1" name="displayIntervalRepeats"<cfif displayInterval.repeats> checked</cfif>>&nbsp;&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.repeats')#
 							</label>
 						</div>
-					<cfelse>
-						<input type="hidden" id="displayIntervalAllDay" name="displayIntervalllDay" value="0"/>
-						<input type="hidden" class="mura-repeat-option" id="displayIntervalRepeats" value="1" name="displayIntervalRepeats">
-					</cfif>
-					<div class="mura-repeat-options mura-control-group" <cfif rc.ptype eq 'Calendar'>style="display:none"</cfif>>
+					<div class="mura-repeat-options mura-control-group" style="display:none">
 						<div class="mura-control-inline">
-							<!--- todo: rb key for 'repeats' --->
-							<label>Repeats</label>		
 							<select id="displayIntervalType" name="displayIntervalType" class="mura-repeat-option">
-							<!--- todo: rb key for 'never' --->
-								<cfloop list="never,daily,weekly,bi-weekly,monthly,weekdays,weekends,week1,week2,week3,week4,weeklast,yearly" index="i">
+								<cfloop list="daily,weekly,bi-weekly,monthly,weekdays,weekends,week1,week2,week3,week4,weeklast,yearly" index="i">
 								<option value="#i#"<cfif displayInterval.type eq i> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayInterval.#i#')#</option>
 								</cfloop>
 							</select>
@@ -460,7 +458,7 @@
 
 			var input=$('input[name="displayIntervalEvery"]');
 
-			if(!isCalendar || isCalendar && $('##displayIntervalRepeats').is(':checked')){
+			if($('##displayIntervalRepeats').is(':checked')){
 				$('.mura-repeat-options').show();
 				setDaysOfWeekDefault();
 			} else {
