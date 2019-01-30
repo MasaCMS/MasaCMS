@@ -30,6 +30,7 @@ Mura.DisplayObject.Cta = Mura.UI.extend({
         this.context.width = this.context.width || 'md';
         this.context.instanceclass = this.context.instanceclass || '';
         this.context.eventLabel=this.context.type
+				this.context.statsid=this.context.statsid || this.context.instanceid || Mura.createUUID();
 
         if (this.context.type == 'modal') {
             this.context.anchorx = 'center';
@@ -186,8 +187,8 @@ Mura.DisplayObject.Cta = Mura.UI.extend({
     },
     initStats: function() {
         var storage = this.getStorage();
-        if (storage[this.context.instanceid]) {
-            this.stats = JSON.parse(storage[this.context.instanceid]);
+        if (storage[this.context.statsid]) {
+            this.stats = JSON.parse(storage[this.context.statsid]);
         }
 
         if (typeof this.stats.expires == 'string') {
@@ -212,7 +213,7 @@ Mura.DisplayObject.Cta = Mura.UI.extend({
     },
     saveStats: function() {
       var storage = this.getStorage();
-      storage[this.context.instanceid] = JSON.stringify(this.stats);
+      storage[this.context.statsid] = JSON.stringify(this.stats);
     },
     clearStats: function() {
         this.stats = {
