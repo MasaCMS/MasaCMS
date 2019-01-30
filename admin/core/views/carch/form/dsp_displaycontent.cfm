@@ -73,10 +73,11 @@
 <div id="editDates"<cfif rc.contentBean.getdisplay() NEQ 2> style="display: none;"</cfif> class="mura-control justify">
 
 	<cfset displayInterval=rc.contentBean.getDisplayInterval().getAllValues()>
+
 	<cfif rc.ptype eq 'Calendar' and not rc.contentBean.exists()>
 		<cfset displayInterval.repeats=0>
 		<cfset displayInterval.allday=1>
-	<cfelseif rc.ptype neq 'Calendar'>
+	<cfelseif rc.contentbean.getIsNew() and rc.ptype neq 'Calendar'>
 		<cfset displayInterval.repeats=0>
 		<cfset displayInterval.allday=0>
 	</cfif>
@@ -462,9 +463,9 @@
 				$('##mura-displayStartHour').show();
 				$('##mura-displayStartMinute').show();
 				$('##mura-displayStartDayPart').show();
-				$('##mura-displayStopHour').hide();
-				$('##mura-displayStopMinute').hide();
-				$('##mura-displayStopDayPart').hide();
+				$('##mura-displayStopHour').show();
+				$('##mura-displayStopMinute').show();
+				$('##mura-displayStopDayPart').show();
 				$('##displayIntervalToLabel').show();
 				$('##mura-tz-container').show();
 			}
