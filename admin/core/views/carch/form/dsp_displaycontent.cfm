@@ -82,6 +82,10 @@
 		<cfset displayInterval.allday=0>
 	</cfif>
 
+	<cfif displayInterval.endAfter eq 0>
+		<cfset displayInterval.endAfter = 1>
+	</cfif>
+
 	<div id="displayschedule-label">datetime here</div>
 
 	<!--- 'big ui' flyout panel --->
@@ -95,11 +99,13 @@
 					<!--- todo: rb key for 'starts' --->
 					<div class="mura-control-group">
 						<label>Starts<!--- #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.schedule')# ---></label>
-						<cf_datetimeselector name="displayStart" datetime="#rc.contentBean.getDisplayStart(timezone=displayInterval.timezone)#">
+						<cf_datetimeselector name="displayStart" datetime="#rc.contentBean.getDisplayStart(timezone=displayInterval.timezone)#" timeselectwrapper="true">
 						
+							<label id="displayIntervalToLabel" class="time"<cfif rc.ptype neq 'Calendar'> style=
+							display:none;"</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.to')#</label>
+
 						<cfif rc.ptype eq 'Calendar'>
-							<label id="displayIntervalToLabel" class="time">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.to')#</label>
-							<cf_datetimeselector name="displayStop" datetime="#rc.contentBean.getDisplayStop(timezone=displayInterval.timezone)#" defaulthour="23" defaultminute="59">
+							<cf_datetimeselector name="displayStop" datetime="#rc.contentBean.getDisplayStop(timezone=displayInterval.timezone)#" defaulthour="23" defaultminute="59"  timeselectwrapper="true">
 						</cfif>
 					
 					</div>
@@ -206,7 +212,7 @@
 						<span class="mura-interval-end" id="mura-interval-end-on" style="display:none">
 							<input type="text" id="displayIntervalEndOn" name="displayIntervalEndOn" class="mura-repeat-option datepicker mura-datepickerdisplayIntervalEndOn" value="#LSDateFormat(displayInterval.endon,session.dateKeyFormat)#" maxlength="12"/>
 							<cfif rc.ptype neq 'Calendar'>
-							<cf_datetimeselector name="displayStop" datetime="#rc.contentBean.getDisplayStop(timezone=displayInterval.timezone)#" defaulthour="23" defaultminute="59">
+							<cf_datetimeselector name="displayStop" datetime="#rc.contentBean.getDisplayStop(timezone=displayInterval.timezone)#" defaulthour="23" defaultminute="59" timeselectwrapper="true">
 							</cfif>
 						</span>
 					</div>
@@ -237,6 +243,7 @@
 	</div> <!--- /.bigui --->
 
 <div><!--- /end editDates --->
+
 	<script>
 	$(function(){
 		<cfif rc.ptype eq 'Calendar'>
@@ -303,6 +310,26 @@
 			}
 
 			$('##displayInterval').val(JSON.stringify(options));
+
+			toggleDailyEndTime();
+		}
+
+		function toggleDailyEndTime(){
+			var repeats =  $('##displayIntervalRepeats').is(':checked');
+			var type=$('##displayIntervalEnd').val();
+	
+		//alert('toggling');
+
+			if (!isCalendar){
+
+				if (repeats){
+					$('##displayIntervalToLabel').show();
+					$('##mura-interval-end-on .mura-timeselectwrapper').insertAfter('##displayIntervalToLabel');
+				} else if (type='on' || type == 'never'){
+					$('##displayIntervalToLabel').hide();
+					$('##displayIntervalToLabel + .mura-timeselectwrapper').insertAfter('##mura-datepicker-displayStop');
+				}		
+			}
 		}
 
 		function getDaysOfWeek(){
@@ -561,7 +588,7 @@
 		})
 	});
 
-</script>
+	</script>
 </div>
 </div>
 </cfoutput>
