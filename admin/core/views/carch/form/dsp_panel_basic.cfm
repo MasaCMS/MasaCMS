@@ -406,10 +406,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</div>
 				</cfif>
 
-				<cfif rc.parentBean.getType() eq 'Calendar' and ((rc.parentid neq '00000000000000000000000000000000001' and application.settingsManager.getSite(rc.siteid).getlocking() neq 'all') or (rc.parentid eq '00000000000000000000000000000000001' and application.settingsManager.getSite(rc.siteid).getlocking() eq 'none')) and rc.contentid neq '00000000000000000000000000000000001'>
-					<cfinclude template="dsp_displaycontent.cfm">
-				</cfif>
-
 				<span id="extendset-container-basic" class="extendset-container"></span>
 
 				<span id="extendset-container-tabbasicbottom" class="extendset-container"></span>
