@@ -61,6 +61,7 @@ this["Mura"]["templates"]["cta"] = window.mura.Handlebars.template({"compiler":[
         this.context.width = this.context.width || 'md';
         this.context.instanceclass = this.context.instanceclass || '';
         this.context.eventLabel=this.context.type
+				this.context.statsid=this.context.statsid || this.context.instanceid || Mura.createUUID();
 
         if (this.context.type == 'modal') {
             this.context.anchorx = 'center';
@@ -217,8 +218,8 @@ this["Mura"]["templates"]["cta"] = window.mura.Handlebars.template({"compiler":[
     },
     initStats: function() {
         var storage = this.getStorage();
-        if (storage[this.context.instanceid]) {
-            this.stats = JSON.parse(storage[this.context.instanceid]);
+        if (storage[this.context.statsid]) {
+            this.stats = JSON.parse(storage[this.context.statsid]);
         }
 
         if (typeof this.stats.expires == 'string') {
@@ -243,7 +244,7 @@ this["Mura"]["templates"]["cta"] = window.mura.Handlebars.template({"compiler":[
     },
     saveStats: function() {
       var storage = this.getStorage();
-      storage[this.context.instanceid] = JSON.stringify(this.stats);
+      storage[this.context.statsid] = JSON.stringify(this.stats);
     },
     clearStats: function() {
         this.stats = {
