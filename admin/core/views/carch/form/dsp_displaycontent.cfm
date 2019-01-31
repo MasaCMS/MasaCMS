@@ -562,6 +562,21 @@
 			}	
 		}
 
+		function hideDefaultRepeats(){
+			var stopHour = $('##mura-displayStopHour').val();
+			var stopMin = $('##mura-displayStopMinute').val();
+			var stopDaypart = $('##mura-displayStopDayPart').val();	
+			var intervalType = $('##displayIntervalType').val();
+			var intervalEvery = $('##displayIntervalEvery').val();
+
+			if ( intervalType == 'daily' && intervalEvery == 1 
+				&& (stopMin == 59 && (stopHour == 11 && stopDaypart == 'PM' || stopHour == 23))
+				){
+					$('##repeatsRadioNo').trigger('click');
+					toggleRepeatCheckbox();
+				}
+		}
+
 		$('##mura-datepicker-displayStop').hide();
 		$('.mura-repeat-option').on('change',updateDisplayInterval);
 		$('##displayIntervalRepeats').click(toggleRepeatOptionsContainer);
@@ -572,7 +587,7 @@
 		$('##mura-datepicker-displayStart').change(setEndOption);
 		$('##repeatsRadioYes,##repeatsRadioNo').click(toggleRepeatCheckbox);
 
-
+		hideDefaultRepeats();
 		toggleRepeatOptionsContainer();
 		toggleRepeatOptions();
 		toggleAllDayOptions();
@@ -606,7 +621,7 @@
 			$('##displayschedule-label').html(csStr);	
 		}
 	}
-
+	
 	$(document).ready(function(){
 		// run on page load
 		showSelectedCS();
