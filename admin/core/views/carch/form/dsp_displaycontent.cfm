@@ -563,11 +563,11 @@
 
 	function showSelectedCS(){
 		var csStr = $('##mura-datepicker-displayStart').val() + ' ' 
-							+ $('##mura-displayStartHour').val() + ':' 
-							+ $('##mura-displayStartMinute option:selected').html() + ' '
-							+ $('##mura-displayStartDayPart option:selected').html() + '<br>';
+					+ $('##mura-displayStartHour').val() + ':' 
+					+ $('##mura-displayStartMinute option:selected').html() + ' '
+					+ $('##mura-displayStartDayPart option:selected').html() + '<br>';
 		if ( $('##displayIntervalRepeats').is(':checked')){
-			csStr += 'Repeating ' 
+			csStr += 'repeating ' 
 				+ $('##displayIntervalType option:selected').html();
 		}
 		
