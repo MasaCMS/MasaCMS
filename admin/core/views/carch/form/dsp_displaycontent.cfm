@@ -141,21 +141,29 @@
 					<input name="convertDisplayTimeZone" type="hidden" value="true">
 					<!--- /end timezone --->
 
-					<div class="mura-control-group">
-						<!--- all day --->
+					<!--- all day --->
 						<cfif rc.ptype eq 'Calendar'>
-							<label class="checkbox" for="displayIntervalAllDay">
-								<input type="checkbox" id="displayIntervalAllDay" name="displayIntervalllDay" value="1" <cfif displayInterval.allday> checked</cfif>/>&nbsp;&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.allday')#
-							</label>
+							<div class="mura-control-group">
+								<label class="checkbox" for="displayIntervalAllDay">
+									<input type="checkbox" id="displayIntervalAllDay" name="displayIntervalllDay" value="1" <cfif displayInterval.allday> checked</cfif>/>&nbsp;&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.allday')#
+								</label>
+							</div>
 						<cfelse>
-							<input type="hidden" id="displayIntervalAllDay" name="displayIntervalllDay" value="0"/>
+							<div>
+								<input type="hidden" id="displayIntervalAllDay" name="displayIntervalllDay" value="0"/>
+							</div>
 						</cfif>
 
-						<!--- repeats --->
-						<label for="displayIntervalRepeats" class="checkbox">
-							<input type="checkbox" class="mura-repeat-option" id="displayIntervalRepeats" value="1" name="displayIntervalRepeats"<cfif displayInterval.repeats> checked</cfif>>&nbsp;&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.repeats')#
+					<!--- repeats --->
+					<div class="mura-control-group">
+						<label style="display:none;" for="displayIntervalRepeats" class="checkbox">
+							<input type="checkbox" class="mura-repeat-option" id="displayIntervalRepeats" value="1" name="displayIntervalRepeats"<cfif displayInterval.repeats> checked</cfif> >
 						</label>
+
+						<label class="radio inline"><input type="radio" id="repeatsRadioYes" name="repeatsRadio" value="yes"<cfif displayInterval.repeats> checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.repeats')#</label>
+						<label class="radio inline"><input type="radio" id="repeatsRadioNo" name="repeatsRadio" value="no"<cfif not displayInterval.repeats> checked</cfif>>Does not repeat</label>
 					</div>
+					<!--- /repeats --->
 
 					<!--- repeat schedule --->
 					<div class="mura-repeat-options mura-control-group" style="display:none">
@@ -303,6 +311,9 @@
 				daysofweek: getDaysOfWeek()
 			};
 
+		<!--- todo: remove this --->
+			console.log(options);
+
 			if(!options.repeats && options.allday){
 				$('##mura-datepicker-displayStop').val($('##mura-datepicker-displayStart').val());
 				$('##mura-datepicker-displayStop').trigger('change');
@@ -366,16 +377,23 @@
 				var type=$('##displayIntervalEnd').val();
 
 				$('.mura-interval-end').hide();
-				//alert(type)
+
 				if(type=='after'){
 					$('##mura-interval-end-after').show();
+					if ($('##displayIntervalEndAfter').val() == 0){
+						$('##displayIntervalEndAfter').val(1);
+					}
 					pushDisplayStopOut();
-					if(!($('##displayIntervalRepeats')).is(':checked')){
-						$('##displayIntervalRepeats').trigger('click');
+					if(!$('##displayIntervalRepeats').is(':checked')){
+						$('##repeatsRadioYes').trigger('click');
+						toggleRepeatCheckbox();
+						toggleRepeatOptionsContainer();
+						$('##displayIntervalEnd').val('after');
 					}
 
 				} else if(type=='on'){
 					$('##mura-interval-end-on').show();
+					$('##displayIntervalEndAfter').val(0);
 
 					var start=$('##mura-datepicker-displayStart');
 					var stop=$('##mura-datepicker-displayStop');
@@ -395,12 +413,14 @@
 					}
 				} else if(type=='never'){
 					pushDisplayStopOut();
+					$('##displayIntervalEndAfter').val(0);
 				}
 			} else {
 				var start=$('##mura-datepicker-displayStart');
 				var stop=$('##mura-datepicker-displayStop');
 				stop.val(start.val()).trigger('change');
 				$('##displayIntervalEnd').val('on');
+				$('##displayIntervalEndAfter').val(0);
 				$('##displayIntervalEndOn').val(start.val());	
 			}
 
@@ -502,14 +522,13 @@
 
 		function toggleRepeatOptionsContainer(){
 
-			var input=$('input[name="displayIntervalEvery"]');
-
 			if($('##displayIntervalRepeats').is(':checked')){
 				$('.mura-repeat-options').show();
 				setDaysOfWeekDefault();
 			} else {
 				$('.mura-repeat-options').hide();
 				$('##displayIntervalType').val('daily');
+				$('##displayIntervalEvery').val(1);
 				if($('##displayIntervalEndOn').val()){
 					$('##displayIntervalEnd').val('on');
 				} else {
@@ -531,6 +550,18 @@
 
 		}
 
+		function toggleRepeatCheckbox(){
+			if ($('##repeatsRadioYes').is(':checked')){
+				if (!$('##displayIntervalRepeats').is(':checked')){
+					$('##displayIntervalRepeats').trigger('click');
+				}
+			} else {
+				if ($('##displayIntervalRepeats').is(':checked')){
+					$('##displayIntervalRepeats').trigger('click');
+				}
+			}	
+		}
+
 		$('##mura-datepicker-displayStop').hide();
 		$('.mura-repeat-option').on('change',updateDisplayInterval);
 		$('##displayIntervalRepeats').click(toggleRepeatOptionsContainer);
@@ -539,21 +570,14 @@
 		$('##displayIntervalType').on('change',toggleRepeatOptions);
 		$('##displayIntervalEnd').on('change',setEndOption);
 		$('##mura-datepicker-displayStart').change(setEndOption);
+		$('##repeatsRadioYes,##repeatsRadioNo').click(toggleRepeatCheckbox);
 
-		//todo - can a text input be :checked?
-
-		var repeats=$('input[name="displayIntervalEvery"]').is(':checked');
-
-		if(repeats){
-			$('##displayIntervalRepeats').attr('checked',true);
-		}
 
 		toggleRepeatOptionsContainer();
 		toggleRepeatOptions();
 		toggleAllDayOptions();
 		setEndOption();
 		toggleDetectConflicts();
-
 
 	})
 
