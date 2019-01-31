@@ -568,8 +568,11 @@
 			var stopDaypart = $('##mura-displayStopDayPart').val();	
 			var intervalType = $('##displayIntervalType').val();
 			var intervalEvery = $('##displayIntervalEvery').val();
+			var intervalEnds = $('##displayIntervalEnd').val();
+			var intervalEndsAfter = $('##displayIntervalEndAfter').val();
 
-			if ( intervalType == 'daily' && intervalEvery == 1 
+			if ( (intervalEnds != 'after' || intervalEndsAfter < 2)
+				&& intervalType == 'daily' && intervalEvery == 1 
 				&& (stopMin == 59 && (stopHour == 11 && stopDaypart == 'PM' || stopHour == 23))
 				){
 					$('##repeatsRadioNo').trigger('click');
