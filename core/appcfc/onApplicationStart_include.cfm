@@ -134,7 +134,7 @@ if ( application.setupComplete ) {
 
 	for (variables.envVar in request.muraSysEnv) {
 		if(listFirst(variables.envVar,"_")=='MURA'){
-			variables.p=listRest(variables.envVar,"_")
+			variables.p=listRest(variables.envVar,"_");
 			variables.iniProperties[variables.p]=request.muraSysEnv[variables.envVar];
 			if ( left(variables.iniProperties[variables.p],2) == "${"
 						and right(variables.iniProperties[variables.p],1) == "}" ) {
