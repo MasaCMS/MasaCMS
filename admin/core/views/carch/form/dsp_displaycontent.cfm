@@ -86,7 +86,7 @@
 		<cfset displayInterval.endAfter = 1>
 	</cfif>
 
-	<div id="displayschedule-label">datetime here</div>
+	<div id="displayschedule-label"></div>
 
 	<!--- 'big ui' flyout panel --->
 	<!--- todo: resource bundle key for 'manage schedule' --->
@@ -565,25 +565,30 @@
 		var csStr = $('##mura-datepicker-displayStart').val() + ' ' 
 							+ $('##mura-displayStartHour').val() + ':' 
 							+ $('##mura-displayStartMinute option:selected').html() + ' '
-							+ $('##mura-displayStartDayPart option:selected').html() + '<br>'
-							+ 'Repeating ' 
-							+ $('##displayIntervalType option:selected').html();
+							+ $('##mura-displayStartDayPart option:selected').html() + '<br>';
+		if ( $('##displayIntervalRepeats').is(':checked')){
+			csStr += 'Repeating ' 
+				+ $('##displayIntervalType option:selected').html();
+		}
 		
 		if ( $('##displayIntervalEnd').val() == 'on' && $('##displayIntervalEndOn').val() != ''){
-				csStr += ' until ' + $('##displayIntervalEndOn').val();
+			csStr += ' until ' + $('##displayIntervalEndOn').val();
 		} 
 		else if ( $('##displayIntervalEnd').val() == 'after'  && $('##displayIntervalEndAfter').val() >= 1){
-				csStr += ' x ' + $('##displayIntervalEndAfter').val();
+			csStr += ' x ' + $('##displayIntervalEndAfter').val();
 		}
 
-		$('##displayschedule-label').html(csStr);
+		if ($('##mura-datepicker-displayStart').val() != ''){
+			$('##displayschedule-label').html(csStr);	
+		}
 	}
 
 	$(document).ready(function(){
 		// run on page load
 		showSelectedCS();
 		// run on change of any schedule element
-		$('##displayschedule-selector *').on('change',function(){
+		$('##displayschedule-selector *, ##displayIntervalEnd').on('change',function(){
+			alert('showing');
 			showSelectedCS();
 		})
 	});
