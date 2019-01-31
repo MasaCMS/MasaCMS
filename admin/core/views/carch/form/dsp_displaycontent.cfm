@@ -588,7 +588,6 @@
 		showSelectedCS();
 		// run on change of any schedule element
 		$('##displayschedule-selector *, ##displayIntervalEnd').on('change',function(){
-			alert('showing');
 			showSelectedCS();
 		})
 	});
