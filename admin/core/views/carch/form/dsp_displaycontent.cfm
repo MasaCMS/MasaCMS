@@ -606,8 +606,12 @@
 					+ $('##mura-displayStartMinute option:selected').html() + ' '
 					+ $('##mura-displayStartDayPart option:selected').html() + '<br>';
 		if ( $('##displayIntervalRepeats').is(':checked')){
-			csStr += 'repeating ' 
-				+ $('##displayIntervalType option:selected').html();
+			csStr += 'repeating '; 
+				if ($('##displayIntervalType').val() == 'daily'){
+					csStr += '#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.every')#&nbsp;' + $('##displayIntervalEvery').val() + '&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.days')#';
+				} else {
+					csStr += $('##displayIntervalType option:selected').html();					
+				}
 		}
 		
 		if ( $('##displayIntervalEnd').val() == 'on' && $('##displayIntervalEndOn').val() != ''){
