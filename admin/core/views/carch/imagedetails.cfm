@@ -438,17 +438,16 @@
 					var self=this;
 
 					setTimeout(function(){
-							$.getJSON('./?muraAction=carch.getImageSizeURL&siteid=#esapiEncode("url",rc.siteid)#&fileid=' + $(self).data('fileid') + '&size=' + $(this).data('size'))
+							$.getJSON('./?muraAction=carch.getImageSizeURL&siteid=#esapiEncode("url",rc.siteid)#&fileid=' + $(self).data('fileid') + '&size=' + $(self).data('size'))
 							.then(function(data){
 								var target=$(self).data('size') + $(self).data('fileid');
-
 								setImg(target,data);
 							});
 						},
 						delay
 					)
 
-					delay=delay + 50;
+					delay=delay + 5;
 
 				}
 			);
