@@ -227,7 +227,7 @@
 				border-top-color: rgba(255,255,255,.25) !important;
 				margin-left: 5px !important;
 				margin-right: 5px !important;
-				margin-top: 3px !important;
+				margin-top: 10px !important;
 			}
 
 		&:first-child a {
@@ -313,9 +313,10 @@
 			line-height: .8 !important;
 			margin-right: 4px !important;
 			overflow: visible !important;
-			padding: 5px 6px 5px 5px !important;
+			padding: 4px 4px 3px 5px !important;
 			position: relative !important;
 			text-align: center !important;
+			top: -1px !important;
 				&.list-alt {
 					top: 2px !important;
 				}
@@ -402,7 +403,7 @@
 	#frontEndTools > #tools-user,
 	#frontEndTools > #tools-version,
 	#frontEndTools > #tools-changesets {
-		margin-top: 1px !important;
+
 		&> li > a{
 			height: 38px !important;
 			line-height: 38px !important;
@@ -603,6 +604,11 @@
 			margin-left: -5px !important;
 			}
 		}
+	}
+
+	/* bug fix for absolute positioned changeset dropdown */
+	#frontEndTools > ul > li#cs-title > ul.dropdown-menu[x-placement=bottom-start] { 
+	    transform: translate3d(0px, @feToolBarHeight-1, 0px) !important;
 	}
 
 	#frontEndTools > ul > li#adminSave .dropdown-menu,
