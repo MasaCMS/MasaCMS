@@ -2621,7 +2621,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 										}
 									}
 
-									if(entity.valueExists('extendData') || entity.hasColumn(propName)){
+									if(entity.valueExists('extendData') || entity.hasProperty(propName)){
 										feed.addParam(column=propName,criteria=criteria,condition=condition,relationship=relationship);
 									} else {
 										throw(type="invalidParameters");
@@ -3133,7 +3133,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 			if(entity.getEntityName()=='content'){
 				links['permissions']="#baseurl#/#entity.getEntityName()#/#entity.get('contentid')#/permissions";
-			} else {
+			} else if(len(entity.getPrimaryKey()) )  {
 				links['permissions']="#baseurl#/#entity.getEntityName()#/#entity.get(entity.getPrimaryKey())#/permissions";
 			}
 
