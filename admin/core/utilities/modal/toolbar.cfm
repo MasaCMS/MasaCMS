@@ -42,6 +42,9 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 
+	<cfheader name="cache-control"  value="no-cache, no-store, must-revalidate">
+	<cfheader name="pragma" value="no-cache">
+	<cfheader name="expires" value="#getHttpTimeString(now())#">
 	<cfparam name="Cookie.fetDisplay" default="">
 	<cfset completeurls=(variables.$.content('type') eq 'Variation' or variables.$.siteConfig('isRemote'))>
 	<cfif variables.$.content('type') eq 'Variation'>
