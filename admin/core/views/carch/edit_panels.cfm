@@ -181,12 +181,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 						<!--- Remote --->
 						<!--- todo: change "advanced" to "remote" in other locations --->
-						<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Remote')>
-							<cfif listFind(session.mura.memberships,'S2IsPrivate')>
-								<cfinclude template="form/dsp_panel_Remote.cfm">
-							<cfelse>
-								<!--- todo correct "ommit" --> "omit" --->
-								<input type="hidden" name="ommitRemoteTab" value="true">
+						<cfif (rc.type neq 'Component' and rc.type neq 'Form') and rc.contentBean.getcontentID() neq '00000000000000000000000000000000001'>
+							<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Remote')>
+								<cfif listFind(session.mura.memberships,'S2IsPrivate')>
+									<cfinclude template="form/dsp_panel_Remote.cfm">
+								<cfelse>
+									<!--- todo correct "ommit" --> "omit" --->
+									<input type="hidden" name="ommitRemoteTab" value="true">
+								</cfif>
 							</cfif>
 						</cfif>
 						<!--- /Remote --->

@@ -244,6 +244,73 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			    </div>
 			</cfif>
 
+			<!--- exclude from cache --->
+			<cfif application.settingsManager.getSite(rc.siteid).getCache() and rc.type eq 'Component' or rc.type eq 'Form'>
+				<div class="mura-control-group">
+					<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.docachelabel')#</label>
+		      		<label for="cacheItem" class="checkbox">
+		      			<input name="doCache" id="doCache" type="CHECKBOX" value="0"<cfif rc.contentBean.getDoCache() eq 0> checked</cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.docache')#
+		      		</label>
+		       </div>
+			</cfif>
+
+			<!--- ssl --->
+			<cfif rc.type eq 'Component'>
+				<div class="mura-control-group">
+			      	<label>
+			      		<cfoutput>
+								<span data-toggle="popover" title="" data-placement="right"
+						  	data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.layoutTemplate"))#"
+						  	data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.layouttemplate"))#"
+						  	>
+								#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.layouttemplate')# <i class="mi-question-circle"></i></span>
+							</cfoutput>
+			      	</label>
+			  		<select name="template" class="dropdown">
+						<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.none')#</option>
+						<cfloop query="rc.rsTemplates">
+						<cfif right(rc.rsTemplates.name,4) eq ".cfm">
+						<cfoutput>
+						<option value="#rc.rsTemplates.name#" <cfif rc.contentBean.getTemplate() eq rc.rsTemplates.name>selected</cfif>>#rc.rsTemplates.name#</option>
+						</cfoutput>
+						</cfif></cfloop>
+					</select>
+				</div>
+			</cfif>
+			<!--- Use site useSSL sitewide setting instead --->
+			<cfif not listFindNoCase('Component,Form,Variation',rc.type) and rc.contentBean.getForceSSL() and not rc.$.siteConfig('useSSL')>
+				<div class="mura-control-group">
+				    <label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forcessllabel')#</label>
+			      	<label for="forceSSL" class="checkbox">
+			      	<input name="forceSSL" id="forceSSL" type="CHECKBOX" value="1" <cfif rc.contentBean.getForceSSL() eq "">checked <cfelseif rc.contentBean.getForceSSL() eq 1>checked</cfif> class="checkbox">
+										<span data-toggle="popover" title="" data-placement="right"
+								  	data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.makePageSecure"))#"
+								  	data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.forcessllabel"))#">
+								  	#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forcessltext'),application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.#rc.type#'))#
+					      	 <i class="mi-question-circle"></i>
+					      	</span>
+			  		</label>
+			      </div>
+			</cfif>
+
+			<cfif not rc.$.siteConfig().getContentRenderer().useLayoutManager() and rc.type eq 'Form' >
+
+				<cfif rc.contentBean.getForceSSL() and not rc.$.siteConfig('useSSL')>
+					<div class="mura-control-group">
+						<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forcessllabel')#</label>
+			     		<label for="forceSSL" class="checkbox">
+			     			<input name="forceSSL" id="forceSSL" type="CHECKBOX" value="1" <cfif rc.contentBean.getForceSSL() eq "">checked <cfelseif rc.contentBean.getForceSSL() eq 1>checked</cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forcessl')#
+			     		</label>
+				    </div>
+			   	</cfif>
+
+				    <div class="mura-control-group">
+						<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displaytitlelabel')#</label>
+			      		<label for="displayTitle" class="checkbox">
+			      			<input name="displayTitle" id="displayTitle" type="CHECKBOX" value="1" <cfif rc.contentBean.getDisplayTitle() eq "">checked <cfelseif rc.contentBean.getDisplayTitle() eq 1>checked</cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displaytitle')#
+			      		</label>
+			        </div>
+			</cfif>
 			<!--- expiration --->
 			<cfif listFind("Page,Folder,Calendar,Gallery,Link,File,Link",rc.type)>
 
