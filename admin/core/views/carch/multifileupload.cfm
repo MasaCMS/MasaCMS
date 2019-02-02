@@ -478,7 +478,7 @@ $(function () {
                 }
                 return [];
             },
-        limitConcurrentUploads: 10
+        limitConcurrentUploads: 4
         }
     ).bind('fileuploadsubmit', function (e, data) {
 
