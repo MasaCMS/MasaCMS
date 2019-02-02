@@ -143,6 +143,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<!--- content parent --->
 				<cfif ((rc.parentid neq '00000000000000000000000000000000001' and application.settingsManager.getSite(rc.siteid).getlocking() neq 'all') or (rc.parentid eq '00000000000000000000000000000000001' and application.settingsManager.getSite(rc.siteid).getlocking() eq 'none')) and rc.contentid neq '00000000000000000000000000000000001'>
 
+
+
 					<cfif application.settingsManager.getSite(rc.siteid).getlocking() neq 'all'>
 						<div class="mura-control-group">
 				      		<label>
@@ -339,9 +341,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<div class="mura-control justify">
 								<div class="mura-input-set">
 									<input type="text" id="url" name="body" value="#esapiEncode('html_attr',rc.contentBean.getbody())#" class="text mura-5" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.urlrequired')#">
-				     	 		<button type="button" data-completepath="false" data-target="body" data-resourcetype="user" class="btn mura-file-type-selector mura-ckfinder" title="Select a File from Server"><i class="mi-folder-open"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.browseassets')#</button>
+				     	 			<button type="button" data-completepath="false" data-target="body" data-resourcetype="user" class="btn mura-file-type-selector mura-ckfinder" title="Select a File from Server"><i class="mi-folder-open"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.browseassets')#</button>
+					     	 	</div>
 				     	 	</div>
-			     	 	</div>
 						</cfif>
 			     	</div>
 			     </cfsavecontent>	
@@ -351,9 +353,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfsavecontent>
 				</cfif>
 				<!--- /end body --->
-
-
-<!--- todo these fields below need new homes --->
 
 				<!--- component module assignments --->
 				<cfif rc.type eq 'Component'>
@@ -383,15 +382,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</div>
 				</cfif>
 
+				<!--- form confirmation, sendto --->
 				<cfif rc.type eq 'Form'>
-					<!---
-					<div class="mura-control-group body-container" style="display:none">
-						<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formpresentation')#</label>
-						<label for="rc" class="checkbox">
-			      			<input name="responseChart" id="rc" type="CHECKBOX" value="1" <cfif rc.contentBean.getresponseChart() eq 1>checked </cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.ispoll')#
-			      		</label>
-					</div>
-					--->
 					<div class="mura-control-group body-container" style="display:none">
 						<label>
 						 	#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.confirmationmessage')#
