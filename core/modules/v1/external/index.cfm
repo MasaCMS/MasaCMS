@@ -1,2 +1,2 @@
 <cfset objectparams.render='client'>
-<cfset objectparams.async=true>
+<cfset objectparams.async=false>

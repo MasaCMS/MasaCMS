@@ -1,7 +1,7 @@
-this["mura"] = this["mura"] || {};
-this["mura"]["templates"] = this["mura"]["templates"] || {};
+this["Mura"] = this["Mura"] || {};
+this["Mura"]["templates"] = this["Mura"]["templates"] || {};
 
-this["mura"]["templates"]["cta-container"] = window.mura.Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+this["Mura"]["templates"]["cta-container"] = window.mura.Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
   return "<div class=\"mura-cta__container\"\n	data-mura-cta-anchorx=\""
@@ -11,7 +11,7 @@ this["mura"]["templates"]["cta-container"] = window.mura.Handlebars.template({"c
     + "\">\n</div>\n";
 },"useData":true});
 
-this["mura"]["templates"]["cta-instance"] = window.mura.Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+this["Mura"]["templates"]["cta-instance"] = window.mura.Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
   return "<div id=\"mura-cta-"
@@ -22,14 +22,12 @@ this["mura"]["templates"]["cta-instance"] = window.mura.Handlebars.template({"co
     + alias4(((helper = (helper = helpers.animatespeed || (depth0 != null ? depth0.animatespeed : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"animatespeed","hash":{},"data":data}) : helper)))
     + "\"\n	data-mura-cta-type=\""
     + alias4(((helper = (helper = helpers.type || (depth0 != null ? depth0.type : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"type","hash":{},"data":data}) : helper)))
-    + "\"\n	class=\""
-    + alias4(((helper = (helper = helpers.cssclass || (depth0 != null ? depth0.cssclass : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"cssclass","hash":{},"data":data}) : helper)))
-    + "\"\n	>\n	<div class=\"mura-cta__item__wrapper\"\n		data-mura-cta-size=\""
+    + "\"\n>\n	<div class=\"mura-cta__item__wrapper\"\n		data-mura-cta-size=\""
     + alias4(((helper = (helper = helpers.width || (depth0 != null ? depth0.width : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"width","hash":{},"data":data}) : helper)))
     + "\">\n		<div class=\"mura-cta__item__content\"></div>\n		<div class=\"mura-cta__item__dismiss\"></div>\n	</div>\n</div>\n";
 },"useData":true});
 
-this["mura"]["templates"]["cta"] = window.mura.Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+this["Mura"]["templates"]["cta"] = window.mura.Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<div class=\"mura-cta\">\n</div>\n";
 },"useData":true});;Mura.DisplayObject.Cta = Mura.UI.extend({
     displayed: false,
@@ -61,7 +59,7 @@ this["mura"]["templates"]["cta"] = window.mura.Handlebars.template({"compiler":[
         this.context.animatespeed = this.context.animatespeed ||  'fast';
 
         this.context.width = this.context.width || 'md';
-        this.context.cssclass = this.context.cssclass || '';
+        this.context.instanceclass = this.context.instanceclass || '';
         this.context.eventLabel=this.context.type
 
         if (this.context.type == 'modal') {
@@ -289,6 +287,13 @@ this["mura"]["templates"]["cta"] = window.mura.Handlebars.template({"compiler":[
                 region.append(Mura.trim(Mura.templates['cta-instance'](this.context)));
             }
             var cta = Mura('#mura-cta-' + this.context.instanceid);
+
+						if(this.context.instanceclass){
+							var classes=this.context.instanceclass.split(' ');
+							for(var c=0;c<classes.length;c++){
+								cta.addClass(classes[c]);
+							}
+						}
 
             var self = this;
 

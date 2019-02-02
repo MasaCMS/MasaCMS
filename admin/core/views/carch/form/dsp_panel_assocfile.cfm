@@ -1,4 +1,4 @@
-/*  This file is part of Mura CMS.
+<!--- This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -40,51 +40,37 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
-*/
-/**
- * This provides user iterating functionality
- */
-component extends="mura.iterator.queryIterator" output="false" hint="This provides user iterating functionality" {
-	variables.userBean ="";
-	variables.entityName ="user";
-	variables.recordIDField="userID";
+--->
+<cfif ListFindNoCase("Page,Folder,Calendar,Gallery,Link",rc.type)>
+<cfset tabList=listAppend(tabList,"tabAssoc")>
+<cfoutput>
+<div class="mura-panel panel">
+	<div class="mura-panel-heading" role="tab" id="heading-assoc">
+		<h4 class="mura-panel-title">
+			<a class="collapse" role="button" data-toggle="collapse" data-parent="##content-panels" href="##panel-assoc" aria-expanded="true" aria-controls="panel-assoc">
+				<!--- todo better rb keys for these --->
+				<cfif rc.ptype eq 'Gallery' or rc.type neq 'File'>
+			  		#listLast(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectimage'),' ')#
+				<cfelse>
+					#listLast(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectfile'),' ')#
+				</cfif>
+			</a>
+		</h4>
+	</div>
+	<div id="panel-assoc" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-assoc" aria-expanded="false" style="height: 0px;">
+		<div class="mura-panel-body">
+			
+				<span id="extendset-container-tabassoctop" class="extendset-container"></span>
 
-	public function getEntityName() output=false {
-		return variables.entityName;
-	}
+				<!--- file/image selector --->				
+				<cfinclude template="dsp_file_selector.cfm">
 
-	public function setEntityName(entityName) output=false {
-		variables.entityName=arguments.entityName;
-		return this;
-	}
+				<span id="extendset-container-assoc" class="extendset-container"></span>
 
-	public function packageRecord() output=false {
-		if ( !isObject(variables.userBean) ) {
-			variables.userBean=getBean("user");
-			variables.userStructTemplate= structCopy(variables.userBean.getAllValues(autocomplete=false));
-		} else {
-			variables.userBean.setAllValues( structCopy(variables.userStructTemplate) );
-		}
-		variables.userBean.set(queryRowToStruct(variables.records,currentIndex()));
-		getBean("userManager").setUserBeanMetaData(variables.userBean);
-		variables.userBean.setValue('sourceIterator',this);
-		return variables.userBean;
-	}
+				<span id="extendset-container-tabassocbottom" class="extendset-container"></span>
 
-	public function buildQueryFromList(idList, siteid) output=false {
-		var i="";
-		var idArray=listToArray(arguments.idList);
-		variables.records=queryNew("userID,siteID","VARCHAR,VARCHAR");
-		for ( i=1 ; i<=arrayLen(arguments.idArray) ; i++ ) {
-			QueryAddRow(variables.records);
-			QuerySetCell(variables.records,"userID", idArray[i]);
-			QuerySetCell(variables.records, 'siteID',arguments.siteid);
-		}
-		variables._recordcount=variables.records.recordcount;
-		variables.maxRecordsPerPage=variables.records.recordcount;
-		variables.recordIndex = 0;
-		variables.pageIndex = 1;
-		return this;
-	}
-
-}
+		</div>
+	</div>
+</div> 
+</cfoutput>
+</cfif>

@@ -495,7 +495,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<!-- tab content -->
 		<div class="block-content tab-content">
 
-			<div id="mura-content-title-render">#esapiEncode('html_attr',rc.contentBean.gettitle())#</div>
+			<!--- todo: rb key placeholder text for "Content Title" --->
+			<!--- todo: style for placeholder see end of custom.less --->
+			<div id="mura-content-title-render" data-placeholder="Content Title">#esapiEncode('html_attr',rc.contentBean.gettitle())#</div>
 			<div id="mura-content-body-render">#bodyContent#</div>
 
 			<div class="load-inline tab-preloader"></div>
@@ -609,7 +611,13 @@ titleBlock.onclick = function(event){
 			var newTitle = holder.value;
 			var realTitle = document.getElementById('title');
 			realTitle.value = newTitle;
+			// todo: open basic tab when changing title div
+			if (!($('##panel-basic').hasClass('in'))){
+				$('##heading-basic h4 a').trigger('click');
+			}
+			<cfif not rc.contentBean.getIsNew()>
 			openDisplay('editAdditionalTitles','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');
+			</cfif>
 		}
 	}
 }

@@ -5,6 +5,8 @@
 
     dbUtility.setTable("tclustercommands").addIndex("created");
 
+		dbUtility.setTable('tcontentrelated').addIndex("relatedContentSetID");
+	
 		try{
 			dbUtility.setTable('tcontentfeeditems').addPrimaryKey('feedID,itemID');
 		} catch(Any e){

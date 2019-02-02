@@ -70,8 +70,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<li><div class="ui-button button-field" id="button-nested" data-object="field-nested" title="#application.rbFactory.getKeyValue(session.rb,'formbuilder.field.nested.tooltip')#"><span class="ui-icon ui-icon-formfield ui-icon-formfield-nested"></span></div></li>
 			</ul>
 		</div>
-		<div id="mura-tb-form" class="clearfix">
-			<div id="mura-tb-form-pages" class="clearfix">
+		<div id="mura-tb-form">
+			<div id="mura-tb-form-pages">
 					Page
 				<ul id="mura-form-pages">
 				</ul>
@@ -93,6 +93,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<div id="mura-tb-grid">
 				</div>
 			</div>
+			<div style="clear:both;"></div>
 		</div>
 
 	</div>

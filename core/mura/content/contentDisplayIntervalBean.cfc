@@ -6,7 +6,7 @@ component extends="mura.bean.bean" hint="This provides content display interval 
     property name="allDay" datatype="integer" default="1";
     property name="end" datatype="string" default="";
     property name="endOn" datatype="date";
-    property name="endAfter" datatype="integer" default="0";
+    property name="endAfter" datatype="integer" default="1";
     property name="daysofweek" datatype="string" default="";
     property name="detectConflicts" datatype="integer" default="0";
     property name="detectSpan" datatype="integer" default="12";

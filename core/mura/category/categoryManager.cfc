@@ -240,6 +240,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforeCategorySave",currentEventObject=pluginEvent,objectid=categoryBean.getCategoryID())>
 	<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforeCategoryCreate",currentEventObject=pluginEvent,objectid=categoryBean.getCategoryID())>
 	<cfif structIsEmpty(categoryBean.getErrors())>
+		<cfset categoryBean.setLastUpdate(now())>
 		<cfset categoryBean.setLastUpdateBy(left(sessionData.mura.fname & " " & sessionData.mura.lname,50)) />
 		<cfif not (structKeyExists(arguments.data,"categoryID") and len(arguments.data.categoryID))>
 			<cfset categoryBean.setCategoryID("#createUUID()#") />
@@ -712,6 +713,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset purgeCategoryDescendentsCache(categoryBean=categoryBean)>
 		</cfif>
 
+		<cfset categoryBean.setLastUpdate(now())>
 		<cfset categoryBean.setLastUpdateBy(left(sessionData.mura.fname & " " & sessionData.mura.lname,50)) />
 		<cfset variables.DAO.update(categoryBean) />
 

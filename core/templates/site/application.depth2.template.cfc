@@ -54,7 +54,6 @@
 component output="false" {
 	depth=2;
 	include "#repeatString('../',depth)#core/appcfc/applicationSettings.cfm";
-	include "#repeatString('../',depth)#config/mappings.cfm";
 	include "#repeatString('../',depth)#plugins/mappings.cfm";
 	include "#repeatString('../',depth)#core/appcfc/onApplicationStart_method.cfm";
 
@@ -66,10 +65,7 @@ component output="false" {
 		*/
 		if (!reFindNoCase('(/sites/)([^/]*)(/index.cfm)',cgi.script_name) && !(listFindNoCase("styles.js.cfm,templates.js.cfm,editor.css.cfm,default.js.cfm,config.js.cfm,validate.cfm,remote.cfc",listLast(cgi.SCRIPT_NAME,"/"))
 		 || listFindNoCase(cgi.SCRIPT_NAME,"remote","/")) ) {
-			cfoutput(  ) {
-
-				writeOutput("Access Restricted.");
-			}
+			writeOutput("Access Restricted.");
 			abort;
 		}
 		include "#repeatString('../',depth)#core/appcfc/onRequestStart_include.cfm";

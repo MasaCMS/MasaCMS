@@ -191,11 +191,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.adminDir="/admin"/>
 <cfset variables.instance.allowedIndexFiles="index.cfm,index.json,index.html"/>
 <cfset variables.instance.HSTSMaxAge=1200/>
-<cfset variables.instance.siteDir=""/>
+<cfset variables.instance.siteDir="sites"/>
 <cfset variables.instance.legacyAppcfcSupport=false>
 <cfset variables.instance.showUsageTags=true>
 <cfset variables.instance.offline404=true>
 <cfset variables.instance.externalConfig="">
+<cfset variables.instance.forceDirectoryStructure=true>
+<cfset variables.instance.suppressAPIParams=true>
 
 <cffunction name="OnMissingMethod" output="false" hint="Handles missing method exceptions.">
 <cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />
@@ -248,9 +250,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cfloop>
 
-	<cfif directoryExists(expandPath('/muraWRM/sites/')) and not directoryExists(expandPath('/muraWRM/default/'))>
-		<cfset variables.instance.siteDir='sites'>
-	<cfelse>
+	<cfif not directoryExists(expandPath('/muraWRM/sites/')) and directoryExists(expandPath('/muraWRM/default/'))>
 		<cfset variables.instance.siteDir=''>
 	</cfif>
 

@@ -1593,6 +1593,7 @@ and parentID is null
 			<cfset StructDelete(sArgs,"ContentID")/>
 			<cfset StructDelete(sArgs,"ParentID")/>
 			<cfset StructDelete(sArgs,"SiteID")/>
+			<cfset StructDelete(sArgs,"isnew")/>
 
 			<cfset newContentBean.set( content=sArgs ) />
 			<cfif rsRelated.recordCount>
@@ -1623,6 +1624,8 @@ and parentID is null
 
 			<cfif arguments.approved>
 				<cfset newContentBean.setApproved( 1 ) />
+			<cfelse>
+				<cfset newContentBean.setApproved( 0 ) />
 			</cfif>
 
 			<cfif len( newContentBean.getFileID() )>

@@ -19,7 +19,7 @@
 <cfparam name="attributes.break" default="false">
 <cfparam name="attributes.dateclass" default="">
 <cfparam name="attributes.datespanclass" default="span3">
-
+<cfparam name="attributes.timeselectwrapper" default="false">
 <cfset attributes.hourname="">
 <cfset attributes.minutename="">
 <cfset attributes.daypartname="">
@@ -42,7 +42,9 @@
 
 <cfoutput>
 <input type="text" autocomplete="off" class="datepicker #esapiEncode('html_attr',attributes.dateclass)# #esapiEncode('html_attr',attributes.datespanclass)# mura-datepicker#esapiEncode('html_attr',attributes.name)#" value="#LSDateFormat(attributes.datetime,session.dateKeyFormat)#" maxlength="12" id="mura-datepicker-#esapiEncode('html_attr',attributes.name)#"/><cfif attributes.break><br/></cfif>
+<cfif attributes.timeselectwrapper><div class="mura-timeselectwrapper"></cfif>
 <cf_timeselector attributecollection="#attributes#">
+<cfif attributes.timeselectwrapper></div></cfif>
 <input type="hidden" id="mura-#esapiEncode('html_attr',attributes.name)#" name="#esapiEncode('html_attr',attributes.name)#" value="#esapiEncode('html_attr',attributes.datetime)#" data-required="#esapiEncode('html_attr',attributes.required)#" data-required="#esapiEncode('html_attr',attributes.message)#"/>
 <script>
 	$(function(){

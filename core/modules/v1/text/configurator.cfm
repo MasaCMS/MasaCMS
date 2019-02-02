@@ -43,6 +43,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfsilent>
 	<cfparam name="objectParams.sourcetype" default="custom">
+	<cfparam name="objectParams.async" default="false">
 	<cfparam name="objectParams.source" default="">
 	<cfset content=rc.$.getBean('content').loadBy(contentid=rc.objectid)>
 	<cfset content.setType('Component')>

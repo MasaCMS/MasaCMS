@@ -41,6 +41,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
+
 <cfset tabList=listAppend(tabList,"tabBasic")>
 <cfinclude template="head_formbuilder.cfm">
 	<cfoutput>
@@ -81,9 +82,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<cfsavecontent variable="bodyContent">
 				<div class="mura-control-group">
-					<label>
-						#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.content")#
-					</label>
 					<div id="bodyContainer" class="mura-control justify">
 						<cfinclude template="dsp_formbuilder.cfm">
 					</div>
@@ -91,6 +89,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfsavecontent>	
 
 			<span id="extendSetsBasic"></span>
+
+			<!--- parentid placeholder --->
+			<input type="hidden" name="parentid" value="#esapiEncode('html_attr',rc.parentid)#">
 
 			<cfif rc.type eq 'Form'>
 				<div class="mura-control-group">

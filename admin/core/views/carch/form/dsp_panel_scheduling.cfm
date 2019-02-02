@@ -1,4 +1,4 @@
-/*  This file is part of Mura CMS.
+<!--- This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -40,51 +40,48 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
-*/
-/**
- * This provides user iterating functionality
- */
-component extends="mura.iterator.queryIterator" output="false" hint="This provides user iterating functionality" {
-	variables.userBean ="";
-	variables.entityName ="user";
-	variables.recordIDField="userID";
+--->
+<cfset tabList=listAppend(tabList,"tabSchedule")>
+<cfoutput>
+<div class="mura-panel panel">
+	<div class="mura-panel-heading" role="tab" id="heading-schedule">
+		<h4 class="mura-panel-title">
+			<!--- todo: rb key for scheduling --->
+			<a class="collapse" role="button" data-toggle="collapse" data-parent="##content-panels" href="##panel-schedule" aria-expanded="true" aria-controls="panel-schedule">Scheduling<!--- #application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.basic")# ---></a>
+		</h4>
+	</div>
+	<div id="panel-schedule" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-schedule" aria-expanded="false" style="height: 0px;">
+		<div class="mura-panel-body">
+			
+			<span id="extendset-container-tabscheduletop" class="extendset-container"></span>
 
-	public function getEntityName() output=false {
-		return variables.entityName;
-	}
+			<!--- display yes/no/schedule --->
+			<cfif ((rc.parentid neq '00000000000000000000000000000000001' and application.settingsManager.getSite(rc.siteid).getlocking() neq 'all') or (rc.parentid eq '00000000000000000000000000000000001' and application.settingsManager.getSite(rc.siteid).getlocking() eq 'none')) and rc.contentid neq '00000000000000000000000000000000001'>
 
-	public function setEntityName(entityName) output=false {
-		variables.entityName=arguments.entityName;
-		return this;
-	}
+				<cfinclude template="dsp_displaycontent.cfm">
 
-	public function packageRecord() output=false {
-		if ( !isObject(variables.userBean) ) {
-			variables.userBean=getBean("user");
-			variables.userStructTemplate= structCopy(variables.userBean.getAllValues(autocomplete=false));
-		} else {
-			variables.userBean.setAllValues( structCopy(variables.userStructTemplate) );
-		}
-		variables.userBean.set(queryRowToStruct(variables.records,currentIndex()));
-		getBean("userManager").setUserBeanMetaData(variables.userBean);
-		variables.userBean.setValue('sourceIterator',this);
-		return variables.userBean;
-	}
+			<cfelse>
+				<cfif rc.type neq 'Component' and rc.type neq 'Form'>
+					<input type="hidden" name="display" value="#rc.contentBean.getdisplay()#">
+						<cfif rc.contentid eq '00000000000000000000000000000000001' or (rc.parentid eq '00000000000000000000000000000000001' and application.settingsManager.getSite(rc.siteid).getlocking() eq 'top') or application.settingsManager.getSite(rc.siteid).getlocking() eq 'all'>
+							<input type="hidden" name="parentid" value="#esapiEncode('html_attr',rc.parentid)#">
+						</cfif>
+					<input type="hidden" name="displayStart" value="">
+					<input type="hidden" name="displayStop" value="">
+				<cfelse>
+					<input type="hidden" name="display" value="1">
+				</cfif>
 
-	public function buildQueryFromList(idList, siteid) output=false {
-		var i="";
-		var idArray=listToArray(arguments.idList);
-		variables.records=queryNew("userID,siteID","VARCHAR,VARCHAR");
-		for ( i=1 ; i<=arrayLen(arguments.idArray) ; i++ ) {
-			QueryAddRow(variables.records);
-			QuerySetCell(variables.records,"userID", idArray[i]);
-			QuerySetCell(variables.records, 'siteID',arguments.siteid);
-		}
-		variables._recordcount=variables.records.recordcount;
-		variables.maxRecordsPerPage=variables.records.recordcount;
-		variables.recordIndex = 0;
-		variables.pageIndex = 1;
-		return this;
-	}
+			</cfif>
+			<!--- /end display yes/no/schedule --->
 
-}
+			<span id="extendset-container-schedule" class="extendset-container"></span>
+
+			<span id="extendset-container-tabschedulebottom" class="extendset-container"></span>
+
+		</div>
+	</div>
+</div> 
+
+
+</cfoutput>

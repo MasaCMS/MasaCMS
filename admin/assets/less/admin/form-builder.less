@@ -42,6 +42,10 @@
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. 
 */
 
+@tbformheight: ~"calc(100vh - 380px)";
+@tbformpagesw: 60px;
+@tbformfieldsw: 230px;
+@tbfieldsettingsw: ~"calc(100% - 290px)";
 	
 #mura-templatebuilder{
 
@@ -56,28 +60,27 @@
 		padding: 0;
 	}
 
+	.tb-fieldIsEmpty {
+		border: 1px solid #ff0000 !important;
+	}	
 
-.tb-fieldIsEmpty {
-	border: 1px solid #ff0000 !important;
-}	
 	#mura-tb-form-fields {
-		width: 20% !important;
+		width: @tbformfieldsw !important;
 	}
 	#mura-tb-fields-settings {
-		width: 73% !important;
+		width: @tbfieldsettingsw !important;
 	}
 
 	#mura-tb-form-pages {
 		background: #aaa;
 		color: #fff;
 		float: left;
-		height: 450px;
+		height: @tbformheight;
 		overflow-x: hidden;
 		overflow-y: auto;
-		padding: 1%;
-		padding-top: 16px;
+		padding: 10px 4px 4px 8px;
 		text-align: center;
-		width: 7%;
+		width: @tbformpagesw;
 	}
 	#mura-tb-form-pages .current {
 		background: #ccc;
@@ -94,6 +97,7 @@
 		list-style: none;
 		list-style-type: none;
 		cursor: pointer;
+		width: @tbformpagesw - 16px !important;
 	}
 
 	#mura-form-addpage {
@@ -215,14 +219,6 @@
 		width: 18px;
 		height: 18px;
 	}
-	.mura-tb-form select {
-		/*border: 1px solid #aaa;*/
-		/*
-margin: 0;
-		padding: 1px;
-		float: left;
-*/
-	}
 	
 	ul.template-form {
 		list-style: none;
@@ -243,11 +239,10 @@ margin: 0;
 	#mura-tb-fields-settings {
 		background-color: #e4e4e4;
 		float: right;
-		height: 450px;
+		height: @tbformheight;
 		overflow-x: hidden;
 		overflow-y: auto;
-		padding: 2%;
-		width: 66%;
+		padding: 8px 16px;
 	}
 	
 	.template-form > li {
@@ -545,17 +540,15 @@ font-size: 12px;
 	}
 	
 	#mura-tb-form {
-		/*border-top: 1px solid #d1d1d1;*/
-		/* background: url('../images/formbuilder/bg-shadows.png') repeat-y 206px 0; */
 		background-color: #d7d7d6;
-		clear: both;
+		clear: left;
+		height: @tbformheight;
 	}
 	#mura-tb-form-fields {
-		width: 26%;
-		padding: 2% 2% 2% 2%;
+		padding: 16px;
 		float: left;
 		background: #f7f7f7;
-		height: 450px;
+		height: @tbformheight;
 		overflow-y: auto;
 		overflow-x: hidden;
 	}

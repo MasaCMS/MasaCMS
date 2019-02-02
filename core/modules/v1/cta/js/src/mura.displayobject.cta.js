@@ -28,7 +28,7 @@ Mura.DisplayObject.Cta = Mura.UI.extend({
         this.context.animatespeed = this.context.animatespeed ||  'fast';
 
         this.context.width = this.context.width || 'md';
-        this.context.cssclass = this.context.cssclass || '';
+        this.context.instanceclass = this.context.instanceclass || '';
         this.context.eventLabel=this.context.type
 
         if (this.context.type == 'modal') {
@@ -256,6 +256,13 @@ Mura.DisplayObject.Cta = Mura.UI.extend({
                 region.append(Mura.trim(Mura.templates['cta-instance'](this.context)));
             }
             var cta = Mura('#mura-cta-' + this.context.instanceid);
+
+						if(this.context.instanceclass){
+							var classes=this.context.instanceclass.split(' ');
+							for(var c=0;c<classes.length;c++){
+								cta.addClass(classes[c]);
+							}
+						}
 
             var self = this;
 

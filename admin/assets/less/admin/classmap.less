@@ -235,11 +235,18 @@ main > .content > :first-child:not(.alert){
 
   // datepicker fields
 
-  #main input[type=text].datepicker,
-  .mura-content select.mura-repeat-option{
+  input[type=text].datepicker,
+  select.mura-repeat-option{
   .form-control;  
-  .make-sm-column(3);
+    width: 115px !important;
   }
+  
+  input[type=text].mura-repeat-option.numeric{
+    .form-control;  
+    max-width: 60px;
+    width: 60px;
+  }
+
   select.time{
   .form-control;  
   .make-sm-column(1);
@@ -247,10 +254,6 @@ main > .content > :first-child:not(.alert){
   margin-left: 8px;
   min-width: 70px;
   padding-right: 8px;
-  }
-  .bigui select.time{
-    .make-sm-column(2);
-    .make-xs-column(4);    
   }
 
   // search param fields
@@ -610,7 +613,23 @@ h1:not([class]){
     }
 
     .mura-control-group > label + .datepicker{
-      .make-sm-column(6);
+    .make-sm-column(6);
+    margin-right: 15px;
+    }
+    .mura-timeselectwrapper{
+    .make-sm-column(4);
+    min-width: 210px;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 6px;
+
+      div.nice-select.time, 
+      select.time{
+      .make-sm-column(2);
+      min-width: 60px;
+      margin-left: 0;
+      }
+
     }
     .mura-control-group .mura-interval-end input[type=text]{
       .make-sm-column(3);
@@ -618,3 +637,24 @@ h1:not([class]){
 
   } /* /.mura__edit__controls__objects */
 } /* /.mura__edit__controls */
+
+/* "big ui" flyout panel */
+.bigui{
+    
+    /* datepickers in big UI */
+    select.time{
+      .make-xs-column(1.5);    
+      min-width: 55px;
+      width: 55px;
+      padding-left: 5px;
+      padding-right: 5px;    
+    }
+    .datepicker{
+      .make-sm-column(3);
+      min-width: 115px;
+      margin-right: 15px;  
+      padding-left: 5px;
+      padding-right: 5px;    
+    }
+
+  } /* /.bigui */

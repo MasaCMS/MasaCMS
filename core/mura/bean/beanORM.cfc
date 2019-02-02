@@ -155,12 +155,12 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 			variables.dbUtility=getBean('dbUtility');
 			variables.dbUtility.setTable(getTable());
 			if(hasCustomDatasource() ){
-				variables.dbUtility.setValue('datasource',getCustomDatasource());
+				variables.dbUtility.setValue('customDatasource',getCustomDatasource());
 				variables.dbUtility.setValue('DbUsername','');
 				variables.dbUtility.setValue('DbPassword','');
 
 				if(structKeyExists(application.objectMappings[variables.entityName],'dbtype') ){
-					variables.dbUtility.setDbType(application.objectMappings[variables.entityName].dbtype);
+					variables.dbUtility.setValue('dbType',application.objectMappings[variables.entityName].dbtype);
 				}
 			}
 		}

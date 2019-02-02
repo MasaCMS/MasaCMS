@@ -2144,3 +2144,10 @@ body#clogin.modal-wrapper #mura-content {
     padding-top: 5px;
     padding-bottom: 5px;
 }
+
+/* editable div placeholders */
+div[data-placeholder]:not([data-placeholder=""]):empty::before {
+  content: attr(data-placeholder);
+  opacity: .25;
+  font-style: italic;
+}

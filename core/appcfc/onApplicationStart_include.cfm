@@ -305,6 +305,7 @@ if ( application.setupComplete ) {
 		variables.serviceFactory.addAlias("category","categoryBean");
 		variables.serviceFactory.addAlias("categoryFeed","categoryFeedBean");
 		variables.serviceFactory.addAlias("userFeed","userFeedBean");
+		variables.serviceFactory.addAlias("groupFeed","userFeedBean");
 		variables.serviceFactory.addAlias("comment","contentCommentBean");
 		variables.serviceFactory.addAlias("commentFeed","contentCommentFeedBean");
 		variables.serviceFactory.addAlias("stats","contentStatsBean");
@@ -377,6 +378,7 @@ if ( application.setupComplete ) {
 		} catch (any cfcatch) {}
 	}
 
+
 	application.objectMappings={};
 	application.objectMappings.bundleableBeans="";
 	application.objectMappings.versionedBeans="";
@@ -418,9 +420,44 @@ if ( application.setupComplete ) {
 
 	variables.serviceFactory.getBean('contentCategoryAssign');
 
+	param name="application.muraExternalConfig" default={};
+
+	if (len(application.configBean.getValue('externalConfig'))) {
+
+		if(isValid('url',application.configBean.getValue('externalConfig'))){
+			httpService=application.configBean.getHTTPService();
+			httpService.setMethod("get");
+			httpService.setCharset("utf-8");
+			httpService.setURL(application.configBean.getValue('externalConfig'));
+			config=httpService.send().getPrefix().filecontent;
+		} else if (fileExists(application.configBean.getValue('externalConfig'))) {
+			config=fileRead(application.configBean.getValue('externalConfig'),'utf-8');
+		}
+		if(isJSON(config)){
+			application.muraExternalConfig=deserializeJSON(config);
+		} else {
+			writeLog(type="Error", file="exception", text="Error reading external config from  '#application.configBean.getValue('externalConfig')#': #config#");
+		}
+	}
+
+	if(	isdefined('url.applyDBUpdates')
+			&& isDefined('application.muraExternalConfig.global.entities')
+			&& isArray(application.muraExternalConfig.global.entities)
+		){
+		entities=application.muraExternalConfig.global.entities;
+		for(entity in entities){
+			if(isJSON(entity)){
+				getServiceFactory().declareBean(json=entity,fromExternalConfig=true);
+			}
+		}
+	}
+
+	request.muraattachormlinks=true;
 	application.serviceFactory.loadDynamicEntities();
+	request.muraattachormlinks=false;
 
 	application.appAutoUpdated=false;
+
 	variables.serviceList="utility,pluginManager,settingsManager,contentManager,eventManager,contentRenderer,contentUtility,contentGateway,categoryManager,clusterManager,contentServer,changesetManager,scriptProtectionFilter,permUtility,emailManager,loginManager,mailinglistManager,userManager,dataCollectionManager,feedManager,sessionTrackingManager,favoriteManager,raterManager,dashboardManager,autoUpdater";
 	//  The ad manager has been removed, but may be there in certain legacy conditions
 	if ( application.serviceFactory.containsBean('advertiserManager') ) {
@@ -443,6 +480,8 @@ if ( application.setupComplete ) {
 		application.mura=application.serviceFactory.getBean('mura');
 	}
 
+	request.muraattachormlinks=true;
+
 	//  End beanServicePlaceHolders
 	variables.temp='';
 	application.badwords = ReReplaceNoCase(trim(variables.temp), "," , "|" , "ALL");
@@ -456,6 +495,7 @@ if ( application.setupComplete ) {
 	if ( fileExists(ExpandPath("/muraWRM/config/settings.custom.managers.cfm")) ) {
 		include "/muraWRM/config/settings.custom.managers.cfm";
 	}
+
 	variables.basedir=expandPath("/muraWRM");
 	variables.mapprefix="";
 	if ( len(application.configBean.getValue('encryptionKey')) ) {
@@ -904,26 +944,6 @@ if ( application.setupComplete ) {
 		}
 	}
 
-	param name="application.muraExternalConfig" default={};
-
-
-	if (len(application.configBean.getValue('externalConfig'))) {
-
-		if(isValid('url',application.configBean.getValue('externalConfig'))){
-			httpService=application.configBean.getHTTPService();
-			httpService.setMethod("get");
-			httpService.setCharset("utf-8");
-			httpService.setURL(application.configBean.getValue('externalConfig'));
-			config=httpService.send().getPrefix().filecontent;
-		} else if (fileExists(application.configBean.getValue('externalConfig'))) {
-			config=fileRead(application.configBean.getValue('externalConfig'),'utf-8');
-		}
-
-		if(isJSON(config)){
-			application.muraExternalConfig=deserializeJSON(config);
-		}
-	}
-
 	if(isDefined('application.muraExternalConfig.global.modules') && isStruct(application.muraExternalConfig.global.modules)){
 		modules=application.muraExternalConfig.global.modules;
 		sites=application.configBean.getBean('settingsManager').getSites();
@@ -960,17 +980,6 @@ if ( application.setupComplete ) {
 
 	}
 
-	/*
-	if(isDefined('application.muraExternalConfig.global.entities') && isArray(application.muraExternalConfig.global.entities)){
-		entities=application.muraExternalConfig.global.entities;
-		rsSites=application.configBean.getBean('settingsManager').getList();
-		for(entity in entities){
-			if(isJSON(entity)){
-				getServiceFactory().declareBean(json=entity,siteid=valueList(rsSites.siteid));
-			}
-		}
-	}
-	*/
 
 	application.sessionTrackingThrottle=false;
 
