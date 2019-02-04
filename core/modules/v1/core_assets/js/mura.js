@@ -13256,9 +13256,9 @@ Mura.Request=Mura.Core.extend(
 				}
 				if (typeof error == 'undefined' || ( typeof httpResponse != 'undefined' && httpResponse.statusCode >= 200 && httpResponse.statusCode < 400)) {
 					try {
-							var data = JSON.parse(body);
+						var data = JSON.parse(body);
 					} catch (e) {
-							var data = body;
+						var data = body;
 					}
 					params.success(data, httpResponse);
 				} else if (typeof error == 'undefined') {
@@ -13273,10 +13273,15 @@ Mura.Request=Mura.Core.extend(
 						throw data;
 					}
 				} else {
+					try {
+						var data = JSON.parse(body);
+					} catch (e) {
+						var data = body;
+					}
 					if(typeof params.error == 'function'){
-						params.error(error,httpResponse);
+						params.error(data,httpResponse);
 					} else {
-						throw error;
+						throw data;
 					}
 				}
 			}
@@ -13338,7 +13343,12 @@ Mura.Request=Mura.Core.extend(
 							console.log(req.responseText);
 						}
 						if(typeof params.error == 'function'){
-							params.error(req);
+							try {
+								var data = JSON.parse(req.responseText);
+							} catch (e) {
+								var data = req.responseText;
+							}
+							params.error(data);
 						} else {
 							throw req;
 						}
@@ -13360,7 +13370,12 @@ Mura.Request=Mura.Core.extend(
 						req.send(params.data);
 					} catch(e){
 						if(typeof params.error == 'function'){
-							params.error(req,e);
+							try {
+								var data = JSON.parse(req.responseText);
+							} catch (e) {
+								var data = req.responseText;
+							}
+							params.error(data,e);
 						} else {
 							throw e;
 						}
@@ -13383,7 +13398,12 @@ Mura.Request=Mura.Core.extend(
 							req.send(query);
 						} catch(e){
 							if(typeof params.error == 'function'){
-								params.error(req,e);
+								try {
+									var data = JSON.parse(req.responseText);
+								} catch (e) {
+									var data = req.responseText;
+								}
+								params.error(data,e);
 							} else {
 								throw e;
 							}
@@ -13416,7 +13436,16 @@ Mura.Request=Mura.Core.extend(
 						req.send();
 					} catch(e){
 						if(typeof params.error == 'function'){
-							params.error(req,e);
+							if(typeof req.responseText != 'undefined'){
+								try {
+									var data = JSON.parse(req.responseText);
+								} catch (e) {
+									var data = req.responseText;
+								}
+								params.error(data,e);
+							} else {
+								params.error(req,e);
+							}
 						} else {
 							throw e;
 						}
