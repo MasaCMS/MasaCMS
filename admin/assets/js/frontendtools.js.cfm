@@ -1102,7 +1102,7 @@
 					//console.log("fet:" + 1106)
 					openFrontEndToolsModal(this);
 				};
-				
+
 				Mura("img").each(function(){MuraInlineEditor.checkforImageCroppers(this);});
 
 				MuraInlineEditor.setAnchorSaveChecks(document);

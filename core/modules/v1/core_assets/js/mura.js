@@ -3288,7 +3288,7 @@ var Mura=(function(){
 
 					Mura.markupInitted=true;
 
-					if(Mura.cookieConsentEnabled){Mura(function(){Mura('body').appendDisplayObject({object:'cookie_consent',queue:false});});}
+					if(Mura.cookieConsentEnabled){Mura(function(){Mura('body').appendDisplayObject({object:'cookie_consent',queue:false,statsid:'cookie_consent'});});}
 
 					Mura(document).on("keydown", function(event) {
 						loginCheck(event.which);
@@ -13256,9 +13256,9 @@ Mura.Request=Mura.Core.extend(
 				}
 				if (typeof error == 'undefined' || ( typeof httpResponse != 'undefined' && httpResponse.statusCode >= 200 && httpResponse.statusCode < 400)) {
 					try {
-							var data = JSON.parse(body);
+						var data = JSON.parse(body);
 					} catch (e) {
-							var data = body;
+						var data = body;
 					}
 					params.success(data, httpResponse);
 				} else if (typeof error == 'undefined') {
@@ -13273,10 +13273,15 @@ Mura.Request=Mura.Core.extend(
 						throw data;
 					}
 				} else {
+					try {
+						var data = JSON.parse(body);
+					} catch (e) {
+						var data = body;
+					}
 					if(typeof params.error == 'function'){
-						params.error(error,httpResponse);
+						params.error(data,httpResponse);
 					} else {
-						throw error;
+						throw data;
 					}
 				}
 			}
@@ -13338,7 +13343,12 @@ Mura.Request=Mura.Core.extend(
 							console.log(req.responseText);
 						}
 						if(typeof params.error == 'function'){
-							params.error(req);
+							try {
+								var data = JSON.parse(req.responseText);
+							} catch (e) {
+								var data = req.responseText;
+							}
+							params.error(data);
 						} else {
 							throw req;
 						}
@@ -13360,7 +13370,12 @@ Mura.Request=Mura.Core.extend(
 						req.send(params.data);
 					} catch(e){
 						if(typeof params.error == 'function'){
-							params.error(req,e);
+							try {
+								var data = JSON.parse(req.responseText);
+							} catch (e) {
+								var data = req.responseText;
+							}
+							params.error(data,e);
 						} else {
 							throw e;
 						}
@@ -13383,7 +13398,12 @@ Mura.Request=Mura.Core.extend(
 							req.send(query);
 						} catch(e){
 							if(typeof params.error == 'function'){
-								params.error(req,e);
+								try {
+									var data = JSON.parse(req.responseText);
+								} catch (e) {
+									var data = req.responseText;
+								}
+								params.error(data,e);
 							} else {
 								throw e;
 							}
@@ -13416,7 +13436,16 @@ Mura.Request=Mura.Core.extend(
 						req.send();
 					} catch(e){
 						if(typeof params.error == 'function'){
-							params.error(req,e);
+							if(typeof req.responseText != 'undefined'){
+								try {
+									var data = JSON.parse(req.responseText);
+								} catch (e) {
+									var data = req.responseText;
+								}
+								params.error(data,e);
+							} else {
+								params.error(req,e);
+							}
 						} else {
 							throw e;
 						}
@@ -13569,7 +13598,7 @@ Mura.RequestContext=Mura.Core.extend(
 				},
 				error: function(resp) {
 					if (resp != null && typeof resp.data != 'undefined' && typeof resp.data != 'undefined' && typeof resolve == 'function') {
-						var item = new Mura.Entity({},self);
+						var item = new Mura.entities.Content({},self);
 						item.set(resp.data);
 						resolve(item);
 					} else if (typeof reject == 'function') {
@@ -17732,9 +17761,10 @@ Mura.DOMSelection = Mura.Core.extend(
 			el.style.opacity = 1;
 			(function fade() {
 				if ((el.style.opacity -= .1) < 	0) {
-						el.style.display = "none";
+					el.style.opacity=0;
+					el.style.display = "none";
 				} else {
-						requestAnimationFrame(fade);
+					requestAnimationFrame(fade);
 				}
 			})();
 		});
@@ -20842,7 +20872,7 @@ this["Mura"]["templates"]["dropdown_static"] = this.Mura.Handlebars.template({"1
     + ((stack1 = ((helper = (helper = helpers.inputWrapperClass || (depth0 != null ? depth0.inputWrapperClass : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"inputWrapperClass","hash":{},"data":data}) : helper))) != null ? stack1 : "")
     + "\" id=\"field-"
     + alias4(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
-    + "-container\">\n		<label for=\""
+    + "-container\">\n		<label for=\"field-"
     + alias4(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
     + "\">"
     + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.summary : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(3, data, 0),"data":data})) != null ? stack1 : "")
@@ -20895,7 +20925,7 @@ this["Mura"]["templates"]["dropdown"] = this.Mura.Handlebars.template({"1":funct
     + ((stack1 = ((helper = (helper = helpers.inputWrapperClass || (depth0 != null ? depth0.inputWrapperClass : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"inputWrapperClass","hash":{},"data":data}) : helper))) != null ? stack1 : "")
     + "\" id=\"field-"
     + alias4(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
-    + "-container\">\n		<label for=\""
+    + "-container\">\n		<label for=\"field-"
     + alias4(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
     + "\">"
     + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.summary : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(3, data, 0),"data":data})) != null ? stack1 : "")
@@ -21294,7 +21324,7 @@ this["Mura"]["templates"]["textarea"] = this.Mura.Handlebars.template({"1":funct
     + ((stack1 = ((helper = (helper = helpers.inputWrapperClass || (depth0 != null ? depth0.inputWrapperClass : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"inputWrapperClass","hash":{},"data":data}) : helper))) != null ? stack1 : "")
     + "\"  id=\"field-"
     + alias4(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
-    + "-container\">\r\n	<label for=\""
+    + "-container\">\r\n	<label for=\"field-"
     + alias4(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
     + "\">"
     + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.summary : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(3, data, 0),"data":data})) != null ? stack1 : "")
@@ -21350,7 +21380,7 @@ this["Mura"]["templates"]["textfield"] = this.Mura.Handlebars.template({"1":func
     + ((stack1 = ((helper = (helper = helpers.inputWrapperClass || (depth0 != null ? depth0.inputWrapperClass : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"inputWrapperClass","hash":{},"data":data}) : helper))) != null ? stack1 : "")
     + "\" id=\"field-"
     + alias4(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
-    + "-container\">\r\n	<label for=\""
+    + "-container\">\r\n	<label for=\"field-"
     + alias4(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
     + "\">"
     + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.summary : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(3, data, 0),"data":data})) != null ? stack1 : "")
