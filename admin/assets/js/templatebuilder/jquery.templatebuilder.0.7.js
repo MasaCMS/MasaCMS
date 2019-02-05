@@ -464,7 +464,7 @@
 			if (_templates[templateName] == undefined) {
 				goLoadTemplate(templateName);
 
-				setTimeout(()=>{
+				setTimeout(function(){
 					if(fieldData.fieldtype.isdata == 1) {
 						if (fieldData.datasetid.length) {
 							doDataset();

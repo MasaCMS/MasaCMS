@@ -351,7 +351,7 @@
 <input name="objectid" class="objectParam" type="hidden" value=""/>
 <input name="trim-params" class="objectParam" type="hidden" value="true"/>
 <input name="queue" class="objectParam" type="hidden" value="false"/>
-<input name="ctanstanceid" class="objectParam" type="hidden" value="#esapiEncode('html_attr',objectparams.statsid)#"/>
+<input name="statsid" class="objectParam" type="hidden" value="#esapiEncode('html_attr',objectparams.statsid)#"/>
 <input name="render" class="objectParam" type="hidden" value="client"/>
 <input name="preview" type="hidden" value=""/>
 <script>
