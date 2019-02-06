@@ -224,8 +224,8 @@ CKEDITOR.editorConfig = function( config )
 		var connectorpath = '#application.configBean.getContext()#/core/vendor/ckfinder/ckfinder.html';
 		config.filebrowserBrowseUrl = connectorpath;
 		config.filebrowserImageBrowseUrl = connectorpath + '?type=Images';
-		config.filebrowserUploadUrl = connectorpath;
-		config.filebrowserImageUploadUrl = connectorpath + '?type=Images';
+		config.filebrowserUploadUrl = '#application.configBean.getContext()#/core/vendor/ckfinder/core/connector/cfm/connector.cfm?command=QuickUpload&type=#URLEncodedFormat(session.siteid)#_User_Assets&currentFolder=%2Files%2F';
+		config.filebrowserImageUploadUrl ='#application.configBean.getContext()#/core/vendor/ckfinder/core/connector/cfm/connector.cfm?command=QuickUpload&type=#URLEncodedFormat(session.siteid)#_User_Assets&currentFolder=%2FImage%2F';
 	</cfif>
 
 	<cfset secure=$.getBean('utility').isHTTPS()>

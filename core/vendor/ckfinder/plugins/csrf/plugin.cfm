@@ -3,13 +3,18 @@
 	<!--- Check permissions, if necessary. --->
 	<cfif listcontains("CopyFiles,CreateFolder,DeleteFiles,DeleteFolder,FileUpload,MoveFiles,RenameFile,RenameFolder,QuickUpload,SaveFile", command)>
 		<cfset var $=application.serviceFactory.getBean('$').init(session.siteid)>
-		<cfif not $.validateCSRFTokens(context='')>
+		<cfif not (
+				isdefined('form.ckCsrfToken')
+					and isdefined('cookie.ckCsrfToken')
+					and form.ckCsrfToken eq cookie.ckCsrfToken	
+					or not $.validateCSRFTokens(context='')
+				)>
 			<cfthrow errorcode="#REQUEST.constants.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED#" type="ckfinder" />
 		</cfif>
    	</cfif>
 
     <cfreturn true />
-    
+
 </cffunction>
 
 <cfset REQUEST.CheckCSRF = CheckCSRF>
