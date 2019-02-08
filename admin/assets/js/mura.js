@@ -746,6 +746,20 @@ var Mura=(function(){
 	}
 
 	/**
+	 * normalizeRequestHandler - Standardizes request handler objects
+	 *
+	 * @param	{object} eventHandler
+	 * @memberof {object} eventHandler
+	 */
+	function normalizeRequestHandler(eventHandler) {
+		eventHandler.progress=eventHandler.progress || eventHandler.onProgress || eventHandler.onUploadProgress || function(){};
+		eventHandler.abort=eventHandler.abort || eventHandler.onAbort|| function(){};
+		eventHandler.success=eventHandler.success || eventHandler.onSuccess || function(){};
+		eventHandler.error=eventHandler.error || eventHandler.onError || function(){};
+		return eventHandler;
+	}
+
+	/**
 	 * getRequestContext - Returns a new Mura.RequestContext;
 	 *
 	 * @name getRequestContext
@@ -3394,7 +3408,8 @@ var Mura=(function(){
 			undeclareEntity:undeclareEntity,
 			buildDisplayRegion:buildDisplayRegion,
 			openGate:openGate,
-			firstToUpperCase:firstToUpperCase
+			firstToUpperCase:firstToUpperCase,
+			normalizeRequestHandler:normalizeRequestHandler
 		}
 	);
 
@@ -13335,12 +13350,14 @@ Mura.Request=Mura.Core.extend(
 			params.success=params.success || params.onSuccess || function(){};
 			params.error=params.error || params.onError || function(){};
 
-			if(typeof params.progress == 'function'){
-				req.addEventListener("progress", params.progress);
-			}
+			if(typeof req.addEventListener != 'undefined'){
+				if(typeof params.progress == 'function'){
+					req.addEventListener("progress", params.progress);
+				}
 
-			if(typeof params.abort == 'function'){
-				req.addEventListener("abort", params.abort);
+				if(typeof params.abort == 'function'){
+					req.addEventListener("abort", params.abort);
+				}
 			}
 
 			req.onreadystatechange = function() {
@@ -14010,10 +14027,7 @@ Mura.RequestContext=Mura.Core.extend(
 			eventHandler=eventHandler || {};
 		}
 
-		eventHandler.progress=eventHandler.progress || eventHandler.onProgress || eventHandler.onUploadProgress || function(){};
-		eventHandler.abort=eventHandler.abort || eventHandler.onAbort|| function(){};
-		eventHandler.success=eventHandler.success || eventHandler.onSuccess || function(){};
-		eventHandler.error=eventHandler.error || eventHandler.onError || function(){};
+		Mura.normalizeRequestHandler(eventHandler);
 
 		var self=this;
 		data = data || {};
@@ -14056,10 +14070,7 @@ Mura.RequestContext=Mura.Core.extend(
 			eventHandler=eventHandler || {};
 		}
 
-		eventHandler.progress=eventHandler.progress || eventHandler.onProgress || eventHandler.onUploadProgress || function(){};
-		eventHandler.abort=eventHandler.abort || eventHandler.onAbort|| function(){};
-		eventHandler.success=eventHandler.success || eventHandler.onSuccess || function(){};
-		eventHandler.error=eventHandler.error || eventHandler.onError || function(){};
+		Mura.normalizeRequestHandler(eventHandler);
 
 		var self=this;
 		data = data || {};
@@ -14290,10 +14301,8 @@ Mura.Entity = Mura.Core.extend(
 		} else {
 			eventHandler=eventHandler || {};
 		}
-		eventHandler.progress=eventHandler.progress || eventHandler.onProgress || eventHandler.onUploadProgress || function(){};
-		eventHandler.abort=eventHandler.abort || eventHandler.onAbort|| function(){};
-		eventHandler.success=eventHandler.success || eventHandler.onSuccess || function(){};
-		eventHandler.error=eventHandler.error || eventHandler.onError || function(){};
+
+		Mura.normalizeRequestHandler(eventHandler);
 
 		var self = this;
 
@@ -14365,10 +14374,8 @@ Mura.Entity = Mura.Core.extend(
 		} else {
 			eventHandler=eventHandler || {};
 		}
-		eventHandler.progress=eventHandler.progress || eventHandler.onProgress || eventHandler.onUploadProgress || function(){};
-		eventHandler.abort=eventHandler.abort || eventHandler.onAbort|| function(){};
-		eventHandler.success=eventHandler.success || eventHandler.onSuccess || function(){};
-		eventHandler.error=eventHandler.error || eventHandler.onError || function(){};
+
+		Mura.normalizeRequestHandler(eventHandler);
 
 		if(Mura.mode.toLowerCase() == 'rest'){
 			return new Promise(function(resolve,reject) {
@@ -14864,10 +14871,8 @@ Mura.Entity = Mura.Core.extend(
 	 */
 	save: function(eventHandler) {
 		eventHandler=eventHandler || {};
-		eventHandler.progress=eventHandler.progress || eventHandler.onProgress || eventHandler.onUploadProgress || function(){};
-		eventHandler.abort=eventHandler.abort || eventHandler.onAbort|| function(){};
-		eventHandler.success=eventHandler.success || eventHandler.onSuccess || function(){};
-		eventHandler.error=eventHandler.error || eventHandler.onError || function(){};
+
+		Mura.normalizeRequestHandler(eventHandler);
 
 		var self = this;
 
@@ -14926,7 +14931,7 @@ Mura.Entity = Mura.Core.extend(
 								if (self.get('saveerrors') ||
 									Mura.isEmptyObject(self.getErrors())
 								) {
-									if (typeof ventHandler.success ==	'function') {
+									if (typeof eventHandler.success ==	'function') {
 											eventHandler.success(self);
 									}
 								} else {
@@ -15005,10 +15010,8 @@ Mura.Entity = Mura.Core.extend(
 	 */
 	'delete': function(eventHandler) {
 		eventHandler=eventHandler || {};
-		eventHandler.progress=eventHandler.progress || eventHandler.onProgress || eventHandler.onUploadProgress || function(){};
-		eventHandler.abort=eventHandler.abort || eventHandler.onAbort|| function(){};
-		eventHandler.success=eventHandler.success || eventHandler.onSuccess || function(){};
-		eventHandler.error=eventHandler.error || eventHandler.onError || function(){};
+
+		Mura.normalizeRequestHandler(eventHandler);
 
 		var self = this;
 		if(Mura.mode.toLowerCase() == 'rest'){
