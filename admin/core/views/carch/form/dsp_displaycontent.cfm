@@ -311,9 +311,6 @@
 				daysofweek: getDaysOfWeek()
 			};
 
-		<!--- todo: remove this --->
-			console.log(options);
-
 			if(!options.repeats && options.allday){
 				$('##mura-datepicker-displayStop').val($('##mura-datepicker-displayStart').val());
 				$('##mura-datepicker-displayStop').trigger('change');
