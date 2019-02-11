@@ -245,7 +245,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <script type="text/javascript">
 $(document).ready(function(){	
+
+	// open tab via url hash
+	if(window.location.hash){
+		$('.mura-panel-heading a[href$="' + window.location.hash + '"]').trigger('click');		
+	}
 	
+	// filter settings in side panels
 	filterSettings=function(fstr){
 		// if string provided
 		if(fstr.length > 0){
