@@ -172,11 +172,13 @@ $( document ).ready(function() {
 					item.name = item.displayname;
 				}
 
+				if(data.entityname=='group' && item.name=='userid'){
+					item.displayname='groupid';
+				}
+
 				data.properties[x] = item;
 
 			}
-
-			return data;
 
 		},
 
@@ -235,7 +237,7 @@ $( document ).ready(function() {
 
 	Vue.component('assembler-related-form-template', {
 		template: '#assembler-related-form-template',
-		props: ['data','datatypes','relatedprops'],
+		props: ['datatypes','data'],
 		mounted: function() {
 			/*
 			if(!this.data.cfc)
@@ -250,7 +252,18 @@ $( document ).ready(function() {
 				MuraAssembler.getPropertiesAsJSON( this.onLoadComplete,this.data.relatesto );
 			}
 		},
+		data:function(){
+			return {
+				'relatedprops':{}
+			}
+		},
 		methods: {
+			onFKColumnChange:function(){
+				if(!data.loadkey && data.fkcolumn=='groupid'
+					&& data.relatesto=='group'){
+					data.loadkey='userid'
+				}
+			},
 			clickUpdateRelated: function() {
 				this.$forceUpdate();
 				this.$parent.clickUpdateRelated();
@@ -270,10 +283,14 @@ $( document ).ready(function() {
 
 				for(var i in data.properties) {
 					if(!data.properties[i].cfc && !data.properties[i].relatesto) {
+						if(data.entityname=='group' && data.properties[i].name=='userid'){
+							data.properties[i].name='groupid'
+						}
 						console.log(data.properties[i]);
 						related.push(data.properties[i]);
 					}
 				}
+
 
 				this.relatedprops = related;
 			}
@@ -833,5 +850,7 @@ $( document ).ready(function() {
 			}
 		}
 	});
+
+	setTimeout(function(){ Mura('.mura-actions').show() }, 250);
 
 });

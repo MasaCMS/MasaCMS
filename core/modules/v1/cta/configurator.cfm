@@ -17,6 +17,7 @@
     <cfparam name="objectparams.animate" default="ttb">
     <cfparam name="objectparams.animatespeed" default="fast">
     <cfparam name="objectparams.width" default="md">
+		<cfparam name="objectparams.statsid" default="#createUUID()#">
 
     <cfif not isnumeric(objectparams.scroll)>
         <cfset objectparams.scroll=0>
@@ -350,6 +351,7 @@
 <input name="objectid" class="objectParam" type="hidden" value=""/>
 <input name="trim-params" class="objectParam" type="hidden" value="true"/>
 <input name="queue" class="objectParam" type="hidden" value="false"/>
+<input name="statsid" class="objectParam" type="hidden" value="#esapiEncode('html_attr',objectparams.statsid)#"/>
 <input name="render" class="objectParam" type="hidden" value="client"/>
 <input name="preview" type="hidden" value=""/>
 <script>

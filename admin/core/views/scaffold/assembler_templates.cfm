@@ -20,7 +20,7 @@
 					<div class="mura-control-group">
 						<label>Table Name</label>
 						<input type="text" v-model="model.table"
-							name="table" @change="model.table=model.table.replace(/[^0-9a-z]/gi, '');"
+							name="table" @change="model.table=model.table.replace(/[^0-9a-z_]/gi, '');"
 							:disabled="this.$parent.entityissaved">
 					</div>
 
@@ -265,13 +265,14 @@
 				<select
 					v-model="data.fkcolumn"
 					name="fkcolumn"
+					@change="onFKColumnChange"
 					>
 					<option value="" :selected="!data.fkcolumn || data.fkcolumn == ''">Primary Key</option>
-					<option v-for="(option,index) in this.relatedprops" v-if="option.fieldtype='id' || option.fieldtype=='index'" :value="option.name" :selected="option.fkcolumn == option.name ? 'selected' : 'null'">{{option.name}}</option>
+					<option v-for="(option,index) in this.relatedprops" v-if="option.fieldtype='id' || option.fieldtype=='index'" :value="option.name" :selected="option.fkcolumn == option.name ? 'selected' : 'null'">{{option.displayname}}</option>
 				</select>
 			</div>
 
-		<div class="mura-control-group">
+		<div class="mura-control-group" v-if="data.fieldtype != 'one-to-many'">
 			<label>Render Field</label>
 			<select
 				v-model="data.renderfield"

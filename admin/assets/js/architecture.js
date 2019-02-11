@@ -3288,10 +3288,11 @@ buttons: {
 
 	},
 
-	requestDisplayObjectParams:function(fn){
+	requestDisplayObjectParams:function(fn,targetFrame){
+		targetFrame=targetFrame || 'modal';
 
 		siteManager.frontEndProxyListeners.push(
-			{cmd:'setObjectParams',
+			{cmd:'customObjectParamsRequest',
 			fn:function(params){
 					$(".objectParam, .objectparam").each(function(){
 						var item=$(this);
@@ -3323,7 +3324,8 @@ buttons: {
 						frontEndProxy.post({
 							cmd:'requestObjectParams',
 							instanceid:url.instanceid,
-							targetFrame:'modal'
+							targetFrame:targetFrame,
+							callback:'customObjectParamsRequest'
 							}
 						);
 					}
@@ -3332,7 +3334,8 @@ buttons: {
 				frontEndProxy.post({
 					cmd:'requestObjectParams',
 					instanceid:url.instanceid,
-					targetFrame:'modal'
+					targetFrame:targetFrame,
+					callback:'customObjectParamsRequest'
 					}
 				);
 			}
@@ -3345,7 +3348,7 @@ buttons: {
 		var listeners=siteManager.frontEndProxyListeners;
 
 		for (var i=0; i < listeners.length; i++){
-			if(listeners[i].cmd=parameters.cmd){
+			if(listeners[i].cmd==parameters.cmd){
 				if(parameters.params){
 					listeners[i].fn(parameters.params);
 				} else {
