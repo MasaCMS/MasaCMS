@@ -121,7 +121,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div class="block block-bordered">
 		  <div class="block-content">
 					<cfif rc.action eq "edit">
-<<<<<<< HEAD
 						<cfset rc.fieldnames=application.dataCollectionManager.getCurrentFieldList(rc.contentid)/>
 						<cfinclude template="data_manager/dsp_edit.cfm">
 					<cfelseif rc.action eq "display">
@@ -130,22 +129,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfelse>
 						<cfset rc.fieldnames=application.dataCollectionManager.getCurrentFieldList(rc.contentid)/>
 						<cfinclude template="data_manager/dsp_response.cfm">
-=======
-					<cfset rc.fieldnames=application.dataCollectionManager.getCurrentFieldList(rc.contentid)/>
-					<cfinclude template="data_manager/dsp_edit.cfm">
-					<cfelseif rc.action eq "display">
-					<cfset rc.fieldnames=application.dataCollectionManager.getFullFieldList(rc.contentid)/>
-					<cfinclude template="data_manager/dsp_display.cfm">
-					<cfelse>
-					<cfset rc.fieldnames=application.dataCollectionManager.getCurrentFieldList(rc.contentid)/>
-					<cfinclude template="data_manager/dsp_response.cfm">
->>>>>>> 7.1
 					</cfif>
 			</div> <!-- /.block-content -->
 		</div> <!-- /.block-bordered -->
 	</div> <!-- /.block-constrain -->
-<<<<<<< HEAD
-</cfif>	
-=======
 </cfif>
->>>>>>> 7.1

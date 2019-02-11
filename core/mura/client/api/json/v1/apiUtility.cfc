@@ -1678,11 +1678,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			case 'address':
 				if(getBean('permUtility').getModulePerm(variables.config.entities['#arguments.bean.getEntityName()#'].moduleid,variables.siteid)){
 					return true;
-<<<<<<< HEAD
-				} else if (arguments.bean.getValue('userid')==getCurrentUser('userid')){
-=======
 				} else if (arguments.bean.getValue('userid')==getCurrentUser().get('userid')){
->>>>>>> 7.1
 					return true;
 				} else {
 					return false;
@@ -2035,7 +2031,6 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 	function findPermissions(entityName,id,siteid){
 		var $=getBean('$').init(arguments.siteid);
 		var entity=getBean('entity');
-<<<<<<< HEAD
 
 		if(arguments.entityName=='content'){
 			var pk = 'contentid';
@@ -2043,15 +2038,6 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			var pk = entity.getPrimaryKey();
 		}
 
-=======
-
-		if(arguments.entityName=='content'){
-			var pk = 'contentid';
-		} else {
-			var pk = entity.getPrimaryKey();
-		}
-
->>>>>>> 7.1
 		var loadArgs={
 			'#pk#'=arguments.id,
 			'siteid'=arguments.siteid
@@ -2072,11 +2058,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			method='findCurrentUser'
 		);
 		var sessionData=getSession();
-<<<<<<< HEAD
-		
-=======
 
->>>>>>> 7.1
 		if(isDefined("sessionData.mura")){
 			user.memberships=listToArray(sessionData.mura.memberships);
 			user.membershipids=listToArray(sessionData.mura.membershipids);
@@ -2639,11 +2621,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 										}
 									}
 
-<<<<<<< HEAD
-									if(entity.valueExists('extendData') || entity.hasColumn(propName)){
-=======
 									if(entity.valueExists('extendData') || entity.hasProperty(propName)){
->>>>>>> 7.1
 										feed.addParam(column=propName,criteria=criteria,condition=condition,relationship=relationship);
 									} else {
 										throw(type="invalidParameters");
@@ -3155,11 +3133,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 			if(entity.getEntityName()=='content'){
 				links['permissions']="#baseurl#/#entity.getEntityName()#/#entity.get('contentid')#/permissions";
-<<<<<<< HEAD
-			} else {
-=======
 			} else if(len(entity.getPrimaryKey()) )  {
->>>>>>> 7.1
 				links['permissions']="#baseurl#/#entity.getEntityName()#/#entity.get(entity.getPrimaryKey())#/permissions";
 			}
 
@@ -3779,17 +3753,10 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 						} else {
 							item["required"]= false;
 						}
-<<<<<<< HEAD
 
 						structAppend(item,getSwaggerPropertyDataType(properties['#p#'].datatype),true);
 						arrayAppend(response,item);
 
-=======
-
-						structAppend(item,getSwaggerPropertyDataType(properties['#p#'].datatype),true);
-						arrayAppend(response,item);
-
->>>>>>> 7.1
 						map['#item.name#']=true;
 					}
 				}
