@@ -1678,7 +1678,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			case 'address':
 				if(getBean('permUtility').getModulePerm(variables.config.entities['#arguments.bean.getEntityName()#'].moduleid,variables.siteid)){
 					return true;
-				} else if (arguments.bean.getValue('userid')==getCurrentUser('userid')){
+				} else if (arguments.bean.getValue('userid')==getCurrentUser().get('userid')){
 					return true;
 				} else {
 					return false;
