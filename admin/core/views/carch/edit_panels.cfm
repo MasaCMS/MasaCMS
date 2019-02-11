@@ -247,8 +247,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 $(document).ready(function(){	
 
 	// open tab via url hash
-	if(window.location.hash){
+	if(window.location.hash.substring(1,7) == 'panel-'){
 		$('.mura-panel-heading a[href$="' + window.location.hash + '"]').trigger('click');		
+		window.location.hash = "";
 	}
 	
 	// filter settings in side panels
