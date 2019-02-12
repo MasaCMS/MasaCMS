@@ -16,7 +16,7 @@ Linking Mura CMS statically or dynamically with other modules constitutes the pr
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
-or libraries that are released under the GNU Lesser General Pbuublic License version 2.1.
+or libraries that are released under the GNU Lesser General Public License version 2.1.
 
 In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
 independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
