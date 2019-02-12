@@ -293,7 +293,9 @@ $(document).ready(function(){
 	});
 
 	// focus on input filter on page load
-	jQuery("#mura__edit__settings__filter__input").focus(); 	
+	<cfif $.content().getIsNew()>
+		jQuery("#mura-content-title-render input").focus(); 	
+	</cfif>
 
 });
 </script>
