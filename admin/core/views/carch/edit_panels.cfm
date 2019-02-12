@@ -254,29 +254,19 @@ $(document).ready(function(){
 	
 	// filter settings in side panels
 	filterSettings=function(fstr){
-		// if string provided
-		if(fstr.length > 0){
-			// minimum string length for action
-			if(fstr.length > 2){
+		// minimum string length for action
+		if(fstr.length > 2){
 			// if matching a panel name
-			jQuery("#content-panels .panel-matched").removeClass("panel-matched");
-			// jQuery("#content-panels a.collapse:contains('" + fstr + "')").parents(".mura-panel-heading").siblings(".panel-collapse").addClass("panel-matched").collapse("show").find(".mura-control-group").show();
-
-			// matching content of panels
-			if(jQuery("#content-panels .panel-matched").length == 0){			
-				jQuery("#content-panels label:contains('" + fstr + "')").addClass('content-matched');
-				jQuery("#content-panels .mura-control-group").not(":has('label.content-matched')").hide();
-				jQuery("#content-panels label.content-matched").parents(".mura-control-group").show().parents(".panel-collapse:not(.in)").collapse("show");
+			jQuery("#content-panels a.collapse:contains('" + fstr + "')").each(function(){
+				if ($(this).parents('.mura-panel.panel').has('.panel-collapse.collapse.in').length == 0){
+					$(this).parents('.mura-panel.panel').siblings('.mura-panel.panel').has('.panel-collapse.collapse.in').find('a.collapse').trigger('click');
+					$(this).trigger('click');
 				}
-				jQuery("#content-panels .collapse").not(":has('label.content-matched')").collapse("hide");
-				// end check for panel-matched
-			}
+			});
 
-		// reset on zero length
+		// reset on short length
 		} else {
-			jQuery("#content-panels .content-matched").removeClass("content-matched");			
-			jQuery("#content-panels .collapse").collapse("hide","fast");
-			jQuery("#content-panels .mura-control-group").show("slow");
+			jQuery("#content-panels .panel-collapse.collapse").collapse("hide","fast");
 		}
 	} 
 
@@ -293,8 +283,8 @@ $(document).ready(function(){
 	});
 
 	// focus on input filter on page load
-	<cfif $.content().getIsNew()>
-		jQuery("#mura-content-title-render input").focus(); 	
+	<cfif not $.content().getIsNew()>
+		jQuery("#mura__edit__settings__filter__input").focus(); 	
 	</cfif>
 
 });
