@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 			<!--- filter settings --->
 			<div id="mura__edit__settings__filter">
-	  		<input type="text" class="form-control" id="mura__edit__settings__filter__input" placeholder="Filter settings">
+	  		<input type="text" class="form-control" id="mura__edit__settings__filter__input" placeholder="Find settings">
 			</div>
 			<!--- settings --->
 			<div class="mura__edit__controls__objects">
@@ -254,37 +254,52 @@ $(document).ready(function(){
 	
 	// filter settings in side panels
 	filterSettings=function(fstr){
+		
 		// minimum string length for action
 		if(fstr.length > 2){
+			
 			// if matching a panel name
-			jQuery("#content-panels a.collapse:contains('" + fstr + "')").each(function(){
+			$("#content-panels a.collapse:contains('" + fstr + "')").each(function(){
 				if ($(this).parents('.mura-panel.panel').has('.panel-collapse.collapse.in').length == 0){
 					$(this).parents('.mura-panel.panel').siblings('.mura-panel.panel').has('.panel-collapse.collapse.in').find('a.collapse').trigger('click');
 					$(this).trigger('click');
 				}
 			});
 
+			// also match contents
+			$("#content-panels .mura-panel label:contains('" + fstr + "')").addClass('control-matched').parents('.mura-control-group').addClass('control-matched');
+				if ($('#content-panels .panel-collapse.collapse.in').length == 0){
+					$('.mura-control-group.control-matched').parents('.mura-panel.panel').find('a.collapse').trigger('click');
+				}
+
 		// reset on short length
 		} else {
-			jQuery("#content-panels .panel-collapse.collapse").collapse("hide","fast");
+			$("#content-panels .panel-collapse.collapse").collapse("hide","fast");
+			$('#content-panels .mura-panel .control-matched.control-unhighlight').removeClass('control-unhighlight');
+			$('#content-panels .mura-panel .control-matched').removeClass('control-matched');
 		}
 	} 
 
 	// apply filter by typing, with delay
-	jQuery("#mura__edit__settings__filter__input").keyup(function(){
+	$("#mura__edit__settings__filter__input").keyup(function(){
 		var timeout = null;
 		clearTimeout(timeout);
-    timeout = setTimeout(function () {
-			jQuery("#content-panels").find('.content-matched').removeClass('content-matched');
-			var filterStr = jQuery("#mura__edit__settings__filter__input").val(); 	
-			//	console.log(filterStr);
-				filterSettings(filterStr)	;		
-    }, 500);
+	    timeout = setTimeout(function () {
+			var filterStr = $("#mura__edit__settings__filter__input").val(); 	
+				//	console.log(filterStr);
+					filterSettings(filterStr)	;		
+	    }, 500);
+	    // remove highlight after time
+	    timeout = setTimeout(function () {
+				$("#content-panels").find('.control-matched').addClass('control-unhighlight');
+	    }, 3000);
 	});
 
 	// focus on input filter on page load
 	<cfif not $.content().getIsNew()>
-		jQuery("#mura__edit__settings__filter__input").focus(); 	
+	setTimeout(function () {
+		$("#mura__edit__settings__filter__input").focus(); 	
+	 }, 500);
 	</cfif>
 
 });
