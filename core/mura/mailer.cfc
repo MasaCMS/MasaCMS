@@ -276,9 +276,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		<cfcatch>
 			<cfif len(arguments.siteid)>
-				<cflog type="Error" file="exception" text="The current mail server settings for the site '#arguments.siteID#' are not valid.">
+				<cflog type="Error" file="exception" text="The current mail server settings for the site '#arguments.siteID#' are not valid: #serializeJSON(cfcatch)#">
 			<cfelse>
-				<cflog type="Error" file="exception" text="The current mail server settings in the settings.ini are not valid.">
+				<cflog type="Error" file="exception" text="The current mail server settings in the settings.ini are not valid: #serializeJSON(cfcatch)#">
 			</cfif>
 		</cfcatch>
 		</cftry>
@@ -364,9 +364,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		<cfcatch>
 			<cfif len(arguments.siteid)>
-				<cflog type="Error" file="exception" text="The current mail server settings for the site '#arguments.siteID#' are not valid.">
+				<cflog type="Error" file="exception" text="The current mail server settings for the site '#arguments.siteID#' are not valid: #serializeJSON(cfcatch)#">
 			<cfelse>
-				<cflog type="Error" file="exception" text="The current mail server settings in the settings.ini are not valid.">
+				<cflog type="Error" file="exception" text="The current mail server settings in the settings.ini are not valid: #serializeJSON(cfcatch)#">
 			</cfif>
 		</cfcatch>
 		</cftry>
@@ -458,9 +458,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		<cfcatch>
 			<cfif len(arguments.siteid)>
-				<cflog type="Error" file="exception" text="The current mail server settings for the site '#arguments.siteID#' are not valid.">
+				<cflog type="Error" file="exception" text="The current mail server settings for the site '#arguments.siteID#' are not valid: #serializeJSON(cfcatch)#">
 			<cfelse>
-				<cflog type="Error" file="exception" text="The current mail server settings in the settings.ini are not valid.">
+				<cflog type="Error" file="exception" text="The current mail server settings in the settings.ini are not valid: #serializeJSON(cfcatch)#">
 			</cfif>
 		</cfcatch>
 		</cftry>
