@@ -640,6 +640,21 @@ realTitle.onkeyup = function(event){
 	titleBlock.className = '';
 }
 
+function copyToClipboard(str){
+	var holder = '<textarea style="position:absolute; top:500px; left: -8000px;" id="ctc_holder">' + $.trim(str) + '</textarea>';
+	$('##ctc_holder').remove();
+	$(holder).appendTo('body').select();
+	document.execCommand('copy');
+}
+$('.clicktocopy').append('<i class="mi-copy"></i>');
+
+$('.clicktocopy').click(function(){
+	var copiedicon = '<i class="mi-check"></i>';
+	copyToClipboard($(this).text());
+	$(this).find('i').remove();
+	$(this).append(copiedicon);
+})
+
 </script>
 
 	<input name="approved" type="hidden" value="0">
