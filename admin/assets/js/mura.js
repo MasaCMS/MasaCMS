@@ -18368,16 +18368,32 @@ Mura.UI.Form=Mura.UI.extend(
 			context.mode = 'nested';
 			context.master = this;
 
-			var nestedForm = new Mura.FormUI( context );
-			var holder = Mura('<div id="nested-'+field.formid+'"></div>');
+			var data={};
+			data.objectid=context.objectid;
+			data.formid=context.objectid;
+			data.object='form';
+			data.siteid=self.context.siteid || Mura.siteid;
+			data.contentid=Mura.contentid;
+			data.contenthistid=Mura.contenthistid;
 
-			Mura(".field-container-" + self.context.objectid,self.context.formEl).append(holder);
 
-			context.formEl = holder;
-			nestedForm.getForm();
+			Mura.get(
+				 Mura.apiEndpoint + '?method=processAsyncObject',
+				 data)
+				 .then(function(resp){
+					 var context=Mura.deepExtend({},context,resp.data)
+					 var nestedForm = new Mura.UI.Form( context );
 
-			var html = Mura.templates[template](field);
-			Mura(".field-container-" + self.context.objectid,self.context.formEl).append(html);
+					 	Mura(".field-container-" + self.context.objectid,self.context.formEl).append('<div id="nested-'+field.formid+'"></div>');
+
+					 	context.formEl = document.getElementById('nested-'+field.formid);
+					 	nestedForm.getForm();
+
+					 	var html = Mura.templates[template](field);
+					 	Mura(".field-container-" + self.context.objectid,self.context.formEl).append(html);
+
+				 });
+
 		}
 		else {
 			if(fieldtype == "checkbox") {
