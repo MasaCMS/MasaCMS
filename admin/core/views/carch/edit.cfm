@@ -646,10 +646,11 @@ function copyToClipboard(str){
 	$(holder).appendTo('body').select();
 	document.execCommand('copy');
 }
-$('.clicktocopy').append('<i class="mi-copy"></i>');
+<!--- todo: rb keys for these titles --->
+$('.clicktocopy').append('<i class="mi-copy" title="Click to copy"></i>');
 
 $('.clicktocopy').click(function(){
-	var copiedicon = '<i class="mi-check"></i>';
+	var copiedicon = '<i class="mi-check" title="Copied to clipboard"></i>';
 	copyToClipboard($(this).text());
 	$(this).find('i').remove();
 	$(this).append(copiedicon);
