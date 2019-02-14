@@ -34,7 +34,8 @@ this["Mura"]["templates"]["cta"] = window.mura.Handlebars.template({"compiler":[
     delaymet: true,
     stats: {
         visits: 0,
-        displays: 0
+        displays: 0,
+				dismissed: 0
     },
     preview: false,
     render: function() {
@@ -61,6 +62,7 @@ this["Mura"]["templates"]["cta"] = window.mura.Handlebars.template({"compiler":[
         this.context.width = this.context.width || 'md';
         this.context.instanceclass = this.context.instanceclass || '';
         this.context.eventLabel=this.context.type
+				this.context.statsid=this.context.statsid || this.context.instanceid || Mura.createUUID();
 
         if (this.context.type == 'modal') {
             this.context.anchorx = 'center';
@@ -113,6 +115,10 @@ this["Mura"]["templates"]["cta"] = window.mura.Handlebars.template({"compiler":[
         if (!Mura.isNumeric(this.context.resetqty)) {
             this.context.resetqty = 1;
         }
+
+				if (typeof this.context.dismissible == 'undefined') {
+						this.context.dismissible = 0;
+				}
 
         this.context.eventLabel=this.context.type;
 
@@ -217,9 +223,22 @@ this["Mura"]["templates"]["cta"] = window.mura.Handlebars.template({"compiler":[
     },
     initStats: function() {
         var storage = this.getStorage();
-        if (storage[this.context.instanceid]) {
-            this.stats = JSON.parse(storage[this.context.instanceid]);
+
+        if (storage[this.context.statsid]) {
+            this.stats = JSON.parse(storage[this.context.statsid]);
         }
+
+				if(!Mura.isNumeric(this.stats.dismissed)){
+					this.stats.dismissed=0;
+				}
+
+				if(!Mura.isNumeric(this.stats.visits)){
+					this.stats.visits=0;
+				}
+
+				if(!Mura.isNumeric(this.stats.displays)){
+					this.stats.displays=0;
+				}
 
         if (typeof this.stats.expires == 'string') {
             this.stats.expires = new Date(this.stats.expires);
@@ -228,6 +247,7 @@ this["Mura"]["templates"]["cta"] = window.mura.Handlebars.template({"compiler":[
                 this.stats = {
                     visits: 0,
                     displays: 0,
+										dismissed: 0,
                     expires: this.addTime(new Date(), this.context
                         .resetinterval, this.context.resetqty
                     )
@@ -243,12 +263,13 @@ this["Mura"]["templates"]["cta"] = window.mura.Handlebars.template({"compiler":[
     },
     saveStats: function() {
       var storage = this.getStorage();
-      storage[this.context.instanceid] = JSON.stringify(this.stats);
+      storage[this.context.statsid] = JSON.stringify(this.stats);
     },
     clearStats: function() {
         this.stats = {
             visits: 0,
-            displays: 0
+            displays: 0,
+						dismissed: 0
         }
         this.saveStats();
     },
@@ -305,6 +326,11 @@ this["Mura"]["templates"]["cta"] = window.mura.Handlebars.template({"compiler":[
                     var container = item.closest('.mura-cta__container');
 
                     item.remove();
+								
+										if(self.context.dismissible){
+											self.stats.dismissed=1;
+											self.saveStats();
+										}
 
                     if (container.length && !container.find('.mura-cta__item').length) {
                         container.html('').hide();
@@ -400,6 +426,11 @@ this["Mura"]["templates"]["cta"] = window.mura.Handlebars.template({"compiler":[
 
                 cta.on('click', 'a', function(e) {
 
+									if(self.context.dismissible){
+										self.stats.dismissed=1;
+										self.saveStats();
+									}
+
                   if(!Mura(this).hasClass('mura-donottrack')){
                     var a = Mura(e.target || e.srcElement);
 
@@ -423,6 +454,12 @@ this["Mura"]["templates"]["cta"] = window.mura.Handlebars.template({"compiler":[
                 });
 
                 cta.on('submit', 'form', function(e) {
+
+									if(self.context.dismissible){
+										self.stats.dismissed=1;
+										self.saveStats();
+									}
+
                   if(!Mura(this).hasClass('mura-donottrack')){
                     Mura.trackEvent({
                         category: 'Call to Action',
@@ -435,6 +472,12 @@ this["Mura"]["templates"]["cta"] = window.mura.Handlebars.template({"compiler":[
                 });
 
                 cta.on('formSubmit', function(e) {
+
+									if(self.context.dismissible){
+										self.stats.dismissed=1;
+										self.saveStats();
+									}
+
                   if(!Mura(this).hasClass('mura-donottrack')){
                     Mura.trackEvent({
                         category: 'Call to Action',
@@ -460,6 +503,11 @@ this["Mura"]["templates"]["cta"] = window.mura.Handlebars.template({"compiler":[
                 });
 
                 cta.on('click', 'a', function(e) {
+
+									if(self.context.dismissible){
+										self.stats.dismissed=1;
+										self.saveStats();
+									}
 
                   if(!Mura(this).hasClass('mura-donottrack')){
                     var a = Mura(e.target || e.srcElement);
@@ -497,6 +545,12 @@ this["Mura"]["templates"]["cta"] = window.mura.Handlebars.template({"compiler":[
                 });
 
                 cta.on('submit', 'form', function(e) {
+
+									if(self.context.dismissible){
+										self.stats.dismissed=1;
+										self.saveStats();
+									}
+
                   if(!Mura(this).hasClass('mura-donottrack')){
                     Mura.trackEvent({
                         category: 'Call to Action',
@@ -523,6 +577,12 @@ this["Mura"]["templates"]["cta"] = window.mura.Handlebars.template({"compiler":[
                 });
 
                 cta.on('formSubmit', function(e) {
+
+									if(self.context.dismissible){
+										self.stats.dismissed=1;
+										self.saveStats();
+									}
+
                   if(!Mura(this).hasClass('mura-donottrack')){
                     Mura.trackEvent({
                         category: 'Call to Action',
@@ -563,7 +623,8 @@ this["Mura"]["templates"]["cta"] = window.mura.Handlebars.template({"compiler":[
         if (this.preview || (this.metDelayRequirement() &&
                 this.metScrollRequirement() &&
                 this.metVisitsRequirement() && this.metDisplaysRequirement()
-            )) {
+            && !(this.context.dismissible && this.stats.dismissed)
+					)) {
             this.display();
         }
     },

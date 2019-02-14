@@ -1095,7 +1095,7 @@ function openFileMetaData(contenthistid,fileid,siteid,property) {
 					setTabs('#selectAssocImageResults-' + $elm.attr('data-property'),0);
 				}
 			)
-			.error(
+			.fail(
 				function(data) {
 				$elm.find('.load-inline').spin(false);
 				$elm.find(".mura-file-existing").html(data.responseText);

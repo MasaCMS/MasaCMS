@@ -42,6 +42,7 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfset request.layout=false>
+<cfparam name="request.quickeditscheduler" default="false">
 <cfset $=application.serviceFactory.getBean("MuraScope").init(session.siteID)>
 <cfset content=$.getBean("content").loadBy(contentID=rc.contentID)>
 <cfif not content.hasDrafts()>
@@ -90,7 +91,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfoutput>
 		<div class="mura-control-group">
-			<select name="display" id="mura-display" onchange="javascript: this.selectedIndex==2?toggleDisplay2('editDates',true):toggleDisplay2('editDates',false);">
+			 <select name="display" id="mura-display" onchange="javascript: <cfif request.quickeditscheduler>this.selectedIndex==2?toggleDisplay2('editDates',true):</cfif>toggleDisplay2('editDates',false);">
 				<option value="1"  <cfif content.getdisplay() EQ 1> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#</option>
 				<option value="0"  <cfif content.getdisplay() EQ 0> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.no')#</option>
 				<option value="2"  <cfif content.getdisplay() EQ 2> selected</CFIF>>
@@ -98,7 +99,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</option>
 			</select>
 		</div>
-		<div id="editDates" <cfif content.getdisplay() NEQ 2>style="display: none;"</cfif>>
+		<div id="editDates" <cfif request.quickeditscheduler or content.getdisplay() NEQ 2>style="display: none;"</cfif>>
 			<cfset displayInterval=content.getDisplayInterval().getAllValues()>
 			<cfset rc.ptype=content.getParent().getType()>
 			<cfif rc.ptype neq 'Calendar'>
@@ -477,8 +478,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		}
 
 		$('##mura-datepicker-displayStop').hide();
-		//$('##displayIntervalToLabel').hide();
-
 		$('.mura-repeat-option').on('change',updateDisplayInterval);
 		$('##displayIntervalRepeats').click(toggleRepeatOptionsContainer);
 		$('##displayIntervalAllDay').click(toggleAllDayOptions);
@@ -488,7 +487,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		$('##mura-datepicker-displayStart').change(setEndOption);
 
 		var repeats=$('input[name="displayIntervalEvery"]').is(':checked');
-
 		if(repeats){
 			$('##displayIntervalRepeats').attr('checked',true);
 		}
@@ -499,12 +497,33 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		setEndOption();
 		toggleDetectConflicts();
 
-		//This is only in quick edit
+
+		function getScheduleURL(el){
+			var u = $('##mura-quickEditor').parents('dd.display').parents('dl').find('a.title').attr('href');
+			return u;
+		}
+
+		$('##btn__quickedit__schedule').click(function(){
+			window.location.href=getScheduleURL($(this)) + '&bigui=schedule##panel-schedule';
+			return false;
+		});
+
+		//toggle quickedit contents for 'per schedule'
 		$('##mura-display').change(function(){
 			if($(this).val() == 2){
-				$('.mura-quickEdit').addClass("large");
+				<cfif request.quickeditscheduler>
+					$('.mura-quickEdit').addClass("large");
+				<cfelse>
+					$('##btn__quickedit__save').hide();
+					$('##btn__quickedit__schedule').show();
+				</cfif>
 			} else {
-				$('.mura-quickEdit').removeClass("large")
+				<cfif request.quickeditscheduler>
+					$('.mura-quickEdit').removeClass("large")
+				<cfelse>
+					$('##btn__quickedit__save').show();
+					$('##btn__quickedit__schedule').hide();
+				</cfif>
 			}
 		}).trigger('change');
 	})
@@ -512,7 +531,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfoutput>
 	</cfif>
 	<div class="form-actions">
-		<button class="btn mura-primary" onclick="siteManager.saveQuickEdit(this);">Submit</button>
+		<!--- todo: rb keys for submit, manage schedule --->
+		<button id="btn__quickedit__save"<cfif content.getdisplay() EQ 2> style="display:none;"</cfif> class="btn mura-primary" onclick="siteManager.saveQuickEdit(this);">Submit</button>
+		<button id="btn__quickedit__schedule"<cfif content.getdisplay() NEQ 2> style="display:none;"</cfif> type="button" class="btn mura-primary"> Manage Schedule</button>
 	</div>
 	</cfoutput>
 <cfelse>

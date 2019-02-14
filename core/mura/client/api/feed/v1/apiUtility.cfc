@@ -302,7 +302,7 @@
 
 		<cfcontent reset="true"><cfheader name="content-type" value="text/xml;charset=UTF-8">
 		<cfsavecontent variable="returnString"><cfoutput><?xml version="1.0" ?>
-		<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" >
+		<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom">
 			<channel>
 				<title>#XMLFormat(arguments.feed.renderName())#</title>
 				<link>#application.settingsManager.getSite(arguments.feed.getSiteID()).getScheme()#://#application.settingsManager.getSite(arguments.feed.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#</link>
@@ -311,6 +311,7 @@
 				<generator>http://www.getmura.com</generator>
 				<pubDate>#GetHttpTimeString(now())#</pubDate>
 				<language>#XMLFormat(arguments.feed.getLang())#</language>
+				<atom:link href="#application.settingsManager.getSite(arguments.feed.getSiteID()).getScheme()#://#application.settingsManager.getSite(arguments.feed.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/index.cfm/_api/feed/v1/#XmlFormat(arguments.feed.getSiteID())#/?feedID=#XmlFormat(arguments.feed.getFeedID())#" rel="self" type="application/rss+xml" />
 			<cfloop condition="arguments.iterator.hasNext()">
 			<cfsilent>
 				<cfset item=arguments.iterator.next()>

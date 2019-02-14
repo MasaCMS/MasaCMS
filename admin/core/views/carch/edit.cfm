@@ -16,7 +16,7 @@ Linking Mura CMS statically or dynamically with other modules constitutes the pr
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
-or libraries that are released under the GNU Lesser General Pbuublic License version 2.1.
+or libraries that are released under the GNU Lesser General Public License version 2.1.
 
 In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
 independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
@@ -261,6 +261,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		$('.bigui__close').on('click',function(){
 			$(this).parents('.bigui').hide();
 		})
+
+		// trigger via URL
+		<cfoutput>
+		<cfif len($.event('bigui'))>
+		setTimeout(function(){
+			var panel = '##panel-#$.event('bigui')#';
+			$(panel).find('.bigui__launch').trigger('click');
+			<cfif $.event('bigui') is 'schedule'>
+				$('##editDates').show();
+			</cfif>
+		}, 500);
+		</cfif>
+		</cfoutput>
 
 
 	});
@@ -626,6 +639,22 @@ realTitle.onkeyup = function(event){
 	titleBlock.innerHTML = realTitle.value;
 	titleBlock.className = '';
 }
+
+function copyToClipboard(str){
+	var holder = '<textarea style="position:absolute; top:500px; left: -8000px;" id="ctc_holder">' + $.trim(str) + '</textarea>';
+	$('##ctc_holder').remove();
+	$(holder).appendTo('body').select();
+	document.execCommand('copy');
+}
+<!--- todo: rb keys for these titles --->
+$('.clicktocopy').append('<i class="mi-copy" title="Click to copy"></i>');
+
+$('.clicktocopy').click(function(){
+	var copiedicon = '<i class="mi-check" title="Copied to clipboard"></i>';
+	copyToClipboard($(this).text());
+	$(this).find('i').remove();
+	$(this).append(copiedicon);
+})
 
 </script>
 

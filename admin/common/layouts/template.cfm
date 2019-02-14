@@ -356,12 +356,14 @@
 				$(document).ready(function(){
 					// persist side navigation expand/collapse 
 					$('*[data-action=sidebar_mini_toggle]').click(function(){
-						if($('##page-container').hasClass('sidebar-mini')){
-			 			createCookie('ADMINSIDEBAR','off',5);
-						} else {
-			 			createCookie('ADMINSIDEBAR','on',5);
-						}
+						var asb = 'on';
+						// adjust sidebar as needed
 						resizeTabPane();
+						// set adminsidebar cookie
+						if($('##page-container').hasClass('sidebar-mini')){
+							asb = 'off';
+						}
+			 			createCookie('ADMINSIDEBAR',asb,5);
 					});
 
 					// persist open nav items

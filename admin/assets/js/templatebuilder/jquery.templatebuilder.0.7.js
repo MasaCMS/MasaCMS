@@ -461,20 +461,35 @@
 				});
 			});
 
-			if (_templates[templateName] == undefined)
+			if (_templates[templateName] == undefined) {
 				goLoadTemplate(templateName);
-			else {
+
+				setTimeout(function(){
+					if(fieldData.fieldtype.isdata == 1) {
+						if (fieldData.datasetid.length) {
+							doDataset();
+						}
+						else {
+							goLoadDataset();
+						}
+					}
+				},
+				100
+				)
+			} else {
 				doRenderField();
+
+				if(fieldData.fieldtype.isdata == 1) {
+					if (fieldData.datasetid.length) {
+						doDataset();
+					}
+					else {
+						goLoadDataset();
+					}
+				}
 			}
 
-			if(fieldData.fieldtype.isdata == 1) {
-				if (fieldData.datasetid.length) {
-					doDataset();
-				}
-				else {
-					goLoadDataset();
-				}
-			}
+
 		}
 
 		function doRenderField() {
@@ -839,7 +854,7 @@
 				jQuery('#mura-tb-grp-sourcetype').hide();
 				jQuery('.mura-tb-grp-entered').hide();
 				jQuery('.mura-tb-grp-source').hide();
-console.log("asdfw");
+
 				_currentDataset.sourcetype = 'muraorm';
 
 			}

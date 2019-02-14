@@ -52,7 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<div id="panel-listdisplayoptions" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-listdisplayoptions" aria-expanded="false" style="height: 0px;">
 		<div class="mura-panel-body">
 
-			<!--- todo remove this from list of available tabs / containers --->
+			<!--- todo remove this from list of available tabs / containers, delete this file --->
 			<!--- this tab is being combined with the new "layout" tab --->
 			<span id="extendset-container-tablistdisplayoptionstop" class="extendset-container"></span>
 			<span id="extendset-container-listdisplayoptions" class="extendset-container"></span>

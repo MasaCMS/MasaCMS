@@ -65,7 +65,7 @@
 			<!--- todo: should 'always' be an option for calendar items (formerly "yes")? What schedule does it set? --->
 		<option value="1"  <cfif rc.contentBean.getdisplay() EQ 1> selected</cfif>>Always<!--- #application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')# ---></option>
 		<option value="0"  <cfif rc.contentBean.getdisplay() EQ 0> selected</cfif>>Never<!--- #application.rbFactory.getKeyValue(session.rb,'sitemanager.no')# ---></option>
-		<option value="2"  <cfif rc.contentBean.getdisplay() EQ 2> selected</CFIF>>
+		<option value="2"  <cfif rc.contentBean.getdisplay() EQ 2 or $.event('bigui') is 'schedule'> selected</CFIF>>
 			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.perschedule')#
 		</option>
 	</select>
@@ -310,9 +310,6 @@
 				endafter: $('##displayIntervalEndAfter').val(),
 				daysofweek: getDaysOfWeek()
 			};
-
-		<!--- todo: remove this --->
-			console.log(options);
 
 			if(!options.repeats && options.allday){
 				$('##mura-datepicker-displayStop').val($('##mura-datepicker-displayStart').val());

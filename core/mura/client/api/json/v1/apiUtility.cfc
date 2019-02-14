@@ -1678,7 +1678,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			case 'address':
 				if(getBean('permUtility').getModulePerm(variables.config.entities['#arguments.bean.getEntityName()#'].moduleid,variables.siteid)){
 					return true;
-				} else if (arguments.bean.getValue('userid')==getCurrentUser('userid')){
+				} else if (arguments.bean.getValue('userid')==getCurrentUser().get('userid')){
 					return true;
 				} else {
 					return false;
@@ -2058,7 +2058,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			method='findCurrentUser'
 		);
 		var sessionData=getSession();
-		
+
 		if(isDefined("sessionData.mura")){
 			user.memberships=listToArray(sessionData.mura.memberships);
 			user.membershipids=listToArray(sessionData.mura.membershipids);
@@ -2462,6 +2462,34 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		checkForChangesetRequest(arguments.entityName,arguments.siteid);
 
+		var propName='';
+		var propIndex=0;
+		var p='';
+		var i='';
+		var checkProp='';
+		var feedIDParam='';
+		var queryArray=listToArray(arguments.queryString,'&');
+		var started=false;
+
+		if(arguments.entityName=='content'){
+			for(p in queryArray){
+				if(left(p,6)=='feedid'){
+					checkProp=urlDecode(listFirst(p,'='));
+					if(find('[',checkProp)){
+						propName=listFirst(checkProp,'[');
+						propIndex=listFirst(listlast(checkProp,'['),']');
+						structDelete(arguments,propName & propIndex);
+					} else {
+						propName=p;
+					}
+					if(propName=='feedid'){
+						$.event('feedid',listLast(p,'='));
+						feedIDParam=p;
+					}
+				}
+			}
+		}
+
 		if(arguments.entityName=='content' && len($.event('feedid'))){
 			var feed=$.getBean('feed').loadBy(feedid=$.event('feedid'));
 			var entity=$.getBean(arguments.entityName);
@@ -2521,17 +2549,14 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		} else {
 			var queryParams=[];
 
-			for(var i in listToArray(arguments.queryString,'&')){
-				var checkProp=urlDecode(listFirst(i,'='));
+			for(i in queryArray){
+				checkProp=urlDecode(listFirst(i,'='));
 				if(checkProp!='pageIndex'){
 					ArrayAppend(queryParams, checkProp);
 				}
 			}
 
-			var propName='';
-			var propIndex=0;
 			var relationship='and';
-			var started=false;
 			var advancedsort='';
 
 			for(var p in queryParams){
@@ -2559,7 +2584,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 						baseURL=baseURL & '=' & esapiEncode('url',params[p]);
 					}
 
-					if(!listFindNoCase('expand,muraPointInTime,liveOnly,feedid,cacheid,_cacheid,distinct,fields,entityname,method,maxItems,pageIndex,itemsPerPage,sortBy,sortDirection,contentpoolid,shownavonly,showexcludesearch,includehomepage,feedname',p)){
+					if(!listFindNoCase('expand,muraPointInTime,liveOnly,feedid,cacheid,_cacheid,distinct,fields,entityname,method,maxItems,pageIndex,itemsPerPage,sortBy,sortDirection,contentpoolid,shownavonly,showexcludesearch,includehomepage,feedname',propName)){
 						if(propName == 'sort'){
 							advancedsort=listAppend(advancedsort,arguments.params[p]);
 						} else if(!(entity.getEntityName()=='user' && propName=='isPublic')){
@@ -2596,7 +2621,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 										}
 									}
 
-									if(entity.valueExists('extendData') || entity.hasColumn(propName)){
+									if(entity.valueExists('extendData') || entity.hasProperty(propName)){
 										feed.addParam(column=propName,criteria=criteria,condition=condition,relationship=relationship);
 									} else {
 										throw(type="invalidParameters");
@@ -3108,7 +3133,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 			if(entity.getEntityName()=='content'){
 				links['permissions']="#baseurl#/#entity.getEntityName()#/#entity.get('contentid')#/permissions";
-			} else {
+			} else if(len(entity.getPrimaryKey()) )  {
 				links['permissions']="#baseurl#/#entity.getEntityName()#/#entity.get(entity.getPrimaryKey())#/permissions";
 			}
 

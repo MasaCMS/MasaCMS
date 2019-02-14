@@ -103,7 +103,6 @@ if ( application.setupComplete ) {
 
 	for(variables.p in listToArray(variables.iniSections.settings)){
 		variables.envVar='MURA_#UCASE(variables.p)#';
-		//if(!structKeyExists(request.muraSecrets,variables.envVar)){
 			if ( structKeyExists(request.muraSysEnv,variables.envVar) ) {
 				variables.iniProperties[variables.p]=request.muraSysEnv[variables.envVar];
 			} else {
@@ -118,17 +117,25 @@ if ( application.setupComplete ) {
 				variables.iniProperties[variables.p]=mid(variables.iniProperties[variables.p],3,len(variables.iniProperties[variables.p])-4);
 				variables.iniProperties[variables.p] = evaluate(variables.iniProperties[variables.p]);
 			}
-		//}
 	}
 
 	for(variables.p in listToArray(variables.iniSections[ variables.iniProperties.mode])){
-		variables.envVar='MURA_#UCASE(variables.p)#';
-		//if(!structKeyExists(request.muraSecrets,variables.envVar)){
-			if ( structKeyExists(request.muraSysEnv,variables.envVar) ) {
-				variables.iniProperties[variables.p]=request.muraSysEnv[variables.envVar];
-			} else {
-				variables.iniProperties[variables.p]=getProfileString("#variables.basedir#/config/settings.ini.cfm", variables.iniProperties.mode,variables.p);
-			}
+		variables.iniProperties[variables.p]=getProfileString("#variables.basedir#/config/settings.ini.cfm", variables.iniProperties.mode,variables.p);
+		if ( left(variables.iniProperties[variables.p],2) == "${"
+					and right(variables.iniProperties[variables.p],1) == "}" ) {
+			variables.iniProperties[variables.p]=mid(variables.iniProperties[variables.p],3,len(variables.iniProperties[variables.p])-3);
+			variables.iniProperties[variables.p] = evaluate(variables.iniProperties[variables.p]);
+		} else if ( left(variables.iniProperties[variables.p],2) == "{{"
+					and right(variables.iniProperties[variables.p],2) == "}}" ) {
+			variables.iniProperties[variables.p]=mid(variables.iniProperties[variables.p],3,len(variables.iniProperties[variables.p])-4);
+			variables.iniProperties[variables.p] = evaluate(variables.iniProperties[variables.p]);
+		}
+	}
+
+	for (variables.envVar in request.muraSysEnv) {
+		if(listFirst(variables.envVar,"_")=='MURA'){
+			variables.p=listRest(variables.envVar,"_");
+			variables.iniProperties[variables.p]=request.muraSysEnv[variables.envVar];
 			if ( left(variables.iniProperties[variables.p],2) == "${"
 						and right(variables.iniProperties[variables.p],1) == "}" ) {
 				variables.iniProperties[variables.p]=mid(variables.iniProperties[variables.p],3,len(variables.iniProperties[variables.p])-3);
@@ -138,9 +145,8 @@ if ( application.setupComplete ) {
 				variables.iniProperties[variables.p]=mid(variables.iniProperties[variables.p],3,len(variables.iniProperties[variables.p])-4);
 				variables.iniProperties[variables.p] = evaluate(variables.iniProperties[variables.p]);
 			}
-		//}
+		}
 	}
-
 
 	try {
 		if ( !structKeyExists(variables.iniProperties,"encryptionkey") || !len(variables.iniProperties["encryptionkey"]) ) {

@@ -130,7 +130,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfif>
 		<script>
-			$(()=>{
+			$(function(){
 				$('##layoutSel').on('change',function() {
 					$('input[name="layout"]').val($('##layoutSel').val())
 					setLayoutOptions();

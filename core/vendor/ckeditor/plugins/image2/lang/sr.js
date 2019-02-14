@@ -1,6 +1,6 @@
-﻿/*
-Copyright (c) 2003-2015, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
+/*
+Copyright (c) 2003-2019, CKSource - Frederico Knabben. All rights reserved.
+For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 */
 CKEDITOR.plugins.setLang( 'image2', 'sr', {
 	alt: 'Алтернативни текст',
@@ -16,5 +16,6 @@ CKEDITOR.plugins.setLang( 'image2', 'sr', {
 	resizer: 'Click and drag to resize', // MISSING
 	title: 'Особине слика',
 	uploadTab: 'Пошаљи',
-	urlMissing: 'Недостаје УРЛ слике.'
+	urlMissing: 'Недостаје УРЛ слике.',
+	altMissing: 'Alternative text is missing.' // MISSING
 } );

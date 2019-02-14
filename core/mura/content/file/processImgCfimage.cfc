@@ -197,12 +197,19 @@
 			</cfif>
 
 			<cftry>
-				<cfset variables.fileWriter.copyFile(source=OriginalImageFile,destination=NewImageSource)>
+				<cfset variables.fileWriter.copyFile(source=OriginalImageFile,destination=NewImageSource,mode="744")>
 
 				<cfset resizeImage(height=arguments.height,width=arguments.width,image=NewImageSource)>
 
+				<cfif listFirst(expandPath(NewImageSource),':') eq 's3'>
+					<cftry>
+					<cfset storeSetACL(expandPath(NewImageSource),[{group="all", permission="read"}])>
+					<cfcatch></cfcatch>
+					</cftry>
+				</cfif>
+
 				<cfif not doesImageFileExist(NewImageSource,arguments.attempt)>
-					<cfset variables.fileWriter.copyFile(source=OriginalImageFile,destination=NewImageSource)>
+					<cfset variables.fileWriter.copyFile(source=OriginalImageFile,destination=NewImageSource,mode="744")>
 				</cfif>
 
 				<cfcatch>

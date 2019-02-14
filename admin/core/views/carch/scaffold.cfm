@@ -177,7 +177,7 @@
 				</span>
 
 				<ul v-if="data.list.length" class="pagination">
-
+					<li><strong>{{data.collection.get('startindex')}}</strong> to <strong>{{data.collection.get('endindex')}}</strong> of <strong>{{data.collection.get('totalitems')}}</strong></li>
 					<li><a v-if="data.links.first" @click="applyPage('first')">
 						<i class="mi-angle-double-left"></i>
 					</a></li>
@@ -269,7 +269,7 @@
 	</template>
 
 	<template id="scaffold-related-many-one">
-		<div v-if="loaded || mparent && mparent.properties">
+		<div v-if="loaded || mparent && mparent.properties &&  mparent.list">
 			<div v-if="property.relatesto">
 				<div class="mura-control-group">
 					<label>
@@ -277,7 +277,7 @@
 					</label>
 					<select
 					v-model="property.fkcolumn=='primaryKey' ? model[mparent.properties.primarykey] : model[property.fkcolumn]"
-					:name="mparent.properties.primarykey">
+					:name="property.fkcolumn">
 						<option value="">-- none --</option>
 						<option v-for="(option,index) in this.mparent.list" :value="option.id"
 							 :selected="option[property.loadkey] == model[property.fkcolumn] ? 'selected' : null">

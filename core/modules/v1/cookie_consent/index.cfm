@@ -1,4 +1,5 @@
 <cfoutput>
+	<cfparam name="objectparams.statsid" default="cookie_consent">
 	<script>
 		Mura(function(){
 				if(!Mura.readCookie('MURA_CONSENT')){
@@ -9,7 +10,8 @@
 							type:'#this.cookieConsentType#',
 							queue:false,
 							cssclass:'#this.cookieConsentWrapperClass#',
-							width:'#this.cookieConsentWidth#'
+							width:'#this.cookieConsentWidth#',
+							statsid: '#esapiEncode("javascript",objectparams.statsid)#'
 						}
 					);
 				}

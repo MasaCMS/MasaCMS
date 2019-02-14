@@ -718,8 +718,8 @@ var Mura=(function(){
 	 * @return {Promise}
 	 * @memberof {class} Mura
 	 */
-	function get(url, data) {
-		return Mura._requestcontext.get(url, data);
+	function get(url, data, eventHandler) {
+		return Mura._requestcontext.get(url, data, eventHandler);
 	}
 
 	/**
@@ -730,8 +730,8 @@ var Mura=(function(){
 	 * @return {Promise}
 	 * @memberof {class} Mura
 	 */
-	function post(url, data) {
-		return Mura._requestcontext.post(url, data);
+	function post(url, data, eventHandler) {
+		return Mura._requestcontext.post(url, data, eventHandler);
 	}
 
 	/**
@@ -743,6 +743,20 @@ var Mura=(function(){
 	 */
 	function ajax(params) {
 		return Mura._requestcontext.request(params);
+	}
+
+	/**
+	 * normalizeRequestHandler - Standardizes request handler objects
+	 *
+	 * @param	{object} eventHandler
+	 * @memberof {object} eventHandler
+	 */
+	function normalizeRequestHandler(eventHandler) {
+		eventHandler.progress=eventHandler.progress || eventHandler.onProgress || eventHandler.onUploadProgress || function(){};
+		eventHandler.abort=eventHandler.abort || eventHandler.onAbort|| function(){};
+		eventHandler.success=eventHandler.success || eventHandler.onSuccess || function(){};
+		eventHandler.error=eventHandler.error || eventHandler.onError || function(){};
+		return eventHandler;
 	}
 
 	/**
@@ -3288,7 +3302,7 @@ var Mura=(function(){
 
 					Mura.markupInitted=true;
 
-					if(Mura.cookieConsentEnabled){Mura(function(){Mura('body').appendDisplayObject({object:'cookie_consent',queue:false});});}
+					if(Mura.cookieConsentEnabled){Mura(function(){Mura('body').appendDisplayObject({object:'cookie_consent',queue:false,statsid:'cookie_consent'});});}
 
 					Mura(document).on("keydown", function(event) {
 						loginCheck(event.which);
@@ -3394,7 +3408,8 @@ var Mura=(function(){
 			undeclareEntity:undeclareEntity,
 			buildDisplayRegion:buildDisplayRegion,
 			openGate:openGate,
-			firstToUpperCase:firstToUpperCase
+			firstToUpperCase:firstToUpperCase,
+			normalizeRequestHandler:normalizeRequestHandler
 		}
 	);
 
@@ -13256,9 +13271,9 @@ Mura.Request=Mura.Core.extend(
 				}
 				if (typeof error == 'undefined' || ( typeof httpResponse != 'undefined' && httpResponse.statusCode >= 200 && httpResponse.statusCode < 400)) {
 					try {
-							var data = JSON.parse(body);
+						var data = JSON.parse(body);
 					} catch (e) {
-							var data = body;
+						var data = body;
 					}
 					params.success(data, httpResponse);
 				} else if (typeof error == 'undefined') {
@@ -13273,10 +13288,15 @@ Mura.Request=Mura.Core.extend(
 						throw data;
 					}
 				} else {
+					try {
+						var data = JSON.parse(body);
+					} catch (e) {
+						var data = body;
+					}
 					if(typeof params.error == 'function'){
-						params.error(error,httpResponse);
+						params.error(data,httpResponse);
 					} else {
-						throw error;
+						throw data;
 					}
 				}
 			}
@@ -13313,6 +13333,7 @@ Mura.Request=Mura.Core.extend(
 				params.async = true;
 			}
 			var req = new XMLHttpRequest();
+
 			if (params.crossDomain) {
 				if (!("withCredentials" in req) && typeof XDomainRequest !=
 					"undefined" && this.isXDomainRequest(params.url)) {
@@ -13323,6 +13344,22 @@ Mura.Request=Mura.Core.extend(
 					req = new XDomainRequest();
 				}
 			}
+
+			params.progress=params.progress || params.onProgress || params.onUploadProgress || function(){};
+			params.abort=params.abort || params.onAbort|| function(){};
+			params.success=params.success || params.onSuccess || function(){};
+			params.error=params.error || params.onError || function(){};
+
+			if(typeof req.addEventListener != 'undefined'){
+				if(typeof params.progress == 'function'){
+					req.addEventListener("progress", params.progress);
+				}
+
+				if(typeof params.abort == 'function'){
+					req.addEventListener("abort", params.abort);
+				}
+			}
+
 			req.onreadystatechange = function() {
 				if (req.readyState == 4) {
 					//IE9 doesn't appear to return the request status
@@ -13338,7 +13375,12 @@ Mura.Request=Mura.Core.extend(
 							console.log(req.responseText);
 						}
 						if(typeof params.error == 'function'){
-							params.error(req);
+							try {
+								var data = JSON.parse(req.responseText);
+							} catch (e) {
+								var data = req.responseText;
+							}
+							params.error(data);
 						} else {
 							throw req;
 						}
@@ -13360,7 +13402,12 @@ Mura.Request=Mura.Core.extend(
 						req.send(params.data);
 					} catch(e){
 						if(typeof params.error == 'function'){
-							params.error(req,e);
+							try {
+								var data = JSON.parse(req.responseText);
+							} catch (e) {
+								var data = req.responseText;
+							}
+							params.error(data,e);
 						} else {
 							throw e;
 						}
@@ -13383,7 +13430,12 @@ Mura.Request=Mura.Core.extend(
 							req.send(query);
 						} catch(e){
 							if(typeof params.error == 'function'){
-								params.error(req,e);
+								try {
+									var data = JSON.parse(req.responseText);
+								} catch (e) {
+									var data = req.responseText;
+								}
+								params.error(data,e);
 							} else {
 								throw e;
 							}
@@ -13416,7 +13468,16 @@ Mura.Request=Mura.Core.extend(
 						req.send();
 					} catch(e){
 						if(typeof params.error == 'function'){
-							params.error(req,e);
+							if(typeof req.responseText != 'undefined'){
+								try {
+									var data = JSON.parse(req.responseText);
+								} catch (e) {
+									var data = req.responseText;
+								}
+								params.error(data,e);
+							} else {
+								params.error(req,e);
+							}
 						} else {
 							throw e;
 						}
@@ -13569,7 +13630,7 @@ Mura.RequestContext=Mura.Core.extend(
 				},
 				error: function(resp) {
 					if (resp != null && typeof resp.data != 'undefined' && typeof resp.data != 'undefined' && typeof resolve == 'function') {
-						var item = new Mura.Entity({},self);
+						var item = new Mura.entities.Content({},self);
 						item.set(resp.data);
 						resolve(item);
 					} else if (typeof reject == 'function') {
@@ -13957,20 +14018,38 @@ Mura.RequestContext=Mura.Core.extend(
 	 * @param	{object} data Data to send to url
 	 * @return {Promise}
 	 */
-	get:function(url, data) {
+	get:function(url, data, eventHandler) {
+		if(typeof url == 'object'){
+			data=url.data;
+			eventHander=url;
+			url=url.url;
+		} else {
+			eventHandler=eventHandler || {};
+		}
+
+		Mura.normalizeRequestHandler(eventHandler);
+
 		var self=this;
 		data = data || {};
+
 		return new Promise(function(resolve, reject) {
+
+			if(typeof resolve == 'function'){
+				eventHandler.success=resolve;
+			}
+
+			if(typeof reject == 'function'){
+				eventHandler.error=reject;
+			}
+
 			return self.request({
 				type: 'get',
 				url: url,
 				data: data,
-				success: function(resp) {
-					resolve(resp);
-				},
-				error: function(resp) {
-					reject(resp);
-				}
+				success: eventHandler.success,
+				error: eventHandler.error,
+				progress:eventHandler.progress,
+				abort: eventHandler.abort
 			});
 		});
 	},
@@ -13982,20 +14061,38 @@ Mura.RequestContext=Mura.Core.extend(
 	 * @param	{object} data Data to send to url
 	 * @return {Promise}
 	 */
-	post:function(url, data) {
+	post:function(url, data, eventHandler) {
+		if(typeof url == 'object'){
+			data=url.data;
+			eventHander=url;
+			url=url.url;
+		} else {
+			eventHandler=eventHandler || {};
+		}
+
+		Mura.normalizeRequestHandler(eventHandler);
+
 		var self=this;
 		data = data || {};
+
 		return new Promise(function(resolve, reject) {
+
+			if(typeof resolve == 'function'){
+				eventHandler.success=resolve;
+			}
+
+			if(typeof reject == 'function'){
+				eventHandler.error=reject;
+			}
+
 			return self.request({
 				type: 'post',
 				url: url,
 				data: data,
-				success: function(resp) {
-					resolve(resp);
-				},
-				error: function(resp) {
-					reject(resp);
-				}
+				success: eventHandler.success,
+				error: eventHandler.error,
+				progress:eventHandler.progress,
+				abort: eventHandler.abort
 			});
 		});
 	},
@@ -14190,12 +14287,23 @@ Mura.Entity = Mura.Core.extend(
 	/**
 	 * invoke - Invokes a method
 	 *
-	 * @param	{string} funcName Method to call
+	 * @param	{string} name Method to call
 	 * @param	{object} params Arguments to submit to method
 	 * @param	{string} method GET or POST
 	 * @return {any}
 	 */
-	invoke:function(funcName,params,method){
+	invoke:function(name,params,method,eventHandler){
+		if(typeof name == 'object'){
+			params=name.params || {};
+			method=name.method || 'get';
+			eventHandler=name;
+			name=name.name;
+		} else {
+			eventHandler=eventHandler || {};
+		}
+
+		Mura.normalizeRequestHandler(eventHandler);
+
 		var self = this;
 
 		if(typeof method=='undefined' && typeof params=='string'){
@@ -14206,82 +14314,113 @@ Mura.Entity = Mura.Core.extend(
 		params=params || {};
 		method=method || "post";
 
-		if(this[funcName]=='function'){
-			return this[funcName].apply(this,params);
+		if(this[name]=='function'){
+			return this[name].apply(this,params);
 		}
 
 		return new Promise(function(resolve,reject) {
+
+			if(typeof resolve == 'function'){
+				eventHandler.success=resolve;
+			}
+
+			if(typeof reject == 'function'){
+				eventHandler.error=reject;
+			}
+
 			self._requestcontext.request({
 				type: method.toLowerCase(),
-				url: self.getApiEndPoint() + funcName,
+				url: self.getApiEndPoint() + name,
 				data: Mura.extend(params,{
 					'_cacheid': Math.random()
 				}),
 				success: function(resp) {
 					if (resp.data != 'undefined'	) {
-						if (typeof resolve ==	'function') {
-							resolve(resp.data);
+						if (typeof 	eventHandler.success ==	'function') {
+							eventHandler.success(resp.data);
 						}
 					} else {
-						if (typeof reject == 'function') {
-							reject(resp);
+						if (typeof eventHandler.error == 'function') {
+							eventHandler.error(resp);
 						}
 					}
 				},
 				error: function(resp) {
 					resp=Mura.parseString(resp.response);
-					if (typeof reject == 'function'){
-						reject(resp);
+					if (typeof eventHandler.error == 'function'){
+						eventHandler.error(resp);
 					}
-				}
+				},
+				progress:eventHandler.progress,
+				abort: eventHandler.abort
 			});
 		});
 	},
 
 	/**
-	 * invokeWithCSRF - Proxies method call to remote api, but first generates CSRF tokens based on funcName
+	 * invokeWithCSRF - Proxies method call to remote api, but first generates CSRF tokens based on name
 	 *
-	 * @param	{string} funcName Method to call
+	 * @param	{string} name Method to call
 	 * @param	{object} params Arguments to submit to method
 	 * @param	{string} method GET or POST
 	 * @return {Promise} All Headers
 	 */
-	invokeWithCSRF:function(funcName,params,method){
+	invokeWithCSRF:function(name,params,method,eventHandler){
+		if(typeof name == 'object'){
+			params=name.params || {};
+			method=name.method || 'get';
+			eventHandler=name;
+			name=name.name;
+		} else {
+			eventHandler=eventHandler || {};
+		}
+
+		Mura.normalizeRequestHandler(eventHandler);
+
 		if(Mura.mode.toLowerCase() == 'rest'){
 			return new Promise(function(resolve,reject) {
 				return self.invoke(
-					funcName,
+					name,
 					Mura.extend(params,resp.data),
-					method
+					method,
+					eventHandler
 				).then(resolve,reject);
 			});
 		} else {
 			var self = this;
 			return new Promise(function(resolve,reject) {
+				if(typeof resolve == 'function'){
+					eventHandler.success=resolve;
+				}
+
+				if(typeof reject == 'function'){
+					eventHandler.error=reject;
+				}
 				self._requestcontext.request({
 					type: 'post',
 					url: Mura.apiEndpoint + '?method=generateCSRFTokens',
 					data: {
 						siteid: self.get('siteid'),
-						context: funcName
+						context: name
 					},
 					success: function(resp) {
 						if (resp.data != 'undefined'	) {
 							self.invoke(
-								funcName,
+								name,
 								Mura.extend(params,resp.data),
-								method
+								method,
+								eventHandler
 							).then(resolve,reject);
 						} else {
-							if (typeof reject == 'function'){
-								reject(resp);
+							if (typeof eventHandler.error == 'function'){
+								eventHandler.error(resp);
 							}
 						}
 					},
 					error: function(resp) {
 						resp=Mura.parseString(resp.response);
-						if (typeof reject == 'function'){
-							reject(resp);
+						if (typeof eventHandler.error == 'function'){
+							eventHandler.error(resp);
 						}
 					}
 				});
@@ -14730,12 +14869,20 @@ Mura.Entity = Mura.Core.extend(
 	 *
 	 * @return {Promise}
 	 */
-	save: function() {
+	save: function(eventHandler) {
+		eventHandler=eventHandler || {};
+
+		Mura.normalizeRequestHandler(eventHandler);
+
 		var self = this;
+
 		if (!this.get('isdirty')) {
 			return new Promise(function(resolve, reject) {
-				if (typeof resolve =='function') {
-					resolve(self);
+				if(typeof resolve == 'function'){
+					eventHandler.success=resolve;
+				}
+				if (typeof eventHandler.success =='function') {
+					eventHandler.success(self);
 				}
 			});
 		}
@@ -14751,15 +14898,26 @@ Mura.Entity = Mura.Core.extend(
 						self.set('id',resp.data.id);
 						self.set('isdirty',true);
 						self.cachePut();
-						self.save().then(
+						self.save(eventHandler).then(
 							resolve,
 							reject
 						);
-					}
+					},
+					error: eventHandler.error,
+					abort: eventHandler.abort
 				});
 			});
 		} else {
 			return new Promise(function(resolve, reject) {
+
+				if(typeof resolve == 'function'){
+					eventHandler.success=resolve;
+				}
+
+				if(typeof reject == 'function'){
+					eventHandler.error=reject;
+				}
+
 				var context = self.get('id');
 				if(Mura.mode.toLowerCase() == 'rest'){
 					self._requestcontext.request({
@@ -14773,21 +14931,23 @@ Mura.Entity = Mura.Core.extend(
 								if (self.get('saveerrors') ||
 									Mura.isEmptyObject(self.getErrors())
 								) {
-									if (typeof resolve ==	'function') {
-											resolve(self);
+									if (typeof eventHandler.success ==	'function') {
+											eventHandler.success(self);
 									}
 								} else {
-									if (typeof reject == 'function') {
-											reject(self);
+									if (typeof eventHandler.error == 'function') {
+											eventHandler.error(self);
 									}
 								}
 							} else {
 								self.set('errors',resp.error);
-								if (typeof reject == 'function') {
-									reject(self);
+								if (typeof eventHandler.error == 'function') {
+									eventHandler.error(self);
 								}
 							}
-						}
+						},
+						progress:eventHandler.progress,
+						abort: eventHandler.abort
 					});
 				} else {
 					self._requestcontext.request({
@@ -14814,26 +14974,29 @@ Mura.Entity = Mura.Core.extend(
 										if (self.get('saveerrors') ||
 											Mura.isEmptyObject(self.getErrors())
 										) {
-											if (typeof resolve ==	'function') {
-												resolve(self);
+											if (typeof eventHandler.success ==	'function') {
+												eventHandler.success(self);
 											}
 										} else {
-											if (typeof reject == 'function') {
-												reject(self);
+											if (typeof eventHandler.error == 'function') {
+												eventHandler.error(self);
 											}
 										}
 									} else {
 										self.set('errors',resp.error);
-										if (typeof reject == 'function') {
-											reject(self);
+										if (typeof eventHandler.error == 'function') {
+											eventHandler.error(self);
 										}
 									}
-								}
+								},
+								progress:eventHandler.progress,
+								abort: eventHandler.abort
 							});
 						},
 						error: function(resp) {
 							this.success(resp );
-						}
+						},
+						abort: eventHandler.abort
 					});
 				}
 			});
@@ -14845,10 +15008,23 @@ Mura.Entity = Mura.Core.extend(
 	 *
 	 * @return {Promise}
 	 */
-	'delete': function() {
+	'delete': function(eventHandler) {
+		eventHandler=eventHandler || {};
+
+		Mura.normalizeRequestHandler(eventHandler);
+
 		var self = this;
 		if(Mura.mode.toLowerCase() == 'rest'){
 			return new Promise(function(resolve, reject) {
+
+				if(typeof resolve == 'function'){
+					eventHandler.success=resolve;
+				}
+
+				if(typeof reject == 'function'){
+					eventHandler.error=reject;
+				}
+
 				self._requestcontext.request({
 					type: 'post',
 					url: Mura.apiEndpoint + '?method=delete',
@@ -14860,14 +15036,25 @@ Mura.Entity = Mura.Core.extend(
 					success: function() {
 						self.set('isdeleted',true);
 						self.cachePurge();
-						if (typeof resolve == 'function') {
-								resolve(self);
+						if (typeof eventHandler.success == 'function') {
+							eventHandler.success(self);
 						}
-					}
+					},
+					error: eventHandler.error,
+					progress:eventHandler.progress,
+					abort: eventHandler.abort
 				});
 			});
 		} else {
 			return new Promise(function(resolve, reject) {
+				if(typeof resolve == 'function'){
+					eventHandler.success=resolve;
+				}
+
+				if(typeof reject == 'function'){
+					eventHandler.error=reject;
+				}
+
 				self._requestcontext.request({
 					type: 'post',
 					url: Mura.apiEndpoint + '?method=generateCSRFTokens',
@@ -14889,12 +15076,17 @@ Mura.Entity = Mura.Core.extend(
 							success: function() {
 								self.set('isdeleted',true);
 								self.cachePurge();
-								if (typeof resolve == 'function') {
-									resolve(self);
+								if (typeof eventHandler.success == 'function') {
+									eventHandler.success(self);
 								}
-							}
+							},
+							error: eventHandler.error,
+							progress:eventHandler.progress,
+							abort: eventHandler.abort
 						});
-					}
+					},
+					error: eventHandler.error,
+					abort: eventHandler.abort
 				});
 			});
 		}
@@ -15398,12 +15590,24 @@ Mura.Feed = Mura.Core.extend(
 		/**
 		 * contentPoolID - Sets items per page
 		 *
-		 * @param  {number} contentPoolID Items per page
+		 * @param  {string} contentPoolID Items per page
 		 * @return {Mura.Feed}              Self
 		 */
 		contentPoolID: function(contentPoolID) {
 			this.queryString += '&contentpoolid=' + encodeURIComponent(
 				contentPoolID);
+			return this;
+		},
+
+		/**
+		 * contentPoolID - Sets items per page
+		 *
+		 * @param  {string} feedID Items per page
+		 * @return {Mura.Feed}              Self
+		 */
+		feedID: function(feedID) {
+			this.queryString += '&feedid=' + encodeURIComponent(
+				feedID);
 			return this;
 		},
 
@@ -17720,9 +17924,10 @@ Mura.DOMSelection = Mura.Core.extend(
 			el.style.opacity = 1;
 			(function fade() {
 				if ((el.style.opacity -= .1) < 	0) {
-						el.style.display = "none";
+					el.style.opacity=0;
+					el.style.display = "none";
 				} else {
-						requestAnimationFrame(fade);
+					requestAnimationFrame(fade);
 				}
 			})();
 		});
@@ -17979,7 +18184,7 @@ Mura.UI=Mura.Core.extend(
 	},
 
 	destroy:function(){
-
+		
 	},
 
 	init:function(args){
@@ -18057,6 +18262,7 @@ Mura.UI.Form=Mura.UI.extend(
 		formrequiredwrapperclass:"",
 		formbuttonsubmitclass :"form-submit",
 		formbuttonsubmitlabel : "Submit",
+		formbuttonsubmitwaitlabel : "Please Wait...",
 		formbuttonnextclass:"form-nav",
 		formbuttonnextlabel : "Next",
 		formbuttonbackclass:"form-nav",
@@ -18754,9 +18960,9 @@ Mura.UI.Form=Mura.UI.extend(
 
 		delete self.data.isNew;
 
-		Mura(self.context.formEl)
-			.find('form')
-			.trigger('formSubmit');
+		var frm=Mura(self.context.formEl).find('form');
+		frm.find('.mura-form-submit').html(self.rb.formbuttonsubmitwaitlabel);
+		frm.trigger('formSubmit');
 
 		if(self.ormform) {
 			//console.log('a!');
@@ -18896,7 +19102,8 @@ Mura.UI.Form=Mura.UI.extend(
 		var frm=Mura(this.context.formEl);
 		var frmErrors=frm.find(".error-container-" + self.context.objectid);
 
-		Mura(this.context.formEl).find('.mura-response-error').remove();
+		frm.find('.mura-form-submit').html(self.rb.formbuttonsubmitlabel);
+		frm.find('.mura-response-error').remove();
 
 		console.log(errors);
 
@@ -18934,7 +19141,7 @@ Mura.UI.Form=Mura.UI.extend(
 			}
 
 			if(this.inlineerrors){
-				var label=Mura(this.context.formEl).find('label[for="' + e + '"]');
+				var label=Mura(this.context.formEl).find('label[data-for="' + e + '"]');
 
 				if(label.length){
 					label.node.insertAdjacentHTML('afterend',Mura.templates['error'](error));
@@ -19441,6 +19648,19 @@ Mura.UI.Form=Mura.UI.extend(
 			} else {
 				return 'text';
 			}
+		});
+
+		Mura.Handlebars.registerHelper('labelForValue',function() {
+			//id, class, title, size
+			var escapeExpression=Mura.Handlebars.escapeExpression;
+
+			if(this.cssid){
+				return escapeExpression(this.cssid);
+			} else {
+				return "field-" + escapeExpression(this.name) ;
+			}
+
+			return returnString;
 		});
 
 		Mura.Handlebars.registerHelper('commonInputAttributes',function() {
@@ -20829,6 +21049,8 @@ this["Mura"]["templates"]["dropdown_static"] = this.Mura.Handlebars.template({"1
     + "\" id=\"field-"
     + alias4(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
     + "-container\">\n		<label for=\""
+    + alias4(((helper = (helper = helpers.labelForValue || (depth0 != null ? depth0.labelForValue : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"labelForValue","hash":{},"data":data}) : helper)))
+    + "\" data-for=\""
     + alias4(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
     + "\">"
     + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.summary : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(3, data, 0),"data":data})) != null ? stack1 : "")
@@ -20882,6 +21104,8 @@ this["Mura"]["templates"]["dropdown"] = this.Mura.Handlebars.template({"1":funct
     + "\" id=\"field-"
     + alias4(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
     + "-container\">\n		<label for=\""
+    + alias4(((helper = (helper = helpers.labelForValue || (depth0 != null ? depth0.labelForValue : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"labelForValue","hash":{},"data":data}) : helper)))
+    + "\" data-for=\""
     + alias4(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
     + "\">"
     + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.summary : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(3, data, 0),"data":data})) != null ? stack1 : "")
@@ -20927,8 +21151,10 @@ this["Mura"]["templates"]["file"] = this.Mura.Handlebars.template({"1":function(
     + "\" id=\"field-"
     + alias4(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
     + "-container\">\r\n	<label for=\""
+    + alias4(((helper = (helper = helpers.labelForValue || (depth0 != null ? depth0.labelForValue : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"labelForValue","hash":{},"data":data}) : helper)))
+    + "\" data-for=\""
     + alias4(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
-    + "_attachment\">"
+    + "\">"
     + alias4(((helper = (helper = helpers.label || (depth0 != null ? depth0.label : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"label","hash":{},"data":data}) : helper)))
     + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.isrequired : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "</label>\r\n	<input type=\"file\" "
@@ -21278,9 +21504,11 @@ this["Mura"]["templates"]["textarea"] = this.Mura.Handlebars.template({"1":funct
 
   return "<div class=\""
     + ((stack1 = ((helper = (helper = helpers.inputWrapperClass || (depth0 != null ? depth0.inputWrapperClass : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"inputWrapperClass","hash":{},"data":data}) : helper))) != null ? stack1 : "")
-    + "\"  id=\"field-"
+    + "\" id=\"field-"
     + alias4(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
     + "-container\">\r\n	<label for=\""
+    + alias4(((helper = (helper = helpers.labelForValue || (depth0 != null ? depth0.labelForValue : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"labelForValue","hash":{},"data":data}) : helper)))
+    + "\" data-for=\""
     + alias4(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
     + "\">"
     + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.summary : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(3, data, 0),"data":data})) != null ? stack1 : "")
@@ -21337,6 +21565,8 @@ this["Mura"]["templates"]["textfield"] = this.Mura.Handlebars.template({"1":func
     + "\" id=\"field-"
     + alias4(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
     + "-container\">\r\n	<label for=\""
+    + alias4(((helper = (helper = helpers.labelForValue || (depth0 != null ? depth0.labelForValue : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"labelForValue","hash":{},"data":data}) : helper)))
+    + "\" data-for=\""
     + alias4(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
     + "\">"
     + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.summary : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(3, data, 0),"data":data})) != null ? stack1 : "")
