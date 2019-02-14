@@ -138,7 +138,6 @@
 
 		<!-- nice-select: select box replacement (sidebar configurator only) -->
 		<cfif rc.sourceFrame neq 'modal'>
-	    <link rel="stylesheet" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/css/nice-select.min.css">
 			<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery.nice-select.min.js" type="text/javascript"></script>
 	    <script type="text/javascript">
 	    	$(document).ready(function() {
