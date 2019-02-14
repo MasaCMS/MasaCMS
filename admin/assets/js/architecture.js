@@ -3309,10 +3309,11 @@ buttons: {
 									}
 
 								} else {
-									item.val(params[p]);
+									item.val(params[p].toString());
 
 									if(item.is('SELECT')){
-										//item.niceSelect('update');
+										//item.find('option[value="' + params[p] + '"]').attr('selected',true);
+										item.niceSelect('update');
 									}
 
 									if(item.attr('id') && typeof CKEDITOR.instances[item.attr('id')] != 'undefined'){
