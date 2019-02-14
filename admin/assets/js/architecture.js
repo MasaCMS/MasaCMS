@@ -3312,7 +3312,6 @@ buttons: {
 									item.val(params[p].toString());
 
 									if(item.is('SELECT')){
-										//item.find('option[value="' + params[p] + '"]').attr('selected',true);
 										item.niceSelect('update');
 									}
 
