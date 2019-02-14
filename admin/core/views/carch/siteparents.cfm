@@ -50,8 +50,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="form-inline">
 <h2>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.searchforcontent')#</h2>
 <div class="mura-input-set">
-	<input id="parentSearch" name="parentSearch" value="#esapiEncode('html_attr',rc.keywords)#" type="text" class="text" maxlength="50" onclick="return false;">
-	<input type="button" class="btn" onclick="siteManager.loadSiteParents('#rc.siteid#','#rc.contentid#','#rc.parentid#',document.getElementById('parentSearch').value,0);return false;" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.search')#">
+	<input id="parentSearch" name="parentSearch" value="" type="text" class="text" maxlength="50" onclick="return false;">
+	<input id="parentSearchSubmit" type="button" class="btn" onclick="siteManager.loadSiteParents('#rc.siteid#','#rc.contentid#','#rc.parentid#',document.getElementById('parentSearch').value,0);return false;" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.search')#">
 </div>
 </cfoutput>
 </div>
@@ -115,3 +115,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfelse>
 <cfoutput><input type="hidden" id="parentid" name="parentid" value="#esapiEncode('html_attr',rc.parentid)#" /></cfoutput>
 </cfif>
+
+<script type="text/javascript">
+	$(document).ready(function(){	
+		$('#parentSearch').on('keypress',function(e){
+			if(e.which == 13) {
+				var pval = $(this).val();
+				$('#parentSearchSubmit').trigger('click');
+				setTimeout(function(){						
+				$('#parentSearch').focus();	
+				},'250')	
+				return false;
+		  	}
+		})
+	})
+</script>
