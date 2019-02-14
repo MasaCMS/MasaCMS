@@ -1646,39 +1646,70 @@ function setLowerCaseKeys(obj) {
 }
 
 function setFinders(selector){
-	if(typeof CKFinder != 'undefined'){
-		$(selector).unbind('click').on('click',function(){
-			var target=$(this).attr('data-target');
-			var finder = new CKFinder();
-			finder.basePath = context + '/core/vendor/ckfinder/';
-			var completepath=$(this).attr('data-completepath');
-
-			if(completepath.toLowerCase() == 'true'){
-				finder.selectActionFunction = function(fileUrl) {
-					var fs=jQuery('input[name="' + target + '"]');
-					fs.val(webroot + fileDelim + fileUrl);
-					fs.trigger('change');
-				};
+	var targetFrame='sideBar';
+	if(window.self !== window.top){
+		var url=Mura.getQueryStringParams(location.search);
+		Mura(selector).click(function(){
+			var target=Mura(this);
+			if(Mura("#ProxyIFrame").length){
+				Mura("#ProxyIFrame").load(
+					function(){
+						frontEndProxy.post({
+							cmd:'openFileManager',
+							instanceid:url.instanceid,
+							target:target.data('target'),
+							completepath:target.data('completepath')
+							}
+						);
+					}
+				);
 			} else {
-				finder.selectActionFunction = function(fileUrl) {
-					var fs=jQuery('input[name="' + target + '"]');
-					fs.val(fileUrl);
-					fs.trigger('change');
-				};
+				frontEndProxy.post({
+					cmd:'openFileManager',
+					instanceid:url.instanceid,
+					target:target.data('target'),
+					completepath:target.data('completepath')
+					}
+				);
 			}
+		})
 
-			if($(this).attr('data-resourcetype') =='root'){
-				finder.resourceType='Application_Root';
-			} else if($(this).attr('data-resourcetype') == 'site'){
-				finder.resourceType=siteid + '_Site_Files';
-			} else {
-				finder.resourceType=siteid + '_User_Assets';
-			}
+	} else {
+		if(typeof CKFinder != 'undefined'){
+			$(selector).unbind('click').on('click',function(){
+				var target=$(this).attr('data-target');
+				var finder = new CKFinder();
+				finder.basePath = context + '/core/vendor/ckfinder/';
+				var completepath=$(this).attr('data-completepath');
 
-			finder.popup();
+				if(completepath.toLowerCase() == 'true'){
+					finder.selectActionFunction = function(fileUrl) {
+						var fs=jQuery('input[name="' + target + '"]');
+						fs.val(webroot + fileDelim + fileUrl);
+						fs.trigger('change');
+					};
+				} else {
+					finder.selectActionFunction = function(fileUrl) {
+						var fs=jQuery('input[name="' + target + '"]');
+						fs.val(fileUrl);
+						fs.trigger('change');
+					};
+				}
 
-		});
+				if($(this).attr('data-resourcetype') =='root'){
+					finder.resourceType='Application_Root';
+				} else if($(this).attr('data-resourcetype') == 'site'){
+					finder.resourceType=siteid + '_Site_Files';
+				} else {
+					finder.resourceType=siteid + '_User_Assets';
+				}
+
+				finder.popup();
+
+			});
+		}
 	}
+
 }
 
 

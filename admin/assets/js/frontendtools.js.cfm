@@ -38,6 +38,8 @@
 	<cfif len($.globalConfig('admindomain')) or $.event('contenttype') eq 'variation' or ($.siteConfig('isRemote') and len($.siteConfig().getValue('resourceDomain')))>
 		var adminProxyLoc="#$.siteConfig().getAdminPath(complete=1)#/assets/js/porthole/proxy.html";
 		var adminLoc="#$.siteConfig().getAdminPath(complete=1)#/";
+		var coreLoc="#$.siteConfig().getCorePath(complete=1)#/";
+		var resourceLoc="#$.siteConfig().getResourcePath(complete=1)#/";
 		var frontEndProxyLoc= location.protocol + "//" + location.hostname;
 
 		if(location.port){
@@ -46,6 +48,8 @@
 	<cfelse>
 		var adminProxyLoc="#$.globalConfig('context')##$.globalConfig('adminDir')#/assets/js/porthole/proxy.html";
 		var adminLoc="#$.globalConfig('context')##$.globalConfig('adminDir')#/";
+		var coreLoc="#$.globalConfig('context')#/core/";
+		var resourceLoc="#$.globalConfig('context')#/";
 		var frontEndProxyLoc="";
 	</cfif>
 	var instanceid=Mura.createUUID();
@@ -76,6 +80,61 @@
 				} else {
 					resizeFrontEndToolsModal(decodeURIComponent(parameters["height"]));
 				}
+			} else if(parameters["cmd"] == "openFileManager"){
+					Mura.loader().loadjs(
+					coreLoc +'vendor/ckfinder/ckfinder.js',
+						function(){
+							var target=parameters["target"];
+							var finder = new CKFinder();
+							finder.basePath = coreLoc + 'vendor/ckfinder/';
+
+							<cfif $.siteConfig('isremote')>
+								var completepath="true";
+							<cfelse>
+								var completepath=(typeof parameters["completepath"] != 'undefined') ? parameters.completepath.toString() : "true";
+							</cfif>
+
+							finder.selectActionFunction=function(fileURL){
+
+								var item=Mura('[data-instanceid="' + parameters["instanceid"] + '"]');
+
+								if(completepath.toString().toLowerCase() == 'true'){
+									item.data(parameters["target"],webroot + fileDelim + fileUrl)
+								} else {
+									item.data(parameters["target"],fileUrl)
+								}
+
+								var data=item.data();
+
+								delete data.runtime;
+
+								if(item.hasClass('mura-body-object')){
+									data.isbodyobject=true;
+								}
+
+								if(parameters["targetFrame"]=='sidebar' && document.getElementById('mura-sidebar-editor').style.display=='none'){
+									Mura('##mura-sidebar-configurator').show();
+								}
+								if(typeof parameters.callback == 'undefined'){
+									if(parameters["targetFrame"]=='sidebar'){
+										sidebarProxy.post({cmd:'setObjectParams',params:data});
+									} else {
+										modalProxy.post({cmd:'setObjectParams',params:data});
+									}
+							}
+						}
+
+						if(Mura(this).attr('data-resourcetype') =='root'){
+							finder.resourceType='Application_Root';
+						} else if(Mura(this).attr('data-resourcetype') == 'site'){
+							finder.resourceType=Mura.siteid + '_Site_Files';
+						} else {
+							finder.resourceType=Mura.siteid + '_User_Assets';
+						}
+					
+						finder.popup();
+					}
+				);
 			} else if(parameters["cmd"] == "close"){
 				closeFrontEndToolsModal();
 			} else if(parameters["cmd"] == "setLocation"){

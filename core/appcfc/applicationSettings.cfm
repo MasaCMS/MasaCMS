@@ -407,6 +407,8 @@ if(request.muraInDocker && (len(getSystemEnvironmentSetting('MURA_DATABASE')) ||
 			, '#connectionStringVarName#' = getSystemEnvironmentSetting('MURA_DBCONNECTIONSTRING')
 			, 'username' = getSystemEnvironmentSetting('MURA_DBUSERNAME')
 			, 'password' = getSystemEnvironmentSetting('MURA_DBPASSWORD')
+			, 'clob' = true
+			, 'blob' = true
 			}
 		};
 
@@ -435,20 +437,21 @@ if(request.muraInDocker && (len(getSystemEnvironmentSetting('MURA_DATABASE')) ||
 		this.datasources={
 			'#getSystemEnvironmentSetting('MURA_DATASOURCE')#'={
 				'#driverVarName#' = driverName
-				, host = getSystemEnvironmentSetting('MURA_DBHOST')
-				, database = getSystemEnvironmentSetting('MURA_DATABASE')
-				, port = getSystemEnvironmentSetting('MURA_DBPORT')
-				, username = getSystemEnvironmentSetting('MURA_DBUSERNAME')
-				, password = getSystemEnvironmentSetting('MURA_DBPASSWORD')
-				, clob = true
+				, 'host' = getSystemEnvironmentSetting('MURA_DBHOST')
+				, 'database' = getSystemEnvironmentSetting('MURA_DATABASE')
+				, 'port' = getSystemEnvironmentSetting('MURA_DBPORT')
+				, 'username' = getSystemEnvironmentSetting('MURA_DBUSERNAME')
+				, 'password' = getSystemEnvironmentSetting('MURA_DBPASSWORD')
+				, 'clob' = true
+				, 'blob' = true
 			},
 			nodatabase={
 				'#driverVarName#' = driverName
-				, host = getSystemEnvironmentSetting('MURA_DBHOST')
-				, database =''
-				, port = getSystemEnvironmentSetting('MURA_DBPORT')
-				, username = getSystemEnvironmentSetting('MURA_DBUSERNAME')
-				, password = getSystemEnvironmentSetting('MURA_DBPASSWORD')
+				, 'host' = getSystemEnvironmentSetting('MURA_DBHOST')
+				, 'database' =''
+				, 'port' = getSystemEnvironmentSetting('MURA_DBPORT')
+				, 'username' = getSystemEnvironmentSetting('MURA_DBUSERNAME')
+				, 'password' = getSystemEnvironmentSetting('MURA_DBPASSWORD')
 			}
 		};
 	}
