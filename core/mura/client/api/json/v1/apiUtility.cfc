@@ -1976,8 +1976,9 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 					var extendData=arguments.entity.getExtendedData();
 					if(!isSimpleValue(extendData)){
 						extendData=extendData.getAllExtendSetData();
-						if(isDefined('extendData.data'))
-						structAppend(temp,extendData.data)
+						if(isDefined('extendData.data')){
+							structAppend(temp,extendData.data);
+						}
 					}
 				} else {
 					var prop=arguments.entity.getValue(listLast(f,'.'));
