@@ -15820,17 +15820,6 @@ Mura.Feed = Mura.Core.extend(
 		},
 
 		/**
-			* orOpenGrouping - Starts new logical condition OR grouping
-			*
-			* @return {Mura.Feed}          Self
-			*/
-		 orOpenGrouping: function() {
-			 this.queryString += '&orOpenGrouping' + encodeURIComponent('[' + this.propIndex + ']');
-			 this.propIndex++;
-			 return this;
-		 },
-
-		/**
 		 * openGrouping - Starts new logical condition grouping
 		 *
 		 * @return {Mura.Feed}          Self
@@ -16003,6 +15992,18 @@ Mura.Feed = Mura.Core.extend(
 		expand: function(expand) {
 			expand = expand || 'all';
 			this.queryString += '&expand=' + encodeURIComponent(expand);
+			return this;
+		},
+
+		/**
+		 * expandDepth - Set the depth that expanded links are expanded
+		 *
+		 * @param  {number} expandDepth Number of levels to expand, defaults to 1
+		 * @return {Mura.Feed}              Self
+		 */
+		expandDepth: function(expandDepth) {
+			expandDepth = expandDepth || 1;
+			this.queryString += '&expandDepth=' + encodeURIComponent(expandDepth);
 			return this;
 		},
 

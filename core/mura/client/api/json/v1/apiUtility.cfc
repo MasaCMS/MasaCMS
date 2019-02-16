@@ -277,7 +277,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		return {'items'=arguments._array};
 	}
 
-	function packageIteratorArray(iterator,itArray,method,expanded=false){
+	function packageIteratorArray(iterator,itArray,method,expanded=0){
 		var result={};
 
 		if(arguments.iterator.getRecordCount()){
@@ -1918,16 +1918,17 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		return returnStruct;
 	}
 
-	function getFilteredValues(entity,expanded=false,entityConfigName,siteid,expandLinks='',pk='',editablecheck=false){
+	function getFilteredValues(entity,expanded=0,entityConfigName,siteid,expandLinks='',pk='',editablecheck=false,expandedProp=''){
 		var fields='';
 		var vals={};
 
 		if(isAggregateQuery()){
-			arguments.expanded=false;
+			arguments.expanded=0;
 		}
 
 		var doFields=!arguments.expanded || (
-				isdefined('url.entityname') && len(url.entityname) && (
+				arguments.expandedProp != 'crumbs'
+				&& isdefined('url.entityname') && len(url.entityname) && (
 					url.entityname==entity.getEntityName() || url.entityname==entityConfigName
 
 					)
@@ -2036,8 +2037,14 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		vals['entityname']=arguments.entityConfigName;
 
-		if(len(arguments.expandLinks)){
-			expandEntity(entity=arguments.entity,itemStruct=vals,siteid=arguments.siteid,expand=arguments.expandLinks);
+		param name="url.expanddepth" default=1;
+
+		if(!isNumeric(url.expanddepth)){
+			url.expanddepth=1;
+		}
+
+		if(arguments.expanded < url.expanddepth && len(arguments.expandLinks)){
+			expandEntity(entity=arguments.entity,itemStruct=vals,siteid=arguments.siteid,expand=arguments.expandLinks,expanded=arguments.expanded);
 		}
 
 		return vals;
@@ -2087,7 +2094,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		return user;
 	}
 
-	function findOne(entityName,id,siteid,render=false,variation=false,expand='',method='findOne',expanded=false){
+	function findOne(entityName,id,siteid,render=false,variation=false,expand='',method='findOne',expanded=0){
 		var $=getBean('$').init(arguments.siteid);
 
 		if(!isDefined('url.entityname')){
@@ -2219,8 +2226,8 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		return returnStruct;
 	}
 
-	function expandEntity(entity,itemStuct,siteid,expand=''){
-
+	function expandEntity(entity,itemStuct,siteid,expand='',expanded=0){
+		arguments.expanded=arguments.expanded+1;
 		if(len(arguments.expand)){
 			var p='';
 			var expandParams={};
@@ -2234,7 +2241,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 						expandParams['#arguments.entity.translatePropKey(p.loadkey)#']=entity.getValue(arguments.entity.translatePropKey(p.column),createUUID());
 
 						//try{
-							arguments.itemStruct[p.name]=findQuery(entityName=p.cfc,siteid=arguments.siteid,params=expandParams,expanded=true);
+							arguments.itemStruct[p.name]=findQuery(entityName=p.cfc,siteid=arguments.siteid,params=expandParams,expand=arguments.expand,expanded=arguments.expanded,expandedProp=p.name);
 						//} catch(any e){WriteDump(p); abort;}
 
 					}
@@ -2246,9 +2253,9 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 					if(arguments.expand=='all' || listFindNoCase(arguments.expand,p.name)){
 						//try{
 							if(p.name=='site'){
-								arguments.itemStruct[p.name]=findOne(entityName='site',id=arguments.entity.getValue(entity.translatePropKey(p.column)),siteid=arguments.siteid,render=false,variation=false,expand='',expanded=true);
+								arguments.itemStruct[p.name]=findOne(entityName='site',id=arguments.entity.getValue(entity.translatePropKey(p.column)),siteid=arguments.siteid,render=false,variation=false,expand=arguments.expand,expanded=arguments.expanded,expandedProp=p.name);
 							} else {
-								arguments.itemStruct[p.name]=findOne(entityName=p.cfc,id=arguments.entity.getValue(entity.translatePropKey(p.column)),siteid=arguments.siteid,render=false,variation=false,expand='',expanded=true);
+								arguments.itemStruct[p.name]=findOne(entityName=p.cfc,id=arguments.entity.getValue(entity.translatePropKey(p.column)),siteid=arguments.siteid,render=false,variation=false,expand=arguments.expand,expanded=arguments.expanded,expandedProp=p.name);
 							}
 						//} catch(any e){WriteDump(p); abort;}
 					}
@@ -2257,7 +2264,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 			if(arguments.expand=='all' || listFindNoCase(arguments.expand,'crumbs')){
 				if(isDefined('arguments.itemStruct.links.crumbs') && isDefined('arguments.itemStruct.path')){
-					arguments.itemStruct.crumbs=findCrumbArray(arguments.itemStruct.entityName,arguments.itemStruct.id,arguments.siteid,arguments.entity.getCrumbIterator(),'',true);
+					arguments.itemStruct.crumbs=findCrumbArray(entityName=arguments.itemStruct.entityName,id=arguments.itemStruct.id,siteid=arguments.siteid,iterator=arguments.entity.getCrumbIterator(),expand='',expanded=arguments.expanded,expandedProp=p.name);
 				}
 			}
 
@@ -2392,7 +2399,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		return packageIteratorArray(iterator,returnArray,'findall');
 	}
 
-	function findMany(entityName,ids,siteid,params,expand='',expanded=false){
+	function findMany(entityName,ids,siteid,params,expand='',expanded=0){
 		param name="arguments.params" default=url;
 
 		if(!isDefined('url.entityname')){
@@ -2476,7 +2483,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		return packageIteratorArray(iterator,finalArray,'findmany');
 	}
 
-	function findQuery(entityName,siteid,params,queryString=cgi.QUERY_STRING,expand='',expanded=false){
+	function findQuery(entityName,siteid,params,queryString=cgi.QUERY_STRING,expand='',expanded=0){
 
 		param name="arguments.params" default=url;
 
@@ -2565,7 +2572,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			var started=false;
 
 			for(var p in arguments.params){
-				if(!listFindNoCase('muraPointInTime,liveOnly,feedid,maxItems,pageIndex,sort,itemsPerPage,sortBy,sortDirection,contentpoolid,shownavonly,showexcludesearch,includehomepage,feedname,expand',p)){
+				if(!listFindNoCase('expanddepth,muraPointInTime,liveOnly,feedid,maxItems,pageIndex,sort,itemsPerPage,sortBy,sortDirection,contentpoolid,shownavonly,showexcludesearch,includehomepage,feedname,expand',p)){
 					feed.addParam(column=p,criteria=arguments.params[p]);
 
 					if(started){
@@ -2615,7 +2622,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 						baseURL=baseURL & '=' & esapiEncode('url',params[p]);
 					}
 
-					if(!listFindNoCase('expand,muraPointInTime,liveOnly,feedid,cacheid,_cacheid,distinct,fields,entityname,method,maxItems,pageIndex,itemsPerPage,sortBy,sortDirection,contentpoolid,shownavonly,showexcludesearch,includehomepage,feedname',propName)){
+					if(!listFindNoCase('expanddepth,expand,muraPointInTime,liveOnly,feedid,cacheid,_cacheid,distinct,fields,entityname,method,maxItems,pageIndex,itemsPerPage,sortBy,sortDirection,contentpoolid,shownavonly,showexcludesearch,includehomepage,feedname',propName)){
 						if(propName == 'sort'){
 							advancedsort=listAppend(advancedsort,arguments.params[p]);
 						} else if(!(entity.getEntityName()=='user' && propName=='isPublic')){
@@ -2685,7 +2692,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 	}
 
-	function iteratorToArray(iterator,siteid,expand='',$,expanded=false){
+	function iteratorToArray(iterator,siteid,expand='',$,expanded=0){
 		var returnArray=[];
 		var item='';
 		var entityName=arguments.iterator.getEntityName();
@@ -2921,7 +2928,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 	}
 
-	function findCrumbArray(entityName,id,siteid,iterator,expand='',expanded=false){
+	function findCrumbArray(entityName,id,siteid,iterator,expand='',expanded=0,expandedProp=''){
 
 		var $=getBean('$').init(arguments.siteid);
 
@@ -2972,7 +2979,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 	}
 
 
-	function findVersionHistory(id,siteid,expand='',expanded=false){
+	function findVersionHistory(id,siteid,expand='',expanded=0){
 
 		var $=getBean('$').init(arguments.siteid);
 		var entity=$.getBean('content');
@@ -3204,7 +3211,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		return links;
 	}
 
-	function findRelatedContent(id,siteid,params,arguments,expand='',expanded=false){
+	function findRelatedContent(id,siteid,params,arguments,expand='',expanded=0){
 		param name="arguments.params" default=url;
 
 		var $=getBean('$').init(arguments.siteid);
