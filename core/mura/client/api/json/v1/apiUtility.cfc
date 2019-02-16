@@ -340,6 +340,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		if(!listFindNoCase('bean',iterator.getEntityName())){
 				result.links['properties']='#getEndpoint()#/#iterator.getEntityName()#/properties';
+				result.links['permissions']='#getEndpoint()#/#iterator.getEntityName()#/permissions';
 		}
 
 		if(result.pageIndex > 1){
@@ -2036,6 +2037,10 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		}
 
 		vals['entityname']=arguments.entityConfigName;
+
+		if(vals.entityName=='contentnav'){
+			vals.entityName='content';
+		}
 
 		param name="url.expanddepth" default=1;
 
