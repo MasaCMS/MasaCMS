@@ -1970,7 +1970,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		fields=listToArray(fields);
 
-		if(!arrayFind(fields,'*') && arrayLen(fields)){
+		if(arrayLen(fields) && !(arrayFind(fields,'*') || arrayFind(fields,'all'))){
 			var temp={};
 
 			for(var f in fields){
@@ -2241,7 +2241,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 			if(arrayLen(arguments.entity.getHasManyPropArray())){
 				for(p in arguments.entity.getHasManyPropArray()){
-					if(arguments.expand=='all' || listFindNoCase(arguments.expand,p.name)){
+					if(arguments.expand=='all' || arguments.expand=='*' || listFindNoCase(arguments.expand,p.name)){
 						expandParams={};
 						expandParams['#arguments.entity.translatePropKey(p.loadkey)#']=entity.getValue(arguments.entity.translatePropKey(p.column),createUUID());
 
