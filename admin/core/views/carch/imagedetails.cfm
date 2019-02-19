@@ -419,7 +419,6 @@
 	       	 		boxHeight:600,
 	       	 		boxWidth:600,
 							minSize:sizeArray,
-							maxSize:sizeArray,
 	       	 		aspectRatio:aspectRatio,
 	       	 		onSelect:saveCoords,
 	       	 		onChange:saveCoords
