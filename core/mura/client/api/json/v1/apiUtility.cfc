@@ -1970,7 +1970,9 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		fields=listToArray(fields);
 
-		if(arrayLen(fields) && !(arrayFind(fields,'*') || arrayFind(fields,'all'))){
+		var allFields=!arrayLen(fields) || arrayFind(fields,'*') || arrayFind(fields,'all');
+
+		if(!allFields){
 			var temp={};
 
 			for(var f in fields){
@@ -2018,16 +2020,16 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			vals.id=arguments.entity.getValue(pk);
 		}
 
-		if(!arrayLen(fields) || arrayFind(fields,'links')){
+		if(allFields || arrayFind(fields,'links')){
 			arguments.editablecheck=(isDefined('url.id') && vals.id==url.id || arguments.editablecheck)? true :false;
 			vals.links=getLinks(entity,arguments.editablecheck);
 		}
 
 		if(listFindNoCase('content,contentnav',arguments.entityConfigName)){
-			if(!arrayLen(fields) || arrayFind(fields,'images')){
+			if(allFields || arrayFind(fields,'images')){
 				vals.images=setImageURLS(entity);
 			}
-			if(!arrayLen(fields) || arrayFind(fields,'url')){
+			if(allFields || arrayFind(fields,'url')){
 				vals.url=entity.getURL(complete=true);
 			}
 		}
@@ -2238,10 +2240,11 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			var expandParams={};
 			var queryString='';
 			var q='';
+			var expandAll=arguments.expand=='all' || arguments.expand=='*';
 
 			if(arrayLen(arguments.entity.getHasManyPropArray())){
 				for(p in arguments.entity.getHasManyPropArray()){
-					if(arguments.expand=='all' || arguments.expand=='*' || listFindNoCase(arguments.expand,p.name)){
+					if(expandAll|| listFindNoCase(arguments.expand,p.name)){
 						expandParams={};
 						expandParams['#arguments.entity.translatePropKey(p.loadkey)#']=entity.getValue(arguments.entity.translatePropKey(p.column),createUUID());
 
@@ -2255,7 +2258,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 			if(arrayLen(arguments.entity.getHasOnePropArray())){
 				for(p in arguments.entity.getHasOnePropArray()){
-					if(arguments.expand=='all' || listFindNoCase(arguments.expand,p.name)){
+					if(expandAll || listFindNoCase(arguments.expand,p.name)){
 						//try{
 							if(p.name=='site'){
 								arguments.itemStruct[p.name]=findOne(entityName='site',id=arguments.entity.getValue(entity.translatePropKey(p.column)),siteid=arguments.siteid,render=false,variation=false,expand=arguments.expand,expanded=arguments.expanded,expandedProp=p.name);
@@ -2267,7 +2270,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				}
 			}
 
-			if(arguments.expand=='all' || listFindNoCase(arguments.expand,'crumbs')){
+			if(expandAll || listFindNoCase(arguments.expand,'crumbs')){
 				if(isDefined('arguments.itemStruct.links.crumbs') && isDefined('arguments.itemStruct.path')){
 					arguments.itemStruct.crumbs=findCrumbArray(entityName=arguments.itemStruct.entityName,id=arguments.itemStruct.id,siteid=arguments.siteid,iterator=arguments.entity.getCrumbIterator(),expand='',expanded=arguments.expanded,expandedProp=p.name);
 				}

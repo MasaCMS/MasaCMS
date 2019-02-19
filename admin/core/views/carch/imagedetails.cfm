@@ -398,7 +398,7 @@
 				var minSize=[];
 				var height=$(this).attr('data-height');
 				var width=$(this).attr('data-width')
-				/*
+				
 				if(typeof width != 'undefined' && width.toString().toLowerCase() == 'auto'
 					|| typeof height != 'undefined' && height.toString().toLowerCase() == 'auto'
 				){
@@ -412,12 +412,13 @@
 				} else {
 					var sizeArray=[0,0]
 				}
-				*/
+
         actionModal(function(){
 	       	 $dialog.find('##crop-target').Jcrop(
 	       	 	{
 	       	 		boxHeight:600,
 	       	 		boxWidth:600,
+							minSize:sizeArray,
 	       	 		aspectRatio:aspectRatio,
 	       	 		onSelect:saveCoords,
 	       	 		onChange:saveCoords
