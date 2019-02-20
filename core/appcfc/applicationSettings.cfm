@@ -72,6 +72,9 @@ param name="request.muraTemplateMissing" default=false;
 param name="request.muraSysEnv" default="#createObject('java','java.lang.System').getenv()#";
 param name="request.muraSecrets" default={};
 
+//https://www.bennadel.com/blog/2824-gethttprequestdata-may-break-your-request-in-coldfusion-but-gethttprequestdata-false-may-not.htm
+ getHTTPRequestData(false);
+
 if (structKeyExists(request.muraSysEnv, "MURA_GLOBAL_SECRETS")) {
     // Confirm that file exist and is JSON
     if (fileExists('/run/secrets/' & request.muraSysEnv["MURA_GLOBAL_SECRETS"])) {
