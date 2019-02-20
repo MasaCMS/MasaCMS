@@ -1152,4 +1152,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
+<cffunction name="readSourceImage" output="false">
+	<cfargument name="fileID">
+	<cfset var rsMeta=readMeta(arguments.fileID)>
+	<cfset var source="#application.configBean.getFileDir()#/#rsMeta.siteID#/cache/file/#rsMeta.fileID#_source.#rsMeta.fileExt#">
+	<cfif rsMeta.recordcount and not fileExists(source)>
+		<cfset getBean('fileWriter').copyFile(source="#application.configBean.getFileDir()#/#rsMeta.siteID#/cache/file/#rsMeta.fileID#.#rsMeta.fileExt#", destination=source)>
+	</cfif>
+	<cfset source=imageRead(source)>
+	<cfreturn source>
+</cffunction>
+
 </cfcomponent>

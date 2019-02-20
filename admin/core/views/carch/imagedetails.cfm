@@ -86,10 +86,24 @@
 <div id="image-details">
 	<div class="block-content">
 	<cfif len(rc.fileID)>
+		<script>
+			fileMap={};
+		</script>
 		<cfloop list="#rc.fileID#" index="f">
 			<cfset $.getBean('fileManager').touchSourceImage(f)>
 			<cfset rc.sourceImage=$.getURLForImage(fileID=f,size='source')>
+
 			<cfif len(rc.sourceImage)>
+				<cfset sourceImage=$.getBean('fileManager').readSourceImage(f)>
+				<script>
+					fileMap['#esapiEncode('javascript',f)#']={height:0,width:0};
+					<cfif structKeyExists(sourceImage,'Image Height') and isNumeric(listFirst(sourceImage['Image Height'],' '))>
+					fileMap['#esapiEncode('javascript',f)#'].height=#esapiEncode('javascript',listFirst(sourceImage['Image Height'],' '))#;
+					</cfif>
+					<cfif structKeyExists(sourceImage,'Image Width') and isNumeric(listFirst(sourceImage['Image Width'],' '))>
+					fileMap['#esapiEncode('javascript',f)#'].width=#esapiEncode('javascript',listFirst(sourceImage['Image Width'],' '))#;
+					</cfif>
+				</script>
 				<cfset rc.rsMeta=$.getBean('fileManager').readMeta(fileID=f)>
 				<h2><i class="mi-picture-o"></i> #esapiEncode('html',rc.rsMeta.filename)#</h2>
 
@@ -398,7 +412,7 @@
 				var minSize=[];
 				var height=$(this).attr('data-height');
 				var width=$(this).attr('data-width')
-				/*
+
 				if(typeof width != 'undefined' && width.toString().toLowerCase() == 'auto'
 					|| typeof height != 'undefined' && height.toString().toLowerCase() == 'auto'
 				){
@@ -412,14 +426,21 @@
 				} else {
 					var sizeArray=[0,0]
 				}
-						minSize:sizeArray,
-				*/
+
+				if(sizeArray[0] && sizeArray[0] > fileMap[currentFileID].width ){
+					sizeArray[0]=0;
+				}
+
+				if(sizeArray[1] && sizeArray[10] > fileMap[currentFileID].heigth ){
+					sizeArray[1]=0;
+				}
+
         actionModal(function(){
 	       	 $dialog.find('##crop-target').Jcrop(
 	       	 	{
 	       	 		boxHeight:600,
 	       	 		boxWidth:600,
-
+							minSize:sizeArray,
 	       	 		aspectRatio:aspectRatio,
 	       	 		onSelect:saveCoords,
 	       	 		onChange:saveCoords
