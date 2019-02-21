@@ -275,7 +275,6 @@ $(document).ready(function(){
 		// reset on short length
 		} else {
 			$("#content-panels .panel-collapse.collapse").collapse("hide","fast");
-			$('#content-panels .mura-panel .control-matched.control-unhighlight').removeClass('control-unhighlight');
 			$('#content-panels .mura-panel .control-matched').removeClass('control-matched');
 		}
 	} 
@@ -289,10 +288,6 @@ $(document).ready(function(){
 				//	console.log(filterStr);
 					filterSettings(filterStr)	;		
 	    }, 500);
-	    // remove highlight after time
-	    timeout = setTimeout(function () {
-				$("#content-panels").find('.control-matched').addClass('control-unhighlight');
-	    }, 3000);
 	});
 
 	// focus on input filter on page load
