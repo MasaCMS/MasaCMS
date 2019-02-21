@@ -82,8 +82,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<!--- /publishing --->
 
 						<!--- scheduling --->
-<!--- todo: add Publishing to tab assignments list, change value here --->
-						<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Publishing')>	
+						<!--- todo: add Scheduling to tab assignments list, change value here --->
+						<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Publishing') and rc.contentBean.getcontentID() neq '00000000000000000000000000000000001'>	
 								<cfinclude template="form/dsp_panel_scheduling.cfm">
 						</cfif>		
 						<!--- /scheduling --->
