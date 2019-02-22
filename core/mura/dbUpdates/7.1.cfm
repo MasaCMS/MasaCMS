@@ -123,7 +123,7 @@ try{
 }
 
 try{
-	dbUtility.setTable('tcontentfeedadvancedparams');
+	dbUtility.setTable('tcontentfeedadvancedparams')
 		.addPrimaryKey('paramID');
 } catch(Any e){
 	writeLog(serializeJSON(e));
