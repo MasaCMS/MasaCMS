@@ -208,6 +208,9 @@ component extends="framework" output="false" {
 
 				if(application.configBean.getScriptProtect()){
 
+					setEncoding("url", "utf-8");
+					setEncoding("form", "utf-8");
+					
 					for(var u in url){
 						//url['#u#']=tempCanonicalize(url['#u#'],true,false);
 					}
