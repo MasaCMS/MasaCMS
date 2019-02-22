@@ -155,7 +155,6 @@
 		<cfset var counter = 0>
 
 		<cfif isDefined('arguments.output.mode')>
-			<!---<cftry>--->
 				<cfset new = FileOpen(arguments.file, "write")>
 
 				<cfloop condition="!fileIsEOF( arguments.output )">
