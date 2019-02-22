@@ -725,7 +725,7 @@ if ( application.setupComplete ) {
 		if ( !fileExists(variables.basedir & "/robots.txt") ) {
 			local.fileWriter.copyFile(source="#variables.basedir#/core/templates/robots.template.cfm", destination="#variables.basedir#/robots.txt");
 		}
-		if ( !fileExists(variables.basedir & "/web.config") ) {
+		if ( findNoCase('Windows',Server.OS.Name) && !fileExists(variables.basedir & "/web.config") ) {
 			local.fileWriter.copyFile(source="#variables.basedir#/core/templates/web.config.template.cfm", destination="#variables.basedir#/web.config");
 		}
 		if ( !fileExists(variables.basedir & "/core/vendor/cfformprotect/cffp.ini.cfm") ) {
