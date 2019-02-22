@@ -14,6 +14,12 @@
 		#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectfile')#
 	</cfif>
 	</label>
+
+	<div id="assocImagePreviewContainer">
+		<!--- todo: test for files, other content types --->
+		<img id="assocImagePreview" src="" style="display: none;">
+	</div>
+
 	<cfif not fileLockedBySomeElse>
 
 		<cfif  rc.type eq 'File'
@@ -26,6 +32,7 @@
 		<!--- todo: resource bundle key for 'select image' --->
 		<div class="bigui" id="bigui__associmg" data-label="Select Image">
 			<div class="bigui__title">#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.selectimage"))#</div>
+
 			<div class="bigui__controls">
 					<cf_fileselector name="newfile" property="fileid" bean="#rc.contentBean#" deleteKey="deleteFile" compactDisplay="#rc.compactDisplay#" locked="#len(stats.getLockID())#" examplefileext="#examplefileext#" >
 			</div>
@@ -53,6 +60,18 @@
 		siteManager.hasFileLock=<cfif stats.getLockType() neq 'node' and stats.getLockID() eq session.mura.userID>true<cfelse>false</cfif>;
 		siteManager.unlockfileconfirm="#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlockfileconfirm'))#";
 	</script>
+
+	<script type="text/javascript">
+		function updateAssocPreview(){
+			var imgsrc = $('##assocImage').attr('src');
+			if (imgsrc.length){
+				$('##assocImagePreview').attr('src',imgsrc).show();
+			}			
+		}
+		// run on load
+		updateAssocPreview();
+	</script>
+
 	<input type="hidden" id="unlockfilewithnew" name="unlockfilewithnew" value="false" />
 </div>
 </cfoutput>
