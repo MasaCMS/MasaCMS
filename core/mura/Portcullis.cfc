@@ -555,7 +555,7 @@
 
 	<cffunction name="removeNullChars" access="private" output="false">
 		<cfargument name="theString" type="string" required="true" />
-		<cfreturn urldecode(encodeForURL(arguments.theString))>
+		<cfreturn urldecode(replace(encodeForURL(arguments.theString),"%00","","all"))>
 	</cffunction>
 
 </cfcomponent>
