@@ -337,6 +337,59 @@
 		<cfreturn true/>
 	</cffunction>
 
+	<cffunction name="stripMSWordFromSimpleValue" output="false">
+		<cfargument name="value">
+		<cfset arguments.value = trim(replaceList(arguments.value,chr(8216) & "," & chr(8217) & "," & chr(8220) & "," & chr(8221) & "," & chr(8212) & "," & chr(8213) & "," & chr(8230),"',',"","",--,--,..."))/>
+		<cfreturn arguments.value>
+	</cffunction>
+
+	<cffunction name="stripMSWordFromArray" output="false">
+		<cfargument name="value">
+		<cfset var idx=0>
+		<cfif isArray(arguments.value) and arrayLen(arguments.value)>
+			<cfloop from="1" to="#arrayLen(arguments.value)#" index="idx">
+			   <cfset arguments.value[idx]=stripMSWord(arguments.value[idx])>
+			</cfloop>
+		</cfif>
+		<cfreturn arguments.value>
+	</cffunction>
+
+	<cffunction name="stripMSWordFromStruct" output="false">
+		<cfargument name="value">
+			<cfset var key="">
+			<cfif isArray(arguments.value)>
+				<cfloop collection="#arguments.value#" item="key" >
+	      	<cfset arguments.value['#key#']=stripMSWord(arguments.value['#key#'])>
+				</cfloop>
+			</cfif>
+		<cfreturn value>
+	</cffunction>
+
+	<cffunction name="stripMSWord" output="false">
+		<cfargument name="value">
+			<cfif isSimpleValue(arguments.value)>
+				<cfif not len(arguments.value) or isNumeric(arguments.value)>
+					<cfreturn arguments.value>
+				<cfelseif isJson(arguments.value)>
+					<cfset arguments.value=deserializeJSON(arguments.value)>
+					<cfif isSimpleValue(arguments.value)>
+						<cfset arguments.value=stripMSWordFromSimpleValue(arguments.value)>
+					<cfelse>
+						<cfset arguments.value=stripMSWord(arguments.value)>
+					</cfif>
+					<cfreturn serializeJSON(arguments.value)>
+				<cfelse>
+					<cfreturn stripMSWordFromSimpleValue(arguments.value)>
+				</cfif>
+			<cfelseif isStruct(arguments.value)>
+				<cfreturn stripMSWordFromStruct(arguments.value)>
+			<cfelseif isArray(arguments.value)>
+				<cfreturn stripMSWordFromArray(arguments.value)>
+			<cfelse>
+				<cfreturn arguments.value>
+			</cfif>
+	</cffunction>
+
 	<cffunction name="filterTags" output="false">
 		<cfargument name="text" required="true" type="String">
 		<cfargument name="tagFilter" default="#variables.instance.tagFilter#">
@@ -346,11 +399,7 @@
 		<cfset var lcount = 0/>
 
 		<!---trim white space and deal with "smart quotes" from MS Word, etc. This code came from Shawn Gorrell's popular cf_xssblock tag - http://www.illumineti.com/documents/xssblock.txt --->
-		<cfif not isJSON(arguments.text)>
-			<cfset result.originalText = trim(replaceList(arguments.text,chr(8216) & "," & chr(8217) & "," & chr(8220) & "," & chr(8221) & "," & chr(8212) & "," & chr(8213) & "," & chr(8230),"',',"","",--,--,..."))/>
-		<cfelse>
-			<cfset result.originalText=arguments.text>
-		</cfif>
+		<cfset result.originalText = stripMSWord(arguments.text)/>
 
 		<cfset result.detected = true/>
 		<cfset result.cleanText = result.originalText/>
