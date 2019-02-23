@@ -1,7 +1,5 @@
 <cfscript>
 //  Preventing XSS attacks
-setEncoding("url", "utf-8");
-setEncoding("form", "utf-8");
 
 if ( structKeyExists(application,"scriptProtectionFilter") && application.configBean.getScriptProtect() ) {
 	if ( isDefined("url") ) {
