@@ -68,7 +68,7 @@
 		</cfquery>
 	</cfloop>
 </cfif>
-<!---
+
 <cfscript>
 try{
 	dbUtility.setTable('tcontent')
@@ -297,4 +297,3 @@ try{
 	writeLog(serializeJSON(e));
 }
 </cfscript>
---->
