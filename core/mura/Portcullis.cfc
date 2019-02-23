@@ -368,7 +368,7 @@
 	<cffunction name="stripMSWord" output="false">
 		<cfargument name="value">
 			<cfif isSimpleValue(arguments.value)>
-				<cfif not len(arguments.value) or isNumeric(arguments.value)>
+				<cfif not len(arguments.value) or isNumeric(arguments.value) or isBoolean(arguments.value)>
 					<cfreturn arguments.value>
 				<cfelseif isJson(arguments.value)>
 					<cfset arguments.value=deserializeJSON(arguments.value)>

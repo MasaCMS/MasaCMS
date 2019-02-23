@@ -74,7 +74,9 @@ param name="request.muraSecrets" default={};
 
 //https://www.bennadel.com/blog/2824-gethttprequestdata-may-break-your-request-in-coldfusion-but-gethttprequestdata-false-may-not.htm
 //Throws error in Lucee 5.2.4.37
-//getHTTPRequestData(false);
+if(!structKeyExists(server,'lucee')){
+	getHTTPRequestData(false);
+}
 
 if (structKeyExists(request.muraSysEnv, "MURA_GLOBAL_SECRETS")) {
     // Confirm that file exist and is JSON
