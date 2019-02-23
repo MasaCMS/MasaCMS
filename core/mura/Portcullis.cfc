@@ -349,7 +349,7 @@
 		<cfif not isJSON(arguments.text)>
 			<cfset result.originalText = trim(replaceList(arguments.text,chr(8216) & "," & chr(8217) & "," & chr(8220) & "," & chr(8221) & "," & chr(8212) & "," & chr(8213) & "," & chr(8230),"',',"","",--,--,..."))/>
 		<cfelse>
-			<cfset results.originalText=arguments.text>
+			<cfset result.originalText=arguments.text>
 		</cfif>
 
 		<cfset result.detected = true/>
