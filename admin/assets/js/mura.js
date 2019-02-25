@@ -15605,6 +15605,18 @@ Mura.Feed = Mura.Core.extend(
 		},
 
 		/**
+		 * name - Sets the name of the content feed to use
+		 *
+		 * @param  {string} name Name of feed as defined in admin
+		 * @return {Mura.Feed}              Self
+		 */
+		name: function(name) {
+			this.queryString += '&feedname=' + encodeURIComponent(
+				name);
+			return this;
+		},
+
+		/**
 		 * contentPoolID - Sets items per page
 		 *
 		 * @param  {string} feedID Items per page
