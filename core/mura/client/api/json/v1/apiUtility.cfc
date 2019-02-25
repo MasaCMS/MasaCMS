@@ -1851,7 +1851,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				entity.loadBy(argumentCollection=loadByparams);
 
 				if(arguments.entityName=='content' && isBoolean($.event('removecategories')) && $.event('removecategories')){
-						var currentCategories=entities.getCategoriesIterator();
+						var currentCategories=entity.getCategoriesIterator();
 
 						if(currentCategories.hasNext()){
 							while(currentCategories.hasNext()){
@@ -1879,7 +1879,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				entity.loadBy(argumentCollection=loadByparams);
 
 				if(arguments.entityName=='content' && isBoolean($.event('removecategories')) && $.event('removecategories')){
-						var currentCategories=entities.getCategoriesIterator();
+						var currentCategories=entity.getCategoriesIterator();
 
 						if(currentCategories.hasNext()){
 							while(currentCategories.hasNext()){
