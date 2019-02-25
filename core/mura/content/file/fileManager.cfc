@@ -896,7 +896,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset var site=variables.settingsManager.getSite(arguments.siteid)>
 
-	<cfif isValid('URL', application.configBean.getAssetPath()) or (not (site.getIsRemote() or request.muraApiRequest) and len(application.configBean.getAssetPath()) and application.configBean.getContext() neq  application.configBean.getAssetPath() and isValid('URL', 'http://' & cgi.server_name & application.configBean.getAssetPath()))>
+	<cfif isValid('URL', application.configBean.getAssetPath())>
 		<cfset var begin=application.configBean.getAssetPath() & "/" & site.getFilePoolID()>
 	<cfelse>
 		<cfset var begin=site.getFileAssetPath(argumentCollection=arguments)>
