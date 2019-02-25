@@ -1848,7 +1848,19 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		if(!request.muraSessionManagement || $.validateCSRFTokens(context=csrfcontext)){
 			if(arguments.entityName=='content' && $.event('type')=='Variation'){
-				entity.loadBy(argumentCollection=loadByparams).set(
+				entity.loadBy(argumentCollection=loadByparams);
+
+				if(arguments.entityName=='content' && isBoolean($.event('removecategories')) && $.event('removecategories')){
+						var currentCategories=entities.getCategoriesIterator();
+
+						if(currentCategories.hasNext()){
+							while(currentCategories.hasNext()){
+								entity.removeCategory(currentCategories.next().get('categoryid'));
+							}
+						}
+				}
+
+				entity.set(
 						$.event().getAllValues()
 					);
 
@@ -1864,8 +1876,19 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 					entity.save();
 				}
 			} else {
-				entity.loadBy(argumentCollection=loadByparams)
-					.set(
+				entity.loadBy(argumentCollection=loadByparams);
+
+				if(arguments.entityName=='content' && isBoolean($.event('removecategories')) && $.event('removecategories')){
+						var currentCategories=entities.getCategoriesIterator();
+
+						if(currentCategories.hasNext()){
+							while(currentCategories.hasNext()){
+								entity.removeCategory(currentCategories.next().get('categoryid'));
+							}
+						}
+				}
+
+				entity.set(
 						$.event().getAllValues()
 					);
 
