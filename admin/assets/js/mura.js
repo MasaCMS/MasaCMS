@@ -2230,7 +2230,12 @@ var Mura=(function(){
 		var self = obj.node;
 		self.prevInnerHTML = self.innerHTML;
 		self.prevData = obj.data();
-		self.innerHTML = Mura.preloaderMarkup;
+
+		if(typeof prevData.preloadermarkup != 'undefined'){
+			self.innerHTML = data.preloadermarkup;
+		} else {
+			self.innerHTML = Mura.preloaderMarkup;
+		}
 
 		Mura(frm).trigger('formSubmit', data);
 
@@ -2815,7 +2820,12 @@ var Mura=(function(){
 					}
 				} else {
 						//console.log(data);
-						self.innerHTML = Mura.preloaderMarkup;
+						if(typeof data.preloadermarkup != 'undefined'){
+							self.innerHTML = data.preloadermarkup;
+						} else {
+							self.innerHTML = Mura.preloaderMarkup;
+						}
+
 						ajax({
 							url: Mura.apiEndpoint + '?method=processAsyncObject',
 							type: 'get',

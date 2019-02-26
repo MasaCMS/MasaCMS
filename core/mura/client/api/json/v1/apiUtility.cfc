@@ -2271,6 +2271,31 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 						expandParams={};
 						expandParams['#arguments.entity.translatePropKey(p.loadkey)#']=entity.getValue(arguments.entity.translatePropKey(p.column),createUUID());
 
+						if(p.cfc=='content'){
+							if(isDefined('url.showexcludesearch')){
+								expandParams.showexcludesearch=url.showexcludesearch;
+							}
+							if(isDefined('url.includeHomePage')){
+								expandParams.includeHomePage=url.includeHomePage;
+							}
+							if(isDefined('url.shownavonly')){
+								expandParams.shownavonly=url.shownavonly;
+							}
+
+							expandParams.sortBy=entity.get('sortBy');
+							expandParams.sortDirection=entity.get('sortDirection');
+						}
+
+						if(isDefined('url.maxitems')){
+							expandParams.maxitems=url.maxitems;
+						}
+						if(isDefined('url.cachedWithin')){
+							expandParams.cachedWithin=url.cachedWithin;
+						}
+						if(isDefined('url.itemsPerPage')){
+							expandParams.itemsPerPage=url.itemsPerPage;
+						}
+
 						//try{
 							arguments.itemStruct[p.name]=findQuery(entityName=p.cfc,siteid=arguments.siteid,params=expandParams,expand=arguments.expand,expanded=arguments.expanded,expandedProp=p.name);
 						//} catch(any e){WriteDump(p); abort;}
