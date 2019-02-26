@@ -482,39 +482,41 @@ if(request.muraInDocker && (len(getSystemEnvironmentSetting('MURA_DATABASE')) ||
 		if(len(getSystemEnvironmentSetting('MURA_DBCUSTOM')) && isJSON(getSystemEnvironmentSetting('MURA_DBCUSTOM'))){
 			this.datasources["#getSystemEnvironmentSetting('MURA_DATASOURCE')#"].custom=deserializeJSON(getSystemEnvironmentSetting('MURA_DBCUSTOM'));
 		}
+	}
+}
 
-		if(len(getSystemEnvironmentSetting('MURA_MEMCACHEDSESSIONSERVER'))){
-			this.cache.connections["muramemcachedsessions"] = {
-					class: "org.lucee.extension.io.cache.memcache.MemCacheRaw"
-				, bundleName: "memcached.extension"
-				, bundleVersion: "3.0.2.29"
-				, storage: true
-				, custom: {
-					"socket_timeout":"30",
-					"initial_connections":"1",
-					"alive_check":"true",
-					"buffer_size":"1",
-					"max_spare_connections":"32",
-					"storage_format":"Binary",
-					"socket_connect_to":"3",
-					"min_spare_connections":"1",
-					"maint_thread_sleep":"5",
-					"failback":"true",
-					"max_idle_time":"600",
-					"max_busy_time":"30",
-					"nagle_alg":"true",
-					"failover":"true",
-					"servers": getSystemEnvironmentSetting('MURA_MEMCACHEDSESSIONSERVER')
-				}
-				, "default": ""
-			};
-			this.sessionCluster = true;
-			this.sessionStorage = "muramemcachedsessions";
-		}
+if (server.coldfusion.productname == 'lucee') {
+	if(len(getSystemEnvironmentSetting('MURA_MEMCACHEDSESSIONSERVER'))){
+		this.cache.connections["muramemcachedsessions"] = {
+				class: "org.lucee.extension.io.cache.memcache.MemCacheRaw"
+			, bundleName: "memcached.extension"
+			, bundleVersion: "3.0.2.29"
+			, storage: true
+			, custom: {
+				"socket_timeout":"30",
+				"initial_connections":"1",
+				"alive_check":"true",
+				"buffer_size":"1",
+				"max_spare_connections":"32",
+				"storage_format":"Binary",
+				"socket_connect_to":"3",
+				"min_spare_connections":"1",
+				"maint_thread_sleep":"5",
+				"failback":"true",
+				"max_idle_time":"600",
+				"max_busy_time":"30",
+				"nagle_alg":"true",
+				"failover":"true",
+				"servers": getSystemEnvironmentSetting('MURA_MEMCACHEDSESSIONSERVER')
+			}
+			, "default": ""
+		};
+		this.sessionCluster = true;
+		this.sessionStorage = "muramemcachedsessions";
+	}
 
-		if(len(getSystemEnvironmentSetting('MURA_TIMEZONE'))){
-			this.timezone = getSystemEnvironmentSetting('MURA_TIMEZONE');
-		}
+	if(len(getSystemEnvironmentSetting('MURA_TIMEZONE'))){
+		this.timezone = getSystemEnvironmentSetting('MURA_TIMEZONE');
 	}
 }
 
