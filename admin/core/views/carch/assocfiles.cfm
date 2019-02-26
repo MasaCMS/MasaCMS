@@ -75,6 +75,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif len(rc.keywords)>
 	<cfoutput>
 
+			<!--- todo: debugging --->
+	<cfdump var="#rc.keywords#">
+	<cfdump var="#rc.rslist#">
+
 	<div class="selectAssocImageResults block" id="selectAssocImageResults-#esapiEncode('html',rc.property)#">
 		<ul class="mura-tabs nav-tabs" data-toggle="tabs">
 			<li><a href="##mura-assoc-images-#esapiEncode('html',rc.property)#" data-toggle="tab" onclick="return false;"><i class="mi-picture-o"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.images')#</a></li>
