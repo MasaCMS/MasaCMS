@@ -2945,8 +2945,12 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			arguments.feed.setfields(arguments.params.fields);
 		}
 
-		if(isDefined('arguments.params.maxitems') && isNumeric(arguments.params.maxitems)){
-			arguments.feed.setMaxItems(arguments.params.maxitems);
+		if(isDefined('arguments.params.maxitems')){
+			if(isNumeric(arguments.params.maxitems)){
+				arguments.feed.setMaxItems(arguments.params.maxitems);
+			} else if(arguments.params.maxitems=='*'){
+				arguments.feed.setMaxItems(0);
+			}
 		}
 
 		if(isDefined('arguments.params.size') && isNumeric(arguments.params.size)){
@@ -2966,8 +2970,12 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 	function setIteratorProps(iterator,params){
 		param name="arguments.params" default=url;
 
-		if(isDefined('arguments.params.itemsPerPage') && isNumeric(arguments.params.itemsPerPage)){
-			iterator.setNextN(arguments.params.itemsPerPage);
+		if(isDefined('arguments.params.itemsPerPage')){
+			if(isNumeric(arguments.params.itemsPerPage)){
+				arguments.iterator.setNextN(arguments.params.itemsPerPage);
+			} else if(arguments.params.itemsPerPage=='*'){
+				arguments.iterator.setNextN(0);
+			}
 		}
 
 		if(isDefined('arguments.params.pageIndex') && isNumeric(arguments.params.pageIndex)){
