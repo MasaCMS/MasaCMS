@@ -843,7 +843,7 @@
 				var expandParams={};
 				var entity=$.content();
 				var expand=$.event('expand');
-				var expandAll=expand=='all' || expand=='*';
+				var expandAll=(expand=='all' || expand=='*');
 				var expanded=1;
 				if(arrayLen(entity.getHasManyPropArray())){
 					for(p in entity.getHasManyPropArray()){
@@ -898,7 +898,7 @@
 				}
 
 				if(expandAll || listFindNoCase(expand,'crumbs')){
-					result.crumbs=apiUtility.findCrumbArray('content',entity.getContentID(),$.event('siteid'),entity.getCrumbIterator(),expand='',expanded=1,expandedProp=p.name);
+					result.crumbs=apiUtility.findCrumbArray(entityName='content',id=entity.getContentID(),siteid=$.event('siteid'),iterator=entity.getCrumbIterator(),expand='',expanded=1,expandedProp=p.name);
 				}
 			}
 

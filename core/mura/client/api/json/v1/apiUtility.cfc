@@ -2263,7 +2263,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			var expandParams={};
 			var queryString='';
 			var q='';
-			var expandAll=arguments.expand=='all' || arguments.expand=='*';
+			var expandAll=(arguments.expand=='all' || arguments.expand=='*');
 
 			if(arrayLen(arguments.entity.getHasManyPropArray())){
 				for(p in arguments.entity.getHasManyPropArray()){
