@@ -2231,8 +2231,8 @@ var Mura=(function(){
 		self.prevInnerHTML = self.innerHTML;
 		self.prevData = obj.data();
 
-		if(typeof prevData.preloadermarkup != 'undefined'){
-			self.innerHTML = data.preloadermarkup;
+		if(typeof self.prevData != 'undefined' && typeof self.prevData.preloadermarkup != 'undefined'){
+			self.innerHTML = self.prevData.preloadermarkup;
 		} else {
 			self.innerHTML = Mura.preloaderMarkup;
 		}
