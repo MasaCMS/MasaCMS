@@ -64,7 +64,7 @@
 	<script type="text/javascript">
 		function updateAssocPreview(){
 			var imgsrc = $('##assocImage').attr('src');
-			if (imgsrc.length){
+			if (imgsrc){
 				$('##assocImagePreview').attr('src',imgsrc).show();
 			}			
 		}
