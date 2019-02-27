@@ -1,4 +1,4 @@
-<!--- This file is part of Mura CMS.
+\<!--- This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -44,6 +44,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
+
 <cfsilent>
 <cfset event=request.event>
 <cfset request.layout=false>
@@ -242,7 +243,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 <dd class="nav">#application.rbFactory.getKeyValue(session.rb,"sitemanager.nav")#</dd>
 	   <cfelse>
 		  <dd class="display">#application.rbFactory.getKeyValue(session.rb,"sitemanager.display")#</dd>
-
 	   </cfif>
 	   <dd class="updated">#application.rbFactory.getKeyValue(session.rb,"sitemanager.updated")#</dd>
 	   <dd class="actions">&nbsp;</dd>
@@ -295,24 +295,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		   <cfif perm eq 'editor' and request.hasLayoutObjectsTab></a></cfif>
 	   </dd>
 
-	   <dd class="display<cfif rc.rstop.Display eq 2 and rc.rstop.approved> scheduled</cfif>">
-
-		<cfif perm eq 'editor' and request.hasPublishingTab>
-		   <a class="mura-quickEditItem<cfif rc.rstop.Display eq 2 and rc.rstop.approved> tooltip</cfif>" data-attribute="display"></cfif>
-
-	   <cfif rc.rstop.Display eq 1 and rc.rstop.approved >
-			   <i class="mi-check" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.true")#"></i><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.true")#</span>
-			 <cfelseif rc.rstop.Display eq 2 and rc.rstop.approved>
-			   <cfif not (perm eq 'editor' and request.hasPublishingTab)>
-				 <a href="##" rel="tooltip" title="#esapiEncode('html_attr','#LSDateFormat(rc.rstop.displaystart,"short")#&nbsp;-&nbsp;#LSDateFormat(rc.rstop.displaystop,"short")#')#"></a>
-				</cfif>
-				<i class="mi-calendar"></i>
-				<cfif not (perm eq 'editor' and request.hasPublishingTab)></a></cfif>
-			  <cfelse>
-				<i class="mi-ban" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.false")#"></i><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.false")#</span>
-			   </cfif>
-	   <cfif perm eq 'editor'and request.hasPublishingTab></a></cfif>
-	 </dd>
+		<dd class="display<cfif rc.rstop.Display eq 2 and rc.rstop.approved> scheduled</cfif>">
+			<i class="mi-check" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.true")#"></i><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.true")#</span>
+		</dd>
 
 		<dd class="template">
 		 <cfif perm eq 'editor' and request.hasLayoutObjectsTab><a class="mura-quickEditItem<cfif len(rc.rstop.template) or len(rc.rstop.childtemplate)> template-set</cfif>" data-attribute="template"></cfif>
