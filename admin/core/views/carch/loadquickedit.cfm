@@ -101,7 +101,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div>
 		<div id="editDates" <cfif request.quickeditscheduler or content.getdisplay() NEQ 2>style="display: none;"</cfif>>
 			<cfset displayInterval=content.getDisplayInterval().getAllValues()>
-			<cfset rc.ptype=content.getParent().getType()>
+			<cfif rc.contentid neq '00000000000000000000000000000000001'>
+				<cfset rc.ptype=content.getParent().getType()>
+			<cfelse>
+				<cfset rs.ptype=''>
+			</cfif>
 			<cfif rc.ptype neq 'Calendar'>
 				<cfset displayInterval.repeats=1>
 				<cfset displayInterval.allday=0>
