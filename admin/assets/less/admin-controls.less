@@ -799,14 +799,20 @@ body.sidebar-tab{
 }
 
 #mura-content-title-render{
+
 	.contentTitle;
-  cursor: pointer;
-  float: left;
-  margin-top: 12px;
-  width: calc(100% - 35px)!important;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;  
+	cursor: pointer;
+	float: left;
+	margin-top: 12px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;  
+	width: 100% !important;
+
+	&:hover, 
+	&.editing{
+		outline: #ccc dotted 1px!important;
+	}
 
 	input{
 		cursor: auto;
@@ -816,9 +822,13 @@ body.sidebar-tab{
 		overflow: hidden;
 		padding-left: 0;
 		padding-top: 4px;
-    text-overflow: ellipsis;
-    white-space: nowrap;    
+	    text-overflow: ellipsis;
+	    white-space: nowrap;    
+
+
+
 	}
+	   
 }
 
 #mura-content-body-render{
