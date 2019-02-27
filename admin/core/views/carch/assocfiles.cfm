@@ -76,8 +76,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfoutput>
 
 			<!--- todo: debugging --->
-	<cfdump var="#rc.keywords#">
-	<cfdump var="#rc.rslist#">
+<!--- 	<cfdump var="#rc.keywords#">
+	<cfdump var="#rc.rslist#"> --->
 
 	<div class="selectAssocImageResults block" id="selectAssocImageResults-#esapiEncode('html',rc.property)#">
 		<ul class="mura-tabs nav-tabs" data-toggle="tabs">
