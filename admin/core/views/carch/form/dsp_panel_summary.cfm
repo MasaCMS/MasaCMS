@@ -99,13 +99,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif listFind("Gallery,Link,Folder,Page,Calendar",rc.type)>
 						<span class="meta-label">
 				      	#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.currentfilename')#: 
-						<span class="clicktocopy"><cfif rc.contentBean.getContentID() eq "00000000000000000000000000000000001">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.emptystring')#<cfelseif len(rc.contentID) and len(rc.contentBean.getcontentID())>#rc.contentBean.getFilename()#<cfelse>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notavailable')#</cfif>
-						   </span>
+						<cfif rc.contentBean.getContentID() eq "00000000000000000000000000000000001">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.emptystring')#<cfelseif len(rc.contentID) and len(rc.contentBean.getcontentID())><span class="clicktocopy">#rc.contentBean.getFilename()#</span><cfelse>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notavailable')#</cfif>
 						</span>
 					</cfif>
 					<span class="meta-label meta-label-wide">
 				      #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentid')#: 
-				      <span class="clicktocopy"><cfif len(rc.contentID) and len(rc.contentBean.getcontentID())>#rc.contentBean.getcontentID()#<cfelse>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notavailable')#</cfif></span>
+				      <cfif len(rc.contentID) and len(rc.contentBean.getcontentID())><span class="clicktocopy">#rc.contentBean.getcontentID()#</span><cfelse>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notavailable')#</cfif>
 				    </span>
 
 					<div class="clearfix"></div>
