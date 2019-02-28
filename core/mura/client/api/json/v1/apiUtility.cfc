@@ -2370,7 +2370,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 	}
 
-	function findAll(siteid,entityName,params,expand=''){
+	function findAll(siteid,entityName,params,expand='',expanded=0){
 		param name="arguments.params" default=url;
 
 		if(!isDefined('url.entityname')){
@@ -2447,7 +2447,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			if(item.getEntityName() == 'entity'){
 				arrayAppend(returnArray, getPrimaryEntityStruct(item,$));
 			} else {
-				arrayAppend(returnArray, getFilteredValues(item,false,entityConfigName,arguments.siteid,arguments.expand,pk));
+				arrayAppend(returnArray, getFilteredValues(item,arguments.expanded,entityConfigName,arguments.siteid,arguments.expand,pk));
 			}
 
 		}
@@ -3822,6 +3822,110 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				});
 		}
 
+		if(arguments.mode=='JSON' && arguments._in=='query'){
+			if(entity.getEntityName()=='content'){
+	
+				arrayAppend(response,{
+						"name"= 'contentPoolID',
+						"in"= "query",
+						"description"= "A list of SiteIDs that would like to query. (Each must be assigned in site settings)",
+						"required"= false,
+						"type"= "string"
+					});
+
+					arrayAppend(response,{
+							"name"= 'feedID',
+							"in"= "query",
+							"description"= "A feedID of a collection defined in the the Mura admin",
+							"required"= false,
+							"type"= "string"
+						});
+
+					arrayAppend(response,{
+							"name"= 'feedName',
+							"in"= "query",
+							"description"= "A the name of a collection defined in the the Mura admin",
+							"required"= false,
+							"type"= "string"
+						});
+
+					arrayAppend(response,{
+							"name"= 'showExcludeSearch',
+							"in"= "query",
+							"description"= "Whether to include content that has set to not be in site search",
+							"required"= false,
+							"type"= "boolean"
+						});
+
+					arrayAppend(response,{
+							"name"= 'includeHomePage',
+							"in"= "query",
+							"description"= "Whether to include the home page in query results",
+							"required"= false,
+							"type"= "boolean"
+						});
+
+					arrayAppend(response,{
+							"name"= 'showNavOnly',
+							"in"= "query",
+							"description"= "Whether to include content that has been set to not be included in site navigation",
+							"required"= false,
+							"type"= "boolean"
+						});
+			}
+			arrayAppend(response,{
+					"name"= 'fields',
+					"in"= "query",
+					"description"= "A comma separated list of fields or links that you would like return. Use * for all",
+					"required"= false,
+					"type"= "string"
+				});
+
+			arrayAppend(response,{
+					"name"= 'expand',
+					"in"= "query",
+					"description"= "A list of relationships links that you would like pre-fetched. Use * for all",
+					"required"= false,
+					"type"= "string"
+				});
+
+			arrayAppend(response,{
+					"name"= 'expandDepth',
+					"in"= "query",
+					"description"= "The number of level that you want to expand",
+					"required"= false,
+					"type"= "number",
+					"format"= "int64"
+				});
+
+			arrayAppend(response,{
+					"name"= 'maxItems',
+					"in"= "query",
+					"description"= "The maximum items that you would like to retrieve",
+					"required"= false,
+					"type"= "integer",
+					"format"= "int64"
+				});
+
+			arrayAppend(response,{
+					"name"= 'itemsPerPage',
+					"in"= "query",
+					"description"= "The number of items per page",
+					"required"= false,
+					"type"= "integer",
+					"format"= "int64"
+				});
+
+			arrayAppend(response,{
+					"name"= 'pageIndex',
+					"in"= "query",
+					"description"= "The page index to return",
+					"required"= false,
+					"type"= "integer",
+					"format"= "int64"
+				});
+		}
+
 		var entityConfig=getEntityConfig(entity.getEntityName());
 		var allowedFields='';
 
@@ -3876,7 +3980,6 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		};
 		var p='';
 		var properties=arguments.entity.getProperties();
-
 
 		for(p in properties){
 
