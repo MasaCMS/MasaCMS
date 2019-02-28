@@ -3824,7 +3824,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		if(arguments.mode=='JSON' && arguments._in=='query'){
 			if(entity.getEntityName()=='content'){
-	
+
 				arrayAppend(response,{
 						"name"= 'contentPoolID',
 						"in"= "query",
@@ -4133,7 +4133,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 								"tags"= [
 									i
 								],
-								"summary"= "Creates a #i#",
+								"summary"= "Creates or Updates a #i#",
 								"description"= "",
 								"operationId"= "save#$.getBean('utility').setProperCase(i)#",
 								"consumes"= [
