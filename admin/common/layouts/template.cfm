@@ -375,15 +375,27 @@
 						maxWidth: 640,
 						minWidth: 300,
 						resize: function (event,ui) {
-				        ui.position.left = ui.originalPosition.left;
-				        ui.size.width = (ui.size.width
-				            - ui.originalSize.width )
-				            + ui.originalSize.width;
-				        resizeTabPane();    
+					        ui.position.left = ui.originalPosition.left;
+					        ui.size.width = (ui.size.width
+					            - ui.originalSize.width )
+					            + ui.originalSize.width;
+
+			                var frameParent = $('##mura-content-body-render');
+			                var overlay = $(frameParent).find('.hidden-dialog-overlay');
+					        if (!overlay.length) {
+					            overlay = $('<div class="hidden-dialog-overlay" style="position:absolute;top:0;left:0;right:0;bottom:0;z-index:100000; width: 100%; height: 100%;"></div>');
+					            overlay.appendTo(frameParent);
+					        } else {
+					            overlay.show();
+					        }
+					
+					        resizeTabPane(); 
 				     	},
 						stop: function(event,ui){
+			                var frameParent = $('##mura-content-body-render');
 							var acw = $(this).width();
-				 			createCookie('ADMINCONTROLWIDTH',acw,5);						
+				 			createCookie('ADMINCONTROLWIDTH',acw,5);				 
+				 			$(frameParent).find('.hidden-dialog-overlay').hide();		
 						}		
 					});
 					
