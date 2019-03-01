@@ -167,7 +167,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfsilent>
 		<cfif verdict neq 'none' and listFindNoCase("jpg,jpeg,png,gif",listLast(rsnest.assocfilename,"."))>
 			<cfset atooltip=true>
-			<cfset atitle="<img class='image-preview' height='80' width='80' src='#$.getURLForImage(fileid=rsnest.fileid,size='small',siteid=rsnest.siteid,fileext=rsnest.fileExt,useProtocol=false)#'>">
+			<cfset atitle="<img class='image-preview' height='86' width='86' src='#$.getURLForImage(fileid=rsnest.fileid,size='small',siteid=rsnest.siteid,fileext=rsnest.fileExt,useProtocol=false)#'>">
 		<cfelse>
 			<cfset atooltip=false>
 			<cfset atitle=''>
@@ -175,7 +175,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfsilent>
 
 	<cfif not listFindNoCase('none,read',verdict)>
-		<a class="<cfif isFileIcon>file </cfif>title draftprompt" title="#atitle#" href="./?muraAction=cArch.edit&contenthistid=#rsnest.ContentHistID#&contentid=#rsnest.ContentID#&type=#rsnest.type#&parentid=#rsnest.parentID#&topid=#esapiEncode('url',attributes.topid)#&siteid=#esapiEncode('url',attributes.siteid)#&moduleid=#rsnest.moduleid#&startrow=#esapiEncode('url',attributes.startrow)#"<cfif rsnest.type eq 'File'> data-filetype="#lcase(left(rsnest.fileExt,4))#"</cfif>  <cfif atooltip>rel="tooltip" data-placement="left" data-html="true"</cfif>>
+		<a class="<cfif isFileIcon>file </cfif>title draftprompt" title="#atitle#" href="./?muraAction=cArch.edit&contenthistid=#rsnest.ContentHistID#&contentid=#rsnest.ContentID#&type=#rsnest.type#&parentid=#rsnest.parentID#&topid=#esapiEncode('url',attributes.topid)#&siteid=#esapiEncode('url',attributes.siteid)#&moduleid=#rsnest.moduleid#&startrow=#esapiEncode('url',attributes.startrow)#"<cfif rsnest.type eq 'File'> data-filetype="#lcase(left(rsnest.fileExt,4))#"</cfif>  <cfif atooltip>rel="tooltip" data-html="true"</cfif>>
 	<cfelse>
 		<a class="<cfif rsnest.type eq 'File'>file </cfif>title"<cfif rsnest.type eq 'File'> data-filetype="#lcase(left(rsnest.fileExt,4))#"</cfif> <cfif atooltip>rel="tooltip" data-html="true" title="#atitle#"</cfif>>
 	</cfif>

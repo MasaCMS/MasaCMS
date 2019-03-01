@@ -192,14 +192,7 @@
 	<meta name="robots" content="noindex, nofollow, noarchive">
 	<meta http-equiv="cache control" content="no-cache, no-store, must-revalidate">
 
-	<!-- Favicons -->
-	<link rel="icon" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/ico/favicon.ico" type="image/x-icon" />
-	<link rel="shortcut icon" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/ico/favicon.ico" type="image/x-icon" />
-	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/ico/apple-touch-icon-144-precomposed.png">
-	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/ico/apple-touch-icon-114-precomposed.png">
-	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/ico/apple-touch-icon-72-precomposed.png">
-	<link rel="apple-touch-icon-precomposed" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/ico/apple-touch-icon-57-precomposed.png">
-
+	
 	<!-- Stylesheets -->
 
 	<!-- Admin CSS -->
@@ -220,11 +213,8 @@
 	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery.collapsibleCheckboxTree.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery.spin.js" type="text/javascript"></script>
 
-	<!-- Mura js -->
-	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/mura.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-
-	<!-- Mura Admin JS -->
-	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/admin.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+    <!--- global admin scripts --->
+    <cfinclude template="includes/html_head.cfm">
 
 	<cfif cgi.http_user_agent contains 'msie'>
 		<!--[if lte IE 8]>
@@ -232,34 +222,8 @@
 		<![endif]-->
 	</cfif>
 
-	<!-- CK Editor/Finder -->
-	<script type="text/javascript" src="#application.configBean.getContext()#/core/vendor/ckeditor/ckeditor.js"></script>
-	<script type="text/javascript" src="#application.configBean.getContext()#/core/vendor/ckeditor/adapters/jquery.js"></script>
-	<script type="text/javascript" src="#application.configBean.getContext()#/core/vendor/ckfinder/ckfinder.js"></script>
-
-	<!-- Color Picker -->
-	<script type="text/javascript" src="#application.configBean.getContext()#/core/vendor/colorpicker/js/bootstrap-colorpicker.js?coreversion=#application.coreversion#"></script>
-	<link href="#application.configBean.getContext()#/core/vendor/colorpicker/css/colorpicker.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
-
 	<!-- nice-select: select box replacement (sidebar controls) -->
 	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery.nice-select.min.js" type="text/javascript"></script>
-
-	<!-- JSON -->
-	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/json2.js" type="text/javascript"></script>
-
-	<!-- Mura Vars -->
-	<script type="text/javascript">
-	var htmlEditorType='#application.configBean.getValue("htmlEditorType")#';
-	var context='#application.configBean.getContext()#';
-	var themepath='#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#';
-	var rb='#lcase(esapiEncode('javascript',session.rb))#';
-	var siteid='#esapiEncode('javascript',session.siteid)#';
-	var sessionTimeout=#evaluate("application.configBean.getValue('sessionTimeout') * 60")#;
-	var activepanel=#esapiEncode('javascript',rc.activepanel)#;
-	var activetab=#esapiEncode('javascript',rc.activetab)#;
-	<cfif $.currentUser().isLoggedIn()>var webroot='#esapiEncode('javascript',left($.globalConfig("webroot"),len($.globalConfig("webroot"))-len($.globalConfig("context"))))#';</cfif>
-	var fileDelim='#esapiEncode('javascript',$.globalConfig("fileDelim"))#';
-	</script>
 
 	#session.dateKey#
 	#rc.ajax#
@@ -351,8 +315,14 @@
 
       </main>
 
-    <cfif request.action neq "core:cLogin.main" and isDefined("session.siteid")>
+	    <cfif request.action neq "core:cLogin.main" and isDefined("session.siteid")>
+
 				<script>
+				$(document).on('click', '.selectAssocImageResults ul li', function(){
+					$(this).find('input[type=radio]').prop('checked',true);
+					return false;
+				});
+
 				$(document).ready(function(){
 					// persist side navigation expand/collapse 
 					$('*[data-action=sidebar_mini_toggle]').click(function(){
@@ -375,15 +345,27 @@
 						maxWidth: 640,
 						minWidth: 300,
 						resize: function (event,ui) {
-				        ui.position.left = ui.originalPosition.left;
-				        ui.size.width = (ui.size.width
-				            - ui.originalSize.width )
-				            + ui.originalSize.width;
-				        resizeTabPane();    
+					        ui.position.left = ui.originalPosition.left;
+					        ui.size.width = (ui.size.width
+					            - ui.originalSize.width )
+					            + ui.originalSize.width;
+
+			                var frameParent = $('##mura-content-body-render');
+			                var overlay = $(frameParent).find('.hidden-dialog-overlay');
+					        if (!overlay.length) {
+					            overlay = $('<div class="hidden-dialog-overlay" style="position:absolute;top:0;left:0;right:0;bottom:0;z-index:100000; width: 100%; height: 100%;"></div>');
+					            overlay.appendTo(frameParent);
+					        } else {
+					            overlay.show();
+					        }
+					
+					        resizeTabPane(); 
 				     	},
 						stop: function(event,ui){
+			                var frameParent = $('##mura-content-body-render');
 							var acw = $(this).width();
-				 			createCookie('ADMINCONTROLWIDTH',acw,5);						
+				 			createCookie('ADMINCONTROLWIDTH',acw,5);				 
+				 			$(frameParent).find('.hidden-dialog-overlay').hide();		
 						}		
 					});
 					
@@ -548,6 +530,8 @@
 		</cfif>
 
     </div><!-- /.page-container -->
+
+
 
 	</body>
 </html></cfprocessingdirective>

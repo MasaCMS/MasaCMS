@@ -1,4 +1,4 @@
-<!--- This file is part of Mura CMS.
+\<!--- This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -44,6 +44,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
+
 <cfsilent>
 <cfset event=request.event>
 <cfset request.layout=false>
@@ -231,20 +232,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 <dl class="mura-grid-hdr">
 	   <dt>
 		   <span class="add"></span>
-		   <!--- <a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.managerTitle"))#"> --->#application.rbFactory.getKeyValue(session.rb,"sitemanager.title")#<!--- </a> --->
+			#application.rbFactory.getKeyValue(session.rb,"sitemanager.title")#
 	   </dt>
 	   <cfif rc.rstop.moduleid eq '00000000000000000000000000000000000' and application.settingsManager.getSite(rc.siteid).getlocking() neq 'all'>
-		 <dd class="objects"><!--- <a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.managerObjects"))#"> --->#application.rbFactory.getKeyValue(session.rb,"sitemanager.objects")#<!--- </a> ---></dd>
-		 <dd class="display"><!--- <a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.managerDisplay"))#"> --->#application.rbFactory.getKeyValue(session.rb,"sitemanager.display")#<!--- </a> ---></dd>
-		 <dd class="template"><!--- <a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.managerTemplate"))#"> --->#application.rbFactory.getKeyValue(session.rb,"sitemanager.template")#<!--- </a> ---></dd>
+		 <dd class="objects">#application.rbFactory.getKeyValue(session.rb,"sitemanager.objects")#</dd>
+		 <dd class="display">#application.rbFactory.getKeyValue(session.rb,"sitemanager.display")#</dd>
+		 <dd class="template">#application.rbFactory.getKeyValue(session.rb,"sitemanager.template")#</dd>
 	   </cfif>
 	   <cfif rc.rstop.moduleid eq '00000000000000000000000000000000000'>
-		 <dd class="nav"><!--- <a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.managerNav"))#"> --->#application.rbFactory.getKeyValue(session.rb,"sitemanager.nav")#<!--- </a> ---></dd>
+		 <dd class="nav">#application.rbFactory.getKeyValue(session.rb,"sitemanager.nav")#</dd>
 	   <cfelse>
-		  <dd class="display"><!--- <a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.managerDisplay"))#"> --->#application.rbFactory.getKeyValue(session.rb,"sitemanager.display")#<!--- </a> ---></dd>
-
+		  <dd class="display">#application.rbFactory.getKeyValue(session.rb,"sitemanager.display")#</dd>
 	   </cfif>
-	   <dd class="updated"><!--- <a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.managerUpdated"))#"> --->#application.rbFactory.getKeyValue(session.rb,"sitemanager.updated")#<!--- </a> ---></dd>
+	   <dd class="updated">#application.rbFactory.getKeyValue(session.rb,"sitemanager.updated")#</dd>
 	   <dd class="actions">&nbsp;</dd>
 	 </dl>
 	 <ul id="mura-nodes"<cfif arrayLen(crumbdata) gt 1 and crumbdata[2].type eq 'Gallery'> class="gallery"</cfif>>
@@ -254,7 +254,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	   <dl id="top-node">
 	   <dt>
 
-		<a class="add" href="javascript:;" <!---ontouchstart="this.onclick();"---> onclick="siteManager.showMenu('newContentMenu','#newcontent#',this,'#rc.rstop.contentid#','#rc.topid#','#rc.rstop.parentid#','#rc.siteid#','#rc.rstop.type#','#rc.rstop.moduleid#');"><i class="mi-ellipsis-v"></i></a>
+		<a class="add" href="javascript:;" onclick="siteManager.showMenu('newContentMenu','#newcontent#',this,'#rc.rstop.contentid#','#rc.topid#','#rc.rstop.parentid#','#rc.siteid#','#rc.rstop.type#','#rc.rstop.moduleid#');"><i class="mi-ellipsis-v"></i></a>
 
 		 <cfif hasKids>
 		 <span class="hasChildren open" onclick="siteManager.loadSiteManager('#esapiEncode('javascript',rc.siteID)#','#esapiEncode('javascript',rc.topid)#','#esapiEncode('javascript',rc.moduleid)#','#esapiEncode('javascript',rc.sortby)#','#esapiEncode('javascript',rc.sortdirection)#','#esapiEncode('javascript',rc.rstop.type)#',1);"></span>
@@ -277,14 +277,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 </cfif>
 		<cfif not isFileIcon><i class="#lcase(icon)#"></i> </cfif><cfif len(rc.rsTop.menutitle)>#esapiEncode('html',rc.rsTop.menutitle)#<cfelse>#esapiEncode('html',rc.rsTop.title)#</cfif>
 		   </a>
-		 <!--- <div class="mura-title-fade"></div> --->
 	   </dt>
 	  <cfif rc.rstop.moduleid eq '00000000000000000000000000000000000' and application.settingsManager.getSite(rc.siteid).getlocking() neq 'all'>
-		 <!---
-	 <cfif rc.sortBy eq 'orderno'>
-		   <dd class="order">&nbsp;</dd>
-		 </cfif>
-	 --->
 	   <dd class="objects">
 		   <cfif perm eq 'editor' and request.hasLayoutObjectsTab>
 			 <a class="mura-quickEditItem<cfif rc.rstop.Display eq 2 and rc.rstop.approved> scheduled</cfif>" data-attribute="inheritObjects">
@@ -301,25 +295,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		   <cfif perm eq 'editor' and request.hasLayoutObjectsTab></a></cfif>
 	   </dd>
 
-	   <dd class="display<cfif rc.rstop.Display eq 2 and rc.rstop.approved> scheduled</cfif>">
-
-		<cfif perm eq 'editor' and request.hasPublishingTab>
-		   <a class="mura-quickEditItem<cfif rc.rstop.Display eq 2 and rc.rstop.approved> tooltip</cfif>" data-attribute="display"></cfif>
-
-	   <cfif rc.rstop.Display eq 1 and rc.rstop.approved >
-			   <i class="mi-check" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.true")#"></i><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.true")#</span>
-			 <cfelseif rc.rstop.Display eq 2 and rc.rstop.approved>
-			   <cfif not (perm eq 'editor' and request.hasPublishingTab)>
-				 <a href="##" rel="tooltip" title="#esapiEncode('html_attr','#LSDateFormat(rc.rstop.displaystart,"short")#&nbsp;-&nbsp;#LSDateFormat(rc.rstop.displaystop,"short")#')#"></a>
-				</cfif>
-				<i class="mi-calendar"></i>
-				<cfif not (perm eq 'editor' and request.hasPublishingTab)></a></cfif>
-			  <cfelse>
-				<i class="mi-ban" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.false")#"></i><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.false")#</span>
-			   </cfif>
-	   <cfif perm eq 'editor'and request.hasPublishingTab></a></cfif>
-	   <!--- <i class="mi-calendar"></i> --->
-	 </dd>
+		<dd class="display<cfif rc.rstop.Display eq 2 and rc.rstop.approved> scheduled</cfif>">
+			<i class="mi-check" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.true")#"></i><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.true")#</span>
+		</dd>
 
 		<dd class="template">
 		 <cfif perm eq 'editor' and request.hasLayoutObjectsTab><a class="mura-quickEditItem<cfif len(rc.rstop.template) or len(rc.rstop.childtemplate)> template-set</cfif>" data-attribute="template"></cfif>
@@ -356,7 +334,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<i class="mi-ban" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.false")#"></i><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.false")#</span>
 			   </cfif>
 	   <cfif perm eq 'editor'and request.hasPublishingTab></a></cfif>
-	   <!--- <i class="mi-calendar"></i> --->
 	 </dd>
 	  </cfif>
 	   	<cfif isDate(rc.rstop.lastupdate)>

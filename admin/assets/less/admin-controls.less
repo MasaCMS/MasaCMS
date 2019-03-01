@@ -1,11 +1,24 @@
 /* variables */
+@controlsdivbgrd: #F9F9F9;
 
+/* panel headers */
+@controlspanelhdrbgrd: #F3F3F3;
+@controlspanelhdrtext: #7a7a7a;
+@controlspanelhdrhover: #EAEAEA;
+@controlspanelhdrhovertext: #646464;
+
+/* panels and elements */
+@controlspanelbgrd: #F6F6F6;
+@controlstextcolor: #333333;
+@controlsinputbgrd: #FFF;
+@controlsinputtext: #333333;
+
+/* panels layout */
 @editcalcheight: ~"calc(100vh - 216px)";
 @editscrollheight: ~"calc(100vh - 233px)";
 @editcalcwidth: ~"calc(100% - 350px)";
-@controlstextcolor: #f3f3f3;
-  
-.contentTitle{
+
+ .contentTitle{
     font-size: 24px;
     font-weight: 900;
     height: 36px;
@@ -14,7 +27,7 @@
 }
 
 .mura__edit__controls{
-	background-color: #454545;
+	background-color: @controlsdivbgrd;
 	color: @controlstextcolor;
 	float: right;
 	margin: 0 !important;
@@ -31,10 +44,10 @@
 		padding: 0;
 
 			input[type=text]{
-				background-color: #333;
+				background-color: @controlsdivbgrd;
 				border:none;	
 				border-radius:0;
-				color: #d8d8d8;
+				color: @controlsinputtext;
 				cursor: pointer;
 				font-size: 14px;
 				margin:0;
@@ -76,7 +89,7 @@
 	}
 
 	.mura__edit__controls__objects{
-			background-color: #454545;
+			background-color: @controlspanelbgrd;
 			padding: 18px 34px 15px 18px;
 			min-height: 120px;
 			padding: 0;
@@ -121,7 +134,7 @@
 				background-image:none;
 				text-shadow:none;
 			  color: @controlstextcolor;
-			  background-color: #333;
+			  background-color: @controlsinputbgrd;
 			  border-color: transparent;
 			  float: left;
 			  margin: 8px 0 4px 0;
@@ -149,21 +162,13 @@
 			  padding-left: 17px;
 			}
 
-			label.control-matched, 
-			div.control-matched{
-				background-color: #784949;
-					&.control-unhighlight{
-						background-color:transparent !important;
-					}
-			}
-
 			.mura-input-set{
 
 				.btn.focus,
 				.btn-default:hover,
 				.btn:not([class*="btn-"]):hover,
 				.btn.active:hover{
-					background-color: #565656;
+					background-color: @controlspanelhdrbgrd;
 					color: @controlstextcolor;
 				}
 
@@ -173,7 +178,7 @@
 					background-image:none;
 					text-shadow:none;
 					color: #A4A4A4;
-					background-color: #454545;
+					background-color: @controlspanelbgrd;
 					border-color: #A4A4A4;
 		   }
 
@@ -208,12 +213,14 @@
 				
 					.mura-panel-heading{
 						border-radius: 0;
-				    background-color: #565656;
-				    padding: 0;
+					    background-color: @controlspanelhdrbgrd;
+				    	color: @controlspanelhdrtext;
+					    padding: 0;
 					}
 			
 				  .mura-panel-heading:hover {
-				    background-color: #6f6f6f;
+				    background-color: @controlspanelhdrhover;
+				    color: @controlspanelhdrhovertext;
 				    cursor: pointer;
 				  }
 				
@@ -227,12 +234,12 @@
 					}
 
 					.mura-panel-title {
-					  color: #fff;
+					  color: @controlspanelhdrtext;
 					  font-size: 16px;
 					}
 					.mura-panel-title a {
 					  display: block;
-					  color: inherit;
+					  color: @controlspanelhdrtext;
 					  padding: 12px 16px;
 					  font-weight: 400;
 					  font-size: 16px;
@@ -240,16 +247,13 @@
 					.mura-panel-title a:hover,
 					.mura-panel-title a:active,
 					.mura-panel-title a:focus {
-					  color: inherit !important;
+					  color: @controlspanelhdrhovertext !important;
 					}
 
 				} /* /mura-panel*/
 				
 				.help-block, 
 				form .help-block{
-				  background-color: #646464!important;
-				  color: #f9f9f9 !important;
-				  border: 1px solid #555 !important;
 				}
 
 				/* nested panels */
@@ -278,7 +282,7 @@
 				}
 
 				.panel-gds-box{
-					box-shadow: inset 0 0 0 2px #565656;
+					box-shadow: inset 0 0 0 2px @controlspanelhdrbgrd;
 			    cursor: pointer;
 			    margin: 8px 0;
 			    padding: 6px 10px;
@@ -340,8 +344,8 @@
 		  .mura-control-group > label + * + select:not([class*="time"]):not([class*="mura-constrain"]){
 				margin: .5em 0;
 				width: 100%;
-				background-color: #333;
-				color: #d8d8d8;
+				background-color: @controlsinputbgrd;
+				color: @controlsinputtext;
 				padding: 8px 12px;
 				font-size: 14px;
 				border: none;
@@ -364,6 +368,13 @@
 			    margin-top: 6px;
 				}
 	
+			}
+
+			#assocImagePreview{
+				height: 80px;
+				width: auto;
+				margin: 12px 0 12px;
+				cursor:pointer;
 			}
 
 			/* custom styles for date inputs */
@@ -402,7 +413,7 @@
 			input[type=datetime-local]::-webkit-calendar-picker-indicator,
 			input[type=month]::-webkit-calendar-picker-indicator,
 			input[type=week]::-webkit-calendar-picker-indicator{
-			    color: #d8d8d8;
+			    color: @controlsinputtext;
 			}
 			
 			input[type=date]::-webkit-calendar-picker-indicator:hover,
@@ -411,7 +422,7 @@
 			input[type=month]::-webkit-calendar-picker-indicator:hover,
 			input[type=week]::-webkit-calendar-picker-indicator:hover{
 					background: none;
-			    color: #d8d8d8;
+			    color: @controlsinputtext;
 			}
 
 			.mura-control-group input.radio,
@@ -440,7 +451,7 @@
 						background-color: #4485f1 !important;
 					}
 					&.mura-delete{
-						background-color: #6f6f6f;
+						background-color: @controlspanelhdrhover;
 			  	  float: right !important;
 					}
 				}
@@ -498,12 +509,12 @@
 							  float: right;
 							}
 							li{
-								background-color: #565656;
+								background-color: @controlspanelhdrbgrd;
 								text-shadow:none;
 									box-shadow:none;
 								font-size: 14px;
 								padding: 8px 12px;
-							  color: #d8d8d8;
+							  color: @controlsinputtext;
 							}
 					}
 
@@ -520,7 +531,7 @@
 
 			.mura-control-group .mura-control.highlight,
 			.mura-control.highlight{
-			  background: #565656;
+			  background: @controlspanelhdrbgrd;
 			}
 
 	/* "big ui" launch button (auto-generated) */
@@ -613,7 +624,7 @@
 			}
 
 			.btn-secondary{
-				background-color: #6f6f6f;
+				background-color: @controlspanelhdrhover;
 				background-image: none;
 				border-color: transparent;
 				border-radius: 2px;	
@@ -755,7 +766,7 @@ body.sidebar-tab{
 	padding-bottom: 0 !important;
 }
 
-#mura-content-body-block .tab-content{
+#mura-content-body-block > .tab-content{
     clear: none;
     width: @editcalcwidth;
     min-height: @editcalcheight !important;
@@ -776,9 +787,7 @@ body.sidebar-tab{
   float: left;
   font-size: 14px;
   padding: 2px 12px 2px 0;
-  max-width: 280px;
-  width: 50%;
-  min-width: 220px;
+  width: 100%;
 
   > span{
     font-weight: 100;
@@ -791,14 +800,20 @@ body.sidebar-tab{
 }
 
 #mura-content-title-render{
+
 	.contentTitle;
-  cursor: pointer;
-  float: left;
-  margin-top: 12px;
-  width: calc(100% - 35px)!important;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;  
+	cursor: pointer;
+	float: left;
+	margin-top: 12px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;  
+	width: 100% !important;
+
+	&:hover, 
+	&.editing{
+		outline: #ccc dotted 1px!important;
+	}
 
 	input{
 		cursor: auto;
@@ -808,9 +823,13 @@ body.sidebar-tab{
 		overflow: hidden;
 		padding-left: 0;
 		padding-top: 4px;
-    text-overflow: ellipsis;
-    white-space: nowrap;    
+	    text-overflow: ellipsis;
+	    white-space: nowrap;    
+
+
+
 	}
+	   
 }
 
 #mura-content-body-render{
@@ -843,4 +862,115 @@ body.sidebar-tab{
  .ui-dialog-buttonpane .ui-dialog-buttonset .ui-button:first-child{
   .mura-primary;
 	}
+}
+
+/* nice-select overrides */
+
+
+.mura__edit__controls{
+
+	select:not(#restrictGroups) {
+	    display: none;
+	}
+
+	.nice-select {
+	    background-color: @controlsinputbgrd;
+	    border-radius: 3px;
+	    border: none;
+	    color: @controlsinputtext;;
+	    font-size: 13px;
+	    height: 36px;
+	    line-height: 36px;
+	    margin: 0;
+	    outline-offset: 0;
+	    -webkit-transition: all .1s ease-in-out;
+	    transition: all .1s ease-in-out;
+	    width: 100%
+	}
+
+	.nice-select.open,
+	.nice-select:active,
+	.nice-select:focus,
+	.nice-select:hover {
+	    border-color: transparent
+	}
+
+	.nice-select:after {
+	    width: 5px
+	}
+
+
+	.nice-select.disabled {
+	    border-color: transparent;
+	    pointer-events: none
+	}
+
+	.nice-select.disabled:after {
+	    border-color: transparent
+	}
+
+	.nice-select.wide {
+	    width: 100%
+	}
+
+	.nice-select.wide .list {
+	    left: 0!important;
+	    right: 0!important
+	}
+
+	.nice-select.right {
+	    float: right
+	}
+
+	.nice-select.right .list {
+	    right: 0
+	}
+
+	.nice-select.small {
+	    font-size: 13px;
+	    line-height: 34px
+	}
+
+	.nice-select .list {
+	    background-color: @controlsinputbgrd;
+	    border-radius: 0;
+	    margin-top: 0;
+	    max-height: 196px;
+	    overflow-x: hidden;
+	    overflow-y: auto;
+	    width: 100%;
+	}
+
+	.nice-select .list:hover .option:not(:hover) {
+	    background-color: transparent!important
+	}
+
+	.nice-select .option {
+	    line-height: 28px;
+	    min-height: 28px;
+	    outline: 0;
+	    overflow: hidden;
+	    text-overflow: ellipsis;
+	    -webkit-transition: all .1s;
+	    transition: all .1s
+	}
+
+	.nice-select.time .option{
+	    overflow: visible;
+	    text-overflow: inherit;
+	}
+
+	.nice-select .option.focus,
+	.nice-select .option.selected.focus,
+	.nice-select .option:hover {
+	    background-color: @controlsinputbgrd;
+	    color: @controlsinputtext;
+	}
+
+	.nice-select .option.disabled {
+	    background-color: transparent;
+	    color: #999;
+	    cursor: default
+	}
+
 }

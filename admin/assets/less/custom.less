@@ -381,6 +381,7 @@
 }
 
 .btn-default.active:hover,
+.btn-default.onstate,
 .open > .dropdown-toggle.btn-default:hover{
   color: #545454;
   background-color: #e1e1e1;
@@ -895,7 +896,10 @@ div.cke_editable{
   border-radius: 3px;
   padding: 10px 16px;
 }
-
+#body{
+  display:none;
+  visiblity:hidden;
+}
 body#mura-select-component,
 body#mura-select-link{
   padding: 12px 17px;
@@ -1228,6 +1232,10 @@ a.no-link{
 .mura-file-selector .mura-control-group {
   min-height: 28px;
   margin-top: 4px;
+
+  &:after{
+    clear:none !important;
+  }
 }
 
 .mura-file-selector .mura-file-selector-tabs {

@@ -587,15 +587,12 @@ dd.display, dd.nav, dd.objects, dd.template {
 
 /* associated files */
 
-.selectAssocImageResults {
-  
-  max-height: 450px;
-  margin-bottom: @baseLineHeight;
-  
+.selectAssocImageResults {  
+
   > .tab-content {
+      margin-bottom: @baseLineHeight !important;
     
     > .tab-pane {
-      max-height: 350px;
       overflow-y: auto;
       padding: 1em;
       background-color: #f7f7f7;
@@ -619,8 +616,8 @@ dd.display, dd.nav, dd.objects, dd.template {
             text-align: left;
             line-height: 28px;
             margin: 0 0 .2em 0;
-            //border-radius:0;
-
+            cursor: pointer; 
+            
             &.no-results {
               .alert;
               display: block;
@@ -643,6 +640,7 @@ dd.display, dd.nav, dd.objects, dd.template {
       &.mura-assoc-images > ul > li {
             .inline-block();
             text-align: center;     
+            cursor: pointer; 
           
             &.no-results {
               .alert;

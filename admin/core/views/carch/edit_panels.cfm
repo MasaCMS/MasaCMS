@@ -82,8 +82,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<!--- /publishing --->
 
 						<!--- scheduling --->
-<!--- todo: add Publishing to tab assignments list, change value here --->
-						<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Publishing')>	
+						<!--- todo: add Scheduling to tab assignments list, change value here --->
+						<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Publishing') and rc.contentBean.getcontentID() neq '00000000000000000000000000000000001'>	
 								<cfinclude template="form/dsp_panel_scheduling.cfm">
 						</cfif>		
 						<!--- /scheduling --->
@@ -275,7 +275,6 @@ $(document).ready(function(){
 		// reset on short length
 		} else {
 			$("#content-panels .panel-collapse.collapse").collapse("hide","fast");
-			$('#content-panels .mura-panel .control-matched.control-unhighlight').removeClass('control-unhighlight');
 			$('#content-panels .mura-panel .control-matched').removeClass('control-matched');
 		}
 	} 
@@ -289,10 +288,6 @@ $(document).ready(function(){
 				//	console.log(filterStr);
 					filterSettings(filterStr)	;		
 	    }, 500);
-	    // remove highlight after time
-	    timeout = setTimeout(function () {
-				$("#content-panels").find('.control-matched').addClass('control-unhighlight');
-	    }, 3000);
 	});
 
 	// focus on input filter on page load

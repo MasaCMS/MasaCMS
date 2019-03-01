@@ -611,7 +611,7 @@ var titleBlock = document.getElementById('mura-content-title-render');
 var realTitle = document.getElementById('title');
 titleBlock.onclick = function(event){
 
-	if (!(titleBlock.className == 'editing')){
+	if (titleBlock.className != 'editing'){
 		var holder = document.createElement('input');
 		holder.style.width = titleBlock.clientWidth + 'px';
 		holder.style.height = titleBlock.clientHeight + 'px';
@@ -620,11 +620,11 @@ titleBlock.onclick = function(event){
 		titleBlock.appendChild(holder);
 		titleBlock.className = 'editing';
 		holder.focus();
+
 		holder.onkeyup = function(event){
 			var newTitle = holder.value;
 			var realTitle = document.getElementById('title');
 			realTitle.value = newTitle;
-			// todo: open basic tab when changing title div
 			if (!($('##panel-basic').hasClass('in'))){
 				$('##heading-basic h4 a').trigger('click');
 			}
@@ -632,6 +632,12 @@ titleBlock.onclick = function(event){
 			openDisplay('editAdditionalTitles','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');
 			</cfif>
 		}
+
+		holder.onblur = function(event){
+			titleBlock.innerHTML = holder.value;
+			titleBlock.className = '';
+		}
+
 	}
 }
 // Update live title when editing input

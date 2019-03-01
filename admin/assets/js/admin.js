@@ -769,14 +769,7 @@ function setHTMLEditors() {
 				$(document.getElementById(allPageTags[i].id)).ckeditor({
 						toolbar: toolbar,
 						customConfig: 'config.js.cfm'
-					},
-					function(editorInstance){
-						if(typeof allPageTags[i] != 'undefined' && typeof allPageTags[i].removeAttribute != 'undefined'){
-							allPageTags[i].removeAttribute('mura-inprocess');
-						}
-						htmlEditorOnComplete(editorInstance)
-					}
-				);
+				}, htmlEditorOnComplete);
 			}
 		}
 	}
@@ -789,12 +782,7 @@ function htmlEditorOnComplete(editorInstance) {
 	var totalIntances = CKEDITOR.instances;
 
 	if(typeof CKFinder != 'undefined'){
-		CKFinder.setupCKEditor(
-			instance, {
-				basePath: context + '/core/vendor/ckfinder/',
-				rememberLastFolder: true
-			}
-		);
+/* TODO: keep this empty statement? */
 	}
 
 
@@ -1088,6 +1076,16 @@ function openFileMetaData(contenthistid,fileid,siteid,property) {
 				function(data) {
 					$elm.find('.load-inline').spin(false);
 					$elm.find(".mura-file-existing").html(data);
+					var searchString = $elm.find(".mura-file-existing").find(".filesearch").val();
+					$elm.find(".mura-file-existing").find(".filesearch").focus().val('').val(searchString);
+					$elm.find(".mura-file-existing").find(".filesearch").keypress(function(f){
+						if(f.which == 13) {
+							var finput =  $elm.find(".mura-file-existing").find(".filesearch");
+							var fbtn = $elm.find(".mura-file-existing").find(".filesearch + .btn");
+							$(fbtn).trigger('click');
+							return false;
+					  	}
+					});
 					$elm.find(".mura-file-existing").find('.btn').click(function(){
 						loadAssocFiles($elm.find(".mura-file-existing").find(".filesearch").val());
 					});
@@ -1112,7 +1110,8 @@ function openFileMetaData(contenthistid,fileid,siteid,property) {
 	    		$elm.find('.load-inline').spin(spinnerArgs2);
 	    	}
 	    	if($(this).hasClass('btn')){
-		    	$(this).addClass("active").siblings().removeClass("active");
+		    	$(this).addClass('focus').addClass('onstate').addClass('active');
+		    	$(this).siblings('.btn').removeClass('focus').removeClass('active').removeClass('onstate');
 	    	}
 	    }
 
@@ -1324,19 +1323,11 @@ function CountDown() {
 	}
 }
 
+/* TODO: keep these empty functions? */
 function fileManagerPopUp() {
-	var finder = new CKFinder();
-	finder.basePath = context + '/core/vendor/ckfinder/';
-	finder.resourceType = '[Advanced] Mura Root';
-	finder.popup();
-	return false;
 }
 
 function fileManagerCreate() {
-	var finder = new CKFinder();
-	finder.basePath = context + '/core/vendor/ckfinder/';
-	finder.create();
-	return false;
 }
 
 function loadjscssfile(filename, filetype) {
@@ -1645,40 +1636,8 @@ function setLowerCaseKeys(obj) {
   return (obj);
 }
 
+/* TODO: keep this empty function? */
 function setFinders(selector){
-	if(typeof CKFinder != 'undefined'){
-		$(selector).unbind('click').on('click',function(){
-			var target=$(this).attr('data-target');
-			var finder = new CKFinder();
-			finder.basePath = context + '/core/vendor/ckfinder/';
-			var completepath=$(this).attr('data-completepath');
-
-			if(completepath.toLowerCase() == 'true'){
-				finder.selectActionFunction = function(fileUrl) {
-					var fs=jQuery('input[name="' + target + '"]');
-					fs.val(webroot + fileDelim + fileUrl);
-					fs.trigger('change');
-				};
-			} else {
-				finder.selectActionFunction = function(fileUrl) {
-					var fs=jQuery('input[name="' + target + '"]');
-					fs.val(fileUrl);
-					fs.trigger('change');
-				};
-			}
-
-			if($(this).attr('data-resourcetype') =='root'){
-				finder.resourceType='Application_Root';
-			} else if($(this).attr('data-resourcetype') == 'site'){
-				finder.resourceType=siteid + '_Site_Files';
-			} else {
-				finder.resourceType=siteid + '_User_Assets';
-			}
-
-			finder.popup();
-
-		});
-	}
 }
 
 

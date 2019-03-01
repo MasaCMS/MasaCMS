@@ -1744,6 +1744,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								or #renderTextParamColumn('tfiles.caption')# like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(kw)#%"/>
 								or #renderTextParamColumn('tfiles.credits')# like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(kw)#%"/>
 								or #renderTextParamColumn('tfiles.alttext')# like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(kw)#%"/>
+								or #renderTextParamColumn('tfiles.filename')# like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(kw)#%"/>
 								or #renderTextParamColumn('tcontentfilemetadata.caption')# like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(kw)#%"/>
 								or #renderTextParamColumn('tcontentfilemetadata.credits')# like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(kw)#%"/>
 								or #renderTextParamColumn('tcontentfilemetadata.alttext')# like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(kw)#%"/>
