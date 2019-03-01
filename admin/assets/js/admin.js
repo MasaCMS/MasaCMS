@@ -1110,7 +1110,8 @@ function openFileMetaData(contenthistid,fileid,siteid,property) {
 	    		$elm.find('.load-inline').spin(spinnerArgs2);
 	    	}
 	    	if($(this).hasClass('btn')){
-		    	$(this).addClass("active").siblings().removeClass("active");
+		    	$(this).addClass('focus').addClass('onstate').addClass('active');
+		    	$(this).siblings('.btn').removeClass('focus').removeClass('active').removeClass('onstate');
 	    	}
 	    }
 
