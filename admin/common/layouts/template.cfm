@@ -315,8 +315,14 @@
 
       </main>
 
-    <cfif request.action neq "core:cLogin.main" and isDefined("session.siteid")>
+	    <cfif request.action neq "core:cLogin.main" and isDefined("session.siteid")>
+
 				<script>
+				$(document).on('click', '.selectAssocImageResults ul li', function(){
+					$(this).find('input[type=radio]').prop('checked',true);
+					return false;
+				});
+
 				$(document).ready(function(){
 					// persist side navigation expand/collapse 
 					$('*[data-action=sidebar_mini_toggle]').click(function(){
@@ -524,6 +530,8 @@
 		</cfif>
 
     </div><!-- /.page-container -->
+
+
 
 	</body>
 </html></cfprocessingdirective>

@@ -96,11 +96,4 @@
 	<cfif $.currentUser().isLoggedIn()>var webroot='#esapiEncode('javascript',left($.globalConfig("webroot"),len($.globalConfig("webroot"))-len($.globalConfig("context"))))#';</cfif>
 	var fileDelim='#esapiEncode('javascript',$.globalConfig("fileDelim"))#';
 	</script>	
-
-	<script type="text/javascript">
-		$(document).on('click', '.selectAssocImageResults ul li', function(){
-			$(this).find('input[type=radio]').prop('checked',true);
-			return false;
-		});
-	</script>
 </cfoutput>
