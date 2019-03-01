@@ -1076,7 +1076,16 @@ function openFileMetaData(contenthistid,fileid,siteid,property) {
 				function(data) {
 					$elm.find('.load-inline').spin(false);
 					$elm.find(".mura-file-existing").html(data);
-					$elm.find(".mura-file-existing").find(".filesearch").focus();
+					var searchString = $elm.find(".mura-file-existing").find(".filesearch").val();
+					$elm.find(".mura-file-existing").find(".filesearch").focus().val('').val(searchString);
+					$elm.find(".mura-file-existing").find(".filesearch").keypress(function(f){
+						if(f.which == 13) {
+							var finput =  $elm.find(".mura-file-existing").find(".filesearch");
+							var fbtn = $elm.find(".mura-file-existing").find(".filesearch + .btn");
+							$(fbtn).trigger('click');
+							return false;
+					  	}
+					});
 					$elm.find(".mura-file-existing").find('.btn').click(function(){
 						loadAssocFiles($elm.find(".mura-file-existing").find(".filesearch").val());
 					});
