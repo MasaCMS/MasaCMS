@@ -28,15 +28,24 @@
 			</p>
 		</cfif>
 
-		<!--- 'big ui' flyout panel --->
-		<!--- todo: resource bundle key for 'select image' --->
-		<div class="bigui" id="bigui__associmg" data-label="Select Image">
-			<div class="bigui__title">#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.selectimage"))#</div>
-
-			<div class="bigui__controls">
-					<cf_fileselector name="newfile" property="fileid" bean="#rc.contentBean#" deleteKey="deleteFile" compactDisplay="#rc.compactDisplay#" locked="#len(stats.getLockID())#" examplefileext="#examplefileext#" >
+		<cfif rc.type eq 'File'>
+			<div id="assocFileSelectorContainer" style="clear:none;float:none;">			
+				<cf_fileselector name="newfile" property="fileid" bean="#rc.contentBean#" deleteKey="deleteFile" compactDisplay="#rc.compactDisplay#" locked="#len(stats.getLockID())#" examplefileext="#examplefileext#" >
 			</div>
-		</div> <!--- /.bigui --->
+
+		<cfelse>	
+
+			<!--- 'big ui' flyout panel --->
+			<!--- todo: resource bundle key for 'select image' --->
+			<div class="bigui" id="bigui__associmg" data-label="Select Image">
+				<div class="bigui__title">#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.selectimage"))#</div>
+
+				<div class="bigui__controls">
+						<cf_fileselector name="newfile" property="fileid" bean="#rc.contentBean#" deleteKey="deleteFile" compactDisplay="#rc.compactDisplay#" locked="#len(stats.getLockID())#" examplefileext="#examplefileext#" >
+				</div>
+			</div> <!--- /.bigui --->
+
+		</cfif>
 
 	<cfelse>
 		<!--- Locked by someone else --->
