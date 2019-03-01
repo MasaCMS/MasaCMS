@@ -62,6 +62,9 @@
 	</script>
 
 	<script type="text/javascript">
+		$('##assocImagePreview').click(function(){
+			$(this).parents().siblings('.bigui__launch').trigger('click');
+		})
 		function updateAssocPreview(){
 			var imgsrc = $('##assocImage').attr('src');
 			if (imgsrc){
