@@ -4,7 +4,7 @@ config: {
     baseResourceLoc: "",
     baseFolder: "",
     height: 600,
-    webRoot: "http://localhost:8050/index.cfm/_api/json/v1/default/muraFileBrowser"
+    webRoot: "/index.cfm/_api/json/v1/default/muraFileBrowser"
 }
 
 , render: function( config ) {
