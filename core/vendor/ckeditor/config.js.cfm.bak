@@ -232,7 +232,7 @@ CKEDITOR.editorConfig = function( config )
 	<cfif application.configBean.getEnableMuraTag()>
 		config.extraPlugins += ',muratag';
 	</cfif>
-    config.extraPlugins += ',MuraFilemanager';
+
 	//config.ProtectedTags = 'i';
 	config.protectedSource.push( /<i[^>]*><\/i>/g );
 	config.protectedSource.push( /<div.*?class=".*?mura\-object.*?">.*?<\/div>/g );
@@ -261,14 +261,12 @@ CKEDITOR.editorConfig = function( config )
 <cfoutput>
 	<cfif isDefined('session.siteid') and application.permUtility.getModulePerm("00000000000000000000000000000000000",session.siteid)>
 		// filebrowser settings needed for inline edit mode
-    config.removePlugins = 'imageuploader';
-    config.removePlugins = 'ckfinder';
-    var connectorpath = '#application.configBean.getContext()#/core/vendor/ckeditor/plugins/murafilemanager/filemanager.html';
+		var connectorpath = '#application.configBean.getContext()#/core/vendor/ckfinder/ckfinder.html';
 		config.filebrowserBrowseUrl = connectorpath;
 		config.filebrowserImageBrowseUrl = connectorpath + '?type=Images';
-    config.filebrowserUploadUrl = connectorpath;
-    config.filebrowserImageUploadUrl = connectorpath + '?type=Images';
-    </cfif>
+		config.filebrowserUploadUrl = '#application.configBean.getContext()#/core/vendor/ckfinder/core/connector/cfm/connector.cfm?command=QuickUpload&type=#URLEncodedFormat(session.siteid)#_User_Assets&currentFolder=%2Files%2F';
+		config.filebrowserImageUploadUrl ='#application.configBean.getContext()#/core/vendor/ckfinder/core/connector/cfm/connector.cfm?command=QuickUpload&type=#URLEncodedFormat(session.siteid)#_User_Assets&currentFolder=%2FImage%2F';
+	</cfif>
 
 	<cfset secure=$.getBean('utility').isHTTPS()>
 
