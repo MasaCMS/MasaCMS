@@ -1,0 +1,1 @@
+<cfset objectParams.render="client">
