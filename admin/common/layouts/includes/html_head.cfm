@@ -51,7 +51,7 @@
 	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/ico/apple-touch-icon-114-precomposed.png">
 	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/ico/apple-touch-icon-72-precomposed.png">
 	<link rel="apple-touch-icon-precomposed" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/ico/apple-touch-icon-57-precomposed.png">
-	
+
 	<!-- Spinner JS -->
 	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/spin.min.js" type="text/javascript"></script>
 
@@ -97,4 +97,10 @@
 	var fileDelim='#esapiEncode('javascript',$.globalConfig("fileDelim"))#';
 	</script>	
 
+	<script type="text/javascript">
+		$(document).on('click', '.selectAssocImageResults ul li', function(){
+			$(this).find('input[type=radio]').prop('checked',true);
+			return false;
+		});
+	</script>
 </cfoutput>
