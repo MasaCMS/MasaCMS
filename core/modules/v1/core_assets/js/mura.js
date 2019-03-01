@@ -1161,7 +1161,7 @@ var Mura=(function(){
 	 * @return {void}
 	 * @memberof {class} Mura
 	 */
-	 function createCookie(name, value, days) {
+	 function createCookie(name, value, days, domain) {
  		if(days) {
  			var date = new Date();
  			date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
@@ -1170,11 +1170,16 @@ var Mura=(function(){
  			var expires = "";
  		}
  		if(typeof location != 'undefined' && location.protocol == 'https:'){
- 			secure='; secure';
+ 			var secure='; secure';
  		} else {
- 			secure='';
+ 			var secure='';
  		}
- 		document.cookie = name + "=" + value + expires + "; path=/" + secure;
+		if(typeof domain != 'undefined'){
+			domain='; domain=' + domain;
+		} else {
+			domain='';
+		}
+ 		document.cookie = name + "=" + value + expires + "; path=/" + secure + domain;
  	}
 
 	/**
