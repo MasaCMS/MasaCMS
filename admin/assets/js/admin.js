@@ -1076,6 +1076,7 @@ function openFileMetaData(contenthistid,fileid,siteid,property) {
 				function(data) {
 					$elm.find('.load-inline').spin(false);
 					$elm.find(".mura-file-existing").html(data);
+					$elm.find(".mura-file-existing").find(".filesearch").focus();
 					$elm.find(".mura-file-existing").find('.btn').click(function(){
 						loadAssocFiles($elm.find(".mura-file-existing").find(".filesearch").val());
 					});
