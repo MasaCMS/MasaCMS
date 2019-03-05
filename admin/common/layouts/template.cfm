@@ -341,6 +341,7 @@
 					stop: function(event,ui){
 		                var frameParent = $('##mura-content-body-render');
 						var acw = $(this).width();
+				        resizeTabPane(); 
 			 			createCookie('ADMINCONTROLWIDTH',acw,5);				 
 			 			$(frameParent).find('.hidden-dialog-overlay').hide();		
 					}		
@@ -348,12 +349,21 @@
 				
 				// set width of pane relative to side controls
 				var resizeTabPane = function(){
-				   var newW = $('##mura-content-body-block').width() - $('.mura__edit__controls').width() - 50;
-			      $('##mura-content-body-block .tab-content').css('width',newW);
+					var blockW = $('##mura-content-body-block').width();
+					var controlW = $('.mura__edit__controls').width();
+
+				   var newW = (blockW - controlW) - 15;
+					// console.log(blockW);
+					// console.log(controlW);
+					// console.log(newW);
+			      $('##mura-content-body-block .tab-content').css('width',newW + 'px');
 				}
 				// run on page load
-				resizeTabPane();
-
+				setTimeout(function(){
+					resizeTabPane();
+					$('##mura-content-body-loading').hide();
+					$('##mura-content-body-render').show();
+				}, 1000);
 				//nice-select 
 				$('.mura__edit__controls .mura-control-group select').niceSelect();
 

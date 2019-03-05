@@ -16,7 +16,7 @@
 /* panels layout */
 @editcalcheight: ~"calc(100vh - 216px)";
 @editscrollheight: ~"calc(100vh - 233px)";
-@editcalcwidth: ~"calc(100% - 350px)";
+@editcalcwidth: ~"calc(100% - 315px)";
 
  .contentTitle{
     font-size: 24px;
@@ -761,20 +761,22 @@ body.sidebar-tab{
 
 .block-constrain#mura-content-body-block{
 	min-height: @editcalcheight !important;
-	margin-top: 0 !important;
-	padding-top: 0 !important;
-	padding-bottom: 0 !important;
-}
+	margin: 0 !important;
+	padding: 0 !important;
+	background-color: transparent;
+	
+	> .tab-content{
+	    clear: none;
+		margin: 0 !important;
+	    width: @editcalcwidth;
+	    min-height: @editcalcheight !important;
+	    position: relative;
 
-#mura-content-body-block > .tab-content{
-    clear: none;
-    width: @editcalcwidth;
-    min-height: @editcalcheight !important;
-    position: relative;
+	    .mura-control-group textarea+.cke{
+	    	width: 100%;
+	    }
 
-    .mura-control-group textarea+.cke{
-    	width: 100%;
-    }
+	} /* /mura-content-body-block */
 }
 
 #mura-content-metadata{
