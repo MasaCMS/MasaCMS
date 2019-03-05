@@ -8,7 +8,8 @@
 @controlspanelhdrhovertext: #212529;
 
 /* panels and elements */
-@controlspanelbgrd: #F5F5F5;
+@controlspanelbgrd: transparent;
+@controlsbordercolor: #d1d1d1;
 @controlstextcolor: #333333;
 @controlsinputbgrd: #FFF;
 @controlsinputtext: #333333;
@@ -28,8 +29,9 @@
 
 .mura__edit__controls{
 	background-color: @controlsdivbgrd;
-	border-left: 1px solid #d1d1d1;
-	box-shadow: -2px 2px  6px rgba(0,0,0,0.08);
+	border: 1px solid @controlsbordercolor;
+	border-bottom: none;
+	box-shadow: -2px -2px 6px rgba(0,0,0,0.08);
 	color: @controlstextcolor;
 	float: right;
 	margin: 0 !important;
@@ -65,6 +67,7 @@
 		width: 100%;
 		min-width: 300px;
 		overflow: auto;
+		padding-right: 2px;
 	}    
 
 	 .btn{
