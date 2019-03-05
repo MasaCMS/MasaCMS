@@ -28,6 +28,8 @@
 
 .mura__edit__controls{
 	background-color: @controlsdivbgrd;
+	border-left: 1px solid #d1d1d1;
+	box-shadow: -2px 2px  6px rgba(0,0,0,0.08);
 	color: @controlstextcolor;
 	float: right;
 	margin: 0 !important;
@@ -234,20 +236,20 @@
 					}
 
 					.mura-panel-title {
-					  color: @controlspanelhdrtext;
-					  font-size: 16px;
-					}
-					.mura-panel-title a {
-					  display: block;
-					  color: @controlspanelhdrtext;
-					  padding: 12px 16px;
-					  font-weight: 400;
-					  font-size: 16px;
-  				}
-					.mura-panel-title a:hover,
-					.mura-panel-title a:active,
-					.mura-panel-title a:focus {
-					  color: @controlspanelhdrhovertext !important;
+						  color: @controlspanelhdrtext;
+						  font-size: 16px;
+						a {
+						  display: block;
+						  color: @controlspanelhdrtext;
+						  padding: 12px 16px 12px 42px;
+						  font-weight: 400;
+						  font-size: 16px;
+	  					}
+						a:hover,
+						a:active,
+						a:focus {
+						  color: @controlspanelhdrhovertext !important;
+						}
 					}
 
 				} /* /mura-panel*/
