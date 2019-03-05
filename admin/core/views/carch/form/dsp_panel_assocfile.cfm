@@ -47,7 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="mura-panel panel">
 	<div class="mura-panel-heading" role="tab" id="heading-assoc">
 		<h4 class="mura-panel-title">
-			<a class="collapse" role="button" data-toggle="collapse" data-parent="##content-panels" href="##panel-assoc" aria-expanded="true" aria-controls="panel-assoc">
+			<a class="collapse collapsed" role="button" data-toggle="collapse" data-parent="##content-panels" href="##panel-assoc" aria-expanded="true" aria-controls="panel-assoc">
 				<!--- todo better rb keys for these --->
 				<cfif rc.ptype eq 'Gallery' or rc.type neq 'File'>
 			  		#listLast(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectimage'),' ')#

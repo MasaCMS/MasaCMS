@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="mura-panel panel">
 	<div class="mura-panel-heading" role="tab" id="heading-extendedattributes">
 		<h4 class="mura-panel-title">
-			<a class="collapse" role="button" data-toggle="collapse" data-parent="##content-panels" href="##panel-extendedattributes" aria-expanded="false" aria-controls="panel-extendedattributes">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.extendedattributes")#</a>
+			<a class="collapse collapsed" role="button" data-toggle="collapse" data-parent="##content-panels" href="##panel-extendedattributes" aria-expanded="false" aria-controls="panel-extendedattributes">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.extendedattributes")#</a>
 		</h4>
 	</div>
 	<div id="panel-extendedattributes" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-extendedattributes" aria-expanded="false" style="height: 0px;">

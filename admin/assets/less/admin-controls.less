@@ -1,4 +1,6 @@
 /* variables */
+@murared: #e34a35;
+@muragray: #212529;
 @controlsdivbgrd: #F9F9F9;
 
 /* panel headers */
@@ -247,25 +249,28 @@
 						a {
 						  display: block;
 						  color: @controlspanelhdrtext;
-						  padding: 12px 16px 12px 42px;
+						  padding: 12px 16px 12px 32px;
 						  font-weight: 400;
 						  font-size: 16px;
 						  position:relative;
 		
 							&:before{
+								color: @murared;
+								content: "\f107";		
+								display: inline-block;
 								position: absolute;
-								top: 3px;
+								font-family: FontAwesome;
+								font-size: 14px;
+								top: 50%;
+								left: 9px;
+								transform: translateY(50%);
 								-webkit-transform: translateY(-50%);
 								-ms-transform: translateY(-50%);
-								transform: translateY(50%);
-								left: 15px;
-								display: inline-block;
-								font-family: FontAwesome;
-								color: #7f7f7f;
-								content: "\f107";		
 							}
 							&.collapsed:before{
+								color: @muragray;
 								content: "\f105";		
+								left: 12px;
 							}
 	  					}
 						a:hover,
