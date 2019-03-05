@@ -237,8 +237,9 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		if(arguments.entityName=='group'){
 			beanInstance.setType(1);
 			beanInstance.getProperties();
-			beanInstance.registerAsEntity();
 		}
+
+		beanInstance.registerAsEntity();
 
 		if(!isDefined('arguments.config.displayname')){
 			arguments.config.displayname=arguments.beanInstance.getEntityDisplayName();
