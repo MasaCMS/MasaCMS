@@ -302,18 +302,17 @@
 
 			// set width of pane relative to side controls
 			var resizeTabPane = function(offsetVal=17){
-				var blockW = $('##mura-content-body-block').get(0).scrollWidth;
-				var controlW = $('##mura-content-body-block .mura__edit__controls').get(0).scrollWidth;
-				var newW = (blockW - controlW) - offsetVal;
+				if ($('##mura-content-body-block').length){
 
-				console.log('blockW: ' + blockW);
-				console.log('controlW: ' + controlW);
-				console.log('newW: ' + newW);
+					var blockW = $('##mura-content-body-block').get(0).scrollWidth;
+					var controlW = $('##mura-content-body-block .mura__edit__controls').get(0).scrollWidth;
+					var newW = (blockW - controlW) - offsetVal;
 
-				$('##mura-content-body-block .tab-content').css('width',newW + 'px');
-				setTimeout(function(){
-					resizeBodyEditor();
-				}, 50)
+					$('##mura-content-body-block .tab-content').css('width',newW + 'px');
+					setTimeout(function(){
+						resizeBodyEditor();
+					}, 50)
+				}
 			}
 			
 			// set height of ckeditor content area - called by resizeTabPane()
@@ -372,9 +371,9 @@
 					stop: function(event,ui){
 		                var frameParent = $('##mura-content-body-render');
 						var acw = $(this).width();
-				        resizeTabPane();
 			 			createCookie('ADMINCONTROLWIDTH',acw,5);				 
 			 			$(frameParent).find('.hidden-dialog-overlay').hide();		
+			        	resizeTabPane();
 					}		
 				});
 				
