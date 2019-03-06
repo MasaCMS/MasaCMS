@@ -304,9 +304,11 @@
 			var resizeTabPane = function(offsetVal=17){
 				if ($('##mura-content-body-block').length){
 
-					var blockW = $('##mura-content-body-block').get(0).scrollWidth;
-					var controlW = $('##mura-content-body-block .mura__edit__controls').get(0).scrollWidth;
+					var blockW = $('##mura-content-body-block').width();
+					var controlW = $('##mura-content-body-block .mura__edit__controls').width();
 					var newW = (blockW - controlW) - offsetVal;
+					console.log('blockW: ' + blockW);
+					console.log(controlW + ' +' + newW + '=' + (controlW + newW));
 
 					$('##mura-content-body-block .tab-content').css('width',newW + 'px');
 					setTimeout(function(){
@@ -352,12 +354,8 @@
 					maxWidth: 640,
 					minWidth: 300,
 					resize: function (event,ui) {
+				        resizeTabPane(); 
 				        ui.position.left = ui.originalPosition.left;
-				        <!--- todo: is this redundant? --->
-				        ui.size.width = (ui.size.width
-				            - ui.originalSize.width )
-				            + ui.originalSize.width;
-
 		                var frameParent = $('##mura-content-body-render');
 		                var overlay = $(frameParent).find('.hidden-dialog-overlay');
 				        if (!overlay.length) {
@@ -366,13 +364,12 @@
 				        } else {
 				            overlay.show();
 				        }
-				        resizeTabPane(); 
 			     	},
 					stop: function(event,ui){
 		                var frameParent = $('##mura-content-body-render');
 						var acw = $(this).width();
 			 			createCookie('ADMINCONTROLWIDTH',acw,5);				 
-			 			$(frameParent).find('.hidden-dialog-overlay').hide();		
+			 			$(frameParent).find('.hidden-dialog-overlay').hide();
 			        	resizeTabPane();
 					}		
 				});
