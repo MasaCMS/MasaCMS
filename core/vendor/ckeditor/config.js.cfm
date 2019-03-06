@@ -240,8 +240,9 @@ CKEDITOR.editorConfig = function( config )
 	config.protectedSource.push( /<ins[\s|\S]+?<\/ins>/g); // Protects <INS> tags
 
 	// Remove the Resize plugin as it does not make sense to use it in conjunction with the AutoGrow plugin.
-	//removePlugins : 'resize';
+	config.removePlugins = 'resize';
 
+	config.resize_enabled = false;
 	config.entities_additional = "";
 
 	// Code Mirror Plugin - http://ckeditor.com/addon/codemirror
