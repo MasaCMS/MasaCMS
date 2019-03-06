@@ -307,8 +307,6 @@
 					var blockW = $('##mura-content-body-block').width();
 					var controlW = $('##mura-content-body-block .mura__edit__controls').width();
 					var newW = (blockW - controlW) - offsetVal;
-					console.log('blockW: ' + blockW);
-					console.log(controlW + ' +' + newW + '=' + (controlW + newW));
 
 					$('##mura-content-body-block .tab-content').css('width',newW + 'px');
 					setTimeout(function(){
@@ -378,6 +376,7 @@
 				setTimeout(function(){
 					$('##mura-content-body-block .load-inline').hide();
 					$('##mura-content-body-render').show();
+					resizeBodyEditor();
 				}, 700);
 
 				//nice-select 
