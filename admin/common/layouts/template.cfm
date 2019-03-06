@@ -302,25 +302,27 @@
 
 			// set width of pane relative to side controls
 			var resizeTabPane = function(){
-				var blockW = $('##mura-content-body-block').width();
-				var controlW = $('.mura__edit__controls').width();
+				var blockW = $('##mura-content-body-block').innerWidth;
+				var controlW = $('##mura-content-body-block .mura__edit__controls').innerWidth;
 				var newW = (blockW - controlW) - 15;
-				var ckeTopH = $('##cke_2_top').height();
-
-				$('##cke_2_contents').css('height','calc((100vh - ' + ckeTopH +  'px) - 345px)');
-
-				console.log('calc((100vh - ' + ckeTopH +  'px) - 412px)');
-
-				// console.log(blockW);
-				// console.log(controlW);
-				// console.log(newW);
 				$('##mura-content-body-block .tab-content').css('width',newW + 'px');
 			}
 			
+			// set height of ckeditor content area
+			var resizeBodyEditor = function(){
+				if ($('##mura-content-body-block .cke_contents').length){
+					var ckeTopH = $('##mura-content-body-block .cke_contents').height();
+					// also adjust cke height
+					$('##mura-content-body-block .cke_contents').css('height','calc((100vh - ' + ckeTopH +  'px) - 345px)');
+				}				
+			}
+
+
 			// todo: timing on this
 			$(window).on("load", function() {
 			// run on page load
 				resizeTabPane();
+				resizeBodyEditor();
 			});
 
 			$(document).ready(function(){
@@ -329,6 +331,7 @@
 					var asb = 'on';
 					// adjust sidebar as needed
 					resizeTabPane();
+					resizeBodyEditor();
 					// set adminsidebar cookie
 					if($('##page-container').hasClass('sidebar-mini')){
 						asb = 'off';
@@ -360,11 +363,14 @@
 				        }
 				
 				        resizeTabPane(); 
+        				resizeBodyEditor();
+	
 			     	},
 					stop: function(event,ui){
 		                var frameParent = $('##mura-content-body-render');
 						var acw = $(this).width();
-				        resizeTabPane(); 
+				        resizeTabPane();
+        				resizeBodyEditor();	 
 			 			createCookie('ADMINCONTROLWIDTH',acw,5);				 
 			 			$(frameParent).find('.hidden-dialog-overlay').hide();		
 					}		
@@ -437,6 +443,8 @@
 				$(window).on('resize',function(){
 					setBlockHeight();
 					resizeTabPane();
+					resizeBodyEditor();
+	
 				});
 
 				// tabdrop: trigger on page load w/ slight delay
