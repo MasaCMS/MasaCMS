@@ -1,6 +1,4 @@
 /* variables */
-@murared: #e34a35;
-@muragray: #212529;
 @controlsdivbgrd: #F9F9F9;
 
 /* panel headers */
@@ -255,7 +253,7 @@
 						  position:relative;
 		
 							&:before{
-								color: @murared;
+								color: @mura-red;
 								content: "\f107";		
 								display: inline-block;
 								position: absolute;
@@ -268,7 +266,7 @@
 								-ms-transform: translateY(-50%);
 							}
 							&.collapsed:before{
-								color: @muragray;
+								color: @grayDark;
 								content: "\f105";		
 								left: 12px;
 							}
@@ -567,7 +565,10 @@
 			}
 
 	/* "big ui" launch button (auto-generated) */
-  .bigui__launch.btn{
+  .bigui__launch{
+  	border:none;
+  	background-color: transparent;
+  	color:@mura-red !important;
   	margin: 8px 0 12px 0;
   }
 

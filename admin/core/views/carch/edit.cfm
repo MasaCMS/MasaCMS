@@ -239,7 +239,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		var renderBigUI = function(el){
 			var idstr = $(el).attr('id');
 			var labelstr = $(el).attr('data-label');
-			$(el).before('<a class="bigui__launch btn" data-rel="' + idstr + '" href="#">' + labelstr + '</a>');
+			$(el).before('<a class="bigui__launch" data-rel="' + idstr + '" href="#">' + labelstr + '</a>');
 			<!--- todo: resource bundle key for 'done' --->
 			$(el).prepend('<a class="bigui__close">Done <i class="mi-angle-right"></i></a>')
 			$(el).wrapInner('<div class="bigui__wrapper"></div>');
