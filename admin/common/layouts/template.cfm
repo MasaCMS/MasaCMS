@@ -351,12 +351,11 @@
 				var resizeTabPane = function(){
 					var blockW = $('##mura-content-body-block').width();
 					var controlW = $('.mura__edit__controls').width();
-
-				   var newW = (blockW - controlW) - 15;
+					var newW = (blockW - controlW) - 15;
 					// console.log(blockW);
 					// console.log(controlW);
 					// console.log(newW);
-			      $('##mura-content-body-block .tab-content').css('width',newW + 'px');
+					$('##mura-content-body-block .tab-content').css('width',newW + 'px');
 				}
 				// run on page load
 				setTimeout(function(){
