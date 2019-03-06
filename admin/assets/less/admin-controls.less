@@ -13,12 +13,14 @@
 @controlsinputbgrd: #FFF;
 @controlsinputtext: #333333;
 
+@cardshadow: -2px -1px 3px rgba(0,0,0,.06) !important;
+
 /* panels layout */
 @editcalcheight: ~"calc(100vh - 216px)";
 @editscrollheight: ~"calc(100vh - 233px)";
 @editcalcwidth: ~"calc(100% - 315px)";
 
- .contentTitle{
+.contentTitle{
     font-size: 26px;
     font-weight: 900;
     height: 40px;
@@ -195,8 +197,15 @@
 			}
 
 			.mura-control-group{
-				margin-bottom: 12px;
-				margin-top: 12px;
+				margin: 6px auto 12px;
+				padding: 6px 12px;
+				background-color: #FFF;
+				box-shadow: @cardshadow;
+
+				label{
+					padding: 6px 0;
+					font-size: 12px;
+				}
 
 				&>label+textarea:not([class*=mura-constrain]){
 					min-height: 6em;
@@ -234,10 +243,10 @@
 					.mura-panel-body{
 					border-radius: 0;
 				    border-radius: 0;
-				    padding-top: 8px;
-				    padding-top: 12px;
-				    padding-left: 14px;
-				    padding-right: 14px;
+				    padding-top: 6px;
+				    padding-bottom: 6px;
+				    padding-left: 12px;
+				    padding-right: 12px;
 					}
 
 					.mura-panel-title {
@@ -282,7 +291,8 @@
 				.help-block, 
 				form .help-block{
 					background-color: #FFF !important;
-					box-shadow: -2px -1px 3px rgba(0,0,0,.06) !important;
+					box-shadow: @cardshadow;
+					border: none;
 				}
 
 				/* nested panels */
@@ -311,7 +321,7 @@
 				}
 
 				.panel-gds-box{
-					box-shadow: inset 0 0 0 2px @controlspanelhdrbgrd;
+				box-shadow: inset 0 0 0 2px @controlspanelhdrbgrd;
 			    cursor: pointer;
 			    margin: 8px 0;
 			    padding: 6px 10px;
@@ -370,13 +380,15 @@
 		  .mura-control-group > label + input[type=file],
 		  .mura-control-group > label + * + input[type=file],
 		  .mura-control-group > label + select:not([class*="time"]):not([class*="mura-constrain"]),
-		  .mura-control-group > label + * + select:not([class*="time"]):not([class*="mura-constrain"]){
-				margin: .5em 0;
+		  .mura-control-group > label + * + select:not([class*="time"]):not([class*="mura-constrain"]),
+		  .mura-control-group > label + * + .nice-select
+		  {
+				margin: 0;
 				width: 100%;
 				background-color: @controlsinputbgrd;
 				color: @controlsinputtext;
-				padding: 8px 12px;
-				font-size: 14px;
+				padding: 8px 0;
+				font-size: 16px;
 				border: none;
 				cursor: pointer;
 				outline: none;
