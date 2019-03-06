@@ -300,6 +300,29 @@
 				return false;
 			});
 
+			// set width of pane relative to side controls
+			var resizeTabPane = function(){
+				var blockW = $('##mura-content-body-block').width();
+				var controlW = $('.mura__edit__controls').width();
+				var newW = (blockW - controlW) - 15;
+				var ckeTopH = $('##cke_2_top').height();
+
+				$('##cke_2_contents').css('height','calc((100vh - ' + ckeTopH +  'px) - 345px)');
+
+				console.log('calc((100vh - ' + ckeTopH +  'px) - 412px)');
+
+				// console.log(blockW);
+				// console.log(controlW);
+				// console.log(newW);
+				$('##mura-content-body-block .tab-content').css('width',newW + 'px');
+			}
+			
+			// todo: timing on this
+			$(window).on("load", function() {
+			// run on page load
+				resizeTabPane();
+			});
+
 			$(document).ready(function(){
 				// persist side navigation expand/collapse 
 				$('*[data-action=sidebar_mini_toggle]').click(function(){
@@ -346,28 +369,6 @@
 			 			$(frameParent).find('.hidden-dialog-overlay').hide();		
 					}		
 				});
-				
-				// set width of pane relative to side controls
-				var resizeTabPane = function(){
-					var blockW = $('##mura-content-body-block').width();
-					var controlW = $('.mura__edit__controls').width();
-					var newW = (blockW - controlW) - 15;
-					var ckeTopH = $('##cke_2_top').height();
-
-					$('##cke_2_contents').css('height','calc((100vh - ' + ckeTopH +  'px) - 345px)');
-
-					console.log('calc((100vh - ' + ckeTopH +  'px) - 412px)');
-
-					// console.log(blockW);
-					// console.log(controlW);
-					// console.log(newW);
-					$('##mura-content-body-block .tab-content').css('width',newW + 'px');
-				}
-				
-				// todo: timing on this
-
-				// run on page load
-				resizeTabPane();
 				
 				setTimeout(function(){
 					$('##mura-content-body-loading').hide();
