@@ -352,17 +352,28 @@
 					var blockW = $('##mura-content-body-block').width();
 					var controlW = $('.mura__edit__controls').width();
 					var newW = (blockW - controlW) - 15;
+					var ckeTopH = $('##cke_2_top').height();
+
+					$('##cke_2_contents').css('height','calc((100vh - ' + ckeTopH +  'px) - 345px)');
+
+					console.log('calc((100vh - ' + ckeTopH +  'px) - 412px)');
+
 					// console.log(blockW);
 					// console.log(controlW);
 					// console.log(newW);
 					$('##mura-content-body-block .tab-content').css('width',newW + 'px');
 				}
+				
+				// todo: timing on this
+
 				// run on page load
+				resizeTabPane();
+				
 				setTimeout(function(){
-					resizeTabPane();
 					$('##mura-content-body-loading').hide();
 					$('##mura-content-body-render').show();
-				}, 1000);
+				}, 2000);
+
 				//nice-select 
 				$('.mura__edit__controls .mura-control-group select').niceSelect();
 
