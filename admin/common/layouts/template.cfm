@@ -376,10 +376,11 @@
 					}		
 				});
 				
+				$('##mura-content-body-block .load-inline').show();
 				setTimeout(function(){
-					$('##mura-content-body-loading').hide();
+					$('##mura-content-body-block .load-inline').hide();
 					$('##mura-content-body-render').show();
-				}, 2000);
+				}, 700);
 
 				//nice-select 
 				$('.mura__edit__controls .mura-control-group select').niceSelect();

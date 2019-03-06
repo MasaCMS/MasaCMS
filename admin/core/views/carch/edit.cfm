@@ -520,9 +520,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					$('.tab-preloader').spin(spinnerArgs2);
 					<cfif rc.compactDisplay eq 'true'>
 					//This is a hack to prevent ckeditor bug that sets iframe width to zero when goin to extended attributes and back
-					$('a[href="##tabBasic"]').on('click',function(){
-						$('##tabBasic').find('.cke_wysiwyg_frame').width('100%');
-					});
 					</cfif>
 				});
 			</script>
