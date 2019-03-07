@@ -2083,21 +2083,23 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 	function findPermissions(entityName,id,siteid){
 		var $=getBean('$').init(arguments.siteid);
-		var entity=getBean('entity');
+		var entity=getBean(arguments.entityName);
 
-		if(arguments.entityName=='content'){
-			var pk = 'contentid';
-		} else {
-			var pk = entity.getPrimaryKey();
+		if(isValid('UUID',arguments.id)|| len(arguments.id)==35){
+			if(arguments.entityName=='content'){
+				var pk = 'contentid';
+			} else {
+				var pk = entity.getPrimaryKey();
+			}
+
+			var loadArgs={
+				'#pk#'=arguments.id,
+				'siteid'=arguments.siteid
+			};
+
+			entity.loadBy(argumentCollection=loadArgs);
 		}
-
-		var loadArgs={
-			'#pk#'=arguments.id,
-			'siteid'=arguments.siteid
-		};
-
-		entity.loadBy(argumentCollection=loadArgs);
-
+		
 		return entity.getPermissions();
 	}
 
