@@ -1,4 +1,4 @@
-<cfcomponent output="false">
+<cfcomponent output="false" hint="This provides a utility to prevent injection attacks">
 
 	<!---
 		Portcullis is a CFC based url,form,cookie filter to help protect against
@@ -49,7 +49,7 @@
 
 	<cfset variables.instance.sqlFilter = "select,insert,update,delete,create,drop,alter,declare,execute,--,xp_,sp_sqlexecute,table_cursor,cast\(,exec\(,eval\(,information_schema"/>
 	<cfset variables.instance.tagFilter = "script,object,applet,embed,form,input,layer,ilayer,frame,iframe,frameset,param,meta,base,style,xss,marquee"/>
-	<cfset variables.instance.wordFilter = "qss,onEvent,onLoad,onClick,onDblClick,onKeyDown,onKeyPress,onKeyUp,onMouseDown,onMouseOut,onMouseUp,onMouseOver,onBlur,onChange,onFocus,onSelect,javascript:,vbscript:,\.cookie,\.toString,:expr,:expression,\.fromCharCode,String\."/>
+	<cfset variables.instance.wordFilter = "qss,onError,onEvent,onLoad,onClick,onDblClick,onKeyDown,onKeyPress,onKeyUp,onMouseDown,onMouseOut,onMouseUp,onMouseOver,onBlur,onChange,onFocus,onSelect,javascript:,vbscript:,\.cookie,\.toString,:expr,:expression,\.fromCharCode,String\."/>
 
 	<cfset variables.instance.thisServer = lcase(CGI.SERVER_NAME)/>
 	<!---End of settings--->
@@ -60,7 +60,7 @@
 		<cfset variables.internal.iplog = QueryNew("IP, Attempts, Blocked, DateBlocked", "VarChar, Integer, Bit, Date")/>
 	</cfif>
 
-	<cffunction name="init" output="false" access="public" returntype="Portcullis">
+	<cffunction name="init" output="false" returntype="Portcullis">
 		<cfargument name="settings" required="false" type="Struct"/>
 		<cfif structkeyexists(arguments,"settings")>
 			<cfset setSettings(arguments.settings)/>
@@ -68,7 +68,7 @@
 		<cfreturn this/>
 	</cffunction>
 
-	<cffunction name="setSettings" output="false" access="public" returntype="Any">
+	<cffunction name="setSettings" output="false">
 		<cfargument name="settings" required="true" type="Struct"/>
 		<cfset var local = StructNew()/>
 		<cfloop collection="#arguments.settings#" item="local.item">
@@ -76,11 +76,11 @@
 		</cfloop>
 	</cffunction>
 
-	<cffunction name="getSettings" output="false" access="public" returntype="Any">
+	<cffunction name="getSettings" output="false">
 		<cfreturn variables.instance/>
 	</cffunction>
 
-	<cffunction name="scan" output="false" access="public" returntype="Void">
+	<cffunction name="scan" output="false">
 		<cfargument name="object" required="true" type="Struct"/>
 		<cfargument name="objectname" required="true" type="String"/>
 		<cfargument name="ipAddress" required="true" type="String"/>
@@ -90,6 +90,9 @@
 		<cfargument name="useTagFilter" default="false"/>
 		<cfargument name="pattern" default=""/>
 		<cfargument name="fixValues" default="true"/>
+		<cfargument name="tagFilter" default="#variables.instance.tagFilter#">
+		<cfargument name="wordFilter" default="#variables.instance.wordFilter#">
+		<cfargument name="sqlFilter" default="#variables.instance.sqlFilter#">
 		 <!---Comma delimited list of fields not to scan--->
 		<cfset var object2 = StructNew()/>
 		<cfset var result = StructNew()/>
@@ -145,7 +148,7 @@
 			<cfloop collection="#object#" item="item">
 
 				<cfif ListContainsNoCase(exFF,item,',') eq false and (not len(arguments.pattern) or refindNoCase(arguments.pattern,item))>
-					<cfset temp = filterTags(object[item])/>
+					<cfset temp = filterTags(object[item],arguments.tagFilter)/>
 					<cfset itemname = REReplaceNoCase(item,nameregex,"","All")>
 					<cfif temp.detected eq true><cfset detected = detected + 1/></cfif>
 					<cfif arguments.fixValues>
@@ -169,7 +172,7 @@
 				</cfif>
 
 				<cfif arguments.useWordFilter>
-					<cfset temp = filterWords(object[item])/>
+					<cfset temp = filterWords(object[item],arguments.wordFilter)/>
 					<cfset itemname = REReplaceNoCase(item,nameregex,"","All")>
 					<cfif temp.detected eq true><cfset detected = detected + 1/></cfif>
 					<cfif arguments.fixValues>
@@ -187,7 +190,7 @@
 		<cfif arguments.useSQLFilter>
 			<cfloop collection="#object#" item="item">
 				<cfif ListContainsNoCase(exFF,item,',') eq false and (not len(arguments.pattern) or refindNoCase(arguments.pattern,item))>
-					<cfset temp = filterSQL(object[item],arguments.useSQLFilter)/>
+					<cfset temp = filterSQL(object[item],arguments.SQLFilter)/>
 					<cfset itemname = REReplaceNoCase(item,nameregex,"","All")>
 					<cfif temp.detected eq true><cfset detected = detected + 1/></cfif>
 					<cfif arguments.fixValues>
@@ -222,7 +225,7 @@
 
 	</cffunction>
 
-	<cffunction name="setlog" output="false" access="public" returntype="Void">
+	<cffunction name="setlog" output="false">
 		<cfargument name="ipAddress" required="true" type="String">
 		<cfif isLogged(request.remoteAddr) eq 1>
 			<cfset updateLog(arguments.ipAddress)/>
@@ -232,23 +235,23 @@
 
 	</cffunction>
 
-	<cffunction name="getLog" output="false" access="public" returntype="Any">
+	<cffunction name="getLog" output="false">
 		<cfreturn variables.internal.iplog/>
 	</cffunction>
 
-	<cffunction name="isLogged" output="false" access="public" returntype="Any">
+	<cffunction name="isLogged" output="false">
 		<cfargument name="ipAddress" required="true" type="String">
 		<cfset var find = ""/>
 
 		<cfquery dbtype="query" name="find">
 		select IP from variables.internal.iplog
-		where IP = <cfqueryparam cfsqltype="cf_sql_varchar" maxlength="54" value="#arguments.ipAddress#">
+		where IP = <cfqueryparam cfsqltype="cf_sql_varchar" maxlength="100" value="#arguments.ipAddress#">
 		</cfquery>
 
 		<cfreturn YesNoFormat(find.recordcount)/>
 	</cffunction>
 
-	<cffunction name="isBlocked" output="false" access="public" returntype="Any">
+	<cffunction name="isBlocked" output="false">
 		<cfargument name="ipAddress" required="true" type="String">
 		<cfset var blocked = false/>
 		<cfset var find = ""/>
@@ -259,7 +262,7 @@
 			<cfquery dbtype="query" name="find">
 			SELECT blocked
 			FROM variables.internal.iplog
-			WHERE IP = <cfqueryparam cfsqltype="cf_sql_varchar" maxlength="54" value="#arguments.ipAddress#">
+			WHERE IP = <cfqueryparam cfsqltype="cf_sql_varchar" maxlength="100" value="#arguments.ipAddress#">
 			</cfquery>
 			<cfif find.blocked eq 1>
 				<cfset blocked = true/>
@@ -269,7 +272,7 @@
 		<cfreturn blocked/>
 	</cffunction>
 
-	<cffunction name="cleanLog" output="false" access="public" returntype="Any">
+	<cffunction name="cleanLog" output="false">
 		<cfset var cutoff = 0 - variables.instance.blockTime/>
 
 		<cfquery dbtype="query" name="variables.internal.iplog">
@@ -281,7 +284,7 @@
 		<cfreturn true/>
 	</cffunction>
 
-	<cffunction name="updateLog" output="false" access="public" returntype="Any">
+	<cffunction name="updateLog" output="false">
 		<cfargument name="ipAddress" required="true" type="String">
 		<cfset var attempts = 0/>
 		<cfset var find = ""/>
@@ -289,7 +292,7 @@
 		<cfquery dbtype="query" name="find">
 		SELECT attempts
 		FROM variables.internal.iplog
-		WHERE IP = <cfqueryparam cfsqltype="cf_sql_varchar" maxlength="54" value="#arguments.ipAddress#">
+		WHERE IP = <cfqueryparam cfsqltype="cf_sql_varchar" maxlength="100" value="#arguments.ipAddress#">
 		</cfquery>
 		<cfset attempts = val(find.attempts) + 1/>
 
@@ -300,29 +303,29 @@
 		SELECT IP, #attempts# AS Attempts, Blocked, #now()# as DateBlocked
 		</cfif>
 		FROM variables.internal.iplog
-		WHERE IP = <cfqueryparam cfsqltype="cf_sql_varchar" maxlength="54" value="#arguments.ipAddress#">
+		WHERE IP = <cfqueryparam cfsqltype="cf_sql_varchar" maxlength="100" value="#arguments.ipAddress#">
 		UNION
 		SELECT IP, Attempts, Blocked, DateBlocked
 		FROM variables.internal.iplog
-		WHERE NOT IP = <cfqueryparam cfsqltype="cf_sql_varchar" maxlength="54" value="#arguments.ipAddress#">
+		WHERE NOT IP = <cfqueryparam cfsqltype="cf_sql_varchar" maxlength="100" value="#arguments.ipAddress#">
 		</cfquery>
 
 		<cfreturn true/>
 	</cffunction>
 
-	<cffunction name="removeIPfromLog" output="false" access="public" returntype="Any">
+	<cffunction name="removeIPfromLog" output="false">
 		<cfargument name="ipAddress" required="true" type="String">
 
 		<cfquery dbtype="query" name="variables.internal.iplog">
 		SELECT *
 		FROM variables.internal.iplog
-		WHERE IP <> <cfqueryparam cfsqltype="cf_sql_varchar" maxlength="54" value="#arguments.ipAddress#">
+		WHERE IP <> <cfqueryparam cfsqltype="cf_sql_varchar" maxlength="100" value="#arguments.ipAddress#">
 		</cfquery>
 
 		<cfreturn true/>
 	</cffunction>
 
-	<cffunction name="insertLog" output="false" access="public" returntype="Any">
+	<cffunction name="insertLog" output="false">
 		<cfargument name="ipAddress" required="true" type="String">
 
 		<cfset QueryAddRow(variables.internal.iplog, 1)>
@@ -334,20 +337,74 @@
 		<cfreturn true/>
 	</cffunction>
 
-	<cffunction name="filterTags" output="false" access="public" returntype="Any">
+	<cffunction name="stripMSWordFromSimpleValue" output="false">
+		<cfargument name="value">
+		<cfset arguments.value = trim(replaceList(arguments.value,chr(8216) & "," & chr(8217) & "," & chr(8220) & "," & chr(8221) & "," & chr(8212) & "," & chr(8213) & "," & chr(8230),"',',"","",--,--,..."))/>
+		<cfreturn arguments.value>
+	</cffunction>
+
+	<cffunction name="stripMSWordFromArray" output="false">
+		<cfargument name="value">
+		<cfset var idx=0>
+		<cfif isArray(arguments.value) and arrayLen(arguments.value)>
+			<cfloop from="1" to="#arrayLen(arguments.value)#" index="idx">
+			   <cfset arguments.value[idx]=stripMSWord(arguments.value[idx])>
+			</cfloop>
+		</cfif>
+		<cfreturn arguments.value>
+	</cffunction>
+
+	<cffunction name="stripMSWordFromStruct" output="false">
+		<cfargument name="value">
+			<cfset var key="">
+			<cfif isArray(arguments.value)>
+				<cfloop collection="#arguments.value#" item="key" >
+	      	<cfset arguments.value['#key#']=stripMSWord(arguments.value['#key#'])>
+				</cfloop>
+			</cfif>
+		<cfreturn value>
+	</cffunction>
+
+	<cffunction name="stripMSWord" output="false">
+		<cfargument name="value">
+			<cfif isSimpleValue(arguments.value)>
+				<cfif not len(arguments.value) or isNumeric(arguments.value) or isBoolean(arguments.value)>
+					<cfreturn arguments.value>
+				<cfelseif isJson(arguments.value)>
+					<cfset arguments.value=deserializeJSON(arguments.value)>
+					<cfif isSimpleValue(arguments.value)>
+						<cfset arguments.value=stripMSWordFromSimpleValue(arguments.value)>
+					<cfelse>
+						<cfset arguments.value=stripMSWord(arguments.value)>
+					</cfif>
+					<cfreturn serializeJSON(arguments.value)>
+				<cfelse>
+					<cfreturn stripMSWordFromSimpleValue(arguments.value)>
+				</cfif>
+			<cfelseif isStruct(arguments.value)>
+				<cfreturn stripMSWordFromStruct(arguments.value)>
+			<cfelseif isArray(arguments.value)>
+				<cfreturn stripMSWordFromArray(arguments.value)>
+			<cfelse>
+				<cfreturn arguments.value>
+			</cfif>
+	</cffunction>
+
+	<cffunction name="filterTags" output="false">
 		<cfargument name="text" required="true" type="String">
+		<cfargument name="tagFilter" default="#variables.instance.tagFilter#">
 		<cfset var result = StructNew()/>
 		<cfset var tag = ""/>
 		<cfset var tcount = 0/>
 		<cfset var lcount = 0/>
 
 		<!---trim white space and deal with "smart quotes" from MS Word, etc. This code came from Shawn Gorrell's popular cf_xssblock tag - http://www.illumineti.com/documents/xssblock.txt --->
-		<cfset result.originalText = trim(replaceList(arguments.text,chr(8216) & "," & chr(8217) & "," & chr(8220) & "," & chr(8221) & "," & chr(8212) & "," & chr(8213) & "," & chr(8230),"',',"","",--,--,..."))/>
+		<cfset result.originalText = stripMSWord(arguments.text)/>
 
 		<cfset result.detected = true/>
 		<cfset result.cleanText = result.originalText/>
 
-		<cfloop index="tag" list="#variables.instance.tagFilter#">
+		<cfloop index="tag" list="#arguments.tagFilter#">
 			<cfif REFindNoCase(("<#tag#.*?>|<#tag#.*?/>|</#tag#.*?>"),result.cleanText) eq 0>
 				<cfset tcount = tcount + 1/>
 			<cfelse>
@@ -369,18 +426,19 @@
 		<cfreturn result/>
 	</cffunction>
 
-	<cffunction name="filterWords" output="false" access="public" returntype="Any">
+	<cffunction name="filterWords" output="false">
 		<cfargument name="text" required="true" type="String">
+		<cfargument name="wordFilter" default="#variables.instance.wordFilter#">
 		<cfset var result = StructNew()/>
 		<cfset result.detected = true/>
 		<cfset result.originalText = arguments.text/>
 
-		<cfif len(variables.instance.wordFilter)>
-			<cfif REFindNoCase((ListChangeDelims(variables.instance.wordFilter,"|")),arguments.text) eq 0>
+		<cfif len(arguments.wordFilter)>
+			<cfif REFindNoCase((ListChangeDelims(arguments.wordFilter,"|")),arguments.text) eq 0>
 				<cfset result.detected = false/>
 				<cfset result.cleanText = result.originalText/>
 			<cfelse>
-				<cfset result.cleanText = REReplaceNoCase(result.originalText,(ListChangeDelims(variables.instance.wordFilter,"|")),variables.instance.invalidMarker,"ALL")>
+				<cfset result.cleanText = REReplaceNoCase(result.originalText,(ListChangeDelims(arguments.wordFilter,"|")),variables.instance.invalidMarker,"ALL")>
 			</cfif>
 		<cfelse>
 			<cfset result.cleanText = result.originalText/>
@@ -389,8 +447,9 @@
 		<cfreturn result/>
 	</cffunction>
 
-	<cffunction name="filterSQL" output="false" access="public" returntype="Any">
+	<cffunction name="filterSQL" output="false">
 		<cfargument name="text" required="true" type="String">
+		<cfargument name="sqlFilter" default="#variables.instance.sqlFilter#">
 		<cfset var result = StructNew()/>
 		<cfset var sqlcmdword = ""/>
 		<cfset var tcount = 0/>
@@ -399,7 +458,7 @@
 		<cfset result.originalText = arguments.text/>
 		<cfset result.cleanText = arguments.text/>
 
-		<cfloop index="sqlcmdword" list="#variables.instance.sqlFilter#">
+		<cfloop index="sqlcmdword" list="#arguments.sqlFilter#">
 			<cfif REFindNoCase("[[:punct:]]",sqlcmdword) eq 0>
 				<cfif REFindNoCase(sqlcmdword,arguments.text) eq 0>
 					<cfset tcount = tcount + 1/>
@@ -430,7 +489,7 @@
 	</cffunction>
 
 	<!--- Some SQL command words are commonly used in everyday language like update and alter - this method determines if the context appears malign--->
-	<cffunction name="badSQLContext" output="false" access="public" returntype="Any">
+	<cffunction name="badSQLContext" output="false">
 		<cfargument name="sqlcmdword" required="true" type="String">
 		<cfargument name="text" required="true" type="String">
 		<cfset var local = StructNew()/>
@@ -466,7 +525,7 @@
 		<cfreturn local.result/>
 	</cffunction>
 
-	<cffunction name="filterCRLF" output="false" access="public" returntype="Any">
+	<cffunction name="filterCRLF" output="false">
 		<cfargument name="text" required="true" type="String">
 		<cfset var result = StructNew()/>
 		<cfset result.detected = true/>
@@ -483,7 +542,7 @@
 	</cffunction>
 
 	<!---HTMLEditFormat and XMLFormat simply don't do enough, so we do far more here--->
-	<cffunction name="escapeChars" output="false" access="public" returntype="Any">
+	<cffunction name="escapeChars" output="false">
 		<cfargument name="text" required="true" type="String">
 		<cfset var result = arguments.text/>
 
@@ -500,7 +559,7 @@
 		<cfreturn result/>
 	</cffunction>
 
-	<cffunction name="isSafeReferer" output="false" access="public" returntype="Any">
+	<cffunction name="isSafeReferer" output="false">
 		<cfset var thisserver = lcase(CGI.SERVER_NAME)/>
 		<cfset var thisreferer = "none"/>
 		<cfset var isSafe = false/> <!---We assume false until it's verified--->
@@ -525,7 +584,7 @@
 	</cffunction>
 
 	<!---Sometimes submitted variable names which are valid in other languages are not usable in CF due to its Variable naming rules--->
-	<cffunction name="isValidCFVariableName" output="false" access="public" returntype="Any">
+	<cffunction name="isValidCFVariableName" output="false">
 		<cfargument name="text" required="true" type="String">
 		<cfset var local = StructNew()/>
 		<cfset local.result = true/>
@@ -543,13 +602,13 @@
 		<cfreturn local.result/>
 	</cffunction>
 
-	<cffunction name="isDetected" output="false" access="public" returntype="Any">
+	<cffunction name="isDetected" output="false">
 		<cfreturn variables.internal.detected/>
 	</cffunction>
 
-	<cffunction name="removeNullChars" access="private" output="false" returntype="string">
+	<cffunction name="removeNullChars" access="private" output="false">
 		<cfargument name="theString" type="string" required="true" />
-		<cfreturn urldecode(replace(urlEncodedFormat(arguments.theString),"%00","","all"))>
+		<cfreturn urldecode(replace(encodeForURL(arguments.theString),"%00","","all"))>
 	</cffunction>
 
 </cfcomponent>
