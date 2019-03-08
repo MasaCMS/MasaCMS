@@ -69,16 +69,7 @@ if ( !request.muraTemplateMissing ) {
 			}
 		}
 
-	logData='';
-
-	if(structKeyExists(exception,'message')){
-		logData=exception.message;
-		logData=logData & ", " & exception.stacktrace;
-	} else {
-		logData=exception.stacktrace;
-	}
-
-	writeLog( text=logData, file="exception", type="Error" );
+	writeLog( text=serializeJSON(e), file="exception", type="Error" );
 
 	if ( structKeyExists(application,"pluginManager") && structKeyExists(application.pluginManager,"announceEvent") ) {
 		if ( structKeyExists(request,"servletEvent") ) {ź
