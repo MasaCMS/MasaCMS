@@ -72,9 +72,11 @@ if ( !request.muraTemplateMissing ) {
 
 	if(structKeyExists(exception,'message')){
 		logData=exception.message;
+		logData=logData & ", " & exception.stacktrace;
+	} else {
+		logData=exception.stacktrace;
 	}
 
-	logData=logData & ", " & exception.stacktrace;
 
 	writeLog( text=logData, file="exception", type="Error" );
 	
