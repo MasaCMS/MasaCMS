@@ -73,14 +73,15 @@ if ( !request.muraTemplateMissing ) {
 
 	if(structKeyExists(exception,'message')){
 		logData=exception.message;
+		logData=logData & ", " & exception.stacktrace;
+	} else {
+		logData=exception.stacktrace;
 	}
-
-	logData=logData & ", " & exception.stacktrace;
 
 	writeLog( text=logData, file="exception", type="Error" );
 
 	if ( structKeyExists(application,"pluginManager") && structKeyExists(application.pluginManager,"announceEvent") ) {
-		if ( structKeyExists(request,"servletEvent") ) {
+		if ( structKeyExists(request,"servletEvent") ) {ź
 			local.pluginEvent=request.servletEvent;
 		} else if ( structKeyExists(request,"event") && isObject(request.event) ) {
 			local.pluginEvent=request.event;
