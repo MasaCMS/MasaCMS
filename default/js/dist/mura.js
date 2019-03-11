@@ -4859,7 +4859,7 @@ return /******/ (function(modules) { // webpackBootstrap
 												fileref.setAttribute("type","text/javascript");
 												fileref.setAttribute(
 													"src",
-													"https://www.google.com/recaptcha/api.js?onload=MuraCheckForReCaptcha&render=explicit&hl=" +  Mura.reCAPTCHALanguage
+													"https://www.recaptcha.net/recaptcha/api.js?onload=MuraCheckForReCaptcha&render=explicit&hl=" +  Mura.reCAPTCHALanguage
 												);
 
 												document.getElementsByTagName("head")[0].appendChild(fileref);
@@ -4867,7 +4867,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 										if (find(".g-recaptcha-container").length) {
 												loader().loadjs(
-														"https://www.google.com/recaptcha/api.js?onload=MuraCheckForReCaptcha&render=explicit&hl=" +
+														"https://www.recaptcha.net/recaptcha/api.js?onload=MuraCheckForReCaptcha&render=explicit&hl=" +
 														Mura.reCAPTCHALanguage,
 														function() {
 																find(
