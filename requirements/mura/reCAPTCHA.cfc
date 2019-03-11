@@ -59,7 +59,7 @@ component accessors=true output=false hint="This provides the ability to interac
   property name='secret' default='';
 
   this._signupUrl='https://www.google.com/recaptcha/admin';
-  this._siteVerifyUrl='https://www.google.com/recaptcha/api/siteverify?';
+  this._siteVerifyUrl='https://www.recaptcha.net/recaptcha/api/siteverify?';
 
   public any function init(required string secret) {
     setSecret(arguments.secret);
