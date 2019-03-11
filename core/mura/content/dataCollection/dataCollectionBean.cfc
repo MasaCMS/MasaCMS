@@ -440,7 +440,7 @@ component extends="mura.bean.bean" entityname="dataCollection" hint="This provid
 					} else {
 						if (StructKeyExists(formResult, field.name)) {
 							field.value = esapiEncode('html', formResult[field.name]);
-						} else if (findNoCase('attachment', field.name)) {
+						} else if (StructKeyExists(formResult, field.name & '_attachment') && isValid('uuid',formResult['#field.name#_attachment'])) {
 							var redirectid=createUUID();
 							var userRedirect=getBean('userRedirect').set(
 								{
@@ -457,6 +457,8 @@ component extends="mura.bean.bean" entityname="dataCollection" hint="This provid
 					}
 				}
 			}
+
+
 			htmlString &= '</table>';
 
 			mailer.sendHTML(
