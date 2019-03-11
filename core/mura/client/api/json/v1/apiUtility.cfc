@@ -2099,8 +2099,14 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 			entity.loadBy(argumentCollection=loadArgs);
 		}
-		
-		return entity.getPermissions();
+
+		var result=entity.getPermissions();
+
+		result.read=(result.read)?true:false;
+		result.delete=(result.delete)?true:false;
+		result.save=(result.save)?true:false;
+
+		return result;
 	}
 
 	function findCurrentUser(entityName,id,siteid,render=false,variation=false,expand=''){
