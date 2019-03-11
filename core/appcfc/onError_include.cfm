@@ -69,8 +69,14 @@ if ( !request.muraTemplateMissing ) {
 			}
 		}
 
-	writeLog( text=serializeJSON(exception), file="exception", type="Error" );
-	
+	local.logData={stacktrace=arguments.exception.stacktrace};
+
+	if(structKeyExists(arguments.exception,'message')){
+		local.logData.message=arguments.exception.message;
+	}
+
+	writeLog( text=serializeJSON(local.logData), file="exception", type="Error" );
+
 	if ( structKeyExists(application,"pluginManager") && structKeyExists(application.pluginManager,"announceEvent") ) {
 		if ( structKeyExists(request,"servletEvent") ) {
 			local.pluginEvent=request.servletEvent;
