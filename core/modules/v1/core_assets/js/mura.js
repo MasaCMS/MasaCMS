@@ -17601,7 +17601,11 @@ Mura.DOMSelection = Mura.Core.extend(
 		if (!this.selection.length) {
 			return false;
 		}
-		return this.selection[0].matchesSelector && this.selection[0].matchesSelector(selector);
+		if (typeof this.selection[0] !== "undefined") {
+		 	return this.selection[0].matchesSelector && this.selection[0].matchesSelector(selector);
+		} else {
+			return false;
+		}
 	},
 
 	/**
@@ -19796,7 +19800,7 @@ Mura.UI.Text=Mura.UI.extend(
 /** @lends Mura.DisplayObject.Text.prototype */
 {
 	renderClient:function(){
-		this.context.targetEl.innerHTML=Mura.templates['text'](this.context);
+		Mura(this.context.targetEl).html(Mura.templates['text'](this.context));
 		this.trigger('afterRender');
 	},
 
@@ -19831,7 +19835,7 @@ Mura.UI.Embed=Mura.UI.extend(
 /** @lends Mura.DisplayObject.Embed.prototype */
 {
 	renderClient:function(){
-		this.context.targetEl.innerHTML=Mura.templates['embed'](this.context);
+		Mura(this.context.targetEl).html(Mura.templates['embed'](this.context));
 		this.trigger('afterRender');
 	},
 
