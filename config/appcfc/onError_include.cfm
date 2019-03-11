@@ -67,7 +67,19 @@ if ( !request.muraTemplateMissing ) {
 				hasencodeforhtml=false;
 			}
 		}
-	writeLog( text=exception.stacktrace, file="exception", type="Error" );
+		
+	logData='';
+
+	if(structKeyExists(exception,'message')){
+		logData=exception.message;
+		logData=logData & ", " & exception.stacktrace;
+	} else {
+		logData=exception.stacktrace;
+	}
+
+
+	writeLog( text=logData, file="exception", type="Error" );
+	
 	if ( structKeyExists(application,"pluginManager") && structKeyExists(application.pluginManager,"announceEvent") ) {
 		if ( structKeyExists(request,"servletEvent") ) {
 			local.pluginEvent=request.servletEvent;
