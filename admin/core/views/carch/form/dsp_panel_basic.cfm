@@ -148,7 +148,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif application.settingsManager.getSite(rc.siteid).getlocking() neq 'all'>
 						<div class="mura-control-group">
 				      		<label>
-					  			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentparent')#:
+					  			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentparent')#
 			      			</label>
 			      			<div class="mura-control justify">
 				  				<cfif arrayLen(rc.crumbData) gt 1>
