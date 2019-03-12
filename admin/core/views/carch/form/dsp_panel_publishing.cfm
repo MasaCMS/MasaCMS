@@ -154,34 +154,35 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<option value="1"  <cfif  rc.contentBean.getisfeature() EQ 1> selected</CFIF>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#</option>
 							<option value="2"  <cfif rc.contentBean.getisfeature() EQ 2> selected</CFIF>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.perschedule')#</option>
 						</select>
-					</div>
-					<div id="editFeatureDates" <cfif rc.contentBean.getisfeature() NEQ 2>style="display: none;"</cfif>>
 
-						<div id="featureschedule-label"></div>
-						<!--- 'big ui' flyout panel --->
-						<!--- todo: resource bundle key for 'manage schedule' --->
-						<div class="bigui" id="bigui__featureschedule" data-label="#esapiEncode('html_attr', 'Manage Schedule')#">
-							<div class="bigui__title">#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.schedule'))#</div>
-							<div class="bigui__controls">
+						<div id="editFeatureDates" <cfif rc.contentBean.getisfeature() NEQ 2>style="display: none;"</cfif>>
 
-								<div id="featureschedule-selector">
-									<div class="mura-control-group">
-										<label class="date-span">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.from')#</label>
-											<cf_datetimeselector name="featureStart" datespanclass="time" datetime="#rc.contentBean.getFeatureStart()#">
+							<div id="featureschedule-label"></div>
+							<!--- 'big ui' flyout panel --->
+							<!--- todo: resource bundle key for 'manage schedule' --->
+							<div class="bigui" id="bigui__featureschedule" data-label="#esapiEncode('html_attr', 'Manage Schedule')#">
+								<div class="bigui__title">#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.schedule'))#</div>
+								<div class="bigui__controls">
+
+									<div id="featureschedule-selector">
+										<div class="mura-control-group">
+											<label class="date-span">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.from')#</label>
+												<cf_datetimeselector name="featureStart" datespanclass="time" datetime="#rc.contentBean.getFeatureStart()#">
+										</div>
+										<div class="mura-control-group">
+												<label class="date-span">
+												#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.to')#
+												</label>
+												<cf_datetimeselector name="featureStop" datespanclass="time" datetime="#rc.contentBean.getFeatureStop()#" defaulthour="23" defaultminute="59">
+										</div>
+
 									</div>
-									<div class="mura-control-group">
-											<label class="date-span">
-											#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.to')#
-											</label>
-											<cf_datetimeselector name="featureStop" datespanclass="time" datetime="#rc.contentBean.getFeatureStop()#" defaulthour="23" defaultminute="59">
-									</div>
-
 								</div>
-							</div>
-						</div> <!--- /.bigui --->
+							</div> <!--- /.bigui --->
 
-					</div>
-
+						</div>
+					</div> <!--- /.mura-control-group --->
+		
 					<!--- todo: resource bundle key for 'Featured' --->
 					<script type="text/javascript">
 						function showSelectedFeat(){

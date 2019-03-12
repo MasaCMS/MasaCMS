@@ -54,40 +54,41 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				<span id="extendset-container-tabcategorizationtop" class="extendset-container"></span>
 
-				<div id="categories__selected"></div>
+				<div class="mura-control-group">
+					<div id="categories__selected"></div>
 
-		<!--- 'big ui' flyout panel --->
-		<!--- todo: resource bundle key for 'manage categories' --->
-		<div class="bigui" id="bigui__categories" data-label="Manage Categories">
-			<div class="bigui__title">#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.availablecategories'))#</div>
-			<div class="bigui__controls">
+					<!--- 'big ui' flyout panel --->
+					<!--- todo: resource bundle key for 'manage categories' --->
+					<div class="bigui" id="bigui__categories" data-label="Manage Categories">
+						<div class="bigui__title">#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.availablecategories'))#</div>
+						<div class="bigui__controls">
 
-					<div class="mura-control-group">
-						<div class="mura-grid stripe" id="mura-grid-categories">
-							<dl class="mura-grid-hdr">
-								<dt class="categorytitle">
-										#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.availablecategories')#
-								</dt>
-								<dd class="categoryassignmentwrapper">
-									<!--- <a title="#application.rbFactory.getKeyValue(session.rb,'tooltip.categoryfeatureassignment')#" rel="tooltip" href="##"> --->
-												#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.feature')#<!---  <i class="mi-question-circle"></i>
-									</a> --->
-								</dd>
-							</dl><!--- /.mura-grid-hdr --->
-								<cfset rc.rsCategoryAssign=application.contentManager.getCategoriesByHistID(rc.contentBean.getContentHistID()) />
-								<cf_dsp_categories_nest
-									siteID="#rc.siteID#"
-									parentID=""
-									nestLevel="0"
-									contentBean="#rc.contentBean#"
-									rsCategoryAssign="#rc.rsCategoryAssign#">
+								<div class="mura-control-group">
+									<div class="mura-grid stripe" id="mura-grid-categories">
+										<dl class="mura-grid-hdr">
+											<dt class="categorytitle">
+													#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.availablecategories')#
+											</dt>
+											<dd class="categoryassignmentwrapper">
+												<!--- <a title="#application.rbFactory.getKeyValue(session.rb,'tooltip.categoryfeatureassignment')#" rel="tooltip" href="##"> --->
+															#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.feature')#<!---  <i class="mi-question-circle"></i>
+												</a> --->
+											</dd>
+										</dl><!--- /.mura-grid-hdr --->
+											<cfset rc.rsCategoryAssign=application.contentManager.getCategoriesByHistID(rc.contentBean.getContentHistID()) />
+											<cf_dsp_categories_nest
+												siteID="#rc.siteID#"
+												parentID=""
+												nestLevel="0"
+												contentBean="#rc.contentBean#"
+												rsCategoryAssign="#rc.rsCategoryAssign#">
 
-						</div><!--- /.mura-grid --->
-					</div>
+									</div><!--- /.mura-grid --->
+								</div>
 
-			</div>
-		</div> <!--- /.bigui --->
-
+						</div>
+					</div> <!--- /.bigui --->
+				</div> <!--- /.mura-control-group --->	
 
 				<span id="extendset-container-categorization" class="extendset-container"></span>
 				<span id="extendset-container-tabcategorizationbottom" class="extendset-container"></span>
@@ -192,9 +193,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			})
 			<!--- todo: resource bundle values for text --->
 			if (catList.trim().length > 0){
-				$('#categories__selected').html('<p>Selected Categories</p><ul>' + catList + '</ul>');
+				$('#categories__selected').html('<label>Selected Categories</label><ul>' + catList + '</ul>');
 			} else {
-				$('#categories__selected').html('<p>No categories selected<p>');
+				$('#categories__selected').html('<label>Selected Categories</label><div>No categories selected</div>');
 			}
 
 		}
