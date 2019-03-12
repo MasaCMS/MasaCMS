@@ -1,594 +1,499 @@
 /* variables */
-@controlsdivbgrd: #F9F9F9;
 
+@controlsdivbgrd: #F9F9F9;
 /* panel headers */
+
 @controlspanelhdrbgrd: #FFFFFF;
 @controlspanelhdrtext: #212529;
 @controlspanelhdrhover: #FEFEFE;
 @controlspanelhdrhovertext: #212529;
-
 /* panels and elements */
+
 @controlspanelbgrd: transparent;
+@controlslabelcolor: #999999;
 @controlstextcolor: #333333;
 @controlsinputbgrd: #FFF;
 @controlsinputtext: #333333;
-
-@cardshadow: -2px -1px 3px rgba(0,0,0,.06) !important;
-
+@cardshadow: -2px -1px 3px rgba(0, 0, 0,
+	.06) !important;
 /* panels layout */
+
 @editcalcheight: ~"calc(100vh - 216px)";
 @editscrollheight: ~"calc(100vh - 233px)";
 @editcalcwidth: ~"calc(100% - 315px)";
-
-.contentTitle{
+.contentTitle {
     font-size: 26px;
     font-weight: 900;
     height: 40px;
     margin-bottom: 15px;
     padding: 0;
 }
+.mura__edit__controls {
+    background-color: @controlsdivbgrd;
+    border: 1px solid @grayBorderLight !important;
+    border-bottom: none;
+    border-radius: 4px;
+    box-shadow: -1px 0 2px rgba(0, 0, 0,
+    	.05);
+    color: @controlstextcolor;
+    float: right;
+    margin: 10px 0 0 0 !important;
+    padding: 0 !important;
+    width: 300px;
+    min-width: 300px;
+    max-width: @editcalcwidth !important;
+    min-height: @editscrollheight !important;
+    text-transform: none;
+    z-index: 98!important;
+    #mura__edit__settings__filter {
+        margin: 0;
+        padding: 0;
+        input[type=text] {
+            background-color: @controlsdivbgrd;
+            border: none;
+            border-radius: 4px;
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+            color: @controlsinputtext;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 0;
+            outline: none;
+            outline-offset: 0;
+            padding: 8px 12px;
+        }
+    }
+    .mura__edit__controls__scrollable {
+        height: @editscrollheight;
+        width: 100%;
+        min-width: 300px;
+        overflow: auto;
+        padding-right: 2px;
+    }
+    .btn {
+        border: 1px solid transparent !important;
+        box-shadow: none !important;
+        cursor: pointer !important;
+        font-size: 14px !important;
+        height: 32px !important;
+        letter-spacing: normal !important;
+        line-height: 1.42857143 !important;
+        padding: 6px 12px !important;
+        text-align: center !important;
+        text-shadow: none !important;
+        touch-action: manipulation !important;
+        user-select: none !important;
+        -webkit-user-select: none !important;
+        vertical-align: middle !important;
+        white-space: nowrap !important;
+        -webkit-appearance: button !important;
+        i {
+            margin-right: 4px !important;
+        }
+    }
+    .mura__edit__controls__objects {
+        background-color: @controlspanelbgrd;
+        padding: 18px 34px 15px 18px;
+        min-height: 120px;
+        padding: 0;
+        * {
+            text-transform: none;
+        }
+        .clearfix {
+            clear: both !important;
+        }
+        img+div, img+label {
+            margin-top: 8px;
+        }
+        .mura-close {
+            i {
+                color: #808080;
+                cursor: pointer;
+                font-size: 18px;
+                top: 20px;
+                position: absolute;
+                right: 20px;
+            }
+        }
+        .btn {
+            font-size: 14px;
+            padding: 6px 12px;
+            -webkit-box-shadow: none;
+            -moz-box-shadow: none;
+            box-shadow: none;
+            background-image: none;
+            text-shadow: none;
+        }
+        .btn-default,
+        .btn:not([class*="btn-"]) {
+            border-radius: 2px;
+            background-image: none;
+            text-shadow: none;
+            color: @controlstextcolor;
+            background-color: @controlsinputbgrd;
+            border-color: transparent;
+            float: left;
+            margin: 8px 0 4px 0;
+        }
+        .btn:not([class*="btn-"])+* {
+            float: left;
+            clear: left;
+            margin-top: 8px;
+        }
+        label+.btn:not([class*="btn-"]), label div+.btn:not([class*="btn-"]) {
+            margin-top: 8px;
+        }
+        label.checkbox.inline, label.radio.inline {
+            width: auto;
+            padding-left: 20px !important;
+            margin-top: 0;
+        }
+        label.radio.inline {
+            padding-left: 17px;
+        }
+        .mura-input-set {
+            .btn.focus,
+            .btn-default:hover,
+            .btn:not([class*="btn-"]):hover,
+            .btn.active:hover {
+                background-color: @controlspanelhdrbgrd;
+                color: @controlstextcolor;
+            }
+        }
+        .alert:not([class*="alert-"]) {
+            background-image: none;
+            text-shadow: none;
+            color: #A4A4A4;
+            background-color: @controlspanelbgrd;
+            border-color: #A4A4A4;
+        }
+        .mura-layout-row {
+            padding: 0;
+            margin: 0;
+        }
+        .mura-control-group {
+            margin: 0 auto 12px !important;
+            padding: 6px 12px !important;
+            background-color: #FFF !important;
+            position: relative !important;
 
-.mura__edit__controls{
-	background-color: @controlsdivbgrd;
-	border: 1px solid @grayBorderLight !important;
-	border-bottom: none;
-	border-radius: 4px;
-	box-shadow: -1px 0 2px rgba(0,0,0,.05);
-	color: @controlstextcolor;
-	float: right;
-	margin: 10px 0 0 0 !important;
-	padding: 0 !important;
-	width: 300px;
-	min-width: 300px;
-	max-width: @editcalcwidth !important;
-	min-height: @editscrollheight !important;	
-	text-transform: none;
-	z-index: 98!important;
+			label, 
+			.control-label, 
+			.mura-control-label {
+	            font-size: 14px !important;
+	            font-weight: normal !important;
+	            color: @controlslabelcolor !important;
+	            line-height: 1.2 !important;
+	            padding-top: 4px;
 
-	#mura__edit__settings__filter{
-		margin: 0;
-		padding: 0;
-
-			input[type=text]{
-				background-color: @controlsdivbgrd;
-				border:none;	
-				border-radius:4px;
-				border-bottom-left-radius: 0;
-				border-bottom-right-radius: 0;
-				color: @controlsinputtext;
-				cursor: pointer;
-				font-size: 14px;
-				margin:0;
-				outline: none;
-				outline-offset: 0;
-				padding: 8px 12px;
-			}
-	}
-
-	
-	.mura__edit__controls__scrollable{
-		height: @editscrollheight;
-		width: 100%;
-		min-width: 300px;
-		overflow: auto;
-		padding-right: 2px;
-	}    
-
-	 .btn{
-			border: 1px solid transparent !important;
-			box-shadow: none !important;
-			cursor: pointer !important;
-			font-size: 14px !important;
-			height: 32px !important;
-			letter-spacing: normal !important;
-			line-height: 1.42857143 !important;
-			padding: 6px 12px !important;
-			text-align: center !important;
-			text-shadow: none !important;
-			touch-action: manipulation !important;
-			user-select:none !important;
-			-webkit-user-select: none !important;
-			vertical-align: middle !important;
-			white-space: nowrap !important;
-			-webkit-appearance: button !important;
-		
-		i{
-					margin-right: 4px !important;
-		}		
-	}
-
-	.mura__edit__controls__objects{
-			background-color: @controlspanelbgrd;
-			padding: 18px 34px 15px 18px;
-			min-height: 120px;
-			padding: 0;
-
-			* {
-				text-transform: none;
-			}
-
-			.clearfix{
-				clear:both !important;
-			}
-
-			img + div, 
-			img + label{
-				margin-top: 8px;
-			} 
-
-			.mura-close{
-
-					i{
-							color: #808080;
-							cursor:pointer;
-							font-size: 18px;
-							top: 20px;
-							position: absolute;
-							right: 20px;
-					}
-			}
-
-			.btn {
-				font-size: 14px;
-				padding: 6px 12px;
-				-webkit-box-shadow: none;
-				-moz-box-shadow: none;
-				box-shadow: none;
-				background-image:none;
-				text-shadow:none;
-			}
-			.btn-default,
-			.btn:not([class*="btn-"]){
-				border-radius:2px;
-				background-image:none;
-				text-shadow:none;
-			  color: @controlstextcolor;
-			  background-color: @controlsinputbgrd;
-			  border-color: transparent;
-			  float: left;
-			  margin: 8px 0 4px 0;
-		   }
-
-			.btn:not([class*="btn-"]) + *{
-				float: left;
-				clear: left;
-				margin-top: 8px;
-			}
-
-			label + .btn:not([class*="btn-"]),
-			label 	div + .btn:not([class*="btn-"]){
-				margin-top: 8px;
-			}
-
-			label.checkbox.inline,
-			label.radio.inline{
-			  width:auto;
-			  padding-left: 20px !important;
-			  margin-top: 0;
-			}
-
-			label.radio.inline{
-			  padding-left: 17px;
-			}
-
-			.mura-input-set{
-
-				.btn.focus,
-				.btn-default:hover,
-				.btn:not([class*="btn-"]):hover,
-				.btn.active:hover{
-					background-color: @controlspanelhdrbgrd;
-					color: @controlstextcolor;
+	            &.checkbox, 
+	            &.radio{
+	            	color: @controlstextcolor !important;
+	            }
+				&.checkbox{
+				  padding-left: 22px !important;
 				}
-
-			}
-
-		   .alert:not([class*="alert-"]){
-					background-image:none;
-					text-shadow:none;
-					color: #A4A4A4;
-					background-color: @controlspanelbgrd;
-					border-color: #A4A4A4;
-		   }
-
-			.mura-layout-row{
-			  padding: 0;
-			  margin: 0;
-			}
-
-			.mura-control-group{
-				margin: 6px auto 12px;
-				padding: 6px 12px;
-				background-color: #FFF;
-				box-shadow: @cardshadow;
-
-				label{
-					padding: 6px 0;
-					font-size: 12px;
+				&.radio{
+				  padding-left: 15px !important;
 				}
-
-				&>label+textarea:not([class*=mura-constrain]){
-					min-height: 6em;
-					max-width: 100%;
-					min-width: 100%;
+				&.checkbox.inline,
+				&.radio.inline{
+				  width:auto !important;
+				  padding-left: 30px !important;
+				  margin-top: 0 !important;
 				}
-
-			}
-
-			.mura-panel-group{
-				border-radius: 0;
-				clear:both;
-				margin-top: 0;
-
-				.mura-panel{
-					border: none;
-					border-radius: 0;
-					margin: 0;
-					margin-bottom: 2px;
-					background-color: inherit !important;
-				
-					.mura-panel-heading{
-						border-radius: 0;
-					    background-color: @controlspanelhdrbgrd;
-				    	color: @controlspanelhdrtext;
-					    padding: 0;
-					}
-			
-				  .mura-panel-heading:hover {
-				    background-color: @controlspanelhdrhover;
-				    color: @controlspanelhdrhovertext;
-				    cursor: pointer;
-				  }
-				
-					.mura-panel-body{
-					border-radius: 0;
-				    border-radius: 0;
-				    padding-top: 6px;
-				    padding-bottom: 6px;
-				    padding-left: 12px;
-				    padding-right: 12px;
-					}
-
-					.mura-panel-title {
-						  color: @controlspanelhdrtext;
-						  font-size: 16px;
-						a {
-						  display: block;
-						  color: @controlspanelhdrtext;
-						  padding: 12px 16px 12px 32px;
-						  font-weight: 400;
-						  font-size: 16px;
-						  position:relative;
-		
-							&:before{
-								color: @mura-red;
-								content: "\f107";		
-								display: inline-block;
-								position: absolute;
-								font-family: FontAwesome;
-								font-size: 14px;
-								top: 50%;
-								left: 9px;
-								transform: translateY(50%);
-								-webkit-transform: translateY(-50%);
-								-ms-transform: translateY(-50%);
-							}
-							&.collapsed:before{
-								color: @grayDark;
-								content: "\f105";		
-								left: 12px;
-							}
-	  					}
-						a:hover,
-						a:active,
-						a:focus {
-						  color: @controlspanelhdrhovertext !important;
-						}
-					}
-
-				} /* /mura-panel*/
-				
-				.help-block, 
-				form .help-block{
-					background-color: #FFF !important;
-					box-shadow: @cardshadow;
-					border: none;
+				&.radio.inline{
+				  padding-left: 22px !important;
 				}
+				&.time-repeat {
+        		  width: 75px !important;
+ 			   }
+            }
 
-				/* nested panels */
-				.mura-control-group .mura-panel-group{
-					margin-bottom: 0 !important;	
+            &>label+textarea:not([class*=mura-constrain]) {
+                min-height: 6em !important;
+                max-width: 100% !important;
+                min-width: 100% !important;
+            }
 
-					.mura-panel-body{
-						padding-bottom: 2px !important;
-						padding-top: 2px !important;
+        }
+        .mura-panel-group {
+            border-radius: 0;
+            clear: both;
+            margin-top: 0;
+            .mura-panel {
+                border: none;
+                border-radius: 0;
+                margin: 0;
+                margin-bottom: 2px;
+                background-color: inherit !important;
+                .mura-panel-heading {
+                    border-radius: 0;
+                    background-color: @controlspanelhdrbgrd;
+                    color: @controlspanelhdrtext;
+                    padding: 0;
+                }
+                .mura-panel-heading:hover {
+                    background-color: @controlspanelhdrhover;
+                    color: @controlspanelhdrhovertext;
+                    cursor: pointer;
+                }
+                .mura-panel-body {
+                    border-radius: 0;
+                    padding: 12px 18px 0;
+                }
+                .mura-panel-title {
+                    color: @controlspanelhdrtext;
+                    font-size: 16px;
+                    a {
+                        display: block;
+                        color: @controlspanelhdrtext;
+                        padding: 12px 16px 12px 32px;
+                        font-weight: 400;
+                        font-size: 16px;
+                        position: relative;
+                        &:before {
+                            color: @mura-red;
+                            content: "\f107";
+                            display: inline-block;
+                            position: absolute;
+                            font-family: FontAwesome;
+                            font-size: 15px;
+                            font-weight: 700;
+                            top: 50%;
+                            left: 12px;
+                            transform: translateY(50%);
+                            -webkit-transform: translateY(-50%);
+                            -ms-transform: translateY(-50%);
+                        }
+                        &.collapsed:before {
+                            color: @grayDark;
+                            content: "\f105";
+                            left: 16px;
+                        }
+                    }
+                    a:hover, a:active, a:focus {
+                        color: @controlspanelhdrhovertext !important;
+                    }
+                }
+            }
+            /* /mura-panel*/
+            .help-block, form .help-block {
+                background-color: #FFF !important;
+                box-shadow: @cardshadow;
+                border: none !important;
+            }
+            /* nested panels */
+            .mura-control-group .mura-panel-group {
+                margin-bottom: 0 !important;
+                .mura-panel-body {
+                    padding-bottom: 2px !important;
+                    padding-top: 2px !important;
+                    .mura-control-group:last-child {
+                        margin-bottom: 0 !important;
+                        padding-bottom: 0 !important;
+                    }
+                }
+            }
+            /* /nested panels */
+            &.no-header {
+                .mura-panel-heading {
+                    display: none !important;
+                    margin: 0 !important;
+                    padding: 0 !important;
+                    height: 0 !important;
+                }
+            }
+            .panel-gds-box {
+                box-shadow: inset 0 0 0 2px @controlspanelhdrbgrd;
+                cursor: pointer;
+                margin: 8px 0;
+                padding: 6px 10px;
+            }
+            .panel-gds-box span {
+                font-size: 12px;
+                font-weight: 400;
+                color: @controlstextcolor;
+                line-height: 1.2;
+            }
+            .panel-gds-box.active {
+                box-shadow: inset 0 0 0 2px #bbbbbb;
+            }
+            #panel-gds-meta+#panel-gds-inner {
+                margin-top: 10px;
+            }
+        }
+        /* /mura-panel-group */
 
-						.mura-control-group:last-child{
-							margin-bottom: 0 !important;
-							padding-bottom: 0 !important;
-						}
-					}			
+        select, select:focus, input[type=date], input[type=file], input[type=datetime], input[type=datetime-local], input[type=image], input[type=email], input[type=month], input[type=number], input[type=tel], input[type=range], input[type=text], input[type=text].mura-repeat-option, input[type=url], input[type=week], textarea,
+        .mura-control-group>label+textarea:not([class*="mura-constrain"]),
+        .mura-control-group>label+*+textarea:not([class*="mura-constrain"]),
+        .mura-control-group>label+input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]),
+        .mura-control-group>label+*+input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]),
+        .mura-control-group>label+input[type=password],
+        .mura-control-group>label+*+input[type=password],
+        .mura-control-group>label+input[type=file],
+        .mura-control-group>label+*+input[type=file],
+        .mura-control-group>label+select:not([class*="time"]):not([class*="mura-constrain"]),
+        .mura-control-group>label+*+select:not([class*="time"]):not([class*="mura-constrain"]),
+        .mura-control-group>label+*+.nice-select {
+            margin: 0;
+            width: 100%;
+            background-color: @controlsinputbgrd;
+            color: @controlsinputtext;
+            padding: 8px 0;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            outline: none;
+            outline-offset: 0;
+        }
+        input[type=text].mura-repeat-option {
+            margin: 0 0;
+        }
+        #assocFileContainer {
+            min-height: 130px;
+            .mura-file-selector-newfile {
+                border-radius: 2px;
+                margin-left: -3px;
+                float: left;
+                margin-top: 6px;
+            }
+        }
+        #assocImagePreview {
+            height: 80px;
+            width: auto;
+            margin: 12px 0 12px;
+            cursor: pointer;
+        }
+        /* custom styles for date inputs */
+        input[type=date], input[type=datetime], input[type=datetime-local], input[type=month], input[type=week] {
+            appearance: none;
+            -webkit-appearance: none;
+            display: inline-block !important;
+            visibility: visible !important;
+        }
+        /* hide the clear button from date inputs */
+        input[type=date]::-webkit-clear-button, input[type=datetime]::-webkit-clear-button, input[type=datetime-local]::-webkit-clear-button, input[type=month]::-webkit-clear-button, input[type=week]::-webkit-clear-button {
+            display: none;
+        }
+        /* hide the spin button */
+        input[type=date]::-webkit-inner-spin-button, input[type=datetime]::-webkit-inner-spin-button, input[type=datetime-local]::-webkit-inner-spin-button, input[type=month]::-webkit-inner-spin-button, input[type=week]::-webkit-inner-spin-button {
+            display: none;
+        }
+        /* always display the drop down caret */
+        input[type=date]::-webkit-calendar-picker-indicator, input[type=datetime]::-webkit-calendar-picker-indicator, input[type=datetime-local]::-webkit-calendar-picker-indicator, input[type=month]::-webkit-calendar-picker-indicator, input[type=week]::-webkit-calendar-picker-indicator {
+            color: @controlsinputtext;
+        }
+        input[type=date]::-webkit-calendar-picker-indicator:hover, input[type=datetime]::-webkit-calendar-picker-indicator:hover, input[type=datetime-local]::-webkit-calendar-picker-indicator:hover, input[type=month]::-webkit-calendar-picker-indicator:hover, input[type=week]::-webkit-calendar-picker-indicator:hover {
+            background: none;
+            color: @controlsinputtext;
+        }
+        .mura-control-group input.radio,
+        .mura-control-group input[type=radio],
+        .mura-control-group input.checkbox,
+        .mura-control-group input[type=checkbox] {
+            margin-top: 2px !important;
+            border: none;
+            outline: 0;
+        }
+        textarea {
+            min-height: 85px;
+        }
+        .form-actions {
+            clear: both;
+            margin: 0;
+            padding: 0;
+            .btn {
+                background-image: none !important;
+                clear: none !important;
+                float: left !important;
+                margin: 0 4px 0 0;
+                &.mura-primary {
+                    background-color: #4485f1 !important;
+                }
+                &.mura-delete {
+                    background-color: @controlspanelhdrhover;
+                    float: right !important;
+                }
+            }
+        }
+        #feedCustomImageOptions .half {
+            padding-right: 12px;
+            +.half {
+                padding-right: 0;
+                padding-left: 12px;
+            }
+        }
+        #availableFields, #availableGroups,
+        .dragMsg {
+            color: @controlstextcolor;
+            span {
+                color: @controlstextcolor;
+            }
+        }
+        #sortableFields,
+        .sortableFields, #sortableGroups,
+        .sortableGroups {
+            .dragMsg,
+            .dragMsg span {
+                color: @controlstextcolor;
+            }
+            #availableListSort, #contentAvailableListSort, #groupAvailableListSort, #contentDisplayListSort, #displayListSort, #groupAssignmentListSort, #groupAvailableListSort {
+                li {
+                    text-overflow: ellipsis;
+                    width: 100%;
+                    overflow: hidden;
+                }
+            }
+            #displayListSort {
+                padding: 0 !important;
+                border: none !important;
+                margin-bottom: 12px !important;
+                li:before {
+                    content: "\f0c9";
+                    font-family: FontAwesome;
+                    color: #737373;
+                    float: right;
+                }
+                li {
+                    background-color: @controlspanelhdrbgrd;
+                    text-shadow: none;
+                    box-shadow: none;
+                    font-size: 14px;
+                    padding: 8px 12px;
+                    color: @controlsinputtext;
+                }
+            }
+        }
+        ul.configurator-options {
+            list-style-type: none;
+            padding-left: 0;
+            margin: 0;
+            clear: both;
+        }
+        .mura-control-group .mura-control.highlight,
+        .mura-control.highlight {
+            background: @controlspanelhdrbgrd;
+        }
+        /* "big ui" launch button (auto-generated) */
+        .bigui__launch {
+            border: none;
+            background-color: transparent;
+            color: @mura-red !important;
+            margin: 8px 0 12px 0;
+            position: absolute;
+            top: 0;
+            right: 12px;
+        }
+    }
+    /* .mura__edit__controls__objects */
+}
+/* /.mura__edit__controls */
 
-				} /* /nested panels */
+/* "big ui" flyout panel */
 
-				&.no-header{
-					.mura-panel-heading{
-						display: none !important;
-						margin: 0 !important;
-						padding: 0 !important;
-						height: 0 !important;
-					}
-				}
-
-				.panel-gds-box{
-				box-shadow: inset 0 0 0 2px @controlspanelhdrbgrd;
-			    cursor: pointer;
-			    margin: 8px 0;
-			    padding: 6px 10px;
-				}
-				.panel-gds-box span{
-					font-size: 12px;
-			    font-weight: 400;
-			    color: @controlstextcolor;
-			    line-height: 1.2;
-				}
-				.panel-gds-box.active{
-					box-shadow: inset 0 0 0 2px #bbbbbb;
-				}
-				#panel-gds-meta + #panel-gds-inner{
-					margin-top: 10px;
-				}
-
-			} /* /mura-panel-group */
-
-			label,
-			.control-label,
-			.mura-control-label{
-				font-size: 14px;
-				font-weight: normal;
-				color: @controlstextcolor;
-				line-height: 1.2;
-			}
-
-			.mura-control-group label.time-repeat{
-				width: 75px;
-			}
-
-			select,
-			select:focus,
-			input[type=date],
-			input[type=file],
-			input[type=datetime],
-			input[type=datetime-local],
-			input[type=image],
-			input[type=email],
-			input[type=month],
-			input[type=number],
-			input[type=tel],
-			input[type=range],
-			input[type=text],
-			input[type=text].mura-repeat-option,
-			input[type=url],
-			input[type=week],
-			textarea, 
-		  .mura-control-group > label + textarea:not([class*="mura-constrain"]),
-		  .mura-control-group > label + * + textarea:not([class*="mura-constrain"]),
-		  .mura-control-group > label + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]),
-		  .mura-control-group > label + * + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]),
-		  .mura-control-group > label + input[type=password],
-		  .mura-control-group > label + * + input[type=password],
-		  .mura-control-group > label + input[type=file],
-		  .mura-control-group > label + * + input[type=file],
-		  .mura-control-group > label + select:not([class*="time"]):not([class*="mura-constrain"]),
-		  .mura-control-group > label + * + select:not([class*="time"]):not([class*="mura-constrain"]),
-		  .mura-control-group > label + * + .nice-select
-		  {
-				margin: 0;
-				width: 100%;
-				background-color: @controlsinputbgrd;
-				color: @controlsinputtext;
-				padding: 8px 0;
-				font-size: 16px;
-				border: none;
-				cursor: pointer;
-				outline: none;
-				outline-offset: 0;
-			}
-
-			input[type=text].mura-repeat-option{
-				margin: 0 0;
-			}
-
-			#assocFileContainer{
-				min-height: 130px;
-	
-				.mura-file-selector-newfile{
-			    border-radius: 2px;
-			    margin-left: -3px;
-			    float: left;
-			    margin-top: 6px;
-				}
-	
-			}
-
-			#assocImagePreview{
-				height: 80px;
-				width: auto;
-				margin: 12px 0 12px;
-				cursor:pointer;
-			}
-
-			/* custom styles for date inputs */
-			input[type=date],
-			input[type=datetime],
-			input[type=datetime-local],
-			input[type=month],
-			input[type=week]{
-			    appearance: none;
-			    -webkit-appearance: none;
-			    display: inline-block !important;
-			    visibility: visible !important;
-			}
-
-			/* hide the clear button from date inputs */
-			input[type=date]::-webkit-clear-button,
-			input[type=datetime]::-webkit-clear-button,
-			input[type=datetime-local]::-webkit-clear-button,
-			input[type=month]::-webkit-clear-button,
-			input[type=week]::-webkit-clear-button{
-			    display: none;
-			}
-
-			/* hide the spin button */
-			input[type=date]::-webkit-inner-spin-button,
-			input[type=datetime]::-webkit-inner-spin-button,
-			input[type=datetime-local]::-webkit-inner-spin-button,
-			input[type=month]::-webkit-inner-spin-button,
-			input[type=week]::-webkit-inner-spin-button{  
-			    display: none;
-			}
-
-			/* always display the drop down caret */
-			input[type=date]::-webkit-calendar-picker-indicator,
-			input[type=datetime]::-webkit-calendar-picker-indicator,
-			input[type=datetime-local]::-webkit-calendar-picker-indicator,
-			input[type=month]::-webkit-calendar-picker-indicator,
-			input[type=week]::-webkit-calendar-picker-indicator{
-			    color: @controlsinputtext;
-			}
-			
-			input[type=date]::-webkit-calendar-picker-indicator:hover,
-			input[type=datetime]::-webkit-calendar-picker-indicator:hover,
-			input[type=datetime-local]::-webkit-calendar-picker-indicator:hover,
-			input[type=month]::-webkit-calendar-picker-indicator:hover,
-			input[type=week]::-webkit-calendar-picker-indicator:hover{
-					background: none;
-			    color: @controlsinputtext;
-			}
-
-			.mura-control-group input.radio,
-			.mura-control-group input[type=radio],
-			.mura-control-group input.checkbox,
-			.mura-control-group input[type=checkbox]{
-			  margin-top: 1px;
-			  border: none;
-			  outline: 0;
-			}
-
-			textarea{
-			min-height: 85px;
-			}
-
-			.form-actions{
-				clear:both;
-				margin:0;
-				padding:0;
-				.btn{
-					background-image:none !important;
-					clear: none !important;
-					float: left !important;
-					margin:0 4px 0 0;
-					&.mura-primary{
-						background-color: #4485f1 !important;
-					}
-					&.mura-delete{
-						background-color: @controlspanelhdrhover;
-			  	  float: right !important;
-					}
-				}
-			}
-
-			#feedCustomImageOptions .half{
-				padding-right: 12px;
-				+.half{
-					padding-right: 0;
-					padding-left: 12px;
-				}
-
-			}
-
-			#availableFields, #availableGroups, .dragMsg{
-	  		color: @controlstextcolor;
-
-				span{
-		  		color: @controlstextcolor;
-				}
-
-		  }
-
-			#sortableFields, .sortableFields, #sortableGroups, .sortableGroups {
-
-				.dragMsg, .dragMsg span{
-			  		color: @controlstextcolor;
-			  	}
-
-				#availableListSort,
-				#contentAvailableListSort,
-				#groupAvailableListSort,
-			  #contentDisplayListSort,
-			  #displayListSort,
-			  #groupAssignmentListSort,
-			  #groupAvailableListSort {
-
-					li {
-						text-overflow: ellipsis;
-						width: 100%;
-						overflow: hidden;
-					}
-				}
-
-
-				#displayListSort{
-						padding: 0 !important;
-						border: none !important;
-						margin-bottom: 12px !important;
-							
-							li:before{
-							  content: "\f0c9";
-							  font-family: FontAwesome;
-							  color: #737373;
-							  float: right;
-							}
-							li{
-								background-color: @controlspanelhdrbgrd;
-								text-shadow:none;
-									box-shadow:none;
-								font-size: 14px;
-								padding: 8px 12px;
-							  color: @controlsinputtext;
-							}
-					}
-
-			}
-
-
-
-			ul.configurator-options{
-			list-style-type:none;
-			padding-left:0;
-			margin: 0;
-			clear:both;
-			}
-
-			.mura-control-group .mura-control.highlight,
-			.mura-control.highlight{
-			  background: @controlspanelhdrbgrd;
-			}
-
-	/* "big ui" launch button (auto-generated) */
-  .bigui__launch{
-  	border:none;
-  	background-color: transparent;
-  	color:@mura-red !important;
-  	margin: 8px 0 12px 0;
-  }
-
-	} /* .mura__edit__controls__objects */
-
-} /* /.mura__edit__controls */
-
-	/* "big ui" flyout panel */
-	.bigui{
+.bigui {
     display: none;
     position: absolute;
     top: 11px;
@@ -598,269 +503,258 @@
     width: ~"calc(100% + 2px)";
     z-index: 97!important;
     overflow: visible;
+    .bigui__wrapper {
+        background-color: #fff;
+        height: ~"calc(100% - 28px)";
+        overflow-y: auto;
+        padding: 17px 25px;
+        width: 100%;
+        .bigui__close {
+            width: auto;
+            float: right;
+            .btn {
+                border: 1px solid transparent !important;
+                box-shadow: none !important;
+                cursor: pointer !important;
+                font-size: 14px !important;
+                height: 32px !important;
+                letter-spacing: normal !important;
+                line-height: 1.42857143 !important;
+                padding: 6px 12px !important;
+                text-align: center !important;
+                text-shadow: none !important;
+                touch-action: manipulation !important;
+                user-select: none !important;
+                -webkit-user-select: none !important;
+                vertical-align: middle !important;
+                white-space: nowrap !important;
+                -webkit-appearance: button !important;
+                i {
+                    margin-right: 4px !important;
+                }
+            }
+        }
+        .bigui__title {
+            .contentTitle;
+        }
+        .bigui__controls {
+            padding: 0;
+        }
+        .bigui__close {
+            .btn;
+            .mura-primary;
+            cursor: pointer;
+            padding: 5px 12px;
+            margin-right: -7px;
+        }
+        .navZoom li {
+            cursor: default;
+        }
+        #availableObjectsContainer, #availableRegions {
+            min-width: 380px;
+            float: left;
+        }
+        #availableObjectsContainer {
+            padding-left: 35px;
+        }
+    }
+    /* /.bigui__wrapper */
+    .btn.active.focus,
+    .btn.active:focus,
+    .btn.focus,
+    .btn:active.focus,
+    .btn:active:focus,
+    .btn:focus {
+        outline: none !important !important;
+    }
+    .btn-secondary {
+        background-color: @controlspanelhdrhover;
+        background-image: none;
+        border-color: transparent;
+        border-radius: 2px;
+        color: @controlstextcolor;
+    }
+    .btn-primary,
+    .mura-primary {
+        color: #ffffff !important;
+        background-color: @mura-red;
+        border-color: #4882cc;
+        background-image: none !important;
+        >i {
+            color: #fff !important;
+        }
+    }
+}
+/* /.bigui */
 
-    .bigui__wrapper{
-  	    background-color: #fff;
-  	    height: ~"calc(100% - 28px)";
-  	    overflow-y: auto;
-    		padding: 17px 25px;
-  	    width: 100%;
-
-    	.bigui__close{
-    		    width: auto;
-    				float: right;
-
-				.btn{
-					border: 1px solid transparent !important;
-					box-shadow: none !important;
-					cursor: pointer !important;
-					font-size: 14px !important;
-					height: 32px !important;
-					letter-spacing: normal !important;
-					line-height: 1.42857143 !important;
-					padding: 6px 12px !important;
-					text-align: center !important;
-					text-shadow: none !important;
-					touch-action: manipulation !important;
-					user-select:none !important;
-					-webkit-user-select: none !important;
-					vertical-align: middle !important;
-					white-space: nowrap !important;
-					-webkit-appearance: button !important;
-				
-				 i{
-						margin-right: 4px !important;
-					}
-				}
-    	}
-	    
-	    .bigui__title{
-	    	.contentTitle;
-	    }
-	    .bigui__controls{
-	    	padding: 0;
-
-	    }
-			.bigui__close{
-				.btn;
-				.mura-primary;
-				cursor: pointer;
-				padding: 5px 12px;
-				margin-right: -7px;
-			}
-
-			.navZoom li{
-				cursor: default;
-			}
-
-
-			#availableObjectsContainer, #availableRegions{
-				min-width: 380px;
-				float: left;
-			}
-			#availableObjectsContainer{
-				padding-left: 35px;
-			}	
-
-    } /* /.bigui__wrapper */		
-
-		.btn.active.focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn:active:focus, .btn:focus {
-			    outline: none !important !important;
-			}
-
-			.btn-secondary{
-				background-color: @controlspanelhdrhover;
-				background-image: none;
-				border-color: transparent;
-				border-radius: 2px;	
-				color: @controlstextcolor;
-			}
-
-			.btn-primary,
-			.mura-primary {
-			  color: #ffffff !important;
-			  background-color: @mura-red;
-			  border-color: #4882cc;
-			  background-image:none !important;
-
-			  > i{
-			    color:#fff !important;
-			  }
-			}
-
-	} /* /.bigui */ 
-
-
-#bigui__categories{
-	.categoryAssignment li ul {
-		margin: 0 !important;
-	}			
-	.mura-grid{
-		 li {
-	      float: none;
-	      cursor: default;
-        .clearfix();
-	   } 
-		 dl { 
-			  float: none;
-				width: 100%;
-		    height: 28px;
-			}
-			dt{
-		    width: ~"calc(100% - 75px)";
-	      line-height: 28px;
-	      border-right: none;      					
-	    }
-			dd{
-		    width: 75px;
-	      border-left: 1px solid @tableBorder;
-	      border-right: none;
-	      float: right;					
-    	}
-		  .mura-grid-hdr {
-		    dt, dd { 
-		    	.bold-font; 
-		    }
-		    dt { 
-		      padding-left: 12px !important;
-		      }
-		  }
-		  
-		  #mura-nodes {
-		    
-		    // !important needed to override .mura-grid styles
-		    
-		    li li dt { padding-left: 2em !important; }
-		    li li li dt { padding-left: 3em !important; }
-		    li li li li dt { padding-left: 4em !important; }
-		    li li li li li dt { padding-left: 5em !important; }
-		    li li li li li li dt { padding-left: 6em !important; }
-		    li li li li li li li li dt { padding-left: 7em !important; }
-		    li li li li li li li li li dt { padding-left: 8em !important; }
-		    li li li li li li li li li li dt { padding-left: 9em !important; }
-		    li li li li li li li li li li li dt { padding-left: 10em !important; }
-		    li li li li li li li li li li li li dt { padding-left: 11em !important; }
-		      
-		    dt {
-		    
-		      > span {
-		      
-		        .inline-block;
-		        cursor: default;
-		        width: 10px;
-		        margin-left: 1em;
-		        margin-right: 2px;
-		        }
-		        
-		        > label {
-		        
-		        cursor: pointer;
-		        margin-bottom: 0;
-		        .inline-block;
-		        line-height: 28px;
-		        font-weight: normal;
-		        
-		        }
-
-		      }   
-		   
-		      .categorytitle label input[type=checkbox]{
-		        float:left;
-		        margin:7px 4px 7px 0;
-		      }
-
-		      .categorytitle > .hasChildren { 
-		      margin-left: 1em; 
-		      }
-
-		    }		    	
-		}
-	} /* /#bigui_categories */		
+#bigui__categories {
+    .categoryAssignment li ul {
+        margin: 0 !important;
+    }
+    .mura-grid {
+        li {
+            float: none;
+            cursor: default;
+            .clearfix();
+        }
+        dl {
+            float: none;
+            width: 100%;
+            height: 28px;
+        }
+        dt {
+            width: ~"calc(100% - 75px)";
+            line-height: 28px;
+            border-right: none;
+        }
+        dd {
+            width: 75px;
+            border-left: 1px solid @tableBorder;
+            border-right: none;
+            float: right;
+        }
+        .mura-grid-hdr {
+            dt, dd {
+                .bold-font;
+            }
+            dt {
+                padding-left: 12px !important;
+            }
+        }
+        #mura-nodes {
+            // !important needed to override .mura-grid styles
+            li li dt {
+                padding-left: 2em !important;
+            }
+            li li li dt {
+                padding-left: 3em !important;
+            }
+            li li li li dt {
+                padding-left: 4em !important;
+            }
+            li li li li li dt {
+                padding-left: 5em !important;
+            }
+            li li li li li li dt {
+                padding-left: 6em !important;
+            }
+            li li li li li li li li dt {
+                padding-left: 7em !important;
+            }
+            li li li li li li li li li dt {
+                padding-left: 8em !important;
+            }
+            li li li li li li li li li li dt {
+                padding-left: 9em !important;
+            }
+            li li li li li li li li li li li dt {
+                padding-left: 10em !important;
+            }
+            li li li li li li li li li li li li dt {
+                padding-left: 11em !important;
+            }
+            dt {
+                >span {
+                    .inline-block;
+                    cursor: default;
+                    width: 10px;
+                    margin-left: 1em;
+                    margin-right: 2px;
+                }
+                >label {
+                    cursor: pointer;
+                    margin-bottom: 0;
+                    .inline-block;
+                    line-height: 28px;
+                    font-weight: normal;
+                }
+            }
+            .categorytitle label input[type=checkbox] {
+                float: left;
+                margin: 7px 4px 7px 0;
+            }
+            .categorytitle>.hasChildren {
+                margin-left: 1em;
+            }
+        }
+    }
+}
+/* /#bigui_categories */
 
 /* selected item lists for big ui panels */
-#categories__selected, 
-#relcontent__selected{
-		p{
-			padding: 12px 0 12px 0px;
-		}
-		ul > li{
-			direction: rtl;
-			list-style: none;
-			overflow: hidden;
-			padding-left: 12px;
-			text-overflow: ellipsis;
-			white-space: nowrap;
-			width: 100%;
-		}
-	}
 
+#categories__selected, #relcontent__selected {
+    p {
+        padding: 12px 0 12px 0px;
+    }
+    ul>li {
+        direction: rtl;
+        list-style: none;
+        overflow: hidden;
+        padding-left: 12px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 100%;
+    }
+}
 /* sidebar-tab class on body alters layout slightly */
-body.sidebar-tab{
-	.block-content{
- 	 padding-bottom: 0 !important;
-	}
-	.mura-actions{
-		z-index: 99!important;
-	}
+
+body.sidebar-tab {
+    .block-content {
+        padding-bottom: 0 !important;
+    }
+    .mura-actions {
+        z-index: 99!important;
+    }
 }
-
-.block-constrain#mura-content-body-block{
-	height: @editcalcheight !important;
-	margin: 0 !important;
-	padding: 0 !important;
-	background-color: transparent;
-	overflow: hidden;
-	
-	> .tab-content{
-	    clear: none;
-		margin: 0 !important;
-	    width: @editcalcwidth;
-	    min-height: @editcalcheight !important;
-	    position: relative;
-
-	    .mura-control-group textarea+.cke{
-	    	width: 100%;
-	    }
-
-	 .load-inline{
-	 	position: absolute;
-	 	top: 40%;
-	 	left: ~"calc(50% - 30px)";
-	 }  
-
-	}
-
-	.mura-actions{
-		 margin: 5px -25px -30px!important;
-	}
-
-} /* /mura-content-body-block */
-
-#mura-content-metadata{
-	padding: 12px;
+.block-constrain#mura-content-body-block {
+    height: @editcalcheight !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background-color: transparent;
+    overflow: hidden;
+    >.tab-content {
+        clear: none;
+        margin: 0 !important;
+        width: @editcalcwidth;
+        min-height: @editcalcheight !important;
+        position: relative;
+        .mura-control-group textarea+.cke {
+            width: 100%;
+        }
+        .load-inline {
+            position: absolute;
+            top: 40%;
+            left: ~"calc(50% - 30px)";
+        }
+    }
+    .mura-actions {
+        margin: 5px -25px -30px!important;
+    }
 }
+/* /mura-content-body-block */
 
-.meta-label{
-  clear: right;
-  display: block;
-  float: left;
-  font-size: 14px;
-  padding: 2px 12px 2px 0;
-  width: 100%;
-
-  > span{
-    font-weight: 100;
-  }
-  &.meta-label-wide{
-  	max-width: 100%;
-  	min-width: 100%;
-  	clear: both;
-  }
+#mura-content-metadata {
+    padding: 12px;
 }
-
-#mura-content-title-render{
-
-	.contentTitle;
+.meta-label {
+    clear: right;
+    display: block;
+    float: left;
+    font-size: 14px;
+    padding: 2px 12px 2px 0;
+    width: 100%;
+    >span {
+        font-weight: 100;
+    }
+    &.meta-label-wide {
+        max-width: 100%;
+        min-width: 100%;
+        clear: both;
+    }
+}
+#mura-content-title-render {
+    .contentTitle;
     cursor: pointer;
     float: left;
     margin-top: 5px;
@@ -870,168 +764,138 @@ body.sidebar-tab{
     width: 100%!important;
     background-color: #FFF;
     padding-left: 12px;
-
-	&:hover, 
-	&.editing{
-		outline: #ccc dotted 1px!important;
-	}
-
-	input{
-		cursor: auto;
-		font-size: 26px;
-		font-weight: 900;
-		border: none;
-		overflow: hidden;
-		padding-left: 0;
-		padding-top: 3px;
-	    text-overflow: ellipsis;
-	    white-space: nowrap;    
-
-
-
-	}
-	   
-}
-
-#mura-content-body-render{
-	#bodyContainer label{
-		display: none;
-	}
-}
-
-/* modal window in legacy layout view */
-#carch .ui-dialog{
- .objectParam.nice-select{
-    background-color: #fff;
-    color: #646464;
-    border: 1px solid #e6e6e6;
-    border-radius: 3px;
-    
-    ul.list,
-    .option{
-	   	background-color: #fff !important;
-	    color: #646464 !important;
+    &:hover, &.editing {
+        outline: #ccc dotted 1px!important;
     }
-    .option.focus,
-		.option.selected.focus,
-		.option:hover {
-		    background-color: #4485f1 !important;
-		    color: #fff !important;
-		}
-
- }	
- .ui-dialog-buttonpane .ui-dialog-buttonset .ui-button:first-child{
-  .mura-primary;
-	}
+    input {
+        cursor: auto;
+        font-size: 26px;
+        font-weight: 900;
+        border: none;
+        overflow: hidden;
+        padding-left: 0;
+        padding-top: 3px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
 }
+#mura-content-body-render {
+    #bodyContainer label {
+        display: none;
+    }
+}
+/* modal window in legacy layout view */
 
+#carch .ui-dialog {
+    .objectParam.nice-select {
+        background-color: #fff;
+        color: #646464;
+        border: 1px solid #e6e6e6;
+        border-radius: 3px;
+        ul.list,
+        .option {
+            background-color: #fff !important;
+            color: #646464 !important;
+        }
+        .option.focus,
+        .option.selected.focus,
+        .option:hover {
+            background-color: #4485f1 !important;
+            color: #fff !important;
+        }
+    }
+    .ui-dialog-buttonpane .ui-dialog-buttonset .ui-button:first-child {
+        .mura-primary;
+    }
+}
 /* nice-select overrides */
 
-
-.mura__edit__controls{
-
-	select:not(#restrictGroups) {
-	    display: none;
-	}
-
-	.nice-select {
-	    background-color: @controlsinputbgrd;
-	    border-radius: 3px;
-	    border: none;
-	    color: @controlsinputtext;;
-	    font-size: 13px;
-	    height: 36px;
-	    line-height: 36px;
-	    margin: 0;
-	    outline-offset: 0;
-	    -webkit-transition: all .1s ease-in-out;
-	    transition: all .1s ease-in-out;
-	    width: 100%
-	}
-
-	.nice-select.open,
-	.nice-select:active,
-	.nice-select:focus,
-	.nice-select:hover {
-	    border-color: transparent
-	}
-
-	.nice-select:after {
-	    width: 5px
-	}
-
-
-	.nice-select.disabled {
-	    border-color: transparent;
-	    pointer-events: none
-	}
-
-	.nice-select.disabled:after {
-	    border-color: transparent
-	}
-
-	.nice-select.wide {
-	    width: 100%
-	}
-
-	.nice-select.wide .list {
-	    left: 0!important;
-	    right: 0!important
-	}
-
-	.nice-select.right {
-	    float: right
-	}
-
-	.nice-select.right .list {
-	    right: 0
-	}
-
-	.nice-select.small {
-	    font-size: 13px;
-	    line-height: 34px
-	}
-
-	.nice-select .list {
-	    background-color: @controlsinputbgrd;
-	    border-radius: 0;
-	    margin-top: 0;
-	    max-height: 196px;
-	    overflow-x: hidden;
-	    overflow-y: auto;
-	    width: 100%;
-	}
-
-	.nice-select .list:hover .option:not(:hover) {
-	    background-color: transparent!important
-	}
-
-	.nice-select .option {
-	    line-height: 28px;
-	    min-height: 28px;
-	    outline: 0;
-	    overflow: hidden;
-	    text-overflow: ellipsis;
-	    -webkit-transition: all .1s;
-	    transition: all .1s
-	}
-
-	.nice-select.time .option{
-	    overflow: visible;
-	    text-overflow: inherit;
-	}
-
-	.nice-select .option.focus,
-	.nice-select .option.selected.focus,
-	.nice-select .option:hover {
-	    background-color: @controlsinputbgrd;
-	    color: @controlsinputtext;
-	}
-
-	.nice-select .option.disabled {
-	    background-color: transparent;
-	    color: #999;
-	    cursor: default
-	}
-
+.mura__edit__controls {
+    select:not(#restrictGroups) {
+        display: none;
+    }
+    .nice-select {
+        background-color: @controlsinputbgrd;
+        border-radius: 3px;
+        border: none;
+        color: @controlsinputtext;
+        ;
+        font-size: 13px;
+        height: 36px;
+        line-height: 36px;
+        margin: 0;
+        outline-offset: 0;
+        -webkit-transition: all .1s ease-in-out;
+        transition: all .1s ease-in-out;
+        width: 100%
+    }
+    .nice-select.open,
+    .nice-select:active,
+    .nice-select:focus,
+    .nice-select:hover {
+        border-color: transparent
+    }
+    .nice-select:after {
+        width: 5px
+    }
+    .nice-select.disabled {
+        border-color: transparent;
+        pointer-events: none
+    }
+    .nice-select.disabled:after {
+        border-color: transparent
+    }
+    .nice-select.wide {
+        width: 100%
+    }
+    .nice-select.wide .list {
+        left: 0!important;
+        right: 0!important
+    }
+    .nice-select.right {
+        float: right
+    }
+    .nice-select.right .list {
+        right: 0
+    }
+    .nice-select.small {
+        font-size: 13px;
+        line-height: 34px
+    }
+    .nice-select .list {
+        background-color: @controlsinputbgrd;
+        border-radius: 0;
+        margin-top: 0;
+        max-height: 196px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        width: 100%;
+    }
+    .nice-select .list:hover .option:not(:hover) {
+        background-color: transparent!important
+    }
+    .nice-select .option {
+        line-height: 28px;
+        min-height: 28px;
+        outline: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        -webkit-transition: all .1s;
+        transition: all .1s
+    }
+    .nice-select.time .option {
+        overflow: visible;
+        text-overflow: inherit;
+    }
+    .nice-select .option.focus,
+    .nice-select .option.selected.focus,
+    .nice-select .option:hover {
+        background-color: @controlsinputbgrd;
+        color: @controlsinputtext;
+    }
+    .nice-select .option.disabled {
+        background-color: transparent;
+        color: #999;
+        cursor: default
+    }
 }
