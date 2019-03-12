@@ -201,10 +201,11 @@ if (isdefined("url.type")){
 	  rsSites=application.settingsManager.getList();
 
 	  for (i=1; i lte rsSites.recordcount; i=(i+1)){
+			site=application.settingsManager.getSite(rsSites.siteID[i]);
 	    temp = structNew();
 	    temp.name = '#rsSites.siteID[i]#_User_Assets';
-	    temp.url = currrentSite.getFileAssetPath() & '/assets/';
-	    temp.directory ="#application.configBean.getAssetDir()##application.configBean.getFileDelim()##rsSites.siteID[i]##application.configBean.getFileDelim()#assets/";
+	    temp.url = site.getFileAssetPath() & '/assets/';
+	    temp.directory ="#application.configBean.getAssetDir()##application.configBean.getFileDelim()##site.getFilePoolID()##application.configBean.getFileDelim()#assets/";
 	    temp.maxSize = 0;
 	    if(application.configBean.getValue('fmAllowedExtensions') eq ''){
 	      temp.allowedExtensions = config.defaultAllowedExtensions;
