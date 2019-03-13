@@ -19,6 +19,7 @@
 @controlsinputshadow: 0 1px 0 #e6e6e6;
 @controlsinputfocusshadow: 0 2px 0 #b1b1b1;
 @cardshadow: 0px 0px  13px rgba(0,0,0,0.1) !important;
+@titleeditwidth: ~"calc(100% - 2px)";
 
 /* panels layout */
 @editcalcheight: ~"calc(100vh - 216px)";
@@ -781,10 +782,11 @@ body.sidebar-tab {
     cursor: pointer;
     float: left;
     margin-top: 5px;
+    margin-left: 1px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    width: 100%!important;
+    width: @titleeditwidth !important;
     background-color: transparent;
     padding-left: 12px;
     &:hover, &.editing {
