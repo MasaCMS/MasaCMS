@@ -190,9 +190,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<!--- notes --->
 				<div class="mura-control-group">
 					<label>
+						<!--- todo: change this rb key to simply 'Notes' --->
 						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.addnotes')#
 					</label>
-					<textarea name="notes" rows="8" id="abstract">#esapiEncode('html',rc.contentBean.getNotes())#</textarea>
+					<textarea name="notes" rows="4" id="abstract">#esapiEncode('html',rc.contentBean.getNotes())#</textarea>
 				</div> <!--- /end mura-control-group --->
 
 		</div>
