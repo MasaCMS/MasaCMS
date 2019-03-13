@@ -650,13 +650,13 @@ function copyToClipboard(str){
 	document.execCommand('copy');
 }
 <!--- todo: rb keys for these titles --->
-$('.clicktocopy').append('<i class="mi-copy" title="Click to copy"></i>');
+$('.clicktocopy').prepend('<i class="mi-copy" title="Click to copy"></i>');
 
 $('.clicktocopy').click(function(){
 	var copiedicon = '<i class="mi-check" title="Copied to clipboard"></i>';
 	copyToClipboard($(this).text());
 	$(this).find('i').remove();
-	$(this).append(copiedicon);
+	$(this).prepend(copiedicon);
 })
 
 </script>

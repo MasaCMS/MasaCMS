@@ -16,11 +16,12 @@
 @controlslabeliconcolor: #e0e0e0;
 @controlstextcolor: #333333;
 @controlsinputbgrd: #FCFCFC;
-@controlsinputtext: #333333;
+@controlsinputtextcolor: #333333;
 @controlsinputfontsize: 16px;
 @controlsinputshadow: 0 1px 0 #e6e6e6;
 @controlsinputfocusshadow: 0 2px 0 #b1b1b1;
-@cardshadow: 0px 0px  13px rgba(0,0,0,0.1) !important;
+/*@cardshadow: 0px 0px  13px rgba(0,0,0,0.04) !important;*/
+@cardshadow: none;
 @titleeditwidth: ~"calc(100% - 2px)";
 
 /* panels layout */
@@ -59,7 +60,7 @@
             border-radius: 4px;
             border-bottom-left-radius: 0;
             border-bottom-right-radius: 0;
-            color: @controlsinputtext;
+            color: @controlsinputtextcolor;
             cursor: pointer;
             font-size: 14px;
             margin: 0;
@@ -299,6 +300,7 @@
                 background-color: #FFF !important;
                 box-shadow: @cardshadow;
                 border: none !important;
+                border-radius: 4px;
             }
             /* nested panels */
             .mura-control-group .mura-panel-group {
@@ -357,7 +359,7 @@
             margin: 0;
             width: 100%;
             background-color: @controlsinputbgrd;
-            color: @controlsinputtext;
+            color: @controlsinputtextcolor;
             padding: 8px 0;
             font-size: @controlsinputfontsize;
             border: none;
@@ -368,15 +370,37 @@
         .mura-control-group>label+input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]),
         .mura-control-group>label+*+input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]),
         .mura-control-group>label+input[type=password],
-        .mura-control-group>label+*+input[type=password]{
+        .mura-control-group>label+*+input[type=password],
+        .mura-control-group>label+textarea,
+        .mura-control-group>label+*+textarea{
             box-shadow: @controlsinputshadow;
             border-bottom-right-radius: 0px;
             border-bottom-left-radius: 0px;
-            margin-bottom: 8px;
+            margin-bottom: 8px !important;
             padding: 0;
             &:focus{
                 box-shadow: @controlsinputfocusshadow;
             }
+        }
+        .mura-control-group>label+textarea,
+        .mura-control-group>label+*+textarea{
+            min-height: 48px !important;
+        }
+        .cke_bottom, 
+        .cke_chrome, 
+        .cke_top{
+            border-color: transparent !important;
+            background-color: #fff;
+        }
+        .cke_bottom{
+            border-top: 1px solid #f9f9f9!important;
+            width: ~"calc(100% - 36px)" !important;
+            margin: 0 0 0 12px;
+        }
+        .cke_top{
+            border-bottom: 1px solid #f9f9f9!important;
+            width: ~"calc(100% - 36px)" !important;
+            margin: 0 0 0 12px;
         }
         input[type=text].mura-repeat-option {
             margin: 0 0;
@@ -413,11 +437,11 @@
         }
         /* always display the drop down caret */
         input[type=date]::-webkit-calendar-picker-indicator, input[type=datetime]::-webkit-calendar-picker-indicator, input[type=datetime-local]::-webkit-calendar-picker-indicator, input[type=month]::-webkit-calendar-picker-indicator, input[type=week]::-webkit-calendar-picker-indicator {
-            color: @controlsinputtext;
+            color: @controlsinputtextcolor;
         }
         input[type=date]::-webkit-calendar-picker-indicator:hover, input[type=datetime]::-webkit-calendar-picker-indicator:hover, input[type=datetime-local]::-webkit-calendar-picker-indicator:hover, input[type=month]::-webkit-calendar-picker-indicator:hover, input[type=week]::-webkit-calendar-picker-indicator:hover {
             background: none;
-            color: @controlsinputtext;
+            color: @controlsinputtextcolor;
         }
         .mura-control-group input.radio,
         .mura-control-group input[type=radio],
@@ -492,7 +516,7 @@
                     box-shadow: none;
                     font-size: 14px;
                     padding: 8px 12px;
-                    color: @controlsinputtext;
+                    color: @controlsinputtextcolor;
                 }
             }
         }
@@ -769,13 +793,20 @@ body.sidebar-tab {
 }
 .meta-label {
     clear: right;
+    color: @controlslabelcolor;
     display: block;
     float: left;
     font-size: 14px;
-    padding: 2px 12px 2px 0;
+    padding: 4px 12px 4px 0;
     width: 100%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
     >span {
+        color: @controlsinputtextcolor;
         font-weight: 100;
+        padding-left: 12px;
+        display: inline-block;
     }
     &.meta-label-wide {
         max-width: 100%;
@@ -851,7 +882,7 @@ body.sidebar-tab {
         background-color: @controlsdivbgrd !important;
         border-radius: 0;
         border: none;
-        color: @controlsinputtext;
+        color: @controlsinputtextcolor;
         font-size: @controlsinputfontsize;
         height: 36px;
         line-height: 36px;
@@ -932,7 +963,7 @@ body.sidebar-tab {
         .option.selected.focus,
         .option:hover {
             background-color: transparent;
-            color: @controlsinputtext;
+            color: @controlsinputtextcolor;
         }
         .option.disabled {
             background-color: transparent;
