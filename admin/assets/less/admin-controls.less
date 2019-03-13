@@ -10,12 +10,12 @@
 /* panels and elements */
 
 @controlspanelbgrd: transparent;
+@controlsgroupbgrd: #FCFCFC;
 @controlslabelcolor: #999999;
 @controlstextcolor: #333333;
-@controlsinputbgrd: #FFF;
+@controlsinputbgrd: #FCFCFC;
 @controlsinputtext: #333333;
-@cardshadow: -2px -1px 3px rgba(0, 0, 0,
-	.06) !important;
+@cardshadow: 0px 0px  13px rgba(0,0,0,0.1) !important;
 /* panels layout */
 
 @editcalcheight: ~"calc(100vh - 216px)";
@@ -174,7 +174,7 @@
         .mura-control-group {
             margin: 0 auto 12px !important;
             padding: 6px 12px !important;
-            background-color: #FFF !important;
+            background-color: @controlsgroupbgrd !important;
             position: relative !important;
 
             .mura-control-heading,
