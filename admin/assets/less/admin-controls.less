@@ -1,21 +1,23 @@
 /* variables */
-@controlsdivbgrd: #F9F9F9;
 
 /* panel headers */
 @controlspanelhdrbgrd: #FFFFFF;
-@controlspanelhdrtext: #212529;
+@controlspanelhdrtext: #545454;
 @controlspanelhdrhover: #FEFEFE;
 @controlspanelhdrhovertext: #212529;
 @controlspanelhdrborder: #EBEBEB;
 @controlsclosedicon: #9b9b9b;
 
 /* panels and elements */
+@controlsdivbgrd: #F9F9F9;
 @controlspanelbgrd: transparent;
 @controlsgroupbgrd: #FCFCFC;
 @controlslabelcolor: #999999;
+@controlslabeliconcolor: #e0e0e0;
 @controlstextcolor: #333333;
 @controlsinputbgrd: #FCFCFC;
 @controlsinputtext: #333333;
+@controlsinputfontsize: 16px;
 @controlsinputshadow: 0 1px 0 #e6e6e6;
 @controlsinputfocusshadow: 0 2px 0 #b1b1b1;
 @cardshadow: 0px 0px  13px rgba(0,0,0,0.1) !important;
@@ -182,7 +184,7 @@
 
             .mura-control-heading,
             p.mura-control-heading{
-            	font-size: 16px;
+            	font-size: @controlsinputfontsize;
             	font-weight: normal;
             	padding-top: 8px !important;
             }
@@ -195,6 +197,10 @@
 	            color: @controlslabelcolor !important;
 	            line-height: 1.2 !important;
 	            padding-top: 4px;
+
+                i{
+                    color: @controlslabeliconcolor;
+                }
 
 	            &.checkbox, 
 	            &.radio{
@@ -353,7 +359,7 @@
             background-color: @controlsinputbgrd;
             color: @controlsinputtext;
             padding: 8px 0;
-            font-size: 16px;
+            font-size: @controlsinputfontsize;
             border: none;
             cursor: pointer;
             outline: none;
@@ -366,7 +372,7 @@
             box-shadow: @controlsinputshadow;
             border-bottom-right-radius: 0px;
             border-bottom-left-radius: 0px;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
             padding: 0;
             &:focus{
                 box-shadow: @controlsinputfocusshadow;
@@ -840,88 +846,98 @@ body.sidebar-tab {
     select:not(#restrictGroups) {
         display: none;
     }
-    .nice-select {
-        background-color: @controlsinputbgrd;
-        border-radius: 3px;
+    .nice-select, 
+    .mura-control-group>label+.nice-select {
+        background-color: @controlsdivbgrd !important;
+        border-radius: 0;
         border: none;
         color: @controlsinputtext;
-        ;
-        font-size: 13px;
+        font-size: @controlsinputfontsize;
         height: 36px;
         line-height: 36px;
         margin: 0;
         outline-offset: 0;
         -webkit-transition: all .1s ease-in-out;
         transition: all .1s ease-in-out;
-        width: 100%
-    }
-    .nice-select.open,
-    .nice-select:active,
-    .nice-select:focus,
-    .nice-select:hover {
-        border-color: transparent
-    }
-    .nice-select:after {
-        width: 5px
-    }
-    .nice-select.disabled {
-        border-color: transparent;
-        pointer-events: none
-    }
-    .nice-select.disabled:after {
-        border-color: transparent
-    }
-    .nice-select.wide {
-        width: 100%
-    }
-    .nice-select.wide .list {
-        left: 0!important;
-        right: 0!important
-    }
-    .nice-select.right {
-        float: right
-    }
-    .nice-select.right .list {
-        right: 0
-    }
-    .nice-select.small {
-        font-size: 13px;
-        line-height: 34px
-    }
-    .nice-select .list {
-        background-color: @controlsinputbgrd;
-        border-radius: 0;
-        margin-top: 0;
-        max-height: 196px;
-        overflow-x: hidden;
-        overflow-y: auto;
         width: 100%;
-    }
-    .nice-select .list:hover .option:not(:hover) {
-        background-color: transparent!important
-    }
-    .nice-select .option {
-        line-height: 28px;
-        min-height: 28px;
-        outline: 0;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        -webkit-transition: all .1s;
-        transition: all .1s
-    }
-    .nice-select.time .option {
-        overflow: visible;
-        text-overflow: inherit;
-    }
-    .nice-select .option.focus,
-    .nice-select .option.selected.focus,
-    .nice-select .option:hover {
-        background-color: @controlsinputbgrd;
-        color: @controlsinputtext;
-    }
-    .nice-select .option.disabled {
-        background-color: transparent;
-        color: #999;
-        cursor: default
+
+        .current{
+            padding-left: 12px;
+            margin-top: -6px;
+        }
+
+        &.open,
+        &:active,
+        &:focus,
+        &:hover {
+            border-color: transparent
+        }
+        &:after {
+            width: 5px
+        }
+        &.disabled {
+            border-color: transparent;
+            pointer-events: none
+        }
+        &.disabled:after {
+            border-color: transparent
+        }
+        &.wide {
+            width: 100%
+        }
+        &.wide .list {
+            left: 0!important;
+            right: 0!important
+        }
+        &.right {
+            float: right
+        }
+        &.right .list {
+            right: 0
+        }
+        &.small {
+            font-size: 13px;
+            line-height: 34px
+        }
+        .list, 
+        ul.list {
+            background-color: @controlsdivbgrd;
+            border-radius: 0;
+            border-top-color: transparent !important;
+            box-shadow: 1px 2px 1px 1px rgba(68,68,68,.11);
+            font-size: 14px;
+            margin-top: 0;
+            max-height: 196px;
+            overflow-x: hidden;
+            overflow-y: auto;
+            width: 100%;
+        }
+        .list:hover .option:not(:hover) {
+            background-color: transparent!important
+        }
+        .option {
+            line-height: 28px;
+            min-height: 28px;
+            outline: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            -webkit-transition: all .1s;
+            transition: all .1s
+        }
+        &.time .option {
+            overflow: visible;
+            text-overflow: inherit;
+        }
+        .option.focus,
+        .option.selected.focus,
+        .option:hover {
+            background-color: transparent;
+            color: @controlsinputtext;
+        }
+        .option.disabled {
+            background-color: transparent;
+            color: #999;
+            cursor: default
+        }
     }
 }
