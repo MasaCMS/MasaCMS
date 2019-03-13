@@ -416,7 +416,7 @@ header .btn i{
     padding: 4px 10px;
 
     &.mura-primary{
-      background-color: @mura-blue !important;
+      background-color: @mura-red !important;
       color:#FFF !important;
 
       > i{
@@ -463,10 +463,11 @@ body.mura-admin{
 
   // admin form-actions
   .mura-actions{
-    background-color: #f5f5f5;
-    min-height: 55px;
+    background-color: #fff;
+    box-shadow: 0px -2px  4px rgba(7,7,7,0.1);
+    min-height: 82px;
     padding-bottom: 5px;
-    padding-top: 15px;
+    padding-top: 24px;
   }
   .mura-actions.primary-actions,
   .block-content form .mura-actions,
@@ -474,11 +475,12 @@ body.mura-admin{
   .block-content + .mura-actions{
 
     bottom: 30px;
-    margin: 5px -25px -30px!important;
+    margin: 5px -50px -30px!important;
     position: fixed;
     padding-bottom: 10px;
     width: 100%;
     z-index: 99;
+    box-shadow: 0 -1px 3px rgba(7,7,7,.05);
   }
 }
 
@@ -908,6 +910,17 @@ body#mura-select-link{
   }
 }
 
+.cke_bottom, 
+.cke_chrome, 
+.cke_top{
+  border-color: #EBEBEB !important;
+}
+.cke_top{
+  border-bottom: none;
+}
+.cke_bottom{
+  border-top: none;
+}
 .cke_dialog_contents_body{
   padding: 6px 10px;
 
@@ -1035,7 +1048,7 @@ body.mura-admin{
 }
 
 .block-constrain > .content{
-  padding: 27px 30px !important;
+  padding: 27px 0 !important;
 }
 
 .no-constrain .block-constrain .block .block-content{
@@ -2157,12 +2170,12 @@ body#clogin.modal-wrapper #mura-content {
 div[data-placeholder]:not([data-placeholder=""]):empty::before {
   content: attr(data-placeholder);
   opacity: .25;
-  font-style: italic;
 }
 
 .clicktocopy{
   cursor:pointer;
   > i {
-    margin-left: 4px;
+    margin-right: 6px !important;
+    color: #999 !important;
   }
 }

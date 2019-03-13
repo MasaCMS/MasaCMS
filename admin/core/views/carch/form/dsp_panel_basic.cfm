@@ -47,7 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="mura-panel panel">
 	<div class="mura-panel-heading" role="tab" id="heading-basic">
 		<h4 class="mura-panel-title">
-			<a class="collapse" role="button" data-toggle="collapse" data-parent="##content-panels" href="##panel-basic" aria-expanded="true" aria-controls="panel-basic">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.basic")#</a>
+			<a class="collapse collapsed" role="button" data-toggle="collapse" data-parent="##content-panels" href="##panel-basic" aria-expanded="true" aria-controls="panel-basic">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.basic")#</a>
 		</h4>
 	</div>
 	<div id="panel-basic" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-basic" aria-expanded="false" style="height: 0px;">
@@ -148,7 +148,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif application.settingsManager.getSite(rc.siteid).getlocking() neq 'all'>
 						<div class="mura-control-group">
 				      		<label>
-					  			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentparent')#:
+					  			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentparent')#
 			      			</label>
 			      			<div class="mura-control justify">
 				  				<cfif arrayLen(rc.crumbData) gt 1>
@@ -220,7 +220,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 										fckEditor.config.EditorAreaCSS	= '#application.settingsManager.getSite(rc.siteid).getThemeAssetPath()#/css/editor.css';
 										fckEditor.config.StylesXmlPath = '#application.settingsManager.getSite(rc.siteid).getThemeAssetPath()#/css/fckstyles.xml';
 										fckEditor.width			= "98%";
-										fckEditor.height		= "calc(100vh - 460px)";
+										fckEditor.height		= "calc(100vh - 380px)";
 										fckEditor.config.DefaultLanguage=lcase(session.rb);
 										fckEditor.config.AutoDetectLanguage=false;
 										if (rc.moduleID eq "00000000000000000000000000000000000"){
@@ -277,7 +277,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 											jQuery('##body').ckeditor(
 											{ toolbar:<cfif rc.type eq "Form">'Form'<cfelse>'Default'</cfif>,
-											height:'calc(100vh - 460px)',
+											height:'calc(100vh - 380px)',
 											customConfig : 'config.js.cfm'
 											},
 												function(editorInstance){

@@ -61,7 +61,7 @@
 <!--[if IE 9]> <html lang="en_US" class="ie9 mura no-focus"> <![endif]-->
 <!--[if gt IE 9]><!--> <html lang="#esapiEncode('html_attr',session.locale)#" class="mura no-focus"><!--<![endif]-->
 </cfif>
-  <head>
+<head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -192,26 +192,8 @@
 	<meta name="robots" content="noindex, nofollow, noarchive">
 	<meta http-equiv="cache control" content="no-cache, no-store, must-revalidate">
 
-	
-	<!-- Stylesheets -->
-
 	<!-- Admin CSS -->
 	<link href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/css/admin.min.css" rel="stylesheet" type="text/css" />
-
-	<!-- Spinner JS -->
-	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/spin.min.js" type="text/javascript"></script>
-
-	<!-- jQuery -->
-	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-
-	<!-- OneUI Core JS: Bootstrap, slimScroll, scrollLock, Appear, CountTo, Placeholder, Cookie and App.js -->
-	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/oneui.min.js"></script>
-
-	<!-- jQuery UI components -->
-	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery-ui.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery-ui-i18n.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery.collapsibleCheckboxTree.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery.spin.js" type="text/javascript"></script>
 
     <!--- global admin scripts --->
     <cfinclude template="includes/html_head.cfm">
@@ -238,274 +220,294 @@
 	<cfif structKeyExists(rc,'$')>
 		 #rc.$.renderEvent('onAdminHTMLHeadRender')#
 	</cfif>
-  </head>
-  <!--- use class no-constrain to remove fixed-width on inner containers --->
-  <body id="#rc.originalcircuit#" class="mura-admin header-navbar-fixed no-constrain #trim(rc.bodyclass)#">
+</head>
+<!--- use class no-constrain to remove fixed-width on inner containers --->
+<body id="#rc.originalcircuit#" class="mura-admin header-navbar-fixed no-constrain #trim(rc.bodyclass)#">
 
-    <!-- Page Container -->
-    <div id="page-container" class="<cfif session.siteid neq ''  and rc.$.currentUser().isLoggedIn() and rc.$.currentUser().isPrivateUser()>sidebar-l</cfif> sidebar-o <cfif cookie.ADMINSIDEBAR is 'off'> sidebar-mini</cfif> side-overlay-hover side-scroll header-navbar-fixed">
+	<!-- Page Container -->
+	<div id="page-container" class="<cfif session.siteid neq ''  and rc.$.currentUser().isLoggedIn() and rc.$.currentUser().isPrivateUser()>sidebar-l</cfif> sidebar-o <cfif cookie.ADMINSIDEBAR is 'off'> sidebar-mini</cfif> side-overlay-hover side-scroll header-navbar-fixed">
 
 		<cfif session.siteid neq ''  and rc.$.currentUser().isLoggedIn() and rc.$.currentUser().isPrivateUser()>
-    <cfinclude template="includes/nav.cfm">
-    <cfinclude template="includes/header.cfm">
+			<cfinclude template="includes/nav.cfm">
+			<cfinclude template="includes/header.cfm">
 		</cfif>
 
-    <!-- Main Container -->
-    <main id="main-container" class="<cfif session.siteid neq '' and rc.$.currentUser().isLoggedIn() and rc.$.currentUser().isPrivateUser()>block-constrain</cfif>">
+		<!-- Main Container -->
+		<main id="main-container" class="<cfif session.siteid neq '' and rc.$.currentUser().isLoggedIn() and rc.$.currentUser().isPrivateUser()>block-constrain</cfif>">
 
-    <!-- Page Content -->
-    <div class="content">
+		    <!-- Page Content -->
+		    <div class="content">
 
-         	<cfif request.action neq "core:cLogin.main" and isdefined('session.siteID')
-         		and (
-         		listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')
-         		)
-         	>
-          <cfparam name="session.mura.alerts" default="#structNew()#">
-          <cfif not structKeyExists(session.mura.alerts,'#session.siteid#')>
-          	<cfset session.mura.alerts['#session.siteid#']={}>
-          </cfif>
+		     	<cfif request.action neq "core:cLogin.main" and isdefined('session.siteID')
+		     		and (listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2'))>
+					<cfparam name="session.mura.alerts" default="#structNew()#">
+					<cfif not structKeyExists(session.mura.alerts,'#session.siteid#')>
+						<cfset session.mura.alerts['#session.siteid#']={}>
+					</cfif>
 
-     			<cfif not structIsEmpty(session.mura.alerts['#session.siteid#'])>
-     				<cfset alerts=session.mura.alerts['#session.siteid#']>
-     				<cfloop collection="#alerts#" item="alert">
-     					<cfif not listFindNoCase('defaultpasswordnotice,cachenotice',alert)>
-     						<div<cfif len(alerts['#alert#'].type)> class="alert alert-#esapiEncode('html',alerts['#alert#'].type)#"<cfelse> class="alert alert-error"</cfif>>
-	     						<span>
-				           	<a data-alertid="#alert#" class="close alert-dismiss" data-dismiss="alert"><i class="mi-close"></i></a>
-  	   						</span>
-		     					#alerts['#alert#'].text#
+		 			<cfif not structIsEmpty(session.mura.alerts['#session.siteid#'])>
+		 				<cfset alerts=session.mura.alerts['#session.siteid#']>
+		 				<cfloop collection="#alerts#" item="alert">
+		 					<cfif not listFindNoCase('defaultpasswordnotice,cachenotice',alert)>
+		 						<div<cfif len(alerts['#alert#'].type)> class="alert alert-#esapiEncode('html',alerts['#alert#'].type)#"<cfelse> class="alert alert-error"</cfif>>
+		     						<span>
+							           	<a data-alertid="#alert#" class="close alert-dismiss" data-dismiss="alert"><i class="mi-close"></i></a>
+			   							</span>
+			     					#alerts['#alert#'].text#
 								</div>
-		     			</cfif>
-     				</cfloop>
-     			</cfif>
+			     			</cfif>
+		 				</cfloop>
+		 			</cfif>
 
 					<cfif rc.renderMuraAlerts>
 						<cfif isdefined('session.hasdefaultpassword') and not structKeyExists(session.mura.alerts['#session.siteID#'],'defaultpasswordnotice')>
 							<div class="alert alert-error">
 								<span>
 									<a data-alertid="defaultpasswordnotice" class="close alert-dismiss" data-dismiss="alert"><i class="mi-close"></i></a>
-									#rc.$.rbKey("layout.defaultpasswordnotice")#
+										#rc.$.rbKey("layout.defaultpasswordnotice")#
 								</span>
 							</div>
 						</cfif>
-
 						<cfif not len(application.settingsManager.getSite(session.siteID).getEnableLockdown())
 							and not application.settingsManager.getSite(session.siteID).getCache()
-								and not structKeyExists(session.mura.alerts['#session.siteID#'],'cachenotice')>
-									<div class="alert alert-warning">
-										<span>
-											<a data-alertid="cachenotice" class="close alert-dismiss" data-dismiss="alert"><i class="mi-close"></i></a>
-											#rc.$.rbKey("layout.cachenotice")#
-										</span>
-									</div>
-								</cfif>
-							</cfif>
+							and not structKeyExists(session.mura.alerts['#session.siteID#'],'cachenotice')>
+							<div class="alert alert-warning">
+								<span>
+									<a data-alertid="cachenotice" class="close alert-dismiss" data-dismiss="alert"><i class="mi-close"></i></a>
+									#rc.$.rbKey("layout.cachenotice")#
+								</span>
+							</div>
+						</cfif>
+					</cfif>
+		 		</cfif>
+		 		<cfif request.action neq "core:cLogin.main">
+		 			<div id="mura-content">
+		 		</cfif>
+		 		</cfprocessingdirective>#body#<cfprocessingdirective suppressWhitespace="true">
+		 		<cfif request.action neq "core:cLogin.main">
+		 			</div> <!-- /##mura-content -->
+		 		</cfif>
 
-         	</cfif>
-         		<cfif request.action neq "core:cLogin.main">
-         			<div id="mura-content">
-         		</cfif>
-         		</cfprocessingdirective>#body#<cfprocessingdirective suppressWhitespace="true">
-         		<cfif request.action neq "core:cLogin.main">
-         			</div> <!-- /##mura-content -->
-         		</cfif>
+			</div>  <!-- /.content -->
 
-      </div>  <!-- /.content -->
+		</main>
 
-      </main>
+		<cfif request.action neq "core:cLogin.main" and isDefined("session.siteid")>
 
-	    <cfif request.action neq "core:cLogin.main" and isDefined("session.siteid")>
+			<script>
+			$(document).on('click', '.selectAssocImageResults ul li', function(){
+				$(this).find('input[type=radio]').prop('checked',true);
+				return false;
+			});
 
-				<script>
-				$(document).on('click', '.selectAssocImageResults ul li', function(){
-					$(this).find('input[type=radio]').prop('checked',true);
+			// set width of pane relative to side controls
+			var resizeTabPane = function(offsetVal=17){
+				if ($('##mura-content-body-block').length){
+
+					var blockW = $('##mura-content-body-block').width();
+					var controlW = $('##mura-content-body-block .mura__edit__controls').width();
+					var newW = (blockW - controlW) - offsetVal;
+
+					$('##mura-content-body-block .tab-content').css('width',newW + 'px');
+					setTimeout(function(){
+						resizeBodyEditor();
+					}, 50)
+				}
+			}
+			
+			// set height of ckeditor content area - called by resizeTabPane()
+			var resizeBodyEditor = function(){
+				if ($('##mura-content-body-render .cke_contents').length){
+					var ckeTopH = $('##mura-content-body-render .cke_top').height();
+					// also adjust cke height
+					$('##mura-content-body-render .cke_contents').css('height','calc((100vh - ' + ckeTopH +  'px) - 372px)');
+				}			
+			}
+
+			// todo: timing on this
+			$(window).on("load", function() {
+			// run on page load
+				resizeTabPane();
+			});
+
+			$(document).ready(function(){
+				// persist side navigation expand/collapse 
+				$('*[data-action=sidebar_mini_toggle]').click(function(){
+					var asb = 'on';
+					// adjust sidebar as needed
+					resizeTabPane();
+					// set adminsidebar cookie
+					if($('##page-container').hasClass('sidebar-mini')){
+						asb = 'off';
+					}
+		 			createCookie('ADMINSIDEBAR',asb,5);
+				});
+
+				// persist open nav items
+				$('##sidebar .nav-main li ul li a.active').parents('li').parents('ul').parents('li').addClass('open');
+
+				// resizable editing panel
+				$('##mura-content .mura__edit__controls').resizable({
+					handles:'w',
+					maxWidth: 640,
+					minWidth: 300,
+					resize: function (event,ui) {
+				        resizeTabPane(); 
+				        ui.position.left = ui.originalPosition.left;
+		                var frameParent = $('##mura-content-body-render');
+		                var overlay = $(frameParent).find('.hidden-dialog-overlay');
+				        if (!overlay.length) {
+				            overlay = $('<div class="hidden-dialog-overlay" style="position:absolute;top:0;left:0;right:0;bottom:0;z-index:100000; width: 100%; height: 100%;"></div>');
+				            overlay.appendTo(frameParent);
+				        } else {
+				            overlay.show();
+				        }
+			     	},
+					stop: function(event,ui){
+		                var frameParent = $('##mura-content-body-render');
+						var acw = $(this).width();
+			 			createCookie('ADMINCONTROLWIDTH',acw,5);				 
+			 			$(frameParent).find('.hidden-dialog-overlay').hide();
+			        	resizeTabPane();
+					}		
+				});
+				
+				$('##mura-content-body-block .load-inline').show();
+				setTimeout(function(){
+					$('##mura-content-body-block .load-inline').hide();
+					$('##mura-content-body-render').show();
+					resizeBodyEditor();
+				}, 700);
+
+				//nice-select 
+				$('.mura__edit__controls .mura-control-group select').niceSelect();
+
+				// header-search
+				$('##mura-header-search-reveal').click(
+				function(){
+					$(this).hide();
+					$('##mura-header-search').show();
+				});
+
+				// site list filter
+				var sitefilter = jQuery('##site-list-filter');
+				var sitelist = jQuery('ul##site-selector-list');
+				var sitelistw = jQuery(sitelist).width();
+				jQuery(sitelist).find('.ui-widget').click(function(){
+					return false;
+				})
+				jQuery(sitefilter).click(function(){
 					return false;
 				});
-
-				$(document).ready(function(){
-					// persist side navigation expand/collapse 
-					$('*[data-action=sidebar_mini_toggle]').click(function(){
-						var asb = 'on';
-						// adjust sidebar as needed
-						resizeTabPane();
-						// set adminsidebar cookie
-						if($('##page-container').hasClass('sidebar-mini')){
-							asb = 'off';
-						}
-			 			createCookie('ADMINSIDEBAR',asb,5);
-					});
-
-					// persist open nav items
-					$('##sidebar .nav-main li ul li a.active').parents('li').parents('ul').parents('li').addClass('open');
-
-					// resizable editing panel
-					$('##mura-content .mura__edit__controls').resizable({
-						handles:'w',
-						maxWidth: 640,
-						minWidth: 300,
-						resize: function (event,ui) {
-					        ui.position.left = ui.originalPosition.left;
-					        ui.size.width = (ui.size.width
-					            - ui.originalSize.width )
-					            + ui.originalSize.width;
-
-			                var frameParent = $('##mura-content-body-render');
-			                var overlay = $(frameParent).find('.hidden-dialog-overlay');
-					        if (!overlay.length) {
-					            overlay = $('<div class="hidden-dialog-overlay" style="position:absolute;top:0;left:0;right:0;bottom:0;z-index:100000; width: 100%; height: 100%;"></div>');
-					            overlay.appendTo(frameParent);
-					        } else {
-					            overlay.show();
-					        }
-					
-					        resizeTabPane(); 
-				     	},
-						stop: function(event,ui){
-			                var frameParent = $('##mura-content-body-render');
-							var acw = $(this).width();
-				 			createCookie('ADMINCONTROLWIDTH',acw,5);				 
-				 			$(frameParent).find('.hidden-dialog-overlay').hide();		
-						}		
-					});
-					
-					// set width of pane relative to side controls
-					var resizeTabPane = function(){
-					   var newW = $('##mura-content-body-block').width() - $('.mura__edit__controls').width() - 50;
-				      $('##mura-content-body-block .tab-content').css('width',newW);
+				jQuery(sitelist).css('width',sitelistw);
+				jQuery(sitefilter).keyup(function(){
+					var str = jQuery(this).val();
+					jQuery(sitelist).find('li').hide();
+					if (str == ''){
+						jQuery(sitelist).find('li').show();
+					} else {
+						jQuery(sitelist).find('li:contains(' + str + ')').show();
 					}
-					// run on page load
-					resizeTabPane();
-
-					//nice-select 
-					$('.mura__edit__controls .mura-control-group select').niceSelect();
-
-					// header-search
-					$('##mura-header-search-reveal').click(
-					function(){
-						$(this).hide();
-						$('##mura-header-search').show();
-					});
-
-					// site list filter
-					var sitefilter = jQuery('##site-list-filter');
-					var sitelist = jQuery('ul##site-selector-list');
-					var sitelistw = jQuery(sitelist).width();
-					jQuery(sitelist).find('.ui-widget').click(function(){
-						return false;
-					})
-					jQuery(sitefilter).click(function(){
-						return false;
-					});
-					jQuery(sitelist).css('width',sitelistw);
-					jQuery(sitefilter).keyup(function(){
-						var str = jQuery(this).val();
-						jQuery(sitelist).find('li').hide();
-						if (str == ''){
-							jQuery(sitelist).find('li').show();
-						} else {
-							jQuery(sitelist).find('li:contains(' + str + ')').show();
-						}
-					});
-
-					// make :contains selector case-insensitive
-					jQuery.expr[":"].contains = jQuery.expr.createPseudo(function(arg) {
-					    return function( elem ) {
-				        return jQuery(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0;
-					    };
-					});
-
-					// min-height for page content area
-					var setBlockHeight = function(){
-						var bc = $('##mura-content .block-constrain');
-						var minFooterH = 15;
-						var windowH = $(window).height();
-						var headerH = $('.mura-header:first').height();
-						var footerH = $('.mura-actions:first').height();
-						if (footerH <= minFooterH){ footerH = minFooterH;}
-						if ($(bc).length > 1){
-							$.each(bc,function(){
-								if($(this)[0] !== $(bc).last()[0]){
-									footerH = footerH + $(this).height();
-								}
-							});
-						}
-						var h = windowH - headerH - footerH -110;
-						$(bc).last().css('min-height',h + 'px');
-					};
-					// run on page load
-					setBlockHeight();
-					// run on window resize
-					$(window).on('resize',function(){
-						setBlockHeight();
-						resizeTabPane();
-					});
-
-					// tabdrop: trigger on page load w/ slight delay
-					if ( $( '.mura-tabs').length ) {
-						var triggerTabDrop = function(){
-							setTimeout(function(){
-								$('.mura-tabs').tabdrop({text: '<i class="mi-chevron-down"></i>'});
-								$('.tabdrop .dropdown-toggle').parents('.nav-tabs').css('overflow-y','visible');
-								$('.tabdrop a.dropdown-toggle .display-tab').html('<i class="mi-chevron-down"></i>');
-							}, 10);
-						}
-						// run on page load
-						triggerTabDrop();
-						// run on resize
-						$(window).on('resize',function(){
-							$('.nav-tabs').css('overflow-y','hidden').find('li.tabdrop').removeClass('open').find('.dropdown-backdrop').remove();
-								triggerTabDrop();
-						});
-						$('.tabdrop .dropdown-toggle').on('click',function(){
-							$(this).parents('.nav-tabs').css('overflow-y','visible');
-						});
-					}
-					// /tabdrop
-
-					// dismiss alerts
-					$('.alert-dismiss').click(
-						function(){
-							var _alert=this;
-							$.ajax(
-								{
-									url:'./',
-									data:{
-										siteid:'#esapiEncode('javascript',session.siteid)#',
-										alertid:$(_alert).attr('data-alertid'),
-										muraaction:'cdashboard.dismissAlert'
-									},
-									success: function(){
-										$(_alert).parent('.alert').fadeOut();
-									}
-								}
-							);
-						}
-					);
-
-					// click to close new table actions, category selector filter
-					document.onclick = function(e) {
-					if (jQuery('##newContentMenu').length > 0){
-					  if(!(jQuery(e.target).parents().hasClass('addNew')) && !(jQuery(e.target).parents().hasClass('add')) && !(jQuery(e.target).hasClass('add'))){
-				     	jQuery('##newContentMenu').addClass('hide');
-			    	}
-					};
-
-					if (jQuery('.actions-menu').length > 0){
-				    if(!(jQuery(e.target).parents().hasClass('actions-menu')) && !(jQuery(e.target).parents().hasClass('actions-list')) && !(jQuery(e.target).parents().hasClass('show-actions')) && !(jQuery(e.target).hasClass('actions-list'))){
-				       jQuery('.actions-menu').addClass('hide');
-			     	}
-					};
-
-					if(jQuery('##category-select-list').length > 0){
-				    if(!(jQuery(e.target).parents().hasClass('category-select')) && !(jQuery(e.target).parents().hasClass('categories'))){
-				    	jQuery('##category-select-list').slideUp('fast');
-					    }
-						}
-					};
-					// /click to close
-
 				});
+
+				// make :contains selector case-insensitive
+				jQuery.expr[":"].contains = jQuery.expr.createPseudo(function(arg) {
+				    return function( elem ) {
+			        return jQuery(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0;
+				    };
+				});
+
+				// min-height for page content area
+				var setBlockHeight = function(){
+					var bc = $('##mura-content .block-constrain');
+					var minFooterH = 15;
+					var windowH = $(window).height();
+					var headerH = $('.mura-header:first').height();
+					var footerH = $('.mura-actions:first').height();
+					if (footerH <= minFooterH){ footerH = minFooterH;}
+					if ($(bc).length > 1){
+						$.each(bc,function(){
+							if($(this)[0] !== $(bc).last()[0]){
+								footerH = footerH + $(this).height();
+							}
+						});
+					}
+					var h = windowH - headerH - footerH -110;
+					$(bc).last().css('min-height',h + 'px');
+				};
+				// run on page load
+				setBlockHeight();
+				// run on window resize
+				$(window).on('resize',function(){
+					setBlockHeight();
+					resizeTabPane();
+				});
+
+				// tabdrop: trigger on page load w/ slight delay
+				if ( $( '.mura-tabs').length ) {
+					var triggerTabDrop = function(){
+						setTimeout(function(){
+							$('.mura-tabs').tabdrop({text: '<i class="mi-chevron-down"></i>'});
+							$('.tabdrop .dropdown-toggle').parents('.nav-tabs').css('overflow-y','visible');
+							$('.tabdrop a.dropdown-toggle .display-tab').html('<i class="mi-chevron-down"></i>');
+						}, 10);
+					}
+					// run on page load
+					triggerTabDrop();
+					// run on resize
+					$(window).on('resize',function(){
+						$('.nav-tabs').css('overflow-y','hidden').find('li.tabdrop').removeClass('open').find('.dropdown-backdrop').remove();
+							triggerTabDrop();
+					});
+					$('.tabdrop .dropdown-toggle').on('click',function(){
+						$(this).parents('.nav-tabs').css('overflow-y','visible');
+					});
+				}
+				// /tabdrop
+
+				// dismiss alerts
+				$('.alert-dismiss').click(
+					function(){
+						var _alert=this;
+						$.ajax(
+							{
+								url:'./',
+								data:{
+									siteid:'#esapiEncode('javascript',session.siteid)#',
+									alertid:$(_alert).attr('data-alertid'),
+									muraaction:'cdashboard.dismissAlert'
+								},
+								success: function(){
+									$(_alert).parent('.alert').fadeOut();
+								}
+							}
+						);
+					}
+				);
+
+				// click to close new table actions, category selector filter
+				document.onclick = function(e) {
+				if (jQuery('##newContentMenu').length > 0){
+				  if(!(jQuery(e.target).parents().hasClass('addNew')) && !(jQuery(e.target).parents().hasClass('add')) && !(jQuery(e.target).hasClass('add'))){
+			     	jQuery('##newContentMenu').addClass('hide');
+		    	}
+				};
+
+				if (jQuery('.actions-menu').length > 0){
+			    if(!(jQuery(e.target).parents().hasClass('actions-menu')) && !(jQuery(e.target).parents().hasClass('actions-list')) && !(jQuery(e.target).parents().hasClass('show-actions')) && !(jQuery(e.target).hasClass('actions-list'))){
+			       jQuery('.actions-menu').addClass('hide');
+		     	}
+				};
+
+				if(jQuery('##category-select-list').length > 0){
+			    if(!(jQuery(e.target).parents().hasClass('category-select')) && !(jQuery(e.target).parents().hasClass('categories'))){
+			    	jQuery('##category-select-list').slideUp('fast');
+				    }
+					}
+				};
+				// /click to close
+
+			});
 
 			mura.init({
 			context:'#esapiEncode("javascript",rc.$.globalConfig('context'))#',
@@ -517,22 +519,20 @@
 
 		</cfif>
 
-		<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery-tagselector.js?coreversion=#application.coreversion#"></script>
-
-		<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/bootstrap-tabdrop.js"></script>
+		<cfinclude template="includes/html_foot.cfm">
 
 		<cfif rc.originalcircuit eq "cArch" and (rc.originalfuseaction eq "list" or rc.originalfuseaction eq "search") and (listFind(',00000000000000000000000000000000099,00000000000000000000000000000000000,00000000000000000000000000000000003,00000000000000000000000000000000004',rc.moduleid) or rc.moduleid eq '')>
 			<cfinclude template="/muraWRM#application.configBean.getAdminDir()#/core/views/carch/dsp_content_nav.cfm">
 		</cfif>
+
 		<cfinclude template="includes/dialog.cfm">
+		
 		<cfif structKeyExists(rc,'$')>
 			#rc.$.renderEvent('onAdminHTMLFootRender')#
 		</cfif>
 
-    </div><!-- /.page-container -->
+	</div><!-- /.page-container -->
 
-
-
-	</body>
+</body>
 </html></cfprocessingdirective>
 </cfoutput>

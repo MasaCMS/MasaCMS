@@ -49,32 +49,30 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<div class="mura-panel panel">
 		<div class="mura-panel-heading" role="tab" id="heading-relatedcontent">
 			<h4 class="mura-panel-title">
-				<a class="collapse" role="button" data-toggle="collapse" data-parent="##content-panels" href="##panel-relatedcontent" aria-expanded="false" aria-controls="panel-relatedcontent">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.relatedcontent")#</a>
+				<a class="collapse collapsed" role="button" data-toggle="collapse" data-parent="##content-panels" href="##panel-relatedcontent" aria-expanded="false" aria-controls="panel-relatedcontent">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.relatedcontent")#</a>
 			</h4>
 		</div>
 		<div id="panel-relatedcontent" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-relatedcontent" aria-expanded="false" style="height: 0px;">
 			<div class="mura-panel-body">
 
-					<span id="extendset-container-tabrelatedcontenttop" class="extendset-container"></span>
+				<span id="extendset-container-tabrelatedcontenttop" class="extendset-container"></span>
+
+				<div class="mura-control-group">
 					<div id="relcontent__selected"></div>
-
-				<!--- 'big ui' flyout panel --->
-				<!--- todo: resource bundle key for 'manage related content' --->
-				<div class="bigui" id="bigui__related" data-label="Manage Related Content">
-					<div class="bigui__title">#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.relatedcontent"))#</div>
-					<div class="bigui__controls">
-
-						<div id="selectRelatedContent"><!--- target for ajax ---></div>
-						<div id="selectedRelatedContent" class="mura-control-group">
-
-					</div>
-				</div> <!--- /.bigui --->
-
+					<!--- 'big ui' flyout panel --->
+					<!--- todo: resource bundle key for 'manage related content' --->
+					<div class="bigui" id="bigui__related" data-label="Manage Related Content">
+						<div class="bigui__title">#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.relatedcontent"))#</div>
+						<div class="bigui__controls">
+							<div id="selectRelatedContent"><!--- target for ajax ---></div>
+							<div id="selectedRelatedContent" class="mura-control-group"></div>
+						</div>
+					</div> <!--- /.bigui --->
+				</div>
+				<input id="relatedContentSetData" type="hidden" name="relatedContentSetData" value="" />	
 			</div>
-			<input id="relatedContentSetData" type="hidden" name="relatedContentSetData" value="" />	
 		</div>
-	</div>
-</div> 
+	</div> 
 </cfoutput>
 
 <script type="text/javascript">
@@ -94,9 +92,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 					if (rcList.trim().length > 0){
 					<!--- todo: resource bundle values for text --->
-						$('#relcontent__selected').html('<p>Selected Related Content</p><ul>' + rcList + '</ul>');
+						$('#relcontent__selected').html('<label>Selected Related Content</label><ul>' + rcList + '</ul>');
 					} else {
-						$('#relcontent__selected').html('<p>No related content selected<p>');
+						$('#relcontent__selected').html('<label>Selected Related Content</label><div>No related content selected</div>');
 					}
 				}
 

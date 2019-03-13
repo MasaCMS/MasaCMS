@@ -46,9 +46,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<!--- accordion panels --->
 		<div class="mura__edit__controls__scrollable">
 			
+			<!--- todo: rb key for placeholder --->
 			<!--- filter settings --->
 			<div id="mura__edit__settings__filter">
-	  		<input type="text" class="form-control" id="mura__edit__settings__filter__input" placeholder="Find settings">
+	  		<input type="text" class="form-control" id="mura__edit__settings__filter__input" placeholder="Type to Find Settings">
 			</div>
 			<!--- settings --->
 			<div class="mura__edit__controls__objects">

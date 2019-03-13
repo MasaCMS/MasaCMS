@@ -239,7 +239,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		var renderBigUI = function(el){
 			var idstr = $(el).attr('id');
 			var labelstr = $(el).attr('data-label');
-			$(el).before('<a class="bigui__launch btn" data-rel="' + idstr + '" href="#">' + labelstr + '</a>');
+			$(el).before('<a class="bigui__launch" data-rel="' + idstr + '" href="#">' + labelstr + '</a>');
 			<!--- todo: resource bundle key for 'done' --->
 			$(el).prepend('<a class="bigui__close">Done <i class="mi-angle-right"></i></a>')
 			$(el).wrapInner('<div class="bigui__wrapper"></div>');
@@ -511,7 +511,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<!--- todo: rb key placeholder text for "Content Title" --->
 			<!--- todo: style for placeholder see end of custom.less --->
 			<div id="mura-content-title-render" data-placeholder="Content Title">#esapiEncode('html_attr',rc.contentBean.gettitle())#</div>
-			<div id="mura-content-body-render">#bodyContent#</div>
+			<div id="mura-content-body-render" style="display:none;">#bodyContent#</div>
 
 			<div class="load-inline tab-preloader"></div>
 
@@ -520,9 +520,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					$('.tab-preloader').spin(spinnerArgs2);
 					<cfif rc.compactDisplay eq 'true'>
 					//This is a hack to prevent ckeditor bug that sets iframe width to zero when goin to extended attributes and back
-					$('a[href="##tabBasic"]').on('click',function(){
-						$('##tabBasic').find('.cke_wysiwyg_frame').width('100%');
-					});
 					</cfif>
 				});
 			</script>
@@ -653,13 +650,13 @@ function copyToClipboard(str){
 	document.execCommand('copy');
 }
 <!--- todo: rb keys for these titles --->
-$('.clicktocopy').append('<i class="mi-copy" title="Click to copy"></i>');
+$('.clicktocopy').prepend('<i class="mi-copy" title="Click to copy"></i>');
 
 $('.clicktocopy').click(function(){
 	var copiedicon = '<i class="mi-check" title="Copied to clipboard"></i>';
 	copyToClipboard($(this).text());
 	$(this).find('i').remove();
-	$(this).append(copiedicon);
+	$(this).prepend(copiedicon);
 })
 
 </script>

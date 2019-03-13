@@ -47,51 +47,55 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="mura-panel panel">
   <div class="mura-panel-heading" role="tab" id="heading-usagereport">
     <h4 class="mura-panel-title">
-      <a class="collapse" role="button" data-toggle="collapse" data-parent="##content-panels" href="##panel-usagereport" aria-expanded="false" aria-controls="panel-usagereport">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.usagereport")#</a>
+      <a class="collapse collapsed" role="button" data-toggle="collapse" data-parent="##content-panels" href="##panel-usagereport" aria-expanded="false" aria-controls="panel-usagereport">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.usagereport")#</a>
     </h4>
   </div>
     <div id="panel-usagereport" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-usagereport" aria-expanded="false" style="height: 0px;">
       <div class="mura-panel-body">
     <span id="extendset-container-tabusagereporttop" class="extendset-container"></span>
 
-    <div id="usage__totals"></div>
-    <!--- 'big ui' flyout panel --->
-    <!--- todo: resource bundle key for 'see usage details' --->
-    <div class="bigui" id="bigui__usage" data-label="See Usage Details">
-      <div class="bigui__title">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.usagereport")#</div>
-      <div class="bigui__controls">
-
-        <div class="mura-control-group">
-        <cfif rsUsage.recordcount>
-            <label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.usagedescription')#:</label>
-            <table class="mura-table-grid" id="table__usage__report">
-            <tr>
-              <th class="var-width">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.title')#</th>
-              <th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.display')#</th>
-              <th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.update')#</th>
-              <th class="actions">&nbsp;</th>
-            </tr>
-             <cfloop query="rsUsage">
-        		<cfset crumbdata=application.contentManager.getCrumbList(rsUsage.contentid, rc.siteid)/>
-        		<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
-                <tr>
-                <td class="var-width">#$.dspZoom(crumbdata)#</td>
-        		<td>
-        	    <cfif rsUsage.Display and (rsUsage.Display eq 1 and rsUsage.approved)>#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#<cfelseif(rsUsage.Display eq 2 and rsUsage.approved)>#LSDateFormat(rsUsage.displaystart,session.dateKeyFormat)# - #LSDateFormat(rsUsage.displaystop,session.dateKeyFormat)#<cfelse>#application.rbFactory.getKeyValue(session.rb,'sitemanager.no')#</cfif></td>
-        		<td>#LSDateFormat(rsUsage.lastupdate,session.dateKeyFormat)#</td>
-                <td nowrap class="actions"><ul><cfif verdict neq 'none'><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.edit')#" href="./?muraAction=cArch.edit&contenthistid=#rsUsage.ContentHistID#&contentid=#rsUsage.ContentID#&type=#rsUsage.type#&parentid=#rsUsage.parentID#&topid=#rsUsage.contentid#&siteid=#rsUsage.siteid#&moduleid=#rsUsage.moduleid#"><i class="mi-pencil"></i></a></li><li class="version-history"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.versionhistory')#" href="./?muraAction=cArch.hist&contentid=#rsUsage.ContentID#&type=#rsUsage.type#&parentid=#rsUsage.parentID#&topid=#rsUsage.contentid#&siteid=#rsUsage.siteid#&moduleid=#rsUsage.moduleid#"><i class="mi-history"></i></a></li><cfelse><li class="edit disabled">#application.rbFactory.getKeyValue(session.rb,'sitemanager.edit')#</li><li class="version-history disabled">#application.rbFactory.getKeyValue(session.rb,'sitemanager.versionhistory')#</li></cfif></ul></td>
-                </tr>
-            </cfloop>
-           </table>
-         <cfelse>
-             <div class="help-block-empty">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.nousage'),lcase(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.#rc.contentBean.getType()#')))#</div>
-        </cfif>
-
-        </div> <!--- / .mura-control-group --->
+    <div class="mura-control-group">
 
 
-      </div>
-    </div> <!--- /.bigui --->
+      <div id="usage__totals"></div>
+      <!--- 'big ui' flyout panel --->
+      <!--- todo: resource bundle key for 'see usage details' --->
+      <div class="bigui" id="bigui__usage" data-label="See Usage Details">
+        <div class="bigui__title">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.usagereport")#</div>
+        <div class="bigui__controls">
+
+          <div class="mura-control-group">
+          <cfif rsUsage.recordcount>
+              <label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.usagedescription')#:</label>
+              <table class="mura-table-grid" id="table__usage__report">
+              <tr>
+                <th class="var-width">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.title')#</th>
+                <th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.display')#</th>
+                <th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.update')#</th>
+                <th class="actions">&nbsp;</th>
+              </tr>
+               <cfloop query="rsUsage">
+          		<cfset crumbdata=application.contentManager.getCrumbList(rsUsage.contentid, rc.siteid)/>
+          		<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
+                  <tr>
+                  <td class="var-width">#$.dspZoom(crumbdata)#</td>
+          		<td>
+          	    <cfif rsUsage.Display and (rsUsage.Display eq 1 and rsUsage.approved)>#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#<cfelseif(rsUsage.Display eq 2 and rsUsage.approved)>#LSDateFormat(rsUsage.displaystart,session.dateKeyFormat)# - #LSDateFormat(rsUsage.displaystop,session.dateKeyFormat)#<cfelse>#application.rbFactory.getKeyValue(session.rb,'sitemanager.no')#</cfif></td>
+          		<td>#LSDateFormat(rsUsage.lastupdate,session.dateKeyFormat)#</td>
+                  <td nowrap class="actions"><ul><cfif verdict neq 'none'><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.edit')#" href="./?muraAction=cArch.edit&contenthistid=#rsUsage.ContentHistID#&contentid=#rsUsage.ContentID#&type=#rsUsage.type#&parentid=#rsUsage.parentID#&topid=#rsUsage.contentid#&siteid=#rsUsage.siteid#&moduleid=#rsUsage.moduleid#"><i class="mi-pencil"></i></a></li><li class="version-history"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.versionhistory')#" href="./?muraAction=cArch.hist&contentid=#rsUsage.ContentID#&type=#rsUsage.type#&parentid=#rsUsage.parentID#&topid=#rsUsage.contentid#&siteid=#rsUsage.siteid#&moduleid=#rsUsage.moduleid#"><i class="mi-history"></i></a></li><cfelse><li class="edit disabled">#application.rbFactory.getKeyValue(session.rb,'sitemanager.edit')#</li><li class="version-history disabled">#application.rbFactory.getKeyValue(session.rb,'sitemanager.versionhistory')#</li></cfif></ul></td>
+                  </tr>
+              </cfloop>
+             </table>
+           <cfelse>
+               <div class="help-block-empty">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.nousage'),lcase(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.#rc.contentBean.getType()#')))#</div>
+          </cfif>
+
+          </div> <!--- / .mura-control-group --->
+
+
+        </div>
+      </div> <!--- /.bigui --->
+    </div> <!--- /.mura-control-group --->
 
     <span id="extendset-container-usagereport" class="extendset-usagereport"></span>
     <span id="extendset-container-tabusagereportbottom" class="extendset-container"></span>
