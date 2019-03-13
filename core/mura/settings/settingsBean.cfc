@@ -726,12 +726,24 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		return getResourcePath(argumentCollection=arguments) & "#variables.configBean.getSiteAssetPath()#/#variables.instance.displayPoolID#";
 	}
 
+	public function getSiteAssetPath(complete="0", domain="#getValue('domain')#") output=false {
+		return getAssetPath(argumentCollection=arguments);
+	}
+
 	public function getFileAssetPath(complete="0", domain="#getValue('domain')#") output=false {
 		if(len(variables.configBean.getValue('fileAssetPath'))){
 			return variables.configBean.getValue('fileAssetPath')  & "/" & variables.instance.filepoolID;
 		} else {
 			return getResourcePath(argumentCollection=arguments) & "#variables.configBean.getSiteAssetPath()#/#variables.instance.filepoolID#";
 		}
+	}
+
+	public function getFileDir() output=false {
+		return variables.configBean.getFileDir()  & variables.configBean.getFileDelim() & variables.instance.filepoolID;
+	}
+
+	public function getAssetDir() output=false {
+		return variables.configBean.getAssetDir()  & variables.configBean.getFileDelim() & variables.instance.filepoolID;
 	}
 
 	public function getIncludePath() output=false {

@@ -3152,7 +3152,15 @@ var Mura=(function(){
 		}
 
 		if (!config.assetpath) {
-			config.assetpath = config.context + "/" + config.siteid;
+			config.assetpath = config.context + "/sites/" + config.siteid;
+		}
+
+		if (!config.siteassetpath) {
+			config.siteassetpath = config.assetpath;
+		}
+
+		if (!config.fileassetpath) {
+			config.fileassetpath = config.assetpath;
 		}
 
 		if (!config.apiEndpoint) {
