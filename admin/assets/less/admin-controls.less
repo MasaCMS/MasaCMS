@@ -1,26 +1,30 @@
 /* variables */
-
 @controlsdivbgrd: #F9F9F9;
-/* panel headers */
 
+/* panel headers */
 @controlspanelhdrbgrd: #FFFFFF;
 @controlspanelhdrtext: #212529;
 @controlspanelhdrhover: #FEFEFE;
 @controlspanelhdrhovertext: #212529;
-/* panels and elements */
+@controlspanelhdrborder: #EBEBEB;
+@controlsclosedicon: #9b9b9b;
 
+/* panels and elements */
 @controlspanelbgrd: transparent;
 @controlsgroupbgrd: #FCFCFC;
 @controlslabelcolor: #999999;
 @controlstextcolor: #333333;
 @controlsinputbgrd: #FCFCFC;
 @controlsinputtext: #333333;
+@controlsinputshadow: 0 1px 0 #e6e6e6;
+@controlsinputfocusshadow: 0 2px 0 #b1b1b1;
 @cardshadow: 0px 0px  13px rgba(0,0,0,0.1) !important;
-/* panels layout */
 
+/* panels layout */
 @editcalcheight: ~"calc(100vh - 216px)";
 @editscrollheight: ~"calc(100vh - 233px)";
 @editcalcwidth: ~"calc(100% - 315px)";
+
 .contentTitle {
     font-size: 26px;
     font-weight: 900;
@@ -30,11 +34,9 @@
 }
 .mura__edit__controls {
     background-color: @controlsdivbgrd;
-    border: 1px solid @grayBorderLight !important;
+    border: none !important;
     border-bottom: none;
     border-radius: 4px;
-    box-shadow: -1px 0 2px rgba(0, 0, 0,
-    	.05);
     color: @controlstextcolor;
     float: right;
     margin: 10px 0 0 0 !important;
@@ -239,6 +241,7 @@
                     background-color: @controlspanelhdrbgrd;
                     color: @controlspanelhdrtext;
                     padding: 0;
+                    border-bottom: 1px solid @controlspanelhdrborder;
                 }
                 .mura-panel-heading:hover {
                     background-color: @controlspanelhdrhover;
@@ -274,7 +277,7 @@
                             -ms-transform: translateY(-50%);
                         }
                         &.collapsed:before {
-                            color: @grayDark;
+                            color: @controlsclosedicon;
                             content: "\f105";
                             left: 16px;
                         }
@@ -354,6 +357,19 @@
             cursor: pointer;
             outline: none;
             outline-offset: 0;
+        }
+        .mura-control-group>label+input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]),
+        .mura-control-group>label+*+input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]),
+        .mura-control-group>label+input[type=password],
+        .mura-control-group>label+*+input[type=password]{
+            box-shadow: @controlsinputshadow;
+            border-bottom-right-radius: 0px;
+            border-bottom-left-radius: 0px;
+            margin-bottom: 12px;
+            padding: 0;
+            &:focus{
+                box-shadow: @controlsinputfocusshadow;
+            }
         }
         input[type=text].mura-repeat-option {
             margin: 0 0;
@@ -769,13 +785,14 @@ body.sidebar-tab {
     text-overflow: ellipsis;
     white-space: nowrap;
     width: 100%!important;
-    background-color: #FFF;
+    background-color: transparent;
     padding-left: 12px;
     &:hover, &.editing {
-        outline: #ccc dotted 1px!important;
+        outline: #ccc dashed 1px!important;
     }
     input {
         cursor: auto;
+        background-color: transparent;
         font-size: 26px;
         font-weight: 900;
         border: none;
