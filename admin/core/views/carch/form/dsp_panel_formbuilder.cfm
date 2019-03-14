@@ -98,7 +98,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<label>
 				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.confirmationmessage')#
 			</label>
-				<textarea name="responseMessage" rows="6">#esapiEncode('html',rc.contentBean.getresponseMessage())#</textarea>
+				<textarea name="responseMessage" rows="4">#esapiEncode('html',rc.contentBean.getresponseMessage())#</textarea>
 			</div>
 				<div class="mura-control-group">
 					<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.responsesendto')#

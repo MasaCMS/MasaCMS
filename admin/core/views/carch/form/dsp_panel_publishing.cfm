@@ -223,24 +223,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			</cfif>
 
-			<!--- notify for review --->
-			<div class="mura-control-group">
-					<label for="dspnotify" class="checkbox">
-			  		<input type="checkbox" name="dspNotify"  id="dspnotify" onclick="siteManager.loadNotify('#esapiEncode('javascript',rc.siteid)#','#esapiEncode('javascript',rc.contentid)#','#esapiEncode('javascript',rc.parentid)#');"  class="checkbox">
-					<span data-toggle="popover" title="" data-placement="right"
-						data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.notifyReview"))#"
-						data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.notifyforreview"))#">
-						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notifyforreview')#
-			      		 <i class="mi-question-circle"></i>
-					 </span>
-			  	</label>
-				<div id="selectNotify" class="mura-control justify" style="display: none;"></div>
-			</div> <!--- /end mura-control-group --->
-
 			<!--- locked --->
 			<cfif  rc.contentid neq '00000000000000000000000000000000001' and listFind(session.mura.memberships,'S2')>
 				<div class="mura-control-group">
-					<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.locknodelabel')#</label>
+<!--- 					<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.locknodelabel')#</label> --->
 					<label for="islocked" class="checkbox"><input name="isLocked" id="islocked" type="CHECKBOX" value="1" <cfif rc.contentBean.getIsLocked() eq "">checked <cfelseif rc.contentBean.getIsLocked() eq 1>checked</cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.locknode')#</label>
 			    </div>
 			</cfif>
@@ -248,7 +234,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<!--- exclude from cache --->
 			<cfif application.settingsManager.getSite(rc.siteid).getCache() and rc.type eq 'Component' or rc.type eq 'Form'>
 				<div class="mura-control-group">
-					<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.docachelabel')#</label>
+<!--- 					<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.docachelabel')#</label> --->
 		      		<label for="cacheItem" class="checkbox">
 		      			<input name="doCache" id="doCache" type="CHECKBOX" value="0"<cfif rc.contentBean.getDoCache() eq 0> checked</cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.docache')#
 		      		</label>
@@ -306,12 +292,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			   	</cfif>
 
 				    <div class="mura-control-group">
-						<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displaytitlelabel')#</label>
 			      		<label for="displayTitle" class="checkbox">
-			      			<input name="displayTitle" id="displayTitle" type="CHECKBOX" value="1" <cfif rc.contentBean.getDisplayTitle() eq "">checked <cfelseif rc.contentBean.getDisplayTitle() eq 1>checked</cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displaytitle')#
+			      			<input name="displayTitle" id="displayTitle" type="CHECKBOX" value="1" <cfif rc.contentBean.getDisplayTitle() eq "">checked <cfelseif rc.contentBean.getDisplayTitle() eq 1>checked</cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displaytitlelabel')#
 			      		</label>
 			        </div>
 			</cfif>
+
+			<!--- notify for review --->
+			<div class="mura-control-group">
+					<label for="dspnotify" class="checkbox">
+			  		<input type="checkbox" name="dspNotify"  id="dspnotify" onclick="siteManager.loadNotify('#esapiEncode('javascript',rc.siteid)#','#esapiEncode('javascript',rc.contentid)#','#esapiEncode('javascript',rc.parentid)#');"  class="checkbox">
+					<span data-toggle="popover" title="" data-placement="right"
+						data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.notifyReview"))#"
+						data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.notifyforreview"))#">
+						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notifyforreview')#
+			      		 <i class="mi-question-circle"></i>
+					 </span>
+			  	</label>
+				<div id="selectNotify" class="mura-control justify" style="display: none;"></div>
+			</div> <!--- /end mura-control-group --->
+			
 			<!--- expiration --->
 			<cfif listFind("Page,Folder,Calendar,Gallery,Link,File,Link",rc.type)>
 

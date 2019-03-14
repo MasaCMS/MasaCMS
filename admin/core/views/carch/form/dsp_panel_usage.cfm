@@ -60,7 +60,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       <div id="usage__totals"></div>
       <!--- 'big ui' flyout panel --->
       <!--- todo: resource bundle key for 'see usage details' --->
-      <div class="bigui" id="bigui__usage" data-label="See Usage Details">
+      <div class="bigui" id="bigui__usage" data-label="<cfif rsUsage.recordcount>See Usage Details</cfif>">
         <div class="bigui__title">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.usagereport")#</div>
         <div class="bigui__controls">
 
@@ -107,7 +107,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <script type="text/javascript">
   var showUsageTotal = function(){
-    var usageStr = 'Not Used';
+    var usageStr = 'Not used';
     var usageTotal = <cfoutput>#rsUsage.recordcount#</cfoutput>;
     if (usageTotal == 1){
       usageStr = "Used in 1 location";
