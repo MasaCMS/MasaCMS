@@ -152,9 +152,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		  	<cfif listFindNoCase('Page,Folder,Calendar,Gallery,File,Link',rc.type)>
 
  				<!--- navigation --->
-				<div class="mura-control-group">
+				<div class="mura-control-group boolean">
 			      	<label for="isNav" class="checkbox">
-			      		<input name="isnav" id="isNav" type="CHECKBOX" value="1" <cfif rc.contentBean.getisnav() eq 1 or rc.contentBean.getisNew() eq 1>checked</cfif> class="checkbox">
+			      		<input name="isnav" id="isNav" type="checkbox" value="1" <cfif rc.contentBean.getisnav() eq 1 or rc.contentBean.getisNew() eq 1>checked</cfif> class="checkbox">
 				    	<span data-toggle="popover" title="" data-placement="right" data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.includeSiteNav"))#" data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.isnav"))#">
 						      #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.isnav')#
 				    		 <i class="mi-question-circle"></i>
@@ -163,9 +163,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</div> <!--- /end mura-control-group --->
 
 				<!--- open new window --->
-				<div class="mura-control-group">
+				<div class="mura-control-group boolean">
 			     	<label for="Target" class="checkbox">
-			     	<input  name="target" id="Target" type="CHECKBOX" value="_blank" <cfif rc.contentBean.gettarget() eq "_blank">checked</cfif> class="checkbox" >
+			     	<input  name="target" id="Target" type="checkbox" value="_blank" <cfif rc.contentBean.gettarget() eq "_blank">checked</cfif> class="checkbox" >
 			    		<span data-toggle="popover" title="" data-placement="right" data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.openNewWindow"))#" data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.newWindow"))#">
 					     		#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.newwindow')#
 							<i class="mi-question-circle"></i>
@@ -174,17 +174,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</div> <!--- /end mura-control-group --->
 
 				<!--- exclude from search --->
-				<div class="mura-control-group">
-					 <label for="searchExclude" class="checkbox"><input name="searchExclude" id="searchExclude" type="CHECKBOX" value="1" <cfif rc.contentBean.getSearchExclude() eq "">checked <cfelseif rc.contentBean.getSearchExclude() eq 1>checked</cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.searchexclude')#</label>
+				<div class="mura-control-group boolean">
+					 <label for="searchExclude" class="checkbox"><input name="searchExclude" id="searchExclude" type="checkbox" value="1" <cfif rc.contentBean.getSearchExclude() eq "">checked <cfelseif rc.contentBean.getSearchExclude() eq 1>checked</cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.searchexclude')#</label>
 				</div> <!--- /end mura-control-group --->
 
 			</cfif>	
 
 			<!--- lock node --->
 			<cfif  rc.contentid neq '00000000000000000000000000000000001' and listFind(session.mura.memberships,'S2')>
-				<div class="mura-control-group">
+				<div class="mura-control-group boolean">
 			  <!--- <label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.locknodelabel')#</label> --->
-					<label for="islocked" class="checkbox"><input name="isLocked" id="islocked" type="CHECKBOX" value="1" <cfif rc.contentBean.getIsLocked() eq "">checked <cfelseif rc.contentBean.getIsLocked() eq 1>checked</cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.locknode')#</label>
+					<label for="islocked" class="checkbox"><input name="isLocked" id="islocked" type="checkbox" value="1" <cfif rc.contentBean.getIsLocked() eq "">checked <cfelseif rc.contentBean.getIsLocked() eq 1>checked</cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.locknode')#</label>
 			    </div>
 			</cfif> <!--- ./lock node --->			
 
@@ -193,7 +193,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		  		<!--- restrict access --->
 				<cfif application.settingsManager.getSite(rc.siteid).getextranet()>
-					<div class="mura-control-group">
+					<div class="mura-control-group boolean">
 				      	<label for="Restricted" class="checkbox"><input name="restricted" id="Restricted" type="checkbox" value="1"  onclick="javascript: this.checked?toggleDisplay2('rg',true):toggleDisplay2('rg',false);" <cfif rc.contentBean.getrestricted() eq 1>checked </cfif> class="checkbox">
 						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.restrictaccess')#
 						</label>
@@ -229,10 +229,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<!--- exclude from cache --->
 			<cfif application.settingsManager.getSite(rc.siteid).getCache() and rc.type eq 'Component' or rc.type eq 'Form'>
-				<div class="mura-control-group">
+				<div class="mura-control-group boolean">
 <!--- 					<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.docachelabel')#</label> --->
 		      		<label for="cacheItem" class="checkbox">
-		      			<input name="doCache" id="doCache" type="CHECKBOX" value="0"<cfif rc.contentBean.getDoCache() eq 0> checked</cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.docache')#
+		      			<input name="doCache" id="doCache" type="checkbox" value="0"<cfif rc.contentBean.getDoCache() eq 0> checked</cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.docache')#
 		      		</label>
 		       </div>
 			</cfif>
@@ -265,7 +265,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<div class="mura-control-group">
 				    <label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forcessllabel')#</label>
 			      	<label for="forceSSL" class="checkbox">
-			      	<input name="forceSSL" id="forceSSL" type="CHECKBOX" value="1" <cfif rc.contentBean.getForceSSL() eq "">checked <cfelseif rc.contentBean.getForceSSL() eq 1>checked</cfif> class="checkbox">
+			      	<input name="forceSSL" id="forceSSL" type="checkbox" value="1" <cfif rc.contentBean.getForceSSL() eq "">checked <cfelseif rc.contentBean.getForceSSL() eq 1>checked</cfif> class="checkbox">
 										<span data-toggle="popover" title="" data-placement="right"
 								  	data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.makePageSecure"))#"
 								  	data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.forcessllabel"))#">
@@ -279,23 +279,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif not rc.$.siteConfig().getContentRenderer().useLayoutManager() and rc.type eq 'Form' >
 
 				<cfif rc.contentBean.getForceSSL() and not rc.$.siteConfig('useSSL')>
-					<div class="mura-control-group">
-						<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forcessllabel')#</label>
+					<div class="mura-control-group boolean">
+						<!--- <label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forcessllabel')#</label> --->
 			     		<label for="forceSSL" class="checkbox">
-			     			<input name="forceSSL" id="forceSSL" type="CHECKBOX" value="1" <cfif rc.contentBean.getForceSSL() eq "">checked <cfelseif rc.contentBean.getForceSSL() eq 1>checked</cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forcessl')#
+			     			<input name="forceSSL" id="forceSSL" type="checkbox" value="1" <cfif rc.contentBean.getForceSSL() eq "">checked <cfelseif rc.contentBean.getForceSSL() eq 1>checked</cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forcessl')#
 			     		</label>
 				    </div>
 			   	</cfif>
 
-				    <div class="mura-control-group">
-			      		<label for="displayTitle" class="checkbox">
-			      			<input name="displayTitle" id="displayTitle" type="CHECKBOX" value="1" <cfif rc.contentBean.getDisplayTitle() eq "">checked <cfelseif rc.contentBean.getDisplayTitle() eq 1>checked</cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displaytitlelabel')#
-			      		</label>
-			        </div>
+			    <div class="mura-control-group boolean">
+		      		<label for="displayTitle" class="checkbox">
+		      			<input name="displayTitle" id="displayTitle" type="checkbox" value="1" <cfif rc.contentBean.getDisplayTitle() eq "">checked <cfelseif rc.contentBean.getDisplayTitle() eq 1>checked</cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displaytitlelabel')#
+		      		</label>
+		        </div>
 			</cfif>
 
 			<!--- notify for review --->
-			<div class="mura-control-group">
+			<div class="mura-control-group boolean">
 					<label for="dspnotify" class="checkbox">
 			  		<input type="checkbox" name="dspNotify"  id="dspnotify" onclick="siteManager.loadNotify('#esapiEncode('javascript',rc.siteid)#','#esapiEncode('javascript',rc.contentid)#','#esapiEncode('javascript',rc.parentid)#');"  class="checkbox">
 					<span data-toggle="popover" title="" data-placement="right"
