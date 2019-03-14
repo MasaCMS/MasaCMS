@@ -308,7 +308,7 @@
 					var controlW = $('##mura-content-body-block .mura__edit__controls').width();
 					var newW = (blockW - controlW) - offsetVal;
 
-					$('##mura-content-body-block .tab-content').css('width',newW + 'px');
+					$('##mura-content-body-block .block-content.tab-content').css('width',newW + 'px');
 					setTimeout(function(){
 						resizeBodyEditor();
 					}, 50)
