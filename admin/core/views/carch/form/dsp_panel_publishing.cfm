@@ -376,15 +376,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<!--- /end expiration --->
 
 			<!--- mobile nav --->
-		  	<cfif listFindNoCase('Page,Folder,Calendar,Gallery,File,Link',rc.type)>		  		
-				<div class="mura-control-group">
-					<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude')#</label>
-					<div class="radio-group">
-						<label class="radio"><input type="radio" name="mobileExclude" value="0" checked<!---<cfif rc.contentBean.getMobileExclude() eq 0> selected</cfif>--->>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude.always')#</label>
-						<label class="radio"><input type="radio" name="mobileExclude" value="2"<cfif rc.contentBean.getMobileExclude() eq 2> checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude.mobile')#</label>
-						<label class="radio"><input type="radio" name="mobileExclude" value="1"<cfif rc.contentBean.getMobileExclude() eq 1> checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude.standard')#</label>
+		  	<cfif listFindNoCase('Page,Folder,Calendar,Gallery,File,Link',rc.type)>	
+			  	<!--- deprecating --->
+			  	<cfif rc.contentBean.getMobileExclude() eq 0
+			  	or rc.contentBean.getIsNew()>
+			  		<input type="hidden" name="mobileExclude" value="0">
+			  	<cfelse>	
+					<div class="mura-control-group">
+						<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude')#</label>
+						<div class="radio-group">
+							<label class="radio"><input type="radio" name="mobileExclude" value="0" checked<!---<cfif rc.contentBean.getMobileExclude() eq 0> selected</cfif>--->>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude.always')#</label>
+							<label class="radio"><input type="radio" name="mobileExclude" value="2"<cfif rc.contentBean.getMobileExclude() eq 2> checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude.mobile')#</label>
+							<label class="radio"><input type="radio" name="mobileExclude" value="1"<cfif rc.contentBean.getMobileExclude() eq 1> checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude.standard')#</label>
+						</div>
 					</div>
-				</div>
+				</cfif>	
 			</cfif> <!--- /end mobile nav --->
 
 		   <span id="extendset-container-publishing" class="extendset-container"></span>
