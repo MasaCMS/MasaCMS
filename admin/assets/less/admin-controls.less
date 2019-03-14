@@ -360,15 +360,32 @@
             width: 100%;
             background-color: @controlsinputbgrd;
             color: @controlsinputtextcolor;
-            padding: 8px 0;
+            padding: 7px 0;
             font-size: @controlsinputfontsize;
             border: none;
             cursor: pointer;
             outline: none;
             outline-offset: 0;
         }
-        .mura-control-group>label+input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]),
-        .mura-control-group>label+*+input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]),
+        .mura-timeselectwrapper{
+            max-width: 266px;
+            min-width: 232px;
+            margin: 0;
+            padding: 0;
+            float: left;
+
+            .nice-select.time{
+                width: 30%;
+                padding: 7px 12px 8px 3px;
+                margin-right: 6px;
+                max-width: 86px;
+                min-width: 66px;
+                clear: none;
+            }
+        }
+
+        .mura-control-group>label+input[type=text],
+        .mura-control-group>label+*+input[type=text],
         .mura-control-group>label+input[type=password],
         .mura-control-group>label+*+input[type=password],
         .mura-control-group>label+textarea,
@@ -975,8 +992,4 @@ body.sidebar-tab {
         width: 75%;
         float:left;
     }
-    .mura-timeselectwrapper .nice-select.time{
-        width: 30%;
-    }
-
 }
