@@ -295,9 +295,12 @@
 		<cfif request.action neq "core:cLogin.main" and isDefined("session.siteid")>
 
 			<script>
-			$(document).on('click', '.selectAssocImageResults ul li', function(){
-				$(this).find('input[type=radio]').prop('checked',true);
-				return false;
+			$(document).on('click', '.selectAssocImageResults ul li', function(e){
+				console.log(e.target.tagName);
+				if(e.target.tagName != 'INPUT'){
+					$(this).find('input[type=radio]').prop('checked',true);
+					return false;
+				}
 			});
 
 			// set width of pane relative to side controls
