@@ -283,6 +283,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 												function(editorInstance){
 													htmlEditorOnComplete(editorInstance);
 													showPreview();
+													// custom global resize function fits to content window
+													resizeBodyEditor();				
 												}
 											);
 										}

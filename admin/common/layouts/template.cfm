@@ -324,13 +324,40 @@
 				}			
 			}
 
-			// todo: timing on this
 			$(window).on("load", function() {
-			// run on page load
 				resizeTabPane();
+				$('##mura-content-body-render').show();
 			});
 
 			$(document).ready(function(){
+
+				// resizable editing panel
+				$('##mura-content .mura__edit__controls').resizable({
+					handles:'w',
+					maxWidth: 640,
+					minWidth: 300,
+					resize: function (event,ui) {
+		                // overlay prevents ckeditor iframe from stealing cursor focus
+		                var frameParent = $('##mura-content-body-render');
+		                var overlay = $(frameParent).find('.hidden-dialog-overlay');
+				        if (!overlay.length) {
+				            overlay = $('<div class="hidden-dialog-overlay" style="position:absolute;top:0;left:0;right:0;bottom:0;z-index:100000; width: 100%; height: 100%;"></div>');
+				            overlay.appendTo(frameParent);
+				        } else {
+				            overlay.show();
+				        }
+				        resizeTabPane(); 
+				        ui.position.left = ui.originalPosition.left;
+			     	},
+					stop: function(event,ui){
+						var acw = $(this).width();
+		                var frameParent = $('##mura-content-body-render');
+			 			$(frameParent).find('.hidden-dialog-overlay').hide();
+			        	resizeTabPane();
+			 			createCookie('ADMINCONTROLWIDTH',acw,5);				 
+					}		
+				});
+
 				// persist side navigation expand/collapse 
 				$('*[data-action=sidebar_mini_toggle]').click(function(){
 					var asb = 'on';
@@ -345,40 +372,7 @@
 
 				// persist open nav items
 				$('##sidebar .nav-main li ul li a.active').parents('li').parents('ul').parents('li').addClass('open');
-
-				// resizable editing panel
-				$('##mura-content .mura__edit__controls').resizable({
-					handles:'w',
-					maxWidth: 640,
-					minWidth: 300,
-					resize: function (event,ui) {
-				        resizeTabPane(); 
-				        ui.position.left = ui.originalPosition.left;
-		                var frameParent = $('##mura-content-body-render');
-		                var overlay = $(frameParent).find('.hidden-dialog-overlay');
-				        if (!overlay.length) {
-				            overlay = $('<div class="hidden-dialog-overlay" style="position:absolute;top:0;left:0;right:0;bottom:0;z-index:100000; width: 100%; height: 100%;"></div>');
-				            overlay.appendTo(frameParent);
-				        } else {
-				            overlay.show();
-				        }
-			     	},
-					stop: function(event,ui){
-		                var frameParent = $('##mura-content-body-render');
-						var acw = $(this).width();
-			 			createCookie('ADMINCONTROLWIDTH',acw,5);				 
-			 			$(frameParent).find('.hidden-dialog-overlay').hide();
-			        	resizeTabPane();
-					}		
-				});
 				
-				$('##mura-content-body-block .load-inline').show();
-				setTimeout(function(){
-					$('##mura-content-body-block .load-inline').hide();
-					$('##mura-content-body-render').show();
-					resizeBodyEditor();
-				}, 700);
-
 				//nice-select 
 				$('.mura__edit__controls .mura-control-group select').niceSelect();
 

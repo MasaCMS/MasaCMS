@@ -514,15 +514,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<div id="mura-content-body-render" style="display:none;">#bodyContent#</div>
 
 			<div class="load-inline tab-preloader"></div>
-
-			<script>
-				$(function(){
-					$('.tab-preloader').spin(spinnerArgs2);
-					<cfif rc.compactDisplay eq 'true'>
-					//This is a hack to prevent ckeditor bug that sets iframe width to zero when goin to extended attributes and back
-					</cfif>
-				});
-			</script>
+			<script>$('.tab-preloader').spin(spinnerArgs2);</script>
 
 		</div><!-- /block-content tab content -->
 		#actionButtons#
