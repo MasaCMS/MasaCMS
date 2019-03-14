@@ -141,10 +141,11 @@ CKEDITOR.editorConfig = function( config )
 	];
 
 	config.toolbar_htmlEditor = [
-		{name: 'group0', items: ['A11ychecker','Source']},
-		{name: 'group1', items: ['Cut','Copy','Paste','PasteText','PasteFromWord']},
-		{name: 'group2', items: ['Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink','-','Image']},
-		{name: 'group3', items: ['Selectlink','SelectComponent','Templates']},
+		{name: 'group0', items: ['Bold','Italic','Underline','RemoveFormat','-','NumberedList','BulletedList','-','Link','Unlink']},
+		{name: 'group1', items: ['PasteText','PasteFromWord','-','Image','-','SpecialChar']},
+		{name: 'group2', items: ['Selectlink','SelectComponent','Templates']},
+		{name: 'group3', items: ['A11ychecker','Source']}
+
 	];
 
 	config.toolbar_bbcode = [
