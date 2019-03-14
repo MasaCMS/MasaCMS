@@ -54,8 +54,86 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<span id="extendset-container-tabpublishingtop" class="extendset-container"></span>
 
+			<!--- featured --->
+			<cfif not listFindNoCase('Component,Form,Variation',rc.type) and rc.contentid neq '00000000000000000000000000000000001'>
+				<div class="mura-control-group">
+					 <label>
+					     	#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.isfeature')#
+					</label>
+			    	<select name="isFeature" onchange="javascript: this.selectedIndex==2?toggleDisplay2('editFeatureDates',true):toggleDisplay2('editFeatureDates',false);">
+						<option value="0"  <cfif  rc.contentBean.getisfeature() EQ 0> selected</CFIF>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.no')#</option>
+						<option value="1"  <cfif  rc.contentBean.getisfeature() EQ 1> selected</CFIF>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#</option>
+						<option value="2"  <cfif rc.contentBean.getisfeature() EQ 2> selected</CFIF>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.perschedule')#</option>
+					</select>
+
+					<div id="editFeatureDates" <cfif rc.contentBean.getisfeature() NEQ 2>style="display: none;"</cfif>>
+
+						<div id="featureschedule-label"></div>
+						<!--- 'big ui' flyout panel --->
+						<!--- todo: resource bundle key for 'manage schedule' --->
+						<div class="bigui" id="bigui__featureschedule" data-label="#esapiEncode('html_attr', 'Manage Schedule')#">
+							<div class="bigui__title">#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.schedule'))#</div>
+							<div class="bigui__controls">
+
+								<div id="featureschedule-selector">
+									<div class="mura-control-group">
+										<label class="date-span">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.from')#</label>
+											<cf_datetimeselector name="featureStart" datespanclass="time" datetime="#rc.contentBean.getFeatureStart()#">
+									</div>
+									<div class="mura-control-group">
+											<label class="date-span">
+											#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.to')#
+											</label>
+											<cf_datetimeselector name="featureStop" datespanclass="time" datetime="#rc.contentBean.getFeatureStop()#" defaulthour="23" defaultminute="59">
+									</div>
+
+								</div>
+							</div>
+						</div> <!--- /.bigui --->
+
+					</div>
+				</div> <!--- /.mura-control-group --->
+	
+				<!--- todo: resource bundle key for 'Featured' --->
+				<script type="text/javascript">
+					function showSelectedFeat(){
+						var featStr = '';
+						var startDate = $('##mura-datepicker-featureStart').val();
+						var stopDate = $('##mura-datepicker-featureStop').val();
+						if (startDate != ''){
+							var featStr = startDate 
+							+ ' ' + $('##mura-featureStartHour option:selected').html()
+							+ ':' + $('##mura-featureStartMinute option:selected').html()
+							+ ' ' + $('##mura-featureStartDayPart option:selected').html();
+	
+							if (stopDate != ''){
+								var featStr = featStr +  ' to ' + stopDate 
+								+ ' ' + $('##mura-featureStopHour option:selected').html()
+								+ ':' + $('##mura-featureStopMinute option:selected').html()
+								+ ' ' + $('##mura-featureStopDayPart option:selected').html();
+							}
+	
+						}
+
+						$('##featureschedule-label').html(featStr);
+					}
+
+					$(document).ready(function(){
+						// run on page load
+						setTimeout(function(){
+							showSelectedFeat();
+						}, 300);
+						// run on change of any schedule element
+						$('##featureschedule-selector *').on('change',function(){
+							showSelectedFeat();
+						})
+					});				
+				</script>
+
+			</cfif><!--- / end featured --->
+
 			<!--- release date --->
-		  	<cfif listFindNoCase('Page,Folder,Calendar,Gallery,File,Link',rc.type)>
+	  		<cfif listFindNoCase('Page,Folder,Calendar,Gallery,File,Link',rc.type)>
 				<div class="mura-control-group">
 				    <label>
 				    	<span data-toggle="popover" title="" data-placement="right"
@@ -68,8 +146,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			      </label>
 			      <cf_datetimeselector name="releaseDate" datetime="#rc.contentBean.getReleaseDate()#" timeselectwrapper="true">
 				</div> <!--- /end mura-control-group --->
-			</cfif>	<!--- /end release date --->
+			</cfif>	<!--- /release date --->
 
+			<!--- restrict by type --->
 		  	<cfif listFindNoCase('Page,Folder,Calendar,Gallery,File,Link',rc.type)>
 
  				<!--- navigation --->
@@ -83,20 +162,34 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			      	</label>
 				</div> <!--- /end mura-control-group --->
 
+				<!--- open new window --->
+				<div class="mura-control-group">
+			     	<label for="Target" class="checkbox">
+			     	<input  name="target" id="Target" type="CHECKBOX" value="_blank" <cfif rc.contentBean.gettarget() eq "_blank">checked</cfif> class="checkbox" >
+			    		<span data-toggle="popover" title="" data-placement="right" data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.openNewWindow"))#" data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.newWindow"))#">
+					     		#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.newwindow')#
+							<i class="mi-question-circle"></i>
+				     	</span>	 
+			     	</label>
+				</div> <!--- /end mura-control-group --->
+
 				<!--- exclude from search --->
 				<div class="mura-control-group">
 					 <label for="searchExclude" class="checkbox"><input name="searchExclude" id="searchExclude" type="CHECKBOX" value="1" <cfif rc.contentBean.getSearchExclude() eq "">checked <cfelseif rc.contentBean.getSearchExclude() eq 1>checked</cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.searchexclude')#</label>
 				</div> <!--- /end mura-control-group --->
 
-				<!--- mobile nav --->
+			</cfif>	
+
+			<!--- lock node --->
+			<cfif  rc.contentid neq '00000000000000000000000000000000001' and listFind(session.mura.memberships,'S2')>
 				<div class="mura-control-group">
-					<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude')#</label>
-					<div class="radio-group">
-						<label class="radio"><input type="radio" name="mobileExclude" value="0" checked<!---<cfif rc.contentBean.getMobileExclude() eq 0> selected</cfif>--->>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude.always')#</label>
-						<label class="radio"><input type="radio" name="mobileExclude" value="2"<cfif rc.contentBean.getMobileExclude() eq 2> checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude.mobile')#</label>
-						<label class="radio"><input type="radio" name="mobileExclude" value="1"<cfif rc.contentBean.getMobileExclude() eq 1> checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude.standard')#</label>
-					</div>
-				</div>
+			  <!--- <label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.locknodelabel')#</label> --->
+					<label for="islocked" class="checkbox"><input name="isLocked" id="islocked" type="CHECKBOX" value="1" <cfif rc.contentBean.getIsLocked() eq "">checked <cfelseif rc.contentBean.getIsLocked() eq 1>checked</cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.locknode')#</label>
+			    </div>
+			</cfif> <!--- ./lock node --->			
+
+			<!--- restrict by type --->
+		  	<cfif listFindNoCase('Page,Folder,Calendar,Gallery,File,Link',rc.type)>
 
 		  		<!--- restrict access --->
 				<cfif application.settingsManager.getSite(rc.siteid).getextranet()>
@@ -132,104 +225,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			    </cfif>
 			    <!--- /end restrict access --->
 
-				<!--- open new window --->
-				<div class="mura-control-group">
-			     	<label for="Target" class="checkbox">
-			     	<input  name="target" id="Target" type="CHECKBOX" value="_blank" <cfif rc.contentBean.gettarget() eq "_blank">checked</cfif> class="checkbox" >
-			    		<span data-toggle="popover" title="" data-placement="right" data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.openNewWindow"))#" data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.newWindow"))#">
-					     		#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.newwindow')#
-							<i class="mi-question-circle"></i>
-				     	</span>	 
-			     	</label>
-				</div> <!--- /end mura-control-group --->
-				
-				<!--- featured --->
-				<cfif not listFindNoCase('Component,Form,Variation',rc.type) and rc.contentid neq '00000000000000000000000000000000001'>
-					<div class="mura-control-group">
-						 <label>
-						     	#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.isfeature')#
-						</label>
-				    	<select name="isFeature" onchange="javascript: this.selectedIndex==2?toggleDisplay2('editFeatureDates',true):toggleDisplay2('editFeatureDates',false);">
-							<option value="0"  <cfif  rc.contentBean.getisfeature() EQ 0> selected</CFIF>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.no')#</option>
-							<option value="1"  <cfif  rc.contentBean.getisfeature() EQ 1> selected</CFIF>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#</option>
-							<option value="2"  <cfif rc.contentBean.getisfeature() EQ 2> selected</CFIF>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.perschedule')#</option>
-						</select>
-
-						<div id="editFeatureDates" <cfif rc.contentBean.getisfeature() NEQ 2>style="display: none;"</cfif>>
-
-							<div id="featureschedule-label"></div>
-							<!--- 'big ui' flyout panel --->
-							<!--- todo: resource bundle key for 'manage schedule' --->
-							<div class="bigui" id="bigui__featureschedule" data-label="#esapiEncode('html_attr', 'Manage Schedule')#">
-								<div class="bigui__title">#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.schedule'))#</div>
-								<div class="bigui__controls">
-
-									<div id="featureschedule-selector">
-										<div class="mura-control-group">
-											<label class="date-span">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.from')#</label>
-												<cf_datetimeselector name="featureStart" datespanclass="time" datetime="#rc.contentBean.getFeatureStart()#">
-										</div>
-										<div class="mura-control-group">
-												<label class="date-span">
-												#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.to')#
-												</label>
-												<cf_datetimeselector name="featureStop" datespanclass="time" datetime="#rc.contentBean.getFeatureStop()#" defaulthour="23" defaultminute="59">
-										</div>
-
-									</div>
-								</div>
-							</div> <!--- /.bigui --->
-
-						</div>
-					</div> <!--- /.mura-control-group --->
-		
-					<!--- todo: resource bundle key for 'Featured' --->
-					<script type="text/javascript">
-						function showSelectedFeat(){
-							var featStr = '';
-							var startDate = $('##mura-datepicker-featureStart').val();
-							var stopDate = $('##mura-datepicker-featureStop').val();
-							if (startDate != ''){
-								var featStr = startDate 
-								+ ' ' + $('##mura-featureStartHour option:selected').html()
-								+ ':' + $('##mura-featureStartMinute option:selected').html()
-								+ ' ' + $('##mura-featureStartDayPart option:selected').html();
-		
-								if (stopDate != ''){
-									var featStr = featStr +  ' to ' + stopDate 
-									+ ' ' + $('##mura-featureStopHour option:selected').html()
-									+ ':' + $('##mura-featureStopMinute option:selected').html()
-									+ ' ' + $('##mura-featureStopDayPart option:selected').html();
-								}
-		
-							}
-
-							$('##featureschedule-label').html(featStr);
-						}
-
-						$(document).ready(function(){
-							// run on page load
-							setTimeout(function(){
-								showSelectedFeat();
-							}, 300);
-							// run on change of any schedule element
-							$('##featureschedule-selector *').on('change',function(){
-								showSelectedFeat();
-							})
-						});				
-					</script>
-
-				</cfif><!--- / end featured --->
-
-			</cfif>
-
-			<!--- locked --->
-			<cfif  rc.contentid neq '00000000000000000000000000000000001' and listFind(session.mura.memberships,'S2')>
-				<div class="mura-control-group">
-<!--- 					<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.locknodelabel')#</label> --->
-					<label for="islocked" class="checkbox"><input name="isLocked" id="islocked" type="CHECKBOX" value="1" <cfif rc.contentBean.getIsLocked() eq "">checked <cfelseif rc.contentBean.getIsLocked() eq 1>checked</cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.locknode')#</label>
-			    </div>
-			</cfif>
+			</cfif> <!--- /end restrict by type --->
 
 			<!--- exclude from cache --->
 			<cfif application.settingsManager.getSite(rc.siteid).getCache() and rc.type eq 'Component' or rc.type eq 'Form'>
@@ -378,6 +374,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		  		
 			</cfif>
 			<!--- /end expiration --->
+
+			<!--- mobile nav --->
+		  	<cfif listFindNoCase('Page,Folder,Calendar,Gallery,File,Link',rc.type)>		  		
+				<div class="mura-control-group">
+					<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude')#</label>
+					<div class="radio-group">
+						<label class="radio"><input type="radio" name="mobileExclude" value="0" checked<!---<cfif rc.contentBean.getMobileExclude() eq 0> selected</cfif>--->>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude.always')#</label>
+						<label class="radio"><input type="radio" name="mobileExclude" value="2"<cfif rc.contentBean.getMobileExclude() eq 2> checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude.mobile')#</label>
+						<label class="radio"><input type="radio" name="mobileExclude" value="1"<cfif rc.contentBean.getMobileExclude() eq 1> checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude.standard')#</label>
+					</div>
+				</div>
+			</cfif> <!--- /end mobile nav --->
 
 		   <span id="extendset-container-publishing" class="extendset-container"></span>
 
