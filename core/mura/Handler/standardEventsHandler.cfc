@@ -961,6 +961,10 @@
 				result.targetingjs=variationTargeting.getTargetingJS();
 			}
 
+			if(isDefined('request.muraJSONRedirectURL') && len(request.muraJSONRedirectURL)){
+				result.redirect=request.muraJSONRedirectURL;
+			}
+
 			$.event('__MuraResponse__',apiUtility.serializeResponse(response={'apiversion'=apiUtility.getApiVersion(),'method'='findOne','params'={filename=result.filename,siteid=result.siteid,rendered=true},data=result},statuscode=200));
 
 		} catch (any e){
