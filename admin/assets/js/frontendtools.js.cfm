@@ -403,7 +403,7 @@
 				    return false;
 				});
 
-				utility("##frontEndToolsModalBody").css("top",(utility(document).scrollTop()+80) + "px")
+				utility("##frontEndToolsModalBody").css("top",(utility(document).scrollTop()+48) + "px")
 				resizeFrontEndToolsModal(frontEndModalHeight);
 			} else {
 
