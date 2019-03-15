@@ -428,7 +428,7 @@
 				'</div>');
 
 				frontEndModalHeight=0;
-				utility("##frontEndToolsModalBody").css("top",(utility(document).scrollTop()+70) + "px")
+				utility("##frontEndToolsModalBody").css("top",(utility(document).scrollTop()+48) + "px")
 				resizeFrontEndToolsModal(0);
 			}
 		} else {
@@ -467,7 +467,7 @@
 				if (frontEndModalWidth==frontEndModalWidthStandard
 					&& frameHeight < utility(window).height()
 					) {
-					frameHeight= Math.max(utility(window).height() * .84,frameHeight);
+					frameHeight= Math.max(utility(window).height()-96,frameHeight);
 				}
 
 				utility('##frontEndToolsModalContainer ##frontEndToolsModalBody,##frontEndToolsModalContainer ##frontEndToolsModaliframe').width(frontEndModalWidth);
