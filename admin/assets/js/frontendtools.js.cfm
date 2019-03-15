@@ -472,7 +472,14 @@
 
 				utility('##frontEndToolsModalContainer ##frontEndToolsModalBody,##frontEndToolsModalContainer ##frontEndToolsModaliframe').width(frontEndModalWidth);
 
-				frame.style.height = frameHeight + "px";
+// debug
+//console.log('utility(document).height(): ' + utility(document).height());
+//console.log('frameHeight: ' + frameHeight);
+
+				// set height, preventing overflow of window
+				if (frameHeight < utility(document).height() - 48){
+					frame.style.height = frameHeight + "px";
+				}
 
 				frameContainer.style.position = "absolute";
 				document.overflow = "auto"
