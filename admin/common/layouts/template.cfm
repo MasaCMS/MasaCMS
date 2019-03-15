@@ -293,7 +293,6 @@
 
 			<script>
 			$(document).on('click', '.selectAssocImageResults ul li', function(e){
-				console.log(e.target.tagName);
 				if(e.target.tagName != 'INPUT'){
 					$(this).find('input[type=radio]').prop('checked',true);
 					return false;
