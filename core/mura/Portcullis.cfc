@@ -371,7 +371,12 @@
 				<cfif not len(arguments.value) or isNumeric(arguments.value) or isBoolean(arguments.value)>
 					<cfreturn arguments.value>
 				<cfelseif isJson(arguments.value)>
-					<cfset arguments.value=deserializeJSON(arguments.value)>
+					<cftry>
+						<cfset arguments.value=deserializeJSON(arguments.value)>
+						<cfcatch>
+							<cfset arguments.value=stripMSWordFromSimpleValue(arguments.value)>
+						</cfcatch>
+					</cftry>
 					<cfif isSimpleValue(arguments.value)>
 						<cfset arguments.value=stripMSWordFromSimpleValue(arguments.value)>
 					<cfelse>
