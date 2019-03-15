@@ -407,13 +407,6 @@
 					}
 				});
 
-				// make :contains selector case-insensitive
-				jQuery.expr[":"].contains = jQuery.expr.createPseudo(function(arg) {
-				    return function( elem ) {
-			        return jQuery(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0;
-				    };
-				});
-
 				// min-height for page content area
 				var setBlockHeight = function(){
 					var bc = $('##mura-content .block-constrain');

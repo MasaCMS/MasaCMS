@@ -136,7 +136,7 @@
 				if ($('##mura-content-body-render .cke_contents').length){
 					var ckeTopH = $('##mura-content-body-render .cke_top').height();
 					// also adjust cke height
-					$('##mura-content-body-render .cke_contents').css('height','calc((100vh - ' + ckeTopH +  'px) - 372px)');
+					$('##mura-content-body-render .cke_contents').css('height','calc((100vh - ' + ckeTopH +  'px) - 260px)');
 				}			
 			}
 

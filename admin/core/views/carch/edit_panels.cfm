@@ -247,6 +247,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <script type="text/javascript">
 $(document).ready(function(){	
 
+	// custom case-insensitive :contains method
+    $.expr[":"].contains = $.expr.createPseudo(function (arg) {
+        return function (elem) {
+            return $(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0;
+        };
+    });
+
 	// open tab via url hash
 	if(window.location.hash.substring(1,7) == 'panel-'){
 		$('.mura-panel-heading a[href$="' + window.location.hash + '"]').trigger('click');		

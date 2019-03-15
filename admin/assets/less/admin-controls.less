@@ -30,7 +30,8 @@
 @editcalcwidth: ~"calc(100% - 315px)";
 
 /* front end modal */
-@frontendcalcheight: ~"calc(100vh - 94px)";
+@frontendcalcheight: ~"calc(100vh - 84px)";
+@frontendcontrolsheight: ~"calc(100vh - 170px)";
 
 .contentTitle {
     font-size: 26px;
@@ -1018,11 +1019,43 @@ body.sidebar-tab {
 }
 
 /* front end modal */
-body.compact{
+body.modal-wrapper{
+    .mura-header{
+        padding-bottom: 2px;
+        .nav-module-specific{
+            display: none;
+        }
+    }
+    .block-content{
+        padding-bottom: 0;
+    }
+    .body-container.mura-control-group{
+        padding-bottom: 0;
+        margin-bottom: 0;
+    }
+
     .block-constrain#mura-content-body-block {
         height: @frontendcalcheight !important;
+        box-shadow: none !important;
     }    
     .block-constrain#mura-content-body-block>.tab-content {
-        min-height: calc(100vh - 138px)!important;
+        min-height: ~"calc(100vh - 138px)" !important;
     }   
+    .mura__edit__controls{
+        height: @frontendcontrolsheight;
+
+         .mura__edit__controls__scrollable {
+            height: @frontendcontrolsheight;
+            min-height: @frontendcontrolsheight;
+            width: 100%;
+            min-width: 300px;
+            overflow: auto;
+            padding-right: 0;
+        }
+
+    }
+    .mura-actions{
+        padding-bottom: 0 !important;
+    }
+
 }

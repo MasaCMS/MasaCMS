@@ -193,9 +193,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			})
 			<!--- todo: resource bundle values for text --->
 			if (catList.trim().length > 0){
-				$('#categories__selected').html('<label>Selected Categories</label><ul>' + catList + '</ul>');
+				$('#categories__selected').html('<label>Selected</label><ul>' + catList + '</ul>');
 			} else {
-				$('#categories__selected').html('<label>Selected Categories</label><div>No categories selected</div>');
+				$('#categories__selected').html('<label>Selected</label><div>No categories selected</div>');
 			}
 
 		}
