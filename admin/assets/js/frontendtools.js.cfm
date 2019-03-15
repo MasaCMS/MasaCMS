@@ -477,12 +477,12 @@
 //console.log('frameHeight: ' + frameHeight);
 
 				// set height, preventing overflow of window
-				if (frameHeight < utility(document).height() - 48){
+				if (frameHeight < utility(document).height() - 96){
 					frame.style.height = frameHeight + "px";
 				}
 
 				frameContainer.style.position = "absolute";
-				document.overflow = "auto"
+				document.overflow = "auto";
 
 				if(windowHeight > frontEndModalHeight){
 					frontEndModalHeight=windowHeight;
