@@ -350,7 +350,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 	public function getDomain(required String mode="") output=false {
 		var temp="";
 		if ( arguments.mode == 'preview' ) {
-			if ( len(request.muraPreviewDomain) ) {
+			if ( isDefined('request.muraPreviewDomain') && len(request.muraPreviewDomain) ) {
 				return request.muraPreviewDomain;
 			} else {
 				return variables.instance.Domain;
