@@ -148,6 +148,10 @@
 			var frontEndProxy;
 			jQuery(document).ready(function(){
 
+
+				//nice-select 
+				$('.mura__edit__controls .mura-control-group select').niceSelect();
+
 				// tabdrop: trigger on page load w/ slight delay
 				if ( $( '.mura-tabs').length ) {
 					var triggerTabDrop = function(){

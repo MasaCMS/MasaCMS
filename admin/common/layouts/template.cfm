@@ -204,9 +204,6 @@
 		<![endif]-->
 	</cfif>
 
-	<!-- nice-select: select box replacement (sidebar controls) -->
-	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery.nice-select.min.js" type="text/javascript"></script>
-
 	#session.dateKey#
 	#rc.ajax#
 

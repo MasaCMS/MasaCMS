@@ -94,7 +94,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<!--- todo: resource bundle values for text --->
 						$('#relcontent__selected').html('<label>Selected</label><ul>' + rcList + '</ul>');
 					} else {
-						$('#relcontent__selected').html('<label>Selected Related Content</label><div>No related content selected</div>');
+						$('#relcontent__selected').html('<label>Selected</label><div>No related content selected</div>');
 					}
 				}
 
