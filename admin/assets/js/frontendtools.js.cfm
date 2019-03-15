@@ -464,17 +464,16 @@
 			//if (frameDoc.body != null) {
 				var windowHeight = Math.max(frameHeight, utility(window).height());
 
-				/*
 				if (frontEndModalWidth==frontEndModalWidthStandard
 					&& frameHeight < utility(window).height()
 					) {
-					frameHeight= Math.max(utility(window).height() * .80,frameHeight);
+					frameHeight= Math.max(utility(window).height() * .84,frameHeight);
 				}
-				*/
 
 				utility('##frontEndToolsModalContainer ##frontEndToolsModalBody,##frontEndToolsModalContainer ##frontEndToolsModaliframe').width(frontEndModalWidth);
 
 				frame.style.height = frameHeight + "px";
+
 				frameContainer.style.position = "absolute";
 				document.overflow = "auto"
 

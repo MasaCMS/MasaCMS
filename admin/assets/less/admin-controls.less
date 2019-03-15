@@ -29,6 +29,9 @@
 @editscrollheight: ~"calc(100vh - 260px)";
 @editcalcwidth: ~"calc(100% - 315px)";
 
+/* front end modal */
+@frontendcalcheight: ~"calc(100vh - 94px)";
+
 .contentTitle {
     font-size: 26px;
     font-weight: 900;
@@ -1012,4 +1015,14 @@ body.sidebar-tab {
         width: 75%;
         float:left;
     }
+}
+
+/* front end modal */
+body.compact{
+    .block-constrain#mura-content-body-block {
+        height: @frontendcalcheight !important;
+    }    
+    .block-constrain#mura-content-body-block>.tab-content {
+        min-height: calc(100vh - 138px)!important;
+    }   
 }
