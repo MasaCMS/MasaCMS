@@ -382,6 +382,12 @@
             outline: none;
             outline-offset: 0;
         }
+        .mura-control.justify select.multiSelect{
+            font-size: 14px;
+            height: auto !important;
+            overflow: auto;
+            padding-left: 32px;
+        }
         .mura-timeselectwrapper{
             max-width: 266px;
             min-width: 232px;
@@ -768,7 +774,6 @@
 /* /#bigui_categories */
 
 /* selected item lists for big ui panels */
-
 #categories__selected, #relcontent__selected {
     p {
         padding: 12px 0 12px 0px;
@@ -879,8 +884,8 @@ body.sidebar-tab {
         display: none;
     }
 }
-/* modal window in legacy layout view */
 
+/* modal window in legacy layout view */
 #carch .ui-dialog {
     .objectParam.nice-select {
         background-color: #fff;
@@ -903,8 +908,8 @@ body.sidebar-tab {
         .mura-primary;
     }
 }
-/* nice-select overrides */
 
+/* nice-select overrides */
 .mura__edit__controls {
     select:not(#restrictGroups) {
         display: none;
@@ -916,7 +921,7 @@ body.sidebar-tab {
         border: none;
         color: @controlsinputtextcolor;
         font-size: @controlsinputfontsize;
-        height: 36px;
+        height: 36px;   
         line-height: 36px;
         margin: 0;
         outline-offset: 0;
