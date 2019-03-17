@@ -99,9 +99,9 @@
 								var item=Mura('[data-instanceid="' + parameters["instanceid"] + '"]');
 
 								if(completepath.toString().toLowerCase() == 'true'){
-									item.data(parameters["target"],webroot + fileDelim + fileUrl)
+									item.data(parameters["target"],webroot + fileDelim + fileURL)
 								} else {
-									item.data(parameters["target"],fileUrl)
+									item.data(parameters["target"],fileURL)
 								}
 
 								var data=item.data();
@@ -115,13 +115,14 @@
 								if(parameters["targetFrame"]=='sidebar' && document.getElementById('mura-sidebar-editor').style.display=='none'){
 									Mura('##mura-sidebar-configurator').show();
 								}
+
 								if(typeof parameters.callback == 'undefined'){
-									if(parameters["targetFrame"]=='sidebar'){
+									if(typeof parameters["targetFrame"] != 'undefined' && parameters["targetFrame"].toLowerCase()=='sidebar'){
 										sidebarProxy.post({cmd:'setObjectParams',params:data});
 									} else {
 										modalProxy.post({cmd:'setObjectParams',params:data});
 									}
-							}
+								}
 						}
 
 						if(Mura(this).attr('data-resourcetype') =='root'){
@@ -131,7 +132,7 @@
 						} else {
 							finder.resourceType=Mura.siteid + '_User_Assets';
 						}
-					
+
 						finder.popup();
 					}
 				);

@@ -1658,7 +1658,8 @@ function setFinders(selector){
 							cmd:'openFileManager',
 							instanceid:url.instanceid,
 							target:target.data('target'),
-							completepath:target.data('completepath')
+							completepath:target.data('completepath'),
+							targetFrame:targetFrame
 							}
 						);
 					}
@@ -1668,7 +1669,8 @@ function setFinders(selector){
 					cmd:'openFileManager',
 					instanceid:url.instanceid,
 					target:target.data('target'),
-					completepath:target.data('completepath')
+					completepath:target.data('completepath'),
+					targetFrame:targetFrame
 					}
 				);
 			}
