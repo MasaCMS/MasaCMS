@@ -18867,7 +18867,7 @@ Mura.UI.Form=Mura.UI.extend(
 				 Mura.apiEndpoint + '?method=processAsyncObject',
 				 data)
 				 .then(function(resp){
-					 var context=Mura.deepExtend({},context,resp.data)
+					 var context=Mura.extend({},context,resp.data)
 					 var nestedForm = new Mura.UI.Form( context );
 
 					 	Mura(".field-container-" + self.context.objectid,self.context.formEl).append('<div id="nested-'+field.formid+'"></div>');
@@ -19144,7 +19144,7 @@ Mura.UI.Form=Mura.UI.extend(
 					}
 				);
 			} else {
-				var data=Mura.deepExtend({}, self.data, self.context);
+				var data=Mura.extend({}, self.data, self.context);
 				data.validateform=true;
 				data.formid=data.objectid;
 				data.siteid=data.siteid || Mura.siteid;
@@ -19501,7 +19501,7 @@ Mura.UI.Form=Mura.UI.extend(
 			//console.log('b!');
 
 			if(!Mura.formdata){
-				var data=Mura.deepExtend({},self.context,self.data);
+				var data=Mura.extend({},self.context,self.data);
 				data.saveform=true;
 				data.formid=data.objectid;
 				data.siteid=data.siteid || Mura.siteid;
@@ -19515,7 +19515,7 @@ Mura.UI.Form=Mura.UI.extend(
 				}
 
 			} else {
-				var rawdata=Mura.deepExtend({},self.context,self.data);
+				var rawdata=Mura.extend({},self.context,self.data);
 				rawdata.saveform=true;
 				rawdata.formid=rawdata.objectid;
 				rawdata.siteid=rawdata.siteid || Mura.siteid;
