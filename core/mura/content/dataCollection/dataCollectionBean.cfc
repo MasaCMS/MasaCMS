@@ -147,7 +147,7 @@ component extends="mura.bean.bean" entityname="dataCollection" hint="This provid
 
 					if( prop.fieldtype.fieldtype eq 'nested' ) {
 						nestedform = getBean('content').loadBy( contentID=prop.formid,siteid=getValue('siteID') );
-						structAppend(validations, getValidations( nestedform) );
+						structAppend(validations, getValidations( nestedform,prop.name & "_" ) );
 					} else {
 						if(structkeyExists(prop,'validateMessage') && len(prop.validateMessage)){
 							message=prop.validateMessage;

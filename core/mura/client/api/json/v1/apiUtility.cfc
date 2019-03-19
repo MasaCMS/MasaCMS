@@ -435,7 +435,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 					params['client_secret']=headers['X-client-secret'];
 				}
 
-				if( structKeyExists( headers, 'X-access_token' )){
+				if( structKeyExists( headers, 'X-access-token' )){
 					params['access_token']=headers['X-access-token'];
 				}
 

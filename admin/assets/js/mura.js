@@ -18849,15 +18849,16 @@ Mura.UI.Form=Mura.UI.extend(
 		self.setDefault( fieldtype,field );
 
 		if (fieldtype == "nested") {
-			var context = {};
-			context.objectid = field.formid;
-			context.paging = 'single';
-			context.mode = 'nested';
-			context.master = this;
+			var nested_context = {};
+			nested_context.objectid = field.formid;
+			nested_context.paging = 'single';
+			nested_context.mode = 'nested';
+			nested_context.prefix = field.name + '_';
+			nested_context.master = this;
 
 			var data={};
-			data.objectid=context.objectid;
-			data.formid=context.objectid;
+			data.objectid=nested_context.objectid;
+			data.formid=nested_context.objectid;
 			data.object='form';
 			data.siteid=self.context.siteid || Mura.siteid;
 			data.contentid=Mura.contentid;
@@ -18867,7 +18868,7 @@ Mura.UI.Form=Mura.UI.extend(
 				 Mura.apiEndpoint + '?method=processAsyncObject',
 				 data)
 				 .then(function(resp){
-					var tempContext=Mura.extend({},context);
+					var tempContext=Mura.extend({},nested_context);
 
 					delete tempContext.targetEl;
 
@@ -18932,8 +18933,8 @@ Mura.UI.Form=Mura.UI.extend(
 		switch( fieldtype ) {
 			case "textfield":
 			case "textarea":
-				if(self.data[field.name]){
-					field.value = self.data[field.name];
+				if(self.data[self.context.prefix + field.name]){
+					field.value = self.data[self.context.prefix + field.name];
 				}
 			 break;
 			case "checkbox":
@@ -18944,9 +18945,9 @@ Mura.UI.Form=Mura.UI.extend(
 						ds.datarecords[i].selected = 0;
 						ds.datarecords[i].isselected = 0;
 
-						if(self.data[field.name].items && self.data[field.name].items.length) {
-							for(var x = 0;x < self.data[field.name].items.length;x++) {
-								if (ds.datarecords[i].id == self.data[field.name].items[x][sourceid]) {
+						if(self.data[self.context.prefix + field.name].items && self.data[self.context.prefix + field.name].items.length) {
+							for(var x = 0;x < self.data[self.context.prefix + field.name].items.length;x++) {
+								if (ds.datarecords[i].id == self.data[self.context.prefix + field.name].items[x][sourceid]) {
 									ds.datarecords[i].isselected = 1;
 									ds.datarecords[i].selected = 1;
 								}
@@ -18954,7 +18955,7 @@ Mura.UI.Form=Mura.UI.extend(
 						}
 					}
 					else {
-						if (self.data[field.name] && ds.datarecords[i].value && self.data[field.name].indexOf(ds.datarecords[i].value) > -1) {
+						if (self.data[self.context.prefix + field.name] && ds.datarecords[i].value && self.data[self.context.prefix + field.name].indexOf(ds.datarecords[i].value) > -1) {
 							ds.datarecords[i].isselected = 1;
 							ds.datarecords[i].selected = 1;
 						}
@@ -18980,9 +18981,9 @@ Mura.UI.Form=Mura.UI.extend(
 						}
 					}
 					else {
-						 if(ds.datarecords[i].value == self.data[field.name]) {
+						 if(ds.datarecords[i].value == self.data[self.context.prefix + field.name]) {
 							ds.datarecords[i].isselected = 1;
-							field.selected = self.data[field.name];
+							field.selected = self.data[self.context.prefix + field.name];
 						}
 						else {
 							ds.datarecords[i].isselected = 0;
@@ -19046,6 +19047,9 @@ Mura.UI.Form=Mura.UI.extend(
 		var self = this;
 
 		//console.log("render form: " + self.currentpage);
+		if(typeof self.context.prefix =='undefined'){
+			self.context.prefix='';
+		}
 
 		Mura(".field-container-" + self.context.objectid,self.context.formEl).empty();
 
@@ -20186,15 +20190,15 @@ Mura.UI.Form=Mura.UI.extend(
 			var escapeExpression=Mura.Handlebars.escapeExpression;
 
 			if(typeof this.fieldtype != 'undefined' && this.fieldtype.fieldtype=='file'){
-				var returnString='name="' + escapeExpression(this.name) + '_attachment"';
+				var returnString='name="' + escapeExpression(self.context.prefix + this.name) + '_attachment"';
 			} else {
-				var returnString='name="' + escapeExpression(this.name) + '"';
+				var returnString='name="' + escapeExpression(self.context.prefix + this.name) + '"';
 			}
 
 			if(this.cssid){
 				returnString += ' id="' + escapeExpression(this.cssid) + '"';
 			} else {
-				returnString += ' id="field-' + escapeExpression(this.name) + '"';
+				returnString += ' id="field-' + escapeExpression(self.context.prefix + this.name) + '"';
 			}
 
 			returnString += ' class="';
