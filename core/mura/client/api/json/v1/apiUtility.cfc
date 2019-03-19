@@ -483,7 +483,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 							structDelete(params,'access_token');
 							structDelete(url,'access_token');
 						}
-						if(!token.exists() || !listFind('client_credentials,authorization_code',token.getGrantType())){
+						if(!token.exists() || !listFind('client_credentials,authorization_code,password,implicit',token.getGrantType())){
 							params.method='Not Available';
 							responseObject.setHeader( 'WWW-Authenticate', 'Bearer error="invalid_access_token"' );
 							responseObject.setHeader( 'WWW-Authenticate', 'Bearer' );

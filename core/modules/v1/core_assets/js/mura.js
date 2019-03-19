@@ -18820,13 +18820,14 @@ Mura.UI.Form=Mura.UI.extend(
 	},
 
 	getPageFieldList:function(){
+
 		var page=this.currentpage;
-		var fields = self.formJSON.form.pages[page];
+		var fields = this.formJSON.form.pages[page];
 		var result=[];
 
 		for(var f=0;f < fields.length;f++){
 			//console.log("add: " + self.formJSON.form.fields[fields[f]].name);
-			result.push(self.formJSON.form.fields[fields[f]].name);
+			result.push(this.formJSON.form.fields[fields[f]].name);
 		}
 
 		//console.log(result);
@@ -18862,21 +18863,29 @@ Mura.UI.Form=Mura.UI.extend(
 			data.contentid=Mura.contentid;
 			data.contenthistid=Mura.contenthistid;
 
-
 			Mura.get(
 				 Mura.apiEndpoint + '?method=processAsyncObject',
 				 data)
 				 .then(function(resp){
-					 var context=Mura.extend({},context,resp.data)
-					 var nestedForm = new Mura.UI.Form( context );
+					var tempContext=Mura.extend({},context);
 
-					 	Mura(".field-container-" + self.context.objectid,self.context.formEl).append('<div id="nested-'+field.formid+'"></div>');
+					delete tempContext.targetEl;
 
-					 	context.formEl = document.getElementById('nested-'+field.formid);
-					 	nestedForm.getForm();
+					var context=Mura.deepExtend({},tempContext,resp.data)
 
-					 	var html = Mura.templates[template](field);
-					 	Mura(".field-container-" + self.context.objectid,self.context.formEl).append(html);
+					context.targetEl=self.context.targetEl;
+
+					var nestedForm = new Mura.UI.Form( context );
+
+					Mura(".field-container-" + self.context.objectid,self.context.formEl).append('<div id="nested-'+field.formid+'"></div>');
+
+					context.formEl = document.getElementById('nested-'+field.formid);
+
+					nestedForm.getForm();
+
+					var html = Mura.templates[template](field);
+
+					Mura(".field-container-" + self.context.objectid,self.context.formEl).append(html);
 
 				 });
 
@@ -19507,7 +19516,11 @@ Mura.UI.Form=Mura.UI.extend(
 				data.siteid=data.siteid || Mura.siteid;
 				data.contentid=Mura.contentid || '';
 				data.contenthistid=Mura.contenthistid || '';
+
 				delete data.filename;
+				delete rawdata.def;
+				delete rawdata.ishuman;
+				delete rawdata.targetEl;
 
 				var tokenArgs={
 					siteid: data.siteid,
@@ -19522,12 +19535,15 @@ Mura.UI.Form=Mura.UI.extend(
 				rawdata.contentid=Mura.contentid || '';
 				rawdata.contenthistid=Mura.contenthistid || '';
 
+				delete rawdata.filename;
+				delete rawdata.def;
+				delete rawdata.ishuman;
+				delete rawdata.targetEl;
+
 				var tokenArgs={
 					siteid: rawdata.siteid,
 					context: rawdata.formid
 				}
-
-				delete rawdata.filename;
 
 				var data=new FormData();
 
