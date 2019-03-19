@@ -45,6 +45,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="request.quickeditscheduler" default="false">
 <cfset $=application.serviceFactory.getBean("MuraScope").init(session.siteID)>
 <cfset content=$.getBean("content").loadBy(contentID=rc.contentID)>
+<script>
+	$('.mura-quickEdit select').niceSelect();
+</script>
 <cfif not content.hasDrafts()>
 	<cfoutput>
 	<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.edit#rc.attribute#')#</h1>

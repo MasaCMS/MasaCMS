@@ -1401,23 +1401,35 @@
 	/* @group Quick Edit */
 
 	.mura-quickEdit {
-		background-color: #272727;
-		opacity: 1;
-		position: absolute;
+		background-color: #FFF;
+		.border-radius(1px);
 		bottom: 34px;
-		left: 50%;
-		margin-left: -86px;
-		width: 160px;
-		min-height: 70px;
-		z-index: 2;
+		box-shadow: 0 0 0 1px rgba(68, 68, 68, 0.11);
 		display: block;
-		.border-radius(2px);
-		padding: 8px 10px;
-		box-shadow: 0 2px 4px #333232;
-		white-space: normal;
 		font-size: @qeFontSize;
+		left: 50%;
+		margin-left: -108px;
+		min-height: 70px;
+		opacity: 1;
+		padding: 6px 8px 6px;
+		position: absolute;
 		text-align: left;
+		white-space: normal;
+		width: 220px;
+		z-index: 2;
 
+			.form-actions{
+				clear:both;
+				padding: 4px 8px;
+				margin: 6px auto;
+			}
+
+			select, input, textarea{
+				border: none;
+				background-color: #f9f9f9;
+				color: #333;
+			}
+    
 			select.time {
 				width: 43px !important;
 				padding: 2px 1px !important;
@@ -1491,13 +1503,16 @@
 		h1,
 		label,
 		.label {
-			color: #fff !important;
-			font-size: 11px !important;
-			text-align: left;
-			margin: 0 0 8px 0;
+			clear: both;
+			color: #999 !important;
+		    float: left;
+			font-size: 13px !important;
 			font-weight: normal;
+			line-height: 2em;
+			margin: 6px 0 2px;
+			padding: 0;
 			padding-right: 20px;
-			line-height: 1;
+			text-align: left;
 		}
 
 		select + h1{
@@ -1505,7 +1520,6 @@
 			padding-top: 4px;
 		}
 			
-
 		.cancel {
 			position: absolute;
 			top: 4px;
@@ -1513,8 +1527,8 @@
 			cursor: pointer;
 
 				i {
-					font-size: 16px;
 					color: @gray;
+					font-size: 14x;
 					text-shadow: none;
 					top: -3px;
 
@@ -1590,7 +1604,7 @@
 					font-size: 11px;
 					
 					&.mura-primary{
-						border: 1px solid #6699CC !important;
+						border: 1px solid @mura-red !important;
 					}
 			}
 
@@ -1654,10 +1668,9 @@
 		z-index: 11;
 		width: 24px;
 		height: 14px;
-		left: 71px;
+		left: 96px;
 		bottom: -14px;
 		background: url('../images/quickedit-bottom.png') no-repeat center bottom;
-		opacity: .95;
 	}
 
 	.mura-quickEdit:hover {

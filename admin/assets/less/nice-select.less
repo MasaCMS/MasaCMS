@@ -149,6 +149,35 @@
     outline: 0
 }
 
+.mura-quickEdit .nice-select{
+    border-color: #ebebeb !important;
+    .border-radius(1px);
+    height: 24px;
+    line-height: 20px;    
+    padding: 1px 6px;
+    width: 100%;
+    
+    .list{
+      .border-radius(0);  
+      cursor: pointer;
+      width: 100%;
+      z-index: 99;
+
+      li{
+        cursor: pointer;
+        font-size: 13px;
+        padding: 4px 6px;
+        min-height: 2em;
+        line-height: 2em;
+        height: 2em;
+
+         *, > *{
+          cursor: pointer;
+         }
+      }
+    }
+}
+
 .nice-select.disabled,
 .nice-select.disabled:after {
     border-color: transparent
