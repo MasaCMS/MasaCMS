@@ -666,7 +666,7 @@
 
 					<!--- Set the loop type and increment. --->
 					<cfset LOCAL.LoopType = "d" />
-					<cfset LOCAL.LoopIncrement = 1 />
+					<cfset LOCAL.LoopIncrement = local.displayInterval.every />
 					<cfset LOCAL.DaysOfWeek = "1,2,3,4,5,6,7" />
 
 				</cfdefaultcase>
