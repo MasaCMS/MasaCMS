@@ -478,6 +478,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 						var tokenInfoRequest=isDefined('url.access_token') && isDefined('url.client_id') && (arrayLen(pathInfo) == 5 && pathInfo[5]=='tokeninfo'
 							|| arrayLen(pathInfo) == 6 && pathInfo[6]=='tokeninfo'
 						);
+
 						var token=getBean('oauthToken').loadBy(token=params.access_token);
 						if(!tokenInfoRequest){
 							structDelete(params,'access_token');
@@ -4625,7 +4626,8 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			'token_type'='Bearer',
 			'access_token'=token.getToken(),
 			'expires_in'=token.getExpiresIn(),
-			'expires_at'=token.getExpiresAt()
+			'expires_at'=token.getExpiresAt(),
+			'info'=token.getTokenInfo()
 		};
 
 		if(request.muraHasOAuthBearerTokenHeader && isJSON(token.getData()) && ( $currentuser.isAdminUser() || $currentuser.isSuperUser() || $currentuser.getUserID() == token.getUserID() ) ) {
