@@ -18,8 +18,12 @@
 @controlsinputbgrd: #FCFCFC;
 @controlsinputtextcolor: #333333;
 @controlsinputfontsize: 16px;
+
 @controlsinputshadow: 0 1px 0 #e6e6e6;
-@controlsinputfocusshadow: 0 2px 0 #b1b1b1;
+/*@controlsinputfocusshadow: 0 2px 0 #b1b1b1;*/
+@controlsinputfocusshadow: 0 1px 0 #b1b1b1;
+
+
 /*@cardshadow: 0px 0px  13px rgba(0,0,0,0.04) !important;*/
 @cardshadow: none;
 @titleeditwidth: ~"calc(100% - 2px)";
@@ -514,6 +518,26 @@
                 }
             }
         }
+        .tagSelector{
+             input{
+                margin-top: 0;
+            }
+            .tag{
+                background-color: @controlslabelcolor;
+                border-radius: 2px;
+                color: #FFF;
+                font-size: 14px;
+                height: 24px;
+                 a i{
+                    color: #e0e0e0 !important;
+                    float: right;
+                    font-size: 12px;
+                    font-weight: normal;
+                    margin: 6px 0px 0 6px;
+                }
+            }
+         }   
+
         #feedCustomImageOptions .half {
             padding-right: 12px;
             +.half {
@@ -859,7 +883,9 @@ body.sidebar-tab {
     }
 }
 #mura-content-title-render {
-    .contentTitle;
+    .contentTitle; 
+    color: @controlstextcolor;
+    font-weight: 400;
     cursor: pointer;
     float: left;
     margin-top: 5px;
@@ -870,14 +896,20 @@ body.sidebar-tab {
     width: @titleeditwidth !important;
     background-color: transparent;
     padding-left: 12px;
-    &:hover, &.editing {
-        outline: #ccc dashed 1px!important;
+    border: @controlspanelhdrborder solid 1px!important;        
+    /*box-shadow: 0 1px 0 #e6e6e6;*/
+    &:hover{
+    /*border: #CDCDCD solid 1px!important;*/
+    } 
+    &.editing {
+        border: #CDCDCD solid 1px!important;
+        /*border: @mura-red dashed 1px!important;*/
     }
     input {
         cursor: auto;
         background-color: transparent;
         font-size: 26px;
-        font-weight: 900;
+        font-weight: 400;
         border: none;
         overflow: hidden;
         padding-left: 0;
