@@ -7,7 +7,7 @@ component
   {
 		property name="filebrowserid" default="" required=true fieldtype="id" orderno="-100000" rendertype="textfield" displayname="filebrowserid" html=false datatype="char" length="35" nullable=false pos="0";
 
-		private function getBaseResourcePath( siteid,resourcePath ) {
+		private function getBaseFileDir( siteid,resourcePath ) {
 			arguments.resourcePath == "" ? "User_Assets" : arguments.resourcePath;
 
 			var pathRoot = "";
@@ -27,7 +27,7 @@ component
 			return pathRoot;
 		}
 
-		private function getBaseAssetPath( siteid,resourcePath ) {
+		private function getBaseResourcePath( siteid,resourcePath ) {
 			arguments.resourcePath == "" ? "User_Assets" : arguments.resourcePath;
 
 			var pathRoot = "";
@@ -86,7 +86,7 @@ component
 			var allowedExtensions = m.getBean('configBean').getFMAllowedExtensions();
 			var tempDir = m.globalConfig().getTempDir();
 
-			var baseFilePath = getBaseResourcePath( arguments.siteid,arguments.resourcePath );
+			var baseFilePath = getBaseFileDir( arguments.siteid,arguments.resourcePath );
 			var filePath = baseFilePath  & m.globalConfig().getFileDelim() & rereplace(arguments.directory,"\.{1,}","\.","all");
 
 			response.uploaded = fileUploadAll(destination=tempDir,nameconflict="overwrite");
@@ -153,7 +153,7 @@ component
 			}
 
 			var m = application.serviceFactory.getBean('m').init(arguments.siteid);
-			var baseFilePath = getBaseResourcePath( arguments.siteid,arguments.resourcePath );
+			var baseFilePath = getBaseFileDir( arguments.siteid,arguments.resourcePath );
 			var filePath = baseFilePath  & m.globalConfig().getFileDelim() & rereplace(arguments.directory,"\.{1,}","\.","all");
 			var path = expandpath(filePath) & application.configBean.getFileDelim() & arguments.filename;
 
@@ -205,7 +205,7 @@ component
 			}
 
 			var m = application.serviceFactory.getBean('m').init(arguments.siteid);
-			var baseFilePath = getBaseResourcePath( arguments.siteid,arguments.resourcePath );
+			var baseFilePath = getBaseFileDir( arguments.siteid,arguments.resourcePath );
 			var filePath = baseFilePath  & m.globalConfig().getFileDelim() & rereplace(arguments.directory,"\.{1,}","\.","all");
 			var ext = rereplacenocase(arguments.filename,".[^\.]*","");
 
@@ -233,7 +233,7 @@ component
 			}
 
 			var m = application.serviceFactory.getBean('m').init(arguments.siteid);
-			var baseFilePath = getBaseResourcePath( arguments.siteid,arguments.resourcePath );
+			var baseFilePath = getBaseFileDir( arguments.siteid,arguments.resourcePath );
 			var filePath = baseFilePath  & m.globalConfig().getFileDelim() & rereplace(arguments.directory,"\.{1,}","\.","all");
 
 			try {
@@ -266,8 +266,10 @@ component
 
 			var m = application.serviceFactory.getBean('m').init(arguments.siteid);
 
-			var baseFilePath = getBaseResourcePath( arguments.siteid,arguments.resourcePath );
+			var baseFilePath = getBaseFileDir( arguments.siteid,arguments.resourcePath );
 			var filePath = baseFilePath  & m.globalConfig().getFileDelim() & rereplace(arguments.directory,"\.{1,}","\.","all");
+
+// move to getBaseResourcePath() --> getFileAssetPath()
 			var assetPath = baseFilePath & replace(arguments.directory,"\","/","all");
 
 			var frow = {};
