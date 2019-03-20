@@ -3,6 +3,7 @@
   margin: 5px;
 }
 .fileviewer-wrapper {
+  position: relative;
   display: block;
   border: 3px solid #eee;
   box-shadow: 2px 2px 5px grey;
@@ -13,7 +14,7 @@
     content: "";
     display: block;
 }
-.filewindow-appbar {
+.filewindow-navmenu {
   background-color: #fafafa;
   display: block;
   clear: both;
@@ -21,54 +22,23 @@
   padding: 4px;
   margin: 0;
 }
-
-.filewindow-navmenu {
-  float: right;
-  margin: 0 5px;
-}
-
 .filewindow-navmenu p {
   float: left;
+  padding: 0 5px;
 }
 .filewindow-navmenu ul {
   float: right;
-  display: inline;
 }
 .filewindow-navmenu ul li a {
   margin: 0 3px;
+  padding: 1px 5px;
 }
-
-.filewindow-modemenu {
-  float: left;
-  margin: 0 5px;
-}
-.filewindow-modemenu ul {
-  float: left;
-  margin: 0;
-  padding: 4px 0 0 0;
-  list-style: none;
-}
-.filewindow-modemenu ul li {
-  display: inline;
-  margin: 0;
-  padding: 0;
-}
-.filewindow-modemenu .highlight {
-  background-color: #ff0000;
-
-}
-.filewindow-modemenu ul li i {
-  display: inline;
-  padding: 4px;
-  font-size: 1.5em;
-}
-
-
 #actionwindow-wrapper {
   position: absolute;
   margin: 60px 30%;
   background-color: #ffffff;
     z-index: 100000;
+
 }
 .actionwindow-formwrapper {
   border: 2px solid #666;
@@ -174,7 +144,7 @@
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    background-image: url("../images/loading.gif");
+    background-image: url("/core/modules/v1/filebrowser/assets/images/loading.gif");
  }
 
 .filewindow-wrapper {
@@ -227,8 +197,8 @@
 
 
 .fileviewer-icon-jpg {
-  background-image: url("./assets/images/jpg.png");
+  background-image: url("/core/modules/v1/filebrowser/assets/images/jpg.png");
 }
 .fileviewer-icon-png {
-  background-image: url("./assets/images/png.png");
+  background-image: url("/core/modules/v1/filebrowser/assets/images/png.png");
 }
