@@ -49,8 +49,8 @@
   <cfset session.resourceType=rc.resourceType>
 </cfif>
 <cfoutput>
-  <script src="/admin/assets/js/filemanager/murafilemanager.js"></script>
-  <link href="/admin/assets/js/filemanager/assets/css/vuefm.css" link rel="stylesheet" type="text/css">
+  <script src="/admin/assets/js/filebrowser/filebrowser.js"></script>
+  <link href="/admin/assets/js/filebrowser/assets/css/filebrowser.css" link rel="stylesheet" type="text/css">
 <div class="mura-header">
 	<cfif session.resourceType eq "assets">
 	<h1>#application.rbFactory.getKeyValue(session.rb,"layout.userassets")#</h1>
@@ -76,24 +76,22 @@
 		<div class="block block-bordered">
 		  <div class="block-content">
       </br></br></br>
-        <div id="MuraFileManagerContainer"></div>
+        <div id="MuraFileBrowserContainer"></div>
 			<script type="text/javascript">
-            MuraFilemanager.config.height="600";
+            MuraFileBrowser.config.height="600";
 			<cfif session.resourceType eq "assets">
-      console.log("A");
-            MuraFilemanager.config.baseResourceLoc="#esapiEncode('javascript','#session.siteID#_User_Assets')#";
+            MuraFileBrowser.config.resourcepath="#esapiEncode('javascript','User_Assets')#";
 			<cfelseif session.resourceType eq "files" and application.configBean.getValue(property='fmShowSiteFiles',defaultValue=true)>
-      console.log("B");
-            MuraFilemanager.resourceType="#esapiEncode('javascript','#session.siteID#_Site_Files')#"
+            MuraFileBrowser.config.resourcepath="#esapiEncode('javascript','Site_Files')#"
 			<cfelseif session.resourceType eq "root" and application.configBean.getValue(property='fmShowApplicationRoot',defaultValue=true)>
-      console.log("C");
-            MuraFilemanager.config.baseResourceLoc="#esapiEncode('javascript','Application_Root')#";
+            MuraFileBrowser.config.resourcepath="#esapiEncode('javascript','Application_Root')#";
 			<cfelse>
-      console.log("D");
-            MuraFilemanager.config.baseResourceLoc="#esapiEncode('javascript','#session.siteID#_User_Assets')#";
+            MuraFileBrowser.config.resourcepath="#esapiEncode('javascript','User_Assets')#";
 			</cfif>
-      console.log("base: " + MuraFilemanager.config.baseResourceLoc);
-      MuraFilemanager.render();
+      Mura(function(m) {
+        MuraFileBrowser.render();
+      });
+
 			</script>
 		</div> <!-- /.block-content -->
 	</div> <!-- /.block-bordered -->

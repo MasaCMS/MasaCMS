@@ -233,7 +233,7 @@ CKEDITOR.editorConfig = function( config )
 	<cfif application.configBean.getEnableMuraTag()>
 		config.extraPlugins += ',muratag';
 	</cfif>
-    config.extraPlugins += ',MuraFilemanager';
+	//config.extraPlugins += ',MuraFileBrowser';
 	//config.ProtectedTags = 'i';
 	config.protectedSource.push( /<i[^>]*><\/i>/g );
 	config.protectedSource.push( /<div.*?class=".*?mura\-object.*?">.*?<\/div>/g );
@@ -265,7 +265,7 @@ CKEDITOR.editorConfig = function( config )
 		// filebrowser settings needed for inline edit mode
     config.removePlugins = 'imageuploader';
     config.removePlugins = 'ckfinder';
-    var connectorpath = '#application.configBean.getContext()#/core/vendor/ckeditor/plugins/murafilemanager/filemanager.html';
+    var connectorpath = '#application.configBean.getContext()#/core/vendor/ckeditor/plugins/murafilebrowser/filebrowser.html';
 		config.filebrowserBrowseUrl = connectorpath;
 		config.filebrowserImageBrowseUrl = connectorpath + '?type=Images';
     config.filebrowserUploadUrl = connectorpath;
