@@ -1,15 +1,13 @@
   // objectparams are available under 'this.context.{yourVar}'
-  Mura.DisplayObject.vuefm = Mura.UI.extend({
+  Mura.DisplayObject.filebrowser = Mura.UI.extend({
 
   // Mura invokes this method by default
   render: function() {
 
-
-
     var self = this;
     var target =  "_" + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
-    this.webRoot = "http://localhost:8050/index.cfm/_api/json/v1/default/muraFileBrowser";
+    this.webRoot = "/index.cfm/_api/json/v1/default/filebrowser";
     this.editfilelist = ["txt","cfm"];
     this.imagelist = ["gif","jpg","jpeg","png"];
 

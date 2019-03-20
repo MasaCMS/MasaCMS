@@ -1,26 +1,23 @@
-MuraFilemanager = {
+MuraFileBrowser = {
 
 config: {
-    baseResourceLoc: "",
-    baseFolder: "",
+    resourcepath: "User_Assets",
     height: 600,
-    webRoot: "/index.cfm/_api/json/v1/default/muraFileBrowser"
+    selectMode: 0,
+    endpoint: '',
 }
 
 , render: function( config ) {
   var self = this;
   var target =  "_" + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
-
-
   this.config=Mura.extend(config,this.config);
-  console.log(config);
 
-  this.webRoot = this.config.webRoot;
+  this.endpoint = Mura.apiEndpoint + "filebrowser/";
   this.editfilelist = ["txt","cfm"];
   this.imagelist = ["gif","jpg","jpeg","png"];
 
-  this.container = Mura("#MuraFileManagerContainer");
+  this.container = Mura("#MuraFileBrowserContainer");
   this.container.append("<div id='" + target + "'><component :is='currentView'></component></div>");
   this.target = target;
 
@@ -28,7 +25,7 @@ config: {
 
   Mura.loader()
     .loadjs(
-      '/core/modules/v1/vuefm/assets/js/vue.js',
+      '/core/modules/v1/filebrowser/assets/js/vue.js',
     function() {
       self.mountbrowser();
      } ) ;
@@ -40,13 +37,12 @@ config: {
   var self = this;
 }
 
-, error: function(msg) {
+, onError: function(msg) {
   console.log( msg );
 }
 
 , getURLVars: function() {
     var vars = {};
-    console.log(window.location.href);
     var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
         vars[key] = value;
     });
@@ -61,7 +57,7 @@ config: {
 
 , getEditFile: function( directory,currentFile,onSuccess) {
   var dir = directory == undefined ? "" : directory;
-  var baseurl = this.webRoot + "/edit?directory=" + dir + "&filename=" + currentFile.fullname;
+  var baseurl = this.endpoint + "/edit?directory=" + dir + "&filename=" + currentFile.fullname + "&resourcepath=" + this.config.resourcepath;
 
   if(!this.validate()) {
     return error("No Access");
@@ -75,14 +71,14 @@ config: {
       },
       //fail
       function(response) {
-        fail(response);
+        this.onError(response);
       }
     );
 }
 
-, doDeleteFile: function( directory,currentFile,onSuccess) {
+, doDeleteFile: function( directory,currentFile,onSuccess,onError) {
   var dir = directory == undefined ? "" : directory;
-  var baseurl = this.webRoot + "/delete?directory=" + dir + "&filename=" + currentFile.fullname;
+  var baseurl = this.endpoint + "/delete?directory=" + dir + "&filename=" + currentFile.fullname + "&resourcepath=" + this.config.resourcepath;
 
   if(!this.validate()) {
     return error("No Access");
@@ -96,14 +92,14 @@ config: {
       },
       //fail
       function(response) {
-        fail(response);
+        this.onError(response);
       }
     );
 }
 
-, doRenameFile: function( directory,currentFile) {
+, doRenameFile: function( directory,currentFile,onSuccess,onError) {
   var dir = directory == undefined ? "" : directory;
-  var baseurl = this.webRoot + "/rename?directory=" + dir + "&filename=" + currentFile.fullname + "&name=" + currentFile.name;
+  var baseurl = this.endpoint + "/rename?directory=" + dir + "&filename=" + currentFile.fullname + "&name=" + currentFile.name + "&resourcepath=" + this.config.resourcepath;
 
   if(!this.validate()) {
     return error("No Access");
@@ -113,21 +109,42 @@ config: {
     .then(
       //success
       function(response) {
-        console.log("response");
-        console.log(response);
+        onSuccess(response);
       },
       //fail
       function(response) {
-        fail(response);
+        this.onError(response);
       }
     );
 }
 
-, loadDirectory: function( directory,pageindex,onSuccess,onFail,filterResults,sortOn,sortDir ) {
+, doNewFolder: function( directory,newfolder,onSuccess ) {
+  var dir = directory == undefined ? "" : directory;
+  var baseurl = this.endpoint + "/addfolder?directory=" + dir + "&name=" + newfolder + "&resourcepath=" + this.config.resourcepath;
+
+  if(!this.validate()) {
+    return error("No Access");
+  }
+
+  Mura.get( baseurl )
+    .then(
+      //success
+      function(response) {
+        onSuccess(response);
+      },
+      //fail
+      function(response) {
+        onError(response);
+      }
+    );
+}
+
+, loadDirectory: function( directory,pageindex,onSuccess,onError,filterResults,sortOn,sortDir ) {
   var self = this;
 
   var dir = directory == undefined ? "" : directory;
-  var baseurl = this.webRoot + "/browse?directory=" + dir + "&baseFolder=" + self.config.baseFolder;
+
+  var baseurl = this.endpoint + "browse?directory=" + dir + "&resourcepath=" + this.config.resourcepath;
 
   if(!this.validate()) {
     return error("No Access");
@@ -149,14 +166,14 @@ config: {
       },
       //fail
       function(response) {
-        fail(response);
+        onError(response);
       }
     );
 }
 
-, loadBaseDirectory: function( success,fail ) {
+, loadBaseDirectory: function( onSuccess,onError ) {
   var self = this;
-  var baseurl = this.webRoot + "/browse";
+  var baseurl = this.endpoint + "/browse" + "?resourcepath=" + this.config.resourcepath;
 
   if(!this.validate()) {
     return error("No Access");
@@ -166,18 +183,18 @@ config: {
     .then(
       //success
       function(response) {
-        success(response);
+        onSuccess(response);
       },
       //fail
       function(response) {
-        fail(response);
+        onError(response);
       }
     );
 }
 
 , doUpload: function( formData,success,fail ) {
   var self = this;
-  var baseurl = this.webRoot + "/upload";
+  var baseurl = this.endpoint + "/upload" + "?resourcepath=" + this.config.resourcepath;
 
   if(!this.validate()) {
     return error("No Access");
@@ -188,9 +205,8 @@ config: {
       function doSuccess( response ) {
         success( response );
       },
-      function doFail( response ) {
-        console.log( "fail" );
-        console.log( response );
+      function doonError( response ) {
+        this.onError(response);
       }
     );
 }
@@ -199,16 +215,32 @@ config: {
 , mountbrowser: function() {
   var self = this;
 
+  Vue.directive('click-outside', {
+    bind: function (el, binding, vnode) {
+      el.clickOutsideEvent = function (event) {
+        // here I check that click was outside the el and his childrens
+        if (!(el == event.target || el.contains(event.target))) {
+          // and if it did, call method provided in attribute value
+          vnode.context[binding.expression](event);
+        }
+      };
+      document.body.addEventListener('click', el.clickOutsideEvent)
+    },
+    unbind: function (el) {
+      document.body.removeEventListener('click', el.clickOutsideEvent)
+    },
+  });
+
   Vue.component('contextmenu', {
     props: ["currentFile","menuy","menux"],
     template: `
     <div id="newContentMenu" class="addNew" v-bind:style="{ left: (menux + 20) + 'px',top: menuy + 'px' }">
         <ul id="newContentOptions">
-          <li v-if="checkImageType()"><a @click="selectFile()"><i class="mi-check"> Select</i></a></li>
+          <li v-if="checkImageType() && checkSelectMode()"><a @click="selectFile()"><i class="mi-check"> Select</i></a></li>
           <li v-if="checkFileType()"><a  @click="editFile()"><i class="mi-pencil"> Edit</i></a></li>
           <li v-if="checkImageType()"><a  @click="viewFile()"><i class="mi-image"> View</i></a></li>
           <li><a @click="renameFile()"><i class="mi-edit"> Rename</i></a></li>
-          <li><a @click="downloadFile()"><i class="mi-download"> Download</i></a></li> <!-- v-if="checkIsFile()" -->
+          <li v-if="checkIsFile()"><a @click="downloadFile()"><i class="mi-download">Download</i></a></li>
           <li><a @click="deleteFile()"><i class="mi-trash"> Delete</i></a></li>
         </ul>
       </div>
@@ -224,8 +256,6 @@ config: {
     }
     , methods: {
       compstyle: function() {
-        console.log("THIS IS UPDATED");
-
         this.posx = this.menux;
         this.posy = this.menuy;
 
@@ -233,38 +263,32 @@ config: {
       }
 
      , selectFile: function() {
-        console.log(fileViewer.currentFile);
         window.opener.CKEDITOR.tools.callFunction(self.callback,fileViewer.currentFile.image);
         window.close();
       }
 
       , editFile: function() {
-        console.log("EDIT: " + fileViewer.currentFile.name);
         fileViewer.editFile(this.successEditFile);
       }
       , viewFile: function() {
-        console.log("View: " + fileViewer.currentFile.name);
         fileViewer.isDisplayWindow = "VIEW";
         fileViewer.viewFile();
       }
       , successEditFile: function( response ) {
-        console.log("RESP");
-        console.log(response);
         this.currentFile.content = response.data.content;
         fileViewer.isDisplayWindow = "EDIT";
       }
       , renameFile: function() {
-        console.log("RENAME: " + fileViewer.currentFile.name);
         fileViewer.isDisplayWindow = "RENAME";
       }
       , downloadFile: function() {
-        console.log("DOWNLOAD: " + fileViewer.currentFile.name);
-//        fileViewer.isDisplayWindow = "DOWNLOAD";
           window.open(fileViewer.currentFile.image, '_blank');
       }
       , deleteFile: function() {
-        console.log("DELETE: " + fileViewer.currentFile.name);
         fileViewer.isDisplayWindow = "DELETE";
+      }
+      , checkSelectMode: function() {
+          return fileViewer.checkSelectMode();
       }
       , checkFileType: function() {
           return fileViewer.checkFileType();
@@ -279,14 +303,15 @@ config: {
   });
 
   Vue.component('actionwindow', {
-    props: ["isDisplayWindow","currentFile"],
+    props: ["isDisplayWindow","currentFile","currentIndex","error"],
     template: `
       <div id="actionwindow-wrapper">
         <editwindow v-if="isDisplayWindow=='EDIT'" :currentFile="currentFile"></editwindow>
-        <viewwindow v-if="isDisplayWindow=='VIEW'" :currentFile="currentFile" :currentIndex="currentIndex"></viewwindow>
         <renamewindow v-if="isDisplayWindow=='RENAME'" :currentFile="currentFile"></renamewindow>
+        <addfolderwindow v-if="isDisplayWindow=='ADDFOLDER'" :currentFile="currentFile"></addfolderwindow>
         <downloadwindow v-if="isDisplayWindow=='DOWNLOAD'" :currentFile="currentFile"></downloadwindow>
         <deletewindow v-if="isDisplayWindow=='DELETE'" :currentFile="currentFile"></deletewindow>
+        <errorwindow v-if="isDisplayWindow=='ERROR'" :currentFile="currentFile" :error="error"></errorwindow>
       </div>
     `,
     data() {
@@ -334,27 +359,98 @@ config: {
     }
   });
 
+  Vue.component('errorwindow', {
+    props: ['error'],
+    template: `
+      <div class="actionwindow-formwrapper">
+        <div>
+          <h3>Error</h3>
+          <h4>{{error}}</h4>
+        </div>
+        <div>
+          <button @click="cancel()">Close</button>
+        </div>
+      </div>
+    `,
+    data() {
+        return {
+          filename: ''
+        };
+    },
+    methods: {
+      cancel: function() {
+        fileViewer.isDisplayWindow = '';
+      }
+    }
+  });
+
+
+  Vue.component('addfolderwindow', {
+    props: ["currentFile"],
+    template: `
+      <div class="actionwindow-formwrapper">
+        <div>
+          <h3>Add Folder</h3>
+          <label>
+            Name:
+            <input v-model="foldername"></input>
+          </label>
+        </div>
+        <div>
+          <button @click="newFolder()">Save</button>
+          <button @click="cancel()">Cancel</button>
+        </div>
+      </div>
+    `,
+    data() {
+        return {
+          foldername: ''
+        };
+    },
+    methods: {
+      newFolder: function() {
+        fileViewer.newFolder(this.foldername);
+
+        fileViewer.isDisplayWindow = '';
+      }
+      , cancel: function() {
+        fileViewer.isDisplayWindow = '';
+      }
+    },
+    mounted: function() {
+
+    }
+  });
+
   Vue.component('viewwindow', {
     props: ["currentFile","currentIndex","total"],
     template: `
-      <div class="actionwindow-formwrapper">
-      !{{currentIndex}}!
+      <div class="fileviewer-modal">
         <div>
-          <div v-if="currentIndex > 0" class="actionwindow-left" @click="lastimage">&lt;</div>
-          <div class="actionwindow-right" @click="nextimage">&gt;</div>
+          <div class="fileviewer-gallery" :style="{ 'background-image': 'url(' + currentFile.image + ')' }"  v-click-outside="closewindow">
+            <div>
+              <div class="actionwindow-left" @click="lastimage">&lt;</div>
+              <div class="actionwindow-right" @click="nextimage">&gt;</div>
+            </div>
+          </div>
         </div>
-        <div class="fileviewer-gallery" :style="{ 'background-image': 'url(' + currentFile.image + ')' }"></div>
       </div>
     `,
     data() {
         return {};
-    },
-    methods: {
+    }
+    , mounted: function() {
+      this.$root.isDisplayContext = 0;
+    }
+    , methods: {
       lastimage: function() {
         fileViewer.previousFile(1);
       }
       , nextimage: function() {
         fileViewer.nextFile(1);
+      }
+      , closewindow: function( event ) {
+        this.$root.isDisplayWindow = "";
       }
     }
   });
@@ -366,7 +462,7 @@ config: {
         <h3>Delete</h3>
         <label>
           <p>Confirm Deletion: {{currentFile.name}}</p>
-          <button @click="updateDelete()">Delete</button>
+          <button @click="doDelete()">Delete</button>
           <button @click="cancel()">Cancel</button>
         </label>
       </div>
@@ -375,11 +471,8 @@ config: {
         return {};
     },
     methods: {
-      updateDelete: function() {
-        fileViewer.deleteFile(  fileViewer.refresh);
-        fileViewer.isDisplayWindow = '';
-      }
-      , successDeleteFile: function() {
+      doDelete: function() {
+        fileViewer.deleteFile(  fileViewer.refresh, fileViewer.displayError );
         fileViewer.isDisplayWindow = '';
       }
       , cancel: function() {
@@ -414,30 +507,23 @@ config: {
       }
     }
     , mounted: function() {
-      console.log(this.currentFile);
       this.filecontent = this.currentFile.content;
     }
   });
 
-
-
-
-
   Vue.component('appbar', {
     props: ["links","isbottomnav","response","itemsper","location"],
     template: `
-    <div class="filewindow-appbar">
+      <div class="filewindow-appbar">
           <navmenu v-if="response.links" :links="links" :response="response" :itemsper="itemsper" :isbottomnav="isbottomnav"></navmenu>
           <modemenu v-if="location"></modemenu>
-        </div>
+      </div>
     `,
     data() {
         return {};
     },
     methods: {
       applyPage: function(goto) {
-        console.log("USE: " + goto);
-
           var pageindex = 1;
 
           if(goto == 'last') {
@@ -449,8 +535,6 @@ config: {
           else if(goto == 'previous') {
             pageindex = parseInt(fileViewer.response.pageindex) - 1;
           }
-
-          console.log("goto " + pageindex);
 
           this.$parent.refresh('',pageindex)
       }
@@ -473,34 +557,34 @@ config: {
               <i class="mi-bars" title="List View"></i>
             </label>
           </div>
-          <label class="btn btn-secondary">
-            <i @click="addFolder" class="mi-folder" title="Add Folder"></i>
+          <label @click="newFolder" class="btn btn-secondary">
+            <i class="mi-folder" title="Add Folder"></i>
           </label>
           <input v-model="filterResults" v-on:input="filterChange">
         </div>
     `,
     data() {
         return {
-          viewmode: this.$parent.$parent.displaymode,
+          viewmode: this.$root.displaymode,
           filterResults: '',
           timeout: undefined
         };
     },
     methods: {
       switchMode: function(mode) {
-        this.$parent.$parent.displaymode = this.viewmode = mode;
+        this.$root.displaymode = this.viewmode = mode;
 
       }
-      , addFolder: function() {
-
+      , newFolder: function() {
+        fileViewer.isDisplayWindow = 'ADDFOLDER';
       }
       , filterChange: function(e,value) {
         // timeout to allow for typing and not fire immediately
         if(this.timeout)
           window.clearTimeout(this.timeout);
 
-        this.$parent.$parent.filterResults = this.filterResults;
-        this.timeout = window.setTimeout(this.$parent.$parent.refresh, 500);
+        this.$root.filterResults = this.filterResults;
+        this.timeout = window.setTimeout(this.$root.refresh, 500);
       }
     }
 
@@ -543,8 +627,6 @@ config: {
     },
     methods: {
       applyPage: function(goto) {
-        console.log("USE: " + goto);
-
           var pageindex = 1;
 
           if(goto == 'last') {
@@ -556,8 +638,6 @@ config: {
           else if(goto == 'previous') {
             pageindex = parseInt(fileViewer.response.pageindex) - 1;
           }
-
-          console.log("goto " + pageindex);
 
           this.$parent.refresh('',pageindex)
       }
@@ -573,8 +653,6 @@ config: {
     props: ['files','folders','foldertree','isDisplayContext','currentFile'],
     template: `
       <div class="listmode-wrapper">
-    {{this.$parent.$parent.isDisplayContext}}
-      {{isDisplayContext}} {{menux}} {{menuy}}
         <table class="mura-table-grid">
         	<tbody>
         		<tr>
@@ -622,7 +700,7 @@ config: {
 
         	</tbody>
         </table>
-        <contextmenu :currentFile="this.$parent.currentFile" :isDisplayContext="this.$parent.$parent.isDisplayContext" v-if="isDisplayContext" :menux="menux" :menuy="menuy"></contextmenu>
+        <contextmenu :currentFile="this.$parent.currentFile" :isDisplayContext="this.$root.isDisplayContext" v-if="isDisplayContext" :menux="menux" :menuy="menuy"></contextmenu>
       </div>`,
     data() {
       return {
@@ -632,25 +710,28 @@ config: {
     }
     , methods: {
       refresh: function( directory,index ) {
-        this.$parent.$parent.refresh( directory,index );
+        this.$root.refresh( directory,index );
+      }
+      , displayError: function( e ) {
+        this.$root.displayError( e );
       }
       ,back: function( ) {
-        this.$parent.$parent.back( );
+        this.$root.back( );
       }
       ,openMenu: function(e,file,index,ref) {
-
-                if(this.$parent.$parent.isDisplayContext) {
-                  this.$parent.$parent.isDisplayContext = 0;
-                }
+        if(this.isDisplayContext) {
+          this.$root.isDisplayContext = 0;
+          return;
+        }
 
         var left = Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().left);
         var top =  Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().top);
 
-        this.$parent.$parent.isDisplayContext = 1;
-        this.$parent.$parent.isDisplayWindow = '';
-        this.$parent.$parent.currentFile = file;
-        this.$parent.$parent.currentFile.index = index;
-        this.$parent.$parent.currentIndex = index;
+        this.$root.isDisplayContext = 1;
+        this.$root.isDisplayWindow = '';
+        this.$root.currentFile = file;
+        this.$root.currentFile.index = index;
+        this.$root.currentIndex = index;
         this.menux = left;
         this.menuy = top;
 
@@ -702,26 +783,27 @@ config: {
     }
     , methods: {
       refresh: function( directory,index ) {
-        this.$parent.$parent.refresh( directory,index );
+        this.$root.refresh( directory,index );
       }
       ,back: function( ) {
-        this.$parent.$parent.back( );
+        this.$root.back( );
       }
       ,openMenu: function(e,file,index) {
 
-        if(this.$parent.$parent.isDisplayContext) {
-          this.$parent.$parent.isDisplayContext = 0;
+        if(this.isDisplayContext) {
+          this.$root.isDisplayContext = 0;
+          return;
         }
 
         this.menux = Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().left) + 25;
         this.menuy =  Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().top) + 20;
 
 
-        this.$parent.$parent.isDisplayContext = 1;
-        this.$parent.$parent.isDisplayWindow = '';
-        this.$parent.$parent.currentFile = file;
-        this.$parent.$parent.currentFile.index = index;
-        this.$parent.$parent.currentIndex = index;
+        this.$root.isDisplayContext = 1;
+        this.$root.isDisplayWindow = '';
+        this.$root.currentFile = file;
+        this.$root.currentFile.index = index;
+        this.$root.currentIndex = index;
 
         e.preventDefault();
       }
@@ -732,8 +814,8 @@ config: {
     props: ['files','folders','foldertree','isDisplayContext','currentFile','','displaymode'],
     template: `
       <div class="filewindow-wrapper">
-        <gridmode v-if="displaymode==1" :foldertree="foldertree" :files="files" :folders="folders" :isDisplayContext="isDisplayContext"></gridmode>
-        <listmode  v-if="displaymode==2" :foldertree="foldertree" :files="files" :folders="folders" :isDisplayContext="isDisplayContext"></listmode>
+        <gridmode v-if="displaymode==1" :currentFile="currentFile"   :foldertree="foldertree" :files="files" :folders="folders" :isDisplayContext="isDisplayContext"></gridmode>
+        <listmode  v-if="displaymode==2" :currentFile="currentFile" :foldertree="foldertree" :files="files" :folders="folders" :isDisplayContext="isDisplayContext"></listmode>
       </div>`,
     data() {
       return {};
@@ -749,7 +831,8 @@ config: {
     el: "#" + self.target,
     template: `
       <div class="fileviewer-wrapper">
-        <actionwindow v-if="isDisplayWindow" :isDisplayWindow="isDisplayWindow" :currentFile="currentFile"></actionwindow>
+        <viewwindow v-if="isDisplayWindow=='VIEW'" :currentFile="currentFile" :currentIndex="currentIndex"></viewwindow>
+        <actionwindow v-if="isDisplayWindow" :isDisplayWindow="isDisplayWindow" :currentIndex="currentIndex" :currentFile="currentFile" :error="error"></actionwindow>
         <div class="fileviewer-breadcrumb">
           <i class="mi-home" @click="setDirDepth(-1)"></i>
           <i v-for="(item,index) in foldertree" class="mi-angle-double-right fa-padleft" @click="setDirDepth(index)"> {{item}}</i>
@@ -771,7 +854,7 @@ config: {
           </form>
         </div>
         <appbar v-if="response.links" :location=1 :links="response.links" :itemsper="itemsper" :response="response"></appbar>
-        <filewindow :isDisplayContext="isDisplayContext" :foldertree="foldertree" :files="files" :folders="folders" :displaymode="displaymode"></filewindow>
+        <filewindow :currentFile="currentFile" :isDisplayContext="isDisplayContext" :foldertree="foldertree" :files="files" :folders="folders" :displaymode="displaymode"></filewindow>
         <appbar v-if="response.links" :location=0 :links="response.links" :itemsper="itemsper" :response="response"></appbar>
       </div>`
     ,
@@ -784,12 +867,13 @@ config: {
       fileCount: 0,
       files: [],
       folders: [],
+      error: "",
+      selectMode: 0,
       displaymode: 2,
       uploadedFiles: [],
       isDisplayContext: 0,
       isDisplayWindow: '',
       uploadField: "uploadFiles",
-      error: null,
       filterResults: '',
       sortOn: '',
       sortDir: 'ASC',
@@ -809,7 +893,7 @@ config: {
       isSuccess() {
         return this.currentState === IS_SUCCESS;
       },
-      isFail() {
+      isonError() {
         return this.currentState === IS_FAIL;
       }
     },
@@ -824,7 +908,15 @@ config: {
           dir = dir + "\\" + this.foldertree[i];
         }
 
-          self.doRenameFile( dir,this.currentFile );
+          self.doRenameFile( dir,this.currentFile,this.refresh );
+      }
+      , newFolder: function(foldername) {
+        var dir = "";
+
+        for(var i=0;i<this.foldertree.length;i++) {
+          dir = dir + "\\" + this.foldertree[i];
+        }
+        self.doNewFolder( dir,foldername,this.refresh );
       }
       , updateEdit: function() {
           self.updateEdit(currentFile);
@@ -834,10 +926,7 @@ config: {
         this.files = response.data.items;
         this.folders = response.data.folders;
       }
-      , displayError: function(response) {
-        this.response = response.data;
-        this.files = response.data.items;
-        this.folders = response.data.folders;
+      , displayError: function( e ) {
       }
       , previousFile( img ) {
         img = img ? img : 0;
@@ -891,11 +980,10 @@ config: {
         this.error = null;
       }
       , setDirDepth: function( depth ) {
-          console.log(depth);
           this.foldertree = this.foldertree.slice(0,depth+1);
           this.refresh();
       }
-      , editFile: function( onSuccess) {
+      , editFile: function( onSuccess,onError ) {
         var dir = "";
 
         for(var i=0;i<this.foldertree.length;i++) {
@@ -908,17 +996,14 @@ config: {
       , viewFile: function( direction ) {
 
       }
-      , deleteFile: function( onSuccess) {
+      , deleteFile: function( onSuccess, onError) {
         var dir = "";
 
         for(var i=0;i<this.foldertree.length;i++) {
           dir = dir + "\\" + this.foldertree[i];
         }
 
-        console.log(this.currentFile);
-        console.log(dir);
-
-        self.doDeleteFile(dir,this.currentFile,onSuccess);
+        self.doDeleteFile(dir,this.currentFile,onSuccess,onError);
 
       }
       , refresh: function( folder,pageindex ) {
@@ -941,8 +1026,6 @@ config: {
         this.refresh();
       }
       , closeMenu: function( e ) {
-        console.log('close menu');
-        console.log(e);
         this.isDisplayContext = 0;
         e.preventDefault();
       }
@@ -985,6 +1068,9 @@ config: {
         this.uploadReset();
         this.refresh();
       }
+      , checkSelectMode: function() {
+        return this.selectMode;
+      }
       , checkFileType: function() {
           for(var i = 0;i<self.editfilelist.length;i++) {
             if(this.currentFile.type == self.editfilelist[i])
@@ -995,7 +1081,7 @@ config: {
       }
       , checkImageType: function() {
           for(var i = 0;i<self.imagelist.length;i++) {
-            if(this.currentFile.type == self.imagelist[i]) {
+            if(this.currentFile.ext == self.imagelist[i]) {
               return true;
             }
           }
@@ -1003,25 +1089,20 @@ config: {
       }
       , checkIsFile: function() {
 
-        console.log(this.currentFile['index']);
-        console.log(this.currentFile);
-
-        if(!parseInt(this.currentFile.index)) {
+        if(Math.floor(this.currentFile.isfile)) {
           return true;
         }
         return false;
       }
     },
     mounted: function() {
-        var me = this;
         this.uploadReset();
+        this.selectMode = self.config.selectMode;
         self.loadBaseDirectory(this.displayResults,this.displayError);
         var vm = this;
         window.addEventListener('mouseup', function(event) {
-          me.isDisplayContext = 0;
+          this.isDisplayContext = 0;
         });
-
-
     }
   });
 }
