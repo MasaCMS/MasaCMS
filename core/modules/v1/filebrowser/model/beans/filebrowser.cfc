@@ -7,6 +7,26 @@ component
   {
 		property name="filebrowserid" default="" required=true fieldtype="id" orderno="-100000" rendertype="textfield" displayname="filebrowserid" html=false datatype="char" length="35" nullable=false pos="0";
 
+		private function getBaseFileDir( siteid,resourcePath ) {
+			arguments.resourcePath == "" ? "User_Assets" : arguments.resourcePath;
+
+			var pathRoot = "";
+			var m=getBean('$').init(arguments.siteid);
+			var currentSite = application.settingsManager.getSite(arguments.siteid);
+
+			if(arguments.resourcePath == "Site_Files") {
+				pathRoot = m.globalConfig().getFileDir() & '/' & currentSite.getFilePoolID();
+			}
+			else if(arguments.resourcePath == "Application_Root") {
+				pathRoot = "/";
+			}
+			else {
+				pathRoot = m.globalConfig().getFileDir() & '/' & currentSite.getFilePoolID() & '/assets';
+			}
+
+			return pathRoot;
+		}
+
 		private function getBaseResourcePath( siteid,resourcePath ) {
 			arguments.resourcePath == "" ? "User_Assets" : arguments.resourcePath;
 
@@ -27,41 +47,24 @@ component
 			return pathRoot;
 		}
 
-		private function getBaseAssetPath( siteid,resourcePath ) {
-			arguments.resourcePath == "" ? "User_Assets" : arguments.resourcePath;
-
-			var pathRoot = "";
+		private any function checkPerms( siteid,context,resourcePath )  {
 			var m=getBean('$').init(arguments.siteid);
-			var currentSite = application.settingsManager.getSite(arguments.siteid);
+			var permission = {message: '',success: 0};
 
-			if(arguments.resourcePath == "Site_Files") {
-				pathRoot = application.configBean.getAssetPath() & '/' & currentSite.getFilePoolID();
-			}
-			else if(arguments.resourcePath == "Application_Root") {
-				pathRoot = "/";
-			}
-			else {
-				pathRoot = application.configBean.getAssetPath() & '/' & currentSite.getFilePoolID() & '/assets';
+			// context: upload, edit,delete,rename,addFolder,browse
+			// resourcePath: User_Assets,Site_Files,Application_Root
+
+			if(!(m.getCurrentUser().isLoggedIn() and (m.getCurrentUser().isAdminUser() or m.getCurrentUser().isSuperUser()))) {
+				permission.message = "Permission Denied";
+				return permission;
 			}
 
-			return pathRoot;
-		}
-
-		private any function checkPerms( siteid,context,mode )  {
-			var permission = {};
-
-			var m=getBean('$').init(arguments.siteid);
-
-			permission.success = 0;
-
-			if(m.validateCSRFTokens(context='file-' & arguments.mode)) {
-				permission.success = 1;
+/*			if(!m.validateCSRFTokens()) {
+					permission.message = "Invalid CSRF tokens";
+					return permission;
 			}
-
+*/
 			permission.success = 1;
-
-//			arguments.$.getContentRenderer().validateCSRFTokens(context='file-' & arguments.mode)
-
 			return permission;
 		}
 
@@ -73,12 +76,12 @@ component
 
 			// hasrestrictedfiles
 
-			var permission = checkPerms(arguments.siteid,'upload');
+			var permission = checkPerms(arguments.siteid,'upload',resourcePath);
 			var response = { success: 0,failed: [],saved: []};
 
 			if(!permission.success) {
 				response.permission = permission;
-				response.message = "Permission failed."
+				response.message = permission.message;
 				return response;
 			}
 
@@ -86,7 +89,7 @@ component
 			var allowedExtensions = m.getBean('configBean').getFMAllowedExtensions();
 			var tempDir = m.globalConfig().getTempDir();
 
-			var baseFilePath = getBaseResourcePath( arguments.siteid,arguments.resourcePath );
+			var baseFilePath = getBaseFileDir( arguments.siteid,arguments.resourcePath );
 			var filePath = baseFilePath  & m.globalConfig().getFileDelim() & rereplace(arguments.directory,"\.{1,}","\.","all");
 
 			response.uploaded = fileUploadAll(destination=tempDir,nameconflict="overwrite");
@@ -100,6 +103,7 @@ component
 						ArrayAppend(response.saved,item);
 				}
 				else {
+					fileDelete(item.serverdirectory & m.globalConfig().getFileDelim() & item.serverfile);
 					ArrayAppend(response.failed,item);
 				}
 			}
@@ -112,12 +116,12 @@ component
 			arguments.siteid == "" ? "default" : arguments.siteid;
 			arguments.pageindex == isNumeric(arguments.pageindex) ? arguments.pageindex : 1;
 
-			var permission = checkPerms('edit');
+			var permission = checkPerms(arguments.siteid,'edit',resourcePath);
 			var response = { success: 0};
 
 			if(!permission.success) {
 				response.permission = permission;
-				response.message = "Permission failed."
+				response.message = permission.message;
 				return response;
 			}
 
@@ -143,17 +147,17 @@ component
 			arguments.siteid == "" ? "default" : arguments.siteid;
 			arguments.pageindex == isNumeric(arguments.pageindex) ? arguments.pageindex : 1;
 
-			var permission = checkPerms('delete');
+			var permission = checkPerms(arguments.siteid,'delete',resourcePath);
 			var response = { success: 0};
 
 			if(!permission.success) {
 				response.permission = permission;
-				response.message = "Permission failed."
-				throw( message = response.message,object=response);
+				response.message = permission.message;
+				return response;
 			}
 
 			var m = application.serviceFactory.getBean('m').init(arguments.siteid);
-			var baseFilePath = getBaseResourcePath( arguments.siteid,arguments.resourcePath );
+			var baseFilePath = getBaseFileDir( arguments.siteid,arguments.resourcePath );
 			var filePath = baseFilePath  & m.globalConfig().getFileDelim() & rereplace(arguments.directory,"\.{1,}","\.","all");
 			var path = expandpath(filePath) & application.configBean.getFileDelim() & arguments.filename;
 
@@ -195,17 +199,17 @@ component
 			arguments.siteid == "" ? "default" : arguments.siteid;
 			arguments.pageindex == isNumeric(arguments.pageindex) ? arguments.pageindex : 1;
 
-			var permission = checkPerms('rename');
+			var permission = checkPerms(arguments.siteid,'rename',resourcePath);
 			var response = { success: 0};
 
 			if(!permission.success) {
 				response.permission = permission;
-				response.message = "Permission failed."
+				response.message = permission.message;
 				return response;
 			}
 
 			var m = application.serviceFactory.getBean('m').init(arguments.siteid);
-			var baseFilePath = getBaseResourcePath( arguments.siteid,arguments.resourcePath );
+			var baseFilePath = getBaseFileDir( arguments.siteid,arguments.resourcePath );
 			var filePath = baseFilePath  & m.globalConfig().getFileDelim() & rereplace(arguments.directory,"\.{1,}","\.","all");
 			var ext = rereplacenocase(arguments.filename,".[^\.]*","");
 
@@ -223,17 +227,17 @@ component
 			arguments.siteid == "" ? "default" : arguments.siteid;
 			arguments.pageindex == isNumeric(arguments.pageindex) ? arguments.pageindex : 1;
 
-			var permission = checkPerms('addFolder');
+			var permission = checkPerms(arguments.siteid,'addFolder',resourcePath);
 			var response = { success: 0};
 
 			if(!permission.success) {
 				response.permission = permission;
-				response.message = "Permission failed."
+				response.message = permission.message;
 				return response;
 			}
 
 			var m = application.serviceFactory.getBean('m').init(arguments.siteid);
-			var baseFilePath = getBaseResourcePath( arguments.siteid,arguments.resourcePath );
+			var baseFilePath = getBaseFileDir( arguments.siteid,arguments.resourcePath );
 			var filePath = baseFilePath  & m.globalConfig().getFileDelim() & rereplace(arguments.directory,"\.{1,}","\.","all");
 
 			try {
@@ -252,23 +256,25 @@ component
 			arguments.pageindex == isNumeric(arguments.pageindex) ? arguments.pageindex : 1;
 
 			var m=getBean('$').init(arguments.siteid);
-			var permission = checkPerms('browse');
+			var permission = checkPerms(arguments.siteid,'browse',resourcePath);
 			var response = { success: 0};
 
 			if(!permission.success) {
 				response.permission = permission;
-				response.message = "Permission failed."
+				response.message = permission.message;
 				return response;
 			}
 
-// m.globalConfig().getFileDir() ... OS file path (no siteid)
+// m.siteConfig().getFileDir() ... OS file path (no siteid)
 // m.siteConfig().getFileAssetPath() ... includes siteid (urls)
 
 			var m = application.serviceFactory.getBean('m').init(arguments.siteid);
 
-			var baseFilePath = getBaseResourcePath( arguments.siteid,arguments.resourcePath );
+			var baseFilePath = getBaseFileDir( arguments.siteid,arguments.resourcePath );
 			var filePath = baseFilePath  & m.globalConfig().getFileDelim() & rereplace(arguments.directory,"\.{1,}","\.","all");
-			var assetPath = baseFilePath & replace(arguments.directory,"\","/","all");
+
+// move to getBaseResourcePath() --> getFileAssetPath()
+			var assetPath = getBaseResourcePath(arguments.siteid,arguments.resourcePath) & replace(arguments.directory,"\","/","all");
 
 			var frow = {};
 
@@ -307,10 +313,6 @@ component
 			var rsFiles = rsExecute.getResult();
 			var rsPrefix = rsExecute.getPrefix();
 
-
-			response['resourcePath'] = baseFilePath;
-			response['filePath'] = expandPath(filePath);
-
 			response['endindex'] = response['endindex'] > rsFiles.recordCount ? rsFiles.recordCount : response['endindex'];
 
 			response['res'] = serializeJSON(rsFiles);
@@ -334,18 +336,18 @@ component
 					frow['ext'] = rereplace(frow['fullname'],".[^\.]*\.","");
 				frow['lastmodified'] = rsFiles['datelastmodified'][x];
 				frow['lastmodifiedshort'] = LSDateFormat(rsFiles['datelastmodified'][x],m.getShortDateFormat());
-				frow['image'] = assetPath & "/" & frow['fullname'];
+				frow['url'] = assetPath & "/" & frow['fullname'];
 				ArrayAppend(response['items'],frow,true);
 			}
 
 			if(response.totalpages > 1) {
 				if(response.pageindex < response.totalpages) {
-					response['links']['next'] = linkDir & "&pageIndex=" & response.pageindex+1;
-					response['links']['last'] = linkDir & "&pageIndex=" & response.totalpages;
+	//				response['links']['next'] = linkDir & "&pageIndex=" & response.pageindex+1;
+		//			response['links']['last'] = linkDir & "&pageIndex=" & response.totalpages;
 				}
 				if(response.pageindex > 1) {
-					response['links']['first'] = linkDir & "&pageIndex=1";
-					response['links']['previous'] = linkDir & "&pageIndex=" & response.pageindex-1;
+			//		response['links']['first'] = linkDir & "&pageIndex=1";
+			//		response['links']['previous'] = linkDir & "&pageIndex=" & response.pageindex-1;
 				}
 			}
 
