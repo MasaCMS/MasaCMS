@@ -15,6 +15,7 @@
 @controlslabelcolor: #999999;
 @controlslabeliconcolor: #e0e0e0;
 @controlstextcolor: #333333;
+@controlsselectbgrd: #EFEFEF;
 @controlsinputbgrd: #FCFCFC;
 @controlsinputtextcolor: #333333;
 @controlsinputfontsize: 16px;
@@ -204,6 +205,10 @@
             &.boolean{
                 background-color: transparent !important;
                 padding-bottom: 0 !important;
+                margin: 0 auto 4px !important;
+                &+.mura-control-group:not(.boolean){
+                    margin-top: 16px !important;
+                }
             }
 
             .mura-control-heading,
@@ -955,7 +960,7 @@ body.sidebar-tab {
     }
     .nice-select, 
     .mura-control-group>label+.nice-select {
-        background-color: @controlsdivbgrd !important;
+        background-color: @controlsselectbgrd !important;
         border-radius: 0;
         border: none;
         color: @controlsinputtextcolor;
@@ -1008,10 +1013,11 @@ body.sidebar-tab {
         }
         .list, 
         ul.list {
-            background-color: @controlsdivbgrd;
+            background-color: #FFF;
             border-radius: 0;
             border-top-color: transparent !important;
-            box-shadow: 1px 2px 1px 1px rgba(68,68,68,.11);
+            box-shadow: none !important;
+            /*box-shadow: 1px 2px 1px 1px rgba(68,68,68,.11);*/
             font-size: 14px;
             margin-top: 0;
             max-height: 196px;
