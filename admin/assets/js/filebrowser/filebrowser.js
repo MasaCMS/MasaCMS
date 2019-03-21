@@ -5,6 +5,7 @@ config: {
     height: 600,
     selectMode: 0,
     endpoint: '',
+    selectCallback: function() {}
 }
 
 , render: function( config ) {
@@ -13,7 +14,7 @@ config: {
 
   this.config=Mura.extend(config,this.config);
 
-  this.endpoint = Mura.apiEndpoint + "filebrowser/";
+  this.endpoint = "http://localhost:8080/" + Mura.apiEndpoint + "filebrowser/";
   this.editfilelist = ["txt","cfm"];
   this.imagelist = ["gif","jpg","jpeg","png"];
 
@@ -263,8 +264,13 @@ config: {
       }
 
      , selectFile: function() {
-        window.opener.CKEDITOR.tools.callFunction(self.callback,fileViewer.currentFile.image);
-        window.close();
+        if(MuraFileBrowser.config.selectMode == 1) {
+          window.opener.CKEDITOR.tools.callFunction(self.callback,fileViewer.currentFile.url);
+          window.close();
+        }
+        else {
+          return MuraFileBrowser.config.selectCallback( fileViewer.currentFile );
+        }
       }
 
       , editFile: function() {
@@ -282,7 +288,7 @@ config: {
         fileViewer.isDisplayWindow = "RENAME";
       }
       , downloadFile: function() {
-          window.open(fileViewer.currentFile.image, '_blank');
+          window.open(fileViewer.currentFile.url, '_blank');
       }
       , deleteFile: function() {
         fileViewer.isDisplayWindow = "DELETE";
@@ -427,7 +433,7 @@ config: {
     template: `
       <div class="fileviewer-modal">
         <div>
-          <div class="fileviewer-gallery" :style="{ 'background-image': 'url(' + currentFile.image + ')' }"  v-click-outside="closewindow">
+          <div class="fileviewer-gallery" :style="{ 'background-image': 'url(' + currentFile.url + ')' }"  v-click-outside="closewindow">
             <div>
               <div class="actionwindow-left" @click="lastimage">&lt;</div>
               <div class="actionwindow-right" @click="nextimage">&gt;</div>
@@ -756,7 +762,7 @@ config: {
           <div class="fileviewer-item"  :id="'fileitem-'+index"  v-if="parseInt(file.isfile)" @contextmenu="openMenu($event,file,index)">
             <div class="fileviewer-image">
               <div v-if="0" class="fileviewer-icon" :class="['fileviewer-icon-' + file.type]"></div>
-              <div v-else class="fileviewer-icon" :style="{ 'background-image': 'url(' + file.image + ')' }"></div>
+              <div v-else class="fileviewer-icon" :style="{ 'background-image': 'url(' + file.url + ')' }"></div>
             </div>
             <div class="fileviewer-label">
               {{file.name}}
@@ -868,7 +874,6 @@ config: {
       files: [],
       folders: [],
       error: "",
-      selectMode: 0,
       displaymode: 2,
       uploadedFiles: [],
       isDisplayContext: 0,
@@ -1069,7 +1074,7 @@ config: {
         this.refresh();
       }
       , checkSelectMode: function() {
-        return this.selectMode;
+        return MuraFileBrowser.config.selectMode;
       }
       , checkFileType: function() {
           for(var i = 0;i<self.editfilelist.length;i++) {

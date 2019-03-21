@@ -208,7 +208,7 @@ CKEDITOR.editorConfig = function( config )
 			{name: 'group11', items: ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField']},
 			{name: 'group12', items: ['Styles','Format','-','Maximize','ShowBlocks','About']}
 		];
---->		
+--->
 
 	<!--- /Toolbars --->
 
