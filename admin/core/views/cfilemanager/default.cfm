@@ -78,7 +78,6 @@
       </br></br></br>
         <div id="MuraFileBrowserContainer"></div>
 			<script type="text/javascript">
-            MuraFileBrowser.config.height="600";
 			<cfif session.resourceType eq "assets">
             MuraFileBrowser.config.resourcepath="#esapiEncode('javascript','User_Assets')#";
 			<cfelseif session.resourceType eq "files" and application.configBean.getValue(property='fmShowSiteFiles',defaultValue=true)>
@@ -89,6 +88,7 @@
             MuraFileBrowser.config.resourcepath="#esapiEncode('javascript','User_Assets')#";
 			</cfif>
       Mura(function(m) {
+        MuraFileBrowser.config.height=600;
         MuraFileBrowser.render();
       });
 

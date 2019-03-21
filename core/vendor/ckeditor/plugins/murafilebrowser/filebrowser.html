@@ -1,15 +1,15 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-	<title>Mura File Manager</title>
+	<title>Mura File Browser</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="robots" content="noindex, nofollow" />
 
   <script src="/admin/assets/js/mura.js"></script>
   <script src="/admin/assets/js/filebrowser/filebrowser.js"></script>
-  <link href="/admin/assets/js/filebrowser/assets/css/filebrowser.css" link rel="stylesheet" type="text/css">
+	<link href="/admin/assets/css/admin.min.css" rel="stylesheet" type="text/css" />
+<link href="/admin/assets/js/filebrowser/assets/css/filebrowser.css" link rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="/admin/assets/css/fonts.min.css">
-  <link href="/admin/assets/css/admin.min.css" rel="stylesheet" type="text/css" />
 
   <script>
   console.log(this);
@@ -22,11 +22,17 @@
   );
   </script>
 </head>
-<body class="MuraFileBrowserWindow">
-  <div id="MuraFileBrowserContainer"></div>
+<body class="mura-admin MuraFileBrowserWindow">
+	<div class="mura">
+  	<div id="MuraFileBrowserContainer"></div>
+	</div>
 </body>
 <script>
-MuraFilemanager.render();
+	Mura(function(m) {
+		MuraFileBrowser.config.height=600;
+		MuraFileBrowser.config.selectMode=1;
+		MuraFileBrowser.render();
+	});
 </script>
 </head>
 
