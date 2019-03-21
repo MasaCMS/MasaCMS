@@ -147,7 +147,7 @@ component extends="mura.bean.bean" entityname="dataCollection" hint="This provid
 
 					if( prop.fieldtype.fieldtype eq 'nested' ) {
 						nestedform = getBean('content').loadBy( contentID=prop.formid,siteid=getValue('siteID') );
-						structAppend(validations, getValidations( nestedform,prop.name & "_" ) );
+						structAppend(validations.properties, getValidations( nestedform,prop.name & "_" ).properties );
 					} else {
 						if(structkeyExists(prop,'validateMessage') && len(prop.validateMessage)){
 							message=prop.validateMessage;
@@ -168,9 +168,9 @@ component extends="mura.bean.bean" entityname="dataCollection" hint="This provid
 						}
 
 						if(prop.fieldtype.fieldtype == 'file'){
-							propname=prop.name & "_attachment";
+							propname=arguments.prefix & prop.name & "_attachment";
 						} else {
-							propname=prop.name;
+							propname=arguments.prefix & prop.name;
 						}
 
 						if(arrayLen(rules)){
@@ -178,7 +178,7 @@ component extends="mura.bean.bean" entityname="dataCollection" hint="This provid
 						}
 
 						variables.formproperties[propname]=prop;
-						variables.formpropertylist=listAppend(variables.formpropertylist,arguments.prefix & propname);
+						variables.formpropertylist=listAppend(variables.formpropertylist,propname);
 					}
 				}
 			}
