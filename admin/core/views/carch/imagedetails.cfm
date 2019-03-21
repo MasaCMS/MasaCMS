@@ -57,22 +57,6 @@
 
 	<cfinclude template="dsp_secondary_menu.cfm">
 
-	<div class="mura-item-metadata">
-		<div class="label-group">
-			<cfif not len(rc.imagesize)>
-
-			<!---
-			<cfelse>
-				<div class="nav-module-specific btn-toolbar">
-					<div class="btn-group">
-						<a href="javascript:frontEndProxy.post({cmd:'close'});" class="btn"><i class="mi-arrow-circle-left"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#</a>
-					</div>
-				</div>
-			--->
-			</cfif>
-
-		</div> <!-- /label-group -->
-	</div> <!-- /metadata -->
 	</cfif>
 
 	<cfif not len(rc.imagesize) and  rc.compactDisplay neq "true" and isDefined('rc.contentBean')>
@@ -85,6 +69,10 @@
 <div class="block block-constrain">
 <div id="image-details">
 	<div class="block-content">
+
+	<!--- todo: rb key for 'done' --->
+	<a class="ui__back" href="#rc.contentBean.getEditURL(compactDisplay=rc.compactDisplay)#">Done <i class="mi-angle-right"></i></a>
+
 	<cfif len(rc.fileID)>
 		<cfloop list="#rc.fileID#" index="f">
 			<cfset $.getBean('fileManager').touchSourceImage(f)>

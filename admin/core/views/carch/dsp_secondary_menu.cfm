@@ -211,8 +211,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfdefaultcase>
 		<cfswitch expression="#rc.originalfuseaction#">
 			<cfcase value="edit,update">
-<!--- 				<a class="btn" href="./?muraAction=cArch.list&siteid=#esapiEncode('url',rc.siteid)#&moduleid=00000000000000000000000000000000000"><i class="mi-arrow-circle-left"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.backtositemanager')#</a>
- --->
+
 				<cfif rc.contentid neq "">
 				<div class="btn-group">
 					  <a class="btn dropdown-toggle" data-toggle="dropdown" href="##">
