@@ -42,7 +42,7 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput>
-	<div class="mura__edit__controls" style="width: #cookie.ADMINCONTROLWIDTH#px">
+	<div class="mura__edit__controls" <cfif not $.event('compactDisplay')>style="width: #cookie.ADMINCONTROLWIDTH#px"</cfif>>
 		<!--- accordion panels --->
 		<div class="mura__edit__controls__scrollable">
 			
@@ -246,6 +246,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <script type="text/javascript">
 $(document).ready(function(){	
+
+	// custom case-insensitive :contains method
+    $.expr[":"].contains = $.expr.createPseudo(function (arg) {
+        return function (elem) {
+            return $(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0;
+        };
+    });
 
 	// open tab via url hash
 	if(window.location.hash.substring(1,7) == 'panel-'){

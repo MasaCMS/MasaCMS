@@ -54,12 +54,9 @@
 #carch #mura-content #gridContainer ul.breadcrumb{
   float: left;
 }
-#tabArchitectural #gridContainer .overflow-wrap{
-  /*  
-  overflow-x: auto;
-  overflow-y: hidden; 
-  */
-}  
+#tabArchitectural .block-header + .block-content{ 
+  overflow: visible; 
+}
 #tabArchitectural #gridContainer dl {
   width: 100%;
   float: none;
@@ -287,9 +284,14 @@ dd.display, dd.nav, dd.objects, dd.template {
     padding: @baseLineHeight/2;
     cursor: move;
     border: 0;
-    border-radius:3px;
+    border-radius:1px;
+    background: none;
+    background-color: #b1b1b1;
+    color: #FFF;
+    padding: 6px;
+    text-shadow: none;
     /* #gradient .vertical(hsl(260,0%,90%),hsl(260,0%,86%)); */
-    background: darken(@grayLighter,6%);
+    /*background: darken(@grayLighter,6%);*/
     }
 
   #availableListSort,
@@ -300,9 +302,9 @@ dd.display, dd.nav, dd.objects, dd.template {
   #groupAssignmentListSort  {
     .box-sizing(border-box);
     margin: 0 0 @baseLineHeight !important;
-    padding: 12px !important;
+    padding: 6px !important;
     list-style-type: none;
-    border: 1px dotted red;
+    border: none !important;
     width: 48%;
     float: right;
   }
@@ -323,7 +325,9 @@ dd.display, dd.nav, dd.objects, dd.template {
   #contentDisplayListSort, #displayListSort, #groupAssignmentListSort, #groupAvailableListSort {
     
     li {
-      background: hsl(55,80%,88%);
+      background-color: #999;
+      color: #FFF;
+     /* background: hsl(55,80%,88%);*/
     }
     
   }

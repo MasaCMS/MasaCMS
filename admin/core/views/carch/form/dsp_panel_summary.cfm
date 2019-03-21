@@ -193,7 +193,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<!--- todo: change this rb key to simply 'Notes' --->
 						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.addnotes')#
 					</label>
-					<textarea name="notes" rows="4" id="abstract">#esapiEncode('html',rc.contentBean.getNotes())#</textarea>
+					<textarea name="notes" rows="3" id="abstract">#esapiEncode('html',rc.contentBean.getNotes())#</textarea>
 				</div> <!--- /end mura-control-group --->
 
 		</div>

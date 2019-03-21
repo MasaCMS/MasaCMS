@@ -89,7 +89,6 @@
 			<![endif]-->
 		</cfif>
 
-	  
 	    <!--- global admin scripts --->
 	    <cfinclude template="includes/html_head.cfm">
 
@@ -116,8 +115,42 @@
 		<link href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/css/admin.min.css" rel="stylesheet" type="text/css" />
 		#session.dateKey#
 		<script type="text/javascript">
+
+			// set width of pane relative to side controls
+			var resizeTabPane = function(offsetVal=17){
+				if ($('##mura-content-body-block').length){
+
+					var blockW = $('##mura-content-body-block').width();
+					var controlW = $('##mura-content-body-block .mura__edit__controls').width();
+					var newW = (blockW - controlW) - offsetVal;
+
+					$('##mura-content-body-block .block-content.tab-content').css('width',newW + 'px');
+					setTimeout(function(){
+						resizeBodyEditor();
+					}, 50)
+				}
+			}
+			
+			// set height of ckeditor content area - called by resizeTabPane()
+			var resizeBodyEditor = function(){
+				if ($('##mura-content-body-render .cke_contents').length){
+					var ckeTopH = $('##mura-content-body-render .cke_top').height();
+					// also adjust cke height
+					$('##mura-content-body-render .cke_contents').css('height','calc((100vh - ' + ckeTopH +  'px) - 260px)');
+				}			
+			}
+
+			$(window).on("load", function() {
+				resizeTabPane();
+				$('##mura-content-body-render').show();
+			});
+
 			var frontEndProxy;
 			jQuery(document).ready(function(){
+
+
+				//nice-select 
+				$('.mura__edit__controls .mura-control-group select').niceSelect();
 
 				// tabdrop: trigger on page load w/ slight delay
 				if ( $( '.mura-tabs').length ) {

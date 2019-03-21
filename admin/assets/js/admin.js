@@ -765,6 +765,8 @@ function setHTMLEditors() {
 				}
 
 				var toolbar= allPageTags[i].getAttribute('data-toolbar') || 'Default';
+				// debug: show toolbar being used
+				// console.log("loading toolbar: " + toolbar);
 
 				$(document.getElementById(allPageTags[i].id)).ckeditor({
 						toolbar: toolbar,

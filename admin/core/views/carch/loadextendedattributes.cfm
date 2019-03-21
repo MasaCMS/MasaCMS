@@ -139,6 +139,7 @@
 	<cfset returnsets[containerID]=trim(returnsets[containerID]) />
 </cfloop>
 <cftry>
+	<!--- todo: change this list to new panels --->
 	<cfparam name="rc.tablist" default="tabBasic,tabSEO,tabAdvanced,tabCategorization,tabExtendedAttributes,tabLayoutObjects,tabListDisplayOptions,tabMobile,tabPublishing,tabTags,tabUsagereport">
 	<cfloop list="#rc.tablist#" index="tab">
 		<cfloop list="top,bottom" index="context">

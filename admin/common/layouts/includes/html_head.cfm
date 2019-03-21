@@ -95,5 +95,9 @@
 	var activetab=#esapiEncode('javascript',rc.activetab)#;
 	<cfif $.currentUser().isLoggedIn()>var webroot='#esapiEncode('javascript',left($.globalConfig("webroot"),len($.globalConfig("webroot"))-len($.globalConfig("context"))))#';</cfif>
 	var fileDelim='#esapiEncode('javascript',$.globalConfig("fileDelim"))#';
-	</script>	
+	</script>
+
+	<!-- nice-select: select box replacement (sidebar controls) -->
+	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery.nice-select.min.js" type="text/javascript"></script>
+	
 </cfoutput>
