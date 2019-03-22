@@ -1326,7 +1326,7 @@ var Mura=(function(){
 			var instance = CKEDITOR.instances[el.getAttribute('id')];
 			var conf = {
 				height: 200,
-				width: '100%'
+				width: '70%'
 			};
 
 			extend(conf, Mura(el).data());
