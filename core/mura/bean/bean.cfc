@@ -1471,7 +1471,7 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 			} else {
 				permissions.save=(allowSave(m) || api.allowAction(this,m));
 				permissions.delete=(allowDelete(m) || api.allowAction(this,m));
-				permissions.read=true;
+				permissions.read= getPublicAPI() || (api.allowAccess(this,m) && allowRead(m));
 				return permissions;
 			}
 		} else {

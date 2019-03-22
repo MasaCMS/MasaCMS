@@ -339,6 +339,13 @@
     			trackingparams+='&mautic_trk=' + encodeURIComponent(mautic_trk);
     		}
 
+				var autopilot_trk=readCookie('_autopilot_session_id');
+
+    		if(autopilot_trk){
+    			console.log('autopilot_trk=' + autopilot_trk);
+    			trackingparams+='&autopilot_trk=' + encodeURIComponent(autopilot_trk);
+    		}
+
 				Mura.init({
 					rootpath:rootpath,
 					siteid:siteid

@@ -26,4 +26,4 @@ Installing Mura couldn't be easier. Follow the instructions below and you'll be 
 
 8. You're done installing Mura. Enjoy!
 
-For more information on Installation and Setup, please visit http://docs.getmura.com/v6/installation-setup/
+For more information on Installation and Setup, please visit https://docs.getmura.com/v7-1/installation-setup/installing-mura-codebase/

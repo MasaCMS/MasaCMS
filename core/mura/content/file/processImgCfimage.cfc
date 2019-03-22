@@ -201,7 +201,7 @@
 
 				<cfset resizeImage(height=arguments.height,width=arguments.width,image=NewImageSource)>
 
-				<cfif listFirst(expandPath(NewImageSource),':') eq 's3'>
+				<cfif listFirst(expandPath(NewImageSource),':') eq 's3' and len(arguments.siteID) and getBean('settingsManager').getSite(arguments.siteid).getContentRenderer().directImages>
 					<cftry>
 					<cfset storeSetACL(expandPath(NewImageSource),[{group="all", permission="read"}])>
 					<cfcatch></cfcatch>
