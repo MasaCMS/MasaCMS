@@ -11,7 +11,23 @@
  * modifying or distribute this file or part of its contents. The contents of
  * this file is part of the Source Code of CKFinder.
 --->
+<cfscript>
+headers = getHttpRequestData().headers;
+if(structKeyExists(headers,'Origin')){
 
+	origin = headers['Origin'];
+	originDomain =reReplace(origin, "^\w+://([^\/:]+)[\w\W]*$", "\1", "one");
+	PC = getpagecontext().getresponse();
+
+	// If the Origin is okay, then echo it back, otherwise leave out the header key
+	//for(var domain in application.settingsManager.getAccessControlOriginDomainArray() ){
+		//if( domain == originDomain || len(originDomain) > len(domain) && right(originDomain,len(domain)+1)=='.' & domain ){
+			PC.setHeader( 'Access-Control-Allow-Origin', origin );
+			PC.setHeader( 'Access-Control-Allow-Credentials', 'true' );
+	//	}
+	//}
+}
+</cfscript>
 <cffunction name="include" output="false" returnType="void">
 	<cfargument name="template" type="string" required="true">
 	<cfinclude template="../../../#template#">

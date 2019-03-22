@@ -350,7 +350,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 	public function getDomain(required String mode="") output=false {
 		var temp="";
 		if ( arguments.mode == 'preview' ) {
-			if ( len(request.muraPreviewDomain) ) {
+			if ( isDefined('request.muraPreviewDomain') && len(request.muraPreviewDomain) ) {
 				return request.muraPreviewDomain;
 			} else {
 				return variables.instance.Domain;
@@ -726,8 +726,24 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		return getResourcePath(argumentCollection=arguments) & "#variables.configBean.getSiteAssetPath()#/#variables.instance.displayPoolID#";
 	}
 
+	public function getSiteAssetPath(complete="0", domain="#getValue('domain')#") output=false {
+		return getAssetPath(argumentCollection=arguments);
+	}
+
 	public function getFileAssetPath(complete="0", domain="#getValue('domain')#") output=false {
-		return getResourcePath(argumentCollection=arguments) & "#variables.configBean.getSiteAssetPath()#/#variables.instance.filepoolID#";
+		if(len(variables.configBean.getValue('fileAssetPath'))){
+			return variables.configBean.getValue('fileAssetPath')  & "/" & variables.instance.filepoolID;
+		} else {
+			return getResourcePath(argumentCollection=arguments) & "#variables.configBean.getSiteAssetPath()#/#variables.instance.filepoolID#";
+		}
+	}
+
+	public function getFileDir() output=false {
+		return variables.configBean.getFileDir()  & variables.configBean.getFileDelim() & variables.instance.filepoolID;
+	}
+
+	public function getAssetDir() output=false {
+		return variables.configBean.getAssetDir()  & variables.configBean.getFileDelim() & variables.instance.filepoolID;
 	}
 
 	public function getIncludePath() output=false {
