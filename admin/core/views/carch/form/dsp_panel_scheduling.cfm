@@ -52,7 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</div>
 	<div id="panel-schedule" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-schedule" aria-expanded="false" style="height: 0px;">
 		<div class="mura-panel-body">
-			
+
 			<span id="extendset-container-tabscheduletop" class="extendset-container"></span>
 
 			<!--- display yes/no/schedule --->
@@ -63,9 +63,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfelse>
 				<cfif rc.type neq 'Component' and rc.type neq 'Form'>
 					<input type="hidden" name="display" value="#rc.contentBean.getdisplay()#">
-						<cfif rc.contentid eq '00000000000000000000000000000000001' or (rc.parentid eq '00000000000000000000000000000000001' and application.settingsManager.getSite(rc.siteid).getlocking() eq 'top') or application.settingsManager.getSite(rc.siteid).getlocking() eq 'all'>
-							<input type="hidden" name="parentid" value="#esapiEncode('html_attr',rc.parentid)#">
-						</cfif>
 					<input type="hidden" name="displayStart" value="">
 					<input type="hidden" name="displayStop" value="">
 				<cfelse>
@@ -81,7 +78,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		</div>
 	</div>
-</div> 
+</div>
 
 
 </cfoutput>

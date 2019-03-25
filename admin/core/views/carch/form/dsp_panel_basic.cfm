@@ -52,7 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</div>
 	<div id="panel-basic" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-basic" aria-expanded="false" style="height: 0px;">
 		<div class="mura-panel-body">
-			
+
 				<span id="extendset-container-tabbasictop" class="extendset-container"></span>
 
 				<!--- type/subtype --->
@@ -165,7 +165,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								    <span id="mover2" style="display:none"><input type="hidden" name="parentid" value="#esapiEncode('html_attr',rc.parentid)#"></span>
 									</div>
 								</div> <!--- /.bigui --->
-							    
+
 								<script>
 									jQuery(document).ready(function(){
 										siteManager.loadSiteParents(
@@ -284,7 +284,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 													htmlEditorOnComplete(editorInstance);
 													showPreview();
 													// custom global resize function fits to content window
-													resizeBodyEditor();				
+													resizeBodyEditor();
 												}
 											);
 										}
@@ -348,7 +348,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				     	 	</div>
 						</cfif>
 			     	</div>
-			     </cfsavecontent>	
+			     </cfsavecontent>
 				<cfelseif rc.type eq 'File'>
 					<cfsavecontent variable="bodyContent">
 						<cfinclude template="dsp_file_selector.cfm">
@@ -406,7 +406,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		</div>
 	</div>
-</div> 
+</div>
 
 	<script>
 		jQuery(document).ready(function(){

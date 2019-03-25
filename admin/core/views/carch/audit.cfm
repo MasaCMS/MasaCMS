@@ -152,7 +152,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									<cfif rc.compactDisplay eq 'true'>
 										<li class="preview"><a href="##" onclick="frontEndProxy.post({cmd:'setLocation',location:encodeURIComponent('#esapiEncode('javascript',previewURL)#')});return false;"><i class="mi-globe"></i>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.preview')#</a></li>
 									<cfelse>
-										<li class="preview"><a href="##" onclick="return preview('#previewURL#','#rc.item.getTargetParams()#');"><i class="mi-globe"></i>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.preview')#</a></li>
+										<li class="preview"><a href="#previewURL#"><i class="mi-globe"></i>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.preview')#</a></li>
 									</cfif>
 								</cfcase>
 							</cfswitch>

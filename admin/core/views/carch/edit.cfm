@@ -233,7 +233,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 
 <script type="text/javascript">
-	$(document).ready(function(){	
+	$(document).ready(function(){
 
 		// create hidden BigUI with button, close link
 		var renderBigUI = function(el){
@@ -695,6 +695,7 @@ $('.clicktocopy').click(function(){
 	<input name="OrderNo" type="hidden" value="<cfif rc.contentBean.getorderno() eq ''>0<cfelse>#rc.contentBean.getOrderNo()#</cfif>">
 	<input type="hidden" name="closeCompactDisplay" value="#esapiEncode('html_attr',rc.compactDisplay)#" />
 	<input type="hidden" name="compactDisplay" value="#esapiEncode('html_attr',rc.compactDisplay)#" />
+	<input type="hidden" name="frontend" value="#esapiEncode('html_attr',rc.frontend)#" />
 	<input type="hidden" name="instanceid" value="#esapiEncode('html_attr',rc.instanceid)#" />
 	<input type="hidden" name="parenthistid" value="#esapiEncode('html_attr',rc.parenthistid)#" />
 
