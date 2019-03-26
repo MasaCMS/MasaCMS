@@ -790,8 +790,18 @@ config: {
       , viewFile: function( file,index ) {
         this.$root.currentFile = file;
         this.$root.currentIndex = index;
-        fileViewer.isDisplayWindow = "VIEW";
-        fileViewer.viewFile();
+
+        if(fileViewer.checkFileType()) {
+          fileViewer.editFile(this.successEditFile);
+        }
+        else {
+          fileViewer.isDisplayWindow = "VIEW";
+          fileViewer.viewFile();
+        }
+      }
+      , successEditFile: function( response ) {
+        this.currentFile.content = response.data.content;
+        fileViewer.isDisplayWindow = "EDIT";
       }
       ,openMenu: function(e,file,index,ref) {
 
