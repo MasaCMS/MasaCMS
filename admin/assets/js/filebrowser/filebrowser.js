@@ -5,7 +5,7 @@ config: {
     height: 600,
     selectMode: 0,
     endpoint: '',
-    displaymode: 1, // 1: list, 2: grid
+    displaymode: 2, // 1: grid, 2: list
     selectCallback: function() {}
 }
 
@@ -750,7 +750,7 @@ config: {
         					</ul>
         				</div>
         			</td>
-        			<td class="var-width" v-if="parseInt(file.isfile)">
+        			<td class="var-width" v-if="parseInt(file.isfile)" @click="viewFile(file,index)">
                   {{file.fullname}}
               </td>
               <td class="var-width" v-else>
@@ -788,6 +788,12 @@ config: {
       }
       ,back: function( ) {
         this.$root.back( );
+      }
+      , viewFile: function( file,index ) {
+        this.$root.currentFile = file;
+        this.$root.currentIndex = index;
+        fileViewer.isDisplayWindow = "VIEW";
+        fileViewer.viewFile();
       }
       ,openMenu: function(e,file,index,ref) {
 
