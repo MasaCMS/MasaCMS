@@ -51,7 +51,7 @@ component
 			var m=getBean('$').init(arguments.siteid);
 			var permission = {message: '',success: 0};
 
-			// context: upload, edit,delete,rename,addFolder,browse
+			// context: upload,edit,write,delete,rename,addFolder,browse
 			// resourcePath: User_Assets,Site_Files,Application_Root
 
 			if(!(m.getCurrentUser().isLoggedIn() and (m.getCurrentUser().isAdminUser() or m.getCurrentUser().isSuperUser()))) {
@@ -92,15 +92,20 @@ component
 			var baseFilePath = getBaseFileDir( arguments.siteid,arguments.resourcePath );
 			var filePath = baseFilePath  & m.globalConfig().getFileDelim() & rereplace(arguments.directory,"\.{1,}","\.","all");
 
-			response.uploaded = fileUploadAll(destination=tempDir,nameconflict="overwrite");
+			response.uploaded = fileUploadAll(destination=tempDir,nameconflict="unique");
 			response.allowedExtensions = allowedExtensions;
 
 			for(var i = 1; i lte ArrayLen(response.uploaded);i++ ) {
 				var item = response.uploaded[i];
 				var valid = false;
 				if(listFindNoCase(allowedExtensions,item.serverfileext)) {
-						fileMove(item.serverdirectory & m.globalConfig().getFileDelim() & item.serverfile,expandPath(filePath) & m.globalConfig().getFileDelim() & item.serverfile );
-						ArrayAppend(response.saved,item);
+						try {
+							fileMove(item.serverdirectory & m.globalConfig().getFileDelim() & item.serverfile,expandPath(filePath) & m.globalConfig().getFileDelim() & item.serverfile );
+							ArrayAppend(response.saved,item);
+						}
+						catch( any e ) {
+							ArrayAppend(e.message,item);
+						}
 				}
 				else {
 					fileDelete(item.serverdirectory & m.globalConfig().getFileDelim() & item.serverfile);
@@ -112,7 +117,7 @@ component
 			return response;
 		}
 
-		remote any function edit( siteid,directory,filename,filter="",pageIndex=1,resourcePath )  {
+		remote any function edit( siteid,directory,filename,filter="",pageIndex=1,resourcepath )  {
 			arguments.siteid == "" ? "default" : arguments.siteid;
 			arguments.pageindex == isNumeric(arguments.pageindex) ? arguments.pageindex : 1;
 
@@ -126,13 +131,16 @@ component
 			}
 
 			var m = application.serviceFactory.getBean('m').init(arguments.siteid);
-			var pathRoot = application.configBean.getAssetDir() & application.configBean.getFileDelim() & "assets";
-			var filePath =  pathRoot & "/" & rereplace(arguments.directory,"\.{1,}","\.","all");
+			var baseFilePath = getBaseFileDir( arguments.siteid,arguments.resourcePath );
+			var filePath = baseFilePath  & m.globalConfig().getFileDelim() & rereplace(arguments.directory,"\.{1,}","\.","all");
+			var path = expandpath(filePath) & application.configBean.getFileDelim() & arguments.filename;
+
 
 			try {
-				var fileContent = fileRead(expandpath(filePath) & application.configBean.getFileDelim() & arguments.filename);
+				var fileContent = fileRead(path);
 			}
 			catch( any e ) {
+				response['error'] = e;
 				return( e );
 			}
 
@@ -141,6 +149,35 @@ component
 			response.success = 1;
 			return response;
 
+		}
+
+		remote any function update( siteid,directory,filename,filter="",resourcepath,content )  {
+			arguments.siteid == "" ? "default" : arguments.siteid;
+
+			var permission = checkPerms(arguments.siteid,'write',resourcePath);
+			var response = { success: 0};
+
+			if(!permission.success) {
+				response.permission = permission;
+				response.message = permission.message;
+				return response;
+			}
+
+			var m = application.serviceFactory.getBean('m').init(arguments.siteid);
+			var baseFilePath = getBaseFileDir( arguments.siteid,arguments.resourcePath );
+			var filePath = baseFilePath  & m.globalConfig().getFileDelim() & rereplace(arguments.directory,"\.{1,}","\.","all");
+			var path = expandpath(filePath) & application.configBean.getFileDelim() & arguments.filename;
+
+			try {
+				fileWrite(path,arguments.content);
+			}
+			catch( any e ) {
+				response['error'] = e;
+				return( e );
+			}
+
+			response.success = 1;
+			return response;
 		}
 
 		remote any function delete( siteid,directory,filename,filter="",pageIndex=1,resourcePath )  {
@@ -342,12 +379,12 @@ component
 
 			if(response.totalpages > 1) {
 				if(response.pageindex < response.totalpages) {
-	//				response['links']['next'] = linkDir & "&pageIndex=" & response.pageindex+1;
-		//			response['links']['last'] = linkDir & "&pageIndex=" & response.totalpages;
+					response['links']['next'] = "&pageIndex=" & response.pageindex+1;
+					response['links']['last'] = "&pageIndex=" & response.totalpages;
 				}
 				if(response.pageindex > 1) {
-			//		response['links']['first'] = linkDir & "&pageIndex=1";
-			//		response['links']['previous'] = linkDir & "&pageIndex=" & response.pageindex-1;
+					response['links']['first'] = "&pageIndex=1";
+					response['links']['previous'] = "&pageIndex=" & response.pageindex-1;
 				}
 			}
 

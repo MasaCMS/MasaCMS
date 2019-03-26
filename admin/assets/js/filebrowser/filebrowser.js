@@ -5,7 +5,12 @@ config: {
     height: 600,
     selectMode: 0,
     endpoint: '',
+    displaymode: 1, // 1: list, 2: grid
     selectCallback: function() {}
+}
+
+, prettify: function( tgt ) {
+
 }
 
 , render: function( config ) {
@@ -15,7 +20,7 @@ config: {
   this.config=Mura.extend(config,this.config);
 
   this.endpoint = "http://localhost:8080/" + Mura.apiEndpoint + "filebrowser/";
-  this.editfilelist = ["txt","cfm"];
+  this.editfilelist = ["txt","cfm","cfc","html","htm","cfml","js","css","json"];
   this.imagelist = ["gif","jpg","jpeg","png"];
 
   this.container = Mura("#MuraFileBrowserContainer");
@@ -86,6 +91,26 @@ config: {
   }
 
   Mura.get( baseurl )
+    .then(
+      //success
+      function(response) {
+        onSuccess(response);
+      },
+      //fail
+      function(response) {
+        this.onError(response);
+      }
+    );
+}
+, doUpdateContent: function( directory,currentFile,content,onSuccess,onError) {
+  var dir = directory == undefined ? "" : directory;
+  var baseurl = this.endpoint + "/update?directory=" + dir + "&filename=" + currentFile.fullname + "&resourcepath=" + this.config.resourcepath;
+
+  if(!this.validate()) {
+    return error("No Access");
+  }
+
+  Mura.post( baseurl,{content: content} )
     .then(
       //success
       function(response) {
@@ -435,8 +460,19 @@ config: {
         <div>
           <div class="fileviewer-gallery" :style="{ 'background-image': 'url(' + currentFile.url + ')' }"  v-click-outside="closewindow">
             <div>
-              <div class="actionwindow-left" @click="lastimage">&lt;</div>
-              <div class="actionwindow-right" @click="nextimage">&gt;</div>
+              <div class="actionwindow-left" @click="lastimage"><i class="mi-caret-left"></i></div>
+              <div class="actionwindow-right" @click="nextimage"><i class="mi-caret-right"></i></div>
+              <div class="fileviewer-gallery-menu">
+                <ul>
+                  <li v-if="checkImageType() && checkSelectMode()"><a @click="selectFile()"><i class="mi-check"> Select</i></a></li>
+                  <li v-if="checkFileType()"><a  @click="editFile()"><i class="mi-pencil"> Edit</i></a></li>
+                  <li><a @click="renameFile()"><i class="mi-edit"> Rename</i></a></li>
+                  <li v-if="checkIsFile()"><a @click="downloadFile()"><i class="mi-download">Download</i></a></li>
+                  <li><a @click="deleteFile()"><i class="mi-trash"> Delete</i></a></li>
+                  <li><a @click="closewindow()"><i class="mi-times">Close</i></a></li>
+                </ul>
+                <p>{{currentFile.name}} ({{currentFile.size}}k)</p>
+              </div>
             </div>
           </div>
         </div>
@@ -458,6 +494,28 @@ config: {
       , closewindow: function( event ) {
         this.$root.isDisplayWindow = "";
       }
+      , renameFile: function() {
+        fileViewer.isDisplayWindow = "RENAME";
+      }
+      , downloadFile: function() {
+          window.open(fileViewer.currentFile.url, '_blank');
+      }
+      , deleteFile: function() {
+        fileViewer.isDisplayWindow = "DELETE";
+      }
+      , checkSelectMode: function() {
+          return fileViewer.checkSelectMode();
+      }
+      , checkFileType: function() {
+          return fileViewer.checkFileType();
+      }
+      , checkImageType: function() {
+        return fileViewer.checkImageType();
+      }
+      , checkIsFile: function() {
+        return fileViewer.checkIsFile();
+      }
+
     }
   });
 
@@ -493,7 +551,7 @@ config: {
       <div class="actionwindow-formwrapper">
         <h3>Edit</h3>
         <label>
-          <textarea class="editwindow" v-model="filecontent"></textarea>
+          <textarea class="editwindow prettyprint" v-model="filecontent"></textarea>
           <button @click="updateContent()">Update</button>
           <button @click="cancel()">Cancel</button>
         </label>
@@ -506,6 +564,8 @@ config: {
     },
     methods: {
       updateContent: function() {
+        console.log(this.filecontent);
+        fileViewer.updateContent(this.filecontent);
         fileViewer.isDisplayWindow = '';
       }
       , cancel: function() {
@@ -645,10 +705,10 @@ config: {
             pageindex = parseInt(fileViewer.response.pageindex) - 1;
           }
 
-          this.$parent.refresh('',pageindex)
+          this.$root.refresh('',pageindex)
       }
       , applyItemsPer: function() {
-        this.$parent.itemsper = this.itemsper;
+        this.$root.itemsper = this.itemsper;
       }
     }
 
@@ -725,15 +785,19 @@ config: {
         this.$root.back( );
       }
       ,openMenu: function(e,file,index,ref) {
-        if(this.isDisplayContext) {
-          this.$root.isDisplayContext = 0;
-          return;
+
+        this.$root.isDisplayContext = 0;
+
+        if(this.$root.contextListener) {
         }
 
-        var left = Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().left);
+        var left = Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().left) - 26;
         var top =  Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().top);
 
-        this.$root.isDisplayContext = 1;
+        this.$nextTick(function () {
+          this.$root.isDisplayContext = 1;
+        });
+
         this.$root.isDisplayWindow = '';
         this.$root.currentFile = file;
         this.$root.currentFile.index = index;
@@ -759,7 +823,7 @@ config: {
           </div>
         </div>
         <div v-for="(file,index) in files">
-          <div class="fileviewer-item"  :id="'fileitem-'+index"  v-if="parseInt(file.isfile)" @contextmenu="openMenu($event,file,index)">
+          <div class="fileviewer-item"  :id="'fileitem-'+index"  v-if="parseInt(file.isfile)" @click="openMenu($event,file,index)">
             <div class="fileviewer-image">
               <div v-if="0" class="fileviewer-icon" :class="['fileviewer-icon-' + file.type]"></div>
               <div v-else class="fileviewer-icon" :style="{ 'background-image': 'url(' + file.url + ')' }"></div>
@@ -795,17 +859,13 @@ config: {
         this.$root.back( );
       }
       ,openMenu: function(e,file,index) {
+        this.menux = Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().left)+5;
+        this.menuy =  Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().top)+10;
 
-        if(this.isDisplayContext) {
-          this.$root.isDisplayContext = 0;
-          return;
-        }
+        this.$nextTick(function () {
+          this.$root.isDisplayContext = 1;
+        })
 
-        this.menux = Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().left) + 25;
-        this.menuy =  Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().top) + 20;
-
-
-        this.$root.isDisplayContext = 1;
         this.$root.isDisplayWindow = '';
         this.$root.currentFile = file;
         this.$root.currentFile.index = index;
@@ -874,7 +934,7 @@ config: {
       files: [],
       folders: [],
       error: "",
-      displaymode: 2,
+      displaymode: this.config.displaymode,
       uploadedFiles: [],
       isDisplayContext: 0,
       isDisplayWindow: '',
@@ -905,6 +965,15 @@ config: {
     methods: {
       updateDelete: function() {
           self.updateDelete(currentFile);
+      }
+      , updateContent: function( content ) {
+        var dir = "";
+
+        for(var i=0;i<this.foldertree.length;i++) {
+          dir = dir + "\\" + this.foldertree[i];
+        }
+
+        self.doUpdateContent( dir,this.currentFile,content,this.refresh );
       }
       , renameFile: function() {
         var dir = "";
@@ -1078,11 +1147,11 @@ config: {
       }
       , checkFileType: function() {
           for(var i = 0;i<self.editfilelist.length;i++) {
-            if(this.currentFile.type == self.editfilelist[i])
+            if(this.currentFile.ext == self.editfilelist[i]) {
               return true;
-
-            return false;
+            }
           }
+          return false;
       }
       , checkImageType: function() {
           for(var i = 0;i<self.imagelist.length;i++) {
@@ -1104,10 +1173,10 @@ config: {
         this.uploadReset();
         this.selectMode = self.config.selectMode;
         self.loadBaseDirectory(this.displayResults,this.displayError);
-        var vm = this;
         window.addEventListener('mouseup', function(event) {
-          this.isDisplayContext = 0;
+          fileViewer.isDisplayContext = 0;
         });
+        var vm = this;
     }
   });
 }
