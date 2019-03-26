@@ -276,22 +276,23 @@ dd.display, dd.nav, dd.objects, dd.template {
     height: @baseLineHeight;
     padding: 0 0 16px 0;
     .clearfix;
+
+      .half + .half{
+        padding-left: 6px;
+      }
     }
 
   li, li.ui-sortable-helper {
 
-    margin: 0 0 3px 0;
-    padding: @baseLineHeight/2;
-    cursor: move;
-    border: 0;
-    border-radius:1px;
     background: none;
     background-color: #b1b1b1;
+    border: 0;
+    border-radius:1px;
+    cursor: move;
     color: #FFF;
-    padding: 6px;
+    margin: 0 0 3px 0;
+    padding: 6px 6px 6px 8px;
     text-shadow: none;
-    /* #gradient .vertical(hsl(260,0%,90%),hsl(260,0%,86%)); */
-    /*background: darken(@grayLighter,6%);*/
     }
 
   #availableListSort,
@@ -302,7 +303,7 @@ dd.display, dd.nav, dd.objects, dd.template {
   #groupAssignmentListSort  {
     .box-sizing(border-box);
     margin: 0 0 @baseLineHeight !important;
-    padding: 6px !important;
+    padding: 6px 0 !important;
     list-style-type: none;
     border: none !important;
     width: 48%;
@@ -325,7 +326,7 @@ dd.display, dd.nav, dd.objects, dd.template {
   #contentDisplayListSort, #displayListSort, #groupAssignmentListSort, #groupAvailableListSort {
     
     li {
-      background-color: #999;
+      background-color: #545454;
       color: #FFF;
      /* background: hsl(55,80%,88%);*/
     }
