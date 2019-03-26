@@ -83,22 +83,6 @@
   height: 200px;
 }
 
-.actionwindow-left {
-  float: left;
-  padding: 5px;
-  font-size: 3em;
-  margin: 20% 0;
-  background-color:rgba(255, 255, 255, 0.5);
-}
-
-.actionwindow-right {
-  float: right;
-  padding: 5px;
-  font-size: 3em;
-  margin: 20% 0;
-  background-color:rgba(255, 255, 255, 0.5);
-}
-
 #renamewindow-wrapper p {
   position: relative;
 }
@@ -169,7 +153,6 @@
     font-size: 4em;
     text-align: center;
     position: absolute;
-    z-index: 1;
     top: 10px;
     left: 47%;
     color: #ddd;
@@ -223,16 +206,17 @@
   height: 100%;
   left: 0;
   top: 0;
-  background-color:rgba(0, 0, 0, 0.7);
+  background-color:rgba(0, 0, 0, 0.8);
 }
 
 .fileviewer-gallery {
+  display: block;
   width: 800px;
   height: 600px;
   margin: 20% auto;
   background-size: contain;
   background-repeat: no-repeat;
-  background-color:rgba(255, 255, 255, 0.5);
+  background-color:rgba(0, 0, 0, 0.75);
 }
 
 .fileviewer-icon {
@@ -243,7 +227,42 @@
   background-repeat: no-repeat;
 }
 
+.fileviewer-gallery-menu {
+  top: 600px;
+  position: relative;
+  text-align: center;
+  width: 800px;
+  padding: 10px 0 1px 0;
+  background-color:rgba(0, 0, 0, 0.50);
+}
 
+.fileviewer-gallery-menu ul li {
+  display: inline;
+  list-style: none;
+  color: #000;
+  padding: 4px 10px;
+  background-color:rgba(255, 255, 255, 0.25);
+}
+
+.fileviewer-gallery-menu ul li a {
+  color: #000;
+}
+
+.actionwindow-left {
+  float: left;
+  padding: 5px;
+  font-size: 3em;
+  margin: 35% 0;
+  background-color:rgba(255, 255, 255, 0.5);
+}
+
+.actionwindow-right {
+  float: right;
+  padding: 5px;
+  font-size: 3em;
+  margin: 35% 0;
+  background-color:rgba(255, 255, 255, 0.5);
+}
 
 .fileviewer-icon-jpg {
   background-image: url("./assets/images/jpg.png");
