@@ -580,12 +580,8 @@
 		var tools=utility("##frontEndTools");
 
 		if(utility('HTML').hasClass('mura-edit-mode')){
-			if(typeof tools.fadeOut == 'function'){
-				utility("##frontEndTools").fadeOut();
-			} else {
-				utility("##frontEndTools").hide();
-			}
-
+			
+			utility("##frontEndTools").hide();
 			utility('HTML').removeClass('mura-edit-mode');
 			utility(".editableObject").addClass('editableObjectHide');
 
@@ -595,12 +591,8 @@
 			}
 
 		} else {
-			if(typeof tools.fadeOut == 'function'){
-				utility("##frontEndTools").fadeIn();
-			} else {
-				utility("##frontEndTools").show();
-			}
 
+			utility("##frontEndTools").show();
 			utility('HTML').addClass('mura-edit-mode');
 			utility(".editableObject").removeClass('editableObjectHide');
 
