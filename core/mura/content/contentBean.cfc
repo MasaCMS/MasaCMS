@@ -454,7 +454,7 @@ component extends="mura.bean.beanExtendable" entityName="content" table="tconten
 			variables.instance.errors.filemissing=variables.settingsManager.getSite(variables.instance.siteID).getRBFactory().getKey("sitemanager.filemissing");
 		}
 
-		if (len(getValue('filename')) && variables.settingsManager.siteExists(listFirst(getValue('filename'),"/"))) {
+		if (!site.getContentRenderer().siteidinurls && len(getValue('filename')) && variables.settingsManager.siteExists(listFirst(getValue('filename'),"/"))) {
 			variables.instance.errors.filename=variables.settingsManager.getSite(variables.instance.siteID).getRBFactory().getKey("sitemanager.content.filenamesiteidconflict");
 		}
 
