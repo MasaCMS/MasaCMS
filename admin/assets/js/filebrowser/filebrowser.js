@@ -5,7 +5,12 @@ config: {
     height: 600,
     selectMode: 0,
     endpoint: '',
+    displaymode: 2, // 1: grid, 2: list
     selectCallback: function() {}
+}
+
+, prettify: function( tgt ) {
+
 }
 
 , render: function( config ) {
@@ -15,7 +20,7 @@ config: {
   this.config=Mura.extend(config,this.config);
 
   this.endpoint = "http://localhost:8080/" + Mura.apiEndpoint + "filebrowser/";
-  this.editfilelist = ["txt","cfm"];
+  this.editfilelist = ["txt","cfm","cfc","html","htm","cfml","js","css","json"];
   this.imagelist = ["gif","jpg","jpeg","png"];
 
   this.container = Mura("#MuraFileBrowserContainer");
@@ -25,8 +30,10 @@ config: {
   this.main(); // Delegating to main()
 
   Mura.loader()
+    .loadcss('/core/vendor/codemirror/codemirror.css')
     .loadjs(
       '/core/modules/v1/filebrowser/assets/js/vue.js',
+      '/core/vendor/codemirror/codemirror.js',
     function() {
       self.mountbrowser();
      } ) ;
@@ -86,6 +93,26 @@ config: {
   }
 
   Mura.get( baseurl )
+    .then(
+      //success
+      function(response) {
+        onSuccess(response);
+      },
+      //fail
+      function(response) {
+        this.onError(response);
+      }
+    );
+}
+, doUpdateContent: function( directory,currentFile,content,onSuccess,onError) {
+  var dir = directory == undefined ? "" : directory;
+  var baseurl = this.endpoint + "/update?directory=" + dir + "&filename=" + currentFile.fullname + "&resourcepath=" + this.config.resourcepath;
+
+  if(!this.validate()) {
+    return error("No Access");
+  }
+
+  Mura.post( baseurl,{content: content} )
     .then(
       //success
       function(response) {
@@ -435,8 +462,19 @@ config: {
         <div>
           <div class="fileviewer-gallery" :style="{ 'background-image': 'url(' + currentFile.url + ')' }"  v-click-outside="closewindow">
             <div>
-              <div class="actionwindow-left" @click="lastimage">&lt;</div>
-              <div class="actionwindow-right" @click="nextimage">&gt;</div>
+              <div class="actionwindow-left" @click="lastimage"><i class="mi-caret-left"></i></div>
+              <div class="actionwindow-right" @click="nextimage"><i class="mi-caret-right"></i></div>
+              <div class="fileviewer-gallery-menu">
+                <ul>
+                  <li v-if="checkImageType() && checkSelectMode()"><a @click="selectFile()"><i class="mi-check"> Select</i></a></li>
+                  <li v-if="checkFileType()"><a  @click="editFile()"><i class="mi-pencil"> Edit</i></a></li>
+                  <li><a @click="renameFile()"><i class="mi-edit"> Rename</i></a></li>
+                  <li v-if="checkIsFile()"><a @click="downloadFile()"><i class="mi-download">Download</i></a></li>
+                  <li><a @click="deleteFile()"><i class="mi-trash"> Delete</i></a></li>
+                  <li><a @click="closewindow()"><i class="mi-times">Close</i></a></li>
+                </ul>
+                <p>{{currentFile.fullname}} ({{currentFile.size}}k)</p>
+              </div>
             </div>
           </div>
         </div>
@@ -458,6 +496,28 @@ config: {
       , closewindow: function( event ) {
         this.$root.isDisplayWindow = "";
       }
+      , renameFile: function() {
+        fileViewer.isDisplayWindow = "RENAME";
+      }
+      , downloadFile: function() {
+          window.open(fileViewer.currentFile.url, '_blank');
+      }
+      , deleteFile: function() {
+        fileViewer.isDisplayWindow = "DELETE";
+      }
+      , checkSelectMode: function() {
+          return fileViewer.checkSelectMode();
+      }
+      , checkFileType: function() {
+          return fileViewer.checkFileType();
+      }
+      , checkImageType: function() {
+        return fileViewer.checkImageType();
+      }
+      , checkIsFile: function() {
+        return fileViewer.checkIsFile();
+      }
+
     }
   });
 
@@ -467,7 +527,7 @@ config: {
       <div class="actionwindow-formwrapper">
         <h3>Delete</h3>
         <label>
-          <p>Confirm Deletion: {{currentFile.name}}</p>
+          <p>Confirm Deletion: {{currentFile.fullname}}</p>
           <button @click="doDelete()">Delete</button>
           <button @click="cancel()">Cancel</button>
         </label>
@@ -493,7 +553,7 @@ config: {
       <div class="actionwindow-formwrapper">
         <h3>Edit</h3>
         <label>
-          <textarea class="editwindow" v-model="filecontent"></textarea>
+          <textarea id="contenteditfield" class="editwindow" v-model="filecontent"></textarea>
           <button @click="updateContent()">Update</button>
           <button @click="cancel()">Cancel</button>
         </label>
@@ -506,6 +566,7 @@ config: {
     },
     methods: {
       updateContent: function() {
+        fileViewer.updateContent(this.filecontent);
         fileViewer.isDisplayWindow = '';
       }
       , cancel: function() {
@@ -514,6 +575,10 @@ config: {
     }
     , mounted: function() {
       this.filecontent = this.currentFile.content;
+//      this.editor = CodeMirror.fromTextArea(document.getElementById('contenteditfield'), {
+//         lineNumbers: true
+//       });
+
     }
   });
 
@@ -645,10 +710,10 @@ config: {
             pageindex = parseInt(fileViewer.response.pageindex) - 1;
           }
 
-          this.$parent.refresh('',pageindex)
+          this.$root.refresh('',pageindex)
       }
       , applyItemsPer: function() {
-        this.$parent.itemsper = this.itemsper;
+        this.$root.itemsper = this.itemsper;
       }
     }
 
@@ -685,13 +750,11 @@ config: {
         					</ul>
         				</div>
         			</td>
-        			<td class="var-width" v-if="parseInt(file.isfile)">
-                  {{file.name}}
+        			<td class="var-width" v-if="parseInt(file.isfile)" @click="viewFile(file,index)">
+                  {{file.fullname}}
               </td>
-              <td class="var-width" v-else>
-                <a  @click="refresh(file.name)">
-                <i class="mi-folder"></i> {{file.name}}
-                </a>
+              <td v-else class="var-width"  @click="refresh(file.name)">
+                <i class="mi-folder"></i> {{file.fullname}}
               </td>
         			<td>
                 <i v-if="parseInt(file.isfile)">
@@ -724,16 +787,36 @@ config: {
       ,back: function( ) {
         this.$root.back( );
       }
+      , viewFile: function( file,index ) {
+        this.$root.currentFile = file;
+        this.$root.currentIndex = index;
+
+        if(fileViewer.checkFileType()) {
+          fileViewer.editFile(this.successEditFile);
+        }
+        else {
+          fileViewer.isDisplayWindow = "VIEW";
+          fileViewer.viewFile();
+        }
+      }
+      , successEditFile: function( response ) {
+        this.currentFile.content = response.data.content;
+        fileViewer.isDisplayWindow = "EDIT";
+      }
       ,openMenu: function(e,file,index,ref) {
-        if(this.isDisplayContext) {
-          this.$root.isDisplayContext = 0;
-          return;
+
+        this.$root.isDisplayContext = 0;
+
+        if(this.$root.contextListener) {
         }
 
-        var left = Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().left);
+        var left = Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().left) - 26;
         var top =  Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().top);
 
-        this.$root.isDisplayContext = 1;
+        this.$nextTick(function () {
+          this.$root.isDisplayContext = 1;
+        });
+
         this.$root.isDisplayWindow = '';
         this.$root.currentFile = file;
         this.$root.currentFile.index = index;
@@ -759,13 +842,13 @@ config: {
           </div>
         </div>
         <div v-for="(file,index) in files">
-          <div class="fileviewer-item"  :id="'fileitem-'+index"  v-if="parseInt(file.isfile)" @contextmenu="openMenu($event,file,index)">
+          <div class="fileviewer-item"  :id="'fileitem-'+index"  v-if="parseInt(file.isfile)" @click="openMenu($event,file,index)">
             <div class="fileviewer-image">
               <div v-if="0" class="fileviewer-icon" :class="['fileviewer-icon-' + file.type]"></div>
               <div v-else class="fileviewer-icon" :style="{ 'background-image': 'url(' + file.url + ')' }"></div>
             </div>
             <div class="fileviewer-label">
-              {{file.name}}
+              {{file.fullname}}
             </div>
           </div>
           <div class="fileviewer-item" v-else @click="refresh(file.name)">
@@ -773,7 +856,7 @@ config: {
               <i class="mi-folder" style="font-size: 7em;color: #333"></i>
             </div>
             <div class="fileviewer-label">
-              {{file.name}}
+              {{file.fullname}}
             </div>
           </div>
         </div>
@@ -795,17 +878,13 @@ config: {
         this.$root.back( );
       }
       ,openMenu: function(e,file,index) {
+        this.menux = Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().left)+5;
+        this.menuy =  Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().top)+10;
 
-        if(this.isDisplayContext) {
-          this.$root.isDisplayContext = 0;
-          return;
-        }
+        this.$nextTick(function () {
+          this.$root.isDisplayContext = 1;
+        })
 
-        this.menux = Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().left) + 25;
-        this.menuy =  Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().top) + 20;
-
-
-        this.$root.isDisplayContext = 1;
         this.$root.isDisplayWindow = '';
         this.$root.currentFile = file;
         this.$root.currentFile.index = index;
@@ -853,7 +932,7 @@ config: {
               Uploading {{fileCount}} files...
               <ul class="fileviewer-uploadedfiles">
                 <li v-for="file in uploadedFiles">
-                  {{file.name}} ({{Math.floor(file.size/1000)}}k)
+                  {{file.fullname}} ({{Math.floor(file.size/1000)}}k)
                 </li>
               </ul>
             </p>
@@ -874,7 +953,7 @@ config: {
       files: [],
       folders: [],
       error: "",
-      displaymode: 2,
+      displaymode: this.config.displaymode,
       uploadedFiles: [],
       isDisplayContext: 0,
       isDisplayWindow: '',
@@ -905,6 +984,15 @@ config: {
     methods: {
       updateDelete: function() {
           self.updateDelete(currentFile);
+      }
+      , updateContent: function( content ) {
+        var dir = "";
+
+        for(var i=0;i<this.foldertree.length;i++) {
+          dir = dir + "\\" + this.foldertree[i];
+        }
+
+        self.doUpdateContent( dir,this.currentFile,content,this.refresh );
       }
       , renameFile: function() {
         var dir = "";
@@ -1078,11 +1166,11 @@ config: {
       }
       , checkFileType: function() {
           for(var i = 0;i<self.editfilelist.length;i++) {
-            if(this.currentFile.type == self.editfilelist[i])
+            if(this.currentFile.ext == self.editfilelist[i]) {
               return true;
-
-            return false;
+            }
           }
+          return false;
       }
       , checkImageType: function() {
           for(var i = 0;i<self.imagelist.length;i++) {
@@ -1104,10 +1192,10 @@ config: {
         this.uploadReset();
         this.selectMode = self.config.selectMode;
         self.loadBaseDirectory(this.displayResults,this.displayError);
-        var vm = this;
         window.addEventListener('mouseup', function(event) {
-          this.isDisplayContext = 0;
+          fileViewer.isDisplayContext = 0;
         });
+        var vm = this;
     }
   });
 }
