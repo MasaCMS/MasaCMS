@@ -168,7 +168,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset variables.editLink = variables.editLink & "&amp;type=" & request.contentBean.getType()>
 			<cfset variables.editLink = variables.editLink & "&amp;parentid=" & request.contentBean.getParentID()>
 			<cfset variables.editLink = variables.editLink & "&amp;moduleid=" & request.contentBean.getModuleID()>
-			<cfset variables.editLink = variables.editLink & "&amp;compactDisplay=true">
+			<cfset variables.editLink = variables.editLink & "&amp;frontend=true">
 
 			<cfset variables.newLink = variables.adminBase & "/?muraAction=cArch.loadnewcontentmenu">
 			<cfset variables.newLink = variables.newLink & "&amp;contentid=" & request.contentBean.getContentID()>
@@ -381,7 +381,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 										</li>
 									</cfif>
 									<li id="adminFullEdit">
-										<a href="#variables.editLink#"<cfif variables.dolockcheck> data-configurator="true"</cfif> #variables.targetHook#>
+										<a href="#variables.editLink#"<cfif variables.dolockcheck> data-configurator="true"</cfif>>
 											<cfif $.content('type') eq 'Variation'>
 												<i class="mi-edit"></i> Edit Metadata <!--#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-full')#--->
 											<cfelseif useLayoutManager()>
@@ -418,7 +418,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</cfif>
 							<!---</cfif>--->
 							<cfif $.currentUser().isPrivateUser()>
-								<li><a href="#variables.adminLink#" title="#application.rbFactory.getKeyValue(session.rb,'layout.sitemanager')#" target="admin"><i class="mi-sitemap"></i></a></li>
+								<li><a href="#variables.adminLink#" title="#application.rbFactory.getKeyValue(session.rb,'layout.sitemanager')#"><i class="mi-sitemap"></i></a></li>
 							</cfif>
 						</ul>
 					</cfif>
@@ -502,7 +502,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif listFindNoCase(session.mura.memberships,'S2IsPrivate')>
 					<cfif $.siteConfig().getValue(property='showDashboard',defaultValue=0)>
 						<ul id="adminDashboard">
-							<li><a href="#$.siteConfig().getAdminPath(complete=completeurls)#/?muraAction=cDashboard.main&siteid=#esapiEncode('url',$.event('siteid'))#&span=1" title="Dashboard" target="admin"><i class="mi-dashboard"></i> Dashboard</a></li>
+							<li><a href="#$.siteConfig().getAdminPath(complete=completeurls)#/?muraAction=cDashboard.main&siteid=#esapiEncode('url',$.event('siteid'))#&span=1" title="Dashboard"><i class="mi-dashboard"></i> Dashboard</a></li>
 						</ul>
 					</cfif>
 				</cfif>

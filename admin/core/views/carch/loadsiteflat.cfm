@@ -617,7 +617,7 @@ if(len($.siteConfig('customTagGroups'))){
 							<li class="download"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.download')#" href="#application.configBean.getContext()#/index.cfm/_api/render/file/?fileID=#item.getFileID()#&method=attachment" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'sitemanager.downloadconfirm'))#',this.href)"><i class="mi-download"></i></a></li>
 							</cfcase>
 							<cfdefaultcase>
-							<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" href="##" onclick="return preview('#item.getURL(complete=1)#');"><i class="mi-globe"></i></a></li>
+							<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" href="#item.getURL(complete=1)#"><i class="mi-globe"></i></a></li>
 							</cfdefaultcase>
 						</cfswitch>
 						</cfif>
@@ -643,7 +643,7 @@ if(len($.siteConfig('customTagGroups'))){
 					<cfelse>
 					    <li class="edit disabled"><i class="mi-pencil"></i></li>
 						<cfif item.getmoduleid() eq '00000000000000000000000000000000000' or (item.getmoduleid() eq '00000000000000000000000000000000099' and item.getType() eq 'Variation')>
-						<li class="preview"><a title="Preview" href="##" onclick="return preview('#item.getURL(complete=1)#');"><i class="mi-globe"></i></a></li>
+						<li class="preview"><a title="Preview" href="#item.getURL(complete=1)#"><i class="mi-globe"></i></a></li>
 						</cfif>
 						<li class="version-history disabled"><a><i class="mi-history"></i></a></li>
 						<li class="permissions disabled"><a><i class="mi-group"></i></a></li>

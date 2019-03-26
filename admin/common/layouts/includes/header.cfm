@@ -87,7 +87,7 @@
     <!--- site selector  --->
     <li id="site-selector">
       <div class="btn-group">
-     		<a id="select-site-btn" class="btn btn-default" href="#rc.$.createHref(filename='',complete=1)#" target="_blank"><i class="mi-globe"></i> #esapiEncode('html', application.settingsManager.getSite(session.siteid).getSite())#</a>
+     		<a id="select-site-btn" class="btn btn-default" href="#rc.$.createHref(filename='',complete=1)#"><i class="mi-globe"></i> #esapiEncode('html', application.settingsManager.getSite(session.siteid).getSite())#</a>
         <button type="button" class="btn btn-default dropdown-toggle" id="site-selector-trigger" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <span class="caret"></span>
         </button>
