@@ -753,10 +753,8 @@ config: {
         			<td class="var-width" v-if="parseInt(file.isfile)" @click="viewFile(file,index)">
                   {{file.fullname}}
               </td>
-              <td class="var-width" v-else>
-                <a  @click="refresh(file.name)">
+              <td v-else class="var-width"  @click="refresh(file.name)">
                 <i class="mi-folder"></i> {{file.fullname}}
-                </a>
               </td>
         			<td>
                 <i v-if="parseInt(file.isfile)">
