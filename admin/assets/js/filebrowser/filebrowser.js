@@ -30,8 +30,10 @@ config: {
   this.main(); // Delegating to main()
 
   Mura.loader()
+    .loadcss('/core/vendor/codemirror/codemirror.css')
     .loadjs(
       '/core/modules/v1/filebrowser/assets/js/vue.js',
+      '/core/vendor/codemirror/codemirror.js',
     function() {
       self.mountbrowser();
      } ) ;
@@ -471,7 +473,7 @@ config: {
                   <li><a @click="deleteFile()"><i class="mi-trash"> Delete</i></a></li>
                   <li><a @click="closewindow()"><i class="mi-times">Close</i></a></li>
                 </ul>
-                <p>{{currentFile.name}} ({{currentFile.size}}k)</p>
+                <p>{{currentFile.fullname}} ({{currentFile.size}}k)</p>
               </div>
             </div>
           </div>
@@ -525,7 +527,7 @@ config: {
       <div class="actionwindow-formwrapper">
         <h3>Delete</h3>
         <label>
-          <p>Confirm Deletion: {{currentFile.name}}</p>
+          <p>Confirm Deletion: {{currentFile.fullname}}</p>
           <button @click="doDelete()">Delete</button>
           <button @click="cancel()">Cancel</button>
         </label>
@@ -551,7 +553,7 @@ config: {
       <div class="actionwindow-formwrapper">
         <h3>Edit</h3>
         <label>
-          <textarea class="editwindow prettyprint" v-model="filecontent"></textarea>
+          <textarea id="contenteditfield" class="editwindow" v-model="filecontent"></textarea>
           <button @click="updateContent()">Update</button>
           <button @click="cancel()">Cancel</button>
         </label>
@@ -564,7 +566,6 @@ config: {
     },
     methods: {
       updateContent: function() {
-        console.log(this.filecontent);
         fileViewer.updateContent(this.filecontent);
         fileViewer.isDisplayWindow = '';
       }
@@ -574,6 +575,10 @@ config: {
     }
     , mounted: function() {
       this.filecontent = this.currentFile.content;
+//      this.editor = CodeMirror.fromTextArea(document.getElementById('contenteditfield'), {
+//         lineNumbers: true
+//       });
+
     }
   });
 
@@ -746,11 +751,11 @@ config: {
         				</div>
         			</td>
         			<td class="var-width" v-if="parseInt(file.isfile)">
-                  {{file.name}}
+                  {{file.fullname}}
               </td>
               <td class="var-width" v-else>
                 <a  @click="refresh(file.name)">
-                <i class="mi-folder"></i> {{file.name}}
+                <i class="mi-folder"></i> {{file.fullname}}
                 </a>
               </td>
         			<td>
@@ -829,7 +834,7 @@ config: {
               <div v-else class="fileviewer-icon" :style="{ 'background-image': 'url(' + file.url + ')' }"></div>
             </div>
             <div class="fileviewer-label">
-              {{file.name}}
+              {{file.fullname}}
             </div>
           </div>
           <div class="fileviewer-item" v-else @click="refresh(file.name)">
@@ -837,7 +842,7 @@ config: {
               <i class="mi-folder" style="font-size: 7em;color: #333"></i>
             </div>
             <div class="fileviewer-label">
-              {{file.name}}
+              {{file.fullname}}
             </div>
           </div>
         </div>
@@ -913,7 +918,7 @@ config: {
               Uploading {{fileCount}} files...
               <ul class="fileviewer-uploadedfiles">
                 <li v-for="file in uploadedFiles">
-                  {{file.name}} ({{Math.floor(file.size/1000)}}k)
+                  {{file.fullname}} ({{Math.floor(file.size/1000)}}k)
                 </li>
               </ul>
             </p>
