@@ -505,7 +505,7 @@
 			</cfif>
 			mura.init({
 				context:'#esapiEncode("javascript",rc.$.globalConfig('context'))#',
-				themepath:'#esapiEncode("javascript",site.getThemeAssetPath())#',
+				themepath:'#esapiEncode("javascript",site.getThemeAssetPath(complete=1))#',
 				siteid:'#esapiEncode("javascript",site.getSiteID())#',
 				assetpath:'#esapiEncode("javascript",site.getAssetPath(complete=1))#',
 				sitespath:'#esapiEncode("javascript",site.getSitesPath(complete=1))#',
