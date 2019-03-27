@@ -3152,7 +3152,7 @@ Display Objects
 		return '';
 	}
 
-	public function outputMuraCSS(includeskin=true, version='7.1', complete=false, useProtocol=true) {
+	public function outputMuraCSS(includeskin=true, version='7.2', complete=false, useProtocol=true) {
 		if ( !fileExists(expandPath('/muraWRM/core/modules/v1/core_assets/css/mura.' & arguments.version & '.min.css')) ) {
 			arguments.version = '7.0';
 		}
