@@ -421,7 +421,7 @@
 							}
 						});
 					}
-					var h = windowH - headerH - footerH -110;
+					var h = windowH - headerH - footerH;
 					$(bc).last().css('min-height',h + 'px');
 				};
 				// run on page load

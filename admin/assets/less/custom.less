@@ -123,7 +123,7 @@
 .content .push,
 .content .block,
 .content .items-push>div {
-  margin-bottom: 0px !Important;
+  margin-bottom: 0 !Important;
 }
 
 .content .block-bordered{
@@ -464,7 +464,7 @@ body.mura-admin{
   // admin form-actions
   .mura-actions{
     background-color: #fff;
-    box-shadow: 0px -2px  4px rgba(7,7,7,0.1);
+    box-shadow: 0 -2px  4px rgba(7,7,7,0.1);
     min-height: 82px;
     padding-bottom: 5px;
     padding-top: 24px;
@@ -1064,7 +1064,7 @@ body.mura-admin{
 }
 
 .no-constrain .block-constrain .block .block-content{
-  overflow: auto;
+  overflow: visible;
 }
 
 ul.nav-header .btn i,
@@ -1286,7 +1286,7 @@ a.no-link{
 
 .block-content{
   display: block;
-  padding: 5px 0px 35px;
+  padding: 5px 0 13px;
 }
 
 .block-content + .block-content{
@@ -1332,6 +1332,11 @@ a.no-link{
 #cplugins .block-content.tab-content,
 #cusers .block-content.tab-content {
    overflow: visible;
+}
+
+/* allow overflow for views with actions nav */
+#tabArchitectural .block-header + .block-content{ 
+  overflow: visible; 
 }
 
 .sidebar h2,
