@@ -313,7 +313,7 @@
 					}, 50)
 				}
 			}
-			
+
 			// set height of ckeditor content area - called by resizeTabPane()
 			var resizeBodyEditor = function(){
 				if ($('##mura-content-body-render .cke_contents').length){
@@ -323,7 +323,7 @@
 					var offsetH = ckeTopH + adminHeaderH;
 					// also adjust cke height
 					$('##mura-content-body-render .cke_contents').css('height','calc((100vh - ' + offsetH +  'px) - 283px)');
-				}			
+				}
 			}
 
 			$(window).on("load", function() {
@@ -348,7 +348,7 @@
 				        } else {
 				            overlay.show();
 				        }
-				        resizeTabPane(); 
+				        resizeTabPane();
 				        ui.position.left = ui.originalPosition.left;
 			     	},
 					stop: function(event,ui){
@@ -356,11 +356,11 @@
 		                var frameParent = $('##mura-content-body-render');
 			 			$(frameParent).find('.hidden-dialog-overlay').hide();
 			        	resizeTabPane();
-			 			createCookie('ADMINCONTROLWIDTH',acw,5);				 
-					}		
+			 			createCookie('ADMINCONTROLWIDTH',acw,5);
+					}
 				});
 
-				// persist side navigation expand/collapse 
+				// persist side navigation expand/collapse
 				$('*[data-action=sidebar_mini_toggle]').click(function(){
 					var asb = 'on';
 					// adjust sidebar as needed
@@ -374,8 +374,8 @@
 
 				// persist open nav items
 				$('##sidebar .nav-main li ul li a.active').parents('li').parents('ul').parents('li').addClass('open');
-				
-				//nice-select 
+
+				//nice-select
 				$('.mura__edit__controls .mura-control-group select').niceSelect();
 
 				// header-search
@@ -498,10 +498,23 @@
 
 			});
 
+			<cfif isDefined('session.siteid') and len(session.siteid)>
+				<cfset site=$.getBean('settingsManager').getSite(session.siteid)>
+			<cfelse>
+				<cfset site=$.getBean('settingsManager').getSite('default')>
+			</cfif>
 			mura.init({
-			context:'#esapiEncode("javascript",rc.$.globalConfig('context'))#',
-			themepath:'#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#',
-			siteid:<cfif isDefined('session.siteid') and len(session.siteid)>'#esapiEncode("javascript",session.siteid)#'<cfelse>'default'</cfif>
+				context:'#esapiEncode("javascript",rc.$.globalConfig('context'))#',
+				themepath:'#esapiEncode("javascript",site.getThemeAssetPath())#',
+				siteid:'#esapiEncode("javascript",site.getSiteID())#',
+				assetpath:'#esapiEncode("javascript",site.getAssetPath(complete=1))#',
+				sitespath:'#esapiEncode("javascript",site.getSitesPath(complete=1))#',
+				corepath:'#esapiEncode("javascript",site.getCorePath(complete=1))#',
+				fileassetpath:'#esapiEncode("javascript",site.getFileAssetPath(complete=1))#',
+				adminpath:'#esapiEncode("javascript",site.getAdminPath(complete=1))#',
+				themepath:'#esapiEncode("javascript",site.getThemeAssetPath(complete=1))#',
+				pluginspath:'#esapiEncode("javascript",site.getPluginsPath(complete=1))#',
+				rootpath:'#esapiEncode("javascript",site.getRootPath(complete=1))#'
 			});
 
 			</script>
@@ -515,7 +528,7 @@
 		</cfif>
 
 		<cfinclude template="includes/dialog.cfm">
-		
+
 		<cfif structKeyExists(rc,'$')>
 			#rc.$.renderEvent('onAdminHTMLFootRender')#
 		</cfif>
