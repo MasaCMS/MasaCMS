@@ -157,6 +157,7 @@
 							<option value="mura-ten"<cfif listFind(attributes.params.class,'mura-ten',' ')> selected</cfif>>Five Sixths</option>
 							<option value="mura-eleven"<cfif listFind(attributes.params.class,'mura-eleven',' ')> selected</cfif>>Eleven Twelfths</option>
 							<option value="mura-twelve"<cfif listFind(attributes.params.class,'mura-twelve',' ')> selected</cfif>>Full</option>
+							<option value="mura-expanded"<cfif listFind(attributes.params.class,'mura-expanded',' ')> selected</cfif>>Full</option>
 						</select>
 					</div>
 				</div> <!--- /end  mura-panel-collapse --->
