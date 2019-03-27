@@ -503,7 +503,7 @@
 			<cfelse>
 				<cfset site=$.getBean('settingsManager').getSite('default')>
 			</cfif>
-			mura.init({
+			Mura.init({
 				context:'#esapiEncode("javascript",rc.$.globalConfig('context'))#',
 				themepath:'#esapiEncode("javascript",site.getThemeAssetPath(complete=1))#',
 				siteid:'#esapiEncode("javascript",site.getSiteID())#',
