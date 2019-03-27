@@ -313,7 +313,11 @@
 		<cfset local.displayInterval=deserializeInterval(arguments.query.displayInterval[local.currentrow],arguments.query.displayStart[local.currentrow],arguments.query.displayStop[local.currentrow])>
 
 		<cfif arguments.query.display[local.currentrow] eq 2
-		and len(local.DISPLAYINTERVAL.type) >
+				and len(local.DISPLAYINTERVAL.type)
+				and (
+					arguments.query.parentType[local.currentrow] eq 'calendar'
+					or local.DISPLAYINTERVAL.repeats
+			)>
 
 			<cfif not local.displayInterval.every>
 				<cfset local.displayInterval.every=1>
