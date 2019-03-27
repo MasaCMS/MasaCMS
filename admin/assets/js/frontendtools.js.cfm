@@ -81,9 +81,8 @@
 					resizeFrontEndToolsModal(decodeURIComponent(parameters["height"]));
 				}
 			} else if(parameters["cmd"] == "openFileManager"){
-					Mura.loader().loadjs(
-					coreLoc +'vendor/ckfinder/ckfinder.js',
-						function(){
+
+						(function(){
 							var target=parameters["target"];
 							var finder = new CKFinder();
 							finder.basePath = coreLoc + 'vendor/ckfinder/';
@@ -93,7 +92,7 @@
 							<cfelse>
 								var completepath=(typeof parameters["completepath"] != 'undefined') ? parameters.completepath.toString() : "true";
 							</cfif>
-
+							/*
 							finder.selectActionFunction=function(fileURL){
 
 								var item=Mura('[data-instanceid="' + parameters["instanceid"] + '"]');
@@ -124,18 +123,10 @@
 									}
 								}
 						}
+						*/
+						siteManager.openDisplayObjectModal('filebrowser/modal.cfm');
 
-						if(Mura(this).attr('data-resourcetype') =='root'){
-							finder.resourceType='Application_Root';
-						} else if(Mura(this).attr('data-resourcetype') == 'site'){
-							finder.resourceType=Mura.siteid + '_Site_Files';
-						} else {
-							finder.resourceType=Mura.siteid + '_User_Assets';
-						}
-
-						finder.popup();
-					}
-				);
+					})();
 			} else if(parameters["cmd"] == "close"){
 				closeFrontEndToolsModal();
 			} else if(parameters["cmd"] == "setLocation"){
@@ -580,7 +571,7 @@
 		var tools=utility("##frontEndTools");
 
 		if(utility('HTML').hasClass('mura-edit-mode')){
-			
+
 			utility("##frontEndTools").hide();
 			utility('HTML').removeClass('mura-edit-mode');
 			utility(".editableObject").addClass('editableObjectHide');

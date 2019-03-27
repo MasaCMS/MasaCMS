@@ -19,7 +19,7 @@ config: {
 
   this.config=Mura.extend(config,this.config);
 
-  this.endpoint = "http://localhost:8080/" + Mura.apiEndpoint + "filebrowser/";
+  this.endpoint =  Mura.apiEndpoint + "filebrowser/";
   this.editfilelist = ["txt","cfm","cfc","html","htm","cfml","js","css","json"];
   this.imagelist = ["gif","jpg","jpeg","png"];
 

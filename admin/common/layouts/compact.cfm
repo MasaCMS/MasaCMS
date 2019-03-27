@@ -89,18 +89,8 @@
 			<![endif]-->
 		</cfif>
 
-	    <!--- global admin scripts --->
-	    <cfinclude template="includes/html_head.cfm">
-
-		<cfif rc.$.event('contenttype') neq 'Variation' and not len(rc.$.event('remoteurl')) and not len(rc.$.event('preloadOnly'))>
-			<script>
-				try{
-					//if you can access window.top.document then ckfinder won't work
-					crossdomainhack=window.top.document;
-					Mura.loader().loadjs('#application.configBean.getContext()#/core/vendor/ckfinder/ckfinder.js');
-				} catch (e){};
-			</script>
-		</cfif>
+		<!--- global admin scripts --->
+		<cfinclude template="includes/html_head.cfm">
 
 		<!-- nice-select: select box replacement (sidebar controls) -->
 		<cfif rc.sourceFrame neq 'modal'>
@@ -130,14 +120,14 @@
 					}, 50)
 				}
 			}
-			
+
 			// set height of ckeditor content area - called by resizeTabPane()
 			var resizeBodyEditor = function(){
 				if ($('##mura-content-body-render .cke_contents').length){
 					var ckeTopH = $('##mura-content-body-render .cke_top').height();
 					// also adjust cke height
 					$('##mura-content-body-render .cke_contents').css('height','calc((100vh - ' + ckeTopH +  'px) - 260px)');
-				}			
+				}
 			}
 
 			$(window).on("load", function() {
@@ -149,7 +139,7 @@
 			jQuery(document).ready(function(){
 
 
-				//nice-select 
+				//nice-select
 				$('.mura__edit__controls .mura-control-group select').niceSelect();
 
 				// tabdrop: trigger on page load w/ slight delay
@@ -227,10 +217,23 @@
 
 			});
 
+			<cfif isDefined('session.siteid') and len(session.siteid)>
+				<cfset site=$.getBean('settingsManager').getSite(session.siteid)>
+			<cfelse>
+				<cfset site=$.getBean('settingsManager').getSite('default')>
+			</cfif>
 			mura.init({
 				context:'#esapiEncode("javascript",rc.$.globalConfig('context'))#',
-				themepath:'#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#',
-				siteid:<cfif isDefined('session.siteid') and len(session.siteid)>'#esapiEncode("javascript",session.siteid)#'<cfelse>'default'</cfif>
+				themepath:'#esapiEncode("javascript",site.getThemeAssetPath())#',
+				siteid:'#esapiEncode("javascript",site.getSiteID())#',
+				assetpath:'#esapiEncode("javascript",site.getAssetPath(complete=1))#',
+				sitespath:'#esapiEncode("javascript",site.getSitesPath(complete=1))#',
+				corepath:'#esapiEncode("javascript",site.getCorePath(complete=1))#',
+				fileassetpath:'#esapiEncode("javascript",site.getFileAssetPath(complete=1))#',
+				adminpath:'#esapiEncode("javascript",site.getAdminPath(complete=1))#',
+				themepath:'#esapiEncode("javascript",site.getThemeAssetPath(complete=1))#',
+				pluginspath:'#esapiEncode("javascript",site.getPluginsPath(complete=1))#',
+				rootpath:'#esapiEncode("javascript",site.getRootPath(complete=1))#'
 			});
 		</script>
 		#rc.ajax#
