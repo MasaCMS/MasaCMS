@@ -318,8 +318,11 @@
 			var resizeBodyEditor = function(){
 				if ($('##mura-content-body-render .cke_contents').length){
 					var ckeTopH = $('##mura-content-body-render .cke_top').height();
+					var adminHeaderH = $('##mura-content .mura-header').height();
+					console.log(adminHeaderH);
+					var offsetH = ckeTopH + adminHeaderH;
 					// also adjust cke height
-					$('##mura-content-body-render .cke_contents').css('height','calc((100vh - ' + ckeTopH +  'px) - 380px)');
+					$('##mura-content-body-render .cke_contents').css('height','calc((100vh - ' + offsetH +  'px) - 283px)');
 				}			
 			}
 
