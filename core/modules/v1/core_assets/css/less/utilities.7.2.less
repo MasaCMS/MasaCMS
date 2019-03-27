@@ -105,7 +105,6 @@ li .cke_skin_mura {
 
 
 .mura-object {
-  float: left;
 	display: block;
   box-sizing: border-box;
 }
@@ -196,13 +195,36 @@ li .cke_skin_mura {
 }
 
 .mura-expanded {
-  width: 100vw;
+	width: calc(100vw) !important;
+  left: calc(-1 * (100vw - 100%) / 2);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   position: relative;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
+  overflow: hidden;
+	background: grey;
 }
+
+.mura-sidebar-state__pushed--right .mura-object.mura-expanded {
+	padding-left: 150px
+}
+
+.mura-object.mura-expanded > .mura-object-content, .mura-object.mura-expanded > .mura-object-meta  {
+	background: blue;
+}
+
+.mura-sidebar-state__pushed--right {
+
+	.mura-object.mura-expanded > .mura-object-content, .mura-object.mura-expanded > .mura-object-meta  {
+		background: green;
+	}
+
+
+}
+
+
+
 
 /* Misc
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
