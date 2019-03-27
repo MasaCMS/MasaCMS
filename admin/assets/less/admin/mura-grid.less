@@ -1663,14 +1663,44 @@
 		min-width: 160px;
 		width: auto !important;
 		z-index: 99 !important;
+		left: auto;
+	    right: 80%;
+	    bottom: auto;
+	    top: -165%;
 
+		&:after{
+			left: auto;
+		    right: -19px;
+		    top: 52px;
+		    transform: rotate(270deg);
+		}
+
+		#mura-quickEdit-display{
+			float:left;
+			clear:both;
+		}
+		
+		input.datepicker{
+			width: 86px !important;
+			min-width: 85px !important;
+		}
 		select.time{
 			margin-left: 0 !important;
+		    min-width: auto;
+		    width: 43px!important;
 		}
 
 		#mura-quickEdit-displayDates{
 			min-width: 245px;
 		}
+
+		.mura-interval-end input[type=text],
+		.mura-interval-end input[type=text].datepicker,
+		input.datepicker, 
+		select{
+			margin-bottom: .25px;
+		} 
+
 	}
 
 	.mura-quickEdit:after {
