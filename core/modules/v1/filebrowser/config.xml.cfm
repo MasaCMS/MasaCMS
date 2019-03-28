@@ -1,1 +1,1 @@
-<mura name="filebrowser" contenttypes="*" iconclass="mi-commenting"></mura>
+<mura name="filebrowser" contenttypes="" iconclass="mi-commenting"></mura>
