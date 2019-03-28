@@ -33,6 +33,7 @@
 		<cfparam name="attributes.params.cssid" default="">
 		<cfparam name="attributes.params.label" default="">
 		<cfparam name="attributes.params.object" default="">
+		<cfset contentcontainerclass=esapiEncode("javascript",$.getContentRenderer().expandedContentContainerClass)>
 
 		<cfif not (isDefined("attributes.params.cssstyles") and isStruct(attributes.params.cssstyles))>
 			<cfif isDefined("attributes.params.cssstyles") and isJSON(attributes.params.cssstyles)>
@@ -159,6 +160,13 @@
 							<option value="mura-twelve"<cfif listFind(attributes.params.class,'mura-twelve',' ')> selected</cfif>>Full</option>
 							<option value="mura-expanded"<cfif listFind(attributes.params.class,'mura-expanded',' ')> selected</cfif>>Expanded</option>
 						</select>
+					</div>
+					<div class="mura-control-group constraincontentcontainer" style='display:none;'>
+							<label>Constrain Content</label>
+							<select name="constraincontent">
+							<option value=""<cfif not listFind(attributes.params.contentcssclass,contentcontainerclass,' ')> selected</cfif>>False</option>
+							<option value="constrain"<cfif listFind(attributes.params.contentcssclass,contentcontainerclass,' ')> selected</cfif>>True</option>
+							</select>
 					</div>
 				</div> <!--- /end  mura-panel-collapse --->
 			</div> <!--- /end  mura-panel-body --->
@@ -310,7 +318,7 @@
 					$('#backgroundImage').val('').trigger('change');
 			})
 			*/
-			$('input[name="cssclass"],select[name="alignment"],select[name="width"],select[name="offset"]').on('change', function() {
+			$('input[name="cssclass"],select[name="alignment"],select[name="width"],select[name="offset"],select[name="constraincontent"]').on('change', function() {
 				setPlacementVisibility();
 			});
 
@@ -378,29 +386,34 @@
 					*/
 					//}
 		  		var contentcssclass=$('input[name="contentcssclass"]');
-					var expandedContentContainerClass='<cfoutput>#esapiEncode("javascript",$.getContentRenderer().expandedContentContainerClass)#</cfoutput>';
+					var expandedContentContainerClass='<cfoutput>#contentcontainerclass#</cfoutput>';
 					var contentcssclassArray=contentcssclass.val().split(' ');
-
+					var constraincontent=$('select[name="constraincontent"]');
+	
 					if(width.val()=='mura-expanded'){
-
-						if(contentcssclassArray.indexOf(expandedContentContainerClass)==-1){
-							if(contentcssclassArray.length){
-								contentcssclass.val(contentcssclass.val() + ' ' + expandedContentContainerClass);
-							} else {
-								contentcssclass.val(expandedContentContainerClass);
-							}
-						}
-					} else {
-						if(contentcssclassArray.indexOf(expandedContentContainerClass) > -1){
-							for( var i = 0; i < contentcssclassArray.length; i++){
-								if ( contentcssclassArray[i] === expandedContentContainerClass) {
-									contentcssclassArray.splice(i, 1);
+						$('.constraincontentcontainer').show();
+						if(constraincontent.val()=='constrain'){
+							if(contentcssclassArray.indexOf(expandedContentContainerClass)==-1){
+								if(contentcssclassArray.length){
+									contentcssclass.val(contentcssclass.val() + ' ' + expandedContentContainerClass);
+								} else {
+									contentcssclass.val(expandedContentContainerClass);
 								}
 							}
+						} else {
+							if(contentcssclassArray.indexOf(expandedContentContainerClass) > -1){
+								for( var i = 0; i < contentcssclassArray.length; i++){
+									if ( contentcssclassArray[i] === expandedContentContainerClass) {
+										contentcssclassArray.splice(i, 1);
+									}
+								}
+							}
+
+							contentcssclass.val(contentcssclassArray.join(' '));
+
 						}
-
-						contentcssclass.val(contentcssclassArray.join(' '));
-
+					} else {
+						$('.constraincontentcontainer').hide();
 					}
 
 					contentcssclass.val($.trim(contentcssclass.val()));
