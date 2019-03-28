@@ -357,9 +357,7 @@
 
 						classInput.val($.trim(classInput.val()));
 
-	  				if(inited && typeof updateDraft == 'function'){
-	  					updateDraft();
-	  				}
+
 					/*
 	  			if(alignment.val()=='mura-left'){
 		  			var offset=$('select[name="offset"]');
@@ -379,7 +377,36 @@
 		  		}
 					*/
 					//}
-		  		var cssclassInput=$('input[name="cssclass"]');
+		  		var contentcssclass=$('input[name="contentcssclass"]');
+					var expandedContentContainerClass='<cfoutput>#esapiEncode("javascript",$.getContentRenderer().expandedContentContainerClass)#</cfoutput>';
+					var contentcssclassArray=contentcssclass.val().split(' ');
+
+					if(width.val()=='mura-expanded'){
+
+						if(contentcssclassArray.indexOf(expandedContentContainerClass)==-1){
+							if(contentcssclassArray.length){
+								contentcssclass.val(contentcssclass.val() + ' ' + expandedContentContainerClass);
+							} else {
+								contentcssclass.val(expandedContentContainerClass);
+							}
+						}
+					} else {
+						if(contentcssclassArray.indexOf(expandedContentContainerClass) > -1){
+							for( var i = 0; i < contentcssclassArray.length; i++){
+								if ( contentcssclassArray[i] === expandedContentContainerClass) {
+									contentcssclassArray.splice(i, 1);
+								}
+							}
+						}
+
+						contentcssclass.val(contentcssclassArray.join(' '));
+
+					}
+
+					contentcssclass.val($.trim(contentcssclass.val()));
+
+
+					var cssclassInput=$('input[name="cssclass"]');
 
 		  		if(cssclassInput.val()){
 	  				if(classInput.val() ){
@@ -390,6 +417,10 @@
 
 						classInput.val($.trim(classInput.val()));
 		  		}
+
+					if(inited && typeof updateDraft == 'function'){
+						updateDraft();
+					}
 			}
 
 			setPlacementVisibility();
