@@ -99,7 +99,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<cfset counter=counter+1/>
 						        <li>
 						        <cfif hasImage>
-						        <img title="#esapiEncode('html_attr',rsimages.assocfilename & '.' & rsimages.fileExt)#" src="#application.configBean.getContext()#/index.cfm/_api/render/small/?fileID=#rsimages.fileid#"/><br/>
+						        <img title="#esapiEncode('html_attr',rsimages.assocfilename)#" src="#application.configBean.getContext()#/index.cfm/_api/render/small/?fileID=#rsimages.fileid#"/><br/>
 						        <cfelse>
 						        <i class="mi-file-text-o"></i><br/>#rsimages.assocfilename#<br>
 						        </cfif>
