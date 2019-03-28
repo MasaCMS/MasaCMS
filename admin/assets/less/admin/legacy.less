@@ -591,8 +591,14 @@ dd.display, dd.nav, dd.objects, dd.template {
 
 .selectAssocImageResults {  
 
+  .mura-tabs:before,
+  .mura-tabs:after{
+      display: inline !important;
+  }
+  
   > .tab-content {
       margin-bottom: @baseLineHeight !important;
+      clear: left;
     
     > .tab-pane {
       overflow-y: auto;

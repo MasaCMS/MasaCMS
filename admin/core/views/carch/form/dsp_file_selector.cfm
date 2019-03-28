@@ -3,20 +3,19 @@
 <cfset examplefileext="zip">
 <cfoutput>
 <div id="assocFileContainer" class="mura-control-group" style="display:none">
-   <label>
 	<cfif rc.ptype eq 'Gallery' or rc.type neq 'File'>
+   		<label>
 		<cfset examplefileext="png">
 		<span data-toggle="popover" title="" data-placement="right"
   	data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.selectimage"))#"
   	data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.selectimage"))#">
   		#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectimage')# <i class="mi-question-circle"></i></span>
+		</label>
 	<cfelse>
-		#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectfile')#
+		<h2>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectfile')#</h2>
 	</cfif>
-	</label>
 
 	<div id="assocImagePreviewContainer">
-		<!--- todo: test for files, other content types --->
 		<img id="assocImagePreview" src="" style="display: none;">
 	</div>
 
