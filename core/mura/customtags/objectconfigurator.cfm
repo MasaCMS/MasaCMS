@@ -389,7 +389,7 @@
 					var expandedContentContainerClass='<cfoutput>#contentcontainerclass#</cfoutput>';
 					var contentcssclassArray=contentcssclass.val().split(' ');
 					var constraincontent=$('select[name="constraincontent"]');
-	
+
 					if(width.val()=='mura-expanded'){
 						$('.constraincontentcontainer').show();
 						if(constraincontent.val()=='constrain'){
@@ -408,12 +408,19 @@
 									}
 								}
 							}
-
 							contentcssclass.val(contentcssclassArray.join(' '));
 
 						}
 					} else {
 						$('.constraincontentcontainer').hide();
+						if(contentcssclassArray.indexOf(expandedContentContainerClass) > -1){
+							for( var i = 0; i < contentcssclassArray.length; i++){
+								if ( contentcssclassArray[i] === expandedContentContainerClass) {
+									contentcssclassArray.splice(i, 1);
+								}
+							}
+						}
+						contentcssclass.val(contentcssclassArray.join(' '));
 					}
 
 					contentcssclass.val($.trim(contentcssclass.val()));
