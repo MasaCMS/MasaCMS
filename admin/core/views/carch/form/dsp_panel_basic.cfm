@@ -322,9 +322,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfelseif rc.type eq 'Link'>
 					<cfsavecontent variable="bodyContent">
 					<div class="mura-control-group">
-					     <label>
+					     <h2>
 				      		#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.url")#
-				      	</label>
+				      	</h2>
 			     	 	<cfif len(application.serviceFactory.getBean('settingsManager').getSite(session.siteid).getRazunaSettings().getHostname())>
 			 	 			<input type="text" id="url" name="body" value="#esapiEncode('html_attr',rc.contentBean.getbody())#" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.urlrequired')#">
 			 	 			<div class="mura-control justify">
