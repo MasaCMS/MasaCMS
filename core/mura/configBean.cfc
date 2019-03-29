@@ -1972,13 +1972,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var beanName=''>
 		<cfset var beanInstance=''>
 		<cfset var $=''>
+		<cfset var applyGlobalDefault=true>
 		<cfdirectory name="rs" directory="#expandPath(arguments.dir)#" action="list" filter="">
 		<cfloop query="rs">
+			<cfset applyGlobalDefault=arguments.applyGlobal>
 			<cfif rs.type eq 'dir'>
 				<cfif listFindNoCase('handlers,eventHandlers',rs.name)>
-					<cfset registerHandlerDir(dir=listAppend(arguments.dir,rs.name,'/'),package=arguments.package & "." & rs.name,siteid=arguments.siteid,moduleid=arguments.moduleid,applyGlobal=arguments.applyGlobal)>
+					<cfset registerHandlerDir(dir=listAppend(arguments.dir,rs.name,'/'),package=arguments.package & "." & rs.name,siteid=arguments.siteid,moduleid=arguments.moduleid,applyGlobal=applyGlobalDefault)>
 				<cfelse>
-					<cfset registerBeanDir(dir=listAppend(arguments.dir,rs.name,'/'),package=arguments.package & "." & rs.name,siteid=arguments.siteid,moduleid=arguments.moduleid,applyGlobal=arguments.applyGlobal)>
+					<cfset registerBeanDir(dir=listAppend(arguments.dir,rs.name,'/'),package=arguments.package & "." & rs.name,siteid=arguments.siteid,moduleid=arguments.moduleid,applyGlobal=applyGlobalDefault)>
 				</cfif>
 			<cfelseif listLast(rs.name,'.') eq 'cfc'>
 				<cfset var tracePoint=initTracepoint("Registering Eventhandler: #package#.#beanName#")>
@@ -1989,12 +1991,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfloop list="#arguments.siteid#" index="local.i">
 					<cfif not structKeyExists(request.muraAppliedHandlers,'#local.i#_#package#.#beanName#')>
 						<cfif structKeyExists(request.muraAppliedHandlers,'#package#.#beanName#')>
-							<cfset arguments.applyGlobal=false>
+							<cfset applyGlobalDefault=false>
 						</cfif>
-						<cfset getBean('pluginManager').addEventHandler(component=beanInstance,siteid=local.i,applyglobal=arguments.applyGlobal)>
+						<cfset getBean('pluginManager').addEventHandler(component=beanInstance,siteid=local.i,applyglobal=applyGlobalDefault)>
 						<cfset request.muraAppliedHandlers['#package#.#beanName#']=true>
 						<cfset request.muraAppliedHandlers['#local.i#_#package#.#beanName#']=true>
-						<cfif isDefined('beanInstance.onApplicationLoad') and arguments.applyGlobal>
+						<cfif isDefined('beanInstance.onApplicationLoad') and applyGlobalDefault>
 							<cfset $=getBean('$').init()>
 							<cfset beanInstance.onApplicationLoad($=$,m=$,Mura=$,event=$.event())>
 						</cfif>
