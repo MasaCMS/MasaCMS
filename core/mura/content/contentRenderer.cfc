@@ -243,6 +243,7 @@ General Classes
 <cfset this.formButtonCancelClass = "form-cancel btn-primary pull-right">
 <cfset this.formRequiredLabel= "Required">
 
+<cfset this.expandedContentContainerClass="container">
 
 <!--- Images --->
 <cfset this.imageClass="img-thumbnail">
