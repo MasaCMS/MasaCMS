@@ -510,7 +510,7 @@
                 float: left !important;
                 margin: 0 4px 0 0;
                 &.mura-primary {
-                    background-color: #4485f1 !important;
+                    background-color: @mura-red !important;
                 }
                 &.mura-delete {
                     background-color: @controlspanelhdrhover;
@@ -698,7 +698,7 @@
     .mura-primary {
         color: #ffffff !important;
         background-color: @mura-red;
-        border-color: #4882cc;
+        border-color: @mura-red;
         background-image: none !important;
         >i {
             color: #fff !important;
@@ -964,12 +964,13 @@ body.sidebar-tab {
         .option.focus,
         .option.selected.focus,
         .option:hover {
-            background-color: #4485f1 !important;
-            color: #fff !important;
+            background-color: #f6f6f6 !important;
+            color: #646464 !important;
         }
     }
     .ui-dialog-buttonpane .ui-dialog-buttonset .ui-button:first-child {
         .mura-primary;
+        background-color: @mura-red;
     }
 }
 
