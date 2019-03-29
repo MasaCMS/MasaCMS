@@ -15,9 +15,11 @@
 		<h2>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectfile')#</h2>
 	</cfif>
 
-	<div id="assocImagePreviewContainer">
-		<img id="assocImagePreview" src="" style="display: none;">
-	</div>
+	<cfif rc.type neq 'File'>
+		<div id="assocImagePreviewContainer">
+			<img id="assocImagePreview" src="" style="display: none;">
+		</div>
+	</cfif>
 
 	<cfif not fileLockedBySomeElse>
 
