@@ -16,6 +16,12 @@ component
 
 			if(arguments.resourcePath == "Site_Files") {
 				pathRoot = m.globalConfig().getFileDir() & '/' & currentSite.getFilePoolID();
+				if(!directoryExists(expandPath(pathRoot & "/File"))){
+					directoryCreate(expandPath(pathRoot & "/File"));
+				}
+				if(!directoryExists(expandPath(pathRoot & "/Image"))){
+					directoryCreate(expandPath(pathRoot & "/Image"));
+				}
 			}
 			else if(arguments.resourcePath == "Application_Root") {
 				pathRoot = "/";
@@ -35,13 +41,13 @@ component
 			var currentSite = application.settingsManager.getSite(arguments.siteid);
 
 			if(arguments.resourcePath == "Site_Files") {
-				pathRoot = application.configBean.getAssetPath() & '/' & currentSite.getFilePoolID();
+				pathRoot = currentSite.getAssetPath(complete=1);
 			}
 			else if(arguments.resourcePath == "Application_Root") {
-				pathRoot = "/";
+				pathRoot = application.configBean.getRootPath(complete=1);
 			}
 			else {
-				pathRoot = application.configBean.getAssetPath() & '/' & currentSite.getFilePoolID() & '/assets';
+				pathRoot = currentSite.getFileAssetPath(complete=1) & '/assets';
 			}
 
 			return pathRoot;

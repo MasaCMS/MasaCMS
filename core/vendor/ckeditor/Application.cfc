@@ -63,7 +63,7 @@ component output="false" {
 				NOTE: If you need to allow direct access to a file located under your site/theme (e.g., a remote web service, etc.),
 				just add the file name to the list of files below.
 		*/
-		if ( !(listFindNoCase("styles.js.cfm,templates.js.cfm,editor.css.cfm,default.js.cfm,config.js.cfm,validate.cfm,remote.cfc",listLast(cgi.SCRIPT_NAME,"/"))
+		if ( !(listFindNoCase("filebrowser.cfm,styles.js.cfm,templates.js.cfm,editor.css.cfm,default.js.cfm,config.js.cfm,validate.cfm,remote.cfc",listLast(cgi.SCRIPT_NAME,"/"))
 		 || listFindNoCase(cgi.SCRIPT_NAME,"remote","/")
 		 || left(listLast(cgi.SCRIPT_NAME,"/"),4) is 'fck_'
 		 ) ) {

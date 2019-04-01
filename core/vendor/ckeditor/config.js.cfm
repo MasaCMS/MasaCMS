@@ -265,11 +265,11 @@ CKEDITOR.editorConfig = function( config )
 		// filebrowser settings needed for inline edit mode
     config.removePlugins = 'imageuploader';
     config.removePlugins = 'ckfinder';
-    var connectorpath = '#application.configBean.getContext()#/core/vendor/ckeditor/plugins/murafilebrowser/filebrowser.html';
+    var connectorpath = '#application.configBean.getContext()#/core/vendor/ckeditor/plugins/murafilebrowser/filebrowser.cfm';
 		config.filebrowserBrowseUrl = connectorpath;
-		config.filebrowserImageBrowseUrl = connectorpath + '?type=Images';
+		config.filebrowserImageBrowseUrl = connectorpath + '?resourcepath=User_Assets&directory=/Image&displaymode=1';
     config.filebrowserUploadUrl = connectorpath;
-    config.filebrowserImageUploadUrl = connectorpath + '?type=Images';
+    config.filebrowserImageUploadUrl = connectorpath + '?resourcepath=User_Assets&directory=/File&displaymode=2';
     </cfif>
 
 	<cfset secure=$.getBean('utility').isHTTPS()>

@@ -2,6 +2,7 @@ MuraFileBrowser = {
 
 config: {
     resourcepath: "User_Assets",
+		directory: "",
     height: 600,
     selectMode: 0,
     endpoint: '',
@@ -30,10 +31,10 @@ config: {
   this.main(); // Delegating to main()
 
   Mura.loader()
-    .loadcss('/core/vendor/codemirror/codemirror.css')
+    .loadcss(Mura.corepath + '/vendor/codemirror/codemirror.css')
     .loadjs(
-      '/core/modules/v1/filebrowser/assets/js/vue.js',
-      '/core/vendor/codemirror/codemirror.js',
+      Mura.corepath + '/modules/v1/filebrowser/assets/js/vue.js',
+      Mura.corepath + '/vendor/codemirror/codemirror.js',
     function() {
       self.mountbrowser();
      } ) ;
@@ -201,7 +202,7 @@ config: {
 
 , loadBaseDirectory: function( onSuccess,onError ) {
   var self = this;
-  var baseurl = this.endpoint + "/browse" + "?resourcepath=" + this.config.resourcepath;
+  var baseurl = this.endpoint + "/browse" + "?resourcepath=" + this.config.resourcepath + "&directory=" + this.config.directory;
 
   if(!this.validate()) {
     return error("No Access");
@@ -264,12 +265,12 @@ config: {
     template: `
     <div id="newContentMenu" class="addNew" v-bind:style="{ left: (menux + 20) + 'px',top: menuy + 'px' }">
         <ul id="newContentOptions">
-          <li v-if="checkImageType() && checkSelectMode()"><a @click="selectFile()"><i class="mi-check"> Select</i></a></li>
-          <li v-if="checkFileType()"><a  @click="editFile()"><i class="mi-pencil"> Edit</i></a></li>
-          <li v-if="checkImageType()"><a  @click="viewFile()"><i class="mi-image"> View</i></a></li>
-          <li><a @click="renameFile()"><i class="mi-edit"> Rename</i></a></li>
-          <li v-if="checkIsFile()"><a @click="downloadFile()"><i class="mi-download">Download</i></a></li>
-          <li><a @click="deleteFile()"><i class="mi-trash"> Delete</i></a></li>
+          <li v-if="checkIsFile() && checkSelectMode()"><a href="#" @click="selectFile()"><i class="mi-check"> Select</i></a></li>
+          <li v-if="checkFileType()"><a href="#" @click="editFile()"><i class="mi-pencil"> Edit</i></a></li>
+          <li v-if="checkImageType()"><a href="#" @click="viewFile()"><i class="mi-image"> View</i></a></li>
+          <li><a href="#" @click="renameFile()"><i class="mi-edit"> Rename</i></a></li>
+          <li v-if="checkIsFile()"><a href="#" @click="downloadFile()"><i class="mi-download"> Download</i></a></li>
+          <li><a href="#" @click="deleteFile()"><i class="mi-trash"> Delete</i></a></li>
         </ul>
       </div>
     `,
@@ -460,7 +461,7 @@ config: {
     template: `
       <div class="fileviewer-modal">
         <div>
-          <div class="fileviewer-gallery" :style="{ 'background-image': 'url(' + currentFile.url + ')' }"  v-click-outside="closewindow">
+          <div class="fileviewer-gallery" :style="{ 'background-image': 'url(' + encodeURI(currentFile.url) + ')' }"  v-click-outside="closewindow">
             <div>
               <div class="actionwindow-left" @click="lastimage"><i class="mi-caret-left"></i></div>
               <div class="actionwindow-right" @click="nextimage"><i class="mi-caret-right"></i></div>
@@ -665,20 +666,20 @@ config: {
     props: ["links","isbottomnav","response","itemsper"],
     template: `
         <div class="filewindow-navmenu">
-          <p v-if="isbottomnav">
+          <p href="#" v-if="isbottomnav">
           {{response.pageindex}} of {{response.totalpages}} <!-- ({{response.totalitems}}) includes folders -->
           </p>
         <ul class="pagination">
-          <li><a v-if="links.first" @click="applyPage('first')">
+          <li><a href="#" v-if="links.first" @click="applyPage('first')">
             <i class="mi-angle-double-left"></i>
           </a></li>
-          <li><a v-if="links.previous" @click="applyPage('previous')">
+          <li><a href="#" v-if="links.previous" @click="applyPage('previous')">
             <i class="mi-angle-left"></i>
           </a></li>
-          <li><a v-if="links.next" @click="applyPage('next')">
+          <li><a href="#" v-if="links.next" @click="applyPage('next')">
             <i class="mi-angle-right"></i>
           </a></li>
-          <li><a v-if="links.last" @click="applyPage('last')">
+          <li><a href="#" v-if="links.last" @click="applyPage('last')">
             <i class="mi-angle-double-right"></i>
           </a></li>
 
@@ -735,7 +736,7 @@ config: {
         		</tr>
             <tr v-if="foldertree.length">
               <td>
-                <a  @click="back()">
+                <a href="#" @click="back()">
                   &nbsp;
                   <i class="mi-arrow-up"></i>
                 </a>
@@ -743,18 +744,19 @@ config: {
             </tr>
         		<tr v-for="(file,index) in files">
         			<td class="actions">
-        				<a :id="'fileitem-'+index" class="show-actions" @click="openMenu($event,file,index)"><i class="mi-ellipsis-v"></i></a>
+        				<a href="#" :id="'fileitem-'+index" class="show-actions" @click="openMenu($event,file,index)"><i class="mi-ellipsis-v"></i></a>
         				<div class="actions-menu hide">
         					<ul class="actions-list">
         						<li class="edit"><a @contextmenu="openMenu($event,file,index)"><i class="mi-pencil"></i>View</a></li>
         					</ul>
         				</div>
         			</td>
-        			<td class="var-width" v-if="parseInt(file.isfile)" @click="viewFile(file,index)">
-                  {{file.fullname}}
+        			<td class="var-width" v-if="parseInt(file.isfile)">
+                <a v-if="checkFileType(file,index) || checkImageType(file,index)" href="#" @click="viewFile(file,index)">{{file.fullname}}</a>
+								<span v-if="!(checkFileType(file,index) || checkImageType(file,index))">{{file.fullname}}</span>
               </td>
-              <td v-else class="var-width"  @click="refresh(file.name)">
-                <i class="mi-folder"></i> {{file.fullname}}
+              <td v-else class="var-width">
+                <a href="#" @click="refresh(file.name)"><i class="mi-folder"></i> {{file.fullname}}</a>
               </td>
         			<td>
                 <i v-if="parseInt(file.isfile)">
@@ -798,6 +800,19 @@ config: {
           fileViewer.isDisplayWindow = "VIEW";
           fileViewer.viewFile();
         }
+      },
+			checkFileType: function(file,index) {
+				this.$root.currentFile = file;
+				this.$root.currentIndex = index;
+        return fileViewer.checkFileType();
+      }
+      , checkImageType: function(file,index) {
+				this.$root.currentFile = file;
+				this.$root.currentIndex = index;
+        return fileViewer.checkImageType();
+      }
+      , checkIsFile: function() {
+        return fileViewer.checkIsFile();
       }
       , successEditFile: function( response ) {
         this.currentFile.content = response.data.content;
@@ -845,7 +860,7 @@ config: {
           <div class="fileviewer-item"  :id="'fileitem-'+index"  v-if="parseInt(file.isfile)" @click="openMenu($event,file,index)">
             <div class="fileviewer-image">
               <div v-if="0" class="fileviewer-icon" :class="['fileviewer-icon-' + file.type]"></div>
-              <div v-else class="fileviewer-icon" :style="{ 'background-image': 'url(' + file.url + ')' }"></div>
+              <div v-else class="fileviewer-icon" :style="{ 'background-image': 'url(' + encodeURI(file.url) + ')' }"></div>
             </div>
             <div class="fileviewer-label">
               {{file.fullname}}
@@ -989,7 +1004,7 @@ config: {
         var dir = "";
 
         for(var i=0;i<this.foldertree.length;i++) {
-          dir = dir + "\\" + this.foldertree[i];
+          dir = dir + "/" + this.foldertree[i];
         }
 
         self.doUpdateContent( dir,this.currentFile,content,this.refresh );
@@ -998,7 +1013,7 @@ config: {
         var dir = "";
 
         for(var i=0;i<this.foldertree.length;i++) {
-          dir = dir + "\\" + this.foldertree[i];
+          dir = dir + "/" + this.foldertree[i];
         }
 
           self.doRenameFile( dir,this.currentFile,this.refresh );
@@ -1007,7 +1022,7 @@ config: {
         var dir = "";
 
         for(var i=0;i<this.foldertree.length;i++) {
-          dir = dir + "\\" + this.foldertree[i];
+          dir = dir + "/" + this.foldertree[i];
         }
         self.doNewFolder( dir,foldername,this.refresh );
       }
@@ -1080,7 +1095,7 @@ config: {
         var dir = "";
 
         for(var i=0;i<this.foldertree.length;i++) {
-          dir = dir + "\\" + this.foldertree[i];
+          dir = dir + "/" + this.foldertree[i];
         }
 
         self.getEditFile(dir,this.currentFile,onSuccess);
@@ -1093,7 +1108,7 @@ config: {
         var dir = "";
 
         for(var i=0;i<this.foldertree.length;i++) {
-          dir = dir + "\\" + this.foldertree[i];
+          dir = dir + "/" + this.foldertree[i];
         }
 
         self.doDeleteFile(dir,this.currentFile,onSuccess,onError);
@@ -1108,7 +1123,7 @@ config: {
         isNaN(pageindex) ? 0 : pageindex;
 
         for(var i=0;i<this.foldertree.length;i++) {
-          dir = dir + "\\" + this.foldertree[i];
+          dir = dir + "/" + this.foldertree[i];
         }
 
         self.loadDirectory(dir,pageindex,this.displayResults,this.displayError,this.filterResults,this.sortOn,this.sortDir);
@@ -1144,7 +1159,7 @@ config: {
           });
 
         for(var i=0;i<this.foldertree.length;i++) {
-          dir = dir + "\\" + this.foldertree[i];
+          dir = dir + "/" + this.foldertree[i];
         }
 
         formData.append("directory",dir);
@@ -1166,7 +1181,7 @@ config: {
       }
       , checkFileType: function() {
           for(var i = 0;i<self.editfilelist.length;i++) {
-            if(this.currentFile.ext == self.editfilelist[i]) {
+            if(this.currentFile.ext.toLowerCase() == self.editfilelist[i]) {
               return true;
             }
           }
@@ -1174,7 +1189,7 @@ config: {
       }
       , checkImageType: function() {
           for(var i = 0;i<self.imagelist.length;i++) {
-            if(this.currentFile.ext == self.imagelist[i]) {
+            if(this.currentFile.ext.toLowerCase() == self.imagelist[i]) {
               return true;
             }
           }
