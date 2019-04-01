@@ -123,7 +123,7 @@
 .content .push,
 .content .block,
 .content .items-push>div {
-  margin-bottom: 0px !Important;
+  margin-bottom: 0 !Important;
 }
 
 .content .block-bordered{
@@ -464,7 +464,7 @@ body.mura-admin{
   // admin form-actions
   .mura-actions{
     background-color: #fff;
-    box-shadow: 0px -2px  4px rgba(7,7,7,0.1);
+    box-shadow: 0 -2px  4px rgba(7,7,7,0.1);
     min-height: 82px;
     padding-bottom: 5px;
     padding-top: 24px;
@@ -934,12 +934,41 @@ body#mura-select-link{
   border-top: none;
 }
 .cke_dialog_contents_body{
-  padding: 6px 10px;
+  padding: 8px 16px;
 
   label{
   font: normal normal normal 12px Arial,Helvetica,Tahoma,Verdana,Sans-Serif !important;
   }
 
+}
+select.cke_dialog_ui_input_select,
+input.cke_dialog_ui_input_text, 
+input.cke_dialog_ui_input_password, 
+input.cke_dialog_ui_input_tel{
+  height: 24px;
+  min-height: 24px;
+  padding: 1px 6px;
+}
+
+input.cke_dialog_ui_input_text:focus, input.cke_dialog_ui_input_password:focus, input.cke_dialog_ui_input_tel:focus, textarea.cke_dialog_ui_input_textarea:focus, select.cke_dialog_ui_input_select:focus {
+    outline: 0;
+    border: 1px solid #bcbcbc !important;
+}
+
+a.cke_dialog_ui_button_ok,
+a.cke_dialog_ui_button_ok:active,
+a.cke_dialog_ui_button_ok:focus,
+a.cke_dialog_ui_button_ok:hover {
+  background-color: @mura-red !important;
+}
+
+.cke_dialog_contents_body *,
+.cke_dialog_contents_body label,
+.cke_reset_all,
+.cke_reset_all *,
+.cke_reset_all a,
+.cke_reset_all textarea{
+  font:inherit !important;
 }
 
 a.cke_dialog_ui_button,
@@ -981,13 +1010,49 @@ a.cke_dialog_ui_button_ok span {
   background-color: #f5f5f5 !important;
   border:none !important;
 }
+.cke_dialog_title{
+  padding: 12px 18px;
+}
+
+.cke_dialog_footer{
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.cke_dialog_tabs {
+  height: 33px;
+  display: inline-block;
+  margin: 9px 8px 0;
+}
 
 .cke_dialog_tabs a:active,
 .cke_dialog_tabs a:hover,
 .cke_dialog_tabs a:focus{
   color: #595959 !important;
 }
-
+  
+a.cke_dialog_tab {
+    height: 25px;
+    padding: 7px 8px 1px !important;
+}
+a.cke_dialog_tab:focus{
+  border: 1px solid #d1d1d1;
+} 
+a.cke_dialog_tab_selected,
+a.cke_dialog_tab_selected:focus{
+    border: 1px solid #d1d1d1;
+    border-bottom-color: #fff !important;
+}
+.cke_combo{
+  margin-bottom: 0;
+}   
+.cke_combo_text{
+  margin-top: 3px;
+  margin-right: -4px;
+}
+.cke_dialog_ui_radio_input + label{ 
+  vertical-align:2px;
+}
 .mura-link-search-result{
   padding-top: 15px;
 
@@ -1064,7 +1129,7 @@ body.mura-admin{
 }
 
 .no-constrain .block-constrain .block .block-content{
-  overflow: auto;
+  overflow: visible;
 }
 
 ul.nav-header .btn i,
@@ -1286,7 +1351,7 @@ a.no-link{
 
 .block-content{
   display: block;
-  padding: 5px 0px 35px;
+  padding: 5px 0 13px;
 }
 
 .block-content + .block-content{
@@ -1332,6 +1397,11 @@ a.no-link{
 #cplugins .block-content.tab-content,
 #cusers .block-content.tab-content {
    overflow: visible;
+}
+
+/* allow overflow for views with actions nav */
+#tabArchitectural .block-header + .block-content{ 
+  overflow: visible; 
 }
 
 .sidebar h2,

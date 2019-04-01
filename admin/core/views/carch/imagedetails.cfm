@@ -71,7 +71,7 @@
 	<div class="block-content">
 
 	<!--- todo: rb key for 'done' --->
-	<a class="ui__back" href="#rc.contentBean.getEditURL(compactDisplay=rc.compactDisplay)#">Done <i class="mi-angle-right"></i></a>
+	<a class="ui__back" href="#rc.contentBean.getEditURL(compactDisplay=rc.compactDisplay)#&bigui=assoc##panel-assoc">Done <i class="mi-angle-right"></i></a>
 
 	<cfif len(rc.fileID)>
 		<script>
