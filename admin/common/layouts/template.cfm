@@ -410,7 +410,9 @@
 				var setBlockHeight = function(){
 					var bc = $('##mura-content .block-constrain');
 					var minFooterH = 15;
+					var paddingH = 70;
 					var windowH = $(window).height();
+					var navbarH = $('##header-navbar:first').height();
 					var headerH = $('.mura-header:first').height();
 					var footerH = $('.mura-actions:first').height();
 					if (footerH <= minFooterH){ footerH = minFooterH;}
@@ -421,7 +423,9 @@
 							}
 						});
 					}
-					var h = windowH - headerH - footerH -110;
+					var subtr = paddingH + navbarH + headerH + footerH;
+					var h = windowH - subtr;
+
 					$(bc).last().css('min-height',h + 'px');
 				};
 				// run on page load

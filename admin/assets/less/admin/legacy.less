@@ -54,9 +54,6 @@
 #carch #mura-content #gridContainer ul.breadcrumb{
   float: left;
 }
-#tabArchitectural .block-header + .block-content{ 
-  overflow: visible; 
-}
 #tabArchitectural #gridContainer dl {
   width: 100%;
   float: none;
@@ -594,8 +591,14 @@ dd.display, dd.nav, dd.objects, dd.template {
 
 .selectAssocImageResults {  
 
+  .mura-tabs:before,
+  .mura-tabs:after{
+      display: inline !important;
+  }
+  
   > .tab-content {
       margin-bottom: @baseLineHeight !important;
+      clear: left;
     
     > .tab-pane {
       overflow-y: auto;

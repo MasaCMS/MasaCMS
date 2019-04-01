@@ -510,8 +510,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<!--- todo: rb key placeholder text for "Content Title" --->
 			<!--- todo: style for placeholder see end of custom.less --->
-			<div id="mura-content-title-render" data-placeholder="Content Title">#esapiEncode('html_attr',rc.contentBean.gettitle())#</div>
-			<div id="mura-content-body-render" style="display:none;">#bodyContent#</div>
+			<div id="mura-content-title-render" data-placeholder="#esapiEncode('html_attr', rc.contentbean.getType())# Title">#esapiEncode('html_attr',rc.contentBean.gettitle())#</div>
+
+			<cfif listFindNoCase("Link,File,",rc.contentBean.getType())>
+				<div id="mura-content-body-render" style="display:none;"><div id="mura-content-body-inner">#bodyContent#</div></div>
+			<cfelse>
+				<div id="mura-content-body-render" style="display:none;">#bodyContent#</div>
+			</cfif>
 
 			<div class="load-inline tab-preloader"></div>
 			<script>$('.tab-preloader').spin(spinnerArgs2);</script>
