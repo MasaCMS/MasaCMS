@@ -311,8 +311,6 @@ config: {
         fileViewer.editFile(this.successEditFile);
       }
       , viewFile: function() {
-        console.log("CLICKED");
-        console.log(fileViewer);
         fileViewer.isDisplayWindow = "VIEW";
         fileViewer.viewFile();
       }
@@ -1126,7 +1124,6 @@ config: {
 
       }
       , viewFile: function( direction ) {
-        console.log("VIEW FILE");
       }
       , deleteFile: function( onSuccess, onError) {
         var dir = "";
