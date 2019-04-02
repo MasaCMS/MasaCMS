@@ -66,6 +66,11 @@ component
 				return permission;
 			}
 
+			if(arguments.resourcePath == 'Application_Root' && !m.getCurrentUser().isSuperUser()){
+				permission.message = "Permission Denied";
+				return permission;
+			}
+
 /*			if(!m.validateCSRFTokens()) {
 					permission.message = "Invalid CSRF tokens";
 					return permission;
@@ -73,6 +78,39 @@ component
 */
 			permission.success = 1;
 			return permission;
+		}
+
+		remote any function ckeditor_quick_upload( siteid,directory,formData,resourcePath ){
+			/*
+			{
+			    "uploaded": 1,
+			    "fileName": "foo.jpg",
+			    "url": "/files/foo.jpg"
+			}
+
+			{
+			    "uploaded": 1,
+			    "fileName": "foo(2).jpg",
+			    "url": "/files/foo(2).jpg",
+			    "error": {
+			        "message": "A file with the same name already exists. The uploaded file was renamed to \"foo(2).jpg\"."
+			    }
+			}
+
+			{
+			    "uploaded": 0,
+			    "error": {
+			        "message": "The file is too big."
+			    }
+			}
+
+			*/
+
+			return serializeJSON({
+			    "uploaded": 1,
+			    "fileName": "foo.jpg",
+			    "url": "/files/foo.jpg"
+			});
 		}
 
 		remote any function upload( siteid,directory,formData,resourcePath )  {
