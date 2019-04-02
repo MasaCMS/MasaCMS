@@ -672,7 +672,7 @@ config: {
   });
 
   Vue.component('navmenu', {
-    props: ["links","isbottomnav","response","itemsper"],
+    props: ["links","isbottomnav","response"],
     template: `
         <div class="filewindow-navmenu">
           <p href="#" v-if="isbottomnav">
@@ -694,9 +694,9 @@ config: {
 
           <li class="pull-right">
             <select name="itemsper" class="itemsper" @change="applyItemsPer" v-model="itemsper">
-              <option value='10' :selected="itemsper == 10 ? 'selected' : null">10</option>
-              <option value='20' :selected="itemsper == 20 ? 'selected' : null">20</option>
-              <option value='50' :selected="itemsper == 50 ? 'selected' : null">50</option>
+              <option value='10' :selected="$root.itemsper == 10 ? 'selected' : null">10</option>
+              <option value='20' :selected="$root.itemsper == 20 ? 'selected' : null">20</option>
+              <option value='50' :selected="$root.itemsper == 50 ? 'selected' : null">50</option>
             </select>
           </li>
 
@@ -704,7 +704,7 @@ config: {
       </div>
     `,
     data() {
-        return {};
+        return {itemsper:this.$root.itemsper};
     },
     methods: {
       applyPage: function(goto) {
