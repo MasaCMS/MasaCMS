@@ -269,12 +269,12 @@ config: {
     template: `
     <div id="newContentMenu" class="addNew" v-bind:style="{ left: (menux + 20) + 'px',top: menuy + 'px' }">
         <ul id="newContentOptions">
-          <li v-if="checkIsFile() && checkSelectMode()"><a href="#" @click.prevent="selectFile()"><i class="mi-check"> Select</i></a></li>
-          <li v-if="checkFileType()"><a href="#" @click.prevent="editFile()"><i class="mi-pencil"> Edit</i></a></li>
-          <li v-if="checkImageType()"><a href="#" @click.prevent="viewFile()"><i class="mi-image"> View</i></a></li>
+          <li v-if="checkIsFile() && checkSelectMode()"><a href="#" @click="selectFile()"><i class="mi-check"> Select</i></a></li>
+          <li v-if="checkIsFile() && checkFileType()"><a href="#" @click="editFile()"><i class="mi-pencil"> Edit</i></a></li>
+          <li v-if="checkIsFile() && checkImageType()"><a href="#" @click="viewFile()"><i class="mi-image"> View</i></a></li>
           <li><a href="#" @click.prevent="renameFile()"><i class="mi-edit"> Rename</i></a></li>
-          <li v-if="checkIsFile()"><a href="#" @click.prevent="downloadFile()"><i class="mi-download"> Download</i></a></li>
-          <li><a href="#" @click.prevent="deleteFile()"><i class="mi-trash"> Delete</i></a></li>
+          <li v-if="checkIsFile()"><a href="#" @click="downloadFile()"><i class="mi-download"> Download</i></a></li>
+          <li><a href="#" @click="deleteFile()"><i class="mi-trash"> Delete</i></a></li>
         </ul>
       </div>
     `,
@@ -911,6 +911,9 @@ config: {
       ,openMenu: function(e,file,index) {
         this.menux = Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().left)+5;
         this.menuy =  Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().top)+10;
+
+				this.$root.currentFile = file;
+				this.$root.currentIndex = index;
 
         this.$nextTick(function () {
           this.$root.isDisplayContext = 1;
