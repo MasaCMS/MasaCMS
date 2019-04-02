@@ -269,12 +269,12 @@ config: {
     template: `
     <div id="newContentMenu" class="addNew" v-bind:style="{ left: (menux + 20) + 'px',top: menuy + 'px' }">
         <ul id="newContentOptions">
-          <li v-if="checkIsFile() && checkSelectMode()"><a href="#" @click="selectFile()"><i class="mi-check"> Select</i></a></li>
-          <li v-if="checkFileType()"><a href="#" @click="editFile()"><i class="mi-pencil"> Edit</i></a></li>
-          <li v-if="checkImageType()"><a href="#" @click="viewFile()"><i class="mi-image"> View</i></a></li>
-          <li><a href="#" @click="renameFile()"><i class="mi-edit"> Rename</i></a></li>
-          <li v-if="checkIsFile()"><a href="#" @click="downloadFile()"><i class="mi-download"> Download</i></a></li>
-          <li><a href="#" @click="deleteFile()"><i class="mi-trash"> Delete</i></a></li>
+          <li v-if="checkIsFile() && checkSelectMode()"><a href="#" @click.prevent="selectFile()"><i class="mi-check"> Select</i></a></li>
+          <li v-if="checkFileType()"><a href="#" @click.prevent="editFile()"><i class="mi-pencil"> Edit</i></a></li>
+          <li v-if="checkImageType()"><a href="#" @click.prevent="viewFile()"><i class="mi-image"> View</i></a></li>
+          <li><a href="#" @click.prevent="renameFile()"><i class="mi-edit"> Rename</i></a></li>
+          <li v-if="checkIsFile()"><a href="#" @click.prevent="downloadFile()"><i class="mi-download"> Download</i></a></li>
+          <li><a href="#" @click.prevent="deleteFile()"><i class="mi-trash"> Delete</i></a></li>
         </ul>
       </div>
     `,
@@ -591,7 +591,7 @@ config: {
     props: ["links","isbottomnav","response","itemsper","location"],
     template: `
       <div class="filewindow-appbar">
-          <navmenu v-if="response.links" :links.sync="links" :response.sync="response" :itemsper="itemsper" :isbottomnav.sync="isbottomnav"></navmenu>
+          <navmenu v-if="response.links" :links="links" :response="response" :itemsper="itemsper" :isbottomnav="isbottomnav"></navmenu>
           <modemenu v-if="location"></modemenu>
       </div>
     `,
@@ -675,28 +675,28 @@ config: {
     props: ["links","isbottomnav","response"],
     template: `
         <div class="filewindow-navmenu">
-          <p href="#" v-if="isbottomnav">
+          <p v-if="isbottomnav">
           {{response.pageindex}} of {{response.totalpages}} <!-- ({{response.totalitems}}) includes folders -->
           </p>
         <ul class="pagination">
-          <li><a href="#" v-if="links.first" @click="applyPage('first')">
+          <li><a href="#" v-if="links.first" @click.prevent="applyPage('first')">
             <i class="mi-angle-double-left"></i>
           </a></li>
-          <li><a href="#" v-if="links.previous" @click="applyPage('previous')">
+          <li><a href="#" v-if="links.previous" @click.prevent="applyPage('previous')">
             <i class="mi-angle-left"></i>
           </a></li>
-          <li><a href="#" v-if="links.next" @click="applyPage('next')">
+          <li><a href="#" v-if="links.next" @click.prevent="applyPage('next')">
             <i class="mi-angle-right"></i>
           </a></li>
-          <li><a href="#" v-if="links.last" @click="applyPage('last')">
+          <li><a href="#" v-if="links.last" @click.prevent="applyPage('last')">
             <i class="mi-angle-double-right"></i>
           </a></li>
 
           <li class="pull-right">
             <select name="itemsper" class="itemsper" @change="applyItemsPer" v-model="itemsper">
-              <option value='10' :selected="$root.itemsper == 10 ? 'selected' : null">10</option>
-              <option value='20' :selected="$root.itemsper == 20 ? 'selected' : null">20</option>
-              <option value='50' :selected="$root.itemsper == 50 ? 'selected' : null">50</option>
+              <option value='10' :selected="itemsper == 10 ? 'selected' : null">10</option>
+              <option value='20' :selected="itemsper == 20 ? 'selected' : null">20</option>
+              <option value='50' :selected="itemsper == 50 ? 'selected' : null">50</option>
             </select>
           </li>
 
@@ -746,7 +746,7 @@ config: {
         		</tr>
             <tr v-if="foldertree.length">
               <td>
-                <a href="#" @click="back()">
+                <a href="#" @click.prevent="back()">
                   &nbsp;
                   <i class="mi-arrow-up"></i>
                 </a>
@@ -754,7 +754,7 @@ config: {
             </tr>
         		<tr v-for="(file,index) in files">
         			<td class="actions">
-        				<a href="#" :id="'fileitem-'+index" class="show-actions" @click="openMenu($event,file,index)"><i class="mi-ellipsis-v"></i></a>
+        				<a href="#" :id="'fileitem-'+index" class="show-actions" @click.prevent="openMenu($event,file,index)"><i class="mi-ellipsis-v"></i></a>
         				<div class="actions-menu hide">
         					<ul class="actions-list">
         						<li class="edit"><a @contextmenu="openMenu($event,file,index)"><i class="mi-pencil"></i>View</a></li>
@@ -762,11 +762,10 @@ config: {
         				</div>
         			</td>
         			<td class="var-width" v-if="parseInt(file.isfile)">
-                <a v-if="checkFileType(file,index) || checkImageType(file,index)" href="#" @click="viewFile(file,index)">{{file.fullname}}</a>
-								<span v-if="!(checkFileType(file,index) || checkImageType(file,index))">{{file.fullname}}</span>
+                <a href="#" @click.prevent="viewFile(file,index)">{{file.fullname}}</a>
               </td>
               <td v-else class="var-width">
-                <a href="#" @click="refresh(file.name)"><i class="mi-folder"></i> {{file.fullname}}</a>
+                <a href="#" @click.prevent="refresh(file.name)"><i class="mi-folder"></i> {{file.fullname}}</a>
               </td>
         			<td>
                 <i v-if="parseInt(file.isfile)">
@@ -803,15 +802,22 @@ config: {
         this.$root.currentFile = file;
         this.$root.currentIndex = index;
 
-        if(fileViewer.checkFileType()) {
-          fileViewer.editFile(this.successEditFile);
-        }
-        else {
-          fileViewer.isDisplayWindow = "VIEW";
-          fileViewer.viewFile();
-        }
-      },
-			checkFileType: function(file,index) {
+				if(this.isViewable(file,index)){
+	        if(fileViewer.checkFileType()) {
+	          fileViewer.editFile(this.successEditFile);
+	        }
+	        else {
+	          fileViewer.isDisplayWindow = "VIEW";
+	          fileViewer.viewFile();
+	        }
+				}
+      }
+			, isViewable: function(file,index){
+				this.$root.currentFile = file;
+				this.$root.currentIndex = index;
+				return fileViewer.isViewable();
+			}
+			, checkFileType: function(file,index) {
 				this.$root.currentFile = file;
 				this.$root.currentIndex = index;
         return fileViewer.checkFileType();
@@ -963,9 +969,9 @@ config: {
             </p>
           </form>
         </div>
-        <appbar v-if="response.links" :location=1 :links.sync="response.links" :itemsper.sync="itemsper" :response.sync="response"></appbar>
-        <filewindow :currentFile.sync="currentFile" :isDisplayContext.sync="isDisplayContext" :foldertree="foldertree" :files="files" :folders.sync="folders" :displaymode.sync="displaymode"></filewindow>
-        <appbar v-if="response.links" :location=0 :links.sync="response.links" :itemsper.sync="itemsper" :response.sync="response"></appbar>
+        <appbar v-if="response.links" :location=1 :links="response.links" :itemsper="itemsper" :response="response"></appbar>
+        <filewindow :currentFile="currentFile" :isDisplayContext="isDisplayContext" :foldertree="foldertree" :files="files" :folders="folders" :displaymode="displaymode"></filewindow>
+        <appbar v-if="response.links" :location=0 :links="response.links" :itemsper="itemsper" :response="response"></appbar>
       </div>`
     ,
     data: {
@@ -1188,6 +1194,19 @@ config: {
       }
       , checkSelectMode: function() {
         return MuraFileBrowser.config.selectMode;
+      }
+			, isViewable: function() {
+          for(var i = 0;i<self.editfilelist.length;i++) {
+            if(this.currentFile.ext.toLowerCase() == self.editfilelist[i]) {
+              return true;
+            }
+          }
+					for(var i = 0;i<self.imagelist.length;i++) {
+            if(this.currentFile.ext.toLowerCase() == self.imagelist[i]) {
+              return true;
+            }
+          }
+          return false;
       }
       , checkFileType: function() {
           for(var i = 0;i<self.editfilelist.length;i++) {
