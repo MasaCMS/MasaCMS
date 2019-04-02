@@ -33,7 +33,7 @@ config: {
   Mura.loader()
     .loadcss(Mura.corepath + '/vendor/codemirror/codemirror.css')
     .loadjs(
-      Mura.corepath + '/modules/v1/filebrowser/assets/js/vue.js',
+      Mura.adminpath + '/assets/js/vue.min.js',
       Mura.corepath + '/vendor/codemirror/codemirror.js',
     function() {
       self.mountbrowser();
@@ -269,9 +269,9 @@ config: {
     template: `
     <div id="newContentMenu" class="addNew" v-bind:style="{ left: (menux + 20) + 'px',top: menuy + 'px' }">
         <ul id="newContentOptions">
-          <li v-if="checkIsFile() && checkSelectMode()"><a href="#" @click="selectFile()"><i class="mi-check"> Select</i></a></li>
-          <li v-if="checkIsFile() && checkFileType()"><a href="#" @click="editFile()"><i class="mi-pencil"> Edit</i></a></li>
-          <li v-if="checkIsFile() && checkImageType()"><a href="#" @click="viewFile()"><i class="mi-image"> View</i></a></li>
+          <li v-if="checkIsFile() && checkSelectMode()"><a href="#" @click.prevent="selectFile()"><i class="mi-check"> Select</i></a></li>
+          <li v-if="checkIsFile() && checkFileType()"><a href="#" @click.prevent="editFile()"><i class="mi-pencil"> Edit</i></a></li>
+          <li v-if="checkIsFile() && checkImageType()"><a href="#" @click.prevent="viewFile()"><i class="mi-image"> View</i></a></li>
           <li><a href="#" @click.prevent="renameFile()"><i class="mi-edit"> Rename</i></a></li>
           <li v-if="checkIsFile()"><a href="#" @click="downloadFile()"><i class="mi-download"> Download</i></a></li>
           <li><a href="#" @click="deleteFile()"><i class="mi-trash"> Delete</i></a></li>
@@ -286,6 +286,8 @@ config: {
     }
     , computed: {
 
+    }
+    , mounted: function() {
     }
     , methods: {
       compstyle: function() {
@@ -309,6 +311,8 @@ config: {
         fileViewer.editFile(this.successEditFile);
       }
       , viewFile: function() {
+        console.log("CLICKED");
+        console.log(fileViewer);
         fileViewer.isDisplayWindow = "VIEW";
         fileViewer.viewFile();
       }
@@ -394,6 +398,7 @@ config: {
     },
     mounted: function() {
       this.filename = this.currentFile.name;
+      fileViewer.isDisplayContext = 0;
     }
   });
 
@@ -842,7 +847,7 @@ config: {
         }
 
         var left = Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().left) - 26;
-        var top =  Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().top);
+        var top =  Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().top) + window.scrollX;
 
         this.$nextTick(function () {
           this.$root.isDisplayContext = 1;
@@ -910,7 +915,7 @@ config: {
       }
       ,openMenu: function(e,file,index) {
         this.menux = Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().left)+5;
-        this.menuy =  Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().top)+10;
+        this.menuy =  Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().top)+10 + window.scrollX;
 
 				this.$root.currentFile = file;
 				this.$root.currentIndex = index;
@@ -1121,7 +1126,7 @@ config: {
 
       }
       , viewFile: function( direction ) {
-
+        console.log("VIEW FILE");
       }
       , deleteFile: function( onSuccess, onError) {
         var dir = "";
@@ -1240,7 +1245,7 @@ config: {
         this.selectMode = self.config.selectMode;
         self.loadBaseDirectory(this.displayResults,this.displayError);
         window.addEventListener('mouseup', function(event) {
-          fileViewer.isDisplayContext = 0;
+//        fileViewer.isDisplayContext = 0;
         });
         var vm = this;
     }
