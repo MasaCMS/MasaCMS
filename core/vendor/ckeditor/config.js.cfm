@@ -266,10 +266,11 @@ CKEDITOR.editorConfig = function( config )
     config.removePlugins = 'imageuploader';
     config.removePlugins = 'ckfinder';
     var connectorpath = '#application.configBean.getContext()#/core/vendor/ckeditor/plugins/murafilebrowser/filebrowser.cfm';
-		config.filebrowserBrowseUrl = connectorpath;
+		var uploadpath = '#application.Mura.getBean('settingsManager').getSite(session.siteid).getApi(type="json",type="v1").getEndPoint()#/filebrowser/upload?resourcepath=User_Assets&directory=/';
+		config.filebrowserBrowseUrl = connectorpath + '?resourcepath=User_Assets&displaymode=2';
 		config.filebrowserImageBrowseUrl = connectorpath + '?resourcepath=User_Assets&directory=/Image&displaymode=1';
-    config.filebrowserUploadUrl = connectorpath;
-    config.filebrowserImageUploadUrl = connectorpath + '?resourcepath=User_Assets&directory=/File&displaymode=2';
+    config.filebrowserUploadUrl = uploadpath + "File";
+    config.filebrowserImageUploadUrl = uploadpath + "Image";
     </cfif>
 
 	<cfset secure=$.getBean('utility').isHTTPS()>
