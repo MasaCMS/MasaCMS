@@ -168,7 +168,7 @@ config: {
     );
 }
 
-, loadDirectory: function( directory,pageindex,onSuccess,onError,filterResults,sortOn,sortDir ) {
+, loadDirectory: function( directory,pageindex,onSuccess,onError,filterResults,sortOn,sortDir,itemsper ) {
   var self = this;
 
   var dir = directory == undefined ? "" : directory;
@@ -183,9 +183,13 @@ config: {
     baseurl += "&pageindex=" + pageindex;
   }
 
-  if(filterResults.length) {
-    baseurl += "&filterResults=" + filterResults;
+	if(itemsper) {
+    baseurl += "&itemsperpage=" + itemsper;
   }
+
+	if(filterResults.length) {
+		baseurl += "&filterResults=" + filterResults;
+	}
 
   Mura.get( baseurl )
     .then(
@@ -587,13 +591,18 @@ config: {
     props: ["links","isbottomnav","response","itemsper","location"],
     template: `
       <div class="filewindow-appbar">
-          <navmenu v-if="response.links" :links="links" :response="response" :itemsper="itemsper" :isbottomnav="isbottomnav"></navmenu>
+          <navmenu v-if="response.links" :links.sync="links" :response.sync="response" :itemsper="itemsper" :isbottomnav.sync="isbottomnav"></navmenu>
           <modemenu v-if="location"></modemenu>
       </div>
     `,
-    data() {
-        return {};
-    },
+		data: function() {
+			return {
+
+			}
+		},
+		computed: {
+
+	  },
     methods: {
       applyPage: function(goto) {
           var pageindex = 1;
@@ -715,6 +724,7 @@ config: {
       }
       , applyItemsPer: function() {
         this.$root.itemsper = this.itemsper;
+				this.$root.refresh('',1)
       }
     }
 
@@ -953,9 +963,9 @@ config: {
             </p>
           </form>
         </div>
-        <appbar v-if="response.links" :location=1 :links="response.links" :itemsper="itemsper" :response="response"></appbar>
-        <filewindow :currentFile="currentFile" :isDisplayContext="isDisplayContext" :foldertree="foldertree" :files="files" :folders="folders" :displaymode="displaymode"></filewindow>
-        <appbar v-if="response.links" :location=0 :links="response.links" :itemsper="itemsper" :response="response"></appbar>
+        <appbar v-if="response.links" :location=1 :links.sync="response.links" :itemsper.sync="itemsper" :response.sync="response"></appbar>
+        <filewindow :currentFile.sync="currentFile" :isDisplayContext.sync="isDisplayContext" :foldertree="foldertree" :files="files" :folders.sync="folders" :displaymode.sync="displaymode"></filewindow>
+        <appbar v-if="response.links" :location=0 :links.sync="response.links" :itemsper.sync="itemsper" :response.sync="response"></appbar>
       </div>`
     ,
     data: {
@@ -976,7 +986,7 @@ config: {
       filterResults: '',
       sortOn: '',
       sortDir: 'ASC',
-      itemsper: 10,
+      itemsper: 20,
       editfilelist: self.editfilelist,
       response: {pageindex: 0}
     },
@@ -1126,7 +1136,7 @@ config: {
           dir = dir + "/" + this.foldertree[i];
         }
 
-        self.loadDirectory(dir,pageindex,this.displayResults,this.displayError,this.filterResults,this.sortOn,this.sortDir);
+        self.loadDirectory(dir,pageindex,this.displayResults,this.displayError,this.filterResults,this.sortOn,this.sortDir,this.itemsper);
       }
       , back: function() {
         this.foldertree.splice(-1);

@@ -15,19 +15,20 @@ component
 			var currentSite = application.settingsManager.getSite(arguments.siteid);
 
 			if(arguments.resourcePath == "Site_Files") {
-				pathRoot = m.globalConfig().getFileDir() & '/' & currentSite.getFilePoolID();
+				pathRoot = currentSite.getIncludePath();
+			}
+			else if(arguments.resourcePath == "Application_Root") {
+				pathRoot = "/murawrm";
+			}
+			else {
+				pathRoot = currentSite.getAssetDir() & '/assets';
+
 				if(!directoryExists(expandPath(pathRoot & "/File"))){
 					directoryCreate(expandPath(pathRoot & "/File"));
 				}
 				if(!directoryExists(expandPath(pathRoot & "/Image"))){
 					directoryCreate(expandPath(pathRoot & "/Image"));
 				}
-			}
-			else if(arguments.resourcePath == "Application_Root") {
-				pathRoot = "/";
-			}
-			else {
-				pathRoot = m.globalConfig().getFileDir() & '/' & currentSite.getFilePoolID() & '/assets';
 			}
 
 			return pathRoot;
@@ -293,7 +294,7 @@ component
 			return true;
 		}
 
-		remote any function browse( siteid,directory,filterResults="",pageIndex=1,sortOn,sortDir,resourcePath )  {
+		remote any function browse( siteid,directory,filterResults="",pageIndex=1,sortOn,sortDir,resourcePath,itemsPerPage=20 )  {
 
 			arguments.siteid == "" ? "default" : arguments.siteid;
 			arguments.pageindex == isNumeric(arguments.pageindex) ? arguments.pageindex : 1;
@@ -324,16 +325,16 @@ component
 			response['items'] = [];
 			response['links'] = {};
 			response['folders'] = [];
-			response['itemsperpage'] = 20;
+			response['itemsperpage'] = arguments.itemsPerPage;
 
 			response['directory'] = arguments.directory == "" ? "" : arguments.directory;
-
 			response['directory'] = rereplace(response['directory'],"\\","\/","all");
 			response['directory'] = rereplace(response['directory'],"$\\","");
 
 			var rsDirectory = directoryList(expandPath(filePath),false,"query");
-			var response['startindex'] = 1 + response['itemsperpage'] * pageIndex - response['itemsperpage'];
-			var response['endindex'] = response['startindex'] + response['itemsperpage'] - 1;
+
+			response['startindex'] = 1 + response['itemsperpage'] * pageIndex - response['itemsperpage'];
+			response['endindex'] = response['startindex'] + response['itemsperpage'] - 1;
 
 			var sqlString = "SELECT * from sourceQuery";
 
@@ -383,14 +384,17 @@ component
 				ArrayAppend(response['items'],frow,true);
 			}
 
+			var apiEndpoint=m.siteConfig().getApi(type="json", version="v1").getEndpoint();
+
+			var baseurl=apiEndpoint & "/filebrowser/browse?directory=#esapiEncode("url",arguments.directory)#&resourcepath=#esapiEncode("url",arguments.resourcepath)#&pageIndex=";
 			if(response.totalpages > 1) {
 				if(response.pageindex < response.totalpages) {
-					response['links']['next'] = "&pageIndex=" & response.pageindex+1;
-					response['links']['last'] = "&pageIndex=" & response.totalpages;
+					response['links']['next'] = baseurl & response.pageindex+1;
+					response['links']['last'] = baseurl & response.totalpages;
 				}
 				if(response.pageindex > 1) {
-					response['links']['first'] = "&pageIndex=1";
-					response['links']['previous'] = "&pageIndex=" & response.pageindex-1;
+					response['links']['first'] =baseurl & 1;
+					response['links']['previous'] = baseurl & (response.pageindex-1);
 				}
 			}
 
