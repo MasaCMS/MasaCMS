@@ -61,12 +61,12 @@ component
 			// context: upload,edit,write,delete,rename,addFolder,browse
 			// resourcePath: User_Assets,Site_Files,Application_Root
 
-			if(!(m.getCurrentUser().isLoggedIn() and (m.getCurrentUser().isAdminUser() or m.getCurrentUser().isSuperUser()))) {
+			if ( !m.getBean('permUtility').getModulePerm('00000000000000000000000000000000000',arguments.siteid) ) {
 				permission.message = "Permission Denied";
 				return permission;
 			}
 
-			if(arguments.resourcePath == 'Application_Root' && !m.getCurrentUser().isSuperUser()){
+			if(arguments.resourcePath != 'User_Assets' && !m.getCurrentUser().isSuperUser()){
 				permission.message = "Permission Denied";
 				return permission;
 			}

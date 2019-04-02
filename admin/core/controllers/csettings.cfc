@@ -142,6 +142,7 @@ component extends="controller" output="false" {
 			request.newImageIDList="";
 			if ( arguments.rc.action == 'Update' ) {
 				lock name="appInitBlock#application.instanceID#" type="exclusive" timeout="200" {
+					application.appInitialized=false;
 					bean=variables.settingsManager.update(arguments.rc);
 				}
 				variables.clusterManager.reload();
