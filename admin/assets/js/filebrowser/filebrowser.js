@@ -21,8 +21,6 @@ config: {
   this.config=Mura.extend(config,this.config);
 
   this.endpoint =  Mura.apiEndpoint + "filebrowser/";
-  this.editfilelist = ["txt","cfm","cfc","html","htm","cfml","js","css","json"];
-  this.imagelist = ["gif","jpg","jpeg","png"];
 
   this.container = Mura("#MuraFileBrowserContainer");
   this.container.append("<div id='" + target + "'><component :is='currentView'></component></div>");
@@ -206,7 +204,7 @@ config: {
 
 , loadBaseDirectory: function( onSuccess,onError ) {
   var self = this;
-  var baseurl = this.endpoint + "/browse" + "?resourcepath=" + this.config.resourcepath + "&directory=" + this.config.directory;
+  var baseurl = this.endpoint + "/browse" + "?resourcepath=" + this.config.resourcepath + "&directory=" + this.config.directory + "&settings=1";
 
   if(!this.validate()) {
     return error("No Access");
@@ -270,7 +268,7 @@ config: {
     <div id="newContentMenu" class="addNew" v-bind:style="{ left: (menux + 20) + 'px',top: menuy + 'px' }">
         <ul id="newContentOptions">
           <li v-if="checkIsFile() && checkSelectMode()"><a href="#" @click.prevent="selectFile()"><i class="mi-check"> Select</i></a></li>
-          <li v-if="checkIsFile() && checkFileType()"><a href="#" @click.prevent="editFile()"><i class="mi-pencil"> Edit</i></a></li>
+          <li v-if="checkIsFile() && checkFileEditable()"><a href="#" @click.prevent="editFile()"><i class="mi-pencil"> Edit</i></a></li>
           <li v-if="checkIsFile() && checkImageType()"><a href="#" @click.prevent="viewFile()"><i class="mi-image"> View</i></a></li>
           <li><a href="#" @click.prevent="renameFile()"><i class="mi-edit"> Rename</i></a></li>
           <li v-if="checkIsFile()"><a href="#" @click="downloadFile()"><i class="mi-download"> Download</i></a></li>
@@ -330,8 +328,8 @@ config: {
       , checkSelectMode: function() {
           return fileViewer.checkSelectMode();
       }
-      , checkFileType: function() {
-          return fileViewer.checkFileType();
+      , checkFileEditable: function() {
+          return fileViewer.checkFileEditable();
       }
       , checkImageType: function() {
         return fileViewer.checkImageType();
@@ -475,7 +473,7 @@ config: {
               <div class="fileviewer-gallery-menu">
                 <ul>
                   <li v-if="checkImageType() && checkSelectMode()"><a @click="selectFile()"><i class="mi-check"> Select</i></a></li>
-                  <li v-if="checkFileType()"><a  @click="editFile()"><i class="mi-pencil"> Edit</i></a></li>
+                  <li v-if="checkFileEditable()"><a  @click="editFile()"><i class="mi-pencil"> Edit</i></a></li>
                   <li><a @click="renameFile()"><i class="mi-edit"> Rename</i></a></li>
                   <li v-if="checkIsFile()"><a @click="downloadFile()"><i class="mi-download">Download</i></a></li>
                   <li><a @click="deleteFile()"><i class="mi-trash"> Delete</i></a></li>
@@ -516,8 +514,8 @@ config: {
       , checkSelectMode: function() {
           return fileViewer.checkSelectMode();
       }
-      , checkFileType: function() {
-          return fileViewer.checkFileType();
+      , checkFileEditable: function() {
+          return fileViewer.checkFileEditable();
       }
       , checkImageType: function() {
         return fileViewer.checkImageType();
@@ -805,25 +803,26 @@ config: {
         this.$root.currentFile = file;
         this.$root.currentIndex = index;
 
-				if(this.isViewable(file,index)){
-	        if(fileViewer.checkFileType()) {
-	          fileViewer.editFile(this.successEditFile);
-	        }
-	        else {
-	          fileViewer.isDisplayWindow = "VIEW";
-	          fileViewer.viewFile();
-	        }
+				if(this.checkImageType(file,index)) {
+          fileViewer.isDisplayWindow = "VIEW";
 				}
+        else if(this.checkFileEditable(file,index)) {
+          fileViewer.editFile(this.successEditFile);
+        }
+      }
+      , successEditFile: function( response ) {
+        this.currentFile.content = response.data.content;
+        fileViewer.isDisplayWindow = "EDIT";
       }
 			, isViewable: function(file,index){
 				this.$root.currentFile = file;
 				this.$root.currentIndex = index;
 				return fileViewer.isViewable();
 			}
-			, checkFileType: function(file,index) {
+			, checkFileEditable: function(file,index) {
 				this.$root.currentFile = file;
 				this.$root.currentIndex = index;
-        return fileViewer.checkFileType();
+        return fileViewer.checkFileEditable();
       }
       , checkImageType: function(file,index) {
 				this.$root.currentFile = file;
@@ -832,10 +831,6 @@ config: {
       }
       , checkIsFile: function() {
         return fileViewer.checkIsFile();
-      }
-      , successEditFile: function( response ) {
-        this.currentFile.content = response.data.content;
-        fileViewer.isDisplayWindow = "EDIT";
       }
       ,openMenu: function(e,file,index,ref) {
 
@@ -990,6 +985,7 @@ config: {
       files: [],
       folders: [],
       error: "",
+      settings: {},
       displaymode: this.config.displaymode,
       uploadedFiles: [],
       isDisplayContext: 0,
@@ -1055,6 +1051,10 @@ config: {
         this.response = response.data;
         this.files = response.data.items;
         this.folders = response.data.folders;
+
+        if(response.data.settings) {
+          this.settings = response.data.settings;
+        }
       }
       , displayError: function( e ) {
       }
@@ -1201,29 +1201,34 @@ config: {
         return MuraFileBrowser.config.selectMode;
       }
 			, isViewable: function() {
-          for(var i = 0;i<self.editfilelist.length;i++) {
-            if(this.currentFile.ext.toLowerCase() == self.editfilelist[i]) {
+          var editlist = this.settings.editfilelist;
+          var imagelist = this.settings.imagelist;
+          for(var i = 0;i<editlist.length;i++) {
+            if(this.currentFile.ext.toLowerCase() == editlist[i]) {
               return true;
             }
           }
-					for(var i = 0;i<self.imagelist.length;i++) {
-            if(this.currentFile.ext.toLowerCase() == self.imagelist[i]) {
+					for(var i = 0;i<imagelist.length;i++) {
+            if(this.currentFile.ext.toLowerCase() == imagelist[i]) {
               return true;
             }
           }
           return false;
       }
-      , checkFileType: function() {
-          for(var i = 0;i<self.editfilelist.length;i++) {
-            if(this.currentFile.ext.toLowerCase() == self.editfilelist[i]) {
-              return true;
-            }
+      , checkFileEditable: function() {
+        var editlist = this.settings.editfilelist;
+
+        for(var i = 0;i<editlist.length;i++) {
+          if(this.currentFile.ext.toLowerCase() == editlist[i]) {
+            return true;
           }
-          return false;
+        }
+        return false;
       }
       , checkImageType: function() {
-          for(var i = 0;i<self.imagelist.length;i++) {
-            if(this.currentFile.ext.toLowerCase() == self.imagelist[i]) {
+        var imagelist = this.settings.imagelist;
+          for(var i = 0;i<imagelist.length;i++) {
+            if(this.currentFile.ext.toLowerCase() == imagelist[i]) {
               return true;
             }
           }
