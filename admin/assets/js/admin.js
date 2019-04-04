@@ -1643,7 +1643,15 @@ function setFinders(selector){
 	if(window.self !== window.top){
 		var url=Mura.getQueryStringParams(location.search);
 		Mura(selector).click(function(){
-			siteManager.openDisplayObjectModal('filebrowser/modal.cfm');
+			var target=Mura(this);
+			siteManager.openDisplayObjectModal(
+				'filebrowser/modal.cfm',
+				{
+					target:target.data('target'),
+					completepath:target.data('completepath')
+				}
+
+			);
 		});
 		/*
 		Mura(selector).click(function(){
