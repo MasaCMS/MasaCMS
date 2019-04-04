@@ -1,4 +1,4 @@
- <!--- This file is part of Mura CMS.
+<!--- This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -127,8 +127,8 @@ jQuery(document).ready(function(){
             <!-- The global progress information -->
             <div class="fileupload-progress fade half">
                 <!-- The global progress bar -->
-                <div class="progress">
-                    <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width:0%;"></div>
+                <div class="progress" id="progress-multi-global" style="display: none;">
+                    <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width:0%;"></div>
                 </div>
                 <!-- The extended global progress information -->
                 <div class="progress-extended">&nbsp;</div>
@@ -207,7 +207,7 @@ jQuery(document).ready(function(){
 
             {% if (!o.files.error) { %}
                 <div class="progress">
-                    <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" style="width:0%;"></div>
+                    <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" style="width:0%;"></div>
                 </div>
                 <p class="size">{%=o.formatFileSize(file.size)%}</p>
             {% } %}
@@ -278,7 +278,7 @@ jQuery(document).ready(function(){
             {% } %}
         </td>
         <td><div class="progress">
-                <div class="progress-bar progress-bar-success complete" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" style="width:100%;"></div>
+                <div class="progress-bar progress-bar-danger complete" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" style="width:100%;"></div>
             </div>
             <span class="size complete">{%=o.formatFileSize(file.size)%}</span>
         </td>
@@ -392,7 +392,6 @@ $(function () {
 
         $(data.context).find('.editable').each(
             function(){
-
              extraParams[$(this).attr('data-attribute')]=$(this).html();
             }
         );
@@ -406,6 +405,8 @@ $(function () {
     .bind('fileuploadadded',function(e,data){
 
         var id="summaryid" + fileIndex;
+
+        $('##progress-multi-global').show();
 
         if(CKEDITOR.instances[id]){
             CKEDITOR.instances[id].destroy();
