@@ -1666,6 +1666,7 @@ function setFinders(selector){
 					var self=this;
 					MuraFileBrowser.config.height=600;
 					MuraFileBrowser.config.selectMode=2;
+					MuraFileBrowser.config.resourcepath="Application_Root";
 					MuraFileBrowser.config.selectCallback=function(item){
 						var fs=$('input[name="' + target.data('target') + '"]');
 						fs.val(item.url);
