@@ -1675,7 +1675,7 @@ function setFinders(selector){
 					MuraFileBrowser.render();
 				},
 				modal: true,
-				position: getDialogPosition(),
+				position: { my: "center", at: "top", of: window, collision: "fit" },
 				buttons: {
 					Close: {click: function() {
 						$(this).dialog('close');
