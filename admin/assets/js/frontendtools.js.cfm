@@ -511,11 +511,16 @@
 
 			var frame = document.getElementById("frontEndToolsModaliframe");
 			var frameContainer = document.getElementById("frontEndToolsModalContainer");
+			var framesrc = frame.getAttribute('src');
+			var isFullHeight = framesrc.includes('cArch.editLive');
 
 			//if (frameDoc.body != null) {
 				var windowHeight = Math.max(frameHeight, utility(window).height());
 
+				// setting the height for full screen views
+	
 				if (frontEndModalWidth==frontEndModalWidthStandard
+					&& isFullHeight
 					&& frameHeight < utility(window).height()
 					) {
 					frameHeight= Math.max(utility(window).height()-96,frameHeight);
@@ -524,8 +529,8 @@
 				utility('##frontEndToolsModalContainer ##frontEndToolsModalBody,##frontEndToolsModalContainer ##frontEndToolsModaliframe').width(frontEndModalWidth);
 
 // debug
-//console.log('utility(document).height(): ' + utility(document).height());
-//console.log('frameHeight: ' + frameHeight);
+// console.log('utility(window).height(): ' + utility(window).height());
+// console.log('frameHeight: ' + frameHeight);
 
 				// set height, preventing overflow of window
 				if (frameHeight < utility(document).height() - 96){
