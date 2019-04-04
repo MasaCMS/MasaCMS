@@ -108,11 +108,11 @@ jQuery(document).ready(function(){
                     <span>Add files...</span>
                     <input type="file" name="files" multiple>
                 </span>
-                <button type="submit" class="btn start mura-file-start">
+                <button type="submit" class="btn start mura-file-start" style="display: none;">
                     <i class="mi-upload"></i>
                     <span>Upload</span>
                 </button>
-                <button type="reset" class="btn cancel mura-file-resets">
+                <button type="reset" class="btn cancel mura-file-resets" style="display: none;">
                     <i class="mi-ban"></i>
                     <span>Cancel</span>
                 </button>
@@ -407,6 +407,8 @@ $(function () {
         var id="summaryid" + fileIndex;
 
         $('##progress-multi-global').show();
+        $('.fileupload-buttonbar .mura-file-start').show();
+        $('.fileupload-buttonbar .mura-file-resets').show();
 
         if(CKEDITOR.instances[id]){
             CKEDITOR.instances[id].destroy();
@@ -437,6 +439,13 @@ $(function () {
                     }
                 );
         }
+
+        $(document).on('click', '.mura-file-resets', function(e){
+            $('##progress-multi-global').hide();
+            $('.fileupload-buttonbar .mura-file-start').hide();
+            $('.fileupload-buttonbar .mura-file-resets').hide();
+
+        })
 
         $(document).on('keypress', '.editable.nolinebreaks', function(e){
 
