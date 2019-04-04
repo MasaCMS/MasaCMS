@@ -332,7 +332,7 @@ component
 			return true;
 		}
 
-		remote any function browse( siteid,directory,filterResults="",pageIndex=1,sortOn,sortDir,resourcePath,itemsPerPage=20 )  {
+		remote any function browse( siteid,directory,filterResults="",pageIndex=1,sortOn,sortDir,resourcePath,itemsPerPage=20,settings=0 )  {
 
 			arguments.siteid == "" ? "default" : arguments.siteid;
 			arguments.pageindex == isNumeric(arguments.pageindex) ? arguments.pageindex : 1;
@@ -345,6 +345,16 @@ component
 				response.permission = permission;
 				response.message = permission.message;
 				return response;
+			}
+
+			if(arguments.settings) {
+				// list of allowable editable files and files displayed as "images"
+				var editfilelist = listToArray(m.globalConfig().getValue(property='filebrowsereditlist',default="txt")); // settings.ini.cfm: filebrowsereditlist
+				var imagelist = listToArray(m.globalConfig().get(property='filebrowserimagelist',defaul="gif,jpg,jpeg,png")); // settings.ini.cfm: filebrowserimagelist
+				response.settings = {
+					editfilelist: editfilelist,
+					imagelist: imagelist
+				}
 			}
 
 // m.siteConfig().getFileDir() ... OS file path (no siteid)
