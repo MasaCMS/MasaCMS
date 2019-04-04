@@ -1661,7 +1661,7 @@ function setFinders(selector){
 			$("#alertDialog").attr('title','Select File');
 			$("#alertDialog").dialog({
 				resizable: false,
-				width:800,
+				width:1000,
 				open: function( event, ui ) {
 					var self=this;
 					MuraFileBrowser.config.height=600;
