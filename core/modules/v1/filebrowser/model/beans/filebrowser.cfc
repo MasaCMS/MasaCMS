@@ -349,8 +349,8 @@ component
 
 			if(arguments.settings) {
 				// list of allowable editable files and files displayed as "images"
-				var editfilelist = listToArray(m.globalConfig().getValue(property='filebrowsereditlist',default="txt")); // settings.ini.cfm: filebrowsereditlist
-				var imagelist = listToArray(m.globalConfig().get(property='filebrowserimagelist',defaul="gif,jpg,jpeg,png")); // settings.ini.cfm: filebrowserimagelist
+				var editfilelist = listToArray(m.globalConfig().getValue(property='filebrowsereditlist',defaultValue="txt,cfm,cfc,html,htm,cfml,js,css,json")); // settings.ini.cfm: filebrowsereditlist
+				var imagelist = listToArray(m.globalConfig().get(property='filebrowserimagelist',defaultValue="gif,jpg,jpeg,png")); // settings.ini.cfm: filebrowserimagelist
 				response.settings = {
 					editfilelist: editfilelist,
 					imagelist: imagelist
