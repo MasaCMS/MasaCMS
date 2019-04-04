@@ -1677,14 +1677,7 @@ function setFinders(selector){
 				},
 				modal: true,
 				position: { my: "center", at: "top", of: window, collision: "fit" },
-				buttons: {
-					Close: {click: function() {
-						$(this).dialog('close');
-					}
-					, text: 'Close'
-					, class: 'mura-primary'
-					} // /OK
-					}
+				buttons: {}
 			});
 		});
 	}
