@@ -1653,69 +1653,39 @@ function setFinders(selector){
 
 			);
 		});
-		/*
-		Mura(selector).click(function(){
-			var target=Mura(this);
-			if(Mura("#ProxyIFrame").length){
-				Mura("#ProxyIFrame").load(
-					function(){
-						frontEndProxy.post({
-							cmd:'openFileManager',
-							instanceid:url.instanceid,
-							target:target.data('target'),
-							completepath:target.data('completepath'),
-							targetFrame:targetFrame
-							}
-						);
-					}
-				);
-			} else {
-				frontEndProxy.post({
-					cmd:'openFileManager',
-					instanceid:url.instanceid,
-					target:target.data('target'),
-					completepath:target.data('completepath'),
-					targetFrame:targetFrame
-					}
-				);
-			}
-		})
-		*/
 
 	} else {
-		if(typeof CKFinder != 'undefined'){
-			$(selector).unbind('click').on('click',function(){
-				var target=$(this).attr('data-target');
-				var finder = new CKFinder();
-				finder.basePath = context + '/core/vendor/ckfinder/';
-				var completepath=$(this).attr('data-completepath');
-
-				if(completepath.toLowerCase() == 'true'){
-					finder.selectActionFunction = function(fileUrl) {
-						var fs=jQuery('input[name="' + target + '"]');
-						fs.val(webroot + fileDelim + fileUrl);
+		$(selector).unbind('click').on('click',function(){
+			var target=Mura(this);
+			$("#alertDialogMessage").html('<div id="MuraFileBrowserContainer"></div>');
+			$("#alertDialog").attr('title','Select File');
+			$("#alertDialog").dialog({
+				resizable: false,
+				width:800,
+				open: function( event, ui ) {
+					var self=this;
+					MuraFileBrowser.config.height=600;
+					MuraFileBrowser.config.selectMode=2;
+					MuraFileBrowser.config.selectCallback=function(item){
+						var fs=$('input[name="' + target.data('target') + '"]');
+						fs.val(item.url);
 						fs.trigger('change');
+						$(self).dialog('close');
 					};
-				} else {
-					finder.selectActionFunction = function(fileUrl) {
-						var fs=jQuery('input[name="' + target + '"]');
-						fs.val(fileUrl);
-						fs.trigger('change');
-					};
-				}
-
-				if($(this).attr('data-resourcetype') =='root'){
-					finder.resourceType='Application_Root';
-				} else if($(this).attr('data-resourcetype') == 'site'){
-					finder.resourceType=siteid + '_Site_Files';
-				} else {
-					finder.resourceType=siteid + '_User_Assets';
-				}
-
-				finder.popup();
-
+					MuraFileBrowser.render();
+				},
+				modal: true,
+				position: getDialogPosition(),
+				buttons: {
+					Close: {click: function() {
+						$(this).dialog('close');
+					}
+					, text: 'Close'
+					, class: 'mura-primary'
+					} // /OK
+					}
 			});
-		}
+		});
 	}
 
 }
