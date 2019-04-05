@@ -186,8 +186,8 @@ li .cke_skin_mura {
 	*/
     }
     .mura-expanded {
-        width: calc(100vw) !important;
-        left: calc(-1 * (100vw - 100%) / 2);
+        width: ~"calc(100vw)" !important;
+        left:  ~"calc(-1 * (100vw - 100%) / 2)";
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -196,16 +196,8 @@ li .cke_skin_mura {
         overflow: hidden;
         background: grey;
     }
-    .mura-sidebar-state__pushed--right .mura-object.mura-expanded {
-        padding-left: 150px
-    }
     .mura-object.mura-expanded>.mura-object-content, .mura-object.mura-expanded>.mura-object-meta {
         background: blue;
-    }
-    .mura-sidebar-state__pushed--right {
-        .mura-object.mura-expanded>.mura-object-content, .mura-object.mura-expanded>.mura-object-meta {
-            background: green;
-        }
     }
     /* Utilities
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
@@ -228,6 +220,18 @@ li .cke_skin_mura {
     }
     .mura-center.mura-object {
         float: none;
+    }
+}
+
+.mura-sidebar-state__pushed--right {
+
+	.mura-object.mura-expanded {		    
+	    width: ~"calc(100vw - 300px)" !important;
+	    left: ~"calc(-1 *(100vw - 100% - 270px) / 2)" !important;
+		}
+
+    .mura-object.mura-expanded>.mura-object-content, .mura-object.mura-expanded>.mura-object-meta {
+        background: green;
     }
 }
 /* Misc
