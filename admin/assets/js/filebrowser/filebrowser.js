@@ -21,8 +21,6 @@ config: {
   this.config=Mura.extend(config,this.config);
 
   this.endpoint =  Mura.apiEndpoint + "filebrowser/";
-  this.editfilelist = ["txt","cfm","cfc","html","htm","cfml","js","css","json"];
-  this.imagelist = ["gif","jpg","jpeg","png"];
 
   this.container = Mura("#MuraFileBrowserContainer");
   this.container.append("<div id='" + target + "'><component :is='currentView'></component></div>");
@@ -206,7 +204,7 @@ config: {
 
 , loadBaseDirectory: function( onSuccess,onError ) {
   var self = this;
-  var baseurl = this.endpoint + "/browse" + "?resourcepath=" + this.config.resourcepath + "&directory=" + this.config.directory;
+  var baseurl = this.endpoint + "/browse" + "?resourcepath=" + this.config.resourcepath + "&directory=" + this.config.directory + "&settings=1";
 
   if(!this.validate()) {
     return error("No Access");
@@ -270,7 +268,7 @@ config: {
     <div id="newContentMenu" class="addNew" v-bind:style="{ left: (menux + 20) + 'px',top: menuy + 'px' }">
         <ul id="newContentOptions">
           <li v-if="checkIsFile() && checkSelectMode()"><a href="#" @click.prevent="selectFile()"><i class="mi-check"> Select</i></a></li>
-          <li v-if="checkIsFile() && checkFileType()"><a href="#" @click.prevent="editFile()"><i class="mi-pencil"> Edit</i></a></li>
+          <li v-if="checkIsFile() && checkFileEditable()"><a href="#" @click.prevent="editFile()"><i class="mi-pencil"> Edit</i></a></li>
           <li v-if="checkIsFile() && checkImageType()"><a href="#" @click.prevent="viewFile()"><i class="mi-image"> View</i></a></li>
           <li><a href="#" @click.prevent="renameFile()"><i class="mi-edit"> Rename</i></a></li>
           <li v-if="checkIsFile()"><a href="#" @click="downloadFile()"><i class="mi-download"> Download</i></a></li>
@@ -330,8 +328,8 @@ config: {
       , checkSelectMode: function() {
           return fileViewer.checkSelectMode();
       }
-      , checkFileType: function() {
-          return fileViewer.checkFileType();
+      , checkFileEditable: function() {
+          return fileViewer.checkFileEditable();
       }
       , checkImageType: function() {
         return fileViewer.checkImageType();
@@ -475,7 +473,7 @@ config: {
               <div class="fileviewer-gallery-menu">
                 <ul>
                   <li v-if="checkImageType() && checkSelectMode()"><a @click="selectFile()"><i class="mi-check"> Select</i></a></li>
-                  <li v-if="checkFileType()"><a  @click="editFile()"><i class="mi-pencil"> Edit</i></a></li>
+                  <li v-if="checkFileEditable()"><a  @click="editFile()"><i class="mi-pencil"> Edit</i></a></li>
                   <li><a @click="renameFile()"><i class="mi-edit"> Rename</i></a></li>
                   <li v-if="checkIsFile()"><a @click="downloadFile()"><i class="mi-download">Download</i></a></li>
                   <li><a @click="deleteFile()"><i class="mi-trash"> Delete</i></a></li>
@@ -516,8 +514,8 @@ config: {
       , checkSelectMode: function() {
           return fileViewer.checkSelectMode();
       }
-      , checkFileType: function() {
-          return fileViewer.checkFileType();
+      , checkFileEditable: function() {
+          return fileViewer.checkFileEditable();
       }
       , checkImageType: function() {
         return fileViewer.checkImageType();
@@ -735,7 +733,7 @@ config: {
 
 
   Vue.component('listmode', {
-    props: ['files','folders','foldertree','isDisplayContext','currentFile'],
+    props: ['files','folders','foldertree','isDisplayContext','currentFile','settings'],
     template: `
       <div class="listmode-wrapper">
         <table class="mura-table-grid">
@@ -743,9 +741,9 @@ config: {
         		<tr>
         			<th class="actions"></th>
 
-        			<th class="var-width">Filename</th>
-        			<th>Size</th>
-        			<th>Modified</th>
+        			<th class="var-width">{{settings.rb.filebrowser_filename}}</th>
+        			<th>{{settings.rb.filebrowser_size}}</th>
+        			<th>{{settings.rb.filebrowser_modified}}</th>
         		</tr>
             <tr v-if="foldertree.length">
               <td>
@@ -805,25 +803,26 @@ config: {
         this.$root.currentFile = file;
         this.$root.currentIndex = index;
 
-				if(this.isViewable(file,index)){
-	        if(fileViewer.checkFileType()) {
-	          fileViewer.editFile(this.successEditFile);
-	        }
-	        else {
-	          fileViewer.isDisplayWindow = "VIEW";
-	          fileViewer.viewFile();
-	        }
+				if(this.checkImageType(file,index)) {
+          fileViewer.isDisplayWindow = "VIEW";
 				}
+        else if(this.checkFileEditable(file,index)) {
+          fileViewer.editFile(this.successEditFile);
+        }
+      }
+      , successEditFile: function( response ) {
+        this.currentFile.content = response.data.content;
+        fileViewer.isDisplayWindow = "EDIT";
       }
 			, isViewable: function(file,index){
 				this.$root.currentFile = file;
 				this.$root.currentIndex = index;
 				return fileViewer.isViewable();
 			}
-			, checkFileType: function(file,index) {
+			, checkFileEditable: function(file,index) {
 				this.$root.currentFile = file;
 				this.$root.currentIndex = index;
-        return fileViewer.checkFileType();
+        return fileViewer.checkFileEditable();
       }
       , checkImageType: function(file,index) {
 				this.$root.currentFile = file;
@@ -832,10 +831,6 @@ config: {
       }
       , checkIsFile: function() {
         return fileViewer.checkIsFile();
-      }
-      , successEditFile: function( response ) {
-        this.currentFile.content = response.data.content;
-        fileViewer.isDisplayWindow = "EDIT";
       }
       ,openMenu: function(e,file,index,ref) {
 
@@ -933,11 +928,11 @@ config: {
   });
 
   Vue.component('filewindow', {
-    props: ['files','folders','foldertree','isDisplayContext','currentFile','','displaymode'],
+    props: ['files','folders','foldertree','isDisplayContext','currentFile','settings','displaymode'],
     template: `
       <div class="filewindow-wrapper">
         <gridmode v-if="displaymode==1" :currentFile="currentFile"   :foldertree="foldertree" :files="files" :folders="folders" :isDisplayContext="isDisplayContext"></gridmode>
-        <listmode  v-if="displaymode==2" :currentFile="currentFile" :foldertree="foldertree" :files="files" :folders="folders" :isDisplayContext="isDisplayContext"></listmode>
+        <listmode  v-if="displaymode==2" :settings="settings" :currentFile="currentFile" :foldertree="foldertree" :files="files" :folders="folders" :isDisplayContext="isDisplayContext"></listmode>
       </div>`,
     data() {
       return {};
@@ -953,8 +948,8 @@ config: {
     el: "#" + self.target,
     template: `
       <div class="fileviewer-wrapper">
-        <viewwindow v-if="isDisplayWindow=='VIEW'" :currentFile="currentFile" :currentIndex="currentIndex"></viewwindow>
-        <actionwindow v-if="isDisplayWindow" :isDisplayWindow="isDisplayWindow" :currentIndex="currentIndex" :currentFile="currentFile" :error="error"></actionwindow>
+        <viewwindow v-if="isDisplayWindow=='VIEW'" :settings="settings" :currentFile="currentFile" :currentIndex="currentIndex"></viewwindow>
+        <actionwindow v-if="isDisplayWindow" :settings="settings" :isDisplayWindow="isDisplayWindow" :currentIndex="currentIndex" :currentFile="currentFile" :error="error"></actionwindow>
         <div class="fileviewer-breadcrumb">
           <i class="mi-home" @click="setDirDepth(-1)"></i>
           <i v-for="(item,index) in foldertree" class="mi-angle-double-right fa-padleft" @click="setDirDepth(index)"> {{item}}</i>
@@ -963,10 +958,10 @@ config: {
           <form enctype="multipart/form-data" novalidate v-if="isStart || isSave">
             <input type="file" multiple :name="uploadField" :disabled="isSave" @change="filesChanged($event.target.name, $event.target.files);" accept="*.*" class="file-input-field">
             <p v-if="isStart" class="upload-icon">
-              <strong>Drag</strong> your files here, or <strong>click</strong> to browse...
+              {{settings.rb.filebrowser_draghere}}
             </>
             <p v-if="isSave" class="download-icon">
-              Uploading {{fileCount}} files...
+              {{settings.rb.filebrowser_uploading}} ({{fileCount}})
               <ul class="fileviewer-uploadedfiles">
                 <li v-for="file in uploadedFiles">
                   {{file.fullname}} ({{Math.floor(file.size/1000)}}k)
@@ -975,9 +970,9 @@ config: {
             </p>
           </form>
         </div>
-        <appbar v-if="response.links" :location=1 :links="response.links" :itemsper="itemsper" :response="response"></appbar>
-        <filewindow :currentFile="currentFile" :isDisplayContext="isDisplayContext" :foldertree="foldertree" :files="files" :folders="folders" :displaymode="displaymode"></filewindow>
-        <appbar v-if="response.links" :location=0 :links="response.links" :itemsper="itemsper" :response="response"></appbar>
+        <appbar v-if="response.links" :settings="settings" :location=1 :links="response.links" :itemsper="itemsper" :response="response"></appbar>
+        <filewindow :settings="settings" :currentFile="currentFile" :isDisplayContext="isDisplayContext" :foldertree="foldertree" :files="files" :folders="folders" :displaymode="displaymode"></filewindow>
+        <appbar v-if="response.links" :settings="settings" :location=0 :links="response.links" :itemsper="itemsper" :response="response"></appbar>
       </div>`
     ,
     data: {
@@ -990,6 +985,7 @@ config: {
       files: [],
       folders: [],
       error: "",
+      settings: { rb: {} },
       displaymode: this.config.displaymode,
       uploadedFiles: [],
       isDisplayContext: 0,
@@ -1055,6 +1051,10 @@ config: {
         this.response = response.data;
         this.files = response.data.items;
         this.folders = response.data.folders;
+
+        if(response.data.settings) {
+          this.settings = response.data.settings;
+        }
       }
       , displayError: function( e ) {
       }
@@ -1201,29 +1201,34 @@ config: {
         return MuraFileBrowser.config.selectMode;
       }
 			, isViewable: function() {
-          for(var i = 0;i<self.editfilelist.length;i++) {
-            if(this.currentFile.ext.toLowerCase() == self.editfilelist[i]) {
+          var editlist = this.settings.editfilelist;
+          var imagelist = this.settings.imagelist;
+          for(var i = 0;i<editlist.length;i++) {
+            if(this.currentFile.ext.toLowerCase() == editlist[i]) {
               return true;
             }
           }
-					for(var i = 0;i<self.imagelist.length;i++) {
-            if(this.currentFile.ext.toLowerCase() == self.imagelist[i]) {
+					for(var i = 0;i<imagelist.length;i++) {
+            if(this.currentFile.ext.toLowerCase() == imagelist[i]) {
               return true;
             }
           }
           return false;
       }
-      , checkFileType: function() {
-          for(var i = 0;i<self.editfilelist.length;i++) {
-            if(this.currentFile.ext.toLowerCase() == self.editfilelist[i]) {
-              return true;
-            }
+      , checkFileEditable: function() {
+        var editlist = this.settings.editfilelist;
+
+        for(var i = 0;i<editlist.length;i++) {
+          if(this.currentFile.ext.toLowerCase() == editlist[i]) {
+            return true;
           }
-          return false;
+        }
+        return false;
       }
       , checkImageType: function() {
-          for(var i = 0;i<self.imagelist.length;i++) {
-            if(this.currentFile.ext.toLowerCase() == self.imagelist[i]) {
+        var imagelist = this.settings.imagelist;
+          for(var i = 0;i<imagelist.length;i++) {
+            if(this.currentFile.ext.toLowerCase() == imagelist[i]) {
               return true;
             }
           }
