@@ -741,7 +741,7 @@ config: {
         		<tr>
         			<th class="actions"></th>
 
-        			<th class="var-width">{{settings.rb.filebrowser_modified}}</th>
+        			<th class="var-width">{{settings.rb.filebrowser_filename}}</th>
         			<th>{{settings.rb.filebrowser_size}}</th>
         			<th>{{settings.rb.filebrowser_modified}}</th>
         		</tr>
