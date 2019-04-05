@@ -223,12 +223,20 @@ li .cke_skin_mura {
     }
 }
 
+/* set full width for expanded containers */
 .mura-sidebar-state__pushed--right {
 
 	.mura-object.mura-expanded {		    
 	    width: ~"calc(100vw - 300px)" !important;
 	    left: ~"calc(-1 *(100vw - 100% - 270px) / 2)" !important;
-		}
+	}
+
+	/* adjust for removed -15px margins at extra large width */
+    @media (min-width: 1410px) {
+		.mura-object.mura-expanded {		    
+	    	left: ~"calc(-1 *(100vw - 100% - 300px) / 2)" !important;
+    	}	
+    }	
 
     .mura-object.mura-expanded>.mura-object-content, .mura-object.mura-expanded>.mura-object-meta {
         background: green;
