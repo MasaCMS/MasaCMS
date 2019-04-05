@@ -733,7 +733,7 @@ config: {
 
 
   Vue.component('listmode', {
-    props: ['files','folders','foldertree','isDisplayContext','currentFile'],
+    props: ['files','folders','foldertree','isDisplayContext','currentFile','settings'],
     template: `
       <div class="listmode-wrapper">
         <table class="mura-table-grid">
@@ -741,9 +741,9 @@ config: {
         		<tr>
         			<th class="actions"></th>
 
-        			<th class="var-width">Filename</th>
-        			<th>Size</th>
-        			<th>Modified</th>
+        			<th class="var-width">{{settings.rb.filebrowser_modified}}</th>
+        			<th>{{settings.rb.filebrowser_size}}</th>
+        			<th>{{settings.rb.filebrowser_modified}}</th>
         		</tr>
             <tr v-if="foldertree.length">
               <td>
@@ -928,11 +928,11 @@ config: {
   });
 
   Vue.component('filewindow', {
-    props: ['files','folders','foldertree','isDisplayContext','currentFile','','displaymode'],
+    props: ['files','folders','foldertree','isDisplayContext','currentFile','settings','displaymode'],
     template: `
       <div class="filewindow-wrapper">
         <gridmode v-if="displaymode==1" :currentFile="currentFile"   :foldertree="foldertree" :files="files" :folders="folders" :isDisplayContext="isDisplayContext"></gridmode>
-        <listmode  v-if="displaymode==2" :currentFile="currentFile" :foldertree="foldertree" :files="files" :folders="folders" :isDisplayContext="isDisplayContext"></listmode>
+        <listmode  v-if="displaymode==2" :settings="settings" :currentFile="currentFile" :foldertree="foldertree" :files="files" :folders="folders" :isDisplayContext="isDisplayContext"></listmode>
       </div>`,
     data() {
       return {};
@@ -948,8 +948,8 @@ config: {
     el: "#" + self.target,
     template: `
       <div class="fileviewer-wrapper">
-        <viewwindow v-if="isDisplayWindow=='VIEW'" :currentFile="currentFile" :currentIndex="currentIndex"></viewwindow>
-        <actionwindow v-if="isDisplayWindow" :isDisplayWindow="isDisplayWindow" :currentIndex="currentIndex" :currentFile="currentFile" :error="error"></actionwindow>
+        <viewwindow v-if="isDisplayWindow=='VIEW'" :settings="settings" :currentFile="currentFile" :currentIndex="currentIndex"></viewwindow>
+        <actionwindow v-if="isDisplayWindow" :settings="settings" :isDisplayWindow="isDisplayWindow" :currentIndex="currentIndex" :currentFile="currentFile" :error="error"></actionwindow>
         <div class="fileviewer-breadcrumb">
           <i class="mi-home" @click="setDirDepth(-1)"></i>
           <i v-for="(item,index) in foldertree" class="mi-angle-double-right fa-padleft" @click="setDirDepth(index)"> {{item}}</i>
@@ -958,10 +958,10 @@ config: {
           <form enctype="multipart/form-data" novalidate v-if="isStart || isSave">
             <input type="file" multiple :name="uploadField" :disabled="isSave" @change="filesChanged($event.target.name, $event.target.files);" accept="*.*" class="file-input-field">
             <p v-if="isStart" class="upload-icon">
-              <strong>Drag</strong> your files here, or <strong>click</strong> to browse...
+              {{settings.rb.filebrowser_draghere}}
             </>
             <p v-if="isSave" class="download-icon">
-              Uploading {{fileCount}} files...
+              {{settings.rb.filebrowser_uploading}} ({{fileCount}})
               <ul class="fileviewer-uploadedfiles">
                 <li v-for="file in uploadedFiles">
                   {{file.fullname}} ({{Math.floor(file.size/1000)}}k)
@@ -970,9 +970,9 @@ config: {
             </p>
           </form>
         </div>
-        <appbar v-if="response.links" :location=1 :links="response.links" :itemsper="itemsper" :response="response"></appbar>
-        <filewindow :currentFile="currentFile" :isDisplayContext="isDisplayContext" :foldertree="foldertree" :files="files" :folders="folders" :displaymode="displaymode"></filewindow>
-        <appbar v-if="response.links" :location=0 :links="response.links" :itemsper="itemsper" :response="response"></appbar>
+        <appbar v-if="response.links" :settings="settings" :location=1 :links="response.links" :itemsper="itemsper" :response="response"></appbar>
+        <filewindow :settings="settings" :currentFile="currentFile" :isDisplayContext="isDisplayContext" :foldertree="foldertree" :files="files" :folders="folders" :displaymode="displaymode"></filewindow>
+        <appbar v-if="response.links" :settings="settings" :location=0 :links="response.links" :itemsper="itemsper" :response="response"></appbar>
       </div>`
     ,
     data: {
@@ -985,7 +985,7 @@ config: {
       files: [],
       folders: [],
       error: "",
-      settings: {},
+      settings: { rb: {} },
       displaymode: this.config.displaymode,
       uploadedFiles: [],
       isDisplayContext: 0,

@@ -332,6 +332,14 @@ component
 			return true;
 		}
 
+		private any function getResourceBundle(siteid) {
+			arguments.siteid == "" ? "default" : arguments.siteid;
+			var m=getBean('$').init(arguments.siteid);
+			var rb = application.rbFactory.getKeyStructure(session.rb,'filebrowser');
+
+			return rb;
+		}
+
 		remote any function browse( siteid,directory,filterResults="",pageIndex=1,sortOn,sortDir,resourcePath,itemsPerPage=20,settings=0 )  {
 
 			arguments.siteid == "" ? "default" : arguments.siteid;
@@ -351,9 +359,11 @@ component
 				// list of allowable editable files and files displayed as "images"
 				var editfilelist = listToArray(m.globalConfig().getValue(property='filebrowsereditlist',defaultValue="txt,cfm,cfc,html,htm,cfml,js,css,json")); // settings.ini.cfm: filebrowsereditlist
 				var imagelist = listToArray(m.globalConfig().get(property='filebrowserimagelist',defaultValue="gif,jpg,jpeg,png")); // settings.ini.cfm: filebrowserimagelist
+				var rb = getResourceBundle(arguments.siteid);
 				response.settings = {
 					editfilelist: editfilelist,
-					imagelist: imagelist
+					imagelist: imagelist,
+					rb: rb
 				}
 			}
 
