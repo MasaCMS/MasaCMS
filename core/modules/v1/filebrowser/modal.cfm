@@ -23,7 +23,7 @@ Mura(function(){
 
 	MuraFileBrowser.config.height=600;
 
-	siteManager.setDisplayObjectModalWidth(800);
+	siteManager.setDisplayObjectModalWidth(1200);
 
 	MuraFileBrowser.render();
 
