@@ -1811,7 +1811,8 @@ and tclassextendattributes.type='File'
 			for(var subtypetype in subtypeArray){
 
 				subType = getSubTypeBean();
-
+				subType.inject('contentRenderer',site.getContentRenderer());
+				
 				if(subtypetype eq 'User'){
 					subType.setType( 2 );
 				} else if(subtypetype eq 'Group'){
