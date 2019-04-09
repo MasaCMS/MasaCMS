@@ -1812,7 +1812,7 @@ and tclassextendattributes.type='File'
 
 				subType = getSubTypeBean();
 				subType.inject('contentRenderer',site.getContentRenderer());
-				
+
 				if(subtypetype eq 'User'){
 					subType.setType( 2 );
 				} else if(subtypetype eq 'Group'){
@@ -1912,8 +1912,8 @@ and tclassextendattributes.type='File'
 								attributeKeyList="label,type,optionlist,optionlabellist,defaultvalue,hint,required,validation,message,regex,adminonly";
 
 								for (ak=1;ak LTE listLen(attributeKeyList);ak=ak+1) {
-								      			attrbuteKeyName=listGetAt(attributeKeyList,ak);
-								    if(structKeyExists(attributeXML,attrbuteKeyName)){
+									attrbuteKeyName=listGetAt(attributeKeyList,ak);
+									if(structKeyExists(attributeXML,attrbuteKeyName)){
 										evaluate("attribute.set#attrbuteKeyName#(attributeXML[attrbuteKeyName].xmlText)");
 									}else if(structKeyExists(attributeXML.xmlAttributes,attrbuteKeyName)) {
 										evaluate("attribute.set#attrbuteKeyName#(attributeXML.xmlAttributes[attrbuteKeyName])");
