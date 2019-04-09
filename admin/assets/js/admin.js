@@ -828,6 +828,16 @@ function setDatePickers(target, locale, delim) {
 			$(this).datepicker($.datepicker.regional['']).datepicker("option", "changeYear", true).datepicker("option", "changeMonth", true);
 		});
 	}
+
+	// set default date on schedule start
+	$(target).each(
+		function(index){
+			if ($(this).attr('id') == 'mura-datepicker-displayStart' && $(this).val() == ''){
+				$(this).datepicker("setDate", new Date());					
+			}
+		}
+	)			
+
 }
 
 function setColorPickers(target) {
