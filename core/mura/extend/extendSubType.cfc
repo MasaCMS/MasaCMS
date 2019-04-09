@@ -64,6 +64,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.adminonly=0/>
 <cfset variables.instance.errors=structnew() />
 <cfset variables.contentRenderer="" />
+<cfset variables.extendsetArray=""/>
 
 <cfset variables.iconsclasses="mi-500px,mi-adjust,mi-adn,mi-align-center,mi-align-justify,mi-align-left,mi-align-right,mi-amazon,mi-ambulance,mi-anchor,mi-android,mi-angellist,mi-angle-double-down,mi-angle-double-left,mi-angle-double-right,mi-angle-double-up,mi-angle-down,mi-angle-left,mi-angle-right,mi-angle-up,mi-apple,mi-archive,mi-area-chart,mi-arrow-circle-down,mi-arrow-circle-left,mi-arrow-circle-o-down,mi-arrow-circle-o-left,mi-arrow-circle-o-right,mi-arrow-circle-o-up,mi-arrow-circle-right,mi-arrow-circle-up,mi-arrow-down,mi-arrow-left,mi-arrow-right,mi-arrows,mi-arrows-alt,mi-arrows-h,mi-arrows-v,mi-arrow-up,mi-asterisk,mi-at,mi-automobile,mi-backward,mi-balance-scale,mi-ban,mi-bank,mi-bar-chart,mi-barcode,mi-bars,mi-battery-empty,mi-battery-full,mi-battery-half,mi-battery-quarter,mi-battery-three-quarters,mi-bed,mi-beer,mi-behance,mi-behance-square,mi-bell,mi-bell-slash,mi-bell-slash-o,mi-bicycle,mi-binoculars,mi-birthday-cake,mi-bitbucket,mi-bitbucket-square,mi-bitcoin,mi-black-tie,mi-bold,mi-bolt,mi-bomb,mi-book,mi-bookmark,mi-bookmark-o,mi-briefcase,mi-bug,mi-building,mi-bullhorn,mi-bullseye,mi-bus,mi-buysellads,mi-calculator,mi-calendar,mi-calendar-check-o,mi-calendar-minus-o,mi-calendar-o,mi-calendar-plus-o,mi-calendar-times-o,mi-camera,mi-camera-retro,mi-caret-down,mi-caret-left,mi-caret-right,mi-caret-up,mi-cart-arrow-down,mi-cart-plus,mi-cc-amex,mi-cc-diners-club,mi-cc-discover,mi-cc-jcb,mi-cc-mastercard,mi-cc-paypal,mi-cc-stripe,mi-cc-visa,mi-certificate,mi-chain,mi-check,mi-check-circle,mi-check-circle-o,mi-check-square,mi-chevron-circle-down,mi-chevron-circle-left,mi-chevron-circle-right,mi-chevron-circle-up,mi-chevron-down,mi-chevron-left,mi-chevron-right,mi-chevron-up,mi-child,mi-chrome,mi-circle,mi-circle-o-notch,mi-circle-thin,mi-clock-o,mi-clone,mi-cloud,mi-cloud-download,mi-cloud-upload,mi-cny,mi-code,mi-code-fork,mi-codepen,mi-coffee,mi-cog,mi-cogs,mi-columns,mi-comment,mi-commenting,mi-commenting-o,mi-comment-o,mi-comments,mi-comments-o,mi-compass,mi-compress,mi-connectdevelop,mi-contao,mi-copy,mi-copyright,mi-creative-commons,mi-credit-card,mi-crop,mi-crosshairs,mi-css3,mi-cube,mi-cubes,mi-cut,mi-cutlery,mi-dashboard,mi-dashcube,mi-database,mi-delicious,mi-desktop,mi-deviantart,mi-diamond,mi-digg,mi-dollar,mi-dot-circle-o,mi-download,mi-dribbble,mi-dropbox,mi-drupal,mi-edit,mi-eject,mi-ellipsis-h,mi-ellipsis-v,mi-empire,mi-envelope,mi-envelope-square,mi-eraser,mi-euro,mi-exchange,mi-exclamation,mi-expand,mi-expeditedssl,mi-external-link,mi-external-link-square,mi-eye,mi-eyedropper,mi-eye-slash,mi-facebook,mi-facebook-official,mi-fast-backward,mi-fast-forward,mi-fax,mi-female,mi-fighter-jet,mi-file,mi-file-o,mi-file-audio-o,mi-file-code-o,mi-file-excel-o,mi-file-image-o,mi-file-pdf-o,mi-file-powerpoint-o,mi-file-text,mi-file-text-o,mi-file-video-o,mi-file-word-o,mi-file-zip-o,mi-film,mi-filter,mi-fire,mi-fire-extinguisher,mi-firefox,mi-flag,mi-flag-checkered,mi-flag-o,mi-flask,mi-flickr,mi-folder,mi-folder-open,mi-folder-open-o,mi-font,mi-fonticons,mi-forumbee,mi-forward,mi-foursquare,mi-frown-o,mi-futbol-o,mi-gamepad,mi-gavel,mi-gbp,mi-genderless,mi-get-pocket,mi-gg,mi-gg-circle,mi-gift,mi-github,mi-github-alt,mi-git-square,mi-glass,mi-globe,mi-google,mi-google-wallet,mi-gratipay,mi-hand-grab-o,mi-hand-lizard-o,mi-hand-o-down,mi-hand-o-left,mi-hand-o-right,mi-hand-o-up,mi-hand-paper-o,mi-hand-peace-o,mi-hand-pointer-o,mi-hand-rock-o,mi-hand-scissors-o,mi-hand-spock-o,mi-hdd-o,mi-header,mi-headphones,mi-heart,mi-heartbeat,mi-heart-o,mi-history,mi-home,mi-hospital-o,mi-hourglass,mi-hourglass-end,mi-hourglass-half,mi-hourglass-start,mi-houzz,mi-h-square,mi-html5,mi-i-cursor,mi-image,mi-inbox,mi-indent,mi-industry,mi-info,mi-instagram,mi-internet-explorer,mi-ioxhost,mi-italic,mi-joomla,mi-jsfiddle,mi-key,mi-keyboard-o,mi-language,mi-laptop,mi-lastfm,mi-lastfm-square,mi-leaf,mi-leanpub,mi-lemon-o,mi-level-down,mi-level-up,mi-lightbulb-o,mi-line-chart,mi-linkedin,mi-linux,mi-list,mi-list-ol,mi-list-ul,mi-location-arrow,mi-lock,mi-long-arrow-down,mi-long-arrow-left,mi-long-arrow-right,mi-long-arrow-up,mi-magic,mi-magnet,mi-mail-forward,mi-male,mi-map,mi-map-o,mi-map-pin,mi-map-signs,mi-mars,mi-mars-double,mi-mars-stroke,mi-mars-stroke-h,mi-mars-stroke-v,mi-maxcdn,mi-meanpath,mi-medium,mi-medkit,mi-meh-o,mi-mercury,mi-microphone,mi-microphone-slash,mi-minus,mi-minus-square,mi-minus-square-o,mi-mobile,mi-money,mi-moon-o,mi-mortar-board,mi-motorcycle,mi-mouse-pointer,mi-music,mi-neuter,mi-newspaper-o,mi-object-group,mi-object-ungroup,mi-odnoklassniki,mi-odnoklassniki-square,mi-openid,mi-opera,mi-optin-monster,mi-outdent,mi-pagelines,mi-paint-brush,mi-paperclip,mi-paragraph,mi-paste,mi-pause,mi-paw,mi-paypal,mi-pencil,mi-phone,mi-phone-square,mi-pie-chart,mi-pied-piper,mi-pied-piper-alt,mi-pinterest,mi-pinterest-p,mi-pinterest-square,mi-plane,mi-play,mi-plug,mi-plus,mi-plus-square,mi-plus-square-o,mi-power-off,mi-print,mi-puzzle-piece,mi-qq,mi-qrcode,mi-question,mi-quote-left,mi-quote-right,mi-random,mi-rebel,mi-recycle,mi-reddit,mi-reddit-square,mi-refresh,mi-registered,mi-renren,mi-reply,mi-reply-all,mi-retweet,mi-road,mi-rocket,mi-rotate-left,mi-rotate-right,mi-rss,mi-rss-square,mi-ruble,mi-rupee,mi-safari,mi-save,mi-search,mi-search-minus,mi-search-plus,mi-sellsy,mi-send,mi-send-o,mi-server,mi-share,mi-share-alt,mi-share-alt-square,mi-sheqel,mi-shield,mi-ship,mi-shirtsinbulk,mi-shopping-cart,mi-signal,mi-sign-in,mi-sign-out,mi-simplybuilt,mi-sitemap,mi-skyatlas,mi-skype,mi-slack,mi-sliders,mi-slideshare,mi-smile-o,mi-sort,mi-sort-alpha-asc,mi-sort-alpha-desc,mi-sort-amount-asc,mi-sort-amount-desc,mi-sort-asc,mi-sort-desc,mi-sort-numeric-asc,mi-sort-numeric-desc,mi-soundcloud,mi-space-shuttle,mi-spinner,mi-spoon,mi-spotify,mi-square,mi-stack-exchange,mi-stack-overflow,mi-star,mi-star-half,mi-star-half-full,mi-star-o,mi-steam,mi-steam-square,mi-step-backward,mi-step-forward,mi-stethoscope,mi-sticky-note,mi-sticky-note-o,mi-stop,mi-street-view,mi-strikethrough,mi-stumbleupon,mi-subscript,mi-subway,mi-suitcase,mi-sun-o,mi-superscript,mi-support,mi-table,mi-tablet,mi-tag,mi-tags,mi-tasks,mi-taxi,mi-tencent-weibo,mi-terminal,mi-text-height,mi-text-width,mi-th,mi-th-list,mi-thumbs-down,mi-thumbs-o-down,mi-thumbs-o-up,mi-thumbs-up,mi-thumb-tack,mi-ticket,mi-times,mi-times-circle,mi-times-circle-o,mi-tint,mi-toggle-down,mi-toggle-left,mi-toggle-off,mi-toggle-on,mi-toggle-right,mi-toggle-up,mi-trademark,mi-train,mi-transgender,mi-transgender-alt,mi-trash,mi-tree,mi-trello,mi-tripadvisor,mi-trophy,mi-truck,mi-tty,mi-tumblr,mi-tumblr-square,mi-turkish-lira,mi-tv,mi-twitch,mi-twitter,mi-umbrella,mi-underline,mi-unlink,mi-unlock-alt,mi-upload,mi-user,mi-user-md,mi-user-plus,mi-users,mi-user-secret,mi-user-times,mi-venus,mi-venus-double,mi-venus-mars,mi-viacoin,mi-video-camera,mi-vimeo,mi-vine,mi-vk,mi-volume-down,mi-volume-off,mi-volume-up,mi-warning,mi-wechat,mi-weibo,mi-whatsapp,mi-wheelchair,mi-wifi,mi-wikipedia-w,mi-windows,mi-won,mi-wordpress,mi-wrench,mi-xing,mi-xing-square,mi-yahoo,mi-y-combinator,mi-yelp,mi-yen,mi-youtube,mi-youtube-play">
 
@@ -444,30 +445,33 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="filter" required="true" default=""/>
 <cfargument name="container" required="true" default=""/>
 <cfargument name="activeOnly" required="true" default="false"/>
-<cfset var rs=""/>
-<cfset var tempArray=""/>
-<cfset var extendSet=""/>
-<cfset var extendArray=arrayNew(1) />
-<cfset var rsSets=""/>
-<cfset var extendSetBean=""/>
-<cfset var s=0/>
+	<cfset var rs=""/>
+	<cfset var tempArray=""/>
+	<cfset var extendSet=""/>
+	<cfset var extendArray=arrayNew(1) />
+	<cfset var rsSets=""/>
+	<cfset var extendSetBean=""/>
+	<cfset var s=0/>
 
-	<cfset rsSets=getSetsQuery(arguments.inherit,arguments.doFilter,arguments.filter,arguments.container,arguments.activeOnly)/>
+	<cfif not isArray(variables.extendsetArray)>
+		<cfset variables.extendsetArray=[]>
 
-	<cfif rsSets.recordcount>
-		<cfset tempArray=createObject("component","mura.queryTool").init(rsSets).toArray() />
+		<cfset rsSets=getSetsQuery(arguments.inherit,arguments.doFilter,arguments.filter,arguments.container,arguments.activeOnly)/>
 
-		<cfloop from="1" to="#rsSets.recordcount#" index="s">
+		<cfif rsSets.recordcount>
+			<cfset tempArray=createObject("component","mura.queryTool").init(rsSets).toArray() />
 
-			<cfset extendSetBean=getExtendSetBean() />
-			<cfset extendSetBean.set(tempArray[s]) />
-			<cfset extendSetBean.setIsNew(0) />
-			<cfset arrayAppend(extendArray,extendSetBean)/>
-		</cfloop>
+			<cfloop from="1" to="#rsSets.recordcount#" index="s">
 
+				<cfset extendSetBean=getExtendSetBean() />
+				<cfset extendSetBean.set(tempArray[s]) />
+				<cfset extendSetBean.setIsNew(0) />
+				<cfset arrayAppend(variables.extendsetArray,extendSetBean)/>
+			</cfloop>
+
+		</cfif>
 	</cfif>
-
-	<cfreturn extendArray />
+	<cfreturn variables.extendsetArray />
 </cffunction>
 
 <cffunction name="getRelatedContentSets" returntype="array">
