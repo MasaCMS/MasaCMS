@@ -135,7 +135,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.encryptionKey=hash(getCurrentTemplatePath()) />
 <cfset variables.instance.uselegacysessions=false />
 <cfset variables.instance.customUrlVarDelimiters="_">
-<cfset variables.instance.strongPasswordRegex="(?=^.{7,15}$)(?=.*\d)(?![.\n])(?=.*[a-zA-Z]).*$">
+<cfset variables.instance.strongPasswordRegex="(?=^.{7,15}$)(?=.*\d)(?![.\n])(?=.*[a-z])(?=.*[A-Z]).*$">
 <cfset variables.instance.duplicateTransients=false>
 <cfset variables.instance.maxArchivedVersions=0 />
 <cfset variables.instance.postBundles=false />
