@@ -1812,7 +1812,7 @@ and tclassextendattributes.type='File'
 
 				subType = getSubTypeBean();
 				subType.inject('contentRenderer',site.getContentRenderer());
-				
+
 				if(subtypetype eq 'User'){
 					subType.setType( 2 );
 				} else if(subtypetype eq 'Group'){
@@ -1888,7 +1888,7 @@ and tclassextendattributes.type='File'
 					if(extendSetXML.xmlName == 'attributeset' && isdefined('extendSetXML.xmlAttributes.name')){
 						extsetorder=extsetorder+1;
 
-						extendset= subType.getExtendSetByName(  extendSetXML.xmlAttributes.name );
+						extendset= subType.getExtendSetByName( name=extendSetXML.xmlAttributes.name, useCache=true );
 
 						if(isDefined("extendSetXML.xmlAttributes.container")){
 							extendset.setContainer( extendSetXML.xmlAttributes.container );

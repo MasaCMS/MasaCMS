@@ -445,6 +445,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="filter" required="true" default=""/>
 <cfargument name="container" required="true" default=""/>
 <cfargument name="activeOnly" required="true" default="false"/>
+<cfargument name="useCache" default=false>
+
 	<cfset var rs=""/>
 	<cfset var tempArray=""/>
 	<cfset var extendSet=""/>
@@ -453,9 +455,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var extendSetBean=""/>
 	<cfset var s=0/>
 
-	<cfif not isArray(variables.extendsetArray)>
-		<cfset variables.extendsetArray=[]>
-
+	<cfif arguments.useCache and isArray(variables.extendsetArray)>
+		<cfreturn variables.extendsetArray />
+	<cfelse>
 		<cfset rsSets=getSetsQuery(arguments.inherit,arguments.doFilter,arguments.filter,arguments.container,arguments.activeOnly)/>
 
 		<cfif rsSets.recordcount>
@@ -466,12 +468,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset extendSetBean=getExtendSetBean() />
 				<cfset extendSetBean.set(tempArray[s]) />
 				<cfset extendSetBean.setIsNew(0) />
-				<cfset arrayAppend(variables.extendsetArray,extendSetBean)/>
+				<cfset arrayAppend(extendArray,extendSetBean)/>
 			</cfloop>
 
 		</cfif>
+
+		<cfif arguments.useCache>
+			<cfset variables.extendsetArray=extendArray>
+		</cfif>
+
+		<cfreturn extendArray/>
 	</cfif>
-	<cfreturn variables.extendsetArray />
+
 </cffunction>
 
 <cffunction name="getRelatedContentSets" returntype="array">
@@ -660,7 +668,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getExtendSetByName" output="false">
 <cfargument name="name">
-<cfset var extendSets=getExtendSets()/>
+<cfargument name="useCache" default=false>
+
+<cfset var extendSets=getExtendSets(useCache=arguments.useCache)/>
 <cfset var i=0/>
 <cfset var extendSet=""/>
 	<cfif arrayLen(extendSets)>
