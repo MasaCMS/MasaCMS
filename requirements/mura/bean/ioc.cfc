@@ -259,7 +259,11 @@ component {
 
 
     private struct function cleanMetadata( string cfc ) {
-        var baseMetadata = getComponentMetadata( cfc );
+			try{
+				var baseMetadata = getComponentMetadata( cfc );
+			} catch(any e){
+				WriteDump(cfc);abort;
+			}
         var iocMeta = { setters = { }, pruned = false };
         var md = { extends = baseMetadata };
         do {

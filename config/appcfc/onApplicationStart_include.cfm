@@ -414,7 +414,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				startTime = "#createTime(0,15,0)#"
 				publish = "No"
 				interval = "900"
-				requestTimeOut = "600"
 			/>
 		</cfif>
 		<cfcatch></cfcatch>

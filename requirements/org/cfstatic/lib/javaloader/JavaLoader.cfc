@@ -17,11 +17,9 @@ Purpose:    Utlitity class for loading Java Classes
 	instance.static.uuid = "A0608BEC-0AEB-B46A-0E1E1EC5F3CE7C9C";
 </cfscript>
 
-<cfimport taglib="tags" prefix="jl">
-
 <!------------------------------------------- PUBLIC ------------------------------------------->
 
-<cffunction name="init" hint="Constructor" returntype="JavaLoader" output="false">
+<cffunction name="init" hint="Constructor" access="public" returntype="JavaLoader" output="false">
 	<cfargument name="loadPaths" hint="An array of directories of classes, or paths to .jar files to load" type="array" default="#ArrayNew(1)#" required="no">
 	<cfargument name="loadColdFusionClassPath" hint="Loads the ColdFusion libraries" type="boolean" required="No" default="false">
 	<cfargument name="parentClassLoader" hint="(Expert use only) The parent java.lang.ClassLoader to set when creating the URLClassLoader" type="any" default="" required="false">
@@ -78,7 +76,7 @@ Purpose:    Utlitity class for loading Java Classes
 	</cfscript>
 </cffunction>
 
-<cffunction name="create" hint="Retrieves a reference to the java class. To create a instance, you must run init() on this object" output="false">
+<cffunction name="create" hint="Retrieves a reference to the java class. To create a instance, you must run init() on this object" access="public" returntype="any" output="false">
 	<cfargument name="className" hint="The name of the class to create" type="string" required="Yes">
 	<cfscript>
 		try
@@ -93,15 +91,15 @@ Purpose:    Utlitity class for loading Java Classes
 	</cfscript>
 </cffunction>
 
-<cffunction name="getURLClassLoader" hint="Returns the com.compoundtheory.classloader.NetworkClassLoader in case you need access to it" output="false">
+<cffunction name="getURLClassLoader" hint="Returns the com.compoundtheory.classloader.NetworkClassLoader in case you need access to it" access="public" returntype="any" output="false">
 	<cfreturn instance.ClassLoader />
 </cffunction>
 
-<cffunction name="getClassLoadPaths" returntype="array" output="false">
+<cffunction name="getClassLoadPaths" access="public" returntype="array" output="false">
 	<cfreturn instance.classLoadPaths />
 </cffunction>
 
-	
+
 <cffunction name="switchThreadContextClassLoader" hint="Sometimes you will need to switch out the ThreadContextClassLoader with the classloader used by JavaLoader.<br/>
 			It has :
 			switchThreadContextClassLoader(function object, [struct function arguments], [classLoader=getURLClassLoader()])
@@ -113,7 +111,7 @@ Purpose:    Utlitity class for loading Java Classes
 				<li>Pass it the current object and method name that you wish to have called</li>
 				<li>Inject it into your CFC/Page that you want to use, and call it from there, telling it what function to call (you will need to pass in the URLClassLoader)</li>
 			</ol>"
-			access="public" output="false">
+			access="public" returntype="any" output="false">
 	<cfscript>
 		var local = {};
 		var func = 0; //need this as cf8 doesn't like the structure with functions.
@@ -122,55 +120,55 @@ Purpose:    Utlitity class for loading Java Classes
 		var currentClassloader = Thread.currentThread().getContextClassLoader();
 		var classLoader = "";
 
-		if (structCount(arguments) == 4) 
-		{	
+		if (structCount(arguments) == 4)
+		{
 			// the last 2 arguments are the function arguments and class loader
 			classLoader = arguments[4];
 			local.funcArgs = arguments[3];
-		} 
-		else if (structCount(arguments) == 3) 
-		{	
+		}
+		else if (structCount(arguments) == 3)
+		{
 			// 2nd argument could be classloader or function arguments
-			if (isInstanceOf(arguments[2],"java.lang.ClassLoader")) 
+			if (isInstanceOf(arguments[2],"java.lang.ClassLoader"))
 			{
 				classLoader = arguments[2];
 			}
-			else if (isStruct(arguments[2])) 
+			else if (isStruct(arguments[2]))
 			{
-				local.funcArgs = arguments[2];	
+				local.funcArgs = arguments[2];
 			}
-			
+
 			// 3rd argument could be classloader or function arguments
-			if (isInstanceOf(arguments[3],"java.lang.ClassLoader")) 
+			if (isInstanceOf(arguments[3],"java.lang.ClassLoader"))
 			{
 				classLoader = arguments[3];
-			} 
-			else if (isStruct(arguments[3])) 
-			{
-				local.funcArgs = arguments[3];	
 			}
-		} 
-		else if (structCount(arguments) == 2) 
-		{	
+			else if (isStruct(arguments[3]))
+			{
+				local.funcArgs = arguments[3];
+			}
+		}
+		else if (structCount(arguments) == 2)
+		{
 			// the 2nd argument could be a class loader or function arguments
-			if (isInstanceOf(arguments[2],"java.lang.ClassLoader")) 
+			if (isInstanceOf(arguments[2],"java.lang.ClassLoader"))
 			{
-				classLoader = arguments[2];	
-			} 
-			else if (isStruct(arguments[2])) 
+				classLoader = arguments[2];
+			}
+			else if (isStruct(arguments[2]))
 			{
-				local.funcArgs = arguments[2];	
+				local.funcArgs = arguments[2];
 			}
 		}
-		
-		if (!structKeyExists(local,"funcArgs")) 
+
+		if (!structKeyExists(local,"funcArgs"))
 		{
-			local.funcArgs = {};	
+			local.funcArgs = {};
 		}
-		
-		if (isSimpleValue(classLoader)) 
+
+		if (isSimpleValue(classLoader))
 		{
-			classLoader = getURLClassLoader();	
+			classLoader = getURLClassLoader();
 		}
 	</cfscript>
 
@@ -210,8 +208,8 @@ Purpose:    Utlitity class for loading Java Classes
 		}
 	</cfscript>
 </cffunction>
-	
-<cffunction name="getVersion" hint="Retrieves the version of the loader you are using" output="false">
+
+<cffunction name="getVersion" hint="Retrieves the version of the loader you are using" access="public" returntype="string" output="false">
 	<cfreturn "1.1">
 </cffunction>
 
@@ -219,7 +217,7 @@ Purpose:    Utlitity class for loading Java Classes
 
 <!------------------------------------------- PRIVATE ------------------------------------------->
 
-<cffunction name="createWithSourceCheck" hint="does the create call, but first makes a source check" access="private" output="false">
+<cffunction name="createWithSourceCheck" hint="does the create call, but first makes a source check" access="private" returntype="any" output="false">
 	<cfargument name="className" hint="The name of the class to create" type="string" required="Yes">
 	<cfscript>
 		var dateLastModified = calculateSourceLastModified();
@@ -240,7 +238,7 @@ Purpose:    Utlitity class for loading Java Classes
     </cfscript>
 </cffunction>
 
-<cffunction name="loadClasses" hint="loads up the classes in the system" access="private" output="false">
+<cffunction name="loadClasses" hint="loads up the classes in the system" access="private" returntype="void" output="false">
 	<cfscript>
 		var iterator = getClassLoadPaths().iterator();
 		var file = 0;
@@ -276,7 +274,7 @@ Purpose:    Utlitity class for loading Java Classes
     </cfscript>
 </cffunction>
 
-<cffunction name="compileSource" hint="compile dynamic source" access="private" output="false">
+<cffunction name="compileSource" hint="compile dynamic source" access="private" returntype="void" output="false">
 	<cfscript>
 		var dir = 0;
 		var path = 0;
@@ -351,7 +349,7 @@ Purpose:    Utlitity class for loading Java Classes
 	</cftry>
 </cffunction>
 
-<cffunction name="calculateJarName" hint="returns the jar file name for a directory array" access="private" output="false">
+<cffunction name="calculateJarName" hint="returns the jar file name for a directory array" access="private" returntype="string" output="false">
     <cfargument name="directoryArray" hint="array of directories to compile" type="array" required="Yes">
     <cfscript>
         var file = hash(arrayToList(arguments.directoryArray)) & ".jar";
@@ -373,10 +371,10 @@ Purpose:    Utlitity class for loading Java Classes
 	<!--- cf7 syntax. Yuck. --->
 	<cfloop from="1" to="#len#" index="counter">
 		<cfset dir = directories[counter]>
-		<jl:directory action="list" directory="#dir#" recurse="true"
-					type="file"
-					sort="dateLastModified desc"
-					name="qLastModified">
+		<cfdirectory action="list" directory="#dir#" recurse="true"
+  					type="file"
+  					sort="dateLastModified desc"
+  					name="qLastModified">
 		<cfscript>
 			//it's possible there are no source files.
 			if(qLastModified.recordCount)
@@ -403,7 +401,7 @@ Purpose:    Utlitity class for loading Java Classes
 
 <cffunction name="ensureNetworkClassLoaderOnServerScope"
 			hint="makes sure there is a URL class loader on the server scope that can load me up some networkClassLoader goodness"
-			access="private" output="false">
+			access="private" returntype="void" output="false">
 	<cfscript>
 		var Class = createObject("java", "java.lang.Class");
 		var Array = createObject("java", "java.lang.reflect.Array");
@@ -437,21 +435,21 @@ Purpose:    Utlitity class for loading Java Classes
     </cfif>
 </cffunction>
 
-<cffunction name="createJavaProxy" hint="create a javaproxy, dependent on CF server settings" access="private" output="false">
+<cffunction name="createJavaProxy" hint="create a javaproxy, dependent on CF server settings" access="private" returntype="any" output="false">
 	<cfargument name="class" hint="the java class to create the proxy with" type="any" required="Yes">
 	<cfscript>
 		return createObject("java", "coldfusion.runtime.java.JavaProxy").init(arguments.class);
 	</cfscript>
 </cffunction>
 
-<cffunction name="createJavaProxyCFC" hint="create a javaproxy, dependent on CF server settings" access="private" output="false">
+<cffunction name="createJavaProxyCFC" hint="create a javaproxy, dependent on CF server settings" access="private" returntype="any" output="false">
 	<cfargument name="class" hint="the java class to create the proxy with" type="any" required="Yes">
 	<cfscript>
 		return createObject("component", "JavaProxy")._init(arguments.class);
 	</cfscript>
 </cffunction>
 
-<cffunction name="initUseJavaProxyCFC" hint="initialise whether or not to use the JavaProxy CFC instead of the coldfusion java object" access="private" output="false">
+<cffunction name="initUseJavaProxyCFC" hint="initialise whether or not to use the JavaProxy CFC instead of the coldfusion java object" access="private" returntype="string" output="false">
 	<cfscript>
 		try
 		{
@@ -491,25 +489,25 @@ Purpose:    Utlitity class for loading Java Classes
 	<cfreturn aJars>
 </cffunction>
 
-<cffunction name="setClassLoadPaths" access="private" output="false">
+<cffunction name="setClassLoadPaths" access="private" returntype="void" output="false">
 	<cfargument name="classLoadPaths" type="array" required="true">
 	<cfset instance.classLoadPaths = arguments.classLoadPaths />
 </cffunction>
 
-<cffunction name="getParentClassLoader" access="private" output="false">
+<cffunction name="getParentClassLoader" access="private" returntype="any" output="false">
 	<cfreturn instance.parentClassLoader />
 </cffunction>
 
-<cffunction name="setParentClassLoader" access="private" output="false">
+<cffunction name="setParentClassLoader" access="private" returntype="void" output="false">
 	<cfargument name="parentClassLoader" type="any" required="true">
 	<cfset instance.parentClassLoader = arguments.parentClassLoader />
 </cffunction>
 
-<cffunction name="getServerURLClassLoader" hint="returns the server URL class loader" access="private" output="false">
+<cffunction name="getServerURLClassLoader" hint="returns the server URL class loader" access="private" returntype="any" output="false">
 	<cfreturn server[instance.static.uuid & "." & getVersion()] />
 </cffunction>
 
-<cffunction name="setURLClassLoader" access="private" output="false">
+<cffunction name="setURLClassLoader" access="private" returntype="void" output="false">
 	<cfargument name="ClassLoader" type="any" required="true">
 	<cfset instance.ClassLoader = arguments.ClassLoader />
 </cffunction>
@@ -522,7 +520,7 @@ Purpose:    Utlitity class for loading Java Classes
 	<cfreturn instance.javaCompiler />
 </cffunction>
 
-<cffunction name="setJavaCompiler" access="private" output="false">
+<cffunction name="setJavaCompiler" access="private" returntype="void" output="false">
 	<cfargument name="javaCompiler" type="JavaCompiler" required="true">
 	<cfset instance.javaCompiler = arguments.javaCompiler />
 </cffunction>
@@ -531,7 +529,7 @@ Purpose:    Utlitity class for loading Java Classes
 	<cfreturn instance.sourceDirectories />
 </cffunction>
 
-<cffunction name="setSourceDirectories" access="private" output="false">
+<cffunction name="setSourceDirectories" access="private" returntype="void" output="false">
 	<cfargument name="sourceDirectories" type="array" required="true">
 	<cfset instance.sourceDirectories = arguments.sourceDirectories />
 </cffunction>
@@ -540,7 +538,7 @@ Purpose:    Utlitity class for loading Java Classes
 	<cfreturn instance.sourceLastModified />
 </cffunction>
 
-<cffunction name="setSourceLastModified" access="private" output="false">
+<cffunction name="setSourceLastModified" access="private" returntype="void" output="false">
 	<cfargument name="sourceLastModified" type="date" required="true">
 	<cfset instance.sourceLastModified = arguments.sourceLastModified />
 </cffunction>
@@ -549,11 +547,11 @@ Purpose:    Utlitity class for loading Java Classes
 	<cfreturn StructKeyExists(instance, "sourceLastModified") />
 </cffunction>
 
-<cffunction name="getCompileDirectory" access="private" output="false">
+<cffunction name="getCompileDirectory" access="private" returntype="string" output="false">
 	<cfreturn instance.compileDirectory />
 </cffunction>
 
-<cffunction name="setCompileDirectory" access="private" output="false">
+<cffunction name="setCompileDirectory" access="private" returntype="void" output="false">
 	<cfargument name="compileDirectory" type="string" required="true">
 	<cfset instance.compileDirectory = arguments.compileDirectory />
 </cffunction>
@@ -569,7 +567,7 @@ Purpose:    Utlitity class for loading Java Classes
 	<cfreturn instance.isTrustedSource />
 </cffunction>
 
-<cffunction name="setTrustedSource" access="private" output="false">
+<cffunction name="setTrustedSource" access="private" returntype="void" output="false">
 	<cfargument name="isTrustedSource" type="boolean" required="true">
 	<cfset instance.isTrustedSource = arguments.isTrustedSource />
 </cffunction>

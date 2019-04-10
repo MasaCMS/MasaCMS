@@ -2,7 +2,7 @@
 
 <!------------------------------------------- PUBLIC ------------------------------------------->
 
-<cffunction name="init" hint="Constructor" returntype="JavaCompiler" output="false">
+<cffunction name="init" hint="Constructor" access="public" returntype="JavaCompiler" output="false">
 	<cfargument name="jarDirectory" hint="the directory to build the .jar file in, defaults to ./tmp" type="string" required="No" default="#getDirectoryFromPath(getMetadata(this).path)#/tmp">
 	<cfscript>
 		var data = {};
@@ -37,7 +37,7 @@
 	</cfscript>
 </cffunction>
 
-<cffunction name="compile" hint="compiles Java to bytecode, and returns a JAR" output="false">
+<cffunction name="compile" hint="compiles Java to bytecode, and returns a JAR" access="public" returntype="any" output="false">
 	<cfargument name="directoryArray" hint="array of directories to compile" type="array" required="Yes">
 	<cfargument name="classLoader" hint="a optional URLClassloader to use as the parent for compilation" type="any" required="false">
     <cfargument name="jarName" hint="The name of the jar file. Defaults to a UUID" type="string" required="false" default="#createUUID()#.jar">	
@@ -99,7 +99,7 @@
 	<cfreturn jarPath />
 </cffunction>
 
-<cffunction name="getVersion" hint="returns the version number" output="false">
+<cffunction name="getVersion" hint="returns the version number" access="public" returntype="string" output="false">
 	<cfreturn "0.1.b" />
 </cffunction>
 
@@ -143,20 +143,20 @@
     </cfscript>
 </cffunction>
 
-<cffunction name="getCompiler" access="private" output="false">
+<cffunction name="getCompiler" access="private" returntype="any" output="false">
 	<cfreturn instance.Compiler />
 </cffunction>
 
-<cffunction name="setCompiler" access="private" output="false">
+<cffunction name="setCompiler" access="private" returntype="void" output="false">
 	<cfargument name="Compiler" type="any" required="true">
 	<cfset instance.Compiler = arguments.Compiler />
 </cffunction>
 
-<cffunction name="getJarDirectory" access="private" output="false">
+<cffunction name="getJarDirectory" access="private" returntype="string" output="false">
 	<cfreturn instance.jarDirectory />
 </cffunction>
 
-<cffunction name="setJarDirectory" access="private" output="false">
+<cffunction name="setJarDirectory" access="private" returntype="void" output="false">
 	<cfargument name="jarDirectory" type="string" required="true">
 	<cfset instance.jarDirectory = arguments.jarDirectory />
 </cffunction>
@@ -168,7 +168,7 @@
 		<cfthrow type="#arguments.type#" message="#arguments.message#" detail="#arguments.detail#">
 </cffunction>
 
-<cffunction name="println" hint="" access="private" output="false">
+<cffunction name="println" hint="" access="private" returntype="void" output="false">
 	<cfargument name="str" hint="" type="string" required="Yes">
 	<cfscript>
 		createObject("Java", "java.lang.System").out.println(arguments.str);
