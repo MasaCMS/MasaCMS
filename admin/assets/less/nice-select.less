@@ -253,7 +253,7 @@
 	.nice-select .option {
 	    line-height: 28px;
 	    min-height: 28px;
-	    outline: 0;
+	    outline: 0;admin
 	    overflow: hidden;
 	    text-overflow: ellipsis;
 	    -webkit-transition: all .1s;
@@ -274,3 +274,13 @@
 	}
 
 } 
+
+/* prevent nice-select override in legacy modal configurator */
+#frontEndToolsModaliframe {
+  .mura__edit__controls,
+  #configurator{
+    select {
+        display: none;
+    } 
+   }  
+}
