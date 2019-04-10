@@ -65,14 +65,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
 	<cfsilent>
-		<cfif not IsDefined("cookie.ADMINSIDEBAR")>
-			<cfset application.utility.setCookie(name="ADMINSIDEBAR",value="off",httponly=false)>
-		</cfif>
-		<cfif not IsDefined("cookie.ADMINCONTROLWIDTH")>
-			<cfset application.utility.setCookie(name="ADMINCONTROLWIDTH",value="300",httponly=false)>
-		</cfif>
 		<cfparam name="request.action" default="core:cplugin.plugin">
 		<cfparam name="rc.originalfuseaction" default="#listLast(listLast(request.action,":"),".")#">
 		<cfparam name="rc.originalcircuit"  default="#listFirst(listLast(request.action,":"),".")#">

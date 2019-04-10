@@ -507,6 +507,14 @@ component extends="framework" output="false" {
 		var previewData=application.serviceFactory.getBean('$').getCurrentUser().getValue("ChangesetPreviewData");
 		request.muraChangesetPreview=isStruct(previewData) and previewData.siteID eq request.context.siteid;
 
+
+		if(!IsDefined("cookie.ADMINSIDEBAR")){
+			application.utility.setCookie(name="ADMINSIDEBAR",value="off",httponly=false);
+		}
+		if(!IsDefined("cookie.ADMINCONTROLWIDTH")){
+			application.utility.setCookie(name="ADMINCONTROLWIDTH",value="300",httponly=false);
+		}
+		
 		application.pluginManager.announceEvent("onAdminRequestStart",request.event);
 
 	}
