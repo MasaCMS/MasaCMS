@@ -71,8 +71,10 @@
 	<div class="block-content">
 
 	<!--- todo: rb key for 'done' --->
+	<cfif isDefined('rc.contentBean')>
 	<a class="ui__back" href="#rc.contentBean.getEditURL(compactDisplay=rc.compactDisplay)#&bigui=assoc##panel-assoc">Done <i class="mi-angle-right"></i></a>
-
+	</cfif>
+	
 	<cfif len(rc.fileID)>
 		<script>
 			fileMap={};
