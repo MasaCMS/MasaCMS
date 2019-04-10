@@ -274,3 +274,13 @@
 	}
 
 } 
+
+/* prevent nice-select override in legacy modal configurator */
+#frontEndToolsModaliframe {
+  .mura__edit__controls,
+  #configurator{
+    select {
+        display: block;
+    } 
+   }  
+}
