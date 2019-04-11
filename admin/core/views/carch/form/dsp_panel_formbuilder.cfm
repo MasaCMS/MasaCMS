@@ -86,7 +86,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfinclude template="dsp_formbuilder.cfm">
 					</div>
 				</div>
-			</cfsavecontent>	
+			</cfsavecontent>
 
 			<span id="extendSetsBasic"></span>
 
@@ -96,15 +96,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif rc.type eq 'Form'>
 				<div class="mura-control-group">
 					<label>
-				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.confirmationmessage')#
-			</label>
-				<textarea name="responseMessage" rows="4">#esapiEncode('html',rc.contentBean.getresponseMessage())#</textarea>
-			</div>
+						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.confirmationmessage')#
+					</label>
+					<textarea name="responseMessage" rows="4">#esapiEncode('html',rc.contentBean.getresponseMessage())#</textarea>
+				</div>
 				<div class="mura-control-group">
-					<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.responsesendto')#
-			</label>
-				<input type="text" name="responseSendTo" value="#esapiEncode('html_attr',rc.contentBean.getresponseSendTo())#">
-			</div>
+					<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.responsesendto')#</label>
+					<input type="text" name="responseSendTo" value="#esapiEncode('html_attr',rc.contentBean.getresponseSendTo())#">
+				</div>
+				<cfif application.configBean.getValue(property='formpolls',defaultValue=false)>
+				<div class="mura-control-group">
+					<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formpresentation')#</label>
+					<label for="rc" class="checkbox">
+						<input name="responseChart" type="CHECKBOX" value="1" <cfif rc.contentBean.getresponseChart() eq 1>checked </cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.ispoll')#
+					</label>
+					</div>
+				</cfif>
 			</cfif>
 
 			<span id="extendset-container-basic" class="extendset-container"></span>
@@ -112,5 +119,5 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			</div>
 		</div>
-	</div> 
+	</div>
 </cfoutput>
