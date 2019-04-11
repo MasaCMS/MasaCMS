@@ -97,7 +97,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<span id="extendSetsBasic"></span>
 
 		<cfif rc.type eq 'Form'>
-			<!---
+			<cfif application.configBean.getValue(property='formpolls',defaultValue=false)>
 			<div class="mura-control-group">
 				<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formpresentation')#</label>
 				<div class="mura-control justify">
@@ -107,18 +107,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</label>
 				</div>
 			</div>
-			--->
+			</cfif>
 			<div class="mura-control-group">
 				<label>
-			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.confirmationmessage')#
-		</label>
-			<textarea name="responseMessage" rows="6">#esapiEncode('html',rc.contentBean.getresponseMessage())#</textarea>
-		</div>
+					#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.confirmationmessage')#
+				</label>
+				<textarea name="responseMessage" rows="6">#esapiEncode('html',rc.contentBean.getresponseMessage())#</textarea>
+			</div>
 			<div class="mura-control-group">
-				<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.responsesendto')#
-		</label>
-			<input type="text" name="responseSendTo" value="#esapiEncode('html_attr',rc.contentBean.getresponseSendTo())#">
-		</div>
+				<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.responsesendto')#</label>
+				<input type="text" name="responseSendTo" value="#esapiEncode('html_attr',rc.contentBean.getresponseSendTo())#">
+			</div>
 		</cfif>
 
 		<span id="extendset-container-basic" class="extendset-container"></span>
