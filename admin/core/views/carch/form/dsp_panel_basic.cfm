@@ -386,6 +386,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				<!--- form confirmation, sendto --->
 				<cfif rc.type eq 'Form'>
+					<cfif application.configBean.getValue(property='formpolls',defaultValue=false)>
+					<div class="mura-control-group">
+						<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formpresentation')#</label>
+						<label for="rc" class="checkbox">
+							<input name="responseChart" type="CHECKBOX" value="1" <cfif rc.contentBean.getresponseChart() eq 1>checked </cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.ispoll')#
+						</label>
+						</div>
+					</cfif>
 					<div class="mura-control-group body-container" style="display:none">
 						<label>
 						 	#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.confirmationmessage')#
