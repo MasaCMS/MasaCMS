@@ -276,11 +276,11 @@
 } 
 
 /* prevent nice-select override in legacy modal configurator */
-#frontEndToolsModaliframe {
+body.modal-wrapper {
   .mura__edit__controls,
   #configurator{
     select {
-        display: block;
+        display: block !important;
     } 
    }  
 }
