@@ -19534,6 +19534,15 @@ Mura.UI.Form=Mura.UI.extend(
 				delete data.targetEl;
 				delete data.html;
 
+				if(data.responsechart){
+					var frm=Mura(self.context.targetEl);
+					var polllist=new Array();
+					frm.find("input[type='radio']").each(function(){
+						polllist.push(Mura(this).val());
+					});
+					if(polllist.length > 0) {data.polllist=polllist.toString();}
+				}
+
 				var tokenArgs={
 					siteid: data.siteid,
 					context: data.formid
@@ -19556,6 +19565,15 @@ Mura.UI.Form=Mura.UI.extend(
 				var tokenArgs={
 					siteid: rawdata.siteid,
 					context: rawdata.formid
+				}
+
+				if(rawdata.responsechart){
+					var frm=Mura(self.context.targetEl);
+					var polllist=new Array();
+					frm.find("input[type='radio']").each(function(){
+						polllist.push(Mura(this).val());
+					});
+					if(polllist.length > 0) {rawdata.polllist=polllist.toString();}
 				}
 
 				var data=new FormData();

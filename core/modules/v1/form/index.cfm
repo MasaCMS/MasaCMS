@@ -101,8 +101,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</cfif>
 					</cfif>
 
+
+
 					<cfif not len(objectParams.responsemessage)>
-						<cfset objectParams.responsemessage=$.setDynamicContent(local.formBean.getResponseMessage())>
+						<cfif local.formBean.getResponseChart()>
+							<cfset objectParams.responsemessage=trim($.dspObject_Include(thefile='datacollection/dsp_poll.cfm'))>
+						</cfif>
+						<cfset objectParams.responsemessage=objectParams.responsemessage & $.setDynamicContent(local.formBean.getResponseMessage())>
 					</cfif>
 				</cfif>
 
@@ -148,6 +153,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
    					 objectParams.filename=local.formBean.get('filename');
 					 	 objectParams.name=local.formBean.get('title');
    					 objectParams.responsemessage=local.formBean.get('responseMessage');
+						 objectParams.responsechart=local.formBean.get('responsechart');
    				 </cfscript>
 			</cfif>
 			<cfcatch>
