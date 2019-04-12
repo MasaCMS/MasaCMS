@@ -302,3 +302,13 @@
 	}
 
 } 
+
+/* prevent nice-select override in legacy modal configurator */
+body.modal-wrapper {
+  .mura__edit__controls,
+  #configurator{
+    select {
+        display: block !important;
+    } 
+   }  
+}
