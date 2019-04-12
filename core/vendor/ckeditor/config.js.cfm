@@ -141,10 +141,11 @@ CKEDITOR.editorConfig = function( config )
 	];
 
 	config.toolbar_htmlEditor = [
-		{name: 'group0', items: ['Bold','Italic','Underline','RemoveFormat','-','NumberedList','BulletedList','-','Link','Unlink']},
-		{name: 'group1', items: ['PasteText','PasteFromWord','-','Image','-','SpecialChar']},
-		{name: 'group2', items: ['Selectlink','SelectComponent','Templates']},
-		{name: 'group3', items: ['A11ychecker','Source']}
+		{name: 'group0', items:['Styles','Format']},
+		{name: 'group1', items: ['Bold','Italic','Underline','RemoveFormat','-','NumberedList','BulletedList','-','Link','Unlink']},
+		{name: 'group2', items: ['PasteText','PasteFromWord','-','Image','-','SpecialChar']},
+		{name: 'group3', items: ['Selectlink','SelectComponent','Templates']},
+		{name: 'group4', items: ['A11ychecker','Source']}
 
 	];
 
