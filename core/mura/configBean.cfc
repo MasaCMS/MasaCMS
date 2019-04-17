@@ -1931,7 +1931,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfcatch>
 				<cfparam name="request.muraDeferredModuleErrors" default="#arrayNew(1)#">
 				<cfset ArrayAppend(request.muraDeferredModuleErrors,cfcatch)>
-				<cfset writeLog(type="Error", file="exception", text="Error Registering Bean #arguments.componentPath#: #serializeJSON(cfcatch.stacktrace)#")>
+				<cfset writeLog(type="Error", file="exception", text="Error Registering Bean #arguments.componentPath#: #serializeJSON(cfcatch)#")>
+				<cfset commitTracepoint(initTracepoint("Error Registering Bean #arguments.componentPath#"))>
 				<cfif isBoolean(getValue('debuggingEnabled')) and getValue('debuggingEnabled')>
 					<cfrethrow>
 				<cfelse>
@@ -1984,8 +1985,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset registerBeanDir(dir=listAppend(arguments.dir,rs.name,'/'),package=arguments.package & "." & rs.name,siteid=arguments.siteid,moduleid=arguments.moduleid,applyGlobal=applyGlobalDefault)>
 				</cfif>
 			<cfelseif listLast(rs.name,'.') eq 'cfc'>
+				<cfset var tracePoint=initTracepoint("Registering Eventhandler: #package#.#beanName#")>
 				<cftry>
-					<cfset var tracePoint=initTracepoint("Registering Eventhandler: #package#.#beanName#")>
 					<cfset beanName=listFirst(rs.name,'.')>
 					<cfset beanInstance=createObject('component','#package#.#beanName#').init()>
 					<cfparam name="request.muraAppliedHandlers" default="#structNew()#">
@@ -2004,16 +2005,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</cfif>
 						</cfif>
 					</cfloop>
-					<cfset commitTracepoint(tracepoint)>
 					<cfcatch>
 						<cfparam name="request.muraDeferredModuleErrors" default="#arrayNew(1)#">
 						<cfset ArrayAppend(request.muraDeferredModuleErrors,cfcatch)>
-						<cfset writeLog(type="Error", file="exception", text="Error Registering Handler #arguments.componentPath#: #serializeJSON(cfcatch.stacktrace)#")>
+						<cfset commitTracepoint(initTracepoint("Error Registering Handler #package#.#beanName#"))>
+						<cfset writeLog(type="Error", file="exception", text="Error Registering Handler #package#.#beanName#: #serializeJSON(cfcatch)#")>
 						<cfif isBoolean(getValue('debuggingEnabled')) and getValue('debuggingEnabled')>
 							<cfrethrow>
 						</cfif>
 					</cfcatch>
 				</cftry>
+				<cfset commitTracepoint(tracepoint)>
 			</cfif>
 		</cfloop>
 	</cfif>
