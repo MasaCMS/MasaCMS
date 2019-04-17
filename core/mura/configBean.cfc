@@ -1931,7 +1931,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfcatch>
 				<cfparam name="request.muraDeferredModuleErrors" default="#arrayNew(1)#">
 				<cfset ArrayAppend(request.muraDeferredModuleErrors,cfcatch)>
-				<cfset writeLog(type="Error", file="exception", text="Error Registering Bean #arguments.componentPath#: #serializeJSON(cfcatch.stacktrace)#")>
+				<cfset writeLog(type="Error", file="exception", text="Error Registering Bean #arguments.componentPath#: #serializeJSON(cfcatch)#")>
 				<cfset commitTracepoint(initTracepoint("Error Registering Bean #arguments.componentPath#"))>
 				<cfif isBoolean(getValue('debuggingEnabled')) and getValue('debuggingEnabled')>
 					<cfrethrow>
@@ -2009,7 +2009,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfparam name="request.muraDeferredModuleErrors" default="#arrayNew(1)#">
 						<cfset ArrayAppend(request.muraDeferredModuleErrors,cfcatch)>
 						<cfset commitTracepoint(initTracepoint("Error Registering Handler #package#.#beanName#"))>
-						<cfset writeLog(type="Error", file="exception", text="Error Registering Handler #package#.#beanName#: #serializeJSON(cfcatch.stacktrace)#")>
+						<cfset writeLog(type="Error", file="exception", text="Error Registering Handler #package#.#beanName#: #serializeJSON(cfcatch)#")>
 						<cfif isBoolean(getValue('debuggingEnabled')) and getValue('debuggingEnabled')>
 							<cfrethrow>
 						</cfif>
