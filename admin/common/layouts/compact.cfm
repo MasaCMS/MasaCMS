@@ -175,6 +175,7 @@
 					}
 
 					frontEndProxy = new Porthole.WindowProxy("#esapiEncode('javascript',session.frontEndProxyLoc)##application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/porthole/proxy.html");
+					
 					frontEndProxy.post({cmd:
 											'setHeight',
 											height:getHeight(),
