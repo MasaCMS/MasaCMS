@@ -1872,10 +1872,67 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cftry>
 			<cfset var metadata=getMetaData(createObject('component','#arguments.componentPath#'))>
 
+			<cfset var levelObj=metadata>
+
+			<cfloop condition="structKeyExists(levelObj,'extends')">
+				<cfif not isPublicFound and (isdefined('levelObj.public') and isBoolean(levelObj.public) and levelObj.public or isdefined('levelObj.access') && levelObj.access eq 'remote')>
+					<cfset isPublic=true>
+					<cfset isPublicFound=true>
+				</cfif>
+				<cfif not fieldsFound and isdefined('levelObj.fields') and len(levelObj.fields)>
+					<cfset fields=levelObj.fields>
+					<cfset fieldsFound=true>
+				</cfif>
+				<cfif listFindNoCase('beanORM,beanORMVersioned',listLast(levelObj.fullname,'.'))>
+					<cfset isORM=true>
+					<cfbreak>
+				</cfif>
+				<cfset levelObj=levelObj.extends>
+			</cfloop>
+			<cfset ioc.declareBean(beanName=beanName, dottedPath='#arguments.componentPath#', isSingleton =isSingleton )>
+			<cfif isDefined('metadata.entityname') and metadata.entityname neq beanName>
+				<cfset ioc.addAlias(metadata.entityname,beanName)>
+				<cfset beanName=metadata.entityname>
+			</cfif>
+
+			<cfset structDelete(application.objectMappings,beanName)>
+
+			<cfset entity=ioc.getBean(beanName)>
+
+			<cfif isORM>
+
+					<cfset entity.registerAsEntity()>
+
+					<cfif checkSchema>
+						<cfset entity.checkSchema()>
+					</cfif>
+
+					<cfloop list="#arguments.siteid#" index="local.i">
+						<cfif false and  entity.getEntityName() eq 'test'>
+							<cfdump var="#siteid#">
+							<cfdump var="#isPublic#">
+							<cfdump var="#arguments.moduleid#">
+							<cfdump var="#entity.getPublicAPI()#">
+							<cfdump var="#isORM#">
+							<cfdump var="#beanName#">
+							<cfabort>
+						</cfif>
+						<cfset getBean('settingsManager').getSite(local.i).getApi('json','v1').registerEntity(beanName,{
+							moduleid=arguments.moduleid,
+							public=isPublic,
+							fields=fields,
+							registered=true,
+							beanInstance=entity
+						})>
+					</cfloop>
+
+					<cfset request.muraORMchecked['#checkkey#']=true>
+			</cfif>
 			<cfcatch>
 				<cfparam name="request.muraDeferredModuleErrors" default="#arrayNew(1)#">
 				<cfset ArrayAppend(request.muraDeferredModuleErrors,cfcatch)>
 				<cfset writeLog(type="Error", file="exception", text="Error Registering Bean #arguments.componentPath#: #serializeJSON(cfcatch.stacktrace)#")>
+				<cfset commitTracepoint(initTracepoint("Error Registering Bean #arguments.componentPath#"))>
 				<cfif isBoolean(getValue('debuggingEnabled')) and getValue('debuggingEnabled')>
 					<cfrethrow>
 				<cfelse>
@@ -1883,63 +1940,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 			</cfcatch>
 		</cftry>
-
-		<cfset var levelObj=metadata>
-
-		<cfloop condition="structKeyExists(levelObj,'extends')">
-			<cfif not isPublicFound and (isdefined('levelObj.public') and isBoolean(levelObj.public) and levelObj.public or isdefined('levelObj.access') && levelObj.access eq 'remote')>
-				<cfset isPublic=true>
-				<cfset isPublicFound=true>
-			</cfif>
-			<cfif not fieldsFound and isdefined('levelObj.fields') and len(levelObj.fields)>
-				<cfset fields=levelObj.fields>
-				<cfset fieldsFound=true>
-			</cfif>
-			<cfif listFindNoCase('beanORM,beanORMVersioned',listLast(levelObj.fullname,'.'))>
-				<cfset isORM=true>
-				<cfbreak>
-			</cfif>
-			<cfset levelObj=levelObj.extends>
-		</cfloop>
-		<cfset ioc.declareBean(beanName=beanName, dottedPath='#arguments.componentPath#', isSingleton =isSingleton )>
-		<cfif isDefined('metadata.entityname') and metadata.entityname neq beanName>
-			<cfset ioc.addAlias(metadata.entityname,beanName)>
-			<cfset beanName=metadata.entityname>
-		</cfif>
-
-		<cfset structDelete(application.objectMappings,beanName)>
-
-		<cfset entity=ioc.getBean(beanName)>
-
-		<cfif isORM>
-
-				<cfset entity.registerAsEntity()>
-
-				<cfif checkSchema>
-					<cfset entity.checkSchema()>
-				</cfif>
-
-				<cfloop list="#arguments.siteid#" index="local.i">
-					<cfif false and  entity.getEntityName() eq 'test'>
-						<cfdump var="#siteid#">
-						<cfdump var="#isPublic#">
-						<cfdump var="#arguments.moduleid#">
-						<cfdump var="#entity.getPublicAPI()#">
-						<cfdump var="#isORM#">
-						<cfdump var="#beanName#">
-						<cfabort>
-					</cfif>
-					<cfset getBean('settingsManager').getSite(local.i).getApi('json','v1').registerEntity(beanName,{
-						moduleid=arguments.moduleid,
-						public=isPublic,
-						fields=fields,
-						registered=true,
-						beanInstance=entity
-					})>
-				</cfloop>
-
-				<cfset request.muraORMchecked['#checkkey#']=true>
-		</cfif>
 		<cfset commitTracepoint(tracepoint)>
 	<cfelseif getServiceFactory().containsBean(beanName)>
 		<cfset var entity=getBean(beanName)>
@@ -1985,8 +1985,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset registerBeanDir(dir=listAppend(arguments.dir,rs.name,'/'),package=arguments.package & "." & rs.name,siteid=arguments.siteid,moduleid=arguments.moduleid,applyGlobal=applyGlobalDefault)>
 				</cfif>
 			<cfelseif listLast(rs.name,'.') eq 'cfc'>
+				<cfset var tracePoint=initTracepoint("Registering Eventhandler: #package#.#beanName#")>
 				<cftry>
-					<cfset var tracePoint=initTracepoint("Registering Eventhandler: #package#.#beanName#")>
 					<cfset beanName=listFirst(rs.name,'.')>
 					<cfset beanInstance=createObject('component','#package#.#beanName#').init()>
 					<cfparam name="request.muraAppliedHandlers" default="#structNew()#">
@@ -2005,16 +2005,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</cfif>
 						</cfif>
 					</cfloop>
-					<cfset commitTracepoint(tracepoint)>
 					<cfcatch>
 						<cfparam name="request.muraDeferredModuleErrors" default="#arrayNew(1)#">
 						<cfset ArrayAppend(request.muraDeferredModuleErrors,cfcatch)>
-						<cfset writeLog(type="Error", file="exception", text="Error Registering Handler #arguments.componentPath#: #serializeJSON(cfcatch.stacktrace)#")>
+						<cfset commitTracepoint(initTracepoint("Error Registering Handler #package#.#beanName#"))>
+						<cfset writeLog(type="Error", file="exception", text="Error Registering Handler #package#.#beanName#: #serializeJSON(cfcatch.stacktrace)#")>
 						<cfif isBoolean(getValue('debuggingEnabled')) and getValue('debuggingEnabled')>
 							<cfrethrow>
 						</cfif>
 					</cfcatch>
 				</cftry>
+				<cfset commitTracepoint(tracepoint)>
 			</cfif>
 		</cfloop>
 	</cfif>
