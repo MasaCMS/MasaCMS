@@ -451,7 +451,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif arrayLen(request.muraDeferredModuleErrors)>
 		<cfset var pluginEvent = createObject("component","mura.event").init() />
 		<cfset pluginEvent.setValue('errors',request.muraDeferredModuleErrors)>
-		<cfset getBean('pluginManager').announceEvent("onModuleRegistrationError",pluginEvent)>
+		<cfset application.pluginManager.executeScripts(runat='onGlobalModuleRegistrationError',event= pluginEvent)>
 	</cfif>
 
 	<cfset commitTracepoint(tracepoint1)>
