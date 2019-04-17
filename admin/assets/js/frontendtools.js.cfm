@@ -81,8 +81,9 @@
 					resizeFrontEndToolsModal(decodeURIComponent(parameters["height"]));
 				}
 			} else if(parameters["cmd"] == "openFileManager"){
-
-						(function(){
+					Mura.loader().loadjs(
+					coreLoc +'vendor/ckfinder/ckfinder.js',
+						function(){
 							var target=parameters["target"];
 							var finder = new CKFinder();
 							finder.basePath = coreLoc + 'vendor/ckfinder/';
@@ -92,7 +93,7 @@
 							<cfelse>
 								var completepath=(typeof parameters["completepath"] != 'undefined') ? parameters.completepath.toString() : "true";
 							</cfif>
-							/*
+
 							finder.selectActionFunction=function(fileURL){
 
 								var item=Mura('[data-instanceid="' + parameters["instanceid"] + '"]');
@@ -123,10 +124,18 @@
 									}
 								}
 						}
-						*/
-						siteManager.openDisplayObjectModal('filebrowser/modal.cfm');
 
-					})();
+						if(Mura(this).attr('data-resourcetype') =='root'){
+							finder.resourceType='Application_Root';
+						} else if(Mura(this).attr('data-resourcetype') == 'site'){
+							finder.resourceType=Mura.siteid + '_Site_Files';
+						} else {
+							finder.resourceType=Mura.siteid + '_User_Assets';
+						}
+
+						finder.popup();
+					}
+				);
 			} else if(parameters["cmd"] == "close"){
 				closeFrontEndToolsModal();
 			} else if(parameters["cmd"] == "setLocation"){
@@ -506,7 +515,7 @@
 	}
 
 	var resizeFrontEndToolsModal=function(frameHeight){
-		
+
 		if (document.getElementById("frontEndToolsModaliframe")) {
 
 			var frame = document.getElementById("frontEndToolsModaliframe");
@@ -515,19 +524,25 @@
 			//if (frameDoc.body != null) {
 				var windowHeight = Math.max(frameHeight, utility(window).height());
 
-				/*
 				if (frontEndModalWidth==frontEndModalWidthStandard
 					&& frameHeight < utility(window).height()
 					) {
-					frameHeight= Math.max(utility(window).height() * .80,frameHeight);
+					frameHeight= Math.max(utility(window).height()-96,frameHeight);
 				}
-				*/
 
 				utility('##frontEndToolsModalContainer ##frontEndToolsModalBody,##frontEndToolsModalContainer ##frontEndToolsModaliframe').width(frontEndModalWidth);
 
-				frame.style.height = frameHeight + "px";
+// debug
+//console.log('utility(document).height(): ' + utility(document).height());
+//console.log('frameHeight: ' + frameHeight);
+
+				// set height, preventing overflow of window
+				if (frameHeight < utility(document).height() - 96){
+					frame.style.height = frameHeight + "px";
+				}
+
 				frameContainer.style.position = "absolute";
-				document.overflow = "auto"
+				document.overflow = "auto";
 
 				if(windowHeight > frontEndModalHeight){
 					frontEndModalHeight=windowHeight;
@@ -565,8 +580,12 @@
 		var tools=utility("##frontEndTools");
 
 		if(utility('HTML').hasClass('mura-edit-mode')){
+			if(typeof tools.fadeOut == 'function'){
+				utility("##frontEndTools").fadeOut();
+			} else {
+				utility("##frontEndTools").hide();
+			}
 
-			utility("##frontEndTools").hide();
 			utility('HTML').removeClass('mura-edit-mode');
 			utility(".editableObject").addClass('editableObjectHide');
 
@@ -576,8 +595,12 @@
 			}
 
 		} else {
+			if(typeof tools.fadeOut == 'function'){
+				utility("##frontEndTools").fadeIn();
+			} else {
+				utility("##frontEndTools").show();
+			}
 
-			utility("##frontEndTools").show();
 			utility('HTML').addClass('mura-edit-mode');
 			utility(".editableObject").removeClass('editableObjectHide');
 
