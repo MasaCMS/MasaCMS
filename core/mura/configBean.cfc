@@ -1873,11 +1873,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset var metadata=getMetaData(createObject('component','#arguments.componentPath#'))>
 
 			<cfcatch>
-					<cfif isBoolean(getValue('debuggingEnabled')) and getValue('debuggingEnabled')>
-						<cfrethrow>
-					<cfelse>
-						<cfset writeLog(type="Error", file="exception", text="Error registering #arguments.componentPath#: #serializeJSON(cfcatch.stacktrace)#")>
-						<cfreturn this>
+				<cfparam name="request.muraDeferredModuleErrors" default="#arrayNew(1)#">
+				<cfset ArrayAppend(request.muraDeferredModuleErrors,cfcatch)>
+				<cfset writeLog(type="Error", file="exception", text="Error Registering Bean #arguments.componentPath#: #serializeJSON(cfcatch.stacktrace)#")>
+				<cfif isBoolean(getValue('debuggingEnabled')) and getValue('debuggingEnabled')>
+					<cfrethrow>
+				<cfelse>
+					<cfreturn this>
 				</cfif>
 			</cfcatch>
 		</cftry>
@@ -1983,26 +1985,36 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset registerBeanDir(dir=listAppend(arguments.dir,rs.name,'/'),package=arguments.package & "." & rs.name,siteid=arguments.siteid,moduleid=arguments.moduleid,applyGlobal=applyGlobalDefault)>
 				</cfif>
 			<cfelseif listLast(rs.name,'.') eq 'cfc'>
-				<cfset var tracePoint=initTracepoint("Registering Eventhandler: #package#.#beanName#")>
-				<cfset beanName=listFirst(rs.name,'.')>
-				<cfset beanInstance=createObject('component','#package#.#beanName#').init()>
-				<cfparam name="request.muraAppliedHandlers" default="#structNew()#">
+				<cftry>
+					<cfset var tracePoint=initTracepoint("Registering Eventhandler: #package#.#beanName#")>
+					<cfset beanName=listFirst(rs.name,'.')>
+					<cfset beanInstance=createObject('component','#package#.#beanName#').init()>
+					<cfparam name="request.muraAppliedHandlers" default="#structNew()#">
 
-				<cfloop list="#arguments.siteid#" index="local.i">
-					<cfif not structKeyExists(request.muraAppliedHandlers,'#local.i#_#package#.#beanName#')>
-						<cfif structKeyExists(request.muraAppliedHandlers,'#package#.#beanName#')>
-							<cfset applyGlobalDefault=false>
+					<cfloop list="#arguments.siteid#" index="local.i">
+						<cfif not structKeyExists(request.muraAppliedHandlers,'#local.i#_#package#.#beanName#')>
+							<cfif structKeyExists(request.muraAppliedHandlers,'#package#.#beanName#')>
+								<cfset applyGlobalDefault=false>
+							</cfif>
+							<cfset getBean('pluginManager').addEventHandler(component=beanInstance,siteid=local.i,applyglobal=applyGlobalDefault)>
+							<cfset request.muraAppliedHandlers['#package#.#beanName#']=true>
+							<cfset request.muraAppliedHandlers['#local.i#_#package#.#beanName#']=true>
+							<cfif isDefined('beanInstance.onApplicationLoad') and applyGlobalDefault>
+								<cfset $=getBean('$').init()>
+								<cfset beanInstance.onApplicationLoad($=$,m=$,Mura=$,event=$.event())>
+							</cfif>
 						</cfif>
-						<cfset getBean('pluginManager').addEventHandler(component=beanInstance,siteid=local.i,applyglobal=applyGlobalDefault)>
-						<cfset request.muraAppliedHandlers['#package#.#beanName#']=true>
-						<cfset request.muraAppliedHandlers['#local.i#_#package#.#beanName#']=true>
-						<cfif isDefined('beanInstance.onApplicationLoad') and applyGlobalDefault>
-							<cfset $=getBean('$').init()>
-							<cfset beanInstance.onApplicationLoad($=$,m=$,Mura=$,event=$.event())>
+					</cfloop>
+					<cfset commitTracepoint(tracepoint)>
+					<cfcatch>
+						<cfparam name="request.muraDeferredModuleErrors" default="#arrayNew(1)#">
+						<cfset ArrayAppend(request.muraDeferredModuleErrors,cfcatch)>
+						<cfset writeLog(type="Error", file="exception", text="Error Registering Handler #arguments.componentPath#: #serializeJSON(cfcatch.stacktrace)#")>
+						<cfif isBoolean(getValue('debuggingEnabled')) and getValue('debuggingEnabled')>
+							<cfrethrow>
 						</cfif>
-					</cfif>
-				</cfloop>
-				<cfset commitTracepoint(tracepoint)>
+					</cfcatch>
+				</cftry>
 			</cfif>
 		</cfloop>
 	</cfif>
