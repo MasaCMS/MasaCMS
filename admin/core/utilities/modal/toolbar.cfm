@@ -201,7 +201,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset variables.historyLink = variables.historyLink & "&amp;parentid=" & request.contentBean.getParentID()>
 			<cfset variables.historyLink = variables.historyLink & "&amp;moduleid=" & request.contentBean.getModuleID()>
 			<cfset variables.historyLink = variables.historyLink & "&amp;startrow=1">
-			<cfset variables.historyLink = variables.historyLink & "&amp;compactDisplay=true">
 
 			<cfset variables.adminLink = variables.adminBase & "/?muraAction=cArch.list">
 			<cfset variables.adminLink = variables.adminLink & "&amp;siteid=" & request.contentBean.getSiteID()>
@@ -351,7 +350,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<!---
 							<cfif $.content('type') eq 'Variation'>
 							<li id="adminEditPage" class="dropdown"><a onClick="return MuraInlineEditor.init();"><i class="mi-pencil"></i></a></li>
-							<li id="adminVersionHistory"><a href="#variables.historyLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#" #variables.targethook#><i class="mi-history"></i></a></li>
+							<li id="adminVersionHistory"><a href="#variables.historyLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#"><i class="mi-history"></i></a></li>
 							<cfelse>
 							--->
 							<li id="adminEditPage" class="dropdown"><a class="dropdown-toggle"><i class="mi-pencil"></i><b class="caret"></b></a>
@@ -409,7 +408,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<li id="adminAddContent"><a href="#variables.newLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.add')#" #variables.targethook# data-configurator="true"><i class="mi-plus"></i></a></li>
 							<li id="adminAddContent-suspend" class="suspend" style="display:none;"><a href="##" title="" onClick="return false;"><i class="mi-plus"></i></a></li>
 							</cfif>
-							<li id="adminVersionHistory"><a href="#variables.historyLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#" #variables.targethook#><i class="mi-history"></i></a></li>
+							<li id="adminVersionHistory"><a href="#variables.historyLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#"><i class="mi-history"></i></a></li>
 							<li id="adminVersionHistory-suspend" class="suspend" style="display:none;"><a href="##" title="" onClick="return false;"><i class="mi-history"></i></a></li>
 							<cfif $.content('type') neq 'Variation'>
 							<li id="adminPreview"<!--- class="dropdown"--->><a href="#esapiEncode(

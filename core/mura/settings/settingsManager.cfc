@@ -408,6 +408,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfset request.muraDeferredModuleAssets=[]>
+	<cfset request.muraDeferredModuleErrors=[]>
 	<cfset tracepoint1=initTracepoint("Loading global modules")>
 	<cfset siteTemplate.discoverGlobalModules().discoverGlobalContentTypes()>
 	<cfset request.muraBaseRBFactory=siteTemplate.getRBFactory()>
@@ -446,6 +447,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfif>
 			</cfloop>
 		</cfif>
+	</cfif>
+
+	<cfset var pluginEvent = createObject("component","mura.event").init() />
+	<cfset pluginEvent.setValue('errors',request.muraDeferredModuleErrors)>
+	<cfset application.pluginManager.executeScripts(runat='onAfterGlobalModuleRegistration',event= pluginEvent)>
+	<cfif arrayLen(request.muraDeferredModuleErrors)>
+		<cfset application.pluginManager.executeScripts(runat='onGlobalModuleRegistrationError',event= pluginEvent)>
 	</cfif>
 
 	<cfset commitTracepoint(tracepoint1)>
