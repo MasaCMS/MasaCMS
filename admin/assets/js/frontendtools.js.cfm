@@ -514,7 +514,7 @@
 
 	}
 
-var resizeFrontEndToolsModal=function(frameHeight){
+	var resizeFrontEndToolsModal=function(frameHeight){
 
 		if (document.getElementById("frontEndToolsModaliframe")) {
 
@@ -522,57 +522,48 @@ var resizeFrontEndToolsModal=function(frameHeight){
 			var frameContainer = document.getElementById("frontEndToolsModalContainer");
 			var framesrc = frame.getAttribute('src');
 			var isFullHeight = framesrc.includes('cArch.editLive') || framesrc.includes('cArch.edit');
-			var origFrameHeight = frameHeight;
+			console.log(isFullHeight);
 
+			//if (frameDoc.body != null) {
 				var windowHeight = Math.max(frameHeight, utility(window).height());
 
-				// setting the height for full screen views
+				/*
 				if (frontEndModalWidth==frontEndModalWidthStandard
-					&& isFullHeight
 					&& frameHeight < utility(window).height()
 					) {
-					frameHeight= Math.max(utility(window).height()-96,frameHeight);
-					// console.log('newframeheight:' + frameHeight);
+					frameHeight= Math.max(utility(window).height() * .80,frameHeight);
 				}
+				*/
 
 				utility('##frontEndToolsModalContainer ##frontEndToolsModalBody,##frontEndToolsModalContainer ##frontEndToolsModaliframe').width(frontEndModalWidth);
 
-				// debug
-				// console.log('utility(window).height(): ' + utility(window).height());
-				// console.log('frameHeight: ' + frameHeight);
-				// console.log('origFrameHeight: ' + origFrameHeight);
-				// console.log('windowHeight: ' + windowHeight);
-				// console.log('isFullHeight: ' + isFullHeight);
-				// console.log('frontEndModalHeight: ' + frontEndModalHeight);
-
-				// set height, preventing overflow of window
-				if (frameHeight !== undefined && frameHeight <= utility(window).height() - 96){
+				if (isFullHeight){
+					frame.style.height = utility(window).height()-96 + "px";
+				} else {
 					frame.style.height = frameHeight + "px";
-					// console.log('setting frame height: ' + frameHeight + 'px');
 				}
 
-				frameContainer.style.position = "fixed";
-				document.overflow = "auto";
+				frameContainer.style.position = "absolute";
+				document.overflow = "auto"
 
 				if(windowHeight > frontEndModalHeight){
 					frontEndModalHeight=windowHeight;
 					if(frontEndModalIE8){
-						frameContainer.style.height=Math.max(frameHeight,utility(window).height()) + "px";
-						// console.log('setting modal height: ' + Math.max(frameHeight,utility(window).height()) + 'px');
+						frameContainer.style.height=Math.max(frameHeight,utility(document).height()) + "px";
 					} else {
-						frameContainer.style.height=utility(window).height() + "px";
-						// console.log('setting modal height: ' + utility(window).height() + 'px');
+						frameContainer.style.height=utility(document).height() + "px";
 					}
 					setTimeout(function(){
 						utility("##frontEndToolsModalClose").fadeIn("fast")
 					},1000);
 				}
 
+
+			//}
 			//setTimeout(resizeFrontEndToolsModal, 250);
 		}
 
 	}
-
 
 	var closeFrontEndToolsModal=function(){
 		utility('##frontEndToolsModalContainer').remove();
