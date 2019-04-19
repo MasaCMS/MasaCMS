@@ -597,9 +597,7 @@
 	})
 
 	// update selected datetime string
-
-	<!--- todo: resource bundle key for 'Repeating', 'until', 'after' --->
-
+<!--- todo: resource bundle key for 'Repeating', 'until', 'after' --->
 	function showSelectedCS(){
 		var csStr = $('##mura-datepicker-displayStart').val() + ' '
 					+ $('##mura-displayStartHour').val() + ':'
@@ -614,7 +612,7 @@
 				}
 		}
 
-		if ( $('##displayIntervalEnd').val() == 'on' && $('##displayIntervalEndOn').val() != ''){
+		if ( $('##displayIntervalEnd').val() == 'on' && $('##displayIntervalEndOn').val() != ''  && $('##displayIntervalEndOn').val() != $('##mura-datepicker-displayStart').val()){
 			csStr += ' until ' + $('##displayIntervalEndOn').val();
 		}
 		else if ( $('##displayIntervalEnd').val() == 'after'  && $('##displayIntervalEndAfter').val() >= 1){

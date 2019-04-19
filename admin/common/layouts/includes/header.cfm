@@ -217,7 +217,7 @@
       <li id="user-tools-selector">
           <div class="btn-group">
 
-            <a tabindex="-1" class="btn btn-default" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cEditProfile.edit"> <i class="mi-user"></i> #esapiEncode("html","#session.mura.fname# #session.mura.lname#")#</a>
+            <a id="user-tools-name" tabindex="-1" class="btn btn-default" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cEditProfile.edit"> <i class="mi-user"></i> #esapiEncode("html","#session.mura.fname# #session.mura.lname#")#</a>
 
               <button type="button" class="btn btn-default dropdown-toggle" id="site-selector-trigger" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <cfif local.prompttally> <span class="badge">#local.prompttally#</span></cfif><span class="caret"></span>
