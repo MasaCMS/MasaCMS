@@ -158,8 +158,8 @@
 				_formData.fieldorder = [];
 			}
 
-			console.log('form');
-			console.log(_formData);
+			// console.log('form');
+			// console.log(_formData);
 
 			_dataSets = response.datasets;
 			_formStatus.fields			= {};
@@ -173,7 +173,7 @@
 		function doAddFields() {
 
 
-			console.log( _currentPage );
+			// console.log( _currentPage );
 
 			jQuery('#mura-tb-fields').empty();
 			_buildList = _formData.pages[ _currentPage ].slice(0);
@@ -190,13 +190,13 @@
 
 		function setCurrentPageOrder( val ) {
 
-			console.log( "setCurrentPageOrder" );
-			console.log( val );
-			console.log(  _currentPage );
+			// console.log( "setCurrentPageOrder" );
+			// console.log( val );
+			// console.log(  _currentPage );
 
 			_formData.pages[ _currentPage ] = val;
 
-			console.log( _formData.pages[ _currentPage ] );
+			// console.log( _formData.pages[ _currentPage ] );
 
 		}
 
@@ -266,7 +266,7 @@
 		function addPage( pageNum,isNew ) {
 			$("#mura-form-pages li").removeClass('current');
 
-			console.log('add');
+			// console.log('add');
 
 			var pageblock = '<li id="page-~page~" data-page="~page~"></li>';
 			var pageblock = $(pageblock.replace(/\~page\~/g,pageNum));
@@ -290,8 +290,8 @@
 		function buildPages( currentPage ) {
 			_currentPage = currentPage;
 
-			console.log( "buildPages" );
-			console.log( _formData );
+			// console.log( "buildPages" );
+			// console.log( _formData );
 
 			jQuery("#mura-form-pages").empty();
 
@@ -329,7 +329,7 @@
 					}
 
 					setActivePage( pageblockid-1 );
-					console.log(_formData);
+					// console.log(_formData);
 				} );
 			}
 			doAddFields();
@@ -738,7 +738,7 @@
 //				_currentDataset.sourcetype = 'muraorm';
 			}
 
-			console.log(_currentDataset.sourcetype);
+			// console.log(_currentDataset.sourcetype);
 
 			switch( _currentDataset.sourcetype ) {
 				case "multientity": {
