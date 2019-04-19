@@ -235,8 +235,16 @@ CKEDITOR.editorConfig = function( config )
 		config.extraPlugins += ',muratag';
 	</cfif>
 
-	<cfif cgi.http_referer contains 'carch.edittext'>
+	<cfif cgi.http_referer contains 'carch.edittext'>		
 		config.extraPlugins += ',autogrow';
+		config.autoGrow_onStartup = true;
+		config.autoGrow_bottomSpace = 24;
+		try {
+			config.autoGrow_minHeight = window.innerHeight - 290;
+		}
+		catch(err) {
+			config.autoGrow_minHeight = 400;
+		}			
 	</cfif>	
 		
 	//config.extraPlugins += ',MuraFileBrowser';
