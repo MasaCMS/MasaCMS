@@ -522,7 +522,7 @@
 			var frameContainer = document.getElementById("frontEndToolsModalContainer");
 			var framesrc = frame.getAttribute('src');
 			var isFullHeight = framesrc.includes('cArch.editLive') || framesrc.includes('cArch.edit');
-			console.log(isFullHeight);
+			//console.log(isFullHeight);
 
 			//if (frameDoc.body != null) {
 				var windowHeight = Math.max(frameHeight, utility(window).height());
