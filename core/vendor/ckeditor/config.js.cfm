@@ -234,6 +234,11 @@ CKEDITOR.editorConfig = function( config )
 	<cfif application.configBean.getEnableMuraTag()>
 		config.extraPlugins += ',muratag';
 	</cfif>
+
+	<cfif cgi.http_referer contains 'carch.edittext'>
+		config.extraPlugins += ',autogrow';
+	</cfif>	
+		
 	//config.extraPlugins += ',MuraFileBrowser';
 	//config.ProtectedTags = 'i';
 	config.protectedSource.push( /<i[^>]*><\/i>/g );
