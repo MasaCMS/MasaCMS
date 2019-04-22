@@ -490,6 +490,4 @@
 		});
 	</script>
 	</cfif>
-<cfelse>
-
 </cfif>
