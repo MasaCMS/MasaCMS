@@ -282,8 +282,8 @@
 												</div>
 											</div>
 										</div>
-									</div> <!--- /end panel --->
-								</div> <!--- /end panel group --->
+									</div> 
+								</div> 
 							</div> <!--- /end mura control group --->
 						</div> <!--- /end container --->
 
@@ -312,7 +312,11 @@
 
 				</div> <!--- /end  mura-panel-body --->
 			</div> <!--- /end  mura-panel-collapse --->
-		</div> <!--- /end panel --->
+		</div> <!--- /end style panel --->
+
+		<!--- todo: merge this included content back to this file --->
+		<cfinclude template="objectconfiguratorpanels.cfm">
+
 	</div><!--- /end panels --->
 	</cfoutput>
 </div> <!--- /end availableObjectContainer --->
