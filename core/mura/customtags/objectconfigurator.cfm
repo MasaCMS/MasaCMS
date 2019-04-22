@@ -131,6 +131,8 @@
 								<option value="mura-right"<cfif listFind(attributes.params.class,'mura-right',' ')> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.right')#</option>
 								</select>
 						</div>
+
+						<!--- todo: remove if not used --->
 						<!---
 						<div id="offsetcontainer" class="mura-control-group" style="display:none">
 			      	<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.offset')#</label>
@@ -286,12 +288,6 @@
 						</div> <!--- /end container --->
 
 
-
-
-
-
-
-
 						<!--- todo: remove this if not used --->
 						<!---
 						<div class="mura-control-group">
@@ -327,6 +323,7 @@
 		$(function(){
 
 			var inited=false;
+			<!--- todo: remove this if not used --->
 			/*
 			$('#backgroundImageRaw').on('change',function(){
 					$('#backgroundImage').val('url(' + $(this).val() + ')').trigger('change');
@@ -391,7 +388,7 @@
 
 						classInput.val($.trim(classInput.val()));
 
-
+				<!--- todo: remove if not used --->
 					/*
 	  			if(alignment.val()=='mura-left'){
 		  			var offset=$('select[name="offset"]');
