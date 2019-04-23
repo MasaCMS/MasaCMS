@@ -2035,24 +2035,49 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		return "";
 	}
 
+	public function lookupModuleFilePath(filePath, customOnly="false") output=false {
+		return lookupDisplayObjectFilePath(argumentCollection=arguments);
+	}
+
 	public function hasDisplayObject(object) output=false {
 		return structKeyExists(variables.instance.displayObjectLookup,'#arguments.object#');
+	}
+
+	public function hasModule(object) output=false {
+		return hasDisplayObject(argumentCollection=arguments);
 	}
 
 	public function getDisplayObject(object) output=false {
 		return variables.instance.displayObjectLookup['#arguments.object#'];
 	}
 
+	public function getModule(object) output=false {
+		return getDisplayObject(argumentCollection=arguments);
+	}
+
 	public function hasDisplayObjectFilePath(filepath) output=false {
 		return structKeyExists(variables.instance.displayObjectFilePathLookup,'#arguments.filepath#');
+	}
+
+	public function hasModuleFilePath(filepath) output=false {
+		return hasDisplayObjectFilePath(argumentCollection=arguments);
 	}
 
 	public function getDisplayObjectFilePath(filepath) output=false {
 		return variables.instance.displayObjectFilePathLookup['#arguments.filepath#'];
 	}
 
+	public function getModuleFilePath(filepath) output=false {
+		return getDisplayObjectFilePath(argumentCollection=arguments);
+	}
+
 	public function setDisplayObjectFilePath(filepath, result) output=false {
 		variables.instance.displayObjectFilePathLookup['#arguments.filepath#']=arguments.result;
+		return this;
+	}
+
+	ublic function setModuleFilePath(filepath, result) output=false {
+		setDisplayObjectFilePath(argumentCollection=arguments);
 		return this;
 	}
 
