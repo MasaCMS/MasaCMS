@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance=structNew()/>
 <cfset variables.instance.mode=""/>
 <cfset variables.autoupdateurl="https://github.com/blueriver/MuraCMS/archive/master.zip"/>
-<cfset variables.instance.version="7.1.0"/>
+<cfset variables.instance.version="7.2.0"/>
 <cfset variables.instance.title="Mura CMS"/>
 <cfset variables.instance.projectname="Mura CMS"/>
 <cfset variables.instance.projectname="Mura CMS"/>

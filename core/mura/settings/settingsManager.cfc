@@ -449,13 +449,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cfif>
 
-	<cfset var pluginEvent = createObject("component","mura.event").init() />
-	<cfset pluginEvent.setValue('errors',request.muraDeferredModuleErrors)>
-	<cfset application.pluginManager.executeScripts(runat='onAfterGlobalModuleRegistration',event= pluginEvent)>
-	<cfif arrayLen(request.muraDeferredModuleErrors)>
-		<cfset application.pluginManager.executeScripts(runat='onGlobalModuleRegistrationError',event= pluginEvent)>
-	</cfif>
-
 	<cfset commitTracepoint(tracepoint1)>
 
 	<cfset tracepoint1=initTracepoint("Loading site modules")>
