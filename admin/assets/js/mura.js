@@ -16494,6 +16494,17 @@ Mura.Feed = Mura.Core.extend(
 		},
 
 		/**
+		 * no - Sets to whether to require all categoryids in list of just one.
+		 *
+		 * @param  {boolean} useCategoryIntersect Whether require a match for all categories
+		 * @return {Mura.Feed}              Self
+		 */
+		useCategoryIntersect: function(useCategoryIntersect) {
+			this.queryString += '&useCategoryIntersect=' + encodeURIComponent(useCategoryIntersect);
+			return this;
+		},
+
+		/**
 		 * includeHomepage - Sets to include the home page
 		 *
 		 * @param  {boolean} showExcludeSearch Whether to return the homepage
