@@ -362,6 +362,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset var f = ""/>
 			<cfset var doKids =false />
 			<cfset var dbType=variables.configBean.getDbType() />
+			<cfset var alpha="a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,a1,b1,c1,d1,e1,f1,g1,h1,i1,j1,k1,l1,m1,n1,o1,p1,q1,r1,s1,t1,u1,v1,w1,x1,y1,z1">
 			<cfset var sortOptions="menutitle,title,lastupdate,releasedate,orderno,displayStart,created,rating,comment,credits,type,subtype">
 			<cfset var isExtendedSort=(not listFindNoCase(sortOptions,arguments.sortBy))>
 			<cfset var nowAdjusted="">
@@ -1744,6 +1745,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								or #renderTextParamColumn('tfiles.caption')# like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(kw)#%"/>
 								or #renderTextParamColumn('tfiles.credits')# like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(kw)#%"/>
 								or #renderTextParamColumn('tfiles.alttext')# like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(kw)#%"/>
+								or #renderTextParamColumn('tfiles.filename')# like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(kw)#%"/>
 								or #renderTextParamColumn('tcontentfilemetadata.caption')# like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(kw)#%"/>
 								or #renderTextParamColumn('tcontentfilemetadata.credits')# like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(kw)#%"/>
 								or #renderTextParamColumn('tcontentfilemetadata.alttext')# like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(kw)#%"/>
