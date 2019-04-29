@@ -158,6 +158,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset iterator.setStartRow(variables.$.event('startrow'))>
 			</cfcase>
 			<cfcase value="children">
+				<cfparam name="useCategoryIntersect" default="false">
+
 				<cfif not isNumeric(variables.$.event('year'))>
 					<cfset variables.$.event('year',year(now()))>
 				</cfif>
