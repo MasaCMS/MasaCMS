@@ -101,23 +101,23 @@
 		<cfargument name="text"  type="string" required="true" />
 
 		<cfscript>
-			var final  = StructNew();
+			var final2  = StructNew();
 			var pos    = 1;
 			var result = ReFindNoCase( regex, text, pos, true );
 			var i      = 0;
 
 			while( ArrayLen( result.pos ) GT 1 ) {
 				for( i=2; i LTE ArrayLen( result.pos ); i++ ){
-					if ( not StructKeyExists( final, '$#i-1#' ) ) {
-						final[ '$#i-1#' ] = ArrayNew(1);
+					if ( not StructKeyExists( final2, '$#i-1#' ) ) {
+						final2[ '$#i-1#' ] = ArrayNew(1);
 					}
-					ArrayAppend( final[ '$#i-1#' ], Mid( text, result.pos[i], result.len[i] ) );
+					ArrayAppend( final2[ '$#i-1#' ], Mid( text, result.pos[i], result.len[i] ) );
 				}
 				pos = result.pos[2] + 1;
 				result	= ReFindNoCase( regex, text, pos, true );
 			};
 
-			return final;
+			return final2;
 		</cfscript>
 	</cffunction>
 
@@ -333,7 +333,7 @@
 					return ExpandPath( file );
 				}
 			} catch (any e){}
-			
+
 			return file;
 		</cfscript>
 	</cffunction>
