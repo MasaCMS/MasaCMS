@@ -46,7 +46,7 @@ to your own modified versions of Mura CMS.
 		jQuery.ajax({
 			url: '#application.configBean.getContext()#/admin/core/utilities/bundle/feedback.cfm?siteID=<cfoutput>#rc.siteID#</cfoutput>',
 			success: function(data) {
-				jQuery('#feedbackLoop').html(data);
+				jQuery('##feedbackLoop').html(data);
 			}
 		});
 	});*/
