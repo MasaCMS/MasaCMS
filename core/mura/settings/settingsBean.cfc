@@ -1734,8 +1734,14 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 	public function registerContentTypeDir(dir,package="") output=false {
 		var rs="";
 		var config="";
-		var expandedDir=expandPath(arguments.dir);
+		var expandedDir="";
 		var deferred={};
+
+		if(reFindNoCase("^[a-zA-Z]:\\",arguments.dir)){
+			expandedDir=arguments.dir;
+		} else {
+			expandedDir=expandPath(arguments.dir);
+		}
 
 		if ( directoryExists(expandedDir) ) {
 			rs=getBean('fileWriter').getDirectoryList( directory=expandedDir, type="dir");
@@ -1826,9 +1832,15 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		var o="";
 		var tempVal="";
 		var objectfound=(arguments.conditional) ? false : true;
-		var expandedDir=expandPath(arguments.dir);
+		var expandedDir="";
 		var utility=getBean('utility');
 		var deferred={};
+
+		if(reFindNoCase("^[a-zA-Z]:\\",arguments.dir)){
+			expandedDir=arguments.dir;
+		} else {
+			expandedDir=expandPath(arguments.dir);
+		}
 
 		if ( directoryExists(expandedDir) ) {
 			rs=getBean('fileWriter').getDirectoryList( directory=expandedDir, type="dir");
