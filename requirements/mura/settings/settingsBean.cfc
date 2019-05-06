@@ -1344,8 +1344,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var objectArgs={}>
 	<cfset var o="">
 	<cfset var objectfound=(arguments.conditional) ? false : true>
+	<cfset var tmpPath="">
 
-	<cfif directoryExists(expandPath(arguments.dir))>
+	<cfif reFindNoCase("^[a-zA-Z]:\\",arguments.dir)>
+		<cfset tmpPath=arguments.dir>
+	<cfelse>
+		<cfset tmpPath=expandPath(arguments.dir)>
+	</cfif>
+	<cfif directoryExists(tmpPath)>
 		<cfdirectory name="rs" directory="#expandPath(arguments.dir)#" action="list" type="dir">
 		<cfloop query="rs">
 
