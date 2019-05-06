@@ -113,8 +113,14 @@ structDelete(request,'muraSecrets');
 
 request.muraInDocker=len(getSystemEnvironmentSetting('MURA_DATASOURCE'));
 this.configPath=getDirectoryFromPath(getCurrentTemplatePath());
+
 //  Application name, should be unique
-this.name = "mura" & hash(getCurrentTemplatePath());
+if(len(getSystemEnvironmentSetting('MURA_APPNAME'))) {
+	this.name=getSystemEnvironmentSetting('MURA_APPNAME');
+} else {
+	this.name="mura" & hash(getCurrentTemplatePath());
+}
+
 //  How long application vars persist
 this.applicationTimeout = createTimeSpan(3,0,0,0);
 //  Where should cflogin stuff persist
