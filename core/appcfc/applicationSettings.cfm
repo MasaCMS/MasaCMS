@@ -113,8 +113,33 @@ structDelete(request,'muraSecrets');
 
 request.muraInDocker=len(getSystemEnvironmentSetting('MURA_DATASOURCE'));
 this.configPath=getDirectoryFromPath(getCurrentTemplatePath());
+
+baseDir= left(this.configPath,len(this.configPath)-13);
+this.baseDir=baseDir;
+variables.baseDir=baseDir;
+
+if ( !directoryExists(baseDir & "/config") ) {
+	directoryCreate(baseDir & "/config");
+}
+
+if ( !fileExists(baseDir & "/config/settings.ini.cfm") ) {
+	variables.tracePoint=initTracePoint("Writing config/settings.ini.cfm");
+	fileCopy("#baseDir#/core/templates/settings.template.cfm","#baseDir#/config/settings.ini.cfm");
+	try {
+		fileSetAccessMode("#baseDir#/config/settings.ini.cfm","777");
+	} catch (any cfcatch) {}
+	commitTracePoint(variables.tracePoint);
+}
+
+variables.tracePoint=initTracePoint("Reading config/settings.ini.cfm");
+variables.iniPath=getDirectoryFromPath(getCurrentTemplatePath()) & "/../../config/settings.ini.cfm";
+initINI(variables.iniPath);
+variables.ini.settings.mode=evalSetting(variables.ini.settings.mode);
+commitTracePoint(variables.tracePoint);
+
 //  Application name, should be unique
-this.name = "mura" & hash(getCurrentTemplatePath());
+this.name=evalSetting(getINIProperty("appname","mura" & hash(getCurrentTemplatePath())));
+
 //  How long application vars persist
 this.applicationTimeout = createTimeSpan(3,0,0,0);
 //  Where should cflogin stuff persist
@@ -147,28 +172,7 @@ this.secureJSONPrefix = "";
 this.welcomeFileList = "";
 //  Compile cfml in all cfincluded files
 this.compileextforinclude="*";
-baseDir= left(this.configPath,len(this.configPath)-13);
 
-if ( !directoryExists(baseDir & "/config") ) {
-	directoryCreate(baseDir & "/config");
-}
-
-if ( !fileExists(baseDir & "/config/settings.ini.cfm") ) {
-	variables.tracePoint=initTracePoint("Writing config/settings.ini.cfm");
-	fileCopy("#baseDir#/core/templates/settings.template.cfm","#baseDir#/config/settings.ini.cfm");
-	try {
-		fileSetAccessMode("#baseDir#/config/settings.ini.cfm","777");
-	} catch (any cfcatch) {}
-	commitTracePoint(variables.tracePoint);
-}
-
-this.baseDir=baseDir;
-variables.baseDir=baseDir;
-variables.tracePoint=initTracePoint("Reading config/settings.ini.cfm");
-variables.iniPath=getDirectoryFromPath(getCurrentTemplatePath()) & "/../../config/settings.ini.cfm";
-initINI(variables.iniPath);
-variables.ini.settings.mode=evalSetting(variables.ini.settings.mode);
-commitTracePoint(variables.tracePoint);
 //  define custom coldfusion mappings. Keys are mapping names, values are full paths
 //  This is here for older mappings.cfm files
 mapPrefix="";
