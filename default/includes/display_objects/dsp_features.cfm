@@ -120,7 +120,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</dl>
 		</cfloop>	
 		<dl class="moreResults">
-		<dt>&raquo; <a href="#variables.#.siteConfig('context')##getURLStem(request.siteid,rssection.filename)#">#variables.rbFactory.getKey('list.viewall')#</a></dt></dl>
+		<dt>&raquo; <a href="#variables.$.siteConfig('context')##getURLStem(request.siteid,rssection.filename)#">#variables.rbFactory.getKey('list.viewall')#</a></dt></dl>
 </div>
 <cfelse>
 	<!-- Empty Portal Features '#rsSection.menutitle#' -->
