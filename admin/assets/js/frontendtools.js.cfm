@@ -123,6 +123,8 @@
 										modalProxy.post({cmd:'setObjectParams',params:data});
 									}
 								}
+								
+								Mura.processAsyncObject(item.node)
 						}
 
 						if(Mura(this).attr('data-resourcetype') =='root'){
