@@ -52,6 +52,12 @@ e.g. modules/collection/index.cfm
 <cfparam name="objectParams.metacssstyles.textalign" default="">
 <cfparam name="request.hasbasicoptions" default="true">
 <cfset request.hasmetaoptions=true>
+
+<!--- todo: 
+since the label and other basic options are now part of the objectconfigurator.cfm custom tag, do we need this file? (if not, remove inclusions from other configurators)
+ --->
+
+
 <!--- <cfif not (IsBoolean(objectParams.isbodyobject) and objectParams.isbodyobject)>
 	<cfoutput>
 
