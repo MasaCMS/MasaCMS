@@ -52,7 +52,7 @@ e.g. modules/collection/index.cfm
 <cfparam name="objectParams.metacssstyles.textalign" default="">
 <cfparam name="request.hasbasicoptions" default="true">
 <cfset request.hasmetaoptions=true>
-<cfif not (IsBoolean(objectParams.isbodyobject) and objectParams.isbodyobject)>
+<!--- <cfif not (IsBoolean(objectParams.isbodyobject) and objectParams.isbodyobject)>
 	<cfoutput>
 
 				<div id="labelContainer">
@@ -65,3 +65,4 @@ e.g. modules/collection/index.cfm
 				</div>
 	</cfoutput>
 </cfif>
+ --->
