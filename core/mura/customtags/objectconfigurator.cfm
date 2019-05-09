@@ -110,6 +110,9 @@
 		</div> <!--- /end panel --->
 		</cfif>
 
+		<!--- todo: merge this included content back to this file --->
+		<cfinclude template="objectconfiguratorpanels.cfm">
+
 		<cfif request.haspositionoptions>
 			<!--- Position panel--->
 			<div class="mura-panel panel">
@@ -185,139 +188,6 @@
 				</div> <!--- /end  mura-panel-body --->
 			</div> <!--- /end position panel --->
 		</cfif>
-
-		<!--- Style panel (with nested layout model panels) --->
-		<div class="mura-panel panel">
-			<div class="mura-panel-heading" role="tab" id="heading-style">
-				<h4 class="mura-panel-title">
-					<a class="collapsed" role="button" data-toggle="collapse" data-parent="##configurator-panels" href="##panel-style" aria-expanded="false" aria-controls="panel-style">
-						Style
-					</a>
-				</h4>
-			</div>
-			<div id="panel-style" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-style">
-				<div class="mura-panel-body">
-						<div class="container">
-							<div class="mura-control-group">
-								<div class="panel-gds-box" id="panel-gds-outer" data-gdsel="panel-style-outer"><span>Outer</span>
-									<cfif request.hasmetaoptions>
-										<div class="panel-gds-box" id="panel-gds-meta" data-gdsel="panel-style-meta"><span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.label')#</span></div>
-									</cfif>
-									<div class="panel-gds-box" id="panel-gds-inner" data-gdsel="panel-style-content"><span>Content</span></div>
-								</div>
-								<div class="mura-panel-group" id="style-panels" role="tablist" aria-multiselectable="true">
-									<div class="mura-panel panel">
-										<div id="heading-style-outer" class="mura-panel-heading" role="tab">
-											<h4 class="mura-panel-title">
-												<a class="collapsed" role="button" data-toggle="collapse" data-parent="##style-panels" href="##panel-style-outer" aria-expanded="false" aria-controls="panel-style-outer">
-													Outer
-												</a>
-											</h4>
-										</div>
-										<div id="panel-style-outer" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-style-outer">
-											<div class="mura-panel-body">
-												<div class="mura-control-group">
-													<label>
-														CSS ID
-													</label>
-													<input name="cssid" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.cssid)#" maxlength="255">
-												</div>
-												<div class="mura-control-group">
-													<label>
-														CSS Class
-													</label>
-													<input name="cssclass" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.cssclass)#" maxlength="255">
-													<input name="class" type="hidden" class="objectParam" value="#esapiEncode('html_attr',attributes.params.class)#"/>
-												</div>
-											</div>
-										</div>
-									</div>
-									<cfif request.hasmetaoptions>
-										<div class="mura-panel panel">
-											<div id="heading-style-meta" class="mura-panel-heading" role="tab">
-											<h4 class="mura-panel-title">
-												<a class="collapsed" role="button" data-toggle="collapse" data-parent="##style-panels" href="##panel-style-meta" aria-expanded="false" aria-controls="panel-style-meta">
-													Inner Meta
-												</a>
-											</h4>
-											</div>
-											<div id="panel-style-meta" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-style-meta">
-												<div class="mura-panel-body">
-													<div class="mura-control-group">
-														<label>
-															CSS ID
-														</label>
-														<input name="metacssid" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.metacssid)#" maxlength="255">
-													</div>
-													<div class="mura-control-group">
-														<label>
-															CSS Class
-														</label>
-														<input name="metacssclass" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.metacssclass)#" maxlength="255">
-													</div>
-												</div>
-											</div>
-										</div>
-									</cfif>
-									<div class="mura-panel panel">
-										<div id="heading-style-content" class="mura-panel-heading" role="tab">
-											<h4 class="mura-panel-title">
-												<a class="collapsed" role="button" data-toggle="collapse" data-parent="##style-panels" href="##panel-style-content" aria-expanded="false" aria-controls="panel-style-content">
-													Inner Content
-												</a>
-											</h4>
-										</div>
-										<div id="panel-style-content" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-style-content">
-											<div class="mura-panel-body">
-												<div class="mura-control-group">
-													<label>
-														CSS ID
-													</label>
-													<input name="contentcssid" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.contentcssid)#" maxlength="255">
-												</div>
-												<div class="mura-control-group">
-													<label>
-														CSS Class
-													</label>
-													<input name="contentcssclass" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.contentcssclass)#" maxlength="255">
-												</div>
-											</div>
-										</div>
-									</div> 
-								</div> 
-							</div> <!--- /end mura control group --->
-						</div> <!--- /end container --->
-
-
-						<!--- todo: remove this if not used --->
-						<!---
-						<div class="mura-control-group">
-							<label>
-								#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.backgroundcolor')#
-							</label>
-							<input name="backgroundColor" class="objectStyle colorpicker" type="text" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundColor)#" maxlength="255">
-						</div>
-						<div class="mura-control-group">
-							<label>
-								#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.backgroundimage')#
-							</label>
-							<div class="btn-group" role="group">
-								<button type="button" class="btn mura-ckfinder" data-target="backgroundImageRaw" data-type="image" data-completepath=false>Select</button>
-								<button type="button" id="backgroundImageClear" class="btn">Clear</button>
-							</div>
-							<input name="backgroundImageRaw" type="hidden" id="backgroundImageRaw">
-							<input name="backgroundImage" id="backgroundImage" class="objectStyle" type="hidden" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundImage)#" maxlength="255">
-						</div>
-							--->
-
-
-				</div> <!--- /end  mura-panel-body --->
-			</div> <!--- /end  mura-panel-collapse --->
-		</div> <!--- /end style panel --->
-
-		<!--- todo: merge this included content back to this file --->
-		<cfinclude template="objectconfiguratorpanels.cfm">
-
 	</div><!--- /end panels --->
 	</cfoutput>
 </div> <!--- /end availableObjectContainer --->
