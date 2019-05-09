@@ -1821,11 +1821,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="moduleid" default="00000000000000000000000000000000000">
 	<cfargument name="applyGlobal" default="true">
 	<cfset var rs="">
-	<cfif directoryExists(expandPath(arguments.dir))>
+	<cfset var expandedDir="">
+
+	<cfif reFindNoCase("^[a-zA-Z]:\\",arguments.dir)>
+		<cfset expandedDir=arguments.dir>
+	<cfelse>
+		<cfset expandedDir=expandPath(arguments.dir)>
+	</cfif>
+
+	<cfif directoryExists(expandedDir)>
 		<cfif not isDefined('arguments.package') or isDefined('arguments.package') and not len(arguments.package)>
 			<cfset arguments.package=replace(replace(right(arguments.dir, len(arguments.dir)-1), "\", "/", "ALL"),"/",".","ALL")>
 		</cfif>
-		<cfdirectory name="rs" directory="#expandPath(arguments.dir)#" action="list" filter="">
+		<cfdirectory name="rs" directory="#expandedDir#" action="list" filter="">
 		<cfloop query="rs">
 			<!--- Registers handlers last so that that all entities defined will be available --->
 			<cfif rs.type eq 'dir' and not listFindNoCase('archived,archive,handlers,eventhandlers,event_handlers',rs.name)>

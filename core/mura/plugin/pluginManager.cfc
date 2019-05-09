@@ -2488,7 +2488,7 @@ select * from tplugins order by #arguments.orderby#
 							<cfif not isObject(eventHandler)>
 								<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
 							</cfif>
-							<cfset tracePoint=initTracePoint("#eventHandlere.getValue('_objectName')#.#arguments.runat#")>
+							<cfset tracePoint=initTracePoint("#eventHandler.getValue('_objectName')#.#arguments.runat#")>
 							<cfsavecontent variable="local.theDisplay1">
 							<cfinvoke component="#eventHandler#"method="#arguments.runat#" returnVariable="local.theDisplay2">
 								<cfinvokeargument name="event" value="#arguments.event#">
@@ -2548,7 +2548,7 @@ select * from tplugins order by #arguments.orderby#
 							<cfif not isObject(eventHandler)>
 								<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
 							</cfif>
-							<cfset tracePoint=initTracePoint("#eventHandlere.getValue('_objectName')#.#arguments.runat#")>
+							<cfset tracePoint=initTracePoint("#eventHandler.getValue('_objectName')#.#arguments.runat#")>
 							<cfsavecontent variable="local.theDisplay1">
 							<cfinvoke component="#eventHandler#"method="#arguments.runat#" returnVariable="local.theDisplay2">
 								<cfinvokeargument name="event" value="#arguments.event#">
