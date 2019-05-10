@@ -71,6 +71,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.hideRestrictedNav=false>
 <cfset this.templateArray=[]>
 <cfset this.collectionLayoutArray=[]>
+<cfset this.editableAttributesArray=[]>
+<cfset this.imageAttributesArray=[]>
 <cfset this.styleLookup={
 		'textAlign'='text-align',
 		'textDecoration'='text-decoration',
@@ -243,6 +245,7 @@ General Classes
 <cfset this.formButtonCancelClass = "form-cancel btn-primary pull-right">
 <cfset this.formRequiredLabel= "Required">
 
+<cfset this.expandedContentContainerClass="container">
 
 <!--- Images --->
 <cfset this.imageClass="img-thumbnail">
@@ -3152,7 +3155,7 @@ Display Objects
 		return '';
 	}
 
-	public function outputMuraCSS(includeskin=true, version='7.1', complete=false, useProtocol=true) {
+	public function outputMuraCSS(includeskin=true, version='7.2', complete=false, useProtocol=true) {
 		if ( !fileExists(expandPath('/muraWRM/core/modules/v1/core_assets/css/mura.' & arguments.version & '.min.css')) ) {
 			arguments.version = '7.0';
 		}
