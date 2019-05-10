@@ -1928,7 +1928,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			}
 		}
 
-		var returnStruct=getFilteredValues(entity,true,entity.getEntityName(),arguments.siteid,arguments.expand,pk);
+		var returnStruct=getFilteredValues(entity=entity,expanded=true,entityConfigName=entity.getEntityName(),siteid=arguments.siteid,expandLinks=arguments.expand,pk=pk,$=$);
 
 		returnStruct.saveErrors=saveErrors;
 		returnStruct.errors=errors;
@@ -1944,9 +1944,13 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		return returnStruct;
 	}
 
-	function getFilteredValues(entity,expanded=0,entityConfigName,siteid,expandLinks='',pk='',editablecheck=false,expandedProp=''){
+	function getFilteredValues(entity,expanded=0,entityConfigName,siteid,expandLinks='',pk='',editablecheck=false,expandedProp='',$){
 		var fields='';
 		var vals={};
+
+		if(!isDefined('arguments.$')){
+			arguments.$=getBean('$').init(arguments.siteid);
+		}
 
 		if(isAggregateQuery()){
 			arguments.expanded=0;
@@ -2056,6 +2060,13 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			}
 			if(allFields || arrayFind(fields,'url')){
 				vals.url=entity.getURL(complete=true);
+			}
+
+			var imageAttributes=(isdefined('renderer.imageAttributesArray') && isArray(renderer.imageAttributesArray)) ? renderer.editableAttributesArray : [];
+			for(var imgAttr in imageAttributes){
+				if(structKeyExists(vals,'#imgAttr#') && isValid('uuid',vals['#imgAttr#'])){
+					vals['#imgAttr#images']=setImageURLS(entity,imgAttr,$);
+				}
 			}
 		}
 
@@ -2218,7 +2229,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			}
 		}
 
-		var returnStruct=getFilteredValues(entity=entity,expanded=arguments.expanded,entityConfigName=arguments.entityName,siteid=arguments.siteid,expandLinks=arguments.expand,pk=pk,editablecheck=true);
+		var returnStruct=getFilteredValues(entity=entity,expanded=arguments.expanded,entityConfigName=arguments.entityName,siteid=arguments.siteid,expandLinks=arguments.expand,pk=pk,editablecheck=true,$=$);
 
 		if(isDefined('url.ishuman')){
 			request.cffpJS=true;
@@ -2256,7 +2267,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			throw(type="authorization");
 		}
 
-		var returnStruct=getFilteredValues(entity,true,entity.getEntityName(),arguments.siteid,arguments.expand,pk,true);
+		var returnStruct=getFilteredValues(entity=entity,expanded=true,entityConfigName=entity.getEntityName(),siteid=arguments.siteid,expandLinks=arguments.expand,pk=pk,editablecheck=true,$=$);
 
 		if(isDefined('url.ishuman')){
 			request.cffpJS=true;
@@ -2457,7 +2468,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			if(item.getEntityName() == 'entity'){
 				arrayAppend(returnArray, getPrimaryEntityStruct(item,$));
 			} else {
-				arrayAppend(returnArray, getFilteredValues(item,arguments.expanded,entityConfigName,arguments.siteid,arguments.expand,pk));
+				arrayAppend(returnArray, getFilteredValues(enitity=item,expanded=arguments.expanded,entityConfigName=entityConfigName,siteid=arguments.siteid,expandLinks=arguments.expand,pk=pk,$=$));
 			}
 
 		}
@@ -2527,7 +2538,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				throw(type="authorization");
 			}
 
-			itemStruct=getFilteredValues(item,arguments.expanded,entityConfigName,arguments.siteid,arguments.expand,pk);
+			itemStruct=getFilteredValues(entity=item,expanded=arguments.expanded,entityConfigName=entityConfigName,siteid=arguments.siteid,expandLinks=arguments.expand,pk=pk,$=$);
 
 			arrayAppend(returnArray, itemStruct );
 
@@ -2785,7 +2796,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			if(item.getEntityName() == 'entity'){
 				arrayAppend(returnArray, getPrimaryEntityStruct(item,$));
 			} else {
-				arrayAppend(returnArray, getFilteredValues(item,arguments.expanded,entityConfigName,arguments.siteid,arguments.expand,pk));
+				arrayAppend(returnArray, getFilteredValues(entity=item,expanded=arguments.expanded,entityConfigName=entityConfigName,siteid=arguments.siteid,expandLinks=arguments.expand,pk=pk,$=$));
 			}
 		}
 
@@ -3048,7 +3059,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		while(arguments.iterator.hasNext()){
 			item=arguments.iterator.next();
-			itemStruct=getFilteredValues(item,arguments.expanded,entityConfigName,arguments.siteid,arguments.expand,pk);
+			itemStruct=getFilteredValues(entity=item,expanded=arguments.expanded,entityConfigName=entityConfigName,siteid=arguments.siteid,expandLinks=arguments.expand,pk=pk,$=$);
 
 			arrayAppend(returnArray, itemStruct );
 		}
@@ -3349,9 +3360,9 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		return trim(arguments.str);
 	}
 
-	function setImageURLs(entity){
+	function setImageURLs(entity,attr="fileid",$){
 
-		if(arguments.entity.hasImage()){
+		if(arguments.attr == 'fileid' && arguments.entity.hasImage()){
 			if(!isDefined('variables.images')){
 				variables.images=getBean('settingsManager').getSite(entity.getSiteID()).getCustomImageSizeIterator();
 			}
@@ -3372,6 +3383,34 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				returnStruct['#image.getName()#']=entity.getImageURL(secure=secure,complete=1,size=image.getName());
 			}
 			variables.images.reset();
+		} else if (arguments.attr != 'fileid' && isValid('uuid',entity.get(arguments.attr)) ){
+			 var fileEXT=getBean("fileManager").readMeta(entity.get(arguments.attr)).fileEXT;
+			 if(ListFindNoCase('jpg,jpeg,png,gif,svg', fileEXT)){
+				 if(!isDefined('arguments.$')){
+					 arguments.$=getBean('$').init(arguments.entity.getSiteid());
+				 }
+				 if(!isDefined('variables.images')){
+					 variables.images=getBean('settingsManager').getSite(entity.getSiteID()).getCustomImageSizeIterator();
+				 }
+
+				 var image='';
+				 var secure=getBean('settingsManager').getSite(entity.getSiteID()).getUseSSL();
+				 var renderer=$.getContentRenderer();
+
+				 var returnStruct={
+	 				small=renderer.getURLForImage(fileid=entity.get(arguments.attr),secure=secure,complete=1,size='small'),
+	 				medium=renderer.getURLForImage(fileid=entity.get(arguments.attr),secure=secure,complete=1,size='medium'),
+	 				large=renderer.getURLForImage(fileid=entity.get(arguments.attr),secure=secure,complete=1,size='large'),
+	 				source=renderer.getURLForImage(fileid=entity.get(arguments.attr),secure=secure,complete=1,size='source')
+	 			};
+
+				 while(variables.images.hasNext()){
+					 image=variables.images.next();
+					 returnStruct['#image.getName()#']=renderer.getURLForImage(fileid=entity.get(arguments.attr),secure=secure,complete=1,size=image.getName(),fileExt=fileEXT);
+				 }
+			 } else {
+				 return returnStruct;
+			 }
 		} else {
 			var returnStruct={};
 		}
