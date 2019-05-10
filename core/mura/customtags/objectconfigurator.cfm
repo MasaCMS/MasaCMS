@@ -104,7 +104,7 @@
 	<cfoutput>
 
 		<!--- close the basic or style panel --->
-		<cfif request.hasmetaoptions or request.hasbasicoptions>
+		<cfif request.hasbasicoptions>
 				</div> <!--- /end  mura-panel-collapse --->
 			</div> <!--- /end  mura-panel-body --->
 		</div> <!--- /end panel --->
