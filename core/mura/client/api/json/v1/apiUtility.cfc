@@ -1382,6 +1382,10 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			}
 		}
 
+		var result= getSerializer().serialize(arguments.response);
+
+		cfheader( name="ETag", value=hash(result));
+
 		return getSerializer().serialize(arguments.response);
 	}
 
@@ -2468,7 +2472,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			if(item.getEntityName() == 'entity'){
 				arrayAppend(returnArray, getPrimaryEntityStruct(item,$));
 			} else {
-				arrayAppend(returnArray, getFilteredValues(enitity=item,expanded=arguments.expanded,entityConfigName=entityConfigName,siteid=arguments.siteid,expandLinks=arguments.expand,pk=pk,$=$));
+				arrayAppend(returnArray, getFilteredValues(entity=item,expanded=arguments.expanded,entityConfigName=entityConfigName,siteid=arguments.siteid,expandLinks=arguments.expand,pk=pk,$=$));
 			}
 
 		}
