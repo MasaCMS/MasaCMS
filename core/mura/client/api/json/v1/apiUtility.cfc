@@ -3408,6 +3408,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 					 image=variables.images.next();
 					 returnStruct['#image.getName()#']=renderer.getURLForImage(fileid=entity.get(arguments.attr),secure=secure,complete=1,size=image.getName(),fileExt=fileEXT);
 				 }
+				 variables.images.reset();
 			 } else {
 				 return returnStruct;
 			 }
