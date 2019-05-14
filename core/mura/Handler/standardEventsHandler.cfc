@@ -903,7 +903,11 @@
 				}
 
 				if(expandAll || listFindNoCase(expand,'crumbs')){
-					result.crumbs=apiUtility.findCrumbArray(entityName='content',id=entity.getContentID(),siteid=$.event('siteid'),iterator=entity.getCrumbIterator(),expand='',expanded=1,expandedProp=p.name);
+					result.crumbs=apiUtility.findCrumbArray(entityName='content',id=entity.getContentID(),siteid=$.event('siteid'),iterator=entity.getCrumbIterator(),expand='',expanded=1,expandedProp='crumbs');
+				}
+
+				if(expandAll || listFindNoCase(expand,'relatedcontent')){
+					result.relatedcontent=apiUtility.findRelatedContent(entity=entity,siteid=$.event('siteid'),expand='',expanded=1,expandedProp='relatedcontent');
 				}
 			}
 
