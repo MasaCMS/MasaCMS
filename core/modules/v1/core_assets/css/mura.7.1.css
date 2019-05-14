@@ -549,34 +549,34 @@ aside .rating {
   left: -9999px;
 }
 .rating.zero {
-  background-image: url(../includes/display_objects/rater/images/star_zero.png);
+  background-image: url(../../rater/images/star_zero.png);
 }
 .rating.one {
-  background-image: url(../includes/display_objects/rater/images/star_one.png);
+  background-image: url(../../rater/images/star_one.png);
 }
 .rating.onehalf {
-  background-image: url(../includes/display_objects/rater/images/star_onehalf.png);
+  background-image: url(../../rater/images/star_onehalf.png);
 }
 .rating.two {
-  background-image: url(../includes/display_objects/rater/images/star_two.png);
+  background-image: url(../../rater/images/star_two.png);
 }
 .rating.twohalf {
-  background-image: url(../includes/display_objects/rater/images/star_twohalf.png);
+  background-image: url(../../rater/images/star_twohalf.png);
 }
 .rating.three {
-  background-image: url(../includes/display_objects/rater/images/star_three.png);
+  background-image: url(../../rater/images/star_three.png);
 }
 .rating.threehalf {
-  background-image: url(../includes/display_objects/rater/images/star_threehalf.png);
+  background-image: url(../../rater/images/star_threehalf.png);
 }
 .rating.four {
-  background-image: url(../includes/display_objects/rater/images/star_four.png);
+  background-image: url(../../rater/images/star_four.png);
 }
 .rating.fourhalf {
-  background-image: url(../includes/display_objects/rater/images/star_fourhalf.png);
+  background-image: url(../../rater/images/star_fourhalf.png);
 }
 .rating.five {
-  background-image: url(../includes/display_objects/rater/images/star_five.png);
+  background-image: url(../../rater/images/star_five.png);
 }
 .mura-index .credits {
   color: #666;
@@ -1334,5 +1334,3 @@ hr {
     padding: 10px;
   }
 }
-/* NOTE: References to #svXXXXXXX are deprecated in favor of classes; other ID's may be as well depending on DOM scripting methods */
-/*# sourceMappingURL=mura.7.1.css.map */
