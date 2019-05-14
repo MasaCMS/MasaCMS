@@ -815,12 +815,17 @@
 			var apiUtility=$.siteConfig().getApi('json','v1');
 			var result=structCopy($.content().getAllValues());
 			var renderer=$.getContentRenderer();
+			var editableAttributes=(isdefined('renderer.editableAttributesArray') && isArray(renderer.editableAttributesArray)) ? renderer.editableAttributesArray : [];
 
 			request.cffpJS=true;
 
 			result.template=renderer.getTemplate();
 			result.conanicalURL=renderer.getConanicalURL();
 			result.metadesc=renderer.getMetaDesc();
+
+			for(var attr in editableAttributes){
+				result['#attr.attribute#']=$.renderEditableAttribute(argumentCollection=attr);
+			}
 
 			$.event('response',result);
 
@@ -933,7 +938,14 @@
 
 			result.id=result.contentid;
 			result.links=apiUtility.getLinks($.content());
-			result.images=apiUtility.setImageUrls($.content(),$);
+			result.images=apiUtility.setImageUrls($.content(),'fileid',$);
+
+			var imageAttributes=(isdefined('renderer.imageAttributesArray') && isArray(renderer.imageAttributesArray)) ? renderer.imageAttributesArray : [];
+			for(var img in imageAttributes){
+				if(isValid('uuid',$.content(img))){
+					result['#img#images']=apiUtility.setImageUrls($.content(),img,$);
+				}
+			}
 
 			getpagecontext().getresponse().setcontenttype('application/json; charset=utf-8');
 
