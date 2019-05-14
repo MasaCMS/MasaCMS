@@ -1007,7 +1007,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 							if(arrayLen(pathInfo) == 5){
 								params.relatedcontentsetid=pathInfo[5];
 							} else {
-								param name='params.relatedcontentsetid' default='default';
+								param name='params.relatedcontentsetid' default=$.globalConfig().getValue(property='relatedcontentsetid', defaultValue="default");
 							}
 
 							if(!allowAccess(params.entityName,$)){
@@ -1962,6 +1962,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		var doFields=!arguments.expanded || (
 				arguments.expandedProp != 'crumbs'
+				&& arguments.expandedProp != 'relatedcontent'
 				&& isdefined('url.entityname') && len(url.entityname) && (
 					url.entityname==entity.getEntityName() || url.entityname==entityConfigName
 
@@ -1983,7 +1984,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				}
 
 				if(listFindNoCase('content,contentnav,comment,category,contentCategoryAssign',arguments.entity.getEntityName())){
-					if(listFindNoCase(arguments.expandlinks,'crumbs')){
+					if(listFindNoCase('*,all',arguments.expandlinks) || listFindNoCase(arguments.expandlinks,'crumbs')){
 						if(!listFindNoCase(fields,'links')){
 							fields=listAppend(fields,'links');
 						}
@@ -2345,8 +2346,12 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 			if(expandAll || listFindNoCase(arguments.expand,'crumbs')){
 				if(isDefined('arguments.itemStruct.links.crumbs') && isDefined('arguments.itemStruct.path')){
-					arguments.itemStruct.crumbs=findCrumbArray(entityName=arguments.itemStruct.entityName,id=arguments.itemStruct.id,siteid=arguments.siteid,iterator=arguments.entity.getCrumbIterator(),expand='',expanded=arguments.expanded,expandedProp=p.name);
+					arguments.itemStruct.crumbs=findCrumbArray(entityName=arguments.itemStruct.entityName,id=arguments.itemStruct.id,siteid=arguments.siteid,iterator=arguments.entity.getCrumbIterator(),expand='',expanded=arguments.expanded,expandedProp='crumbs');
 				}
+			}
+
+			if(listFindNoCase('content,contentnav',arguments.entity.getEntityName()) && (expandAll || listFindNoCase(arguments.expand,'relatedcontent')) ){
+				arguments.itemStruct.relatedcontent=findRelatedContent(entity=arguments.entity,siteid=arguments.siteid,expand='',expanded=arguments.expanded,expandedProp='relatedcontent');
 			}
 
 		}
@@ -3304,7 +3309,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		return links;
 	}
 
-	function findRelatedContent(id,siteid,params,arguments,expand='',expanded=0){
+	function findRelatedContent(id='',siteid,params,arguments,expand='',expanded=0,entity='',relatedContentSetID='',expandedProp=''){
 		param name="arguments.params" default=url;
 
 		var $=getBean('$').init(arguments.siteid);
@@ -3313,33 +3318,34 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			throw(type="authorization");
 		}
 
-		checkForChangesetRequest('content',arguments.siteid);
-
-		var entity=$.getBean('content').loadBy(contentid=arguments.id);
-
 		var args={};
 
-		if(isDefined('arguments.params.sortby') && len(arguments.params.sortby)){
-			args.sortBy=arguments.params.sortby;
-		}
+		if(isSimpleValue(arguments.entity)){
+			checkForChangesetRequest('content',arguments.siteid);
+			arguments.entity=$.getBean('content').loadBy(contentid=arguments.id);
 
-		if(isDefined('arguments.params.sortdirection') && len(arguments.params.sortdirection)){
-			args.sortdirection=arguments.params.sortdirection;
-		}
+			if(isDefined('arguments.params.sortby') && len(arguments.params.sortby)){
+				args.sortBy=arguments.params.sortby;
+			}
 
-		if(isDefined('arguments.params.name') && len(arguments.params.name)){
-			args.name=arguments.params.name;
-		}
+			if(isDefined('arguments.params.sortdirection') && len(arguments.params.sortdirection)){
+				args.sortdirection=arguments.params.sortdirection;
+			}
 
-		if(isDefined('arguments.params.reverse') && len(arguments.params.reverse)){
-			args.reverse=arguments.params.reverse;
-		}
+			if(isDefined('arguments.params.name') && len(arguments.params.name)){
+				args.name=arguments.params.name;
+			}
 
-		if(isDefined('arguments.params.relatedContentSetID') && len(arguments.params.relatedContentSetID)){
-			args.relatedContentSetID=arguments.params.relatedContentSetID;
-		}
+			if(isDefined('arguments.params.reverse') && len(arguments.params.reverse)){
+				args.reverse=arguments.params.reverse;
+			}
 
-		var iterator=entity.getRelatedContentIterator(argumentCollection=args);
+			if(isDefined('arguments.params.relatedContentSetID') && len(arguments.params.relatedContentSetID)){
+				args.relatedContentSetID=arguments.params.relatedContentSetID;
+			}
+		} else {
+			args.relatedContentSetID=arguments.relatedContentSetID;
+		}
 
 		var returnArray=[];
 		var itemStruct={};
@@ -3349,10 +3355,31 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		var subItemArray=[];
 		var p='';
 		var pk=entity.getPrimaryKey();
+		var iterator='';
+		var returnArray=[];
 
-		setIteratorProps(iterator,arguments.params);
-		var returnArray=iteratorToArray(iterator=iterator,siteid=arguments.siteid,expand=arguments.expand,$=$,expanded=arguments.expanded);
-		return packageIteratorArray(iterator,returnArray,'findRelatedContent');
+		if(arguments.relatedContentSetID=='' || arguments.relatedContentSetID=='*' || arguments.relatedContentSetID=='all'){
+
+			var subtype=getBean('configBean').getClassExtensionManager().getSubTypeByName(siteid=arguments.siteid,type=entity.getType(),subtype=entity.getSubType());
+			var rssets=subType.getRelatedContentSets(includeInheritedSets=true);
+			var result={};
+
+			for(var i=1;i<=arrayLen(rssets);i++){
+				args.relatedContentSetID=rssets[i].getName();
+				iterator=arguments.entity.getRelatedContentIterator(argumentCollection=args);
+				setIteratorProps(iterator,arguments.params);
+				returnArray=iteratorToArray(iterator=iterator,siteid=arguments.siteid,expand=arguments.expand,$=$,expanded=arguments.expanded,expandedProp=arguments.expandedProp);
+				result['#rssets[i].getName()#']=packageIteratorArray(iterator,returnArray,'findRelatedContent');
+			}
+
+			return result;
+		} else {
+			iterator=entity.getRelatedContentIterator(argumentCollection=args);
+			setIteratorProps(iterator,arguments.params);
+			returnArray=iteratorToArray(iterator=iterator,siteid=arguments.siteid,expand=arguments.expand,$=$,expanded=arguments.expanded,expandedProp='relatedcontent');
+			return packageIteratorArray(iterator,returnArray,'findRelatedContent');
+		}
+
 	}
 
 	function applyRemoteFormat(str){
