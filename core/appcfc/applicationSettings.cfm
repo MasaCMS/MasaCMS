@@ -304,6 +304,8 @@ try {
 	include "#variables.context#/config/cfapplication.cfm";
 	request.hasCFApplicationCFM=true;
 } catch (any cfcatch) {
+	writeLog(type="Error", file="exception", text="If the following error is a missing include , no action is required");
+	writeLog(type="Error", file="exception", text="#e#");
 	request.hasCFApplicationCFM=false;
 }
 if ( request.muraSessionManagement && len(evalSetting(getINIProperty("cookiedomain",""))) ) {
