@@ -172,6 +172,16 @@
 </div> <!--- /end availableObjectContainer --->
 
 	<script>
+		$(document).ready(function(){
+			$('#configuratorContainer input.numeric').on('click', function(){
+				$(this).select();
+			});
+			$('#configuratorContainer input.numeric').on('keyup', function(){
+				var v = $(this).val().replace(/[^0-9]/g,'');
+				$(this).val(v);
+			});
+		})
+
 		$(function(){
 
 			var inited=false;
@@ -195,15 +205,6 @@
 			*/
 			$('input[name="cssclass"],select[name="alignment"],select[name="width"],select[name="offset"],select[name="constraincontent"]').on('change', function() {
 				setPlacementVisibility();
-			});
-
-			function restrictNumeric(el){
-				var v = $(el).val();
-				$(el).val = v.replace(/[^0-9]/g,'');
-			}
-
-			$('input.numeric').on('keyup', function(){
-				restrictNumeric($(this));
 			});
 
 			$('#rowpaddingall').on('keyup', function(){
