@@ -1,6 +1,4 @@
-// use outermost div for higher specificity hook into sidebar objects
 .mura__layout-manager__controls {
-	// position styles of sidebar
 	width: 300px;
 	position: fixed;
 	top: 0;
@@ -8,12 +6,9 @@
 	z-index: 499998 !important;
 	height: 100vh;
 	background-color: #454545;
-
-	// reset typography styles in layout manager sidebar
 	.regular-font;
 	text-transform: none;
 
-	// reset typography styles NESTED within sidebar
 	* {
 		.regular-font;
 		text-transform: none;
@@ -75,14 +70,6 @@
   }
 }
 
-
-/*
-	DEV NOTE
-	ie10 does not allow use of 'inherit' on calculated parent
-	example: .mura-sidebar uses a calculated height, therefore the child elements cannot use 'inherit' for height
-	http://stackoverflow.com/questions/19423384/css-less-calc-method-is-crashing-my-ie10
-*/
-
 .mura__layout-manager__controls__scrollable {
 	height: inherit;
 	width: inherit;
@@ -95,7 +82,6 @@
 }
 
 /* sidebar icons */
-
 *[class^="mi-"],
 *[class*=" mi-"]{
 	font-family: FontAwesome,@sansFontFamily !important;
@@ -296,7 +282,7 @@ body.configurator-wrapper{
 			#configurator .load-inline{
     		position: absolute;
 	    	right: ~'calc(50% - 30px)';
-  	  	top: 50%;
+  	  		top: 50%;
 			}
 
 			#configuratorHeader{
@@ -464,6 +450,34 @@ body.configurator-wrapper{
 
 			} /* /mura-panel-group */
 
+			.mura-ui-row{
+				label{
+					display: block;
+					text-align: center;
+
+					&.px{
+						input[type=text]{
+							width: ~'calc(100% - 64px)';
+						}
+						input + span{
+							display: inline-block;
+							margin-left: 2px;
+						}	
+					}
+					input[type=text]{
+						padding-left: 1px;
+						padding-right: 1px;
+						text-align: center;
+					}
+				}
+				input{
+					float: none;
+				}
+				> div{
+					margin: 0;
+					padding: 0;
+				}
+			} /* /.mura-ui-row */
 
 			label,
 			.control-label,
@@ -613,9 +627,9 @@ body.configurator-wrapper{
 					color: #f3f3f3;
 					}
 				}
-			}
-	}
-}
+			} /* /.configurator-options */
+	} /* /#configuratorContainer */
+} /* body.configurator-wrapper */
 
 .mura__layout-manager__display-regions {
 	padding-right: 300px;
@@ -642,8 +656,7 @@ body.configurator-wrapper{
 
 }
 
-/* set some sort of class somewhere to trigger the flyout - at the moment it uses 'mura-regions-state__pushed--right' */
-
+/* todo: set some sort of class somewhere to trigger the flyout - at the moment it uses 'mura-regions-state__pushed--right' */
 .mura__layout-manager__display-regions__X {
 	margin-top: 32px;
 	padding: 18px;

@@ -3,6 +3,7 @@
 <cfparam name="attributes.params.rowpaddingright" default="">
 <cfparam name="attributes.params.rowpaddingbottom" default="">
 <cfparam name="attributes.params.rowpaddingleft" default="">
+<cfparam name="attributes.params.rowpaddingall" default="">
 <cfparam name="attributes.params.rowbackgroundcolor" default="">
 <cfparam name="attributes.params.rowbackgroundimage" default="">
 <cfparam name="attributes.params.rowbackgroundvideo" default="">
@@ -47,13 +48,53 @@
 					</cfif>	
 
 					<!--- padding --->
-					<div class="mura-control-group">
+					<div class="mura-control-group mura-ui-grid">
 						<!--- todo: rbkey for padding and placeholders --->
 						<label>Padding</label>
-						<input type="text" name="rowpaddingtop" placeholder="top" class="objectParam" value="#val(esapiEncode('html_attr',attributes.params.rowpaddingtop))#">
-						<input type="text" name="rowpaddingright" placeholder="right" class="objectParam" value="#val(esapiEncode('html_attr',attributes.params.rowpaddingright))#">
-						<input type="text" name="rowpaddingbottom" placeholder="bottom" class="objectParam" value="#val(esapiEncode('html_attr',attributes.params.rowpaddingbottom))#">
-						<input type="text" name="rowpaddingleft" placeholder="left" class="objectParam" value="#val(esapiEncode('html_attr',attributes.params.rowpaddingleft))#">
+						
+						<div class="row mura-ui-row">
+							<div class="col-xs-3"></div>
+							<div class="col-xs-6">
+								<label class="px">
+									<input type="text" name="rowpaddingall" id="rowpaddingall" placeholder="All" class="objectParam numeric" value="#val(esapiEncode('html_attr',attributes.params.rowpaddingall))#"> <span>px</span>
+								</label>
+							</div>
+							<div class="col-xs-3"></div>
+						</div>
+
+						<div class="row mura-ui-row">
+							<div class="col-xs-3"></div>
+							<div class="col-xs-6">
+								<label class="px">
+									<input type="text" name="rowpaddingtop" id="rowpaddingtop" placeholder="Top" class="objectParam numeric" value="#val(esapiEncode('html_attr',attributes.params.rowpaddingtop))#"> <span>px</span>
+								</label>
+							</div>
+							<div class="col-xs-3"></div>
+						</div>
+							
+						<div class="row mura-ui-row">
+							<div class="col-xs-6">
+								<label class="px">
+									<input type="text" name="rowpaddingleft" id="rowpaddingleft" placeholder="Left" class="objectParam numeric" value="#val(esapiEncode('html_attr',attributes.params.rowpaddingleft))#"> <span>px</span>
+								</label>
+							</div>
+							<div class="col-xs-6">
+								<label class="px">
+									<input type="text" name="rowpaddingright" id="rowpaddingright" placeholder="Right" class="objectParam numeric" value="#val(esapiEncode('html_attr',attributes.params.rowpaddingright))#"> <span>px</span>
+								</label>
+							</div>
+						</div>
+
+						<div class="row mura-ui-row">
+							<div class="col-xs-3"></div>
+							<div class="col-xs-6">
+								<label class="px">
+									<input type="text" name="rowpaddingbottom" id="rowpaddingbottom" placeholder="Bottom" class="objectParam numeric" value="#val(esapiEncode('html_attr',attributes.params.rowpaddingbottom))#"> <span>px</span>
+								</label>
+							</div>
+							<div class="col-xs-3"></div>
+						</div>
+	
 					</div>
 
 					<!--- background --->

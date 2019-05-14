@@ -135,27 +135,6 @@
 								<option value="mura-right"<cfif listFind(attributes.params.class,'mura-right',' ')> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.right')#</option>
 								</select>
 						</div>
-
-						<!--- todo: remove if not used --->
-						<!---
-						<div id="offsetcontainer" class="mura-control-group" style="display:none">
-			      	<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.offset')#</label>
-							<select name="offset">
-								<option value="">--</option>
-								<option value="mura-offset-by-one"<cfif listFind(attributes.params.class,'mura-offset-by-one',' ')> selected</cfif>>One Twelfth</option>
-								<option value="mura-offset-by-two"<cfif listFind(attributes.params.class,'mura-offset-by-two',' ')> selected</cfif>>One Sixth</option>
-								<option value="mura-offset-by-three"<cfif listFind(attributes.params.class,'mura-offset-by-three',' ')> selected</cfif>>One Fourth</option>
-								<option value="mura-offset-by-four"<cfif listFind(attributes.params.class,'mura-offset-by-four',' ')> selected</cfif>>One Third</option>
-								<option value="mura-offset-by-five"<cfif listFind(attributes.params.class,'mura-offset-by-five',' ')> selected</cfif>>Five Twelfths</option>
-								<option value="mura-offset-by-six"<cfif listFind(attributes.params.class,'mura-offset-by-six',' ')> selected</cfif>>One Half</option>
-								<option value="mura-offset-by-seven"<cfif listFind(attributes.params.class,'mura-offset-by-seven',' ')> selected</cfif>>Seven Twelfths</option>
-								<option value="mura-offset-by-eight"<cfif listFind(attributes.params.class,'mura-offset-by-eight',' ')> selected</cfif>>Two Thirds</option>
-								<option value="mura-offset-by-nine"<cfif listFind(attributes.params.class,'mura-offset-by-nine',' ')> selected</cfif>>Three Fourths</option>
-								<option value="mura-offset-by-ten"<cfif listFind(attributes.params.class,'mura-offset-by-ten',' ')> selected</cfif>>Five Sixths</option>
-								<option value="mura-offset-by-eleven"<cfif listFind(attributes.params.class,'mura-offset-by-eleven',' ')> selected</cfif>>Eleven Twelfths</option>
-							</select>
-						</div>
-						--->
 						<div class="mura-control-group">
 							<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.width')#</label>
 							<select name="width">
@@ -192,8 +171,6 @@
 	</cfoutput>
 </div> <!--- /end availableObjectContainer --->
 
-
-
 	<script>
 		$(function(){
 
@@ -220,22 +197,23 @@
 				setPlacementVisibility();
 			});
 
-			$('.panel-gds-box').on('click',function(){
-				var gdspanel = $(this).attr('data-gdsel');
-				var gdstarget = $('#' + gdspanel);
+			function restrictNumeric(el){
+				var v = $(el).val();
+				$(el).val = v.replace(/[^0-9]/g,'');
+			}
 
-				$('.panel-gds-box').removeClass('active');
-				$(this).addClass('active');
+			$('input.numeric').on('keyup', function(){
+				restrictNumeric($(this));
+			});
 
-				$('#style-panels').find('.panel-collapse.in').removeClass('in');
-				$(gdstarget).addClass('in');
-
-				return false;
+			$('#rowpaddingall').on('keyup', function(){
+				var v = $('#rowpaddingall').val().replace(/[^0-9]/g,'');
+				$('#rowpaddingtop').val(v);
+				$('#rowpaddingleft').val(v);
+				$('#rowpaddingright').val(v);
+				$('#rowpaddingbottom').val(v);
 			})
-
-			$('#style-panels').addClass('no-header');
-			$('#panel-gds-outer').trigger('click');
-
+	
 			function setPlacementVisibility(){
 				var classInput=$('input[name="class"]');
 
