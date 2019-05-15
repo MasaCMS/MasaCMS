@@ -1007,7 +1007,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 							if(arrayLen(pathInfo) == 5){
 								params.relatedcontentsetid=pathInfo[5];
 							} else {
-								param name='params.relatedcontentsetid' default=$.globalConfig().getValue(property='relatedcontentsetid', defaultValue="default");
+								param name='params.relatedcontentsetid' default=$.globalConfig().getValue(property='relatedcontentsetid', defaultValue="Default");
 							}
 
 							if(!allowAccess(params.entityName,$)){
@@ -3393,6 +3393,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			returnArray=iteratorToArray(iterator=iterator,siteid=arguments.siteid,expand=arguments.expand,$=$,expanded=arguments.expanded,expandedProp='relatedcontent');
 			var packagedItems=packageIteratorArray(iterator,returnArray,'findRelatedContent');
 			structDelete(packagedItems,'links');
+			packagedItems.name=arguments.relatedcontentsetid;
 			return packagedItems;
 		}
 
