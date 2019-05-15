@@ -132,12 +132,12 @@ CKEDITOR.editorConfig = function( config )
 	];
 
 	config.toolbar_Basic = [
-		{name: 'group1', items: ['Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink']}
+		{name: 'group1', items: ['Bold','Italic','RemoveFormat','-','NumberedList','BulletedList','-','Link','Unlink']}
 	];
 
 	config.toolbar_FormBuilder = [
 		{name: 'group1', items: ['A11ychecker','Source']},
-		{name: 'group2', items: ['Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink','Format']}
+		{name: 'group2', items: ['Bold','Italic','RemoveFormat','-','NumberedList','BulletedList','-','Link','Unlink','Format']}
 	];
 
 	config.toolbar_htmlEditor = [
@@ -150,7 +150,7 @@ CKEDITOR.editorConfig = function( config )
 	];
 
 	config.toolbar_bbcode = [
-		{name: 'group1', items: ['Source','Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink','-','Image']}
+		{name: 'group1', items: ['Source','Bold','Italic','RemoveFormat','-','NumberedList','BulletedList','-','Link','Unlink','-','Image']}
 	];
 
 <!--- 7.1 verbose toolbar configs --->
@@ -235,7 +235,7 @@ CKEDITOR.editorConfig = function( config )
 		config.extraPlugins += ',muratag';
 	</cfif>
 
-	<cfif cgi.http_referer contains 'carch.edittext'>		
+	<cfif cgi.http_referer contains 'carch.edittext'>
 		config.extraPlugins += ',autogrow';
 		config.autoGrow_onStartup = true;
 		config.autoGrow_bottomSpace = 24;
@@ -244,9 +244,9 @@ CKEDITOR.editorConfig = function( config )
 		}
 		catch(err) {
 			config.autoGrow_minHeight = 400;
-		}			
-	</cfif>	
-		
+		}
+	</cfif>
+
 	//config.extraPlugins += ',MuraFileBrowser';
 	//config.ProtectedTags = 'i';
 	config.protectedSource.push( /<i[^>]*><\/i>/g );
