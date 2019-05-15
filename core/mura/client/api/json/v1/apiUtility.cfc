@@ -3365,7 +3365,8 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			var rssets=subType.getRelatedContentSets(includeInheritedSets=true);
 
 			for(var i=1;i<=arrayLen(rssets);i++){
-				args.relatedContentSetID=rssets[i].getName();
+				args.relatedContentSetID=rssets[i].getRelatedContentSetID();
+				args.name=rssets[i].getName();
 				iterator=arguments.entity.getRelatedContentIterator(argumentCollection=args);
 				setIteratorProps(iterator,arguments.params);
 				packagedItems=packageIteratorArray(
@@ -3378,6 +3379,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				packagedItems.entityname='content';
 				packagedItems.relatedcontentsetid=rssets[i].getRelatedContentSetID();
 				packagedItems.siteid=arguments.siteid;
+
 				arrayAppend(returnArray,packagedItems);
 			}
 
