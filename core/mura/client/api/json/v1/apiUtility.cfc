@@ -3357,27 +3357,43 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		var pk=entity.getPrimaryKey();
 		var iterator='';
 		var returnArray=[];
-
+		var setArray=[];
+		var packagedItems={};
 		if(arguments.relatedContentSetID=='' || arguments.relatedContentSetID=='*' || arguments.relatedContentSetID=='all'){
 
 			var subtype=getBean('configBean').getClassExtensionManager().getSubTypeByName(siteid=arguments.siteid,type=entity.getType(),subtype=entity.getSubType());
 			var rssets=subType.getRelatedContentSets(includeInheritedSets=true);
-			var result={};
 
 			for(var i=1;i<=arrayLen(rssets);i++){
 				args.relatedContentSetID=rssets[i].getName();
 				iterator=arguments.entity.getRelatedContentIterator(argumentCollection=args);
 				setIteratorProps(iterator,arguments.params);
-				returnArray=iteratorToArray(iterator=iterator,siteid=arguments.siteid,expand=arguments.expand,$=$,expanded=arguments.expanded,expandedProp=arguments.expandedProp);
-				result['#rssets[i].getName()#']=packageIteratorArray(iterator,returnArray,'findRelatedContent');
+				packagedItems=packageIteratorArray(
+					iterator,
+					iteratorToArray(iterator=iterator,siteid=arguments.siteid,expand=arguments.expand,$=$,expanded=arguments.expanded,expandedProp=arguments.expandedProp),
+					'findRelatedContent'
+				);
+				structDelete(packagedItems,'links');
+				packagedItems.name=rssets[i].getName();
+				packagedItems.entityname='content';
+				packagedItems.relatedcontentsetid=rssets[i].getRelatedContentSetID();
+				packagedItems.siteid=arguments.siteid;
+				arrayAppend(returnArray,packagedItems);
 			}
 
+			var result=packageIteratorArray(getBean('beanIterator').setArray(returnArray).setEntityName('relatedcontent'),returnArray,'findRelatedContent');
+
+			StructDelete(result,'links');
+
 			return result;
+
 		} else {
 			iterator=entity.getRelatedContentIterator(argumentCollection=args);
 			setIteratorProps(iterator,arguments.params);
 			returnArray=iteratorToArray(iterator=iterator,siteid=arguments.siteid,expand=arguments.expand,$=$,expanded=arguments.expanded,expandedProp='relatedcontent');
-			return packageIteratorArray(iterator,returnArray,'findRelatedContent');
+			var packagedItems=packageIteratorArray(iterator,returnArray,'findRelatedContent');
+			structDelete(packagedItems,'links');
+			return packagedItems;
 		}
 
 	}
