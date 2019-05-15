@@ -151,19 +151,19 @@ CKEDITOR.editorConfig = function( config )
 		];
 
 		config.toolbar_Basic = [
-			{name: 'group1', items: ['Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink']}
+			{name: 'group1', items: ['Bold','Italic','RemoveFormat','-','NumberedList','BulletedList','-','Link','Unlink']}
 		];
 
 		config.toolbar_FormBuilder = [
 			{name: 'group1', items: ['A11ychecker','Source']},
-			{name: 'group2', items: ['Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink','Format']}
+			{name: 'group2', items: ['Bold','Italic','RemoveFormat','-','NumberedList','BulletedList','-','Link','Unlink','Format']}
 		];
 
 		config.toolbar_htmlEditor = [
 			{name: 'group0', items:['Styles','Format']},
 			{name: 'group1', items: ['A11ychecker','Source']},
 			{name: 'group2', items: ['Cut','Copy','Paste','PasteText','PasteFromWord']},
-			{name: 'group3', items: ['Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink','-','Image']},
+			{name: 'group3', items: ['Bold','Italic','RemoveFormat','-','NumberedList','BulletedList','-','Link','Unlink','-','Image']},
 			{name: 'group4', items: ['Selectlink','SelectComponent','Templates']},
 		];
 
