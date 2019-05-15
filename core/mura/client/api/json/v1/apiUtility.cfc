@@ -3381,7 +3381,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				arrayAppend(returnArray,packagedItems);
 			}
 
-			var result=packageIteratorArray(getBean('beanIterator').setArray(returnArray).setEntityName('relatedcontent'),returnArray,'findRelatedContent');
+			var result=packageIteratorArray(getBean('beanIterator').setArray(returnArray).setEntityName('relatedcontentset'),returnArray,'findRelatedContent');
 
 			StructDelete(result,'links');
 
