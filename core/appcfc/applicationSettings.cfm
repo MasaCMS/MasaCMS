@@ -306,7 +306,7 @@ try {
 } catch (any cfcatch) {
 	if(isDefined('e')){
 		writeLog(type="Error", file="exception", text="If the following error is a missing include , no action is required");
-		writeLog(type="Error", file="exception", text="#e#");
+		writeLog(type="Error", file="exception", text="#serializeJSON(e)#");
 	}
 	request.hasCFApplicationCFM=false;
 }
