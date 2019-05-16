@@ -214,6 +214,11 @@
 				$('#rowpaddingright').val(v);
 				$('#rowpaddingbottom').val(v);
 			})
+
+			$('#rowpaddingtop,#rowpaddingright,#rowpaddingbottom,#rowpaddingleft').on('keyup', function(){
+				$('#rowpaddingall').val('');
+			})
+
 	
 			function setPlacementVisibility(){
 				var classInput=$('input[name="class"]');
