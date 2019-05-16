@@ -298,9 +298,7 @@ function setDatePickers(e, t, i) {
 
 function setColorPickers(e) {
     $(e).each(function(e) {
-        $(this).colorpicker({
-            format: "rgba"
-        })
+        $(this).colorpicker();
     });
 }
 
