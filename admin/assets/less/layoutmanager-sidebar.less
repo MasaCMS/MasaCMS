@@ -257,7 +257,6 @@ body.configurator-wrapper{
 
 	background-color: #454545;
 
-	// reset typography styles in sidebar configurator
 	.regular-font;
 	text-transform: none;
 
@@ -265,7 +264,6 @@ body.configurator-wrapper{
 			background-color: #454545;
 			padding: 18px 34px 15px 18px;
 
-			// reset typography styles NESTED within sidebar configurator
 			* {
 				.regular-font;
 				text-transform: none;
@@ -348,10 +346,6 @@ body.configurator-wrapper{
 			.mura-layout-row{
 			  padding: 0;
 			  margin: 0;
-			}
-
-			.mura-control-group{
-				margin-bottom: 12px;
 			}
 
 			.mura-panel-group{
@@ -478,6 +472,42 @@ body.configurator-wrapper{
 					padding: 0;
 				}
 			} /* /.mura-ui-row */
+
+			.mura-control-group{
+				margin-bottom: 12px;
+
+				.input-group{
+					margin: .5em 0;
+
+					input[type=text]{
+						margin: 0;
+					}
+
+					.input-group-addon{
+						margin: .5em 0;
+						background-color: #333;
+						color: #d8d8d8;
+						padding: 8px 12px;
+						font-size: 14px;
+						border: none;
+						cursor: pointer;
+						outline: none;
+						outline-offset: 0;
+						border-top-left-radius: 0;
+						border-top-right-radius: 0;
+						border-left: 1px solid #454545;
+					}
+				}
+
+				.colorpicker-element .add-on i, 
+				.colorpicker-element .input-group-addon i{
+					display: inline-block;
+					cursor: pointer;
+					height: 18px;
+					vertical-align: text-top;
+					width: 18px;
+				}
+			}
 
 			label,
 			.control-label,
@@ -629,6 +659,16 @@ body.configurator-wrapper{
 				}
 			} /* /.configurator-options */
 	} /* /#configuratorContainer */
+
+	/* colorpicker is appended to body, outside form container */
+	div.colorpicker.dropdown-menu{
+		min-width: 130px;
+		padding: 4px;
+		border-radius: 3px;
+		background-color: #565656;
+		border-color: #565656;
+	}
+
 } /* body.configurator-wrapper */
 
 .mura__layout-manager__display-regions {
