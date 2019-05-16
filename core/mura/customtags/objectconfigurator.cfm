@@ -35,6 +35,7 @@
 		<cfparam name="request.hasbasicoptions" default="false">
 		<cfparam name="request.hasmetaoptions" default="false">
 		<cfparam name="request.haspositionoptions" default="false">
+		<cfparam name="attributes.params.isbodyobject" default="false">
 		
 		<cfset contentcontainerclass=esapiEncode("javascript",$.getContentRenderer().expandedContentContainerClass)>
 
@@ -60,10 +61,6 @@
 				<cfset attributes.params.contentcssstyles={}>
 			</cfif>
 		</cfif>
-
-		<cfparam name="attributes.params.cssstyles.backgroundImage" default="">
-		<cfparam name="attributes.params.cssstyles.backgroundColor" default="rgba(255,0,0,0)">
-		<cfparam name="attributes.params.isbodyobject" default="false">
 
 		<cfif not request.hasbasicoptions>
 		<cfset request.hasbasicoptions=attributes.basictab>
@@ -207,16 +204,16 @@
 				setPlacementVisibility();
 			});
 
-			$('#rowpaddingall').on('keyup', function(){
-				var v = $('#rowpaddingall').val().replace(/[^0-9]/g,'');
-				$('#rowpaddingtop').val(v);
-				$('#rowpaddingleft').val(v);
-				$('#rowpaddingright').val(v);
-				$('#rowpaddingbottom').val(v);
+			$('#paddingall').on('keyup', function(){
+				var v = $('#paddingall').val().replace(/[^0-9]/g,'');
+				$('#paddingtop').val(v);
+				$('#paddingleft').val(v);
+				$('#paddingright').val(v);
+				$('#paddingbottom').val(v);
 			})
 
-			$('#rowpaddingtop,#rowpaddingright,#rowpaddingbottom,#rowpaddingleft').on('keyup', function(){
-				$('#rowpaddingall').val('');
+			$('#paddingtop,#paddingright,#paddingbottom,#paddingleft').on('keyup', function(){
+				$('#paddingall').val('');
 			})
 
 	

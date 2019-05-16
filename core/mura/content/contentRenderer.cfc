@@ -77,6 +77,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	'animationDuration'='animation-duration',
 	'animationName'='animation-name',
 	'backgroundColor'='background-color',
+	'backgroundColor'='background-color',
 	'backgroundImage'='background-image',
 	'backgroundOrigin'='background-origin',
 	'backgroundPosition'='background-position',
