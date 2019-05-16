@@ -842,7 +842,6 @@ function setDatePickers(target, locale, delim) {
 
 function setColorPickers(target) {
 	$(target).each(
-
 	function(index) {
 		$(this).colorpicker({
 			format: 'rgba'
