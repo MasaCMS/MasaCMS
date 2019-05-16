@@ -493,9 +493,9 @@ body.configurator-wrapper{
 						cursor: pointer;
 						outline: none;
 						outline-offset: 0;
-						border-top-left-radius: 0;
 						border-top-right-radius: 0;
-						border-left: 1px solid #454545;
+						border-bottom-right-radius: 0;
+						border-right: 1px solid #454545;
 					}
 				}
 
@@ -667,6 +667,10 @@ body.configurator-wrapper{
 		border-radius: 3px;
 		background-color: #565656;
 		border-color: #565656;
+
+		&:after{
+			border-bottom: 6px solid #565656;
+		}
 	}
 
 } /* body.configurator-wrapper */
