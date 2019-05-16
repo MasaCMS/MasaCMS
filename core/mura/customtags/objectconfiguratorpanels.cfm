@@ -101,7 +101,10 @@
 					<div class="mura-control-group">
 						<!--- todo: rbkey for these labels, options and placeholders--->
 						<label>Background Color</label>
-						<input type="text" name="rowbackgroundcolor" placeholder="Select Color" class="objectParam colorpicker" value="#esapiEncode('html_attr',attributes.params.rowbackgroundcolor)#">
+						<div class="input-group mura-colorpicker">
+						<input type="text" name="rowbackgroundcolor" placeholder="Select Color" class="objectParam" autocomplete="off" value="#esapiEncode('html_attr',attributes.params.rowbackgroundcolor)#">
+						 <span class="input-group-addon"><i></i></span>
+						</div>
 					</div>
 
 					<div class="mura-control-group">
