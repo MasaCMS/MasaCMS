@@ -115,12 +115,12 @@ component extends="mura.cfobject" accessors=true output=false {
 		if (enableLockdown == 'development' || enableLockdown == 'maintenance') {
 			// If site is in development mode, only allow pre-existing user accounts through. An exception to this is new super users.
 			if ( (enableLockdown == "development" && isExistingUser) || isSuperUser) {
-				m.getBean('utility').setCookie(name=m.globalConfig('passedLockdownVarName'), value=true, expires='session');
+				m.getBean('utility').setCookie(name="passedLockdown", value=true, expires='session');
 				userBean.save();
 				userBean.login();
 			} else if ( enableLockdown == "maintenance" && isAdmin) {
 				// If the site is in maintenance mode, only allow admin user accounts through.
-				m.getBean('utility').setCookie(name=m.globalConfig('passedLockdownVarName'), value=true, expires='session');
+				m.getBean('utility').setCookie(name="passedLockdown", value=true, expires='session');
 				userBean.save();
 				userBean.login();
 			}
