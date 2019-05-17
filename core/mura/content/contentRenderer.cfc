@@ -82,6 +82,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	'backgroundOrigin'='background-origin',
 	'backgroundPosition'='background-position',
 	'backgroundRepeat'='background-repeat',
+	'backgroundSize'='background-size',
 	'borderRadius'='border-radius',
 	'borderStyle'='border-style',
 	'borderWidth'='border-width',

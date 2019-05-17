@@ -1,26 +1,26 @@
 <!--- todo: merge this into parent file objectconfigurator.cfm --->
-<cfparam name="attributes.params.paddingtop" default="">
-<cfset attributes.globalparams = [
-								'paddingright'
-								,'paddingbottom'
-								,'paddingleft'
-								,'paddingall'
-								,'backgroundcolor'
-								,'backgroundimage'
-								,'backgroundvideo'
-								,'backgroundsize'
-								,'backgroundrepeat'
-								,'backgroundposition'
-								,'backgroundoverlay'
-								,'backgroundparallax'
-								,'textalign'
-								]>
 <cfscript>
-for (p in attributes.globalparams){
-	param name="attributes.params.cssstyles.#p#" default="";
-	param name="attributes.params.metcssstyles.#p#" default="";
-	param name="attributes.params.contentcssstyles.#p#" default="";
-}
+	attributes.globalparams = [
+		'backgroundcolor'
+		,'backgroundimage'
+		,'backgroundoverlay'
+		,'backgroundparallax'
+		,'backgroundposition'
+		,'backgroundrepeat'
+		,'backgroundsize'
+		,'backgroundvideo'
+		,'paddingtop'
+		,'paddingright'
+		,'paddingbottom'
+		,'paddingleft'
+		,'paddingall'
+		,'textalign'];
+
+	for (p in attributes.globalparams){
+		param name="attributes.params.cssstyles.#p#" default="";
+		param name="attributes.params.metcssstyles.#p#" default="";
+		param name="attributes.params.contentcssstyles.#p#" default="";
+	}
 </cfscript>
 
 <cfoutput>
@@ -63,7 +63,7 @@ for (p in attributes.globalparams){
 							<div class="col-xs-3"></div>
 							<div class="col-xs-6">
 								<label class="px">
-									<input type="text" name="paddingall" id="paddingall" placeholder="All" class="numeric" value="#val(esapiEncode('html_attr',attributes.params.paddingall))#"> <span>px</span>
+									<input type="text" name="padding" id="rowpaddingall" placeholder="All" class="objectStyle numeric" value="#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingall))#"> <span>px</span>
 								</label>
 							</div>
 							<div class="col-xs-3"></div>
@@ -73,7 +73,7 @@ for (p in attributes.globalparams){
 							<div class="col-xs-3"></div>
 							<div class="col-xs-6">
 								<label class="px">
-									<input type="text" name="paddingtop" id="paddingtop" placeholder="Top" class="objectStyle numeric" value="#val(esapiEncode('html_attr',attributes.params.paddingtop))#"> <span>px</span>
+									<input type="text" name="paddingTop" id="rowpaddingtop" placeholder="Top" class="objectStyle numeric" value="#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingtop))#"> <span>px</span>
 								</label>
 							</div>
 							<div class="col-xs-3"></div>
@@ -82,12 +82,12 @@ for (p in attributes.globalparams){
 						<div class="row mura-ui-row">
 							<div class="col-xs-6">
 								<label class="px">
-									<input type="text" name="paddingleft" id="paddingleft" placeholder="Left" class="objectStyle numeric" value="#val(esapiEncode('html_attr',attributes.params.paddingleft))#"> <span>px</span>
+									<input type="text" name="paddingLeft" id="rowpaddingleft" placeholder="Left" class="objectStyle numeric" value="#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingleft))#"> <span>px</span>
 								</label>
 							</div>
 							<div class="col-xs-6">
 								<label class="px">
-									<input type="text" name="paddingright" id="paddingright" placeholder="Right" class="objectStyle numeric" value="#val(esapiEncode('html_attr',attributes.params.paddingright))#"> <span>px</span>
+									<input type="text" name="paddingRight" id="rowpaddingright" placeholder="Right" class="objectStyle numeric" value="#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingright))#"> <span>px</span>
 								</label>
 							</div>
 						</div>
@@ -96,7 +96,7 @@ for (p in attributes.globalparams){
 							<div class="col-xs-3"></div>
 							<div class="col-xs-6">
 								<label class="px">
-									<input type="text" name="paddingBottom" id="paddingbottom" placeholder="Bottom" class="objectStyle numeric" value="#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingbottom))#"> <span>px</span>
+									<input type="text" name="paddingBottom" id="rowpaddingbottom" placeholder="Bottom" class="objectStyle numeric" value="#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingbottom))#"> <span>px</span>
 								</label>
 							</div>
 							<div class="col-xs-3"></div>
@@ -110,23 +110,23 @@ for (p in attributes.globalparams){
 						<label>Background Color</label>
 						<div class="input-group mura-colorpicker">
 							<span class="input-group-addon"><i></i></span>
-							<input type="text" name="backgroundColor" placeholder="Select Color" class="objectStyle" autocomplete="off" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundcolor)#">
+							<input type="text" id="rowbackgroundcolor" name="backgroundColor" placeholder="Select Color" class="objectStyle" autocomplete="off" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundcolor)#">
 						</div>
 					</div>
 
 					<div class="mura-control-group">
 						<label>Background Image [todo:url/existing/upload]</label>
-						<input type="text" name="backgroundimage" placeholder="Select Image" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundimage)#">
+						<input type="text" id="rowbackgroundimage" name="backgroundImage" placeholder="Select Image" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundimage)#">
 					</div>
 
 					<div class="mura-control-group">
 						<label>Background Video [todo:url/existing/upload]</label>
-						<input type="text" name="backgroundvideo" placeholder="Select Video" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundvideo)#">
+						<input type="text" id="rowbackgroundvideo" name="backgroundVideo" placeholder="Select Video" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundvideo)#">
 					</div>
 
 					<div class="mura-control-group">
 						<label>Background Size</label>
-						<select name="backgroundsize" class="objectStyle">
+						<select id="rowbackgroundsize" name="backgroundSize" class="objectStyle">
 							<option value="auto"<cfif attributes.params.cssstyles.backgroundsize eq 'auto'> 
 							selected</cfif>>Auto</option>
 							<option value="contain"<cfif attributes.params.cssstyles.backgroundsize eq 'contain'> selected</cfif>>Contain</option>
@@ -136,7 +136,7 @@ for (p in attributes.globalparams){
 
 					<div class="mura-control-group">
 						<label>Background Repeat</label>
-						<select name="backgroundrepeat" class="objectStyle">
+						<select id="rowbackgroundrepeat" name="backgroundRepeat" class="objectStyle">
 							<option value="norepeat"<cfif attributes.params.cssstyles.backgroundrepeat eq 'norepeat'> selected</cfif>>No-repeat</option>
 							<option value="repeat"<cfif attributes.params.cssstyles.backgroundrepeat eq 'repeat'> selected</cfif>>Repeat</option>
 							<option value="repeatx"<cfif attributes.params.cssstyles.backgroundrepeat eq 'repeatx'> selected</cfif>>Repeat-X</option>
@@ -146,17 +146,17 @@ for (p in attributes.globalparams){
 
 					<div class="mura-control-group">
 						<label>Background Position [todo: bg options]</label>
-						<input type="text" name="backgroundposition" placeholder="" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundposition)#">
+						<input type="text" id="rowbackgroundposition" name="backgroundPosition" placeholder="" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundposition)#">
 					</div>
 
 					<div class="mura-control-group">
 						<label>Background Overlay [todo: bg options]</label>
-						<input type="text" name="backgroundoverlay" placeholder="" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundoverlay)#">
+						<input type="text" id="rowbackgroundoverlay" name="backgroundOverlay" placeholder="" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundoverlay)#">
 					</div>
 
 					<div class="mura-control-group">
 						<label>Background Parallax [todo: bg options]</label>
-						<input type="text" name="backgroundparallax" placeholder="" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundparallax)#">
+						<input type="text" id="rowbackgroundparallax" name="backgroundParallax" placeholder="" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundparallax)#">
 					</div>
 
 				</div> <!--- /end container --->

@@ -204,18 +204,17 @@
 				setPlacementVisibility();
 			});
 
-			$('#paddingall').on('keyup', function(){
-				var v = $('#paddingall').val().replace(/[^0-9]/g,'');
-				$('#paddingtop').val(v);
-				$('#paddingleft').val(v);
-				$('#paddingright').val(v);
-				$('#paddingbottom').val(v);
+			$('#rowpaddingall').on('keyup', function(){
+				var v = $('#rowpaddingall').val().replace(/[^0-9]/g,'');
+				$('#rowpaddingtop').val(v);
+				$('#rowpaddingleft').val(v);
+				$('#rowpaddingright').val(v);
+				$('#rowpaddingbottom').val(v);
 			})
 
-			$('#paddingtop,#paddingright,#paddingbottom,#paddingleft').on('keyup', function(){
-				$('#paddingall').val('');
+			$('#rowpaddingtop,#rowpaddingright,#rowpaddingbottom,#rowpaddingleft').on('keyup', function(){
+				$('#rowpaddingall').val('');
 			})
-
 	
 			function setPlacementVisibility(){
 				var classInput=$('input[name="class"]');
