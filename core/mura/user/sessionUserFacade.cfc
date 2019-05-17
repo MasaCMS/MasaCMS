@@ -176,10 +176,11 @@ component extends="mura.cfobject" output="false" hint="This provides access to t
 		}
 
 		public boolean function isPassedLockdown() output=false {
-			if ( !structKeyExists(cookie, "passedLockdown") ) {
-				application.utility.setCookie(name="passedLockdown", value="false");
+			var varName=getBean('configBean').getValue(property='passedLockdownVarName',defaultValue='passedLockdown');
+			if ( !structKeyExists(cookie, '#varName#') ) {
+				application.utility.setCookie(name=varName, value="false");
 			}
-			return cookie.passedLockdown;
+			return cookie['#varName#'];
 		}
 
 		public boolean function hasSession() output=false {
