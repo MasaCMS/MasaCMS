@@ -654,11 +654,15 @@ Display Objects
 				? this.indexFileInURLs
 				: application.configBean.getIndexFileInURLs();
 
-		this.enableFrontEndTools = IsDefined('this.enableFrontEndTools')
-			? this.enableFrontEndTools
-			: IsBoolean(getConfigBean().getEnableFrontEndTools())
-				? getConfigBean().getEnableFrontEndTools()
-				: true;
+		if(isDEfined('session.enableFrontEndTools') && isBoolean(session.enableFrontEndTools)){
+			this.enableFrontEndTools = session.enableFrontEndTools;
+		} else {
+			this.enableFrontEndTools = IsDefined('this.enableFrontEndTools')
+				? this.enableFrontEndTools
+				: IsBoolean(getConfigBean().getEnableFrontEndTools())
+					? getConfigBean().getEnableFrontEndTools()
+					: true;
+		}
 	</cfscript>
 
 	<cfreturn this />
