@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance=structNew()/>
 <cfset variables.instance.mode=""/>
 <cfset variables.autoupdateurl="https://github.com/blueriver/MuraCMS/archive/master.zip"/>
-<cfset variables.instance.version="7.1.0"/>
+<cfset variables.instance.version="7.2.0"/>
 <cfset variables.instance.title="Mura CMS"/>
 <cfset variables.instance.projectname="Mura CMS"/>
 <cfset variables.instance.projectname="Mura CMS"/>
@@ -135,7 +135,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.encryptionKey=hash(getCurrentTemplatePath()) />
 <cfset variables.instance.uselegacysessions=false />
 <cfset variables.instance.customUrlVarDelimiters="_">
-<cfset variables.instance.strongPasswordRegex="(?=^.{7,15}$)(?=.*\d)(?![.\n])(?=.*[a-zA-Z]).*$">
+<cfset variables.instance.strongPasswordRegex="(?=^.{7,15}$)(?=.*\d)(?![.\n])(?=.*[a-z])(?=.*[A-Z]).*$">
 <cfset variables.instance.duplicateTransients=false>
 <cfset variables.instance.maxArchivedVersions=0 />
 <cfset variables.instance.postBundles=false />
@@ -1821,11 +1821,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="moduleid" default="00000000000000000000000000000000000">
 	<cfargument name="applyGlobal" default="true">
 	<cfset var rs="">
-	<cfif directoryExists(expandPath(arguments.dir))>
+	<cfset var expandedDir="">
+
+	<cfif reFindNoCase("^[a-zA-Z]:\\",arguments.dir)>
+		<cfset expandedDir=arguments.dir>
+	<cfelse>
+		<cfset expandedDir=expandPath(arguments.dir)>
+	</cfif>
+
+	<cfif directoryExists(expandedDir)>
 		<cfif not isDefined('arguments.package') or isDefined('arguments.package') and not len(arguments.package)>
 			<cfset arguments.package=replace(replace(right(arguments.dir, len(arguments.dir)-1), "\", "/", "ALL"),"/",".","ALL")>
 		</cfif>
-		<cfdirectory name="rs" directory="#expandPath(arguments.dir)#" action="list" filter="">
+		<cfdirectory name="rs" directory="#expandedDir#" action="list" filter="">
 		<cfloop query="rs">
 			<!--- Registers handlers last so that that all entities defined will be available --->
 			<cfif rs.type eq 'dir' and not listFindNoCase('archived,archive,handlers,eventhandlers,event_handlers',rs.name)>
@@ -1872,72 +1880,74 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cftry>
 			<cfset var metadata=getMetaData(createObject('component','#arguments.componentPath#'))>
 
+			<cfset var levelObj=metadata>
+
+			<cfloop condition="structKeyExists(levelObj,'extends')">
+				<cfif not isPublicFound and (isdefined('levelObj.public') and isBoolean(levelObj.public) and levelObj.public or isdefined('levelObj.access') && levelObj.access eq 'remote')>
+					<cfset isPublic=true>
+					<cfset isPublicFound=true>
+				</cfif>
+				<cfif not fieldsFound and isdefined('levelObj.fields') and len(levelObj.fields)>
+					<cfset fields=levelObj.fields>
+					<cfset fieldsFound=true>
+				</cfif>
+				<cfif listFindNoCase('beanORM,beanORMVersioned',listLast(levelObj.fullname,'.'))>
+					<cfset isORM=true>
+					<cfbreak>
+				</cfif>
+				<cfset levelObj=levelObj.extends>
+			</cfloop>
+			<cfset ioc.declareBean(beanName=beanName, dottedPath='#arguments.componentPath#', isSingleton =isSingleton )>
+			<cfif isDefined('metadata.entityname') and metadata.entityname neq beanName>
+				<cfset ioc.addAlias(metadata.entityname,beanName)>
+				<cfset beanName=metadata.entityname>
+			</cfif>
+
+			<cfset structDelete(application.objectMappings,beanName)>
+
+			<cfset entity=ioc.getBean(beanName)>
+
+			<cfif isORM>
+
+					<cfset entity.registerAsEntity()>
+
+					<cfif checkSchema>
+						<cfset entity.checkSchema()>
+					</cfif>
+
+					<cfloop list="#arguments.siteid#" index="local.i">
+						<cfif false and  entity.getEntityName() eq 'test'>
+							<cfdump var="#siteid#">
+							<cfdump var="#isPublic#">
+							<cfdump var="#arguments.moduleid#">
+							<cfdump var="#entity.getPublicAPI()#">
+							<cfdump var="#isORM#">
+							<cfdump var="#beanName#">
+							<cfabort>
+						</cfif>
+						<cfset getBean('settingsManager').getSite(local.i).getApi('json','v1').registerEntity(beanName,{
+							moduleid=arguments.moduleid,
+							public=isPublic,
+							fields=fields,
+							registered=true,
+							beanInstance=entity
+						})>
+					</cfloop>
+
+					<cfset request.muraORMchecked['#checkkey#']=true>
+			</cfif>
 			<cfcatch>
-					<cfif isBoolean(getValue('debuggingEnabled')) and getValue('debuggingEnabled')>
-						<cfrethrow>
-					<cfelse>
-						<cfset writeLog(type="Error", file="exception", text="Error registering #arguments.componentPath#: #serializeJSON(cfcatch.stacktrace)#")>
-						<cfreturn this>
+				<cfparam name="request.muraDeferredModuleErrors" default="#arrayNew(1)#">
+				<cfset ArrayAppend(request.muraDeferredModuleErrors,cfcatch)>
+				<cfset writeLog(type="Error", file="exception", text="Error Registering Bean #arguments.componentPath#: #serializeJSON(cfcatch)#")>
+				<cfset commitTracepoint(initTracepoint("Error Registering Bean #arguments.componentPath#"))>
+				<cfif isBoolean(getValue('debuggingEnabled')) and getValue('debuggingEnabled')>
+					<cfrethrow>
+				<cfelse>
+					<cfreturn this>
 				</cfif>
 			</cfcatch>
 		</cftry>
-
-		<cfset var levelObj=metadata>
-
-		<cfloop condition="structKeyExists(levelObj,'extends')">
-			<cfif not isPublicFound and (isdefined('levelObj.public') and isBoolean(levelObj.public) and levelObj.public or isdefined('levelObj.access') && levelObj.access eq 'remote')>
-				<cfset isPublic=true>
-				<cfset isPublicFound=true>
-			</cfif>
-			<cfif not fieldsFound and isdefined('levelObj.fields') and len(levelObj.fields)>
-				<cfset fields=levelObj.fields>
-				<cfset fieldsFound=true>
-			</cfif>
-			<cfif listFindNoCase('beanORM,beanORMVersioned',listLast(levelObj.fullname,'.'))>
-				<cfset isORM=true>
-				<cfbreak>
-			</cfif>
-			<cfset levelObj=levelObj.extends>
-		</cfloop>
-		<cfset ioc.declareBean(beanName=beanName, dottedPath='#arguments.componentPath#', isSingleton =isSingleton )>
-		<cfif isDefined('metadata.entityname') and metadata.entityname neq beanName>
-			<cfset ioc.addAlias(metadata.entityname,beanName)>
-			<cfset beanName=metadata.entityname>
-		</cfif>
-
-		<cfset structDelete(application.objectMappings,beanName)>
-
-		<cfset entity=ioc.getBean(beanName)>
-
-		<cfif isORM>
-
-				<cfset entity.registerAsEntity()>
-
-				<cfif checkSchema>
-					<cfset entity.checkSchema()>
-				</cfif>
-
-				<cfloop list="#arguments.siteid#" index="local.i">
-					<cfif false and  entity.getEntityName() eq 'test'>
-						<cfdump var="#siteid#">
-						<cfdump var="#isPublic#">
-						<cfdump var="#arguments.moduleid#">
-						<cfdump var="#entity.getPublicAPI()#">
-						<cfdump var="#isORM#">
-						<cfdump var="#beanName#">
-						<cfabort>
-					</cfif>
-					<cfset getBean('settingsManager').getSite(local.i).getApi('json','v1').registerEntity(beanName,{
-						moduleid=arguments.moduleid,
-						public=isPublic,
-						fields=fields,
-						registered=true,
-						beanInstance=entity
-					})>
-				</cfloop>
-
-				<cfset request.muraORMchecked['#checkkey#']=true>
-		</cfif>
 		<cfset commitTracepoint(tracepoint)>
 	<cfelseif getServiceFactory().containsBean(beanName)>
 		<cfset var entity=getBean(beanName)>
@@ -1972,34 +1982,47 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var beanName=''>
 		<cfset var beanInstance=''>
 		<cfset var $=''>
+		<cfset var applyGlobalDefault=true>
 		<cfdirectory name="rs" directory="#expandPath(arguments.dir)#" action="list" filter="">
 		<cfloop query="rs">
+			<cfset applyGlobalDefault=arguments.applyGlobal>
 			<cfif rs.type eq 'dir'>
 				<cfif listFindNoCase('handlers,eventHandlers',rs.name)>
-					<cfset registerHandlerDir(dir=listAppend(arguments.dir,rs.name,'/'),package=arguments.package & "." & rs.name,siteid=arguments.siteid,moduleid=arguments.moduleid,applyGlobal=arguments.applyGlobal)>
+					<cfset registerHandlerDir(dir=listAppend(arguments.dir,rs.name,'/'),package=arguments.package & "." & rs.name,siteid=arguments.siteid,moduleid=arguments.moduleid,applyGlobal=applyGlobalDefault)>
 				<cfelse>
-					<cfset registerBeanDir(dir=listAppend(arguments.dir,rs.name,'/'),package=arguments.package & "." & rs.name,siteid=arguments.siteid,moduleid=arguments.moduleid,applyGlobal=arguments.applyGlobal)>
+					<cfset registerBeanDir(dir=listAppend(arguments.dir,rs.name,'/'),package=arguments.package & "." & rs.name,siteid=arguments.siteid,moduleid=arguments.moduleid,applyGlobal=applyGlobalDefault)>
 				</cfif>
 			<cfelseif listLast(rs.name,'.') eq 'cfc'>
 				<cfset var tracePoint=initTracepoint("Registering Eventhandler: #package#.#beanName#")>
-				<cfset beanName=listFirst(rs.name,'.')>
-				<cfset beanInstance=createObject('component','#package#.#beanName#').init()>
-				<cfparam name="request.muraAppliedHandlers" default="#structNew()#">
+				<cftry>
+					<cfset beanName=listFirst(rs.name,'.')>
+					<cfset beanInstance=createObject('component','#package#.#beanName#').init()>
+					<cfparam name="request.muraAppliedHandlers" default="#structNew()#">
 
-				<cfloop list="#arguments.siteid#" index="local.i">
-					<cfif not structKeyExists(request.muraAppliedHandlers,'#local.i#_#package#.#beanName#')>
-						<cfif structKeyExists(request.muraAppliedHandlers,'#package#.#beanName#')>
-							<cfset arguments.applyGlobal=false>
+					<cfloop list="#arguments.siteid#" index="local.i">
+						<cfif not structKeyExists(request.muraAppliedHandlers,'#local.i#_#package#.#beanName#')>
+							<cfif structKeyExists(request.muraAppliedHandlers,'#package#.#beanName#')>
+								<cfset applyGlobalDefault=false>
+							</cfif>
+							<cfset getBean('pluginManager').addEventHandler(component=beanInstance,siteid=local.i,applyglobal=applyGlobalDefault)>
+							<cfset request.muraAppliedHandlers['#package#.#beanName#']=true>
+							<cfset request.muraAppliedHandlers['#local.i#_#package#.#beanName#']=true>
+							<cfif isDefined('beanInstance.onApplicationLoad') and applyGlobalDefault>
+								<cfset $=getBean('$').init()>
+								<cfset beanInstance.onApplicationLoad($=$,m=$,Mura=$,event=$.event())>
+							</cfif>
 						</cfif>
-						<cfset getBean('pluginManager').addEventHandler(component=beanInstance,siteid=local.i,applyglobal=arguments.applyGlobal)>
-						<cfset request.muraAppliedHandlers['#package#.#beanName#']=true>
-						<cfset request.muraAppliedHandlers['#local.i#_#package#.#beanName#']=true>
-						<cfif isDefined('beanInstance.onApplicationLoad') and arguments.applyGlobal>
-							<cfset $=getBean('$').init()>
-							<cfset beanInstance.onApplicationLoad($=$,m=$,Mura=$,event=$.event())>
+					</cfloop>
+					<cfcatch>
+						<cfparam name="request.muraDeferredModuleErrors" default="#arrayNew(1)#">
+						<cfset ArrayAppend(request.muraDeferredModuleErrors,cfcatch)>
+						<cfset commitTracepoint(initTracepoint("Error Registering Handler #package#.#beanName#"))>
+						<cfset writeLog(type="Error", file="exception", text="Error Registering Handler #package#.#beanName#: #serializeJSON(cfcatch)#")>
+						<cfif isBoolean(getValue('debuggingEnabled')) and getValue('debuggingEnabled')>
+							<cfrethrow>
 						</cfif>
-					</cfif>
-				</cfloop>
+					</cfcatch>
+				</cftry>
 				<cfset commitTracepoint(tracepoint)>
 			</cfif>
 		</cfloop>

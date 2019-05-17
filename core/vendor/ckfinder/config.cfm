@@ -14,6 +14,8 @@
 <cfscript>
 config = structNew();
 currentUser=application.usermanager.read(session.mura.userID);
+currrentSite=application.settingsManager.getSite(session.siteid);
+
 // This function must check the user session to be sure that he/she is
 // authorized to upload and access files in the File Browser. '
 function CheckAuthentication()
@@ -46,7 +48,7 @@ currentSite=application.settingsManager.getSite(session.siteid);
 config.defaultAllowedExtensions='7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,ics,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pptx,ppsx,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,svg,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip,m4v,less';
 
 //ATTENTION: The trailing slash is required.
-config.baseUrl = application.configBean.getAssetPath() & '/' & currentSite.getFilePoolID() & '/assets/';
+config.baseUrl = currrentSite.getFileAssetPath() & '/assets/';
 config.baseDir = "#application.configBean.getAssetDir()##application.configBean.getFileDelim()##currentSite.getFilePoolID()##application.configBean.getFileDelim()#assets/";
 /*
  * Thumbnails : thumbnails settings. All thumbnails will end up in the same
@@ -187,7 +189,7 @@ if (isdefined("url.type")){
 	if(currentUser.getS2() && (!isBoolean(application.configBean.getValue('fmShowApplicationRoot')) || application.configBean.getValue('fmShowApplicationRoot'))){
 	  config.resourceType[4] = structNew();
 	  config.resourceType[4].name = 'Application_Root';
-	  config.resourceType[4].url =  application.configBean.getContext();
+	  config.resourceType[4].url =  currentSite.getWebPath();
 	  config.resourceType[4].directory =  application.configBean.getWebRoot();
 	  config.resourceType[4].maxSize = 0;
 	  config.resourceType[4].allowedExtensions = '';
@@ -199,10 +201,11 @@ if (isdefined("url.type")){
 	  rsSites=application.settingsManager.getList();
 
 	  for (i=1; i lte rsSites.recordcount; i=(i+1)){
+			site=application.settingsManager.getSite(rsSites.siteID[i]);
 	    temp = structNew();
 	    temp.name = '#rsSites.siteID[i]#_User_Assets';
-	    temp.url =  application.configBean.getAssetPath() & '/' & rsSites.siteID[i] & '/assets/';
-	    temp.directory ="#application.configBean.getAssetDir()##application.configBean.getFileDelim()##rsSites.siteID[i]##application.configBean.getFileDelim()#assets/";
+	    temp.url = site.getFileAssetPath() & '/assets/';
+	    temp.directory ="#application.configBean.getAssetDir()##application.configBean.getFileDelim()##site.getFilePoolID()##application.configBean.getFileDelim()#assets/";
 	    temp.maxSize = 0;
 	    if(application.configBean.getValue('fmAllowedExtensions') eq ''){
 	      temp.allowedExtensions = config.defaultAllowedExtensions;

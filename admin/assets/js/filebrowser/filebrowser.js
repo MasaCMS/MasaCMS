@@ -2,9 +2,16 @@ MuraFileBrowser = {
 
 config: {
     resourcepath: "User_Assets",
+		directory: "",
     height: 600,
     selectMode: 0,
     endpoint: '',
+    displaymode: 2, // 1: grid, 2: list
+    selectCallback: function() {}
+}
+
+, prettify: function( tgt ) {
+
 }
 
 , render: function( config ) {
@@ -13,9 +20,7 @@ config: {
 
   this.config=Mura.extend(config,this.config);
 
-  this.endpoint = Mura.apiEndpoint + "filebrowser/";
-  this.editfilelist = ["txt","cfm"];
-  this.imagelist = ["gif","jpg","jpeg","png"];
+  this.endpoint =  Mura.apiEndpoint + "filebrowser/";
 
   this.container = Mura("#MuraFileBrowserContainer");
   this.container.append("<div id='" + target + "'><component :is='currentView'></component></div>");
@@ -24,8 +29,10 @@ config: {
   this.main(); // Delegating to main()
 
   Mura.loader()
+    .loadcss(Mura.corepath + '/vendor/codemirror/codemirror.css')
     .loadjs(
-      '/core/modules/v1/filebrowser/assets/js/vue.js',
+      Mura.adminpath + '/assets/js/vue.min.js',
+      Mura.corepath + '/vendor/codemirror/codemirror.js',
     function() {
       self.mountbrowser();
      } ) ;
@@ -96,6 +103,26 @@ config: {
       }
     );
 }
+, doUpdateContent: function( directory,currentFile,content,onSuccess,onError) {
+  var dir = directory == undefined ? "" : directory;
+  var baseurl = this.endpoint + "/update?directory=" + dir + "&filename=" + currentFile.fullname + "&resourcepath=" + this.config.resourcepath;
+
+  if(!this.validate()) {
+    return error("No Access");
+  }
+
+  Mura.post( baseurl,{content: content} )
+    .then(
+      //success
+      function(response) {
+        onSuccess(response);
+      },
+      //fail
+      function(response) {
+        this.onError(response);
+      }
+    );
+}
 
 , doRenameFile: function( directory,currentFile,onSuccess,onError) {
   var dir = directory == undefined ? "" : directory;
@@ -139,7 +166,7 @@ config: {
     );
 }
 
-, loadDirectory: function( directory,pageindex,onSuccess,onError,filterResults,sortOn,sortDir ) {
+, loadDirectory: function( directory,pageindex,onSuccess,onError,filterResults,sortOn,sortDir,itemsper ) {
   var self = this;
 
   var dir = directory == undefined ? "" : directory;
@@ -154,9 +181,13 @@ config: {
     baseurl += "&pageindex=" + pageindex;
   }
 
-  if(filterResults.length) {
-    baseurl += "&filterResults=" + filterResults;
+	if(itemsper) {
+    baseurl += "&itemsperpage=" + itemsper;
   }
+
+	if(filterResults.length) {
+		baseurl += "&filterResults=" + filterResults;
+	}
 
   Mura.get( baseurl )
     .then(
@@ -173,7 +204,7 @@ config: {
 
 , loadBaseDirectory: function( onSuccess,onError ) {
   var self = this;
-  var baseurl = this.endpoint + "/browse" + "?resourcepath=" + this.config.resourcepath;
+  var baseurl = this.endpoint + "/browse" + "?resourcepath=" + this.config.resourcepath + "&directory=" + this.config.directory + "&settings=1";
 
   if(!this.validate()) {
     return error("No Access");
@@ -236,12 +267,12 @@ config: {
     template: `
     <div id="newContentMenu" class="addNew" v-bind:style="{ left: (menux + 20) + 'px',top: menuy + 'px' }">
         <ul id="newContentOptions">
-          <li v-if="checkImageType() && checkSelectMode()"><a @click="selectFile()"><i class="mi-check"> Select</i></a></li>
-          <li v-if="checkFileType()"><a  @click="editFile()"><i class="mi-pencil"> Edit</i></a></li>
-          <li v-if="checkImageType()"><a  @click="viewFile()"><i class="mi-image"> View</i></a></li>
-          <li><a @click="renameFile()"><i class="mi-edit"> Rename</i></a></li>
-          <li v-if="checkIsFile()"><a @click="downloadFile()"><i class="mi-download">Download</i></a></li>
-          <li><a @click="deleteFile()"><i class="mi-trash"> Delete</i></a></li>
+          <li v-if="checkIsFile() && checkSelectMode()"><a href="#" @click.prevent="selectFile()"><i class="mi-check"> Select</i></a></li>
+          <li v-if="checkIsFile() && checkFileEditable()"><a href="#" @click.prevent="editFile()"><i class="mi-pencil"> Edit</i></a></li>
+          <li v-if="checkIsFile() && checkImageType()"><a href="#" @click.prevent="viewFile()"><i class="mi-image"> View</i></a></li>
+          <li><a href="#" @click.prevent="renameFile()"><i class="mi-edit"> Rename</i></a></li>
+          <li v-if="checkIsFile()"><a href="#" @click="downloadFile()"><i class="mi-download"> Download</i></a></li>
+          <li><a href="#" @click="deleteFile()"><i class="mi-trash"> Delete</i></a></li>
         </ul>
       </div>
     `,
@@ -254,6 +285,8 @@ config: {
     , computed: {
 
     }
+    , mounted: function() {
+    }
     , methods: {
       compstyle: function() {
         this.posx = this.menux;
@@ -263,8 +296,13 @@ config: {
       }
 
      , selectFile: function() {
-        window.opener.CKEDITOR.tools.callFunction(self.callback,fileViewer.currentFile.image);
-        window.close();
+        if(MuraFileBrowser.config.selectMode == 1) {
+          window.opener.CKEDITOR.tools.callFunction(self.callback,fileViewer.currentFile.url);
+          window.close();
+        }
+        else {
+          return MuraFileBrowser.config.selectCallback( fileViewer.currentFile );
+        }
       }
 
       , editFile: function() {
@@ -282,7 +320,7 @@ config: {
         fileViewer.isDisplayWindow = "RENAME";
       }
       , downloadFile: function() {
-          window.open(fileViewer.currentFile.image, '_blank');
+          window.open(fileViewer.currentFile.url, '_blank');
       }
       , deleteFile: function() {
         fileViewer.isDisplayWindow = "DELETE";
@@ -290,8 +328,8 @@ config: {
       , checkSelectMode: function() {
           return fileViewer.checkSelectMode();
       }
-      , checkFileType: function() {
-          return fileViewer.checkFileType();
+      , checkFileEditable: function() {
+          return fileViewer.checkFileEditable();
       }
       , checkImageType: function() {
         return fileViewer.checkImageType();
@@ -356,6 +394,7 @@ config: {
     },
     mounted: function() {
       this.filename = this.currentFile.name;
+      fileViewer.isDisplayContext = 0;
     }
   });
 
@@ -427,10 +466,21 @@ config: {
     template: `
       <div class="fileviewer-modal">
         <div>
-          <div class="fileviewer-gallery" :style="{ 'background-image': 'url(' + currentFile.image + ')' }"  v-click-outside="closewindow">
+          <div class="fileviewer-gallery" :style="{ 'background-image': 'url(' + encodeURI(currentFile.url) + ')' }"  v-click-outside="closewindow">
             <div>
-              <div class="actionwindow-left" @click="lastimage">&lt;</div>
-              <div class="actionwindow-right" @click="nextimage">&gt;</div>
+              <div class="actionwindow-left" @click="lastimage"><i class="mi-caret-left"></i></div>
+              <div class="actionwindow-right" @click="nextimage"><i class="mi-caret-right"></i></div>
+              <div class="fileviewer-gallery-menu">
+                <ul>
+                  <li v-if="checkImageType() && checkSelectMode()"><a @click="selectFile()"><i class="mi-check"> Select</i></a></li>
+                  <li v-if="checkFileEditable()"><a  @click="editFile()"><i class="mi-pencil"> Edit</i></a></li>
+                  <li><a @click="renameFile()"><i class="mi-edit"> Rename</i></a></li>
+                  <li v-if="checkIsFile()"><a @click="downloadFile()"><i class="mi-download">Download</i></a></li>
+                  <li><a @click="deleteFile()"><i class="mi-trash"> Delete</i></a></li>
+                  <li><a @click="closewindow()"><i class="mi-times">Close</i></a></li>
+                </ul>
+                <p>{{currentFile.fullname}} ({{currentFile.size}}k)</p>
+              </div>
             </div>
           </div>
         </div>
@@ -452,6 +502,28 @@ config: {
       , closewindow: function( event ) {
         this.$root.isDisplayWindow = "";
       }
+      , renameFile: function() {
+        fileViewer.isDisplayWindow = "RENAME";
+      }
+      , downloadFile: function() {
+          window.open(fileViewer.currentFile.url, '_blank');
+      }
+      , deleteFile: function() {
+        fileViewer.isDisplayWindow = "DELETE";
+      }
+      , checkSelectMode: function() {
+          return fileViewer.checkSelectMode();
+      }
+      , checkFileEditable: function() {
+          return fileViewer.checkFileEditable();
+      }
+      , checkImageType: function() {
+        return fileViewer.checkImageType();
+      }
+      , checkIsFile: function() {
+        return fileViewer.checkIsFile();
+      }
+
     }
   });
 
@@ -461,7 +533,7 @@ config: {
       <div class="actionwindow-formwrapper">
         <h3>Delete</h3>
         <label>
-          <p>Confirm Deletion: {{currentFile.name}}</p>
+          <p>Confirm Deletion: {{currentFile.fullname}}</p>
           <button @click="doDelete()">Delete</button>
           <button @click="cancel()">Cancel</button>
         </label>
@@ -487,7 +559,7 @@ config: {
       <div class="actionwindow-formwrapper">
         <h3>Edit</h3>
         <label>
-          <textarea class="editwindow" v-model="filecontent"></textarea>
+          <textarea id="contenteditfield" class="editwindow" v-model="filecontent"></textarea>
           <button @click="updateContent()">Update</button>
           <button @click="cancel()">Cancel</button>
         </label>
@@ -500,6 +572,7 @@ config: {
     },
     methods: {
       updateContent: function() {
+        fileViewer.updateContent(this.filecontent);
         fileViewer.isDisplayWindow = '';
       }
       , cancel: function() {
@@ -508,6 +581,10 @@ config: {
     }
     , mounted: function() {
       this.filecontent = this.currentFile.content;
+//      this.editor = CodeMirror.fromTextArea(document.getElementById('contenteditfield'), {
+//         lineNumbers: true
+//       });
+
     }
   });
 
@@ -519,9 +596,14 @@ config: {
           <modemenu v-if="location"></modemenu>
       </div>
     `,
-    data() {
-        return {};
-    },
+		data: function() {
+			return {
+
+			}
+		},
+		computed: {
+
+	  },
     methods: {
       applyPage: function(goto) {
           var pageindex = 1;
@@ -591,23 +673,23 @@ config: {
   });
 
   Vue.component('navmenu', {
-    props: ["links","isbottomnav","response","itemsper"],
+    props: ["links","isbottomnav","response"],
     template: `
         <div class="filewindow-navmenu">
           <p v-if="isbottomnav">
           {{response.pageindex}} of {{response.totalpages}} <!-- ({{response.totalitems}}) includes folders -->
           </p>
         <ul class="pagination">
-          <li><a v-if="links.first" @click="applyPage('first')">
+          <li><a href="#" v-if="links.first" @click.prevent="applyPage('first')">
             <i class="mi-angle-double-left"></i>
           </a></li>
-          <li><a v-if="links.previous" @click="applyPage('previous')">
+          <li><a href="#" v-if="links.previous" @click.prevent="applyPage('previous')">
             <i class="mi-angle-left"></i>
           </a></li>
-          <li><a v-if="links.next" @click="applyPage('next')">
+          <li><a href="#" v-if="links.next" @click.prevent="applyPage('next')">
             <i class="mi-angle-right"></i>
           </a></li>
-          <li><a v-if="links.last" @click="applyPage('last')">
+          <li><a href="#" v-if="links.last" @click.prevent="applyPage('last')">
             <i class="mi-angle-double-right"></i>
           </a></li>
 
@@ -623,7 +705,7 @@ config: {
       </div>
     `,
     data() {
-        return {};
+        return {itemsper:this.$root.itemsper};
     },
     methods: {
       applyPage: function(goto) {
@@ -639,10 +721,11 @@ config: {
             pageindex = parseInt(fileViewer.response.pageindex) - 1;
           }
 
-          this.$parent.refresh('',pageindex)
+          this.$root.refresh('',pageindex)
       }
       , applyItemsPer: function() {
-        this.$parent.itemsper = this.itemsper;
+        this.$root.itemsper = this.itemsper;
+				this.$root.refresh('',1)
       }
     }
 
@@ -650,7 +733,7 @@ config: {
 
 
   Vue.component('listmode', {
-    props: ['files','folders','foldertree','isDisplayContext','currentFile'],
+    props: ['files','folders','foldertree','isDisplayContext','currentFile','settings'],
     template: `
       <div class="listmode-wrapper">
         <table class="mura-table-grid">
@@ -658,13 +741,13 @@ config: {
         		<tr>
         			<th class="actions"></th>
 
-        			<th class="var-width">Filename</th>
-        			<th>Size</th>
-        			<th>Modified</th>
+        			<th class="var-width">{{settings.rb.filebrowser_filename}}</th>
+        			<th>{{settings.rb.filebrowser_size}}</th>
+        			<th>{{settings.rb.filebrowser_modified}}</th>
         		</tr>
             <tr v-if="foldertree.length">
               <td>
-                <a  @click="back()">
+                <a href="#" @click.prevent="back()">
                   &nbsp;
                   <i class="mi-arrow-up"></i>
                 </a>
@@ -672,7 +755,7 @@ config: {
             </tr>
         		<tr v-for="(file,index) in files">
         			<td class="actions">
-        				<a :id="'fileitem-'+index" class="show-actions" @click="openMenu($event,file,index)"><i class="mi-ellipsis-v"></i></a>
+        				<a href="#" :id="'fileitem-'+index" class="show-actions" @click.prevent="openMenu($event,file,index)"><i class="mi-ellipsis-v"></i></a>
         				<div class="actions-menu hide">
         					<ul class="actions-list">
         						<li class="edit"><a @contextmenu="openMenu($event,file,index)"><i class="mi-pencil"></i>View</a></li>
@@ -680,12 +763,10 @@ config: {
         				</div>
         			</td>
         			<td class="var-width" v-if="parseInt(file.isfile)">
-                  {{file.name}}
+                <a href="#" @click.prevent="viewFile(file,index)">{{file.fullname}}</a>
               </td>
-              <td class="var-width" v-else>
-                <a  @click="refresh(file.name)">
-                <i class="mi-folder"></i> {{file.name}}
-                </a>
+              <td v-else class="var-width">
+                <a href="#" @click.prevent="refresh(file.name)"><i class="mi-folder"></i> {{file.fullname}}</a>
               </td>
         			<td>
                 <i v-if="parseInt(file.isfile)">
@@ -718,16 +799,53 @@ config: {
       ,back: function( ) {
         this.$root.back( );
       }
+      , viewFile: function( file,index ) {
+        this.$root.currentFile = file;
+        this.$root.currentIndex = index;
+
+				if(this.checkImageType(file,index)) {
+          fileViewer.isDisplayWindow = "VIEW";
+				}
+        else if(this.checkFileEditable(file,index)) {
+          fileViewer.editFile(this.successEditFile);
+        }
+      }
+      , successEditFile: function( response ) {
+        this.currentFile.content = response.data.content;
+        fileViewer.isDisplayWindow = "EDIT";
+      }
+			, isViewable: function(file,index){
+				this.$root.currentFile = file;
+				this.$root.currentIndex = index;
+				return fileViewer.isViewable();
+			}
+			, checkFileEditable: function(file,index) {
+				this.$root.currentFile = file;
+				this.$root.currentIndex = index;
+        return fileViewer.checkFileEditable();
+      }
+      , checkImageType: function(file,index) {
+				this.$root.currentFile = file;
+				this.$root.currentIndex = index;
+        return fileViewer.checkImageType();
+      }
+      , checkIsFile: function() {
+        return fileViewer.checkIsFile();
+      }
       ,openMenu: function(e,file,index,ref) {
-        if(this.isDisplayContext) {
-          this.$root.isDisplayContext = 0;
-          return;
+
+        this.$root.isDisplayContext = 0;
+
+        if(this.$root.contextListener) {
         }
 
-        var left = Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().left);
-        var top =  Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().top);
+        var left = Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().left) - 26;
+        var top =  Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().top) + window.scrollX;
 
-        this.$root.isDisplayContext = 1;
+        this.$nextTick(function () {
+          this.$root.isDisplayContext = 1;
+        });
+
         this.$root.isDisplayWindow = '';
         this.$root.currentFile = file;
         this.$root.currentFile.index = index;
@@ -753,13 +871,13 @@ config: {
           </div>
         </div>
         <div v-for="(file,index) in files">
-          <div class="fileviewer-item"  :id="'fileitem-'+index"  v-if="parseInt(file.isfile)" @contextmenu="openMenu($event,file,index)">
+          <div class="fileviewer-item"  :id="'fileitem-'+index"  v-if="parseInt(file.isfile)" @click="openMenu($event,file,index)">
             <div class="fileviewer-image">
               <div v-if="0" class="fileviewer-icon" :class="['fileviewer-icon-' + file.type]"></div>
-              <div v-else class="fileviewer-icon" :style="{ 'background-image': 'url(' + file.image + ')' }"></div>
+              <div v-else class="fileviewer-icon" :style="{ 'background-image': 'url(' + encodeURI(file.url) + ')' }"></div>
             </div>
             <div class="fileviewer-label">
-              {{file.name}}
+              {{file.fullname}}
             </div>
           </div>
           <div class="fileviewer-item" v-else @click="refresh(file.name)">
@@ -767,7 +885,7 @@ config: {
               <i class="mi-folder" style="font-size: 7em;color: #333"></i>
             </div>
             <div class="fileviewer-label">
-              {{file.name}}
+              {{file.fullname}}
             </div>
           </div>
         </div>
@@ -789,17 +907,16 @@ config: {
         this.$root.back( );
       }
       ,openMenu: function(e,file,index) {
+        this.menux = Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().left)+5;
+        this.menuy =  Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().top)+10 + window.scrollX;
 
-        if(this.isDisplayContext) {
-          this.$root.isDisplayContext = 0;
-          return;
-        }
+				this.$root.currentFile = file;
+				this.$root.currentIndex = index;
 
-        this.menux = Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().left) + 25;
-        this.menuy =  Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().top) + 20;
+        this.$nextTick(function () {
+          this.$root.isDisplayContext = 1;
+        })
 
-
-        this.$root.isDisplayContext = 1;
         this.$root.isDisplayWindow = '';
         this.$root.currentFile = file;
         this.$root.currentFile.index = index;
@@ -811,11 +928,11 @@ config: {
   });
 
   Vue.component('filewindow', {
-    props: ['files','folders','foldertree','isDisplayContext','currentFile','','displaymode'],
+    props: ['files','folders','foldertree','isDisplayContext','currentFile','settings','displaymode'],
     template: `
       <div class="filewindow-wrapper">
         <gridmode v-if="displaymode==1" :currentFile="currentFile"   :foldertree="foldertree" :files="files" :folders="folders" :isDisplayContext="isDisplayContext"></gridmode>
-        <listmode  v-if="displaymode==2" :currentFile="currentFile" :foldertree="foldertree" :files="files" :folders="folders" :isDisplayContext="isDisplayContext"></listmode>
+        <listmode  v-if="displaymode==2" :settings="settings" :currentFile="currentFile" :foldertree="foldertree" :files="files" :folders="folders" :isDisplayContext="isDisplayContext"></listmode>
       </div>`,
     data() {
       return {};
@@ -831,8 +948,8 @@ config: {
     el: "#" + self.target,
     template: `
       <div class="fileviewer-wrapper">
-        <viewwindow v-if="isDisplayWindow=='VIEW'" :currentFile="currentFile" :currentIndex="currentIndex"></viewwindow>
-        <actionwindow v-if="isDisplayWindow" :isDisplayWindow="isDisplayWindow" :currentIndex="currentIndex" :currentFile="currentFile" :error="error"></actionwindow>
+        <viewwindow v-if="isDisplayWindow=='VIEW'" :settings="settings" :currentFile="currentFile" :currentIndex="currentIndex"></viewwindow>
+        <actionwindow v-if="isDisplayWindow" :settings="settings" :isDisplayWindow="isDisplayWindow" :currentIndex="currentIndex" :currentFile="currentFile" :error="error"></actionwindow>
         <div class="fileviewer-breadcrumb">
           <i class="mi-home" @click="setDirDepth(-1)"></i>
           <i v-for="(item,index) in foldertree" class="mi-angle-double-right fa-padleft" @click="setDirDepth(index)"> {{item}}</i>
@@ -841,21 +958,21 @@ config: {
           <form enctype="multipart/form-data" novalidate v-if="isStart || isSave">
             <input type="file" multiple :name="uploadField" :disabled="isSave" @change="filesChanged($event.target.name, $event.target.files);" accept="*.*" class="file-input-field">
             <p v-if="isStart" class="upload-icon">
-              <strong>Drag</strong> your files here, or <strong>click</strong> to browse...
+              {{settings.rb.filebrowser_draghere}}
             </>
             <p v-if="isSave" class="download-icon">
-              Uploading {{fileCount}} files...
+              {{settings.rb.filebrowser_uploading}} ({{fileCount}})
               <ul class="fileviewer-uploadedfiles">
                 <li v-for="file in uploadedFiles">
-                  {{file.name}} ({{Math.floor(file.size/1000)}}k)
+                  {{file.fullname}} ({{Math.floor(file.size/1000)}}k)
                 </li>
               </ul>
             </p>
           </form>
         </div>
-        <appbar v-if="response.links" :location=1 :links="response.links" :itemsper="itemsper" :response="response"></appbar>
-        <filewindow :currentFile="currentFile" :isDisplayContext="isDisplayContext" :foldertree="foldertree" :files="files" :folders="folders" :displaymode="displaymode"></filewindow>
-        <appbar v-if="response.links" :location=0 :links="response.links" :itemsper="itemsper" :response="response"></appbar>
+        <appbar v-if="response.links" :settings="settings" :location=1 :links="response.links" :itemsper="itemsper" :response="response"></appbar>
+        <filewindow :settings="settings" :currentFile="currentFile" :isDisplayContext="isDisplayContext" :foldertree="foldertree" :files="files" :folders="folders" :displaymode="displaymode"></filewindow>
+        <appbar v-if="response.links" :settings="settings" :location=0 :links="response.links" :itemsper="itemsper" :response="response"></appbar>
       </div>`
     ,
     data: {
@@ -868,8 +985,8 @@ config: {
       files: [],
       folders: [],
       error: "",
-      selectMode: 0,
-      displaymode: 2,
+      settings: { rb: {} },
+      displaymode: this.config.displaymode,
       uploadedFiles: [],
       isDisplayContext: 0,
       isDisplayWindow: '',
@@ -877,7 +994,7 @@ config: {
       filterResults: '',
       sortOn: '',
       sortDir: 'ASC',
-      itemsper: 10,
+      itemsper: 20,
       editfilelist: self.editfilelist,
       response: {pageindex: 0}
     },
@@ -901,11 +1018,20 @@ config: {
       updateDelete: function() {
           self.updateDelete(currentFile);
       }
+      , updateContent: function( content ) {
+        var dir = "";
+
+        for(var i=0;i<this.foldertree.length;i++) {
+          dir = dir + "/" + this.foldertree[i];
+        }
+
+        self.doUpdateContent( dir,this.currentFile,content,this.refresh );
+      }
       , renameFile: function() {
         var dir = "";
 
         for(var i=0;i<this.foldertree.length;i++) {
-          dir = dir + "\\" + this.foldertree[i];
+          dir = dir + "/" + this.foldertree[i];
         }
 
           self.doRenameFile( dir,this.currentFile,this.refresh );
@@ -914,7 +1040,7 @@ config: {
         var dir = "";
 
         for(var i=0;i<this.foldertree.length;i++) {
-          dir = dir + "\\" + this.foldertree[i];
+          dir = dir + "/" + this.foldertree[i];
         }
         self.doNewFolder( dir,foldername,this.refresh );
       }
@@ -925,6 +1051,10 @@ config: {
         this.response = response.data;
         this.files = response.data.items;
         this.folders = response.data.folders;
+
+        if(response.data.settings) {
+          this.settings = response.data.settings;
+        }
       }
       , displayError: function( e ) {
       }
@@ -987,20 +1117,19 @@ config: {
         var dir = "";
 
         for(var i=0;i<this.foldertree.length;i++) {
-          dir = dir + "\\" + this.foldertree[i];
+          dir = dir + "/" + this.foldertree[i];
         }
 
         self.getEditFile(dir,this.currentFile,onSuccess);
 
       }
       , viewFile: function( direction ) {
-
       }
       , deleteFile: function( onSuccess, onError) {
         var dir = "";
 
         for(var i=0;i<this.foldertree.length;i++) {
-          dir = dir + "\\" + this.foldertree[i];
+          dir = dir + "/" + this.foldertree[i];
         }
 
         self.doDeleteFile(dir,this.currentFile,onSuccess,onError);
@@ -1015,10 +1144,10 @@ config: {
         isNaN(pageindex) ? 0 : pageindex;
 
         for(var i=0;i<this.foldertree.length;i++) {
-          dir = dir + "\\" + this.foldertree[i];
+          dir = dir + "/" + this.foldertree[i];
         }
 
-        self.loadDirectory(dir,pageindex,this.displayResults,this.displayError,this.filterResults,this.sortOn,this.sortDir);
+        self.loadDirectory(dir,pageindex,this.displayResults,this.displayError,this.filterResults,this.sortOn,this.sortDir,this.itemsper);
       }
       , back: function() {
         this.foldertree.splice(-1);
@@ -1051,7 +1180,7 @@ config: {
           });
 
         for(var i=0;i<this.foldertree.length;i++) {
-          dir = dir + "\\" + this.foldertree[i];
+          dir = dir + "/" + this.foldertree[i];
         }
 
         formData.append("directory",dir);
@@ -1069,19 +1198,37 @@ config: {
         this.refresh();
       }
       , checkSelectMode: function() {
-        return this.selectMode;
+        return MuraFileBrowser.config.selectMode;
       }
-      , checkFileType: function() {
-          for(var i = 0;i<self.editfilelist.length;i++) {
-            if(this.currentFile.type == self.editfilelist[i])
+			, isViewable: function() {
+          var editlist = this.settings.editfilelist;
+          var imagelist = this.settings.imagelist;
+          for(var i = 0;i<editlist.length;i++) {
+            if(this.currentFile.ext.toLowerCase() == editlist[i]) {
               return true;
-
-            return false;
+            }
           }
+					for(var i = 0;i<imagelist.length;i++) {
+            if(this.currentFile.ext.toLowerCase() == imagelist[i]) {
+              return true;
+            }
+          }
+          return false;
+      }
+      , checkFileEditable: function() {
+        var editlist = this.settings.editfilelist;
+
+        for(var i = 0;i<editlist.length;i++) {
+          if(this.currentFile.ext.toLowerCase() == editlist[i]) {
+            return true;
+          }
+        }
+        return false;
       }
       , checkImageType: function() {
-          for(var i = 0;i<self.imagelist.length;i++) {
-            if(this.currentFile.ext == self.imagelist[i]) {
+        var imagelist = this.settings.imagelist;
+          for(var i = 0;i<imagelist.length;i++) {
+            if(this.currentFile.ext.toLowerCase() == imagelist[i]) {
               return true;
             }
           }
@@ -1099,10 +1246,10 @@ config: {
         this.uploadReset();
         this.selectMode = self.config.selectMode;
         self.loadBaseDirectory(this.displayResults,this.displayError);
-        var vm = this;
         window.addEventListener('mouseup', function(event) {
-          this.isDisplayContext = 0;
+//        fileViewer.isDisplayContext = 0;
         });
+        var vm = this;
     }
   });
 }

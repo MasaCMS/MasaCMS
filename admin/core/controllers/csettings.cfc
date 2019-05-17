@@ -141,7 +141,10 @@ component extends="controller" output="false" {
 		or !bean.getIsNew() && arguments.rc.$.validateCSRFTokens(context=arguments.rc.siteID) ) {
 			request.newImageIDList="";
 			if ( arguments.rc.action == 'Update' ) {
-				bean=variables.settingsManager.update(arguments.rc);
+				lock name="appInitBlock#application.instanceID#" type="exclusive" timeout="200" {
+					application.appInitialized=false;
+					bean=variables.settingsManager.update(arguments.rc);
+				}
 				variables.clusterManager.reload();
 				if ( !structIsEmpty(bean.getErrors()) ) {
 					getCurrentUser().setValue("errors",bean.getErrors());
@@ -153,8 +156,10 @@ component extends="controller" output="false" {
 				}
 			}
 			if ( listFind(session.mura.memberships,'S2') && arguments.rc.action == 'Add' ) {
-				bean=variables.settingsManager.create(arguments.rc);
-				variables.settingsManager.setSites();
+				lock name="appInitBlock#application.instanceID#" type="exclusive" timeout="200" {
+					bean=variables.settingsManager.create(arguments.rc);
+					variables.settingsManager.setSites();
+				}
 				variables.clusterManager.reload();
 				session.userFilesPath = "#application.configBean.getAssetPath()#/#rc.siteid#/assets/";
 				session.siteid=arguments.rc.siteid;

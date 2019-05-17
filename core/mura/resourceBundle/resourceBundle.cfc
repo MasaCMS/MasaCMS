@@ -226,7 +226,7 @@ component extends="mura.cfobject" output="false" hint="This provides access to l
 
 		for(var i in variables.resourceBundle) {
 			if( left( i,len(arguments.key) ) eq key ) {
-				variables.resourceBundleStruct[key][replace(i,".","-","all")] = variables.resourceBundle[i];
+				variables.resourceBundleStruct[key][replace(i,".","_","all")] = variables.resourceBundle[i];
 			}
 		}
 

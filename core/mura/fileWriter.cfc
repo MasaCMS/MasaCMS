@@ -112,15 +112,20 @@
 		<cfargument name="destination">
 		<cfargument name="mode" required="true" default="#variables.defaultFileMode#">
 		<cflock name="mfw#hash(arguments.source)#" type="exclusive" timeout="5">
-			<cfif variables.useMode >
-				<cffile action="copy" mode="#arguments.mode#" source="#arguments.source#" destination="#arguments.destination#" />
-				<cftry><cffile action="delete" file="#arguments.source#" /><cfcatch></cfcatch></cftry>
-				<!---<cffile action="move" mode="#arguments.mode#" source="#arguments.source#" destination="#arguments.destination#" />--->
+			<!---<cfif not listFirst(expandPath(arguments.file),':') eq 's3>--->
+				<cfif variables.useMode >
+					<cffile action="copy" mode="#arguments.mode#" source="#arguments.source#" destination="#arguments.destination#" />
+					<cftry><cffile action="delete" file="#arguments.source#" /><cfcatch></cfcatch></cftry>
+				<cfelse>
+					<cffile action="copy" source="#arguments.source#" destination="#arguments.destination#" />
+					<cftry><cffile action="delete" file="#arguments.source#" /><cfcatch></cfcatch></cftry>
+				</cfif>
+			<!---
 			<cfelse>
-				<cffile action="copy" source="#arguments.source#" destination="#arguments.destination#" />
+				<cffile action="copy" acl="private" source="#arguments.source#" destination="#arguments.destination#" />
 				<cftry><cffile action="delete" file="#arguments.source#" /><cfcatch></cfcatch></cftry>
-				<!---<cffile action="move" source="#arguments.source#" destination="#arguments.destination#" />--->
 			</cfif>
+			--->
 		</cflock>
 		<cfreturn this />
 	</cffunction>
@@ -150,7 +155,6 @@
 		<cfset var counter = 0>
 
 		<cfif isDefined('arguments.output.mode')>
-			<!---<cftry>--->
 				<cfset new = FileOpen(arguments.file, "write")>
 
 				<cfloop condition="!fileIsEOF( arguments.output )">
@@ -172,11 +176,15 @@
 					<cfset FileDelete(arguments.output.path & "/" & arguments.output.name)>
 				</cfif>
 		<cfelse>
-			<cfif variables.useMode >
-				<cffile action="write" mode="#arguments.mode#" file="#arguments.file#" output="#arguments.output#" addnewline="#arguments.addNewLine#"/>
-			<cfelse>
-				<cffile action="write" file="#arguments.file#" output="#arguments.output#" addnewline="#arguments.addNewLine#"/>
-			</cfif>
+			<!---<cfif not listFirst(expandPath(arguments.file),':') eq 's3>--->
+				<cfif variables.useMode >
+					<cffile action="write" mode="#arguments.mode#" file="#arguments.file#" output="#arguments.output#" addnewline="#arguments.addNewLine#"/>
+				<cfelse>
+					<cffile action="write" file="#arguments.file#" output="#arguments.output#" addnewline="#arguments.addNewLine#"/>
+				</cfif>
+			<!---<cfelse>
+				<cffile action="write" acl="private" file="#arguments.file#" output="#arguments.output#" addnewline="#arguments.addNewLine#"/>
+			</cfif>--->
 		</cfif>
 		<cfreturn this />
 	</cffunction>

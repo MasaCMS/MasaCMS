@@ -42,10 +42,10 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput>
-	<div class="mura__edit__controls" style="width: #cookie.ADMINCONTROLWIDTH#px">
+	<div class="mura__edit__controls" <cfif not $.event('compactDisplay')>style="width: #cookie.ADMINCONTROLWIDTH#px"</cfif>>
 		<!--- accordion panels --->
 		<div class="mura__edit__controls__scrollable">
-			
+
 			<!--- todo: rb key for placeholder --->
 			<!--- filter settings --->
 			<div id="mura__edit__settings__filter">
@@ -77,16 +77,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<!--- /basic --->
 
 						<!--- publishing --->
-						<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Publishing')>	
+						<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Publishing')>
 								<cfinclude template="form/dsp_panel_publishing.cfm">
-						</cfif>		
+						</cfif>
 						<!--- /publishing --->
 
 						<!--- scheduling --->
 						<!--- todo: add Scheduling to tab assignments list, change value here --->
-						<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Publishing') and rc.contentBean.getcontentID() neq '00000000000000000000000000000000001'>	
+						<cfif (not len(tabAssignments) or listFindNocase(tabAssignments,'Publishing')) and rc.contentBean.getcontentID() neq '00000000000000000000000000000000001'>
 								<cfinclude template="form/dsp_panel_scheduling.cfm">
-						</cfif>		
+						</cfif>
 						<!--- /scheduling --->
 
 						<!--- layoutobjects,categories,related_content,tags,usage --->
@@ -170,12 +170,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<!--- /layoutobjects,categories,related_content,tags,usage  --->
 
 						<!--- extended attributes --->
-						<cfif listFindNoCase(rc.$.getBean('contentManager').ExtendableList,rc.type)>	
+						<cfif listFindNoCase(rc.$.getBean('contentManager').ExtendableList,rc.type)>
 							<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Extended Attributes')>
 								<cfset extendSets=application.classExtensionManager.getSubTypeByName(rc.type,rc.contentBean.getSubType(),rc.siteid).getExtendSets(activeOnly=true) />
 								<cfif arrayLen(extendSets)>
 									<cfinclude template="form/dsp_panel_extended_attributes.cfm">
-								</cfif>	
+								</cfif>
 							</cfif>
 						</cfif>
 						<!--- /extended attributes --->
@@ -221,7 +221,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 										<div class="mura-panel panel">
 											<div class="mura-panel-heading" role="tab" id="heading-#tabID#">
 												<h4 class="mura-panel-title">
-													<a class="collapse" role="button" data-toggle="collapse" data-parent="##content-panels" href="##panel-#tabID#" aria-expanded="false" aria-controls="panel-#tabID#">#tablabel#</a>
+													<a class="collapse collapsed" role="button" data-toggle="collapse" data-parent="##content-panels" href="##panel-#tabID#" aria-expanded="false" aria-controls="panel-#tabID#">#tablabel#</a>
 												</h4>
 											</div>
 											<div id="panel-#tabID#" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-#tabID#" aria-expanded="false" style="height: 0px;">
@@ -245,7 +245,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfoutput>
 
 <script type="text/javascript">
-$(document).ready(function(){	
+$(document).ready(function(){
 
 	// custom case-insensitive :contains method
     $.expr[":"].contains = $.expr.createPseudo(function (arg) {
@@ -256,16 +256,16 @@ $(document).ready(function(){
 
 	// open tab via url hash
 	if(window.location.hash.substring(1,7) == 'panel-'){
-		$('.mura-panel-heading a[href$="' + window.location.hash + '"]').trigger('click');		
+		$('.mura-panel-heading a[href$="' + window.location.hash + '"]').trigger('click');
 		window.location.hash = "";
 	}
-	
+
 	// filter settings in side panels
 	filterSettings=function(fstr){
-		
+
 		// minimum string length for action
 		if(fstr.length > 2){
-			
+
 			// if matching a panel name
 			$("#content-panels a.collapse:contains('" + fstr + "')").each(function(){
 				if ($(this).parents('.mura-panel.panel').has('.panel-collapse.collapse.in').length == 0){
@@ -285,23 +285,23 @@ $(document).ready(function(){
 			$("#content-panels .panel-collapse.collapse").collapse("hide","fast");
 			$('#content-panels .mura-panel .control-matched').removeClass('control-matched');
 		}
-	} 
+	}
 
 	// apply filter by typing, with delay
 	$("#mura__edit__settings__filter__input").keyup(function(){
 		var timeout = null;
 		clearTimeout(timeout);
 	    timeout = setTimeout(function () {
-			var filterStr = $("#mura__edit__settings__filter__input").val(); 	
+			var filterStr = $("#mura__edit__settings__filter__input").val();
 				//	console.log(filterStr);
-					filterSettings(filterStr)	;		
+					filterSettings(filterStr)	;
 	    }, 500);
 	});
 
 	// focus on input filter on page load
 	<cfif not $.content().getIsNew()>
 	setTimeout(function () {
-		$("#mura__edit__settings__filter__input").focus(); 	
+		$("#mura__edit__settings__filter__input").focus();
 	 }, 500);
 	</cfif>
 

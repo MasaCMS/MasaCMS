@@ -72,6 +72,14 @@ param name="request.muraTemplateMissing" default=false;
 param name="request.muraSysEnv" default="#createObject('java','java.lang.System').getenv()#";
 param name="request.muraSecrets" default={};
 
+//https://www.bennadel.com/blog/2824-gethttprequestdata-may-break-your-request-in-coldfusion-but-gethttprequestdata-false-may-not.htm
+//Throws error in Lucee 5.2.4.37
+/*
+if(!structKeyExists(server,'lucee')){
+	getHTTPRequestData(false);
+}
+*/
+
 if (structKeyExists(request.muraSysEnv, "MURA_GLOBAL_SECRETS")) {
     // Confirm that file exist and is JSON
     if (fileExists('/run/secrets/' & request.muraSysEnv["MURA_GLOBAL_SECRETS"])) {
@@ -105,8 +113,33 @@ structDelete(request,'muraSecrets');
 
 request.muraInDocker=len(getSystemEnvironmentSetting('MURA_DATASOURCE'));
 this.configPath=getDirectoryFromPath(getCurrentTemplatePath());
+
+baseDir= left(this.configPath,len(this.configPath)-13);
+this.baseDir=baseDir;
+variables.baseDir=baseDir;
+
+if ( !directoryExists(baseDir & "/config") ) {
+	directoryCreate(baseDir & "/config");
+}
+
+if ( !fileExists(baseDir & "/config/settings.ini.cfm") ) {
+	variables.tracePoint=initTracePoint("Writing config/settings.ini.cfm");
+	fileCopy("#baseDir#/core/templates/settings.template.cfm","#baseDir#/config/settings.ini.cfm");
+	try {
+		fileSetAccessMode("#baseDir#/config/settings.ini.cfm","777");
+	} catch (any cfcatch) {}
+	commitTracePoint(variables.tracePoint);
+}
+
+variables.tracePoint=initTracePoint("Reading config/settings.ini.cfm");
+variables.iniPath=getDirectoryFromPath(getCurrentTemplatePath()) & "/../../config/settings.ini.cfm";
+initINI(variables.iniPath);
+variables.ini.settings.mode=evalSetting(variables.ini.settings.mode);
+commitTracePoint(variables.tracePoint);
+
 //  Application name, should be unique
-this.name = "mura" & hash(getCurrentTemplatePath());
+this.name=evalSetting(getINIProperty("appname","mura" & hash(getCurrentTemplatePath())));
+
 //  How long application vars persist
 this.applicationTimeout = createTimeSpan(3,0,0,0);
 //  Where should cflogin stuff persist
@@ -139,28 +172,7 @@ this.secureJSONPrefix = "";
 this.welcomeFileList = "";
 //  Compile cfml in all cfincluded files
 this.compileextforinclude="*";
-baseDir= left(this.configPath,len(this.configPath)-13);
 
-if ( !directoryExists(baseDir & "/config") ) {
-	directoryCreate(baseDir & "/config");
-}
-
-if ( !fileExists(baseDir & "/config/settings.ini.cfm") ) {
-	variables.tracePoint=initTracePoint("Writing config/settings.ini.cfm");
-	fileCopy("#baseDir#/core/templates/settings.template.cfm","#baseDir#/config/settings.ini.cfm");
-	try {
-		fileSetAccessMode("#baseDir#/config/settings.ini.cfm","777");
-	} catch (any cfcatch) {}
-	commitTracePoint(variables.tracePoint);
-}
-
-this.baseDir=baseDir;
-variables.baseDir=baseDir;
-variables.tracePoint=initTracePoint("Reading config/settings.ini.cfm");
-variables.iniPath=getDirectoryFromPath(getCurrentTemplatePath()) & "/../../config/settings.ini.cfm";
-initINI(variables.iniPath);
-variables.ini.settings.mode=evalSetting(variables.ini.settings.mode);
-commitTracePoint(variables.tracePoint);
 //  define custom coldfusion mappings. Keys are mapping names, values are full paths
 //  This is here for older mappings.cfm files
 mapPrefix="";
@@ -291,7 +303,11 @@ this.ormSettings.cfclocation=[];
 try {
 	include "#variables.context#/config/cfapplication.cfm";
 	request.hasCFApplicationCFM=true;
-} catch (any cfcatch) {
+} catch (any e) {
+	if(isDefined('e')){
+		writeLog(type="Error", file="exception", text="If the following error is a missing include , no action is required");
+		writeLog(type="Error", file="exception", text="#serializeJSON(e)#");
+	}
 	request.hasCFApplicationCFM=false;
 }
 if ( request.muraSessionManagement && len(evalSetting(getINIProperty("cookiedomain",""))) ) {
@@ -407,6 +423,8 @@ if(request.muraInDocker && (len(getSystemEnvironmentSetting('MURA_DATABASE')) ||
 			, '#connectionStringVarName#' = getSystemEnvironmentSetting('MURA_DBCONNECTIONSTRING')
 			, 'username' = getSystemEnvironmentSetting('MURA_DBUSERNAME')
 			, 'password' = getSystemEnvironmentSetting('MURA_DBPASSWORD')
+			, 'clob' = true
+			, 'blob' = true
 			}
 		};
 
@@ -435,20 +453,21 @@ if(request.muraInDocker && (len(getSystemEnvironmentSetting('MURA_DATABASE')) ||
 		this.datasources={
 			'#getSystemEnvironmentSetting('MURA_DATASOURCE')#'={
 				'#driverVarName#' = driverName
-				, host = getSystemEnvironmentSetting('MURA_DBHOST')
-				, database = getSystemEnvironmentSetting('MURA_DATABASE')
-				, port = getSystemEnvironmentSetting('MURA_DBPORT')
-				, username = getSystemEnvironmentSetting('MURA_DBUSERNAME')
-				, password = getSystemEnvironmentSetting('MURA_DBPASSWORD')
-				, clob = true
+				, 'host' = getSystemEnvironmentSetting('MURA_DBHOST')
+				, 'database' = getSystemEnvironmentSetting('MURA_DATABASE')
+				, 'port' = getSystemEnvironmentSetting('MURA_DBPORT')
+				, 'username' = getSystemEnvironmentSetting('MURA_DBUSERNAME')
+				, 'password' = getSystemEnvironmentSetting('MURA_DBPASSWORD')
+				, 'clob' = true
+				, 'blob' = true
 			},
 			nodatabase={
 				'#driverVarName#' = driverName
-				, host = getSystemEnvironmentSetting('MURA_DBHOST')
-				, database =''
-				, port = getSystemEnvironmentSetting('MURA_DBPORT')
-				, username = getSystemEnvironmentSetting('MURA_DBUSERNAME')
-				, password = getSystemEnvironmentSetting('MURA_DBPASSWORD')
+				, 'host' = getSystemEnvironmentSetting('MURA_DBHOST')
+				, 'database' =''
+				, 'port' = getSystemEnvironmentSetting('MURA_DBPORT')
+				, 'username' = getSystemEnvironmentSetting('MURA_DBUSERNAME')
+				, 'password' = getSystemEnvironmentSetting('MURA_DBPASSWORD')
 			}
 		};
 	}
@@ -473,39 +492,41 @@ if(request.muraInDocker && (len(getSystemEnvironmentSetting('MURA_DATABASE')) ||
 		if(len(getSystemEnvironmentSetting('MURA_DBCUSTOM')) && isJSON(getSystemEnvironmentSetting('MURA_DBCUSTOM'))){
 			this.datasources["#getSystemEnvironmentSetting('MURA_DATASOURCE')#"].custom=deserializeJSON(getSystemEnvironmentSetting('MURA_DBCUSTOM'));
 		}
+	}
+}
 
-		if(len(getSystemEnvironmentSetting('MURA_MEMCACHEDSESSIONSERVER'))){
-			this.cache.connections["muramemcachedsessions"] = {
-					class: "org.lucee.extension.io.cache.memcache.MemCacheRaw"
-				, bundleName: "memcached.extension"
-				, bundleVersion: "3.0.2.29"
-				, storage: true
-				, custom: {
-					"socket_timeout":"30",
-					"initial_connections":"1",
-					"alive_check":"true",
-					"buffer_size":"1",
-					"max_spare_connections":"32",
-					"storage_format":"Binary",
-					"socket_connect_to":"3",
-					"min_spare_connections":"1",
-					"maint_thread_sleep":"5",
-					"failback":"true",
-					"max_idle_time":"600",
-					"max_busy_time":"30",
-					"nagle_alg":"true",
-					"failover":"true",
-					"servers": getSystemEnvironmentSetting('MURA_MEMCACHEDSESSIONSERVER')
-				}
-				, "default": ""
-			};
-			this.sessionCluster = true;
-			this.sessionStorage = "muramemcachedsessions";
-		}
+if (server.coldfusion.productname == 'lucee') {
+	if(len(getSystemEnvironmentSetting('MURA_MEMCACHEDSESSIONSERVER'))){
+		this.cache.connections["muramemcachedsessions"] = {
+				class: "org.lucee.extension.io.cache.memcache.MemCacheRaw"
+			, bundleName: "memcached.extension"
+			, bundleVersion: "3.0.2.29"
+			, storage: true
+			, custom: {
+				"socket_timeout":"30",
+				"initial_connections":"1",
+				"alive_check":"true",
+				"buffer_size":"1",
+				"max_spare_connections":"32",
+				"storage_format":"Binary",
+				"socket_connect_to":"3",
+				"min_spare_connections":"1",
+				"maint_thread_sleep":"5",
+				"failback":"true",
+				"max_idle_time":"600",
+				"max_busy_time":"30",
+				"nagle_alg":"true",
+				"failover":"true",
+				"servers": getSystemEnvironmentSetting('MURA_MEMCACHEDSESSIONSERVER')
+			}
+			, "default": ""
+		};
+		this.sessionCluster = true;
+		this.sessionStorage = "muramemcachedsessions";
+	}
 
-		if(len(getSystemEnvironmentSetting('MURA_TIMEZONE'))){
-			this.timezone = getSystemEnvironmentSetting('MURA_TIMEZONE');
-		}
+	if(len(getSystemEnvironmentSetting('MURA_TIMEZONE'))){
+		this.timezone = getSystemEnvironmentSetting('MURA_TIMEZONE');
 	}
 }
 

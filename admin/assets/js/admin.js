@@ -828,6 +828,16 @@ function setDatePickers(target, locale, delim) {
 			$(this).datepicker($.datepicker.regional['']).datepicker("option", "changeYear", true).datepicker("option", "changeMonth", true);
 		});
 	}
+
+	// set default date on schedule start
+	$(target).each(
+		function(index){
+			if ($(this).attr('id') == 'mura-datepicker-displayStart' && $(this).val() == ''){
+				$(this).datepicker("setDate", new Date());					
+			}
+		}
+	)			
+
 }
 
 function setColorPickers(target) {
@@ -1638,10 +1648,51 @@ function setLowerCaseKeys(obj) {
   return (obj);
 }
 
-/* TODO: keep this empty function? */
 function setFinders(selector){
-}
+	var targetFrame='sideBar';
+	if(window.self !== window.top){
+		var url=Mura.getQueryStringParams(location.search);
+		Mura(selector).click(function(){
+			var target=Mura(this);
+			siteManager.openDisplayObjectModal(
+				'filebrowser/modal.cfm',
+				{
+					target:target.data('target'),
+					completepath:target.data('completepath')
+				}
 
+			);
+		});
+
+	} else {
+		$(selector).unbind('click').on('click',function(){
+			var target=Mura(this);
+			$("#alertDialogMessage").html('<div id="MuraFileBrowserContainer"></div>');
+			$("#alertDialog").attr('title','Select File');
+			$("#alertDialog").dialog({
+				resizable: false,
+				width:1000,
+				open: function( event, ui ) {
+					var self=this;
+					MuraFileBrowser.config.height=600;
+					MuraFileBrowser.config.selectMode=2;
+					MuraFileBrowser.config.resourcepath="Application_Root";
+					MuraFileBrowser.config.selectCallback=function(item){
+						var fs=$('input[name="' + target.data('target') + '"]');
+						fs.val(item.url);
+						fs.trigger('change');
+						$(self).dialog('close');
+					};
+					MuraFileBrowser.render();
+				},
+				modal: true,
+				position: { my: "center", at: "top", of: window, collision: "fit" },
+				buttons: {}
+			});
+		});
+	}
+
+}
 
 function wireupExterndalUIWidgets(){
 	setFinders(".mura-ckfinder");

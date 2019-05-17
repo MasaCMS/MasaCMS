@@ -54,12 +54,6 @@
 #carch #mura-content #gridContainer ul.breadcrumb{
   float: left;
 }
-#tabArchitectural #gridContainer .overflow-wrap{
-  /*  
-  overflow-x: auto;
-  overflow-y: hidden; 
-  */
-}  
 #tabArchitectural #gridContainer dl {
   width: 100%;
   float: none;
@@ -279,17 +273,23 @@ dd.display, dd.nav, dd.objects, dd.template {
     height: @baseLineHeight;
     padding: 0 0 16px 0;
     .clearfix;
+
+      .half + .half{
+        padding-left: 6px;
+      }
     }
 
   li, li.ui-sortable-helper {
 
-    margin: 0 0 3px 0;
-    padding: @baseLineHeight/2;
-    cursor: move;
+    background: none;
+    background-color: #b1b1b1;
     border: 0;
-    border-radius:3px;
-    /* #gradient .vertical(hsl(260,0%,90%),hsl(260,0%,86%)); */
-    background: darken(@grayLighter,6%);
+    border-radius:1px;
+    cursor: move;
+    color: #FFF;
+    margin: 0 0 3px 0;
+    padding: 6px 6px 6px 8px;
+    text-shadow: none;
     }
 
   #availableListSort,
@@ -300,9 +300,9 @@ dd.display, dd.nav, dd.objects, dd.template {
   #groupAssignmentListSort  {
     .box-sizing(border-box);
     margin: 0 0 @baseLineHeight !important;
-    padding: 12px !important;
+    padding: 6px 0 !important;
     list-style-type: none;
-    border: 1px dotted red;
+    border: none !important;
     width: 48%;
     float: right;
   }
@@ -320,10 +320,12 @@ dd.display, dd.nav, dd.objects, dd.template {
     }
   }
   
-  #contentDisplayListSort, #displayListSort, #groupAssignmentListSort, #groupAvailableListSort {
+  #contentDisplayListSort, #displayListSort, #groupAssignmentListSort{
     
     li {
-      background: hsl(55,80%,88%);
+      background-color: #545454;
+      color: #FFF;
+     /* background: hsl(55,80%,88%);*/
     }
     
   }
@@ -589,16 +591,23 @@ dd.display, dd.nav, dd.objects, dd.template {
 
 .selectAssocImageResults {  
 
+  .mura-tabs:before,
+  .mura-tabs:after{
+      display: inline !important;
+  }
+  
   > .tab-content {
       margin-bottom: @baseLineHeight !important;
+      clear: left;
     
     > .tab-pane {
       overflow-y: auto;
       padding: 1em;
-      background-color: #f7f7f7;
+      background-color: #f5f5f5;
       
       > ul { 
         list-style: none;
+        margin-bottom: 0;
 
         > li {
           border: none;
@@ -758,7 +767,7 @@ dd.display, dd.nav, dd.objects, dd.template {
   
   #fileupload-target {
     margin-bottom: @baseLineHeight;
-    padding: 2em;
+    padding: 24px;
     
     &:before {
       content: "";
@@ -781,10 +790,15 @@ dd.display, dd.nav, dd.objects, dd.template {
 #multi-file-upload {
 
   .fileupload-buttonbar {
+     .btn{
+        padding-top: 6px;
+        
+        > i {
+            font-size: 16px;  
+          }
     
-    .btn > i {
-        font-size: 16px;  
-      }
+     }
+
     }
   
   .progress {
@@ -800,11 +814,14 @@ dd.display, dd.nav, dd.objects, dd.template {
   }
   
   table {
+
+    margin-bottom: 0;
+    border: none !important;
     
     td {
     
       vertical-align: top;
-      padding: 1em;
+      padding: 12px !important;
       
       .btn.mura-edit-file{
         font-size: 14px;
@@ -814,6 +831,7 @@ dd.display, dd.nav, dd.objects, dd.template {
         
         img, canvas {
           .img-rounded;
+          border-radius: 2px;
           margin-bottom: 4px;
           width: 60px;
           max-width: 60px;
@@ -836,7 +854,7 @@ dd.display, dd.nav, dd.objects, dd.template {
         
           > .badge {
             background-color: #000 !important;
-            border-radius:4px;
+            border-radius:2px;
             .center-block;
             color: #FFF;
             font-size: 10px;

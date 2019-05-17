@@ -45,6 +45,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="request.quickeditscheduler" default="false">
 <cfset $=application.serviceFactory.getBean("MuraScope").init(session.siteID)>
 <cfset content=$.getBean("content").loadBy(contentID=rc.contentID)>
+<script>
+	$('.mura-quickEdit select').niceSelect();
+</script>
 <cfif not content.hasDrafts()>
 	<cfoutput>
 	<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.edit#rc.attribute#')#</h1>
@@ -86,6 +89,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 			</cfloop>
 		</select>
+		<!--- todo: much of this can be removed for 7.2 --->
 	<cfelseif rc.attribute eq "display">
 		<cfparam name="session.localeHasDayParts" default="true">
 
@@ -536,11 +540,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<div class="form-actions">
 		<!--- todo: rb keys for submit, manage schedule --->
-		<button id="btn__quickedit__save"<cfif content.getdisplay() EQ 2> style="display:none;"</cfif> class="btn mura-primary" onclick="siteManager.saveQuickEdit(this);">Submit</button>
-		<button id="btn__quickedit__schedule"<cfif content.getdisplay() NEQ 2> style="display:none;"</cfif> type="button" class="btn mura-primary"> Manage Schedule</button>
+		<button id="btn__quickedit__save"<cfif rc.attribute eq "display" and content.getdisplay() eq 2> style="display:none;"</cfif> class="btn mura-primary" onclick="siteManager.saveQuickEdit(this);">Submit</button>
+		<button id="btn__quickedit__schedule"<cfif rc.attribute neq "display" or content.getdisplay() neq 2> style="display:none;"</cfif> type="button" class="btn mura-primary"> Manage Schedule</button>
 	</div>
 	</cfoutput>
 <cfelse>
+	<!--- todo: test this --->
 	<cfoutput>
 	<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.hasdraftstitle')# </h1>
 	<span class="cancel" onclick="siteManager.closeQuickEdit();" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.cancel')#"><i class="mi-close"></i></span>

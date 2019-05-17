@@ -408,6 +408,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfset request.muraDeferredModuleAssets=[]>
+	<cfset request.muraDeferredModuleErrors=[]>
 	<cfset tracepoint1=initTracepoint("Loading global modules")>
 	<cfset siteTemplate.discoverGlobalModules().discoverGlobalContentTypes()>
 	<cfset request.muraBaseRBFactory=siteTemplate.getRBFactory()>

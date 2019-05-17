@@ -54,6 +54,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfparam name="objectParams.viewalllink" default="">
 	<cfparam name="objectParams.viewalllabel" default="">
 	<cfparam name="objectParams.modalimages" default="false">
+	<cfparam name="objectParams.useCategoryIntersect" default="false">
 
 	<cfif not len(objectparams.layout)>
 		<cfset objectParams.layout='default'>

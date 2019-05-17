@@ -3290,28 +3290,44 @@ buttons: {
 
 	requestDisplayObjectParams:function(fn,targetFrame){
 		targetFrame=targetFrame || 'modal';
-
+		var callback=fn;
 		siteManager.frontEndProxyListeners.push(
-			{cmd:'customObjectParamsRequest',
-			fn:function(params){
+			{
+				cmd:'customObjectParamsRequest',
+				fn:function(params){
 					$(".objectParam, .objectparam").each(function(){
 						var item=$(this);
 
-						var p=item.attr('name').toLowerCase();
+						if(typeof item.attr('name') =='string'){
+							var p=item.attr('name').toLowerCase();
 
-						if(typeof params[p] != 'undefined'){
-							item.val(params[p]);
-							if(item.attr('id') && typeof CKEDITOR.instances[item.attr('id')] != 'undefined'){
-								CKEDITOR.instances[item.attr('id')].updateElement();
+							if(typeof params[p] != 'undefined'){
+
+								if(item.is(':radio')){
+									if(item.val().toString()==params[p].toString()){
+										item.attr('checked',true);
+									}
+
+								} else {
+									item.val(params[p].toString());
+
+									if(item.is('SELECT')){
+										item.niceSelect('update');
+									}
+
+									if(item.attr('id') && typeof CKEDITOR.instances[item.attr('id')] != 'undefined'){
+										CKEDITOR.instances[item.attr('id')].updateElement();
+									}
+								}
+
 							}
 						}
 
 					});
 
 					siteManager.initConfiguratorParams();
-					fn(params);
+					callback(params);
 				}
-
 			}
 		);
 

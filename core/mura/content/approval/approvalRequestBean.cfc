@@ -203,22 +203,43 @@ component extends="mura.bean.beanORM"  table="tapprovalrequests" entityname="app
 
 			if(listFindNoCase('Canceled,Rejected,Approved',arguments.actionType)){
 				//try{
-					getBean('mailer').sendText($.setDynamicContent(script),
+					getBean('mailer').sendText(
+						$.setDynamicContent(script),
 						$.event('requester').getEmail(),
 						$.siteConfig('site'),
 						subject,
 						$.event('siteid'),
-						$.event('approver').getEmail());
+						$.event('approver').getEmail()
+					);
 				//} catch (any e){}
 			} else if (arguments.actionType=='Pending'){
 				//try{
 					if(isValid('email',$.event('group').getEmail())){
-						getBean('mailer').sendText($.setDynamicContent(script),
+						getBean('mailer').sendText(
+							$.setDynamicContent(script),
 							$.event('group').getEmail(),
 							$.siteConfig('site'),
 							subject,
 							$.event('siteid'),
-							$.event('approver').getEmail());
+							$.event('approver').getEmail()
+						);
+					} else {
+						var members=$.event('group').getMembersIterator();
+
+						if(members.hasNext()){
+							var emailtext=$.setDynamicContent(script);
+
+							while(members.hasNext()){
+								getBean('mailer').sendText(
+									emailtext,
+									members.next().getEmail(),
+									$.siteConfig('site'),
+									subject,
+									$.event('siteid'),
+									$.event('approver').getEmail()
+								);
+							}
+						}
 					}
 				//} catch (any e){}
 			}

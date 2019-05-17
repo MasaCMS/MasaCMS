@@ -7,6 +7,33 @@ component
   {
 		property name="filebrowserid" default="" required=true fieldtype="id" orderno="-100000" rendertype="textfield" displayname="filebrowserid" html=false datatype="char" length="35" nullable=false pos="0";
 
+		private function getBaseFileDir( siteid,resourcePath ) {
+			arguments.resourcePath == "" ? "User_Assets" : arguments.resourcePath;
+
+			var pathRoot = "";
+			var m=getBean('$').init(arguments.siteid);
+			var currentSite = application.settingsManager.getSite(arguments.siteid);
+
+			if(arguments.resourcePath == "Site_Files") {
+				pathRoot = currentSite.getIncludePath();
+			}
+			else if(arguments.resourcePath == "Application_Root") {
+				pathRoot = "/murawrm";
+			}
+			else {
+				pathRoot = currentSite.getAssetDir() & '/assets';
+
+				if(!directoryExists(expandPath(pathRoot & "/File"))){
+					directoryCreate(expandPath(pathRoot & "/File"));
+				}
+				if(!directoryExists(expandPath(pathRoot & "/Image"))){
+					directoryCreate(expandPath(pathRoot & "/Image"));
+				}
+			}
+
+			return pathRoot;
+		}
+
 		private function getBaseResourcePath( siteid,resourcePath ) {
 			arguments.resourcePath == "" ? "User_Assets" : arguments.resourcePath;
 
@@ -15,54 +42,75 @@ component
 			var currentSite = application.settingsManager.getSite(arguments.siteid);
 
 			if(arguments.resourcePath == "Site_Files") {
-				pathRoot = application.configBean.getAssetPath() & '/' & currentSite.getFilePoolID();
+				pathRoot = currentSite.getAssetPath(complete=1);
 			}
 			else if(arguments.resourcePath == "Application_Root") {
-				pathRoot = "/";
+				pathRoot = application.configBean.getRootPath(complete=1);
 			}
 			else {
-				pathRoot = application.configBean.getAssetPath() & '/' & currentSite.getFilePoolID() & '/assets';
+				pathRoot = currentSite.getFileAssetPath(complete=1) & '/assets';
 			}
 
 			return pathRoot;
 		}
 
-		private function getBaseAssetPath( siteid,resourcePath ) {
-			arguments.resourcePath == "" ? "User_Assets" : arguments.resourcePath;
-
-			var pathRoot = "";
+		private any function checkPerms( siteid,context,resourcePath )  {
 			var m=getBean('$').init(arguments.siteid);
-			var currentSite = application.settingsManager.getSite(arguments.siteid);
+			var permission = {message: '',success: 0};
 
-			if(arguments.resourcePath == "Site_Files") {
-				pathRoot = application.configBean.getAssetPath() & '/' & currentSite.getFilePoolID();
-			}
-			else if(arguments.resourcePath == "Application_Root") {
-				pathRoot = "/";
-			}
-			else {
-				pathRoot = application.configBean.getAssetPath() & '/' & currentSite.getFilePoolID() & '/assets';
+			// context: upload,edit,write,delete,rename,addFolder,browse
+			// resourcePath: User_Assets,Site_Files,Application_Root
+
+			if ( !m.getBean('permUtility').getModulePerm('00000000000000000000000000000000000',arguments.siteid) ) {
+				permission.message = "Permission Denied";
+				return permission;
 			}
 
-			return pathRoot;
-		}
-
-		private any function checkPerms( siteid,context,mode )  {
-			var permission = {};
-
-			var m=getBean('$').init(arguments.siteid);
-
-			permission.success = 0;
-
-			if(m.validateCSRFTokens(context='file-' & arguments.mode)) {
-				permission.success = 1;
+			if(arguments.resourcePath != 'User_Assets' && !m.getCurrentUser().isSuperUser()){
+				permission.message = "Permission Denied";
+				return permission;
 			}
 
+/*			if(!m.validateCSRFTokens()) {
+					permission.message = "Invalid CSRF tokens";
+					return permission;
+			}
+*/
 			permission.success = 1;
-
-//			arguments.$.getContentRenderer().validateCSRFTokens(context='file-' & arguments.mode)
-
 			return permission;
+		}
+
+		remote any function ckeditor_quick_upload( siteid,directory,formData,resourcePath ){
+			/*
+			{
+			    "uploaded": 1,
+			    "fileName": "foo.jpg",
+			    "url": "/files/foo.jpg"
+			}
+
+			{
+			    "uploaded": 1,
+			    "fileName": "foo(2).jpg",
+			    "url": "/files/foo(2).jpg",
+			    "error": {
+			        "message": "A file with the same name already exists. The uploaded file was renamed to \"foo(2).jpg\"."
+			    }
+			}
+
+			{
+			    "uploaded": 0,
+			    "error": {
+			        "message": "The file is too big."
+			    }
+			}
+
+			*/
+
+			return serializeJSON({
+			    "uploaded": 1,
+			    "fileName": "foo.jpg",
+			    "url": "/files/foo.jpg"
+			});
 		}
 
 		remote any function upload( siteid,directory,formData,resourcePath )  {
@@ -73,12 +121,12 @@ component
 
 			// hasrestrictedfiles
 
-			var permission = checkPerms(arguments.siteid,'upload');
+			var permission = checkPerms(arguments.siteid,'upload',resourcePath);
 			var response = { success: 0,failed: [],saved: []};
 
 			if(!permission.success) {
 				response.permission = permission;
-				response.message = "Permission failed."
+				response.message = permission.message;
 				return response;
 			}
 
@@ -86,20 +134,26 @@ component
 			var allowedExtensions = m.getBean('configBean').getFMAllowedExtensions();
 			var tempDir = m.globalConfig().getTempDir();
 
-			var baseFilePath = getBaseResourcePath( arguments.siteid,arguments.resourcePath );
+			var baseFilePath = getBaseFileDir( arguments.siteid,arguments.resourcePath );
 			var filePath = baseFilePath  & m.globalConfig().getFileDelim() & rereplace(arguments.directory,"\.{1,}","\.","all");
 
-			response.uploaded = fileUploadAll(destination=tempDir,nameconflict="overwrite");
+			response.uploaded = fileUploadAll(destination=tempDir,nameconflict="unique");
 			response.allowedExtensions = allowedExtensions;
 
 			for(var i = 1; i lte ArrayLen(response.uploaded);i++ ) {
 				var item = response.uploaded[i];
 				var valid = false;
 				if(listFindNoCase(allowedExtensions,item.serverfileext)) {
-						fileMove(item.serverdirectory & m.globalConfig().getFileDelim() & item.serverfile,expandPath(filePath) & m.globalConfig().getFileDelim() & item.serverfile );
-						ArrayAppend(response.saved,item);
+						try {
+							fileMove(item.serverdirectory & m.globalConfig().getFileDelim() & item.serverfile,expandPath(filePath) & m.globalConfig().getFileDelim() & item.serverfile );
+							ArrayAppend(response.saved,item);
+						}
+						catch( any e ) {
+							ArrayAppend(e.message,item);
+						}
 				}
 				else {
+					fileDelete(item.serverdirectory & m.globalConfig().getFileDelim() & item.serverfile);
 					ArrayAppend(response.failed,item);
 				}
 			}
@@ -108,27 +162,30 @@ component
 			return response;
 		}
 
-		remote any function edit( siteid,directory,filename,filter="",pageIndex=1,resourcePath )  {
+		remote any function edit( siteid,directory,filename,filter="",pageIndex=1,resourcepath )  {
 			arguments.siteid == "" ? "default" : arguments.siteid;
 			arguments.pageindex == isNumeric(arguments.pageindex) ? arguments.pageindex : 1;
 
-			var permission = checkPerms('edit');
+			var permission = checkPerms(arguments.siteid,'edit',resourcePath);
 			var response = { success: 0};
 
 			if(!permission.success) {
 				response.permission = permission;
-				response.message = "Permission failed."
+				response.message = permission.message;
 				return response;
 			}
 
 			var m = application.serviceFactory.getBean('m').init(arguments.siteid);
-			var pathRoot = application.configBean.getAssetDir() & application.configBean.getFileDelim() & "assets";
-			var filePath =  pathRoot & "/" & rereplace(arguments.directory,"\.{1,}","\.","all");
+			var baseFilePath = getBaseFileDir( arguments.siteid,arguments.resourcePath );
+			var filePath = baseFilePath  & m.globalConfig().getFileDelim() & rereplace(arguments.directory,"\.{1,}","\.","all");
+			var path = expandpath(filePath) & application.configBean.getFileDelim() & arguments.filename;
+
 
 			try {
-				var fileContent = fileRead(expandpath(filePath) & application.configBean.getFileDelim() & arguments.filename);
+				var fileContent = fileRead(path);
 			}
 			catch( any e ) {
+				response['error'] = e;
 				return( e );
 			}
 
@@ -139,21 +196,50 @@ component
 
 		}
 
-		remote any function delete( siteid,directory,filename,filter="",pageIndex=1,resourcePath )  {
+		remote any function update( siteid,directory,filename,filter="",resourcepath,content )  {
 			arguments.siteid == "" ? "default" : arguments.siteid;
-			arguments.pageindex == isNumeric(arguments.pageindex) ? arguments.pageindex : 1;
 
-			var permission = checkPerms('delete');
+			var permission = checkPerms(arguments.siteid,'write',resourcePath);
 			var response = { success: 0};
 
 			if(!permission.success) {
 				response.permission = permission;
-				response.message = "Permission failed."
-				throw( message = response.message,object=response);
+				response.message = permission.message;
+				return response;
 			}
 
 			var m = application.serviceFactory.getBean('m').init(arguments.siteid);
-			var baseFilePath = getBaseResourcePath( arguments.siteid,arguments.resourcePath );
+			var baseFilePath = getBaseFileDir( arguments.siteid,arguments.resourcePath );
+			var filePath = baseFilePath  & m.globalConfig().getFileDelim() & rereplace(arguments.directory,"\.{1,}","\.","all");
+			var path = expandpath(filePath) & application.configBean.getFileDelim() & arguments.filename;
+
+			try {
+				fileWrite(path,arguments.content);
+			}
+			catch( any e ) {
+				response['error'] = e;
+				return( e );
+			}
+
+			response.success = 1;
+			return response;
+		}
+
+		remote any function delete( siteid,directory,filename,filter="",pageIndex=1,resourcePath )  {
+			arguments.siteid == "" ? "default" : arguments.siteid;
+			arguments.pageindex == isNumeric(arguments.pageindex) ? arguments.pageindex : 1;
+
+			var permission = checkPerms(arguments.siteid,'delete',resourcePath);
+			var response = { success: 0};
+
+			if(!permission.success) {
+				response.permission = permission;
+				response.message = permission.message;
+				return response;
+			}
+
+			var m = application.serviceFactory.getBean('m').init(arguments.siteid);
+			var baseFilePath = getBaseFileDir( arguments.siteid,arguments.resourcePath );
 			var filePath = baseFilePath  & m.globalConfig().getFileDelim() & rereplace(arguments.directory,"\.{1,}","\.","all");
 			var path = expandpath(filePath) & application.configBean.getFileDelim() & arguments.filename;
 
@@ -195,17 +281,17 @@ component
 			arguments.siteid == "" ? "default" : arguments.siteid;
 			arguments.pageindex == isNumeric(arguments.pageindex) ? arguments.pageindex : 1;
 
-			var permission = checkPerms('rename');
+			var permission = checkPerms(arguments.siteid,'rename',resourcePath);
 			var response = { success: 0};
 
 			if(!permission.success) {
 				response.permission = permission;
-				response.message = "Permission failed."
+				response.message = permission.message;
 				return response;
 			}
 
 			var m = application.serviceFactory.getBean('m').init(arguments.siteid);
-			var baseFilePath = getBaseResourcePath( arguments.siteid,arguments.resourcePath );
+			var baseFilePath = getBaseFileDir( arguments.siteid,arguments.resourcePath );
 			var filePath = baseFilePath  & m.globalConfig().getFileDelim() & rereplace(arguments.directory,"\.{1,}","\.","all");
 			var ext = rereplacenocase(arguments.filename,".[^\.]*","");
 
@@ -223,17 +309,17 @@ component
 			arguments.siteid == "" ? "default" : arguments.siteid;
 			arguments.pageindex == isNumeric(arguments.pageindex) ? arguments.pageindex : 1;
 
-			var permission = checkPerms('addFolder');
+			var permission = checkPerms(arguments.siteid,'addFolder',resourcePath);
 			var response = { success: 0};
 
 			if(!permission.success) {
 				response.permission = permission;
-				response.message = "Permission failed."
+				response.message = permission.message;
 				return response;
 			}
 
 			var m = application.serviceFactory.getBean('m').init(arguments.siteid);
-			var baseFilePath = getBaseResourcePath( arguments.siteid,arguments.resourcePath );
+			var baseFilePath = getBaseFileDir( arguments.siteid,arguments.resourcePath );
 			var filePath = baseFilePath  & m.globalConfig().getFileDelim() & rereplace(arguments.directory,"\.{1,}","\.","all");
 
 			try {
@@ -246,45 +332,67 @@ component
 			return true;
 		}
 
-		remote any function browse( siteid,directory,filterResults="",pageIndex=1,sortOn,sortDir,resourcePath )  {
+		private any function getResourceBundle(siteid) {
+			arguments.siteid == "" ? "default" : arguments.siteid;
+			var m=getBean('$').init(arguments.siteid);
+			var rb = application.rbFactory.getKeyStructure(session.rb,'filebrowser');
+
+			return rb;
+		}
+
+		remote any function browse( siteid,directory,filterResults="",pageIndex=1,sortOn,sortDir,resourcePath,itemsPerPage=20,settings=0 )  {
 
 			arguments.siteid == "" ? "default" : arguments.siteid;
 			arguments.pageindex == isNumeric(arguments.pageindex) ? arguments.pageindex : 1;
 
 			var m=getBean('$').init(arguments.siteid);
-			var permission = checkPerms('browse');
+			var permission = checkPerms(arguments.siteid,'browse',resourcePath);
 			var response = { success: 0};
 
 			if(!permission.success) {
 				response.permission = permission;
-				response.message = "Permission failed."
+				response.message = permission.message;
 				return response;
 			}
 
-// m.globalConfig().getFileDir() ... OS file path (no siteid)
+			if(arguments.settings) {
+				// list of allowable editable files and files displayed as "images"
+				var editfilelist = listToArray(m.globalConfig().getValue(property='filebrowsereditlist',defaultValue="txt,cfm,cfc,html,htm,cfml,js,css,json")); // settings.ini.cfm: filebrowsereditlist
+				var imagelist = listToArray(m.globalConfig().get(property='filebrowserimagelist',defaultValue="gif,jpg,jpeg,png")); // settings.ini.cfm: filebrowserimagelist
+				var rb = getResourceBundle(arguments.siteid);
+				response.settings = {
+					editfilelist: editfilelist,
+					imagelist: imagelist,
+					rb: rb
+				}
+			}
+
+// m.siteConfig().getFileDir() ... OS file path (no siteid)
 // m.siteConfig().getFileAssetPath() ... includes siteid (urls)
 
 			var m = application.serviceFactory.getBean('m').init(arguments.siteid);
 
-			var baseFilePath = getBaseResourcePath( arguments.siteid,arguments.resourcePath );
+			var baseFilePath = getBaseFileDir( arguments.siteid,arguments.resourcePath );
 			var filePath = baseFilePath  & m.globalConfig().getFileDelim() & rereplace(arguments.directory,"\.{1,}","\.","all");
-			var assetPath = baseFilePath & replace(arguments.directory,"\","/","all");
+
+// move to getBaseResourcePath() --> getFileAssetPath()
+			var assetPath = getBaseResourcePath(arguments.siteid,arguments.resourcePath) & replace(arguments.directory,"\","/","all");
 
 			var frow = {};
 
 			response['items'] = [];
 			response['links'] = {};
 			response['folders'] = [];
-			response['itemsperpage'] = 20;
+			response['itemsperpage'] = arguments.itemsPerPage;
 
 			response['directory'] = arguments.directory == "" ? "" : arguments.directory;
-
 			response['directory'] = rereplace(response['directory'],"\\","\/","all");
 			response['directory'] = rereplace(response['directory'],"$\\","");
 
 			var rsDirectory = directoryList(expandPath(filePath),false,"query");
-			var response['startindex'] = 1 + response['itemsperpage'] * pageIndex - response['itemsperpage'];
-			var response['endindex'] = response['startindex'] + response['itemsperpage'] - 1;
+
+			response['startindex'] = 1 + response['itemsperpage'] * pageIndex - response['itemsperpage'];
+			response['endindex'] = response['startindex'] + response['itemsperpage'] - 1;
 
 			var sqlString = "SELECT * from sourceQuery";
 
@@ -306,10 +414,6 @@ component
 			var rsExecute = qObj.execute();
 			var rsFiles = rsExecute.getResult();
 			var rsPrefix = rsExecute.getPrefix();
-
-
-			response['resourcePath'] = baseFilePath;
-			response['filePath'] = expandPath(filePath);
 
 			response['endindex'] = response['endindex'] > rsFiles.recordCount ? rsFiles.recordCount : response['endindex'];
 
@@ -334,18 +438,21 @@ component
 					frow['ext'] = rereplace(frow['fullname'],".[^\.]*\.","");
 				frow['lastmodified'] = rsFiles['datelastmodified'][x];
 				frow['lastmodifiedshort'] = LSDateFormat(rsFiles['datelastmodified'][x],m.getShortDateFormat());
-				frow['image'] = assetPath & "/" & frow['fullname'];
+				frow['url'] = assetPath & "/" & frow['fullname'];
 				ArrayAppend(response['items'],frow,true);
 			}
 
+			var apiEndpoint=m.siteConfig().getApi(type="json", version="v1").getEndpoint();
+
+			var baseurl=apiEndpoint & "/filebrowser/browse?directory=#esapiEncode("url",arguments.directory)#&resourcepath=#esapiEncode("url",arguments.resourcepath)#&pageIndex=";
 			if(response.totalpages > 1) {
 				if(response.pageindex < response.totalpages) {
-					response['links']['next'] = linkDir & "&pageIndex=" & response.pageindex+1;
-					response['links']['last'] = linkDir & "&pageIndex=" & response.totalpages;
+					response['links']['next'] = baseurl & response.pageindex+1;
+					response['links']['last'] = baseurl & response.totalpages;
 				}
 				if(response.pageindex > 1) {
-					response['links']['first'] = linkDir & "&pageIndex=1";
-					response['links']['previous'] = linkDir & "&pageIndex=" & response.pageindex-1;
+					response['links']['first'] =baseurl & 1;
+					response['links']['previous'] = baseurl & (response.pageindex-1);
 				}
 			}
 

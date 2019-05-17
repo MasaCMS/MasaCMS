@@ -815,12 +815,17 @@
 			var apiUtility=$.siteConfig().getApi('json','v1');
 			var result=structCopy($.content().getAllValues());
 			var renderer=$.getContentRenderer();
+			var editableAttributes=(isdefined('renderer.editableAttributesArray') && isArray(renderer.editableAttributesArray)) ? renderer.editableAttributesArray : [];
 
 			request.cffpJS=true;
 
 			result.template=renderer.getTemplate();
 			result.conanicalURL=renderer.getConanicalURL();
 			result.metadesc=renderer.getMetaDesc();
+
+			for(var attr in editableAttributes){
+				result['#attr.attribute#']=$.renderEditableAttribute(argumentCollection=attr);
+			}
 
 			$.event('response',result);
 
@@ -843,14 +848,41 @@
 				var expandParams={};
 				var entity=$.content();
 				var expand=$.event('expand');
-
+				var expandAll=(expand=='all' || expand=='*');
+				var expanded=1;
 				if(arrayLen(entity.getHasManyPropArray())){
 					for(p in entity.getHasManyPropArray()){
-						if(expand=='all' || listFindNoCase(expand,p.name)){
+						if(expandAll || listFindNoCase(expand,p.name)){
 							expandParams={maxitems=0,itemsperpage=0};
 							expandParams['#entity.translatePropKey(p.loadkey)#']=entity.getValue(entity.translatePropKey(p.column));
+
+							if(p.cfc=='content'){
+								if(isDefined('url.showexcludesearch')){
+									expandParams.showexcludesearch=url.showexcludesearch;
+								}
+								if(isDefined('url.includeHomePage')){
+									expandParams.includeHomePage=url.includeHomePage;
+								}
+								if(isDefined('url.shownavonly')){
+									expandParams.shownavonly=url.shownavonly;
+								}
+
+								expandParams.sortBy=entity.get('sortBy');
+								expandParams.sortDirection=entity.get('sortDirection');
+							}
+
+							if(isDefined('url.maxitems')){
+								expandParams.maxitems=url.maxitems;
+							}
+							if(isDefined('url.cachedWithin')){
+								expandParams.cachedWithin=url.cachedWithin;
+							}
+							if(isDefined('url.itemsPerPage')){
+								expandParams.itemsPerPage=url.itemsPerPage;
+							}
+
 							try{
-								result[p.name]=apiUtility.findQuery(entityName=p.cfc,siteid=$.event('siteid'),params=expandParams);
+								result[p.name]=apiUtility.findQuery(entityName=p.cfc,siteid=$.event('siteid'),params=expandParams,expand=expand,expanded=expanded,expandedProp=p.name);
 							} catch(any e){/*WriteDump(p); abort;*/}
 						}
 					}
@@ -858,20 +890,24 @@
 
 				if(arrayLen(entity.getHasOnePropArray())){
 					for(p in entity.getHasOnePropArray()){
-						if(expand=='all' || listFindNoCase(expand,p.name)){
+						if(expandAll || listFindNoCase(expand,p.name)){
 							try{
 								if(p.name=='site'){
-									result[p.name]=apiUtility.findOne(entityName='site',id=$.event('siteid'),siteid=$.event('siteid'),render=false,variation=false,expand=false);
+									result[p.name]=apiUtility.findOne(entityName='site',id=$.event('siteid'),siteid=$.event('siteid'),render=false,variation=false,expand=expand,expanded=expanded,expandedProp=p.name);
 								} else {
-									result[p.name]=apiUtility.findOne(entityName=p.cfc,id=entity.getValue(entity.translatePropKey(p.column)),siteid=$.event('siteid'),render=false,variation=false,expand=false);
+									result[p.name]=apiUtility.findOne(entityName=p.cfc,id=entity.getValue(entity.translatePropKey(p.column)),siteid=$.event('siteid'),render=false,variation=false,expand=expand,expanded=expanded,expandedProp=p.name);
 								}
 							} catch(any e){/*WriteDump(p); abort;*/}
 						}
 					}
 				}
 
-				if(expand=='all' || listFindNoCase(expand,'crumbs')){
-					result.crumbs=apiUtility.findCrumbArray('content',entity.getContentID(),$.event('siteid'),entity.getCrumbIterator());
+				if(expandAll || listFindNoCase(expand,'crumbs')){
+					result.crumbs=apiUtility.findCrumbArray(entityName='content',id=entity.getContentID(),siteid=$.event('siteid'),iterator=entity.getCrumbIterator(),expand='',expanded=1,expandedProp='crumbs');
+				}
+
+				if(expandAll || listFindNoCase(expand,'relatedcontent')){
+					result.relatedcontent=apiUtility.findRelatedContent(entity=entity,siteid=$.event('siteid'),expand='',expanded=1,expandedProp='relatedcontent');
 				}
 			}
 
@@ -884,7 +920,9 @@
 				context=$.siteConfig().getRootPath(complete=1),
 				nocache=$.event('nocache'),
 				assetpath=$.siteConfig().getAssetPath(complete=1),
+				sitespath=$.siteConfig().getSitesPath(complete=1),
 				corepath=$.siteConfig().getCorePath(complete=1),
+				fileassetpath=$.siteConfig().getFileAssetPath(complete=1),
 				adminpath=$.siteConfig().getAdminPath(complete=1),
 				themepath=$.siteConfig().getThemeAssetPath(complete=1),
 				pluginspath=$.siteConfig().getPluginsPath(complete=1),
@@ -904,7 +942,14 @@
 
 			result.id=result.contentid;
 			result.links=apiUtility.getLinks($.content());
-			result.images=apiUtility.setImageUrls($.content(),$);
+			result.images=apiUtility.setImageUrls($.content(),'fileid',$);
+
+			var imageAttributes=(isdefined('renderer.imageAttributesArray') && isArray(renderer.imageAttributesArray)) ? renderer.imageAttributesArray : [];
+			for(var img in imageAttributes){
+				if(isValid('uuid',$.content(img))){
+					result['#img#images']=apiUtility.setImageUrls($.content(),img,$);
+				}
+			}
 
 			getpagecontext().getresponse().setcontenttype('application/json; charset=utf-8');
 
@@ -930,6 +975,10 @@
 				var variationTargeting=$.content().getVariationTargeting();
 				result.initjs=variationTargeting.getInitJS();
 				result.targetingjs=variationTargeting.getTargetingJS();
+			}
+
+			if(isDefined('request.muraJSONRedirectURL') && len(request.muraJSONRedirectURL)){
+				result.redirect=request.muraJSONRedirectURL;
 			}
 
 			$.event('__MuraResponse__',apiUtility.serializeResponse(response={'apiversion'=apiUtility.getApiVersion(),'method'='findOne','params'={filename=result.filename,siteid=result.siteid,rendered=true},data=result},statuscode=200));

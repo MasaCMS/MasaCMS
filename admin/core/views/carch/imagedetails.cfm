@@ -57,22 +57,6 @@
 
 	<cfinclude template="dsp_secondary_menu.cfm">
 
-	<div class="mura-item-metadata">
-		<div class="label-group">
-			<cfif not len(rc.imagesize)>
-
-			<!---
-			<cfelse>
-				<div class="nav-module-specific btn-toolbar">
-					<div class="btn-group">
-						<a href="javascript:frontEndProxy.post({cmd:'close'});" class="btn"><i class="mi-arrow-circle-left"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#</a>
-					</div>
-				</div>
-			--->
-			</cfif>
-
-		</div> <!-- /label-group -->
-	</div> <!-- /metadata -->
 	</cfif>
 
 	<cfif not len(rc.imagesize) and  rc.compactDisplay neq "true" and isDefined('rc.contentBean')>
@@ -85,11 +69,31 @@
 <div class="block block-constrain">
 <div id="image-details">
 	<div class="block-content">
+
+	<!--- todo: rb key for 'done' --->
+	<cfif isDefined('rc.contentBean')>
+	<a class="ui__back" href="#rc.contentBean.getEditURL(compactDisplay=rc.compactDisplay)#&bigui=assoc##panel-assoc">Done <i class="mi-angle-right"></i></a>
+	</cfif>
+	
 	<cfif len(rc.fileID)>
+		<script>
+			fileMap={};
+		</script>
 		<cfloop list="#rc.fileID#" index="f">
 			<cfset $.getBean('fileManager').touchSourceImage(f)>
 			<cfset rc.sourceImage=$.getURLForImage(fileID=f,size='source')>
+
 			<cfif len(rc.sourceImage)>
+				<cfset sourceImage=$.getBean('fileManager').readSourceImage(f)>
+				<script>
+					fileMap['#esapiEncode('javascript',f)#']={height:0,width:0};
+					<cfif structKeyExists(sourceImage,'Image Height') and isNumeric(listFirst(sourceImage['Image Height'],' '))>
+					fileMap['#esapiEncode('javascript',f)#'].height=#esapiEncode('javascript',listFirst(sourceImage['Image Height'],' '))#;
+					</cfif>
+					<cfif structKeyExists(sourceImage,'Image Width') and isNumeric(listFirst(sourceImage['Image Width'],' '))>
+					fileMap['#esapiEncode('javascript',f)#'].width=#esapiEncode('javascript',listFirst(sourceImage['Image Width'],' '))#;
+					</cfif>
+				</script>
 				<cfset rc.rsMeta=$.getBean('fileManager').readMeta(fileID=f)>
 				<h2><i class="mi-picture-o"></i> #esapiEncode('html',rc.rsMeta.filename)#</h2>
 
@@ -119,7 +123,7 @@
 
 							<div id="#lcase(s)##f#btns" class="btn-group">
 									<button type="button" class="btn btn-default btn-small cropper-reset" data-fileid="#f#" data-size="#lcase(s)#"><i class="mi-refresh"></i> Reset</button>
-									<button type="button" class="btn btn-default btn-small cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#evaluate('rc.#s#ImageRatio')#" data-size="#lcase(s)#"><i class="mi-crop"></i> Re-Crop</button>
+									<button type="button" class="btn btn-default btn-small cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-height="#$.siteConfig('#s#ImageHeight')#" data-width="#$.siteConfig('#s#ImageWidth')#" data-ratio="#evaluate('rc.#s#ImageRatio')#" data-size="#lcase(s)#"><i class="mi-crop"></i> Re-Crop</button>
 							</div>
 
 							<div class="mura-control justify">
@@ -141,7 +145,7 @@
 
 							<div id="#lcase(customImage.getName())##f#btns" class="btn-group">
 									<button type="button" class="btn btn-default btn-small cropper-reset" data-fileid="#f#" data-size="#lcase(customImage.getName())#"><i class="mi-refresh"></i> Reset</button>
-									<button type="button" class="btn btn-default btn-small cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#rc.customImageRatio#" data-size="#lcase(customImage.getName())#"><i class="mi-crop"></i> Re-Crop</button>
+									<button type="button" class="btn btn-default btn-small cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-height="#customImage.getHeight()#"  data-width="#customImage.getWidth()#" data-ratio="#rc.customImageRatio#" data-size="#lcase(customImage.getName())#"><i class="mi-crop"></i> Re-Crop</button>
 							</div>
 
 							<div class="mura-control justify">
@@ -160,7 +164,7 @@
 
 							<div id="#lcase(s)##f#btns" class="btn-group">
 								<button type="button" class="btn btn-default btn-small cropper-reset" data-fileid="#f#" data-size="#lcase(s)#"><i class="mi-refresh"></i> Reset</button>
-								<button type="button" class="btn btn-default btn-small cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#evaluate('rc.#s#ImageRatio')#" data-size="#lcase(s)#"><i class="mi-crop"></i> Re-Crop</button>
+								<button type="button" class="btn btn-default btn-small cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#"  data-height="#$.siteConfig('#s#ImageHeight')#" data-width="#$.siteConfig('#s#ImageWidth')#" data-ratio="#evaluate('rc.#s#ImageRatio')#" data-size="#lcase(s)#"><i class="mi-crop"></i> Re-Crop</button>
 							</div>
 
 							<div class="mura-control justify">
@@ -183,7 +187,7 @@
 
 									<div id="#lcase(customImage.getName())##f#btns" class="btn-group">
 										<button type="button" class="btn btn-default btn-small cropper-reset" data-fileid="#f#" data-size="#lcase(customImage.getName())#"><i class="mi-refresh"></i> Reset</button>
-										<button type="button" class="btn btn-default btn-small cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#rc.customImageRatio#" data-size="#lcase(customImage.getName())#"><i class="mi-crop"></i> Re-Crop</button>
+										<button type="button" class="btn btn-default btn-small cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-height="#customImage.getHeight()#"  data-width="#customImage.getWidth()#" data-ratio="#rc.customImageRatio#" data-size="#lcase(customImage.getName())#"><i class="mi-crop"></i> Re-Crop</button>
 									</div>
 
 									<div class="mura-control justify">
@@ -214,7 +218,7 @@
 
 								<div id="#lcase(customImage.getName())##f#btns" class="btn-group">
 									<button type="button" class="btn btn-default btn-small cropper-reset" data-fileid="#f#" data-size="#lcase(esapiEncode('html_attr',rc.imagesize))#" data-height="#customImage.getHeight()#"  data-width="#customImage.getWidth()#"><i class="mi-refresh"></i> Reset</button>
-									<button type="button" class="btn btn-default btn-small cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#rc.customImageRatio#" data-size="#lcase(esapiEncode('html_attr',rc.imagesize))#"><i class="mi-crop"></i> Re-Crop</button>
+									<button type="button" class="btn btn-default btn-small cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-height="#customImage.getHeight()#"  data-width="#customImage.getWidth()#" data-ratio="#rc.customImageRatio#" data-size="#lcase(esapiEncode('html_attr',rc.imagesize))#"><i class="mi-crop"></i> Re-Crop</button>
 								</div>
 
 								<div class="mura-control justify">
@@ -276,66 +280,60 @@
 		   return false;
 		}
 
-	    function flipImage(fileid){
+    function flipImage(fileid){
 			var _fileid=fileid;
 			var transpose=$('##image-actions' + fileid).val()
-	    	//location.href='./index.cfm?muraAction=carch.flipimage&fileid=' + currentFileID + '&siteid=' + siteid;
+    	//location.href='./index.cfm?muraAction=carch.flipimage&fileid=' + currentFileID + '&siteid=' + siteid;
 
-	    	if(transpose != ''){
-	    		//alert(transpose);
-	    		actionModal(
-		    		function(){
-				   		 $.get('./index.cfm?muraAction=carch.flipimage&fileid=' + _fileid + '&siteid=' + siteid + '&transpose=' + transpose + '#csrf#&cacheid=' + Math.random(),
-							function(){
-					    		$('##action-modal').remove();
+    	if(transpose != ''){
+    		//alert(transpose);
+    		actionModal(
+	    		function(){
+			   		 $.get('./index.cfm?muraAction=carch.flipimage&fileid=' + _fileid + '&siteid=' + siteid + '&transpose=' + transpose + '#csrf#&cacheid=' + Math.random(),
+						function(){
+				    		$('##action-modal').remove();
 								$(".cropper-reset[data-fileid='" + _fileid + "']").each(function(){
-									var resetFileID=$(this).attr('data-fileid');
-									var resetSize=$(this).attr('data-size');
+								var resetFileID=$(this).attr('data-fileid');
+								var resetSize=$(this).attr('data-size');
 
-									$.ajax(
-								    	{
-								    		url:'./index.cfm?muraAction=carch.cropimage&fileid=' + resetFileID + '&size=' + resetSize + '&siteid=' + siteid + '#csrf#&cacheid=' + Math.random(),
-											success: function(data) {
-													//alert(JSON.stringify(data));
-
-													reloadImg(resetSize + resetFileID);
-													resizeImg(resetSize + resetFileID,data.width,data.height);
-													return false;
-												}	,
-											async:   false
-										}
-									);
-
-
-								});
-					    	}
+								$.ajax(
+							    	{
+							    		url:'./index.cfm?muraAction=carch.cropimage&fileid=' + resetFileID + '&size=' + resetSize + '&siteid=' + siteid + '#csrf#&cacheid=' + Math.random(),
+										success: function(data) {
+												//alert(JSON.stringify(data));
+												reloadImg(resetSize + resetFileID);
+												resizeImg(resetSize + resetFileID,data.width,data.height);
+												return false;
+											}	,
+										async:   false
+									}
+								);
+							});
+				    	}
 						);
-			   		}
+			   	}
 				);
 			}
-
-		 return false;
-	    }
+			return false;
+	  }
 
 	    function saveCoords(c){currentCoords=c};
 
 	    function applyCropping(){
 
 	    	actionModal(function(){
-			    	//$('##cropper .btn').hide();
-
+			    //$('##cropper .btn').hide();
 			 		//location.href='./index.cfm?muraAction=carch.cropimage&fileid=' + currentFileID + '&size=' + currentSize + '&x=' + currentCoords.x + '&y=' + currentCoords.y + '&width=' + currentCoords.w + '&height=' + currentCoords.h + '&siteid=' + siteid;
-
 			 		if(typeof(currentCoords) == 'object'){
-				    	$.get('./index.cfm?muraAction=carch.cropimage&fileid=' + currentFileID + '&size=' + currentSize + '&x=' + currentCoords.x + '&y=' + currentCoords.y + '&width=' + currentCoords.w + '&height=' + currentCoords.h + '&siteid=' + siteid + '#csrf#&cacheid=' + Math.random(),
-											function(data) {
-												//alert(JSON.stringify(data));
-												reloadImg(currentSize + currentFileID);
-												resizeImg(currentSize + currentFileID,data.width,data.height);
-												$('##cropper').remove()
-												$('##action-modal').remove();
-											}
-										);
+			    	$.get('./index.cfm?muraAction=carch.cropimage&fileid=' + currentFileID + '&size=' + currentSize + '&x=' + currentCoords.x + '&y=' + currentCoords.y + '&width=' + currentCoords.w + '&height=' + currentCoords.h + '&siteid=' + siteid + '#csrf#&cacheid=' + Math.random(),
+							function(data) {
+								//alert(JSON.stringify(data));
+								reloadImg(currentSize + currentFileID);
+								resizeImg(currentSize + currentFileID,data.width,data.height);
+								$('##cropper').remove()
+								$('##action-modal').remove();
+							}
+						);
 					} else {
 						$('##cropper').remove();
 						$('##action-modal').remove();
@@ -348,82 +346,108 @@
 	    	function(){
 	    		$('##action-modal').remove();
 	    		var resetFileID=$(this).attr('data-fileid');
-				var resetSize=$(this).attr('data-size');
-				//alert(resetSize + resetFileID);
+					var resetSize=$(this).attr('data-size');
+					//alert(resetSize + resetFileID);
 
-	    		//location.href='./index.cfm?muraAction=carch.cropimage&fileid=' + resetFileID + '&size=' + resetSize + '&siteid=' + siteid;
-				var url='./index.cfm?muraAction=carch.cropimage&fileid=' + resetFileID + '&size=' + resetSize + '&siteid=' + siteid + '#csrf#&cacheid=' + Math.random();
+		    		//location.href='./index.cfm?muraAction=carch.cropimage&fileid=' + resetFileID + '&size=' + resetSize + '&siteid=' + siteid;
+					var url='./index.cfm?muraAction=carch.cropimage&fileid=' + resetFileID + '&size=' + resetSize + '&siteid=' + siteid + '#csrf#&cacheid=' + Math.random();
 
-				if($(this).attr('data-height')){
-					url= url + '&height=' + $(this).attr('data-height');
-				}
+					if($(this).attr('data-height')){
+						url= url + '&height=' + $(this).attr('data-height');
+					}
 
-				if($(this).attr('data-width')){
-					url = url + '&width=' + $(this).attr('data-width');
-				}
+					if($(this).attr('data-width')){
+						url = url + '&width=' + $(this).attr('data-width');
+					}
 
-				actionModal(function(){
-				    $.ajax(
-				    	{
-				    		url:url,
-							success: function(data) {
-										//alert(JSON.stringify(data));
+					actionModal(function(){
+					    $.ajax(
+					    	{
+					    		url:url,
+								success: function(data) {
+											//alert(JSON.stringify(data));
 
-										reloadImg(resetSize + resetFileID);
-										resizeImg(resetSize + resetFileID,data.width,data.height);
-						    			$('##action-modal').remove();
-									},
-							async:   true
-						}
-					)}
-				);
+											reloadImg(resetSize + resetFileID);
+											resizeImg(resetSize + resetFileID,data.width,data.height);
+							    			$('##action-modal').remove();
+										},
+								async:   true
+							}
+						)}
+					);
 
-	    });
+		    });
 		<!---
 		<cfif not len(rc.imagesize)>
 		--->
 	    $('.cropper').click(
 	    	function(){
 
-	    		currentFileID=$(this).attr('data-fileid');
+	    	currentFileID=$(this).attr('data-fileid');
 				currentSize=$(this).attr('data-size');
 				currentCoords='';
 
-	    		var jcrop_api;
-	    		var $dialogHTML='<div id="cropper"><div class="jc-dialog">';
-	    			$dialogHTML+='<img id="crop-target" src="' + $(this).attr('data-src') + '?cacheid=' + Math.random() +'" /> ';
-	    			$dialogHTML+='<input type="hidden" name="coords" value="" id="coords">';
-					$dialogHTML+='<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix"><div class="ui-dialog-buttonset"><button type="button" class="mura-cancel ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" onclick="$(this).closest(\'.ui-dialog-content\').dialog(\'close\');"><span class="ui-button-text">Cancel</span></button><button type="button" class="mura-primary ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" onclick="applyCropping();"><span class="ui-button-text">Apply Cropping</span></button></div></div>';
+    		var jcrop_api;
+    		var $dialogHTML='<div id="cropper"><div class="jc-dialog">';
+  			$dialogHTML+='<img id="crop-target" src="' + $(this).attr('data-src') + '?cacheid=' + Math.random() +'" /> ';
+  			$dialogHTML+='<input type="hidden" name="coords" value="" id="coords">';
+				$dialogHTML+='<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix"><div class="ui-dialog-buttonset"><button type="button" class="mura-cancel ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" onclick="$(this).closest(\'.ui-dialog-content\').dialog(\'close\');"><span class="ui-button-text">Cancel</span></button><button type="button" class="mura-primary ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" onclick="applyCropping();"><span class="ui-button-text">Apply Cropping</span></button></div></div>';
 
-					$dialogHTML+='</div></div>';
+				$dialogHTML+='</div></div>';
 
-		        var $dialog = $($dialogHTML);
-		        var title=$(this).attr('data-filename');
-		        var scaleby=$(this).attr('data-scaleby');
-		        var aspectRatio=$(this).attr('data-ratio');
+        var $dialog = $($dialogHTML);
+        var title=$(this).attr('data-filename');
+        var scaleby=$(this).attr('data-scaleby');
+        var aspectRatio=$(this).attr('data-ratio');
+				var minSize=[];
+				var height=$(this).attr('data-height');
+				var width=$(this).attr('data-width')
 
-		        actionModal(function(){
-			       	 $dialog.find('##crop-target').Jcrop(
-			       	 	{
-			       	 		boxHeight:600,
-			       	 		boxWidth:600,
-			       	 		aspectRatio:aspectRatio,
-			       	 		onSelect:saveCoords,
-			       	 		onChange:saveCoords
-			       	 	},
-			       	 	function(){
-					        jcrop_api = this;
-					        $dialog.dialog({
-					            modal: true,
-					            title: title,
-					            close: function(){ $dialog.remove(); },
-					            width: jcrop_api.getWidgetSize()[0]+68,
-					            resizable: false,
-					            class: "cropper"
-					        });
-					        $('##action-modal').remove();
-		    			});
-		       	});
+				if(typeof width != 'undefined' && width.toString().toLowerCase() == 'auto'
+					|| typeof height != 'undefined' && height.toString().toLowerCase() == 'auto'
+				){
+					if(typeof width == 'undefined' || width.toString().toLowerCase() == 'auto'){
+						width=0;
+					}
+					if(typeof height == 'undefined' || height.toString().toLowerCase() == 'auto'){
+						height=0;
+					}
+					var sizeArray=[width,height]
+				} else {
+					var sizeArray=[0,0]
+				}
+
+				if(sizeArray[0] && sizeArray[0] > fileMap[currentFileID].width ){
+					sizeArray[0]=0;
+				}
+
+				if(sizeArray[1] && sizeArray[10] > fileMap[currentFileID].heigth ){
+					sizeArray[1]=0;
+				}
+
+        actionModal(function(){
+	       	 $dialog.find('##crop-target').Jcrop(
+	       	 	{
+	       	 		boxHeight:600,
+	       	 		boxWidth:600,
+							minSize:sizeArray,
+	       	 		aspectRatio:aspectRatio,
+	       	 		onSelect:saveCoords,
+	       	 		onChange:saveCoords
+	       	 	},
+	       	 	function(){
+			        jcrop_api = this;
+			        $dialog.dialog({
+			            modal: true,
+			            title: title,
+			            close: function(){ $dialog.remove(); },
+			            width: jcrop_api.getWidgetSize()[0]+68,
+			            resizable: false,
+			            class: "cropper"
+			        });
+			        $('##action-modal').remove();
+    			});
+       	});
 	    });
 
 

@@ -313,7 +313,11 @@
 		<cfset local.displayInterval=deserializeInterval(arguments.query.displayInterval[local.currentrow],arguments.query.displayStart[local.currentrow],arguments.query.displayStop[local.currentrow])>
 
 		<cfif arguments.query.display[local.currentrow] eq 2
-		and len(local.DISPLAYINTERVAL.type) >
+				and len(local.DISPLAYINTERVAL.type)
+				and (
+					arguments.query.parentType[local.currentrow] eq 'calendar'
+					or local.DISPLAYINTERVAL.repeats
+			)>
 
 			<cfif not local.displayInterval.every>
 				<cfset local.displayInterval.every=1>
@@ -666,7 +670,7 @@
 
 					<!--- Set the loop type and increment. --->
 					<cfset LOCAL.LoopType = "d" />
-					<cfset LOCAL.LoopIncrement = 1 />
+					<cfset LOCAL.LoopIncrement = local.displayInterval.every />
 					<cfset LOCAL.DaysOfWeek = "1,2,3,4,5,6,7" />
 
 				</cfdefaultcase>
@@ -697,14 +701,22 @@
 					<cfset local.loopMonth=month(LOCAL.from)>
 					<cfset local.loopYear=year(local.from)>
 					<cfset local.loopIndex=1>
-					<cfset LOCAL.Day =[fix(GetNthDayOfMonth(local.loopYear,local.loopMonth,local.startdayofweek,local.LoopWeek)),fix(GetNthDayOfMonth(local.loopYear,local.loopMonth,local.enddayofweek,local.LoopWeek))] />
-					<cfset LOCAL.Day=arrayMin(local.day)>
+					<cfset local.DaysOfWeekArray=listToArray(local.DaysOfWeek)>
+					<cfset local.DayArray=[]>
+					<cfloop from="1" to="#arrayLen(local.DaysOfWeekArray)#" index="local.i">
+						<cfset arrayAppend(local.DayArray,fix(GetNthDayOfMonth(local.loopYear,local.loopMonth,local.DaysOfWeekArray[local.i],local.LoopWeek)))>
+					</cfloop>
+					<cfset LOCAL.Day=arrayMin(local.DayArray)>
 				<cfelseif local.loopType eq 'weeklast'>
 					<cfset local.loopMonth=month(LOCAL.from)>
 					<cfset local.loopYear=year(local.from)>
 					<cfset local.loopIndex=1>
-					<cfset LOCAL.Day =[fix(GetLastDayOfWeekOfMonth(year(LOCAL.from),month(LOCAL.from),local.startdayofweek)),fix(GetLastDayOfWeekOfMonth(year(LOCAL.from),month(LOCAL.from),local.enddayofweek))] />
-					<cfset LOCAL.Day=arrayMin(local.day)>
+					<cfset local.DaysOfWeekArray=listToArray(local.DaysOfWeek)>
+					<cfset local.DayArray=[]>
+					<cfloop from="1" to="#arrayLen(local.DaysOfWeekArray)#" index="local.i">
+						<cfset arrayAppend(local.DayArray,fix(GetLastDayOfWeekOfMonth(local.loopYear,local.loopMonth,local.DaysOfWeekArray[local.i],local.LoopWeek)))>
+					</cfloop>
+					<cfset LOCAL.Day=arrayMin(LOCAL.DayArray)>
 				<cfelse>
 					<cfset LOCAL.Day = LOCAL.From />
 				</cfif>
@@ -714,9 +726,32 @@
 						<cfset LOCAL.day=LOCAL.To+1>
 					</cfif>
 
-					<cfif local.day lt local.displayStart>
-						<cfset LOCAL.day=local.displayStart>
+					<cfif ListFindNoCase("nthweek,weeklast",local.loopType)>
+						<cfif local.day lt local.displayStart>
+							<cfset local.weekdayfound=false>
+							<cfloop from="1" to="#arrayLen(local.DayArray)#" index="local.i">
+								<cfif local.DayArray[local.i] gte local.displayStart>
+									<cfset LOCAL.day=local.displayStart>
+									<cfset local.weekdayfound=true>
+									<cfbreak>
+								</cfif>
+							</cfloop>
+
+							<cfif not local.weekdayfound>
+								<cfset local.baseLoopDate=dateAdd('m',1,createDate(local.loopYear,local.loopMonth,1))>
+								<cfif local.loopType eq "nthweek">
+									<cfset local.day=fix(GetNthDayOfMonth(year(local.baseLoopDate),month(local.baseLoopDate),arrayMin(local.DaysOfWeekArray),local.LoopWeek))>
+								<cfelse>
+									<cfset local.day=fix(GetLastDayOfWeekOfMonth(year(local.baseLoopDate),month(local.baseLoopDate),arrayMin(local.DaysOfWeekArray),local.LoopWeek))>
+								</cfif>
+							</cfif>
+						</cfif>
+					<cfelse>
+						<cfif local.day lt local.displayStart>
+							<cfset LOCAL.day=local.displayStart>
+						</cfif>
 					</cfif>
+
 				</cfif>
 
 				<!---

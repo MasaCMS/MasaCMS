@@ -111,7 +111,7 @@
 						reload=siteManager.getPluginConfigurator(siteManager.availableObject.params.objectid);
 					}
 
-					console.log(siteManager.availableObject.params);
+//					console.log(siteManager.availableObject.params);
 
 					frontEndProxy.post(
 					{

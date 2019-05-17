@@ -33,6 +33,7 @@
 		<cfparam name="attributes.params.cssid" default="">
 		<cfparam name="attributes.params.label" default="">
 		<cfparam name="attributes.params.object" default="">
+		<cfset contentcontainerclass=esapiEncode("javascript",$.getContentRenderer().expandedContentContainerClass)>
 
 		<cfif not (isDefined("attributes.params.cssstyles") and isStruct(attributes.params.cssstyles))>
 			<cfif isDefined("attributes.params.cssstyles") and isJSON(attributes.params.cssstyles)>
@@ -157,8 +158,18 @@
 							<option value="mura-ten"<cfif listFind(attributes.params.class,'mura-ten',' ')> selected</cfif>>Five Sixths</option>
 							<option value="mura-eleven"<cfif listFind(attributes.params.class,'mura-eleven',' ')> selected</cfif>>Eleven Twelfths</option>
 							<option value="mura-twelve"<cfif listFind(attributes.params.class,'mura-twelve',' ')> selected</cfif>>Full</option>
+							<option value="mura-expanded"<cfif listFind(attributes.params.class,'mura-expanded',' ')> selected</cfif>>Expanded</option>
 						</select>
 					</div>
+					<cfif len(contentcontainerclass)>
+						<div class="mura-control-group constraincontentcontainer" style='display:none;'>
+								<label>Constrain Content</label>
+								<select name="constraincontent">
+								<option value=""<cfif not listFind(attributes.params.contentcssclass,contentcontainerclass,' ')> selected</cfif>>False</option>
+								<option value="constrain"<cfif listFind(attributes.params.contentcssclass,contentcontainerclass,' ')> selected</cfif>>True</option>
+								</select>
+						</div>
+					</cfif>
 				</div> <!--- /end  mura-panel-collapse --->
 			</div> <!--- /end  mura-panel-body --->
 		</div> <!--- /end panel --->
@@ -309,7 +320,7 @@
 					$('#backgroundImage').val('').trigger('change');
 			})
 			*/
-			$('input[name="cssclass"],select[name="alignment"],select[name="width"],select[name="offset"]').on('change', function() {
+			$('input[name="cssclass"],select[name="alignment"],select[name="width"],select[name="offset"],select[name="constraincontent"]').on('change', function() {
 				setPlacementVisibility();
 			});
 
@@ -356,9 +367,7 @@
 
 						classInput.val($.trim(classInput.val()));
 
-	  				if(inited && typeof updateDraft == 'function'){
-	  					updateDraft();
-	  				}
+
 					/*
 	  			if(alignment.val()=='mura-left'){
 		  			var offset=$('select[name="offset"]');
@@ -378,7 +387,49 @@
 		  		}
 					*/
 					//}
-		  		var cssclassInput=$('input[name="cssclass"]');
+		  		var contentcssclass=$('input[name="contentcssclass"]');
+					var expandedContentContainerClass='<cfoutput>#contentcontainerclass#</cfoutput>';
+					var contentcssclassArray=contentcssclass.val().split(' ');
+					var constraincontent=$('select[name="constraincontent"]');
+
+					if(constraincontent.length){
+						if(width.val()=='mura-expanded'){
+							$('.constraincontentcontainer').show();
+							if(constraincontent.val()=='constrain'){
+								if(contentcssclassArray.indexOf(expandedContentContainerClass)==-1){
+									if(contentcssclassArray.length){
+										contentcssclass.val(contentcssclass.val() + ' ' + expandedContentContainerClass);
+									} else {
+										contentcssclass.val(expandedContentContainerClass);
+									}
+								}
+							} else {
+								if(contentcssclassArray.indexOf(expandedContentContainerClass) > -1){
+									for( var i = 0; i < contentcssclassArray.length; i++){
+										if ( contentcssclassArray[i] === expandedContentContainerClass) {
+											contentcssclassArray.splice(i, 1);
+										}
+									}
+								}
+								contentcssclass.val(contentcssclassArray.join(' '));
+
+							}
+						} else {
+							$('.constraincontentcontainer').hide();
+							if(contentcssclassArray.indexOf(expandedContentContainerClass) > -1){
+								for( var i = 0; i < contentcssclassArray.length; i++){
+									if ( contentcssclassArray[i] === expandedContentContainerClass) {
+										contentcssclassArray.splice(i, 1);
+									}
+								}
+							}
+							contentcssclass.val(contentcssclassArray.join(' '));
+						}
+
+						contentcssclass.val($.trim(contentcssclass.val()));
+					}
+
+					var cssclassInput=$('input[name="cssclass"]');
 
 		  		if(cssclassInput.val()){
 	  				if(classInput.val() ){
@@ -389,6 +440,10 @@
 
 						classInput.val($.trim(classInput.val()));
 		  		}
+
+					if(inited && typeof updateDraft == 'function'){
+						updateDraft();
+					}
 			}
 
 			setPlacementVisibility();

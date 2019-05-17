@@ -264,28 +264,26 @@ if ( application.setupComplete ) {
 				if ( structKeyExists(request.muraSysEnv,'MURA_DEFAULTTHEMEURL') ) {
 					application.configBean.setDefaultThemeURL(request.muraSysEnv['MURA_DEFAULTTHEMEURL']);
 				}
-
 				try {
 					local.themeZip="install_theme_#createUUID()#.zip";
-
 					try{
-
-						local.httpService=application.configBean.getHTTPService();
-
-						local.httpService.setURL(application.configBean.getDefaultThemeURL());
-						local.httpService.setGetAsBinary("yes");
-						local.theme=httpService.send().getPrefix();
-
-						local.fileWriter.writeFile(file="#application.configBean.getWebRoot()#/#local.themeZip#",output=local.theme.filecontent);
+						if(len(application.configBean.getDefaultThemeURL())){
+							local.httpService=application.configBean.getHTTPService();
+							local.httpService.setURL(application.configBean.getDefaultThemeURL());
+							local.httpService.setGetAsBinary("yes");
+							local.theme=httpService.send().getPrefix();
+							local.fileWriter.writeFile(file="#application.configBean.getWebRoot()#/#local.themeZip#",output=local.theme.filecontent);
+						}
 					} catch (any e){
 						local.fileWriter.copyFile(source="#application.configBean.getWebRoot()#/core/templates/theme.zip.cfm",destination="#application.configBean.getWebRoot()#/#local.themeZip#");
 					}
-
-					local.zipUtil=new mura.Zip();
-					local.zipUtil.Extract(zipFilePath="#application.configBean.getWebRoot()#/#local.themeZip#",extractPath="#application.configBean.getWebRoot()#/themes", overwriteFiles=false);
-					local.themeRS=local.fileWriter.getDirectoryList(directory="#application.configBean.getWebRoot()#/themes",recurse=false,type="dir");
-					local.fileWriter.renameDir(directory="#application.configBean.getWebRoot()#/themes/#local.themeRS.name#",newDirectory="#application.configBean.getWebRoot()#/themes/default");
-					fileDelete("#application.configBean.getWebRoot()#/#local.themeZip#");
+					if(fileExists("#application.configBean.getWebRoot()#/#local.themeZip#")){
+						local.zipUtil=new mura.Zip();
+						local.zipUtil.Extract(zipFilePath="#application.configBean.getWebRoot()#/#local.themeZip#",extractPath="#application.configBean.getWebRoot()#/themes", overwriteFiles=false);
+						local.themeRS=local.fileWriter.getDirectoryList(directory="#application.configBean.getWebRoot()#/themes",recurse=false,type="dir");
+						local.fileWriter.renameDir(directory="#application.configBean.getWebRoot()#/themes/#local.themeRS.name#",newDirectory="#application.configBean.getWebRoot()#/themes/default");
+						fileDelete("#application.configBean.getWebRoot()#/#local.themeZip#");
+					}
 					commitTracePoint(variables.tracepoint2);
 				} catch (any error) {
 					writeLog(type="Error", file="exception", text="Error pullling theme from remote: #serializeJSON(error.stacktrace)#");
@@ -725,7 +723,7 @@ if ( application.setupComplete ) {
 		if ( !fileExists(variables.basedir & "/robots.txt") ) {
 			local.fileWriter.copyFile(source="#variables.basedir#/core/templates/robots.template.cfm", destination="#variables.basedir#/robots.txt");
 		}
-		if ( !fileExists(variables.basedir & "/web.config") ) {
+		if ( findNoCase('Windows',Server.OS.Name) && !fileExists(variables.basedir & "/web.config") ) {
 			local.fileWriter.copyFile(source="#variables.basedir#/core/templates/web.config.template.cfm", destination="#variables.basedir#/web.config");
 		}
 		if ( !fileExists(variables.basedir & "/core/vendor/cfformprotect/cffp.ini.cfm") ) {

@@ -132,24 +132,25 @@ CKEDITOR.editorConfig = function( config )
 	];
 
 	config.toolbar_Basic = [
-		{name: 'group1', items: ['Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink']}
+		{name: 'group1', items: ['Bold','Italic','RemoveFormat','-','NumberedList','BulletedList','-','Link','Unlink']}
 	];
 
 	config.toolbar_FormBuilder = [
 		{name: 'group1', items: ['A11ychecker','Source']},
-		{name: 'group2', items: ['Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink','Format']}
+		{name: 'group2', items: ['Bold','Italic','RemoveFormat','-','NumberedList','BulletedList','-','Link','Unlink','Format']}
 	];
 
 	config.toolbar_htmlEditor = [
-		{name: 'group0', items: ['Bold','Italic','Underline','RemoveFormat','-','NumberedList','BulletedList','-','Link','Unlink']},
-		{name: 'group1', items: ['PasteText','PasteFromWord','-','Image','-','SpecialChar']},
-		{name: 'group2', items: ['Selectlink','SelectComponent','Templates']},
-		{name: 'group3', items: ['A11ychecker','Source']}
+		{name: 'group0', items:['Styles','Format']},
+		{name: 'group1', items: ['Bold','Italic','Underline','RemoveFormat','-','NumberedList','BulletedList','-','Link','Unlink']},
+		{name: 'group2', items: ['PasteText','PasteFromWord','-','Image','-','SpecialChar']},
+		{name: 'group3', items: ['Selectlink','SelectComponent','Templates']},
+		{name: 'group4', items: ['A11ychecker','Source']}
 
 	];
 
 	config.toolbar_bbcode = [
-		{name: 'group1', items: ['Source','Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink','-','Image']}
+		{name: 'group1', items: ['Source','Bold','Italic','RemoveFormat','-','NumberedList','BulletedList','-','Link','Unlink','-','Image']}
 	];
 
 <!--- 7.1 verbose toolbar configs --->
@@ -209,11 +210,11 @@ CKEDITOR.editorConfig = function( config )
 			{name: 'group11', items: ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField']},
 			{name: 'group12', items: ['Styles','Format','-','Maximize','ShowBlocks','About']}
 		];
---->		
+--->
 
 	<!--- /Toolbars --->
 
-	config.extraPlugins = 'SelectComponent,Selectlink,leaflet,tableresize,onchange,justify,find,bidi,div,showblocks,forms,templates,pagebreak,codemirror,widget,lineutils,dialog,oembed,sourcedialog,fakeobjects,dialogui,showprotected,balloonpanel,dialogadvtab,a11ychecker';
+	config.extraPlugins = 'SelectComponent,Selectlink,leaflet,tableresize,onchange,justify,find,bidi,div,showblocks,forms,templates,pagebreak,codemirror,widget,lineutils,dialog,oembed,sourcedialog,fakeobjects,dialogui,showprotected,balloonpanel,dialogadvtab,a11ychecker,image2';
 
 	if(typeof jQuery == 'undefined'){
 		config.toolbar_QuickEdit[0].items.shift()
@@ -233,6 +234,19 @@ CKEDITOR.editorConfig = function( config )
 	<cfif application.configBean.getEnableMuraTag()>
 		config.extraPlugins += ',muratag';
 	</cfif>
+
+	<cfif cgi.http_referer contains 'carch.edittext'>
+		config.extraPlugins += ',autogrow';
+		config.autoGrow_onStartup = true;
+		config.autoGrow_bottomSpace = 24;
+		try {
+			config.autoGrow_minHeight = window.innerHeight - 290;
+		}
+		catch(err) {
+			config.autoGrow_minHeight = 400;
+		}
+	</cfif>
+
 	//config.extraPlugins += ',MuraFileBrowser';
 	//config.ProtectedTags = 'i';
 	config.protectedSource.push( /<i[^>]*><\/i>/g );
@@ -263,13 +277,14 @@ CKEDITOR.editorConfig = function( config )
 <cfoutput>
 	<cfif isDefined('session.siteid') and application.permUtility.getModulePerm("00000000000000000000000000000000000",session.siteid)>
 		// filebrowser settings needed for inline edit mode
-    config.removePlugins = 'imageuploader';
-    config.removePlugins = 'ckfinder';
-    var connectorpath = '#application.configBean.getContext()#/core/vendor/ckeditor/plugins/murafilebrowser/filebrowser.html';
-		config.filebrowserBrowseUrl = connectorpath;
-		config.filebrowserImageBrowseUrl = connectorpath + '?type=Images';
-    config.filebrowserUploadUrl = connectorpath;
-    config.filebrowserImageUploadUrl = connectorpath + '?type=Images';
+    // config.removePlugins = 'imageuploader';
+    // config.removePlugins = 'ckfinder';
+    var connectorpath = '#application.configBean.getContext()#/core/vendor/ckeditor/plugins/murafilebrowser/filebrowser.cfm';
+		var uploadpath = '#application.Mura.getBean('settingsManager').getSite(session.siteid).getApi().getEndPoint()#/filebrowser/ckeditor_quick_upload?resourcepath=User_Assets&directory=/';
+		config.filebrowserBrowseUrl = connectorpath + '?resourcepath=User_Assets&displaymode=2';
+		config.filebrowserImageBrowseUrl = connectorpath + '?resourcepath=User_Assets&directory=/Image&displaymode=1';
+    config.filebrowserUploadUrl = uploadpath + "File";
+    config.filebrowserImageUploadUrl = uploadpath + "Image";
     </cfif>
 
 	<cfset secure=$.getBean('utility').isHTTPS()>

@@ -94,10 +94,10 @@ component output="false" extends="mura.cache.cacheAbstract" hint="This cache sto
 	}
 
 	public function getPercentFreeMemory() output=false {
-		var runtime = "";
 		if ( !structKeyExists(request,"percentFreeMemory") ) {
-			runtime = getJavaRuntime();
-			request.percentFreeMemory=(Round((runtime.freeMemory() / runtime.maxMemory() ) * 100));
+			var runtime = getJavaRuntime();
+			var usedMemory=runtime.totalMemory() - Runtime.freeMemory();
+			request.percentFreeMemory=(Round((1-(usedMemory / runtime.maxMemory())) * 100));
 		}
 		return request.percentFreeMemory;
 	}

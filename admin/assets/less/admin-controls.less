@@ -15,14 +15,14 @@
 @controlslabelcolor: #999999;
 @controlslabeliconcolor: #e0e0e0;
 @controlstextcolor: #333333;
+@controlsselectbgrd: #EFEFEF;
 @controlsinputbgrd: #FCFCFC;
 @controlsinputtextcolor: #333333;
 @controlsinputfontsize: 16px;
 @controlsinputshadow: 0 1px 0 #e6e6e6;
-@controlsinputfocusshadow: 0 2px 0 #b1b1b1;
-/*@cardshadow: 0px 0px  13px rgba(0,0,0,0.04) !important;*/
+@controlsinputfocusshadow: 0 1px 0 #b1b1b1;
 @cardshadow: none;
-@titleeditwidth: ~"calc(100% - 2px)";
+@titleeditwidth: 100%;
 
 /* panels layout */
 @editcalcheight: ~"calc(100vh - 216px)";
@@ -35,7 +35,7 @@
 
 .contentTitle {
     font-size: 26px;
-    font-weight: 900;
+    font-weight: bold;
     height: 40px;
     margin-bottom: 15px;
     padding: 0;
@@ -200,6 +200,10 @@
             &.boolean{
                 background-color: transparent !important;
                 padding-bottom: 0 !important;
+                margin: 0 auto 4px !important;
+                &+.mura-control-group:not(.boolean){
+                    margin-top: 16px !important;
+                }
             }
 
             .mura-control-heading,
@@ -506,7 +510,7 @@
                 float: left !important;
                 margin: 0 4px 0 0;
                 &.mura-primary {
-                    background-color: #4485f1 !important;
+                    background-color: @mura-red !important;
                 }
                 &.mura-delete {
                     background-color: @controlspanelhdrhover;
@@ -514,6 +518,26 @@
                 }
             }
         }
+        .tagSelector{
+             input{
+                margin-top: 0;
+            }
+            .tag{
+                background-color: @controlslabelcolor;
+                border-radius: 2px;
+                color: #FFF;
+                font-size: 14px;
+                height: 24px;
+                 a i{
+                    color: #e0e0e0 !important;
+                    float: right;
+                    font-size: 12px;
+                    font-weight: normal;
+                    margin: 6px 0px 0 6px;
+                }
+            }
+         }   
+
         #feedCustomImageOptions .half {
             padding-right: 12px;
             +.half {
@@ -634,7 +658,11 @@
             .contentTitle;
         }
         .bigui__controls {
-            padding: 0;
+            background-color: #f8f8f8;
+            border-radius: 2px;
+            margin-bottom: 24px;      
+            min-height: 54px; 
+            padding: 12px 18px 5px;
         }
         .bigui__close {
             .btn;
@@ -674,7 +702,7 @@
     .mura-primary {
         color: #ffffff !important;
         background-color: @mura-red;
-        border-color: #4882cc;
+        border-color: @mura-red;
         background-image: none !important;
         >i {
             color: #fff !important;
@@ -686,6 +714,9 @@
 #bigui__categories {
     .categoryAssignment li ul {
         margin: 0 !important;
+    }
+    .bigui__wrapper{
+        overflow: visible;
     }
     .mura-grid {
         li {
@@ -856,7 +887,9 @@ body.sidebar-tab {
     }
 }
 #mura-content-title-render {
-    .contentTitle;
+    .contentTitle; 
+    color: @controlstextcolor;
+    font-weight: 400;
     cursor: pointer;
     float: left;
     margin-top: 5px;
@@ -867,14 +900,20 @@ body.sidebar-tab {
     width: @titleeditwidth !important;
     background-color: transparent;
     padding-left: 12px;
-    &:hover, &.editing {
-        outline: #ccc dashed 1px!important;
+    border: @controlspanelhdrborder solid 1px!important;        
+    /*box-shadow: 0 1px 0 #e6e6e6;*/
+    &:hover{
+    /*border: #CDCDCD solid 1px!important;*/
+    } 
+    &.editing {
+        border: #CDCDCD solid 1px!important;
+        /*border: @mura-red dashed 1px!important;*/
     }
     input {
         cursor: auto;
         background-color: transparent;
         font-size: 26px;
-        font-weight: 900;
+        font-weight: 400;
         border: none;
         overflow: hidden;
         padding-left: 0;
@@ -884,6 +923,31 @@ body.sidebar-tab {
     }
 }
 #mura-content-body-render {
+    clear: left;
+
+    #assocImage {
+      clear: none !important;
+    }
+    #mura-content-body-inner{
+        background: white;
+        padding: 24px;    
+        
+            h2{
+                font-size: 15px;
+                font-weight: 700;
+                margin-bottom: 15px;
+            }
+    }
+
+    .block>.nav-tabs>li>a{  
+        font-weight: normal !important;
+        color: @controlslabelcolor !important;
+    }
+    .block>.nav-tabs>li.active>a{
+        font-weight: bold;
+        color: @controlstextcolor !important;
+    }
+
     #bodyContainer label {
         display: none;
     }
@@ -904,12 +968,13 @@ body.sidebar-tab {
         .option.focus,
         .option.selected.focus,
         .option:hover {
-            background-color: #4485f1 !important;
-            color: #fff !important;
+            background-color: #f6f6f6 !important;
+            color: #646464 !important;
         }
     }
     .ui-dialog-buttonpane .ui-dialog-buttonset .ui-button:first-child {
         .mura-primary;
+        background-color: @mura-red;
     }
 }
 
@@ -920,7 +985,7 @@ body.sidebar-tab {
     }
     .nice-select, 
     .mura-control-group>label+.nice-select {
-        background-color: @controlsdivbgrd !important;
+        background-color: @controlsselectbgrd !important;
         border-radius: 0;
         border: none;
         color: @controlsinputtextcolor;
@@ -973,10 +1038,11 @@ body.sidebar-tab {
         }
         .list, 
         ul.list {
-            background-color: @controlsdivbgrd;
+            background-color: #FFF;
             border-radius: 0;
             border-top-color: transparent !important;
-            box-shadow: 1px 2px 1px 1px rgba(68,68,68,.11);
+            box-shadow: none !important;
+            /*box-shadow: 1px 2px 1px 1px rgba(68,68,68,.11);*/
             font-size: 14px;
             margin-top: 0;
             max-height: 196px;

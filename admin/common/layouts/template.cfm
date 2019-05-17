@@ -65,14 +65,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
 	<cfsilent>
-		<cfif not IsDefined("cookie.ADMINSIDEBAR")>
-			<cfset application.utility.setCookie(name="ADMINSIDEBAR",value="off",httponly=false)>
-		</cfif>
-		<cfif not IsDefined("cookie.ADMINCONTROLWIDTH")>
-			<cfset application.utility.setCookie(name="ADMINCONTROLWIDTH",value="300",httponly=false)>
-		</cfif>
 		<cfparam name="request.action" default="core:cplugin.plugin">
 		<cfparam name="rc.originalfuseaction" default="#listLast(listLast(request.action,":"),".")#">
 		<cfparam name="rc.originalcircuit"  default="#listFirst(listLast(request.action,":"),".")#">
@@ -313,14 +306,16 @@
 					}, 50)
 				}
 			}
-			
+
 			// set height of ckeditor content area - called by resizeTabPane()
 			var resizeBodyEditor = function(){
 				if ($('##mura-content-body-render .cke_contents').length){
 					var ckeTopH = $('##mura-content-body-render .cke_top').height();
+					var adminHeaderH = $('##mura-content .mura-header').height();
+					var offsetH = ckeTopH + adminHeaderH;
 					// also adjust cke height
-					$('##mura-content-body-render .cke_contents').css('height','calc((100vh - ' + ckeTopH +  'px) - 372px)');
-				}			
+					$('##mura-content-body-render .cke_contents').css('height','calc((100vh - ' + offsetH +  'px) - 283px)');
+				}
 			}
 
 			$(window).on("load", function() {
@@ -345,7 +340,7 @@
 				        } else {
 				            overlay.show();
 				        }
-				        resizeTabPane(); 
+				        resizeTabPane();
 				        ui.position.left = ui.originalPosition.left;
 			     	},
 					stop: function(event,ui){
@@ -353,11 +348,11 @@
 		                var frameParent = $('##mura-content-body-render');
 			 			$(frameParent).find('.hidden-dialog-overlay').hide();
 			        	resizeTabPane();
-			 			createCookie('ADMINCONTROLWIDTH',acw,5);				 
-					}		
+			 			createCookie('ADMINCONTROLWIDTH',acw,5);
+					}
 				});
 
-				// persist side navigation expand/collapse 
+				// persist side navigation expand/collapse
 				$('*[data-action=sidebar_mini_toggle]').click(function(){
 					var asb = 'on';
 					// adjust sidebar as needed
@@ -371,8 +366,8 @@
 
 				// persist open nav items
 				$('##sidebar .nav-main li ul li a.active').parents('li').parents('ul').parents('li').addClass('open');
-				
-				//nice-select 
+
+				//nice-select
 				$('.mura__edit__controls .mura-control-group select').niceSelect();
 
 				// header-search
@@ -407,7 +402,9 @@
 				var setBlockHeight = function(){
 					var bc = $('##mura-content .block-constrain');
 					var minFooterH = 15;
+					var paddingH = 70;
 					var windowH = $(window).height();
+					var navbarH = $('##header-navbar:first').height();
 					var headerH = $('.mura-header:first').height();
 					var footerH = $('.mura-actions:first').height();
 					if (footerH <= minFooterH){ footerH = minFooterH;}
@@ -418,7 +415,9 @@
 							}
 						});
 					}
-					var h = windowH - headerH - footerH -110;
+					var subtr = paddingH + navbarH + headerH + footerH;
+					var h = windowH - subtr;
+
 					$(bc).last().css('min-height',h + 'px');
 				};
 				// run on page load
@@ -495,10 +494,23 @@
 
 			});
 
-			mura.init({
-			context:'#esapiEncode("javascript",rc.$.globalConfig('context'))#',
-			themepath:'#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#',
-			siteid:<cfif isDefined('session.siteid') and len(session.siteid)>'#esapiEncode("javascript",session.siteid)#'<cfelse>'default'</cfif>
+			<cfif isDefined('session.siteid') and len(session.siteid)>
+				<cfset site=$.getBean('settingsManager').getSite(session.siteid)>
+			<cfelse>
+				<cfset site=$.getBean('settingsManager').getSite('default')>
+			</cfif>
+			Mura.init({
+				context:'#esapiEncode("javascript",rc.$.globalConfig('context'))#',
+				themepath:'#esapiEncode("javascript",site.getThemeAssetPath(complete=1))#',
+				siteid:'#esapiEncode("javascript",site.getSiteID())#',
+				assetpath:'#esapiEncode("javascript",site.getAssetPath(complete=1))#',
+				sitespath:'#esapiEncode("javascript",site.getSitesPath(complete=1))#',
+				corepath:'#esapiEncode("javascript",site.getCorePath(complete=1))#',
+				fileassetpath:'#esapiEncode("javascript",site.getFileAssetPath(complete=1))#',
+				adminpath:'#esapiEncode("javascript",site.getAdminPath(complete=1))#',
+				themepath:'#esapiEncode("javascript",site.getThemeAssetPath(complete=1))#',
+				pluginspath:'#esapiEncode("javascript",site.getPluginsPath(complete=1))#',
+				rootpath:'#esapiEncode("javascript",site.getRootPath(complete=1))#'
 			});
 
 			</script>
@@ -512,7 +524,7 @@
 		</cfif>
 
 		<cfinclude template="includes/dialog.cfm">
-		
+
 		<cfif structKeyExists(rc,'$')>
 			#rc.$.renderEvent('onAdminHTMLFootRender')#
 		</cfif>

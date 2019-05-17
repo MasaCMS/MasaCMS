@@ -72,7 +72,7 @@
         <cfelse>
           <div class="mura-async-object"
             data-object="form"
-			data-sam="spade"
+						data-sam="spade"
             data-objectname="Form"
             data-objectid="#esapiEncode('html_attr',bean.getContentID())#"
             data-responsechart="#esapiEncode('html_attr',bean.getResponseChart())#"

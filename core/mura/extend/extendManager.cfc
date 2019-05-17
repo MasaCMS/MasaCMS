@@ -1811,6 +1811,7 @@ and tclassextendattributes.type='File'
 			for(var subtypetype in subtypeArray){
 
 				subType = getSubTypeBean();
+				subType.inject('contentRenderer',site.getContentRenderer());
 
 				if(subtypetype eq 'User'){
 					subType.setType( 2 );
@@ -1887,7 +1888,7 @@ and tclassextendattributes.type='File'
 					if(extendSetXML.xmlName == 'attributeset' && isdefined('extendSetXML.xmlAttributes.name')){
 						extsetorder=extsetorder+1;
 
-						extendset= subType.getExtendSetByName(  extendSetXML.xmlAttributes.name );
+						extendset= subType.getExtendSetByName( name=extendSetXML.xmlAttributes.name, useCache=true );
 
 						if(isDefined("extendSetXML.xmlAttributes.container")){
 							extendset.setContainer( extendSetXML.xmlAttributes.container );
@@ -1911,8 +1912,8 @@ and tclassextendattributes.type='File'
 								attributeKeyList="label,type,optionlist,optionlabellist,defaultvalue,hint,required,validation,message,regex,adminonly";
 
 								for (ak=1;ak LTE listLen(attributeKeyList);ak=ak+1) {
-								      			attrbuteKeyName=listGetAt(attributeKeyList,ak);
-								    if(structKeyExists(attributeXML,attrbuteKeyName)){
+									attrbuteKeyName=listGetAt(attributeKeyList,ak);
+									if(structKeyExists(attributeXML,attrbuteKeyName)){
 										evaluate("attribute.set#attrbuteKeyName#(attributeXML[attrbuteKeyName].xmlText)");
 									}else if(structKeyExists(attributeXML.xmlAttributes,attrbuteKeyName)) {
 										evaluate("attribute.set#attrbuteKeyName#(attributeXML.xmlAttributes[attrbuteKeyName])");

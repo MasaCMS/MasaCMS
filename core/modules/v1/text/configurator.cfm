@@ -72,19 +72,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectcomponent')#</label>
 				<cfset rs=rc.$.getBean('contentManager').getList(args={moduleid='00000000000000000000000000000000003',siteid=session.siteid})>
 				<select name="source" id="component">
-					<option value="{object:'component',objectid:'unconfigured'}">
+					<option value="unconfigured">
 						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectcomponent')#
 					</option>`
 					<cfloop query="rc.rsComponents">
 						<cfset title=rc.rsComponents.menutitle>
-						<option <cfif rc.objectid eq rc.rsComponents.contentid and rc.object eq 'component'>selected </cfif>title="#esapiEncode('html_attr',title)#" value="#rc.rsComponents.contentid#">
+						<option <cfif objectparams.source eq rc.rsComponents.contentid and objectparams.sourcetype eq 'component'>selected </cfif>title="#esapiEncode('html_attr',title)#" value="#rc.rsComponents.contentid#">
 							#esapiEncode('html',title)#
 						</option>
 					</cfloop>
 				</select>
-
 				<cfif hasModulePerm>
 					<button class="btn" id="editBtnComponent"><i class="mi-plus-circle"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.createnew')#</button>
+					<script>
+					$('##editBtnComponent').click(function(){
+							frontEndProxy.post({
+								cmd:'openModal',
+								src:'?muraAction=cArch.editLive&contentId=' + $('##component').val() + '&type=Component&siteId=#esapiEncode("javascript",rc.siteid)#&instanceid=#esapiEncode("javascript",rc.instanceid)#&compactDisplay=true'
+								}
+							);
+					})
+					</script>
 				</cfif>
 			</div>
 			<div id="customcontainer" class="mura-control-group source-container" style="display:none">
@@ -176,11 +184,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				}
 				</cfif>
 
+				function setEditOption(){
+					var selector=$('##component');
+					var val=selector.val();
+
+					if(val && val !='unconfigured'){
+						$('##editBtnComponent').html('<i class="mi-pencil"></i> Edit');
+					} else {
+						$('##editBtnComponent').html('<i class="mi-plus-circle"></i> Create New');
+					}
+				}
+
 				$('select[name="source"], textarea[name="source"]').removeClass('objectParam');
 				$('.source-container').hide();
 				$('##editSource').hide();
 
 				var val=$('select[name="sourcetype"]').val();
+
+				$('##component').on('change',setEditOption);
 
 				if(val=='custom'){
 					$('##custom').addClass('objectParam');
@@ -198,6 +219,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					$('input[name="render"]').val('server');
 					$('input[name="async"]').val('true');
 				}
+
+				setEditOption();
 			}
 
 			$('select[name="sourcetype"]').on('change', function() {

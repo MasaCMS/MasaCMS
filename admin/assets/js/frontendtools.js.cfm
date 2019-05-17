@@ -38,6 +38,8 @@
 	<cfif len($.globalConfig('admindomain')) or $.event('contenttype') eq 'variation' or ($.siteConfig('isRemote') and len($.siteConfig().getValue('resourceDomain')))>
 		var adminProxyLoc="#$.siteConfig().getAdminPath(complete=1)#/assets/js/porthole/proxy.html";
 		var adminLoc="#$.siteConfig().getAdminPath(complete=1)#/";
+		var coreLoc="#$.siteConfig().getCorePath(complete=1)#/";
+		var resourceLoc="#$.siteConfig().getResourcePath(complete=1)#/";
 		var frontEndProxyLoc= location.protocol + "//" + location.hostname;
 
 		if(location.port){
@@ -46,6 +48,8 @@
 	<cfelse>
 		var adminProxyLoc="#$.globalConfig('context')##$.globalConfig('adminDir')#/assets/js/porthole/proxy.html";
 		var adminLoc="#$.globalConfig('context')##$.globalConfig('adminDir')#/";
+		var coreLoc="#$.globalConfig('context')#/core/";
+		var resourceLoc="#$.globalConfig('context')#/";
 		var frontEndProxyLoc="";
 	</cfif>
 	var instanceid=Mura.createUUID();
@@ -76,6 +80,64 @@
 				} else {
 					resizeFrontEndToolsModal(decodeURIComponent(parameters["height"]));
 				}
+			} else if(parameters["cmd"] == "openFileManager"){
+					Mura.loader().loadjs(
+					coreLoc +'vendor/ckfinder/ckfinder.js',
+						function(){
+							var target=parameters["target"];
+							var finder = new CKFinder();
+							finder.basePath = coreLoc + 'vendor/ckfinder/';
+
+							<cfif $.siteConfig('isremote')>
+								var completepath="true";
+							<cfelse>
+								var completepath=(typeof parameters["completepath"] != 'undefined') ? parameters.completepath.toString() : "true";
+							</cfif>
+
+							finder.selectActionFunction=function(fileURL){
+
+								var item=Mura('[data-instanceid="' + parameters["instanceid"] + '"]');
+
+								if(completepath.toString().toLowerCase() == 'true'){
+									item.data(parameters["target"],webroot + fileDelim + fileURL)
+								} else {
+									item.data(parameters["target"],fileURL)
+								}
+
+								var data=item.data();
+
+								delete data.runtime;
+
+								if(item.hasClass('mura-body-object')){
+									data.isbodyobject=true;
+								}
+
+								if(parameters["targetFrame"]=='sidebar' && document.getElementById('mura-sidebar-editor').style.display=='none'){
+									Mura('##mura-sidebar-configurator').show();
+								}
+
+								if(typeof parameters.callback == 'undefined'){
+									if(typeof parameters["targetFrame"] != 'undefined' && parameters["targetFrame"].toLowerCase()=='sidebar'){
+										sidebarProxy.post({cmd:'setObjectParams',params:data});
+									} else {
+										modalProxy.post({cmd:'setObjectParams',params:data});
+									}
+								}
+
+								Mura.processAsyncObject(item.node);
+						}
+
+						if(Mura(this).attr('data-resourcetype') =='root'){
+							finder.resourceType='Application_Root';
+						} else if(Mura(this).attr('data-resourcetype') == 'site'){
+							finder.resourceType=Mura.siteid + '_Site_Files';
+						} else {
+							finder.resourceType=Mura.siteid + '_User_Assets';
+						}
+
+						finder.popup();
+					}
+				);
 			} else if(parameters["cmd"] == "close"){
 				closeFrontEndToolsModal();
 			} else if(parameters["cmd"] == "setLocation"){
@@ -460,29 +522,31 @@
 
 			var frame = document.getElementById("frontEndToolsModaliframe");
 			var frameContainer = document.getElementById("frontEndToolsModalContainer");
+			var framesrc = frame.getAttribute('src');
+			var isFullHeight = framesrc.includes('cArch.editLive') || framesrc.includes('cArch.edit');
+			//console.log(isFullHeight);
 
 			//if (frameDoc.body != null) {
 				var windowHeight = Math.max(frameHeight, utility(window).height());
 
+				/*
 				if (frontEndModalWidth==frontEndModalWidthStandard
 					&& frameHeight < utility(window).height()
 					) {
-					frameHeight= Math.max(utility(window).height()-96,frameHeight);
+					frameHeight= Math.max(utility(window).height() * .80,frameHeight);
 				}
+				*/
 
 				utility('##frontEndToolsModalContainer ##frontEndToolsModalBody,##frontEndToolsModalContainer ##frontEndToolsModaliframe').width(frontEndModalWidth);
 
-// debug
-//console.log('utility(document).height(): ' + utility(document).height());
-//console.log('frameHeight: ' + frameHeight);
-
-				// set height, preventing overflow of window
-				if (frameHeight < utility(document).height() - 96){
+				if (isFullHeight){
+					frame.style.height = utility(window).height()-96 + "px";
+				} else {
 					frame.style.height = frameHeight + "px";
 				}
 
 				frameContainer.style.position = "absolute";
-				document.overflow = "auto";
+				document.overflow = "auto"
 
 				if(windowHeight > frontEndModalHeight){
 					frontEndModalHeight=windowHeight;

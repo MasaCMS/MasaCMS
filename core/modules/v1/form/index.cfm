@@ -74,17 +74,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset local.formJSON = deserializeJSON( local.formBean.getBody() )>
 
 			<cftry>
-				<!---<cfif structKeyExists(local.formJSON.form.formattributes,"muraormentities") and local.formJSON.form.formattributes.muraormentities eq true>--->
-				<cfset objectParams.render = "client" />
-				<cfset objectParams.async = "true"/>
-				<cfparam name="objectParams.view" default="form"/>
+			<!---<cfif structKeyExists(local.formJSON.form.formattributes,"muraormentities") and local.formJSON.form.formattributes.muraormentities eq true>--->
+			<cfset objectParams.render = "client" />
+			<cfset objectParams.async = "true"/>
+			<cfparam name="objectParams.view" default="form"/>
 
-	      <cfif len($.event('saveform'))>
+			<cfif len($.event('saveform'))>
 					<cfset $.event('fields','')>
 
 					<cfset objectParams.errors=$.getBean('dataCollectionBean')
-                .set($.event().getAllValues())
-                .submit($).getErrors()>
+						.set($.event().getAllValues())
+						.submit($).getErrors()>
 
 					<cfif not structCount(objectParams.errors)>
 						<cfset objectParams.responsemessage=$.renderEvent(eventName="onFormSubmitResponseRender",objectid=local.formBean.getContentID())>
@@ -101,10 +101,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</cfif>
 					</cfif>
 
+
+
 					<cfif not len(objectParams.responsemessage)>
-						<cfset objectParams.responsemessage=$.setDynamicContent(local.formBean.getResponseMessage())>
+						<cfif local.formBean.getResponseChart()>
+							<cfset objectParams.responsemessage=trim($.dspObject_Include(thefile='datacollection/dsp_poll.cfm'))>
+						</cfif>
+						<cfset objectParams.responsemessage=objectParams.responsemessage & $.setDynamicContent(local.formBean.getResponseMessage())>
 					</cfif>
 				</cfif>
+
+				<cfloop collection="#objectParams#" item="local.param">
+      		<cfif listLast(local.param,'_') eq 'attachment' and not isValid('uuid',objectParams[local.param])>
+						<cfset structDelete(objectParams,local.param)>
+					</cfif>
+				</cfloop>
+
 			<cfelseif len($.event('validateform'))>
 				<cfparam name="objectparams.fields" default="">
 				<cfset objectParams.errors=$.getBean('dataCollectionBean')
@@ -141,8 +153,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
    					 objectParams.filename=local.formBean.get('filename');
 					 	 objectParams.name=local.formBean.get('title');
    					 objectParams.responsemessage=local.formBean.get('responseMessage');
+						 objectParams.responsechart=local.formBean.get('responsechart');
    				 </cfscript>
-			 </cfif>
+			</cfif>
 			<cfcatch>
 				<cfdump var="#cfcatch#">
 				<cfabort>

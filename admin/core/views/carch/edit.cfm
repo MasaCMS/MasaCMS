@@ -233,7 +233,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 
 <script type="text/javascript">
-	$(document).ready(function(){	
+	$(document).ready(function(){
 
 		// create hidden BigUI with button, close link
 		var renderBigUI = function(el){
@@ -510,8 +510,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<!--- todo: rb key placeholder text for "Content Title" --->
 			<!--- todo: style for placeholder see end of custom.less --->
-			<div id="mura-content-title-render" data-placeholder="Content Title">#esapiEncode('html_attr',rc.contentBean.gettitle())#</div>
-			<div id="mura-content-body-render" style="display:none;">#bodyContent#</div>
+			<div id="mura-content-title-render" data-placeholder="#esapiEncode('html_attr', rc.contentbean.getType())# Title">#esapiEncode('html_attr',rc.contentBean.gettitle())#</div>
+
+			<cfif listFindNoCase("Link,File,",rc.contentBean.getType())>
+				<div id="mura-content-body-render" style="display:none;"><div id="mura-content-body-inner">#bodyContent#</div></div>
+			<cfelse>
+				<div id="mura-content-body-render" style="display:none;">#bodyContent#</div>
+			</cfif>
 
 			<div class="load-inline tab-preloader"></div>
 			<script>$('.tab-preloader').spin(spinnerArgs2);</script>
@@ -695,6 +700,7 @@ $('.clicktocopy').click(function(){
 	<input name="OrderNo" type="hidden" value="<cfif rc.contentBean.getorderno() eq ''>0<cfelse>#rc.contentBean.getOrderNo()#</cfif>">
 	<input type="hidden" name="closeCompactDisplay" value="#esapiEncode('html_attr',rc.compactDisplay)#" />
 	<input type="hidden" name="compactDisplay" value="#esapiEncode('html_attr',rc.compactDisplay)#" />
+	<input type="hidden" name="frontend" value="#esapiEncode('html_attr',rc.frontend)#" />
 	<input type="hidden" name="instanceid" value="#esapiEncode('html_attr',rc.instanceid)#" />
 	<input type="hidden" name="parenthistid" value="#esapiEncode('html_attr',rc.parenthistid)#" />
 

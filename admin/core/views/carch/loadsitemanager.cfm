@@ -351,13 +351,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       <cfif rc.rstop.moduleid eq '00000000000000000000000000000000000' or (rc.rstop.moduleid eq '00000000000000000000000000000000099' and rc.rstop.type eq 'Variation')>
         <cfswitch expression="#rc.rstop.type#">
     		 <cfcase value="Page,Folder,Calendar,Gallery">
-    		 <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(rc.siteid).getWebPath(complete=1)##$.getURLStem(rc.siteid,rc.rstop.filename)#','#esapiEncode('javascript',rc.rstop.targetParams)#');"><i class="mi-globe"></i></a></li>
+    		 <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="#application.settingsManager.getSite(rc.siteid).getWebPath(complete=1)##$.getURLStem(rc.siteid,rc.rstop.filename)#"><i class="mi-globe"></i></a></li>
     		 </cfcase>
     		 <cfcase value="File,Link">
     		 <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(rc.siteid).getWebPath(complete=1)##$.getURLStem(rc.siteid,"")#index.cfm?LinkServID=#rc.rstop.contentid#','#esapiEncode('javascript',rc.rstop.targetParams)#');"><i class="mi-globe"></i></a></li>
     		 </cfcase>
     		 <cfcase value="Variation">
-    		 <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#rc.rstop.remoteurl#','#esapiEncode('javascript',rc.rstop.targetParams)#');"><i class="mi-globe"></i></a></li>
+    		 <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="#esapiEncode('url',rc.rstop.remoteurl)#"><i class="mi-globe"></i></a></li>
     		 </cfcase>
     		 <cfdefaultcase>
     		 <li class="preview disabled"><a><i class="mi-globe"></i></a></li>
@@ -381,13 +381,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       <cfif rc.rstop.moduleid eq '00000000000000000000000000000000000' or (rc.rstop.moduleid eq '00000000000000000000000000000000099' and rc.rstop.type eq 'Variation')>
   	  <cfswitch expression="#rc.rstop.type#">
     	   <cfcase value="Page,Folder,Calendar,Gallery">
-    	   <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(rc.siteid).getWebPath(complete=1)##$.getURLStem(rc.siteid,rc.rstop.filename)#','#esapiEncode('javascript',rc.rstop.targetParams)#');"><i class="mi-globe"></i></a></li>
+    	   <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="#application.settingsManager.getSite(rc.siteid).getWebPath(complete=1)##$.getURLStem(rc.siteid,rc.rstop.filename)#"><i class="mi-globe"></i></a></li>
     	   </cfcase>
     	   <cfcase value="File,Link">
     	   <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(rc.siteid).getWebPath(complete=1)##$.getURLStem(rc.siteid,"")#index.cfm?LinkServID=#rc.rstop.contentid#','#esapiEncode('javascript',rc.rstop.targetParams)#');"><i class="mi-globe"></i></a></li>
     	   </cfcase>
     	   <cfcase value="Variation">
-    	   <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#rc.rstop.remoteurl#','#esapiEncode('javascript',rc.rstop.targetParams)#');"><i class="mi-globe"></i></a></li>
+    	   <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="#esapiEncode('url',rc.rstop.remoteurl)#"><i class="mi-globe"></i></a></li>
     	   </cfcase>
     	   <cfdefaultcase>
     	   <li class="preview disabled"><a><i class="mi-globe"></i></a></li>

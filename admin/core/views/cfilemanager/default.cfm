@@ -49,8 +49,6 @@
   <cfset session.resourceType=rc.resourceType>
 </cfif>
 <cfoutput>
-  <script src="/admin/assets/js/filebrowser/filebrowser.js"></script>
-  <link href="/admin/assets/js/filebrowser/assets/css/filebrowser.css" link rel="stylesheet" type="text/css">
 <div class="mura-header">
 	<cfif session.resourceType eq "assets">
 	<h1>#application.rbFactory.getKeyValue(session.rb,"layout.userassets")#</h1>
@@ -78,7 +76,6 @@
       </br></br></br>
         <div id="MuraFileBrowserContainer"></div>
 			<script type="text/javascript">
-            MuraFileBrowser.config.height="600";
 			<cfif session.resourceType eq "assets">
             MuraFileBrowser.config.resourcepath="#esapiEncode('javascript','User_Assets')#";
 			<cfelseif session.resourceType eq "files" and application.configBean.getValue(property='fmShowSiteFiles',defaultValue=true)>
@@ -89,6 +86,7 @@
             MuraFileBrowser.config.resourcepath="#esapiEncode('javascript','User_Assets')#";
 			</cfif>
       Mura(function(m) {
+        MuraFileBrowser.config.height=600;
         MuraFileBrowser.render();
       });
 

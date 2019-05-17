@@ -79,12 +79,15 @@
 }
 
 #navFilterButtons{
+	background-color: transparent;
 	bottom: 0px;
+	box-shadow: none !important;
+	height: 44px;
 	float: right;
-	margin: 14px 0 0 !important;
-  min-width: 280px;
-  margin-top: 14px;
-  padding-bottom: 0 !important;
+	margin: 24px 0 0 !important;
+	min-height: 44px;
+	min-width: 160px;
+	padding: 0 !important;
 	text-align: right;
 	position: relative;
 	width: auto;
@@ -616,6 +619,13 @@
 			.scheduled a span {
 				max-width: 110px;
 				text-align: center;
+			}
+
+			.tooltip.in{
+				opacity: 1 !important;
+				*{
+					opacity: 1 !important;
+				}
 			}
 
 			li a {
@@ -1401,23 +1411,35 @@
 	/* @group Quick Edit */
 
 	.mura-quickEdit {
-		background-color: #272727;
-		opacity: 1;
-		position: absolute;
+		background-color: #FFF;
+		.border-radius(1px);
 		bottom: 34px;
-		left: 50%;
-		margin-left: -86px;
-		width: 160px;
-		min-height: 70px;
-		z-index: 2;
+		box-shadow: 0 0 0 1px rgba(68, 68, 68, 0.11);
 		display: block;
-		.border-radius(2px);
-		padding: 8px 10px;
-		box-shadow: 0 2px 4px #333232;
-		white-space: normal;
 		font-size: @qeFontSize;
+		left: 50%;
+		margin-left: -108px;
+		min-height: 70px;
+		opacity: 1;
+		padding: 6px 8px 6px;
+		position: absolute;
 		text-align: left;
+		white-space: normal;
+		width: 220px;
+		z-index: 2;
 
+			.form-actions{
+				clear:both;
+				padding: 4px 8px;
+				margin: 6px auto;
+			}
+
+			select, input, textarea{
+				border: none;
+				background-color: #f9f9f9;
+				color: #333;
+			}
+    
 			select.time {
 				width: 43px !important;
 				padding: 2px 1px !important;
@@ -1491,13 +1513,16 @@
 		h1,
 		label,
 		.label {
-			color: #fff !important;
-			font-size: 11px !important;
-			text-align: left;
-			margin: 0 0 8px 0;
+			clear: both;
+			color: #999 !important;
+		    float: left;
+			font-size: 13px !important;
 			font-weight: normal;
+			line-height: 2em;
+			margin: 6px 0 2px;
+			padding: 0;
 			padding-right: 20px;
-			line-height: 1;
+			text-align: left;
 		}
 
 		select + h1{
@@ -1505,7 +1530,6 @@
 			padding-top: 4px;
 		}
 			
-
 		.cancel {
 			position: absolute;
 			top: 4px;
@@ -1513,8 +1537,8 @@
 			cursor: pointer;
 
 				i {
-					font-size: 16px;
 					color: @gray;
+					font-size: 14x;
 					text-shadow: none;
 					top: -3px;
 
@@ -1590,7 +1614,7 @@
 					font-size: 11px;
 					
 					&.mura-primary{
-						border: 1px solid #6699CC !important;
+						border: 1px solid @mura-red !important;
 					}
 			}
 
@@ -1636,16 +1660,47 @@
 
 	.categoryassignment .mura-quickEdit{
 
-			min-width: 160px;
-			width: auto !important;
+		min-width: 160px;
+		width: auto !important;
+		z-index: 99 !important;
+		left: auto;
+	    right: 80%;
+	    bottom: auto;
+	    top: -165%;
 
-			select.time{
-				margin-left: 0 !important;
-			}
+		&:after{
+			left: auto;
+		    right: -19px;
+		    top: 52px;
+		    transform: rotate(270deg);
+		}
 
-			#mura-quickEdit-displayDates{
-				min-width: 245px;
-			}
+		#mura-quickEdit-display{
+			float:left;
+			clear:both;
+		}
+		
+		input.datepicker{
+			width: 86px !important;
+			min-width: 85px !important;
+		}
+		select.time{
+			margin-left: 0 !important;
+		    min-width: auto;
+		    width: 43px!important;
+		}
+
+		#mura-quickEdit-displayDates{
+			min-width: 245px;
+		}
+
+		.mura-interval-end input[type=text],
+		.mura-interval-end input[type=text].datepicker,
+		input.datepicker, 
+		select{
+			margin-bottom: .25px;
+		} 
+
 	}
 
 	.mura-quickEdit:after {
@@ -1654,10 +1709,9 @@
 		z-index: 11;
 		width: 24px;
 		height: 14px;
-		left: 71px;
+		left: 96px;
 		bottom: -14px;
 		background: url('../images/quickedit-bottom.png') no-repeat center bottom;
-		opacity: .95;
 	}
 
 	.mura-quickEdit:hover {
@@ -1666,6 +1720,7 @@
 
 	.mura-quickEdit h1{
 		margin-top: 4px;
+		margin-left: 2px;
 	}
 
 	.mura-quickEdit p{
@@ -1898,8 +1953,7 @@
 
 	.mura-quickEditItem {
 		cursor: pointer;
-		/* border-bottom: 1px dotted; */
-
+		padding: 3px 12px;
 		i {
 			color: @iconColor;
 			}

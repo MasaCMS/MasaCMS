@@ -350,7 +350,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 	public function getDomain(required String mode="") output=false {
 		var temp="";
 		if ( arguments.mode == 'preview' ) {
-			if ( len(request.muraPreviewDomain) ) {
+			if ( isDefined('request.muraPreviewDomain') && len(request.muraPreviewDomain) ) {
 				return request.muraPreviewDomain;
 			} else {
 				return variables.instance.Domain;
@@ -726,8 +726,24 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		return getResourcePath(argumentCollection=arguments) & "#variables.configBean.getSiteAssetPath()#/#variables.instance.displayPoolID#";
 	}
 
+	public function getSiteAssetPath(complete="0", domain="#getValue('domain')#") output=false {
+		return getAssetPath(argumentCollection=arguments);
+	}
+
 	public function getFileAssetPath(complete="0", domain="#getValue('domain')#") output=false {
-		return getResourcePath(argumentCollection=arguments) & "#variables.configBean.getSiteAssetPath()#/#variables.instance.filepoolID#";
+		if(len(variables.configBean.getValue('fileAssetPath'))){
+			return variables.configBean.getValue('fileAssetPath')  & "/" & variables.instance.filepoolID;
+		} else {
+			return getResourcePath(argumentCollection=arguments) & "#variables.configBean.getSiteAssetPath()#/#variables.instance.filepoolID#";
+		}
+	}
+
+	public function getFileDir() output=false {
+		return variables.configBean.getFileDir()  & variables.configBean.getFileDelim() & variables.instance.filepoolID;
+	}
+
+	public function getAssetDir() output=false {
+		return variables.configBean.getAssetDir()  & variables.configBean.getFileDelim() & variables.instance.filepoolID;
 	}
 
 	public function getIncludePath() output=false {
@@ -1718,64 +1734,86 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 	public function registerContentTypeDir(dir,package="") output=false {
 		var rs="";
 		var config="";
-		var expandedDir=expandPath(arguments.dir);
+		var expandedDir="";
 		var deferred={};
+
+		if(reFindNoCase("^[a-zA-Z]:\\",arguments.dir)){
+			expandedDir=arguments.dir;
+		} else {
+			expandedDir=expandPath(arguments.dir);
+		}
 
 		if ( directoryExists(expandedDir) ) {
 			rs=getBean('fileWriter').getDirectoryList( directory=expandedDir, type="dir");
 
 			if(rs.recordcount){
 				for(var row=1;row <= rs.recordcount;row++){
-					if(get('isNew')){
-						param name="request.muraDeferredModuleAssets" default=[];
-						deferred={};
-					}
-					if ( fileExists('#expandedDir#/#rs.name[row]#/config.xml.cfm') ) {
-						config=new mura.executor().execute('#arguments.dir#/#rs.name[row]#/config.xml.cfm');
-					} else if ( fileExists('#expandedDir#/#rs.name[row]#/config.xml') ) {
-						config=fileRead("#rs.directory[row]#/#rs.name[row]#/config.xml");
-					} else {
-						config="";
-					}
-					if ( isXML(config) ) {
-						config=xmlParse(config);
+					try{
 						if(get('isNew')){
-							deferred.config=config;
+							param name="request.muraDeferredModuleAssets" default=[];
+							deferred={};
+						}
+						if ( fileExists('#expandedDir#/#rs.name[row]#/config.xml.cfm') ) {
+							config=new mura.executor().execute('#arguments.dir#/#rs.name[row]#/config.xml.cfm');
+						} else if ( fileExists('#expandedDir#/#rs.name[row]#/config.xml') ) {
+							config=fileRead("#rs.directory[row]#/#rs.name[row]#/config.xml");
 						} else {
-							variables.configBean.getClassExtensionManager().loadConfigXML(config,getValue('siteid'));
+							config="";
+						}
+						if ( isXML(config) ) {
+							config=xmlParse(config);
+							if(get('isNew')){
+								deferred.config=config;
+							} else {
+								variables.configBean.getClassExtensionManager().loadConfigXML(config,getValue('siteid'));
+							}
+						}
+						if(directoryExists('#rs.directory[row]#/#rs.name[row]#/model')) {
+							if(get('isNew')){
+								deferred.modelDir="#arguments.dir#/#rs.name[row]#/model";
+								deferred.package=arguments.package;
+							} else {
+								variables.configBean.registerBeanDir(dir='#arguments.dir#/#rs.name[row]#/model',siteid=getValue('siteid'),package=arguments.package);
+							}
+						} else if ( get('isNew') ){
+							deferred.modelDir="";
+							deferred.package="";
+						}
+						if ( directoryExists('#rs.directory[row]#/#rs.name[row]#/display_objects') ) {
+							registerDisplayObjectDir(dir='#arguments.dir#/#rs.name[row]#/display_objects');
+						}
+						if ( directoryExists('#rs.directory[row]#/#rs.name[row]#/modules') ) {
+							registerDisplayObjectDir(dir='#arguments.dir#/#rs.name[row]#/modules',conditional=true);
+						}
+						if ( directoryExists('#rs.directory[row]#/#rs.name[row]#/content_types') ) {
+							registerContentTypeDir(dir='#arguments.dir#/#rs.name[row]#/content_types');
+						}
+						if ( directoryExists('#rs.directory#/#rs.name[row]#/resource_bundles') ) {
+							variables.instance.rbFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(getRBFactory(),'#rs.directory[row]#/#rs.name[row]#/resource_bundles',getJavaLocale());
+						}
+						if ( directoryExists('#rs.directory[row]#/#rs.name[row]#/resourceBundles') ) {
+							variables.instance.rbFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(getRBFactory(),'#rs.directory[row]#/#rs.name[row]#/resourceBundles',getJavaLocale());
+						}
+
+						if(get('isNew') && ( isDefined('deferred.config') || isDefined('deferred.modelDir') ) ){
+							arrayAppend(request.muraDeferredModuleAssets,duplicate(deferred));
+						}
+
+					} catch(any e){
+						commitTracepoint(initTracepoint("Error Registering Content Type #arguments.package#.#rs.name[row]#, check error log for details"));
+						var logData={stacktrace=e.stacktrace};
+						if(structKeyExists(e,'message')){
+							logData.message=e.message;
+						}
+						writeLog( text="Error Registering Content Type: #serializeJSON(logData)#", file="exception", type="Error" );
+
+						param name="request.muraDeferredModuleErrors" default=[];
+						ArrayAppend(request.muraDeferredModuleErrors,logData);
+
+						if(!isBoolean(variables.configBean.getValue('debuggingenabled')) || variables.configBean.getValue('debuggingenabled')){
+							rethrow;
 						}
 					}
-					if(directoryExists('#rs.directory[row]#/#rs.name[row]#/model')) {
-						if(get('isNew')){
-							deferred.modelDir="#arguments.dir#/#rs.name[row]#/model";
-							deferred.package=arguments.package;
-						} else {
-							variables.configBean.registerBeanDir(dir='#arguments.dir#/#rs.name[row]#/model',siteid=getValue('siteid'),package=arguments.package);
-						}
-					} else if ( get('isNew') ){
-						deferred.modelDir="";
-						deferred.package="";
-					}
-					if ( directoryExists('#rs.directory[row]#/#rs.name[row]#/display_objects') ) {
-						registerDisplayObjectDir(dir='#arguments.dir#/#rs.name[row]#/display_objects');
-					}
-					if ( directoryExists('#rs.directory[row]#/#rs.name[row]#/modules') ) {
-						registerDisplayObjectDir(dir='#arguments.dir#/#rs.name[row]#/modules',conditional=true);
-					}
-					if ( directoryExists('#rs.directory[row]#/#rs.name[row]#/content_types') ) {
-						registerContentTypeDir(dir='#arguments.dir#/#rs.name[row]#/content_types');
-					}
-					if ( directoryExists('#rs.directory#/#rs.name[row]#/resource_bundles') ) {
-						variables.instance.rbFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(getRBFactory(),'#rs.directory[row]#/#rs.name[row]#/resource_bundles',getJavaLocale());
-					}
-					if ( directoryExists('#rs.directory[row]#/#rs.name[row]#/resourceBundles') ) {
-						variables.instance.rbFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(getRBFactory(),'#rs.directory[row]#/#rs.name[row]#/resourceBundles',getJavaLocale());
-					}
-
-					if(get('isNew') && ( isDefined('deferred.config') || isDefined('deferred.modelDir') ) ){
-						arrayAppend(request.muraDeferredModuleAssets,duplicate(deferred));
-					}
-
 				}
 			}
 
@@ -1794,9 +1832,15 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		var o="";
 		var tempVal="";
 		var objectfound=(arguments.conditional) ? false : true;
-		var expandedDir=expandPath(arguments.dir);
+		var expandedDir="";
 		var utility=getBean('utility');
 		var deferred={};
+
+		if(reFindNoCase("^[a-zA-Z]:\\",arguments.dir)){
+			expandedDir=arguments.dir;
+		} else {
+			expandedDir=expandPath(arguments.dir);
+		}
 
 		if ( directoryExists(expandedDir) ) {
 			rs=getBean('fileWriter').getDirectoryList( directory=expandedDir, type="dir");
@@ -1808,129 +1852,145 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 				}
 
 				for(var row=1;row <= rs.recordcount;row++){
-					config='';
-					if ( fileExists('#expandedDir#/#rs.name[row]#/config.xml.cfm') ) {
-						config=new mura.executor().execute('#arguments.dir#/#rs.name[row]#/config.xml.cfm');
-					} else if ( fileExists('#expandedDir#/#rs.name[row]#/config.xml') ) {
-						config=fileRead("#expandedDir#/#rs.name[row]#/config.xml");
-					} else {
-						config="";
-					}
-					if ( isXML(config) ) {
-						config=xmlParse(config);
-
-						if ( isDefined('config.displayobject') ) {
-							var baseXML=config.displayobject;
+					try{
+						config='';
+						if ( fileExists('#expandedDir#/#rs.name[row]#/config.xml.cfm') ) {
+							config=new mura.executor().execute('#arguments.dir#/#rs.name[row]#/config.xml.cfm');
+						} else if ( fileExists('#expandedDir#/#rs.name[row]#/config.xml') ) {
+							config=fileRead("#expandedDir#/#rs.name[row]#/config.xml");
 						} else {
-							var baseXML=config.mura;
+							config="";
 						}
-						if ( isDefined('baseXML.xmlAttributes.name') || isDefined('baseXML.name') ) {
-							objectArgs={
-											object=rs.name[row],
-											custom=arguments.custom
-											};
-							tempVal=utility.getXMLKeyValue(baseXML,'name');
-							if ( len(tempVal) ) {
-								objectArgs.name=tempVal;
-							}
-							tempVal=utility.getXMLKeyValue(baseXML,'condition',true);
-							if ( len(tempVal) ) {
-								objectArgs.condition=tempVal;
-							}
-							tempVal=utility.getXMLKeyValue(baseXML,'contenttypes');
-							if ( len(tempVal) ) {
-								objectArgs.contenttypes=tempVal;
-							}
-							tempVal=utility.getXMLKeyValue(baseXML,'legacyObjectFile');
-							if ( len(tempVal) ) {
-								objectArgs.legacyObjectFile=rs.name[row] & "/" & tempVal;
-							}
-							tempVal=utility.getXMLKeyValue(baseXML,'configuratorInit');
-							if ( len(tempVal) ) {
-								objectArgs.configuratorInit=tempVal;
-							}
-							tempVal=utility.getXMLKeyValue(baseXML,'configuratorJS');
-							if ( len(tempVal) ) {
-								objectArgs.configuratorJS=tempVal;
-							}
-							tempVal=utility.getXMLKeyValue(baseXML,'omitcontenttypes');
-							if ( len(tempVal) ) {
-								objectArgs.omitcontenttypes=tempVal;
-							}
-							tempVal=utility.getXMLKeyValue(baseXML,'custom',true);
-							if ( len(tempVal) ) {
-								objectArgs.custom=tempVal;
-							}
-							tempVal=utility.getXMLKeyValue(baseXML,'iconclass','mi-cog');
-							if ( len(tempVal) ) {
-								objectArgs.custom=tempVal;
-							}
-							tempVal=utility.getXMLKeyValue(baseXML,'cacheoutput',true);
-							if ( len(tempVal) ) {
-								objectArgs.custom=tempVal;
-							}
-							tempVal=utility.getXMLKeyValue(baseXML,'displayObjectFile');
-							if ( len(tempVal) ) {
-								objectArgs.displayObjectFile=rs.name[row] & "/" & tempVal;
+						if ( isXML(config) ) {
+							config=xmlParse(config);
+
+							if ( isDefined('config.displayobject') ) {
+								var baseXML=config.displayobject;
 							} else {
-								tempVal=utility.getXMLKeyValue(baseXML,'component');
-								if(len(tempVal)){
-									objectArgs.displayObjectFile=tempVal;
+								var baseXML=config.mura;
+							}
+							if ( isDefined('baseXML.xmlAttributes.name') || isDefined('baseXML.name') ) {
+								objectArgs={
+												object=rs.name[row],
+												custom=arguments.custom
+												};
+								tempVal=utility.getXMLKeyValue(baseXML,'name');
+								if ( len(tempVal) ) {
+									objectArgs.name=tempVal;
+								}
+								tempVal=utility.getXMLKeyValue(baseXML,'condition',true);
+								if ( len(tempVal) ) {
+									objectArgs.condition=tempVal;
+								}
+								tempVal=utility.getXMLKeyValue(baseXML,'contenttypes');
+								if ( len(tempVal) ) {
+									objectArgs.contenttypes=tempVal;
+								}
+								tempVal=utility.getXMLKeyValue(baseXML,'legacyObjectFile');
+								if ( len(tempVal) ) {
+									objectArgs.legacyObjectFile=rs.name[row] & "/" & tempVal;
+								}
+								tempVal=utility.getXMLKeyValue(baseXML,'configuratorInit');
+								if ( len(tempVal) ) {
+									objectArgs.configuratorInit=tempVal;
+								}
+								tempVal=utility.getXMLKeyValue(baseXML,'configuratorJS');
+								if ( len(tempVal) ) {
+									objectArgs.configuratorJS=tempVal;
+								}
+								tempVal=utility.getXMLKeyValue(baseXML,'omitcontenttypes');
+								if ( len(tempVal) ) {
+									objectArgs.omitcontenttypes=tempVal;
+								}
+								tempVal=utility.getXMLKeyValue(baseXML,'custom',true);
+								if ( len(tempVal) ) {
+									objectArgs.custom=tempVal;
+								}
+								tempVal=utility.getXMLKeyValue(baseXML,'iconclass','mi-cog');
+								if ( len(tempVal) ) {
+									objectArgs.custom=tempVal;
+								}
+								tempVal=utility.getXMLKeyValue(baseXML,'cacheoutput',true);
+								if ( len(tempVal) ) {
+									objectArgs.custom=tempVal;
+								}
+								tempVal=utility.getXMLKeyValue(baseXML,'displayObjectFile');
+								if ( len(tempVal) ) {
+									objectArgs.displayObjectFile=rs.name[row] & "/" & tempVal;
 								} else {
-									objectArgs.displayObjectFile=rs.name[row] & "/index.cfm";
+									tempVal=utility.getXMLKeyValue(baseXML,'component');
+									if(len(tempVal)){
+										objectArgs.displayObjectFile=tempVal;
+									} else {
+										objectArgs.displayObjectFile=rs.name[row] & "/index.cfm";
+									}
+								}
+
+								for ( o in baseXML.xmlAttributes ) {
+									if ( !structKeyExists(objectArgs,o) ) {
+										objectArgs[o]=baseXML.xmlAttributes[o];
+									}
+								}
+
+								objectfound=true;
+
+								registerDisplayObject(
+									argumentCollection=objectArgs
+								);
+
+								if(get('isNew')){
+									deferred.config=config;
+								} else {
+									variables.configBean.getClassExtensionManager().loadConfigXML(config,getValue('siteid'));
 								}
 							}
+						}
 
-							for ( o in baseXML.xmlAttributes ) {
-								if ( !structKeyExists(objectArgs,o) ) {
-									objectArgs[o]=baseXML.xmlAttributes[o];
-								}
-							}
-
-							objectfound=true;
-
-							registerDisplayObject(
-								argumentCollection=objectArgs
-							);
-
+						if(directoryExists('#rs.directory[row]#/#rs.name[row]#/model')) {
 							if(get('isNew')){
-								deferred.config=config;
+								deferred.modelDir="#arguments.dir#/#rs.name[row]#/model";
+								deferred.package=arguments.package;
 							} else {
-								variables.configBean.getClassExtensionManager().loadConfigXML(config,getValue('siteid'));
+								variables.configBean.registerBeanDir(dir='#arguments.dir#/#rs.name[row]#/model',siteid=getValue('siteid'),package=arguments.package);
 							}
+						} else if ( get('isNew') ){
+							deferred.modelDir="";
+							deferred.package="";
 						}
-					}
 
-					if(directoryExists('#rs.directory[row]#/#rs.name[row]#/model')) {
-						if(get('isNew')){
-							deferred.modelDir="#arguments.dir#/#rs.name[row]#/model";
-							deferred.package=arguments.package;
-						} else {
-							variables.configBean.registerBeanDir(dir='#arguments.dir#/#rs.name[row]#/model',siteid=getValue('siteid'),package=arguments.package);
+						if ( directoryExists('#rs.directory[row]#/#rs.name[row]#/display_objects') ) {
+							registerDisplayObjectDir(dir='#arguments.dir#/#rs.name[row]#/display_objects');
 						}
-					} else if ( get('isNew') ){
-						deferred.modelDir="";
-						deferred.package="";
-					}
+						if ( directoryExists('#rs.directory[row]#/#rs.name[row]#/modules') ) {
+							registerDisplayObjectDir(dir='#arguments.dir#/#rs.name[row]#/modules',conditional=true);
+						}
+						if ( directoryExists('#rs.directory[row]#/#rs.name[row]#/content_types') ) {
+							registerContentTypeDir(dir='#arguments.dir#/#rs.name[row]#/content_types');
+						}
+						if ( directoryExists('#rs.directory[row]#/#rs.name[row]#/resource_bundles') ) {
+							variables.instance.rbFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(getRBFactory(),'#rs.directory[row]#/#rs.name[row]#/resource_bundles',getJavaLocale());
+						}
+						if ( directoryExists('#rs.directory[row]#/#rs.name[row]#/resourceBundles') ) {
+							variables.instance.rbFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(getRBFactory(),'#rs.directory[row]#/#rs.name[row]#/resourceBundles',getJavaLocale());
+						}
 
-					if ( directoryExists('#rs.directory[row]#/#rs.name[row]#/display_objects') ) {
-						registerDisplayObjectDir(dir='#arguments.dir#/#rs.name[row]#/display_objects');
-					}
-					if ( directoryExists('#rs.directory[row]#/#rs.name[row]#/modules') ) {
-						registerDisplayObjectDir(dir='#arguments.dir#/#rs.name[row]#/modules',conditional=true);
-					}
-					if ( directoryExists('#rs.directory[row]#/#rs.name[row]#/content_types') ) {
-						registerContentTypeDir(dir='#arguments.dir#/#rs.name[row]#/content_types');
-					}
-					if ( directoryExists('#rs.directory[row]#/#rs.name[row]#/resource_bundles') ) {
-						variables.instance.rbFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(getRBFactory(),'#rs.directory[row]#/#rs.name[row]#/resource_bundles',getJavaLocale());
-					}
-					if ( directoryExists('#rs.directory[row]#/#rs.name[row]#/resourceBundles') ) {
-						variables.instance.rbFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(getRBFactory(),'#rs.directory[row]#/#rs.name[row]#/resourceBundles',getJavaLocale());
-					}
+						if(get('isNew') && ( isDefined('deferred.config') || isDefined('deferred.modelDir') ) ){
+							arrayAppend(request.muraDeferredModuleAssets,duplicate(deferred));
+						}
+					} catch(any e){
+						commitTracepoint(initTracepoint("Error Registering Module #arguments.package#.#rs.name[row]#, check error log for details"));
+						var logData={stacktrace=e.stacktrace};
+						if(structKeyExists(e,'message')){
+							logData.message=e.message;
+						}
+						writeLog( text="Error Registering Module: #serializeJSON(logData)#", file="exception", type="Error" );
 
-					if(get('isNew') && ( isDefined('deferred.config') || isDefined('deferred.modelDir') ) ){
-						arrayAppend(request.muraDeferredModuleAssets,duplicate(deferred));
+						param name="request.muraDeferredModuleErrors" default=[];
+						ArrayAppend(request.muraDeferredModuleErrors,logData);
+
+						if(!isBoolean(variables.configBean.getValue('debuggingenabled')) || variables.configBean.getValue('debuggingenabled')){
+							rethrow;
+						}
 					}
 				}
 			}
@@ -1987,24 +2047,49 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		return "";
 	}
 
+	public function lookupModuleFilePath(filePath, customOnly="false") output=false {
+		return lookupDisplayObjectFilePath(argumentCollection=arguments);
+	}
+
 	public function hasDisplayObject(object) output=false {
 		return structKeyExists(variables.instance.displayObjectLookup,'#arguments.object#');
+	}
+
+	public function hasModule(object) output=false {
+		return hasDisplayObject(argumentCollection=arguments);
 	}
 
 	public function getDisplayObject(object) output=false {
 		return variables.instance.displayObjectLookup['#arguments.object#'];
 	}
 
+	public function getModule(object) output=false {
+		return getDisplayObject(argumentCollection=arguments);
+	}
+
 	public function hasDisplayObjectFilePath(filepath) output=false {
 		return structKeyExists(variables.instance.displayObjectFilePathLookup,'#arguments.filepath#');
+	}
+
+	public function hasModuleFilePath(filepath) output=false {
+		return hasDisplayObjectFilePath(argumentCollection=arguments);
 	}
 
 	public function getDisplayObjectFilePath(filepath) output=false {
 		return variables.instance.displayObjectFilePathLookup['#arguments.filepath#'];
 	}
 
+	public function getModuleFilePath(filepath) output=false {
+		return getDisplayObjectFilePath(argumentCollection=arguments);
+	}
+
 	public function setDisplayObjectFilePath(filepath, result) output=false {
 		variables.instance.displayObjectFilePathLookup['#arguments.filepath#']=arguments.result;
+		return this;
+	}
+
+	ublic function setModuleFilePath(filepath, result) output=false {
+		setDisplayObjectFilePath(argumentCollection=arguments);
 		return this;
 	}
 

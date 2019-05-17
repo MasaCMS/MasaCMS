@@ -100,14 +100,14 @@
 					<div class="mura-control-group">
 						<label>Starts<!--- #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.schedule')# ---></label>
 						<cf_datetimeselector name="displayStart" datetime="#rc.contentBean.getDisplayStart(timezone=displayInterval.timezone)#" timeselectwrapper="true">
-						
+
 							<label id="displayIntervalToLabel" class="time"<cfif rc.ptype neq 'Calendar'> style=
 							display:none;"</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.to')#</label>
 
 						<cfif rc.ptype eq 'Calendar'>
 							<cf_datetimeselector name="displayStop" datetime="#rc.contentBean.getDisplayStop(timezone=displayInterval.timezone)#" defaulthour="23" defaultminute="59"  timeselectwrapper="true">
 						</cfif>
-					
+
 					</div>
 					<!--- /end starts --->
 
@@ -298,7 +298,7 @@
 			}
 
 			var options={
-				repeats: (!isCalendar || isCalendar && $('##displayIntervalRepeats').is(':checked')) ? 1 : 0,
+				repeats: ($('##displayIntervalRepeats').is(':checked')) ? 1 : 0,
 				detectconflicts: $('##displayIntervalDetectConflicts').is(':checked') ? 1 : 0,
 				detectspan: $('##mura-detectspan').val(),
 				allday:  (isCalendar && $('##displayIntervalAllDay').is(':checked')) ? 1 : 0,
@@ -325,7 +325,7 @@
 		function toggleDailyEndTime(){
 			var repeats =  $('##displayIntervalRepeats').is(':checked');
 			var type=$('##displayIntervalEnd').val();
-	
+
 		//alert('toggling');
 
 			if (!isCalendar){
@@ -336,7 +336,7 @@
 				} else if (type='on' || type == 'never'){
 					$('##displayIntervalToLabel').hide();
 					$('##displayIntervalToLabel + .mura-timeselectwrapper').insertAfter('##mura-datepicker-displayStop');
-				}		
+				}
 			}
 		}
 
@@ -418,7 +418,7 @@
 				stop.val(start.val()).trigger('change');
 				$('##displayIntervalEnd').val('on');
 				$('##displayIntervalEndAfter').val(0);
-				$('##displayIntervalEndOn').val(start.val());	
+				$('##displayIntervalEndOn').val(start.val());
 			}
 
 			updateDisplayInterval();
@@ -556,20 +556,20 @@
 				if ($('##displayIntervalRepeats').is(':checked')){
 					$('##displayIntervalRepeats').trigger('click');
 				}
-			}	
+			}
 		}
 
 		function hideDefaultRepeats(){
 			var stopHour = $('##mura-displayStopHour').val();
 			var stopMin = $('##mura-displayStopMinute').val();
-			var stopDaypart = $('##mura-displayStopDayPart').val();	
+			var stopDaypart = $('##mura-displayStopDayPart').val();
 			var intervalType = $('##displayIntervalType').val();
 			var intervalEvery = $('##displayIntervalEvery').val();
 			var intervalEnds = $('##displayIntervalEnd').val();
 			var intervalEndsAfter = $('##displayIntervalEndAfter').val();
 
 			if ( (intervalEnds != 'after' || intervalEndsAfter < 2)
-				&& intervalType == 'daily' && intervalEvery == 1 
+				&& intervalType == 'daily' && intervalEvery == 1
 				&& (stopMin == 59 && (stopHour == 11 && stopDaypart == 'PM' || stopHour == 23))
 				){
 					$('##repeatsRadioNo').trigger('click');
@@ -597,35 +597,33 @@
 	})
 
 	// update selected datetime string
-
-	<!--- todo: resource bundle key for 'Repeating', 'until', 'after' --->
-
+<!--- todo: resource bundle key for 'Repeating', 'until', 'after' --->
 	function showSelectedCS(){
-		var csStr = $('##mura-datepicker-displayStart').val() + ' ' 
-					+ $('##mura-displayStartHour').val() + ':' 
+		var csStr = $('##mura-datepicker-displayStart').val() + ' '
+					+ $('##mura-displayStartHour').val() + ':'
 					+ $('##mura-displayStartMinute option:selected').html() + ' '
 					+ $('##mura-displayStartDayPart option:selected').html() + '<br>';
 		if ( $('##displayIntervalRepeats').is(':checked')){
-			csStr += 'repeating '; 
+			csStr += 'repeating ';
 				if ($('##displayIntervalType').val() == 'daily'){
 					csStr += '#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.every')#&nbsp;' + $('##displayIntervalEvery').val() + '&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.days')#';
 				} else {
-					csStr += $('##displayIntervalType option:selected').html();					
+					csStr += $('##displayIntervalType option:selected').html();
 				}
 		}
-		
-		if ( $('##displayIntervalEnd').val() == 'on' && $('##displayIntervalEndOn').val() != ''){
+
+		if ( $('##displayIntervalEnd').val() == 'on' && $('##displayIntervalEndOn').val() != ''  && $('##displayIntervalEndOn').val() != $('##mura-datepicker-displayStart').val()){
 			csStr += ' until ' + $('##displayIntervalEndOn').val();
-		} 
+		}
 		else if ( $('##displayIntervalEnd').val() == 'after'  && $('##displayIntervalEndAfter').val() >= 1){
 			csStr += ' x ' + $('##displayIntervalEndAfter').val();
 		}
 
 		if ($('##mura-datepicker-displayStart').val() != ''){
-			$('##displayschedule-label').html(csStr);	
+			$('##displayschedule-label').html(csStr);
 		}
 	}
-	
+
 	$(document).ready(function(){
 		// run on page load
 		showSelectedCS();

@@ -71,11 +71,14 @@
 	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/mura.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 
 	<!-- Mura Admin JS -->
-	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/admin.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/admin.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 
 	<!-- CK Editor -->
 	<script type="text/javascript" src="#application.configBean.getContext()#/core/vendor/ckeditor/ckeditor.js"></script>
 	<script type="text/javascript" src="#application.configBean.getContext()#/core/vendor/ckeditor/adapters/jquery.js"></script>
+
+	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/filebrowser/filebrowser.js"></script>
+	<link href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/filebrowser/assets/css/filebrowser.css" link rel="stylesheet" type="text/css"></script>
 
 	<!-- JSON -->
 	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/json2.js" type="text/javascript"></script>
@@ -99,5 +102,5 @@
 
 	<!-- nice-select: select box replacement (sidebar controls) -->
 	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery.nice-select.min.js" type="text/javascript"></script>
-	
+
 </cfoutput>

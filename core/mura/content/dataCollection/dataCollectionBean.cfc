@@ -147,9 +147,8 @@ component extends="mura.bean.bean" entityname="dataCollection" hint="This provid
 
 					if( prop.fieldtype.fieldtype eq 'nested' ) {
 						nestedform = getBean('content').loadBy( contentID=prop.formid,siteid=getValue('siteID') );
-						structAppend(validations, getValidations( nestedform,prop.name & "_" ) );
-					}
-					else {
+						structAppend(validations.properties, getValidations( nestedform,prop.name & "_" ).properties );
+					} else {
 						if(structkeyExists(prop,'validateMessage') && len(prop.validateMessage)){
 							message=prop.validateMessage;
 						} else {
@@ -169,9 +168,9 @@ component extends="mura.bean.bean" entityname="dataCollection" hint="This provid
 						}
 
 						if(prop.fieldtype.fieldtype == 'file'){
-							propname=prop.name & "_attachment";
+							propname=arguments.prefix & prop.name & "_attachment";
 						} else {
-							propname=prop.name;
+							propname=arguments.prefix & prop.name;
 						}
 
 						if(arrayLen(rules)){
@@ -179,7 +178,7 @@ component extends="mura.bean.bean" entityname="dataCollection" hint="This provid
 						}
 
 						variables.formproperties[propname]=prop;
-						variables.formpropertylist=listAppend(variables.formpropertylist,arguments.prefix & propname);
+						variables.formpropertylist=listAppend(variables.formpropertylist,propname);
 					}
 				}
 			}
@@ -440,7 +439,7 @@ component extends="mura.bean.bean" entityname="dataCollection" hint="This provid
 					} else {
 						if (StructKeyExists(formResult, field.name)) {
 							field.value = esapiEncode('html', formResult[field.name]);
-						} else if (findNoCase('attachment', field.name)) {
+						} else if (StructKeyExists(formResult, field.name & '_attachment') && isValid('uuid',formResult['#field.name#_attachment'])) {
 							var redirectid=createUUID();
 							var userRedirect=getBean('userRedirect').set(
 								{
@@ -457,6 +456,8 @@ component extends="mura.bean.bean" entityname="dataCollection" hint="This provid
 					}
 				}
 			}
+
+
 			htmlString &= '</table>';
 
 			mailer.sendHTML(
