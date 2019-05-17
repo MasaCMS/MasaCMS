@@ -116,7 +116,8 @@
 
 					<div class="mura-control-group">
 						<label>Background Image [todo:url/existing/upload]</label>
-						<input type="text" id="rowbackgroundimage" name="backgroundImage" placeholder="Select Image" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundimage)#">
+						<input type="hidden" id="rowbackgroundimage" name="backgroundImage" placeholder="Select Image" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundimage)#">
+						<a class="bigui__launch" data-rel="bigui__rowbgrdimg" href="##">Select Image</a>
 					</div>
 
 					<div class="mura-control-group">

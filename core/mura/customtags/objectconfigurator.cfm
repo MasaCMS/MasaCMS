@@ -177,11 +177,24 @@
 				var v = $(this).val().replace(/[^0-9]/g,'');
 				$(this).val(v);
 			});
+			
+			$('#configuratorContainer .bigui__launch').on('click', function(e){
+				var el=window.parent.$('body');
+				if(el.hasClass('mura-bigui-state__pushed--right')){
+					el.removeClass('mura-bigui-state__pushed--right');
+				} else {
+					el.addClass('mura-bigui-state__pushed--right');
+				}
+				e.preventDefault();
+			});
+			
 		})
-
+s
 		$(function(){
 
 			var inited=false;
+
+
 			<!--- todo: remove this if not used --->
 			/*
 			$('#backgroundImageRaw').on('change',function(){

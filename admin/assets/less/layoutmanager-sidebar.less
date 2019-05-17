@@ -700,6 +700,25 @@ body.configurator-wrapper{
 
 }
 
+.mura__layout-manager__bigui {
+	padding-right: 300px;
+	position: fixed;
+	top: 0;
+	left: 100%;
+	right: 0;
+	bottom: 0;
+	background-color: #fff;
+	width: 100%;
+	z-index: 499997 !important;
+	overflow: scroll;
+	transition: left 1s ease;
+
+	#mura-objects-closeregions-btn{
+		float: right !important;
+	}
+}
+
+
 /* todo: set some sort of class somewhere to trigger the flyout - at the moment it uses 'mura-regions-state__pushed--right' */
 .mura__layout-manager__display-regions__X {
 	margin-top: 32px;
