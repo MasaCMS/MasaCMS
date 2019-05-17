@@ -657,6 +657,7 @@ Display Objects
 		if(isDefined('url.enableFrontEndTools') && isBoolean(url.enableFrontEndTools)){
 			session.enableFrontEndTools = url.enableFrontEndTools;
 		}
+		
 		if(isDEfined('session.enableFrontEndTools') && isBoolean(session.enableFrontEndTools)){
 			this.enableFrontEndTools = session.enableFrontEndTools;
 		} else {
