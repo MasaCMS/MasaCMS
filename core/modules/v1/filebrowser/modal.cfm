@@ -18,12 +18,12 @@ Mura(function(){
 	MuraFileBrowser.config.selectMode=2;
 	MuraFileBrowser.config.displaymode=1;
 	MuraFileBrowser.config.selectCallback=function(item){
-		siteManager.updateDisplayObjectParams({#esapiEncode('javascript',url.target)#:item.url});
+		siteManager.updateDisplayObjectParams({#esapiEncode('javascript',url.target)#:item.url},false);
 	};
 
 	MuraFileBrowser.config.height=600;
 
-	siteManager.setDisplayObjectModalWidth(1200);
+	siteManager.setDisplayObjectModalWidth(1000);
 
 	MuraFileBrowser.render();
 

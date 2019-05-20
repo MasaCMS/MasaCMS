@@ -134,64 +134,77 @@
 
 					if (parameters["cmd"] == "setObjectParams") {
 
-						if(parameters["params"]){
-							originParams=parameters["params"];
-						}
+						if(typeof parameters["complete"] != 'undefined' && !parameters["complete"]){
 
-						//console.log(parameters)
+							for(var p in parameters["params"]){
+								if(parameters["params"].hasOwnProperty(p)){
+									item=$('[name="' + p + '"]');
+									if(item.length){
+										$('[name="' + p + '"]').val(parameters["params"][p]).trigger('change');
+									}
 
-						if(parameters.params.isbodyobject){
-							$(".form-actions").hide();
-						}
+								}
+							}
+						} else {
 
-						configOptions={
-							'object':'#esapiEncode('javascript',rc.object)#',
-							'objectid':'#esapiEncode('javascript',rc.objectid)#',
-							'name':'#esapiEncode('javascript',rc.objectname)#',
-							'iconclass':'#esapiEncode('javascript',rc.objecticonclass)#',
-							'isnew':'#esapiEncode('javascript',rc.isnew)#',
-							'regionid':'0',
-							'context':'#application.configBean.getContext()#',
-							'params':encodeURIComponent(JSON.stringify(parameters["params"])),
-							'siteid':'#esapiEncode('javascript',rc.siteid)#',
-							'contenthistid':'#esapiEncode('javascript',rc.contenthistid)#',
-							'contentid':'#esapiEncode('javascript',rc.contentID)#',
-							'parentid':'#esapiEncode('javascript',rc.parentID)#',
-							'contenttype':'#esapiEncode('javascript',rc.contenttype)#',
-							'contentsubtype':'#esapiEncode('javascript',rc.contentsubtype)#',
-							'instanceid':'#esapiEncode('javascript',rc.instanceid)#'
-						}
-
-						//console.log(configOptions);
-
-						<cfset configuratorWidth=600>
-
-						<cfif not listFindNoCase('feed,relatedcontent,feed_slideshow,category_summary',rc.object) and $.siteConfig().hasDisplayObject(rc.object)>
-							var configurator=siteManager.getPluginConfigurator('#esapiEncode('javascript',rc.objectid)#');
-
-							if(configurator!=''){
-								window[configurator](
-									configOptions
-								);
-							} else {
-								//console.log(configOptions)
-								siteManager.initGenericConfigurator(configOptions);
+							if(parameters["params"]){
+								originParams=parameters["params"];
 							}
 
-							jQuery("##configuratorHeader").html('#esapiEncode('javascript','<i class="#rc.objecticonclass#"></i> #rc.objectname#')#');
-						<cfelse>
-							<cfswitch expression="#rc.object#">
-								<cfdefaultcase>
-									if(siteManager.objectHasConfigurator(configOptions)){
-										siteManager.configuratorMap[configOptions.object].initConfigurator(configOptions);
-									} else {
-										siteManager.initGenericConfigurator(configOptions);
-									}
-								</cfdefaultcase>
-							</cfswitch>
-						</cfif>
-						//siteManager.loadObjectPreview(configOptions);
+							//console.log(parameters)
 
+							if(parameters.params.isbodyobject){
+								$(".form-actions").hide();
+							}
+
+							configOptions={
+								'object':'#esapiEncode('javascript',rc.object)#',
+								'objectid':'#esapiEncode('javascript',rc.objectid)#',
+								'name':'#esapiEncode('javascript',rc.objectname)#',
+								'iconclass':'#esapiEncode('javascript',rc.objecticonclass)#',
+								'isnew':'#esapiEncode('javascript',rc.isnew)#',
+								'regionid':'0',
+								'context':'#application.configBean.getContext()#',
+								'params':encodeURIComponent(JSON.stringify(parameters["params"])),
+								'siteid':'#esapiEncode('javascript',rc.siteid)#',
+								'contenthistid':'#esapiEncode('javascript',rc.contenthistid)#',
+								'contentid':'#esapiEncode('javascript',rc.contentID)#',
+								'parentid':'#esapiEncode('javascript',rc.parentID)#',
+								'contenttype':'#esapiEncode('javascript',rc.contenttype)#',
+								'contentsubtype':'#esapiEncode('javascript',rc.contentsubtype)#',
+								'instanceid':'#esapiEncode('javascript',rc.instanceid)#'
+							}
+
+							//console.log(configOptions);
+
+							<cfset configuratorWidth=600>
+
+							<cfif not listFindNoCase('feed,relatedcontent,feed_slideshow,category_summary',rc.object) and $.siteConfig().hasDisplayObject(rc.object)>
+								var configurator=siteManager.getPluginConfigurator('#esapiEncode('javascript',rc.objectid)#');
+
+								if(configurator!=''){
+									window[configurator](
+										configOptions
+									);
+								} else {
+									//console.log(configOptions)
+									siteManager.initGenericConfigurator(configOptions);
+								}
+
+								jQuery("##configuratorHeader").html('#esapiEncode('javascript','<i class="#rc.objecticonclass#"></i> #rc.objectname#')#');
+							<cfelse>
+								<cfswitch expression="#rc.object#">
+									<cfdefaultcase>
+										if(siteManager.objectHasConfigurator(configOptions)){
+											siteManager.configuratorMap[configOptions.object].initConfigurator(configOptions);
+										} else {
+											siteManager.initGenericConfigurator(configOptions);
+										}
+									</cfdefaultcase>
+								</cfswitch>
+							</cfif>
+							//siteManager.loadObjectPreview(configOptions);
+						}
 					}
 				}
 
