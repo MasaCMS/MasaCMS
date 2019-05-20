@@ -1,5 +1,7 @@
 <!--- todo: merge this into parent file objectconfigurator.cfm --->
 <cfscript>
+	param name="attributes.params.backgroundimageurl" default="";
+	
 	attributes.globalparams = [
 		'backgroundcolor'
 		,'backgroundimage'
@@ -63,7 +65,7 @@
 							<div class="col-xs-3"></div>
 							<div class="col-xs-6">
 								<label class="px">
-									<input type="text" name="padding" id="rowpaddingall" placeholder="All" class="objectStyle numeric" value="#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingall))#"> <span>px</span>
+									<input type="text" name="padding" id="rowpaddingall" placeholder="All" class="objectStyle" value="#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingall))#"> <span>px</span>
 								</label>
 							</div>
 							<div class="col-xs-3"></div>
@@ -73,7 +75,7 @@
 							<div class="col-xs-3"></div>
 							<div class="col-xs-6">
 								<label class="px">
-									<input type="text" name="paddingTop" id="rowpaddingtop" placeholder="Top" class="objectStyle numeric" value="#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingtop))#"> <span>px</span>
+									<input type="text" name="paddingTop" id="rowpaddingtop" placeholder="Top" class="objectStyle" value="#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingtop))#"> <span>px</span>
 								</label>
 							</div>
 							<div class="col-xs-3"></div>
@@ -82,12 +84,12 @@
 						<div class="row mura-ui-row">
 							<div class="col-xs-6">
 								<label class="px">
-									<input type="text" name="paddingLeft" id="rowpaddingleft" placeholder="Left" class="objectStyle numeric" value="#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingleft))#"> <span>px</span>
+									<input type="text" name="paddingLeft" id="rowpaddingleft" placeholder="Left" class="objectStyle" value="#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingleft))#"> <span>px</span>
 								</label>
 							</div>
 							<div class="col-xs-6">
 								<label class="px">
-									<input type="text" name="paddingRight" id="rowpaddingright" placeholder="Right" class="objectStyle numeric" value="#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingright))#"> <span>px</span>
+									<input type="text" name="paddingRight" id="rowpaddingright" placeholder="Right" class="objectStyle" value="#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingright))#"> <span>px</span>
 								</label>
 							</div>
 						</div>
@@ -96,7 +98,7 @@
 							<div class="col-xs-3"></div>
 							<div class="col-xs-6">
 								<label class="px">
-									<input type="text" name="paddingBottom" id="rowpaddingbottom" placeholder="Bottom" class="objectStyle numeric" value="#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingbottom))#"> <span>px</span>
+									<input type="text" name="paddingBottom" id="rowpaddingbottom" placeholder="Bottom" class="objectStyle" value="#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingbottom))#"> <span>px</span>
 								</label>
 							</div>
 							<div class="col-xs-3"></div>
@@ -115,9 +117,14 @@
 					</div>
 
 					<div class="mura-control-group">
-						<label>Background Image [todo:url/existing/upload]</label>
-						<input type="hidden" id="rowbackgroundimage" name="backgroundImage" placeholder="Select Image" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundimage)#">
-						<a class="bigui__launch" data-rel="bigui__rowbgrdimg" href="##">Select Image</a>
+						<label>Background Image</label>
+						<input type="hidden" id="rowbackgroundimage" name="rowBackgroundImage" class="objectParam" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundimage)#">
+						<input type="text" id="rowbackgroundimageurl" name="backgroundImageURL" placeholder="Select Image" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.backgroundimageurl)#">
+						<button type="button" class="btn mura-ckfinder" data-target="backgroundimageurl" data-completepath="false">Select File</button>
+
+<!--- todo: are we using bigui? --->
+<!---	<a class="bigui__launch" data-rel="bigui__rowbgrdimg" href="##">Select Image</a> --->					
+
 					</div>
 
 					<div class="mura-control-group">
@@ -138,10 +145,10 @@
 					<div class="mura-control-group">
 						<label>Background Repeat</label>
 						<select id="rowbackgroundrepeat" name="backgroundRepeat" class="objectStyle">
-							<option value="norepeat"<cfif attributes.params.cssstyles.backgroundrepeat eq 'norepeat'> selected</cfif>>No-repeat</option>
+							<option value="no-repeat"<cfif attributes.params.cssstyles.backgroundrepeat eq 'norepeat'> selected</cfif>>No-repeat</option>
 							<option value="repeat"<cfif attributes.params.cssstyles.backgroundrepeat eq 'repeat'> selected</cfif>>Repeat</option>
-							<option value="repeatx"<cfif attributes.params.cssstyles.backgroundrepeat eq 'repeatx'> selected</cfif>>Repeat-X</option>
-							<option value="repeaty"<cfif attributes.params.cssstyles.backgroundrepeat eq 'repeaty'> selected</cfif>>Repeat-Y</option>
+							<option value="repeat-x"<cfif attributes.params.cssstyles.backgroundrepeat eq 'repeatx'> selected</cfif>>Repeat-X</option>
+							<option value="repeat-y"<cfif attributes.params.cssstyles.backgroundrepeat eq 'repeaty'> selected</cfif>>Repeat-Y</option>
 						</select>
 					</div>
 

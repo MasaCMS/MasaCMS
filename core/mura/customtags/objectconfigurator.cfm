@@ -189,7 +189,7 @@
 			});
 			
 		})
-s
+
 		$(function(){
 
 			var inited=false;
