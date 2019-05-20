@@ -177,6 +177,12 @@
 				var v = $(this).val().replace(/[^0-9]/g,'');
 				$(this).val(v);
 			});
+
+			$('#rowbackgroundimageurl').on('change',function(){
+				var v = $(this).val();
+				var str = "url('" + v + "')";
+				$('#rowbackgroundimage').val(str).trigger('change');
+			});
 			
 			$('#configuratorContainer .bigui__launch').on('click', function(e){
 				var el=window.parent.$('body');
