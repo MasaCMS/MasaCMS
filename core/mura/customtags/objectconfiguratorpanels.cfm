@@ -1,6 +1,7 @@
 <!--- todo: merge this into parent file objectconfigurator.cfm --->
 <cfscript>
 	param name="attributes.params.backgroundimageurl" default="";
+	param name="attributes.params.backgroundvideourl" default="";
 	
 	attributes.globalparams = [
 		'backgroundcolor'
@@ -118,19 +119,22 @@
 
 					<div class="mura-control-group">
 						<label>Background Image</label>
-						<input type="hidden" id="rowbackgroundimage" name="rowBackgroundImage" class="objectParam" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundimage)#">
-						<input type="text" id="rowbackgroundimageurl" name="backgroundImageURL" placeholder="Select Image" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.backgroundimageurl)#">
-						<button type="button" class="btn mura-ckfinder" data-target="backgroundimageurl" data-completepath="false">Select File</button>
+						<input type="hidden" id="rowbackgroundimage" name="backgroundImage" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundimage)#">
+						<input type="text" id="rowbackgroundimageurl" name="backgroundImageURL" placeholder="URL" class="objectParam" value="#esapiEncode('html_attr',attributes.params.backgroundimageurl)#">
+						<button type="button" class="btn mura-ckfinder" data-target="backgroundImageURL" data-completepath="false">Select File</button>
+					</div>
 
 <!--- todo: are we using bigui? --->
 <!---	<a class="bigui__launch" data-rel="bigui__rowbgrdimg" href="##">Select Image</a> --->					
 
-					</div>
-
+<!--- todo: background video - js to create markup - css to position --->
+<!--- 
 					<div class="mura-control-group">
-						<label>Background Video [todo:url/existing/upload]</label>
-						<input type="text" id="rowbackgroundvideo" name="backgroundVideo" placeholder="Select Video" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundvideo)#">
+						<label>Background Video</label>
+						<input type="text" id="rowbackgroundvideourl" name="backgroundVideoURL" placeholder="URL" class="objectParam" value="#esapiEncode('html_attr',attributes.params.backgroundvideourl)#">
+						<button type="button" class="btn mura-ckfinder" data-target="backgroundvideourl" data-completepath="false">Select File</button>
 					</div>
+ --->
 
 					<div class="mura-control-group">
 						<label>Background Size</label>
@@ -153,19 +157,22 @@
 					</div>
 
 					<div class="mura-control-group">
-						<label>Background Position [todo: bg options]</label>
+						<label>Background Position</label>
 						<input type="text" id="rowbackgroundposition" name="backgroundPosition" placeholder="" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundposition)#">
 					</div>
 
 					<div class="mura-control-group">
-						<label>Background Overlay [todo: bg options]</label>
+						<label>Background Overlay</label>
 						<input type="text" id="rowbackgroundoverlay" name="backgroundOverlay" placeholder="" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundoverlay)#">
 					</div>
 
+<!--- todo: parallax --->
+<!--- 
 					<div class="mura-control-group">
 						<label>Background Parallax [todo: bg options]</label>
 						<input type="text" id="rowbackgroundparallax" name="backgroundParallax" placeholder="" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundparallax)#">
 					</div>
+ --->
 
 				</div> <!--- /end container --->
 			</div> <!--- /end  mura-panel-body --->
