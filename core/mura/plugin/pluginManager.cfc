@@ -1275,7 +1275,7 @@ select * from tplugins order by #arguments.orderby#
 			<cfset executeScripts(runat=arguments.eventToAnnounce,siteid=siteid,event=arguments.currentEventObject,rsHandlers=arguments.rsHandlers,moduleID=arguments.moduleID,objectid=arguments.objectid)>
 		</cfif>
 	</cfif>
-</cffunction>""
+</cffunction>
 
 <cffunction name="renderEvent" output="false">
 <cfargument name="eventToRender" required="true" default="" type="any">
