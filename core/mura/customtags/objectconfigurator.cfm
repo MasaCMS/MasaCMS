@@ -246,10 +246,10 @@
 				var b = $('#rowpaddingbottom').val().replace(/[^0-9]/g,'');
 				var l =$('#rowpaddingleft').val().replace(/[^0-9]/g,'');
 				var u = $('#rowpaddinguom').val();
-				if (t.length){ $('#rowpaddingtopval').val(t + u); }
-				if (r.length){ $('#rowpaddingrightval').val(r + u); }
-				if (b.length){ $('#rowpaddingbottomval').val(b + u); }
-				if (l.length){ $('#rowpaddingleftval').val(l + u); }
+				if (t.length){ $('#rowpaddingtopval').val(t + u); } else { $('#rowpaddingtopval').val(''); }
+				if (r.length){ $('#rowpaddingrightval').val(r + u); } else { $('#rowpaddingrightval').val(''); }
+				if (b.length){ $('#rowpaddingbottomval').val(b + u); } else { $('#rowpaddingbottomval').val(''); }
+				if (l.length){ $('#rowpaddingleftval').val(l + u); } else { $('#rowpaddingleftval').val(''); }
 				if (t == r && r == b & b == l){
 					$('#rowpaddingall').val(t);
 				} else {
