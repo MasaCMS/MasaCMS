@@ -383,6 +383,12 @@
 				$('#globalSettingsBtn').show();
 			});
 
+			$('.mura-colorpicker input[type=text]').on('keyup',function(){
+				if ($(this).val().length == 0){
+					$(this).parents('.mura-colorpicker').find('.mura-colorpicker-swatch').css('background-color','transparent');
+				}
+			})
+
 			$('.mura-ui-link').on('click',function(){
 				var targetEl = $(this).attr('data-reveal');
 				if (targetEl.length > 0){
