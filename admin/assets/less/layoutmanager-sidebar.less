@@ -1,6 +1,6 @@
-// use outermost div for higher specificity hook into sidebar objects
+@configInputH: 28px;
+
 .mura__layout-manager__controls {
-	// position styles of sidebar
 	width: 300px;
 	position: fixed;
 	top: 0;
@@ -8,24 +8,21 @@
 	z-index: 499998 !important;
 	height: 100vh;
 	background-color: #454545;
-
-	// reset typography styles in layout manager sidebar
 	.regular-font;
 	text-transform: none;
 
-	// reset typography styles NESTED within sidebar
 	* {
 		.regular-font;
 		text-transform: none;
 	}
 
 	*[draggable=true] {
-	  -moz-user-select:none;
-	  -khtml-user-drag: element;
-	  cursor: move;
+		-moz-user-select: none;
+		-khtml-user-drag: element;
+		cursor: move;
 	}
 
-	.btn{
+	.btn {
 		border: 1px solid transparent !important;
 		box-shadow: none !important;
 		cursor: pointer !important;
@@ -37,51 +34,50 @@
 		text-align: center !important;
 		text-shadow: none !important;
 		touch-action: manipulation !important;
-		user-select:none !important;
+		user-select: none !important;
 		-webkit-user-select: none !important;
 		vertical-align: middle !important;
 		white-space: nowrap !important;
 		-webkit-appearance: button !important;
-	
-	 i{
+
+		i {
 			margin-right: 4px !important;
 		}
-	
+
 	}
 
-} /* /.mura__layout-manager__controls */
-
-.btn.active.focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn:active:focus, .btn:focus {
-    outline: none !important !important;
 }
 
-.btn-secondary{
+/* /.mura__layout-manager__controls */
+.btn.active.focus,
+.btn.active:focus,
+.btn.focus,
+.btn:active.focus,
+.btn:active:focus,
+.btn:focus {
+	outline: none !important !important;
+}
+
+.btn-secondary {
 	background-color: #6f6f6f;
 	background-image: none;
 	border-color: transparent;
-	border-radius: 2px;	
+	border-radius: 2px;
 	color: #f3f3f3;
 }
 
 .btn-primary,
 .mura-primary {
-  color: #ffffff !important;
-  background-color: @mura-blue;
-  border-color: #4882cc;
-  background-image:none !important;
+	color: #ffffff !important;
+	background-color: @mura-blue;
+	border-color: #4882cc;
+	background-image: none !important;
 
-  > i{
-    color:#fff !important;
-  }
+	> i {
+		color: #fff !important;
+	}
+
 }
-
-
-/*
-	DEV NOTE
-	ie10 does not allow use of 'inherit' on calculated parent
-	example: .mura-sidebar uses a calculated height, therefore the child elements cannot use 'inherit' for height
-	http://stackoverflow.com/questions/19423384/css-less-calc-method-is-crashing-my-ie10
-*/
 
 .mura__layout-manager__controls__scrollable {
 	height: inherit;
@@ -95,14 +91,13 @@
 }
 
 /* sidebar icons */
-
 *[class^="mi-"],
-*[class*=" mi-"]{
-	font-family: FontAwesome,@sansFontFamily !important;
+*[class*=" mi-"] {
+	font-family: FontAwesome, @sansFontFamily !important;
 }
 
 .mura-sidebar__objects-list__object-item *[class^="mi-"],
-.mura-sidebar__objects-list__object-item *[class*=" mi-"]{
+.mura-sidebar__objects-list__object-item *[class*=" mi-"] {
 	font-family: "FontAwesome" !important;
 	width: 18px;
 	padding-right: 1em;
@@ -114,7 +109,6 @@
 	height: 100%;
 	width: 100%;
 	overflow: auto;
-
 }
 
 .mura-sidebar__objects-list__object-group {
@@ -123,9 +117,8 @@
 
 body.configurator-wrapper #configuratorContainer h1,
 .mura-sidebar__objects-list__object-group h3 {
-	
 	color: #f3f3f3;
-	float:left;
+	float: left;
 	font-size: 20px;
 	font-weight: normal;
 	line-height: 1.2;
@@ -133,7 +126,7 @@ body.configurator-wrapper #configuratorContainer h1,
 	padding: 0;
 }
 
-body.configurator-wrapper #mura-content{
+body.configurator-wrapper #mura-content {
 	padding-left: 0;
 	padding-right: 0;
 	margin-left: 0;
@@ -146,14 +139,16 @@ body.configurator-wrapper #mura-content{
 	color: #f3f3f3;
 	line-height: 1.2;
 
-	+ .mura-sidebar__object-group-items{
-	margin-top: 12px;
+	+ .mura-sidebar__object-group-items {
+		margin-top: 12px;
 	}
 
-	> .btn{
+	> .btn {
 		float: right;
 	}
+
 }
+
 .mura-sidebar__objects-list__object-group-instruction {
 	background-color: #6f6f6f;
 	font-size: 14px;
@@ -165,27 +160,26 @@ body.configurator-wrapper #mura-content{
 .mura-sidebar__object-group-items,
 .mura-sidebar__objects-list__object-group-items {
 	padding: 0;
-	background:none;
+	background: none;
 
-	+ .btn, 
-	+ .btn + .btn{
+	+ .btn,
+	+ .btn + .btn {
 		margin-top: 10px;
-	
-		&:not([class*=btn-]){
+
+		&:not([class*=btn-]) {
 			.btn-secondary;
 
-	    i{
-    		margin-right: 3px;
-	    }
+			i {
+				margin-right: 3px;
+			}
 
-	    }
-	
-		+ .btn{
+		}
+
+		+ .btn {
 			margin-top: 10px;
 		}
 
 	}
-
 
 }
 
@@ -211,36 +205,32 @@ body.configurator-wrapper #mura-content{
 
 .mura-sidebar__objects-list__object-item {
 	box-sizing: border-box;
-	display:block;
+	display: block;
 	padding: 10px 16px;
 	margin-bottom: 2px;
 	font-size: 14px;
 	color: #d8d8d8;
 	background-color: #565656;
 	font-weight: normal;
-  border: none;
-  border-collapse: collapse;
+	border: none;
+	border-collapse: collapse;
 }
 
-select + .mura-sidebar__objects-list__object-item{
+select + .mura-sidebar__objects-list__object-item {
 	margin-top: 12px;
 }
 
 .mura-sidebar__objects-list__object-item + .mura-sidebar__objects-list__object-item {
-	border:none;
+	border: none;
 }
 
 .mura-sidebar__objects-list__object-item:hover {
 	background: #6f6f6f;
-	color: #f5f5f5;
-	/* cursor: pointer; */
+	color: #f5f5f5;	/* cursor: pointer; */
 }
-
-
 
 /* iframe
 ===================================== */
-
 #configurator #sortableFields #displayListSort,
 #configurator #sortableFields #availableListSort {
 	width: 100%;
@@ -266,357 +256,537 @@ select + .mura-sidebar__objects-list__object-item{
 }
 
 /* compact view / configurators */
-
-body.configurator-wrapper{
-
+body.configurator-wrapper {
 	background-color: #454545;
-
-	// reset typography styles in sidebar configurator
 	.regular-font;
 	text-transform: none;
 
-		#configuratorContainer{
-			background-color: #454545;
-			padding: 18px 34px 15px 18px;
+	#configuratorContainer {
+		background-color: #454545;
+		padding: 18px 34px 15px 18px;
 
-			// reset typography styles NESTED within sidebar configurator
-			* {
-				.regular-font;
-				text-transform: none;
-			}
+		* {
+			.regular-font;
+			text-transform: none;
+		}
 
-			.clearfix{
-				clear:both !important;
-			}
+		a.mura-ui-link{ 
+			color: @mura-red; 
+		}
+		a.mura-ui-link:link,
+		a.mura-ui-link:visited,
+		a.mura-ui-link:hover,
+		a.mura-ui-link:active{
+			color: lighten(@mura-red, 12%) !important;
+		}
 
-			img + div, 
-			img + label{
-				margin-top: 8px;
-			} 
-			#configurator .load-inline{
-    		position: absolute;
-	    	right: ~'calc(50% - 30px)';
-  	  	top: 50%;
-			}
+		.clearfix {
+			clear: both !important;
+		}
 
-			#configuratorHeader{
-				i{
+		.container{
+			padding-left: 0;
+			padding-right: 0;
+		}
+
+		img + div,
+		img + label {
+			margin-top: 8px;
+		}
+
+		#configurator .load-inline {
+			position: absolute;
+			right: ~'calc(50% - 30px)';
+			top: 50%;
+		}
+
+		#configuratorHeader {
+			i {
 				min-width: 24px;
-				}
 			}
 
-			.mura-close{
+		}
 
-					i{
-							color: #808080;
-							cursor:pointer;
-							font-size: 18px;
-							top: 20px;
-							position: absolute;
-							right: 20px;
-					}
-			}
-
-			// button styles
-			.btn {
-				font-size: 14px;
-				padding: 6px 12px;
-				-webkit-box-shadow: none;
-				-moz-box-shadow: none;
-				box-shadow: none;
-				background-image:none;
-				text-shadow:none;
-			}
-
-			// unclassed buttons default
-			.btn:not([class*="btn-"]){
-				border-radius:2px;
-				background-image:none;
-				text-shadow:none;
-			  color: #f3f3f3;
-			  background-color: #333;
-			  border-color: transparent;
-			  float: left;
-			  margin: 8px 0 4px 0;
-		   }
-
-				.btn:not([class*="btn-"]) + *{
-					float: left;
-					clear: left;
-					margin-top: 8px;
-				}
-
-		   label + .btn:not([class*="btn-"]),
-		   label > div + .btn:not([class*="btn-"]){
-		   	margin-top: 8px;
-		   }
-
-		   .alert:not([class*="alert-"]){
-					background-image:none;
-					text-shadow:none;
-					color: #A4A4A4;
-					background-color: #454545;
-					border-color: #A4A4A4;
-		   }
-
-			.mura-layout-row{
-			  padding: 0;
-			  margin: 0;
-			}
-
-			.mura-control-group{
-				margin-bottom: 12px;
-			}
-
-			.mura-panel-group{
-				border-radius: 0;
-				clear:both;
-			  margin-bottom: 22px;
-			  margin-left: -18px;
-			  margin-right: -34px;
-
-				.mura-panel{
-					border: none;
-					border-radius: 0;
-					margin: 0;
-					margin-bottom: 2px;
-					background-color: inherit !important;
-				
-					.mura-panel-heading{
-						border-radius: 0;
-				    background-color: #565656;
-				    padding: 0;
-					}
-			
-				  .mura-panel-heading:hover {
-				    background-color: #6f6f6f;
-				    cursor: pointer;
-				  }
-				
-					.mura-panel-body{
-						border-radius: 0;
-						padding-top: 18px;
-						padding-left: 18px;
-						padding-right: 34px;
-						margin-bottom: 2px;
-					}
-
-					.mura-panel-title {
-					  color: #fff;
-					  font-size: 14px;
-					}
-					.mura-panel-title a {
-					  display: block;
-					  color: inherit;
-					  padding: 10px 16px;
-					}
-					.mura-panel-title a:hover,
-					.mura-panel-title a:active,
-					.mura-panel-title a:focus {
-					  color: inherit !important;
-					}
-
-				} /* /mura-panel*/
-
-				/* nested panels */
-				.mura-control-group .mura-panel-group{
-					margin-bottom: 0 !important;	
-
-					.mura-panel-body{
-						padding-bottom: 2px !important;
-						padding-top: 2px !important;
-
-						.mura-control-group:last-child{
-							margin-bottom: 0 !important;
-							padding-bottom: 0 !important;
-						}
-					}			
-
-				} /* /nested panels */
-
-				&.no-header{
-					.mura-panel-heading{
-						display: none !important;
-						margin: 0 !important;
-						padding: 0 !important;
-						height: 0 !important;
-					}
-				}
-
-				.panel-gds-box{
-					box-shadow: inset 0 0 0 2px #565656;
-			    cursor: pointer;
-			    margin: 8px 0;
-			    padding: 6px 10px;
-				}
-				.panel-gds-box span{
-					font-size: 12px;
-			    font-weight: 400;
-			    color: #f3f3f3;
-			    line-height: 1.2;
-				}
-				.panel-gds-box.active{
-					box-shadow: inset 0 0 0 2px #bbbbbb;
-				}
-				#panel-gds-meta + #panel-gds-inner{
-					margin-top: 10px;
-				}
-
-			} /* /mura-panel-group */
-
-
-			label,
-			.control-label,
-			.mura-control-label{
-				.mura-sidebar__objects-list__object-group-heading;
-			}
-
-			select,
-			select:focus,
-			input[type=date],
-			input[type=datetime],
-			input[type=datetime-local],
-			input[type=image],
-			input[type=email],
-			input[type=month],
-			input[type=number],
-			input[type=tel],
-			input[type=range],
-			input[type=text],
-			input[type=url],
-			input[type=week],
-			textarea {
-				margin: .5em 0;
-				width: 100%;
-				background-color: #333;
-				color: #d8d8d8;
-				padding: 8px 12px;
-				font-size: 14px;
-				border: none;
+		.mura-close {
+			i {
+				color: #808080;
 				cursor: pointer;
-				outline: none;
-				outline-offset: 0;
+				font-size: 18px;
+				top: 20px;
+				position: absolute;
+				right: 20px;
 			}
 
-			/* custom styles for date inputs */
-			input[type=date],
-			input[type=datetime],
-			input[type=datetime-local],
-			input[type=month],
-			input[type=week]{
-			    appearance: none;
-			    -webkit-appearance: none;
-			    display: inline-block !important;
-			    visibility: visible !important;
+		}
+
+		// button styles
+		.btn {
+			background-image: none;
+			box-shadow: none;
+			-webkit-box-shadow: none;
+			-moz-box-shadow: none;
+			font-size: 13px;
+	    padding: 3px 12px;
+			text-shadow: none;
+		}
+
+		// unclassed buttons default
+		.btn:not([class*="btn-"]) {
+			border-radius: 2px;
+			background-image: none;
+			text-shadow: none;
+			color: #f3f3f3;
+			background-color: #333;
+			border-color: transparent;
+			float: left;
+			margin: 8px 0 4px 0;
+		}
+
+		.btn:not([class*="btn-"]) + * {
+			float: left;
+			clear: left;
+			margin-top: 8px;
+		}
+
+		label + .btn:not([class*="btn-"]),
+		label > div + .btn:not([class*="btn-"]) {
+			margin-top: 8px;
+		}
+
+		.alert:not([class*="alert-"]) {
+			background-image: none;
+			text-shadow: none;
+			color: #A4A4A4;
+			background-color: #454545;
+			border-color: #A4A4A4;
+		}
+
+		.mura-layout-row {
+			padding: 0;
+			margin: 0;
+		}
+
+		.mura-panel-group {
+			border-radius: 0;
+			clear: both;
+			margin-bottom: 22px;
+			margin-left: -18px;
+			margin-right: -34px;
+
+			.mura-panel {
+				border: none;
+				border-radius: 0;
+				margin: 0;
+				margin-bottom: 2px;
+				background-color: inherit !important;
+
+				.mura-panel-heading {
+					border-radius: 0;
+					background-color: #565656;
+					padding: 0;
+				}
+
+				.mura-panel-heading:hover {
+					background-color: #6f6f6f;
+					cursor: pointer;
+				}
+
+				.mura-panel-body {
+					border-radius: 0;
+					padding-top: 18px;
+					padding-left: 18px;
+					padding-right: 18px;
+					margin-bottom: 2px;
+				}
+
+				.mura-panel-title {
+					color: #fff;
+					font-size: 14px;
+				}
+
+				.mura-panel-title a {
+					display: block;
+					color: inherit;
+					padding: 10px 16px;
+				}
+
+				.mura-panel-title a:hover,
+				.mura-panel-title a:active,
+				.mura-panel-title a:focus {
+					color: inherit !important;
+				}
+
 			}
 
-			/* hide the clear button from date inputs */
-			input[type=date]::-webkit-clear-button,
-			input[type=datetime]::-webkit-clear-button,
-			input[type=datetime-local]::-webkit-clear-button,
-			input[type=month]::-webkit-clear-button,
-			input[type=week]::-webkit-clear-button{
-			    display: none;
+			/* /mura-panel*/
+
+			/* nested panels */
+			.mura-control-group .mura-panel-group {
+				margin-bottom: 0 !important;
+
+				.mura-panel-body {
+					padding-bottom: 2px !important;
+					padding-top: 2px !important;
+
+					.mura-control-group:last-child {
+						margin-bottom: 0 !important;
+						padding-bottom: 0 !important;
+					}
+
+				}
+
 			}
 
-			/* hide the spin button */
-			input[type=date]::-webkit-inner-spin-button,
-			input[type=datetime]::-webkit-inner-spin-button,
-			input[type=datetime-local]::-webkit-inner-spin-button,
-			input[type=month]::-webkit-inner-spin-button,
-			input[type=week]::-webkit-inner-spin-button{  
-			    display: none;
+			/* /nested panels */
+			&.no-header {
+				.mura-panel-heading {
+					display: none !important;
+					margin: 0 !important;
+					padding: 0 !important;
+					height: 0 !important;
+				}
+
 			}
 
-			/* always display the drop down caret */
-			input[type=date]::-webkit-calendar-picker-indicator,
-			input[type=datetime]::-webkit-calendar-picker-indicator,
-			input[type=datetime-local]::-webkit-calendar-picker-indicator,
-			input[type=month]::-webkit-calendar-picker-indicator,
-			input[type=week]::-webkit-calendar-picker-indicator{
-			    color: #d8d8d8;
-			}
-			
-			input[type=date]::-webkit-calendar-picker-indicator:hover,
-			input[type=datetime]::-webkit-calendar-picker-indicator:hover,
-			input[type=datetime-local]::-webkit-calendar-picker-indicator:hover,
-			input[type=month]::-webkit-calendar-picker-indicator:hover,
-			input[type=week]::-webkit-calendar-picker-indicator:hover{
-					background: none;
-			    color: #d8d8d8;
+			.panel-gds-box {
+				box-shadow: inset 0 0 0 2px #565656;
+				cursor: pointer;
+				margin: 8px 0;
+				padding: 6px 10px;
 			}
 
-			.mura-control-group input.radio,
-			.mura-control-group input[type=radio],
-			.mura-control-group input.checkbox,
-			.mura-control-group input[type=checkbox]{
-			  margin-top: 1px;
-			  border: none;
-			  outline: 0;
+			.panel-gds-box span {
+				font-size: 12px;
+				font-weight: 400;
+				color: #f3f3f3;
+				line-height: 1.2;
 			}
 
-			textarea{
+			.panel-gds-box.active {
+				box-shadow: inset 0 0 0 2px #bbbbbb;
+			}
+
+			#panel-gds-meta + #panel-gds-inner {
+				margin-top: 10px;
+			}
+
+		} /* /mura-panel-group */
+
+		.mura-ui-inset{
+			box-shadow: inset 0 0 0 2px #565656;
+			margin: 12px 0;
+			padding: 12px;
+			width: 100%;
+		}
+
+		.mura-ui-row {
+			padding: 0;
+			margin: 0;
+			width: 100%;
+
+			label {
+				display: block;
+				margin-bottom: 0;
+				text-align: center;
+
+				input[type=text] {
+						height: @configInputH;
+					}
+
+				&.mura-serial{
+						width: 52px;
+				}
+	
+			} /* /label */
+
+			.mura-input-group{
+				label{
+					float: left;
+				}
+				*+.nice-select{
+					border-left: 1px solid #454545;
+					clear: none;
+					float: left;
+					min-width: 72px;
+				}
+			} /* .mura-input-group */
+
+			.center{
+				text-align: center;
+
+				.mura-input-group{
+					margin: 0;
+				}
+			}
+	
+			input.numeric {
+				height: @configInputH;
+				margin: 0;
+				padding-left: 1px;
+				padding-right: 1px;
+				text-align: center;
+				width: 52px;
+
+				&+ span {
+					display: inline-block;
+					margin-left: 2px;
+				}
+
+			}
+
+			.nice-select{
+				margin-bottom: 0;
+				width: auto;
+			}
+
+			input {
+				float: none;
+			}
+
+			> div {
+				margin: 0;
+				padding: 0;
+			}
+
+		}		/* /.mura-ui-row */
+		
+		.mura-control-group {
+			margin-bottom: 8px;
+
+			.input-group {
+				margin: .5em 0;
+
+				input[type=text] {
+					margin: 0;
+				}
+
+				.input-group-addon {
+					margin: .5em 0;
+					background-color: #333;
+					color: #d8d8d8;
+					padding: 5px 8px;
+					font-size: 14px;
+					border: none;
+					cursor: pointer;
+					outline: none;
+					outline-offset: 0;
+					border-top-right-radius: 0;
+					border-bottom-right-radius: 0;
+					border-right: 1px solid #454545;
+				}
+
+			}
+
+			.colorpicker-element .add-on i,
+			.colorpicker-element .input-group-addon i {
+				display: inline-block;
+				cursor: pointer;
+				height: 16px;
+				margin-top: 1px;
+				vertical-align: text-top;
+				width: 16px;
+			}
+
+		} /* .mura-control-group */
+
+		label,
+		.control-label,
+		.mura-control-label {
+			.mura-sidebar__objects-list__object-group-heading;
+		}
+
+		select,
+		select:focus,
+		input[type=date],
+		input[type=datetime],
+		input[type=datetime-local],
+		input[type=image],
+		input[type=email],
+		input[type=month],
+		input[type=number],
+		input[type=tel],
+		input[type=range],
+		input[type=text],
+		input[type=url],
+		input[type=week],
+		textarea {
+			background-color: #333;
+			border: none;
+			color: #d8d8d8;
+			cursor: pointer;
+			font-size: 14px;
+			height: @configInputH;
+			margin: .5em 0;
+			outline: none;
+			outline-offset: 0;
+			padding: 8px 12px;
+			width: 100%;
+
+			&+.btn{
+				margin: 0 0 4px 0;
+			}
+		}
+
+		.nice-select {
+			height: @configInputH;
+	    line-height: @configInputH;
+	    margin-bottom: 7px;
+	     
+	     &+.btn{
+	     	margin-top: -2px;
+	     }
+
+		}
+
+		/* custom styles for date inputs */
+		input[type=date],
+		input[type=datetime],
+		input[type=datetime-local],
+		input[type=month],
+		input[type=week] {
+			appearance: none;
+			-webkit-appearance: none;
+			display: inline-block !important;
+			visibility: visible !important;
+		}
+
+		/* hide the clear button from date inputs */
+		input[type=date]::-webkit-clear-button,
+		input[type=datetime]::-webkit-clear-button,
+		input[type=datetime-local]::-webkit-clear-button,
+		input[type=month]::-webkit-clear-button,
+		input[type=week]::-webkit-clear-button {
+			display: none;
+		}
+
+		/* hide the spin button */
+		input[type=date]::-webkit-inner-spin-button,
+		input[type=datetime]::-webkit-inner-spin-button,
+		input[type=datetime-local]::-webkit-inner-spin-button,
+		input[type=month]::-webkit-inner-spin-button,
+		input[type=week]::-webkit-inner-spin-button {
+			display: none;
+		}
+
+		/* always display the drop down caret */
+		input[type=date]::-webkit-calendar-picker-indicator,
+		input[type=datetime]::-webkit-calendar-picker-indicator,
+		input[type=datetime-local]::-webkit-calendar-picker-indicator,
+		input[type=month]::-webkit-calendar-picker-indicator,
+		input[type=week]::-webkit-calendar-picker-indicator {
+			color: #d8d8d8;
+		}
+
+		input[type=date]::-webkit-calendar-picker-indicator:hover,
+		input[type=datetime]::-webkit-calendar-picker-indicator:hover,
+		input[type=datetime-local]::-webkit-calendar-picker-indicator:hover,
+		input[type=month]::-webkit-calendar-picker-indicator:hover,
+		input[type=week]::-webkit-calendar-picker-indicator:hover {
+			background: none;
+			color: #d8d8d8;
+		}
+
+		.mura-control-group input.radio,
+		.mura-control-group input[type=radio],
+		.mura-control-group input.checkbox,
+		.mura-control-group input[type=checkbox] {
+			margin-top: 1px;
+			border: none;
+			outline: 0;
+		}
+
+		textarea {
 			max-width: 230px;
 			min-height: 85px;
-			}
+		}
 
-			.form-actions{
-				clear:both;
-				margin:0;
-				padding:0;
-				.btn{
-					background-image:none !important;
-					clear: none !important;
-					float: left !important;
-					margin:0 4px 0 0;
-					&.mura-primary{
-						background-color: @mura-blue !important;
-					}
-					&.mura-delete{
-						background-color: #6f6f6f;
-			  	  float: right !important;
-					}
-				}
-			}
-
-			#sortableFields #displayListSort{
-				padding: 0 !important;
-				border: none !important;
-				margin-bottom: 12px !important;
-			}
-			#sortableFields #displayListSort li:before{
-			  content: "\f0c9";
-			  font-family: FontAwesome,@sansFontFamily;
-			  color: #737373;
-			  float: right;
-			}
-
-			#sortableFields #displayListSort li{
-				background-color: #565656;
-				text-shadow:none;
-					box-shadow:none;
-				font-size: 14px;
-				padding: 8px 12px;
-			  color: #d8d8d8;
-			}
-
-			ul.configurator-options{
-			list-style-type:none;
-			padding-left:0;
+		.form-actions {
+			clear: both;
 			margin: 0;
-			clear:both;
+			padding: 0;
 
-				li{
-					list-style-type:none;
+			.btn {
+				background-image: none !important;
+				clear: none !important;
+				float: left !important;
+				font-size: 12px;
+				margin: 0 4px 0 0;
+				padding: 2px 12px;
 
-					a{
-					color: #f3f3f3;
-					}
+				&.mura-primary {
+					background-color: @mura-blue !important;
 				}
+
+				&.mura-delete {
+					background-color: #6f6f6f;
+					float: right !important;
+				}
+
 			}
+
+		}
+
+		#sortableFields #displayListSort {
+			padding: 0 !important;
+			border: none !important;
+			margin-bottom: 12px !important;
+		}
+
+		#sortableFields #displayListSort li:before {
+			content: "\f0c9";
+			font-family: FontAwesome, @sansFontFamily;
+			color: #737373;
+			float: right;
+		}
+
+		#sortableFields #displayListSort li {
+			background-color: #565656;
+			text-shadow: none;
+			box-shadow: none;
+			font-size: 14px;
+			padding: 8px 12px;
+			color: #d8d8d8;
+		}
+
+		ul.configurator-options {
+			list-style-type: none;
+			padding-left: 0;
+			margin: 0;
+			clear: both;
+
+			li {
+				list-style-type: none;
+
+				a {
+					color: #f3f3f3;
+				}
+
+			}
+
+		}
+
+		/* /.configurator-options */
 	}
+
+	/* /#configuratorContainer */
+
+	/* colorpicker is appended to body, outside form container */
+	div.colorpicker.dropdown-menu {
+		min-width: 130px;
+		padding: 4px;
+		border-radius: 3px;
+		background-color: #565656;
+		border-color: #565656;
+
+		&:after {
+			border-bottom: 6px solid #565656;
+		}
+
+	}
+
 }
 
+/* body.configurator-wrapper */
 .mura__layout-manager__display-regions {
 	padding-right: 300px;
 	position: fixed;
@@ -630,20 +800,38 @@ body.configurator-wrapper{
 	overflow: scroll;
 	transition: left 1s ease;
 
-	#mura-objects-closeregions-btn{
+	#mura-objects-closeregions-btn {
 		float: right !important;
 	}
 
 	.btn,
 	> div h3,
-	.mura-region__item h4{
+	.mura-region__item h4 {
 		.regular-font;
 	}
 
 }
 
-/* set some sort of class somewhere to trigger the flyout - at the moment it uses 'mura-regions-state__pushed--right' */
+.mura__layout-manager__bigui {
+	padding-right: 300px;
+	position: fixed;
+	top: 0;
+	left: 100%;
+	right: 0;
+	bottom: 0;
+	background-color: #fff;
+	width: 100%;
+	z-index: 499997 !important;
+	overflow: scroll;
+	transition: left 1s ease;
 
+	#mura-objects-closeregions-btn {
+		float: right !important;
+	}
+
+}
+
+/* todo: set some sort of class somewhere to trigger the flyout - at the moment it uses 'mura-regions-state__pushed--right' */
 .mura__layout-manager__display-regions__X {
 	margin-top: 32px;
 	padding: 18px;
@@ -679,5 +867,5 @@ body.configurator-wrapper{
 	padding: 10px 16px;
 	background-color: #fff;
 	min-height: 38px;
-	outline: 1px dotted #ccc!important;
+	outline: 1px dotted #ccc !important;
 }

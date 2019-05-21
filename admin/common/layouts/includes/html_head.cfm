@@ -85,7 +85,7 @@
 
 	<!-- Color Picker -->
 	<script type="text/javascript" src="#application.configBean.getContext()#/core/vendor/colorpicker/js/bootstrap-colorpicker.js?coreversion=#application.coreversion#"></script>
-	<link href="#application.configBean.getContext()#/core/vendor/colorpicker/css/colorpicker.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
+	<link href="#application.configBean.getContext()#/core/vendor/colorpicker/css/bootstrap-colorpicker.min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
 
 	<script type="text/javascript">
 	var htmlEditorType='#application.configBean.getValue("htmlEditorType")#';
