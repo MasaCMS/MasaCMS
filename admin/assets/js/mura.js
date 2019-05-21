@@ -2260,9 +2260,11 @@ var Mura=(function(){
 		return str.substr(0, 1).toUpperCase() + str.substr(1);
 	}
 
-	function resetAsyncObject(el) {
+	function resetAsyncObject(el,empty) {
 		var self = Mura(el);
-
+		if(typeof empty =='undefined'){
+			empty=true;
+		}
 		self.removeClass('mura-active');
 		self.removeAttr('data-perm');
 		self.removeAttr('data-runtime');
@@ -2285,11 +2287,12 @@ var Mura=(function(){
 					var self = Mura(this);
 					var content = self.children('div.mura-object-content');
 
-					if (content.length) {
+					if (content.length && empty) {
 						self.data('content', content.html());
 					}
-
-					content.html('');
+					if(empty){
+						content.html('');
+					}
 				});
 
 			self.find('.mura-object-meta').html('');
@@ -2299,16 +2302,22 @@ var Mura=(function(){
 				self.data('content', content.html());
 			}
 		}
-
-		self.html('');
+		if(empty){
+			self.html('');
+		}
 	}
 
-	function processAsyncObject(el) {
+	function processAsyncObject(el,usePreloaderMarkup) {
 			obj = Mura(el);
 			if (obj.data('async') === null) {
 					obj.data('async', true);
 			}
-			return processDisplayObject(obj, false, true);
+
+			if(typeof usePreloaderMarkup == 'undefined'){
+				usePreloaderMarkup=true;
+			}
+
+			return processDisplayObject(obj, false, true,false,usePreloaderMarkup);
 	}
 
 	function destroyDisplayObjects(){
@@ -2663,7 +2672,7 @@ var Mura=(function(){
 		}
 	}
 
-	function processDisplayObject(el, queue, rerender, resolveFn) {
+	function processDisplayObject(el, queue, rerender, resolveFn, usePreloaderMarkup) {
 		var obj = (el.node) ? el : Mura(el);
 
 		if (obj.data('queue') != null) {
@@ -2693,14 +2702,14 @@ var Mura=(function(){
 
 					setTimeout(
 						function() {
-							processDisplayObject(el, true, false, resolve);
+							processDisplayObject(el, true, false, resolve, usePreloaderMarkup);
 						}, 10
 					);
 				});
 			} else {
 				setTimeout(
 					function() {
-						var resp = processDisplayObject(el, true, false, resolveFn);
+						var resp = processDisplayObject(el, true, false, resolveFn, usePreloaderMarkup);
 						if (typeof resp == 'object' && typeof resolveFn == 'function') {
 							resp.then(resolveFn);
 						}
@@ -2834,13 +2843,14 @@ var Mura=(function(){
 					}
 				} else {
 						//console.log(data);
-						if(typeof data.preloadermarkup != 'undefined'){
-							self.innerHTML = data.preloadermarkup;
-							delete data.preloadermarkup;
-						} else {
-							self.innerHTML = Mura.preloaderMarkup;
+						if(usePreloaderMarkup){
+							if(typeof data.preloadermarkup != 'undefined'){
+								self.innerHTML = data.preloadermarkup;
+								delete data.preloadermarkup;
+							} else {
+								self.innerHTML = Mura.preloaderMarkup;
+							}
 						}
-
 						ajax({
 							url: Mura.apiEndpoint + '?method=processAsyncObject',
 							type: 'get',
