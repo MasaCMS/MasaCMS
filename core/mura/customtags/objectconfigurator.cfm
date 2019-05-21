@@ -191,6 +191,16 @@
 			});
 
 			$('#rowbackgroundimageurl').trigger('change');
+
+			$('#rowbackgroundpositionx,#rowbackgroundpositiony').on('change',function(){
+				var v = $(this).val();
+				var el = $(this).attr('data-numfield');
+				if (v == 'px' || v == '%'){
+					$('#' + el).show();
+				} else {
+					$('#' + el).hide();
+				}
+			});
 			
 			<!--- todo: are we using bigui here? --->
 			<!---

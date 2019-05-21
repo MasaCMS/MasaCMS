@@ -9,6 +9,8 @@
 		,'backgroundoverlay'
 		,'backgroundparallax'
 		,'backgroundposition'
+		,'backgroundpositionx'
+		,'backgroundpositiony'
 		,'backgroundrepeat'
 		,'backgroundsize'
 		,'backgroundvideo'
@@ -163,10 +165,99 @@
 						</select>
 					</div>
 
-					<div class="mura-control-group css-bg-option" style="display:none;">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+					<div class="mura-control-group mura-ui-grid css-bg-option" style="display:none;">
 						<label>Background Position</label>
-						<input type="text" id="rowbackgroundposition" name="backgroundPosition" placeholder="" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundposition)#">
+						<div class="row mura-ui-row">
+							<div class="col-xs-4"><label class="right">Vertical</label></div>
+							<div class="col-xs-8">
+								<div class="mura-input-group">
+									<label>
+										<input type="text" id="rowbackgroundpositionxnum" name="rowBackgroundPositionxNum" class="numeric" placeholder="" value="<cfif val(esapiEncode('html_attr',attributes.params.cssstyles.backgroundpositionx))>#val(esapiEncode('html_attr',attributes.params.cssstyles.backgroundpositionx))#</cfif>" style="display: none;">
+									</label>
+
+									<select id="rowbackgroundpositionx" name="rowBackgroundPositionX" data-numfield="rowbackgroundpositionxnum">
+										<cfloop list="Top,Center,Bottom,%,px" index="p">
+											<option value="#lcase(p)#"<cfif attributes.params.cssstyles.backgroundpositionx contains p> selected</cfif>>#p#</option>
+										</cfloop>
+									</select>
+									
+									<input type="hidden" id="rowbackgroundpositionxval" name="backgroundPositionX" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundpositionx)#">
+
+								</div>
+							</div>
+						</div>
+
+						<div class="mura-ui-row">
+							<div class="col-xs-4"><label class="right">Horizontal</label></div>
+							<div class="col-xs-8">
+								<div class="mura-input-group">
+									<label>
+										<input type="text" id="rowbackgroundpositionynum" name="rowBackgroundPositionyNum" class="numeric" placeholder="" value="<cfif val(esapiEncode('html_attr',attributes.params.cssstyles.backgroundpositiony))>#val(esapiEncode('html_attr',attributes.params.cssstyles.backgroundpositiony))#</cfif>" style="display: none;">
+									</label>
+
+									<select id="rowbackgroundpositiony" name="rowBackgroundPositionY" data-numfield="rowbackgroundpositionynum">
+										<cfloop list="Top,Center,Bottom,%,px" index="p">
+											<option value="#lcase(p)#"<cfif attributes.params.cssstyles.backgroundpositiony contains p> selected</cfif>>#p#</option>
+										</cfloop>
+									</select>
+									
+									<input type="hidden" id="rowbackgroundpositionyval" name="backgroundPositionY" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundpositiony)#">
+
+								</div>
+							</div>							
+						</div>
 					</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 					<div class="mura-control-group css-bg-option" style="display:none;">
 						<label>Background Overlay</label>
