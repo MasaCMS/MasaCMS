@@ -176,7 +176,7 @@
 									</label>
 
 									<select id="rowbackgroundpositionx" name="rowBackgroundPositionX" data-numfield="rowbackgroundpositionxnum">
-										<cfloop list="Top,Center,Bottom,%,px" index="p">
+										<cfloop list="Left,Center,Right,%,px" index="p">
 											<option value="#lcase(p)#"<cfif attributes.params.cssstyles.backgroundpositionx contains p> selected</cfif>>#p#</option>
 										</cfloop>
 									</select>
