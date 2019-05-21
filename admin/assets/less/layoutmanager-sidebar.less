@@ -1,3 +1,5 @@
+@configInputH: 28px;
+
 .mura__layout-manager__controls {
 	width: 300px;
 	position: fixed;
@@ -463,6 +465,7 @@ body.configurator-wrapper {
 
 				input[type=text] {
 					width: ~'calc(100% - 64px)';
+					height: @configInputH;
 				}
 
 			}
@@ -489,11 +492,10 @@ body.configurator-wrapper {
 				padding: 0;
 			}
 
-		}
-
-		/* /.mura-ui-row */
+		}		/* /.mura-ui-row */
+		
 		.mura-control-group {
-			margin-bottom: 12px;
+			margin-bottom: 4px;
 
 			.input-group {
 				margin: .5em 0;
@@ -528,7 +530,7 @@ body.configurator-wrapper {
 				width: 18px;
 			}
 
-		}
+		} /* .mura-control-group */
 
 		label,
 		.control-label,
@@ -551,16 +553,22 @@ body.configurator-wrapper {
 		input[type=url],
 		input[type=week],
 		textarea {
-			margin: .5em 0;
-			width: 100%;
 			background-color: #333;
-			color: #d8d8d8;
-			padding: 8px 12px;
-			font-size: 14px;
 			border: none;
+			color: #d8d8d8;
 			cursor: pointer;
+			font-size: 14px;
+			height: @configInputH;
+			margin: .5em 0;
 			outline: none;
 			outline-offset: 0;
+			padding: 8px 12px;
+			width: 100%;
+		}
+
+		.nice-select {
+			height: @configInputH;
+	    line-height: @configInputH;
 		}
 
 		/* custom styles for date inputs */
@@ -634,7 +642,9 @@ body.configurator-wrapper {
 				background-image: none !important;
 				clear: none !important;
 				float: left !important;
+				font-size: 12px;
 				margin: 0 4px 0 0;
+				padding: 2px 12px;
 
 				&.mura-primary {
 					background-color: @mura-blue !important;
