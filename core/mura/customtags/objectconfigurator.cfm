@@ -240,26 +240,6 @@
 					$('#backgroundImage').val('').trigger('change');
 			})
 			*/
-			$('input[name="cssclass"],select[name="alignment"],select[name="width"],select[name="offset"],select[name="constraincontent"]').on('change', function() {
-				setPlacementVisibility();
-			});
-
-			$('#rowpaddingall').on('keyup', function(){
-				var v = $('#rowpaddingall').val().replace(/[^0-9]/g,'');
-				$('#rowpaddingadvanced').hide();
-				$('#rowpaddingtop').val(v);
-				$('#rowpaddingleft').val(v);
-				$('#rowpaddingright').val(v);
-				$('#rowpaddingbottom').val(v);
-			})
-
-			$('#rowpaddingtop,#rowpaddingright,#rowpaddingbottom,#rowpaddingleft,#rowpaddingall').on('keyup', function(){
-				updateRowPadding();
-			})
-
-			$('#rowpaddinguom').change(function(){
-				updateRowPadding();
-			})
 
 			function updateRowPadding(){
 				var t = $('#rowpaddingtop').val().replace(/[^0-9]/g,'');
@@ -416,6 +396,27 @@
 					$('#' + targetEl).toggle();
 				}
 				return false;
+			})
+
+			$('input[name="cssclass"],select[name="alignment"],select[name="width"],select[name="offset"],select[name="constraincontent"]').on('change', function() {
+				setPlacementVisibility();
+			});
+
+			$('#rowpaddingall').on('keyup', function(){
+				var v = $('#rowpaddingall').val().replace(/[^0-9]/g,'');
+				$('#rowpaddingadvanced').hide();
+				$('#rowpaddingtop').val(v);
+				$('#rowpaddingleft').val(v);
+				$('#rowpaddingright').val(v);
+				$('#rowpaddingbottom').val(v);
+			})
+
+			$('#rowpaddingtop,#rowpaddingright,#rowpaddingbottom,#rowpaddingleft,#rowpaddingall').on('keyup', function(){
+				updateRowPadding();
+			})
+
+			$('#rowpaddinguom').change(function(){
+				updateRowPadding();
 			})
 
 			inited=true;

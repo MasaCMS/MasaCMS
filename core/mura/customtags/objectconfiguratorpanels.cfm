@@ -165,23 +165,6 @@
 						</select>
 					</div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 					<div class="mura-control-group mura-ui-grid css-bg-option" style="display:none;">
 						<label>Background Position</label>
 						<div class="row mura-ui-row">
@@ -224,40 +207,6 @@
 							</div>							
 						</div>
 					</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 					<div class="mura-control-group css-bg-option" style="display:none;">
 						<label>Background Overlay</label>
