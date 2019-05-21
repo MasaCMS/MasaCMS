@@ -12,11 +12,13 @@
 		,'backgroundrepeat'
 		,'backgroundsize'
 		,'backgroundvideo'
+		,'padding'
 		,'paddingtop'
 		,'paddingright'
 		,'paddingbottom'
 		,'paddingleft'
 		,'paddingall'
+		,'paddinguom'
 		,'textalign'];
 
 	for (p in attributes.globalparams){
@@ -61,22 +63,30 @@
 					<div class="mura-control-group mura-ui-grid">
 						<!--- todo: rbkey for padding and placeholders --->
 						<label>Padding</label>
+
+						<input type="hidden" id="rowpadding" name="padding" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.paddingall)#">
 						
 						<div class="row mura-ui-row">
-							<div class="col-xs-3"></div>
 							<div class="col-xs-6">
-								<label class="px">
-									<input type="text" name="padding" id="rowpaddingall" placeholder="All" class="objectStyle" value="#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingall))#"> <span>px</span>
+								<label class="mura-serial">
+									<input type="text" name="padding" id="rowpaddingall" placeholder="All" class="numeric serial" value="#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingall))#">
 								</label>
 							</div>
-							<div class="col-xs-3"></div>
+							<div class="col-xs-1"></div>
+							<div class="col-xs-5">
+								<select id="rowpaddinguom" name="paddinguom">
+									<cfloop list="px,%,em,rem" index="u">
+										<option value="#u#"<cfif attributes.params.cssstyles.paddinguom eq u> selected</cfif>>#u#</option>
+									</cfloop>
+								</select>
+							</div>
 						</div>
 
 						<div class="row mura-ui-row">
 							<div class="col-xs-3"></div>
 							<div class="col-xs-6">
-								<label class="px">
-									<input type="text" name="paddingTop" id="rowpaddingtop" placeholder="Top" class="objectStyle" value="#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingtop))#"> <span>px</span>
+								<label class="mura-serial">
+									<input type="text" name="paddingTop" id="rowpaddingtop" placeholder="Top" class="numeric serial" value="#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingtop))#">
 								</label>
 							</div>
 							<div class="col-xs-3"></div>
@@ -84,13 +94,13 @@
 							
 						<div class="row mura-ui-row">
 							<div class="col-xs-6">
-								<label class="px">
-									<input type="text" name="paddingLeft" id="rowpaddingleft" placeholder="Left" class="objectStyle" value="#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingleft))#"> <span>px</span>
+								<label class="mura-serial">
+									<input type="text" name="paddingLeft" id="rowpaddingleft" placeholder="Left" class="numeric serial" value="#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingleft))#">
 								</label>
 							</div>
 							<div class="col-xs-6">
-								<label class="px">
-									<input type="text" name="paddingRight" id="rowpaddingright" placeholder="Right" class="objectStyle" value="#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingright))#"> <span>px</span>
+								<label class="mura-serial">
+									<input type="text" name="paddingRight" id="rowpaddingright" placeholder="Right" class="numeric serial" value="#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingright))#">
 								</label>
 							</div>
 						</div>
@@ -98,8 +108,8 @@
 						<div class="row mura-ui-row">
 							<div class="col-xs-3"></div>
 							<div class="col-xs-6">
-								<label class="px">
-									<input type="text" name="paddingBottom" id="rowpaddingbottom" placeholder="Bottom" class="objectStyle" value="#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingbottom))#"> <span>px</span>
+								<label class="mura-serial">
+									<input type="text" name="paddingBottom" id="rowpaddingbottom" placeholder="Bottom" class="numeric serial" value="#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingbottom))#">
 								</label>
 							</div>
 							<div class="col-xs-3"></div>
@@ -121,20 +131,12 @@
 						<label>Background Image</label>
 						<input type="hidden" id="rowbackgroundimage" name="backgroundImage" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundimage)#">
 						<input type="text" id="rowbackgroundimageurl" name="backgroundImageURL" placeholder="URL" class="objectParam" value="#esapiEncode('html_attr',attributes.params.backgroundimageurl)#">
-						<button type="button" class="btn mura-ckfinder" data-target="backgroundImageURL" data-completepath="false">Select File</button>
+						<button type="button" class="btn mura-ckfinder" data-target="backgroundImageURL" data-completepath="false"><i class="mi-image"></i> Select Image</button>
 					</div>
 
 <!--- todo: are we using bigui? --->
 <!---	<a class="bigui__launch" data-rel="bigui__rowbgrdimg" href="##">Select Image</a> --->					
 
-<!--- todo: background video - js to create markup - css to position --->
-<!--- 
-					<div class="mura-control-group">
-						<label>Background Video</label>
-						<input type="text" id="rowbackgroundvideourl" name="backgroundVideoURL" placeholder="URL" class="objectParam" value="#esapiEncode('html_attr',attributes.params.backgroundvideourl)#">
-						<button type="button" class="btn mura-ckfinder" data-target="backgroundvideourl" data-completepath="false">Select File</button>
-					</div>
- --->
 
 					<div class="mura-control-group">
 						<label>Background Size</label>
@@ -165,6 +167,15 @@
 						<label>Background Overlay</label>
 						<input type="text" id="rowbackgroundoverlay" name="backgroundOverlay" placeholder="" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundoverlay)#">
 					</div>
+
+<!--- todo: background video - js to create markup - css to position --->
+<!--- 
+					<div class="mura-control-group">
+						<label>Background Video</label>
+						<input type="text" id="rowbackgroundvideourl" name="backgroundVideoURL" placeholder="URL" class="objectParam" value="#esapiEncode('html_attr',attributes.params.backgroundvideourl)#">
+						<button type="button" class="btn mura-ckfinder" data-target="backgroundvideourl" data-completepath="false">Select File</button>
+					</div>
+ --->
 
 <!--- todo: parallax --->
 <!--- 
