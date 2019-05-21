@@ -67,7 +67,8 @@
 						<input type="hidden" id="rowpadding" name="padding" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.paddingall)#">
 						
 						<div class="row mura-ui-row">
-							<div class="col-xs-12">
+							<div class="col-xs-2"></div>
+							<div class="col-xs-8 center">
 								<div class="mura-input-group">
 									<label class="mura-serial">
 										<input type="text" name="padding" id="rowpaddingall" placeholder="All" class="numeric serial" value="#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingall))#">
@@ -77,8 +78,9 @@
 											<option value="#u#"<cfif attributes.params.cssstyles.paddinguom eq u> selected</cfif>>#u#</option>
 										</cfloop>
 									</select>
-								</div>
+								</div>	
 							</div>
+							<div class="col-xs-2"></div>
 						</div>
 
 						<div class="row mura-ui-row">

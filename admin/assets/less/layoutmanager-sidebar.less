@@ -263,7 +263,7 @@ body.configurator-wrapper {
 
 	#configuratorContainer {
 		background-color: #454545;
-		padding: 18px 18px 15px 18px;
+		padding: 18px 34px 15px 18px;
 
 		* {
 			.regular-font;
@@ -385,7 +385,7 @@ body.configurator-wrapper {
 					border-radius: 0;
 					padding-top: 18px;
 					padding-left: 18px;
-					padding-right: 34px;
+					padding-right: 18px;
 					margin-bottom: 2px;
 				}
 
@@ -466,6 +466,7 @@ body.configurator-wrapper {
 		.mura-ui-row {
 			padding: 0;
 			margin: 0;
+			width: 100%;
 
 			label {
 				display: block;
@@ -493,6 +494,14 @@ body.configurator-wrapper {
 					min-width: 72px;
 				}
 			} /* .mura-input-group */
+
+			.center{
+				text-align: center;
+
+				.mura-input-group{
+					margin: 0;
+				}
+			}
 	
 			input.numeric {
 				height: @configInputH;
