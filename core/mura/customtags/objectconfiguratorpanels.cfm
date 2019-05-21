@@ -63,14 +63,12 @@
 					<div class="mura-control-group mura-ui-grid">
 						<!--- todo: rbkey for padding and placeholders --->
 						<label>Padding</label>
-
-						<input type="hidden" id="rowpadding" name="padding" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.paddingall)#">
 						
 						<div class="row mura-ui-row">
 							<div class="col-xs-8 center">
 								<div class="mura-input-group">
 									<label class="mura-serial">
-										<input type="text" name="padding" id="rowpaddingall" placeholder="All" class="numeric serial" value="#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingall))#">
+										<input type="text" name="padding" id="rowpaddingall" placeholder="All" class="numeric serial" value="<cfif len(trim(attributes.params.cssstyles.paddingall))>#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingall))#</cfif>">
 									</label>
 									<select id="rowpaddinguom" name="paddinguom">
 										<cfloop list="px,%,em,rem" index="u">
@@ -84,13 +82,14 @@
 							</div>
 						</div>
 
-						<div id="rowpaddingadvanced" class="mura-ui-inset">
+						<div id="rowpaddingadvanced" class="mura-ui-inset" style="display: none;">
 							<div class="row mura-ui-row">
 								<div class="col-xs-3"></div>
 								<div class="col-xs-6">
 									<label class="mura-serial">
-										<input type="text" name="paddingTop" id="rowpaddingtop" placeholder="Top" class="numeric serial" value="#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingtop))#">
+										<input type="text" name="rowPaddingTop" id="rowpaddingtop" placeholder="Top" class="numeric serial" value="<cfif len(trim(attributes.params.cssstyles.paddingtop))>#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingtop))#</cfif>">
 									</label>
+									<input type="hidden" name="paddingTop" id="rowpaddingtopval" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.paddingtop)#">
 								</div>
 								<div class="col-xs-3"></div>
 							</div>
@@ -98,13 +97,15 @@
 							<div class="row mura-ui-row">
 								<div class="col-xs-6">
 									<label class="mura-serial">
-										<input type="text" name="paddingLeft" id="rowpaddingleft" placeholder="Left" class="numeric serial" value="#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingleft))#">
+										<input type="text" name="rowPaddingLeft" id="rowpaddingleft" placeholder="Left" class="numeric serial" value="<cfif len(trim(attributes.params.cssstyles.paddingleft))>#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingleft))#</cfif>">
 									</label>
+									<input type="hidden" name="paddingLeft" id="rowpaddingleftval" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.paddingleft)#">
 								</div>
 								<div class="col-xs-6">
 									<label class="mura-serial">
-										<input type="text" name="paddingRight" id="rowpaddingright" placeholder="Right" class="numeric serial" value="#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingright))#">
+										<input type="text" name="rowPaddingRight" id="rowpaddingright" placeholder="Right" class="numeric serial" value="<cfif len(trim(attributes.params.cssstyles.paddingright))>#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingright))#</cfif>">
 									</label>
+									<input type="hidden" name="paddingRight" id="rowpaddingrightval" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.paddingright)#">
 								</div>
 							</div>
 
@@ -112,8 +113,9 @@
 								<div class="col-xs-3"></div>
 								<div class="col-xs-6">
 									<label class="mura-serial">
-										<input type="text" name="paddingBottom" id="rowpaddingbottom" placeholder="Bottom" class="numeric serial" value="#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingbottom))#">
+										<input type="text" name="rowPaddingBottom" id="rowpaddingbottom" placeholder="Bottom" class="numeric serial" value="<cfif len(trim(attributes.params.cssstyles.paddingbottom))>#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingbottom))#</cfif>">
 									</label>
+									<input type="hidden" name="paddingBottom" id="rowpaddingbottomval" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.paddingbottom)#">
 								</div>
 								<div class="col-xs-3"></div>
 							</div>

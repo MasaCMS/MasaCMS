@@ -225,16 +225,42 @@
 
 			$('#rowpaddingall').on('keyup', function(){
 				var v = $('#rowpaddingall').val().replace(/[^0-9]/g,'');
+				$('#rowpaddingadvanced').hide();
 				$('#rowpaddingtop').val(v);
 				$('#rowpaddingleft').val(v);
 				$('#rowpaddingright').val(v);
 				$('#rowpaddingbottom').val(v);
 			})
 
-			$('#rowpaddingtop,#rowpaddingright,#rowpaddingbottom,#rowpaddingleft').on('keyup', function(){
-				$('#rowpaddingall').val('');
+			$('#rowpaddingtop,#rowpaddingright,#rowpaddingbottom,#rowpaddingleft,#rowpaddingall').on('keyup', function(){
+				updateRowPadding();
 			})
-	
+
+			$('#rowpaddinguom').change(function(){
+				updateRowPadding();
+			})
+
+			function updateRowPadding(){
+				var t = $('#rowpaddingtop').val().replace(/[^0-9]/g,'');
+				var r = $('#rowpaddingright').val().replace(/[^0-9]/g,'');
+				var b = $('#rowpaddingbottom').val().replace(/[^0-9]/g,'');
+				var l =$('#rowpaddingleft').val().replace(/[^0-9]/g,'');
+				var u = $('#rowpaddinguom').val();
+				if (t.length){ $('#rowpaddingtopval').val(t + u); }
+				if (r.length){ $('#rowpaddingrightval').val(r + u); }
+				if (b.length){ $('#rowpaddingbottomval').val(b + u); }
+				if (l.length){ $('#rowpaddingleftval').val(l + u); }
+				if (t == r && r == b & b == l){
+					$('#rowpaddingall').val(t);
+				} else {
+					$('#rowpaddingall').val('');
+				}
+				$('#rowpaddingtopval').trigger('change');
+			}	
+
+			// run on load
+			updateRowPadding();
+
 			function setPlacementVisibility(){
 				var classInput=$('input[name="class"]');
 
@@ -356,6 +382,14 @@
 				$('#globalObjectParams').hide();
 				$('#globalSettingsBtn').show();
 			});
+
+			$('.mura-ui-link').on('click',function(){
+				var targetEl = $(this).attr('data-reveal');
+				if (targetEl.length > 0){
+					$('#' + targetEl).toggle();
+				}
+				return false;
+			})
 
 			inited=true;
 		});
