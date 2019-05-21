@@ -129,6 +129,7 @@
 						<label>Background Color</label>
 						<div class="input-group mura-colorpicker">
 							<span class="input-group-addon"><i></i></span>
+							<input type="text" id="rowbackgroundcolor" name="backgroundColor" placeholder="Select Color" class="objectStyle" autocomplete="off" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundcolor)#">
 						</div>
 					</div>
 
