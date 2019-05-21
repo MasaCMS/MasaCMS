@@ -183,10 +183,17 @@
 				var str = "";
 				if (v.length > 3){
 					str = "url('" + v + "')";
-				} 
+					$('.css-bg-option').show();
+				} else {
+					$('.css-bg-option').hide();
+				}
 				$('#rowbackgroundimage').val(str).trigger('change');
 			});
+
+			$('#rowbackgroundimageurl').trigger('change');
 			
+			<!--- todo: are we using bigui here? --->
+			<!---
 			$('#configuratorContainer .bigui__launch').on('click', function(e){
 				var el=window.parent.$('body');
 				if(el.hasClass('mura-bigui-state__pushed--right')){
@@ -196,6 +203,7 @@
 				}
 				e.preventDefault();
 			});
+			--->
 			
 		})
 
