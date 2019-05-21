@@ -180,7 +180,10 @@
 
 			$('#rowbackgroundimageurl').on('change',function(){
 				var v = $(this).val();
-				var str = "url('" + v + "')";
+				var str = "";
+				if (v.length > 3){
+					str = "url('" + v + "')";
+				} 
 				$('#rowbackgroundimage').val(str).trigger('change');
 			});
 			

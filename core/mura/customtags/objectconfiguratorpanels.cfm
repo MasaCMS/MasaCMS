@@ -143,8 +143,7 @@
 <!--- todo: are we using bigui? --->
 <!---	<a class="bigui__launch" data-rel="bigui__rowbgrdimg" href="##">Select Image</a> --->					
 
-
-					<div class="mura-control-group">
+					<div class="mura-control-group mura-ui-bg-option">
 						<label>Background Size</label>
 						<select id="rowbackgroundsize" name="backgroundSize" class="objectStyle">
 							<option value="auto"<cfif attributes.params.cssstyles.backgroundsize eq 'auto'> 
@@ -154,7 +153,7 @@
 						</select>
 					</div>
 
-					<div class="mura-control-group">
+					<div class="mura-control-group mura-ui-bg-option">
 						<label>Background Repeat</label>
 						<select id="rowbackgroundrepeat" name="backgroundRepeat" class="objectStyle">
 							<option value="no-repeat"<cfif attributes.params.cssstyles.backgroundrepeat eq 'norepeat'> selected</cfif>>No-repeat</option>
@@ -164,12 +163,12 @@
 						</select>
 					</div>
 
-					<div class="mura-control-group">
+					<div class="mura-control-group mura-ui-bg-option">
 						<label>Background Position</label>
 						<input type="text" id="rowbackgroundposition" name="backgroundPosition" placeholder="" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundposition)#">
 					</div>
 
-					<div class="mura-control-group">
+					<div class="mura-control-group mura-ui-bg-option">
 						<label>Background Overlay</label>
 						<input type="text" id="rowbackgroundoverlay" name="backgroundOverlay" placeholder="" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundoverlay)#">
 					</div>
