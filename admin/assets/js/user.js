@@ -179,7 +179,7 @@ var userManager = {
 		//checkExtendSetTargeting();
 		setHTMLEditors();
 		setDatePickers(".tab-content .datepicker", dtLocale);
-		setColorPickers(".tab-content .colorpicker");
+		setColorPickers(".tab-content .mura-colorpicker");
 		setFinders(".tab-content .mura-ckfinder");
 		setToolTips(".tab-content");
 		setFileSelectors();
