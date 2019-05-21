@@ -270,6 +270,16 @@ body.configurator-wrapper {
 			text-transform: none;
 		}
 
+		a.mura-ui-link{ 
+			color: @mura-red; 
+		}
+		a.mura-ui-link:link,
+		a.mura-ui-link:visited,
+		a.mura-ui-link:hover,
+		a.mura-ui-link:active{
+			color: lighten(@mura-red, 12%) !important;
+		}
+
 		.clearfix {
 			clear: both !important;
 		}
@@ -460,9 +470,15 @@ body.configurator-wrapper {
 				margin-top: 10px;
 			}
 
+		} /* /mura-panel-group */
+
+		.mura-ui-inset{
+			box-shadow: inset 0 0 0 2px #565656;
+			margin: 12px 0;
+			padding: 12px;
+			width: 100%;
 		}
 
-		/* /mura-panel-group */
 		.mura-ui-row {
 			padding: 0;
 			margin: 0;

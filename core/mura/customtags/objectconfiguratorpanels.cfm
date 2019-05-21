@@ -67,7 +67,6 @@
 						<input type="hidden" id="rowpadding" name="padding" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.paddingall)#">
 						
 						<div class="row mura-ui-row">
-							<div class="col-xs-2"></div>
 							<div class="col-xs-8 center">
 								<div class="mura-input-group">
 									<label class="mura-serial">
@@ -80,41 +79,45 @@
 									</select>
 								</div>	
 							</div>
-							<div class="col-xs-2"></div>
-						</div>
-
-						<div class="row mura-ui-row">
-							<div class="col-xs-3"></div>
-							<div class="col-xs-6">
-								<label class="mura-serial">
-									<input type="text" name="paddingTop" id="rowpaddingtop" placeholder="Top" class="numeric serial" value="#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingtop))#">
-								</label>
-							</div>
-							<div class="col-xs-3"></div>
-						</div>
-							
-						<div class="row mura-ui-row">
-							<div class="col-xs-6">
-								<label class="mura-serial">
-									<input type="text" name="paddingLeft" id="rowpaddingleft" placeholder="Left" class="numeric serial" value="#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingleft))#">
-								</label>
-							</div>
-							<div class="col-xs-6">
-								<label class="mura-serial">
-									<input type="text" name="paddingRight" id="rowpaddingright" placeholder="Right" class="numeric serial" value="#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingright))#">
-								</label>
+							<div class="col-xs-4">
+								<a class="mura-ui-link" data-reveal="rowpaddingadvanced" href="##">Advanced</a>
 							</div>
 						</div>
 
-						<div class="row mura-ui-row">
-							<div class="col-xs-3"></div>
-							<div class="col-xs-6">
-								<label class="mura-serial">
-									<input type="text" name="paddingBottom" id="rowpaddingbottom" placeholder="Bottom" class="numeric serial" value="#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingbottom))#">
-								</label>
+						<div id="rowpaddingadvanced" class="mura-ui-inset">
+							<div class="row mura-ui-row">
+								<div class="col-xs-3"></div>
+								<div class="col-xs-6">
+									<label class="mura-serial">
+										<input type="text" name="paddingTop" id="rowpaddingtop" placeholder="Top" class="numeric serial" value="#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingtop))#">
+									</label>
+								</div>
+								<div class="col-xs-3"></div>
 							</div>
-							<div class="col-xs-3"></div>
-						</div>
+								
+							<div class="row mura-ui-row">
+								<div class="col-xs-6">
+									<label class="mura-serial">
+										<input type="text" name="paddingLeft" id="rowpaddingleft" placeholder="Left" class="numeric serial" value="#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingleft))#">
+									</label>
+								</div>
+								<div class="col-xs-6">
+									<label class="mura-serial">
+										<input type="text" name="paddingRight" id="rowpaddingright" placeholder="Right" class="numeric serial" value="#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingright))#">
+									</label>
+								</div>
+							</div>
+
+							<div class="row mura-ui-row">
+								<div class="col-xs-3"></div>
+								<div class="col-xs-6">
+									<label class="mura-serial">
+										<input type="text" name="paddingBottom" id="rowpaddingbottom" placeholder="Bottom" class="numeric serial" value="#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingbottom))#">
+									</label>
+								</div>
+								<div class="col-xs-3"></div>
+							</div>
+						</div>	
 	
 					</div>
 
