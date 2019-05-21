@@ -3255,8 +3255,9 @@ buttons: {
 			}
 		});
 	},
-	updateDisplayObjectParams:function(params){
+	updateDisplayObjectParams:function(params,complete){
 		params=params || {};
+		complete =(typeof complete != 'undefined')? complete :true;
 
 		var url=Mura.setLowerCaseKeys(Mura.getQueryStringParams(location.search));
 
@@ -3270,7 +3271,8 @@ buttons: {
 							cmd:'setObjectParams',
 							reinit:(url.sourceframe=='sidebar') ? false :true,
 							instanceid:url.instanceid,
-							params:params
+							params:params,
+							complete:complete
 							});
 					}
 				);
@@ -3279,7 +3281,8 @@ buttons: {
 					cmd:'setObjectParams',
 					reinit:(url.sourceframe=='sidebar') ? false :true,
 					instanceid:url.instanceid,
-					params:params
+					params:params,
+					complete:complete
 					});
 			}
 		});

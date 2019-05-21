@@ -190,59 +190,63 @@
 			} else if(parameters["cmd"] == "showobjects"){
 				MuraInlineEditor.sidebarAction('showobjects');
 			} else if (parameters["cmd"]=="setObjectParams"){
-				var item=Mura('[data-instanceid="' + parameters.instanceid + '"]');
+				if(typeof parameters["complete"] != 'undefined' && !parameters["complete"]){
+					sidebarProxy.post(parameters);
+					closeFrontEndToolsModal();
+				} else {
+					var item=Mura('[data-instanceid="' + parameters.instanceid + '"]');
 
-				if(typeof parameters.params == 'object'){
+					if(typeof parameters.params == 'object'){
 
-					delete parameters.params.params;
+						delete parameters.params.params;
 
-					if(item.data('class')){
-						var classes=item.data('class');
+						if(item.data('class')){
+							var classes=item.data('class');
 
-						if(typeof classes != 'Array'){
-							classes=classes.split(' ');
-						}
-
-						for(var c=0;c<classes.length;c++){
-							if(item.hasClass(classes[c])){
-								item.removeClass(classes[c]);
+							if(typeof classes != 'Array'){
+								classes=classes.split(' ');
 							}
-						}
-					}
 
-					for(var p in parameters.params){
-						if(parameters.params.hasOwnProperty(p)){
-							item.data(p,parameters.params[p]);
-						}
-					}
-
-					if(item.data('trim-params') || item.data('trimparams')){
-						var currentdata=item.data();
-
-						for(var p in currentdata){
-							if(currentdata.hasOwnProperty(p)){
-								if(!(p=='inited' || p=='objecticonclass' || p=='async' || p=='instanceid' || p=='object' || p=='objectname' || p=='objectid') && typeof parameters.params[p] == 'undefined' ){
-									item.removeAttr('data-' + p);
+							for(var c=0;c<classes.length;c++){
+								if(item.hasClass(classes[c])){
+									item.removeClass(classes[c]);
 								}
 							}
 						}
+
+						for(var p in parameters.params){
+							if(parameters.params.hasOwnProperty(p)){
+								item.data(p,parameters.params[p]);
+							}
+						}
+
+						if(item.data('trim-params') || item.data('trimparams')){
+							var currentdata=item.data();
+
+							for(var p in currentdata){
+								if(currentdata.hasOwnProperty(p)){
+									if(!(p=='inited' || p=='objecticonclass' || p=='async' || p=='instanceid' || p=='object' || p=='objectname' || p=='objectid') && typeof parameters.params[p] == 'undefined' ){
+										item.removeAttr('data-' + p);
+									}
+								}
+							}
+						}
+
+						item.removeAttr('data-trim-params');
+						item.removeAttr('data-trimparams');
+
+						MuraInlineEditor.isDirty=true;
 					}
 
-					item.removeAttr('data-trim-params');
-					item.removeAttr('data-trimparams');
-
-					MuraInlineEditor.isDirty=true;
+					Mura.resetAsyncObject(item.node);
+					item.addClass('mura-active');
+					Mura.processAsyncObject(item.node).then(function(){
+						closeFrontEndToolsModal();
+						if(parameters.reinit && !item.data('notconfigurable')){
+							openFrontEndToolsModal(item.node);
+						}
+					});
 				}
-
-				Mura.resetAsyncObject(item.node);
-				item.addClass('mura-active');
-				Mura.processAsyncObject(item.node).then(function(){
-					closeFrontEndToolsModal();
-					if(parameters.reinit && !item.data('notconfigurable')){
-						openFrontEndToolsModal(item.node);
-					}
-				});
-
 			} else if (parameters["cmd"]=='reloadObjectAndClose') {
 				if(parameters.instanceid){
 					var item=Mura('[data-instanceid="' + parameters.instanceid + '"]');
