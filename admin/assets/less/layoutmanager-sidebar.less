@@ -306,12 +306,12 @@ body.configurator-wrapper {
 
 		// button styles
 		.btn {
-			font-size: 14px;
-			padding: 6px 12px;
+			background-image: none;
+			box-shadow: none;
 			-webkit-box-shadow: none;
 			-moz-box-shadow: none;
-			box-shadow: none;
-			background-image: none;
+			font-size: 13px;
+	    padding: 3px 12px;
 			text-shadow: none;
 		}
 
@@ -495,7 +495,7 @@ body.configurator-wrapper {
 		}		/* /.mura-ui-row */
 		
 		.mura-control-group {
-			margin-bottom: 4px;
+			margin-bottom: 8px;
 
 			.input-group {
 				margin: .5em 0;
@@ -508,7 +508,7 @@ body.configurator-wrapper {
 					margin: .5em 0;
 					background-color: #333;
 					color: #d8d8d8;
-					padding: 8px 12px;
+					padding: 5px 8px;
 					font-size: 14px;
 					border: none;
 					cursor: pointer;
@@ -525,9 +525,10 @@ body.configurator-wrapper {
 			.colorpicker-element .input-group-addon i {
 				display: inline-block;
 				cursor: pointer;
-				height: 18px;
+				height: 16px;
+				margin-top: 1px;
 				vertical-align: text-top;
-				width: 18px;
+				width: 16px;
 			}
 
 		} /* .mura-control-group */
@@ -564,11 +565,21 @@ body.configurator-wrapper {
 			outline-offset: 0;
 			padding: 8px 12px;
 			width: 100%;
+
+			&+.btn{
+				margin: 0 0 4px 0;
+			}
 		}
 
 		.nice-select {
 			height: @configInputH;
 	    line-height: @configInputH;
+	    margin-bottom: 7px;
+	     
+	     &+.btn{
+	     	margin-top: -2px;
+	     }
+
 		}
 
 		/* custom styles for date inputs */
