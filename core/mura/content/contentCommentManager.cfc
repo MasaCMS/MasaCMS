@@ -242,7 +242,7 @@ component persistent="false" accessors="true" output="false" extends="mura.cfobj
 		try {
 			commentBean.notifySubscribers();
 		} catch(any e) {
-			writeLog(type="Error", file="exception", text="#e#");
+			writeLog(type="Error", file="exception", text="#serializeJSON(e)#");
 		}
 
 		return true;
