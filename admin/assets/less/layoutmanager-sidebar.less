@@ -449,21 +449,21 @@ body.configurator-wrapper{
 					display: block;
 					text-align: center;
 
-					&.px{
-						input[type=text]{
+					input[type=text]{
 							width: ~'calc(100% - 64px)';
 						}
-						input + span{
+					}
+
+				input.numeric{
+					margin: 0;
+					padding-left: 1px;
+					padding-right: 1px;
+					text-align: center;
+						&+ span{
 							display: inline-block;
 							margin-left: 2px;
-						}	
-					}
-					input[type=text]{
-						padding-left: 1px;
-						padding-right: 1px;
-						text-align: center;
-					}
-				}
+						}
+				}	
 				input{
 					float: none;
 				}
