@@ -419,6 +419,28 @@
 				updateRowPadding();
 			})
 
+			$('#rowbackgroundpositiony,#rowbackgroundpositionynum').on('change',function(){
+				var el = $('#rowbackgroundpositionyval');
+				var str = $('#rowbackgroundpositiony').val();
+				var num = $('#rowbackgroundpositionynum').val();
+				if (num.length > 0){
+					str = num + str;
+				}
+				$(el).val(str).trigger('change');
+			});
+
+			$('#rowbackgroundpositionx,#rowbackgroundpositionxnum').on('change',function(){
+				var el = $('#rowbackgroundpositionxval');
+				var str = $('#rowbackgroundpositionx').val();
+				var num = $('#rowbackgroundpositionxnum').val();
+				if (num.length > 0){
+					str = num + str;
+				}
+				$(el).val(str).trigger('change');
+			});
+
+			$('#rowbackgroundpositionx,#rowbackgroundpositiony').trigger('change');
+
 			inited=true;
 		});
 	</script>
