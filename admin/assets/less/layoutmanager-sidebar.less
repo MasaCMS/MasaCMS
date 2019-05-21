@@ -263,7 +263,7 @@ body.configurator-wrapper {
 
 	#configuratorContainer {
 		background-color: #454545;
-		padding: 18px 34px 15px 18px;
+		padding: 18px 18px 15px 18px;
 
 		* {
 			.regular-font;
@@ -272,6 +272,11 @@ body.configurator-wrapper {
 
 		.clearfix {
 			clear: both !important;
+		}
+
+		.container{
+			padding-left: 0;
+			padding-right: 0;
 		}
 
 		img + div,
@@ -459,28 +464,54 @@ body.configurator-wrapper {
 
 		/* /mura-panel-group */
 		.mura-ui-row {
+			padding: 0;
+			margin: 0;
+
 			label {
 				display: block;
+				margin-bottom: 0;
 				text-align: center;
 
 				input[type=text] {
-					width: ~'calc(100% - 64px)';
-					height: @configInputH;
+						height: @configInputH;
+					}
+
+				&.mura-serial{
+						width: 52px;
 				}
+	
+			} /* /label */
 
-			}
-
+			.mura-input-group{
+				label{
+					float: left;
+				}
+				*+.nice-select{
+					border-left: 1px solid #454545;
+					clear: none;
+					float: left;
+					min-width: 72px;
+				}
+			} /* .mura-input-group */
+	
 			input.numeric {
+				height: @configInputH;
 				margin: 0;
 				padding-left: 1px;
 				padding-right: 1px;
 				text-align: center;
+				width: 52px;
 
 				&+ span {
 					display: inline-block;
 					margin-left: 2px;
 				}
 
+			}
+
+			.nice-select{
+				margin-bottom: 0;
+				width: auto;
 			}
 
 			input {

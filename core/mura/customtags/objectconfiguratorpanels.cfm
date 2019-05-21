@@ -67,18 +67,17 @@
 						<input type="hidden" id="rowpadding" name="padding" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.paddingall)#">
 						
 						<div class="row mura-ui-row">
-							<div class="col-xs-6">
-								<label class="mura-serial">
-									<input type="text" name="padding" id="rowpaddingall" placeholder="All" class="numeric serial" value="#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingall))#">
-								</label>
-							</div>
-							<div class="col-xs-1"></div>
-							<div class="col-xs-5">
-								<select id="rowpaddinguom" name="paddinguom">
-									<cfloop list="px,%,em,rem" index="u">
-										<option value="#u#"<cfif attributes.params.cssstyles.paddinguom eq u> selected</cfif>>#u#</option>
-									</cfloop>
-								</select>
+							<div class="col-xs-12">
+								<div class="mura-input-group">
+									<label class="mura-serial">
+										<input type="text" name="padding" id="rowpaddingall" placeholder="All" class="numeric serial" value="#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingall))#">
+									</label>
+									<select id="rowpaddinguom" name="paddinguom">
+										<cfloop list="px,%,em,rem" index="u">
+											<option value="#u#"<cfif attributes.params.cssstyles.paddinguom eq u> selected</cfif>>#u#</option>
+										</cfloop>
+									</select>
+								</div>
 							</div>
 						</div>
 
@@ -123,7 +122,6 @@
 						<label>Background Color</label>
 						<div class="input-group mura-colorpicker">
 							<span class="input-group-addon"><i></i></span>
-							<input type="text" id="rowbackgroundcolor" name="backgroundColor" placeholder="Select Color" class="objectStyle" autocomplete="off" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundcolor)#">
 						</div>
 					</div>
 
