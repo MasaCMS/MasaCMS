@@ -242,9 +242,7 @@ component persistent="false" accessors="true" output="false" extends="mura.cfobj
 		try {
 			commentBean.notifySubscribers();
 		} catch(any e) {
-			// handleError(e);
-			// this will break on versions prior to 6.0.5238
-			// so instead of tossing an error...just skip the notifications
+			writeLog(type="Error", file="exception", text="#serializeJSON(e)#");
 		}
 
 		return true;
