@@ -3,6 +3,10 @@
 	param name="attributes.params.backgroundimageurl" default="";
 	param name="attributes.params.backgroundimageurl" default="";
 	param name="attributes.params.backgroundcolorsel" default="";
+	param name="attributes.params.marginuom" default="";
+	param name="attributes.params.paddinguom" default="";
+	param name="attributes.params.rowbackgroundpositionx" default="";
+	param name="attributes.params.rowbackgroundpositiony" default="";
 	
 	attributes.globalparams = [
 		'backgroundcolor'
@@ -260,7 +264,7 @@
 										<input type="text" id="rowbackgroundpositionxnum" name="rowBackgroundPositionxNum" class="numeric" placeholder="" value="<cfif val(esapiEncode('html_attr',attributes.params.cssstyles.backgroundpositionx))>#val(esapiEncode('html_attr',attributes.params.cssstyles.backgroundpositionx))#</cfif>" style="display: none;">
 									</label>
 
-									<select id="rowbackgroundpositionx" name="rowBackgroundPositionX" data-numfield="rowbackgroundpositionxnum">
+									<select id="rowbackgroundpositionx" name="rowBackgroundPositionX" class="objectParam" data-numfield="rowbackgroundpositionxnum">
 										<cfloop list="Left,Center,Right,%,px" index="p">
 											<option value="#lcase(p)#"<cfif attributes.params.cssstyles.backgroundpositionx contains p> selected</cfif>>#p#</option>
 										</cfloop>
@@ -280,7 +284,7 @@
 										<input type="text" id="rowbackgroundpositionynum" name="rowBackgroundPositionyNum" class="numeric" placeholder="" value="<cfif val(esapiEncode('html_attr',attributes.params.cssstyles.backgroundpositiony))>#val(esapiEncode('html_attr',attributes.params.cssstyles.backgroundpositiony))#</cfif>" style="display: none;">
 									</label>
 
-									<select id="rowbackgroundpositiony" name="rowBackgroundPositionY" data-numfield="rowbackgroundpositionynum">
+									<select id="rowbackgroundpositiony" name="rowBackgroundPositionY" class="objectParam" data-numfield="rowbackgroundpositionynum">
 										<cfloop list="Top,Center,Bottom,%,px" index="p">
 											<option value="#lcase(p)#"<cfif attributes.params.cssstyles.backgroundpositiony contains p> selected</cfif>>#p#</option>
 										</cfloop>
