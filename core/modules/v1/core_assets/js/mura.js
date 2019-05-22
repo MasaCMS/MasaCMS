@@ -2836,6 +2836,7 @@ var Mura=(function(){
 						//console.log(data);
 						if(typeof data.preloadermarkup != 'undefined'){
 							self.innerHTML = data.preloadermarkup;
+							delete data.preloadermarkup;
 						} else {
 							self.innerHTML = Mura.preloaderMarkup;
 						}
