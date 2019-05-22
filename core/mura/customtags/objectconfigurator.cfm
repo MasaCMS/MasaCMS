@@ -37,7 +37,6 @@
 		<cfparam name="request.haspositionoptions" default="false">
 		<cfparam name="attributes.params.isbodyobject" default="false">
 
-		<!--- todo: handle error if these don't exist in contentRenderer.cfc --->
 		<cfparam name="request.textcoloroptions" default="">
 		<cfparam name="request.backgroundcoloroptions" default="">
 		<cfif structKeyExists($.getContentRenderer(),'textColorOptions')>
@@ -79,6 +78,26 @@
 		<cfif not listFindNoCase('folder,gallery,calendar',attributes.params.object) and not (isBoolean(attributes.params.isbodyobject) and attributes.params.isbodyobject)>
 			<cfset request.haspositionoptions = true>
 		</cfif>
+
+		<cfscript>
+			attributes.positionoptions = [
+					{value='',label='Auto'}
+					,{value='mura-one', label='One Twelfth'}
+					,{value='mura-two', label='One Sixth'}
+					,{value='mura-three', label='One Fourth'}
+					,{value='mura-four', label='One Third'}
+					,{value='mura-five', label='Five Twelfths'}
+					,{value='mura-six', label='One Half'}
+					,{value='mura-seven', label='Seven Twelfths'}
+					,{value='mura-eight', label='Two Thirds'}
+					,{value='mura-nine', label='Three Fourths'}
+					,{value='mura-ten', label='Five Sixths'}
+					,{value='mura-eleven', label='Eleven Twelfths'}
+					,{value='mura-twelve', label='Full'}
+					,{value='mura-expanded', label='Expanded'}
+				];
+
+		</cfscript>
 
 	</cfsilent>
 
@@ -142,40 +161,36 @@
 								<option value="mura-right"<cfif listFind(attributes.params.class,'mura-right',' ')> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.right')#</option>
 								</select>
 						</div>
+
 						<div class="mura-control-group">
 							<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.width')#</label>
-
-
-<input
-	type="text"
-	name="somename"
-	class="mura-slider"
-	data-slider-ticks="[1, 2, 3]"
-	data-slider-ticks-labels='["short", "medium", "long"]'
-	data-slider-min="1"
-	data-slider-max="3"
-	data-slider-step="1"
-	data-slider-value="3"
-	data-slider-tooltip="hide"
->
-
-							<select name="width">
-								<option value="">--</option>
-								<option value="mura-one"<cfif listFind(attributes.params.class,'mura-one',' ')> selected</cfif>>One Twelfth</option>
-								<option value="mura-two"<cfif listFind(attributes.params.class,'mura-two',' ')> selected</cfif>>One Sixth</option>
-								<option value="mura-three"<cfif listFind(attributes.params.class,'mura-three',' ')> selected</cfif>>One Fourth</option>
-								<option value="mura-four"<cfif listFind(attributes.params.class,'mura-four',' ')> selected</cfif>>One Third</option>
-								<option value="mura-five"<cfif listFind(attributes.params.class,'mura-five',' ')> selected</cfif>>Five Twelfths</option>
-								<option value="mura-six"<cfif listFind(attributes.params.class,'mura-six',' ')> selected</cfif>>One Half</option>
-								<option value="mura-seven"<cfif listFind(attributes.params.class,'mura-seven',' ')> selected</cfif>>Seven Twelfths</option>
-								<option value="mura-eight"<cfif listFind(attributes.params.class,'mura-eight',' ')> selected</cfif>>Two Thirds</option>
-								<option value="mura-nine"<cfif listFind(attributes.params.class,'mura-nine',' ')> selected</cfif>>Three Fourths</option>
-								<option value="mura-ten"<cfif listFind(attributes.params.class,'mura-ten',' ')> selected</cfif>>Five Sixths</option>
-								<option value="mura-eleven"<cfif listFind(attributes.params.class,'mura-eleven',' ')> selected</cfif>>Eleven Twelfths</option>
-								<option value="mura-twelve"<cfif listFind(attributes.params.class,'mura-twelve',' ')> selected</cfif>>Full</option>
-								<option value="mura-expanded"<cfif listFind(attributes.params.class,'mura-expanded',' ')> selected</cfif>>Expanded</option>
+							<cfset attributes.positionlabels = ''>
+							<cfset attributes.positionvalues = ''>
+							<select name="width" id="objectwidthsel">
+								<cfloop from="1" to="#arrayLen(attributes.positionoptions)#" index="i">
+									<cfset p = attributes.positionoptions[i]>
+									<option value="#p['value']#"<cfif listFind(attributes.params.class,'#p['value']#',' ')> selected</cfif>>#p['label']#</option>
+									<cfset l = "'#p["label"]#'">
+									<cfset v = "'#p["value"]#'">
+									<cfset attributes.positionLabels = listAppend(attributes.positionlabels, l)>
+									<cfset attributes.positionValues = listAppend(attributes.positionvalues, v)>									
+								</cfloop>
 							</select>
 						</div>
+
+<!--- todo: bootstrap slider --->
+<!--- 						<input
+							type="text"
+							data-slider-id="objectwidthslider"
+							name="objectwidthslider"
+							class="mura-rangeslider"
+							data-slider-ticks="[0,1,2,3,4,5,6,7,8,9,10,11,12,13]"
+							data-slider-ticks-labels="'[#attributes.positionlabels#]'"
+							data-slider-ticks-tooltip="true"
+							data-slider-tooltip="hide"
+							data-slider-valuefield="##objectwidthsel"
+						> --->
+
 						<cfif len(contentcontainerclass)>
 							<div class="mura-control-group constraincontentcontainer" style='display:none;'>
 									<label>Constrain Content</label>
@@ -469,10 +484,11 @@
 			});
 
 			// range sliders
-			var rangeSlider = $("input.mura-slider").bootstrapSlider();
-			rangeSlider.on('change',function(targetEl){
+			var rangeSlider = $("input.mura-rangeslider").bootstrapSlider();
+			rangeSlider.on('change',function(){
 				var v = rangeSlider.bootstrapSlider('getValue');
-				$(targetEl).val(v);
+				var targetEl = $(this).attr('data-slider-valuefield');
+				$(targetEl).val(v).hide();
 			});
 
 			// colorpicker
