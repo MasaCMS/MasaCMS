@@ -38,8 +38,14 @@
 		<cfparam name="attributes.params.isbodyobject" default="false">
 
 		<!--- todo: handle error if these don't exist in contentRenderer.cfc --->
-		<cfparam name="request.textcoloroptions" default="#$.getContentRenderer().textColorOptions#">
-		<cfparam name="request.bgcoloroptions" default="#$.getContentRenderer().backgroundColorOptions#">
+		<cfparam name="request.textcoloroptions" default="">
+		<cfparam name="request.backgroundcoloroptions" default="">
+		<cfif structKeyExists($.getContentRenderer(),'textColorOptions')>
+			<cfset request.textColorOptions = $.getContentRenderer().textColorOptions>
+		</cfif>
+		<cfif structKeyExists($.getContentRenderer(),'backgroundColorOptions')>
+			<cfset request.backgroundColorOptions = $.getContentRenderer().backgroundColorOptions>
+		</cfif>
 		
 		<cfset contentcontainerclass=esapiEncode("javascript",$.getContentRenderer().expandedContentContainerClass)>
 
