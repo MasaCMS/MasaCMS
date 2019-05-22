@@ -205,12 +205,12 @@
 					<div class="mura-control-group">
 						<!--- todo: rbkey for these labels, options and placeholders--->
 						<label>Background Color</label>
-						<cfif isArray(request.bgcoloroptions) and arrayLen(request.bgcoloroptions)>
+						<cfif isArray(request.backgroundcoloroptions) and arrayLen(request.backgroundcoloroptions)>
 							<select id="rowbackgroundcolorsel" name="backgroundColorSel" class="objectParam">
 								<option value=""<cfif attributes.params.backgroundcolorsel eq ''> 
 							selected</cfif>>None</option>
-								<cfloop from="1" to="#arrayLen(request.bgcoloroptions)#" index="i">
-									<cfset c = request.bgcoloroptions[i]>
+								<cfloop from="1" to="#arrayLen(request.backgroundcoloroptions)#" index="i">
+									<cfset c = request.backgroundcoloroptions[i]>
 									<option value="#c['value']#"<cfif attributes.params.backgroundcolorsel eq c['value']> 
 							selected</cfif> style="background-color:#c['value']#;">#c['name']#</option>
 								</cfloop>
@@ -218,7 +218,7 @@
 							selected</cfif>>Custom</option>
 							</select>
 						</cfif>
-						<div class="input-group mura-colorpicker" id="rowbackgroundcustom" style="<cfif isArray(request.bgcoloroptions) and arrayLen(request.bgcoloroptions)>display: none;</cfif>">
+						<div class="input-group mura-colorpicker" id="rowbackgroundcustom" style="<cfif isArray(request.backgroundcoloroptions) and arrayLen(request.backgroundcoloroptions)>display: none;</cfif>">
 							<span class="input-group-addon"><i class="mura-colorpicker-swatch"></i></span>
 							<input type="text" id="rowbackgroundcolor" name="backgroundColor" placeholder="Select Color" class="objectStyle" autocomplete="off" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundcolor)#">
 						</div>
@@ -256,28 +256,9 @@
 
 					<div class="mura-control-group mura-ui-grid css-bg-option" style="display:none;">
 						<label>Background Position</label>
-						<div class="row mura-ui-row">
-							<div class="col-xs-4"><label class="right">Vertical</label></div>
-							<div class="col-xs-8">
-								<div class="mura-input-group">
-									<label>
-										<input type="text" id="rowbackgroundpositionxnum" name="rowBackgroundPositionxNum" class="numeric" placeholder="" value="<cfif val(esapiEncode('html_attr',attributes.params.cssstyles.backgroundpositionx))>#val(esapiEncode('html_attr',attributes.params.cssstyles.backgroundpositionx))#</cfif>" style="display: none;">
-									</label>
-
-									<select id="rowbackgroundpositionx" name="rowBackgroundPositionX" class="objectParam" data-numfield="rowbackgroundpositionxnum">
-										<cfloop list="Left,Center,Right,%,px" index="p">
-											<option value="#lcase(p)#"<cfif attributes.params.cssstyles.backgroundpositionx contains p> selected</cfif>>#p#</option>
-										</cfloop>
-									</select>
-									
-									<input type="hidden" id="rowbackgroundpositionxval" name="backgroundPositionX" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundpositionx)#">
-
-								</div>
-							</div>
-						</div>
 
 						<div class="mura-ui-row">
-							<div class="col-xs-4"><label class="right">Horizontal</label></div>
+							<div class="col-xs-4"><label class="right ui-nested">Vertical</label></div>
 							<div class="col-xs-8">
 								<div class="mura-input-group">
 									<label>
@@ -294,6 +275,26 @@
 
 								</div>
 							</div>							
+						</div>
+
+						<div class="row mura-ui-row">
+							<div class="col-xs-4"><label class="right ui-nested">Horizontal</label></div>
+							<div class="col-xs-8">
+								<div class="mura-input-group">
+									<label>
+										<input type="text" id="rowbackgroundpositionxnum" name="rowBackgroundPositionxNum" class="numeric" placeholder="" value="<cfif val(esapiEncode('html_attr',attributes.params.cssstyles.backgroundpositionx))>#val(esapiEncode('html_attr',attributes.params.cssstyles.backgroundpositionx))#</cfif>" style="display: none;">
+									</label>
+
+									<select id="rowbackgroundpositionx" name="rowBackgroundPositionX" class="objectParam" data-numfield="rowbackgroundpositionxnum">
+										<cfloop list="Left,Center,Right,%,px" index="p">
+											<option value="#lcase(p)#"<cfif attributes.params.cssstyles.backgroundpositionx contains p> selected</cfif>>#p#</option>
+										</cfloop>
+									</select>
+									
+									<input type="hidden" id="rowbackgroundpositionxval" name="backgroundPositionX" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundpositionx)#">
+
+								</div>
+							</div>
 						</div>
 					</div>
 
