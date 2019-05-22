@@ -238,9 +238,9 @@
 						MuraInlineEditor.isDirty=true;
 					}
 
-					Mura.resetAsyncObject(item.node);
+					Mura.resetAsyncObject(item.node,false);
 					item.addClass('mura-active');
-					Mura.processAsyncObject(item.node).then(function(){
+					Mura.processAsyncObject(item.node,false).then(function(){
 						closeFrontEndToolsModal();
 						if(parameters.reinit && !item.data('notconfigurable')){
 							openFrontEndToolsModal(item.node);

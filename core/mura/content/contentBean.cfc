@@ -1274,16 +1274,23 @@ component extends="mura.bean.beanExtendable" entityName="content" table="tconten
 		return this;
 	}
 
-	public function getEditUrl(required boolean compactDisplay="false", tab, required complete="false", required hash="false") output=false {
+	//This is duplicated in the contentNavBean
+	public function getEditUrl(required boolean compactDisplay="false", tab, required complete="false", required hash="false", required instanceid='') output=false {
 		var returnStr="";
 		var topID="00000000000000000000000000000000001";
-		if ( listFindNoCase("Form,Component", variables.instance.type) ) {
+		if ( listFindNoCase("Form,Component", getValue('type')) ) {
 			topID=getValue('moduleid');
 		}
 		if ( arguments.compactDisplay ) {
 			arguments.compactDisplay='true';
 		}
-		returnStr= "#variables.configBean.getAdminPath(complete=arguments.complete)#/?muraAction=cArch.edit&contenthistid=#esapiEncode('url',getContentHistId())#&contentid=#esapiEncode('url',getContentId())#&type=#esapiEncode('url',getValue('type'))#&siteid=#esapiEncode('url',getValue('siteid'))#&topid=#esapiEncode('url',topID)#&parentid=#esapiEncode('url',getValue('parentid'))#&moduleid=#esapiEncode('url',getValue('moduleid'))#&compactdisplay=#esapiEncode('url',arguments.compactdisplay)#";
+
+		if(len(arguments.instanceid)){
+			returnStr= "#getBean('configBean').getAdminPath(complete=arguments.complete)#/?muraAction=cArch.editLive&contentId=#esapiEncode('url',getValue('contentid'))#&type=#esapiEncode('url',getValue('type'))#&siteId=#esapiEncode('url',getValue('siteid'))#&instanceid=#esapiEncode('url',arguments.instanceid)#&compactDisplay=#esapiEncode('url',arguments.compactdisplay)#";
+		} else {
+			returnStr= "#getBean('configBean').getAdminPath(complete=arguments.complete)#/?muraAction=cArch.edit&contenthistid=#esapiEncode('url',getValue('contenthistid'))#&contentid=#esapiEncode('url',getValue('contentid'))#&type=#esapiEncode('url',getValue('type'))#&siteid=#esapiEncode('url',getValue('siteid'))#&topid=#esapiEncode('url',topID)#&parentid=#esapiEncode('url',getValue('parentid'))#&moduleid=#esapiEncode('url',getValue('moduleid'))#&compactdisplay=#esapiEncode('url',arguments.compactdisplay)#";
+		}
+
 		if ( structKeyExists(arguments,"tab") ) {
 			returnStr=returnStr & "##" & arguments.tab;
 		}
