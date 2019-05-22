@@ -348,13 +348,14 @@
 					$('#rowpaddingall').val(t);
 				} else {
 					$('#rowpaddingall').val('');
+					$('#rowpaddingadvanced').show();
 				}
 				$('#rowpaddingtopval').trigger('change');
 			}	
 
 			// run on load
 			updateRowPadding();			
-
+ 
 			function updateRowMargin(){
 				var t = $('#rowmargintop').val().replace(/[^0-9]/g,'');
 				var r = $('#rowmarginright').val().replace(/[^0-9]/g,'');
@@ -369,6 +370,8 @@
 					$('#rowmarginall').val(t);
 				} else {
 					$('#rowmarginall').val('');
+					$('#rowmarginadvanced').show();
+
 				}
 				$('#rowmargintopval').trigger('change');
 			}	

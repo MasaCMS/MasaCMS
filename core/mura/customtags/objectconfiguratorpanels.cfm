@@ -32,7 +32,7 @@
 
 	for (p in attributes.globalparams){
 		param name="attributes.params.cssstyles.#p#" default="";
-		param name="attributes.params.metcssstyles.#p#" default="";
+		param name="attributes.params.metacssstyles.#p#" default="";
 		param name="attributes.params.contentcssstyles.#p#" default="";
 	}
 </cfscript>
@@ -57,14 +57,14 @@
 							<label>
 								CSS ID
 							</label>
-							<input name="cssid" class="objectStyle" type="text" value="#esapiEncode('html_attr',attributes.params.cssid)#" maxlength="255">
+							<input name="cssid" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.cssid)#" maxlength="255">
 						</div>
 						<div class="mura-control-group">
 							<label>
 								CSS Class
 							</label>
-							<input name="cssclass" class="objectStyle" type="text" value="#esapiEncode('html_attr',attributes.params.cssclass)#" maxlength="255">
-							<input name="class" type="hidden" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.class)#"/>
+							<input name="cssclass" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.cssclass)#" maxlength="255">
+							<input name="class" type="hidden" class="objectParam" value="#esapiEncode('html_attr',attributes.params.class)#"/>
 						</div>
 					</cfif>	
 
@@ -131,7 +131,7 @@
 						</div>	
 	
 					</div>
-					
+
 					<!--- padding --->
 					<div class="mura-control-group mura-ui-grid">
 						<!--- todo: rbkey for padding and placeholders --->
