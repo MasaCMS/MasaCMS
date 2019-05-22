@@ -333,6 +333,49 @@
 				setPlacementVisibility();
 			});
 
+<!--- todo: merge these into a global method for all directional attributes (padding, margin on all) --->
+			function updateRowPadding(){
+				var t = $('#rowpaddingtop').val().replace(/[^0-9]/g,'');
+				var r = $('#rowpaddingright').val().replace(/[^0-9]/g,'');
+				var b = $('#rowpaddingbottom').val().replace(/[^0-9]/g,'');
+				var l =$('#rowpaddingleft').val().replace(/[^0-9]/g,'');
+				var u = $('#rowpaddinguom').val();
+				if (t.length){ $('#rowpaddingtopval').val(t + u); } else { $('#rowpaddingtopval').val(''); }
+				if (r.length){ $('#rowpaddingrightval').val(r + u); } else { $('#rowpaddingrightval').val(''); }
+				if (b.length){ $('#rowpaddingbottomval').val(b + u); } else { $('#rowpaddingbottomval').val(''); }
+				if (l.length){ $('#rowpaddingleftval').val(l + u); } else { $('#rowpaddingleftval').val(''); }
+				if (t == r && r == b & b == l){
+					$('#rowpaddingall').val(t);
+				} else {
+					$('#rowpaddingall').val('');
+				}
+				$('#rowpaddingtopval').trigger('change');
+			}	
+
+			// run on load
+			updateRowPadding();			
+
+			function updateRowMargin(){
+				var t = $('#rowmargintop').val().replace(/[^0-9]/g,'');
+				var r = $('#rowmarginright').val().replace(/[^0-9]/g,'');
+				var b = $('#rowmarginbottom').val().replace(/[^0-9]/g,'');
+				var l =$('#rowmarginleft').val().replace(/[^0-9]/g,'');
+				var u = $('#rowmarginuom').val();
+				if (t.length){ $('#rowmargintopval').val(t + u); } else { $('#rowmargintopval').val(''); }
+				if (r.length){ $('#rowmarginrightval').val(r + u); } else { $('#rowmarginrightval').val(''); }
+				if (b.length){ $('#rowmarginbottomval').val(b + u); } else { $('#rowmarginbottomval').val(''); }
+				if (l.length){ $('#rowmarginleftval').val(l + u); } else { $('#rowmarginleftval').val(''); }
+				if (t == r && r == b & b == l){
+					$('#rowmarginall').val(t);
+				} else {
+					$('#rowmarginall').val('');
+				}
+				$('#rowmargintopval').trigger('change');
+			}	
+
+			// run on load
+			updateRowMargin();			
+
 			$('#rowpaddingall').on('keyup', function(){
 				var v = $('#rowpaddingall').val().replace(/[^0-9]/g,'');
 				$('#rowpaddingadvanced').hide();
@@ -349,6 +392,26 @@
 			$('#rowpaddinguom').change(function(){
 				updateRowPadding();
 			})
+
+			$('#rowmarginall').on('keyup', function(){
+				var v = $('#rowmarginall').val().replace(/[^0-9]/g,'');
+				$('#rowmarginadvanced').hide();
+				$('#rowmargintop').val(v);
+				$('#rowmarginleft').val(v);
+				$('#rowmarginright').val(v);
+				$('#rowmarginbottom').val(v);
+			})
+
+			$('#rowmargintop,#rowmarginright,#rowmarginbottom,#rowmarginleft,#rowmarginall').on('keyup', function(){
+				updateRowMargin();
+			})
+
+			$('#rowmarginuom').change(function(){
+				updateRowMargin();
+			})			
+
+
+
 
 			$('#rowbackgroundpositiony,#rowbackgroundpositionynum').on('change',function(){
 				var el = $('#rowbackgroundpositionyval');
@@ -380,27 +443,6 @@
 				var v = $(this).val().replace(/[^0-9]/g,'');
 				$(this).val(v);
 			});
-
-			function updateRowPadding(){
-				var t = $('#rowpaddingtop').val().replace(/[^0-9]/g,'');
-				var r = $('#rowpaddingright').val().replace(/[^0-9]/g,'');
-				var b = $('#rowpaddingbottom').val().replace(/[^0-9]/g,'');
-				var l =$('#rowpaddingleft').val().replace(/[^0-9]/g,'');
-				var u = $('#rowpaddinguom').val();
-				if (t.length){ $('#rowpaddingtopval').val(t + u); } else { $('#rowpaddingtopval').val(''); }
-				if (r.length){ $('#rowpaddingrightval').val(r + u); } else { $('#rowpaddingrightval').val(''); }
-				if (b.length){ $('#rowpaddingbottomval').val(b + u); } else { $('#rowpaddingbottomval').val(''); }
-				if (l.length){ $('#rowpaddingleftval').val(l + u); } else { $('#rowpaddingleftval').val(''); }
-				if (t == r && r == b & b == l){
-					$('#rowpaddingall').val(t);
-				} else {
-					$('#rowpaddingall').val('');
-				}
-				$('#rowpaddingtopval').trigger('change');
-			}	
-
-			// run on load
-			updateRowPadding();
 
 			$('#rowbackgroundpositionx,#rowbackgroundpositiony').on('change',function(){
 				var v = $(this).val();

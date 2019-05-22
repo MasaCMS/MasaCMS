@@ -68,6 +68,70 @@
 						</div>
 					</cfif>	
 
+					<!--- margin --->
+					<div class="mura-control-group mura-ui-grid">
+						<!--- todo: rbkey for margin and placeholders --->
+						<label>Margin</label>
+						
+						<div class="row mura-ui-row">
+							<div class="col-xs-8 center">
+								<div class="mura-input-group">
+									<label class="mura-serial">
+										<input type="text" name="margin" id="rowmarginall" placeholder="All" class="numeric serial" value="<cfif len(trim(attributes.params.cssstyles.marginall))>#val(esapiEncode('html_attr',attributes.params.cssstyles.marginall))#</cfif>">
+									</label>
+									<select id="rowmarginuom" name="marginuom">
+										<cfloop list="px,%,em,rem" index="u">
+											<option value="#u#"<cfif attributes.params.cssstyles.marginuom eq u> selected</cfif>>#u#</option>
+										</cfloop>
+									</select>
+								</div>	
+							</div>
+							<div class="col-xs-4">
+								<a class="mura-ui-link" data-reveal="rowmarginadvanced" href="##">Advanced</a>
+							</div>
+						</div>
+
+						<div id="rowmarginadvanced" class="mura-ui-inset" style="display: none;">
+							<div class="row mura-ui-row">
+								<div class="col-xs-3"></div>
+								<div class="col-xs-6">
+									<label class="mura-serial">
+										<input type="text" name="rowMarginTop" id="rowmargintop" placeholder="Top" class="numeric serial" value="<cfif len(trim(attributes.params.cssstyles.margintop))>#val(esapiEncode('html_attr',attributes.params.cssstyles.margintop))#</cfif>">
+									</label>
+									<input type="hidden" name="marginTop" id="rowmargintopval" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.margintop)#">
+								</div>
+								<div class="col-xs-3"></div>
+							</div>
+								
+							<div class="row mura-ui-row">
+								<div class="col-xs-6">
+									<label class="mura-serial">
+										<input type="text" name="rowMarginLeft" id="rowmarginleft" placeholder="Left" class="numeric serial" value="<cfif len(trim(attributes.params.cssstyles.marginleft))>#val(esapiEncode('html_attr',attributes.params.cssstyles.marginleft))#</cfif>">
+									</label>
+									<input type="hidden" name="marginLeft" id="rowmarginleftval" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.marginleft)#">
+								</div>
+								<div class="col-xs-6">
+									<label class="mura-serial">
+										<input type="text" name="rowMarginRight" id="rowmarginright" placeholder="Right" class="numeric serial" value="<cfif len(trim(attributes.params.cssstyles.marginright))>#val(esapiEncode('html_attr',attributes.params.cssstyles.marginright))#</cfif>">
+									</label>
+									<input type="hidden" name="marginRight" id="rowmarginrightval" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.marginright)#">
+								</div>
+							</div>
+
+							<div class="row mura-ui-row">
+								<div class="col-xs-3"></div>
+								<div class="col-xs-6">
+									<label class="mura-serial">
+										<input type="text" name="rowMarginBottom" id="rowmarginbottom" placeholder="Bottom" class="numeric serial" value="<cfif len(trim(attributes.params.cssstyles.marginbottom))>#val(esapiEncode('html_attr',attributes.params.cssstyles.marginbottom))#</cfif>">
+									</label>
+									<input type="hidden" name="marginBottom" id="rowmarginbottomval" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.marginbottom)#">
+								</div>
+								<div class="col-xs-3"></div>
+							</div>
+						</div>	
+	
+					</div>
+					
 					<!--- padding --->
 					<div class="mura-control-group mura-ui-grid">
 						<!--- todo: rbkey for padding and placeholders --->
