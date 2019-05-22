@@ -238,6 +238,33 @@ component extends="mura.cfobject" output="false" hint="This provides a proxy to 
 		return it;
 	}
 
+	//This is duplicated in the contentBean
+	public function getEditUrl(required boolean compactDisplay="false", tab, required complete="false", required hash="false", required instanceid='') output=false {
+		var returnStr="";
+		var topID="00000000000000000000000000000000001";
+		if ( listFindNoCase("Form,Component", getValue('type')) ) {
+			topID=getValue('moduleid');
+		}
+		if ( arguments.compactDisplay ) {
+			arguments.compactDisplay='true';
+		}
+
+		if(len(arguments.instanceid)){
+			returnStr= "#getBean('configBean').getAdminPath(complete=arguments.complete)#/?muraAction=cArch.editLive&contentId=#esapiEncode('url',getValue('contentid'))#&type=#esapiEncode('url',getValue('type'))#&siteId=#esapiEncode('url',getValue('siteid'))#&instanceid=#esapiEncode('url',arguments.instanceid)#&compactDisplay=#esapiEncode('url',arguments.compactdisplay)#";
+		} else {
+			returnStr= "#getBean('configBean').getAdminPath(complete=arguments.complete)#/?muraAction=cArch.edit&contenthistid=#esapiEncode('url',getValue('contenthistid'))#&contentid=#esapiEncode('url',getValue('contentid'))#&type=#esapiEncode('url',getValue('type'))#&siteid=#esapiEncode('url',getValue('siteid'))#&topid=#esapiEncode('url',topID)#&parentid=#esapiEncode('url',getValue('parentid'))#&moduleid=#esapiEncode('url',getValue('moduleid'))#&compactdisplay=#esapiEncode('url',arguments.compactdisplay)#";
+		}
+
+		if ( structKeyExists(arguments,"tab") ) {
+			returnStr=returnStr & "##" & arguments.tab;
+		}
+		if ( arguments.hash ) {
+			var redirectid=getBean('utility').createRedirectId(returnStr);
+			returnStr=getBean('settingsManager').getSite(getValue('siteid')).getContentRenderer().createHREF(complete=arguments.complete,filename=redirectid);
+		}
+		return returnStr;
+	}
+
 	public function hasImage(usePlaceholder="true") {
 		return len(getValue('fileID')) && listFindNoCase('jpg,jpeg,png,gif,svg',getValue('fileEXT')) || arguments.usePlaceholder && len(variables.settingsManager.getSite(getValue('siteid')).getPlaceholderImgID());
 	}
