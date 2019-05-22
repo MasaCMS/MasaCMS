@@ -198,73 +198,21 @@
 
 			var inited=false;
 
-
-			<!--- todo: remove this if not used --->
-			/*
-			$('#backgroundImageRaw').on('change',function(){
-					$('#backgroundImage').val('url(' + $(this).val() + ')').trigger('change');
-			})
-
-			$('#backgroundImage').on('change',function(){
-				if($(this).val()){
-					$('#backgroundImageClear').hide();
-				} else {
-					$('#backgroundImageClear').show();
-				}
-			});
-
-			$('#backgroundImageClear').on('click',function(){
-					$('#backgroundImage').val('').trigger('change');
-			})
-			*/
-
 			function setPlacementVisibility(){
 				var classInput=$('input[name="class"]');
-
 				classInput.val('');
 
 	  			var alignment=$('select[name="alignment"]');
-
 	  			classInput.val(alignment.val());
-					/*
-	  			if(alignment.val()=='mura-left'){
-	  				$('#offsetcontainer').show();
-	  			} else {
-	  				$('#offsetcontainer').hide();
-	  			}
-					*/
 
 	  			var width=$('select[name="width"]');
+  				if(classInput.val() ){
+  					classInput.val(classInput.val() + ' ' + width.val());
+  				} else {
+  					classInput.val(width.val());
+  				}
+					classInput.val($.trim(classInput.val()));
 
-	  			//if(width.val()){
-	  				if(classInput.val() ){
-	  					classInput.val(classInput.val() + ' ' + width.val());
-	  				} else {
-	  					classInput.val(width.val());
-	  				}
-
-						classInput.val($.trim(classInput.val()));
-
-				<!--- todo: remove if not used --->
-					/*
-	  			if(alignment.val()=='mura-left'){
-		  			var offset=$('select[name="offset"]');
-
-		  			if(offset.val()){
-		  				if(classInput.val() ){
-		  					classInput.val(classInput.val() + ' ' + offset.val());
-		  				} else {
-		  					classInput.val(offset.val());
-		  				}
-
-		  				if(inited && typeof updateDraft == 'function'){
-		  					updateDraft();
-		  				}
-
-		  			}
-		  		}
-					*/
-					//}
 		  		var contentcssclass=$('input[name="contentcssclass"]');
 					var expandedContentContainerClass='<cfoutput>#contentcontainerclass#</cfoutput>';
 					var contentcssclassArray=contentcssclass.val().split(' ');
@@ -352,7 +300,8 @@
 				setPlacementVisibility();
 			});
 
-<!--- todo: merge these into a global method for all directional attributes (padding, margin on all) --->
+			<!--- todo: merge these into a global method for all directional attributes (padding, margin on all) --->
+			// padding
 			function updateRowPadding(){
 				var t = $('#rowpaddingtop').val().replace(/[^0-9]/g,'');
 				var r = $('#rowpaddingright').val().replace(/[^0-9]/g,'');
@@ -372,9 +321,26 @@
 				$('#rowpaddingtopval').trigger('change');
 			}	
 
-			// run on load
+			$('#rowpaddingall').on('keyup', function(){
+				var v = $('#rowpaddingall').val().replace(/[^0-9]/g,'');
+				$('#rowpaddingadvanced').hide();
+				$('#rowpaddingtop').val(v);
+				$('#rowpaddingleft').val(v);
+				$('#rowpaddingright').val(v);
+				$('#rowpaddingbottom').val(v);
+			})
+
+			$('#rowpaddingtop,#rowpaddingright,#rowpaddingbottom,#rowpaddingleft,#rowpaddingall').on('keyup', function(){
+				updateRowPadding();
+			})
+
+			$('#rowpaddinguom').on('change',function(){
+				updateRowPadding();
+			});
+
 			updateRowPadding();			
  
+ 			// margin
 			function updateRowMargin(){
 				var t = $('#rowmargintop').val().replace(/[^0-9]/g,'');
 				var r = $('#rowmarginright').val().replace(/[^0-9]/g,'');
@@ -395,26 +361,6 @@
 				$('#rowmargintopval').trigger('change');
 			}	
 
-			// run on load
-			updateRowMargin();			
-
-			$('#rowpaddingall').on('keyup', function(){
-				var v = $('#rowpaddingall').val().replace(/[^0-9]/g,'');
-				$('#rowpaddingadvanced').hide();
-				$('#rowpaddingtop').val(v);
-				$('#rowpaddingleft').val(v);
-				$('#rowpaddingright').val(v);
-				$('#rowpaddingbottom').val(v);
-			})
-
-			$('#rowpaddingtop,#rowpaddingright,#rowpaddingbottom,#rowpaddingleft,#rowpaddingall').on('keyup', function(){
-				updateRowPadding();
-			})
-
-			$('#rowpaddinguom').on('change',function(){
-				updateRowPadding();
-			});
-
 			$('#rowmarginall').on('keyup', function(){
 				var v = $('#rowmarginall').val().replace(/[^0-9]/g,'');
 				$('#rowmarginadvanced').hide();
@@ -432,6 +378,9 @@
 				updateRowMargin();
 			});			
 
+			updateRowMargin();			
+
+			// background color
 			function updateRowBgColor(v){
 				var swatchColor = v;
 				var swatchEl = $('#rowbackgroundcustom').find('i.mura-colorpicker-swatch');
@@ -455,12 +404,22 @@
 
 			updateRowBgColor($('#rowbackgroundcolorsel').val());
 
-			$('.mura-colorpicker input[type=text]').on('keyup',function(){
-				if ($(this).val().length == 0){
-					$(this).parents('.mura-colorpicker').find('.mura-colorpicker-swatch').css('background-color','transparent');
+			// background image
+			$('#rowbackgroundimageurl').on('change',function(){
+				var v = $(this).val();
+				var str = "";
+				if (v.length > 3){
+					str = "url('" + v + "')";
+					$('.css-bg-option').show();
+				} else {
+					$('.css-bg-option').hide();
 				}
-			})
+				$('#rowbackgroundimage').val(str).trigger('change');
+			});
 
+			$('#rowbackgroundimageurl').trigger('change');		
+
+			// background position x/y
 			function updatePositionSelection(sel){
 				var v = $(sel).val();
 				var el = $(sel).attr('data-numfield');
@@ -499,35 +458,29 @@
 				updatePositionSelection($(this));
 			});
 
-
+			// numeric input - select on focus
 			$('#configuratorContainer input.numeric').on('click', function(){
 				$(this).select();
 			});
+			// numeric input - restrict value
 			$('#configuratorContainer input.numeric').on('keyup', function(){
 				var v = $(this).val().replace(/[^0-9]/g,'');
 				$(this).val(v);
 			});
 
-			$('#rowbackgroundimageurl').on('change',function(){
-				var v = $(this).val();
-				var str = "";
-				if (v.length > 3){
-					str = "url('" + v + "')";
-					$('.css-bg-option').show();
-				} else {
-					$('.css-bg-option').hide();
-				}
-				$('#rowbackgroundimage').val(str).trigger('change');
-			});
-
-			$('#rowbackgroundimageurl').trigger('change');		
-
-			// range slidersd
+			// range sliders
 			var rangeSlider = $("input.mura-slider").bootstrapSlider();
 			rangeSlider.on('change',function(targetEl){
 				var v = rangeSlider.bootstrapSlider('getValue');
 				$(targetEl).val(v);
 			});
+
+			// colorpicker
+			$('.mura-colorpicker input[type=text]').on('keyup',function(){
+				if ($(this).val().length == 0){
+					$(this).parents('.mura-colorpicker').find('.mura-colorpicker-swatch').css('background-color','transparent');
+				}
+			})
 
 			<!--- todo: are we using bigui here? --->
 			<!---
