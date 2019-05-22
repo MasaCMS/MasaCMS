@@ -144,6 +144,21 @@
 						</div>
 						<div class="mura-control-group">
 							<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.width')#</label>
+
+
+<input
+	type="text"
+	name="somename"
+	class="mura-slider"
+	data-slider-ticks="[1, 2, 3]"
+	data-slider-ticks-labels='["short", "medium", "long"]'
+	data-slider-min="1"
+	data-slider-max="3"
+	data-slider-step="1"
+	data-slider-value="3"
+	data-slider-tooltip="hide"
+>
+
 							<select name="width">
 								<option value="">--</option>
 								<option value="mura-one"<cfif listFind(attributes.params.class,'mura-one',' ')> selected</cfif>>One Twelfth</option>
@@ -493,7 +508,6 @@
 				$(this).val(v);
 			});
 
-
 			$('#rowbackgroundimageurl').on('change',function(){
 				var v = $(this).val();
 				var str = "";
@@ -508,7 +522,13 @@
 
 			$('#rowbackgroundimageurl').trigger('change');		
 
-			
+			// range slidersd
+			var rangeSlider = $("input.mura-slider").bootstrapSlider();
+			rangeSlider.on('change',function(targetEl){
+				var v = rangeSlider.bootstrapSlider('getValue');
+				$(targetEl).val(v);
+			});
+
 			<!--- todo: are we using bigui here? --->
 			<!---
 			$('#configuratorContainer .bigui__launch').on('click', function(e){
