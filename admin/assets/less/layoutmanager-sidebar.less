@@ -273,6 +273,7 @@ body.configurator-wrapper {
 		a.mura-ui-link{ 
 			color: @mura-red; 
 		}
+
 		a.mura-ui-link:link,
 		a.mura-ui-link:visited,
 		a.mura-ui-link:hover,
@@ -287,6 +288,14 @@ body.configurator-wrapper {
 		.container{
 			padding-left: 0;
 			padding-right: 0;
+		}
+
+		.right{
+			text-align: right;
+		}
+		
+		label.right{
+			padding-right: 1em;
 		}
 
 		img + div,
@@ -487,7 +496,6 @@ body.configurator-wrapper {
 			label {
 				display: block;
 				margin-bottom: 0;
-				text-align: center;
 
 				input[type=text] {
 						height: @configInputH;
@@ -495,6 +503,11 @@ body.configurator-wrapper {
 
 				&.mura-serial{
 						width: 52px;
+				}
+
+				&.ui-nested{
+					font-size: 13px;
+					margin-top: 4px;
 				}
 	
 			} /* /label */
@@ -550,6 +563,19 @@ body.configurator-wrapper {
 
 		}		/* /.mura-ui-row */
 		
+		.css-bg-option{
+		
+			.mura-ui-row{
+				padding-top: 4px; 
+				
+				.mura-input-group .nice-select{
+					min-width: 102px;
+				}
+		
+			}
+		
+		} /* /.css-bg-option */
+
 		.mura-control-group {
 			margin-bottom: 8px;
 
