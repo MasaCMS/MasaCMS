@@ -14,6 +14,13 @@
 		,'backgroundrepeat'
 		,'backgroundsize'
 		,'backgroundvideo'
+		,'margin'
+		,'margintop'
+		,'marginright'
+		,'marginbottom'
+		,'marginleft'
+		,'marginall'
+		,'marginuom'		
 		,'padding'
 		,'paddingtop'
 		,'paddingright'
@@ -124,6 +131,8 @@
 						</div>	
 	
 					</div>
+
+
 
 					<!--- background --->
 					<div class="mura-control-group">

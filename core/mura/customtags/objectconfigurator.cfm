@@ -169,54 +169,6 @@
 </div> <!--- /end availableObjectContainer --->
 
 	<script>
-		$(document).ready(function(){
-			$('#configuratorContainer input.numeric').on('click', function(){
-				$(this).select();
-			});
-			$('#configuratorContainer input.numeric').on('keyup', function(){
-				var v = $(this).val().replace(/[^0-9]/g,'');
-				$(this).val(v);
-			});
-
-			$('#rowbackgroundimageurl').on('change',function(){
-				var v = $(this).val();
-				var str = "";
-				if (v.length > 3){
-					str = "url('" + v + "')";
-					$('.css-bg-option').show();
-				} else {
-					$('.css-bg-option').hide();
-				}
-				$('#rowbackgroundimage').val(str).trigger('change');
-			});
-
-			$('#rowbackgroundimageurl').trigger('change');
-
-			$('#rowbackgroundpositionx,#rowbackgroundpositiony').on('change',function(){
-				var v = $(this).val();
-				var el = $(this).attr('data-numfield');
-				if (v == 'px' || v == '%'){
-					$('#' + el).show();
-				} else {
-					$('#' + el).hide();
-				}
-			});
-			
-			<!--- todo: are we using bigui here? --->
-			<!---
-			$('#configuratorContainer .bigui__launch').on('click', function(e){
-				var el=window.parent.$('body');
-				if(el.hasClass('mura-bigui-state__pushed--right')){
-					el.removeClass('mura-bigui-state__pushed--right');
-				} else {
-					el.addClass('mura-bigui-state__pushed--right');
-				}
-				e.preventDefault();
-			});
-			--->
-			
-		})
-
 		$(function(){
 
 			var inited=false;
@@ -240,27 +192,6 @@
 					$('#backgroundImage').val('').trigger('change');
 			})
 			*/
-
-			function updateRowPadding(){
-				var t = $('#rowpaddingtop').val().replace(/[^0-9]/g,'');
-				var r = $('#rowpaddingright').val().replace(/[^0-9]/g,'');
-				var b = $('#rowpaddingbottom').val().replace(/[^0-9]/g,'');
-				var l =$('#rowpaddingleft').val().replace(/[^0-9]/g,'');
-				var u = $('#rowpaddinguom').val();
-				if (t.length){ $('#rowpaddingtopval').val(t + u); } else { $('#rowpaddingtopval').val(''); }
-				if (r.length){ $('#rowpaddingrightval').val(r + u); } else { $('#rowpaddingrightval').val(''); }
-				if (b.length){ $('#rowpaddingbottomval').val(b + u); } else { $('#rowpaddingbottomval').val(''); }
-				if (l.length){ $('#rowpaddingleftval').val(l + u); } else { $('#rowpaddingleftval').val(''); }
-				if (t == r && r == b & b == l){
-					$('#rowpaddingall').val(t);
-				} else {
-					$('#rowpaddingall').val('');
-				}
-				$('#rowpaddingtopval').trigger('change');
-			}	
-
-			// run on load
-			updateRowPadding();
 
 			function setPlacementVisibility(){
 				var classInput=$('input[name="class"]');
@@ -440,6 +371,74 @@
 			});
 
 			$('#rowbackgroundpositionx,#rowbackgroundpositiony').trigger('change');
+
+
+			$('#configuratorContainer input.numeric').on('click', function(){
+				$(this).select();
+			});
+			$('#configuratorContainer input.numeric').on('keyup', function(){
+				var v = $(this).val().replace(/[^0-9]/g,'');
+				$(this).val(v);
+			});
+
+			function updateRowPadding(){
+				var t = $('#rowpaddingtop').val().replace(/[^0-9]/g,'');
+				var r = $('#rowpaddingright').val().replace(/[^0-9]/g,'');
+				var b = $('#rowpaddingbottom').val().replace(/[^0-9]/g,'');
+				var l =$('#rowpaddingleft').val().replace(/[^0-9]/g,'');
+				var u = $('#rowpaddinguom').val();
+				if (t.length){ $('#rowpaddingtopval').val(t + u); } else { $('#rowpaddingtopval').val(''); }
+				if (r.length){ $('#rowpaddingrightval').val(r + u); } else { $('#rowpaddingrightval').val(''); }
+				if (b.length){ $('#rowpaddingbottomval').val(b + u); } else { $('#rowpaddingbottomval').val(''); }
+				if (l.length){ $('#rowpaddingleftval').val(l + u); } else { $('#rowpaddingleftval').val(''); }
+				if (t == r && r == b & b == l){
+					$('#rowpaddingall').val(t);
+				} else {
+					$('#rowpaddingall').val('');
+				}
+				$('#rowpaddingtopval').trigger('change');
+			}	
+
+			// run on load
+			updateRowPadding();
+
+			$('#rowbackgroundpositionx,#rowbackgroundpositiony').on('change',function(){
+				var v = $(this).val();
+				var el = $(this).attr('data-numfield');
+				if (v == 'px' || v == '%'){
+					$('#' + el).show();
+				} else {
+					$('#' + el).hide();
+				}
+			});
+
+			$('#rowbackgroundimageurl').on('change',function(){
+				var v = $(this).val();
+				var str = "";
+				if (v.length > 3){
+					str = "url('" + v + "')";
+					$('.css-bg-option').show();
+				} else {
+					$('.css-bg-option').hide();
+				}
+				$('#rowbackgroundimage').val(str).trigger('change');
+			});
+
+			$('#rowbackgroundimageurl').trigger('change');		
+
+			
+			<!--- todo: are we using bigui here? --->
+			<!---
+			$('#configuratorContainer .bigui__launch').on('click', function(e){
+				var el=window.parent.$('body');
+				if(el.hasClass('mura-bigui-state__pushed--right')){
+					el.removeClass('mura-bigui-state__pushed--right');
+				} else {
+					el.addClass('mura-bigui-state__pushed--right');
+				}
+				e.preventDefault();
+			});
+			--->				
 
 			inited=true;
 		});
