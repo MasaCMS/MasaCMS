@@ -1,7 +1,8 @@
 <!--- todo: merge this into parent file objectconfigurator.cfm --->
 <cfscript>
 	param name="attributes.params.backgroundimageurl" default="";
-	param name="attributes.params.backgroundvideourl" default="";
+	param name="attributes.params.backgroundimageurl" default="";
+	param name="attributes.params.backgroundcolorsel" default="";
 	
 	attributes.globalparams = [
 		'backgroundcolor'
@@ -196,13 +197,24 @@
 	
 					</div>
 
-
-
 					<!--- background --->
 					<div class="mura-control-group">
 						<!--- todo: rbkey for these labels, options and placeholders--->
 						<label>Background Color</label>
-						<div class="input-group mura-colorpicker">
+						<cfif isArray(request.bgcoloroptions) and arrayLen(request.bgcoloroptions)>
+							<select id="rowbackgroundcolorsel" name="backgroundColorSel" class="objectParam">
+								<option value=""<cfif attributes.params.backgroundcolorsel eq ''> 
+							selected</cfif>>None</option>
+								<cfloop from="1" to="#arrayLen(request.bgcoloroptions)#" index="i">
+									<cfset c = request.bgcoloroptions[i]>
+									<option value="#c['value']#"<cfif attributes.params.backgroundcolorsel eq c['value']> 
+							selected</cfif> style="background-color:#c['value']#;">#c['name']#</option>
+								</cfloop>
+								<option value="custom"<cfif attributes.params.backgroundcolorsel eq 'custom'> 
+							selected</cfif>>Custom</option>
+							</select>
+						</cfif>
+						<div class="input-group mura-colorpicker" id="rowbackgroundcustom" style="<cfif isArray(request.bgcoloroptions) and arrayLen(request.bgcoloroptions)>display: none;</cfif>">
 							<span class="input-group-addon"><i class="mura-colorpicker-swatch"></i></span>
 							<input type="text" id="rowbackgroundcolor" name="backgroundColor" placeholder="Select Color" class="objectStyle" autocomplete="off" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundcolor)#">
 						</div>

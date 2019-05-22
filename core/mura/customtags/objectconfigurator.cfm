@@ -36,6 +36,10 @@
 		<cfparam name="request.hasmetaoptions" default="false">
 		<cfparam name="request.haspositionoptions" default="false">
 		<cfparam name="attributes.params.isbodyobject" default="false">
+
+		<!--- todo: handle error if these don't exist in contentRenderer.cfc --->
+		<cfparam name="request.textcoloroptions" default="#$.getContentRenderer().textColorOptions#">
+		<cfparam name="request.bgcoloroptions" default="#$.getContentRenderer().backgroundColorOptions#">
 		
 		<cfset contentcontainerclass=esapiEncode("javascript",$.getContentRenderer().expandedContentContainerClass)>
 
@@ -315,12 +319,6 @@
 				$('#globalSettingsBtn').show();
 			});
 
-			$('.mura-colorpicker input[type=text]').on('keyup',function(){
-				if ($(this).val().length == 0){
-					$(this).parents('.mura-colorpicker').find('.mura-colorpicker-swatch').css('background-color','transparent');
-				}
-			})
-
 			$('.mura-ui-link').on('click',function(){
 				var targetEl = $(this).attr('data-reveal');
 				if (targetEl.length > 0){
@@ -392,9 +390,9 @@
 				updateRowPadding();
 			})
 
-			$('#rowpaddinguom').change(function(){
+			$('#rowpaddinguom').on('change',function(){
 				updateRowPadding();
-			})
+			});
 
 			$('#rowmarginall').on('keyup', function(){
 				var v = $('#rowmarginall').val().replace(/[^0-9]/g,'');
@@ -407,14 +405,40 @@
 
 			$('#rowmargintop,#rowmarginright,#rowmarginbottom,#rowmarginleft,#rowmarginall').on('keyup', function(){
 				updateRowMargin();
-			})
+			});
 
-			$('#rowmarginuom').change(function(){
+			$('#rowmarginuom').on('change',function(){
 				updateRowMargin();
-			})			
+			});			
 
+			function updateRowBgColor(v){
+				var swatchColor = v;
+				var swatchEl = $('#rowbackgroundcustom').find('i.mura-colorpicker-swatch');
+				if (v == 'custom'){
+					$('#rowbackgroundcustom').show();
+				} else if (v == 'none'){
+					swatchColor = 'transparent'					
+					$('#rowbackgroundcustom').hide();
+					$('#rowbackgroundcolor').val('');
+				} else {
+					$('#rowbackgroundcustom').hide();
+					$('#rowbackgroundcolor').val(v);
+				}
+				swatchEl.css('background-color',swatchColor);
+			}
 
+			$('#rowbackgroundcolorsel').on('change',function(){
+				var v = $(this).val();
+				updateRowBgColor(v);
+			});
 
+			updateRowBgColor($('#rowbackgroundcolorsel').val());
+
+			$('.mura-colorpicker input[type=text]').on('keyup',function(){
+				if ($(this).val().length == 0){
+					$(this).parents('.mura-colorpicker').find('.mura-colorpicker-swatch').css('background-color','transparent');
+				}
+			})
 
 			$('#rowbackgroundpositiony,#rowbackgroundpositionynum').on('change',function(){
 				var el = $('#rowbackgroundpositionyval');
