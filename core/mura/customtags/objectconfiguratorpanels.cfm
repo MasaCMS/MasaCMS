@@ -7,7 +7,7 @@
 	param name="attributes.params.paddinguom" default="";
 	param name="attributes.params.rowbackgroundpositionx" default="";
 	param name="attributes.params.rowbackgroundpositiony" default="";
-	
+
 	attributes.globalparams = [
 		'backgroundcolor'
 		,'backgroundimage'
@@ -25,7 +25,7 @@
 		,'marginbottom'
 		,'marginleft'
 		,'marginall'
-		,'marginuom'		
+		,'marginuom'
 		,'padding'
 		,'paddingtop'
 		,'paddingright'
@@ -71,13 +71,13 @@
 							<input name="cssclass" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.cssclass)#" maxlength="255">
 							<input name="class" type="hidden" class="objectParam" value="#esapiEncode('html_attr',attributes.params.class)#"/>
 						</div>
-					</cfif>	
+					</cfif>
 
 					<!--- margin --->
 					<div class="mura-control-group mura-ui-grid">
 						<!--- todo: rbkey for margin and placeholders --->
 						<label>Margin</label>
-						
+
 						<div class="row mura-ui-row">
 							<div class="col-xs-8 center">
 								<div class="mura-input-group">
@@ -89,7 +89,7 @@
 											<option value="#u#"<cfif attributes.params.marginuom eq u> selected</cfif>>#u#</option>
 										</cfloop>
 									</select>
-								</div>	
+								</div>
 							</div>
 							<div class="col-xs-4">
 								<a class="mura-ui-link" data-reveal="rowmarginadvanced" href="##">Advanced</a>
@@ -107,7 +107,7 @@
 								</div>
 								<div class="col-xs-3"></div>
 							</div>
-								
+
 							<div class="row mura-ui-row">
 								<div class="col-xs-6">
 									<label class="mura-serial">
@@ -133,15 +133,15 @@
 								</div>
 								<div class="col-xs-3"></div>
 							</div>
-						</div>	
-	
+						</div>
+
 					</div>
 
 					<!--- padding --->
 					<div class="mura-control-group mura-ui-grid">
 						<!--- todo: rbkey for padding and placeholders --->
 						<label>Padding</label>
-						
+
 						<div class="row mura-ui-row">
 							<div class="col-xs-8 center">
 								<div class="mura-input-group">
@@ -153,7 +153,7 @@
 											<option value="#u#"<cfif attributes.params.paddinguom eq u> selected</cfif>>#u#</option>
 										</cfloop>
 									</select>
-								</div>	
+								</div>
 							</div>
 							<div class="col-xs-4">
 								<a class="mura-ui-link" data-reveal="rowpaddingadvanced" href="##">Advanced</a>
@@ -171,7 +171,7 @@
 								</div>
 								<div class="col-xs-3"></div>
 							</div>
-								
+
 							<div class="row mura-ui-row">
 								<div class="col-xs-6">
 									<label class="mura-serial">
@@ -197,8 +197,8 @@
 								</div>
 								<div class="col-xs-3"></div>
 							</div>
-						</div>	
-	
+						</div>
+
 					</div>
 
 					<!--- background --->
@@ -207,14 +207,14 @@
 						<label>Background Color</label>
 						<cfif isArray(request.backgroundcoloroptions) and arrayLen(request.backgroundcoloroptions)>
 							<select id="rowbackgroundcolorsel" name="backgroundColorSel" class="objectParam">
-								<option value=""<cfif attributes.params.backgroundcolorsel eq ''> 
+								<option value=""<cfif attributes.params.backgroundcolorsel eq ''>
 							selected</cfif>>None</option>
 								<cfloop from="1" to="#arrayLen(request.backgroundcoloroptions)#" index="i">
 									<cfset c = request.backgroundcoloroptions[i]>
-									<option value="#c['value']#"<cfif attributes.params.backgroundcolorsel eq c['value']> 
+									<option value="#c['value']#"<cfif attributes.params.backgroundcolorsel eq c['value']>
 							selected</cfif> style="background-color:#c['value']#;">#c['name']#</option>
 								</cfloop>
-								<option value="custom"<cfif attributes.params.backgroundcolorsel eq 'custom'> 
+								<option value="custom"<cfif attributes.params.backgroundcolorsel eq 'custom'>
 							selected</cfif>>Custom</option>
 							</select>
 						</cfif>
@@ -232,12 +232,12 @@
 					</div>
 
 <!--- todo: are we using bigui? --->
-<!---	<a class="bigui__launch" data-rel="bigui__rowbgrdimg" href="##">Select Image</a> --->					
+<!---	<a class="bigui__launch" data-rel="bigui__rowbgrdimg" href="##">Select Image</a> --->
 
 					<div class="mura-control-group css-bg-option" style="display:none;">
 						<label>Background Size</label>
 						<select id="rowbackgroundsize" name="backgroundSize" class="objectStyle">
-							<option value="auto"<cfif attributes.params.cssstyles.backgroundsize eq 'auto'> 
+							<option value="auto"<cfif attributes.params.cssstyles.backgroundsize eq 'auto'>
 							selected</cfif>>Auto</option>
 							<option value="contain"<cfif attributes.params.cssstyles.backgroundsize eq 'contain'> selected</cfif>>Contain</option>
 							<option value="cover"<cfif attributes.params.cssstyles.backgroundsize eq 'cover'> selected</cfif>>Cover</option>
@@ -270,11 +270,11 @@
 											<option value="#lcase(p)#"<cfif attributes.params.cssstyles.backgroundpositiony contains p> selected</cfif>>#p#</option>
 										</cfloop>
 									</select>
-									
+
 									<input type="hidden" id="rowbackgroundpositionyval" name="backgroundPositionY" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundpositiony)#">
 
 								</div>
-							</div>							
+							</div>
 						</div>
 
 						<div class="row mura-ui-row">
@@ -290,7 +290,7 @@
 											<option value="#lcase(p)#"<cfif attributes.params.cssstyles.backgroundpositionx contains p> selected</cfif>>#p#</option>
 										</cfloop>
 									</select>
-									
+
 									<input type="hidden" id="rowbackgroundpositionxval" name="backgroundPositionX" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundpositionx)#">
 
 								</div>
@@ -304,7 +304,7 @@
 					</div>
 
 <!--- todo: background video - js to create markup - css to position --->
-<!--- 
+<!---
 					<div class="mura-control-group">
 						<label>Background Video</label>
 						<input type="text" id="rowbackgroundvideourl" name="backgroundVideoURL" placeholder="URL" class="objectParam" value="#esapiEncode('html_attr',attributes.params.backgroundvideourl)#">
@@ -313,7 +313,7 @@
  --->
 
 <!--- todo: parallax --->
-<!--- 
+<!---
 					<div class="mura-control-group">
 						<label>Background Parallax [todo: bg options]</label>
 						<input type="text" id="rowbackgroundparallax" name="backgroundParallax" placeholder="" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundparallax)#">
@@ -409,5 +409,5 @@
 				</div> <!--- /end container --->
 			</div> <!--- /end  mura-panel-body --->
 		</div> <!--- /end  mura-panel-collapse --->
-	</div> <!--- /end panel --->		
+	</div> <!--- /end panel --->
 </cfoutput>
