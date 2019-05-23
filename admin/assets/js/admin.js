@@ -2,8 +2,8 @@ function loadObject(e, t, i) {
     var a, n = t;
     processReqChange = function() {
         4 == a.readyState && 200 == a.status && (document.getElementById(n).innerHTML = a.responseText);
-    }, document.getElementById(n).innerHTML = i, window.XMLHttpRequest ? ((a = new XMLHttpRequest()).onreadystatechange = processReqChange, 
-    a.open("GET", e, !0), a.send(null)) : window.ActiveXObject && (a = new ActiveXObject("Microsoft.XMLHTTP")) && (a.onreadystatechange = processReqChange, 
+    }, document.getElementById(n).innerHTML = i, window.XMLHttpRequest ? ((a = new XMLHttpRequest()).onreadystatechange = processReqChange,
+    a.open("GET", e, !0), a.send(null)) : window.ActiveXObject && (a = new ActiveXObject("Microsoft.XMLHTTP")) && (a.onreadystatechange = processReqChange,
     a.open("GET", e, !0), a.send());
 }
 
@@ -32,7 +32,7 @@ function daysInFebruary(e) {
 }
 
 function DaysArray(e) {
-    for (var t = 1; t <= e; t++) this[t] = 31, 4 != t && 6 != t && 9 != t && 11 != t || (this[t] = 30), 
+    for (var t = 1; t <= e; t++) this[t] = 31, 4 != t && 6 != t && 9 != t && 11 != t || (this[t] = 30),
     2 == t && (this[t] = 29);
     return this;
 }
@@ -40,7 +40,7 @@ function DaysArray(e) {
 function parseDateTimeSelector(e) {
     if (isDate($(".datepicker.mura-datepicker" + e).val())) {
         var t = $(".datepicker.mura-datepicker" + e).val(), i = (DaysArray(12), t.split(dtCh)), a = i[dtFormat[0]], n = i[dtFormat[1]], o = i[dtFormat[2]], r = $("#mura-" + e + "Minute").length ? $("#mura-" + e + "Minute").val() : 0, l = $("#mura-" + e + "Hour").length ? $("#mura-" + e + "Hour").val() : 0;
-        $("#mura-" + e + "DayPart").length && ("pm" == $("#mura-" + e + "DayPart").val().toLowerCase() ? 24 == (l = parseInt(l) + 12) && (l = 12) : 12 == parseInt(l) && (l = 0)), 
+        $("#mura-" + e + "DayPart").length && ("pm" == $("#mura-" + e + "DayPart").val().toLowerCase() ? 24 == (l = parseInt(l) + 12) && (l = 12) : 12 == parseInt(l) && (l = 0)),
         1 == l.length && (l = "0" + l), 1 == r.length && (r = "0" + r);
         var s = "{ts '" + o + "-" + a + "-" + n + " " + l + ":" + r + ":00'}";
         $("#mura-" + e).val(s);
@@ -77,7 +77,7 @@ function isColor(e) {
 }
 
 function isURL(e) {
-    return urlPattern = /(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/, 
+    return urlPattern = /(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/,
     e.match(urlPattern);
 }
 
@@ -90,14 +90,14 @@ function stripe(e) {
 }
 
 function toggleDisplay(e, t, i) {
-    "none" == document.getElementById(e).style.display ? (document.getElementById(e).style.display = "", 
-    document.getElementById(e + "Link") && (document.getElementById(e + "Link").innerHTML = "[" + i + "]")) : (document.getElementById(e).style.display = "none", 
+    "none" == document.getElementById(e).style.display ? (document.getElementById(e).style.display = "",
+    document.getElementById(e + "Link") && (document.getElementById(e + "Link").innerHTML = "[" + i + "]")) : (document.getElementById(e).style.display = "none",
     document.getElementById(e + "Link") && (document.getElementById(e + "Link").innerHTML = "[" + t + "]"));
 }
 
 function openDisplay(e, t) {
     if ("none" == document.getElementById(e).style.display) {
-        if ($("#" + e).slideDown(), "editAdditionalTitles" == e && $("#alertTitleSuccess").hide(), 
+        if ($("#" + e).slideDown(), "editAdditionalTitles" == e && $("#alertTitleSuccess").hide(),
         document.getElementById(e + "Link")) document.getElementById(e + "Link").innerHTML = "[" + t + "]";
         document.getElementById(e).style.display = "";
     }
@@ -145,30 +145,30 @@ function getValidationRegex(e) {
 
 function validateForm(e) {
     var t, i, a = "", n = !1, o = "", r = e.getElementsByTagName("input");
-    for (f = 0; f < r.length; f++) if (theField = r[f], o = getValidationType(theField), 
-    "" == theField.style.display) if (getValidationIsRequired(theField) && "" == theField.value) n || (n = !0, 
-    t = f, i = "input"), a += getValidationMessage(theField, " is required."); else if ("" != o) if ("EMAIL" != o || "" == theField.value || isEmail(theField.value)) if ("NUMERIC" == o && "" != theField.value && isNaN(theField.value)) isNaN(theField.value.replace(/\$|\,|\%/g, "")) ? (n || (n = !0, 
-    t = f, i = "input"), a += getValidationMessage(theField, " must be numeric.")) : theField.value = theField.value.replace(/\$|\,|\%/g, ""); else if ("COLOR" == o && "" != theField.value) isColor(theField.value) || (n || (n = !0, 
-    t = f, i = "input"), a += getValidationMessage(theField, " is not a valid color.")); else if ("URL" == o && "" != theField.value) isURL(theField.value) || (n || (n = !0, 
+    for (f = 0; f < r.length; f++) if (theField = r[f], o = getValidationType(theField),
+    "" == theField.style.display) if (getValidationIsRequired(theField) && "" == theField.value) n || (n = !0,
+    t = f, i = "input"), a += getValidationMessage(theField, " is required."); else if ("" != o) if ("EMAIL" != o || "" == theField.value || isEmail(theField.value)) if ("NUMERIC" == o && "" != theField.value && isNaN(theField.value)) isNaN(theField.value.replace(/\$|\,|\%/g, "")) ? (n || (n = !0,
+    t = f, i = "input"), a += getValidationMessage(theField, " must be numeric.")) : theField.value = theField.value.replace(/\$|\,|\%/g, ""); else if ("COLOR" == o && "" != theField.value) isColor(theField.value) || (n || (n = !0,
+    t = f, i = "input"), a += getValidationMessage(theField, " is not a valid color.")); else if ("URL" == o && "" != theField.value) isURL(theField.value) || (n || (n = !0,
     t = f, i = "input"), a += getValidationMessage(theField, " is not a valid URL.")); else if ("REGEX" == o && "" != theField.value && hasValidationRegex(theField)) {
         var l = new RegExp(getValidationRegex(theField));
         theField.value.match(l) || (n || (n = !0, t = f, i = "input"), a += getValidationMessage(theField, " is not valid."));
-    } else "MATCH" == o && hasValidationMatchField(theField) && theField.value != e[getValidationMatchField(theField)].value ? (n || (n = !0, 
-    t = f, i = "input"), a += getValidationMessage(theField, " must match" + getValidationMatchField(theField) + ".")) : "DATE" != o && "DATETIME" != o || "" == theField.value || isDate(theField.value) || (n || (n = !0, 
-    t = f, i = "input"), a += getValidationMessage(theField, " must be a valid date [MM/DD/YYYY].")); else n || (n = !0, 
+    } else "MATCH" == o && hasValidationMatchField(theField) && theField.value != e[getValidationMatchField(theField)].value ? (n || (n = !0,
+    t = f, i = "input"), a += getValidationMessage(theField, " must match" + getValidationMatchField(theField) + ".")) : "DATE" != o && "DATETIME" != o || "" == theField.value || isDate(theField.value) || (n || (n = !0,
+    t = f, i = "input"), a += getValidationMessage(theField, " must be a valid date [MM/DD/YYYY].")); else n || (n = !0,
     t = f, i = "input"), a += getValidationMessage(theField, " must be a valid email address.");
     var s = e.getElementsByTagName("textarea");
-    for (f = 0; f < s.length; f++) if (theField = s[f], o = getValidationType(theField), 
-    "" == theField.style.display && getValidationIsRequired(theField) && "" == theField.value) n || (n = !0, 
+    for (f = 0; f < s.length; f++) if (theField = s[f], o = getValidationType(theField),
+    "" == theField.style.display && getValidationIsRequired(theField) && "" == theField.value) n || (n = !0,
     t = f, i = "textarea"), a += getValidationMessage(theField, " is required."); else if ("" != o && "REGEX" == o && "" != theField.value && hasValidationRegex(theField)) {
         l = new RegExp(getValidationRegex(theField));
         theField.value.match(l) || (n || (n = !0, t = f, i = "input"), a += getValidationMessage(theField, " is not valid."));
     }
     var d = e.getElementsByTagName("select");
-    for (f = 0; f < d.length; f++) theField = d[f], o = getValidationType(theField), 
-    "" == theField.style.display && getValidationIsRequired(theField) && "" == theField.options[theField.selectedIndex].value && (n || (n = !0, 
+    for (f = 0; f < d.length; f++) theField = d[f], o = getValidationType(theField),
+    "" == theField.style.display && getValidationIsRequired(theField) && "" == theField.options[theField.selectedIndex].value && (n || (n = !0,
     t = f, i = "select"), a += getValidationMessage(theField, " is required."));
-    return "" == a || ("input" == i ? r[t].focus() : "textarea" == i ? s[t].focus() : "select" == i && d[t].focus(), 
+    return "" == a || ("input" == i ? r[t].focus() : "textarea" == i ? s[t].focus() : "select" == i && d[t].focus(),
     $("#alertDialogMessage").html(a), $("#alertDialog").attr("title", "Alert"), $("#alertDialog").dialog({
         resizable: !1,
         modal: !0,
@@ -222,14 +222,14 @@ function submitForm(e, t, i) {
 }
 
 function actionModal(e) {
-    return $("body").append('<div id="action-modal" class="modal-backdrop fade in"></div>'), 
-    $("#action-modal").spin(spinnerArgs), e && ("string" == typeof e ? location.href = e : e()), 
+    return $("body").append('<div id="action-modal" class="modal-backdrop fade in"></div>'),
+    $("#action-modal").spin(spinnerArgs), e && ("string" == typeof e ? location.href = e : e()),
     !1;
 }
 
 function preview(e, t) {
-    return newWindow = "" == t ? window.open(e, "previewWin") : window.open(e, "previewWin", t), 
-    !newWindow || newWindow.closed || void 0 === newWindow.closed ? alertDialog("pop-up window has been blocked for this site,Disable blocking pop-up windows to see the Site Preview") : newWindow.focus(), 
+    return newWindow = "" == t ? window.open(e, "previewWin") : window.open(e, "previewWin", t),
+    !newWindow || newWindow.closed || void 0 === newWindow.closed ? alertDialog("pop-up window has been blocked for this site,Disable blocking pop-up windows to see the Site Preview") : newWindow.focus(),
     !1;
 }
 
@@ -239,7 +239,7 @@ function createCookie(e, t, i) {
         a.setTime(a.getTime() + 24 * i * 60 * 60 * 1e3);
         var n = "; expires=" + a.toGMTString();
     } else n = "";
-    "undefined" != typeof location && "https:" == location.protocol ? secure = "; secure" : secure = "", 
+    "undefined" != typeof location && "https:" == location.protocol ? secure = "; secure" : secure = "",
     document.cookie = e + "=" + t + n + "; path=/" + secure;
 }
 
@@ -318,7 +318,7 @@ function setToolTips(e) {
 function setTabs(t, e) {
     if ($(".tab-preloader").spin(spinnerArgs2), $(t + " a").click(function(e) {
         e.preventDefault(), $(this).tab("show");
-    }), "" != window.location.hash) $(t + ' a[href="' + window.location.hash + '"]').tab("show"), 
+    }), "" != window.location.hash) $(t + ' a[href="' + window.location.hash + '"]').tab("show"),
     window.setTimeout(function() {
         $("a span.display-tab").html('<i class="mi-chevron-down"></i>');
     }, 1); else if (void 0 !== e) try {
@@ -350,7 +350,7 @@ function setCheckboxTrees() {
 
 function openFileMetaData(t, i, a, n) {
     try {
-        "undefined" == typeof fileMetaDataAssign && (fileMetaDataAssign = {}), $("#newFileMetaContainer").remove(), 
+        "undefined" == typeof fileMetaDataAssign && (fileMetaDataAssign = {}), $("#newFileMetaContainer").remove(),
         $("body").append('<div id="newFileMetaContainer" title="Loading..." style="display:none"><div id="newFileMeta"><div class="load-inline"></div></div></div>');
         var e = $.ui.dialog.prototype._focusTabbable;
         $.ui.dialog.prototype._focusTabbable = function() {}, $("#newFileMetaContainer").dialog({
@@ -372,7 +372,7 @@ function openFileMetaData(t, i, a, n) {
                             e[$(this).attr("data-property")] = $(this).val();
                         }), $(".exif").each(function() {
                             e.exifpartial[$(this).attr("data-property")] = $(this).val();
-                        }), e.setasdefault = $("#filemeta-setasdefault").is(":checked"), fileMetaDataAssign[n] = e, 
+                        }), e.setasdefault = $("#filemeta-setasdefault").is(":checked"), fileMetaDataAssign[n] = e,
                         $("#filemetadataassign").val(JSON.stringify(fileMetaDataAssign)), $(this).dialog("close");
                     },
                     text: "Save",
@@ -380,11 +380,11 @@ function openFileMetaData(t, i, a, n) {
                 }
             },
             open: function() {
-                $(".ui-widget-overlay").css("z-index", 500), $(".ui-dialog").css("z-index", 501), 
+                $(".ui-widget-overlay").css("z-index", 500), $(".ui-dialog").css("z-index", 501),
                 $("#newFileMetaContainer").html('<div class="ui-dialog-content ui-widget-content"><div class="load-inline"></div></div>');
                 var e = "muraAction=cArch.loadfilemetadata&fileid=" + i + "&property=" + n + "&contenthistid=" + t + "&siteid=" + a + "&cacheid=" + Math.random();
                 $("#newFileMetaContainer .load-inline").spin(spinnerArgs2), Mura.get("index.cfm?" + e).then(function(e) {
-                    if (-1 != e.indexOf("mura-primary-login-token") && (location.href = "./"), $("#newFileMetaContainer .load-inline").spin(!1), 
+                    if (-1 != e.indexOf("mura-primary-login-token") && (location.href = "./"), $("#newFileMetaContainer .load-inline").spin(!1),
                     $("#newFileMetaContainer").html(e), n in fileMetaDataAssign) {
                         var t = fileMetaDataAssign[n];
                         for (var i in t) $('.filemeta[data-property="' + i + '"]').val(t[i]);
@@ -394,7 +394,7 @@ function openFileMetaData(t, i, a, n) {
                         toolbar: "Basic",
                         height: 100,
                         customConfig: "config.js.cfm"
-                    }, htmlEditorOnComplete), setTabs("#newFileMetaContainer.tabs", 0), setDatePickers(".datepicker", dtLocale), 
+                    }, htmlEditorOnComplete), setTabs("#newFileMetaContainer.tabs", 0), setDatePickers(".datepicker", dtLocale),
                     $("#newFileMetaContainer").dialog("option", "position", getDialogPosition()), $(".filemeta:first").focus();
                 }, function(e) {
                     $("#newFileMetaContainer").html(e.responseText), $("#newFileMetaContainer").dialog("option", "position", getDialogPosition());
@@ -418,7 +418,7 @@ function alertDialog(e, t, i, a, n) {
     a = a || 450;
     if ("object" == typeof e) {
         var o = e;
-        e = o.message || "Message not defined", t = o.okAction || function() {}, i = o.title || "Alert", 
+        e = o.message || "Message not defined", t = o.okAction || function() {}, i = o.title || "Alert",
         a = o.width || 0;
     }
     i = i || "Alert";
@@ -437,7 +437,7 @@ function alertDialog(e, t, i, a, n) {
             }
         }
     };
-    return a && (r.width = a), $("#alertDialog").attr("title", i), $("#alertDialogMessage").html(e), 
+    return a && (r.width = a), $("#alertDialog").attr("title", i), $("#alertDialogMessage").html(e),
     $("#alertDialog").dialog(r), !1;
 }
 
@@ -445,7 +445,7 @@ function confirmDialog(e, t, i, a, n, o, r, l) {
     n = n || 450;
     if ("object" == typeof e) {
         var s = e;
-        e = s.message || "Message not defined", s.yesAction && (t = s.yesAction), s.noAction && (i = s.noAction), 
+        e = s.message || "Message not defined", s.yesAction && (t = s.yesAction), s.noAction && (i = s.noAction),
         a = s.title || "Alert", n = s.width || 0;
     }
     a = a || "Alert", o = o || "OK", r = r || "Cancel";
@@ -474,7 +474,7 @@ function confirmDialog(e, t, i, a, n, o, r, l) {
             $(this).dialog("destroy");
         }
     };
-    return n && (d.width = n), $("#alertDialog").attr("title", a), $("#alertDialogMessage").html(e), 
+    return n && (d.width = n), $("#alertDialog").attr("title", a), $("#alertDialogMessage").html(e),
     $("#alertDialog").dialog(d), !1;
 }
 
@@ -484,7 +484,7 @@ function confirmDialog(e, t, i, a, n, o, r, l) {
         r(this.$element).attr("data-name") && (this.options.file = this.$element.attr("data-name"));
         var n = function(e) {
             var t = "muraAction=cArch.assocfiles&compactDisplay=true&siteid=" + i.attr("data-siteid") + "&fileid=" + i.attr("data-fileid") + "&type=" + i.attr("data-filetype") + "&contentid=" + i.attr("data-contentid") + "&property=" + i.attr("data-property") + "&keywords=" + e + "&cacheid=" + Math.random();
-            i.find(".mura-file-existing").html('<div class="load-inline"></div>'), i.find(".load-inline").spin(spinnerArgs2), 
+            i.find(".mura-file-existing").html('<div class="load-inline"></div>'), i.find(".load-inline").spin(spinnerArgs2),
             r.ajax("index.cfm?" + t).done(function(e) {
                 i.find(".load-inline").spin(!1), i.find(".mura-file-existing").html(e);
                 var t = i.find(".mura-file-existing").find(".filesearch").val();
@@ -501,13 +501,13 @@ function confirmDialog(e, t, i, a, n, o, r, l) {
                 i.find(".load-inline").spin(!1), i.find(".mura-file-existing").html(e.responseText);
             });
         }, o = function(e) {
-            i.find(".mura-file-option").find("input").val(""), i.find(".mura-file-option").find(".btn").hide(), 
-            i.find(".mura-file-option").hide(), i.find(".mura-file-" + e.toLowerCase()).show(), 
+            i.find(".mura-file-option").find("input").val(""), i.find(".mura-file-option").find(".btn").hide(),
+            i.find(".mura-file-option").hide(), i.find(".mura-file-" + e.toLowerCase()).show(),
             i.find(".mura-file-option").find("input").attr("name", ""), i.find(".mura-file-" + e.toLowerCase()).find("input").attr("name", a.file);
         };
         r(this.$element).find("button.mura-file-type-selector").click(function() {
-            o(r(this).val()), "existing" == r(this).val().toLowerCase() ? n("") : (i.find(".mura-file-existing").html('<div class="load-inline"></div>'), 
-            i.find(".load-inline").spin(spinnerArgs2)), r(this).hasClass("btn") && (r(this).addClass("focus").addClass("onstate").addClass("active"), 
+            o(r(this).val()), "existing" == r(this).val().toLowerCase() ? n("") : (i.find(".mura-file-existing").html('<div class="load-inline"></div>'),
+            i.find(".load-inline").spin(spinnerArgs2)), r(this).hasClass("btn") && (r(this).addClass("focus").addClass("onstate").addClass("active"),
             r(this).siblings(".btn").removeClass("focus").removeClass("active").removeClass("onstate"));
         }), i.find(".mura-file-option").find("input").change(function() {
             /^(([a-zA-Z]:)|(\\{2}\w+)\$?)(\\(\w[\w].*))+(.jpg|.jpeg|.png|.gif|.svg)$/.test(r(this).val().toLowerCase()) || /(http(s?):)|([/|.|\w|\s])*\.(?:jpg|jpeg|gif|png|svg)/.test(r(this).val().toLowerCase()) ? r(this).parent().find(".file-meta-open").show() : r(this).parent().find(".file-meta-open").hide();
@@ -533,7 +533,7 @@ function CountDown() {
     var e = new Date();
     e = Date.parse(e) / 1e3;
     var t = parseInt(sessionTimeout - (e - start), 10), i = Math.floor(t / 3600), a = Math.floor((t - 3600 * i) / 60), n = t - (3600 * i + 60 * a);
-    a = a <= 9 ? "0" + a : a, n = n <= 9 ? "0" + n : n, null != document.getElementById("clock").innerHTML && (document.getElementById("clock").innerHTML = i + ":" + a + ":" + n), 
+    a = a <= 9 ? "0" + a : a, n = n <= 9 ? "0" + n : n, null != document.getElementById("clock").innerHTML && (document.getElementById("clock").innerHTML = i + ":" + a + ":" + n),
     0 < t ? timerID = setTimeout("CountDown()", 100) : null != document.getElementById("clock").innerHTML && (document.getElementById("clock").innerHTML = "0:0:0");
 }
 
@@ -542,10 +542,10 @@ function fileManagerPopUp() {}
 function fileManagerCreate() {}
 
 function loadjscssfile(e, t) {
-    if ("js" == t) (i = document.createElement("script")).setAttribute("type", "text/javascript"), 
+    if ("js" == t) (i = document.createElement("script")).setAttribute("type", "text/javascript"),
     i.setAttribute("src", e); else if ("css" == t) {
         var i;
-        (i = document.createElement("link")).setAttribute("rel", "stylesheet"), i.setAttribute("type", "text/css"), 
+        (i = document.createElement("link")).setAttribute("rel", "stylesheet"), i.setAttribute("type", "text/css"),
         i.setAttribute("href", e);
     }
     void 0 !== i && document.getElementsByTagName("head")[0].appendChild(i);
@@ -577,17 +577,17 @@ function openPreviewDialog(e) {
         },
         open: function() {
             var e = '<div id="mura-preview-device-selector"><p>Preview Mode</p>';
-            e += '<a class="mura-device-standard active" data-height="600" data-width="1075" data-mobileformat="false"><i class="mi-desktop"></i></a>', 
-            e += '<a class="mura-device-tablet" data-height="600" data-width="768" data-mobileformat="false"><i class="mi-tablet"></i></a>', 
-            e += '<a class="mura-device-tablet-landscape" data-height="480" data-width="1024" data-mobileformat="false"><i class="mi-tablet mi-rotate-270"></i></a>', 
-            e += '<a class="mura-device-phone" data-height="480" data-width="320" data-mobileformat="true"><i class="mi-mobile-phone"></i></a>', 
-            e += '<a class="mura-device-phone-landscape" data-height="250" data-width="520" data-mobileformat="true"><i class="mi-mobile-phone mi-rotate-270"></i></a>', 
+            e += '<a class="mura-device-standard active" data-height="600" data-width="1075" data-mobileformat="false"><i class="mi-desktop"></i></a>',
+            e += '<a class="mura-device-tablet" data-height="600" data-width="768" data-mobileformat="false"><i class="mi-tablet"></i></a>',
+            e += '<a class="mura-device-tablet-landscape" data-height="480" data-width="1024" data-mobileformat="false"><i class="mi-tablet mi-rotate-270"></i></a>',
+            e += '<a class="mura-device-phone" data-height="480" data-width="320" data-mobileformat="true"><i class="mi-mobile-phone"></i></a>',
+            e += '<a class="mura-device-phone-landscape" data-height="250" data-width="520" data-mobileformat="true"><i class="mi-mobile-phone mi-rotate-270"></i></a>',
             e += "</div>";
             $(".ui-dialog").prepend(e), $("#mura-preview-device-selector a").bind("click", function() {
                 var e = $(this).data();
-                return $(a).dialog("option", "width", e.width + 30), $(a).dialog("option", "height", e.height + 124), 
-                $("#preview-dialog").attr("width", e.width).attr("height", e.height).attr("src", t + "&mobileFormat=" + e.mobileformat), 
-                $(a).dialog("option", "position", i), $("#mura-preview-device-selector a").removeClass("active"), 
+                return $(a).dialog("option", "width", e.width + 30), $(a).dialog("option", "height", e.height + 124),
+                $("#preview-dialog").attr("width", e.width).attr("height", e.height).attr("src", t + "&mobileFormat=" + e.mobileformat),
+                $(a).dialog("option", "position", i), $("#mura-preview-device-selector a").removeClass("active"),
                 $(this).addClass("active"), !1;
             });
         }
@@ -596,7 +596,7 @@ function openPreviewDialog(e) {
 }
 
 function preloadimages(e) {
-    for (var t = [], i = (e = "object" != typeof e ? [ e ] : e, 0); i < e.length; i++) t[i] = new Image(), 
+    for (var t = [], i = (e = "object" != typeof e ? [ e ] : e, 0); i < e.length; i++) t[i] = new Image(),
     t[i].src = e[i];
 }
 
@@ -676,16 +676,23 @@ function setFinders(e) {
         });
     } else $(e).unbind("click").on("click", function() {
         var a = Mura(this);
-        $("#alertDialogMessage").html('<div id="MuraFileBrowserContainer"></div>'), $("#alertDialog").attr("title", "Select File"), 
+        $("#alertDialogMessage").html('<div id="MuraFileBrowserContainer"></div>'), $("#alertDialog").attr("title", "Select File"),
         $("#alertDialog").dialog({
             resizable: !1,
             width: 1e3,
             open: function(e, t) {
                 var i = this;
-                MuraFileBrowser.config.height = 600, MuraFileBrowser.config.selectMode = 2, MuraFileBrowser.config.resourcepath = "Application_Root", 
+                MuraFileBrowser.config.height = 600, MuraFileBrowser.config.selectMode = 2, MuraFileBrowser.config.resourcepath = "Application_Root",
                 MuraFileBrowser.config.selectCallback = function(e) {
                     var t = $('input[name="' + a.data("target") + '"]');
-                    t.val(e.url), t.trigger("change"), $(i).dialog("close");
+										var serverpath=a.attr('data-serverpath');
+										if(serverpath.toLowerCase()=='true'){
+											t.val(webroot + e.url);
+										} else {
+											t.val(e.url);
+										}
+										t.trigger("change");
+										$(i).dialog("close");
                 }, MuraFileBrowser.render();
             },
             modal: !0,
@@ -701,9 +708,9 @@ function setFinders(e) {
 }
 
 function wireupExterndalUIWidgets() {
-    setFinders(".mura-ckfinder"), "undefined" != typeof dtLocale && setDatePickers(".datepicker", dtLocale), 
-    "undefined" != typeof activetab && setTabs(".mura-tabs", activetab), setHTMLEditors(), 
-    "undefined" != typeof activepanel && setAccordions(".accordion", activepanel), setCheckboxTrees(), 
+    setFinders(".mura-ckfinder"), "undefined" != typeof dtLocale && setDatePickers(".datepicker", dtLocale),
+    "undefined" != typeof activetab && setTabs(".mura-tabs", activetab), setHTMLEditors(),
+    "undefined" != typeof activepanel && setAccordions(".accordion", activepanel), setCheckboxTrees(),
     setColorPickers(".mura-colorpicker"), setToolTips(".container"), setFileSelectors();
 }
 
@@ -715,7 +722,7 @@ function showTableControls(e) {
 void 0 !== $.ui && ($.widget("custom.muraSiteSelector", $.ui.autocomplete, {
     _suggest: function(e) {
         var t = this.element.closest("ul");
-        t.children("li").remove(), this._renderMenu(t, e), this.isNewMenu = !0, this.menu.refresh(), 
+        t.children("li").remove(), this._renderMenu(t, e), this.isNewMenu = !0, this.menu.refresh(),
         t.show(), this._resizeMenu(), this.options.autoFocus && this.menu.next();
     },
     _renderItem: function(e, t) {
