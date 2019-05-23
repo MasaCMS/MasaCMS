@@ -2254,7 +2254,7 @@
 		},
 		setAnchorSaveChecks:function(el){
 			function handleEditCheck(){
-				if(MuraInlineEditor.isDirty){
+				if(MuraInlineEditor.isDirty && !Mura(el).closest('.mura-object').length){
 					<cfoutput>
 					if(confirm("#esapiEncode('javascript',application.rbFactory.getKey('sitemanager.content.saveasdraftlm',session.rb))#")){
 						MuraInlineEditor.requestedURL=window.location;
