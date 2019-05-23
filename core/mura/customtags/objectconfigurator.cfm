@@ -45,7 +45,7 @@
 		<cfif structKeyExists($.getContentRenderer(),'backgroundColorOptions')>
 			<cfset request.backgroundColorOptions = $.getContentRenderer().backgroundColorOptions>
 		</cfif>
-		
+
 		<cfset contentcontainerclass=esapiEncode("javascript",$.getContentRenderer().expandedContentContainerClass)>
 
 		<cfif not (isDefined("attributes.params.cssstyles") and isStruct(attributes.params.cssstyles))>
@@ -173,7 +173,7 @@
 									<cfset l = "'#p["label"]#'">
 									<cfset v = "'#p["value"]#'">
 									<cfset attributes.positionLabels = listAppend(attributes.positionlabels, l)>
-									<cfset attributes.positionValues = listAppend(attributes.positionvalues, v)>									
+									<cfset attributes.positionValues = listAppend(attributes.positionvalues, v)>
 								</cfloop>
 							</select>
 						</div>
@@ -334,7 +334,7 @@
 					$('#rowpaddingadvanced').show();
 				}
 				$('#rowpaddingtopval').trigger('change');
-			}	
+			}
 
 			$('#rowpaddingall').on('keyup', function(){
 				var v = $('#rowpaddingall').val().replace(/[^0-9]/g,'');
@@ -353,8 +353,8 @@
 				updateRowPadding();
 			});
 
-			updateRowPadding();			
- 
+			updateRowPadding();
+
  			// margin
 			function updateRowMargin(){
 				var t = $('#rowmargintop').val().replace(/[^0-9]/g,'');
@@ -374,7 +374,7 @@
 
 				}
 				$('#rowmargintopval').trigger('change');
-			}	
+			}
 
 			$('#rowmarginall').on('keyup', function(){
 				var v = $('#rowmarginall').val().replace(/[^0-9]/g,'');
@@ -391,18 +391,18 @@
 
 			$('#rowmarginuom').on('change',function(){
 				updateRowMargin();
-			});			
+			});
 
-			updateRowMargin();			
+			updateRowMargin();
 
 			// background color
 			function updateRowBgColor(v){
 				var swatchColor = v;
 				var swatchEl = $('#rowbackgroundcustom').find('i.mura-colorpicker-swatch');
-				if (v == 'custom'){
+				if (v == 'custom' <cfif not(isArray(request.backgroundcoloroptions) and arrayLen(request.backgroundcoloroptions))> || true</cfif>){
 					$('#rowbackgroundcustom').show();
 				} else if (v == 'none'){
-					swatchColor = 'transparent'					
+					swatchColor = 'transparent'
 					$('#rowbackgroundcustom').hide();
 					$('#rowbackgroundcolor').val('');
 				} else {
@@ -432,7 +432,7 @@
 				$('#rowbackgroundimage').val(str).trigger('change');
 			});
 
-			$('#rowbackgroundimageurl').trigger('change');		
+			$('#rowbackgroundimageurl').trigger('change');
 
 			// background position x/y
 			function updatePositionSelection(sel){
@@ -509,7 +509,7 @@
 				}
 				e.preventDefault();
 			});
-			--->				
+			--->
 
 			inited=true;
 		});
