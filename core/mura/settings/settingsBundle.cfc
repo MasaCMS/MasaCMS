@@ -568,6 +568,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var theme="">
 		<cfset var pluginDir="">
 		<cfset var rssite="">
+		<cfset var rsFiles="">
 
 		<cfif not len( getBundle() ) or not directoryExists( getBundle() )>
 			<cfreturn>
@@ -620,8 +621,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 			<cfif arguments.renderingMode eq "all">
 				<cfset zipPath = getBundle() & "sitefiles.zip" />
-				<cfzip file="#zipPath#" action="unzip" overwrite="true" destination="#destDir#" entrypath="cache">
-				<cfzip file="#zipPath#" action="unzip" overwrite="true" destination="#destDir#" entrypath="assets">
+				<cfzip file="#zipPath#" action="list" name="rsfiles">
+
+				<cfif not listFindNoCase('cache,assets',listFirst(rsfiles.name,"\/"))>
+					<cfzip file="#zipPath#" action="unzip" overwrite="true" destination="#siteRoot#" filter="#rsfiles.name#">
+				</cfif>
+
 				<!---<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=siteRoot, overwriteFiles=true, excludeDirs="cache|assets")>--->
 			<cfelseif arguments.renderingMode eq "theme" and len(arguments.themeDir)>
 				<cfset zipPath = getBundle() & "sitefiles.zip" />
