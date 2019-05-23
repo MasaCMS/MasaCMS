@@ -658,6 +658,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 												'access_token'=token.getToken(),
 												'expires_in'=token.getExpiresIn(),
 												'expires_at'=token.getExpiresAt(),
+												'refresh_token'=oauthclient.generateToken(granttype='refresh_token',userid=rsUser.userid).getToken(),
 												'info'=token.getTokenInfo()
 											 });
 										} else {
@@ -670,6 +671,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 												'access_token'=token.getToken(),
 												'expires_in'=token.getExpiresIn(),
 												'expires_at'=token.getExpiresAt(),
+												'refresh_token'=oauthclient.generateToken(granttype='refresh_token',userid=rsUser.userid).getToken(),
 												'info'=token.getTokenInfo()
 											 }});
 										}
@@ -709,6 +711,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 												'access_token'=token.getToken(),
 												'expires_in'=token.getExpiresIn(),
 												'expires_at'=token.getExpiresAt(),
+												'refresh_token'=oauthclient.generateToken(granttype='refresh_token',userid=clientAccount.getUserID()).getToken(),
 												'info'=token.getTokenInfo()
 											 });
 										 } else {
@@ -721,6 +724,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 													'access_token'=token.getToken(),
 													'expires_in'=token.getExpiresIn(),
 													'expires_at'=token.getExpiresAt(),
+													'refresh_token'=oauthclient.generateToken(granttype='refresh_token',userid=clientAccount.getUserID()).getToken(),
 													'info'=token.getTokenInfo()
 												 }});
 										 }

@@ -436,7 +436,7 @@ function clone() output=false {
 }
 
 function where(property) output=false {
-	if ( isDefined('arguments.propery') ) {
+	if ( isDefined('arguments.property') ) {
 		andProp(argumentCollection=arguments);
 	}
 	return this;

@@ -29,7 +29,8 @@ component extends="mura.bean.beanORM" entityName='oauthClient' table="toauthclie
         }
 
         var existingTokens=token.getFeed()
-            .where('clientid').isEQ(get('clientid'))
+            .where()
+						.prop('clientid').isEQ(get('clientid'))
             .andProp('granttype').isEQ(arguments.granttype)
             .andProp('userid').isEQ(arguments.userid)
             .andProp('expires').isGT(now())
