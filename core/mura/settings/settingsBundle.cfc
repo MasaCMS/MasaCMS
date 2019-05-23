@@ -217,6 +217,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var rscheck="">
 		<cfset var started=false>
 		<cfset var site=getBean('settingsManager').getSite(arguments.siteid)>
+		<cfset var $=getBean('$').init(arguments.siteid)>
 
 		<!---<cfset var moduleIDSQLlist="" />--->
 		<cfset var i="" />
@@ -234,6 +235,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif arguments.bundleMode neq 'plugin' and len(arguments.siteID)>
 			<cfset  getBean("fileManager").cleanFileCache(arguments.siteID)>
 			<cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#sitefiles.zip",directory=siteRoot,recurse="true",sinceDate=arguments.sinceDate)>
+
+			<!--- If the theme does not live in the site directory add it from the global directory --->
+			<cfif (not directoryExists(expandPath($.siteConfig().getIncludePath() & "/includes/themes/#$.siteConfig('theme')#"))
+					or not directoryExists(expandPath($.siteConfig().getIncludePath() & "/themes/#$.siteConfig('theme')#"))
+				) and directoryExists(expandPath($.globalConfig().getWebRoot() & "/themes/#$.siteConfig('theme')#"))>
+				<cfzip action="zip" file="#variables.backupDir#sitefiles.zip" source="#expandPath($.globalConfig().getWebRoot() & '/themes/' & $.siteConfig('theme'))#" prefix="themes/#$.siteConfig('theme')#">
+			</cfif>
+
 			<cfset var filePoolID=getBean('settingsManager').getSite(arguments.siteid).getFilePoolID()>
 			<!--- We do not want to include files collected from mura forms or the advertising manager --->
 			<cfquery name="rsInActivefiles">
