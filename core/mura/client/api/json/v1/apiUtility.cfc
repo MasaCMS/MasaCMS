@@ -2019,7 +2019,20 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 						}
 					}
 				} else {
-					var prop=arguments.entity.getValue(listLast(f,'.'));
+					if(f=='displayInterval'){
+						var prop=arguments.entity.getDisplayInterval().getAll();
+						structDelete(prop,'addObjects');
+						structDelete(prop,'removeObjects');
+						structDelete(prop,'sourceiterator');
+						structDelete(prop,'frommuracache');
+						structDelete(prop,'errors');
+						structDelete(prop,'instanceid');
+						structDelete(prop,'primaryKey');
+						structDelete(prop,'isNew');
+					} else{
+						var prop=arguments.entity.getValue(property=listLast(f,'.'));
+					}
+
 					temp['#f#']=prop;
 				}
 			}
