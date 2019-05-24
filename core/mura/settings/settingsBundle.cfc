@@ -632,9 +632,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset zipPath = getBundle() & "sitefiles.zip" />
 				<cfzip file="#zipPath#" action="list" name="rsfiles">
 
-				<cfif not listFindNoCase('cache,assets',listFirst(rsfiles.name,"\/"))>
-					<cfzip file="#zipPath#" action="unzip" overwrite="true" destination="#siteRoot#" filter="#rsfiles.name#">
-				</cfif>
+				<cfloop query="rsfiles">
+					<cfif not listFindNoCase('cache,assets',listFirst(rsfiles.name,"\/"))>
+						<cfzip file="#zipPath#" action="unzip" overwrite="true" destination="#siteRoot#" filter="#rsfiles.name#">
+					</cfif>
+				</cfloop>
 
 				<!---<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=siteRoot, overwriteFiles=true, excludeDirs="cache|assets")>--->
 			<cfelseif arguments.renderingMode eq "theme" and len(arguments.themeDir)>
