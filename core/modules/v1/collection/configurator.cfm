@@ -71,6 +71,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<option <cfif objectParams.sourcetype eq 'localindex'>selected </cfif>value="localindex">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.localindex')#</option>
 					<option <cfif objectParams.sourcetype eq 'remotefeed'>selected </cfif>value="remotefeed">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotefeed')#</option>
 					<option <cfif objectParams.sourcetype eq 'relatedcontent'>selected </cfif>value="relatedcontent">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontent')#</option>
+					<option <cfif objectParams.sourcetype eq 'children'>selected </cfif>value="children">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.children')#</option>
 				</select>
 			</div>
 			<div id="localindexcontainer" class="mura-control-group source-container" style="display:none">
