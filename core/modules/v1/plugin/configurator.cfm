@@ -118,11 +118,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif len(customOutputList)>
 					<cfquery name="rs" dbtype="query">
 						select * from prelist where
-						objectID in (''
-						<cfloop list="#customOutputList#" index="i">
-							,'#i#'
-						</cfloop>
-						)
+						objectID in (<cfqueryparam value="#customOutputList#" list=true cfsqltype="varchar">)
 					</cfquery>
 
 						<select name="customObjectSelector"
@@ -141,11 +137,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif not len(customOutput)>
 					<cfquery name="rs" dbtype="query">
 						select * from prelist where
-						objectID not in (''
-						<cfloop list="#customOutputList#" index="i">
-							,'#i#'
-						</cfloop>
-						)
+						objectID not in (<cfqueryparam value="#customOutputList#" list=true cfsqltype="varchar">)
 					</cfquery>
 					<cfif rs.recordcount>
 						<select id="availableObjectSelector" class="multiSelect"

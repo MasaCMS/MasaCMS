@@ -100,7 +100,7 @@
 		username="#application.configBean.getDBUsername()#"
 		password="#application.configBean.getDBPassword()#"
 		name="rsSection">
-		select filename,menutitle,type from tcontent where siteid='#$.event('siteID')#' and contentid='#arguments.objectid#' and approved=1 and active=1 and display=1
+		select filename,menutitle,type from tcontent where siteid=<cfqueryparam value="#$.event('siteID')#" cfsqltype="varchar"> and contentid=<cfqueryparam value="#arguments.objectid#" cfsqltype="varchar"> and approved=1 and active=1 and display=1
 </cfquery>
 
 <cfset navPath="#$.siteConfig('context')##getURLStem($.event('siteID'),rsSection.filename)#">

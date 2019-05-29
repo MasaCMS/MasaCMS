@@ -55,7 +55,7 @@
 	<cfquery datasource="#application.configBean.getDatasource(mode='readOnly')#" username="#application.configBean.getDBUsername(mode='readOnly')#" password="#application.configBean.getDBPassword(mode='readOnly')#" name="variables.rslist">
 		SELECT mlid, name, description
 		FROM tmailinglist
-		WHERE siteid='#variables.$.event('siteID')#'
+		WHERE siteid=<cfqueryparam value="#variables.$.event('siteID')#" cfsqltype="varchar">
 			AND isPublic=1
 		ORDER BY isPurge, name
 	</cfquery>
