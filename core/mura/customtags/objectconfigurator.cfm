@@ -484,12 +484,15 @@
 			});
 
 			// range sliders
+			<!--- todo: this or jquery-ui range slider --->
+			<!--- 
 			var rangeSlider = $("input.mura-rangeslider").bootstrapSlider();
-			rangeSlider.on('change',function(){
+			$(rangeSlider).on('change',function(){
 				var v = rangeSlider.bootstrapSlider('getValue');
 				var targetEl = $(this).attr('data-slider-valuefield');
 				$(targetEl).val(v).hide();
 			});
+			--->
 
 			// colorpicker
 			$('.mura-colorpicker input[type=text]').on('keyup',function(){
