@@ -65,8 +65,8 @@ component output="false" {
 		*/
 		if ( !(listFindNoCase("styles.js.cfm,templates.js.cfm,editor.css.cfm,default.js.cfm,config.js.cfm,validate.cfm,remote.cfc",listLast(cgi.SCRIPT_NAME,"/"))
 		 || listFindNoCase(cgi.SCRIPT_NAME,"remote","/")) ) {
-			writeOutput("Access Restricted.");
-			abort;
+			//writeOutput("Access Restricted.");
+			//abort;
 		}
 		include "#repeatString('../',depth)#core/appcfc/onRequestStart_include.cfm";
 		include "#repeatString('../',depth)#core/appcfc/scriptProtect_include.cfm";
