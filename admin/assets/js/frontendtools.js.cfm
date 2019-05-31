@@ -212,6 +212,21 @@
 									item.removeClass(classes[c]);
 								}
 							}
+
+							if(typeof parameters.params.class != 'undefined' && parameters.params.class){
+
+								var incomingClasses=parameters.params.class;
+
+								if(typeof incomingClasses != 'Array'){
+									incomingClasses=incomingClasses.split(' ');
+								}
+
+								for(var c=0;c<incomingClasses.length;c++){
+									if(!item.hasClass(incomingClasses[c])){
+										item.addClass(incomingClasses[c]);
+									}
+								}
+							}
 						}
 
 						for(var p in parameters.params){
