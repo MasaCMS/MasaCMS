@@ -356,7 +356,6 @@
 				setPlacementVisibility();
 			});
 
-			<!--- todo: merge these into a global method for all directional attributes (padding, margin on all) --->
 			// padding
 			function updateOuterPadding(){
 				var t = $('#outerpaddingtop').val().replace(/[^0-9]/g,'');
@@ -396,45 +395,83 @@
 
 			updateOuterPadding();
 
- 			// margin
-			function updateOuterMargin(){
-				var t = $('#outermargintop').val().replace(/[^0-9]/g,'');
-				var r = $('#outermarginright').val().replace(/[^0-9]/g,'');
-				var b = $('#outermarginbottom').val().replace(/[^0-9]/g,'');
-				var l =$('#outermarginleft').val().replace(/[^0-9]/g,'');
-				var u = $('#outermarginuom').val();
-				if (t.length){ $('#outermargintopval').val(t + u); } else { $('#outermargintopval').val(''); }
-				if (r.length){ $('#outermarginrightval').val(r + u); } else { $('#outermarginrightval').val(''); }
-				if (b.length){ $('#outermarginbottomval').val(b + u); } else { $('#outermarginbottomval').val(''); }
-				if (l.length){ $('#outermarginleftval').val(l + u); } else { $('#outermarginleftval').val(''); }
+			function updateInnerPadding(){
+				var t = $('#innerpaddingtop').val().replace(/[^0-9]/g,'');
+				var r = $('#innerpaddingright').val().replace(/[^0-9]/g,'');
+				var b = $('#innerpaddingbottom').val().replace(/[^0-9]/g,'');
+				var l =$('#innerpaddingleft').val().replace(/[^0-9]/g,'');
+				var u = $('#innerpaddinguom').val();
+				if (t.length){ $('#innerpaddingtopval').val(t + u); } else { $('#innerpaddingtopval').val(''); }
+				if (r.length){ $('#innerpaddingrightval').val(r + u); } else { $('#innerpaddingrightval').val(''); }
+				if (b.length){ $('#innerpaddingbottomval').val(b + u); } else { $('#innerpaddingbottomval').val(''); }
+				if (l.length){ $('#innerpaddingleftval').val(l + u); } else { $('#innerpaddingleftval').val(''); }
 				if (t == r && r == b & b == l){
-					$('#outermarginall').val(t);
+					$('#innerpaddingall').val(t);
 				} else {
-					$('#outermarginall').val('');
-					$('#outermarginadvanced').show();
-
+					$('#innerpaddingall').val('');
+					$('#innerpaddingadvanced').show();
 				}
-				$('#outermargintopval').trigger('change');
+				$('#innerpaddingtopval').trigger('change');
 			}
 
-			$('#outermarginall').on('keyup', function(){
-				var v = $('#outermarginall').val().replace(/[^0-9]/g,'');
-				$('#outermarginadvanced').hide();
-				$('#outermargintop').val(v);
-				$('#outermarginleft').val(v);
-				$('#outermarginright').val(v);
-				$('#outermarginbottom').val(v);
+			$('#innerpaddingall').on('keyup', function(){
+				var v = $('#innerpaddingall').val().replace(/[^0-9]/g,'');
+				$('#innerpaddingadvanced').hide();
+				$('#innerpaddingtop').val(v);
+				$('#innerpaddingleft').val(v);
+				$('#innerpaddingright').val(v);
+				$('#innerpaddingbottom').val(v);
 			})
 
-			$('#outermargintop,#outermarginright,#outermarginbottom,#outermarginleft,#outermarginall').on('keyup', function(){
-				updateOuterMargin();
+			$('#innerpaddingtop,#innerpaddingright,#innerpaddingbottom,#innerpaddingleft,#innerpaddingall').on('keyup', function(){
+				updateInnerPadding();
+			})
+
+			$('#innerpaddinguom').on('change',function(){
+				updateInnerPadding();
 			});
 
-			$('#outermarginuom').on('change',function(){
-				updateOuterMargin();
+			updateInnerPadding();
+			
+ 			// margin
+			function updateInnerMargin(){
+				var t = $('#innermargintop').val().replace(/[^0-9]/g,'');
+				var r = $('#innermarginright').val().replace(/[^0-9]/g,'');
+				var b = $('#innermarginbottom').val().replace(/[^0-9]/g,'');
+				var l =$('#innermarginleft').val().replace(/[^0-9]/g,'');
+				var u = $('#innermarginuom').val();
+				if (t.length){ $('#innermargintopval').val(t + u); } else { $('#innermargintopval').val(''); }
+				if (r.length){ $('#innermarginrightval').val(r + u); } else { $('#innermarginrightval').val(''); }
+				if (b.length){ $('#innermarginbottomval').val(b + u); } else { $('#innermarginbottomval').val(''); }
+				if (l.length){ $('#innermarginleftval').val(l + u); } else { $('#innermarginleftval').val(''); }
+				if (t == r && r == b & b == l){
+					$('#innermarginall').val(t);
+				} else {
+					$('#innermarginall').val('');
+					$('#innermarginadvanced').show();
+
+				}
+				$('#innermargintopval').trigger('change');
+			}
+
+			$('#innermarginall').on('keyup', function(){
+				var v = $('#innermarginall').val().replace(/[^0-9]/g,'');
+				$('#innermarginadvanced').hide();
+				$('#innermargintop').val(v);
+				$('#innermarginleft').val(v);
+				$('#innermarginright').val(v);
+				$('#innermarginbottom').val(v);
+			})
+
+			$('#innermargintop,#innermarginright,#innermarginbottom,#innermarginleft,#innermarginall').on('keyup', function(){
+				updateInnerMargin();
 			});
 
-			updateOuterMargin();
+			$('#innermarginuom').on('change',function(){
+				updateInnerMargin();
+			});
+
+			updateInnerMargin();
 
 			// background color
 			function updateRowBgColor(v){
