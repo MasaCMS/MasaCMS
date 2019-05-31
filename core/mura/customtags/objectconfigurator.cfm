@@ -432,7 +432,7 @@
 			});
 
 			updateInnerPadding();
-			
+
  			// margin
 			function updateInnerMargin(){
 				var t = $('#innermargintop').val().replace(/[^0-9]/g,'');
@@ -474,7 +474,7 @@
 			updateInnerMargin();
 
 			// background color
-			function updateRowBgColor(v){
+			function updateOuterBgColor(v){
 				var swatchColor = v;
 				var swatchEl = $('#outerbackgroundcustom').find('i.mura-colorpicker-swatch');
 				if (v == 'custom' <cfif not(isArray(request.backgroundcoloroptions) and arrayLen(request.backgroundcoloroptions))> || true</cfif>){
@@ -492,10 +492,10 @@
 
 			$('#outerbackgroundcolorsel').on('change',function(){
 				var v = $(this).val();
-				updateRowBgColor(v);
+				updateOuterBgColor(v);
 			});
 
-			updateRowBgColor($('#outerbackgroundcolorsel').val());
+			updateOuterBgColor($('#outerbackgroundcolorsel').val());
 
 			// background image
 			$('#outerbackgroundimageurl').on('change',function(){

@@ -4,7 +4,7 @@
 		<div class="mura-panel-heading" role="tab" id="heading-style-inner">
 			<h4 class="mura-panel-title">
 				<a class="collapsed" role="button" data-toggle="collapse" data-parent="##configurator-panels" href="##panel-style-inner" aria-expanded="false" aria-controls="panel-style-inner">
-					Outer
+					Inner
 				</a>
 			</h4>
 		</div>
@@ -42,7 +42,7 @@
 									<label class="mura-serial">
 										<input type="text" name="innerMarginTop" id="innermargintop" placeholder="Top" class="numeric serial" value="<cfif len(trim(attributes.params.contentcssstyles.margintop))>#val(esapiEncode('html_attr',attributes.params.contentcssstyles.margintop))#</cfif>">
 									</label>
-									<input type="hidden" name="marginTop" id="innermargintopval" class="contentStyle value="#esapiEncode('html_attr',attributes.params.contentcssstyles.margintop)#">
+									<input type="hidden" name="marginTop" id="innermargintopval" class="contentStyle" value="#esapiEncode('html_attr',attributes.params.contentcssstyles.margintop)#">
 								</div>
 								<div class="col-xs-3"></div>
 							</div>
@@ -52,13 +52,13 @@
 									<label class="mura-serial">
 										<input type="text" name="innerMarginLeft" id="innermarginleft" placeholder="Left" class="numeric serial" value="<cfif len(trim(attributes.params.contentcssstyles.marginleft))>#val(esapiEncode('html_attr',attributes.params.contentcssstyles.marginleft))#</cfif>">
 									</label>
-									<input type="hidden" name="marginLeft" id="innermarginleftval" class="contentStyle value="#esapiEncode('html_attr',attributes.params.contentcssstyles.marginleft)#">
+									<input type="hidden" name="marginLeft" id="innermarginleftval" class="contentStyle" value="#esapiEncode('html_attr',attributes.params.contentcssstyles.marginleft)#">
 								</div>
 								<div class="col-xs-6">
 									<label class="mura-serial">
 										<input type="text" name="innerMarginRight" id="innermarginright" placeholder="Right" class="numeric serial" value="<cfif len(trim(attributes.params.contentcssstyles.marginright))>#val(esapiEncode('html_attr',attributes.params.contentcssstyles.marginright))#</cfif>">
 									</label>
-									<input type="hidden" name="marginRight" id="innermarginrightval" class="contentStyle value="#esapiEncode('html_attr',attributes.params.contentcssstyles.marginright)#">
+									<input type="hidden" name="marginRight" id="innermarginrightval" class="contentStyle" value="#esapiEncode('html_attr',attributes.params.contentcssstyles.marginright)#">
 								</div>
 							</div>
 
@@ -68,7 +68,7 @@
 									<label class="mura-serial">
 										<input type="text" name="innerMarginBottom" id="innermarginbottom" placeholder="Bottom" class="numeric serial" value="<cfif len(trim(attributes.params.contentcssstyles.marginbottom))>#val(esapiEncode('html_attr',attributes.params.contentcssstyles.marginbottom))#</cfif>">
 									</label>
-									<input type="hidden" name="marginBottom" id="innermarginbottomval" class="contentStyle value="#esapiEncode('html_attr',attributes.params.contentcssstyles.marginbottom)#">
+									<input type="hidden" name="marginBottom" id="innermarginbottomval" class="contentStyle" value="#esapiEncode('html_attr',attributes.params.contentcssstyles.marginbottom)#">
 								</div>
 								<div class="col-xs-3"></div>
 							</div>
@@ -106,7 +106,7 @@
 									<label class="mura-serial">
 										<input type="text" name="innerPaddingTop" id="innerpaddingtop" placeholder="Top" class="numeric serial" value="<cfif len(trim(attributes.params.contentcssstyles.paddingtop))>#val(esapiEncode('html_attr',attributes.params.contentcssstyles.paddingtop))#</cfif>">
 									</label>
-									<input type="hidden" name="paddingTop" id="innerpaddingtopval" class="contentStyle value="#esapiEncode('html_attr',attributes.params.contentcssstyles.paddingtop)#">
+									<input type="hidden" name="paddingTop" id="innerpaddingtopval" class="contentStyle" value="#esapiEncode('html_attr',attributes.params.contentcssstyles.paddingtop)#">
 								</div>
 								<div class="col-xs-3"></div>
 							</div>
@@ -116,13 +116,13 @@
 									<label class="mura-serial">
 										<input type="text" name="innerPaddingLeft" id="innerpaddingleft" placeholder="Left" class="numeric serial" value="<cfif len(trim(attributes.params.contentcssstyles.paddingleft))>#val(esapiEncode('html_attr',attributes.params.contentcssstyles.paddingleft))#</cfif>">
 									</label>
-									<input type="hidden" name="paddingLeft" id="innerpaddingleftval" class="contentStyle value="#esapiEncode('html_attr',attributes.params.contentcssstyles.paddingleft)#">
+									<input type="hidden" name="paddingLeft" id="innerpaddingleftval" class="contentStyle" value="#esapiEncode('html_attr',attributes.params.contentcssstyles.paddingleft)#">
 								</div>
 								<div class="col-xs-6">
 									<label class="mura-serial">
 										<input type="text" name="innerPaddingRight" id="innerpaddingright" placeholder="Right" class="numeric serial" value="<cfif len(trim(attributes.params.contentcssstyles.paddingright))>#val(esapiEncode('html_attr',attributes.params.contentcssstyles.paddingright))#</cfif>">
 									</label>
-									<input type="hidden" name="paddingRight" id="innerpaddingrightval" class="contentStyle value="#esapiEncode('html_attr',attributes.params.contentcssstyles.paddingright)#">
+									<input type="hidden" name="paddingRight" id="innerpaddingrightval" class="contentStyle" value="#esapiEncode('html_attr',attributes.params.contentcssstyles.paddingright)#">
 								</div>
 							</div>
 
@@ -132,7 +132,7 @@
 									<label class="mura-serial">
 										<input type="text" name="innerPaddingBottom" id="innerpaddingbottom" placeholder="Bottom" class="numeric serial" value="<cfif len(trim(attributes.params.contentcssstyles.paddingbottom))>#val(esapiEncode('html_attr',attributes.params.contentcssstyles.paddingbottom))#</cfif>">
 									</label>
-									<input type="hidden" name="paddingBottom" id="innerpaddingbottomval" class="contentStyle value="#esapiEncode('html_attr',attributes.params.contentcssstyles.paddingbottom)#">
+									<input type="hidden" name="paddingBottom" id="innerpaddingbottomval" class="contentStyle" value="#esapiEncode('html_attr',attributes.params.contentcssstyles.paddingbottom)#">
 								</div>
 								<div class="col-xs-3"></div>
 							</div>
@@ -159,20 +159,20 @@
 						</cfif>
 						<div class="input-group mura-colorpicker" id="innerbackgroundcustom" style="<cfif isArray(request.backgroundcoloroptions) and arrayLen(request.backgroundcoloroptions)>display: none;</cfif>">
 							<span class="input-group-addon"><i class="mura-colorpicker-swatch"></i></span>
-							<input type="text" id="innerbackgroundcolor" name="backgroundColor" placeholder="Select Color" class="contentStyle autocomplete="off" value="#esapiEncode('html_attr',attributes.params.contentcssstyles.backgroundcolor)#">
+							<input type="text" id="innerbackgroundcolor" name="backgroundColor" placeholder="Select Color" class="contentStyle" autocomplete="off" value="#esapiEncode('html_attr',attributes.params.contentcssstyles.backgroundcolor)#">
 						</div>
 					</div>
 
 					<div class="mura-control-group">
 						<label>Background Image</label>
-						<input type="hidden" id="innerbackgroundimage" name="backgroundImage" class="contentStyle value="#esapiEncode('html_attr',attributes.params.contentcssstyles.backgroundimage)#">
-						<input type="text" id="innerbackgroundimageurl" name="backgroundImageURL" placeholder="URL" class="objectParam" value="#esapiEncode('html_attr',attributes.params.innerbackgroundimageurl)#">
-						<button type="button" class="btn mura-ckfinder" data-target="backgroundImageURL" data-completepath="false"><i class="mi-image"></i> Select Image</button>
+						<input type="hidden" id="innerbackgroundimage" name="backgroundImage" class="contentStyle" value="#esapiEncode('html_attr',attributes.params.contentcssstyles.backgroundimage)#">
+						<input type="text" id="innerbackgroundimageurl" name="innerBackgroundImageURL" placeholder="URL" class="objectParam" value="#esapiEncode('html_attr',attributes.params.innerbackgroundimageurl)#">
+						<button type="button" class="btn mura-ckfinder" data-target="innerBackgroundImageURL" data-completepath="false"><i class="mi-image"></i> Select Image</button>
 					</div>
 
 					<div class="mura-control-group css-bg-option" style="display:none;">
 						<label>Background Size</label>
-						<select id="innerbackgroundsize" name="backgroundSize" class="contentStyle>
+						<select id="innerbackgroundsize" name="backgroundSize" class="contentStyle">
 							<option value="auto"<cfif attributes.params.contentcssstyles.backgroundsize eq 'auto'>
 							selected</cfif>>Auto</option>
 							<option value="contain"<cfif attributes.params.contentcssstyles.backgroundsize eq 'contain'> selected</cfif>>Contain</option>
@@ -182,7 +182,7 @@
 
 					<div class="mura-control-group css-bg-option" style="display:none;">
 						<label>Background Repeat</label>
-						<select id="innerbackgroundrepeat" name="backgroundRepeat" class="contentStyle>
+						<select id="innerbackgroundrepeat" name="backgroundRepeat" class="contentStyle">
 							<option value="no-repeat"<cfif attributes.params.contentcssstyles.backgroundrepeat eq 'norepeat'> selected</cfif>>No-repeat</option>
 							<option value="repeat"<cfif attributes.params.contentcssstyles.backgroundrepeat eq 'repeat'> selected</cfif>>Repeat</option>
 							<option value="repeat-x"<cfif attributes.params.contentcssstyles.backgroundrepeat eq 'repeatx'> selected</cfif>>Repeat-X</option>
@@ -207,7 +207,7 @@
 										</cfloop>
 									</select>
 
-									<input type="hidden" id="innerbackgroundpositionyval" name="backgroundPositionY" class="contentStyle value="#esapiEncode('html_attr',attributes.params.contentcssstyles.backgroundpositiony)#">
+									<input type="hidden" id="innerbackgroundpositionyval" name="backgroundPositionY" class="contentStyle" value="#esapiEncode('html_attr',attributes.params.contentcssstyles.backgroundpositiony)#">
 
 								</div>
 							</div>
@@ -227,7 +227,7 @@
 										</cfloop>
 									</select>
 
-									<input type="hidden" id="innerbackgroundpositionxval" name="backgroundPositionX" class="contentStyle value="#esapiEncode('html_attr',attributes.params.contentcssstyles.backgroundpositionx)#">
+									<input type="hidden" id="innerbackgroundpositionxval" name="backgroundPositionX" class="contentStyle" value="#esapiEncode('html_attr',attributes.params.contentcssstyles.backgroundpositionx)#">
 
 								</div>
 							</div>
@@ -236,7 +236,7 @@
 
 					<div class="mura-control-group css-bg-option" style="display:none;">
 						<label>Background Overlay</label>
-						<input type="text" id="innerbackgroundoverlay" name="backgroundOverlay" placeholder="" class="contentStyle value="#esapiEncode('html_attr',attributes.params.contentcssstyles.backgroundoverlay)#">
+						<input type="text" id="innerbackgroundoverlay" name="backgroundOverlay" placeholder="" class="contentStyle" value="#esapiEncode('html_attr',attributes.params.contentcssstyles.backgroundoverlay)#">
 					</div>
 
 					<!--- css id and class for inner --->
