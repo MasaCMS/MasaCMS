@@ -358,83 +358,83 @@
 
 			<!--- todo: merge these into a global method for all directional attributes (padding, margin on all) --->
 			// padding
-			function updateRowPadding(){
-				var t = $('#rowpaddingtop').val().replace(/[^0-9]/g,'');
-				var r = $('#rowpaddingright').val().replace(/[^0-9]/g,'');
-				var b = $('#rowpaddingbottom').val().replace(/[^0-9]/g,'');
-				var l =$('#rowpaddingleft').val().replace(/[^0-9]/g,'');
-				var u = $('#rowpaddinguom').val();
-				if (t.length){ $('#rowpaddingtopval').val(t + u); } else { $('#rowpaddingtopval').val(''); }
-				if (r.length){ $('#rowpaddingrightval').val(r + u); } else { $('#rowpaddingrightval').val(''); }
-				if (b.length){ $('#rowpaddingbottomval').val(b + u); } else { $('#rowpaddingbottomval').val(''); }
-				if (l.length){ $('#rowpaddingleftval').val(l + u); } else { $('#rowpaddingleftval').val(''); }
+			function updateOuterPadding(){
+				var t = $('#outerpaddingtop').val().replace(/[^0-9]/g,'');
+				var r = $('#outerpaddingright').val().replace(/[^0-9]/g,'');
+				var b = $('#outerpaddingbottom').val().replace(/[^0-9]/g,'');
+				var l =$('#outerpaddingleft').val().replace(/[^0-9]/g,'');
+				var u = $('#outerpaddinguom').val();
+				if (t.length){ $('#outerpaddingtopval').val(t + u); } else { $('#outerpaddingtopval').val(''); }
+				if (r.length){ $('#outerpaddingrightval').val(r + u); } else { $('#outerpaddingrightval').val(''); }
+				if (b.length){ $('#outerpaddingbottomval').val(b + u); } else { $('#outerpaddingbottomval').val(''); }
+				if (l.length){ $('#outerpaddingleftval').val(l + u); } else { $('#outerpaddingleftval').val(''); }
 				if (t == r && r == b & b == l){
-					$('#rowpaddingall').val(t);
+					$('#outerpaddingall').val(t);
 				} else {
-					$('#rowpaddingall').val('');
-					$('#rowpaddingadvanced').show();
+					$('#outerpaddingall').val('');
+					$('#outerpaddingadvanced').show();
 				}
-				$('#rowpaddingtopval').trigger('change');
+				$('#outerpaddingtopval').trigger('change');
 			}
 
-			$('#rowpaddingall').on('keyup', function(){
-				var v = $('#rowpaddingall').val().replace(/[^0-9]/g,'');
-				$('#rowpaddingadvanced').hide();
-				$('#rowpaddingtop').val(v);
-				$('#rowpaddingleft').val(v);
-				$('#rowpaddingright').val(v);
-				$('#rowpaddingbottom').val(v);
+			$('#outerpaddingall').on('keyup', function(){
+				var v = $('#outerpaddingall').val().replace(/[^0-9]/g,'');
+				$('#outerpaddingadvanced').hide();
+				$('#outerpaddingtop').val(v);
+				$('#outerpaddingleft').val(v);
+				$('#outerpaddingright').val(v);
+				$('#outerpaddingbottom').val(v);
 			})
 
-			$('#rowpaddingtop,#rowpaddingright,#rowpaddingbottom,#rowpaddingleft,#rowpaddingall').on('keyup', function(){
-				updateRowPadding();
+			$('#outerpaddingtop,#outerpaddingright,#outerpaddingbottom,#outerpaddingleft,#outerpaddingall').on('keyup', function(){
+				updateOuterPadding();
 			})
 
-			$('#rowpaddinguom').on('change',function(){
-				updateRowPadding();
+			$('#outerpaddinguom').on('change',function(){
+				updateOuterPadding();
 			});
 
-			updateRowPadding();
+			updateOuterPadding();
 
  			// margin
-			function updateRowMargin(){
-				var t = $('#rowmargintop').val().replace(/[^0-9]/g,'');
-				var r = $('#rowmarginright').val().replace(/[^0-9]/g,'');
-				var b = $('#rowmarginbottom').val().replace(/[^0-9]/g,'');
-				var l =$('#rowmarginleft').val().replace(/[^0-9]/g,'');
-				var u = $('#rowmarginuom').val();
-				if (t.length){ $('#rowmargintopval').val(t + u); } else { $('#rowmargintopval').val(''); }
-				if (r.length){ $('#rowmarginrightval').val(r + u); } else { $('#rowmarginrightval').val(''); }
-				if (b.length){ $('#rowmarginbottomval').val(b + u); } else { $('#rowmarginbottomval').val(''); }
-				if (l.length){ $('#rowmarginleftval').val(l + u); } else { $('#rowmarginleftval').val(''); }
+			function updateOuterMargin(){
+				var t = $('#outermargintop').val().replace(/[^0-9]/g,'');
+				var r = $('#outermarginright').val().replace(/[^0-9]/g,'');
+				var b = $('#outermarginbottom').val().replace(/[^0-9]/g,'');
+				var l =$('#outermarginleft').val().replace(/[^0-9]/g,'');
+				var u = $('#outermarginuom').val();
+				if (t.length){ $('#outermargintopval').val(t + u); } else { $('#outermargintopval').val(''); }
+				if (r.length){ $('#outermarginrightval').val(r + u); } else { $('#outermarginrightval').val(''); }
+				if (b.length){ $('#outermarginbottomval').val(b + u); } else { $('#outermarginbottomval').val(''); }
+				if (l.length){ $('#outermarginleftval').val(l + u); } else { $('#outermarginleftval').val(''); }
 				if (t == r && r == b & b == l){
-					$('#rowmarginall').val(t);
+					$('#outermarginall').val(t);
 				} else {
-					$('#rowmarginall').val('');
-					$('#rowmarginadvanced').show();
+					$('#outermarginall').val('');
+					$('#outermarginadvanced').show();
 
 				}
-				$('#rowmargintopval').trigger('change');
+				$('#outermargintopval').trigger('change');
 			}
 
-			$('#rowmarginall').on('keyup', function(){
-				var v = $('#rowmarginall').val().replace(/[^0-9]/g,'');
-				$('#rowmarginadvanced').hide();
-				$('#rowmargintop').val(v);
-				$('#rowmarginleft').val(v);
-				$('#rowmarginright').val(v);
-				$('#rowmarginbottom').val(v);
+			$('#outermarginall').on('keyup', function(){
+				var v = $('#outermarginall').val().replace(/[^0-9]/g,'');
+				$('#outermarginadvanced').hide();
+				$('#outermargintop').val(v);
+				$('#outermarginleft').val(v);
+				$('#outermarginright').val(v);
+				$('#outermarginbottom').val(v);
 			})
 
-			$('#rowmargintop,#rowmarginright,#rowmarginbottom,#rowmarginleft,#rowmarginall').on('keyup', function(){
-				updateRowMargin();
+			$('#outermargintop,#outermarginright,#outermarginbottom,#outermarginleft,#outermarginall').on('keyup', function(){
+				updateOuterMargin();
 			});
 
-			$('#rowmarginuom').on('change',function(){
-				updateRowMargin();
+			$('#outermarginuom').on('change',function(){
+				updateOuterMargin();
 			});
 
-			updateRowMargin();
+			updateOuterMargin();
 
 			// background color
 			function updateRowBgColor(v){
