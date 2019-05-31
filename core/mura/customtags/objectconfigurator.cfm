@@ -152,7 +152,7 @@
 							<!--- nested panels --->
 							<div class="mura-control-group">
 								<!--- todo: rbkeys for box labels --->
-								<div class="panel-gds-box" id="panel-gds-row" data-gdsel="panel-style-row"><span>Row</span>
+								<div class="panel-gds-box" id="panel-gds-outer" data-gdsel="panel-style-outer"><span>Outer</span>
 									<cfif request.hasmetaoptions>
 										<div class="panel-gds-box" id="panel-gds-meta" data-gdsel="panel-style-meta"><span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.label')#</span></div>
 									</cfif>
@@ -252,7 +252,7 @@
 				return false;
 			})
 			$('#style-panels').addClass('no-header');
-			$('#panel-gds-row').trigger('click');			
+			$('#panel-gds-outer').trigger('click');			
 
 			function setPlacementVisibility(){
 				var classInput=$('input[name="class"]');

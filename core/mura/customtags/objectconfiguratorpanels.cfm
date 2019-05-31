@@ -45,18 +45,18 @@
 <cfoutput>
 	<!--- row --->
 	<div class="mura-panel panel">
-		<div class="mura-panel-heading" role="tab" id="heading-style-row">
+		<div class="mura-panel-heading" role="tab" id="heading-style-outer">
 			<h4 class="mura-panel-title">
-				<a class="collapsed" role="button" data-toggle="collapse" data-parent="##configurator-panels" href="##panel-style-row" aria-expanded="false" aria-controls="panel-row">
-					Row
+				<a class="collapsed" role="button" data-toggle="collapse" data-parent="##configurator-panels" href="##panel-style-outer" aria-expanded="false" aria-controls="panel-style-outer">
+					Outer
 				</a>
 			</h4>
 		</div>
-		<div id="panel-style-row" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-style-row">
+		<div id="panel-style-outer" class="panel-collapse collapse" role="tabpanel" aria-labeledby="heading-style-outer">
 			<div class="mura-panel-body">
 				<div class="container">
 
-					<!--- css id and class for row --->
+					<!--- css id and class for outer --->
 					<cfif request.haspositionoptions>
 						<div class="mura-control-group">
 							<label>
@@ -330,12 +330,12 @@
 		<div class="mura-panel panel">
 			<div class="mura-panel-heading" role="tab" id="heading-style-label">
 				<h4 class="mura-panel-title">
-					<a class="collapsed" role="button" data-toggle="collapse" data-parent="##configurator-panels" href="##panel-style-label" aria-expanded="false" aria-controls="panel-label">
+					<a class="collapsed" role="button" data-toggle="collapse" data-parent="##configurator-panels" href="##panel-style-label" aria-expanded="false" aria-controls="panel-style-label">
 						Label
 					</a>
 				</h4>
 			</div>
-			<div id="panel-style-label" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-style-label">
+			<div id="panel-style-label" class="panel-collapse collapse" role="tabpanel" aria-labeledby="heading-style-label">
 				<div class="mura-panel-body">
 					<div class="container" id="labelContainer">
 
@@ -379,14 +379,14 @@
 	</cfif>
 	<!--- content --->
 	<div class="mura-panel panel">
-		<div class="mura-panel-heading" role="tab" id="heading-style-content">
+		<div class="mura-panel-heading" role="tab" id="heading-style-inner">
 			<h4 class="mura-panel-title">
-				<a class="collapsed" role="button" data-toggle="collapse" data-parent="##configurator-panels" href="##panel-style-content" aria-expanded="false" aria-controls="panel-content">
-					Content
+				<a class="collapsed" role="button" data-toggle="collapse" data-parent="##configurator-panels" href="##panel-style-inner" aria-expanded="false" aria-controls="panel-style-inner">
+					Inner
 				</a>
 			</h4>
 		</div>
-		<div id="panel-style-content" class="panel-collapse collapse" role="tabpanel" aria-contentledby="heading-style-content">
+		<div id="panel-style-inner" class="panel-collapse collapse" role="tabpanel" aria-labeledby="heading-style-inner">
 			<div class="mura-panel-body">
 				<div class="container">
 
