@@ -43,7 +43,7 @@
 </cfscript>
 
 <cfoutput>
-	<!--- row --->
+	<!--- outer --->
 	<div class="mura-panel panel">
 		<div class="mura-panel-heading" role="tab" id="heading-style-outer">
 			<h4 class="mura-panel-title">
@@ -213,9 +213,6 @@
 						<input type="text" id="outerbackgroundimageurl" name="backgroundImageURL" placeholder="URL" class="objectParam" value="#esapiEncode('html_attr',attributes.params.backgroundimageurl)#">
 						<button type="button" class="btn mura-ckfinder" data-target="backgroundImageURL" data-completepath="false"><i class="mi-image"></i> Select Image</button>
 					</div>
-
-<!--- todo: are we using bigui? --->
-<!---	<a class="bigui__launch" data-rel="bigui__rowbgrdimg" href="##">Select Image</a> --->
 
 					<div class="mura-control-group css-bg-option" style="display:none;">
 						<label>Background Size</label>

@@ -542,19 +542,6 @@
 				}
 			})
 
-			<!--- todo: are we using bigui here? --->
-			<!---
-			$('#configuratorContainer .bigui__launch').on('click', function(e){
-				var el=window.parent.$('body');
-				if(el.hasClass('mura-bigui-state__pushed--right')){
-					el.removeClass('mura-bigui-state__pushed--right');
-				} else {
-					el.addClass('mura-bigui-state__pushed--right');
-				}
-				e.preventDefault();
-			});
-			--->
-
 			inited=true;
 		});
 	</script>
