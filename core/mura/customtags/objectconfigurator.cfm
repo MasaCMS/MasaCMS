@@ -267,7 +267,6 @@
   				} else {
   					classInput.val(width.val());
   				}
-					
 					classInput.val($.trim(classInput.val()));
 
 		  		var contentcssclass=$('input[name="contentcssclass"]');
@@ -374,7 +373,9 @@
 					$('#outerpaddingall').val('');
 					$('#outerpaddingadvanced').show();
 				}
-				$('#outerpaddingtopval').trigger('change');
+				if(inited){
+					$('#outerpaddingtopval').trigger('change');
+				}
 			}
 
 			$('#outerpaddingall').on('keyup', function(){
@@ -412,7 +413,9 @@
 					$('#innerpaddingall').val('');
 					$('#innerpaddingadvanced').show();
 				}
-				$('#innerpaddingtopval').trigger('change');
+				if(inited){
+					$('#innerpaddingtopval').trigger('change');
+				}
 			}
 
 			$('#innerpaddingall').on('keyup', function(){
@@ -452,7 +455,9 @@
 					$('#innermarginadvanced').show();
 
 				}
-				$('#innermargintopval').trigger('change');
+				if(inited){
+					$('#innermargintopval').trigger('change');
+				}
 			}
 
 			$('#innermarginall').on('keyup', function(){
@@ -508,10 +513,22 @@
 				} else {
 					$('.css-bg-option').hide();
 				}
-				$('#outerbackgroundimage').val(str).trigger('change');
+				if(inited){
+					$('#outerbackgroundimage').val(str).trigger('change');
+				}
 			});
 
-			$('#outerbackgroundimageurl').trigger('change');
+			var v = $('#outerbackgroundimageurl').val();
+			var str = "";
+			if (v.length > 3){
+				str = "url('" + v + "')";
+				$('.css-bg-option').show();
+			} else {
+				$('.css-bg-option').hide();
+			}
+
+			//commented out to not intially trigger reseting of rendered object
+			//$('#outerbackgroundimageurl').trigger('change');
 
 			// background position x/y
 			function updatePositionSelection(sel){
