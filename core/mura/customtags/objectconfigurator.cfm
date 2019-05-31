@@ -136,8 +136,37 @@
 		</div> <!--- /end panel --->
 		</cfif>
 
-		<!--- todo: merge this included content back to this file --->
-		<cfinclude template="objectconfiguratorpanels.cfm">
+		<!--- style --->
+		<div class="mura-panel panel">
+			<div class="mura-panel-heading" role="tab" id="heading-style">
+				<h4 class="mura-panel-title">
+					<!--- todo: rbkey for style --->
+					<a class="collapsed" role="button" data-toggle="collapse" data-parent="##configurator-panels" href="##panel-style" aria-expanded="false" aria-controls="panel-style">
+						Style
+					</a>
+				</h4>
+			</div>
+			<div id="panel-style" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-style">
+				<div class="mura-panel-body">
+					<div class="container">
+							<!--- nested panels --->
+							<div class="mura-control-group">
+								<!--- todo: rbkeys for box labels --->
+								<div class="panel-gds-box" id="panel-gds-row" data-gdsel="panel-style-row"><span>Row</span>
+									<cfif request.hasmetaoptions>
+										<div class="panel-gds-box" id="panel-gds-meta" data-gdsel="panel-style-meta"><span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.label')#</span></div>
+									</cfif>
+									<div class="panel-gds-box" id="panel-gds-inner" data-gdsel="panel-style-content"><span>Content</span></div>
+								</div>
+								<div class="mura-panel-group" id="style-panels" role="tablist" aria-multiselectable="true">
+									<!--- todo: merge this included content back to this file --->
+									<cfinclude template="objectconfiguratorpanels.cfm">
+								</div> <!--- /end panel group --->
+							</div> <!--- /end mura control group --->
+					</div> <!--- /end container --->
+				</div> <!--- /end  mura-panel-body --->
+			</div> <!--- /end  mura-panel-collapse --->
+		</div> <!--- /end style panel --->
 
 		<cfif request.haspositionoptions>
 			<!--- Position panel--->
@@ -212,6 +241,18 @@
 		$(function(){
 
 			var inited=false;
+
+			$('.panel-gds-box').on('click',function(){
+				var gdspanel = $(this).attr('data-gdsel');
+				var gdstarget = $('#' + gdspanel);
+				$('.panel-gds-box').removeClass('active');
+				$(this).addClass('active');
+				$('#style-panels').find('.panel-collapse.in').removeClass('in');
+				$(gdstarget).addClass('in');
+				return false;
+			})
+			$('#style-panels').addClass('no-header');
+			$('#panel-gds-row').trigger('click');			
 
 			function setPlacementVisibility(){
 				var classInput=$('input[name="class"]');

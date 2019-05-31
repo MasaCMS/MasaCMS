@@ -45,14 +45,14 @@
 <cfoutput>
 	<!--- row --->
 	<div class="mura-panel panel">
-		<div class="mura-panel-heading" role="tab" id="heading-row">
+		<div class="mura-panel-heading" role="tab" id="heading-style-row">
 			<h4 class="mura-panel-title">
-				<a class="collapsed" role="button" data-toggle="collapse" data-parent="##configurator-panels" href="##panel-row" aria-expanded="false" aria-controls="panel-row">
+				<a class="collapsed" role="button" data-toggle="collapse" data-parent="##configurator-panels" href="##panel-style-row" aria-expanded="false" aria-controls="panel-row">
 					Row
 				</a>
 			</h4>
 		</div>
-		<div id="panel-row" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-row">
+		<div id="panel-style-row" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-style-row">
 			<div class="mura-panel-body">
 				<div class="container">
 
@@ -328,14 +328,14 @@
 	<cfif request.hasmetaoptions and not (IsBoolean(attributes.params.isbodyobject) and attributes.params.isbodyobject)>
 		<!--- label --->
 		<div class="mura-panel panel">
-			<div class="mura-panel-heading" role="tab" id="heading-label">
+			<div class="mura-panel-heading" role="tab" id="heading-style-label">
 				<h4 class="mura-panel-title">
-					<a class="collapsed" role="button" data-toggle="collapse" data-parent="##configurator-panels" href="##panel-label" aria-expanded="false" aria-controls="panel-label">
+					<a class="collapsed" role="button" data-toggle="collapse" data-parent="##configurator-panels" href="##panel-style-label" aria-expanded="false" aria-controls="panel-label">
 						Label
 					</a>
 				</h4>
 			</div>
-			<div id="panel-label" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-label">
+			<div id="panel-style-label" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-style-label">
 				<div class="mura-panel-body">
 					<div class="container" id="labelContainer">
 
@@ -379,14 +379,14 @@
 	</cfif>
 	<!--- content --->
 	<div class="mura-panel panel">
-		<div class="mura-panel-heading" role="tab" id="heading-content">
+		<div class="mura-panel-heading" role="tab" id="heading-style-content">
 			<h4 class="mura-panel-title">
-				<a class="collapsed" role="button" data-toggle="collapse" data-parent="##configurator-panels" href="##panel-content" aria-expanded="false" aria-controls="panel-content">
+				<a class="collapsed" role="button" data-toggle="collapse" data-parent="##configurator-panels" href="##panel-style-content" aria-expanded="false" aria-controls="panel-content">
 					Content
 				</a>
 			</h4>
 		</div>
-		<div id="panel-content" class="panel-collapse collapse" role="tabpanel" aria-contentledby="heading-content">
+		<div id="panel-style-content" class="panel-collapse collapse" role="tabpanel" aria-contentledby="heading-style-content">
 			<div class="mura-panel-body">
 				<div class="container">
 
