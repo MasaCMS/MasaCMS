@@ -5,8 +5,8 @@
 	param name="attributes.params.backgroundcolorsel" default="";
 	param name="attributes.params.marginuom" default="";
 	param name="attributes.params.paddinguom" default="";
-	param name="attributes.params.rowbackgroundpositionx" default="";
-	param name="attributes.params.rowbackgroundpositiony" default="";
+	param name="attributes.params.outerbackgroundpositionx" default="";
+	param name="attributes.params.outerbackgroundpositiony" default="";
 
 	attributes.globalparams = [
 		'backgroundcolor'
@@ -55,23 +55,6 @@
 		<div id="panel-style-outer" class="panel-collapse collapse" role="tabpanel" aria-labeledby="heading-style-outer">
 			<div class="mura-panel-body">
 				<div class="container">
-
-					<!--- css id and class for outer --->
-					<cfif request.haspositionoptions>
-						<div class="mura-control-group">
-							<label>
-								CSS ID
-							</label>
-							<input name="cssid" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.cssid)#" maxlength="255">
-						</div>
-						<div class="mura-control-group">
-							<label>
-								CSS Class
-							</label>
-							<input name="cssclass" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.cssclass)#" maxlength="255">
-							<input name="class" type="hidden" class="objectParam" value="#esapiEncode('html_attr',attributes.params.class)#"/>
-						</div>
-					</cfif>
 
 					<!--- margin --->
 					<div class="mura-control-group mura-ui-grid">
@@ -206,7 +189,7 @@
 						<!--- todo: rbkey for these labels, options and placeholders--->
 						<label>Background Color</label>
 						<cfif isArray(request.backgroundcoloroptions) and arrayLen(request.backgroundcoloroptions)>
-							<select id="rowbackgroundcolorsel" name="backgroundColorSel" class="objectParam">
+							<select id="outerbackgroundcolorsel" name="backgroundColorSel" class="objectParam">
 								<option value=""<cfif attributes.params.backgroundcolorsel eq ''>
 							selected</cfif>>None</option>
 								<cfloop from="1" to="#arrayLen(request.backgroundcoloroptions)#" index="i">
@@ -218,16 +201,16 @@
 							selected</cfif>>Custom</option>
 							</select>
 						</cfif>
-						<div class="input-group mura-colorpicker" id="rowbackgroundcustom" style="<cfif isArray(request.backgroundcoloroptions) and arrayLen(request.backgroundcoloroptions)>display: none;</cfif>">
+						<div class="input-group mura-colorpicker" id="outerbackgroundcustom" style="<cfif isArray(request.backgroundcoloroptions) and arrayLen(request.backgroundcoloroptions)>display: none;</cfif>">
 							<span class="input-group-addon"><i class="mura-colorpicker-swatch"></i></span>
-							<input type="text" id="rowbackgroundcolor" name="backgroundColor" placeholder="Select Color" class="objectStyle" autocomplete="off" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundcolor)#">
+							<input type="text" id="outerbackgroundcolor" name="backgroundColor" placeholder="Select Color" class="objectStyle" autocomplete="off" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundcolor)#">
 						</div>
 					</div>
 
 					<div class="mura-control-group">
 						<label>Background Image</label>
-						<input type="hidden" id="rowbackgroundimage" name="backgroundImage" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundimage)#">
-						<input type="text" id="rowbackgroundimageurl" name="backgroundImageURL" placeholder="URL" class="objectParam" value="#esapiEncode('html_attr',attributes.params.backgroundimageurl)#">
+						<input type="hidden" id="outerbackgroundimage" name="backgroundImage" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundimage)#">
+						<input type="text" id="outerbackgroundimageurl" name="backgroundImageURL" placeholder="URL" class="objectParam" value="#esapiEncode('html_attr',attributes.params.backgroundimageurl)#">
 						<button type="button" class="btn mura-ckfinder" data-target="backgroundImageURL" data-completepath="false"><i class="mi-image"></i> Select Image</button>
 					</div>
 
@@ -236,7 +219,7 @@
 
 					<div class="mura-control-group css-bg-option" style="display:none;">
 						<label>Background Size</label>
-						<select id="rowbackgroundsize" name="backgroundSize" class="objectStyle">
+						<select id="outerbackgroundsize" name="backgroundSize" class="objectStyle">
 							<option value="auto"<cfif attributes.params.cssstyles.backgroundsize eq 'auto'>
 							selected</cfif>>Auto</option>
 							<option value="contain"<cfif attributes.params.cssstyles.backgroundsize eq 'contain'> selected</cfif>>Contain</option>
@@ -246,7 +229,7 @@
 
 					<div class="mura-control-group css-bg-option" style="display:none;">
 						<label>Background Repeat</label>
-						<select id="rowbackgroundrepeat" name="backgroundRepeat" class="objectStyle">
+						<select id="outerbackgroundrepeat" name="backgroundRepeat" class="objectStyle">
 							<option value="no-repeat"<cfif attributes.params.cssstyles.backgroundrepeat eq 'norepeat'> selected</cfif>>No-repeat</option>
 							<option value="repeat"<cfif attributes.params.cssstyles.backgroundrepeat eq 'repeat'> selected</cfif>>Repeat</option>
 							<option value="repeat-x"<cfif attributes.params.cssstyles.backgroundrepeat eq 'repeatx'> selected</cfif>>Repeat-X</option>
@@ -262,16 +245,16 @@
 							<div class="col-xs-8">
 								<div class="mura-input-group">
 									<label>
-										<input type="text" id="rowbackgroundpositionynum" name="rowBackgroundPositionyNum" class="numeric" placeholder="" value="<cfif val(esapiEncode('html_attr',attributes.params.cssstyles.backgroundpositiony))>#val(esapiEncode('html_attr',attributes.params.cssstyles.backgroundpositiony))#</cfif>" style="display: none;">
+										<input type="text" id="outerbackgroundpositionynum" name="outerBackgroundPositionyNum" class="numeric" placeholder="" value="<cfif val(esapiEncode('html_attr',attributes.params.cssstyles.backgroundpositiony))>#val(esapiEncode('html_attr',attributes.params.cssstyles.backgroundpositiony))#</cfif>" style="display: none;">
 									</label>
 
-									<select id="rowbackgroundpositiony" name="rowBackgroundPositionY" class="objectParam" data-numfield="rowbackgroundpositionynum">
+									<select id="outerbackgroundpositiony" name="outerBackgroundPositionY" class="objectParam" data-numfield="outerbackgroundpositionynum">
 										<cfloop list="Top,Center,Bottom,%,px" index="p">
 											<option value="#lcase(p)#"<cfif attributes.params.cssstyles.backgroundpositiony contains p> selected</cfif>>#p#</option>
 										</cfloop>
 									</select>
 
-									<input type="hidden" id="rowbackgroundpositionyval" name="backgroundPositionY" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundpositiony)#">
+									<input type="hidden" id="outerbackgroundpositionyval" name="backgroundPositionY" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundpositiony)#">
 
 								</div>
 							</div>
@@ -282,16 +265,16 @@
 							<div class="col-xs-8">
 								<div class="mura-input-group">
 									<label>
-										<input type="text" id="rowbackgroundpositionxnum" name="rowBackgroundPositionxNum" class="numeric" placeholder="" value="<cfif val(esapiEncode('html_attr',attributes.params.cssstyles.backgroundpositionx))>#val(esapiEncode('html_attr',attributes.params.cssstyles.backgroundpositionx))#</cfif>" style="display: none;">
+										<input type="text" id="outerbackgroundpositionxnum" name="outerBackgroundPositionxNum" class="numeric" placeholder="" value="<cfif val(esapiEncode('html_attr',attributes.params.cssstyles.backgroundpositionx))>#val(esapiEncode('html_attr',attributes.params.cssstyles.backgroundpositionx))#</cfif>" style="display: none;">
 									</label>
 
-									<select id="rowbackgroundpositionx" name="rowBackgroundPositionX" class="objectParam" data-numfield="rowbackgroundpositionxnum">
+									<select id="outerbackgroundpositionx" name="outerBackgroundPositionX" class="objectParam" data-numfield="outerbackgroundpositionxnum">
 										<cfloop list="Left,Center,Right,%,px" index="p">
 											<option value="#lcase(p)#"<cfif attributes.params.cssstyles.backgroundpositionx contains p> selected</cfif>>#p#</option>
 										</cfloop>
 									</select>
 
-									<input type="hidden" id="rowbackgroundpositionxval" name="backgroundPositionX" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundpositionx)#">
+									<input type="hidden" id="outerbackgroundpositionxval" name="backgroundPositionX" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundpositionx)#">
 
 								</div>
 							</div>
@@ -300,14 +283,14 @@
 
 					<div class="mura-control-group css-bg-option" style="display:none;">
 						<label>Background Overlay</label>
-						<input type="text" id="rowbackgroundoverlay" name="backgroundOverlay" placeholder="" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundoverlay)#">
+						<input type="text" id="outerbackgroundoverlay" name="backgroundOverlay" placeholder="" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundoverlay)#">
 					</div>
 
 <!--- todo: background video - js to create markup - css to position --->
 <!---
 					<div class="mura-control-group">
 						<label>Background Video</label>
-						<input type="text" id="rowbackgroundvideourl" name="backgroundVideoURL" placeholder="URL" class="objectParam" value="#esapiEncode('html_attr',attributes.params.backgroundvideourl)#">
+						<input type="text" id="outerbackgroundvideourl" name="backgroundVideoURL" placeholder="URL" class="objectParam" value="#esapiEncode('html_attr',attributes.params.backgroundvideourl)#">
 						<button type="button" class="btn mura-ckfinder" data-target="backgroundvideourl" data-completepath="false">Select File</button>
 					</div>
  --->
@@ -316,9 +299,25 @@
 <!---
 					<div class="mura-control-group">
 						<label>Background Parallax [todo: bg options]</label>
-						<input type="text" id="rowbackgroundparallax" name="backgroundParallax" placeholder="" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundparallax)#">
+						<input type="text" id="outerbackgroundparallax" name="backgroundParallax" placeholder="" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundparallax)#">
 					</div>
  --->
+					<!--- css id and class for outer --->
+					<cfif request.haspositionoptions>
+						<div class="mura-control-group">
+							<label>
+								CSS ID
+							</label>
+							<input name="cssid" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.cssid)#" maxlength="255">
+						</div>
+						<div class="mura-control-group">
+							<label>
+								CSS Class
+							</label>
+							<input name="cssclass" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.cssclass)#" maxlength="255">
+							<input name="class" type="hidden" class="objectParam" value="#esapiEncode('html_attr',attributes.params.class)#"/>
+						</div>
+					</cfif>
 
 				</div> <!--- /end container --->
 			</div> <!--- /end  mura-panel-body --->

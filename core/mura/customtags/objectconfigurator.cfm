@@ -156,7 +156,7 @@
 									<cfif request.hasmetaoptions>
 										<div class="panel-gds-box" id="panel-gds-meta" data-gdsel="panel-style-meta"><span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.label')#</span></div>
 									</cfif>
-									<div class="panel-gds-box" id="panel-gds-inner" data-gdsel="panel-style-content"><span>Content</span></div>
+									<div class="panel-gds-box" id="panel-gds-inner" data-gdsel="panel-style-inner"><span>Inner</span></div>
 								</div>
 								<div class="mura-panel-group" id="style-panels" role="tablist" aria-multiselectable="true">
 									<!--- todo: merge this included content back to this file --->
@@ -439,29 +439,29 @@
 			// background color
 			function updateRowBgColor(v){
 				var swatchColor = v;
-				var swatchEl = $('#rowbackgroundcustom').find('i.mura-colorpicker-swatch');
+				var swatchEl = $('#outerbackgroundcustom').find('i.mura-colorpicker-swatch');
 				if (v == 'custom' <cfif not(isArray(request.backgroundcoloroptions) and arrayLen(request.backgroundcoloroptions))> || true</cfif>){
-					$('#rowbackgroundcustom').show();
+					$('#outerbackgroundcustom').show();
 				} else if (v == 'none'){
 					swatchColor = 'transparent'
-					$('#rowbackgroundcustom').hide();
-					$('#rowbackgroundcolor').val('');
+					$('#outerbackgroundcustom').hide();
+					$('#outerbackgroundcolor').val('');
 				} else {
-					$('#rowbackgroundcustom').hide();
-					$('#rowbackgroundcolor').val(v);
+					$('#outerbackgroundcustom').hide();
+					$('#outerbackgroundcolor').val(v);
 				}
 				swatchEl.css('background-color',swatchColor);
 			}
 
-			$('#rowbackgroundcolorsel').on('change',function(){
+			$('#outerbackgroundcolorsel').on('change',function(){
 				var v = $(this).val();
 				updateRowBgColor(v);
 			});
 
-			updateRowBgColor($('#rowbackgroundcolorsel').val());
+			updateRowBgColor($('#outerbackgroundcolorsel').val());
 
 			// background image
-			$('#rowbackgroundimageurl').on('change',function(){
+			$('#outerbackgroundimageurl').on('change',function(){
 				var v = $(this).val();
 				var str = "";
 				if (v.length > 3){
@@ -470,10 +470,10 @@
 				} else {
 					$('.css-bg-option').hide();
 				}
-				$('#rowbackgroundimage').val(str).trigger('change');
+				$('#outerbackgroundimage').val(str).trigger('change');
 			});
 
-			$('#rowbackgroundimageurl').trigger('change');
+			$('#outerbackgroundimageurl').trigger('change');
 
 			// background position x/y
 			function updatePositionSelection(sel){
@@ -486,31 +486,31 @@
 				}
 			}
 
-			$('#rowbackgroundpositiony,#rowbackgroundpositionynum').on('change',function(){
-				var el = $('#rowbackgroundpositionyval');
-				var str = $('#rowbackgroundpositiony').val();
-				var num = $('#rowbackgroundpositionynum').val();
+			$('#outerbackgroundpositiony,#outerbackgroundpositionynum').on('change',function(){
+				var el = $('#outerbackgroundpositionyval');
+				var str = $('#outerbackgroundpositiony').val();
+				var num = $('#outerbackgroundpositionynum').val();
 				if (num.length > 0){
 					str = num + str;
 				}
 				$(el).val(str).trigger('change');
 			});
 
-			$('#rowbackgroundpositionx,#rowbackgroundpositionxnum').on('change',function(){
-				var el = $('#rowbackgroundpositionxval');
-				var str = $('#rowbackgroundpositionx').val();
-				var num = $('#rowbackgroundpositionxnum').val();
+			$('#outerbackgroundpositionx,#outerbackgroundpositionxnum').on('change',function(){
+				var el = $('#outerbackgroundpositionxval');
+				var str = $('#outerbackgroundpositionx').val();
+				var num = $('#outerbackgroundpositionxnum').val();
 				if (num.length > 0){
 					str = num + str;
 				}
 				$(el).val(str).trigger('change');
 			});
 
-			$('#rowbackgroundpositionx,#rowbackgroundpositiony').on('change',function(){
+			$('#outerbackgroundpositionx,#outerbackgroundpositiony').on('change',function(){
 				updatePositionSelection($(this));
 			});
 
-			$('#rowbackgroundpositionx,#rowbackgroundpositiony').each(function(){
+			$('#outerbackgroundpositionx,#outerbackgroundpositiony').each(function(){
 				updatePositionSelection($(this));
 			});
 
