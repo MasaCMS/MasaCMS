@@ -136,8 +136,37 @@
 		</div> <!--- /end panel --->
 		</cfif>
 
-		<!--- todo: merge this included content back to this file --->
-		<cfinclude template="objectconfiguratorpanels.cfm">
+		<!--- style --->
+		<div class="mura-panel panel">
+			<div class="mura-panel-heading" role="tab" id="heading-style">
+				<h4 class="mura-panel-title">
+					<!--- todo: rbkey for style --->
+					<a class="collapsed" role="button" data-toggle="collapse" data-parent="##configurator-panels" href="##panel-style" aria-expanded="false" aria-controls="panel-style">
+						Style
+					</a>
+				</h4>
+			</div>
+			<div id="panel-style" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-style">
+				<div class="mura-panel-body">
+					<div class="container">
+							<!--- nested panels --->
+							<div class="mura-control-group">
+								<!--- todo: rbkeys for box labels --->
+								<div class="panel-gds-box" id="panel-gds-outer" data-gdsel="panel-style-outer"><span>Outer</span>
+									<cfif request.hasmetaoptions>
+										<div class="panel-gds-box" id="panel-gds-meta" data-gdsel="panel-style-label"><span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.label')#</span></div>
+									</cfif>
+									<div class="panel-gds-box" id="panel-gds-inner" data-gdsel="panel-style-inner"><span>Inner</span></div>
+								</div>
+								<div class="mura-panel-group" id="style-panels" role="tablist" aria-multiselectable="true">
+									<!--- todo: merge this included content back to this file --->
+									<cfinclude template="objectconfiguratorpanels.cfm">
+								</div> <!--- /end panel group --->
+							</div> <!--- /end mura control group --->
+					</div> <!--- /end container --->
+				</div> <!--- /end  mura-panel-body --->
+			</div> <!--- /end  mura-panel-collapse --->
+		</div> <!--- /end style panel --->
 
 		<cfif request.haspositionoptions>
 			<!--- Position panel--->
@@ -212,6 +241,18 @@
 		$(function(){
 
 			var inited=false;
+
+			$('.panel-gds-box').on('click',function(){
+				var gdspanel = $(this).attr('data-gdsel');
+				var gdstarget = $('#' + gdspanel);
+				$('.panel-gds-box').removeClass('active');
+				$(this).addClass('active');
+				$('#style-panels').find('.panel-collapse.in').removeClass('in');
+				$(gdstarget).addClass('in');
+				return false;
+			})
+			$('#style-panels').addClass('no-header');
+			$('#panel-gds-outer').trigger('click');			
 
 			function setPlacementVisibility(){
 				var classInput=$('input[name="class"]');
@@ -315,112 +356,149 @@
 				setPlacementVisibility();
 			});
 
-			<!--- todo: merge these into a global method for all directional attributes (padding, margin on all) --->
 			// padding
-			function updateRowPadding(){
-				var t = $('#rowpaddingtop').val().replace(/[^0-9]/g,'');
-				var r = $('#rowpaddingright').val().replace(/[^0-9]/g,'');
-				var b = $('#rowpaddingbottom').val().replace(/[^0-9]/g,'');
-				var l =$('#rowpaddingleft').val().replace(/[^0-9]/g,'');
-				var u = $('#rowpaddinguom').val();
-				if (t.length){ $('#rowpaddingtopval').val(t + u); } else { $('#rowpaddingtopval').val(''); }
-				if (r.length){ $('#rowpaddingrightval').val(r + u); } else { $('#rowpaddingrightval').val(''); }
-				if (b.length){ $('#rowpaddingbottomval').val(b + u); } else { $('#rowpaddingbottomval').val(''); }
-				if (l.length){ $('#rowpaddingleftval').val(l + u); } else { $('#rowpaddingleftval').val(''); }
+			function updateOuterPadding(){
+				var t = $('#outerpaddingtop').val().replace(/[^0-9]/g,'');
+				var r = $('#outerpaddingright').val().replace(/[^0-9]/g,'');
+				var b = $('#outerpaddingbottom').val().replace(/[^0-9]/g,'');
+				var l =$('#outerpaddingleft').val().replace(/[^0-9]/g,'');
+				var u = $('#outerpaddinguom').val();
+				if (t.length){ $('#outerpaddingtopval').val(t + u); } else { $('#outerpaddingtopval').val(''); }
+				if (r.length){ $('#outerpaddingrightval').val(r + u); } else { $('#outerpaddingrightval').val(''); }
+				if (b.length){ $('#outerpaddingbottomval').val(b + u); } else { $('#outerpaddingbottomval').val(''); }
+				if (l.length){ $('#outerpaddingleftval').val(l + u); } else { $('#outerpaddingleftval').val(''); }
 				if (t == r && r == b & b == l){
-					$('#rowpaddingall').val(t);
+					$('#outerpaddingall').val(t);
 				} else {
-					$('#rowpaddingall').val('');
-					$('#rowpaddingadvanced').show();
+					$('#outerpaddingall').val('');
+					$('#outerpaddingadvanced').show();
 				}
-				$('#rowpaddingtopval').trigger('change');
+				$('#outerpaddingtopval').trigger('change');
 			}
 
-			$('#rowpaddingall').on('keyup', function(){
-				var v = $('#rowpaddingall').val().replace(/[^0-9]/g,'');
-				$('#rowpaddingadvanced').hide();
-				$('#rowpaddingtop').val(v);
-				$('#rowpaddingleft').val(v);
-				$('#rowpaddingright').val(v);
-				$('#rowpaddingbottom').val(v);
+			$('#outerpaddingall').on('keyup', function(){
+				var v = $('#outerpaddingall').val().replace(/[^0-9]/g,'');
+				$('#outerpaddingadvanced').hide();
+				$('#outerpaddingtop').val(v);
+				$('#outerpaddingleft').val(v);
+				$('#outerpaddingright').val(v);
+				$('#outerpaddingbottom').val(v);
 			})
 
-			$('#rowpaddingtop,#rowpaddingright,#rowpaddingbottom,#rowpaddingleft,#rowpaddingall').on('keyup', function(){
-				updateRowPadding();
+			$('#outerpaddingtop,#outerpaddingright,#outerpaddingbottom,#outerpaddingleft,#outerpaddingall').on('keyup', function(){
+				updateOuterPadding();
 			})
 
-			$('#rowpaddinguom').on('change',function(){
-				updateRowPadding();
+			$('#outerpaddinguom').on('change',function(){
+				updateOuterPadding();
 			});
 
-			updateRowPadding();
+			updateOuterPadding();
+
+			function updateInnerPadding(){
+				var t = $('#innerpaddingtop').val().replace(/[^0-9]/g,'');
+				var r = $('#innerpaddingright').val().replace(/[^0-9]/g,'');
+				var b = $('#innerpaddingbottom').val().replace(/[^0-9]/g,'');
+				var l =$('#innerpaddingleft').val().replace(/[^0-9]/g,'');
+				var u = $('#innerpaddinguom').val();
+				if (t.length){ $('#innerpaddingtopval').val(t + u); } else { $('#innerpaddingtopval').val(''); }
+				if (r.length){ $('#innerpaddingrightval').val(r + u); } else { $('#innerpaddingrightval').val(''); }
+				if (b.length){ $('#innerpaddingbottomval').val(b + u); } else { $('#innerpaddingbottomval').val(''); }
+				if (l.length){ $('#innerpaddingleftval').val(l + u); } else { $('#innerpaddingleftval').val(''); }
+				if (t == r && r == b & b == l){
+					$('#innerpaddingall').val(t);
+				} else {
+					$('#innerpaddingall').val('');
+					$('#innerpaddingadvanced').show();
+				}
+				$('#innerpaddingtopval').trigger('change');
+			}
+
+			$('#innerpaddingall').on('keyup', function(){
+				var v = $('#innerpaddingall').val().replace(/[^0-9]/g,'');
+				$('#innerpaddingadvanced').hide();
+				$('#innerpaddingtop').val(v);
+				$('#innerpaddingleft').val(v);
+				$('#innerpaddingright').val(v);
+				$('#innerpaddingbottom').val(v);
+			})
+
+			$('#innerpaddingtop,#innerpaddingright,#innerpaddingbottom,#innerpaddingleft,#innerpaddingall').on('keyup', function(){
+				updateInnerPadding();
+			})
+
+			$('#innerpaddinguom').on('change',function(){
+				updateInnerPadding();
+			});
+
+			updateInnerPadding();
 
  			// margin
-			function updateRowMargin(){
-				var t = $('#rowmargintop').val().replace(/[^0-9]/g,'');
-				var r = $('#rowmarginright').val().replace(/[^0-9]/g,'');
-				var b = $('#rowmarginbottom').val().replace(/[^0-9]/g,'');
-				var l =$('#rowmarginleft').val().replace(/[^0-9]/g,'');
-				var u = $('#rowmarginuom').val();
-				if (t.length){ $('#rowmargintopval').val(t + u); } else { $('#rowmargintopval').val(''); }
-				if (r.length){ $('#rowmarginrightval').val(r + u); } else { $('#rowmarginrightval').val(''); }
-				if (b.length){ $('#rowmarginbottomval').val(b + u); } else { $('#rowmarginbottomval').val(''); }
-				if (l.length){ $('#rowmarginleftval').val(l + u); } else { $('#rowmarginleftval').val(''); }
+			function updateInnerMargin(){
+				var t = $('#innermargintop').val().replace(/[^0-9]/g,'');
+				var r = $('#innermarginright').val().replace(/[^0-9]/g,'');
+				var b = $('#innermarginbottom').val().replace(/[^0-9]/g,'');
+				var l =$('#innermarginleft').val().replace(/[^0-9]/g,'');
+				var u = $('#innermarginuom').val();
+				if (t.length){ $('#innermargintopval').val(t + u); } else { $('#innermargintopval').val(''); }
+				if (r.length){ $('#innermarginrightval').val(r + u); } else { $('#innermarginrightval').val(''); }
+				if (b.length){ $('#innermarginbottomval').val(b + u); } else { $('#innermarginbottomval').val(''); }
+				if (l.length){ $('#innermarginleftval').val(l + u); } else { $('#innermarginleftval').val(''); }
 				if (t == r && r == b & b == l){
-					$('#rowmarginall').val(t);
+					$('#innermarginall').val(t);
 				} else {
-					$('#rowmarginall').val('');
-					$('#rowmarginadvanced').show();
+					$('#innermarginall').val('');
+					$('#innermarginadvanced').show();
 
 				}
-				$('#rowmargintopval').trigger('change');
+				$('#innermargintopval').trigger('change');
 			}
 
-			$('#rowmarginall').on('keyup', function(){
-				var v = $('#rowmarginall').val().replace(/[^0-9]/g,'');
-				$('#rowmarginadvanced').hide();
-				$('#rowmargintop').val(v);
-				$('#rowmarginleft').val(v);
-				$('#rowmarginright').val(v);
-				$('#rowmarginbottom').val(v);
+			$('#innermarginall').on('keyup', function(){
+				var v = $('#innermarginall').val().replace(/[^0-9]/g,'');
+				$('#innermarginadvanced').hide();
+				$('#innermargintop').val(v);
+				$('#innermarginleft').val(v);
+				$('#innermarginright').val(v);
+				$('#innermarginbottom').val(v);
 			})
 
-			$('#rowmargintop,#rowmarginright,#rowmarginbottom,#rowmarginleft,#rowmarginall').on('keyup', function(){
-				updateRowMargin();
+			$('#innermargintop,#innermarginright,#innermarginbottom,#innermarginleft,#innermarginall').on('keyup', function(){
+				updateInnerMargin();
 			});
 
-			$('#rowmarginuom').on('change',function(){
-				updateRowMargin();
+			$('#innermarginuom').on('change',function(){
+				updateInnerMargin();
 			});
 
-			updateRowMargin();
+			updateInnerMargin();
 
 			// background color
-			function updateRowBgColor(v){
+			function updateOuterBgColor(v){
 				var swatchColor = v;
-				var swatchEl = $('#rowbackgroundcustom').find('i.mura-colorpicker-swatch');
+				var swatchEl = $('#outerbackgroundcustom').find('i.mura-colorpicker-swatch');
 				if (v == 'custom' <cfif not(isArray(request.backgroundcoloroptions) and arrayLen(request.backgroundcoloroptions))> || true</cfif>){
-					$('#rowbackgroundcustom').show();
+					$('#outerbackgroundcustom').show();
 				} else if (v == 'none'){
 					swatchColor = 'transparent'
-					$('#rowbackgroundcustom').hide();
-					$('#rowbackgroundcolor').val('');
+					$('#outerbackgroundcustom').hide();
+					$('#outerbackgroundcolor').val('');
 				} else {
-					$('#rowbackgroundcustom').hide();
-					$('#rowbackgroundcolor').val(v);
+					$('#outerbackgroundcustom').hide();
+					$('#outerbackgroundcolor').val(v);
 				}
 				swatchEl.css('background-color',swatchColor);
 			}
 
-			$('#rowbackgroundcolorsel').on('change',function(){
+			$('#outerbackgroundcolorsel').on('change',function(){
 				var v = $(this).val();
-				updateRowBgColor(v);
+				updateOuterBgColor(v);
 			});
 
-			updateRowBgColor($('#rowbackgroundcolorsel').val());
+			updateOuterBgColor($('#outerbackgroundcolorsel').val());
 
 			// background image
-			$('#rowbackgroundimageurl').on('change',function(){
+			$('#outerbackgroundimageurl').on('change',function(){
 				var v = $(this).val();
 				var str = "";
 				if (v.length > 3){
@@ -429,10 +507,10 @@
 				} else {
 					$('.css-bg-option').hide();
 				}
-				$('#rowbackgroundimage').val(str).trigger('change');
+				$('#outerbackgroundimage').val(str).trigger('change');
 			});
 
-			$('#rowbackgroundimageurl').trigger('change');
+			$('#outerbackgroundimageurl').trigger('change');
 
 			// background position x/y
 			function updatePositionSelection(sel){
@@ -445,31 +523,31 @@
 				}
 			}
 
-			$('#rowbackgroundpositiony,#rowbackgroundpositionynum').on('change',function(){
-				var el = $('#rowbackgroundpositionyval');
-				var str = $('#rowbackgroundpositiony').val();
-				var num = $('#rowbackgroundpositionynum').val();
+			$('#outerbackgroundpositiony,#outerbackgroundpositionynum').on('change',function(){
+				var el = $('#outerbackgroundpositionyval');
+				var str = $('#outerbackgroundpositiony').val();
+				var num = $('#outerbackgroundpositionynum').val();
 				if (num.length > 0){
 					str = num + str;
 				}
 				$(el).val(str).trigger('change');
 			});
 
-			$('#rowbackgroundpositionx,#rowbackgroundpositionxnum').on('change',function(){
-				var el = $('#rowbackgroundpositionxval');
-				var str = $('#rowbackgroundpositionx').val();
-				var num = $('#rowbackgroundpositionxnum').val();
+			$('#outerbackgroundpositionx,#outerbackgroundpositionxnum').on('change',function(){
+				var el = $('#outerbackgroundpositionxval');
+				var str = $('#outerbackgroundpositionx').val();
+				var num = $('#outerbackgroundpositionxnum').val();
 				if (num.length > 0){
 					str = num + str;
 				}
 				$(el).val(str).trigger('change');
 			});
 
-			$('#rowbackgroundpositionx,#rowbackgroundpositiony').on('change',function(){
+			$('#outerbackgroundpositionx,#outerbackgroundpositiony').on('change',function(){
 				updatePositionSelection($(this));
 			});
 
-			$('#rowbackgroundpositionx,#rowbackgroundpositiony').each(function(){
+			$('#outerbackgroundpositionx,#outerbackgroundpositiony').each(function(){
 				updatePositionSelection($(this));
 			});
 
@@ -484,12 +562,15 @@
 			});
 
 			// range sliders
+			<!--- todo: this or jquery-ui range slider --->
+			<!--- 
 			var rangeSlider = $("input.mura-rangeslider").bootstrapSlider();
-			rangeSlider.on('change',function(){
+			$(rangeSlider).on('change',function(){
 				var v = rangeSlider.bootstrapSlider('getValue');
 				var targetEl = $(this).attr('data-slider-valuefield');
 				$(targetEl).val(v).hide();
 			});
+			--->
 
 			// colorpicker
 			$('.mura-colorpicker input[type=text]').on('keyup',function(){
@@ -497,19 +578,6 @@
 					$(this).parents('.mura-colorpicker').find('.mura-colorpicker-swatch').css('background-color','transparent');
 				}
 			})
-
-			<!--- todo: are we using bigui here? --->
-			<!---
-			$('#configuratorContainer .bigui__launch').on('click', function(e){
-				var el=window.parent.$('body');
-				if(el.hasClass('mura-bigui-state__pushed--right')){
-					el.removeClass('mura-bigui-state__pushed--right');
-				} else {
-					el.addClass('mura-bigui-state__pushed--right');
-				}
-				e.preventDefault();
-			});
-			--->
 
 			inited=true;
 		});
