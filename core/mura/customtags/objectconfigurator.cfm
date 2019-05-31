@@ -252,7 +252,7 @@
 				return false;
 			})
 			$('#style-panels').addClass('no-header');
-			$('#panel-gds-outer').trigger('click');			
+			$('#panel-gds-outer').trigger('click');
 
 			function setPlacementVisibility(){
 				var classInput=$('input[name="class"]');
@@ -267,6 +267,7 @@
   				} else {
   					classInput.val(width.val());
   				}
+					
 					classInput.val($.trim(classInput.val()));
 
 		  		var contentcssclass=$('input[name="contentcssclass"]');
@@ -563,7 +564,7 @@
 
 			// range sliders
 			<!--- todo: this or jquery-ui range slider --->
-			<!--- 
+			<!---
 			var rangeSlider = $("input.mura-rangeslider").bootstrapSlider();
 			$(rangeSlider).on('change',function(){
 				var v = rangeSlider.bootstrapSlider('getValue');

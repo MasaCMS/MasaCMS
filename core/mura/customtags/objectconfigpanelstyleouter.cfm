@@ -102,8 +102,8 @@
 					<div class="mura-control-group">
 						<label>Background Image</label>
 						<input type="hidden" id="outerbackgroundimage" name="backgroundImage" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundimage)#">
-						<input type="text" id="outerbackgroundimageurl" name="backgroundImageURL" placeholder="URL" class="objectParam" value="#esapiEncode('html_attr',attributes.params.outerbackgroundimageurl)#">
-						<button type="button" class="btn mura-ckfinder" data-target="backgroundImageURL" data-completepath="false"><i class="mi-image"></i> Select Image</button>
+						<input type="text" id="outerbackgroundimageurl" name="outerbackgroundimageurl" placeholder="URL" class="objectParam" value="#esapiEncode('html_attr',attributes.params.outerbackgroundimageurl)#">
+						<button type="button" class="btn mura-ckfinder" data-target="outerbackgroundimageurl" data-completepath="false"><i class="mi-image"></i> Select Image</button>
 					</div>
 
 					<div class="mura-control-group css-bg-option" style="display:none;">
@@ -188,7 +188,6 @@
 								CSS Class
 							</label>
 							<input name="cssclass" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.cssclass)#" maxlength="255">
-							<input name="class" type="hidden" class="objectParam" value="#esapiEncode('html_attr',attributes.params.class)#"/>
 						</div>
 					</cfif>
 

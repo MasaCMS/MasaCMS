@@ -105,6 +105,8 @@
 			</div> <!--- /end  mura-panel-collapse --->
 		</div> <!--- /end label panel --->
 	</cfif>
+
+	<input name="class" type="hidden" class="objectParam" value="#esapiEncode('html_attr',attributes.params.class)#"/>
 </cfoutput>
 
 	<!--- inner panel --->
