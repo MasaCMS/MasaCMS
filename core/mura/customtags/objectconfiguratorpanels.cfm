@@ -43,7 +43,11 @@
 
 	for (p in attributes.globalparams){
 		param name="attributes.params.cssstyles.#p#" default="";
-		param name="attributes.params.metacssstyles.#p#" default="";
+		if(p == 'textalign'){
+			param name="attributes.params.metacssstyles.#p#" default="center";
+		} else {
+			param name="attributes.params.metacssstyles.#p#" default="";
+		}
 		param name="attributes.params.contentcssstyles.#p#" default="";
 	}
 </cfscript>
@@ -70,11 +74,11 @@
 						<!--- label text --->
 						<div class="mura-control-group">
 							<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.text')#</label>
-							<input name="label" type="text" class="metaStyle" maxlength="50" value="#esapiEncode('html_attr',attributes.params.label)#"/>
+							<input name="label" type="text" class="objectParam" maxlength="50" value="#esapiEncode('html_attr',attributes.params.label)#"/>
 						</div>
 						<!--- label alignment --->
 						<div class="mura-control-group">
-							<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.alignment')#</label>
+							<label>Text Alignment</label>
 							<select name="textAlign" class="metaStyle">
 								<option value="">--</option>
 								<option value="left"<cfif attributes.params.metacssstyles.textalign eq 'left'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.left')#</option>

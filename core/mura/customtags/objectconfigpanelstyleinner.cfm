@@ -4,14 +4,24 @@
 		<div class="mura-panel-heading" role="tab" id="heading-style-inner">
 			<h4 class="mura-panel-title">
 				<a class="collapsed" role="button" data-toggle="collapse" data-parent="##configurator-panels" href="##panel-style-inner" aria-expanded="false" aria-controls="panel-style-inner">
-					Inner
+					Content
 				</a>
 			</h4>
 		</div>
 		<div id="panel-style-inner" class="panel-collapse collapse" role="tabpanel" aria-labeledby="heading-style-inner">
 			<div class="mura-panel-body">
 				<div class="container">
-
+					<!--- label alignment --->
+					<div class="mura-control-group">
+						<label>Text Alignment</label>
+						<select name="textAlign" class="contentStyle">
+							<option value="">--</option>
+							<option value="left"<cfif attributes.params.contentcssstyles.textalign eq 'left'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.left')#</option>
+							<option value="right"<cfif attributes.params.contentcssstyles.textalign eq 'right'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.right')#</option>
+							<option value="center"<cfif attributes.params.contentcssstyles.textalign eq 'center'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.center')#</option>
+							<option value="justify"<cfif attributes.params.contentcssstyles.textalign eq 'justify'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.justify')#</option>
+						</select>
+					</div>
 					<!--- margin --->
 					<div class="mura-control-group mura-ui-grid">
 						<!--- todo: rbkey for margin and placeholders --->

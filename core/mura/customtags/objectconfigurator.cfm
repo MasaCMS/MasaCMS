@@ -152,11 +152,11 @@
 							<!--- nested panels --->
 							<div class="mura-control-group">
 								<!--- todo: rbkeys for box labels --->
-								<div class="panel-gds-box" id="panel-gds-outer" data-gdsel="panel-style-outer"><span>Outer</span>
+								<div class="panel-gds-box" id="panel-gds-outer" data-gdsel="panel-style-outer"><span>Module</span>
 									<cfif request.hasmetaoptions>
 										<div class="panel-gds-box" id="panel-gds-meta" data-gdsel="panel-style-label"><span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.label')#</span></div>
 									</cfif>
-									<div class="panel-gds-box" id="panel-gds-inner" data-gdsel="panel-style-inner"><span>Inner</span></div>
+									<div class="panel-gds-box" id="panel-gds-inner" data-gdsel="panel-style-inner"><span>Content</span></div>
 								</div>
 								<div class="mura-panel-group" id="style-panels" role="tablist" aria-multiselectable="true">
 									<!--- todo: merge this included content back to this file --->
@@ -167,72 +167,6 @@
 				</div> <!--- /end  mura-panel-body --->
 			</div> <!--- /end  mura-panel-collapse --->
 		</div> <!--- /end style panel --->
-
-		<cfif request.haspositionoptions>
-			<!--- Position panel--->
-			<div class="mura-panel panel">
-				<div class="mura-panel-heading" role="tab" id="heading-positioning">
-					<h4 class="mura-panel-title">
-						<a class="collapsed" role="button" data-toggle="collapse" data-parent="##configurator-panels" href="##panel-positioning" aria-expanded="false" aria-controls="panel-positioning">
-							#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.position')#
-						</a>
-					</h4>
-				</div>
-				<div id="panel-positioning" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-positioning">
-					<div class="mura-panel-body">
-						<div class="mura-control-group">
-								<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.alignment')#</label>
-								<select name="alignment">
-								<option value="">--</option>
-								<option value="mura-left"<cfif listFind(attributes.params.class,'mura-left',' ')> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.left')#</option>
-								<!--- todo: remove if not used --->
-								<!---<option value="mura-center"<cfif listFind(attributes.params.class,'mura-center',' ')> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.center')#</option>--->
-								<option value="mura-right"<cfif listFind(attributes.params.class,'mura-right',' ')> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.right')#</option>
-								</select>
-						</div>
-
-						<div class="mura-control-group">
-							<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.width')#</label>
-							<cfset attributes.positionlabels = ''>
-							<cfset attributes.positionvalues = ''>
-							<select name="width" id="objectwidthsel">
-								<cfloop from="1" to="#arrayLen(attributes.positionoptions)#" index="i">
-									<cfset p = attributes.positionoptions[i]>
-									<option value="#p['value']#"<cfif listFind(attributes.params.class,'#p['value']#',' ')> selected</cfif>>#p['label']#</option>
-									<cfset l = "'#p["label"]#'">
-									<cfset v = "'#p["value"]#'">
-									<cfset attributes.positionLabels = listAppend(attributes.positionlabels, l)>
-									<cfset attributes.positionValues = listAppend(attributes.positionvalues, v)>
-								</cfloop>
-							</select>
-						</div>
-
-<!--- todo: bootstrap slider --->
-<!--- 						<input
-							type="text"
-							data-slider-id="objectwidthslider"
-							name="objectwidthslider"
-							class="mura-rangeslider"
-							data-slider-ticks="[0,1,2,3,4,5,6,7,8,9,10,11,12,13]"
-							data-slider-ticks-labels="'[#attributes.positionlabels#]'"
-							data-slider-ticks-tooltip="true"
-							data-slider-tooltip="hide"
-							data-slider-valuefield="##objectwidthsel"
-						> --->
-
-						<cfif len(contentcontainerclass)>
-							<div class="mura-control-group constraincontentcontainer" style='display:none;'>
-									<label>Constrain Content</label>
-									<select name="constraincontent">
-									<option value=""<cfif not listFind(attributes.params.contentcssclass,contentcontainerclass,' ')> selected</cfif>>False</option>
-									<option value="constrain"<cfif listFind(attributes.params.contentcssclass,contentcontainerclass,' ')> selected</cfif>>True</option>
-									</select>
-							</div>
-						</cfif>
-					</div> <!--- /end  mura-panel-collapse --->
-				</div> <!--- /end  mura-panel-body --->
-			</div> <!--- /end position panel --->
-		</cfif>
 	</div><!--- /end panels --->
 	</cfoutput>
 </div> <!--- /end availableObjectContainer --->
