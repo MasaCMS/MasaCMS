@@ -115,76 +115,29 @@ li .cke_skin_mura {
         .mura-container {
             width: 80%;
         }
-        .mura-object {
-            margin-right: 2%;
-        } // should be 4%, but if not in a container, objects won't align
+
         .mura-column:last-child, .mura-object:last-child {
             margin-right: 0;
         }
-        .mura-one.mura-object {
-            width: 4.66666666667%;
-        }
-        .mura-two.mura-object {
-            width: 13.3333333333%;
-        }
-        .mura-three.mura-object {
-            width: 22%;
-        }
-        .mura-four.mura-object {
-            width: 30.6666666667%;
-        }
-        .mura-five.mura-object {
-            width: 39.3333333333%;
-        }
-        .mura-six.mura-object {
-            width: 48%;
-        }
-        .mura-seven.mura-object {
-            width: 56.6666666667%;
-        }
-        .mura-eight.mura-object {
-            width: 65.3333333333%;
-        }
-        .mura-nine.mura-object {
-            width: 74.0%;
-        }
-        .mura-ten.mura-object {
-            width: 82.6666666667%;
-        }
-        .mura-eleven.mura-object {
-            width: 91.3333333333%;
-        }
-        .mura-twelve.mura-object {
-            width: 100%;
-            margin-left: 0;
-        }
-        .mura-one-third.mura-object {
-            width: 30.6666666667%;
-        }
-        .mura-two-thirds.mura-object {
-            width: 65.3333333333%;
-        }
-        .mura-one-half.mura-object {
-            width: 48%;
-        }
-        /*
-	.mura-one.mura-object                    { width: 8.33%; }
-	.mura-two.mura-object                    { width: 16.66%; }
-	.mura-three.mura-object                  { width: 25%;            }
-	.mura-four.mura-object                   { width: 33.33%; }
-	.mura-five.mura-object                   { width: 41.66%; }
-	.mura-six.mura-object                    { width: 50%;            }
-	.mura-seven.mura-object                  { width: 58.33%; }
-	.mura-eight.mura-object                  { width: 66.66%; }
-	.mura-nine.mura-object                   { width: 75%;          }
-	.mura-ten.mura-object                    { width: 83.33%; }
-	.mura-eleven.mura-object                 { width: 91.66%; }
-	.mura-twelve.mura-object                 { width: 100% }
-	.mura-one-third.mura-object               { width: 33.33%; }
-	.mura-two-thirds.mura-object              { width: 66.66%; }
-	.mura-one-half.mura-object                { width: 50%; }
-	*/
+
+				.mura-one.mura-object                    { width: 8.33%; }
+				.mura-two.mura-object                    { width: 16.66%; }
+				.mura-three.mura-object                  { width: 25%;  }
+				.mura-four.mura-object                   { width: 33.33%; }
+				.mura-five.mura-object                   { width: 41.66%; }
+				.mura-six.mura-object                    { width: 50%; }
+				.mura-seven.mura-object                  { width: 58.33%; }
+				.mura-eight.mura-object                  { width: 66.66%; }
+				.mura-nine.mura-object                   { width: 75%; }
+				.mura-ten.mura-object                    { width: 83.33%; }
+				.mura-eleven.mura-object                 { width: 91.66%; }
+				.mura-twelve.mura-object                 { width: 100% }
+				.mura-one-third.mura-object               { width: 33.33%; }
+				.mura-two-thirds.mura-object              { width: 66.66%; }
+				.mura-one-half.mura-object                { width: 50%; }
+
     }
+
     .mura-expanded {
         width: ~"calc(100vw)" !important;
         left:  ~"calc(-1 * (100vw - 100%) / 2)";
@@ -194,11 +147,8 @@ li .cke_skin_mura {
         align-items: center;
         position: relative;
         overflow: hidden;
-        background: grey;
     }
-    .mura-object.mura-expanded>.mura-object-content, .mura-object.mura-expanded>.mura-object-meta {
-        background: blue;
-    }
+
     /* Utilities
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
     .mura-full-width {
@@ -226,12 +176,12 @@ li .cke_skin_mura {
 /* set full width for expanded containers */
 .mura-sidebar-state__pushed--right {
 
-	.mura-object.mura-expanded {		    
+	.mura-object.mura-expanded {
 	    width: ~"calc(100vw - 300px)" !important;
 	    left: ~"calc(-1 *(100vw - 100% - 300px) / 2)" !important;
 	}
 
-    .mura-object.mura-expanded>.mura-object-content, 
+    .mura-object.mura-expanded>.mura-object-content,
     .mura-object.mura-expanded>.mura-object-meta {
     	opacity: 1;
     }

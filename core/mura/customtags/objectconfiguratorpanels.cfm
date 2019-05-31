@@ -101,8 +101,10 @@
 							<input name="metacssclass" class="metaStyle" type="text" value="#esapiEncode('html_attr',attributes.params.metacssclass)#" maxlength="255">
 						</div>
 
-						<!--- todo: duplicate row options here --->
+						<!--- todo: duplicate row options here
+						Not sure we should have all options -Matt
 						<label>TODO: duplicate 'row' panel options here</label>
+						--->
 
 					</div> <!--- /end container --->
 				</div> <!--- /end  mura-panel-body --->

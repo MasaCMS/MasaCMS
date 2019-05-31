@@ -331,6 +331,58 @@
 
 			updateOuterPadding();
 
+			$('#outerpaddingtop,#outerpaddingright,#outerpaddingbottom,#outerpaddingleft,#outerpaddingall').on('keyup', function(){
+				updateOuterPadding();
+			})
+
+			$('#outerpaddinguom').on('change',function(){
+				updateOuterPadding();
+			});
+
+			updateOuterPadding();
+
+			// margin
+			function updateOuterMargin(){
+				var t = $('#outermargintop').val().replace(/[^0-9]/g,'');
+				var r = $('#outermarginright').val().replace(/[^0-9]/g,'');
+				var b = $('#outermarginbottom').val().replace(/[^0-9]/g,'');
+				var l =$('#outermarginleft').val().replace(/[^0-9]/g,'');
+				var u = $('#outermarginuom').val();
+				if (t.length){ $('#outermargintopval').val(t + u); } else { $('#outermargintopval').val(''); }
+				if (r.length){ $('#outermarginrightval').val(r + u); } else { $('#outermarginrightval').val(''); }
+				if (b.length){ $('#outermarginbottomval').val(b + u); } else { $('#outermarginbottomval').val(''); }
+				if (l.length){ $('#outermarginleftval').val(l + u); } else { $('#outermarginleftval').val(''); }
+				if (t == r && r == b & b == l){
+					$('#outermarginall').val(t);
+				} else {
+					$('#outermarginall').val('');
+					$('#outermarginadvanced').show();
+
+				}
+				if(inited){
+					$('#outermargintopval').trigger('change');
+				}
+			}
+
+			$('#outermarginall').on('keyup', function(){
+				var v = $('#outermarginall').val().replace(/[^0-9]/g,'');
+				$('#outermarginadvanced').hide();
+				$('#outermargintop').val(v);
+				$('#outermarginleft').val(v);
+				$('#outermarginright').val(v);
+				$('#outermarginbottom').val(v);
+			})
+
+			$('#outermargintop,#outermarginright,#outermarginbottom,#outermarginleft,#outermarginall').on('keyup', function(){
+				updateOuterMargin();
+			});
+
+			$('#outermarginuom').on('change',function(){
+				updateOuterMargin();
+			});
+
+			updateOuterMargin();
+			
 			function updateInnerPadding(){
 				var t = $('#innerpaddingtop').val().replace(/[^0-9]/g,'');
 				var r = $('#innerpaddingright').val().replace(/[^0-9]/g,'');
