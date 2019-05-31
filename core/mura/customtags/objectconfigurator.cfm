@@ -154,7 +154,7 @@
 								<!--- todo: rbkeys for box labels --->
 								<div class="panel-gds-box" id="panel-gds-outer" data-gdsel="panel-style-outer"><span>Outer</span>
 									<cfif request.hasmetaoptions>
-										<div class="panel-gds-box" id="panel-gds-meta" data-gdsel="panel-style-meta"><span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.label')#</span></div>
+										<div class="panel-gds-box" id="panel-gds-meta" data-gdsel="panel-style-label"><span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.label')#</span></div>
 									</cfif>
 									<div class="panel-gds-box" id="panel-gds-inner" data-gdsel="panel-style-inner"><span>Inner</span></div>
 								</div>
