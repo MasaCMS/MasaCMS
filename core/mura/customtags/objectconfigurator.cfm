@@ -373,6 +373,7 @@
 
 			updateOuterMargin();
 
+			<cfif request.hasmetaoptions and not (IsBoolean(attributes.params.isbodyobject) and attributes.params.isbodyobject)>
 			// padding
 			function updateMetaPadding(){
 				var t = $('#metapaddingtop').val().replace(/[^0-9]/g,'');
@@ -413,7 +414,8 @@
 			});
 
 			updateMetaPadding();
-
+			</cfif>
+			
 			// margin
 			function updateMetaMargin(){
 				var t = $('#metamargintop').val().replace(/[^0-9]/g,'');
