@@ -331,16 +331,6 @@
 
 			updateOuterPadding();
 
-			$('#outerpaddingtop,#outerpaddingright,#outerpaddingbottom,#outerpaddingleft,#outerpaddingall').on('keyup', function(){
-				updateOuterPadding();
-			})
-
-			$('#outerpaddinguom').on('change',function(){
-				updateOuterPadding();
-			});
-
-			updateOuterPadding();
-
 			// margin
 			function updateOuterMargin(){
 				var t = $('#outermargintop').val().replace(/[^0-9]/g,'');
@@ -382,7 +372,93 @@
 			});
 
 			updateOuterMargin();
-			
+
+			// padding
+			function updateMetaPadding(){
+				var t = $('#metapaddingtop').val().replace(/[^0-9]/g,'');
+				var r = $('#metapaddingright').val().replace(/[^0-9]/g,'');
+				var b = $('#metapaddingbottom').val().replace(/[^0-9]/g,'');
+				var l =$('#metapaddingleft').val().replace(/[^0-9]/g,'');
+				var u = $('#metapaddinguom').val();
+				if (t.length){ $('#metapaddingtopval').val(t + u); } else { $('#metapaddingtopval').val(''); }
+				if (r.length){ $('#metapaddingrightval').val(r + u); } else { $('#metapaddingrightval').val(''); }
+				if (b.length){ $('#metapaddingbottomval').val(b + u); } else { $('#metapaddingbottomval').val(''); }
+				if (l.length){ $('#metapaddingleftval').val(l + u); } else { $('#metapaddingleftval').val(''); }
+				if (t == r && r == b & b == l){
+					$('#metapaddingall').val(t);
+				} else {
+					$('#metapaddingall').val('');
+					$('#metapaddingadvanced').show();
+				}
+				if(inited){
+					$('#metapaddingtopval').trigger('change');
+				}
+			}
+
+			$('#metapaddingall').on('keyup', function(){
+				var v = $('#metapaddingall').val().replace(/[^0-9]/g,'');
+				$('#metapaddingadvanced').hide();
+				$('#metapaddingtop').val(v);
+				$('#metapaddingleft').val(v);
+				$('#metapaddingright').val(v);
+				$('#metapaddingbottom').val(v);
+			})
+
+			$('#metapaddingtop,#metapaddingright,#metapaddingbottom,#metapaddingleft,#metapaddingall').on('keyup', function(){
+				updateMetaPadding();
+			})
+
+			$('#metapaddinguom').on('change',function(){
+				updateMetaPadding();
+			});
+
+			updateMetaPadding();
+
+			// margin
+			function updateMetaMargin(){
+				var t = $('#metamargintop').val().replace(/[^0-9]/g,'');
+				var r = $('#metamarginright').val().replace(/[^0-9]/g,'');
+				var b = $('#metamarginbottom').val().replace(/[^0-9]/g,'');
+				var l =$('#metamarginleft').val().replace(/[^0-9]/g,'');
+				var u = $('#metamarginuom').val();
+				if (t.length){ $('#metamargintopval').val(t + u); } else { $('#metamargintopval').val(''); }
+				if (r.length){ $('#metamarginrightval').val(r + u); } else { $('#metamarginrightval').val(''); }
+				if (b.length){ $('#metamarginbottomval').val(b + u); } else { $('#metamarginbottomval').val(''); }
+				if (l.length){ $('#metamarginleftval').val(l + u); } else { $('#metamarginleftval').val(''); }
+				if (t == r && r == b & b == l){
+					$('#metamarginall').val(t);
+				} else {
+					$('#metamarginall').val('');
+					$('#metamarginadvanced').show();
+
+				}
+				if(inited){
+					$('#metamargintopval').trigger('change');
+				}
+			}
+
+			$('#metamarginall').on('keyup', function(){
+				var v = $('#metamarginall').val().replace(/[^0-9]/g,'');
+				$('#metamarginadvanced').hide();
+				$('#metamargintop').val(v);
+				$('#metamarginleft').val(v);
+				$('#metamarginright').val(v);
+				$('#metamarginbottom').val(v);
+			})
+
+			$('#metamargintop,#metamarginright,#metamarginbottom,#metamarginleft,#metamarginall').on('keyup', function(){
+				updateMetaMargin();
+			});
+
+			$('#metamarginuom').on('change',function(){
+				updateMetaMargin();
+			});
+
+			updateMetaMargin();
+
+
+			//Padding
+
 			function updateInnerPadding(){
 				var t = $('#innerpaddingtop').val().replace(/[^0-9]/g,'');
 				var r = $('#innerpaddingright').val().replace(/[^0-9]/g,'');
