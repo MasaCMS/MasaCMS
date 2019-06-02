@@ -2732,6 +2732,7 @@ var Mura=(function(){
 			obj.html(Mura.templates.content(obj.data()));
 
 			obj.find('.mura-object').each(function() {
+				this.innerHTML=obj.data('preloadermarkup') || Mura.preloaderMarkup;
 				this.setAttribute('data-instanceid', createUUID());
 			});
 		}
