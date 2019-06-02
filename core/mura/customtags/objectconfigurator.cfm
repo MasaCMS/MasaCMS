@@ -130,7 +130,7 @@
 	<cfoutput>
 
 		<!--- close the basic or style panel --->
-		<cfif request.hasbasicoptions>
+		<cfif request.hasbasicoptions or request.hasmetaoptions and not (IsBoolean(attributes.params.isbodyobject) and attributes.params.isbodyobject)>>
 				</div> <!--- /end  mura-panel-collapse --->
 			</div> <!--- /end  mura-panel-body --->
 		</div> <!--- /end panel --->
@@ -457,7 +457,7 @@
 
 			updateMetaMargin();
 			</cfif>
-			
+
 			//Padding
 
 			function updateInnerPadding(){
