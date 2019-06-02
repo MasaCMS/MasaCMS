@@ -20544,7 +20544,7 @@ Handlebars.noConflict();
 Mura.templates=Mura.templates || {};
 Mura.templates['meta']=function(context){
 	if(context.label){
-		return '<div class="mura-object-meta"><h3>' + Mura.escapeHTML(context.label) + '</h3></div>';
+		return '<div class="mura-object-meta"><h2>' + Mura.escapeHTML(context.label) + '</h2></div>';
 	} else {
 		return '';
 	}

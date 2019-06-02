@@ -135,7 +135,6 @@
 									<input type="hidden" name="paddingRight" id="innerpaddingrightval" class="contentStyle" value="#esapiEncode('html_attr',attributes.params.contentcssstyles.paddingright)#">
 								</div>
 							</div>
-
 							<div class="row mura-ui-row">
 								<div class="col-xs-3"></div>
 								<div class="col-xs-6">

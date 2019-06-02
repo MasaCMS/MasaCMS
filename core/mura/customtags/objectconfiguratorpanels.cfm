@@ -71,11 +71,12 @@
 				<div class="mura-panel-body">
 					<div class="container" id="labelContainer">
 
-						<!--- label text --->
+						<!--- label text
 						<div class="mura-control-group">
 							<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.text')#</label>
 							<input name="label" type="text" class="objectParam" maxlength="50" value="#esapiEncode('html_attr',attributes.params.label)#"/>
 						</div>
+						--->
 						<!--- label alignment --->
 						<div class="mura-control-group">
 							<label>Text Alignment</label>

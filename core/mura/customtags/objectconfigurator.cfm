@@ -414,8 +414,7 @@
 			});
 
 			updateMetaPadding();
-			</cfif>
-			
+
 			// margin
 			function updateMetaMargin(){
 				var t = $('#metamargintop').val().replace(/[^0-9]/g,'');
@@ -457,8 +456,8 @@
 			});
 
 			updateMetaMargin();
-
-
+			</cfif>
+			
 			//Padding
 
 			function updateInnerPadding(){

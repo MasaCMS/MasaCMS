@@ -99,7 +99,7 @@ CKEDITOR.editorConfig = function( config )
 		{name: 'group2', items:['NumberedList','BulletedList','Outdent','Indent','Blockquote']},
 		{name: 'group3', items:['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']},
 		{name: 'group4', items:['Link','Unlink','Anchor']},
-		{name: 'group5', items:['PasteText','PasteFromWord','-','Image','oembed','leaflet','-','Table','HorizontalRule','SpecialChar','-','Selectlink','SelectComponent',<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
+		{name: 'group5', items:['PasteText','PasteFromWord','-','Image','oembed','leaflet','-','Table','HorizontalRule','SpecialChar','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
 		{name: 'group6', items:['Find','A11ychecker','Source','Maximize']}
 	];
 
@@ -110,7 +110,7 @@ CKEDITOR.editorConfig = function( config )
 		{name: 'group3', items:['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']},
 		{name: 'group4', items:['Link','Unlink','Anchor']},
 		'/',
-		{name: 'group5', items:['PasteText','PasteFromWord','-','Image','oembed','leaflet','-','Table','HorizontalRule','SpecialChar','-','Selectlink','SelectComponent',<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
+		{name: 'group5', items:['PasteText','PasteFromWord','-','Image','oembed','leaflet','-','Table','HorizontalRule','SpecialChar','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
 		{name: 'group6', items:['Find','A11ychecker','Source','Maximize']}
 	];
 
@@ -126,7 +126,7 @@ CKEDITOR.editorConfig = function( config )
 		{name: 'group2', items:['NumberedList','BulletedList','Outdent','Indent','Blockquote']},
 		{name: 'group3', items:['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']},
 		{name: 'group4', items:['Link','Unlink','Anchor']},
-		{name: 'group5', items:['PasteText','PasteFromWord','-','Image','oembed','leaflet','-','Table','HorizontalRule','SpecialChar','-','Selectlink','SelectComponent',<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
+		{name: 'group5', items:['PasteText','PasteFromWord','-','Image','oembed','leaflet','-','Table','HorizontalRule','SpecialChar','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
 		{name: 'group6', items:['Find','A11ychecker','Source','Maximize']},
 		{name: 'group11', items: ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField']},
 	];
