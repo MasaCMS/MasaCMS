@@ -18005,39 +18005,43 @@ Mura.DOMSelection = Mura.Core.extend(
  				obj.css(obj.data('cssstyles'));
  			}
  			if(obj.data('metacssclass') || obj.data('metacssid') || obj.data('metacssstyles')){
- 				var meta=obj.find('.mura-object-meta').first();
- 			}
- 			if(obj.data('metacssid')){
- 				meta.addClass(obj.data('metacssclass'));
- 			}
- 			if(obj.data('metacssclass')){
- 			 obj.data('metacssclass').split(' ').forEach(function(c){
- 				 if (!meta.hasClass(c)) {
- 					 meta.addClass(c);
- 				 }
- 			 })
- 			}
- 			if(obj.data('metacssstyles')){
- 				meta.removeAttr('style');
- 				meta.css(obj.data('metacssstyles'));
- 			}
+ 				var meta=obj.children('.mura-object-meta').first();
+
+	 			if(obj.data('metacssid')){
+	 				meta.attr('id',obj.data('metacssid'));
+	 			}
+	 			if(obj.data('metacssclass')){
+	 			 obj.data('metacssclass').split(' ').forEach(function(c){
+	 				 if (!meta.hasClass(c)) {
+	 					 meta.addClass(c);
+	 				 }
+	 			 })
+	 			}
+
+				if(obj.data('metacssstyles')){
+					meta.removeAttr('style');
+					meta.css(obj.data('metacssstyles'));
+				}
+			}
+
  			if(obj.data('contentcssclass') || obj.data('contentcssid') || obj.data('contentcssstyles')){
- 				var content=obj.find('.mura-object-content').first();
- 			}
- 			if(obj.data('contentcssid')){
- 				content.addClass(obj.data('contentcssclass'));
- 			}
- 			if(obj.data('contentcssclass')){
- 				obj.data('contentcssclass').split(' ').forEach(function(c){
- 					if (!content.hasClass(c)) {
- 					 		content.addClass(c);
- 					}
- 				 })
- 			}
- 			if(obj.data('contentcssstyles')){
- 				content.removeAttr('style');
- 				content.css(obj.data('contentcssstyles'));
- 			}
+ 				var content=obj.children('.mura-object-content').first();
+
+	 			if(obj.data('contentcssid')){
+	 				content.attr('id',obj.data('contentcssid'));
+	 			}
+	 			if(obj.data('contentcssclass')){
+	 				obj.data('contentcssclass').split(' ').forEach(function(c){
+	 					if (!content.hasClass(c)) {
+	 					 		content.addClass(c);
+	 					}
+	 				 })
+	 			}
+	 			if(obj.data('contentcssstyles')){
+	 				content.removeAttr('style');
+	 				content.css(obj.data('contentcssstyles'));
+	 			}
+			}
  		});
  		return this;
  	},

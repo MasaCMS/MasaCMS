@@ -167,7 +167,7 @@
 		} else {
 			var EventListenerOptions;
 		}
-		
+
 		obj
 			.off('dragenter', initDraggableObject_dragstart)
 			.off('dragover', initDraggableObject_dragover)
