@@ -584,9 +584,9 @@
 				var str = "";
 				if (v.length > 3){
 					str = "url('" + v + "')";
-					$('.css-bg-option').show();
+					$('.outer-css-bg-option').show();
 				} else {
-					$('.css-bg-option').hide();
+					$('.outer-css-bg-option').hide();
 				}
 				if(inited){
 					$('#outerbackgroundimage').val(str).trigger('change');
@@ -597,9 +597,9 @@
 			var str = "";
 			if (v.length > 3){
 				str = "url('" + v + "')";
-				$('.css-bg-option').show();
+				$('.outer-css-bg-option').show();
 			} else {
-				$('.css-bg-option').hide();
+				$('.outer-css-bg-option').hide();
 			}
 
 			//commented out to not intially trigger reseting of rendered object
@@ -684,9 +684,9 @@
 				var str = "";
 				if (v.length > 3){
 					str = "url('" + v + "')";
-					$('.css-bg-option').show();
+					$('.inner-css-bg-option').show();
 				} else {
-					$('.css-bg-option').hide();
+					$('.inner-css-bg-option').hide();
 				}
 				if(inited){
 					$('#innerbackgroundimage').val(str).trigger('change');
@@ -697,9 +697,9 @@
 			var str = "";
 			if (v.length > 3){
 				str = "url('" + v + "')";
-				$('.css-bg-option').show();
+				$('.inner-css-bg-option').show();
 			} else {
-				$('.css-bg-option').hide();
+				$('.inner-css-bg-option').hide();
 			}
 
 			//commented out to not intially trigger reseting of rendered object

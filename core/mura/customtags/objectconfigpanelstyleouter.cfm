@@ -224,7 +224,7 @@
 						<button type="button" class="btn mura-ckfinder" data-target="outerbackgroundimageurl" data-completepath="false"><i class="mi-image"></i> Select Image</button>
 					</div>
 
-					<div class="mura-control-group css-bg-option" style="display:none;">
+					<div class="mura-control-group outer-css-bg-option" style="display:none;">
 						<label>Background Size</label>
 						<select id="outerbackgroundsize" name="backgroundSize" class="objectStyle">
 							<option value="auto"<cfif attributes.params.cssstyles.backgroundsize eq 'auto'>
@@ -234,7 +234,7 @@
 						</select>
 					</div>
 
-					<div class="mura-control-group css-bg-option" style="display:none;">
+					<div class="mura-control-group outer-css-bg-option" style="display:none;">
 						<label>Background Repeat</label>
 						<select id="outerbackgroundrepeat" name="backgroundRepeat" class="objectStyle">
 							<option value="no-repeat"<cfif attributes.params.cssstyles.backgroundrepeat eq 'norepeat'> selected</cfif>>No-repeat</option>
@@ -244,7 +244,7 @@
 						</select>
 					</div>
 
-					<div class="mura-control-group mura-ui-grid css-bg-option" style="display:none;">
+					<div class="mura-control-group mura-ui-grid outer-css-bg-option" style="display:none;">
 						<label>Background Position</label>
 
 						<div class="mura-ui-row">
