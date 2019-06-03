@@ -190,6 +190,7 @@
 			} else if(parameters["cmd"] == "showobjects"){
 				MuraInlineEditor.sidebarAction('showobjects');
 			} else if (parameters["cmd"]=="setObjectParams"){
+				console.log(parameters)
 				if(typeof parameters["complete"] != 'undefined' && !parameters["complete"]){
 					sidebarProxy.post(parameters);
 					closeFrontEndToolsModal();

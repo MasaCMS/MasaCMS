@@ -52,7 +52,7 @@
 	}
 </cfscript>
 
-	<!--- outer panel --->
+	<!--- outer panel--->
 	<cfinclude template="objectconfigpanelstyleouter.cfm">
 
 <cfoutput>

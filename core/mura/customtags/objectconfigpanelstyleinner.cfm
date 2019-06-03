@@ -168,7 +168,7 @@
 						</cfif>
 						<div class="input-group mura-colorpicker" id="innerbackgroundcustom" style="<cfif isArray(request.backgroundcoloroptions) and arrayLen(request.backgroundcoloroptions)>display: none;</cfif>">
 							<span class="input-group-addon"><i class="mura-colorpicker-swatch"></i></span>
-							<input type="text" id="innerbackgroundcolor" name="backgroundColor" placeholder="Select Color" class="contentStyle" autocomplete="off" value="#esapiEncode('html_attr',attributes.params.contentcssstyles.backgroundcolor)#">
+							<input type="text" id="innerbackgroundcolor" name="innerbackgroundColor" placeholder="Select Color" autocomplete="off" value="#esapiEncode('html_attr',attributes.params.contentcssstyles.backgroundcolor)#">
 						</div>
 					</div>
 

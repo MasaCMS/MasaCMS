@@ -2269,6 +2269,7 @@ var Mura=(function(){
 		self.removeAttr('data-perm');
 		self.removeAttr('data-runtime');
 		self.removeAttr('draggable');
+		self.removeAttr('style');
 
 		if (self.data('object') == 'container') {
 			self.find('.mura-object:not([data-object="container"])').html('');
@@ -2280,6 +2281,7 @@ var Mura=(function(){
 				self.removeAttr('data-inited');
 				self.removeAttr('data-runtime');
 				self.removeAttr('draggable');
+				self.removeAttr('style');
 			});
 
 			self.find('.mura-object[data-object="container"]').each(

@@ -174,7 +174,7 @@
 	<script>
 		$(function(){
 
-			var inited=false;
+			inited=false;
 
 			$('.panel-gds-box').on('click',function(){
 				var gdspanel = $(this).attr('data-gdsel');
@@ -290,7 +290,7 @@
 				setPlacementVisibility();
 			});
 
-			// padding
+			// Begin Outer Margin and Padding
 			function updateOuterPadding(){
 				var t = $('#outerpaddingtop').val().replace(/[^0-9]/g,'');
 				var r = $('#outerpaddingright').val().replace(/[^0-9]/g,'');
@@ -373,8 +373,10 @@
 
 			updateOuterMargin();
 
+			//End Outer Margin and Padding
+
 			<cfif request.hasmetaoptions and not (IsBoolean(attributes.params.isbodyobject) and attributes.params.isbodyobject)>
-			// padding
+			// Begin Meta Margin and Padding
 			function updateMetaPadding(){
 				var t = $('#metapaddingtop').val().replace(/[^0-9]/g,'');
 				var r = $('#metapaddingright').val().replace(/[^0-9]/g,'');
@@ -456,9 +458,10 @@
 			});
 
 			updateMetaMargin();
+			// End Meta Margin and Padding
 			</cfif>
 
-			//Padding
+			// Begin Inner Content Margin and Padding
 
 			function updateInnerPadding(){
 				var t = $('#innerpaddingtop').val().replace(/[^0-9]/g,'');
@@ -542,7 +545,10 @@
 
 			updateInnerMargin();
 
-			// background color
+			// End Inner Content Margin and Padding
+
+			// Begin Outer background
+
 			function updateOuterBgColor(v){
 				var swatchColor = v;
 				var swatchEl = $('#outerbackgroundcustom').find('i.mura-colorpicker-swatch');
@@ -563,6 +569,9 @@
 				var v = $(this).val();
 				updateOuterBgColor(v);
 			});
+
+			//Add this later so that the colorpicker doesn't auto trigger an object reload
+			$('#outerbackgroundcolor').addClass('objectStyle');
 
 			updateOuterBgColor($('#outerbackgroundcolorsel').val());
 
@@ -611,7 +620,9 @@
 				if (num.length > 0){
 					str = num + str;
 				}
-				$(el).val(str).trigger('change');
+				if(inited){
+					$(el).val(str).trigger('change');
+				}
 			});
 
 			$('#outerbackgroundpositionx,#outerbackgroundpositionxnum').on('change',function(){
@@ -621,7 +632,9 @@
 				if (num.length > 0){
 					str = num + str;
 				}
-				$(el).val(str).trigger('change');
+				if(inited){
+					$(el).val(str).trigger('change');
+				}
 			});
 
 			$('#outerbackgroundpositionx,#outerbackgroundpositiony').on('change',function(){
@@ -631,6 +644,99 @@
 			$('#outerbackgroundpositionx,#outerbackgroundpositiony').each(function(){
 				updatePositionSelection($(this));
 			});
+
+			//End Outer Background
+
+			//Begin Inner Background
+			// background color
+			function updateInnerBgColor(v){
+				var swatchColor = v;
+				var swatchEl = $('#innerbackgroundcustom').find('i.mura-colorpicker-swatch');
+				if (v == 'custom' <cfif not(isArray(request.backgroundcoloroptions) and arrayLen(request.backgroundcoloroptions))> || true</cfif>){
+					$('#innerbackgroundcustom').show();
+				} else if (v == 'none'){
+					swatchColor = 'transparent'
+					$('#innerbackgroundcustom').hide();
+					$('#innerbackgroundcolor').val('');
+				} else {
+					$('#innerbackgroundcustom').hide();
+					$('#innerbackgroundcolor').val(v);
+				}
+				swatchEl.css('background-color',swatchColor);
+			}
+
+			$('#innerbackgroundcolorsel').on('change',function(){
+				var v = $(this).val();
+				updateInnerBgColor(v);
+			});
+
+			//Add this later so that the colorpicker doesn't auto trigger an object reload
+			$('#innerbackgroundcolor').addClass('contentStyle');
+
+			updateInnerBgColor($('#innerbackgroundcolorsel').val());
+
+			// background image
+			$('#innerbackgroundimageurl').on('change',function(){
+				var v = $(this).val();
+				var str = "";
+				if (v.length > 3){
+					str = "url('" + v + "')";
+					$('.css-bg-option').show();
+				} else {
+					$('.css-bg-option').hide();
+				}
+				if(inited){
+					$('#innerbackgroundimage').val(str).trigger('change');
+				}
+			});
+
+			var v = $('#innerbackgroundimageurl').val();
+			var str = "";
+			if (v.length > 3){
+				str = "url('" + v + "')";
+				$('.css-bg-option').show();
+			} else {
+				$('.css-bg-option').hide();
+			}
+
+			//commented out to not intially trigger reseting of rendered object
+			//$('#innerbackgroundimageurl').trigger('change');
+
+
+			$('#innerbackgroundpositiony,#innerbackgroundpositionynum').on('change',function(){
+				var el = $('#innerbackgroundpositionyval');
+				var str = $('#innerbackgroundpositiony').val();
+				var num = $('#innerbackgroundpositionynum').val();
+				if (num.length > 0){
+					str = num + str;
+				}
+				if(inited){
+					$(el).val(str).trigger('change');
+				}
+			});
+
+			$('#innerbackgroundpositionx,#innerbackgroundpositionxnum').on('change',function(){
+				var el = $('#innerbackgroundpositionxval');
+				var str = $('#innerbackgroundpositionx').val();
+				var num = $('#innerbackgroundpositionxnum').val();
+				if (num.length > 0){
+					str = num + str;
+				}
+				if(inited){
+					$(el).val(str).trigger('change');
+				}
+			});
+
+			$('#innerbackgroundpositionx,#innerbackgroundpositiony').on('change',function(){
+				updatePositionSelection($(this));
+			});
+
+			$('#innerbackgroundpositionx,#innerbackgroundpositiony').each(function(){
+				updatePositionSelection($(this));
+			});
+
+			//End Inner Background
+
 
 			// numeric input - select on focus
 			$('#configuratorContainer input.numeric').on('click', function(){
