@@ -357,9 +357,9 @@
 		//If the it's a form of component that's not configurable then go straight to edit it
 		if((lcaseObject=='form' || lcaseObject=='component') && tempCheck.data('notconfigurable')){
 			if(Mura.isUUID(tempCheck.data('objectid'))){
-					src=adminLoc + '?muraAction=carch.editLive&compactDisplay=true&contentid=' + encodeURIComponent(tempCheck.data('objectid')) + '&type='+ encodeURIComponent(tempCheck.data('object')) + '&siteid='+  Mura.siteid + '&instanceid=' + encodeURIComponent(tempCheck.data('instanceid'));
+					src=adminLoc + '?muraAction=cArch.editLive&compactDisplay=true&contentid=' + encodeURIComponent(tempCheck.data('objectid')) + '&type='+ encodeURIComponent(tempCheck.data('object')) + '&siteid='+  Mura.siteid + '&instanceid=' + encodeURIComponent(tempCheck.data('instanceid'));
 			} else {
-					src=adminLoc + '?muraAction=carch.editLive&compactDisplay=true&title=' + encodeURIComponent(tempCheck.data('objectid')) + '&type='+ encodeURIComponent(tempCheck.data('object')) + '&siteid=' + Mura.siteid + '&instanceid=' + encodeURIComponent(tempCheck.data('instanceid'));
+					src=adminLoc + '?muraAction=cArch.editLive&compactDisplay=true&title=' + encodeURIComponent(tempCheck.data('objectid')) + '&type='+ encodeURIComponent(tempCheck.data('object')) + '&siteid=' + Mura.siteid + '&instanceid=' + encodeURIComponent(tempCheck.data('instanceid'));
 			}
 
 		}
