@@ -2507,6 +2507,7 @@ var Mura=(function(){
 					if (region && region.length) {
 						if (region.data('perm')) {
 							var objectData = obj.data();
+
 							if (MuraInlineEditor && (MuraInlineEditor.objectHasConfigurator(obj) || (!Mura.layoutmanager && MuraInlineEditor.objectHasEditor(objectData)))) {
 								obj.children('.frontEndToolsModal').remove();
 								obj.prepend(layoutmanagertoolbar);
@@ -2516,12 +2517,12 @@ var Mura=(function(){
 									.addClass('mura-active')
 									.hover(
 										function(e) {
-											//e.stopPropagation();
+											e.stopPropagation();
 											Mura('.mura-active-target').removeClass('mura-active-target');
 											Mura(this).addClass('mura-active-target');
 										},
 										function(e) {
-											//e.stopPropagation();
+											e.stopPropagation();
 											Mura(this).removeClass('mura-active-target');
 										}
 									);
