@@ -560,11 +560,7 @@
 
 				if(windowHeight > frontEndModalHeight){
 					frontEndModalHeight=windowHeight;
-					if(frontEndModalIE8){
-						frameContainer.style.height=Math.max(frameHeight,utility(document).height()) + "px";
-					} else {
-						frameContainer.style.height=utility(document).height() + "px";
-					}
+					frameContainer.style.height=utility(document).height() + "px";
 					setTimeout(function(){
 						utility("##frontEndToolsModalClose").fadeIn("fast")
 					},1000);
