@@ -17,7 +17,7 @@
 						<select name="moduletheme">
 							<option value="">--</option>
 							<cfloop array="#request.modulethemearray#" index="theme">
-								<option value="#theme#"<cfif  listFind(attributes.params.class,theme,' ')> selected</cfif>>#esapiEncode('html',theme)#</option>
+								<option value="#theme.class#"<cfif  listFind(attributes.params.class,theme.class,' ')> selected</cfif>>#esapiEncode('html',theme.name)#</option>
 							</cfloop>
 						</select>
 					</div>
