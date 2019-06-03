@@ -7,8 +7,12 @@
 	param name="attributes.params.innerbackgroundimageurl" default="";
 	param name="attributes.params.innerbackgroundcolorsel" default="";
 
-	param name="attributes.params.marginuom" default="";
-	param name="attributes.params.paddinguom" default="";
+	param name="attributes.params.metamarginuom" default="";
+	param name="attributes.params.metapaddinguom" default="";
+	param name="attributes.params.outermarginuom" default="";
+	param name="attributes.params.outerpaddinguom" default="";
+	param name="attributes.params.innermarginuom" default="";
+	param name="attributes.params.innerpaddinguom" default="";
 	param name="attributes.params.outerbackgroundpositionx" default="";
 	param name="attributes.params.outerbackgroundpositiony" default="";
 	param name="attributes.params.innerbackgroundpositionx" default="";
@@ -100,9 +104,9 @@
 										<label class="mura-serial">
 											<input type="text" name="margin" id="metamarginall" placeholder="All" class="numeric serial" value="<cfif len(trim(attributes.params.cssstyles.marginall))>#val(esapiEncode('html_attr',attributes.params.cssstyles.marginall))#</cfif>">
 										</label>
-										<select id="metamarginuom" name="marginuom" class="objectParam">
+										<select id="metamarginuom" name="metamarginuom" class="objectParam">
 											<cfloop list="px,%,em,rem" index="u">
-												<option value="#u#"<cfif attributes.params.marginuom eq u> selected</cfif>>#u#</option>
+												<option value="#u#"<cfif attributes.params.metamarginuom eq u> selected</cfif>>#u#</option>
 											</cfloop>
 										</select>
 									</div>
@@ -164,9 +168,9 @@
 										<label class="mura-serial">
 											<input type="text" name="padding" id="metapaddingall" placeholder="All" class="numeric serial" value="<cfif len(trim(attributes.params.cssstyles.paddingall))>#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingall))#</cfif>">
 										</label>
-										<select id="metapaddinguom" name="paddinguom" class="objectParam">
+										<select id="metapaddinguom" name="metapaddinguom" class="objectParam">
 											<cfloop list="px,%,em,rem" index="u">
-												<option value="#u#"<cfif attributes.params.paddinguom eq u> selected</cfif>>#u#</option>
+												<option value="#u#"<cfif attributes.params.metapaddinguom eq u> selected</cfif>>#u#</option>
 											</cfloop>
 										</select>
 									</div>

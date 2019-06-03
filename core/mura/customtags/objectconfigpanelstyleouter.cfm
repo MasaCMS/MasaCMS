@@ -77,9 +77,9 @@
 									<label class="mura-serial">
 										<input type="text" name="margin" id="outermarginall" placeholder="All" class="numeric serial" value="<cfif len(trim(attributes.params.cssstyles.marginall))>#val(esapiEncode('html_attr',attributes.params.cssstyles.marginall))#</cfif>">
 									</label>
-									<select id="outermarginuom" name="marginuom" class="objectParam">
+									<select id="outermarginuom" name="outermarginuom" class="objectParam">
 										<cfloop list="px,%,em,rem" index="u">
-											<option value="#u#"<cfif attributes.params.marginuom eq u> selected</cfif>>#u#</option>
+											<option value="#u#"<cfif attributes.params.outermarginuom eq u> selected</cfif>>#u#</option>
 										</cfloop>
 									</select>
 								</div>
@@ -141,9 +141,9 @@
 									<label class="mura-serial">
 										<input type="text" name="padding" id="outerpaddingall" placeholder="All" class="numeric serial" value="<cfif len(trim(attributes.params.cssstyles.paddingall))>#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingall))#</cfif>">
 									</label>
-									<select id="outerpaddinguom" name="paddinguom" class="objectParam">
+									<select id="outerpaddinguom" name="outerpaddinguom" class="objectParam">
 										<cfloop list="px,%,em,rem" index="u">
-											<option value="#u#"<cfif attributes.params.paddinguom eq u> selected</cfif>>#u#</option>
+											<option value="#u#"<cfif attributes.params.outerpaddinguom eq u> selected</cfif>>#u#</option>
 										</cfloop>
 									</select>
 								</div>
