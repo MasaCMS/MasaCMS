@@ -357,9 +357,9 @@
 		//If the it's a form of component that's not configurable then go straight to edit it
 		if((lcaseObject=='form' || lcaseObject=='component') && tempCheck.data('notconfigurable')){
 			if(Mura.isUUID(tempCheck.data('objectid'))){
-					src=adminLoc + '?muraAction=carch.editlive&compactDisplay=true&contentid=' + encodeURIComponent(tempCheck.data('objectid')) + '&type='+ encodeURIComponent(tempCheck.data('object')) + '&siteid='+  Mura.siteid + '&instanceid=' + encodeURIComponent(tempCheck.data('instanceid'));
+					src=adminLoc + '?muraAction=carch.editLive&compactDisplay=true&contentid=' + encodeURIComponent(tempCheck.data('objectid')) + '&type='+ encodeURIComponent(tempCheck.data('object')) + '&siteid='+  Mura.siteid + '&instanceid=' + encodeURIComponent(tempCheck.data('instanceid'));
 			} else {
-					src=adminLoc + '?muraAction=carch.editlive&compactDisplay=true&title=' + encodeURIComponent(tempCheck.data('objectid')) + '&type='+ encodeURIComponent(tempCheck.data('object')) + '&siteid=' + Mura.siteid + '&instanceid=' + encodeURIComponent(tempCheck.data('instanceid'));
+					src=adminLoc + '?muraAction=carch.editLive&compactDisplay=true&title=' + encodeURIComponent(tempCheck.data('objectid')) + '&type='+ encodeURIComponent(tempCheck.data('object')) + '&siteid=' + Mura.siteid + '&instanceid=' + encodeURIComponent(tempCheck.data('instanceid'));
 			}
 
 		}
@@ -556,7 +556,12 @@
 				}
 
 				frameContainer.style.position = "absolute";
-				document.overflow = "auto"
+				document.overflow = "auto";
+
+				console.log('framesrc: ' + framesrc);
+				console.log('isFullHeight: ' + isFullHeight);
+				console.log('windowHeight: ' + windowHeight);
+				console.log('frontEndModalHeight: ' + frontEndModalHeight);
 
 				if(windowHeight > frontEndModalHeight){
 					frontEndModalHeight=windowHeight;
