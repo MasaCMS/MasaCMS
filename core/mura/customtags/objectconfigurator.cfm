@@ -205,7 +205,10 @@
 
 		  		var contentcssclass=$('input[name="contentcssclass"]');
 					var expandedContentContainerClass='<cfoutput>#contentcontainerclass#</cfoutput>';
-					var contentcssclassArray=contentcssclass.val().split(' ');
+					var contentcssclassArray=[];
+					if(typeof contentcssclass.val() =='string'){
+						contentcssclassArray=contentcssclass.val().split(' ');
+					}
 					var constraincontent=$('select[name="constraincontent"]');
 
 					if(constraincontent.length){
