@@ -223,7 +223,7 @@
 
 					</div>
 
-					<!--- background
+					<!--- background --->
 					<div class="mura-control-group">
 						<!--- todo: rbkey for these labels, options and placeholders--->
 						<label>Background Color</label>
@@ -245,7 +245,6 @@
 							<input type="text" id="outerbackgroundcolor" name="backgroundColor" placeholder="Select Color" autocomplete="off" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundcolor)#">
 						</div>
 					</div>
-					--->
 
 					<div class="mura-control-group">
 						<label>Background Image</label>
@@ -285,7 +284,7 @@
 
 					<div class="mura-control-group outer-css-bg-option" style="display:none;">
 						<label>Background Opacity</label>
-						<input type="text" name="backgroundopacity" placeholder="1" class="objectParam float" value="#esapiEncode('html_attr',attributes.params.backgroundopacity)#">
+						<input type="text" name="backgroundopacity" placeholder="" class="objectParam float" value="#esapiEncode('html_attr',attributes.params.backgroundopacity)#">
 					</div>
 
 					<div class="mura-control-group mura-ui-grid outer-css-bg-option" style="display:none;">

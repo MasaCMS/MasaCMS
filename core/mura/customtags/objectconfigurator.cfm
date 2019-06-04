@@ -40,14 +40,15 @@
 
 		<!---
 		<cfparam name="request.textcoloroptions" default="">
-		<cfparam name="request.backgroundcoloroptions" default="">
 		<cfif structKeyExists($.getContentRenderer(),'textColorOptions')>
 			<cfset request.textColorOptions = $.getContentRenderer().textColorOptions>
 		</cfif>
+		--->
+		<cfparam name="request.backgroundcoloroptions" default="">
 		<cfif structKeyExists($.getContentRenderer(),'backgroundColorOptions')>
 			<cfset request.backgroundColorOptions = $.getContentRenderer().backgroundColorOptions>
 		</cfif>
-		--->
+
 
 		<cfparam name="request.modulethemearray" default="#arrayNew(1)#">
 		<cfif structKeyExists($.getContentRenderer(),'modulethemearray') and isArray($.getContentRenderer().modulethemearray)>
@@ -567,7 +568,7 @@
 			// End Inner Content Margin and Padding
 
 			// Begin Outer background
-			<!---
+
 			function updateOuterBgColor(v){
 				var swatchColor = v;
 				var swatchEl = $('#outerbackgroundcustom').find('i.mura-colorpicker-swatch');
@@ -593,7 +594,7 @@
 			$('#outerbackgroundcolor').addClass('objectStyle');
 
 			updateOuterBgColor($('#outerbackgroundcolorsel').val());
-			--->
+
 
 			$('#outerminheightnum,#outerminheightoum').on('change',function(){
 				var el = $('#outerminheightuomval');
