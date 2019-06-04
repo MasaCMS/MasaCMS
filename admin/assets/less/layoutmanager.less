@@ -131,6 +131,10 @@ body.mura-sidebar-state__pushed--right .mura__layout-manager__controls {
 	opacity: 1;
 }
 
+.mura-object {
+	position: relative;
+}
+
 .frontEndToolsModal.mura {
 	color: #fff !important;
 	display: block !important;
@@ -138,12 +142,11 @@ body.mura-sidebar-state__pushed--right .mura__layout-manager__controls {
 	line-height: 24px !important;
 	min-height: 24px !important;
 	opacity: 0;
-	padding: 0 !important;
-	position: relative;
-	width: 100% !important;
-	z-index:1;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 2;
 	box-sizing: border-box;
-
 
 	 > span.mura-edit-icon{
 		background-color:#4485f1 !important;
@@ -159,6 +162,11 @@ body.mura-sidebar-state__pushed--right .mura__layout-manager__controls {
 	 }
 }
 
+div.mura-object[data-object="container"]:not([style*="min-height"]) > .frontEndToolsModal.mura {
+	position: relative;
+	width: 100% !important;
+	z-index: 1;
+}
 .mura-object-primary {
 	clear: both;
 	display: block;

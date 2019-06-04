@@ -11,60 +11,89 @@
 		<div id="panel-style-outer" class="panel-collapse collapse" role="tabpanel" aria-labeledby="heading-style-outer">
 			<div class="mura-panel-body">
 				<div class="container">
-
+					<cfif arrayLen(request.modulethemearray)>
+					<div class="mura-control-group">
+						<label>Theme</label>
+						<select name="moduletheme">
+							<option value="">--</option>
+							<cfloop array="#request.modulethemearray#" index="theme">
+								<option value="#theme.class#"<cfif  listFind(attributes.params.class,theme.class,' ')> selected</cfif>>#esapiEncode('html',theme.name)#</option>
+							</cfloop>
+						</select>
+					</div>
+					</cfif>
 					<cfif request.haspositionoptions>
 
-									<div class="mura-control-group">
-											<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.alignment')#</label>
-											<select name="alignment">
-											<option value="">--</option>
-											<option value="mura-left"<cfif listFind(attributes.params.class,'mura-left',' ')> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.left')#</option>
-											<!--- todo: remove if not used --->
-											<!---<option value="mura-center"<cfif listFind(attributes.params.class,'mura-center',' ')> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.center')#</option>--->
-											<option value="mura-right"<cfif listFind(attributes.params.class,'mura-right',' ')> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.right')#</option>
-											</select>
-									</div>
+						<div class="mura-control-group">
+							<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.alignment')#</label>
+							<select name="alignment">
+							<option value="">--</option>
+							<option value="mura-left"<cfif listFind(attributes.params.class,'mura-left',' ')> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.left')#</option>
+							<!--- todo: remove if not used --->
+							<!---<option value="mura-center"<cfif listFind(attributes.params.class,'mura-center',' ')> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.center')#</option>--->
+							<option value="mura-right"<cfif listFind(attributes.params.class,'mura-right',' ')> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.right')#</option>
+							</select>
+						</div>
 
-									<div class="mura-control-group">
-										<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.width')#</label>
-										<cfset attributes.positionlabels = ''>
-										<cfset attributes.positionvalues = ''>
-										<select name="width" id="objectwidthsel">
-											<cfloop from="1" to="#arrayLen(attributes.positionoptions)#" index="i">
-												<cfset p = attributes.positionoptions[i]>
-												<option value="#p['value']#"<cfif listFind(attributes.params.class,'#p['value']#',' ')> selected</cfif>>#p['label']#</option>
-												<cfset l = "'#p["label"]#'">
-												<cfset v = "'#p["value"]#'">
-												<cfset attributes.positionLabels = listAppend(attributes.positionlabels, l)>
-												<cfset attributes.positionValues = listAppend(attributes.positionvalues, v)>
-											</cfloop>
-										</select>
-									</div>
+						<div class="mura-control-group">
+							<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.width')#</label>
+							<cfset attributes.positionlabels = ''>
+							<cfset attributes.positionvalues = ''>
+							<select name="width" id="objectwidthsel">
+								<cfloop from="1" to="#arrayLen(attributes.positionoptions)#" index="i">
+									<cfset p = attributes.positionoptions[i]>
+									<option value="#p['value']#"<cfif listFind(attributes.params.class,'#p['value']#',' ')> selected</cfif>>#p['label']#</option>
+									<cfset l = "'#p["label"]#'">
+									<cfset v = "'#p["value"]#'">
+									<cfset attributes.positionLabels = listAppend(attributes.positionlabels, l)>
+									<cfset attributes.positionValues = listAppend(attributes.positionvalues, v)>
+								</cfloop>
+							</select>
+						</div>
 
-			<!--- todo: bootstrap slider --->
-			<!--- 						<input
-										type="text"
-										data-slider-id="objectwidthslider"
-										name="objectwidthslider"
-										class="mura-rangeslider"
-										data-slider-ticks="[0,1,2,3,4,5,6,7,8,9,10,11,12,13]"
-										data-slider-ticks-labels="'[#attributes.positionlabels#]'"
-										data-slider-ticks-tooltip="true"
-										data-slider-tooltip="hide"
-										data-slider-valuefield="##objectwidthsel"
-									> --->
+						<!--- todo: bootstrap slider --->
+						<!--- 						<input
+							type="text"
+							data-slider-id="objectwidthslider"
+							name="objectwidthslider"
+							class="mura-rangeslider"
+							data-slider-ticks="[0,1,2,3,4,5,6,7,8,9,10,11,12,13]"
+							data-slider-ticks-labels="'[#attributes.positionlabels#]'"
+							data-slider-ticks-tooltip="true"
+							data-slider-tooltip="hide"
+							data-slider-valuefield="##objectwidthsel"
+						> --->
 
-									<cfif len(contentcontainerclass)>
-										<div class="mura-control-group constraincontentcontainer" style='display:none;'>
-												<label>Constrain Content</label>
-												<select name="constraincontent">
-												<option value=""<cfif not listFind(attributes.params.contentcssclass,contentcontainerclass,' ')> selected</cfif>>False</option>
-												<option value="constrain"<cfif listFind(attributes.params.contentcssclass,contentcontainerclass,' ')> selected</cfif>>True</option>
-												</select>
-										</div>
-									</cfif>
-
+						<cfif len(contentcontainerclass)>
+							<div class="mura-control-group constraincontentcontainer" style='display:none;'>
+									<label>Constrain Content</label>
+									<select name="constraincontent">
+									<option value=""<cfif not listFind(attributes.params.contentcssclass,contentcontainerclass,' ')> selected</cfif>>False</option>
+									<option value="constrain"<cfif listFind(attributes.params.contentcssclass,contentcontainerclass,' ')> selected</cfif>>True</option>
+									</select>
+							</div>
+						</cfif>
 					</cfif>
+
+					<div class="mura-control-group">
+						<!--- todo: rbkey for margin and placeholders --->
+						<label>Minimum Height</label>
+
+						<div class="row mura-ui-row">
+
+								<div class="mura-input-group">
+									<label class="mura-serial">
+										<input type="text" name="outerminheight" id="outerminheightnum" placeholder="0" class="numeric serial" value="<cfif len(trim(attributes.params.cssstyles.minheight))>#val(esapiEncode('html_attr',attributes.params.cssstyles.minheight))#</cfif>">
+									</label>
+									<select id="outerminheightuom" name="outerminheightuom" class="objectParam">
+										<cfloop list="px,%,em,rem" index="u">
+											<option value="#u#"<cfif attributes.params.outerminheightuom eq u> selected</cfif>>#u#</option>
+										</cfloop>
+									</select>
+								</div>
+								<input type="hidden" name="minHeight" id="outerminheightuomval" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.minheight)#">
+						</div>
+					</div>
 
 					<!--- margin --->
 					<div class="mura-control-group mura-ui-grid">
@@ -194,7 +223,7 @@
 
 					</div>
 
-					<!--- background --->
+					<!--- background
 					<div class="mura-control-group">
 						<!--- todo: rbkey for these labels, options and placeholders--->
 						<label>Background Color</label>
@@ -216,6 +245,7 @@
 							<input type="text" id="outerbackgroundcolor" name="backgroundColor" placeholder="Select Color" autocomplete="off" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundcolor)#">
 						</div>
 					</div>
+					--->
 
 					<div class="mura-control-group">
 						<label>Background Image</label>
@@ -241,6 +271,25 @@
 							<option value="repeat"<cfif attributes.params.cssstyles.backgroundrepeat eq 'repeat'> selected</cfif>>Repeat</option>
 							<option value="repeat-x"<cfif attributes.params.cssstyles.backgroundrepeat eq 'repeatx'> selected</cfif>>Repeat-X</option>
 							<option value="repeat-y"<cfif attributes.params.cssstyles.backgroundrepeat eq 'repeaty'> selected</cfif>>Repeat-Y</option>
+						</select>
+					</div>
+
+					<div class="mura-control-group outer-css-bg-option" style="display:none;">
+						<label>Background Attachment</label>
+						<select name="backgroundAttachment" class="objectStyle">
+							<option value="scroll"<cfif attributes.params.cssstyles.backgroundAttachment eq 'scroll'>
+							selected</cfif>>Scroll</option>
+							<option value="Fixed"<cfif attributes.params.cssstyles.backgroundAttachment eq 'fixed'> selected</cfif>>Fixed</option>
+						</select>
+					</div>
+
+					<div class="mura-control-group outer-css-bg-option" style="display:none;">
+						<label>Background Opacity</label>
+						<select name="outerbackgroundopacity">
+							<option value="">--</option>
+							<cfloop from="1" to="10" index="i">
+								<option value="mura-op-#i#"<cfif listFind(attributes.params.class,'mura-op-#i#',' ')> selected</cfif>>#i#0%</option>
+							</cfloop>
 						</select>
 					</div>
 
@@ -288,10 +337,12 @@
 						</div>
 					</div>
 
+					<!---
 					<div class="mura-control-group css-bg-option" style="display:none;">
 						<label>Background Overlay</label>
 						<input type="text" id="outerbackgroundoverlay" name="backgroundOverlay" placeholder="" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundoverlay)#">
 					</div>
+					--->
 
 					<!--- css id and class for outer --->
 					<cfif request.haspositionoptions>

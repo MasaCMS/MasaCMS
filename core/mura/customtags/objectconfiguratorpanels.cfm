@@ -11,6 +11,7 @@
 	param name="attributes.params.metapaddinguom" default="";
 	param name="attributes.params.outermarginuom" default="";
 	param name="attributes.params.outerpaddinguom" default="";
+	param name="attributes.params.outerminheightuom" default="";
 	param name="attributes.params.innermarginuom" default="";
 	param name="attributes.params.innerpaddinguom" default="";
 	param name="attributes.params.outerbackgroundpositionx" default="";
@@ -22,7 +23,7 @@
 		'backgroundcolor'
 		,'backgroundimage'
 		,'backgroundoverlay'
-		,'backgroundparallax'
+		,'backgroundattachment'
 		,'backgroundposition'
 		,'backgroundpositionx'
 		,'backgroundpositiony'
@@ -36,6 +37,7 @@
 		,'marginleft'
 		,'marginall'
 		,'marginuom'
+		,'opacity'
 		,'padding'
 		,'paddingtop'
 		,'paddingright'
@@ -43,7 +45,8 @@
 		,'paddingleft'
 		,'paddingall'
 		,'paddinguom'
-		,'textalign'];
+		,'textalign',
+		 'minheight'];
 
 	for (p in attributes.globalparams){
 		param name="attributes.params.cssstyles.#p#" default="";

@@ -37,6 +37,7 @@
 		<cfparam name="request.haspositionoptions" default="false">
 		<cfparam name="attributes.params.isbodyobject" default="false">
 
+		<!---
 		<cfparam name="request.textcoloroptions" default="">
 		<cfparam name="request.backgroundcoloroptions" default="">
 		<cfif structKeyExists($.getContentRenderer(),'textColorOptions')>
@@ -44,6 +45,12 @@
 		</cfif>
 		<cfif structKeyExists($.getContentRenderer(),'backgroundColorOptions')>
 			<cfset request.backgroundColorOptions = $.getContentRenderer().backgroundColorOptions>
+		</cfif>
+		--->
+
+		<cfparam name="request.modulethemearray" default="#arrayNew(1)#">
+		<cfif structKeyExists($.getContentRenderer(),'modulethemearray') and isArray($.getContentRenderer().modulethemearray)>
+			<cfset request.modulethemearray = $.getContentRenderer().modulethemearray>
 		</cfif>
 
 		<cfset contentcontainerclass=esapiEncode("javascript",$.getContentRenderer().expandedContentContainerClass)>
@@ -130,7 +137,7 @@
 	<cfoutput>
 
 		<!--- close the basic or style panel --->
-		<cfif request.hasbasicoptions or request.hasmetaoptions and not (IsBoolean(attributes.params.isbodyobject) and attributes.params.isbodyobject)>>
+		<cfif request.hasbasicoptions or request.hasmetaoptions and not (IsBoolean(attributes.params.isbodyobject) and attributes.params.isbodyobject)>
 				</div> <!--- /end  mura-panel-collapse --->
 			</div> <!--- /end  mura-panel-body --->
 		</div> <!--- /end panel --->
@@ -188,53 +195,55 @@
 			$('#style-panels').addClass('no-header');
 			$('#panel-gds-outer').trigger('click');
 
-			function setPlacementVisibility(){
+			function updateDynamicClasses(){
 				var classInput=$('input[name="class"]');
 				classInput.val('');
 
-	  			var alignment=$('select[name="alignment"]');
-	  			classInput.val(alignment.val());
+  			var alignment=$('select[name="alignment"]');
+  			classInput.val(alignment.val());
 
-	  			var width=$('select[name="width"]');
-  				if(classInput.val() ){
-  					classInput.val(classInput.val() + ' ' + width.val());
-  				} else {
-  					classInput.val(width.val());
-  				}
-					classInput.val($.trim(classInput.val()));
+  			var width=$('select[name="width"]');
+				if(classInput.val() ){
+					classInput.val(classInput.val() + ' ' + width.val());
+				} else {
+					classInput.val(width.val());
+				}
 
-		  		var contentcssclass=$('input[name="contentcssclass"]');
-					var expandedContentContainerClass='<cfoutput>#contentcontainerclass#</cfoutput>';
-					var contentcssclassArray=[];
-					if(typeof contentcssclass.val() =='string'){
-						contentcssclassArray=contentcssclass.val().split(' ');
-					}
-					var constraincontent=$('select[name="constraincontent"]');
+				var theme=$('select[name="moduletheme"]');
+				if(classInput.val() ){
+					classInput.val(classInput.val() + ' ' + theme.val());
+				} else {
+					classInput.val(theme.val());
+				}
 
-					if(constraincontent.length){
-						if(width.val()=='mura-expanded'){
-							$('.constraincontentcontainer').show();
-							if(constraincontent.val()=='constrain'){
-								if(contentcssclassArray.indexOf(expandedContentContainerClass)==-1){
-									if(contentcssclassArray.length){
-										contentcssclass.val(contentcssclass.val() + ' ' + expandedContentContainerClass);
-									} else {
-										contentcssclass.val(expandedContentContainerClass);
-									}
+				var outerbackgroundopacity=$('select[name="outerbackgroundopacity"]');
+				if(classInput.val() ){
+					classInput.val(classInput.val() + ' ' + outerbackgroundopacity.val());
+				} else {
+					classInput.val(outerbackgroundopacity.val());
+				}
+				classInput.val($.trim(classInput.val()));
+
+	  		var contentcssclass=$('input[name="contentcssclass"]');
+				var expandedContentContainerClass='<cfoutput>#contentcontainerclass#</cfoutput>';
+				var contentcssclassArray=[];
+				if(typeof contentcssclass.val() =='string'){
+					contentcssclassArray=contentcssclass.val().split(' ');
+				}
+				var constraincontent=$('select[name="constraincontent"]');
+
+				if(constraincontent.length){
+					if(width.val()=='mura-expanded'){
+						$('.constraincontentcontainer').show();
+						if(constraincontent.val()=='constrain'){
+							if(contentcssclassArray.indexOf(expandedContentContainerClass)==-1){
+								if(contentcssclassArray.length){
+									contentcssclass.val(contentcssclass.val() + ' ' + expandedContentContainerClass);
+								} else {
+									contentcssclass.val(expandedContentContainerClass);
 								}
-							} else {
-								if(contentcssclassArray.indexOf(expandedContentContainerClass) > -1){
-									for( var i = 0; i < contentcssclassArray.length; i++){
-										if ( contentcssclassArray[i] === expandedContentContainerClass) {
-											contentcssclassArray.splice(i, 1);
-										}
-									}
-								}
-								contentcssclass.val(contentcssclassArray.join(' '));
-
 							}
 						} else {
-							$('.constraincontentcontainer').hide();
 							if(contentcssclassArray.indexOf(expandedContentContainerClass) > -1){
 								for( var i = 0; i < contentcssclassArray.length; i++){
 									if ( contentcssclassArray[i] === expandedContentContainerClass) {
@@ -243,29 +252,41 @@
 								}
 							}
 							contentcssclass.val(contentcssclassArray.join(' '));
+
 						}
-
-						contentcssclass.val($.trim(contentcssclass.val()));
+					} else {
+						$('.constraincontentcontainer').hide();
+						if(contentcssclassArray.indexOf(expandedContentContainerClass) > -1){
+							for( var i = 0; i < contentcssclassArray.length; i++){
+								if ( contentcssclassArray[i] === expandedContentContainerClass) {
+									contentcssclassArray.splice(i, 1);
+								}
+							}
+						}
+						contentcssclass.val(contentcssclassArray.join(' '));
 					}
 
-					var cssclassInput=$('input[name="cssclass"]');
+					contentcssclass.val($.trim(contentcssclass.val()));
+				}
 
-		  		if(cssclassInput.val()){
-	  				if(classInput.val() ){
-	  					classInput.val(classInput.val() + ' ' + cssclassInput.val());
-	  				} else {
-	  					classInput.val(cssclassInput.val());
-	  				}
+				var cssclassInput=$('input[name="cssclass"]');
 
-						classInput.val($.trim(classInput.val()));
-		  		}
+	  		if(cssclassInput.val()){
+  				if(classInput.val() ){
+  					classInput.val(classInput.val() + ' ' + cssclassInput.val());
+  				} else {
+  					classInput.val(cssclassInput.val());
+  				}
 
-					if(inited && typeof updateDraft == 'function'){
-						updateDraft();
-					}
+					classInput.val($.trim(classInput.val()));
+	  		}
+
+				if(inited && typeof updateDraft == 'function'){
+					updateDraft();
+				}
 			}
 
-			setPlacementVisibility();
+			updateDynamicClasses();
 
 			$('#globalSettingsBtn').click(function(){
 				$('#availableObjectContainer').hide();
@@ -289,8 +310,8 @@
 				return false;
 			})
 
-			$('input[name="cssclass"],select[name="alignment"],select[name="width"],select[name="offset"],select[name="constraincontent"]').on('change', function() {
-				setPlacementVisibility();
+			$('input[name="cssclass"],select[name="moduletheme"],select[name="alignment"],select[name="width"],select[name="offset"],select[name="constraincontent"],select[name="outerbackgroundopacity"]').on('change', function() {
+				updateDynamicClasses();
 			});
 
 			// Begin Outer Margin and Padding
@@ -551,7 +572,7 @@
 			// End Inner Content Margin and Padding
 
 			// Begin Outer background
-
+			<!---
 			function updateOuterBgColor(v){
 				var swatchColor = v;
 				var swatchEl = $('#outerbackgroundcustom').find('i.mura-colorpicker-swatch');
@@ -577,6 +598,19 @@
 			$('#outerbackgroundcolor').addClass('objectStyle');
 
 			updateOuterBgColor($('#outerbackgroundcolorsel').val());
+			--->
+
+			$('#outerminheightnum,#outerminheightoum').on('change',function(){
+				var el = $('#outerminheightuomval');
+				var str = $('#outerminheightuom').val();
+				var num = $('#outerminheightnum').val();
+				if (num.length > 0){
+					str = num + str;
+				}
+				if(inited){
+					$(el).val(str).trigger('change');
+				}
+			});
 
 			// background image
 			$('#outerbackgroundimageurl').on('change',function(){
@@ -651,6 +685,7 @@
 			//End Outer Background
 
 			//Begin Inner Background
+			<!---
 			// background color
 			function updateInnerBgColor(v){
 				var swatchColor = v;
@@ -739,7 +774,7 @@
 			});
 
 			//End Inner Background
-
+			--->
 
 			// numeric input - select on focus
 			$('#configuratorContainer input.numeric').on('click', function(){
