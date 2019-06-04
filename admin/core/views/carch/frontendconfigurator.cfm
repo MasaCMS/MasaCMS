@@ -86,10 +86,13 @@
 		var configOptions={};
 		var originParams={};
 		var originid='#esapiEncode('javascript',rc.objectid)#';
+		var inited=true;
 
 		var updateDraft=function(){
+				if(!inited){
+					return;
+				}
 				currentPanel='';
-
 				siteManager.updateAvailableObject();
 
 				var availableObjectSelector=jQuery('##availableObjectSelector');

@@ -308,7 +308,7 @@
 					classInput.val($.trim(classInput.val()));
 	  		}
 
-				if(inited && typeof updateDraft == 'function'){
+				if(typeof updateDraft == 'function'){
 					updateDraft();
 				}
 			}
@@ -400,9 +400,9 @@
 					$('#outermarginadvanced').show();
 
 				}
-				if(inited){
-					$('#outermargintopval').trigger('change');
-				}
+
+				$('#outermargintopval').trigger('change');
+
 			}
 
 			$('#outermarginall').on('keyup', function(){
@@ -486,9 +486,9 @@
 					$('#metamarginadvanced').show();
 
 				}
-				if(inited){
-					$('#metamargintopval').trigger('change');
-				}
+
+				$('#metamargintopval').trigger('change');
+
 			}
 
 			$('#metamarginall').on('keyup', function(){
@@ -530,9 +530,8 @@
 					$('#innerpaddingall').val('');
 					$('#innerpaddingadvanced').show();
 				}
-				if(inited){
-					$('#innerpaddingtopval').trigger('change');
-				}
+
+				$('#innerpaddingtopval').trigger('change');
 			}
 
 			$('#innerpaddingall').on('keyup', function(){
@@ -572,9 +571,9 @@
 					$('#innermarginadvanced').show();
 
 				}
-				if(inited){
-					$('#innermargintopval').trigger('change');
-				}
+
+				$('#innermargintopval').trigger('change');
+
 			}
 
 			$('#innermarginall').on('keyup', function(){
@@ -634,9 +633,9 @@
 				if (num.length > 0){
 					str = num + str;
 				}
-				if(inited){
-					$(el).val(str).trigger('change');
-				}
+
+				$(el).val(str).trigger('change');
+
 			});
 
 			// background image
@@ -649,9 +648,9 @@
 				} else {
 					$('.outer-css-bg-option').hide();
 				}
-				if(inited){
-					$('#outerbackgroundimage').val(str).trigger('change');
-				}
+
+				$('#outerbackgroundimage').val(str).trigger('change');
+
 			});
 
 			var v = $('#outerbackgroundimageurl').val();
@@ -684,9 +683,9 @@
 				if (num.length > 0){
 					str = num + str;
 				}
-				if(inited){
-					$(el).val(str).trigger('change');
-				}
+
+				$(el).val(str).trigger('change');
+
 			});
 
 			$('#outerbackgroundpositionx,#outerbackgroundpositionxnum').on('change',function(){
@@ -696,9 +695,9 @@
 				if (num.length > 0){
 					str = num + str;
 				}
-				if(inited){
-					$(el).val(str).trigger('change');
-				}
+
+				$(el).val(str).trigger('change');
+
 			});
 
 			$('#outerbackgroundpositionx,#outerbackgroundpositiony').on('change',function(){
@@ -775,9 +774,9 @@
 				if (num.length > 0){
 					str = num + str;
 				}
-				if(inited){
-					$(el).val(str).trigger('change');
-				}
+
+				$(el).val(str).trigger('change');
+
 			});
 
 			$('#innerbackgroundpositionx,#innerbackgroundpositionxnum').on('change',function(){
@@ -787,9 +786,9 @@
 				if (num.length > 0){
 					str = num + str;
 				}
-				if(inited){
-					$(el).val(str).trigger('change');
-				}
+
+				$(el).val(str).trigger('change');
+				
 			});
 
 			$('#innerbackgroundpositionx,#innerbackgroundpositiony').on('change',function(){
