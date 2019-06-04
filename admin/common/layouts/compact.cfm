@@ -106,8 +106,9 @@
 		#session.dateKey#
 		<script type="text/javascript">
 
-			// set width of pane relative to side controls
 			var resizeTabPane = function(offsetVal=17){
+
+				// set width of pane relative to side controls
 				if ($('##mura-content-body-block').length){
 
 					var blockW = $('##mura-content-body-block').width();
@@ -119,14 +120,39 @@
 						resizeBodyEditor();
 					}, 50)
 				}
+				// set heights, accounting for header
+				if ($('##dspStatusContainer').length){
+					var tabContent = $('##mura-content-body-block>.tab-content');
+					var controls = $('##mura-content-body-block .mura__edit__controls');
+					var statusH = $('##dspStatusContainer').height();
+					var origBlockH = $('##mura-content-body-block').height();
+					var origTabH = $(tabContent).height();
+					var origControlsH = $(controls).height();
+					var newBlockH = origBlockH - statusH;
+					var newTabH = origTabH - statusH + 90;
+					var newControlsH = origControlsH - statusH + 12;
+				
+					$('##mura-content-body-block').css('height',newBlockH);
+					$(tabContent).css('height',newTabH);
+					$(controls).css('height',newControlsH);
+				}	
+
 			}
 
 			// set height of ckeditor content area - called by resizeTabPane()
 			var resizeBodyEditor = function(){
 				if ($('##mura-content-body-render .cke_contents').length){
 					var ckeTopH = $('##mura-content-body-render .cke_top').height();
-					// also adjust cke height
-					$('##mura-content-body-render .cke_contents').css('height','calc((100vh - ' + ckeTopH +  'px) - 260px)');
+					var statusH = 0;
+					var topH = 0;
+
+					if ($("##dspStatusContainer").length){
+						statusH = $("##dspStatusContainer").height();
+					};
+
+				 	topH = statusH + ckeTopH;
+
+					$('##mura-content-body-render .cke_contents').css('height','calc((100vh - ' + topH +  'px) - 260px)');
 				}
 			}
 

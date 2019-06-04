@@ -542,33 +542,32 @@
 			var frame = document.getElementById("frontEndToolsModaliframe");
 			var frameContainer = document.getElementById("frontEndToolsModalContainer");
 			var framesrc = frame.getAttribute('src');
-			var isFullHeight = framesrc.includes('cArch.editLive') || framesrc.includes('cArch.edit');
+			var isFullHeight = framesrc.includes('cArch.editLive') || framesrc.includes('cArch.edit');	
+			var windowHeight = Math.max(frameHeight, utility(window).height());
+		
+			utility('##frontEndToolsModalContainer ##frontEndToolsModalBody,##frontEndToolsModalContainer ##frontEndToolsModaliframe').width(frontEndModalWidth);
 
-				var windowHeight = Math.max(frameHeight, utility(window).height());
+			if (isFullHeight){
+				frame.style.height = utility(window).height()-96 + "px";
+			} else {
+				frame.style.height = frameHeight + "px";
+			}
 
-				utility('##frontEndToolsModalContainer ##frontEndToolsModalBody,##frontEndToolsModalContainer ##frontEndToolsModaliframe').width(frontEndModalWidth);
+			frameContainer.style.position = "absolute";
+			document.overflow = "auto";
 
-				if (isFullHeight){
-					frame.style.height = utility(window).height()-96 + "px";
-				} else {
-					frame.style.height = frameHeight + "px";
-				}
+//			console.log('framesrc: ' + framesrc);
+//			console.log('isFullHeight: ' + isFullHeight);
+//			console.log('windowHeight: ' + windowHeight);
+//			console.log('frontEndModalHeight: ' + frontEndModalHeight);
 
-				frameContainer.style.position = "absolute";
-				document.overflow = "auto";
-
-				console.log('framesrc: ' + framesrc);
-				console.log('isFullHeight: ' + isFullHeight);
-				console.log('windowHeight: ' + windowHeight);
-				console.log('frontEndModalHeight: ' + frontEndModalHeight);
-
-				if(windowHeight > frontEndModalHeight){
-					frontEndModalHeight=windowHeight;
-					frameContainer.style.height=utility(document).height() + "px";
-					setTimeout(function(){
-						utility("##frontEndToolsModalClose").fadeIn("fast")
-					},1000);
-				}
+			if(windowHeight > frontEndModalHeight){
+				frontEndModalHeight=windowHeight;
+				frameContainer.style.height=utility(document).height() + "px";
+				setTimeout(function(){
+					utility("##frontEndToolsModalClose").fadeIn("fast")
+				},1000);
+			}
 		}
 
 	}
