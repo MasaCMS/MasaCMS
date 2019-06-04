@@ -88,6 +88,7 @@
 		var originid='#esapiEncode('javascript',rc.objectid)#';
 
 		var updateDraft=function(){
+				currentPanel='';
 
 				siteManager.updateAvailableObject();
 
@@ -118,7 +119,8 @@
 						cmd:'setObjectParams',
 						instanceid:instanceid,
 						params:siteManager.availableObject.params,
-						reinit:(reload) ? true : false
+						reinit:(reload) ? true : false,
+						currentPanel:currentPanel
 					});
 
 				}

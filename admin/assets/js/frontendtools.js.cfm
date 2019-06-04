@@ -156,6 +156,14 @@
 				window.scrollTo(0, 0);
 			} else if(parameters["cmd"] == "autoScroll"){
 				autoScroll(parameters["y"]);
+			} else if(parameters["cmd"] == "setCurrentPanel"){
+				var item=Mura('[data-instanceid="' + parameters["instanceid"] + '"]');
+				Mura(".mura-object-content,.mura-object-meta").removeClass('mura-object-selected')
+				if(parameters["currentPanel"]=='content'){
+					item.children('.mura-object-content').addClass('mura-object-selected');
+				}	if(parameters["currentPanel"]=='meta'){
+					item.children('.mura-object-meta').addClass('mura-object-selected');
+				}
 			} else if(parameters["cmd"] == "requestObjectParams"){
 				var item=Mura('[data-instanceid="' + parameters["instanceid"] + '"]');
 				var data=item.data();
@@ -261,6 +269,13 @@
 							openFrontEndToolsModal(item.node);
 						}
 					});
+
+					Mura(".mura-object-content,.mura-object-meta").removeClass('mura-object-selected')
+					if(parameters["currentPanel"]=='content'){
+						item.children('.mura-object-content').addClass('mura-object-selected');
+					}	if(parameters["currentPanel"]=='meta'){
+						item.children('.mura-object-meta').addClass('mura-object-selected');
+					}
 				}
 			} else if (parameters["cmd"]=='reloadObjectAndClose') {
 				if(parameters.instanceid){
@@ -542,9 +557,9 @@
 			var frame = document.getElementById("frontEndToolsModaliframe");
 			var frameContainer = document.getElementById("frontEndToolsModalContainer");
 			var framesrc = frame.getAttribute('src');
-			var isFullHeight = framesrc.includes('cArch.editLive') || framesrc.includes('cArch.edit');	
+			var isFullHeight = framesrc.includes('cArch.editLive') || framesrc.includes('cArch.edit');
 			var windowHeight = Math.max(frameHeight, utility(window).height());
-		
+
 			utility('##frontEndToolsModalContainer ##frontEndToolsModalBody,##frontEndToolsModalContainer ##frontEndToolsModaliframe').width(frontEndModalWidth);
 
 			if (isFullHeight){

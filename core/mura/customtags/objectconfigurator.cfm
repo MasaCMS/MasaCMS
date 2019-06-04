@@ -183,7 +183,38 @@
 	<script>
 		$(function(){
 
+			currentPanel="";
 			inited=false;
+
+			$('#panel-gds-outer,.mura-panel-heading').click(function(){
+				currentPanel="";
+				frontEndProxy.post(
+				{
+					cmd:'setCurrentPanel',
+					instanceid:instanceid,
+					currentPanel:currentPanel
+				});
+			});
+
+			$('#panel-gds-inner').click(function(){
+				currentPanel="content";
+				frontEndProxy.post(
+				{
+					cmd:'setCurrentPanel',
+					instanceid:instanceid,
+					currentPanel:currentPanel
+				});
+			});
+
+			$('#panel-gds-meta').click(function(){
+				currentPanel="meta";
+				frontEndProxy.post(
+				{
+					cmd:'setCurrentPanel',
+					instanceid:instanceid,
+					currentPanel:currentPanel
+				});
+			});
 
 			$('.panel-gds-box').on('click',function(){
 				var gdspanel = $(this).attr('data-gdsel');

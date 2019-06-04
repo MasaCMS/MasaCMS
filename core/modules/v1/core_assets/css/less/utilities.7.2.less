@@ -147,6 +147,13 @@ li .cke_skin_mura {
         overflow: hidden;
     }
 
+		/* Turn off parallax scrolling for all tablets and phones. Increase/decrease the pixels if needed */
+		@media only screen and (max-device-width: 1366px) {
+		  .mura-object {
+		    background-attachment: scroll !important;
+		  }
+		}
+
     /* Utilities
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
     .mura-full-width {
@@ -192,9 +199,13 @@ li .cke_skin_mura {
 */
 
 .mura-object.mura-expanded {
-		.mura-object-content, .mura-object-meta {
+		.mura-object-content {
 			text-align: center;
 		}
+}
+
+.mura-object-meta {
+ text-align: center;
 }
 
 /* set full width for expanded containers */
