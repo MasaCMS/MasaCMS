@@ -150,7 +150,7 @@
 
 					</div>
 
-					<!--- background
+					<!--- background --->
 					<div class="mura-control-group">
 						<!--- todo: rbkey for these labels, options and placeholders--->
 						<label>Background Color</label>
@@ -169,11 +169,11 @@
 						</cfif>
 						<div class="input-group mura-colorpicker" id="innerbackgroundcustom" style="<cfif isArray(request.backgroundcoloroptions) and arrayLen(request.backgroundcoloroptions)>display: none;</cfif>">
 							<span class="input-group-addon"><i class="mura-colorpicker-swatch"></i></span>
-							<input type="text" id="innerbackgroundcolor" name="innerbackgroundColor" placeholder="Select Color" autocomplete="off" value="#esapiEncode('html_attr',attributes.params.contentcssstyles.backgroundcolor)#">
+							<input type="text" id="innerbackgroundcolor" name="backgroundColor" placeholder="Select Color" autocomplete="off" value="#esapiEncode('html_attr',attributes.params.contentcssstyles.backgroundcolor)#">
 						</div>
 					</div>
 
-
+					<!---
 					<div class="mura-control-group">
 						<label>Background Image</label>
 						<input type="hidden" id="innerbackgroundimage" name="backgroundImage" class="contentStyle" value="#esapiEncode('html_attr',attributes.params.contentcssstyles.backgroundimage)#">

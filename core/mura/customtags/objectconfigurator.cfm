@@ -681,7 +681,7 @@
 			//End Outer Background
 
 			//Begin Inner Background
-			<!---
+
 			// background color
 			function updateInnerBgColor(v){
 				var swatchColor = v;
@@ -708,7 +708,7 @@
 			$('#innerbackgroundcolor').addClass('contentStyle');
 
 			updateInnerBgColor($('#innerbackgroundcolorsel').val());
-
+			<!---
 			// background image
 			$('#innerbackgroundimageurl').on('change',function(){
 				var v = $(this).val();
@@ -771,6 +771,36 @@
 
 			//End Inner Background
 			--->
+
+			// Begin Meta background color
+
+			function updateMetaBgColor(v){
+				var swatchColor = v;
+				var swatchEl = $('#innerbackgroundcustom').find('i.mura-colorpicker-swatch');
+				if (v == 'custom' <cfif not(isArray(request.backgroundcoloroptions) and arrayLen(request.backgroundcoloroptions))> || true</cfif>){
+					$('#metabackgroundcustom').show();
+				} else if (v == 'none'){
+					swatchColor = 'transparent'
+					$('#metabackgroundcustom').hide();
+					$('#imetabackgroundcolor').val('');
+				} else {
+					$('#metabackgroundcustom').hide();
+					$('#imetabackgroundcolor').val(v);
+				}
+				swatchEl.css('background-color',swatchColor);
+			}
+
+			$('#metabackgroundcolorsel').on('change',function(){
+				var v = $(this).val();
+				updateMetaBgColor(v);
+			});
+
+			//Add this later so that the colorpicker doesn't auto trigger an object reload
+			$('#metabackgroundcolor').addClass('metaStyle');
+
+			updateMetaBgColor($('#metabackgroundcolorsel').val());
+
+			//End Meta Background
 
 			// numeric input - select on focus
 			$('#configuratorContainer input.numeric').on('click', function(){

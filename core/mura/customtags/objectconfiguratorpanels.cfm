@@ -224,6 +224,29 @@
 
 						</div>
 
+						<!--- background --->
+						<div class="mura-control-group">
+							<!--- todo: rbkey for these labels, options and placeholders--->
+							<label>Background Color</label>
+							<cfif isArray(request.backgroundcoloroptions) and arrayLen(request.backgroundcoloroptions)>
+								<select id="metabackgroundcolorsel" name="backgroundColorSel" class="objectParam">
+									<option value=""<cfif attributes.params.innerbackgroundcolorsel eq ''>
+								selected</cfif>>None</option>
+									<cfloop from="1" to="#arrayLen(request.backgroundcoloroptions)#" index="i">
+										<cfset c = request.backgroundcoloroptions[i]>
+										<option value="#c['value']#"<cfif attributes.params.metabackgroundcolorsel eq c['value']>
+								selected</cfif> style="background-color:#c['value']#;">#c['name']#</option>
+									</cfloop>
+									<option value="custom"<cfif attributes.params.metabackgroundcolorsel eq 'custom'>
+								selected</cfif>>Custom</option>
+								</select>
+							</cfif>
+							<div class="input-group mura-colorpicker" id="metabackgroundcustom" style="<cfif isArray(request.backgroundcoloroptions) and arrayLen(request.backgroundcoloroptions)>display: none;</cfif>">
+								<span class="input-group-addon"><i class="mura-colorpicker-swatch"></i></span>
+								<input type="text" id="metabackgroundcolor" name="backgroundColor" placeholder="Select Color" autocomplete="off" value="#esapiEncode('html_attr',attributes.params.metacssstyles.backgroundcolor)#">
+							</div>
+						</div>
+
 						<!--- css id and class for label --->
 						<div class="mura-control-group">
 							<label>
