@@ -18035,7 +18035,6 @@ Mura.DOMSelection = Mura.Core.extend(
 				sheet.deleteRule(0);
 			}
 
-			console.log(cssstyles)
 			if (cssstyles && typeof cssstyles.backgroundColor != 'undefined') {
 				sheet.insertRule(
 					'div.mura-object[data-instanceid="' + obj.data('instanceid') + '"]:before{content: ""; position: absolute;	top: 0; right: 0;left: 0;bottom:0; background:' + cssstyles.backgroundColor + '}',
