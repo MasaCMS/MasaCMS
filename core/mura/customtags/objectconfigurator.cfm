@@ -161,11 +161,11 @@
 							<!--- nested panels --->
 							<div class="mura-control-group">
 								<!--- todo: rbkeys for box labels --->
-								<div class="panel-gds-box" id="panel-gds-outer" data-gdsel="panel-style-outer"><span>Module</span>
+								<div class="panel-gds-box" id="panel-gds-object" data-gdsel="panel-style-object"><span>Module</span>
 									<cfif request.hasmetaoptions>
 										<div class="panel-gds-box" id="panel-gds-meta" data-gdsel="panel-style-label"><span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.label')#</span></div>
 									</cfif>
-									<div class="panel-gds-box" id="panel-gds-inner" data-gdsel="panel-style-inner"><span>Content</span></div>
+									<div class="panel-gds-box" id="panel-gds-content" data-gdsel="panel-style-content"><span>Content</span></div>
 								</div>
 								<div class="mura-panel-group" id="style-panels" role="tablist" aria-multiselectable="true">
 									<!--- todo: merge this included content back to this file --->
@@ -186,7 +186,7 @@
 			currentPanel="";
 			inited=false;
 
-			$('#panel-gds-outer,.mura-panel-heading').click(function(){
+			$('#panel-gds-object,.mura-panel-heading').click(function(){
 				currentPanel="";
 				frontEndProxy.post(
 				{
@@ -196,7 +196,7 @@
 				});
 			});
 
-			$('#panel-gds-inner').click(function(){
+			$('#panel-gds-content').click(function(){
 				currentPanel="content";
 				frontEndProxy.post(
 				{
@@ -226,7 +226,7 @@
 				return false;
 			})
 			$('#style-panels').addClass('no-header');
-			$('#panel-gds-outer').trigger('click');
+			$('#panel-gds-object').trigger('click');
 
 			function updateDynamicClasses(){
 				var classInput=$('input[name="class"]');
@@ -341,90 +341,90 @@
 				updateDynamicClasses();
 			});
 
-			// Begin Outer Margin and Padding
-			function updateOuterPadding(){
-				var t = $('#outerpaddingtop').val().replace(/[^0-9]/g,'');
-				var r = $('#outerpaddingright').val().replace(/[^0-9]/g,'');
-				var b = $('#outerpaddingbottom').val().replace(/[^0-9]/g,'');
-				var l =$('#outerpaddingleft').val().replace(/[^0-9]/g,'');
-				var u = $('#outerpaddinguom').val();
-				if (t.length){ $('#outerpaddingtopval').val(t + u); } else { $('#outerpaddingtopval').val(''); }
-				if (r.length){ $('#outerpaddingrightval').val(r + u); } else { $('#outerpaddingrightval').val(''); }
-				if (b.length){ $('#outerpaddingbottomval').val(b + u); } else { $('#outerpaddingbottomval').val(''); }
-				if (l.length){ $('#outerpaddingleftval').val(l + u); } else { $('#outerpaddingleftval').val(''); }
+			// Begin Object Margin and Padding
+			function updateObjectPadding(){
+				var t = $('#objectpaddingtop').val().replace(/[^0-9]/g,'');
+				var r = $('#objectpaddingright').val().replace(/[^0-9]/g,'');
+				var b = $('#objectpaddingbottom').val().replace(/[^0-9]/g,'');
+				var l =$('#objectpaddingleft').val().replace(/[^0-9]/g,'');
+				var u = $('#objectpaddinguom').val();
+				if (t.length){ $('#objectpaddingtopval').val(t + u); } else { $('#objectpaddingtopval').val(''); }
+				if (r.length){ $('#objectpaddingrightval').val(r + u); } else { $('#objectpaddingrightval').val(''); }
+				if (b.length){ $('#objectpaddingbottomval').val(b + u); } else { $('#objectpaddingbottomval').val(''); }
+				if (l.length){ $('#objectpaddingleftval').val(l + u); } else { $('#objectpaddingleftval').val(''); }
 				if (t == r && r == b & b == l){
-					$('#outerpaddingall').val(t);
+					$('#objectpaddingall').val(t);
 				} else {
-					$('#outerpaddingall').val('');
-					$('#outerpaddingadvanced').show();
+					$('#objectpaddingall').val('');
+					$('#objectpaddingadvanced').show();
 				}
 				if(inited){
-					$('#outerpaddingtopval').trigger('change');
+					$('#objectpaddingtopval').trigger('change');
 				}
 			}
 
-			$('#outerpaddingall').on('keyup', function(){
-				var v = $('#outerpaddingall').val().replace(/[^0-9]/g,'');
-				$('#outerpaddingadvanced').hide();
-				$('#outerpaddingtop').val(v);
-				$('#outerpaddingleft').val(v);
-				$('#outerpaddingright').val(v);
-				$('#outerpaddingbottom').val(v);
+			$('#objectpaddingall').on('keyup', function(){
+				var v = $('#objectpaddingall').val().replace(/[^0-9]/g,'');
+				$('#objectpaddingadvanced').hide();
+				$('#objectpaddingtop').val(v);
+				$('#objectpaddingleft').val(v);
+				$('#objectpaddingright').val(v);
+				$('#objectpaddingbottom').val(v);
 			})
 
-			$('#outerpaddingtop,#outerpaddingright,#outerpaddingbottom,#outerpaddingleft,#outerpaddingall').on('keyup', function(){
-				updateOuterPadding();
+			$('#objectpaddingtop,#objectpaddingright,#objectpaddingbottom,#objectpaddingleft,#objectpaddingall').on('keyup', function(){
+				updateObjectPadding();
 			})
 
-			$('#outerpaddinguom').on('change',function(){
-				updateOuterPadding();
+			$('#objectpaddinguom').on('change',function(){
+				updateObjectPadding();
 			});
 
-			updateOuterPadding();
+			updateObjectPadding();
 
 			// margin
-			function updateOuterMargin(){
-				var t = $('#outermargintop').val().replace(/[^0-9]/g,'');
-				var r = $('#outermarginright').val().replace(/[^0-9]/g,'');
-				var b = $('#outermarginbottom').val().replace(/[^0-9]/g,'');
-				var l =$('#outermarginleft').val().replace(/[^0-9]/g,'');
-				var u = $('#outermarginuom').val();
-				if (t.length){ $('#outermargintopval').val(t + u); } else { $('#outermargintopval').val(''); }
-				if (r.length){ $('#outermarginrightval').val(r + u); } else { $('#outermarginrightval').val(''); }
-				if (b.length){ $('#outermarginbottomval').val(b + u); } else { $('#outermarginbottomval').val(''); }
-				if (l.length){ $('#outermarginleftval').val(l + u); } else { $('#outermarginleftval').val(''); }
+			function updateObjectMargin(){
+				var t = $('#objectmargintop').val().replace(/[^0-9]/g,'');
+				var r = $('#objectmarginright').val().replace(/[^0-9]/g,'');
+				var b = $('#objectmarginbottom').val().replace(/[^0-9]/g,'');
+				var l =$('#objectmarginleft').val().replace(/[^0-9]/g,'');
+				var u = $('#objectmarginuom').val();
+				if (t.length){ $('#objectmargintopval').val(t + u); } else { $('#objectmargintopval').val(''); }
+				if (r.length){ $('#objectmarginrightval').val(r + u); } else { $('#objectmarginrightval').val(''); }
+				if (b.length){ $('#objectmarginbottomval').val(b + u); } else { $('#objectmarginbottomval').val(''); }
+				if (l.length){ $('#objectmarginleftval').val(l + u); } else { $('#objectmarginleftval').val(''); }
 				if (t == r && r == b & b == l){
-					$('#outermarginall').val(t);
+					$('#objectmarginall').val(t);
 				} else {
-					$('#outermarginall').val('');
-					$('#outermarginadvanced').show();
+					$('#objectmarginall').val('');
+					$('#objectmarginadvanced').show();
 
 				}
 
-				$('#outermargintopval').trigger('change');
+				$('#objectmargintopval').trigger('change');
 
 			}
 
-			$('#outermarginall').on('keyup', function(){
-				var v = $('#outermarginall').val().replace(/[^0-9]/g,'');
-				$('#outermarginadvanced').hide();
-				$('#outermargintop').val(v);
-				$('#outermarginleft').val(v);
-				$('#outermarginright').val(v);
-				$('#outermarginbottom').val(v);
+			$('#objectmarginall').on('keyup', function(){
+				var v = $('#objectmarginall').val().replace(/[^0-9]/g,'');
+				$('#objectmarginadvanced').hide();
+				$('#objectmargintop').val(v);
+				$('#objectmarginleft').val(v);
+				$('#objectmarginright').val(v);
+				$('#objectmarginbottom').val(v);
 			})
 
-			$('#outermargintop,#outermarginright,#outermarginbottom,#outermarginleft,#outermarginall').on('keyup', function(){
-				updateOuterMargin();
+			$('#objectmargintop,#objectmarginright,#objectmarginbottom,#objectmarginleft,#objectmarginall').on('keyup', function(){
+				updateObjectMargin();
 			});
 
-			$('#outermarginuom').on('change',function(){
-				updateOuterMargin();
+			$('#objectmarginuom').on('change',function(){
+				updateObjectMargin();
 			});
 
-			updateOuterMargin();
+			updateObjectMargin();
 
-			//End Outer Margin and Padding
+			//End Object Margin and Padding
 
 			<cfif request.hasmetaoptions and not (IsBoolean(attributes.params.isbodyobject) and attributes.params.isbodyobject)>
 			// Begin Meta Margin and Padding
@@ -512,124 +512,124 @@
 			// End Meta Margin and Padding
 			</cfif>
 
-			// Begin Inner Content Margin and Padding
+			// Begin Content Content Margin and Padding
 
-			function updateInnerPadding(){
-				var t = $('#innerpaddingtop').val().replace(/[^0-9]/g,'');
-				var r = $('#innerpaddingright').val().replace(/[^0-9]/g,'');
-				var b = $('#innerpaddingbottom').val().replace(/[^0-9]/g,'');
-				var l =$('#innerpaddingleft').val().replace(/[^0-9]/g,'');
-				var u = $('#innerpaddinguom').val();
-				if (t.length){ $('#innerpaddingtopval').val(t + u); } else { $('#innerpaddingtopval').val(''); }
-				if (r.length){ $('#innerpaddingrightval').val(r + u); } else { $('#innerpaddingrightval').val(''); }
-				if (b.length){ $('#innerpaddingbottomval').val(b + u); } else { $('#innerpaddingbottomval').val(''); }
-				if (l.length){ $('#innerpaddingleftval').val(l + u); } else { $('#innerpaddingleftval').val(''); }
+			function updateContentPadding(){
+				var t = $('#contentpaddingtop').val().replace(/[^0-9]/g,'');
+				var r = $('#contentpaddingright').val().replace(/[^0-9]/g,'');
+				var b = $('#contentpaddingbottom').val().replace(/[^0-9]/g,'');
+				var l =$('#contentpaddingleft').val().replace(/[^0-9]/g,'');
+				var u = $('#contentpaddinguom').val();
+				if (t.length){ $('#contentpaddingtopval').val(t + u); } else { $('#contentpaddingtopval').val(''); }
+				if (r.length){ $('#contentpaddingrightval').val(r + u); } else { $('#contentpaddingrightval').val(''); }
+				if (b.length){ $('#contentpaddingbottomval').val(b + u); } else { $('#contentpaddingbottomval').val(''); }
+				if (l.length){ $('#contentpaddingleftval').val(l + u); } else { $('#contentpaddingleftval').val(''); }
 				if (t == r && r == b & b == l){
-					$('#innerpaddingall').val(t);
+					$('#contentpaddingall').val(t);
 				} else {
-					$('#innerpaddingall').val('');
-					$('#innerpaddingadvanced').show();
+					$('#contentpaddingall').val('');
+					$('#contentpaddingadvanced').show();
 				}
 
-				$('#innerpaddingtopval').trigger('change');
+				$('#contentpaddingtopval').trigger('change');
 			}
 
-			$('#innerpaddingall').on('keyup', function(){
-				var v = $('#innerpaddingall').val().replace(/[^0-9]/g,'');
-				$('#innerpaddingadvanced').hide();
-				$('#innerpaddingtop').val(v);
-				$('#innerpaddingleft').val(v);
-				$('#innerpaddingright').val(v);
-				$('#innerpaddingbottom').val(v);
+			$('#contentpaddingall').on('keyup', function(){
+				var v = $('#contentpaddingall').val().replace(/[^0-9]/g,'');
+				$('#contentpaddingadvanced').hide();
+				$('#contentpaddingtop').val(v);
+				$('#contentpaddingleft').val(v);
+				$('#contentpaddingright').val(v);
+				$('#contentpaddingbottom').val(v);
 			})
 
-			$('#innerpaddingtop,#innerpaddingright,#innerpaddingbottom,#innerpaddingleft,#innerpaddingall').on('keyup', function(){
-				updateInnerPadding();
+			$('#contentpaddingtop,#contentpaddingright,#contentpaddingbottom,#contentpaddingleft,#contentpaddingall').on('keyup', function(){
+				updateContentPadding();
 			})
 
-			$('#innerpaddinguom').on('change',function(){
-				updateInnerPadding();
+			$('#contentpaddinguom').on('change',function(){
+				updateContentPadding();
 			});
 
-			updateInnerPadding();
+			updateContentPadding();
 
  			// margin
-			function updateInnerMargin(){
-				var t = $('#innermargintop').val().replace(/[^0-9]/g,'');
-				var r = $('#innermarginright').val().replace(/[^0-9]/g,'');
-				var b = $('#innermarginbottom').val().replace(/[^0-9]/g,'');
-				var l =$('#innermarginleft').val().replace(/[^0-9]/g,'');
-				var u = $('#innermarginuom').val();
-				if (t.length){ $('#innermargintopval').val(t + u); } else { $('#innermargintopval').val(''); }
-				if (r.length){ $('#innermarginrightval').val(r + u); } else { $('#innermarginrightval').val(''); }
-				if (b.length){ $('#innermarginbottomval').val(b + u); } else { $('#innermarginbottomval').val(''); }
-				if (l.length){ $('#innermarginleftval').val(l + u); } else { $('#innermarginleftval').val(''); }
+			function updateContentMargin(){
+				var t = $('#contentmargintop').val().replace(/[^0-9]/g,'');
+				var r = $('#contentmarginright').val().replace(/[^0-9]/g,'');
+				var b = $('#contentmarginbottom').val().replace(/[^0-9]/g,'');
+				var l =$('#contentmarginleft').val().replace(/[^0-9]/g,'');
+				var u = $('#contentmarginuom').val();
+				if (t.length){ $('#contentmargintopval').val(t + u); } else { $('#contentmargintopval').val(''); }
+				if (r.length){ $('#contentmarginrightval').val(r + u); } else { $('#contentmarginrightval').val(''); }
+				if (b.length){ $('#contentmarginbottomval').val(b + u); } else { $('#contentmarginbottomval').val(''); }
+				if (l.length){ $('#contentmarginleftval').val(l + u); } else { $('#contentmarginleftval').val(''); }
 				if (t == r && r == b & b == l){
-					$('#innermarginall').val(t);
+					$('#contentmarginall').val(t);
 				} else {
-					$('#innermarginall').val('');
-					$('#innermarginadvanced').show();
+					$('#contentmarginall').val('');
+					$('#contentmarginadvanced').show();
 
 				}
 
-				$('#innermargintopval').trigger('change');
+				$('#contentmargintopval').trigger('change');
 
 			}
 
-			$('#innermarginall').on('keyup', function(){
-				var v = $('#innermarginall').val().replace(/[^0-9]/g,'');
-				$('#innermarginadvanced').hide();
-				$('#innermargintop').val(v);
-				$('#innermarginleft').val(v);
-				$('#innermarginright').val(v);
-				$('#innermarginbottom').val(v);
+			$('#contentmarginall').on('keyup', function(){
+				var v = $('#contentmarginall').val().replace(/[^0-9]/g,'');
+				$('#contentmarginadvanced').hide();
+				$('#contentmargintop').val(v);
+				$('#contentmarginleft').val(v);
+				$('#contentmarginright').val(v);
+				$('#contentmarginbottom').val(v);
 			})
 
-			$('#innermargintop,#innermarginright,#innermarginbottom,#innermarginleft,#innermarginall').on('keyup', function(){
-				updateInnerMargin();
+			$('#contentmargintop,#contentmarginright,#contentmarginbottom,#contentmarginleft,#contentmarginall').on('keyup', function(){
+				updateContentMargin();
 			});
 
-			$('#innermarginuom').on('change',function(){
-				updateInnerMargin();
+			$('#contentmarginuom').on('change',function(){
+				updateContentMargin();
 			});
 
-			updateInnerMargin();
+			updateContentMargin();
 
-			// End Inner Content Margin and Padding
+			// End Content Content Margin and Padding
 
-			// Begin Outer background
+			// Begin Object background
 
-			function updateOuterBgColor(v){
+			function updateObjectBgColor(v){
 				var swatchColor = v;
-				var swatchEl = $('#outerbackgroundcustom').find('i.mura-colorpicker-swatch');
+				var swatchEl = $('#objectbackgroundcustom').find('i.mura-colorpicker-swatch');
 				if (v == 'custom' <cfif not(isArray(request.colorOptions) and arrayLen(request.colorOptions))> || true</cfif>){
-					$('#outerbackgroundcustom').show();
+					$('#objectbackgroundcustom').show();
 				} else if (v == 'none'){
 					swatchColor = 'transparent'
-					$('#outerbackgroundcustom').hide();
-					$('#outerbackgroundcolor').val('');
+					$('#objectbackgroundcustom').hide();
+					$('#objectbackgroundcolor').val('');
 				} else {
-					$('#outerbackgroundcustom').hide();
-					$('#outerbackgroundcolor').val(v);
+					$('#objectbackgroundcustom').hide();
+					$('#objectbackgroundcolor').val(v);
 				}
 				swatchEl.css('background-color',swatchColor);
 			}
 
-			$('#outerbackgroundcolorsel').on('change',function(){
+			$('#objectbackgroundcolorsel').on('change',function(){
 				var v = $(this).val();
-				updateOuterBgColor(v);
+				updateObjectBgColor(v);
 			});
 
 			//Add this later so that the colorpicker doesn't auto trigger an object reload
-			$('#outerbackgroundcolor').addClass('objectStyle');
+			$('#objectbackgroundcolor').addClass('objectStyle');
 
-			updateOuterBgColor($('#outerbackgroundcolorsel').val());
+			updateObjectBgColor($('#objectbackgroundcolorsel').val());
 
 
-			$('#outerminheightnum,#outerminheightoum').on('change',function(){
-				var el = $('#outerminheightuomval');
-				var str = $('#outerminheightuom').val();
-				var num = $('#outerminheightnum').val();
+			$('#objectminheightnum,#objectminheightoum').on('change',function(){
+				var el = $('#objectminheightuomval');
+				var str = $('#objectminheightuom').val();
+				var num = $('#objectminheightnum').val();
 				if (num.length > 0){
 					str = num + str;
 				}
@@ -639,31 +639,31 @@
 			});
 
 			// background image
-			$('#outerbackgroundimageurl').on('change',function(){
+			$('#objectbackgroundimageurl').on('change',function(){
 				var v = $(this).val();
 				var str = "";
 				if (v.length > 3){
 					str = "url('" + v + "')";
-					$('.outer-css-bg-option').show();
+					$('.object-css-bg-option').show();
 				} else {
-					$('.outer-css-bg-option').hide();
+					$('.object-css-bg-option').hide();
 				}
 
-				$('#outerbackgroundimage').val(str).trigger('change');
+				$('#objectbackgroundimage').val(str).trigger('change');
 
 			});
 
-			var v = $('#outerbackgroundimageurl').val();
+			var v = $('#objectbackgroundimageurl').val();
 			var str = "";
 			if (v.length > 3){
 				str = "url('" + v + "')";
-				$('.outer-css-bg-option').show();
+				$('.object-css-bg-option').show();
 			} else {
-				$('.outer-css-bg-option').hide();
+				$('.object-css-bg-option').hide();
 			}
 
 			//commented out to not intially trigger reseting of rendered object
-			//$('#outerbackgroundimageurl').trigger('change');
+			//$('#objectbackgroundimageurl').trigger('change');
 
 			// background position x/y
 			function updatePositionSelection(sel){
@@ -676,10 +676,10 @@
 				}
 			}
 
-			$('#outerbackgroundpositiony,#outerbackgroundpositionynum').on('change',function(){
-				var el = $('#outerbackgroundpositionyval');
-				var str = $('#outerbackgroundpositiony').val();
-				var num = $('#outerbackgroundpositionynum').val();
+			$('#objectbackgroundpositiony,#objectbackgroundpositionynum').on('change',function(){
+				var el = $('#objectbackgroundpositionyval');
+				var str = $('#objectbackgroundpositiony').val();
+				var num = $('#objectbackgroundpositionynum').val();
 				if (num.length > 0){
 					str = num + str;
 				}
@@ -688,10 +688,10 @@
 
 			});
 
-			$('#outerbackgroundpositionx,#outerbackgroundpositionxnum').on('change',function(){
-				var el = $('#outerbackgroundpositionxval');
-				var str = $('#outerbackgroundpositionx').val();
-				var num = $('#outerbackgroundpositionxnum').val();
+			$('#objectbackgroundpositionx,#objectbackgroundpositionxnum').on('change',function(){
+				var el = $('#objectbackgroundpositionxval');
+				var str = $('#objectbackgroundpositionx').val();
+				var num = $('#objectbackgroundpositionxnum').val();
 				if (num.length > 0){
 					str = num + str;
 				}
@@ -700,77 +700,77 @@
 
 			});
 
-			$('#outerbackgroundpositionx,#outerbackgroundpositiony').on('change',function(){
+			$('#objectbackgroundpositionx,#objectbackgroundpositiony').on('change',function(){
 				updatePositionSelection($(this));
 			});
 
-			$('#outerbackgroundpositionx,#outerbackgroundpositiony').each(function(){
+			$('#objectbackgroundpositionx,#objectbackgroundpositiony').each(function(){
 				updatePositionSelection($(this));
 			});
 
-			//End Outer Background
+			//End Object Background
 
-			//Begin Inner Background
+			//Begin Content Background
 
 			// background color
-			function updateInnerBgColor(v){
+			function updateContentBgColor(v){
 				var swatchColor = v;
-				var swatchEl = $('#innerbackgroundcustom').find('i.mura-colorpicker-swatch');
+				var swatchEl = $('#contentbackgroundcustom').find('i.mura-colorpicker-swatch');
 				if (v == 'custom' <cfif not(isArray(request.colorOptions) and arrayLen(request.colorOptions))> || true</cfif>){
-					$('#innerbackgroundcustom').show();
+					$('#contentbackgroundcustom').show();
 				} else if (v == 'none'){
 					swatchColor = 'transparent'
-					$('#innerbackgroundcustom').hide();
-					$('#innerbackgroundcolor').val('');
+					$('#contentbackgroundcustom').hide();
+					$('#contentbackgroundcolor').val('');
 				} else {
-					$('#innerbackgroundcustom').hide();
-					$('#innerbackgroundcolor').val(v);
+					$('#contentbackgroundcustom').hide();
+					$('#contentbackgroundcolor').val(v);
 				}
 				swatchEl.css('background-color',swatchColor);
 			}
 
-			$('#innerbackgroundcolorsel').on('change',function(){
+			$('#contentbackgroundcolorsel').on('change',function(){
 				var v = $(this).val();
-				updateInnerBgColor(v);
+				updateContentBgColor(v);
 			});
 
 			//Add this later so that the colorpicker doesn't auto trigger an object reload
-			$('#innerbackgroundcolor').addClass('contentStyle');
+			$('#contentbackgroundcolor').addClass('contentStyle');
 
-			updateInnerBgColor($('#innerbackgroundcolorsel').val());
+			updateContentBgColor($('#contentbackgroundcolorsel').val());
 			<!---
 			// background image
-			$('#innerbackgroundimageurl').on('change',function(){
+			$('#contentbackgroundimageurl').on('change',function(){
 				var v = $(this).val();
 				var str = "";
 				if (v.length > 3){
 					str = "url('" + v + "')";
-					$('.inner-css-bg-option').show();
+					$('.content-css-bg-option').show();
 				} else {
-					$('.inner-css-bg-option').hide();
+					$('.content-css-bg-option').hide();
 				}
 				if(inited){
-					$('#innerbackgroundimage').val(str).trigger('change');
+					$('#contentbackgroundimage').val(str).trigger('change');
 				}
 			});
 
-			var v = $('#innerbackgroundimageurl').val();
+			var v = $('#contentbackgroundimageurl').val();
 			var str = "";
 			if (v.length > 3){
 				str = "url('" + v + "')";
-				$('.inner-css-bg-option').show();
+				$('.content-css-bg-option').show();
 			} else {
-				$('.inner-css-bg-option').hide();
+				$('.content-css-bg-option').hide();
 			}
 
 			//commented out to not intially trigger reseting of rendered object
-			//$('#innerbackgroundimageurl').trigger('change');
+			//$('#contentbackgroundimageurl').trigger('change');
 
 
-			$('#innerbackgroundpositiony,#innerbackgroundpositionynum').on('change',function(){
-				var el = $('#innerbackgroundpositionyval');
-				var str = $('#innerbackgroundpositiony').val();
-				var num = $('#innerbackgroundpositionynum').val();
+			$('#contentbackgroundpositiony,#contentbackgroundpositionynum').on('change',function(){
+				var el = $('#contentbackgroundpositionyval');
+				var str = $('#contentbackgroundpositiony').val();
+				var num = $('#contentbackgroundpositionynum').val();
 				if (num.length > 0){
 					str = num + str;
 				}
@@ -779,34 +779,34 @@
 
 			});
 
-			$('#innerbackgroundpositionx,#innerbackgroundpositionxnum').on('change',function(){
-				var el = $('#innerbackgroundpositionxval');
-				var str = $('#innerbackgroundpositionx').val();
-				var num = $('#innerbackgroundpositionxnum').val();
+			$('#contentbackgroundpositionx,#contentbackgroundpositionxnum').on('change',function(){
+				var el = $('#contentbackgroundpositionxval');
+				var str = $('#contentbackgroundpositionx').val();
+				var num = $('#contentbackgroundpositionxnum').val();
 				if (num.length > 0){
 					str = num + str;
 				}
 
 				$(el).val(str).trigger('change');
-				
+
 			});
 
-			$('#innerbackgroundpositionx,#innerbackgroundpositiony').on('change',function(){
+			$('#contentbackgroundpositionx,#contentbackgroundpositiony').on('change',function(){
 				updatePositionSelection($(this));
 			});
 
-			$('#innerbackgroundpositionx,#innerbackgroundpositiony').each(function(){
+			$('#contentbackgroundpositionx,#contentbackgroundpositiony').each(function(){
 				updatePositionSelection($(this));
 			});
 
-			//End Inner Background
+			//End Content Background
 			--->
 
 			// Begin Meta background color
 
 			function updateMetaBgColor(v){
 				var swatchColor = v;
-				var swatchEl = $('#innerbackgroundcustom').find('i.mura-colorpicker-swatch');
+				var swatchEl = $('#contentbackgroundcustom').find('i.mura-colorpicker-swatch');
 				if (v == 'custom' <cfif not(isArray(request.colorOptions) and arrayLen(request.colorOptions))> || true</cfif>){
 					$('#metabackgroundcustom').show();
 				} else if (v == 'none'){
