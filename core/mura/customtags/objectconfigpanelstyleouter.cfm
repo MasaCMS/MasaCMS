@@ -73,8 +73,27 @@
 									</select>
 							</div>
 						</cfif>
-
 					</cfif>
+
+					<div class="mura-control-group">
+						<!--- todo: rbkey for margin and placeholders --->
+						<label>Minimum Height</label>
+
+						<div class="row mura-ui-row">
+
+								<div class="mura-input-group">
+									<label class="mura-serial">
+										<input type="text" name="outerminheight" id="outerminheightnum" placeholder="" class="numeric serial" value="<cfif len(trim(attributes.params.cssstyles.minheight))>#val(esapiEncode('html_attr',attributes.params.cssstyles.minheight))#</cfif>">
+									</label>
+									<select id="outerminheightuom" name="outerminheightuom" class="objectParam">
+										<cfloop list="px,%,em,rem" index="u">
+											<option value="#u#"<cfif attributes.params.outerminheightuom eq u> selected</cfif>>#u#</option>
+										</cfloop>
+									</select>
+								</div>
+								<input type="hidden" name="minHeight" id="outerminheightuomval" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.minheight)#">
+						</div>
+					</div>
 
 					<!--- margin --->
 					<div class="mura-control-group mura-ui-grid">
@@ -252,6 +271,15 @@
 							<option value="repeat"<cfif attributes.params.cssstyles.backgroundrepeat eq 'repeat'> selected</cfif>>Repeat</option>
 							<option value="repeat-x"<cfif attributes.params.cssstyles.backgroundrepeat eq 'repeatx'> selected</cfif>>Repeat-X</option>
 							<option value="repeat-y"<cfif attributes.params.cssstyles.backgroundrepeat eq 'repeaty'> selected</cfif>>Repeat-Y</option>
+						</select>
+					</div>
+
+					<div class="mura-control-group outer-css-bg-option" style="display:none;">
+						<label>Background Attachment</label>
+						<select name="backgroundAttachment" class="objectStyle">
+							<option value="scroll"<cfif attributes.params.cssstyles.backgroundAttachment eq 'scroll'>
+							selected</cfif>>Scroll</option>
+							<option value="Fixed"<cfif attributes.params.cssstyles.backgroundAttachment eq 'fixed'> selected</cfif>>Fixed</option>
 						</select>
 					</div>
 

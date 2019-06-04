@@ -593,6 +593,18 @@
 			updateOuterBgColor($('#outerbackgroundcolorsel').val());
 			--->
 
+			$('#outerminheightnum,#outerminheightoum').on('change',function(){
+				var el = $('#outerminheightuomval');
+				var str = $('#outerminheightuom').val();
+				var num = $('#outerminheightnum').val();
+				if (num.length > 0){
+					str = num + str;
+				}
+				if(inited){
+					$(el).val(str).trigger('change');
+				}
+			});
+
 			// background image
 			$('#outerbackgroundimageurl').on('change',function(){
 				var v = $(this).val();
@@ -693,7 +705,6 @@
 			$('#innerbackgroundcolor').addClass('contentStyle');
 
 			updateInnerBgColor($('#innerbackgroundcolorsel').val());
-			--->
 
 			// background image
 			$('#innerbackgroundimageurl').on('change',function(){
@@ -756,7 +767,7 @@
 			});
 
 			//End Inner Background
-
+			--->
 
 			// numeric input - select on focus
 			$('#configuratorContainer input.numeric').on('click', function(){

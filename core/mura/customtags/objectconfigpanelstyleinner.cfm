@@ -11,7 +11,7 @@
 		<div id="panel-style-inner" class="panel-collapse collapse" role="tabpanel" aria-labeledby="heading-style-inner">
 			<div class="mura-panel-body">
 				<div class="container">
-					
+
 					<!--- label alignment --->
 					<div class="mura-control-group">
 						<label>Text Alignment</label>
@@ -172,7 +172,7 @@
 							<input type="text" id="innerbackgroundcolor" name="innerbackgroundColor" placeholder="Select Color" autocomplete="off" value="#esapiEncode('html_attr',attributes.params.contentcssstyles.backgroundcolor)#">
 						</div>
 					</div>
-					--->
+
 
 					<div class="mura-control-group">
 						<label>Background Image</label>
@@ -249,7 +249,7 @@
 						<label>Background Overlay</label>
 						<input type="text" id="innerbackgroundoverlay" name="backgroundOverlay" placeholder="" class="contentStyle" value="#esapiEncode('html_attr',attributes.params.contentcssstyles.backgroundoverlay)#">
 					</div>
-
+					--->
 					<!--- css id and class for inner --->
 					<cfif request.haspositionoptions>
 						<div class="mura-control-group">
