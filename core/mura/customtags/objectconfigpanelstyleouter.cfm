@@ -83,7 +83,7 @@
 
 								<div class="mura-input-group">
 									<label class="mura-serial">
-										<input type="text" name="outerminheight" id="outerminheightnum" placeholder="0" class="numeric serial" value="<cfif len(trim(attributes.params.cssstyles.minheight))>#val(esapiEncode('html_attr',attributes.params.cssstyles.minheight))#</cfif>">
+										<input type="text" name="outerminheight" id="outerminheightnum" placeholder="" class="numeric serial" value="<cfif len(trim(attributes.params.cssstyles.minheight))>#val(esapiEncode('html_attr',attributes.params.cssstyles.minheight))#</cfif>">
 									</label>
 									<select id="outerminheightuom" name="outerminheightuom" class="objectParam">
 										<cfloop list="px,%,em,rem" index="u">
@@ -285,12 +285,7 @@
 
 					<div class="mura-control-group outer-css-bg-option" style="display:none;">
 						<label>Background Opacity</label>
-						<select name="outerbackgroundopacity">
-							<option value="">--</option>
-							<cfloop from="1" to="10" index="i">
-								<option value="mura-op-#i#"<cfif listFind(attributes.params.class,'mura-op-#i#',' ')> selected</cfif>>#i#0%</option>
-							</cfloop>
-						</select>
+						<input type="text" name="backgroundopacity" placeholder="1" class="objectParam float" value="#esapiEncode('html_attr',attributes.params.backgroundopacity)#">
 					</div>
 
 					<div class="mura-control-group mura-ui-grid outer-css-bg-option" style="display:none;">
@@ -337,12 +332,10 @@
 						</div>
 					</div>
 
-					<!---
 					<div class="mura-control-group css-bg-option" style="display:none;">
 						<label>Background Overlay</label>
 						<input type="text" id="outerbackgroundoverlay" name="backgroundOverlay" placeholder="" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundoverlay)#">
 					</div>
-					--->
 
 					<!--- css id and class for outer --->
 					<cfif request.haspositionoptions>

@@ -30,6 +30,7 @@
 		<cfparam name="attributes.params.contentcssid" default="">
 		<cfparam name="attributes.params.cssid" default="">
 		<cfparam name="attributes.params.label" default="">
+		<cfparam name="attributes.params.backgroundopacity" default="">
 		<cfparam name="attributes.params.object" default="">
 
 		<cfparam name="request.hasbasicoptions" default="false">
@@ -216,12 +217,6 @@
 					classInput.val(theme.val());
 				}
 
-				var outerbackgroundopacity=$('select[name="outerbackgroundopacity"]');
-				if(classInput.val() ){
-					classInput.val(classInput.val() + ' ' + outerbackgroundopacity.val());
-				} else {
-					classInput.val(outerbackgroundopacity.val());
-				}
 				classInput.val($.trim(classInput.val()));
 
 	  		var contentcssclass=$('input[name="contentcssclass"]');
@@ -310,7 +305,7 @@
 				return false;
 			})
 
-			$('input[name="cssclass"],select[name="moduletheme"],select[name="alignment"],select[name="width"],select[name="offset"],select[name="constraincontent"],select[name="outerbackgroundopacity"]').on('change', function() {
+			$('input[name="cssclass"],select[name="moduletheme"],select[name="alignment"],select[name="width"],select[name="offset"],select[name="constraincontent"]').on('change', function() {
 				updateDynamicClasses();
 			});
 
