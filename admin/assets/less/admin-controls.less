@@ -834,7 +834,7 @@ body.sidebar-tab {
     }
 }
 .block-constrain#mura-content-body-block {
-    height: @editcalcheight !important;
+    height: @editcalcheight;
     margin: 0 !important;
     padding: 0 !important;
     background-color: transparent;
@@ -1101,12 +1101,9 @@ body.modal-wrapper{
     }
 
     .block-constrain#mura-content-body-block {
-        height: @frontendcalcheight !important;
+        height: @frontendcalcheight;
         box-shadow: none !important;
-    }    
-    .block-constrain#mura-content-body-block>.tab-content {
-        min-height: ~"calc(100vh - 138px)" !important;
-    }   
+    }      
     .mura__edit__controls{
         height: @frontendcontrolsheight;
 

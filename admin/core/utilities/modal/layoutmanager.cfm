@@ -148,13 +148,6 @@
 	</div>
 </cfif>
 
-<div class="mura__layout-manager__bigui">
-	<div class="mura__layout-manager__bigui__X">
-		<p><button id="mura-objects-bigui-close" class="btn mura-primary">Close <i class="mi-angle-right"></i></button><p>
-		<h3>BIGUI CONTENT</h3>
-	</div>
-</div>
-
 </div>
 <script>
 Mura(function(){

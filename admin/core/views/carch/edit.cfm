@@ -444,46 +444,45 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </div> <!-- /.mura-header -->
 
-<cfinclude template="dsp_status.cfm">
+<div id="dspStatusContainer">
 
-<cfif not rc.contentBean.getIsNew()>
-	<cfset draftcheck=application.contentManager.getDraftPromptData(rc.contentBean.getContentID(),rc.contentBean.getSiteID())>
-	<cfif yesNoFormat(draftcheck.showdialog) and len(draftcheck.historyid) and draftcheck.historyid neq rc.contentBean.getContentHistID()>
+	<cfinclude template="dsp_status.cfm">
+
+	<cfif not rc.contentBean.getIsNew()>
+		<cfset draftcheck=application.contentManager.getDraftPromptData(rc.contentBean.getContentID(),rc.contentBean.getSiteID())>
+		<cfif yesNoFormat(draftcheck.showdialog) and len(draftcheck.historyid) and draftcheck.historyid neq rc.contentBean.getContentHistID()>
+			<div class="alert alert-info">
+				<span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.inline')#: <strong><a href="./?#replace(cgi.query_string,'#rc.contentBean.getContentHistID()#','#draftcheck.historyid#')#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.gotolatest')#</a></strong></span>
+			</div>
+		</cfif>
+	</cfif>
+
+	<cfif hasChangesets and (not currentChangeset.getIsNew() or pendingChangesets.recordcount)>
 		<div class="alert alert-info">
-			<span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.inline')#: <strong><a href="./?#replace(cgi.query_string,'#rc.contentBean.getContentHistID()#','#draftcheck.historyid#')#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.gotolatest')#</a></strong></span>
+			<span>
+				<cfif pendingChangesets.recordcount>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetnodenotify")#:<br>
+				<ul class="alert-list">
+				<cfloop query="pendingChangesets"><li><a href="?muraAction=cArch.edit&moduleID=#esapiEncode('url',rc.moduleID)#&siteID=#esapiEncode('url',rc.siteID)#&topID=#esapiEncode('url',rc.topID)#&contentID=#esapiEncode('url',rc.contentID)#&return=#esapiEncode('url',rc.return)#&contentHistID=#pendingChangesets.contentHistID#&parentID=#esapiEncode('url',rc.parentID)#&startrow=#esapiEncode('url',rc.startrow)#&type=#esapiEncode('url',rc.type)#&compactDisplay=#esapiEncode('url',rc.compactDisplay)#">#esapiEncode('html',pendingChangesets.changesetName)#</a></li></cfloop>
+				</ul>
+				</cfif>
+				<cfif not currentChangeset.getIsNew()>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetversionnotify")#: <strong>#esapiEncode('html',currentChangeset.getName())#</strong></cfif>
+			</span>
 		</div>
 	</cfif>
-</cfif>
 
-<cfif hasChangesets and (not currentChangeset.getIsNew() or pendingChangesets.recordcount)>
-	<div class="alert alert-info">
-		<span>
-			<cfif pendingChangesets.recordcount>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetnodenotify")#:<br>
-			<ul class="alert-list">
-			<cfloop query="pendingChangesets"><li><a href="?muraAction=cArch.edit&moduleID=#esapiEncode('url',rc.moduleID)#&siteID=#esapiEncode('url',rc.siteID)#&topID=#esapiEncode('url',rc.topID)#&contentID=#esapiEncode('url',rc.contentID)#&return=#esapiEncode('url',rc.return)#&contentHistID=#pendingChangesets.contentHistID#&parentID=#esapiEncode('url',rc.parentID)#&startrow=#esapiEncode('url',rc.startrow)#&type=#esapiEncode('url',rc.type)#&compactDisplay=#esapiEncode('url',rc.compactDisplay)#">#esapiEncode('html',pendingChangesets.changesetName)#</a></li></cfloop>
-			</ul>
-			</cfif>
-			<cfif not currentChangeset.getIsNew()>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetversionnotify")#: <strong>#esapiEncode('html',currentChangeset.getName())#</strong></cfif>
-		</span>
-	</div>
-</cfif>
+	<cfif len(rc.contentBean.getNotes())>
+		<div class="alert alert-info">
+			<span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.notes")#: #esapiEncode('html',rc.contentBean.getNotes())#</span>
+		</div>
+	</cfif>
 
-<cfif len(rc.contentBean.getNotes())>
-	<div class="alert alert-info">
-		<span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.notes")#: #esapiEncode('html',rc.contentBean.getNotes())#</span>
-	</div>
-</cfif>
+	<!--- This is plugin message targeting --->
+	<span id="msg">
+	<cfif not listFindNoCase("Component,Form,Variation",rc.type)>#application.pluginManager.renderEvent("onContentEditMessageRender", pluginEvent)#</cfif>
+	#application.pluginManager.renderEvent("on#rc.contentBean.getType()#EditMessageRender", pluginEvent)#
+	#application.pluginManager.renderEvent("on#rc.contentBean.getType()##rc.contentBean.getSubType()#EditMessageRender", pluginEvent)#
+	</span>
 
-<!--- This is plugin message targeting --->
-<span id="msg">
-<cfif not listFindNoCase("Component,Form,Variation",rc.type)>#application.pluginManager.renderEvent("onContentEditMessageRender", pluginEvent)#</cfif>
-#application.pluginManager.renderEvent("on#rc.contentBean.getType()#EditMessageRender", pluginEvent)#
-#application.pluginManager.renderEvent("on#rc.contentBean.getType()##rc.contentBean.getSubType()#EditMessageRender", pluginEvent)#
-</span>
-
-</cfoutput>
-
-	<cfoutput>
 		<cfif rc.contentBean.exists() and rc.compactDisplay eq "true" and not ListFindNoCase(nodeLevelList & ",Variation",rc.type)>
 			<div class="alert alert-info">
 				<span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</span>
@@ -493,7 +492,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif not structIsEmpty(rc.contentBean.getErrors())>
 			<div class="alert alert-error"><span>#application.utility.displayErrors(rc.contentBean.getErrors())#</span></div>
 		</cfif>
+
+	</div> <!--- /dspstatus-container --->
 	</cfoutput>
+
 
 	<form novalidate="novalidate" action="index.cfm" method="post" enctype="multipart/form-data" name="contentForm" onsubmit="return ckContent(draftremovalnotice);" id="contentForm">
 

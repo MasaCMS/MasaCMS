@@ -356,9 +356,9 @@
 		//If the it's a form of component that's not configurable then go straight to edit it
 		if((lcaseObject=='form' || lcaseObject=='component') && tempCheck.data('notconfigurable')){
 			if(Mura.isUUID(tempCheck.data('objectid'))){
-					src=adminLoc + '?muraAction=carch.editlive&compactDisplay=true&contentid=' + encodeURIComponent(tempCheck.data('objectid')) + '&type='+ encodeURIComponent(tempCheck.data('object')) + '&siteid='+  Mura.siteid + '&instanceid=' + encodeURIComponent(tempCheck.data('instanceid'));
+					src=adminLoc + '?muraAction=cArch.editLive&compactDisplay=true&contentid=' + encodeURIComponent(tempCheck.data('objectid')) + '&type='+ encodeURIComponent(tempCheck.data('object')) + '&siteid='+  Mura.siteid + '&instanceid=' + encodeURIComponent(tempCheck.data('instanceid'));
 			} else {
-					src=adminLoc + '?muraAction=carch.editlive&compactDisplay=true&title=' + encodeURIComponent(tempCheck.data('objectid')) + '&type='+ encodeURIComponent(tempCheck.data('object')) + '&siteid=' + Mura.siteid + '&instanceid=' + encodeURIComponent(tempCheck.data('instanceid'));
+					src=adminLoc + '?muraAction=cArch.editLive&compactDisplay=true&title=' + encodeURIComponent(tempCheck.data('objectid')) + '&type='+ encodeURIComponent(tempCheck.data('object')) + '&siteid=' + Mura.siteid + '&instanceid=' + encodeURIComponent(tempCheck.data('instanceid'));
 			}
 
 		}
@@ -542,46 +542,32 @@
 			var frame = document.getElementById("frontEndToolsModaliframe");
 			var frameContainer = document.getElementById("frontEndToolsModalContainer");
 			var framesrc = frame.getAttribute('src');
-			var isFullHeight = framesrc.includes('cArch.editLive') || framesrc.includes('cArch.edit');
-			//console.log(isFullHeight);
+			var isFullHeight = framesrc.includes('cArch.editLive') || framesrc.includes('cArch.edit');	
+			var windowHeight = Math.max(frameHeight, utility(window).height());
+		
+			utility('##frontEndToolsModalContainer ##frontEndToolsModalBody,##frontEndToolsModalContainer ##frontEndToolsModaliframe').width(frontEndModalWidth);
 
-			//if (frameDoc.body != null) {
-				var windowHeight = Math.max(frameHeight, utility(window).height());
+			if (isFullHeight){
+				frame.style.height = utility(window).height()-96 + "px";
+			} else {
+				frame.style.height = frameHeight + "px";
+			}
 
-				/*
-				if (frontEndModalWidth==frontEndModalWidthStandard
-					&& frameHeight < utility(window).height()
-					) {
-					frameHeight= Math.max(utility(window).height() * .80,frameHeight);
-				}
-				*/
+			frameContainer.style.position = "absolute";
+			document.overflow = "auto";
 
-				utility('##frontEndToolsModalContainer ##frontEndToolsModalBody,##frontEndToolsModalContainer ##frontEndToolsModaliframe').width(frontEndModalWidth);
+//			console.log('framesrc: ' + framesrc);
+//			console.log('isFullHeight: ' + isFullHeight);
+//			console.log('windowHeight: ' + windowHeight);
+//			console.log('frontEndModalHeight: ' + frontEndModalHeight);
 
-				if (isFullHeight){
-					frame.style.height = utility(window).height()-96 + "px";
-				} else {
-					frame.style.height = frameHeight + "px";
-				}
-
-				frameContainer.style.position = "absolute";
-				document.overflow = "auto"
-
-				if(windowHeight > frontEndModalHeight){
-					frontEndModalHeight=windowHeight;
-					if(frontEndModalIE8){
-						frameContainer.style.height=Math.max(frameHeight,utility(document).height()) + "px";
-					} else {
-						frameContainer.style.height=utility(document).height() + "px";
-					}
-					setTimeout(function(){
-						utility("##frontEndToolsModalClose").fadeIn("fast")
-					},1000);
-				}
-
-
-			//}
-			//setTimeout(resizeFrontEndToolsModal, 250);
+			if(windowHeight > frontEndModalHeight){
+				frontEndModalHeight=windowHeight;
+				frameContainer.style.height=utility(document).height() + "px";
+				setTimeout(function(){
+					utility("##frontEndToolsModalClose").fadeIn("fast")
+				},1000);
+			}
 		}
 
 	}
