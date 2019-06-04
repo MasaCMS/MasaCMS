@@ -11,12 +11,12 @@
 		<div id="panel-style-outer" class="panel-collapse collapse" role="tabpanel" aria-labeledby="heading-style-outer">
 			<div class="mura-panel-body">
 				<div class="container">
-					<cfif arrayLen(request.modulethemes)>
+					<cfif arrayLen(request.modulethemeoptions)>
 					<div class="mura-control-group">
 						<label>Theme</label>
 						<select name="moduletheme">
 							<option value="">--</option>
-							<cfloop array="#request.modulethemes#" index="theme">
+							<cfloop array="#request.modulethemeoptions#" index="theme">
 								<option value="#theme.value#"<cfif  listFind(attributes.params.class,theme.value,' ')> selected</cfif>>#esapiEncode('html',theme.name)#</option>
 							</cfloop>
 						</select>

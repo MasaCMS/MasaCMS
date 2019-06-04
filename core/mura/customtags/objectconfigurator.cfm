@@ -50,9 +50,9 @@
 		</cfif>
 
 
-		<cfparam name="request.modulethemes" default="#arrayNew(1)#">
-		<cfif structKeyExists($.getContentRenderer(),'modulethemes') and isArray($.getContentRenderer().modulethemes)>
-			<cfset request.modulethemes = $.getContentRenderer().modulethemes>
+		<cfparam name="request.modulethemeoptions" default="#arrayNew(1)#">
+		<cfif structKeyExists($.getContentRenderer(),'modulethemeoptions') and isArray($.getContentRenderer().modulethemeoptions)>
+			<cfset request.modulethemeoptions = $.getContentRenderer().modulethemeoptions>
 		</cfif>
 
 		<cfset contentcontainerclass=esapiEncode("javascript",$.getContentRenderer().expandedContentContainerClass)>
