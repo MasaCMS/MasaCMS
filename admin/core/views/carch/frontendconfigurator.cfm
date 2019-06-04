@@ -92,7 +92,10 @@
 				if(!inited){
 					return;
 				}
-				currentPanel='';
+				if(typeof currentPanel == 'undefined'){
+					currentPanel='';
+				}
+				
 				siteManager.updateAvailableObject();
 
 				var availableObjectSelector=jQuery('##availableObjectSelector');

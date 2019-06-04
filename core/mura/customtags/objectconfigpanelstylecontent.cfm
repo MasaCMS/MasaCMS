@@ -256,13 +256,13 @@
 							<label>
 								CSS ID
 							</label>
-							<input name="contentcssid" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.cssid)#" maxlength="255">
+							<input name="contentcssid" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.contentcssid)#" maxlength="255">
 						</div>
 						<div class="mura-control-group">
 							<label>
 								CSS Class
 							</label>
-							<input name="contentcssclass" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.cssclass)#" maxlength="255">
+							<input name="contentcssclass" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.contentcssclass)#" maxlength="255">
 						</div>
 					</cfif>
 

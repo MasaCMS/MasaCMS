@@ -198,6 +198,7 @@
 			} else if(parameters["cmd"] == "showobjects"){
 				MuraInlineEditor.sidebarAction('showobjects');
 			} else if (parameters["cmd"]=="setObjectParams"){
+
 				if(typeof parameters["complete"] != 'undefined' && !parameters["complete"]){
 					sidebarProxy.post(parameters);
 					closeFrontEndToolsModal();
@@ -268,14 +269,13 @@
 						if(parameters.reinit && !item.data('notconfigurable')){
 							openFrontEndToolsModal(item.node);
 						}
+					}).then(function(){
+						if(parameters["currentPanel"]=='content'){
+							item.children('.mura-object-content').addClass('mura-object-selected');
+						}	if(parameters["currentPanel"]=='meta'){
+							item.children('.mura-object-meta').addClass('mura-object-selected');
+						}
 					});
-
-					Mura(".mura-object-content,.mura-object-meta").removeClass('mura-object-selected')
-					if(parameters["currentPanel"]=='content'){
-						item.children('.mura-object-content').addClass('mura-object-selected');
-					}	if(parameters["currentPanel"]=='meta'){
-						item.children('.mura-object-meta').addClass('mura-object-selected');
-					}
 				}
 			} else if (parameters["cmd"]=='reloadObjectAndClose') {
 				if(parameters.instanceid){

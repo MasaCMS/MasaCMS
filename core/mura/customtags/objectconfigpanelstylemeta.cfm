@@ -187,13 +187,13 @@
 						<label>
 							CSS ID
 						</label>
-						<input name="metacssid" class="metaStyle" type="text" value="#esapiEncode('html_attr',attributes.params.metacssid)#" maxlength="255">
+						<input name="metacssid" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.metacssid)#" maxlength="255">
 					</div>
 					<div class="mura-control-group">
 						<label>
 							CSS Class
 						</label>
-						<input name="metacssclass" class="metaStyle" type="text" value="#esapiEncode('html_attr',attributes.params.metacssclass)#" maxlength="255">
+						<input name="metacssclass" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.metacssclass)#" maxlength="255">
 					</div>
 
 					<!--- todo: duplicate row options here
