@@ -44,15 +44,15 @@
 			<cfset request.textColorOptions = $.getContentRenderer().textColorOptions>
 		</cfif>
 		--->
-		<cfparam name="request.backgroundcoloroptions" default="">
-		<cfif structKeyExists($.getContentRenderer(),'backgroundColorOptions')>
-			<cfset request.backgroundColorOptions = $.getContentRenderer().backgroundColorOptions>
+		<cfparam name="request.colorOptions" default="">
+		<cfif structKeyExists($.getContentRenderer(),'coloroptions')>
+			<cfset request.colorOptions = $.getContentRenderer().coloroptions>
 		</cfif>
 
 
-		<cfparam name="request.modulethemearray" default="#arrayNew(1)#">
-		<cfif structKeyExists($.getContentRenderer(),'modulethemearray') and isArray($.getContentRenderer().modulethemearray)>
-			<cfset request.modulethemearray = $.getContentRenderer().modulethemearray>
+		<cfparam name="request.modulethemes" default="#arrayNew(1)#">
+		<cfif structKeyExists($.getContentRenderer(),'modulethemes') and isArray($.getContentRenderer().modulethemes)>
+			<cfset request.modulethemes = $.getContentRenderer().modulethemes>
 		</cfif>
 
 		<cfset contentcontainerclass=esapiEncode("javascript",$.getContentRenderer().expandedContentContainerClass)>
@@ -603,7 +603,7 @@
 			function updateOuterBgColor(v){
 				var swatchColor = v;
 				var swatchEl = $('#outerbackgroundcustom').find('i.mura-colorpicker-swatch');
-				if (v == 'custom' <cfif not(isArray(request.backgroundcoloroptions) and arrayLen(request.backgroundcoloroptions))> || true</cfif>){
+				if (v == 'custom' <cfif not(isArray(request.colorOptions) and arrayLen(request.colorOptions))> || true</cfif>){
 					$('#outerbackgroundcustom').show();
 				} else if (v == 'none'){
 					swatchColor = 'transparent'
@@ -717,7 +717,7 @@
 			function updateInnerBgColor(v){
 				var swatchColor = v;
 				var swatchEl = $('#innerbackgroundcustom').find('i.mura-colorpicker-swatch');
-				if (v == 'custom' <cfif not(isArray(request.backgroundcoloroptions) and arrayLen(request.backgroundcoloroptions))> || true</cfif>){
+				if (v == 'custom' <cfif not(isArray(request.colorOptions) and arrayLen(request.colorOptions))> || true</cfif>){
 					$('#innerbackgroundcustom').show();
 				} else if (v == 'none'){
 					swatchColor = 'transparent'
@@ -808,7 +808,7 @@
 			function updateMetaBgColor(v){
 				var swatchColor = v;
 				var swatchEl = $('#innerbackgroundcustom').find('i.mura-colorpicker-swatch');
-				if (v == 'custom' <cfif not(isArray(request.backgroundcoloroptions) and arrayLen(request.backgroundcoloroptions))> || true</cfif>){
+				if (v == 'custom' <cfif not(isArray(request.colorOptions) and arrayLen(request.colorOptions))> || true</cfif>){
 					$('#metabackgroundcustom').show();
 				} else if (v == 'none'){
 					swatchColor = 'transparent'

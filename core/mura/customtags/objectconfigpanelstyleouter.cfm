@@ -11,13 +11,13 @@
 		<div id="panel-style-outer" class="panel-collapse collapse" role="tabpanel" aria-labeledby="heading-style-outer">
 			<div class="mura-panel-body">
 				<div class="container">
-					<cfif arrayLen(request.modulethemearray)>
+					<cfif arrayLen(request.modulethemes)>
 					<div class="mura-control-group">
 						<label>Theme</label>
 						<select name="moduletheme">
 							<option value="">--</option>
-							<cfloop array="#request.modulethemearray#" index="theme">
-								<option value="#theme.class#"<cfif  listFind(attributes.params.class,theme.class,' ')> selected</cfif>>#esapiEncode('html',theme.name)#</option>
+							<cfloop array="#request.modulethemes#" index="theme">
+								<option value="#theme.value#"<cfif  listFind(attributes.params.class,theme.value,' ')> selected</cfif>>#esapiEncode('html',theme.name)#</option>
 							</cfloop>
 						</select>
 					</div>
@@ -227,12 +227,12 @@
 					<div class="mura-control-group">
 						<!--- todo: rbkey for these labels, options and placeholders--->
 						<label>Background Color</label>
-						<cfif isArray(request.backgroundcoloroptions) and arrayLen(request.backgroundcoloroptions)>
+						<cfif isArray(request.colorOptions) and arrayLen(request.colorOptions)>
 							<select id="outerbackgroundcolorsel" name="backgroundColorSel" class="objectParam">
 								<option value=""<cfif attributes.params.outerbackgroundcolorsel eq ''>
 							selected</cfif>>None</option>
-								<cfloop from="1" to="#arrayLen(request.backgroundcoloroptions)#" index="i">
-									<cfset c = request.backgroundcoloroptions[i]>
+								<cfloop from="1" to="#arrayLen(request.colorOptions)#" index="i">
+									<cfset c = request.colorOptions[i]>
 									<option value="#c['value']#"<cfif attributes.params.outerbackgroundcolorsel eq c['value']>
 							selected</cfif> style="background-color:#c['value']#;">#c['name']#</option>
 								</cfloop>
@@ -240,7 +240,7 @@
 							selected</cfif>>Custom</option>
 							</select>
 						</cfif>
-						<div class="input-group mura-colorpicker" id="outerbackgroundcustom" style="<cfif isArray(request.backgroundcoloroptions) and arrayLen(request.backgroundcoloroptions)>display: none;</cfif>">
+						<div class="input-group mura-colorpicker" id="outerbackgroundcustom" style="<cfif isArray(request.colorOptions) and arrayLen(request.colorOptions)>display: none;</cfif>">
 							<span class="input-group-addon"><i class="mura-colorpicker-swatch"></i></span>
 							<input type="text" id="outerbackgroundcolor" name="backgroundColor" placeholder="Select Color" autocomplete="off" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundcolor)#">
 						</div>
