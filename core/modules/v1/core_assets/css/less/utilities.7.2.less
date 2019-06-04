@@ -171,8 +171,9 @@ li .cke_skin_mura {
     }
 }
 
-.mura-object-content {
+.mura-object-content,.mura-object-meta {
 	width: 100%;
+	position: relative;
 }
 
 /* Turn off parallax scrolling for tablets and phones */
@@ -181,6 +182,35 @@ li .cke_skin_mura {
     background-attachment: scroll !important;
   }
 }
+
+.mura-op-1:before,
+.mura-op-2:before,
+.mura-op-3:before,
+.mura-op-4:before,
+.mura-op-5:before,
+.mura-op-6:before,
+.mura-op-7:before,
+.mura-op-8:before,
+.mura-op-9:before,
+.mura-op-10:before{
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+}
+
+.mura-op-1:before {	background: rgba(255,255,255,0.1);	}
+.mura-op-2:before {	background: rgba(255,255,255,0.2);	}
+.mura-op-3:before {	background: rgba(255,255,255,0.3);	}
+.mura-op-4:before {  background: rgba(255,255,255,0.4);	}
+.mura-op-5:before {	background: rgba(255,255,255,0.5);	}
+.mura-op-6:before {	background: rgba(255,255,255,0.6);	}
+.mura-op-7:before {	background: rgba(255,255,255,0.7);	}
+.mura-op-8:before{  background: rgba(255,255,255,0.8);	}
+.mura-op-9:before {	background: rgba(255,255,255,0.9);	}
+.mura-op-10:before {	background: rgba(255,255,255,1);	}
 
 /* set full width for expanded containers */
 .mura-sidebar-state__pushed--right {

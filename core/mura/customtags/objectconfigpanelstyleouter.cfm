@@ -283,6 +283,16 @@
 						</select>
 					</div>
 
+					<div class="mura-control-group outer-css-bg-option" style="display:none;">
+						<label>Background Opacity</label>
+						<select name="outerbackgroundopacity">
+							<option value="">--</option>
+							<cfloop from="1" to="10" index="i">
+								<option value="mura-op-#i#"<cfif listFind(attributes.params.class,'mura-op-#i#',' ')> selected</cfif>>#i#0%</option>
+							</cfloop>
+						</select>
+					</div>
+
 					<div class="mura-control-group mura-ui-grid outer-css-bg-option" style="display:none;">
 						<label>Background Position</label>
 
@@ -327,10 +337,12 @@
 						</div>
 					</div>
 
+					<!---
 					<div class="mura-control-group css-bg-option" style="display:none;">
 						<label>Background Overlay</label>
 						<input type="text" id="outerbackgroundoverlay" name="backgroundOverlay" placeholder="" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundoverlay)#">
 					</div>
+					--->
 
 					<!--- css id and class for outer --->
 					<cfif request.haspositionoptions>
