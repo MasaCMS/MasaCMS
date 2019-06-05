@@ -281,11 +281,6 @@
 						</select>
 					</div>
 
-					<div class="mura-control-group object-css-bg-option" style="display:none;">
-						<label>Background Opacity</label>
-						<input type="text" name="backgroundopacity" placeholder="" class="objectParam float" value="#esapiEncode('html_attr',attributes.params.backgroundopacity)#">
-					</div>
-
 					<div class="mura-control-group mura-ui-grid object-css-bg-option" style="display:none;">
 						<label>Background Position</label>
 
