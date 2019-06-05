@@ -47,12 +47,16 @@
 		<cfparam name="request.colorOptions" default="">
 		<cfif structKeyExists($.getContentRenderer(),'coloroptions')>
 			<cfset request.colorOptions = $.getContentRenderer().coloroptions>
+		<cfelseif structKeyExists($.getContentRenderer(),'colorArray')>
+			<cfset request.colorOptions = $.getContentRenderer().colorArray>
 		</cfif>
 
 
 		<cfparam name="request.modulethemeoptions" default="#arrayNew(1)#">
 		<cfif structKeyExists($.getContentRenderer(),'modulethemeoptions') and isArray($.getContentRenderer().modulethemeoptions)>
 			<cfset request.modulethemeoptions = $.getContentRenderer().modulethemeoptions>
+		<cfelseif structKeyExists($.getContentRenderer(),'modulethemeArray') and isArray($.getContentRenderer().modulethemeArray)>
+			<cfset request.modulethemeoptions = $.getContentRenderer().modulethemeArray>
 		</cfif>
 
 		<cfset contentcontainerclass=esapiEncode("javascript",$.getContentRenderer().expandedContentContainerClass)>
