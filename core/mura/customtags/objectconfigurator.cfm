@@ -163,7 +163,7 @@
 								<!--- todo: rbkeys for box labels --->
 								<div class="panel-gds-box" id="panel-gds-object" data-gdsel="panel-style-object"><span>Module</span>
 									<cfif request.hasmetaoptions>
-										<div class="panel-gds-box" id="panel-gds-meta" data-gdsel="panel-style-label"><span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.label')#</span></div>
+										<div class="panel-gds-box" id="panel-gds-meta" data-gdsel="panel-style-label"<cfif not len(attributes.params.label)> style="display:none"</cfif>><span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.label')#</span></div>
 									</cfif>
 									<div class="panel-gds-box" id="panel-gds-content" data-gdsel="panel-style-content"><span>Content</span></div>
 								</div>
@@ -214,6 +214,14 @@
 					instanceid:instanceid,
 					currentPanel:currentPanel
 				});
+			});
+
+			$('input[name="label"]').change(function(item){
+				if(Mura.trim(Mura(this).val())){
+					Mura('#panel-gds-meta').show();
+				} else {
+					Mura('#panel-gds-meta').hide();
+				}
 			});
 
 			$('.panel-gds-box').on('click',function(){
