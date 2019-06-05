@@ -91,8 +91,13 @@ li .cke_skin_mura {
         margin: 0 auto;
     }
     .mura-object {
-        float: left;
-        display: block;
+				float: left;
+				display: inline-flex;
+				flex-direction: row;
+				flex-wrap: wrap;
+				justify-content: center;
+				align-items: center;
+				position: relative;
         box-sizing: border-box;
     }
     .mura-region-local, .mura-region-inherited {
@@ -176,10 +181,6 @@ li .cke_skin_mura {
     .mura-center.mura-object {
         float: none;
     }
-}
-
-.mura-object-content,.mura-object-meta {
-	position: relative;
 }
 
 .mura-object-content,.mura-object-meta {
