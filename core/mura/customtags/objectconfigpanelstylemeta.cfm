@@ -22,12 +22,11 @@
 					<!--- label alignment --->
 					<div class="mura-control-group">
 						<label>Text Alignment</label>
-						<select name="textAlign" class="metaStyle">
+						<select name="justifyContent" class="objectStyle">
 							<option value="">--</option>
-							<option value="left"<cfif attributes.params.metacssstyles.textalign eq 'left'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.left')#</option>
-							<option value="right"<cfif attributes.params.metacssstyles.textalign eq 'right'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.right')#</option>
-							<option value="center"<cfif attributes.params.metacssstyles.textalign eq 'center'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.center')#</option>
-							<option value="justify"<cfif attributes.params.metacssstyles.textalign eq 'justify'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.justify')#</option>
+							<option value="flex-start"<cfif attributes.params.metacssstyles.justifycontent eq 'left'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.left')#</option>
+							<option value="center"<cfif attributes.params.metacssstyles.justifycontent eq 'center'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.center')#</option>
+							<option value="flex-end"<cfif attributes.params.metacssstyles.justifyContent eq 'right'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.right')#</option>
 						</select>
 					</div>
 

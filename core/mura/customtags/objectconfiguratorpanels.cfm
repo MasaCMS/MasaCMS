@@ -46,8 +46,9 @@
 		,'paddingleft'
 		,'paddingall'
 		,'paddinguom'
-		,'textalign',
-		 'minheight'];
+		,'textalign'
+		,'minheight'
+		,'justifycontent'];
 
 	for (p in attributes.globalparams){
 		param name="attributes.params.cssstyles.#p#" default="";
