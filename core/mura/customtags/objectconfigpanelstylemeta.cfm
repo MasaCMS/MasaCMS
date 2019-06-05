@@ -21,13 +21,11 @@
 					--->
 					<!--- label alignment --->
 					<div class="mura-control-group">
-						<label>Alignment</label>
-						<select name="justifyContent" class="objectStyle">
+						<label>Text Alignment</label>
+						<select name="float" class="metaStyle">
 							<option value="">--</option>
-							<option value="flex-start"<cfif attributes.params.cssstyles.justifycontent eq 'left'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.left')#</option>
-							<option value="center"<cfif attributes.params.cssstyles.justifycontent eq 'center'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.center')#</option>
-							<option value="flex-end"<cfif attributes.params.cssstyles.justifyContent eq 'right'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.right')#</option>
-							<option value="space-evenly"<cfif attributes.params.cssstyles.justifyContent eq 'justify'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.justify')#</option>
+							<option value="left"<cfif attributes.params.metacssstyles.float eq 'left'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.left')#</option>
+							<option value="right"<cfif attributes.params.metacssstyles.float eq 'right'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.right')#</option>
 						</select>
 					</div>
 

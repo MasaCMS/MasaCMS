@@ -31,6 +31,7 @@
 		,'backgroundrepeat'
 		,'backgroundsize'
 		,'backgroundvideo'
+		,'float'
 		,'margin'
 		,'margintop'
 		,'marginright'
@@ -46,9 +47,8 @@
 		,'paddingleft'
 		,'paddingall'
 		,'paddinguom'
-		,'textalign'
-		,'minheight'
-		,'justifycontent'];
+		,'textalign',
+		 'minheight'];
 
 	for (p in attributes.globalparams){
 		param name="attributes.params.cssstyles.#p#" default="";
@@ -63,7 +63,6 @@
 
 	<!--- object panel--->
 	<cfinclude template="objectconfigpanelstyleobject.cfm">
-
 
 	<cfinclude template="objectconfigpanelstylemeta.cfm">
 

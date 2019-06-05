@@ -91,13 +91,8 @@ li .cke_skin_mura {
         margin: 0 auto;
     }
     .mura-object {
-				float: left;
-				display: inline-flex;
-				flex-direction: row;
-				flex-wrap: wrap;
-				justify-content: center;
-				align-items: center;
-				position: relative;
+        float: left;
+        display: block;
         box-sizing: border-box;
     }
     .mura-region-local, .mura-region-inherited {
@@ -185,6 +180,23 @@ li .cke_skin_mura {
 
 .mura-object-content,.mura-object-meta {
 	position: relative;
+}
+
+.mura-object-meta-wrapper {
+	text-align: center;
+}
+
+
+.mura-object-meta-wrapper:after {
+  visibility: hidden;
+  display: block;
+  content: "";
+  clear: both;
+  height: 0;
+}
+
+.mura-object-meta {
+	display: inline-block;
 }
 
 /*

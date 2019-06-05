@@ -162,7 +162,10 @@
 				if(parameters["currentPanel"]=='content'){
 					item.children('.mura-object-content').addClass('mura-object-selected');
 				}	if(parameters["currentPanel"]=='meta'){
-					item.children('.mura-object-meta').addClass('mura-object-selected');
+					var metaWrapper=item.children('.mura-object-meta-wrapper');
+					if(metaWrapper.length){
+						metaWrapper.children('.mura-object-meta').addClass('mura-object-selected');
+					}
 				}
 			} else if(parameters["cmd"] == "requestObjectParams"){
 				var item=Mura('[data-instanceid="' + parameters["instanceid"] + '"]');
@@ -273,7 +276,10 @@
 						if(parameters["currentPanel"]=='content'){
 							item.children('.mura-object-content').addClass('mura-object-selected');
 						}	if(parameters["currentPanel"]=='meta'){
-							item.children('.mura-object-meta').addClass('mura-object-selected');
+							var metaWrapper=item.children('.mura-object-meta-wrapper');
+							if(metaWrapper.length){
+								metaWrapper.children('.mura-object-meta').addClass('mura-object-selected');
+							}
 						}
 					});
 				}

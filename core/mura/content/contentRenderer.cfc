@@ -89,7 +89,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	'borderStyle'='border-style',
 	'borderWidth'='border-width',
 	'boxSizing'='box-sizing',
-	'justifyContent'= 'justify-content',
 	'fontFamily'='font-family',
 	'fontSize'='font-size',
 	'fontVariant'='font-variant',

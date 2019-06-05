@@ -46,5 +46,5 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="objectparams.metacssid" default="">
 <cfparam name="objectparams.metacssstyles" default="">
 <cfif len(objectParams.label)>
-	<cfoutput><div<cfif len(objectparams.metacssid)> id="#esapiEncode('html_attr',trim(objectparams.metacssid))#"</cfif> class="#esapiEncode('html_attr',trim('mura-object-meta #objectparams.metacssclass#'))#" style="#$.renderCssStyles(objectparams.metacssstyles)#"><h2>#esapiEncode('html',objectParams.label)#</h2></div></cfoutput>
+	<cfoutput><div class="mura-object-meta-wrapper"><div<cfif len(objectparams.metacssid)> id="#esapiEncode('html_attr',trim(objectparams.metacssid))#"</cfif> class="#esapiEncode('html_attr',trim('mura-object-meta #objectparams.metacssclass#'))#" style="#$.renderCssStyles(objectparams.metacssstyles)#"><h2>#esapiEncode('html',objectParams.label)#</h2></div></div></cfoutput>
 </cfif>
