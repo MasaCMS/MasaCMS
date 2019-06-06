@@ -252,7 +252,7 @@
 							</div>
 						</div>
 					</div>
-					<!--- css id and class for label --->
+				
 					<div class="mura-control-group">
 						<label>
 							CSS ID

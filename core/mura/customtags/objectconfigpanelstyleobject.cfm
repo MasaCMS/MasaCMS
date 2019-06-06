@@ -323,22 +323,19 @@
 							</div>
 						</div>
 					</div>
-					
-					<!--- css id and class for object --->
-					<cfif request.haspositionoptions>
-						<div class="mura-control-group">
-							<label>
-								CSS ID
-							</label>
-							<input name="cssid" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.cssid)#" maxlength="255">
-						</div>
-						<div class="mura-control-group">
-							<label>
-								CSS Class
-							</label>
-							<input name="cssclass" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.cssclass)#" maxlength="255">
-						</div>
-					</cfif>
+
+					<div class="mura-control-group">
+						<label>
+							CSS ID
+						</label>
+						<input name="cssid" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.cssid)#" maxlength="255">
+					</div>
+					<div class="mura-control-group">
+						<label>
+							CSS Class
+						</label>
+						<input name="cssclass" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.cssclass)#" maxlength="255">
+					</div>
 
 				</div> <!--- /end container --->
 			</div> <!--- /end  mura-panel-body --->

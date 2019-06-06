@@ -122,7 +122,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	'verticalAlign'='vertical-align',
 	'webkitTransition'='-webkit-transition',
 	'whiteSpace'='white-space',
-	'wordSpacing'='word-spacing'
+	'wordSpacing'='word-spacing',
+	'zIndex'='z-index'
 	}>
 
 <!--- Set these to a boolean value to override settings.ini.cfm value--->
