@@ -29,6 +29,26 @@
 						</select>
 					</div>
 
+					<div class="mura-control-group">
+						<!--- todo: rbkey for margin and placeholders --->
+						<label>Minimum Height</label>
+
+						<div class="row mura-ui-row">
+
+								<div class="mura-input-group">
+									<label class="mura-serial">
+										<input type="text" name="objectminheight" id="objectminheightnum" placeholder="0" class="numeric serial" value="<cfif len(trim(attributes.params.metacssstyles.minheight))>#val(esapiEncode('html_attr',attributes.params.metacssstyles.minheight))#</cfif>">
+									</label>
+									<select id="metaminheightuom" name="metaminheightuom" class="objectParam">
+										<cfloop list="px,%,em,rem" index="u">
+											<option value="#u#"<cfif attributes.params.metaminheightuom eq u> selected</cfif>>#u#</option>
+										</cfloop>
+									</select>
+								</div>
+								<input type="hidden" name="minHeight" id="metaminheightuomval" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.metacssstyles.minheight)#">
+						</div>
+					</div>
+
 					<!--- margin --->
 					<div class="mura-control-group mura-ui-grid">
 						<!--- todo: rbkey for margin and placeholders --->

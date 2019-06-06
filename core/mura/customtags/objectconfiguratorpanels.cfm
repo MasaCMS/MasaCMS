@@ -13,6 +13,8 @@
 	param name="attributes.params.objectmarginuom" default="";
 	param name="attributes.params.objectpaddinguom" default="";
 	param name="attributes.params.objectminheightuom" default="";
+	param name="attributes.params.metaminheightuom" default="";
+	param name="attributes.params.contentminheightuom" default="";
 	param name="attributes.params.contentmarginuom" default="";
 	param name="attributes.params.contentpaddinguom" default="";
 	param name="attributes.params.objectbackgroundpositionx" default="";

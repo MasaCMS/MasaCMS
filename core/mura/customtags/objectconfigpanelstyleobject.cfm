@@ -82,7 +82,7 @@
 
 								<div class="mura-input-group">
 									<label class="mura-serial">
-										<input type="text" name="objectminheight" id="objectminheightnum" placeholder="" class="numeric serial" value="<cfif len(trim(attributes.params.cssstyles.minheight))>#val(esapiEncode('html_attr',attributes.params.cssstyles.minheight))#</cfif>">
+										<input type="text" name="objectminheight" id="objectminheightnum" placeholder="0" class="numeric serial" value="<cfif len(trim(attributes.params.cssstyles.minheight))>#val(esapiEncode('html_attr',attributes.params.cssstyles.minheight))#</cfif>">
 									</label>
 									<select id="objectminheightuom" name="objectminheightuom" class="objectParam">
 										<cfloop list="px,%,em,rem" index="u">
