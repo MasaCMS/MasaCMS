@@ -18044,22 +18044,26 @@ Mura.DOMSelection = Mura.Core.extend(
  			}
 
  			if(obj.data('metacssclass') || obj.data('metacssid') || obj.data('metacssstyles')){
- 				var meta=obj.children('.mura-object-meta').first();
+ 				var metaWrapper=obj.children('.mura-object-meta-wrapper');
+				if(metaWrapper.length){
+					var meta=metaWrapper.children('.mura-object-meta');
+					if(meta.length){
+			 			if(obj.data('metacssid')){
+			 				meta.attr('id',obj.data('metacssid'));
+			 			}
+			 			if(obj.data('metacssclass')){
+			 			 obj.data('metacssclass').split(' ').forEach(function(c){
+			 				 if (!meta.hasClass(c)) {
+			 					 meta.addClass(c);
+			 				 }
+			 			 })
+			 			}
 
-	 			if(obj.data('metacssid')){
-	 				meta.attr('id',obj.data('metacssid'));
-	 			}
-	 			if(obj.data('metacssclass')){
-	 			 obj.data('metacssclass').split(' ').forEach(function(c){
-	 				 if (!meta.hasClass(c)) {
-	 					 meta.addClass(c);
-	 				 }
-	 			 })
-	 			}
-
-				if(obj.data('metacssstyles')){
-					meta.removeAttr('style');
-					meta.css(obj.data('metacssstyles'));
+						if(obj.data('metacssstyles')){
+							meta.removeAttr('style');
+							meta.css(obj.data('metacssstyles'));
+						}
+					}
 				}
 			}
 
@@ -20587,7 +20591,7 @@ Handlebars.noConflict();
 Mura.templates=Mura.templates || {};
 Mura.templates['meta']=function(context){
 	if(context.label){
-		return '<div class="mura-object-meta"><h2>' + Mura.escapeHTML(context.label) + '</h2></div>';
+		return '<div class="mura-object-meta-wrapper"><div class="mura-object-meta"><h2>' + Mura.escapeHTML(context.label) + '</h2></div></div>';
 	} else {
 		return '';
 	}
@@ -20598,12 +20602,20 @@ Mura.templates['content']=function(context){
 }
 Mura.templates['text']=function(context){
 	context=context || {};
-	context.source=context.source || '<p>This object has not been configured.</p>';
+	if(context.label){
+		context.source=context.source || '';
+	} else {
+		context.source=context.source || '<p>This object has not been configured.</p>';
+	}
 	return context.source;
 }
 Mura.templates['embed']=function(context){
 	context=context || {};
-	context.source=context.source || '<p>This object has not been configured.</p>';
+	if(context.label){
+		context.source=context.source || '';
+	} else {
+		context.source=context.source || '<p>This object has not been configured.</p>';
+	}
 	return context.source;
 }
 
