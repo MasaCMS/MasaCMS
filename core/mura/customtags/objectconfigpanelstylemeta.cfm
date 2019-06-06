@@ -13,6 +13,16 @@
 			<div class="mura-panel-body">
 				<div class="container" id="labelContainer">
 
+					<div class="mura-control-group">
+						<label>Position</label>
+						<select name="labelposition">
+						<option value="">--</option>
+						<option value="mura-object-label-left"<cfif listFind(attributes.params.class,'mura-object-label-left',' ')> selected</cfif>>Left</option>
+						<option value="mura-object-label-top"<cfif listFind(attributes.params.class,'mura-object-label-top',' ')> selected</cfif>>Top</option>
+						<option value="mura-object-label-right"<cfif listFind(attributes.params.class,'mura-object-label-right',' ')> selected</cfif>>Right</option>
+						</select>
+					</div>
+
 					<!--- label alignment --->
 					<div class="mura-control-group">
 						<label>Text Alignment</label>
@@ -252,7 +262,7 @@
 							</div>
 						</div>
 					</div>
-				
+
 					<div class="mura-control-group">
 						<label>
 							CSS ID

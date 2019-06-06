@@ -253,6 +253,13 @@
 					classInput.val(width.val());
 				}
 
+				var position=$('select[name="labelposition"]');
+				if(classInput.val() ){
+					classInput.val(classInput.val() + ' ' + position.val());
+				} else {
+					classInput.val(position.val());
+				}
+
 				var theme=$('select[name="moduletheme"]');
 				if(classInput.val() ){
 					classInput.val(classInput.val() + ' ' + theme.val());
@@ -348,7 +355,7 @@
 				return false;
 			})
 
-			$('input[name="cssclass"],select[name="moduletheme"],select[name="alignment"],select[name="width"],select[name="offset"],select[name="constraincontent"]').on('change', function() {
+			$('input[name="cssclass"],select[name="moduletheme"],select[name="alignment"],select[name="width"],select[name="offset"],select[name="constraincontent"],select[name="labelposition"]').on('change', function() {
 				updateDynamicClasses();
 			});
 

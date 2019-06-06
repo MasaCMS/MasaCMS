@@ -184,12 +184,30 @@ li .cke_skin_mura {
 	box-sizing: border-box;
 }
 
+.mura-object.mura-object-label-right > .mura-object-meta-wrapper,
+.mura-object.mura-object-label-right > .mura-object-content,
+.mura-object.mura-object-label-left > .mura-object-meta-wrapper,
+.mura-object.mura-object-label-left > .mura-object-content {
+	position: relative;
+	width: 50%;
+	box-sizing: border-box;
+}
+
+
+.mura-object.mura-object-label-right > .mura-object-meta-wrapper {
+	float:right;
+}
+
+.mura-object.mura-object-label-left > .mura-object-meta-wrapper,
+.mura-object.mura-object-label-left > .mura-object-content  {
+	float:left;
+}
+
 .mura-object-meta-wrapper {
 	text-align: center;
 }
 
-
-.mura-object-meta-wrapper:after {
+.mura-object:not(.mura-object-label-left) > .mura-object-meta-wrapper:after {
   visibility: hidden;
   display: block;
   content: "";
