@@ -623,6 +623,17 @@
 
 			});
 
+			// background position x/y
+			function updatePositionSelection(sel){
+				var v = $(sel).val();
+				var el = $(sel).attr('data-numfield');
+				if (v == 'px' || v == '%'){
+					$('#' + el).show();
+				} else {
+					$('#' + el).hide();
+				}
+			}
+
 			// background image
 			$('#objectbackgroundimageurl').on('change',function(){
 				var v = $(this).val();
@@ -647,19 +658,7 @@
 				$('.object-css-bg-option').hide();
 			}
 
-			//commented out to not intially trigger reseting of rendered object
 			//$('#objectbackgroundimageurl').trigger('change');
-
-			// background position x/y
-			function updatePositionSelection(sel){
-				var v = $(sel).val();
-				var el = $(sel).attr('data-numfield');
-				if (v == 'px' || v == '%'){
-					$('#' + el).show();
-				} else {
-					$('#' + el).hide();
-				}
-			}
 
 			$('#objectbackgroundpositiony,#objectbackgroundpositionynum').on('change',function(){
 				var el = $('#objectbackgroundpositionyval');
@@ -695,9 +694,68 @@
 
 			//End Object Background
 
-			//Begin Content Background
 
-			<!---
+			// background image
+			$('#metabackgroundimageurl').on('change',function(){
+				var v = $(this).val();
+				var str = "";
+				if (v.length > 3){
+					str = "url('" + v + "')";
+					$('.meta-css-bg-option').show();
+				} else {
+					$('.meta-css-bg-option').hide();
+				}
+
+				$('#metabackgroundimage').val(str).trigger('change');
+
+			});
+
+			var v = $('#metabackgroundimageurl').val();
+			var str = "";
+			if (v.length > 3){
+				str = "url('" + v + "')";
+				$('.meta-css-bg-option').show();
+			} else {
+				$('.meta-css-bg-option').hide();
+			}
+
+			//$('#metabackgroundimageurl').trigger('change');
+
+
+			$('#metabackgroundpositiony,#metabackgroundpositionynum').on('change',function(){
+				var el = $('#metabackgroundpositionyval');
+				var str = $('#metabackgroundpositiony').val();
+				var num = $('#metabackgroundpositionynum').val();
+				if (num.length > 0){
+					str = num + str;
+				}
+
+				$(el).val(str).trigger('change');
+
+			});
+
+			$('#metabackgroundpositionx,#metabackgroundpositionxnum').on('change',function(){
+				var el = $('#metabackgroundpositionxval');
+				var str = $('#metabackgroundpositionx').val();
+				var num = $('#metabackgroundpositionxnum').val();
+				if (num.length > 0){
+					str = num + str;
+				}
+
+				$(el).val(str).trigger('change');
+
+			});
+
+			$('#metabackgroundpositionx,#metabackgroundpositiony').on('change',function(){
+				updatePositionSelection($(this));
+			});
+
+			$('#metabackgroundpositionx,#metabackgroundpositiony').each(function(){
+				updatePositionSelection($(this));
+			});
+
+			//End Meta Background
+
 			// background image
 			$('#contentbackgroundimageurl').on('change',function(){
 				var v = $(this).val();
@@ -708,9 +766,9 @@
 				} else {
 					$('.content-css-bg-option').hide();
 				}
-				if(inited){
-					$('#contentbackgroundimage').val(str).trigger('change');
-				}
+
+				$('#contentbackgroundimage').val(str).trigger('change');
+
 			});
 
 			var v = $('#contentbackgroundimageurl').val();
@@ -722,8 +780,7 @@
 				$('.content-css-bg-option').hide();
 			}
 
-			//commented out to not intially trigger reseting of rendered object
-			//$('#contentbackgroundimageurl').trigger('change');
+		//	$('#contentbackgroundimageurl').trigger('change');
 
 
 			$('#contentbackgroundpositiony,#contentbackgroundpositionynum').on('change',function(){
@@ -758,9 +815,7 @@
 				updatePositionSelection($(this));
 			});
 
-			//End Content Background
-			--->
-
+			//End Object Background
 
 			// numeric input - select on focus
 			$('#configuratorContainer input.numeric').on('click', function(){

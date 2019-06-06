@@ -323,13 +323,7 @@
 							</div>
 						</div>
 					</div>
-					<!---
-					<div class="mura-control-group css-bg-option" style="display:none;">
-						<label>Background Overlay</label>
-						<input type="text" id="objectbackgroundoverlay" name="backgroundOverlay" placeholder="" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundoverlay)#">
-					</div>
-					--->
-
+					
 					<!--- css id and class for object --->
 					<cfif request.haspositionoptions>
 						<div class="mura-control-group">

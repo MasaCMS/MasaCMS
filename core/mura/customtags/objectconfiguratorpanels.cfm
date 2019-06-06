@@ -6,6 +6,9 @@
 	param name="attributes.params.contentbackgroundimageurl" default="";
 	param name="attributes.params.contentbackgroundimageurl" default="";
 	param name="attributes.params.contentbackgroundcolorsel" default="";
+	param name="attributes.params.metabackgroundimageurl" default="";
+	param name="attributes.params.metabackgroundimageurl" default="";
+	param name="attributes.params.metabackgroundcolorsel" default="";
 
 	param name="attributes.params.textcolor" default="";
 	param name="attributes.params.metatextcolor" default="";
@@ -25,6 +28,8 @@
 	param name="attributes.params.objectbackgroundpositiony" default="";
 	param name="attributes.params.contentbackgroundpositionx" default="";
 	param name="attributes.params.contentbackgroundpositiony" default="";
+	param name="attributes.params.metabackgroundpositionx" default="";
+	param name="attributes.params.metabackgroundpositiony" default="";
 
 	attributes.globalparams = [
 		'backgroundcolor'

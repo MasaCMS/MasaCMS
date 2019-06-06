@@ -13,12 +13,6 @@
 			<div class="mura-panel-body">
 				<div class="container" id="labelContainer">
 
-					<!--- label text
-					<div class="mura-control-group">
-						<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.text')#</label>
-						<input name="label" type="text" class="objectParam" maxlength="50" value="#esapiEncode('html_attr',attributes.params.label)#"/>
-					</div>
-					--->
 					<!--- label alignment --->
 					<div class="mura-control-group">
 						<label>Text Alignment</label>
@@ -179,6 +173,85 @@
 						</div>
 					</div>
 
+					<div class="mura-control-group">
+						<label>Background Image</label>
+						<input type="hidden" id="metabackgroundimage" name="backgroundImage" class="metaStyle" value="#esapiEncode('html_attr',attributes.params.metacssstyles.backgroundimage)#">
+						<input type="text" id="metabackgroundimageurl" name="metabackgroundimageurl" placeholder="URL" class="objectParam" value="#esapiEncode('html_attr',attributes.params.metabackgroundimageurl)#">
+						<button type="button" class="btn mura-ckfinder" data-target="metabackgroundimageurl" data-completepath="false"><i class="mi-image"></i> Select Image</button>
+					</div>
+
+					<div class="mura-control-group meta-css-bg-option" style="display:none;">
+						<label>Background Size</label>
+						<select id="metabackgroundsize" name="backgroundSize" class="metaStyle">
+							<option value="auto"<cfif attributes.params.metacssstyles.backgroundsize eq 'auto'>
+							selected</cfif>>Auto</option>
+							<option value="contain"<cfif attributes.params.metacssstyles.backgroundsize eq 'contain'> selected</cfif>>Contain</option>
+							<option value="cover"<cfif attributes.params.metacssstyles.backgroundsize eq 'cover'> selected</cfif>>Cover</option>
+						</select>
+					</div>
+
+					<div class="mura-control-group meta-css-bg-option" style="display:none;">
+						<label>Background Repeat</label>
+						<select id="metabackgroundrepeat" name="backgroundRepeat" class="metaStyle">
+							<option value="no-repeat"<cfif attributes.params.metacssstyles.backgroundrepeat eq 'norepeat'> selected</cfif>>No-repeat</option>
+							<option value="repeat"<cfif attributes.params.metacssstyles.backgroundrepeat eq 'repeat'> selected</cfif>>Repeat</option>
+							<option value="repeat-x"<cfif attributes.params.metacssstyles.backgroundrepeat eq 'repeatx'> selected</cfif>>Repeat-X</option>
+							<option value="repeat-y"<cfif attributes.params.metacssstyles.backgroundrepeat eq 'repeaty'> selected</cfif>>Repeat-Y</option>
+						</select>
+					</div>
+
+					<div class="mura-control-group meta-css-bg-option" style="display:none;">
+						<label>Background Attachment</label>
+						<select name="backgroundAttachment" class="metaStyle">
+							<option value="scroll"<cfif attributes.params.metacssstyles.backgroundAttachment eq 'scroll'>
+							selected</cfif>>Scroll</option>
+							<option value="Fixed"<cfif attributes.params.metacssstyles.backgroundAttachment eq 'fixed'> selected</cfif>>Fixed</option>
+						</select>
+					</div>
+
+					<div class="mura-control-group mura-ui-grid meta-css-bg-option" style="display:none;">
+						<label>Background Position</label>
+
+						<div class="mura-ui-row">
+							<div class="col-xs-4"><label class="right ui-nested">Vertical</label></div>
+							<div class="col-xs-8">
+								<div class="mura-input-group">
+									<label>
+										<input type="text" id="metabackgroundpositionynum" name="metaBackgroundPositionyNum" class="numeric" placeholder="" value="<cfif val(esapiEncode('html_attr',attributes.params.metacssstyles.backgroundpositiony))>#val(esapiEncode('html_attr',attributes.params.metacssstyles.backgroundpositiony))#</cfif>" style="display: none;">
+									</label>
+
+									<select id="metabackgroundpositiony" name="metaBackgroundPositionY" class="objectParam" data-numfield="metabackgroundpositionynum">
+										<cfloop list="Top,Center,Bottom,%,px" index="p">
+											<option value="#lcase(p)#"<cfif attributes.params.metacssstyles.backgroundpositiony contains p> selected</cfif>>#p#</option>
+										</cfloop>
+									</select>
+
+									<input type="hidden" id="metabackgroundpositionyval" name="backgroundPositionY" class="metaStyle" value="#esapiEncode('html_attr',attributes.params.metacssstyles.backgroundpositiony)#">
+
+								</div>
+							</div>
+						</div>
+
+						<div class="row mura-ui-row">
+							<div class="col-xs-4"><label class="right ui-nested">Horizontal</label></div>
+							<div class="col-xs-8">
+								<div class="mura-input-group">
+									<label>
+										<input type="text" id="metabackgroundpositionxnum" name="metaBackgroundPositionxNum" class="numeric" placeholder="" value="<cfif val(esapiEncode('html_attr',attributes.params.metacssstyles.backgroundpositionx))>#val(esapiEncode('html_attr',attributes.params.metacssstyles.backgroundpositionx))#</cfif>" style="display: none;">
+									</label>
+
+									<select id="metabackgroundpositionx" name="metaBackgroundPositionX" class="objectParam" data-numfield="metabackgroundpositionxnum">
+										<cfloop list="Left,Center,Right,%,px" index="p">
+											<option value="#lcase(p)#"<cfif attributes.params.metacssstyles.backgroundpositionx contains p> selected</cfif>>#p#</option>
+										</cfloop>
+									</select>
+
+									<input type="hidden" id="metabackgroundpositionxval" name="backgroundPositionX" class="metaStyle" value="#esapiEncode('html_attr',attributes.params.metacssstyles.backgroundpositionx)#">
+
+								</div>
+							</div>
+						</div>
+					</div>
 					<!--- css id and class for label --->
 					<div class="mura-control-group">
 						<label>

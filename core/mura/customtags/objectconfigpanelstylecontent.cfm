@@ -173,7 +173,6 @@
 						</div>
 					</div>
 
-					<!---
 					<div class="mura-control-group">
 						<label>Background Image</label>
 						<input type="hidden" id="contentbackgroundimage" name="backgroundImage" class="contentStyle" value="#esapiEncode('html_attr',attributes.params.contentcssstyles.backgroundimage)#">
@@ -198,6 +197,15 @@
 							<option value="repeat"<cfif attributes.params.contentcssstyles.backgroundrepeat eq 'repeat'> selected</cfif>>Repeat</option>
 							<option value="repeat-x"<cfif attributes.params.contentcssstyles.backgroundrepeat eq 'repeatx'> selected</cfif>>Repeat-X</option>
 							<option value="repeat-y"<cfif attributes.params.contentcssstyles.backgroundrepeat eq 'repeaty'> selected</cfif>>Repeat-Y</option>
+						</select>
+					</div>
+
+					<div class="mura-control-group content-css-bg-option" style="display:none;">
+						<label>Background Attachment</label>
+						<select name="backgroundAttachment" class="contentStyle">
+							<option value="scroll"<cfif attributes.params.contentcssstyles.backgroundAttachment eq 'scroll'>
+							selected</cfif>>Scroll</option>
+							<option value="Fixed"<cfif attributes.params.contentcssstyles.backgroundAttachment eq 'fixed'> selected</cfif>>Fixed</option>
 						</select>
 					</div>
 
@@ -245,11 +253,6 @@
 						</div>
 					</div>
 
-					<div class="mura-control-group css-bg-option" style="display:none;">
-						<label>Background Overlay</label>
-						<input type="text" id="contentbackgroundoverlay" name="backgroundOverlay" placeholder="" class="contentStyle" value="#esapiEncode('html_attr',attributes.params.contentcssstyles.backgroundoverlay)#">
-					</div>
-					--->
 					<!--- css id and class for content --->
 					<cfif request.haspositionoptions>
 						<div class="mura-control-group">
