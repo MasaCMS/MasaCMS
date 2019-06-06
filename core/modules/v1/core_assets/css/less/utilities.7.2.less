@@ -203,6 +203,24 @@ li .cke_skin_mura {
 	float:left;
 }
 
+
+.mura-expanded.mura-object.mura-object-label-left {
+	flex-direction: row;
+}
+
+.mura-expanded.mura-object.mura-object-label-right{
+	flex-direction: row-reverse;
+}
+
+.mura-expanded.mura-object.mura-object-label-right > .mura-object-meta-wrapper,
+.mura-expanded.mura-object.mura-object-label-right > .mura-object-content,
+.mura-expanded.mura-object.mura-object-label-left > .mura-object-meta-wrapper,
+.mura-expanded.mura-object.mura-object-label-left > .mura-object-content {
+	flex-grow: 1;
+	flex-basis: 50%;
+}
+
+
 .mura-object-meta-wrapper {
 	text-align: center;
 }
