@@ -650,30 +650,6 @@
 
 			});
 
-			$('#contentminheightnum,#contentminheightoum').on('change',function(){
-				var el = $('#contentminheightuomval');
-				var str = $('contentminheightuom').val();
-				var num = $('#contentminheightnum').val();
-				if (num.length > 0){
-					str = num + str;
-				}
-
-				$(el).val(str).trigger('change');
-
-			});
-
-			$('#metaminheightnum,#metaminheightoum').on('change',function(){
-				var el = $('#metaminheightuomval');
-				var str = $('#metaminheightuom').val();
-				var num = $('#metaminheightnum').val();
-				if (num.length > 0){
-					str = num + str;
-				}
-
-				$(el).val(str).trigger('change');
-
-			});
-
 			// background image
 			$('#objectbackgroundimageurl').on('change',function(){
 				var v = $(this).val();
