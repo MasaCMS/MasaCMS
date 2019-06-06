@@ -175,7 +175,7 @@
 						<label>Background Color</label>
 						<div class="input-group mura-colorpicker" id="metabackgroundcustom">
 							<span class="input-group-addon"><i class="mura-colorpicker-swatch"></i></span>
-							<input type="text" id="metabackgroundcolor" name="backgroundColor" placeholder="Select Color" autocomplete="off" value="#esapiEncode('html_attr',attributes.params.metacssstyles.backgroundcolor)#">
+							<input type="text" id="metabackgroundcolor" name="backgroundColor" class="metaStyle"  placeholder="Select Color" autocomplete="off" value="#esapiEncode('html_attr',attributes.params.metacssstyles.backgroundcolor)#">
 						</div>
 					</div>
 

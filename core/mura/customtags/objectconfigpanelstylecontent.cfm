@@ -169,7 +169,7 @@
 						<label>Background Color</label>
 						<div class="input-group mura-colorpicker" id="contentbackgroundcustom">
 							<span class="input-group-addon"><i class="mura-colorpicker-swatch"></i></span>
-							<input type="text" id="contentbackgroundcolor" name="backgroundColor" placeholder="Select Color" autocomplete="off" value="#esapiEncode('html_attr',attributes.params.contentcssstyles.backgroundcolor)#">
+							<input type="text" id="contentbackgroundcolor" name="backgroundColor" class="contentStyle" placeholder="Select Color" autocomplete="off" value="#esapiEncode('html_attr',attributes.params.contentcssstyles.backgroundcolor)#">
 						</div>
 					</div>
 
