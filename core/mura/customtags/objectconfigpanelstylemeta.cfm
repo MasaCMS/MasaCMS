@@ -25,6 +25,7 @@
 						<select name="float" class="metaStyle">
 							<option value="">--</option>
 							<option value="left"<cfif attributes.params.metacssstyles.float eq 'left'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.left')#</option>
+							<option value="none"<cfif attributes.params.metacssstyles.float eq 'none'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.center')#</option>
 							<option value="right"<cfif attributes.params.metacssstyles.float eq 'right'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.right')#</option>
 						</select>
 					</div>
@@ -157,24 +158,22 @@
 
 					</div>
 
-					<!--- background --->
+					<!--- text color --->
 					<div class="mura-control-group">
 						<!--- todo: rbkey for these labels, options and placeholders--->
+						<label>Text Color</label>
+
+						<div class="input-group mura-colorpicker">
+							<span class="input-group-addon"><i class="mura-colorpicker-swatch"></i></span>
+							<input type="text" id="metatextcolor" name="metatextcolor" class="objectParam" placeholder="Select Color" autocomplete="off" value="#esapiEncode('html_attr',attributes.params.metatextcolor)#">
+						</div>
+
+					</div>
+
+					<!--- background --->
+					<div class="mura-control-group">
 						<label>Background Color</label>
-						<cfif isArray(request.colorOptions) and arrayLen(request.colorOptions)>
-							<select id="metabackgroundcolorsel" name="backgroundColorSel" class="objectParam">
-								<option value=""<cfif attributes.params.metabackgroundcolorsel eq ''>
-							selected</cfif>>None</option>
-								<cfloop from="1" to="#arrayLen(request.colorOptions)#" index="i">
-									<cfset c = request.colorOptions[i]>
-									<option value="#c['value']#"<cfif attributes.params.metabackgroundcolorsel eq c['value']>
-							selected</cfif> style="background-color:#c['value']#;">#c['name']#</option>
-								</cfloop>
-								<option value="custom"<cfif attributes.params.metabackgroundcolorsel eq 'custom'>
-							selected</cfif>>Custom</option>
-							</select>
-						</cfif>
-						<div class="input-group mura-colorpicker" id="metabackgroundcustom" style="<cfif isArray(request.colorOptions) and arrayLen(request.colorOptions)>display: none;</cfif>">
+						<div class="input-group mura-colorpicker" id="metabackgroundcustom">
 							<span class="input-group-addon"><i class="mura-colorpicker-swatch"></i></span>
 							<input type="text" id="metabackgroundcolor" name="backgroundColor" placeholder="Select Color" autocomplete="off" value="#esapiEncode('html_attr',attributes.params.metacssstyles.backgroundcolor)#">
 						</div>

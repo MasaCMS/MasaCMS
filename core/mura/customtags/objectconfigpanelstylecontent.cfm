@@ -151,24 +151,23 @@
 
 					</div>
 
+					<!--- text color --->
+					<div class="mura-control-group">
+						<!--- todo: rbkey for these labels, options and placeholders--->
+						<label>Text Color</label>
+
+						<div class="input-group mura-colorpicker">
+							<span class="input-group-addon"><i class="mura-colorpicker-swatch"></i></span>
+							<input type="text" id="contenttextcolor" name="contenttextcolor" class="objectParam" placeholder="Select Color" autocomplete="off" value="#esapiEncode('html_attr',attributes.params.contenttextcolor)#">
+						</div>
+
+					</div>
+
 					<!--- background --->
 					<div class="mura-control-group">
 						<!--- todo: rbkey for these labels, options and placeholders--->
 						<label>Background Color</label>
-						<cfif isArray(request.colorOptions) and arrayLen(request.colorOptions)>
-							<select id="contentbackgroundcolorsel" name="backgroundColorSel" class="objectParam">
-								<option value=""<cfif attributes.params.contentbackgroundcolorsel eq ''>
-							selected</cfif>>None</option>
-								<cfloop from="1" to="#arrayLen(request.colorOptions)#" index="i">
-									<cfset c = request.colorOptions[i]>
-									<option value="#c['value']#"<cfif attributes.params.contentbackgroundcolorsel eq c['value']>
-							selected</cfif> style="background-color:#c['value']#;">#c['name']#</option>
-								</cfloop>
-								<option value="custom"<cfif attributes.params.contentbackgroundcolorsel eq 'custom'>
-							selected</cfif>>Custom</option>
-							</select>
-						</cfif>
-						<div class="input-group mura-colorpicker" id="contentbackgroundcustom" style="<cfif isArray(request.colorOptions) and arrayLen(request.colorOptions)>display: none;</cfif>">
+						<div class="input-group mura-colorpicker" id="contentbackgroundcustom">
 							<span class="input-group-addon"><i class="mura-colorpicker-swatch"></i></span>
 							<input type="text" id="contentbackgroundcolor" name="backgroundColor" placeholder="Select Color" autocomplete="off" value="#esapiEncode('html_attr',attributes.params.contentcssstyles.backgroundcolor)#">
 						</div>

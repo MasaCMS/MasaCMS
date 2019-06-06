@@ -7,6 +7,10 @@
 	param name="attributes.params.contentbackgroundimageurl" default="";
 	param name="attributes.params.contentbackgroundcolorsel" default="";
 
+	param name="attributes.params.textcolor" default="";
+	param name="attributes.params.metatextcolor" default="";
+	param name="attributes.params.contenttextcolor" default="";
+
 	param name="attributes.params.metamarginuom" default="";
 	param name="attributes.params.metapaddinguom" default="";
 	param name="attributes.params.metabackgroundcolorsel" default="";

@@ -222,26 +222,25 @@
 
 					</div>
 
+					<!--- text color --->
+					<div class="mura-control-group">
+						<!--- todo: rbkey for these labels, options and placeholders--->
+						<label>Text Color</label>
+
+						<div class="input-group mura-colorpicker">
+							<span class="input-group-addon"><i class="mura-colorpicker-swatch"></i></span>
+							<input type="text" id="objecttextcolor" name="textColor" class="objectParam" placeholder="Select Color" autocomplete="off" value="#esapiEncode('html_attr',attributes.params.textcolor)#">
+						</div>
+
+					</div>
+
 					<!--- background --->
 					<div class="mura-control-group">
 						<!--- todo: rbkey for these labels, options and placeholders--->
 						<label>Background Color</label>
-						<cfif isArray(request.colorOptions) and arrayLen(request.colorOptions)>
-							<select id="objectbackgroundcolorsel" name="backgroundColorSel" class="objectParam">
-								<option value=""<cfif attributes.params.objectbackgroundcolorsel eq ''>
-							selected</cfif>>None</option>
-								<cfloop from="1" to="#arrayLen(request.colorOptions)#" index="i">
-									<cfset c = request.colorOptions[i]>
-									<option value="#c['value']#"<cfif attributes.params.objectbackgroundcolorsel eq c['value']>
-							selected</cfif> style="background-color:#c['value']#;">#c['name']#</option>
-								</cfloop>
-								<option value="custom"<cfif attributes.params.objectbackgroundcolorsel eq 'custom'>
-							selected</cfif>>Custom</option>
-							</select>
-						</cfif>
-						<div class="input-group mura-colorpicker" id="objectbackgroundcustom" style="<cfif isArray(request.colorOptions) and arrayLen(request.colorOptions)>display: none;</cfif>">
+						<div class="input-group mura-colorpicker" id="objectbackgroundcustom">
 							<span class="input-group-addon"><i class="mura-colorpicker-swatch"></i></span>
-							<input type="text" id="objectbackgroundcolor" name="backgroundColor" placeholder="Select Color" autocomplete="off" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundcolor)#">
+							<input type="text" id="objectbackgroundcolor" name="backgroundColor" class="objectStyle" placeholder="Select Color" autocomplete="off" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundcolor)#">
 						</div>
 					</div>
 
@@ -324,11 +323,12 @@
 							</div>
 						</div>
 					</div>
-
+					<!---
 					<div class="mura-control-group css-bg-option" style="display:none;">
 						<label>Background Overlay</label>
 						<input type="text" id="objectbackgroundoverlay" name="backgroundOverlay" placeholder="" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundoverlay)#">
 					</div>
+					--->
 
 					<!--- css id and class for object --->
 					<cfif request.haspositionoptions>

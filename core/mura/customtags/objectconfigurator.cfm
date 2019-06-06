@@ -30,7 +30,6 @@
 		<cfparam name="attributes.params.contentcssid" default="">
 		<cfparam name="attributes.params.cssid" default="">
 		<cfparam name="attributes.params.label" default="">
-		<cfparam name="attributes.params.backgroundopacity" default="">
 		<cfparam name="attributes.params.object" default="">
 
 		<cfparam name="request.hasbasicoptions" default="false">
@@ -611,32 +610,6 @@
 
 			// Begin Object background
 
-			function updateObjectBgColor(v){
-				var swatchColor = v;
-				var swatchEl = $('#objectbackgroundcustom').find('i.mura-colorpicker-swatch');
-				if (v == 'custom' <cfif not(isArray(request.colorOptions) and arrayLen(request.colorOptions))> || true</cfif>){
-					$('#objectbackgroundcustom').show();
-				} else if (v == 'none'){
-					swatchColor = 'transparent'
-					$('#objectbackgroundcustom').hide();
-					$('#objectbackgroundcolor').val('');
-				} else {
-					$('#objectbackgroundcustom').hide();
-					$('#objectbackgroundcolor').val(v);
-				}
-				swatchEl.css('background-color',swatchColor);
-			}
-
-			$('#objectbackgroundcolorsel').on('change',function(){
-				var v = $(this).val();
-				updateObjectBgColor(v);
-			});
-
-			//Add this later so that the colorpicker doesn't auto trigger an object reload
-			$('#objectbackgroundcolor').addClass('objectStyle');
-
-			updateObjectBgColor($('#objectbackgroundcolorsel').val());
-
 
 			$('#objectminheightnum,#objectminheightoum').on('change',function(){
 				var el = $('#objectminheightuomval');
@@ -724,32 +697,6 @@
 
 			//Begin Content Background
 
-			// background color
-			function updateContentBgColor(v){
-				var swatchColor = v;
-				var swatchEl = $('#contentbackgroundcustom').find('i.mura-colorpicker-swatch');
-				if (v == 'custom' <cfif not(isArray(request.colorOptions) and arrayLen(request.colorOptions))> || true</cfif>){
-					$('#contentbackgroundcustom').show();
-				} else if (v == 'none'){
-					swatchColor = 'transparent'
-					$('#contentbackgroundcustom').hide();
-					$('#contentbackgroundcolor').val('');
-				} else {
-					$('#contentbackgroundcustom').hide();
-					$('#contentbackgroundcolor').val(v);
-				}
-				swatchEl.css('background-color',swatchColor);
-			}
-
-			$('#contentbackgroundcolorsel').on('change',function(){
-				var v = $(this).val();
-				updateContentBgColor(v);
-			});
-
-			//Add this later so that the colorpicker doesn't auto trigger an object reload
-			$('#contentbackgroundcolor').addClass('contentStyle');
-
-			updateContentBgColor($('#contentbackgroundcolorsel').val());
 			<!---
 			// background image
 			$('#contentbackgroundimageurl').on('change',function(){
@@ -814,35 +761,6 @@
 			//End Content Background
 			--->
 
-			// Begin Meta background color
-
-			function updateMetaBgColor(v){
-				var swatchColor = v;
-				var swatchEl = $('#contentbackgroundcustom').find('i.mura-colorpicker-swatch');
-				if (v == 'custom' <cfif not(isArray(request.colorOptions) and arrayLen(request.colorOptions))> || true</cfif>){
-					$('#metabackgroundcustom').show();
-				} else if (v == 'none'){
-					swatchColor = 'transparent'
-					$('#metabackgroundcustom').hide();
-					$('#imetabackgroundcolor').val('');
-				} else {
-					$('#metabackgroundcustom').hide();
-					$('#imetabackgroundcolor').val(v);
-				}
-				swatchEl.css('background-color',swatchColor);
-			}
-
-			$('#metabackgroundcolorsel').on('change',function(){
-				var v = $(this).val();
-				updateMetaBgColor(v);
-			});
-
-			//Add this later so that the colorpicker doesn't auto trigger an object reload
-			$('#metabackgroundcolor').addClass('metaStyle');
-
-			updateMetaBgColor($('#metabackgroundcolorsel').val());
-
-			//End Meta Background
 
 			// numeric input - select on focus
 			$('#configuratorContainer input.numeric').on('click', function(){

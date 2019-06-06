@@ -18035,19 +18035,39 @@ Mura.DOMSelection = Mura.Core.extend(
 				sheet.deleteRule(0);
 			}
 
+			var selector='div.mura-object[data-instanceid="' + obj.data('instanceid') + '"]';
+
 			if (cssstyles && typeof cssstyles.backgroundColor != 'undefined' && cssstyles.backgroundColor
 				&& typeof cssstyles.backgroundImage != 'undefined' && cssstyles.backgroundImage) {
+				var style =selector + ':before{content: ""; position: absolute;	top: 0; right: 0;left: 0;bottom:0; background:' + cssstyles.backgroundColor + '}';
 				sheet.insertRule(
-					'div.mura-object[data-instanceid="' + obj.data('instanceid') + '"]:before{content: ""; position: absolute;	top: 0; right: 0;left: 0;bottom:0; background:' + cssstyles.backgroundColor + '}',
+					style,
 					sheet.cssRules.length
 				);
  			}
+			if(obj.data('textcolor')){
+				var style=selector + ', ' + selector + ' p, ' + selector + ' h1, ' + selector + ' h2, ' + selector + ' h3, ' + selector + ' h4, ' + selector + ' h5, ' + selector + ' h6, ' +selector + ' a:link, ' + selector + ' a:visited, '  + selector + ' a:hover, ' + selector + ' a:active { color:' + obj.data('textcolor') + ';} ';
+				sheet.insertRule(
+					style,
+					sheet.cssRules.length
+				);
+			}
 
- 			if(obj.data('metacssclass') || obj.data('metacssid') || obj.data('metacssstyles')){
+ 			if(obj.data('metacssclass') || obj.data('metacssid') || obj.data('metatextcolor') || obj.data('metacssstyles')){
  				var metaWrapper=obj.children('.mura-object-meta-wrapper');
 				if(metaWrapper.length){
 					var meta=metaWrapper.children('.mura-object-meta');
 					if(meta.length){
+
+						if(obj.data('metatextcolor')){
+							var selector='div.mura-object[data-instanceid="' + obj.data('instanceid') + '"] .mura-object-meta';
+							var style = selector + ', ' + selector + ' p, ' + selector + ' h1, ' + selector + ' h2, ' + selector + ' h3, ' + selector + ' h4, ' + selector + ' h5, ' + selector + ' h6, ' +selector + ' a:link, ' + selector + ' a:visited, '  + selector + ' a:hover, ' + selector + ' a:active { color:' + obj.data('metatextcolor') + ';} ';
+							sheet.insertRule(
+								style,
+								sheet.cssRules.length
+							);
+						}
+
 			 			if(obj.data('metacssid')){
 			 				meta.attr('id',obj.data('metacssid'));
 			 			}
@@ -18067,7 +18087,16 @@ Mura.DOMSelection = Mura.Core.extend(
 				}
 			}
 
- 			if(obj.data('contentcssclass') || obj.data('contentcssid') || obj.data('contentcssstyles')){
+			if(obj.data('contenttextcolor')){
+				var selector='div.mura-object[data-instanceid="' + obj.data('instanceid') + '"] .mura-object-content';
+				var style=	selector + ', ' + selector + ' p, ' + selector + ' h1, ' + selector + ' h2, ' + selector + ' h3, ' + selector + ' h4, ' + selector + ' h5, ' + selector + ' h6, ' +selector + ' a:link, ' + selector + ' a:visited, '  + selector + ' a:hover, ' + selector + ' a:active { color:' + obj.data('contenttextcolor') + ';} ';
+				sheet.insertRule(
+				style,
+					sheet.cssRules.length
+				);
+			}
+
+ 			if(obj.data('contentcssclass') || obj.data('contentcssid') || obj.data('contenttextcolor') || obj.data('contentcssstyles')){
  				var content=obj.children('.mura-object-content').first();
 
 	 			if(obj.data('contentcssid')){
