@@ -15,7 +15,7 @@
 
 					<div class="mura-control-group">
 						<label>Label Position</label>
-						<select name="labelposition">
+						<select name="labelposition" class="classtoggle">
 						<option value="">--</option>
 						<option value="mura-object-label-left"<cfif listFind(attributes.params.class,'mura-object-label-left',' ')> selected</cfif>>Left</option>
 						<option value="mura-object-label-top"<cfif listFind(attributes.params.class,'mura-object-label-top',' ')> selected</cfif>>Top</option>
@@ -45,9 +45,9 @@
 									<label class="mura-serial">
 										<input type="text" name="margin" id="metamarginall" placeholder="All" class="numeric serial" value="<cfif len(trim(attributes.params.metacssstyles.marginall))>#val(esapiEncode('html_attr',attributes.params.metacssstyles.marginall))#</cfif>">
 									</label>
-									<select id="metamarginuom" name="metamarginuom" class="objectParam">
+									<select id="metamarginuom" name="metamarginuom" class="styleSupport">
 										<cfloop list="px,%,em,rem" index="u">
-											<option value="#u#"<cfif attributes.params.metamarginuom eq u> selected</cfif>>#u#</option>
+											<option value="#u#"<cfif attributes.params.styleSupport.metamarginuom eq u> selected</cfif>>#u#</option>
 										</cfloop>
 									</select>
 								</div>
@@ -109,9 +109,9 @@
 									<label class="mura-serial">
 										<input type="text" name="padding" id="metapaddingall" placeholder="All" class="numeric serial" value="<cfif len(trim(attributes.params.metacssstyles.paddingall))>#val(esapiEncode('html_attr',attributes.params.metacssstyles.paddingall))#</cfif>">
 									</label>
-									<select id="metapaddinguom" name="metapaddinguom" class="objectParam">
+									<select id="metapaddinguom" name="metapaddinguom" class="styleSupport">
 										<cfloop list="px,%,em,rem" index="u">
-											<option value="#u#"<cfif attributes.params.metapaddinguom eq u> selected</cfif>>#u#</option>
+											<option value="#u#"<cfif attributes.params.styleSupport.metapaddinguom eq u> selected</cfif>>#u#</option>
 										</cfloop>
 									</select>
 								</div>
@@ -169,7 +169,7 @@
 
 						<div class="input-group mura-colorpicker">
 							<span class="input-group-addon"><i class="mura-colorpicker-swatch"></i></span>
-							<input type="text" id="metatextcolor" name="metatextcolor" class="objectParam" placeholder="Select Color" autocomplete="off" value="#esapiEncode('html_attr',attributes.params.metatextcolor)#">
+							<input type="text" id="metatextcolor" name="color" class="metaStyle" placeholder="Select Color" autocomplete="off" value="#esapiEncode('html_attr',attributes.params.metacssstyles.color)#">
 						</div>
 
 					</div>
@@ -186,7 +186,7 @@
 					<div class="mura-control-group">
 						<label>Background Image</label>
 						<input type="hidden" id="metabackgroundimage" name="backgroundImage" class="metaStyle" value="#esapiEncode('html_attr',attributes.params.metacssstyles.backgroundimage)#">
-						<input type="text" id="metabackgroundimageurl" name="metabackgroundimageurl" placeholder="URL" class="objectParam" value="#esapiEncode('html_attr',attributes.params.metabackgroundimageurl)#">
+						<input type="text" id="metabackgroundimageurl" name="metabackgroundimageurl" placeholder="URL" class="styleSupport" value="#esapiEncode('html_attr',attributes.params.styleSupport.metabackgroundimageurl)#">
 						<button type="button" class="btn mura-ckfinder" data-target="metabackgroundimageurl" data-completepath="false"><i class="mi-image"></i> Select Image</button>
 					</div>
 
@@ -230,7 +230,7 @@
 										<input type="text" id="metabackgroundpositionynum" name="metaBackgroundPositionyNum" class="numeric" placeholder="" value="<cfif val(esapiEncode('html_attr',attributes.params.metacssstyles.backgroundpositiony))>#val(esapiEncode('html_attr',attributes.params.metacssstyles.backgroundpositiony))#</cfif>" style="display: none;">
 									</label>
 
-									<select id="metabackgroundpositiony" name="metaBackgroundPositionY" class="objectParam" data-numfield="metabackgroundpositionynum">
+									<select id="metabackgroundpositiony" name="metaBackgroundPositionY" class="styleSupport" data-numfield="metabackgroundpositionynum">
 										<cfloop list="Top,Center,Bottom,%,px" index="p">
 											<option value="#lcase(p)#"<cfif attributes.params.metacssstyles.backgroundpositiony contains p> selected</cfif>>#p#</option>
 										</cfloop>
@@ -250,7 +250,7 @@
 										<input type="text" id="metabackgroundpositionxnum" name="metaBackgroundPositionxNum" class="numeric" placeholder="" value="<cfif val(esapiEncode('html_attr',attributes.params.metacssstyles.backgroundpositionx))>#val(esapiEncode('html_attr',attributes.params.metacssstyles.backgroundpositionx))#</cfif>" style="display: none;">
 									</label>
 
-									<select id="metabackgroundpositionx" name="metaBackgroundPositionX" class="objectParam" data-numfield="metabackgroundpositionxnum">
+									<select id="metabackgroundpositionx" name="metaBackgroundPositionX" class="styleSupport" data-numfield="metabackgroundpositionxnum">
 										<cfloop list="Left,Center,Right,%,px" index="p">
 											<option value="#lcase(p)#"<cfif attributes.params.metacssstyles.backgroundpositionx contains p> selected</cfif>>#p#</option>
 										</cfloop>

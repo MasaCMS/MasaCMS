@@ -14,7 +14,7 @@
 					<cfif arrayLen(request.modulethemeoptions)>
 					<div class="mura-control-group">
 						<label>Theme</label>
-						<select name="moduletheme">
+						<select name="moduletheme" class="classtoggle">
 							<option value="">--</option>
 							<cfloop array="#request.modulethemeoptions#" index="theme">
 								<option value="#theme.value#"<cfif  listFind(attributes.params.class,theme.value,' ')> selected</cfif>>#esapiEncode('html',theme.name)#</option>
@@ -26,7 +26,7 @@
 
 						<div class="mura-control-group">
 							<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.alignment')#</label>
-							<select name="alignment">
+							<select name="alignment" class="classtoggle">
 							<option value="">--</option>
 							<option value="mura-left"<cfif listFind(attributes.params.class,'mura-left',' ')> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.left')#</option>
 							<option value="mura-center"<cfif listFind(attributes.params.class,'mura-center',' ')> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.center')#</option>
@@ -38,7 +38,7 @@
 							<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.width')#</label>
 							<cfset attributes.positionlabels = ''>
 							<cfset attributes.positionvalues = ''>
-							<select name="width" id="objectwidthsel">
+							<select name="width" id="objectwidthsel" class="classtoggle">
 								<cfloop from="1" to="#arrayLen(attributes.positionoptions)#" index="i">
 									<cfset p = attributes.positionoptions[i]>
 									<option value="#p['value']#"<cfif listFind(attributes.params.class,'#p['value']#',' ')> selected</cfif>>#p['label']#</option>
@@ -66,7 +66,7 @@
 						<cfif len(contentcontainerclass)>
 							<div class="mura-control-group constraincontentcontainer" style='display:none;'>
 									<label>Constrain Content</label>
-									<select name="constraincontent">
+									<select name="constraincontent" class="classtoggle">
 									<option value=""<cfif not listFind(attributes.params.contentcssclass,contentcontainerclass,' ')> selected</cfif>>False</option>
 									<option value="constrain"<cfif listFind(attributes.params.contentcssclass,contentcontainerclass,' ')> selected</cfif>>True</option>
 									</select>
@@ -84,7 +84,7 @@
 									<label class="mura-serial">
 										<input type="text" name="objectminheight" id="objectminheightnum" placeholder="0" class="numeric serial" value="<cfif len(trim(attributes.params.cssstyles.minheight))>#val(esapiEncode('html_attr',attributes.params.cssstyles.minheight))#</cfif>">
 									</label>
-									<select id="objectminheightuom" name="objectminheightuom" class="objectParam">
+									<select id="objectminheightuom" name="objectminheightuom" class="styleSupport">
 										<cfloop list="px,%,em,rem" index="u">
 											<option value="#u#"<cfif attributes.params.objectminheightuom eq u> selected</cfif>>#u#</option>
 										</cfloop>
@@ -105,9 +105,9 @@
 									<label class="mura-serial">
 										<input type="text" name="margin" id="objectmarginall" placeholder="All" class="numeric serial" value="<cfif len(trim(attributes.params.cssstyles.marginall))>#val(esapiEncode('html_attr',attributes.params.cssstyles.marginall))#</cfif>">
 									</label>
-									<select id="objectmarginuom" name="objectmarginuom" class="objectParam">
+									<select id="objectmarginuom" name="objectmarginuom" class="styleSupport">
 										<cfloop list="px,%,em,rem" index="u">
-											<option value="#u#"<cfif attributes.params.objectmarginuom eq u> selected</cfif>>#u#</option>
+											<option value="#u#"<cfif attributes.params.stylesupport.objectmarginuom eq u> selected</cfif>>#u#</option>
 										</cfloop>
 									</select>
 								</div>
@@ -169,9 +169,9 @@
 									<label class="mura-serial">
 										<input type="text" name="padding" id="objectpaddingall" placeholder="All" class="numeric serial" value="<cfif len(trim(attributes.params.cssstyles.paddingall))>#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingall))#</cfif>">
 									</label>
-									<select id="objectpaddinguom" name="objectpaddinguom" class="objectParam">
+									<select id="objectpaddinguom" name="objectpaddinguom" class="styleSupport">
 										<cfloop list="px,%,em,rem" index="u">
-											<option value="#u#"<cfif attributes.params.objectpaddinguom eq u> selected</cfif>>#u#</option>
+											<option value="#u#"<cfif attributes.params.styleSupport.objectpaddinguom eq u> selected</cfif>>#u#</option>
 										</cfloop>
 									</select>
 								</div>
@@ -229,7 +229,7 @@
 
 						<div class="input-group mura-colorpicker">
 							<span class="input-group-addon"><i class="mura-colorpicker-swatch"></i></span>
-							<input type="text" id="objecttextcolor" name="textColor" class="objectParam" placeholder="Select Color" autocomplete="off" value="#esapiEncode('html_attr',attributes.params.textcolor)#">
+							<input type="text" id="objecttextcolor" name="color" class="objectStyle" placeholder="Select Color" autocomplete="off" value="#esapiEncode('html_attr',attributes.params.cssstyles.color)#">
 						</div>
 
 					</div>
@@ -247,7 +247,7 @@
 					<div class="mura-control-group">
 						<label>Background Image</label>
 						<input type="hidden" id="objectbackgroundimage" name="backgroundImage" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundimage)#">
-						<input type="text" id="objectbackgroundimageurl" name="objectbackgroundimageurl" placeholder="URL" class="objectParam" value="#esapiEncode('html_attr',attributes.params.objectbackgroundimageurl)#">
+						<input type="text" id="objectbackgroundimageurl" name="objectbackgroundimageurl" placeholder="URL" class="styleSupport" value="#esapiEncode('html_attr',attributes.params.styleSupport.objectbackgroundimageurl)#">
 						<button type="button" class="btn mura-ckfinder" data-target="objectbackgroundimageurl" data-completepath="false"><i class="mi-image"></i> Select Image</button>
 					</div>
 
@@ -291,7 +291,7 @@
 										<input type="text" id="objectbackgroundpositionynum" name="objectBackgroundPositionyNum" class="numeric" placeholder="" value="<cfif val(esapiEncode('html_attr',attributes.params.cssstyles.backgroundpositiony))>#val(esapiEncode('html_attr',attributes.params.cssstyles.backgroundpositiony))#</cfif>" style="display: none;">
 									</label>
 
-									<select id="objectbackgroundpositiony" name="objectBackgroundPositionY" class="objectParam" data-numfield="objectbackgroundpositionynum">
+									<select id="objectbackgroundpositiony" name="objectBackgroundPositionY" class="styleSupport" data-numfield="objectbackgroundpositionynum">
 										<cfloop list="Top,Center,Bottom,%,px" index="p">
 											<option value="#lcase(p)#"<cfif attributes.params.cssstyles.backgroundpositiony contains p> selected</cfif>>#p#</option>
 										</cfloop>
@@ -311,7 +311,7 @@
 										<input type="text" id="objectbackgroundpositionxnum" name="objectBackgroundPositionxNum" class="numeric" placeholder="" value="<cfif val(esapiEncode('html_attr',attributes.params.cssstyles.backgroundpositionx))>#val(esapiEncode('html_attr',attributes.params.cssstyles.backgroundpositionx))#</cfif>" style="display: none;">
 									</label>
 
-									<select id="objectbackgroundpositionx" name="objectBackgroundPositionX" class="objectParam" data-numfield="objectbackgroundpositionxnum">
+									<select id="objectbackgroundpositionx" name="objectBackgroundPositionX" class="styleSupport" data-numfield="objectbackgroundpositionxnum">
 										<cfloop list="Left,Center,Right,%,px" index="p">
 											<option value="#lcase(p)#"<cfif attributes.params.cssstyles.backgroundpositionx contains p> selected</cfif>>#p#</option>
 										</cfloop>
@@ -334,7 +334,7 @@
 						<label>
 							CSS Class
 						</label>
-						<input name="cssclass" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.cssclass)#" maxlength="255">
+						<input name="cssclass" class="objectParam classtoggle" type="text" value="#esapiEncode('html_attr',attributes.params.cssclass)#" maxlength="255">
 					</div>
 
 				</div> <!--- /end container --->

@@ -243,29 +243,14 @@
 				var classInput=$('input[name="class"]');
 				classInput.val('');
 
-  			var alignment=$('select[name="alignment"]');
-  			classInput.val(alignment.val());
-
-  			var width=$('select[name="width"]');
-				if(classInput.val() ){
-					classInput.val(classInput.val() + ' ' + width.val());
-				} else {
-					classInput.val(width.val());
-				}
-
-				var position=$('select[name="labelposition"]');
-				if(classInput.val() ){
-					classInput.val(classInput.val() + ' ' + position.val());
-				} else {
-					classInput.val(position.val());
-				}
-
-				var theme=$('select[name="moduletheme"]');
-				if(classInput.val() ){
-					classInput.val(classInput.val() + ' ' + theme.val());
-				} else {
-					classInput.val(theme.val());
-				}
+				$('.classtoggle,.classToggle').each(function(){
+					var input=$(this);
+					if(classInput.val() ){
+						classInput.val(classInput.val() + ' ' + input.val());
+					} else {
+						classInput.val(input.val());
+					}
+				})
 
 				classInput.val($.trim(classInput.val()));
 
@@ -278,7 +263,7 @@
 				var constraincontent=$('select[name="constraincontent"]');
 
 				if(constraincontent.length){
-					if(width.val()=='mura-expanded'){
+					if($('select[name="width"].classtoggle').val()=='mura-expanded'){
 						$('.constraincontentcontainer').show();
 						if(constraincontent.val()=='constrain'){
 							if(contentcssclassArray.indexOf(expandedContentContainerClass)==-1){
@@ -314,18 +299,6 @@
 					contentcssclass.val($.trim(contentcssclass.val()));
 				}
 
-				var cssclassInput=$('input[name="cssclass"]');
-
-	  		if(cssclassInput.val()){
-  				if(classInput.val() ){
-  					classInput.val(classInput.val() + ' ' + cssclassInput.val());
-  				} else {
-  					classInput.val(cssclassInput.val());
-  				}
-
-					classInput.val($.trim(classInput.val()));
-	  		}
-
 				if(typeof updateDraft == 'function'){
 					updateDraft();
 				}
@@ -355,7 +328,7 @@
 				return false;
 			})
 
-			$('input[name="cssclass"],select[name="moduletheme"],select[name="alignment"],select[name="width"],select[name="offset"],select[name="constraincontent"],select[name="labelposition"]').on('change', function() {
+			$('.classtoggle,.classToggle').on('change', function() {
 				updateDynamicClasses();
 			});
 
