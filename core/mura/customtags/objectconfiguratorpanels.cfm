@@ -1,35 +1,36 @@
 <!--- todo: merge this into parent file objectconfigurator.cfm --->
 <cfscript>
-	param name="attributes.params.objectbackgroundimageurl" default="";
-	param name="attributes.params.objectbackgroundimageurl" default="";
-	param name="attributes.params.objectbackgroundcolorsel" default="";
-	param name="attributes.params.contentbackgroundimageurl" default="";
-	param name="attributes.params.contentbackgroundimageurl" default="";
-	param name="attributes.params.contentbackgroundcolorsel" default="";
-	param name="attributes.params.metabackgroundimageurl" default="";
-	param name="attributes.params.metabackgroundimageurl" default="";
-	param name="attributes.params.metabackgroundcolorsel" default="";
-
-	param name="attributes.params.textcolor" default="";
-	param name="attributes.params.metatextcolor" default="";
-	param name="attributes.params.contenttextcolor" default="";
-
-	param name="attributes.params.metamarginuom" default="";
-	param name="attributes.params.metapaddinguom" default="";
-	param name="attributes.params.metabackgroundcolorsel" default="";
-	param name="attributes.params.objectmarginuom" default="";
-	param name="attributes.params.objectpaddinguom" default="";
-	param name="attributes.params.objectminheightuom" default="";
-	param name="attributes.params.metaminheightuom" default="";
-	param name="attributes.params.contentminheightuom" default="";
-	param name="attributes.params.contentmarginuom" default="";
-	param name="attributes.params.contentpaddinguom" default="";
-	param name="attributes.params.objectbackgroundpositionx" default="";
-	param name="attributes.params.objectbackgroundpositiony" default="";
-	param name="attributes.params.contentbackgroundpositionx" default="";
-	param name="attributes.params.contentbackgroundpositiony" default="";
-	param name="attributes.params.metabackgroundpositionx" default="";
-	param name="attributes.params.metabackgroundpositiony" default="";
+	if(!isStruct(attributes.params)){
+		attributes.params={};
+	}
+	param name="attributes.params.stylesupport" default={};
+	if(!isStruct(attributes.params.stylesupport)){
+		attributes.params.stylesupport={};
+	}
+	param name="attributes.params.stylesupport.objectbackgroundimageurl" default="";
+	param name="attributes.params.stylesupport.objectbackgroundcolorsel" default="";
+	param name="attributes.params.stylesupport.contentbackgroundimageurl" default="";
+	param name="attributes.params.stylesupport.contentbackgroundimageurl" default="";
+	param name="attributes.params.stylesupport.contentbackgroundcolorsel" default="";
+	param name="attributes.params.stylesupport.metabackgroundimageurl" default="";
+	param name="attributes.params.stylesupport.metabackgroundimageurl" default="";
+	param name="attributes.params.stylesupport.metabackgroundcolorsel" default="";
+	param name="attributes.params.stylesupport.metamarginuom" default="";
+	param name="attributes.params.stylesupport.metapaddinguom" default="";
+	param name="attributes.params.stylesupport.metabackgroundcolorsel" default="";
+	param name="attributes.params.stylesupport.objectmarginuom" default="";
+	param name="attributes.params.stylesupport.objectpaddinguom" default="";
+	param name="attributes.params.stylesupport.objectminheightuom" default="";
+	param name="attributes.params.stylesupport.metaminheightuom" default="";
+	param name="attributes.params.stylesupport.contentminheightuom" default="";
+	param name="attributes.params.stylesupport.contentmarginuom" default="";
+	param name="attributes.params.stylesupport.contentpaddinguom" default="";
+	param name="attributes.params.stylesupport.objectbackgroundpositionx" default="";
+	param name="attributes.params.stylesupport.objectbackgroundpositiony" default="";
+	param name="attributes.params.stylesupport.contentbackgroundpositionx" default="";
+	param name="attributes.params.stylesupport.contentbackgroundpositiony" default="";
+	param name="attributes.params.stylesupport.metabackgroundpositionx" default="";
+	param name="attributes.params.stylesupport.metabackgroundpositiony" default="";
 
 	attributes.globalparams = [
 		'backgroundcolor'
@@ -42,6 +43,7 @@
 		,'backgroundrepeat'
 		,'backgroundsize'
 		,'backgroundvideo'
+		,'color'
 		,'float'
 		,'margin'
 		,'margintop'

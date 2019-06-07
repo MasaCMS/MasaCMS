@@ -35,9 +35,9 @@
 									<label class="mura-serial">
 										<input type="text" name="margin" id="contentmarginall" placeholder="All" class="numeric serial" value="<cfif len(trim(attributes.params.contentcssstyles.marginall))>#val(esapiEncode('html_attr',attributes.params.contentcssstyles.marginall))#</cfif>">
 									</label>
-									<select id="contentmarginuom" name="contentmarginuom" class="objectParam">
+									<select id="contentmarginuom" name="contentmarginuom" class="styleSupport">
 										<cfloop list="px,%,em,rem" index="u">
-											<option value="#u#"<cfif attributes.params.contentmarginuom eq u> selected</cfif>>#u#</option>
+											<option value="#u#"<cfif attributes.params.styleSupport.contentmarginuom eq u> selected</cfif>>#u#</option>
 										</cfloop>
 									</select>
 								</div>
@@ -99,9 +99,9 @@
 									<label class="mura-serial">
 										<input type="text" name="padding" id="contentpaddingall" placeholder="All" class="numeric serial" value="<cfif len(trim(attributes.params.contentcssstyles.paddingall))>#val(esapiEncode('html_attr',attributes.params.contentcssstyles.paddingall))#</cfif>">
 									</label>
-									<select id="contentpaddinguom" name="contentpaddinguom" class="objectParam">
+									<select id="contentpaddinguom" name="contentpaddinguom" class="styleSupport">
 										<cfloop list="px,%,em,rem" index="u">
-											<option value="#u#"<cfif attributes.params.contentpaddinguom eq u> selected</cfif>>#u#</option>
+											<option value="#u#"<cfif attributes.params.styleSupport.contentpaddinguom eq u> selected</cfif>>#u#</option>
 										</cfloop>
 									</select>
 								</div>
@@ -158,7 +158,7 @@
 
 						<div class="input-group mura-colorpicker">
 							<span class="input-group-addon"><i class="mura-colorpicker-swatch"></i></span>
-							<input type="text" id="contenttextcolor" name="contenttextcolor" class="objectParam" placeholder="Select Color" autocomplete="off" value="#esapiEncode('html_attr',attributes.params.contenttextcolor)#">
+							<input type="text" id="contenttextcolor" name="color" class="contentStyle" placeholder="Select Color" autocomplete="off" value="#esapiEncode('html_attr',attributes.params.contentcssstyles.color)#">
 						</div>
 
 					</div>
@@ -176,7 +176,7 @@
 					<div class="mura-control-group">
 						<label>Background Image</label>
 						<input type="hidden" id="contentbackgroundimage" name="backgroundImage" class="contentStyle" value="#esapiEncode('html_attr',attributes.params.contentcssstyles.backgroundimage)#">
-						<input type="text" id="contentbackgroundimageurl" name="contentbackgroundimageurl" placeholder="URL" class="objectParam" value="#esapiEncode('html_attr',attributes.params.contentbackgroundimageurl)#">
+						<input type="text" id="contentbackgroundimageurl" name="contentbackgroundimageurl" placeholder="URL" class="styleSupport" value="#esapiEncode('html_attr',attributes.params.styleSupport.contentbackgroundimageurl)#">
 						<button type="button" class="btn mura-ckfinder" data-target="contentbackgroundimageurl" data-completepath="false"><i class="mi-image"></i> Select Image</button>
 					</div>
 
@@ -220,7 +220,7 @@
 										<input type="text" id="contentbackgroundpositionynum" name="contentBackgroundPositionyNum" class="numeric" placeholder="" value="<cfif val(esapiEncode('html_attr',attributes.params.contentcssstyles.backgroundpositiony))>#val(esapiEncode('html_attr',attributes.params.contentcssstyles.backgroundpositiony))#</cfif>" style="display: none;">
 									</label>
 
-									<select id="contentbackgroundpositiony" name="contentBackgroundPositionY" class="objectParam" data-numfield="contentbackgroundpositionynum">
+									<select id="contentbackgroundpositiony" name="contentBackgroundPositionY" class="styleSupport" data-numfield="contentbackgroundpositionynum">
 										<cfloop list="Top,Center,Bottom,%,px" index="p">
 											<option value="#lcase(p)#"<cfif attributes.params.contentcssstyles.backgroundpositiony contains p> selected</cfif>>#p#</option>
 										</cfloop>
@@ -240,7 +240,7 @@
 										<input type="text" id="contentbackgroundpositionxnum" name="contentBackgroundPositionxNum" class="numeric" placeholder="" value="<cfif val(esapiEncode('html_attr',attributes.params.contentcssstyles.backgroundpositionx))>#val(esapiEncode('html_attr',attributes.params.contentcssstyles.backgroundpositionx))#</cfif>" style="display: none;">
 									</label>
 
-									<select id="contentbackgroundpositionx" name="contentBackgroundPositionX" class="objectParam" data-numfield="contentbackgroundpositionxnum">
+									<select id="contentbackgroundpositionx" name="contentBackgroundPositionX" class="styleSupport" data-numfield="contentbackgroundpositionxnum">
 										<cfloop list="Left,Center,Right,%,px" index="p">
 											<option value="#lcase(p)#"<cfif attributes.params.contentcssstyles.backgroundpositionx contains p> selected</cfif>>#p#</option>
 										</cfloop>

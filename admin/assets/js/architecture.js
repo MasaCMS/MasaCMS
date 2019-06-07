@@ -2780,6 +2780,28 @@ buttons: {
 			}
 		})
 
+		availableObjectParams['stylesupport']={};
+
+		$(".styleSupport, .stylesupport").each(
+
+		function() {
+			var item = $(this);
+			if(item.val() != null && ( item.attr("type") != "radio" || (item.attr("type") == "radio"  && item.is(':checked')) ) ) {
+
+				if(typeof item.attr("name") != 'undefined'){
+					if(typeof availableObjectParams['stylesupport'][item.attr("name")] == 'undefined') {
+						if(item.attr("type") == "checkbox" && !item.is(":checked")){
+							availableObjectParams['stylesupport'][item.attr("name")] = '';
+						} else {
+							availableObjectParams['stylesupport'][item.attr("name")] = item.val();
+						}
+					} else if (!(item.attr("type") == "checkbox" && !item.is(":checked")) ){
+						availableObjectParams['stylesupport'][item.attr("name")] = availableObjectParams['stylesupport'][item.attr("name")] + ',' + item.val();
+					}
+				}
+			}
+		})
+
 		this.availableObject = $.extend({}, this.availableObjectTemplate);
 		this.availableObject.params = availableObjectParams;
 		this.availableObject.params.cssstyles=JSON.stringify(this.availableObject.params.cssstyles);

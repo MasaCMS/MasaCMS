@@ -2325,15 +2325,8 @@ var Mura=(function(){
 	function filterUnwantedParams(params){
 
 		//Strip out unwanted attributes
-		var unwanted=['iconclass','objectname','inited','params','cssstyles','metacssstyles','contentcssstyles',
-			'cssclass','cssid','metacssclass','metacssid','contentcssclass','contentcssid',
-			'objectminheightuom','metaminheightuom','contentinheightuom',
-			'textcolor','metatextcolor','contenttextcolor',
-			'objectpaddinguom','metapaddinguom','contentpaddinguom',
-			'objectmarginuom','metamarginuom','contentmarginuom',
-			'objectbackgroundimageurl','metabackgroundimageurl','contentbackgroundimageurl',
-			'objectbackgroundpositiony','metabackgroundpositiony','contentbackgroundpositiony',
-			'objectbackgroundpositionx','metabackgroundpositionx','contentbackgroundpositionx'];
+		var unwanted=['iconclass','objectname','inited','params','supportstyle','cssstyles','metacssstyles','contentcssstyles',
+			'cssclass','cssid','metacssclass','metacssid','contentcssclass','contentcssid'];
 
 		for(var c=0; c<unwanted.length;c++){
 			delete params[unwanted[c]];
@@ -18065,15 +18058,15 @@ Mura.DOMSelection = Mura.Core.extend(
 					sheet.cssRules.length
 				);
  			}
-			if(obj.data('textcolor')){
-				var style=selector + ', ' + selector + ' label, ' + selector + ' p, ' + selector + ' h1, ' + selector + ' h2, ' + selector + ' h3, ' + selector + ' h4, ' + selector + ' h5, ' + selector + ' h6, ' +selector + ' a:link, ' + selector + ' a:visited, '  + selector + ' a:hover, ' + selector + ' a:active { color:' + obj.data('textcolor') + ';} ';
+			if(cssstyles && cssstyles.color){
+				var style=selector + ', ' + selector + ' label, ' + selector + ' p, ' + selector + ' h1, ' + selector + ' h2, ' + selector + ' h3, ' + selector + ' h4, ' + selector + ' h5, ' + selector + ' h6, ' +selector + ' a:link, ' + selector + ' a:visited, '  + selector + ' a:hover, ' + selector + ' a:active { color:' + cssstyles.color + ';} ';
 				sheet.insertRule(
 					style,
 					sheet.cssRules.length
 				);
 			}
 
- 			if(obj.data('metacssclass') || obj.data('metacssid') || obj.data('metatextcolor') || obj.data('metacssstyles')){
+ 			if(obj.data('metacssclass') || obj.data('metacssid') ||  obj.data('metacssstyles')){
  				var metaWrapper=obj.children('.mura-object-meta-wrapper');
 				if(metaWrapper.length){
 					var meta=metaWrapper.children('.mura-object-meta');
@@ -18093,9 +18086,9 @@ Mura.DOMSelection = Mura.Core.extend(
 								sheet.cssRules.length
 							);
 			 			}
-						if(obj.data('metatextcolor')){
+						if(metacssstyles && metacssstyles.color){
 
-							var style = selector + ', ' + selector + ' label, ' + selector + ' p, ' + selector + ' h1, ' + selector + ' h2, ' + selector + ' h3, ' + selector + ' h4, ' + selector + ' h5, ' + selector + ' h6, ' +selector + ' a:link, ' + selector + ' a:visited, '  + selector + ' a:hover, ' + selector + ' a:active { color:' + obj.data('metatextcolor') + ';} ';
+							var style = selector + ', ' + selector + ' label, ' + selector + ' p, ' + selector + ' h1, ' + selector + ' h2, ' + selector + ' h3, ' + selector + ' h4, ' + selector + ' h5, ' + selector + ' h6, ' +selector + ' a:link, ' + selector + ' a:visited, '  + selector + ' a:hover, ' + selector + ' a:active { color:' + metacssstyles.color + ';} ';
 							sheet.insertRule(
 								style,
 								sheet.cssRules.length
@@ -18137,16 +18130,16 @@ Mura.DOMSelection = Mura.Core.extend(
 				);
 			}
 
-			if(obj.data('contenttextcolor')){
+			if(contentcssstyles && contentcssstyles.color){
 
-				var style=	selector + ', ' + selector + ' label, ' + selector + ' p, ' + selector + ' h1, ' + selector + ' h2, ' + selector + ' h3, ' + selector + ' h4, ' + selector + ' h5, ' + selector + ' h6, ' +selector + ' a:link, ' + selector + ' a:visited, '  + selector + ' a:hover, ' + selector + ' a:active { color:' + obj.data('contenttextcolor') + ';} ';
+				var style=	selector + ', ' + selector + ' label, ' + selector + ' p, ' + selector + ' h1, ' + selector + ' h2, ' + selector + ' h3, ' + selector + ' h4, ' + selector + ' h5, ' + selector + ' h6, ' +selector + ' a:link, ' + selector + ' a:visited, '  + selector + ' a:hover, ' + selector + ' a:active { color:' + contentcssstyles.color + ';} ';
 				sheet.insertRule(
 				style,
 					sheet.cssRules.length
 				);
 			}
 
- 			if(obj.data('contentcssclass') || obj.data('contentcssid') || obj.data('contenttextcolor') || obj.data('contentcssstyles')){
+ 			if(obj.data('contentcssclass') || obj.data('contentcssid') ||  obj.data('contentcssstyles')){
  				var content=obj.children('.mura-object-content').first();
 
 	 			if(obj.data('contentcssid')){
