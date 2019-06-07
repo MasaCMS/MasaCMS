@@ -2807,6 +2807,7 @@ buttons: {
 		this.availableObject.params.cssstyles=JSON.stringify(this.availableObject.params.cssstyles);
 		this.availableObject.params.metacssstyles=JSON.stringify(this.availableObject.params.metacssstyles);
 		this.availableObject.params.contentcssstyles=JSON.stringify(this.availableObject.params.contentcssstyles);
+		this.availableObject.params.stylesupport=JSON.stringify(this.availableObject.params.stylesupport);
 
 		if(typeof originParams == 'object'){
 			this.availableObject.params=$.extend(originParams,this.availableObject.params);
