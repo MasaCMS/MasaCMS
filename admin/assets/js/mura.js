@@ -2164,7 +2164,7 @@ var Mura=(function(){
 
 			var data = new FormData(frm);
 			var checkdata = setLowerCaseKeys(formToObject(frm));
-			var keys = deepExtend(setLowerCaseKeys(obj.data()),
+			var keys = filterUnwantedParams(deepExtend(setLowerCaseKeys(obj.data())),
 				urlparams, {
 						siteid: Mura.siteid,
 						contentid: Mura.contentid,
@@ -2204,7 +2204,7 @@ var Mura=(function(){
 
 		} else {
 
-			var data = deepExtend(setLowerCaseKeys(obj.data()),
+			var data = filterUnwantedParams(deepExtend(setLowerCaseKeys(obj.data())),
 				urlparams, setLowerCaseKeys(formToObject(frm)),
 					{
 						siteid: Mura.siteid,
@@ -2243,7 +2243,7 @@ var Mura=(function(){
 
 		var self = obj.node;
 		self.prevInnerHTML = self.innerHTML;
-		self.prevData = obj.data();
+		self.prevData = filterUnwantedParams(obj.data());
 
 		if(typeof self.prevData != 'undefined' && typeof self.prevData.preloadermarkup != 'undefined'){
 			self.innerHTML = self.prevData.preloadermarkup;
@@ -2322,6 +2322,26 @@ var Mura=(function(){
 			return processDisplayObject(obj, false, true,false,usePreloaderMarkup);
 	}
 
+	function filterUnwantedParams(params){
+
+		//Strip out unwanted attributes
+		var unwanted=['iconclass','objectname','inited','params','cssstyles','metacssstyles','contentcssstyles',
+			'cssclass','cssid','metacssclass','metacssid','contentcssclass','contentcssid',
+			'objectminheightuom','metaminheightuom','contentinheightuom',
+			'textcolor','metatextcolor','contenttextcolor',
+			'objectpaddinguom','metapaddinguom','contentpaddinguom',
+			'objectmarginuom','metamarginuom','contentmarginuom',
+			'objectbackgroundimageurl','metabackgroundimageurl','contentbackgroundimageurl',
+			'objectbackgroundpositiony','metabackgroundpositiony','contentbackgroundpositiony',
+			'objectbackgroundpositionx','metabackgroundpositionx','contentbackgroundpositionx'];
+
+		for(var c=0; c<unwanted.length;c++){
+			delete params[unwanted[c]];
+		}
+
+		return params;
+	}
+
 	function destroyDisplayObjects(){
 		for (var property in Mura.displayObjectInstances) {
 			if (Mura.displayObjectInstances.hasOwnProperty(property)) {
@@ -2361,11 +2381,11 @@ var Mura=(function(){
 					obj.html(trim(response.html));
 				} else {
 					if (obj.data('object') == 'container') {
-						var context = deepExtend(obj.data(), response);
+						var context = filterUnwantedParams(deepExtend(obj.data(), response));
 						context.targetEl = obj.node;
 						obj.prepend(Mura.templates.meta(context));
 					} else {
-						var context = deepExtend(obj.data(), response);
+						var context = filterUnwantedParams(deepExtend(obj.data(), response));
 						var template = obj.data('clienttemplate') || obj.data('object');
 						var properNameCheck = firstToUpperCase(template);
 
@@ -2418,7 +2438,7 @@ var Mura=(function(){
 					}
 				}
 		} else {
-			var context = obj.data();
+			var context = filterUnwantedParams(obj.data());
 			if (obj.data('object') == 'container') {
 				obj.prepend(Mura.templates.meta(context));
 			} else {
@@ -2746,7 +2766,7 @@ var Mura=(function(){
 				obj.calculateDisplayObjectStyles();
 
 				if(!rerender && obj.data('render')=='client' && obj.children('.mura-object-content').length){
-					var context=obj.data();
+					var context=filterUnwantedParams(obj.data());
 					if(typeof context.instanceid != 'undefined' && typeof Mura.hydrationData[context.instanceid] != 'undefined'){
 						Mura.extend(context,Mura.hydrationData[context.instanceid]);
 					}
@@ -2810,8 +2830,6 @@ var Mura=(function(){
 					contenthistid: Mura.contenthistid
 				});
 
-			delete data.inited;
-
 			if (obj.data('contentid')) {
 				data.contentid = self.getAttribute('data-contentid');
 			}
@@ -2823,8 +2841,6 @@ var Mura=(function(){
 			if ('objectparams' in data) {
 				data['objectparams'] = encodeURIComponent(JSON.stringify(data['objectparams']));
 			}
-
-			delete data.params;
 
 			if (obj.data('object') == 'container') {
 				wireUpObject(obj);
@@ -2858,7 +2874,7 @@ var Mura=(function(){
 						ajax({
 							url: Mura.apiEndpoint + '?method=processAsyncObject',
 							type: 'get',
-							data: data,
+							data: filterUnwantedParams(data),
 							success: function(resp) {
 								handleResponse(obj,resp);
 								if (typeof resolve =='function') {
