@@ -14,7 +14,7 @@
 					<cfif arrayLen(request.modulethemeoptions)>
 					<div class="mura-control-group">
 						<label>Theme</label>
-						<select name="moduletheme">
+						<select name="moduletheme" class="classtoggle">
 							<option value="">--</option>
 							<cfloop array="#request.modulethemeoptions#" index="theme">
 								<option value="#theme.value#"<cfif  listFind(attributes.params.class,theme.value,' ')> selected</cfif>>#esapiEncode('html',theme.name)#</option>
@@ -26,7 +26,7 @@
 
 						<div class="mura-control-group">
 							<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.alignment')#</label>
-							<select name="alignment">
+							<select name="alignment" class="classtoggle">
 							<option value="">--</option>
 							<option value="mura-left"<cfif listFind(attributes.params.class,'mura-left',' ')> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.left')#</option>
 							<option value="mura-center"<cfif listFind(attributes.params.class,'mura-center',' ')> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.center')#</option>
@@ -38,7 +38,7 @@
 							<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.width')#</label>
 							<cfset attributes.positionlabels = ''>
 							<cfset attributes.positionvalues = ''>
-							<select name="width" id="objectwidthsel">
+							<select name="width" id="objectwidthsel" class="classtoggle">
 								<cfloop from="1" to="#arrayLen(attributes.positionoptions)#" index="i">
 									<cfset p = attributes.positionoptions[i]>
 									<option value="#p['value']#"<cfif listFind(attributes.params.class,'#p['value']#',' ')> selected</cfif>>#p['label']#</option>
@@ -66,7 +66,7 @@
 						<cfif len(contentcontainerclass)>
 							<div class="mura-control-group constraincontentcontainer" style='display:none;'>
 									<label>Constrain Content</label>
-									<select name="constraincontent">
+									<select name="constraincontent" class="classtoggle">
 									<option value=""<cfif not listFind(attributes.params.contentcssclass,contentcontainerclass,' ')> selected</cfif>>False</option>
 									<option value="constrain"<cfif listFind(attributes.params.contentcssclass,contentcontainerclass,' ')> selected</cfif>>True</option>
 									</select>
@@ -334,7 +334,7 @@
 						<label>
 							CSS Class
 						</label>
-						<input name="cssclass" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.cssclass)#" maxlength="255">
+						<input name="cssclass" class="objectParam classtoggle" type="text" value="#esapiEncode('html_attr',attributes.params.cssclass)#" maxlength="255">
 					</div>
 
 				</div> <!--- /end container --->
