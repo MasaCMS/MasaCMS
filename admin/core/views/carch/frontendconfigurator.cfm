@@ -29,30 +29,30 @@
 </cfsilent>
 <cfinclude template="js.cfm">
 <cfif rc.layoutmanager>
-	<cfoutput>
-		<cfif rc.sourceFrame  eq 'modal'>
-			<div class="mura-header">
-				<h1 id="configuratorHeader">Loading...</h1>
-			</div>
-			<div class="block block-constrain">
-				<div class="block block-bordered">
-				  <div class="block-content">
-		</cfif>
-	<div id="configuratorContainer">
-		<cfif rc.sourceFrame eq 'sidebar'>
-			<h1 id="configuratorHeader"></h1>
-			<a class="mura-close" onclick="frontEndProxy.post({cmd:'showobjects'});"><i class="mi-close"></i></a>
-		</cfif>
+<cfoutput>
+<cfif rc.sourceFrame  eq 'modal'>
+	<div class="mura-header">
+		<h1 id="configuratorHeader">Loading...</h1>
+	</div>
+	<div class="block block-constrain">
+		<div class="block block-bordered">
+		  <div class="block-content">
+</cfif>
+			<div id="configuratorContainer">
+				<cfif rc.sourceFrame eq 'sidebar'>
+					<h1 id="configuratorHeader"></h1>
+					<a class="mura-close" onclick="frontEndProxy.post({cmd:'showobjects'});"><i class="mi-close"></i></a>
+				</cfif>
 
-		<div class="clearfix">
-		    <div id="configurator"><div class="load-inline"></div></div>
-		   <!---
-		    <div style="float: right; width: 30%;"><h2>Preview</h2>
-		    	<iframe id="configuratorPreview" style="width:100%;height:700px;" marginheight="0" marginwidth="0" frameborder="0" src=""></iframe>
-		    </div>
-		    --->
-		</div>
-		<cfif not listFindNoCase('folder,calendar,gallery',rc.object) and not isdefined('rc.isBody')>
+				<div class="clearfix">
+					<div id="configurator"><div class="load-inline"></div></div>
+					<!---
+					<div style="float: right; width: 30%;"><h2>Preview</h2>
+					<iframe id="configuratorPreview" style="width:100%;height:700px;" marginheight="0" marginwidth="0" frameborder="0" src=""></iframe>
+					</div>
+					--->
+			</div>
+			<cfif not listFindNoCase('folder,calendar,gallery',rc.object) and not isdefined('rc.isBody')>
 			<div class="form-actions" style="display:none">
 
 				<cfif rc.sourceFrame eq 'modal'>
@@ -62,19 +62,19 @@
 				<a href="##" class="btn mura-delete" id="deleteObject"><i class="mi-trash"></i> #esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.delete"))#</a>
 
 			</div>
-		</cfif>
-	</div><!-- /configuratorContainer -->
-		<cfif rc.sourceFrame eq 'modal'>
-				</div> <!-- /.block-content -->
-			</div> <!-- /.block-bordered -->
-		</div> <!-- /.block-constrain -->
-		</cfif>
+			</cfif>
+		</div><!-- /configuratorContainer -->
+<cfif rc.sourceFrame eq 'modal'>
+		</div> <!-- /.block-content -->
+	</div> <!-- /.block-bordered -->
+</div> <!-- /.block-constrain -->
+</cfif>
 
-	<cfif len(rc.$.event('preloadOnly'))>
-		<script>
-			$('##configurator .load-inline').spin(spinnerArgs2);
-		</script>
-	<cfelse>
+<cfif len(rc.$.event('preloadOnly'))>
+	<script>
+		$('##configurator .load-inline').spin(spinnerArgs2);
+	</script>
+<cfelse>
 	<cfinclude template="dsp_configuratorJS.cfm">
 	<script>
 		$('##configurator .load-inline').spin(spinnerArgs2);
@@ -86,16 +86,16 @@
 		var configOptions={};
 		var originParams={};
 		var originid='#esapiEncode('javascript',rc.objectid)#';
-		var inited=true;
+		window.configuratorInited=false;
 
 		var updateDraft=function(){
-				if(!inited){
+				if(!window.configuratorInited){
 					return;
 				}
 				if(typeof currentPanel == 'undefined'){
 					currentPanel='';
 				}
-				
+
 				siteManager.updateAvailableObject();
 
 				var availableObjectSelector=jQuery('##availableObjectSelector');
@@ -261,6 +261,7 @@
 	</cfif>
 	</cfoutput>
 <cfelse>
+<!--- BEGIN LEGACY DISPLAY OBJECTS --->
 	<cfsilent>
 		<cfset rsDisplayObject=application.contentManager.readContentObject(rc.contentHistID,rc.regionID,rc.orderno)>
 		<cfset rc.siteid=rsDisplayObject.siteid>
@@ -645,4 +646,5 @@
 	</script>
 	<cfinclude template="dsp_configuratorJS.cfm">
 	</cfoutput>
+	<!--- END LEGACY DISPLAY OBJECTS --->
 </cfif>

@@ -3066,6 +3066,7 @@ buttons: {
 			data: data,
 			type: 'post',
 			success: function(_resp) {
+				window.configuratorInited;
 				try {
 					resp = eval('(' + _resp + ')');
 				} catch(err) {
@@ -3085,7 +3086,7 @@ buttons: {
 
 				$('.form-actions').show();
 
-	      		niceSelects=$('.mura #configurator select');;
+				niceSelects=$('.mura #configurator select');;
 
 				if(niceSelects.niceSelect){
 					niceSelects.each(function(){
@@ -3156,6 +3157,8 @@ buttons: {
 					$("#actionButtons").show();
 					$("#configuratorNotices").show();
 				}
+				window.configuratorInited=false;
+
 				//initConfiguratorParams();
 			}
 		});

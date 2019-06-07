@@ -187,7 +187,7 @@
 		$(function(){
 
 			currentPanel="";
-			inited=false;
+			window.configuratorInited=false;
 
 			$('#panel-gds-object,.mura-panel-heading').click(function(){
 				currentPanel="";
@@ -376,9 +376,9 @@
 					$('#objectpaddingall').val('');
 					$('#objectpaddingadvanced').show();
 				}
-				if(inited){
-					$('#objectpaddingtopval').trigger('change');
-				}
+
+				$('#objectpaddingtopval').trigger('change');
+
 			}
 
 			$('#objectpaddingall').on('keyup', function(){
@@ -462,9 +462,9 @@
 					$('#metapaddingall').val('');
 					$('#metapaddingadvanced').show();
 				}
-				if(inited){
-					$('#metapaddingtopval').trigger('change');
-				}
+
+				$('#metapaddingtopval').trigger('change');
+
 			}
 
 			$('#metapaddingall').on('keyup', function(){
@@ -852,7 +852,7 @@
 				}
 			})
 
-			inited=true;
+			window.configuratorInited=true;
 		});
 	</script>
 	</cfif>
