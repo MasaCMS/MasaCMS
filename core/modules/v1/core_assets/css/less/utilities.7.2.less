@@ -147,13 +147,6 @@ li .cke_skin_mura {
         overflow: hidden;
     }
 
-		/* Turn off parallax scrolling for all tablets and phones. Increase/decrease the pixels if needed */
-		@media only screen and (max-device-width: 1366px) {
-		  .mura-object {
-		    background-attachment: scroll !important;
-		  }
-		}
-
     /* Utilities
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
     .mura-full-width {
@@ -178,53 +171,63 @@ li .cke_skin_mura {
     }
 }
 
-.mura-object, .mura-object-content,.mura-object-meta {
+
+/* Turn off parallax scrolling for all tablets and phones. Increase/decrease the pixels if needed */
+@media only screen and (max-device-width: 1366px) {
+	.mura-object {
+		background-attachment: scroll !important;
+	}
+}
+
+.mura-object, .mura-object-content, .mura-object-meta-wrapper, .mura-object-meta {
 	position: relative;
 	display: block;
 	box-sizing: border-box;
+	height: 100%;
 }
 
-.mura-object.mura-object-label-right > .mura-object-meta-wrapper,
-.mura-object.mura-object-label-right > .mura-object-content,
-.mura-object.mura-object-label-left > .mura-object-meta-wrapper,
-.mura-object.mura-object-label-left > .mura-object-content {
-	position: relative;
-	width: 50%;
-	box-sizing: border-box;
-}
+/* For devices larger than 550px */
+@media (min-width: 550px) {
 
 
-.mura-object.mura-object-label-right > .mura-object-meta-wrapper {
-	float:right;
-	box-sizing: border-box;
-}
-
-.mura-object.mura-object-label-left > .mura-object-meta-wrapper,
-.mura-object.mura-object-label-left > .mura-object-content  {
-	float:left;
-	box-sizing: border-box;
-}
+	.mura-object.mura-object-label-right > .mura-object-meta-wrapper,
+	.mura-object.mura-object-label-right > .mura-object-content,
+	.mura-object.mura-object-label-left > .mura-object-meta-wrapper,
+	.mura-object.mura-object-label-left > .mura-object-content {
+		position: relative;
+		width: 50%;
+		box-sizing: border-box;
+	}
 
 
-.mura-expanded.mura-object.mura-object-label-left {
-	flex-direction: row;
-}
+	.mura-object.mura-object-label-right > .mura-object-meta-wrapper {
+		float:right;
+		box-sizing: border-box;
+	}
 
-.mura-expanded.mura-object.mura-object-label-right{
-	flex-direction: row-reverse;
-}
-
-.mura-expanded.mura-object.mura-object-label-right > .mura-object-meta-wrapper,
-.mura-expanded.mura-object.mura-object-label-right > .mura-object-content,
-.mura-expanded.mura-object.mura-object-label-left > .mura-object-meta-wrapper,
-.mura-expanded.mura-object.mura-object-label-left > .mura-object-content {
-	flex-grow: 1;
-	flex-basis: 50%;
-}
+	.mura-object.mura-object-label-left > .mura-object-meta-wrapper,
+	.mura-object.mura-object-label-left > .mura-object-content  {
+		float:left;
+		box-sizing: border-box;
+	}
 
 
-.mura-object-meta-wrapper {
-	text-align: center;
+	.mura-expanded.mura-object.mura-object-label-left {
+		flex-direction: row;
+	}
+
+	.mura-expanded.mura-object.mura-object-label-right{
+		flex-direction: row-reverse;
+	}
+
+	.mura-expanded.mura-object.mura-object-label-right > .mura-object-meta-wrapper,
+	.mura-expanded.mura-object.mura-object-label-right > .mura-object-content,
+	.mura-expanded.mura-object.mura-object-label-left > .mura-object-meta-wrapper,
+	.mura-expanded.mura-object.mura-object-label-left > .mura-object-content {
+		flex-grow: 1;
+		flex-basis: 50%;
+	}
+
 }
 
 .mura-object:not(.mura-object-label-left) > .mura-object-meta-wrapper:after {
@@ -233,6 +236,10 @@ li .cke_skin_mura {
   content: "";
   clear: both;
   height: 0;
+}
+
+.mura-object-meta-wrapper {
+	text-align: center;
 }
 
 .mura-object-meta {
