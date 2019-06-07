@@ -242,7 +242,7 @@
 			<cfif rc.sourceFrame eq 'modal'>
 			jQuery("##saveConfigDraft").bind("click",updateDraft);
 			<cfelse>
-			jQuery('##configuratorContainer').on('change','.objectParam, .objectparam, .objectStyle, .objectstyle, .metaStyle, .metastyle, .contentStyle, .contentstyle, ##availableObjectSelector',updateDraft);
+			jQuery('##configuratorContainer').on('change','.styleSupport,.stylesupport,.objectParam, .objectparam, .objectStyle, .objectstyle, .metaStyle, .metastyle, .contentStyle, .contentstyle, ##availableObjectSelector',updateDraft);
 			</cfif>
 
 			jQuery("##deleteObject").bind("click",
