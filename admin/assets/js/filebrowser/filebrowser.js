@@ -632,17 +632,17 @@ config: {
     template: `
         <div class="filewindow-modemenu">
           <div class="btn-group btn-group-toggle" data-toggle="buttons">
-            <label class="btn btn-secondary" v-bind:class="{ highlight: viewmode == 1 }" @click="switchMode(1)">
+            <a class="btn" v-bind:class="{ highlight: viewmode == 1 }" @click="switchMode(1)">
               <i class="mi-th" title="Grid View"></i>
-            </label>
-            <label class="btn btn-secondary" v-bind:class="{ highlight: viewmode == 2 }" @click="switchMode(2)">
-              <i class="mi-bars" title="List View"></i>
-            </label>
+            </a>
+            <a class="btn" v-bind:class="{ highlight: viewmode == 2 }" @click="switchMode(2)">
+              <i class="mi-list" title="List View"></i>
+            </a>
           </div>
-          <label @click="newFolder" class="btn btn-secondary">
+          <a @click="newFolder" class="btn">
             <i class="mi-folder" title="Add Folder"></i>
-          </label>
-          <input v-model="filterResults" v-on:input="filterChange">
+          </a>
+          <input class="filewindow-searchinput" placeholder="Search Files" v-model="filterResults" v-on:input="filterChange">
         </div>
     `,
     data() {
@@ -948,12 +948,16 @@ config: {
     el: "#" + self.target,
     template: `
       <div class="fileviewer-wrapper">
+        <div class="mura-header">
+          <ul class="breadcrumb fileviewer-breadcrumb">
+          <li class="">
+            <a @click="setDirDepth(-1)"><i class="mi-file"></i>Home</a>
+          </li>
+            <i v-for="(item,index) in foldertree" class="mi-angle-double-right fa-padleft" @click="setDirDepth(index)"> {{item}}</i>
+          </ul>
+        </div>
         <viewwindow v-if="isDisplayWindow=='VIEW'" :settings="settings" :currentFile="currentFile" :currentIndex="currentIndex"></viewwindow>
         <actionwindow v-if="isDisplayWindow" :settings="settings" :isDisplayWindow="isDisplayWindow" :currentIndex="currentIndex" :currentFile="currentFile" :error="error"></actionwindow>
-        <div class="fileviewer-breadcrumb">
-          <i class="mi-home" @click="setDirDepth(-1)"></i>
-          <i v-for="(item,index) in foldertree" class="mi-angle-double-right fa-padleft" @click="setDirDepth(index)"> {{item}}</i>
-        </div>
         <div class="fileviewer-droptarget">
           <form enctype="multipart/form-data" novalidate v-if="isStart || isSave">
             <input type="file" multiple :name="uploadField" :disabled="isSave" @change="filesChanged($event.target.name, $event.target.files);" accept="*.*" class="file-input-field">

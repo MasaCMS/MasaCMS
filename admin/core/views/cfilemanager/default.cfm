@@ -70,29 +70,22 @@
 			</div>
 </div> <!-- /.mura-header -->
 
-<div class="block block-constrain">
-		<div class="block block-bordered">
-		  <div class="block-content">
-      </br></br></br>
-        <div id="MuraFileBrowserContainer"></div>
-			<script type="text/javascript">
-			<cfif session.resourceType eq "assets">
-            MuraFileBrowser.config.resourcepath="#esapiEncode('javascript','User_Assets')#";
-			<cfelseif session.resourceType eq "files" and application.configBean.getValue(property='fmShowSiteFiles',defaultValue=true)>
-            MuraFileBrowser.config.resourcepath="#esapiEncode('javascript','Site_Files')#"
-			<cfelseif session.resourceType eq "root" and application.configBean.getValue(property='fmShowApplicationRoot',defaultValue=true)>
-            MuraFileBrowser.config.resourcepath="#esapiEncode('javascript','Application_Root')#";
-			<cfelse>
-            MuraFileBrowser.config.resourcepath="#esapiEncode('javascript','User_Assets')#";
-			</cfif>
-      Mura(function(m) {
-        MuraFileBrowser.config.height=600;
-        MuraFileBrowser.render();
-      });
-
-			</script>
-		</div> <!-- /.block-content -->
-	</div> <!-- /.block-bordered -->
-</div> <!-- /.block-constrain -->
+  <div id="MuraFileBrowserContainer"></div>
+  
+  <script type="text/javascript">
+    <cfif session.resourceType eq "assets">
+          MuraFileBrowser.config.resourcepath="#esapiEncode('javascript','User_Assets')#";
+    <cfelseif session.resourceType eq "files" and application.configBean.getValue(property='fmShowSiteFiles',defaultValue=true)>
+          MuraFileBrowser.config.resourcepath="#esapiEncode('javascript','Site_Files')#"
+    <cfelseif session.resourceType eq "root" and application.configBean.getValue(property='fmShowApplicationRoot',defaultValue=true)>
+          MuraFileBrowser.config.resourcepath="#esapiEncode('javascript','Application_Root')#";
+    <cfelse>
+          MuraFileBrowser.config.resourcepath="#esapiEncode('javascript','User_Assets')#";
+    </cfif>
+    Mura(function(m) {
+    MuraFileBrowser.config.height=600;
+    MuraFileBrowser.render();
+  });
+  </script>
 
 </cfoutput>

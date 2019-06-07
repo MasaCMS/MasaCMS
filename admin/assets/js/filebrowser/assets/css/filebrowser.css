@@ -5,8 +5,6 @@
 }
 .fileviewer-wrapper {
   display: block;
-  border: 3px solid #eee;
-  box-shadow: 2px 2px 5px grey;
 }
 
 .fileviewer-wrapper:after {
@@ -16,10 +14,11 @@
 }
 .filewindow-appbar {
   background-color: #fafafa;
+  border: 1px solid #dbdbdb;
   display: block;
   clear: both;
-  height: 40px;
-  padding: 4px;
+  height: 48px;
+  padding: 6px;
   margin: 0;
 }
 
@@ -41,12 +40,26 @@
 
 .filewindow-modemenu {
   float: left;
-  margin: 0 5px;
+  margin: 0;
 }
+.filewindow-modemenu .btn-group{
+  margin-right: 4px;
+ } 
+
+.filewindow-modemenu a.btn{
+  height: 33px;
+  margin-top: -1px;
+}
+.filewindow-modemenu a.btn i{
+  font-size: 27px;
+  color: #b5b5b5;
+  padding-top: 1px;
+}
+
 .filewindow-modemenu ul {
   float: left;
   margin: 0;
-  padding: 4px 0 0 0;
+  padding: 0;
   list-style: none;
 }
 .filewindow-modemenu ul li {
@@ -83,27 +96,35 @@
   height: 200px;
 }
 
+.listmode-wrapper .mura-table-grid{
+  margin-bottom: 0 !important;
+  border-bottom: none;
+  border-top: none;
+}
+
 #renamewindow-wrapper p {
   position: relative;
 }
 
 
 
-.fileviewer-breadcrumb {
+
+/*.fileviewer-breadcrumb {
   width: 100%;
   height: 40px;
   border: 2px solid #ccc;
   background-color: #eee;
   text-align: left;
   padding: 5px;
-}
+}*/
 
 .fileviewer-droptarget {
   position: relative;
   width: 100%;
   height: 100px;
   background-color: #eee;
-  overflow-y: scroll;
+  margin-bottom: 12px;
+  overflow: hidden;
 }
 .fileviewer-droptarget p {
   text-align: center;
@@ -112,6 +133,14 @@
     text-align: left;
     list-style: none;
     font-size: .8em;
+}
+.filewindow-searchinput{
+    margin-left: 4px;
+    padding-left: 6px;
+    border: 1px solid #eee;
+    border-radius: 2px;
+    font-size: 14px;
+    height: 34px;
 }
 .file-input-field {
     opacity: 0; /* invisible but it's there! */
