@@ -111,7 +111,7 @@ CKEDITOR.editorConfig = function( config )
 		{name: 'group4', items:['Link','Unlink','Anchor']},
 		'/',
 		{name: 'group5', items:['PasteText','PasteFromWord','-','Image','oembed','leaflet','-','Table','HorizontalRule','SpecialChar','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
-		{name: 'group6', items:['Find','A11ychecker','Source','Maximize']}
+		{name: 'group6', items:['Find','A11ychecker','Sourcedialog','Maximize']}
 	];
 
 	config.toolbar_Summary = [
