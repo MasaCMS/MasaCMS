@@ -136,14 +136,10 @@
   position: relative;
 }
 
-/*.fileviewer-breadcrumb {
-  width: 100%;
-  height: 40px;
-  border: 2px solid #ccc;
-  background-color: #eee;
-  text-align: left;
-  padding: 5px;
-}*/
+.fileviewer-breadcrumb a{
+  cursor:pointer;
+}
+
 .fileviewer-droptarget {
   position: relative;
   width: 100%;
@@ -215,7 +211,7 @@
   font-size: 4em;
   text-align: center;
   position: absolute;
-  top: 10px;
+  top: 20px;
   left: 47%;
   color: #ddd;
 }
@@ -261,6 +257,7 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  cursor: pointer;
   margin: 0;
   text-align: center;
   width: 100%;
