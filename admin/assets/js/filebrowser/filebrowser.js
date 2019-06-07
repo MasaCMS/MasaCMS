@@ -971,7 +971,7 @@ config: {
           <li class="">
             <a @click="setDirDepth(-1)"><i class="mi-file"></i>Home</a>
           </li>
-            <li v-for="(item,index) in foldertree" @click="setDirDepth(index)"><a><i class="mi-folder-open"></i>{{item}}</a></li>
+            <li v-for="(item,index) in foldertree" @click="setDirDepth(index)"><a><i class="mi-folder"></i>{{item}}</a></li>
           </ul>
         </div>
         <viewwindow v-if="isDisplayWindow=='VIEW'" :settings="settings" :currentFile="currentFile" :currentIndex="currentIndex"></viewwindow>
