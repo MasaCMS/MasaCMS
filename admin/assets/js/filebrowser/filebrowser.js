@@ -636,7 +636,7 @@ config: {
               <i class="mi-th" title="Grid View"></i>
             </a>
             <a class="btn" v-bind:class="{ highlight: viewmode == 2 }" @click="switchMode(2)">
-              <i class="mi-list" title="List View"></i>
+              <i class="mi-list-ul" title="List View"></i>
             </a>
           </div>
           <a @click="newFolder" class="btn">
@@ -700,6 +700,7 @@ config: {
               <option value='50' :selected="itemsper == 50 ? 'selected' : null">50</option>
             </select>
           </li>
+          <li class="pull-right"><label class="itemsper-label">View in groups of </label></li>
 
         </ul>
       </div>

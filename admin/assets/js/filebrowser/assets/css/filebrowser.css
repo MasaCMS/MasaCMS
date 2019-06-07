@@ -27,6 +27,10 @@
   margin: 0 5px;
 }
 
+.filewindow-navmenu .pagination > li select {
+    height: 26px;
+    margin-top: 4px;
+ } 
 .filewindow-navmenu p {
   float: left;
 }
@@ -49,11 +53,24 @@
 .filewindow-modemenu a.btn{
   height: 33px;
   margin-top: -1px;
+  padding: 3px 8px;
+  box-sizing: border-box;
+}
+.filewindow-modemenu .highlight:link,
+.filewindow-modemenu .highlight:visited,
+.filewindow-modemenu .highlight:active,
+.filewindow-modemenu .highlight:hover,
+.filewindow-modemenu .highlight {
+  background-color: #e34a35 !important;
 }
 .filewindow-modemenu a.btn i{
-  font-size: 27px;
   color: #b5b5b5;
-  padding-top: 1px;
+  font-size: 16px;
+  margin-right: 0;
+  padding-top: 4px;
+}
+.filewindow-modemenu a.btn.highlight i{
+  color: #fff;
 }
 
 .filewindow-modemenu ul {
@@ -66,10 +83,6 @@
   display: inline;
   margin: 0;
   padding: 0;
-}
-.filewindow-modemenu .highlight {
-  background-color: #ff0000;
-
 }
 .filewindow-modemenu ul li i {
   display: inline;
@@ -218,6 +231,10 @@
   background-color: #ccc;
 }
 
+.itemsper-label{
+  font-size: 12px;
+  padding: 8px 8px 0 0;
+}
 .fileviewer-label {
   position: absolute;
   bottom: 0;
