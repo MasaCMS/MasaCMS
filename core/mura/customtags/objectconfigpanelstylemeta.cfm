@@ -14,7 +14,7 @@
 				<div class="container" id="labelContainer">
 
 					<div class="mura-control-group">
-						<label>Position</label>
+						<label>Label Position</label>
 						<select name="labelposition">
 						<option value="">--</option>
 						<option value="mura-object-label-left"<cfif listFind(attributes.params.class,'mura-object-label-left',' ')> selected</cfif>>Left</option>
