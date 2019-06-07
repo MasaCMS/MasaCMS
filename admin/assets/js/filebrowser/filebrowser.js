@@ -479,7 +479,7 @@ config: {
                   <li><a @click="deleteFile()"><i class="mi-trash"> Delete</i></a></li>
                   <li><a @click="closewindow()"><i class="mi-times">Close</i></a></li>
                 </ul>
-                <p>{{currentFile.fullname}} ({{currentFile.size}}k)</p>
+                <p>{{currentFile.fullname}} ({{currentFile.size}}kb)</p>
               </div>
             </div>
           </div>
@@ -770,9 +770,9 @@ config: {
                 <a href="#" @click.prevent="refresh(file.name)"><i class="mi-folder"></i> {{file.fullname}}</a>
               </td>
         			<td>
-                <i v-if="parseInt(file.isfile)">
-        					{{file.size}}K
-                </i>
+                <span v-if="parseInt(file.isfile)">
+        					{{file.size}}kb
+                </span>
         			</td>
         			<td>
         					{{file.lastmodifiedshort}}
@@ -864,32 +864,49 @@ config: {
     template: `
       <div class="gridmode-wrapper">
         <div v-if="foldertree.length" class="fileviewer-item" @click="back()">
-          <div class="fileviewer-image">
-            <i class="mi-arrow-left" style="font-size: 7em"></i>
+          <div class="fileviewer-item-icon">
+            <i class="mi-arrow-circle-o-left"></i>
           </div>
-          <div class="fileviewer-label">
-            Back
+          <div class="fileviewer-item-meta">
+            <div class="fileviewer-item-label">
+              Back
+            </div>
           </div>
         </div>
         <div v-for="(file,index) in files">
           <div class="fileviewer-item"  :id="'fileitem-'+index"  v-if="parseInt(file.isfile)" @click="openMenu($event,file,index)">
-            <div class="fileviewer-image">
-              <div v-if="0" class="fileviewer-icon" :class="['fileviewer-icon-' + file.type]"></div>
-              <div v-else class="fileviewer-icon" :style="{ 'background-image': 'url(' + encodeURI(file.url) + ')' }"></div>
+            <div class="fileviewer-item-image">
+              <div v-if="0" class="fileviewer-item-icon" :class="['fileviewer-item-icon-' + file.type]"></div>
+              <div v-else class="fileviewer-item-icon" :style="{ 'background-image': 'url(' + encodeURI(file.url) + ')' }"></div>
             </div>
-            <div class="fileviewer-label">
-              {{file.fullname}}
+            <div class="fileviewer-item-meta">
+              <div class="fileviewer-item-label">
+                {{file.fullname}}
+              </div>
+              <div class="fileviewer-item-meta-details">
+                <div v-if="parseInt(file.isfile)" class="fileviewer-item-meta-size">
+                  {{file.size}}kb
+                </div>
+              </div>
             </div>
           </div>
           <div class="fileviewer-item" v-else @click="refresh(file.name)">
-            <div class="fileviewer-image">
-              <i class="mi-folder" style="font-size: 7em;color: #333"></i>
+            <div class="fileviewer-item-icon">
+              <i class="mi-folder-open"></i>
             </div>
-            <div class="fileviewer-label">
-              {{file.fullname}}
+            <div class="fileviewer-item-meta">
+              <div class="fileviewer-item-label">
+                {{file.fullname}}
+              </div>
+              <div class="fileviewer-item-meta-details">
+                <div v-if="parseInt(file.isfile)" class="fileviewer-item-meta-size">
+                  {{file.size}}kb
+                </div>
+              </div>
             </div>
           </div>
         </div>
+        <div class="clearfix"></div>
         <contextmenu :currentFile="this.$parent.currentFile" :isDisplayContext="isDisplayContext" v-if="isDisplayContext" :menux="menux" :menuy="menuy"></contextmenu>
       </div>`,
     data() {
@@ -969,7 +986,7 @@ config: {
               {{settings.rb.filebrowser_uploading}} ({{fileCount}})
               <ul class="fileviewer-uploadedfiles">
                 <li v-for="file in uploadedFiles">
-                  {{file.fullname}} ({{Math.floor(file.size/1000)}}k)
+                  {{file.fullname}} ({{Math.floor(file.size/1000)}}kb)
                 </li>
               </ul>
             </p>
