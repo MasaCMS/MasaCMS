@@ -102,15 +102,14 @@
 		<style>
 			#customstyletbl {
 				width:270px;
-				border: 1px solid grey;
 			}
 			#customstyletbl button{
 				float:none!important;display:inline;
 			}
 			#customstyletbl td,#customstyletbl th  {
-				background-color: black;
+				background-color: #454545;
 				color:white;
-				border: 1px solid grey;
+				border: 2px solid grey;
 				padding: auto;
 				text-align: center;
 				height: 30px;
@@ -180,8 +179,8 @@
 							var tr=Mura(this);
 							styles.push(
 								{
-									selector: tr.find('.cssselector').html(),
-									rules:tr.find('.cssrules').html()
+									selector: tr.find('.cssselector').html().replace(/&nbsp;/g, '').replace(/&gt;/g, '>'),
+									rules:tr.find('.cssrules').html().replace(/&nbsp;/g, '').replace(/&gt;/g, '>')
 								}
 							);
 						});
