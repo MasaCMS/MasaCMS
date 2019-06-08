@@ -101,7 +101,7 @@
 				<div class="container">
 		<style>
 			#customstyletbl {
-				width:270px;
+				width:265px;
 			}
 			#customstyletbl button{
 				float:none!important;display:inline;
@@ -114,8 +114,12 @@
 				text-align: center;
 				height: 30px;
 			}
-			#customstyletbl .cssselector, #customstyletbl .cssrules {
-				width:40%;
+			#customstyletbl td  {
+				text-align: left;
+				padding: 5px;
+			}
+			#customstyletbl .customcssstyle {
+				width:80%;
 			}
 		</style>
 
@@ -126,8 +130,7 @@
 			<button class="btn" id="applystyles">Apply</button>
 			<table id="customstyletbl">
 				<tr>
-					<th class="cssselector">Selector</th>
-					<th class="cssrules">Style</th>
+					<th class="customcssstyle">Style</th>
 					<th></th>
 				</tr>
 				<tbody id="customstyletblbody">
@@ -147,7 +150,7 @@
 
 					function renderStyles(){
 						var styles=Mura('#csscustom').val();
-						console.log(styles);
+
 						if(!styles){
 							styles=[];
 						} else {
@@ -162,13 +165,13 @@
 						tbody.html('');
 
 						styles.forEach(function(style){
-							appendStyle(style.selector,style.rules);
+							appendStyle(style);
 						});
 					}
 
-					function appendStyle(selector,rules){
+					function appendStyle(style){
 						var tbody=Mura('#customstyletblbody');
-						tbody.append('<tr><td class="cssselector" contenteditable placeholder="*">' + selector +'</td><td class="cssrules" contenteditable placeholder="property:value;">'+ rules +' </td><td><button class="btn removestyle">-</button></td></tr>')
+						tbody.append('<tr><td class="customcssstyle" contenteditable placeholder="* { }">' + style +'</td><td><button class="btn removestyle">-</button></td></tr>')
 					}
 
 					renderStyles();
@@ -178,10 +181,7 @@
 						Mura("#customstyletblbody").children('tr').each(function(){
 							var tr=Mura(this);
 							styles.push(
-								{
-									selector: tr.find('.cssselector').html().replace(/&nbsp;/g, '').replace(/&gt;/g, '>'),
-									rules:tr.find('.cssrules').html().replace(/&nbsp;/g, '').replace(/&gt;/g, '>').replace(/<br>/g, '\n')
-								}
+								tr.find('.customcssstyle').html().replace(/&nbsp;/g, '').replace(/&gt;/g, '>').replace(/<br>/g, '\n')
 							);
 						});
 
