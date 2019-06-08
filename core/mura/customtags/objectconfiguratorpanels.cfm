@@ -130,7 +130,7 @@
 			<button class="btn" id="applystyles">Apply</button>
 			<table id="customstyletbl">
 				<tr>
-					<th class="customcssstyle">Style</th>
+					<th class="customcssstyle">Styles</th>
 					<th></th>
 				</tr>
 				<tbody id="customstyletblbody">
