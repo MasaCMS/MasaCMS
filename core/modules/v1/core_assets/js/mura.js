@@ -18071,28 +18071,31 @@ Mura.DOMSelection = Mura.Core.extend(
 			}
 
 			var styleSupport=obj.data('stylesupport');
-			if(styleSupport && styleSupport.styles){
-				var styles=JSON.parse(styleSupport.styles);
-
-				if(Array.isArray(styles)){
+			if(styleSupport && styleSupport.css){
+				var styles=styleSupport.css.split('}');
+				console.log(styles);
+				if(Array.isArray(styles) && styles.length){
 					styles.forEach(function(style){
-						try{
-							var styleParts=style.split("{");
+						var styleParts=style.split("{");
+						if(styleParts.length > 1){
 							var selectors=styleParts[0].split(',');
 							selectors.forEach(function(subSelector){
-								sheet.insertRule(
-									selector + ' ' + subSelector + '{' + styleParts[1],
-									sheet.cssRules.length
-								);
+								try{
+									var subStyle=selector + ' ' + subSelector + '{' + styleParts[1] + '}';
+									sheet.insertRule(
+										subStyle,
+										sheet.cssRules.length
+									);
+									if(Mura.editing){
+										console.log('Applying dynamic styles:' + subStyle);
+									}
+								} catch(e){
+									if(Mura.editing){
+										console.log('Error applying dynamic styles:' + subStyle);
+										console.log(e);
+									}
+								}
 							});
-							if(Mura.editing){
-								console.log('Applying dynamic styles:' + selector + ' ' + style);
-							}
-						} catch(e){
-							if(Mura.editing){
-								console.log('Error applying dynamic styles:' + selector + ' ' + style);
-								console.log(e);
-							}
 						}
 					});
 				}

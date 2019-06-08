@@ -7,7 +7,7 @@
 	if(!isStruct(attributes.params.stylesupport)){
 		attributes.params.stylesupport={};
 	}
-	param name="attributes.params.stylesupport.styles" default="";
+	param name="attributes.params.stylesupport.css" default="";
 	param name="attributes.params.stylesupport.objectbackgroundimageurl" default="";
 	param name="attributes.params.stylesupport.objectbackgroundcolorsel" default="";
 	param name="attributes.params.stylesupport.contentbackgroundimageurl" default="";
@@ -83,7 +83,7 @@
 
 	<cfoutput>
 	<input name="class" type="hidden" class="objectParam" value="#esapiEncode('html_attr',attributes.params.class)#"/>
-	<input class="styleSupport" name="styles" id="csscustom" type="hidden" value="#esapiEncode('html_attr',attributes.params.stylesupport.styles)#"/>
+	<input class="styleSupport" name="css" id="csscustom" type="hidden" value="#esapiEncode('html_attr',attributes.params.stylesupport.css)#"/>
 	</cfoutput>
 	<!--- content panel --->
 	<cfinclude template="objectconfigpanelstylecontent.cfm">
@@ -91,7 +91,7 @@
 	<div class="mura-panel panel">
 		<div class="mura-panel-heading" role="tab" id="heading-style-custom">
 			<h4 class="mura-panel-title">
-				<a class="collapsed" role="button" data-toggle="collapse" data-parent="##configurator-panels" href="##panel-style-custom" aria-expanded="false" aria-controls="panel-style-custom">
+				<a class="collapsed" role="button" data-toggle="collapse" data-parent="#configurator-panels" href="#panel-style-custom" aria-expanded="false" aria-controls="panel-style-custom">
 					Custom CSS
 				</a>
 			</h4>
@@ -99,102 +99,23 @@
 		<div id="panel-style-custom" class="panel-collapse collapse" role="tabpanel" aria-labeledby="heading-style-custom">
 			<div class="mura-panel-body">
 				<div class="container">
-		<style>
-			#customstyletbl {
-				width:265px;
-			}
-			#customstyletbl button{
-				float:none!important;display:inline;
-			}
-			#customstyletbl td,#customstyletbl th  {
-				background-color: #454545;
-				color:white;
-				border: 2px solid grey;
-				padding: auto;
-				text-align: center;
-				height: 30px;
-			}
-			#customstyletbl td  {
-				text-align: left;
-				padding: 5px;
-			}
-			#customstyletbl .customcssstyle {
-				width:80%;
-			}
-		</style>
 
-		<div class="mura-control-group">
-			<label>
-				Custom CSS Styles
-			</label>
-			<button class="btn" id="applystyles">Apply</button>
-			<table id="customstyletbl">
-				<tr>
-					<th class="customcssstyle">Styles</th>
-					<th></th>
-				</tr>
-				<tbody id="customstyletblbody">
-
-				</tbody>
-			</table>
-			<button class="btn" id="addstyle">+</button>
-
-		</div>
+						<div class="mura-control-group">
+							<label>
+								Custom CSS Styles
+							</label>
+							<cfoutput>
+							<textarea id="customstylesedit">#esapiEncode('html',attributes.params.stylesupport.css)#</textarea>
+							</cfoutput>
+							<button class="btn" id="applystyles">Apply</button>
+							<script>
+								Mura('#applystyles').click(function(){
+									jQuery('#csscustom').val(Mura('#customstylesedit').val()).trigger('change');
+								})
+							</script>
+						</div>
 
 				</div> <!--- /end container --->
 			</div> <!--- /end  mura-panel-body --->
 		</div> <!--- /end  mura-panel-collapse --->
 	</div> <!--- /end object panel --->
-		<script>
-			Mura(function(){
-
-					function renderStyles(){
-						var styles=Mura('#csscustom').val();
-
-						if(!styles){
-							styles=[];
-						} else {
-								styles=JSON.parse( styles );
-						}
-
-						if(!Array.isArray(styles)){
-							styles=[];
-						}
-
-						var tbody=Mura('#customstyletblbody');
-						tbody.html('');
-
-						styles.forEach(function(style){
-							appendStyle(style);
-						});
-					}
-
-					function appendStyle(style){
-						var tbody=Mura('#customstyletblbody');
-						tbody.append('<tr><td class="customcssstyle" contenteditable placeholder="* { }">' + style +'</td><td><button class="btn removestyle">-</button></td></tr>')
-					}
-
-					renderStyles();
-
-					Mura("#applystyles").on('click',function(){
-						var styles=[];
-						Mura("#customstyletblbody").children('tr').each(function(){
-							var tr=Mura(this);
-							styles.push(
-								tr.find('.customcssstyle').html().replace(/&nbsp;/g, '').replace(/&gt;/g, '>').replace(/<br>/g, '\n')
-							);
-						});
-
-						jQuery('#csscustom').val(JSON.stringify(styles)).trigger('change');
-					});
-
-					Mura('#addstyle').click(function(){
-						appendStyle('','');
-					});
-
-					Mura('#customstyletblbody').on('click','.removestyle',function(){
-						Mura(this).closest('tr').remove();
-					});
-
-			});
-		</script>
