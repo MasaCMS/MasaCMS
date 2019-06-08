@@ -86,7 +86,7 @@
 									</label>
 									<select id="objectminheightuom" name="objectminheightuom" class="styleSupport">
 										<cfloop list="px,%,em,rem" index="u">
-											<option value="#u#"<cfif attributes.params.objectminheightuom eq u> selected</cfif>>#u#</option>
+											<option value="#u#"<cfif attributes.params.stylesupport.objectminheightuom eq u> selected</cfif>>#u#</option>
 										</cfloop>
 									</select>
 								</div>

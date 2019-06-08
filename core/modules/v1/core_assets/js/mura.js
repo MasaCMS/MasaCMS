@@ -2325,7 +2325,7 @@ var Mura=(function(){
 	function filterUnwantedParams(params){
 
 		//Strip out unwanted attributes
-		var unwanted=['iconclass','objectname','inited','params','supportstyle','cssstyles','metacssstyles','contentcssstyles',
+		var unwanted=['iconclass','objectname','inited','params','stylesupport','cssstyles','metacssstyles','contentcssstyles',
 			'cssclass','cssid','metacssclass','metacssid','contentcssclass','contentcssid'];
 
 		for(var c=0; c<unwanted.length;c++){
@@ -18048,7 +18048,7 @@ Mura.DOMSelection = Mura.Core.extend(
 
 			if (cssstyles && typeof cssstyles.backgroundColor != 'undefined' && cssstyles.backgroundColor
 				&& typeof cssstyles.backgroundImage != 'undefined' && cssstyles.backgroundImage) {
-				var style =selector + ':before{content: ""; position: absolute;	top: 0; right: 0;left: 0;bottom:0; background:' + cssstyles.backgroundColor + '}';
+				var style =selector + '::before{content: ""; position: absolute;	top: 0; right: 0;left: 0;bottom:0; background:' + cssstyles.backgroundColor + '}';
 				sheet.insertRule(
 					style,
 					sheet.cssRules.length
@@ -18064,7 +18064,41 @@ Mura.DOMSelection = Mura.Core.extend(
 					style,
 					sheet.cssRules.length
 				);
+				sheet.insertRule(
+					selector + ' * {color:inherit}',
+					sheet.cssRules.length
+				);
 			}
+
+			var styleSupport=obj.data('stylesupport');
+			if(styleSupport && styleSupport.styles){
+				var styles=JSON.parse(styleSupport.styles);
+
+				if(Array.isArray(styles)){
+					styles.forEach(function(style){
+						try{
+						sheet.insertRule(
+							selector + ' ' + style.selector + '{' + syle.rules + '}',
+							sheet.rule.length
+						);
+						console.log('Applying dynamic styles:' + selector + ' ' + style.selector + '{' + syle.rules + '}');
+					} catch(e){
+						console.log('Error applying dynamic styles:' + selector + ' ' + style.selector + '{' + syle.rules + '}');
+					}
+					});
+				}
+
+				var style=selector + ', ' + selector + ' label, ' + selector + ' p, ' + selector + ' h1, ' + selector + ' h2, ' + selector + ' h3, ' + selector + ' h4, ' + selector + ' h5, ' + selector + ' h6, ' +selector + ' a:link, ' + selector + ' a:visited, '  + selector + ' a:hover, ' + selector + ' a:active { color:' + cssstyles.color + ';} ';
+				sheet.insertRule(
+					style,
+					sheet.cssRules.length
+				);
+				sheet.insertRule(
+					selector + ' * {color:inherit}',
+					sheet.cssRules.length
+				);
+			}
+
 
  			if(obj.data('metacssclass') || obj.data('metacssid') ||  obj.data('metacssstyles')){
  				var metaWrapper=obj.children('.mura-object-meta-wrapper');
@@ -18076,7 +18110,7 @@ Mura.DOMSelection = Mura.Core.extend(
 
 						if (metacssstyles && typeof metacssstyles.backgroundColor != 'undefined' && metacssstyles.backgroundColor
 							&& typeof metacssstyles.backgroundImage != 'undefined' && metacssstyles.backgroundImage) {
-							var style =selector + ':before{content: ""; position: absolute;	top: 0; right: 0;left: 0;bottom:0; background:' + metacssstyles.backgroundColor + '}';
+							var style =selector + '::before{content: ""; position: absolute;	top: 0; right: 0;left: 0;bottom:0; background:' + metacssstyles.backgroundColor + '}';
 							sheet.insertRule(
 								style,
 								sheet.cssRules.length
@@ -18091,6 +18125,10 @@ Mura.DOMSelection = Mura.Core.extend(
 							var style = selector + ', ' + selector + ' label, ' + selector + ' p, ' + selector + ' h1, ' + selector + ' h2, ' + selector + ' h3, ' + selector + ' h4, ' + selector + ' h5, ' + selector + ' h6, ' +selector + ' a:link, ' + selector + ' a:visited, '  + selector + ' a:hover, ' + selector + ' a:active { color:' + metacssstyles.color + ';} ';
 							sheet.insertRule(
 								style,
+								sheet.cssRules.length
+							);
+							sheet.insertRule(
+								selector + ' * {color:inherit}',
 								sheet.cssRules.length
 							);
 						}
@@ -18119,7 +18157,7 @@ Mura.DOMSelection = Mura.Core.extend(
 
 			if (contentcssstyles && typeof contentcssstyles.backgroundColor != 'undefined' && contentcssstyles.backgroundColor
 				&& typeof contentcssstyles.backgroundImage != 'undefined' && contentcssstyles.backgroundImage) {
-				var style =selector + ':before{content: ""; position: absolute;	top: 0; right: 0;left: 0;bottom:0; background:' + contentcssstyles.backgroundColor + '}';
+				var style =selector + '::before{content: ""; position: absolute;	top: 0; right: 0;left: 0;bottom:0; background:' + contentcssstyles.backgroundColor + '}';
 				sheet.insertRule(
 					style,
 					sheet.cssRules.length
@@ -18134,7 +18172,11 @@ Mura.DOMSelection = Mura.Core.extend(
 
 				var style=	selector + ', ' + selector + ' label, ' + selector + ' p, ' + selector + ' h1, ' + selector + ' h2, ' + selector + ' h3, ' + selector + ' h4, ' + selector + ' h5, ' + selector + ' h6, ' +selector + ' a:link, ' + selector + ' a:visited, '  + selector + ' a:hover, ' + selector + ' a:active { color:' + contentcssstyles.color + ';} ';
 				sheet.insertRule(
-				style,
+					style,
+					sheet.cssRules.length
+				);
+				sheet.insertRule(
+					selector + ' * {color:inherit}',
 					sheet.cssRules.length
 				);
 			}
