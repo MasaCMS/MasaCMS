@@ -88,6 +88,17 @@
 	<!--- content panel --->
 	<cfinclude template="objectconfigpanelstylecontent.cfm">
 
+	<div class="mura-panel panel">
+		<div class="mura-panel-heading" role="tab" id="heading-style-custom">
+			<h4 class="mura-panel-title">
+				<a class="collapsed" role="button" data-toggle="collapse" data-parent="##configurator-panels" href="##panel-style-custom" aria-expanded="false" aria-controls="panel-style-custom">
+					Custom CSS
+				</a>
+			</h4>
+		</div>
+		<div id="panel-style-custom" class="panel-collapse collapse" role="tabpanel" aria-labeledby="heading-style-custom">
+			<div class="mura-panel-body">
+				<div class="container">
 		<style>
 			#customstyletbl {
 				width:270px;
@@ -127,6 +138,11 @@
 			<button class="btn" id="addstyle">+</button>
 
 		</div>
+
+				</div> <!--- /end container --->
+			</div> <!--- /end  mura-panel-body --->
+		</div> <!--- /end  mura-panel-collapse --->
+	</div> <!--- /end object panel --->
 		<script>
 			Mura(function(){
 
@@ -182,7 +198,4 @@
 					});
 
 			});
-
-
-
 		</script>
