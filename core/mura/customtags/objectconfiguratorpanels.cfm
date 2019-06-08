@@ -93,13 +93,18 @@
 				width:270px;
 				border: 1px solid grey;
 			}
+			#customstyletbl button{
+				float:none!important;display:inline;
+			}
 			#customstyletbl td,#customstyletbl th  {
 				background-color: black;
 				color:white;
-				padding: 10px
-				border: 2px solid white;
+				border: 1px solid grey;
+				padding: auto;
+				text-align: center;
+				height: 30px;
 			}
-			#customstyletblbody td .cssselector, #customstyletblbody td .cssrules {
+			#customstyletbl .cssselector, #customstyletbl .cssrules {
 				width:40%;
 			}
 		</style>
@@ -108,11 +113,12 @@
 			<label>
 				Custom CSS Styles
 			</label>
+			<button class="btn" id="applystyles">Apply</button>
 			<table id="customstyletbl">
 				<tr>
-					<th>Selector</th>
-					<th>Style</th>
-					<th><button class="btn" id="applystyles">Apply</button></th>
+					<th class="cssselector">Selector</th>
+					<th class="cssrules">Style</th>
+					<th></th>
 				</tr>
 				<tbody id="customstyletblbody">
 
