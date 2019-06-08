@@ -111,7 +111,7 @@
 			<table id="customstyletbl">
 				<tr>
 					<th>Selector</th>
-					<th>Styles</th>
+					<th>Style</th>
 					<th><button class="btn" id="applystyles">Apply</button></th>
 				</tr>
 				<tbody id="customstyletblbody">
@@ -147,7 +147,7 @@
 
 					function appendStyle(selector,rules){
 						var tbody=Mura('#customstyletblbody');
-						tbody.append('<tr><td class="cssselector" contenteditable>' + selector +'</td><td class="cssrules" contenteditable>'+ rules +' </td><td><button class="btn removestyle">-</button></td></tr>')
+						tbody.append('<tr><td class="cssselector" contenteditable placeholder="*">' + selector +'</td><td class="cssrules" contenteditable placeholder="property:value;">'+ rules +' </td><td><button class="btn removestyle">-</button></td></tr>')
 					}
 
 					renderStyles();
@@ -168,7 +168,7 @@
 					});
 
 					Mura('#addstyle').click(function(){
-						appendStyle('*','property:value;');
+						appendStyle('','');
 					});
 
 					Mura('#customstyletblbody').on('click','.removestyle',function(){
