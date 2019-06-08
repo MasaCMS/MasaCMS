@@ -18077,14 +18077,19 @@ Mura.DOMSelection = Mura.Core.extend(
 				if(Array.isArray(styles)){
 					styles.forEach(function(style){
 						try{
-						sheet.insertRule(
-							selector + ' ' + style.selector + '{' + syle.rules + '}',
-							sheet.rule.length
-						);
-						console.log('Applying dynamic styles:' + selector + ' ' + style.selector + '{' + syle.rules + '}');
-					} catch(e){
-						console.log('Error applying dynamic styles:' + selector + ' ' + style.selector + '{' + syle.rules + '}');
-					}
+							sheet.insertRule(
+								selector + ' ' + style.selector + ' {' + style.rules + '}',
+								sheet.cssRules.length
+							);
+							if(Mura.editing){
+								console.log('Applying dynamic styles:' + selector + ' ' + style.selector + ' {' + style.rules + '}');
+							}
+						} catch(e){
+							if(Mura.editing){
+								console.log('Error applying dynamic styles:' + selector + ' ' + style.selector + ' {' + style.rules + '}');
+								console.log(e);
+							}
+						}
 					});
 				}
 
