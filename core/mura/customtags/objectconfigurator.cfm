@@ -164,7 +164,7 @@
 							<!--- nested panels --->
 							<div class="mura-control-group">
 								<!--- todo: rbkeys for box labels --->
-								<div class="panel-gds-box" id="panel-gds-content" data-gdsel="panel-style-custom"><span>Custom Styles</span>
+								<div class="panel-gds-box" id="panel-gds-custom" data-gdsel="panel-style-custom"><span>Custom Styles</span>
 								<div class="panel-gds-box" id="panel-gds-object" data-gdsel="panel-style-object"><span>Module</span>
 									<cfif request.hasmetaoptions>
 										<div class="panel-gds-box" id="panel-gds-meta" data-gdsel="panel-style-label"<cfif not len(attributes.params.label)> style="display:none"</cfif>><span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.label')#</span></div>
@@ -203,6 +203,16 @@
 
 			$('#panel-gds-content').click(function(){
 				currentPanel="content";
+				frontEndProxy.post(
+				{
+					cmd:'setCurrentPanel',
+					instanceid:instanceid,
+					currentPanel:currentPanel
+				});
+			});
+
+			$('#panel-gds-custom').click(function(){
+				currentPanel="custom";
 				frontEndProxy.post(
 				{
 					cmd:'setCurrentPanel',
