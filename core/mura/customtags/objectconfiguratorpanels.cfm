@@ -180,7 +180,7 @@
 							styles.push(
 								{
 									selector: tr.find('.cssselector').html().replace(/&nbsp;/g, '').replace(/&gt;/g, '>'),
-									rules:tr.find('.cssrules').html().replace(/&nbsp;/g, '').replace(/&gt;/g, '>')
+									rules:tr.find('.cssrules').html().replace(/&nbsp;/g, '').replace(/&gt;/g, '>').replace(/<br>/g, '\n')
 								}
 							);
 						});
