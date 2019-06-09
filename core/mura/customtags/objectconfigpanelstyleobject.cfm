@@ -82,7 +82,7 @@
 
 								<div class="mura-input-group">
 									<label class="mura-serial">
-										<input type="text" name="objectminheight" id="objectminheightnum" placeholder="0" class="numeric serial" value="<cfif len(trim(attributes.params.cssstyles.minheight))>#val(esapiEncode('html_attr',attributes.params.cssstyles.minheight))#</cfif>">
+										<input type="text" name="objectminheight" id="objectminheightnum" placeholder="0" class="numeric serial" value="<cfif len(trim(attributes.params.stylesupport.objectstyles.minheight))>#val(esapiEncode('html_attr',attributes.params.stylesupport.objectstyles.minheight))#</cfif>">
 									</label>
 									<select id="objectminheightuom" name="objectminheightuom" class="styleSupport">
 										<cfloop list="px,%,em,rem" index="u">
@@ -90,7 +90,7 @@
 										</cfloop>
 									</select>
 								</div>
-								<input type="hidden" name="minHeight" id="objectminheightuomval" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.minheight)#">
+								<input type="hidden" name="minHeight" id="objectminheightuomval" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.stylesupport.objectstyles.minheight)#">
 						</div>
 					</div>
 
@@ -103,7 +103,7 @@
 							<div class="col-xs-8 center">
 								<div class="mura-input-group">
 									<label class="mura-serial">
-										<input type="text" name="margin" id="objectmarginall" placeholder="All" class="numeric serial" value="<cfif len(trim(attributes.params.cssstyles.marginall))>#val(esapiEncode('html_attr',attributes.params.cssstyles.marginall))#</cfif>">
+										<input type="text" name="margin" id="objectmarginall" placeholder="All" class="numeric serial" value="<cfif len(trim(attributes.params.stylesupport.objectstyles.marginall))>#val(esapiEncode('html_attr',attributes.params.stylesupport.objectstyles.marginall))#</cfif>">
 									</label>
 									<select id="objectmarginuom" name="objectmarginuom" class="styleSupport">
 										<cfloop list="px,%,em,rem" index="u">
@@ -122,9 +122,9 @@
 								<div class="col-xs-3"></div>
 								<div class="col-xs-6">
 									<label class="mura-serial">
-										<input type="text" name="objectMarginTop" id="objectmargintop" placeholder="Top" class="numeric serial" value="<cfif len(trim(attributes.params.cssstyles.margintop))>#val(esapiEncode('html_attr',attributes.params.cssstyles.margintop))#</cfif>">
+										<input type="text" name="objectMarginTop" id="objectmargintop" placeholder="Top" class="numeric serial" value="<cfif len(trim(attributes.params.stylesupport.objectstyles.margintop))>#val(esapiEncode('html_attr',attributes.params.stylesupport.objectstyles.margintop))#</cfif>">
 									</label>
-									<input type="hidden" name="marginTop" id="objectmargintopval" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.margintop)#">
+									<input type="hidden" name="marginTop" id="objectmargintopval" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.stylesupport.objectstyles.margintop)#">
 								</div>
 								<div class="col-xs-3"></div>
 							</div>
@@ -132,15 +132,15 @@
 							<div class="row mura-ui-row">
 								<div class="col-xs-6">
 									<label class="mura-serial">
-										<input type="text" name="objectMarginLeft" id="objectmarginleft" placeholder="Left" class="numeric serial" value="<cfif len(trim(attributes.params.cssstyles.marginleft))>#val(esapiEncode('html_attr',attributes.params.cssstyles.marginleft))#</cfif>">
+										<input type="text" name="objectMarginLeft" id="objectmarginleft" placeholder="Left" class="numeric serial" value="<cfif len(trim(attributes.params.stylesupport.objectstyles.marginleft))>#val(esapiEncode('html_attr',attributes.params.stylesupport.objectstyles.marginleft))#</cfif>">
 									</label>
-									<input type="hidden" name="marginLeft" id="objectmarginleftval" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.marginleft)#">
+									<input type="hidden" name="marginLeft" id="objectmarginleftval" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.stylesupport.objectstyles.marginleft)#">
 								</div>
 								<div class="col-xs-6">
 									<label class="mura-serial">
-										<input type="text" name="objectMarginRight" id="objectmarginright" placeholder="Right" class="numeric serial" value="<cfif len(trim(attributes.params.cssstyles.marginright))>#val(esapiEncode('html_attr',attributes.params.cssstyles.marginright))#</cfif>">
+										<input type="text" name="objectMarginRight" id="objectmarginright" placeholder="Right" class="numeric serial" value="<cfif len(trim(attributes.params.stylesupport.objectstyles.marginright))>#val(esapiEncode('html_attr',attributes.params.stylesupport.objectstyles.marginright))#</cfif>">
 									</label>
-									<input type="hidden" name="marginRight" id="objectmarginrightval" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.marginright)#">
+									<input type="hidden" name="marginRight" id="objectmarginrightval" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.stylesupport.objectstyles.marginright)#">
 								</div>
 							</div>
 
@@ -148,9 +148,9 @@
 								<div class="col-xs-3"></div>
 								<div class="col-xs-6">
 									<label class="mura-serial">
-										<input type="text" name="objectMarginBottom" id="objectmarginbottom" placeholder="Bottom" class="numeric serial" value="<cfif len(trim(attributes.params.cssstyles.marginbottom))>#val(esapiEncode('html_attr',attributes.params.cssstyles.marginbottom))#</cfif>">
+										<input type="text" name="objectMarginBottom" id="objectmarginbottom" placeholder="Bottom" class="numeric serial" value="<cfif len(trim(attributes.params.stylesupport.objectstyles.marginbottom))>#val(esapiEncode('html_attr',attributes.params.stylesupport.objectstyles.marginbottom))#</cfif>">
 									</label>
-									<input type="hidden" name="marginBottom" id="objectmarginbottomval" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.marginbottom)#">
+									<input type="hidden" name="marginBottom" id="objectmarginbottomval" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.stylesupport.objectstyles.marginbottom)#">
 								</div>
 								<div class="col-xs-3"></div>
 							</div>
@@ -167,7 +167,7 @@
 							<div class="col-xs-8 center">
 								<div class="mura-input-group">
 									<label class="mura-serial">
-										<input type="text" name="padding" id="objectpaddingall" placeholder="All" class="numeric serial" value="<cfif len(trim(attributes.params.cssstyles.paddingall))>#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingall))#</cfif>">
+										<input type="text" name="padding" id="objectpaddingall" placeholder="All" class="numeric serial" value="<cfif len(trim(attributes.params.stylesupport.objectstyles.paddingall))>#val(esapiEncode('html_attr',attributes.params.stylesupport.objectstyles.paddingall))#</cfif>">
 									</label>
 									<select id="objectpaddinguom" name="objectpaddinguom" class="styleSupport">
 										<cfloop list="px,%,em,rem" index="u">
@@ -186,9 +186,9 @@
 								<div class="col-xs-3"></div>
 								<div class="col-xs-6">
 									<label class="mura-serial">
-										<input type="text" name="objectPaddingTop" id="objectpaddingtop" placeholder="Top" class="numeric serial" value="<cfif len(trim(attributes.params.cssstyles.paddingtop))>#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingtop))#</cfif>">
+										<input type="text" name="objectPaddingTop" id="objectpaddingtop" placeholder="Top" class="numeric serial" value="<cfif len(trim(attributes.params.stylesupport.objectstyles.paddingtop))>#val(esapiEncode('html_attr',attributes.params.stylesupport.objectstyles.paddingtop))#</cfif>">
 									</label>
-									<input type="hidden" name="paddingTop" id="objectpaddingtopval" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.paddingtop)#">
+									<input type="hidden" name="paddingTop" id="objectpaddingtopval" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.stylesupport.objectstyles.paddingtop)#">
 								</div>
 								<div class="col-xs-3"></div>
 							</div>
@@ -196,15 +196,15 @@
 							<div class="row mura-ui-row">
 								<div class="col-xs-6">
 									<label class="mura-serial">
-										<input type="text" name="objectPaddingLeft" id="objectpaddingleft" placeholder="Left" class="numeric serial" value="<cfif len(trim(attributes.params.cssstyles.paddingleft))>#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingleft))#</cfif>">
+										<input type="text" name="objectPaddingLeft" id="objectpaddingleft" placeholder="Left" class="numeric serial" value="<cfif len(trim(attributes.params.stylesupport.objectstyles.paddingleft))>#val(esapiEncode('html_attr',attributes.params.stylesupport.objectstyles.paddingleft))#</cfif>">
 									</label>
-									<input type="hidden" name="paddingLeft" id="objectpaddingleftval" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.paddingleft)#">
+									<input type="hidden" name="paddingLeft" id="objectpaddingleftval" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.stylesupport.objectstyles.paddingleft)#">
 								</div>
 								<div class="col-xs-6">
 									<label class="mura-serial">
-										<input type="text" name="objectPaddingRight" id="objectpaddingright" placeholder="Right" class="numeric serial" value="<cfif len(trim(attributes.params.cssstyles.paddingright))>#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingright))#</cfif>">
+										<input type="text" name="objectPaddingRight" id="objectpaddingright" placeholder="Right" class="numeric serial" value="<cfif len(trim(attributes.params.stylesupport.objectstyles.paddingright))>#val(esapiEncode('html_attr',attributes.params.stylesupport.objectstyles.paddingright))#</cfif>">
 									</label>
-									<input type="hidden" name="paddingRight" id="objectpaddingrightval" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.paddingright)#">
+									<input type="hidden" name="paddingRight" id="objectpaddingrightval" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.stylesupport.objectstyles.paddingright)#">
 								</div>
 							</div>
 
@@ -212,9 +212,9 @@
 								<div class="col-xs-3"></div>
 								<div class="col-xs-6">
 									<label class="mura-serial">
-										<input type="text" name="objectPaddingBottom" id="objectpaddingbottom" placeholder="Bottom" class="numeric serial" value="<cfif len(trim(attributes.params.cssstyles.paddingbottom))>#val(esapiEncode('html_attr',attributes.params.cssstyles.paddingbottom))#</cfif>">
+										<input type="text" name="objectPaddingBottom" id="objectpaddingbottom" placeholder="Bottom" class="numeric serial" value="<cfif len(trim(attributes.params.stylesupport.objectstyles.paddingbottom))>#val(esapiEncode('html_attr',attributes.params.stylesupport.objectstyles.paddingbottom))#</cfif>">
 									</label>
-									<input type="hidden" name="paddingBottom" id="objectpaddingbottomval" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.paddingbottom)#">
+									<input type="hidden" name="paddingBottom" id="objectpaddingbottomval" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.stylesupport.objectstyles.paddingbottom)#">
 								</div>
 								<div class="col-xs-3"></div>
 							</div>
@@ -229,7 +229,7 @@
 
 						<div class="input-group mura-colorpicker">
 							<span class="input-group-addon"><i class="mura-colorpicker-swatch"></i></span>
-							<input type="text" id="objecttextcolor" name="color" class="objectStyle" placeholder="Select Color" autocomplete="off" value="#esapiEncode('html_attr',attributes.params.cssstyles.color)#">
+							<input type="text" id="objecttextcolor" name="color" class="objectStyle" placeholder="Select Color" autocomplete="off" value="#esapiEncode('html_attr',attributes.params.stylesupport.objectstyles.color)#">
 						</div>
 
 					</div>
@@ -240,13 +240,13 @@
 						<label>Background Color</label>
 						<div class="input-group mura-colorpicker" id="objectbackgroundcustom">
 							<span class="input-group-addon"><i class="mura-colorpicker-swatch"></i></span>
-							<input type="text" id="objectbackgroundcolor" name="backgroundColor" class="objectStyle" placeholder="Select Color" autocomplete="off" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundcolor)#">
+							<input type="text" id="objectbackgroundcolor" name="backgroundColor" class="objectStyle" placeholder="Select Color" autocomplete="off" value="#esapiEncode('html_attr',attributes.params.stylesupport.objectstyles.backgroundcolor)#">
 						</div>
 					</div>
 
 					<div class="mura-control-group">
 						<label>Background Image</label>
-						<input type="hidden" id="objectbackgroundimage" name="backgroundImage" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundimage)#">
+						<input type="hidden" id="objectbackgroundimage" name="backgroundImage" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.stylesupport.objectstyles.backgroundimage)#">
 						<input type="text" id="objectbackgroundimageurl" name="objectbackgroundimageurl" placeholder="URL" class="styleSupport" value="#esapiEncode('html_attr',attributes.params.styleSupport.objectbackgroundimageurl)#">
 						<button type="button" class="btn mura-ckfinder" data-target="objectbackgroundimageurl" data-completepath="false"><i class="mi-image"></i> Select Image</button>
 					</div>
@@ -254,29 +254,29 @@
 					<div class="mura-control-group object-css-bg-option" style="display:none;">
 						<label>Background Size</label>
 						<select id="objectbackgroundsize" name="backgroundSize" class="objectStyle">
-							<option value="auto"<cfif attributes.params.cssstyles.backgroundsize eq 'auto'>
+							<option value="auto"<cfif attributes.params.stylesupport.objectstyles.backgroundsize eq 'auto'>
 							selected</cfif>>Auto</option>
-							<option value="contain"<cfif attributes.params.cssstyles.backgroundsize eq 'contain'> selected</cfif>>Contain</option>
-							<option value="cover"<cfif attributes.params.cssstyles.backgroundsize eq 'cover'> selected</cfif>>Cover</option>
+							<option value="contain"<cfif attributes.params.stylesupport.objectstyles.backgroundsize eq 'contain'> selected</cfif>>Contain</option>
+							<option value="cover"<cfif attributes.params.stylesupport.objectstyles.backgroundsize eq 'cover'> selected</cfif>>Cover</option>
 						</select>
 					</div>
 
 					<div class="mura-control-group object-css-bg-option" style="display:none;">
 						<label>Background Repeat</label>
 						<select id="objectbackgroundrepeat" name="backgroundRepeat" class="objectStyle">
-							<option value="no-repeat"<cfif attributes.params.cssstyles.backgroundrepeat eq 'norepeat'> selected</cfif>>No-repeat</option>
-							<option value="repeat"<cfif attributes.params.cssstyles.backgroundrepeat eq 'repeat'> selected</cfif>>Repeat</option>
-							<option value="repeat-x"<cfif attributes.params.cssstyles.backgroundrepeat eq 'repeatx'> selected</cfif>>Repeat-X</option>
-							<option value="repeat-y"<cfif attributes.params.cssstyles.backgroundrepeat eq 'repeaty'> selected</cfif>>Repeat-Y</option>
+							<option value="no-repeat"<cfif attributes.params.stylesupport.objectstyles.backgroundrepeat eq 'norepeat'> selected</cfif>>No-repeat</option>
+							<option value="repeat"<cfif attributes.params.stylesupport.objectstyles.backgroundrepeat eq 'repeat'> selected</cfif>>Repeat</option>
+							<option value="repeat-x"<cfif attributes.params.stylesupport.objectstyles.backgroundrepeat eq 'repeatx'> selected</cfif>>Repeat-X</option>
+							<option value="repeat-y"<cfif attributes.params.stylesupport.objectstyles.backgroundrepeat eq 'repeaty'> selected</cfif>>Repeat-Y</option>
 						</select>
 					</div>
 
 					<div class="mura-control-group object-css-bg-option" style="display:none;">
 						<label>Background Attachment</label>
 						<select name="backgroundAttachment" class="objectStyle">
-							<option value="scroll"<cfif attributes.params.cssstyles.backgroundAttachment eq 'scroll'>
+							<option value="scroll"<cfif attributes.params.stylesupport.objectstyles.backgroundAttachment eq 'scroll'>
 							selected</cfif>>Scroll</option>
-							<option value="Fixed"<cfif attributes.params.cssstyles.backgroundAttachment eq 'fixed'> selected</cfif>>Fixed</option>
+							<option value="Fixed"<cfif attributes.params.stylesupport.objectstyles.backgroundAttachment eq 'fixed'> selected</cfif>>Fixed</option>
 						</select>
 					</div>
 
@@ -288,16 +288,16 @@
 							<div class="col-xs-8">
 								<div class="mura-input-group">
 									<label>
-										<input type="text" id="objectbackgroundpositionynum" name="objectBackgroundPositionyNum" class="numeric" placeholder="" value="<cfif val(esapiEncode('html_attr',attributes.params.cssstyles.backgroundpositiony))>#val(esapiEncode('html_attr',attributes.params.cssstyles.backgroundpositiony))#</cfif>" style="display: none;">
+										<input type="text" id="objectbackgroundpositionynum" name="objectBackgroundPositionyNum" class="numeric" placeholder="" value="<cfif val(esapiEncode('html_attr',attributes.params.stylesupport.objectstyles.backgroundpositiony))>#val(esapiEncode('html_attr',attributes.params.stylesupport.objectstyles.backgroundpositiony))#</cfif>" style="display: none;">
 									</label>
 
 									<select id="objectbackgroundpositiony" name="objectBackgroundPositionY" class="styleSupport" data-numfield="objectbackgroundpositionynum">
 										<cfloop list="Top,Center,Bottom,%,px" index="p">
-											<option value="#lcase(p)#"<cfif attributes.params.cssstyles.backgroundpositiony contains p> selected</cfif>>#p#</option>
+											<option value="#lcase(p)#"<cfif attributes.params.stylesupport.objectstyles.backgroundpositiony contains p> selected</cfif>>#p#</option>
 										</cfloop>
 									</select>
 
-									<input type="hidden" id="objectbackgroundpositionyval" name="backgroundPositionY" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundpositiony)#">
+									<input type="hidden" id="objectbackgroundpositionyval" name="backgroundPositionY" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.stylesupport.objectstyles.backgroundpositiony)#">
 
 								</div>
 							</div>
@@ -308,16 +308,16 @@
 							<div class="col-xs-8">
 								<div class="mura-input-group">
 									<label>
-										<input type="text" id="objectbackgroundpositionxnum" name="objectBackgroundPositionxNum" class="numeric" placeholder="" value="<cfif val(esapiEncode('html_attr',attributes.params.cssstyles.backgroundpositionx))>#val(esapiEncode('html_attr',attributes.params.cssstyles.backgroundpositionx))#</cfif>" style="display: none;">
+										<input type="text" id="objectbackgroundpositionxnum" name="objectBackgroundPositionxNum" class="numeric" placeholder="" value="<cfif val(esapiEncode('html_attr',attributes.params.stylesupport.objectstyles.backgroundpositionx))>#val(esapiEncode('html_attr',attributes.params.stylesupport.objectstyles.backgroundpositionx))#</cfif>" style="display: none;">
 									</label>
 
 									<select id="objectbackgroundpositionx" name="objectBackgroundPositionX" class="styleSupport" data-numfield="objectbackgroundpositionxnum">
 										<cfloop list="Left,Center,Right,%,px" index="p">
-											<option value="#lcase(p)#"<cfif attributes.params.cssstyles.backgroundpositionx contains p> selected</cfif>>#p#</option>
+											<option value="#lcase(p)#"<cfif attributes.params.stylesupport.objectstyles.backgroundpositionx contains p> selected</cfif>>#p#</option>
 										</cfloop>
 									</select>
 
-									<input type="hidden" id="objectbackgroundpositionxval" name="backgroundPositionX" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.cssstyles.backgroundpositionx)#">
+									<input type="hidden" id="objectbackgroundpositionxval" name="backgroundPositionX" class="objectStyle" value="#esapiEncode('html_attr',attributes.params.stylesupport.objectstyles.backgroundpositionx)#">
 
 								</div>
 							</div>

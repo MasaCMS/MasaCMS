@@ -2714,7 +2714,7 @@ buttons: {
 			}
 		})
 
-		availableObjectParams['cssstyles']={};
+		var objectstyles={};
 
 		$(".objectStyle, .objectstyle").each(
 
@@ -2723,20 +2723,20 @@ buttons: {
 			if(item.val() != null && ( item.attr("type") != "radio" || (item.attr("type") == "radio"  && item.is(':checked')) ) ) {
 
 				if(typeof item.attr("name") != 'undefined'){
-					if(typeof availableObjectParams['cssstyles'][item.attr("name")] == 'undefined') {
+					if(typeof objectstyles[item.attr("name")] == 'undefined') {
 						if(item.attr("type") == "checkbox" && !item.is(":checked")){
-							availableObjectParams['cssstyles'][item.attr("name")] = '';
+							objectstyles[item.attr("name")] = '';
 						} else {
-							availableObjectParams['cssstyles'][item.attr("name")] = item.val();
+							objectstyles[item.attr("name")] = item.val();
 						}
 					} else if (!(item.attr("type") == "checkbox" && !item.is(":checked")) ){
-						availableObjectParams['cssstyles'][item.attr("name")] = availableObjectParams['cssstyles'][item.attr("name")] + ',' + item.val();
+						objectstyles[item.attr("name")] = objectstyles[item.attr("name")] + ',' + item.val();
 					}
 				}
 			}
 		})
 
-		availableObjectParams['metacssstyles']={};
+		var metastyles={};
 
 		$(".metaStyle, .metastyle").each(
 
@@ -2745,20 +2745,20 @@ buttons: {
 			if(item.val() != null && ( item.attr("type") != "radio" || (item.attr("type") == "radio"  && item.is(':checked')) ) ) {
 
 				if(typeof item.attr("name") != 'undefined'){
-					if(typeof availableObjectParams['metacssstyles'][item.attr("name")] == 'undefined') {
+					if(typeof metastyles[item.attr("name")] == 'undefined') {
 						if(item.attr("type") == "checkbox" && !item.is(":checked")){
-							availableObjectParams['metacssstyles'][item.attr("name")] = '';
+							metastyles[item.attr("name")] = '';
 						} else {
-							availableObjectParams['metacssstyles'][item.attr("name")] = item.val();
+							metastyles[item.attr("name")] = item.val();
 						}
 					} else if (!(item.attr("type") == "checkbox" && !item.is(":checked")) ){
-						availableObjectParams['metacssstyles'][item.attr("name")] = availableObjectParams['metacssstyles'][item.attr("name")] + ',' + item.val();
+						metastyles[item.attr("name")] = metastyles[item.attr("name")] + ',' + item.val();
 					}
 				}
 			}
 		})
 
-		availableObjectParams['contentcssstyles']={};
+		var contentstyles={};
 
 		$(".contentStyle, .contentstyle").each(
 
@@ -2767,20 +2767,20 @@ buttons: {
 			if(item.val() != null && ( item.attr("type") != "radio" || (item.attr("type") == "radio"  && item.is(':checked')) ) ) {
 
 				if(typeof item.attr("name") != 'undefined'){
-					if(typeof availableObjectParams['contentcssstyles'][item.attr("name")] == 'undefined') {
+					if(typeof contentstyles[item.attr("name")] == 'undefined') {
 						if(item.attr("type") == "checkbox" && !item.is(":checked")){
-							availableObjectParams['contentcssstyles'][item.attr("name")] = '';
+							contentstyles[item.attr("name")] = '';
 						} else {
-							availableObjectParams['contentcssstyles'][item.attr("name")] = item.val();
+							contentstyles[item.attr("name")] = item.val();
 						}
 					} else if (!(item.attr("type") == "checkbox" && !item.is(":checked")) ){
-						availableObjectParams['contentcssstyles'][item.attr("name")] = availableObjectParams['contentcssstyles'][item.attr("name")] + ',' + item.val();
+						acontentstyles[item.attr("name")] = contentstyles[item.attr("name")] + ',' + item.val();
 					}
 				}
 			}
 		})
 
-		availableObjectParams['stylesupport']={};
+		var stylesupport={};
 
 		$(".styleSupport, .stylesupport").each(
 
@@ -2789,14 +2789,14 @@ buttons: {
 			if(item.val() != null && ( item.attr("type") != "radio" || (item.attr("type") == "radio"  && item.is(':checked')) ) ) {
 
 				if(typeof item.attr("name") != 'undefined'){
-					if(typeof availableObjectParams['stylesupport'][item.attr("name")] == 'undefined') {
+					if(typeof stylesupport[item.attr("name")] == 'undefined') {
 						if(item.attr("type") == "checkbox" && !item.is(":checked")){
-							availableObjectParams['stylesupport'][item.attr("name")] = '';
+							stylesupport[item.attr("name")] = '';
 						} else {
-							availableObjectParams['stylesupport'][item.attr("name")] = item.val();
+							stylesupport[item.attr("name")] = item.val();
 						}
 					} else if (!(item.attr("type") == "checkbox" && !item.is(":checked")) ){
-						availableObjectParams['stylesupport'][item.attr("name")] = availableObjectParams['stylesupport'][item.attr("name")] + ',' + item.val();
+						stylesupport['stylesupport'][item.attr("name")] = stylesupport[item.attr("name")] + ',' + item.val();
 					}
 				}
 			}
@@ -2804,10 +2804,10 @@ buttons: {
 
 		this.availableObject = $.extend({}, this.availableObjectTemplate);
 		this.availableObject.params = availableObjectParams;
-		this.availableObject.params.cssstyles=JSON.stringify(this.availableObject.params.cssstyles);
-		this.availableObject.params.metacssstyles=JSON.stringify(this.availableObject.params.metacssstyles);
-		this.availableObject.params.contentcssstyles=JSON.stringify(this.availableObject.params.contentcssstyles);
-		this.availableObject.params.stylesupport=JSON.stringify(this.availableObject.params.stylesupport);
+		stylesupport.objectstyles=objectstyles;
+		stylesupport.metastyles=metastyles;
+		stylesupport.contentstyles=contentstyles;;
+		this.availableObject.params.stylesupport=JSON.stringify(stylesupport);
 
 		if(typeof originParams == 'object'){
 			this.availableObject.params=$.extend(originParams,this.availableObject.params);

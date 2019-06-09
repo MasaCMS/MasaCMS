@@ -66,13 +66,13 @@
 		,'zindex'];
 
 	for (p in attributes.globalparams){
-		param name="attributes.params.cssstyles.#p#" default="";
+		param name="attributes.params.stylesupport.objectstyles.#p#" default="";
 		if(p == 'textalign'){
-			param name="attributes.params.metacssstyles.#p#" default="center";
+			param name="attributes.params.stylesupport.metastyles.#p#" default="center";
 		} else {
-			param name="attributes.params.metacssstyles.#p#" default="";
+			param name="attributes.params.stylesupport.metastyles.#p#" default="";
 		}
-		param name="attributes.params.contentcssstyles.#p#" default="";
+		param name="attributes.params.stylesupport.contentstyles.#p#" default="";
 	}
 </cfscript>
 
