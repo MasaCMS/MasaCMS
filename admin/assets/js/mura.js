@@ -2164,13 +2164,17 @@ var Mura=(function(){
 
 			var data = new FormData(frm);
 			var checkdata = setLowerCaseKeys(formToObject(frm));
-			var keys = filterUnwantedParams(deepExtend(setLowerCaseKeys(obj.data())),
-				urlparams, {
+			var keys = filterUnwantedParams(
+					deepExtend(
+						setLowerCaseKeys(obj.data()),
+						urlparams,
+						{
 						siteid: Mura.siteid,
 						contentid: Mura.contentid,
 						contenthistid: Mura.contenthistid,
 						nocache: 1
-				}
+						}
+					)
 			);
 
 			for (var k in keys) {
@@ -2204,15 +2208,18 @@ var Mura=(function(){
 
 		} else {
 
-			var data = filterUnwantedParams(deepExtend(setLowerCaseKeys(obj.data())),
-				urlparams, setLowerCaseKeys(formToObject(frm)),
+			var data = filterUnwantedParams(
+				deepExtend(
+					setLowerCaseKeys(obj.data()),
+					urlparams,
+					setLowerCaseKeys(formToObject(frm)),
 					{
 						siteid: Mura.siteid,
 						contentid: Mura.contentid,
 						contenthistid: Mura.contenthistid,
 						nocache: 1
 					}
-				);
+				));
 
 			if (data.object == 'container' && data.content) {
 				delete data.content;
@@ -2325,7 +2332,7 @@ var Mura=(function(){
 	function filterUnwantedParams(params){
 
 		//Strip out unwanted attributes
-		var unwanted=['iconclass','objectname','inited','params','supportstyle','cssstyles','metacssstyles','contentcssstyles',
+		var unwanted=['iconclass','objectname','inited','params','stylesupport','cssstyles','metacssstyles','contentcssstyles',
 			'cssclass','cssid','metacssclass','metacssid','contentcssclass','contentcssid'];
 
 		for(var c=0; c<unwanted.length;c++){
@@ -18031,11 +18038,11 @@ Mura.DOMSelection = Mura.Core.extend(
  				obj.removeAttr('id');
  			}
 
-			var cssstyles=obj.data('cssstyles');
+			var styleSupport=obj.data('stylesupport');
 
- 			if(cssstyles){
+ 			if(styleSupport && styleSupport.objectstyles){
  				obj.removeAttr('style');
- 				obj.css(cssstyles);
+ 				obj.css(styleSupport.objectstyles);
  			}
 
 			var sheet=Mura.getStyleSheet('mura-styles-' + obj.data('instanceid'));
@@ -18046,37 +18053,77 @@ Mura.DOMSelection = Mura.Core.extend(
 
 			var selector='div.mura-object[data-instanceid="' + obj.data('instanceid') + '"]';
 
-			if (cssstyles && typeof cssstyles.backgroundColor != 'undefined' && cssstyles.backgroundColor
-				&& typeof cssstyles.backgroundImage != 'undefined' && cssstyles.backgroundImage) {
-				var style =selector + ':before{content: ""; position: absolute;	top: 0; right: 0;left: 0;bottom:0; background:' + cssstyles.backgroundColor + '}';
-				sheet.insertRule(
-					style,
-					sheet.cssRules.length
-				);
-				sheet.insertRule(
-					selector + ' > * {position:relative;}',
-					sheet.cssRules.length
-				);
- 			}
-			if(cssstyles && cssstyles.color){
-				var style=selector + ', ' + selector + ' label, ' + selector + ' p, ' + selector + ' h1, ' + selector + ' h2, ' + selector + ' h3, ' + selector + ' h4, ' + selector + ' h5, ' + selector + ' h6, ' +selector + ' a:link, ' + selector + ' a:visited, '  + selector + ' a:hover, ' + selector + ' a:active { color:' + cssstyles.color + ';} ';
-				sheet.insertRule(
-					style,
-					sheet.cssRules.length
-				);
+			if(styleSupport && styleSupport.objectstyles){
+				var objectstyles=styleSupport.objectstyles;
+				if (objectstyles && typeof objectstyles.backgroundColor != 'undefined' && objectstyles.backgroundColor
+					&& typeof objectstyles.backgroundImage != 'undefined' && objectstyles.backgroundImage) {
+					var style =selector + '::before{content: ""; position: absolute;	top: 0; right: 0;left: 0;bottom:0; background:' + objectstyles.backgroundColor + '}';
+					sheet.insertRule(
+						style,
+						sheet.cssRules.length
+					);
+					sheet.insertRule(
+						selector + ' > * {position:relative;}',
+						sheet.cssRules.length
+					);
+	 			}
+				if(objectstyles && objectstyles.color){
+					var style=selector + ', ' + selector + ' label, ' + selector + ' p, ' + selector + ' h1, ' + selector + ' h2, ' + selector + ' h3, ' + selector + ' h4, ' + selector + ' h5, ' + selector + ' h6, ' +selector + ' a:link, ' + selector + ' a:visited, '  + selector + ' a:hover, ' + selector + ' a:active { color:' + objectstyles.color + ';} ';
+					sheet.insertRule(
+						style,
+						sheet.cssRules.length
+					);
+					sheet.insertRule(
+						selector + ' * {color:inherit}',
+						sheet.cssRules.length
+					);
+				}
 			}
 
- 			if(obj.data('metacssclass') || obj.data('metacssid') ||  obj.data('metacssstyles')){
+			if(styleSupport && styleSupport.css){
+				var styles=styleSupport.css.split('}');
+				console.log(styles);
+				if(Array.isArray(styles) && styles.length){
+					styles.forEach(function(style){
+						var styleParts=style.split("{");
+						if(styleParts.length > 1){
+							var selectors=styleParts[0].split(',');
+							selectors.forEach(function(subSelector){
+								try{
+									var subStyle=selector + ' ' + subSelector + '{' + styleParts[1] + '}';
+									sheet.insertRule(
+										subStyle,
+										sheet.cssRules.length
+									);
+									if(Mura.editing){
+										console.log('Applying dynamic styles:' + subStyle);
+									}
+								} catch(e){
+									if(Mura.editing){
+										console.log('Error applying dynamic styles:' + subStyle);
+										console.log(e);
+									}
+								}
+							});
+						}
+					});
+				}
+			}
+
+ 			if(obj.data('metacssclass') || obj.data('metacssid') || (styleSupport && styleSupport.metastyles) ){
  				var metaWrapper=obj.children('.mura-object-meta-wrapper');
 				if(metaWrapper.length){
 					var meta=metaWrapper.children('.mura-object-meta');
 					if(meta.length){
-						var metacssstyles=obj.data('metacssstyles');
+						metastyles={};
+						if(styleSupport && styleSupport.metastyles){
+							metastyles=styleSupport.metastyles;
+						}
 						var selector='div.mura-object[data-instanceid="' + obj.data('instanceid') + '"] .mura-object-meta';
 
-						if (metacssstyles && typeof metacssstyles.backgroundColor != 'undefined' && metacssstyles.backgroundColor
-							&& typeof metacssstyles.backgroundImage != 'undefined' && metacssstyles.backgroundImage) {
-							var style =selector + ':before{content: ""; position: absolute;	top: 0; right: 0;left: 0;bottom:0; background:' + metacssstyles.backgroundColor + '}';
+						if (metastyles && typeof metastyles.backgroundColor != 'undefined' && metastyles.backgroundColor
+							&& typeof metastyles.backgroundImage != 'undefined' && metastyles.backgroundImage) {
+							var style =selector + '::before{content: ""; position: absolute;	top: 0; right: 0;left: 0;bottom:0; background:' + metastyles.backgroundColor + '}';
 							sheet.insertRule(
 								style,
 								sheet.cssRules.length
@@ -18086,11 +18133,15 @@ Mura.DOMSelection = Mura.Core.extend(
 								sheet.cssRules.length
 							);
 			 			}
-						if(metacssstyles && metacssstyles.color){
+						if(metastyles && metastyles.color){
 
-							var style = selector + ', ' + selector + ' label, ' + selector + ' p, ' + selector + ' h1, ' + selector + ' h2, ' + selector + ' h3, ' + selector + ' h4, ' + selector + ' h5, ' + selector + ' h6, ' +selector + ' a:link, ' + selector + ' a:visited, '  + selector + ' a:hover, ' + selector + ' a:active { color:' + metacssstyles.color + ';} ';
+							var style = selector + ', ' + selector + ' label, ' + selector + ' p, ' + selector + ' h1, ' + selector + ' h2, ' + selector + ' h3, ' + selector + ' h4, ' + selector + ' h5, ' + selector + ' h6, ' +selector + ' a:link, ' + selector + ' a:visited, '  + selector + ' a:hover, ' + selector + ' a:active { color:' + metastyles.color + ';} ';
 							sheet.insertRule(
 								style,
+								sheet.cssRules.length
+							);
+							sheet.insertRule(
+								selector + ' * {color:inherit}',
 								sheet.cssRules.length
 							);
 						}
@@ -18106,20 +18157,24 @@ Mura.DOMSelection = Mura.Core.extend(
 			 			 })
 			 			}
 
-						if(obj.data('metacssstyles')){
+						if(metastyles){
 							meta.removeAttr('style');
-							meta.css(obj.data('metacssstyles'));
+							meta.css(metastyles);
 						}
 					}
 				}
 			}
 
-			var contentcssstyles=obj.data('contentcssstyles');
+			var contentstyles={};
+			if(styleSupport && styleSupport.contentstyles){
+				contentstyles=styleSupport.contentstyles;
+			}
+
 			var selector='div.mura-object[data-instanceid="' + obj.data('instanceid') + '"] .mura-object-content';
 
-			if (contentcssstyles && typeof contentcssstyles.backgroundColor != 'undefined' && contentcssstyles.backgroundColor
-				&& typeof contentcssstyles.backgroundImage != 'undefined' && contentcssstyles.backgroundImage) {
-				var style =selector + ':before{content: ""; position: absolute;	top: 0; right: 0;left: 0;bottom:0; background:' + contentcssstyles.backgroundColor + '}';
+			if (contentstyles && typeof contentstyles.backgroundColor != 'undefined' && contentstyles.backgroundColor
+				&& typeof contentstyles.backgroundImage != 'undefined' && contentstyles.backgroundImage) {
+				var style =selector + '::before{content: ""; position: absolute;	top: 0; right: 0;left: 0;bottom:0; background:' + contentstyles.backgroundColor + '}';
 				sheet.insertRule(
 					style,
 					sheet.cssRules.length
@@ -18130,16 +18185,20 @@ Mura.DOMSelection = Mura.Core.extend(
 				);
 			}
 
-			if(contentcssstyles && contentcssstyles.color){
+			if(contentstyles && contentstyles.color){
 
-				var style=	selector + ', ' + selector + ' label, ' + selector + ' p, ' + selector + ' h1, ' + selector + ' h2, ' + selector + ' h3, ' + selector + ' h4, ' + selector + ' h5, ' + selector + ' h6, ' +selector + ' a:link, ' + selector + ' a:visited, '  + selector + ' a:hover, ' + selector + ' a:active { color:' + contentcssstyles.color + ';} ';
+				var style=	selector + ', ' + selector + ' label, ' + selector + ' p, ' + selector + ' h1, ' + selector + ' h2, ' + selector + ' h3, ' + selector + ' h4, ' + selector + ' h5, ' + selector + ' h6, ' +selector + ' a:link, ' + selector + ' a:visited, '  + selector + ' a:hover, ' + selector + ' a:active { color:' + contentstyles.color + ';} ';
 				sheet.insertRule(
-				style,
+					style,
+					sheet.cssRules.length
+				);
+				sheet.insertRule(
+					selector + ' * {color:inherit}',
 					sheet.cssRules.length
 				);
 			}
 
- 			if(obj.data('contentcssclass') || obj.data('contentcssid') ||  obj.data('contentcssstyles')){
+ 			if(obj.data('contentcssclass') || obj.data('contentcssid') ||  contentstyles){
  				var content=obj.children('.mura-object-content').first();
 
 	 			if(obj.data('contentcssid')){
@@ -18152,11 +18211,13 @@ Mura.DOMSelection = Mura.Core.extend(
 	 					}
 	 				 })
 	 			}
-	 			if(obj.data('contentcssstyles')){
-	 				content.removeAttr('style');
-	 				content.css(obj.data('contentcssstyles'));
-	 			}
+
+				if(contentstyles){
+					content.removeAttr('style');
+					content.css(contentstyles);
+				}
 			}
+
  		});
  		return this;
  	},

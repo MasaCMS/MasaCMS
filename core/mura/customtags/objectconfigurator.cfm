@@ -60,26 +60,26 @@
 
 		<cfset contentcontainerclass=esapiEncode("javascript",$.getContentRenderer().expandedContentContainerClass)>
 
-		<cfif not (isDefined("attributes.params.cssstyles") and isStruct(attributes.params.cssstyles))>
-			<cfif isDefined("attributes.params.cssstyles") and isJSON(attributes.params.cssstyles)>
-				<cfset attributes.params.cssstyles=deserializeJSON(attributes.params.cssstyles)>
+		<cfif not (isDefined("attributes.params.stylesupport.objectstyles") and isStruct(attributes.params.stylesupport.objectstyles))>
+			<cfif isDefined("attributes.params.stylesupport.objectstyles") and isJSON(attributes.params.stylesupport.objectstyles)>
+				<cfset attributes.params.stylesupport.objectstyles=deserializeJSON(attributes.params.stylesupport.objectstyles)>
 			<cfelse>
-				<cfset attributes.params.cssstyles={}>
+				<cfset attributes.params.stylesupport.objectstyles={}>
 			</cfif>
 		</cfif>
 
-		<cfif not (isDefined("attributes.params.metacssstyles") and isStruct(attributes.params.metacssstyles))>
-			<cfif isDefined("attributes.params.metacssstyles") and isJSON(attributes.params.metacssstyles)>
-				<cfset attributes.params.metacssstyles=deserializeJSON(attributes.params.metacssstyles)>
+		<cfif not (isDefined("attributes.params.stylesupport.metastyles") and isStruct(attributes.params.stylesupport.metastyles))>
+			<cfif isDefined("attributes.params.stylesupport.metastyles") and isJSON(attributes.params.stylesupport.metastyles)>
+				<cfset attributes.params.stylesupport.metastyles=deserializeJSON(attributes.params.stylesupport.metastyles)>
 			<cfelse>
-				<cfset attributes.params.metacssstyles={}>
+				<cfset attributes.params.stylesupport.metastyles={}>
 			</cfif>
 		</cfif>
-		<cfif not (isDefined("attributes.params.contentcssstyles") and isStruct(attributes.params.contentcssstyles))>
-			<cfif isDefined("objectParams.contentcssstyles") and isJSON(attributes.params.contentcssstyles)>
-				<cfset attributes.params.contentcssstyles=deserializeJSON(attributes.params.contentcssstyles)>
+		<cfif not (isDefined("attributes.params.stylesupport.contentstyles") and isStruct(attributes.params.stylesupport.contentstyles))>
+			<cfif isDefined("objectParams.contentcssstyles") and isJSON(attributes.params.stylesupport.contentstyles)>
+				<cfset attributes.params.stylesupport.contentstyles=deserializeJSON(attributes.params.stylesupport.contentstyles)>
 			<cfelse>
-				<cfset attributes.params.contentcssstyles={}>
+				<cfset attributes.params.stylesupport.contentstyles={}>
 			</cfif>
 		</cfif>
 
@@ -164,11 +164,13 @@
 							<!--- nested panels --->
 							<div class="mura-control-group">
 								<!--- todo: rbkeys for box labels --->
+								<div class="panel-gds-box" id="panel-gds-custom" data-gdsel="panel-style-custom"><span>Custom Styles</span>
 								<div class="panel-gds-box" id="panel-gds-object" data-gdsel="panel-style-object"><span>Module</span>
 									<cfif request.hasmetaoptions>
-										<div class="panel-gds-box" id="panel-gds-meta" data-gdsel="panel-style-label"<cfif not len(attributes.params.label)> style="display:none"</cfif>><span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.label')#</span></div>
+										<div class="panel-gds-box" id="panel-gds-meta" data-gdsel="panel-style-label"<cfif not len(attributes.params.label)> style="display:none"</cfif>><span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.label')#</span><br/> .mura-object-meta-wrapper > .mura-object-meta </div>
 									</cfif>
-									<div class="panel-gds-box" id="panel-gds-content" data-gdsel="panel-style-content"><span>Content</span></div>
+									<div class="panel-gds-box" id="panel-gds-content" data-gdsel="panel-style-content"><span>Content</span> <br/> .mura-content</div>
+								</div>
 								</div>
 								<div class="mura-panel-group" id="style-panels" role="tablist" aria-multiselectable="true">
 									<!--- todo: merge this included content back to this file --->
@@ -201,6 +203,16 @@
 
 			$('#panel-gds-content').click(function(){
 				currentPanel="content";
+				frontEndProxy.post(
+				{
+					cmd:'setCurrentPanel',
+					instanceid:instanceid,
+					currentPanel:currentPanel
+				});
+			});
+
+			$('#panel-gds-custom').click(function(){
+				currentPanel="custom";
 				frontEndProxy.post(
 				{
 					cmd:'setCurrentPanel',
@@ -334,10 +346,10 @@
 
 			// Begin Object Margin and Padding
 			function updateObjectPadding(){
-				var t = $('#objectpaddingtop').val().replace(/[^0-9]/g,'');
-				var r = $('#objectpaddingright').val().replace(/[^0-9]/g,'');
-				var b = $('#objectpaddingbottom').val().replace(/[^0-9]/g,'');
-				var l =$('#objectpaddingleft').val().replace(/[^0-9]/g,'');
+				var t = $('#objectpaddingtop').val().replace(/[^0-9/-]/g,'');
+				var r = $('#objectpaddingright').val().replace(/[^0-9/-]/g,'');
+				var b = $('#objectpaddingbottom').val().replace(/[^0-9/-]/g,'');
+				var l =$('#objectpaddingleft').val().replace(/[^0-9/-]/g,'');
 				var u = $('#objectpaddinguom').val();
 				if (t.length){ $('#objectpaddingtopval').val(t + u); } else { $('#objectpaddingtopval').val(''); }
 				if (r.length){ $('#objectpaddingrightval').val(r + u); } else { $('#objectpaddingrightval').val(''); }
@@ -355,7 +367,7 @@
 			}
 
 			$('#objectpaddingall').on('keyup', function(){
-				var v = $('#objectpaddingall').val().replace(/[^0-9]/g,'');
+				var v = $('#objectpaddingall').val().replace(/[^0-9/-]/g,'');
 				$('#objectpaddingadvanced').hide();
 				$('#objectpaddingtop').val(v);
 				$('#objectpaddingleft').val(v);
@@ -375,10 +387,10 @@
 
 			// margin
 			function updateObjectMargin(){
-				var t = $('#objectmargintop').val().replace(/[^0-9]/g,'');
-				var r = $('#objectmarginright').val().replace(/[^0-9]/g,'');
-				var b = $('#objectmarginbottom').val().replace(/[^0-9]/g,'');
-				var l =$('#objectmarginleft').val().replace(/[^0-9]/g,'');
+				var t = $('#objectmargintop').val().replace(/[^0-9/-]/g,'');
+				var r = $('#objectmarginright').val().replace(/[^0-9/-]/g,'');
+				var b = $('#objectmarginbottom').val().replace(/[^0-9/-]/g,'');
+				var l =$('#objectmarginleft').val().replace(/[^0-9/-]/g,'');
 				var u = $('#objectmarginuom').val();
 				if (t.length){ $('#objectmargintopval').val(t + u); } else { $('#objectmargintopval').val(''); }
 				if (r.length){ $('#objectmarginrightval').val(r + u); } else { $('#objectmarginrightval').val(''); }
@@ -397,7 +409,7 @@
 			}
 
 			$('#objectmarginall').on('keyup', function(){
-				var v = $('#objectmarginall').val().replace(/[^0-9]/g,'');
+				var v = $('#objectmarginall').val().replace(/[^0-9/-]/g,'');
 				$('#objectmarginadvanced').hide();
 				$('#objectmargintop').val(v);
 				$('#objectmarginleft').val(v);
@@ -420,10 +432,10 @@
 			<cfif request.hasmetaoptions and not (IsBoolean(attributes.params.isbodyobject) and attributes.params.isbodyobject)>
 			// Begin Meta Margin and Padding
 			function updateMetaPadding(){
-				var t = $('#metapaddingtop').val().replace(/[^0-9]/g,'');
-				var r = $('#metapaddingright').val().replace(/[^0-9]/g,'');
-				var b = $('#metapaddingbottom').val().replace(/[^0-9]/g,'');
-				var l =$('#metapaddingleft').val().replace(/[^0-9]/g,'');
+				var t = $('#metapaddingtop').val().replace(/[^0-9/-]/g,'');
+				var r = $('#metapaddingright').val().replace(/[^0-9/-]/g,'');
+				var b = $('#metapaddingbottom').val().replace(/[^0-9/-]/g,'');
+				var l =$('#metapaddingleft').val().replace(/[^0-9/-]/g,'');
 				var u = $('#metapaddinguom').val();
 				if (t.length){ $('#metapaddingtopval').val(t + u); } else { $('#metapaddingtopval').val(''); }
 				if (r.length){ $('#metapaddingrightval').val(r + u); } else { $('#metapaddingrightval').val(''); }
@@ -441,7 +453,7 @@
 			}
 
 			$('#metapaddingall').on('keyup', function(){
-				var v = $('#metapaddingall').val().replace(/[^0-9]/g,'');
+				var v = $('#metapaddingall').val().replace(/[^0-9/-]/g,'');
 				$('#metapaddingadvanced').hide();
 				$('#metapaddingtop').val(v);
 				$('#metapaddingleft').val(v);
@@ -461,10 +473,10 @@
 
 			// margin
 			function updateMetaMargin(){
-				var t = $('#metamargintop').val().replace(/[^0-9]/g,'');
-				var r = $('#metamarginright').val().replace(/[^0-9]/g,'');
-				var b = $('#metamarginbottom').val().replace(/[^0-9]/g,'');
-				var l =$('#metamarginleft').val().replace(/[^0-9]/g,'');
+				var t = $('#metamargintop').val().replace(/[^0-9/-]/g,'');
+				var r = $('#metamarginright').val().replace(/[^0-9/-]/g,'');
+				var b = $('#metamarginbottom').val().replace(/[^0-9/-]/g,'');
+				var l =$('#metamarginleft').val().replace(/[^0-9/-]/g,'');
 				var u = $('#metamarginuom').val();
 				if (t.length){ $('#metamargintopval').val(t + u); } else { $('#metamargintopval').val(''); }
 				if (r.length){ $('#metamarginrightval').val(r + u); } else { $('#metamarginrightval').val(''); }
@@ -483,7 +495,7 @@
 			}
 
 			$('#metamarginall').on('keyup', function(){
-				var v = $('#metamarginall').val().replace(/[^0-9]/g,'');
+				var v = $('#metamarginall').val().replace(/[^0-9/-]/g,'');
 				$('#metamarginadvanced').hide();
 				$('#metamargintop').val(v);
 				$('#metamarginleft').val(v);
@@ -506,10 +518,10 @@
 			// Begin Content Content Margin and Padding
 
 			function updateContentPadding(){
-				var t = $('#contentpaddingtop').val().replace(/[^0-9]/g,'');
-				var r = $('#contentpaddingright').val().replace(/[^0-9]/g,'');
-				var b = $('#contentpaddingbottom').val().replace(/[^0-9]/g,'');
-				var l =$('#contentpaddingleft').val().replace(/[^0-9]/g,'');
+				var t = $('#contentpaddingtop').val().replace(/[^0-9/-]/g,'');
+				var r = $('#contentpaddingright').val().replace(/[^0-9/-]/g,'');
+				var b = $('#contentpaddingbottom').val().replace(/[^0-9/-]/g,'');
+				var l =$('#contentpaddingleft').val().replace(/[^0-9/-]/g,'');
 				var u = $('#contentpaddinguom').val();
 				if (t.length){ $('#contentpaddingtopval').val(t + u); } else { $('#contentpaddingtopval').val(''); }
 				if (r.length){ $('#contentpaddingrightval').val(r + u); } else { $('#contentpaddingrightval').val(''); }
@@ -526,7 +538,7 @@
 			}
 
 			$('#contentpaddingall').on('keyup', function(){
-				var v = $('#contentpaddingall').val().replace(/[^0-9]/g,'');
+				var v = $('#contentpaddingall').val().replace(/[^0-9/-]/g,'');
 				$('#contentpaddingadvanced').hide();
 				$('#contentpaddingtop').val(v);
 				$('#contentpaddingleft').val(v);
@@ -546,10 +558,10 @@
 
  			// margin
 			function updateContentMargin(){
-				var t = $('#contentmargintop').val().replace(/[^0-9]/g,'');
-				var r = $('#contentmarginright').val().replace(/[^0-9]/g,'');
-				var b = $('#contentmarginbottom').val().replace(/[^0-9]/g,'');
-				var l =$('#contentmarginleft').val().replace(/[^0-9]/g,'');
+				var t = $('#contentmargintop').val().replace(/[^0-9/-]/g,'');
+				var r = $('#contentmarginright').val().replace(/[^0-9/-]/g,'');
+				var b = $('#contentmarginbottom').val().replace(/[^0-9/-]/g,'');
+				var l =$('#contentmarginleft').val().replace(/[^0-9/-]/g,'');
 				var u = $('#contentmarginuom').val();
 				if (t.length){ $('#contentmargintopval').val(t + u); } else { $('#contentmargintopval').val(''); }
 				if (r.length){ $('#contentmarginrightval').val(r + u); } else { $('#contentmarginrightval').val(''); }
@@ -560,7 +572,6 @@
 				} else {
 					$('#contentmarginall').val('');
 					$('#contentmarginadvanced').show();
-
 				}
 
 				$('#contentmargintopval').trigger('change');
@@ -568,7 +579,7 @@
 			}
 
 			$('#contentmarginall').on('keyup', function(){
-				var v = $('#contentmarginall').val().replace(/[^0-9]/g,'');
+				var v = $('#contentmarginall').val().replace(/[^0-9/-]/g,'');
 				$('#contentmarginadvanced').hide();
 				$('#contentmargintop').val(v);
 				$('#contentmarginleft').val(v);
@@ -803,7 +814,7 @@
 			});
 			// numeric input - restrict value
 			$('#configuratorContainer input.numeric').on('keyup', function(){
-				var v = $(this).val().replace(/[^0-9]/g,'');
+				var v = $(this).val().replace(/[^0-9/-]/g,'');
 				$(this).val(v);
 			});
 

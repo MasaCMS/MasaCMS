@@ -28,9 +28,9 @@
 						<label>Text Alignment</label>
 						<select name="float" class="metaStyle">
 							<option value="">--</option>
-							<option value="left"<cfif attributes.params.metacssstyles.float eq 'left'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.left')#</option>
-							<option value="none"<cfif attributes.params.metacssstyles.float eq 'none'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.center')#</option>
-							<option value="right"<cfif attributes.params.metacssstyles.float eq 'right'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.right')#</option>
+							<option value="left"<cfif attributes.params.stylesupport.metastyles.float eq 'left'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.left')#</option>
+							<option value="none"<cfif attributes.params.stylesupport.metastyles.float eq 'none'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.center')#</option>
+							<option value="right"<cfif attributes.params.stylesupport.metastyles.float eq 'right'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.right')#</option>
 						</select>
 					</div>
 
@@ -43,7 +43,7 @@
 							<div class="col-xs-8 center">
 								<div class="mura-input-group">
 									<label class="mura-serial">
-										<input type="text" name="margin" id="metamarginall" placeholder="All" class="numeric serial" value="<cfif len(trim(attributes.params.metacssstyles.marginall))>#val(esapiEncode('html_attr',attributes.params.metacssstyles.marginall))#</cfif>">
+										<input type="text" name="margin" id="metamarginall" placeholder="All" class="numeric serial" value="<cfif len(trim(attributes.params.stylesupport.metastyles.marginall))>#val(esapiEncode('html_attr',attributes.params.stylesupport.metastyles.marginall))#</cfif>">
 									</label>
 									<select id="metamarginuom" name="metamarginuom" class="styleSupport">
 										<cfloop list="px,%,em,rem" index="u">
@@ -62,9 +62,9 @@
 								<div class="col-xs-3"></div>
 								<div class="col-xs-6">
 									<label class="mura-serial">
-										<input type="text" name="metaMarginTop" id="metamargintop" placeholder="Top" class="numeric serial" value="<cfif len(trim(attributes.params.metacssstyles.margintop))>#val(esapiEncode('html_attr',attributes.params.metacssstyles.margintop))#</cfif>">
+										<input type="text" name="metaMarginTop" id="metamargintop" placeholder="Top" class="numeric serial" value="<cfif len(trim(attributes.params.stylesupport.metastyles.margintop))>#val(esapiEncode('html_attr',attributes.params.stylesupport.metastyles.margintop))#</cfif>">
 									</label>
-									<input type="hidden" name="marginTop" id="metamargintopval" class="metaStyle" value="#esapiEncode('html_attr',attributes.params.metacssstyles.margintop)#">
+									<input type="hidden" name="marginTop" id="metamargintopval" class="metaStyle" value="#esapiEncode('html_attr',attributes.params.stylesupport.metastyles.margintop)#">
 								</div>
 								<div class="col-xs-3"></div>
 							</div>
@@ -72,15 +72,15 @@
 							<div class="row mura-ui-row">
 								<div class="col-xs-6">
 									<label class="mura-serial">
-										<input type="text" name="metaMarginLeft" id="metamarginleft" placeholder="Left" class="numeric serial" value="<cfif len(trim(attributes.params.metacssstyles.marginleft))>#val(esapiEncode('html_attr',attributes.params.metacssstyles.marginleft))#</cfif>">
+										<input type="text" name="metaMarginLeft" id="metamarginleft" placeholder="Left" class="numeric serial" value="<cfif len(trim(attributes.params.stylesupport.metastyles.marginleft))>#val(esapiEncode('html_attr',attributes.params.stylesupport.metastyles.marginleft))#</cfif>">
 									</label>
-									<input type="hidden" name="marginLeft" id="metamarginleftval" class="metaStyle" value="#esapiEncode('html_attr',attributes.params.metacssstyles.marginleft)#">
+									<input type="hidden" name="marginLeft" id="metamarginleftval" class="metaStyle" value="#esapiEncode('html_attr',attributes.params.stylesupport.metastyles.marginleft)#">
 								</div>
 								<div class="col-xs-6">
 									<label class="mura-serial">
-										<input type="text" name="metaMarginRight" id="metamarginright" placeholder="Right" class="numeric serial" value="<cfif len(trim(attributes.params.metacssstyles.marginright))>#val(esapiEncode('html_attr',attributes.params.metacssstyles.marginright))#</cfif>">
+										<input type="text" name="metaMarginRight" id="metamarginright" placeholder="Right" class="numeric serial" value="<cfif len(trim(attributes.params.stylesupport.metastyles.marginright))>#val(esapiEncode('html_attr',attributes.params.stylesupport.metastyles.marginright))#</cfif>">
 									</label>
-									<input type="hidden" name="marginRight" id="metamarginrightval" class="metaStyle" value="#esapiEncode('html_attr',attributes.params.metacssstyles.marginright)#">
+									<input type="hidden" name="marginRight" id="metamarginrightval" class="metaStyle" value="#esapiEncode('html_attr',attributes.params.stylesupport.metastyles.marginright)#">
 								</div>
 							</div>
 
@@ -88,9 +88,9 @@
 								<div class="col-xs-3"></div>
 								<div class="col-xs-6">
 									<label class="mura-serial">
-										<input type="text" name="metaMarginBottom" id="metamarginbottom" placeholder="Bottom" class="numeric serial" value="<cfif len(trim(attributes.params.metacssstyles.marginbottom))>#val(esapiEncode('html_attr',attributes.params.metacssstyles.marginbottom))#</cfif>">
+										<input type="text" name="metaMarginBottom" id="metamarginbottom" placeholder="Bottom" class="numeric serial" value="<cfif len(trim(attributes.params.stylesupport.metastyles.marginbottom))>#val(esapiEncode('html_attr',attributes.params.stylesupport.metastyles.marginbottom))#</cfif>">
 									</label>
-									<input type="hidden" name="marginBottom" id="metamarginbottomval" class="metaStyle" value="#esapiEncode('html_attr',attributes.params.metacssstyles.marginbottom)#">
+									<input type="hidden" name="marginBottom" id="metamarginbottomval" class="metaStyle" value="#esapiEncode('html_attr',attributes.params.stylesupport.metastyles.marginbottom)#">
 								</div>
 								<div class="col-xs-3"></div>
 							</div>
@@ -107,7 +107,7 @@
 							<div class="col-xs-8 center">
 								<div class="mura-input-group">
 									<label class="mura-serial">
-										<input type="text" name="padding" id="metapaddingall" placeholder="All" class="numeric serial" value="<cfif len(trim(attributes.params.metacssstyles.paddingall))>#val(esapiEncode('html_attr',attributes.params.metacssstyles.paddingall))#</cfif>">
+										<input type="text" name="padding" id="metapaddingall" placeholder="All" class="numeric serial" value="<cfif len(trim(attributes.params.stylesupport.metastyles.paddingall))>#val(esapiEncode('html_attr',attributes.params.stylesupport.metastyles.paddingall))#</cfif>">
 									</label>
 									<select id="metapaddinguom" name="metapaddinguom" class="styleSupport">
 										<cfloop list="px,%,em,rem" index="u">
@@ -126,9 +126,9 @@
 								<div class="col-xs-3"></div>
 								<div class="col-xs-6">
 									<label class="mura-serial">
-										<input type="text" name="metaPaddingTop" id="metapaddingtop" placeholder="Top" class="numeric serial" value="<cfif len(trim(attributes.params.metacssstyles.paddingtop))>#val(esapiEncode('html_attr',attributes.params.metacssstyles.paddingtop))#</cfif>">
+										<input type="text" name="metaPaddingTop" id="metapaddingtop" placeholder="Top" class="numeric serial" value="<cfif len(trim(attributes.params.stylesupport.metastyles.paddingtop))>#val(esapiEncode('html_attr',attributes.params.stylesupport.metastyles.paddingtop))#</cfif>">
 									</label>
-									<input type="hidden" name="paddingTop" id="metapaddingtopval" class="metaStyle" value="#esapiEncode('html_attr',attributes.params.metacssstyles.paddingtop)#">
+									<input type="hidden" name="paddingTop" id="metapaddingtopval" class="metaStyle" value="#esapiEncode('html_attr',attributes.params.stylesupport.metastyles.paddingtop)#">
 								</div>
 								<div class="col-xs-3"></div>
 							</div>
@@ -136,15 +136,15 @@
 							<div class="row mura-ui-row">
 								<div class="col-xs-6">
 									<label class="mura-serial">
-										<input type="text" name="metaPaddingLeft" id="metapaddingleft" placeholder="Left" class="numeric serial" value="<cfif len(trim(attributes.params.metacssstyles.paddingleft))>#val(esapiEncode('html_attr',attributes.params.metacssstyles.paddingleft))#</cfif>">
+										<input type="text" name="metaPaddingLeft" id="metapaddingleft" placeholder="Left" class="numeric serial" value="<cfif len(trim(attributes.params.stylesupport.metastyles.paddingleft))>#val(esapiEncode('html_attr',attributes.params.stylesupport.metastyles.paddingleft))#</cfif>">
 									</label>
-									<input type="hidden" name="paddingLeft" id="metapaddingleftval" class="metaStyle" value="#esapiEncode('html_attr',attributes.params.metacssstyles.paddingleft)#">
+									<input type="hidden" name="paddingLeft" id="metapaddingleftval" class="metaStyle" value="#esapiEncode('html_attr',attributes.params.stylesupport.metastyles.paddingleft)#">
 								</div>
 								<div class="col-xs-6">
 									<label class="mura-serial">
-										<input type="text" name="metaPaddingRight" id="metapaddingright" placeholder="Right" class="numeric serial" value="<cfif len(trim(attributes.params.metacssstyles.paddingright))>#val(esapiEncode('html_attr',attributes.params.metacssstyles.paddingright))#</cfif>">
+										<input type="text" name="metaPaddingRight" id="metapaddingright" placeholder="Right" class="numeric serial" value="<cfif len(trim(attributes.params.stylesupport.metastyles.paddingright))>#val(esapiEncode('html_attr',attributes.params.stylesupport.metastyles.paddingright))#</cfif>">
 									</label>
-									<input type="hidden" name="paddingRight" id="metapaddingrightval" class="metaStyle" value="#esapiEncode('html_attr',attributes.params.metacssstyles.paddingright)#">
+									<input type="hidden" name="paddingRight" id="metapaddingrightval" class="metaStyle" value="#esapiEncode('html_attr',attributes.params.stylesupport.metastyles.paddingright)#">
 								</div>
 							</div>
 
@@ -152,9 +152,9 @@
 								<div class="col-xs-3"></div>
 								<div class="col-xs-6">
 									<label class="mura-serial">
-										<input type="text" name="metaPaddingBottom" id="metapaddingbottom" placeholder="Bottom" class="numeric serial" value="<cfif len(trim(attributes.params.metacssstyles.paddingbottom))>#val(esapiEncode('html_attr',attributes.params.metacssstyles.paddingbottom))#</cfif>">
+										<input type="text" name="metaPaddingBottom" id="metapaddingbottom" placeholder="Bottom" class="numeric serial" value="<cfif len(trim(attributes.params.stylesupport.metastyles.paddingbottom))>#val(esapiEncode('html_attr',attributes.params.stylesupport.metastyles.paddingbottom))#</cfif>">
 									</label>
-									<input type="hidden" name="paddingBottom" id="metapaddingbottomval" class="metaStyle" value="#esapiEncode('html_attr',attributes.params.metacssstyles.paddingbottom)#">
+									<input type="hidden" name="paddingBottom" id="metapaddingbottomval" class="metaStyle" value="#esapiEncode('html_attr',attributes.params.stylesupport.metastyles.paddingbottom)#">
 								</div>
 								<div class="col-xs-3"></div>
 							</div>
@@ -169,7 +169,7 @@
 
 						<div class="input-group mura-colorpicker">
 							<span class="input-group-addon"><i class="mura-colorpicker-swatch"></i></span>
-							<input type="text" id="metatextcolor" name="color" class="metaStyle" placeholder="Select Color" autocomplete="off" value="#esapiEncode('html_attr',attributes.params.metacssstyles.color)#">
+							<input type="text" id="metatextcolor" name="color" class="metaStyle" placeholder="Select Color" autocomplete="off" value="#esapiEncode('html_attr',attributes.params.stylesupport.metastyles.color)#">
 						</div>
 
 					</div>
@@ -179,13 +179,13 @@
 						<label>Background Color</label>
 						<div class="input-group mura-colorpicker" id="metabackgroundcustom">
 							<span class="input-group-addon"><i class="mura-colorpicker-swatch"></i></span>
-							<input type="text" id="metabackgroundcolor" name="backgroundColor" class="metaStyle"  placeholder="Select Color" autocomplete="off" value="#esapiEncode('html_attr',attributes.params.metacssstyles.backgroundcolor)#">
+							<input type="text" id="metabackgroundcolor" name="backgroundColor" class="metaStyle"  placeholder="Select Color" autocomplete="off" value="#esapiEncode('html_attr',attributes.params.stylesupport.metastyles.backgroundcolor)#">
 						</div>
 					</div>
 
 					<div class="mura-control-group">
 						<label>Background Image</label>
-						<input type="hidden" id="metabackgroundimage" name="backgroundImage" class="metaStyle" value="#esapiEncode('html_attr',attributes.params.metacssstyles.backgroundimage)#">
+						<input type="hidden" id="metabackgroundimage" name="backgroundImage" class="metaStyle" value="#esapiEncode('html_attr',attributes.params.stylesupport.metastyles.backgroundimage)#">
 						<input type="text" id="metabackgroundimageurl" name="metabackgroundimageurl" placeholder="URL" class="styleSupport" value="#esapiEncode('html_attr',attributes.params.styleSupport.metabackgroundimageurl)#">
 						<button type="button" class="btn mura-ckfinder" data-target="metabackgroundimageurl" data-completepath="false"><i class="mi-image"></i> Select Image</button>
 					</div>
@@ -193,29 +193,29 @@
 					<div class="mura-control-group meta-css-bg-option" style="display:none;">
 						<label>Background Size</label>
 						<select id="metabackgroundsize" name="backgroundSize" class="metaStyle">
-							<option value="auto"<cfif attributes.params.metacssstyles.backgroundsize eq 'auto'>
+							<option value="auto"<cfif attributes.params.stylesupport.metastyles.backgroundsize eq 'auto'>
 							selected</cfif>>Auto</option>
-							<option value="contain"<cfif attributes.params.metacssstyles.backgroundsize eq 'contain'> selected</cfif>>Contain</option>
-							<option value="cover"<cfif attributes.params.metacssstyles.backgroundsize eq 'cover'> selected</cfif>>Cover</option>
+							<option value="contain"<cfif attributes.params.stylesupport.metastyles.backgroundsize eq 'contain'> selected</cfif>>Contain</option>
+							<option value="cover"<cfif attributes.params.stylesupport.metastyles.backgroundsize eq 'cover'> selected</cfif>>Cover</option>
 						</select>
 					</div>
 
 					<div class="mura-control-group meta-css-bg-option" style="display:none;">
 						<label>Background Repeat</label>
 						<select id="metabackgroundrepeat" name="backgroundRepeat" class="metaStyle">
-							<option value="no-repeat"<cfif attributes.params.metacssstyles.backgroundrepeat eq 'norepeat'> selected</cfif>>No-repeat</option>
-							<option value="repeat"<cfif attributes.params.metacssstyles.backgroundrepeat eq 'repeat'> selected</cfif>>Repeat</option>
-							<option value="repeat-x"<cfif attributes.params.metacssstyles.backgroundrepeat eq 'repeatx'> selected</cfif>>Repeat-X</option>
-							<option value="repeat-y"<cfif attributes.params.metacssstyles.backgroundrepeat eq 'repeaty'> selected</cfif>>Repeat-Y</option>
+							<option value="no-repeat"<cfif attributes.params.stylesupport.metastyles.backgroundrepeat eq 'norepeat'> selected</cfif>>No-repeat</option>
+							<option value="repeat"<cfif attributes.params.stylesupport.metastyles.backgroundrepeat eq 'repeat'> selected</cfif>>Repeat</option>
+							<option value="repeat-x"<cfif attributes.params.stylesupport.metastyles.backgroundrepeat eq 'repeatx'> selected</cfif>>Repeat-X</option>
+							<option value="repeat-y"<cfif attributes.params.stylesupport.metastyles.backgroundrepeat eq 'repeaty'> selected</cfif>>Repeat-Y</option>
 						</select>
 					</div>
 
 					<div class="mura-control-group meta-css-bg-option" style="display:none;">
 						<label>Background Attachment</label>
 						<select name="backgroundAttachment" class="metaStyle">
-							<option value="scroll"<cfif attributes.params.metacssstyles.backgroundAttachment eq 'scroll'>
+							<option value="scroll"<cfif attributes.params.stylesupport.metastyles.backgroundAttachment eq 'scroll'>
 							selected</cfif>>Scroll</option>
-							<option value="Fixed"<cfif attributes.params.metacssstyles.backgroundAttachment eq 'fixed'> selected</cfif>>Fixed</option>
+							<option value="Fixed"<cfif attributes.params.stylesupport.metastyles.backgroundAttachment eq 'fixed'> selected</cfif>>Fixed</option>
 						</select>
 					</div>
 
@@ -227,16 +227,16 @@
 							<div class="col-xs-8">
 								<div class="mura-input-group">
 									<label>
-										<input type="text" id="metabackgroundpositionynum" name="metaBackgroundPositionyNum" class="numeric" placeholder="" value="<cfif val(esapiEncode('html_attr',attributes.params.metacssstyles.backgroundpositiony))>#val(esapiEncode('html_attr',attributes.params.metacssstyles.backgroundpositiony))#</cfif>" style="display: none;">
+										<input type="text" id="metabackgroundpositionynum" name="metaBackgroundPositionyNum" class="numeric" placeholder="" value="<cfif val(esapiEncode('html_attr',attributes.params.stylesupport.metastyles.backgroundpositiony))>#val(esapiEncode('html_attr',attributes.params.stylesupport.metastyles.backgroundpositiony))#</cfif>" style="display: none;">
 									</label>
 
 									<select id="metabackgroundpositiony" name="metaBackgroundPositionY" class="styleSupport" data-numfield="metabackgroundpositionynum">
 										<cfloop list="Top,Center,Bottom,%,px" index="p">
-											<option value="#lcase(p)#"<cfif attributes.params.metacssstyles.backgroundpositiony contains p> selected</cfif>>#p#</option>
+											<option value="#lcase(p)#"<cfif attributes.params.stylesupport.metastyles.backgroundpositiony contains p> selected</cfif>>#p#</option>
 										</cfloop>
 									</select>
 
-									<input type="hidden" id="metabackgroundpositionyval" name="backgroundPositionY" class="metaStyle" value="#esapiEncode('html_attr',attributes.params.metacssstyles.backgroundpositiony)#">
+									<input type="hidden" id="metabackgroundpositionyval" name="backgroundPositionY" class="metaStyle" value="#esapiEncode('html_attr',attributes.params.stylesupport.metastyles.backgroundpositiony)#">
 
 								</div>
 							</div>
@@ -247,16 +247,16 @@
 							<div class="col-xs-8">
 								<div class="mura-input-group">
 									<label>
-										<input type="text" id="metabackgroundpositionxnum" name="metaBackgroundPositionxNum" class="numeric" placeholder="" value="<cfif val(esapiEncode('html_attr',attributes.params.metacssstyles.backgroundpositionx))>#val(esapiEncode('html_attr',attributes.params.metacssstyles.backgroundpositionx))#</cfif>" style="display: none;">
+										<input type="text" id="metabackgroundpositionxnum" name="metaBackgroundPositionxNum" class="numeric" placeholder="" value="<cfif val(esapiEncode('html_attr',attributes.params.stylesupport.metastyles.backgroundpositionx))>#val(esapiEncode('html_attr',attributes.params.stylesupport.metastyles.backgroundpositionx))#</cfif>" style="display: none;">
 									</label>
 
 									<select id="metabackgroundpositionx" name="metaBackgroundPositionX" class="styleSupport" data-numfield="metabackgroundpositionxnum">
 										<cfloop list="Left,Center,Right,%,px" index="p">
-											<option value="#lcase(p)#"<cfif attributes.params.metacssstyles.backgroundpositionx contains p> selected</cfif>>#p#</option>
+											<option value="#lcase(p)#"<cfif attributes.params.stylesupport.metastyles.backgroundpositionx contains p> selected</cfif>>#p#</option>
 										</cfloop>
 									</select>
 
-									<input type="hidden" id="metabackgroundpositionxval" name="backgroundPositionX" class="metaStyle" value="#esapiEncode('html_attr',attributes.params.metacssstyles.backgroundpositionx)#">
+									<input type="hidden" id="metabackgroundpositionxval" name="backgroundPositionX" class="metaStyle" value="#esapiEncode('html_attr',attributes.params.stylesupport.metastyles.backgroundpositionx)#">
 
 								</div>
 							</div>
