@@ -167,9 +167,9 @@
 								<div class="panel-gds-box" id="panel-gds-custom" data-gdsel="panel-style-custom"><span>Custom Styles</span>
 								<div class="panel-gds-box" id="panel-gds-object" data-gdsel="panel-style-object"><span>Module</span>
 									<cfif request.hasmetaoptions>
-										<div class="panel-gds-box" id="panel-gds-meta" data-gdsel="panel-style-label"<cfif not len(attributes.params.label)> style="display:none"</cfif>><span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.label')#</span></div>
+										<div class="panel-gds-box" id="panel-gds-meta" data-gdsel="panel-style-label"<cfif not len(attributes.params.label)> style="display:none"</cfif>><span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.label')#</span><br/> .mura-object-meta-wrapper > .mura-object-meta </div>
 									</cfif>
-									<div class="panel-gds-box" id="panel-gds-content" data-gdsel="panel-style-content"><span>Content</span></div>
+									<div class="panel-gds-box" id="panel-gds-content" data-gdsel="panel-style-content"><span>Content</span> <br/> .mura-content</div>
 								</div>
 								</div>
 								<div class="mura-panel-group" id="style-panels" role="tablist" aria-multiselectable="true">

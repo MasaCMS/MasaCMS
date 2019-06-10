@@ -18198,7 +18198,7 @@ Mura.DOMSelection = Mura.Core.extend(
 				);
 			}
 
- 			if(obj.data('contentcssclass') || obj.data('contentcssid') || contentstyles){
+ 			if(obj.data('contentcssclass') || obj.data('contentcssid') ||  contentstyles){
  				var content=obj.children('.mura-object-content').first();
 
 	 			if(obj.data('contentcssid')){

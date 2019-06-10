@@ -105,7 +105,7 @@
 								Custom CSS Styles
 							</label>
 							<cfoutput>
-							<textarea id="customstylesedit">#esapiEncode('html',attributes.params.stylesupport.css)#</textarea>
+							<textarea id="customstylesedit" style="min-height: 250px">#esapiEncode('html',attributes.params.stylesupport.css)#</textarea>
 							</cfoutput>
 							<button class="btn" id="applystyles">Apply</button>
 							<script>
