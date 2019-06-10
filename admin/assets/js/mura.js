@@ -18170,11 +18170,6 @@ Mura.DOMSelection = Mura.Core.extend(
 				contentstyles=styleSupport.contentstyles;
 			}
 
-			if(contentstyles){
-				content.removeAttr('style');
-				content.css(contentstyles);
-			}
-			
 			var selector='div.mura-object[data-instanceid="' + obj.data('instanceid') + '"] .mura-object-content';
 
 			if (contentstyles && typeof contentstyles.backgroundColor != 'undefined' && contentstyles.backgroundColor
@@ -18203,7 +18198,7 @@ Mura.DOMSelection = Mura.Core.extend(
 				);
 			}
 
- 			if(obj.data('contentcssclass') || obj.data('contentcssid') ||  obj.data('contentstyles')){
+ 			if(obj.data('contentcssclass') || obj.data('contentcssid') || contentstyles){
  				var content=obj.children('.mura-object-content').first();
 
 	 			if(obj.data('contentcssid')){
@@ -18216,6 +18211,11 @@ Mura.DOMSelection = Mura.Core.extend(
 	 					}
 	 				 })
 	 			}
+
+				if(contentstyles){
+					content.removeAttr('style');
+					content.css(contentstyles);
+				}
 			}
 
  		});
