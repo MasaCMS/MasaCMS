@@ -1241,7 +1241,6 @@
 										.off("click",openToolbar)
 										.on("click",openToolbar);
 
-
 									item.find("img").each(function(){MuraInlineEditor.checkforImageCroppers(this);});
 
 									item.find('.mura-object').each(initObject);
