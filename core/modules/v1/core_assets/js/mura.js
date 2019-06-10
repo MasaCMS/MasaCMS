@@ -18170,6 +18170,11 @@ Mura.DOMSelection = Mura.Core.extend(
 				contentstyles=styleSupport.contentstyles;
 			}
 
+			if(contentstyles){
+				content.removeAttr('style');
+				content.css(contentstyles);
+			}
+			
 			var selector='div.mura-object[data-instanceid="' + obj.data('instanceid') + '"] .mura-object-content';
 
 			if (contentstyles && typeof contentstyles.backgroundColor != 'undefined' && contentstyles.backgroundColor
@@ -18210,10 +18215,6 @@ Mura.DOMSelection = Mura.Core.extend(
 	 					 		content.addClass(c);
 	 					}
 	 				 })
-	 			}
-	 			if(contentstyles){
-	 				content.removeAttr('style');
-	 				content.css(contentstyles);
 	 			}
 			}
 
