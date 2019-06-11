@@ -18161,6 +18161,14 @@ Mura.DOMSelection = Mura.Core.extend(
 							meta.removeAttr('style');
 							meta.css(metastyles);
 						}
+
+						if(obj.is('.mura-object-label-left, .mura-object-label-right')){
+							var left=meta.css('marginLeft');
+							var right=meta.css('marginRight')
+							if(left.charAt(0) != "-" && right.charAt(0) != "-"){
+								meta.css('width','calc(50% - (' + left + ' + ' + right + '))');
+							}
+						}
 					}
 				}
 			}
@@ -18216,6 +18224,14 @@ Mura.DOMSelection = Mura.Core.extend(
 					content.removeAttr('style');
 					content.css(contentstyles);
 				}
+
+				if(obj.is('.mura-object-label-left, .mura-object-label-right')){
+					var left=content.css('marginLeft');
+					var right=content.css('marginRight')
+					if(left.charAt(0) != "-" && right.charAt(0) != "-"){
+						content.css('width','calc(50% - (' + left + ' + ' + right + '))');
+					}
+				}
 			}
 
 			var width='100%';
@@ -18252,7 +18268,11 @@ Mura.DOMSelection = Mura.Core.extend(
 				width='50%';
 			}
 
-			obj.css('width','calc(' + width + ' - (' + obj.css('marginLeft') + ' + ' + obj.css('marginRight') + '))');
+			var left=obj.css('marginLeft');
+			var right=obj.css('marginRight')
+			if(left.charAt(0) != "-" && right.charAt(0) != "-"){
+					obj.css('width','calc(' + width + ' - (' + left + ' + ' + right + '))');
+			}
 
 			if(obj.css('paddingTop').replace(/[^0-9]/g,'') != '0' || obj.css('paddingLeft').replace(/[^0-9]/g,'') != '0'){
 				obj.addClass('mura-object-pin-tools');
