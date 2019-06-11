@@ -18050,9 +18050,16 @@ Mura.DOMSelection = Mura.Core.extend(
 	 calculateDisplayObjectStyles: function(windowResponse) {
 
  		this.each(function(el) {
-			var breakpoint=Mura.getBreakpoint();
-			var fullsize=(breakpoint!='xs');
- 			var obj=Mura(el);
+			var obj=Mura(el);
+			var breakpoints=['mura-xs','mura-sm','mura-md','mura-lg'];
+			var objBreakpoint='mura-sm';
+			for(var b=0;b<breakpoints.length;b++){
+				if(obj.is('.' + breakpoints[b])){
+					objBreakpoint=breakpoints[b];
+					break;
+				}
+			}
+			var fullsize=breakpoints.indexOf('mura-' + Mura.getBreakpoint()) >= breakpoints.indexOf(objBreakpoint);
 
 			Mura.windowResponsiveModules=Mura.windowResponsiveModules||{};
 			Mura.windowResponsiveModules[obj.data('instanceid')]=false;
@@ -18110,7 +18117,7 @@ Mura.DOMSelection = Mura.Core.extend(
 					&& obj.css('marginRight')=='0px'
 				))){
 					Mura.windowResponsiveModules[obj.data('instanceid')]=true;
-				} 
+				}
  			}
 
 			if(!windowResponse){

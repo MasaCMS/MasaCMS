@@ -23,6 +23,15 @@
 					</div>
 					</cfif>
 					<cfif request.haspositionoptions>
+						<div class="mura-control-group">
+							<label>Target Device</label>
+							<select name="breakpoint" class="classtoggle">
+							<option value="">--</option>
+							<option value="mura-sm"<cfif listFind(attributes.params.class,'mura-sm',' ')> selected</cfif>>Tablet (768px+)</option>
+							<option value="mura-md"<cfif listFind(attributes.params.class,'mura-md',' ')> selected</cfif>>Laptop (992px+)</option>
+							<option value="mura-lg"<cfif listFind(attributes.params.class,'mura-lg',' ')> selected</cfif>> Desktop (1200px+)</option>
+							</select>
+						</div>
 
 						<div class="mura-control-group">
 							<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.alignment')#</label>
