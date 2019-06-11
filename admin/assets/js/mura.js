@@ -18254,7 +18254,7 @@ Mura.DOMSelection = Mura.Core.extend(
 
 			obj.css('width','calc(' + width + ' - (' + obj.css('marginLeft') + ' + ' + obj.css('marginRight') + '))');
 
-			if(obj.css('paddingTop').replace(/[^0-9]/g,'') != '0'){
+			if(obj.css('paddingTop').replace(/[^0-9]/g,'') != '0' || obj.css('paddingLeft').replace(/[^0-9]/g,'') != '0'){
 				obj.addClass('mura-object-pin-tools');
 			} else {
 				obj.removeClass('mura-object-pin-tools');
