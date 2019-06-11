@@ -33,6 +33,8 @@ config: {
     .loadjs(
       Mura.adminpath + '/assets/js/vue.min.js',
       Mura.corepath + '/vendor/codemirror/codemirror.js',
+      Mura.corepath + '/vendor/codemirror/addon/formatting/formatting.js',
+      Mura.corepath + '/vendor/codemirror/mode/htmlmixed/htmlmixed.js',
     function() {
       self.mountbrowser();
      } ) ;
@@ -103,6 +105,31 @@ config: {
       }
     );
 }
+
+, doDuplicateFile: function( directory,currentFile,onSuccess,onError) {
+  var dir = directory == undefined ? "" : directory;
+  var baseurl = this.endpoint + "/duplicate?directory=" + dir + "&resourcepath=" + this.config.resourcepath;
+
+  if(!this.validate()) {
+    return error("No Access");
+  }
+
+  var formData = {};
+  formData.file = currentFile;
+
+  Mura.post( baseurl,formData )
+    .then(
+      //success
+      function(response) {
+        onSuccess(response);
+      },
+      //fail
+      function(response) {
+        this.onError(response);
+      }
+    );
+}
+
 , doUpdateContent: function( directory,currentFile,content,onSuccess,onError) {
   var dir = directory == undefined ? "" : directory;
   var baseurl = this.endpoint + "/update?directory=" + dir + "&filename=" + currentFile.fullname + "&resourcepath=" + this.config.resourcepath;
@@ -241,7 +268,192 @@ config: {
       }
     );
 }
+, rotate: function( currentFile,direction,success,error) {
+  var self = this;
+  var baseurl = this.endpoint + "rotate" + "?resourcepath=" + this.config.resourcepath;
 
+  if(!this.validate()) {
+    return error("No Access");
+  }
+
+  var formData = {};
+
+  formData.file = JSON.parse(JSON.stringify(currentFile));
+  formData.direction = direction;
+
+  Mura.post( baseurl,formData )
+    .then(
+      function doSuccess( response ) {
+        success( response );
+      },
+      function doonError( response ) {
+        this.onError(response);
+      }
+    );
+
+}
+
+, performResize: function( currentFile,dimensions,success,error ) {
+  var self = this;
+  var baseurl = this.endpoint + "resize" + "?resourcepath=" + this.config.resourcepath;
+
+  if(!this.validate()) {
+    return error("No Access");
+  }
+
+  var formData = {};
+
+  formData.file = JSON.parse(JSON.stringify(currentFile));
+  formData.dimensions = dimensions;
+
+  Mura.post( baseurl,formData )
+    .then(
+      function doSuccess( response ) {
+        success( response );
+      },
+      function doonError( response ) {
+        this.onError(response);
+      }
+    );
+}
+
+, performCrop: function( currentFile,success,error ) {
+  var self = this;
+  var baseurl = this.endpoint + "processCrop" + "?resourcepath=" + this.config.resourcepath;
+
+  if(!this.validate()) {
+    return error("No Access");
+  }
+
+  var formData = {};
+
+  // bounding container
+  var container = document.getElementById('imagediv');
+  // crop rect
+  var cropRect = document.getElementById('croprectangle');
+  // crop rect bounds
+  var rect = cropRect.getBoundingClientRect();
+  // original image dimensions
+  var source = {
+      width: currentFile.info.width,
+      height: currentFile.info.height
+  };
+
+  // size of container
+  var size = {
+    width: container.clientWidth,
+    height: container.clientHeight
+  };
+  // crop rect size
+  var crop = {
+      x: 0,
+      y: 0,
+      width: 0,
+      height: 0
+  };
+
+  crop.x = cropRect.offsetLeft;
+  crop.y = cropRect.offsetTop;
+  crop.width = rect.width;
+  crop.height = rect.height;
+
+  formData.file = JSON.parse(JSON.stringify(currentFile));
+  formData.crop = crop;
+  formData.size = size;
+
+  Mura.post( baseurl,formData )
+    .then(
+      function doSuccess( response ) {
+        success( response );
+      },
+      function doonError( response ) {
+        this.onError(response);
+      }
+    );
+
+
+}
+, crop: function( canvas,clear ) {
+
+  if(clear == true) {
+    var cropRect = document.getElementById('croprectangle');
+    if(cropRect)
+      cropRect.parentNode.removeChild(cropRect);
+    return;
+  }
+
+  var corners = {
+      x: 0,
+      y: 0,
+      startX: 0,
+      startY: 0
+  };
+  var element = null;
+
+  function setCornerPosition(e) {
+      var ev = e || window.event; //Moz || IE
+      var rect = canvas.getBoundingClientRect();
+
+      if (ev.pageX) { //Moz
+          if(e.target != document.getElementById('imagediv')) {
+            corners.x = e.offsetX + e.target.offsetLeft;
+            corners.y = e.offsetY + e.target.offsetTop;
+          }
+          else {
+            corners.x = ev.offsetX;
+            corners.y = ev.offsetY;
+          }
+      } else if (ev.clientX) { //IE
+          corners.x = ev.offsetX;
+          corners.y = ev.offsetY;
+      }
+    };
+
+    canvas.onmousemove = function (e) {
+      if (element !== null) {
+        setCornerPosition(e);
+//        element.pointer = 'none';
+        element.style.width = Math.abs(corners.x - corners.startX) + 'px';
+        element.style.height = Math.abs(corners.y - corners.startY) + 'px';
+        element.style.left = (corners.x - corners.startX < 0) ? corners.x + 'px' : corners.startX + 'px';
+        element.style.top = (corners.y - corners.startY < 0) ? corners.y + 'px' : corners.startY + 'px';
+      }
+    }
+
+    canvas.onmouseup = function( e ) {
+      element = null;
+      canvas.style.cursor = "default";
+    }
+
+    canvas.onmousedown = function (e) {
+
+      if (element !== null) {
+      }
+      else {
+        var cropRect = document.getElementById('croprectangle');
+        if(cropRect)
+          cropRect.parentNode.removeChild(cropRect);
+
+        setCornerPosition(e);
+        corners.startX = corners.x;
+        corners.startY = corners.y;
+
+        var rect = canvas.getBoundingClientRect();
+
+        element = document.createElement('div');
+        element.className = 'rectangle';
+        element.id = 'croprectangle';
+        element.style.width = Math.abs(corners.x - corners.startX) + 'px';
+        element.style.height = Math.abs(corners.y - corners.startY) + 'px';
+        element.style.left = (corners.x - corners.startX < 0) ? corners.x + 'px' : corners.startX + 'px';
+        element.style.top = (corners.y - corners.startY < 0) ? corners.y + 'px' : corners.startY + 'px';
+
+
+        canvas.appendChild(element);
+        canvas.style.cursor = "crosshair";
+      }
+  }
+}
 
 , mountbrowser: function() {
   var self = this;
@@ -270,6 +482,7 @@ config: {
           <li v-if="checkIsFile() && checkSelectMode()"><a href="#" @click.prevent="selectFile()"><i class="mi-check"> Select</i></a></li>
           <li v-if="checkIsFile() && checkFileEditable()"><a href="#" @click.prevent="editFile()"><i class="mi-pencil"> Edit</i></a></li>
           <li v-if="checkIsFile() && checkImageType()"><a href="#" @click.prevent="viewFile()"><i class="mi-image"> View</i></a></li>
+          <li v-if="checkIsFile() && checkImageType()"><a @click.prevent="duplicateFile()"><i class="mi-copy"> Duplicate</i></a></li>
           <li><a href="#" @click.prevent="renameFile()"><i class="mi-edit"> Rename</i></a></li>
           <li v-if="checkIsFile()"><a href="#" @click="downloadFile()"><i class="mi-download"> Download</i></a></li>
           <li><a href="#" @click="deleteFile()"><i class="mi-trash"> Delete</i></a></li>
@@ -304,9 +517,11 @@ config: {
           return MuraFileBrowser.config.selectCallback( fileViewer.currentFile );
         }
       }
-
       , editFile: function() {
         fileViewer.editFile(this.successEditFile);
+      }
+      , duplicateFile: function() {
+        fileViewer.duplicateFile(fileViewer.refresh, fileViewer.displayError);
       }
       , viewFile: function() {
         fileViewer.isDisplayWindow = "VIEW";
@@ -320,7 +535,7 @@ config: {
         fileViewer.isDisplayWindow = "RENAME";
       }
       , downloadFile: function() {
-          window.open(fileViewer.currentFile.url, '_blank');
+        window.open(fileViewer.currentFile.url, '_blank');
       }
       , deleteFile: function() {
         fileViewer.isDisplayWindow = "DELETE";
@@ -461,29 +676,28 @@ config: {
     }
   });
 
-  Vue.component('viewwindow', {
+  Vue.component('gallerywindow', {
     props: ["currentFile","currentIndex","total"],
     template: `
       <div class="fileviewer-modal">
-        <div>
-          <div class="fileviewer-gallery" :style="{ 'background-image': 'url(' + encodeURI(currentFile.url) + ')' }"  v-click-outside="closewindow">
-            <div>
-              <div class="actionwindow-left" @click="lastimage"><i class="mi-caret-left"></i></div>
-              <div class="actionwindow-right" @click="nextimage"><i class="mi-caret-right"></i></div>
-              <div class="fileviewer-gallery-menu">
-                <ul>
-                  <li v-if="checkImageType() && checkSelectMode()"><a @click="selectFile()"><i class="mi-check"> Select</i></a></li>
-                  <li v-if="checkFileEditable()"><a  @click="editFile()"><i class="mi-pencil"> Edit</i></a></li>
-                  <li><a @click="renameFile()"><i class="mi-edit"> Rename</i></a></li>
-                  <li v-if="checkIsFile()"><a @click="downloadFile()"><i class="mi-download">Download</i></a></li>
-                  <li><a @click="deleteFile()"><i class="mi-trash"> Delete</i></a></li>
-                  <li><a @click="closewindow()"><i class="mi-times">Close</i></a></li>
-                </ul>
-                <p>{{currentFile.fullname}} ({{currentFile.size}}k)</p>
-              </div>
+        <div class="fileviewer-gallery" v-click-outside="closewindow">
+          <div class="fileviewer-image" :style="{ 'background-image': 'url(' + encodeURI(currentFile.url) + ')' }"></div>
+          <div>
+            <div class="actionwindow-left" @click="lastimage"><i class="mi-caret-left"></i></div>
+            <div class="actionwindow-right" @click="nextimage"><i class="mi-caret-right"></i></div>
+            <div class="fileviewer-gallery-menu">
+              <ul>
+                <li v-if="checkImageType() && checkSelectMode()"><a @click="selectFile()"><i class="mi-check"> Select</i></a></li>
+                <li v-if="checkImageType()"><a @click="editImage()"><i class="mi-check"> Edit Image</i></a></li>
+                <li v-if="checkFileEditable()"><a  @click="editFile()"><i class="mi-pencil"> Edit</i></a></li>
+                <li><a @click="renameFile()"><i class="mi-edit"> Rename</i></a></li>
+                <li v-if="checkIsFile()"><a @click="downloadFile()"><i class="mi-download">Download</i></a></li>
+                <li><a @click="deleteFile()"><i class="mi-trash"> Delete</i></a></li>
+                <li><a @click="closewindow()"><i class="mi-times">Close</i></a></li>
+              </ul>
+              <p>{{currentFile.fullname}} ({{currentFile.size}}k <span v-if="checkImageType()">{{currentFile.info.width}}x{{currentFile.info.height}}</span>)</p>
             </div>
           </div>
-        </div>
       </div>
     `,
     data() {
@@ -505,6 +719,9 @@ config: {
       , renameFile: function() {
         fileViewer.isDisplayWindow = "RENAME";
       }
+      , editImage: function() {
+        fileViewer.isDisplayWindow = "EDITIMAGE";
+      }
       , downloadFile: function() {
           window.open(fileViewer.currentFile.url, '_blank');
       }
@@ -524,6 +741,123 @@ config: {
         return fileViewer.checkIsFile();
       }
 
+    }
+  });
+
+  Vue.component('imageeditwindow', {
+    props: ["currentFile","currentIndex","total"],
+    template: `
+    <div class="fileviewer-modal">
+      <imageeditmenu class="fileviewer-gallery" :currentFile="currentFile" :currentIndex="currentIndex" v-click-outside="closewindow"></imageeditmenu>
+    </div>
+    `,
+    data() {
+      return {};
+    }
+    , mounted: function() {
+    }
+    , methods: {
+      closewindow: function( event ) {
+        this.$root.isDisplayWindow = "";
+      }
+    }
+  });
+
+  Vue.component('imageeditmenu', {
+    props: ["currentFile","currentIndex"],
+    template: `
+       <div class="fileviewer-modal">
+        <div class="fileviewer-image" id="imagediv" :style="{ 'background-image': 'url(' + encodeURI(currentFile.url) + ')' }"></div>
+        <div>
+          <div class="fileviewer-gallery-menu">
+            <ul>
+              <!--- MAIN --->
+              <span v-if="editmode==''">
+                <li><a @click="crop()"><i class="mi-crop"> Crop</i></a></li>
+                <li><a @click="rotateRight()"><i class="mi-rotate-right"> Rotate Right</i></a></li>
+                <li><a @click="rotateLeft()"><i class="mi-rotate-left"> Rotate Left</i></a></li>
+                <li><a @click="resize()"><i class="mi-expand"> Resize</i></a></li>
+                <li><a @click="cancel()"><i class="mi-times"> Cancel</i></a></li>
+              </span>
+              <!--- CROP --->
+              <span  v-if="editmode=='CROP'">
+                <li><a @click="confirmCrop()"><i class="mi-check"> Confirm</i></a></li>
+                <li><a @click="cancel()"><i class="mi-times"> Cancel</i></a></li>
+              </span>
+              <!--- RESIZE --->
+              <span  v-if="editmode=='RESIZE'">
+                <li>Width: <input :disabled="resizedimensions.aspect == 'height'" name="resize-width" v-model="resizedimensions.width"></li>
+                <li>Height: <input :disabled="resizedimensions.aspect == 'width'" name="resize-height" v-model="resizedimensions.height"></li>
+                <li>Aspect:
+                  <select name="resize-aspect" v-model="resizedimensions.aspect">
+                    <option value="none">None</option>
+                    <option value="height">Height</option>
+                    <option value="width">Width</option>
+                    <option value="within">Within</option>
+                  </select>
+                </li>
+                <li><a @click="confirmResize()"><i class="mi-check"> Confirm</i></a></li>
+                <li><a @click="cancel()"><i class="mi-times"> Cancel</i></a></li>
+              </span>
+            </ul>
+            <p>{{currentFile.fullname}} ({{currentFile.size}}k {{currentFile.info.width}}x{{currentFile.info.height}})</p>
+          </div>
+        </div>
+      </div>
+    `
+    , data() {
+        return {
+          editmode: '',
+          resizedimensions: {
+            width: 0,
+            height: 0,
+            backup: 0,
+            aspect: 'none'
+          }
+        };
+    }
+    , mounted: function() {
+      this.resizedimensions.width = this.currentFile.info.width;
+      this.resizedimensions.height = this.currentFile.info.height;
+      this.$root.isDisplayContext = 0;
+      this.editmode = '';
+    }
+    , methods: {
+      rotateLeft: function() {
+        MuraFileBrowser.rotate(this.currentFile,'counterclock',this.rotateComplete);
+      }
+      , rotateRight: function() {
+        MuraFileBrowser.rotate(this.currentFile,'clock',this.rotateComplete);
+      }
+      , rotateComplete() {
+        this.$root.refresh(null,null,displaywindow = "EDITIMAGE");
+      }
+      , resize() {
+        this.editmode = "RESIZE";
+      }
+      , confirmResize() {
+        MuraFileBrowser.performResize(this.currentFile,this.resizedimensions,this.resizeComplete);
+      }
+      , resizeComplete() {
+        this.$root.refresh(null,null,displaywindow = "EDITIMAGE");
+      }
+      , crop: function() {
+        this.editmode = "CROP";
+        MuraFileBrowser.crop(document.getElementById('imagediv'));
+      }
+      , confirmCrop: function() {
+        MuraFileBrowser.performCrop( this.currentFile,this.cropComplete );
+      }
+      , cropComplete: function() {
+        this.$root.refresh();
+      }
+      , closewindow: function( event ) {
+        this.$root.isDisplayWindow = "";
+      }
+      , cancel: function( event ) {
+        this.$root.isDisplayWindow = "VIEW";
+        this.editmode = '';
+      }
     }
   });
 
@@ -559,7 +893,7 @@ config: {
       <div class="actionwindow-formwrapper">
         <h3>Edit</h3>
         <label>
-          <textarea id="contenteditfield" class="editwindow" v-model="filecontent"></textarea>
+          <textarea id="contenteditfield" class="editwindow" v-model="filecontent" style="width: 400">abba</textarea>
           <button @click="updateContent()">Update</button>
           <button @click="cancel()">Cancel</button>
         </label>
@@ -578,13 +912,35 @@ config: {
       , cancel: function() {
         fileViewer.isDisplayWindow = '';
       }
+      , selectAll: function() {
+        editor.commands["selectAll"](this.editor);
+      },
+      autoFormat: function() {
+        editor.setCursor(0,0);
+        CodeMirror.commands["selectAll"](editor);
+        editor.autoFormatRange(editor.getCursor(true), editor.getCursor(false));
+        editor.setSize(500, 500);
+        editor.setCursor(0,0);
+      }
     }
     , mounted: function() {
       this.filecontent = this.currentFile.content;
-//      this.editor = CodeMirror.fromTextArea(document.getElementById('contenteditfield'), {
-//         lineNumbers: true
-//       });
-
+          editor = CodeMirror.fromTextArea(document.getElementById('contenteditfield'), {
+          value: this.currentFile.content,
+          mode:  "html",
+          extraKeys: {"Ctrl-Space": "autocomplete"},
+          lineNumbers: true,
+          autoCloseTags: true,
+          indentWithTabs: true,
+          theme: 'monokai'
+        }
+      );
+      editor.getDoc().setValue(this.currentFile.content);
+      this.autoFormat();
+      ed = this;
+      editor.on('change', function(cm) {
+        ed.filecontent = cm.getValue();
+      });
     }
   });
 
@@ -728,9 +1084,7 @@ config: {
 				this.$root.refresh('',1)
       }
     }
-
   });
-
 
   Vue.component('listmode', {
     props: ['files','folders','foldertree','isDisplayContext','currentFile','settings'],
@@ -942,13 +1296,29 @@ config: {
     }
   });
 
+  Vue.component('spinner', {
+    template: `
+      <div id="spinner">
+        <i class="fa fa-spinner fa-spin"></i>
+      </div>`,
+    data() {
+      return {};
+    },
+    methods: {
+
+    }
+  });
+
   const IS_START = 0, IS_SAVE = 1, IS_SUCCESS = 2, IS_FAIL = 3;
 
   var fileViewer = new Vue({
     el: "#" + self.target,
     template: `
       <div class="fileviewer-wrapper">
-        <viewwindow v-if="isDisplayWindow=='VIEW'" :settings="settings" :currentFile="currentFile" :currentIndex="currentIndex"></viewwindow>
+        <spinner v-if="spinnermodal"></spinner>
+        {{message}}
+        <gallerywindow v-if="isDisplayWindow=='VIEW'" :settings="settings" :currentFile="currentFile" :currentIndex="currentIndex"></gallerywindow>
+        <imageeditwindow v-if="isDisplayWindow=='EDITIMAGE'" :settings="settings" :currentFile="currentFile" :currentIndex="currentIndex"></imageeditwindow>
         <actionwindow v-if="isDisplayWindow" :settings="settings" :isDisplayWindow="isDisplayWindow" :currentIndex="currentIndex" :currentFile="currentFile" :error="error"></actionwindow>
         <div class="fileviewer-breadcrumb">
           <i class="mi-home" @click="setDirDepth(-1)"></i>
@@ -984,6 +1354,7 @@ config: {
       fileCount: 0,
       files: [],
       folders: [],
+      spinnermodal: 0,
       error: "",
       settings: { rb: {} },
       displaymode: this.config.displaymode,
@@ -995,6 +1366,7 @@ config: {
       sortOn: '',
       sortDir: 'ASC',
       itemsper: 20,
+      message: '',
       editfilelist: self.editfilelist,
       response: {pageindex: 0}
     },
@@ -1055,8 +1427,15 @@ config: {
         if(response.data.settings) {
           this.settings = response.data.settings;
         }
+        this.$nextTick(function () {
+          this.spinnermodal = 0;
+        });
+
       }
       , displayError: function( e ) {
+        if(e.message) {
+          this.message = message;
+        }
       }
       , previousFile( img ) {
         img = img ? img : 0;
@@ -1135,7 +1514,26 @@ config: {
         self.doDeleteFile(dir,this.currentFile,onSuccess,onError);
 
       }
-      , refresh: function( folder,pageindex ) {
+      , duplicateFile: function( onSuccess, onError) {
+        var dir = "";
+
+        for(var i=0;i<this.foldertree.length;i++) {
+          dir = dir + "/" + this.foldertree[i];
+        }
+
+        self.doDuplicateFile(dir,this.currentFile,onSuccess,onError);
+
+      }
+      , refresh: function( folder,pageindex,displaywindow ) {
+        if(displaywindow) {
+          this.isDisplayWindow = "";
+          this.$nextTick(function () {
+            this.$root.isDisplayWindow = displaywindow;
+          });
+        }
+        else
+          this.isDisplayWindow = '';
+
         if(folder && folder.length)
           this.foldertree.push(folder);
 
@@ -1146,8 +1544,10 @@ config: {
         for(var i=0;i<this.foldertree.length;i++) {
           dir = dir + "/" + this.foldertree[i];
         }
+        this.isDisplayContext = "";
+        this.spinnermodal = 1;
 
-        self.loadDirectory(dir,pageindex,this.displayResults,this.displayError,this.filterResults,this.sortOn,this.sortDir,this.itemsper);
+        self.loadDirectory(dir,pageindex,this.displayResults,this.displayError,this.filterResults,this.sortOn,this.sortDir,this.itemsper,displaywindow);
       }
       , back: function() {
         this.foldertree.splice(-1);
@@ -1244,6 +1644,9 @@ config: {
     },
     mounted: function() {
         this.uploadReset();
+        this.$nextTick(function () {
+          this.spinnermodal = 1;
+        });
         this.selectMode = self.config.selectMode;
         self.loadBaseDirectory(this.displayResults,this.displayError);
         window.addEventListener('mouseup', function(event) {
