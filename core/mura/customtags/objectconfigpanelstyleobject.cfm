@@ -323,18 +323,31 @@
 							</div>
 						</div>
 					</div>
-
 					<div class="mura-control-group">
 						<label>
-							CSS ID
+						Z-Index
 						</label>
-						<input name="cssid" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.cssid)#" maxlength="255">
+						<input name="zIndex" class="objectStyle numeric" type="text" value="#esapiEncode('html_attr',attributes.params.stylesupport.objectstyles.zindex)#" maxlength="5">
 					</div>
 					<div class="mura-control-group">
 						<label>
 							CSS Class
 						</label>
 						<input name="cssclass" class="objectParam classtoggle" type="text" value="#esapiEncode('html_attr',attributes.params.cssclass)#" maxlength="255">
+					</div>
+					<div class="mura-control-group">
+						<label>
+							Custom CSS Styles
+						</label>
+						<cfoutput>
+						<textarea id="customstylesedit" style="min-height: 250px">#esapiEncode('html',attributes.params.stylesupport.css)#</textarea>
+						</cfoutput>
+						<button class="btn" id="applystyles">Apply</button>
+						<script>
+							Mura('##applystyles').click(function(){
+								jQuery('##csscustom').val(Mura('##customstylesedit').val()).trigger('change');
+							})
+						</script>
 					</div>
 
 				</div> <!--- /end container --->

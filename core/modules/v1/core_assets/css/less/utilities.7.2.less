@@ -59,13 +59,21 @@ li .cke_skin_mura {
 .mura-region-inherited, .mura-region-local {
     width: 100%;
     float: left;
+		position: relative;
+		box-sizing: border-box;
+
     box-sizing:border-box .svAsset+.mura-region .mura-region-local, .svAsset+.mura-region .mura-region-local {
         float: none;
     }
+
     .mura-object {
         width: 100%;
         box-sizing: border-box;
+				-moz-box-sizing: border-box;
+        float: left;
+        display: block;
     }
+
     .mura-column:last-child, .mura-object:last-child {
         margin-right: 0;
     }
@@ -90,11 +98,7 @@ li .cke_skin_mura {
     .mura-center {
         margin: 0 auto;
     }
-    .mura-object {
-        float: left;
-        display: block;
-        box-sizing: border-box;
-    }
+
     .mura-region-local, .mura-region-inherited {
         width: 100%;
         margin-right: 0;

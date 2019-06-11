@@ -262,7 +262,12 @@
 							</div>
 						</div>
 					</div>
-
+					<div class="mura-control-group">
+						<label>
+						Z-Index
+						</label>
+						<input name="zIndex" class="metaStyle numeric" type="text" value="#esapiEncode('html_attr',attributes.params.stylesupport.metastyles.zindex)#" maxlength="5">
+					</div>
 					<div class="mura-control-group">
 						<label>
 							CSS ID

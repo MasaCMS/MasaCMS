@@ -1,3 +1,29 @@
+#spinner {
+  position: absolute;
+  z-index:    10000;
+  top:        0;
+  left:       0;
+  height:     100%;
+  width:      100%;
+  background: rgba( 0, 0, 0, .2 );
+  no-repeat;
+  text-align: center;
+  vertical-align: middle;
+}
+#spinner i {
+  font-size: 50px;
+  margin-top: 10%;
+}
+.rectangle {
+    border: 1px dashed #fff;
+    position: absolute;
+}
+.corner {
+    border: 1px solid #000;
+    width: 3px;
+    height: 3px;
+}
+
 .fa-padleft {
   padding-left: 5px;
   margin: 5px;
@@ -94,7 +120,10 @@
   margin: 0;
   padding: 0;
 }
+.filewindow-modemenu .highlight {
+  background-color: #ff0000;
 
+}
 .filewindow-modemenu ul li i {
   display: inline;
   padding: 4px;
@@ -305,26 +334,43 @@
   height: 100%;
   left: 0;
   top: 0;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color:rgba(0, 0, 0, 0.8);
 }
 
 .fileviewer-gallery {
   display: block;
-  width: 800px;
-  height: 600px;
-  margin: 20% auto;
+  width: 70%;
+  height: 70%;
+  margin: 10% auto;
+  position: relative;
+  background-color:rgba(0, 0, 0, 0.75);
+}
+
+.fileviewer-image  {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-size: contain;
+  position: relative;
+  background-repeat: no-repeat;
+}
+
+
+.fileviewer-icon {
+  width: 70px;
+  height: 70px;
+  margin-left: 10px;
   background-size: contain;
   background-repeat: no-repeat;
-  background-color: rgba(0, 0, 0, 0.75);
 }
 
 .fileviewer-gallery-menu {
-  top: 600px;
-  position: relative;
+  bottom: -62px;
+  position: absolute;
   text-align: center;
-  width: 800px;
+  width: 100%;
   padding: 10px 0 1px 0;
-  background-color: rgba(0, 0, 0, 0.50);
+  background-color:rgba(0, 0, 0, 0.70);
 }
 
 .fileviewer-gallery-menu ul li {
@@ -332,26 +378,46 @@
   list-style: none;
   color: #000;
   padding: 4px 10px;
-  background-color: rgba(255, 255, 255, 0.25);
+  background-color:rgba(255, 255, 255, 0.5);
 }
 
 .fileviewer-gallery-menu ul li a {
   color: #000;
 }
+.fileviewer-gallery-menu input {
+  width: 60px;
+  padding: 0 5px;
+  background-color: #ddd;
+}
+.fileviewer-gallery-menu input:disabled {
+  background-color: rgba(255, 255, 255, 0.5);
+  color: #bbb;
+}
+
 
 .actionwindow-left {
   float: left;
   padding: 5px;
   font-size: 3em;
-  margin: 35% 0;
-  background-color: rgba(255, 255, 255, 0.5);
+  position: absolute;
+  left: 0;
+  top: 48%;
+  background-color:rgba(255, 255, 255, 0.5);
 }
 
 .actionwindow-right {
   float: right;
   padding: 5px;
   font-size: 3em;
-  margin: 35% 0;
-  background-color: rgba(255, 255, 255, 0.5);
+  position: absolute;
+  right: 0;
+  top: 48%;
+  background-color:rgba(255, 255, 255, 0.5);
 }
 
+.fileviewer-icon-jpg {
+  background-image: url("./assets/images/jpg.png");
+}
+.fileviewer-icon-png {
+  background-image: url("./assets/images/png.png");
+}

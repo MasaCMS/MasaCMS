@@ -1241,7 +1241,6 @@
 										.off("click",openToolbar)
 										.on("click",openToolbar);
 
-
 									item.find("img").each(function(){MuraInlineEditor.checkforImageCroppers(this);});
 
 									item.find('.mura-object').each(initObject);
@@ -1729,14 +1728,12 @@
 											}
 					        	<cfelse>
 					        		var resp = eval('(' + data + ')');
-											console.log(data)
-											console.log(MuraInlineEditor.requestedURL)
-					        		if(MuraInlineEditor.requestedURL){
+					        		if(MuraInlineEditor.requestedURL && !(MuraInlineEditor.requestedURL.indexOf('previewid') > -1)){
 												location.href=MuraInlineEditor.requestedURL
-											} else if(location.href==resp.location){
+											} else if(location.href!=resp.location){
 												location.href=resp.location;
 											} else {
-												location.reload();
+												location.reload;
 											}
 					        	</cfif>
 								} else {
