@@ -33,8 +33,8 @@ config: {
     .loadjs(
       Mura.adminpath + '/assets/js/vue.min.js',
       Mura.corepath + '/vendor/codemirror/codemirror.js',
-      Mura.corepath + '/vendor/codemirror/addon/formatting/formatting.js',
-      Mura.corepath + '/vendor/codemirror/mode/htmlmixed/htmlmixed.js',
+      // Mura.corepath + '/vendor/codemirror/addon/formatting/formatting.js',
+      // Mura.corepath + '/vendor/codemirror/mode/htmlmixed/htmlmixed.js',
     function() {
       self.mountbrowser();
      } ) ;
