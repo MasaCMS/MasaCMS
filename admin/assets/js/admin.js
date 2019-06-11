@@ -221,6 +221,54 @@ function submitForm(e, t, i) {
     return !1;
 }
 
+function testEmail( e ){
+    e.preventDefault();
+    var pars = 'muraAction=cArch.emailTest&compactDisplay=true';
+
+    $("#emailTestDialog").remove();
+    $("body").append('<div id="emailTestDialog" title="Loading..." style="display:none"></div>');
+    
+    // get current email form element values
+    let mailSettings = {};
+
+        mailSettings.mailSmtpPort = $('input[name="MailServerSMTPPort"]').val();
+        mailSettings.mailHost = $('input[name="MailServerIP"]').val();
+        mailSettings.mailUsername = $('input[name="MailServerUserName"]').val();
+        mailSettings.mailPassword = $('input[name="MailServerPassword"]').val();
+        mailSettings.mailUseTLS = $('input[name="mailServerTLS"]:checked').val();
+        mailSettings.mailUseSSL = $('input[name="mailServerSSL"]:checked').val();
+
+    var modalUrl = "index.cfm?muraAction=cArch.emailTest&compactDisplay=true";
+
+
+    $("#emailTestDialog").dialog({
+        resizable: false,
+        modal: true,
+        title: 'Testing Email Connection',
+        width: 400,
+        position: getDialogPosition(),
+        open: function() {
+            $("#emailTestDialog").html('<div class="ui-dialog-content ui-widget-content"><div class="load-inline"></div></div>');
+            
+            $("#emailTestDialog .load-inline").spin(spinnerArgs2);
+
+            $.post( modalUrl, mailSettings, function( data ) {
+                $("#emailTestDialog .load-inline").spin(false);
+                $('#emailTestDialog').html(data);
+            }).fail(function(response) {
+                $("#emailTestDialog .load-inline").spin(false);
+                $('#emailTestDialog').html(response.responseText);
+            });
+
+        },
+        close: function() {
+            $(this).dialog("destroy");
+            $("#emailTestDialog").remove();
+        }
+    });
+
+}
+
 function actionModal(e) {
     return $("body").append('<div id="action-modal" class="modal-backdrop fade in"></div>'),
     $("#action-modal").spin(spinnerArgs), e && ("string" == typeof e ? location.href = e : e()),

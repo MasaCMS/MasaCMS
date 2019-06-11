@@ -729,6 +729,19 @@ to your own modified versions of Mura CMS.
 						No </label>
 					</div>
 
+			<div class="mura-control-group">
+				<!--- set initial state of Test Email button --->
+				<cfif rc.siteBean.getUseDefaultSMTPServer() eq 1>
+					<cfset variables.testEmailButtonProp = 'disabled' />
+				<cfelse>
+					<cfset variables.testEmailButtonProp = '' />
+				</cfif>
+
+				<button type="button" class="btn btn-secondary mura-primary" onclick="testEmail( event );" id="testEmailSettings" #variables.testEmailButtonProp#>
+					<i class="mi-check-circle"></i> Test Email Settings
+				</button>
+			</div>
+
 				<div class="mura-control-group">
    				<label>Content Pending Script</label>
    						<p class="help-block">Available Dynamic Content: ##returnURL## ##contentName## ##contentType##</p>
@@ -942,7 +955,40 @@ to your own modified versions of Mura CMS.
 				);
 		 }
 
-		 $(document).ready(function(){loadCustomImages({siteid:'#esapiEncode('javascript',rc.siteBean.getSiteID())#'})});
+
+		function attachHandlers(){
+			
+			$("input[type='radio'][name='useDefaultSMTPServer']").each(function(){
+				$(this).click(function() {
+
+					if( jQuery('input[name=useDefaultSMTPServer]:checked').val() == 1 ){
+						jQuery('##testEmailSettings').prop( 'disabled', true );
+					} else {
+						jQuery('##testEmailSettings').prop( 'disabled', false );
+					}
+
+				});
+
+				$('ul[data-toggle="tabs"]').on('shown.bs.tab', function(e){
+				       var currentTab = $(e.target).text();
+
+				    	if( currentTab == 'Email' && jQuery('input[name=useDefaultSMTPServer]:checked').val() == 0 ){
+				    		jQuery('##testEmailSettings').prop( 'disabled', false );
+				    	} else {
+				    		jQuery('##testEmailSettings').prop( 'disabled', true );
+				    	}
+
+				   });
+
+			});
+
+		}
+		 
+		$(document).ready(function(){
+		 	loadCustomImages({siteid:'#esapiEncode('javascript',rc.siteBean.getSiteID())#'}); 
+		 	attachHandlers(); 
+		 	jQuery('##testEmailSettings').prop( 'disabled', true ); 
+		});
 
 			</script>
 			<div class="mura-control-group">
