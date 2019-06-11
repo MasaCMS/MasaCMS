@@ -28,24 +28,24 @@
   padding-left: 5px;
   margin: 5px;
 }
+
 .fileviewer-wrapper {
-  position: relative;
   display: block;
-  border: 3px solid #eee;
-  box-shadow: 2px 2px 5px grey;
 }
 
 .fileviewer-wrapper:after {
-    clear: both;
-    content: "";
-    display: block;
+  clear: both;
+  content: "";
+  display: block;
 }
+
 .filewindow-appbar {
   background-color: #fafafa;
+  border: 1px solid #dbdbdb;
   display: block;
   clear: both;
-  height: 40px;
-  padding: 4px;
+  height: 48px;
+  padding: 6px;
   margin: 0;
 }
 
@@ -54,27 +54,67 @@
   margin: 0 5px;
 }
 
+.filewindow-navmenu .pagination > li select {
+  height: 26px;
+  margin-top: 4px;
+}
+
 .filewindow-navmenu p {
   float: left;
 }
+
 .filewindow-navmenu ul {
   float: right;
   display: inline;
 }
+
 .filewindow-navmenu ul li a {
   margin: 0 3px;
 }
 
 .filewindow-modemenu {
   float: left;
-  margin: 0 5px;
+  margin: 0;
 }
+
+.filewindow-modemenu .btn-group {
+  margin-right: 4px;
+}
+
+.filewindow-modemenu a.btn {
+  height: 33px;
+  margin-top: -1px;
+  padding: 3px 8px;
+  box-sizing: border-box;
+}
+
+.filewindow-modemenu .highlight:link,
+.filewindow-modemenu .highlight:visited,
+.filewindow-modemenu .highlight:active,
+.filewindow-modemenu .highlight:hover,
+.filewindow-modemenu .highlight {
+  background-color: #e34a35 !important;
+  border: 1px solid #e34a35 !important;
+}
+
+.filewindow-modemenu a.btn i {
+  color: #b5b5b5;
+  font-size: 16px;
+  margin-right: 0;
+  padding-top: 4px;
+}
+
+.filewindow-modemenu a.btn.highlight i {
+  color: #fff;
+}
+
 .filewindow-modemenu ul {
   float: left;
   margin: 0;
-  padding: 4px 0 0 0;
+  padding: 0;
   list-style: none;
 }
+
 .filewindow-modemenu ul li {
   display: inline;
   margin: 0;
@@ -90,13 +130,13 @@
   font-size: 1.5em;
 }
 
-
 #actionwindow-wrapper {
   position: absolute;
   margin: 60px 30%;
   background-color: #ffffff;
-    z-index: 100000;
+  z-index: 100000;
 }
+
 .actionwindow-formwrapper {
   border: 2px solid #666;
   padding: 10px 5px 5px;
@@ -108,20 +148,25 @@
   width: 600px;
   height: 200px;
 }
+.gridmode-wrapper{
+    background-color: #fff;
+    border: 1px solid #dbdbdb;
+    border-top: none;
+    border-bottom: none;
+    padding: 24px;
+}
+.listmode-wrapper .mura-table-grid {
+  margin-bottom: 0 !important;
+  border-bottom: none;
+  border-top: none;
+}
 
 #renamewindow-wrapper p {
   position: relative;
 }
 
-
-
-.fileviewer-breadcrumb {
-  width: 100%;
-  height: 40px;
-  border: 2px solid #ccc;
-  background-color: #eee;
-  text-align: left;
-  padding: 5px;
+.fileviewer-breadcrumb a{
+  cursor:pointer;
 }
 
 .fileviewer-droptarget {
@@ -129,23 +174,36 @@
   width: 100%;
   height: 100px;
   background-color: #eee;
-  overflow-y: scroll;
+  margin-bottom: 12px;
+  overflow: hidden;
 }
+
 .fileviewer-droptarget p {
   text-align: center;
 }
+
 .fileviewer-uploadedfiles {
-    text-align: left;
-    list-style: none;
-    font-size: .8em;
+  text-align: left;
+  list-style: none;
+  font-size: .8em;
 }
+
+.filewindow-searchinput {
+  margin-left: 4px;
+  padding-left: 6px;
+  border: 1px solid #eee;
+  border-radius: 2px;
+  font-size: 14px;
+  height: 34px;
+}
+
 .file-input-field {
-    opacity: 0; /* invisible but it's there! */
-    width: 96%;
-    height: 100%;
-    position: absolute;
-    cursor: pointer;
-  }
+  opacity: 0; /* invisible but it's there! */
+  width: 96%;
+  height: 100%;
+  position: absolute;
+  cursor: pointer;
+}
 
 .upload-icon {
   padding: 5px;
@@ -157,15 +215,18 @@
   background: #fff;
   border: 2px solid #000;
 }
+
 .filewindow-context ul {
   list-style: none;
   margin: 5px;
   padding: 0;
 }
+
 .filewindow-context ul li {
   margin: 0;
   padding: 2px 4px;
 }
+
 .filewindow-context ul li:hover {
   background-color: #555;
   color: #fff;
@@ -173,55 +234,96 @@
 }
 
 .upload-icon:before {
-    content: "\f093";  /* this is your text. You can also use UTF-8 character codes as I do here */
-    font-family: FontAwesome;
-    left:-5px;
-    font-size: 4em;
-    text-align: center;
-    position: absolute;
-    top: 10px;
-    left: 47%;
-    color: #ddd;
- }
+  content: "\f093";  /* this is your text. You can also use UTF-8 character codes as I do here */
+  font-family: FontAwesome;
+  left: -5px;
+  font-size: 4em;
+  text-align: center;
+  position: absolute;
+  top: 20px;
+  left: 47%;
+  color: #ddd;
+}
 
 .download-icon {
-    width: 100%;
-    height: 100px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-image: url("../images/loading.gif");
- }
+  width: 100%;
+  height: 100px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: url("../images/loading.gif");
+}
 
 .filewindow-wrapper {
 }
 
-
 .fileviewer-item {
-    position: relative;
-    float: left;
-    width: 100px;
-    height: 110px;
-    margin: 10px;
-    padding: 5px;
-    border: 3px solid #fafafa;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: .7em;
-    box-shadow: 1px 1px 4px #ccc;
+  border: 1px solid #d2d2d2;
+  border-radius: 4px;
+  box-shadow: 5px 5px 6px #eee;
+  float: left;
+  font-size: 13px;
+  height: 160px;
+  margin: 10px;
+  overflow: hidden;
+  padding: 0;
+  position: relative;
+  text-overflow: ellipsis;
+  width: 160px;
+}
+
+.fileviewer-item-label {
+  height: 2em;
+  font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.fileviewer-item-icon {
+  background-color: #f8f8f8;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  cursor: pointer;
+  margin: 0;
+  text-align: center;
+  width: 100%;
+  height: 80px;
+}
+.fileviewer-item-icon i{
+    color: #cccccc;
+    font-size: 22px !important;
+    padding-top: 29px;
+ } 
+
+.fileviewer-item-icon-jpg {
+  background-image: url("./assets/images/jpg.png");
+}
+
+.fileviewer-item-icon-png {
+  background-image: url("./assets/images/png.png");
+}
+
+.fileviewer-item-meta{
+  font-size: 11px;
+  height: 80px;
+  padding: 9px;
+  position: relative;
+}
+.fileviewer-item-meta-details{
+  position: absolute;
+  bottom: 10px;
 }
 
 .image {
   background-color: #ccc;
 }
 
-.fileviewer-label {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 25px;
-  width: 100px;
-  background-color: #fafafa;
+.itemsper-label {
+  font-size: 12px;
+  padding: 8px 8px 0 0;
 }
 
 .fileviewer-modal {
@@ -235,7 +337,7 @@
   background-color:rgba(0, 0, 0, 0.8);
 }
 
-.fileviewer-gallery  {
+.fileviewer-gallery {
   display: block;
   width: 70%;
   height: 70%;

@@ -1,13 +1,7 @@
 <cfparam name="url.target" default="">
 <cfparam name="url.completepath" default="true">
 <cfoutput>
-	<div class="block block-constrain">
-		<div class="block block-bordered">
-		  <div class="block-content">
-				<div id="MuraFileBrowserContainer"></div>
-			</div> <!-- /.block-content -->
-		</div> <!-- /.block-bordered -->
-	</div> <!-- /.block-constrain -->
+<div id="MuraFileBrowserContainer"></div>
 <script>
 
 Mura(function(){

@@ -33,8 +33,8 @@ config: {
     .loadjs(
       Mura.adminpath + '/assets/js/vue.min.js',
       Mura.corepath + '/vendor/codemirror/codemirror.js',
-      Mura.corepath + '/vendor/codemirror/addon/formatting/formatting.js',
-      Mura.corepath + '/vendor/codemirror/mode/htmlmixed/htmlmixed.js',
+      // Mura.corepath + '/vendor/codemirror/addon/formatting/formatting.js',
+      // Mura.corepath + '/vendor/codemirror/mode/htmlmixed/htmlmixed.js',
     function() {
       self.mountbrowser();
      } ) ;
@@ -517,6 +517,7 @@ config: {
           return MuraFileBrowser.config.selectCallback( fileViewer.currentFile );
         }
       }
+
       , editFile: function() {
         fileViewer.editFile(this.successEditFile);
       }
@@ -535,7 +536,7 @@ config: {
         fileViewer.isDisplayWindow = "RENAME";
       }
       , downloadFile: function() {
-        window.open(fileViewer.currentFile.url, '_blank');
+          window.open(fileViewer.currentFile.url, '_blank');
       }
       , deleteFile: function() {
         fileViewer.isDisplayWindow = "DELETE";
@@ -682,22 +683,22 @@ config: {
       <div class="fileviewer-modal">
         <div class="fileviewer-gallery" v-click-outside="closewindow">
           <div class="fileviewer-image" :style="{ 'background-image': 'url(' + encodeURI(currentFile.url) + ')' }"></div>
-          <div>
-            <div class="actionwindow-left" @click="lastimage"><i class="mi-caret-left"></i></div>
-            <div class="actionwindow-right" @click="nextimage"><i class="mi-caret-right"></i></div>
-            <div class="fileviewer-gallery-menu">
-              <ul>
-                <li v-if="checkImageType() && checkSelectMode()"><a @click="selectFile()"><i class="mi-check"> Select</i></a></li>
+            <div>
+              <div class="actionwindow-left" @click="lastimage"><i class="mi-caret-left"></i></div>
+              <div class="actionwindow-right" @click="nextimage"><i class="mi-caret-right"></i></div>
+              <div class="fileviewer-gallery-menu">
+                <ul>
+                  <li v-if="checkImageType() && checkSelectMode()"><a @click="selectFile()"><i class="mi-check"> Select</i></a></li>
                 <li v-if="checkImageType()"><a @click="editImage()"><i class="mi-check"> Edit Image</i></a></li>
-                <li v-if="checkFileEditable()"><a  @click="editFile()"><i class="mi-pencil"> Edit</i></a></li>
-                <li><a @click="renameFile()"><i class="mi-edit"> Rename</i></a></li>
-                <li v-if="checkIsFile()"><a @click="downloadFile()"><i class="mi-download">Download</i></a></li>
-                <li><a @click="deleteFile()"><i class="mi-trash"> Delete</i></a></li>
-                <li><a @click="closewindow()"><i class="mi-times">Close</i></a></li>
-              </ul>
+                  <li v-if="checkFileEditable()"><a  @click="editFile()"><i class="mi-pencil"> Edit</i></a></li>
+                  <li><a @click="renameFile()"><i class="mi-edit"> Rename</i></a></li>
+                  <li v-if="checkIsFile()"><a @click="downloadFile()"><i class="mi-download">Download</i></a></li>
+                  <li><a @click="deleteFile()"><i class="mi-trash"> Delete</i></a></li>
+                  <li><a @click="closewindow()"><i class="mi-times">Close</i></a></li>
+                </ul>
               <p>{{currentFile.fullname}} ({{currentFile.size}}k <span v-if="checkImageType()">{{currentFile.info.width}}x{{currentFile.info.height}}</span>)</p>
-            </div>
           </div>
+        </div>
       </div>
     `,
     data() {
@@ -1056,6 +1057,7 @@ config: {
               <option value='50' :selected="itemsper == 50 ? 'selected' : null">50</option>
             </select>
           </li>
+          <li class="pull-right"><label class="itemsper-label">View in groups of </label></li>
 
         </ul>
       </div>
@@ -1084,7 +1086,9 @@ config: {
 				this.$root.refresh('',1)
       }
     }
+
   });
+
 
   Vue.component('listmode', {
     props: ['files','folders','foldertree','isDisplayContext','currentFile','settings'],
@@ -1217,32 +1221,49 @@ config: {
     template: `
       <div class="gridmode-wrapper">
         <div v-if="foldertree.length" class="fileviewer-item" @click="back()">
-          <div class="fileviewer-image">
-            <i class="mi-arrow-left" style="font-size: 7em"></i>
+          <div class="fileviewer-item-icon">
+            <i class="mi-arrow-circle-o-left"></i>
           </div>
-          <div class="fileviewer-label">
-            Back
+          <div class="fileviewer-item-meta">
+            <div class="fileviewer-item-label">
+              Back
+            </div>
           </div>
         </div>
         <div v-for="(file,index) in files">
           <div class="fileviewer-item"  :id="'fileitem-'+index"  v-if="parseInt(file.isfile)" @click="openMenu($event,file,index)">
-            <div class="fileviewer-image">
-              <div v-if="0" class="fileviewer-icon" :class="['fileviewer-icon-' + file.type]"></div>
-              <div v-else class="fileviewer-icon" :style="{ 'background-image': 'url(' + encodeURI(file.url) + ')' }"></div>
+            <div class="fileviewer-item-image">
+              <div v-if="0" class="fileviewer-item-icon" :class="['fileviewer-item-icon-' + file.type]"></div>
+              <div v-else class="fileviewer-item-icon" :style="{ 'background-image': 'url(' + encodeURI(file.url) + ')' }"></div>
             </div>
-            <div class="fileviewer-label">
-              {{file.fullname}}
+            <div class="fileviewer-item-meta">
+              <div class="fileviewer-item-label">
+                {{file.fullname}}
+              </div>
+              <div class="fileviewer-item-meta-details">
+                <div v-if="parseInt(file.isfile)" class="fileviewer-item-meta-size">
+                  {{file.size}}kb
+                </div>
+              </div>
             </div>
           </div>
           <div class="fileviewer-item" v-else @click="refresh(file.name)">
-            <div class="fileviewer-image">
-              <i class="mi-folder" style="font-size: 7em;color: #333"></i>
+            <div class="fileviewer-item-icon">
+              <i class="mi-folder-open"></i>
             </div>
-            <div class="fileviewer-label">
-              {{file.fullname}}
+            <div class="fileviewer-item-meta">
+              <div class="fileviewer-item-label">
+                {{file.fullname}}
+              </div>
+              <div class="fileviewer-item-meta-details">
+                <div v-if="parseInt(file.isfile)" class="fileviewer-item-meta-size">
+                  {{file.size}}kb
+                </div>
+              </div>
             </div>
           </div>
         </div>
+        <div class="clearfix"></div>
         <contextmenu :currentFile="this.$parent.currentFile" :isDisplayContext="isDisplayContext" v-if="isDisplayContext" :menux="menux" :menuy="menuy"></contextmenu>
       </div>`,
     data() {
@@ -1334,7 +1355,7 @@ config: {
               {{settings.rb.filebrowser_uploading}} ({{fileCount}})
               <ul class="fileviewer-uploadedfiles">
                 <li v-for="file in uploadedFiles">
-                  {{file.fullname}} ({{Math.floor(file.size/1000)}}k)
+                  {{file.fullname}} ({{Math.floor(file.size/1000)}}kb)
                 </li>
               </ul>
             </p>
