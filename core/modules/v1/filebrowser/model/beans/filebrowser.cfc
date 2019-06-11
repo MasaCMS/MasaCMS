@@ -80,6 +80,223 @@ component
 			return permission;
 		}
 
+
+		remote any function resize( resourcePath,file,dimensions ) {
+			var permission = checkPerms(arguments.siteid,'editimage',resourcePath);
+			var response = { success: 0 };
+
+			if(!permission.success) {
+				response.permission = permission;
+				response.message = permission.message;
+				return response;
+			}
+
+			if(isJSON(arguments.file)) {
+				arguments.file = deserializeJSON(arguments.file);
+			}
+			if(isJSON(arguments.dimensions)) {
+				arguments.dimensions = deserializeJSON(arguments.dimensions);
+			}
+
+			response.args = arguments;
+
+			var m=getBean('$').init(arguments.siteid);
+			var currentSite = application.settingsManager.getSite(arguments.siteid);
+			var baseFilePath = getBaseFileDir( arguments.siteid,arguments.resourcePath );
+			var tempDir = m.globalConfig().getTempDir();
+			var timage = replace(createUUID(),"-","","all");
+			var delim = rereplace(baseFilePath,".*\/","");
+			var filePath = baseFilePath & rereplace(arguments.file.url,".*?#delim#","")
+			var sourceImage = ImageNew(filePath);
+			var response = {};
+
+			if(arguments.dimensions.aspect eq "within") {
+				if(!isNumeric(arguments.dimensions.width) || !isNumeric(arguments.dimensions.height) || arguments.dimensions.width < 1 || arguments.dimensions.height < 1) {
+					var rb = getResourceBundle(arguments.siteid);
+					response.message = rb['filebrowser.dimensionsrequired'];
+					return response;
+				}
+				ImageScaleToFit(sourceImage,int(arguments.dimensions.width),int(arguments.dimensions.height));
+			}
+			else if(arguments.dimensions.aspect eq "height") {
+				if(!isNumeric(arguments.dimensions.height) || arguments.dimensions.height < 1) {
+					var rb = getResourceBundle(arguments.siteid);
+					response.message = rb['filebrowser.dimensionsrequired'];
+					return response;
+				}
+				response.stuff = "HEIGHT!";
+				ImageResize(sourceImage,'',int(arguments.dimensions.height),'');
+			}
+			else if(arguments.dimensions.aspect eq "width") {
+				if(!isNumeric(arguments.dimensions.width) || arguments.dimensions.width < 1) {
+					var rb = getResourceBundle(arguments.siteid);
+					response.message = rb['filebrowser.dimensionsrequired'];
+					return response;
+				}
+				response.stuff = "WIDTH!";
+				ImageResize(sourceImage,int(arguments.dimensions.width));
+			}
+			else {
+				if(!isNumeric(arguments.dimensions.width) || !isNumeric(arguments.dimensions.height) || arguments.dimensions.width < 1 || arguments.dimensions.height < 1) {
+					var rb = getResourceBundle(arguments.siteid);
+					response.message = rb['filebrowser.dimensionsrequired'];
+					return response;
+				}
+				response.stuff = "BARF";
+				ImageResize(sourceImage,int(arguments.dimensions.width),int(arguments.dimensions.height));
+			}
+
+			var sourceImageInfo = imageInfo(sourceImage);
+			var destination = replace(filePath,".#arguments.file.ext#","-resize-#randrange(10000,99999)#.#arguments.file.ext#");
+
+			ImageWrite(sourceImage,tempDir & timage & "." & arguments.file.ext);
+			fileMove(tempDir & timage & "." & arguments.file.ext,filePath);
+
+			response.info = imageInfo(sourceImage);
+			response.success = 1;
+			return response;
+		}
+
+		remote any function duplicate( resourcePath,file ) {
+			var permission = checkPerms(arguments.siteid,'duplicate',resourcePath);
+			var response = { success: 0 };
+
+			if(!permission.success) {
+				response.permission = permission;
+				response.message = permission.message;
+				return response;
+			}
+
+			if(isJSON(arguments.file)) {
+				arguments.file = deserializeJSON(arguments.file);
+			}
+
+			var m=getBean('$').init(arguments.siteid);
+			var currentSite = application.settingsManager.getSite(arguments.siteid);
+			var baseFilePath = getBaseFileDir( arguments.siteid,arguments.resourcePath );
+			var tempDir = m.globalConfig().getTempDir();
+			var timage = replace(createUUID(),"-","","all");
+			var delim = rereplace(baseFilePath,".*\/","");
+			var filePath = baseFilePath & rereplace(arguments.file.url,".*?#delim#","")
+			var sourceImage = ImageNew(filePath);
+			var destination = replace(filePath,".#arguments.file.ext#","-copy1.#arguments.file.ext#");
+			var version = 1;
+
+			while(fileExists(destination)) {
+				version++;
+				destination = replace(filePath,".#arguments.file.ext#","-copy#version#.#arguments.file.ext#");
+			}
+
+			ImageWrite(sourceImage,tempDir & timage & "." & arguments.file.ext);
+			fileMove(tempDir & timage & "." & arguments.file.ext,destination);
+
+			response.success = 1;
+			return response;
+		}
+
+		remote any function rotate( resourcePath,file,direction ) {
+			var permission = checkPerms(arguments.siteid,'editimage',resourcePath);
+			var response = { success: 0 };
+
+			if(!permission.success) {
+				response.permission = permission;
+				response.message = permission.message;
+				return response;
+			}
+
+			if(isJSON(arguments.file)) {
+				arguments.file = deserializeJSON(arguments.file);
+			}
+
+			var m=getBean('$').init(arguments.siteid);
+			var currentSite = application.settingsManager.getSite(arguments.siteid);
+			var baseFilePath = getBaseFileDir( arguments.siteid,arguments.resourcePath );
+			var tempDir = m.globalConfig().getTempDir();
+			var timage = replace(createUUID(),"-","","all");
+			var delim = rereplace(baseFilePath,".*\/","");
+			var filePath = baseFilePath & rereplace(arguments.file.url,".*?#delim#","")
+			var sourceImage = ImageNew(filePath);
+			var response = {};
+
+			var rotation = 90;
+			if(arguments.direction eq "counterclock") {
+				rotation = -90;
+			}
+
+			var sourceImageInfo = imageInfo(sourceImage);
+			ImageRotate(sourceImage,int(sourceImageInfo.width/2),int(sourceImageInfo.height/2),rotation);
+
+			ImageWrite(sourceImage,tempDir & timage & "." & arguments.file.ext);
+			fileMove(tempDir & timage & "." & arguments.file.ext,filePath);
+
+			response.info = imageInfo(sourceImage);
+			response.success = 1;
+			return response;
+
+		}
+
+		remote any function processCrop( resourcePath,file,crop,size ) {
+			var permission = checkPerms(arguments.siteid,'editimage',resourcePath);
+			var response = { success: 0};
+
+			if(!permission.success) {
+				response.permission = permission;
+				response.message = permission.message;
+				return response;
+			}
+
+
+			var m=getBean('$').init(arguments.siteid);
+			var currentSite = application.settingsManager.getSite(arguments.siteid);
+			var baseFilePath = getBaseFileDir( arguments.siteid,arguments.resourcePath );
+			var tempDir = m.globalConfig().getTempDir();
+			var timage = replace(createUUID(),"-","","all");
+			var response = {};
+
+			if(isJSON(arguments.file)) {
+				arguments.file = deserializeJSON(arguments.file);
+			}
+			if(isJSON(arguments.crop)) {
+				arguments.crop = deserializeJSON(arguments.crop);
+			}
+			if(isJSON(arguments.size)) {
+				arguments.size = deserializeJSON(arguments.size);
+			}
+
+			var delim = rereplace(baseFilePath,".*\/","");
+			var filePath = baseFilePath & rereplace(arguments.file.url,".*?#delim#","")
+
+			var sourceImage = ImageNew(filePath);
+
+			ImageScaleToFit(sourceImage,size.width,size.height,"highestPerformance");
+			ImageWrite(sourceImage,tempDir & timage & "." & arguments.file.ext);
+			var workImage = ImageNew(tempDir & timage & "." & arguments.file.ext);
+			sourceImage = ImageNew(filePath);
+
+			var workImageInfo = imageInfo(workImage);
+			var sourceImageInfo = imageInfo(sourceImage);
+			var aspect = 1;
+
+			if(workImageInfo.width != sourceImageInfo.width) {
+				aspect = floor(sourceImageInfo.width/workImageInfo.width*1000)/1000;
+			}
+			else if(workImageInfo.height != sourceImageInfo.height) {
+				aspect = floor(sourceImageInfo.height/workImageInfo.height*1000)/1000;
+			}
+
+			ImageCrop(sourceImage,arguments.crop.x*aspect,arguments.crop.y*aspect,arguments.crop.width*aspect,arguments.crop.height*aspect);
+			ImageWrite(sourceImage,tempDir & timage & "." & arguments.file.ext);
+			fileMove(tempDir & timage & "." & arguments.file.ext,filePath);
+			workImage = ImageNew(filePath);
+
+			response.info = imageInfo(workImage);
+			response.aspect = aspect;
+
+			response.success = 1;
+			return response;
+		}
+
+
 		remote any function ckeditor_quick_upload( siteid,directory,formData,resourcePath ){
 			/*
 			{
@@ -417,7 +634,7 @@ component
 
 			response['endindex'] = response['endindex'] > rsFiles.recordCount ? rsFiles.recordCount : response['endindex'];
 
-			response['res'] = serializeJSON(rsFiles);
+			response['res'] = rsFiles;
 			response['totalpages'] = ceiling(rsFiles.recordCount / response['itemsperpage']);
 			response['totalitems'] = 1;
 			response['pageindex'] = arguments.pageindex;
@@ -434,8 +651,20 @@ component
 				frow['size'] = int(rsFiles['size'][x]/1000);
 				frow['name'] = rereplace(frow['fullname'],"\..*","");
 				frow['type'] = rsFiles['type'][x];
-				if(frow['isfile'])
+				frow['ext'] = rereplace(frow['fullname'],".[^\.]*\.","");
+				frow['isimage'] = listfind("jpg,jpeg,gif,png",frow['ext']);
+				frow['info'] = {};
+				if(frow['isfile']) {
 					frow['ext'] = rereplace(frow['fullname'],".[^\.]*\.","");
+
+					if(	frow['isimage'] ) {
+						var iinfo = imageInfo(expandPath(filePath) & application.configBean.getFileDelim() & frow['fullname']);
+						if( isStruct(iinfo) ) {
+							frow['info']['height'] = iinfo.height;
+							frow['info']['width'] = iinfo.width;
+						}
+					}
+				}
 				frow['lastmodified'] = rsFiles['datelastmodified'][x];
 				frow['lastmodifiedshort'] = LSDateFormat(rsFiles['datelastmodified'][x],m.getShortDateFormat());
 				frow['url'] = assetPath & "/" & frow['fullname'];
