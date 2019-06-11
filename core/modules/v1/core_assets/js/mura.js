@@ -3407,6 +3407,7 @@ var Mura=(function(){
 					Mura('label.mura-editable-label').show();
 
 					Mura.breakpoint=getBreakpoint();
+					Mura.windowResponsiveModules={};
 
 					window.addEventListener("resize", function(){
 			    	clearTimeout(Mura.windowResizeID);
@@ -3417,7 +3418,11 @@ var Mura=(function(){
 							if(breakpoint!=Mura.breakpoint){
 								Mura.breakpoint=breakpoint;
 							 	Mura('.mura-object').each(function(){
-									Mura(this).calculateDisplayObjectStyles(true);
+									var obj=Mura(this);
+									var instanceid=obj.data('instanceid');
+									if(typeof Mura.windowResponsiveModules[instanceid] == 'undefined' || Mura.windowResponsiveModules[instanceid]){
+										obj.calculateDisplayObjectStyles(true);
+									}
 								});
 							}
 							delete Mura.windowResizeID;
@@ -18042,12 +18047,16 @@ Mura.DOMSelection = Mura.Core.extend(
 	 *
 	 * @return {object}	Self
 	 */
-	 calculateDisplayObjectStyles: function(resizeAction) {
+	 calculateDisplayObjectStyles: function(windowResponse) {
 
  		this.each(function(el) {
 			var breakpoint=Mura.getBreakpoint();
 			var fullsize=(breakpoint!='xs');
  			var obj=Mura(el);
+
+			Mura.windowResponsiveModules=Mura.windowResponsiveModules||{};
+			Mura.windowResponsiveModules[obj.data('instanceid')]=false;
+
  			obj = (obj.node) ? obj : Mura(obj);
  			var self = obj.node;
  			if (obj.data('class')) {
@@ -18094,9 +18103,17 @@ Mura.DOMSelection = Mura.Core.extend(
 					delete objectstyles.marginBottom;
 				}
  				obj.css(objectstyles);
+				if(!fullsize || (fullsize && !(
+					obj.css('marginTop')=='0px'
+					&& obj.css('marginBottom')=='0px'
+					&& obj.css('marginLeft')=='0px'
+					&& obj.css('marginRight')=='0px'
+				))){
+					Mura.windowResponsiveModules[obj.data('instanceid')]=true;
+				} 
  			}
 
-			if(!resizeAction){
+			if(!windowResponse){
 				var sheet=Mura.getStyleSheet('mura-styles-' + obj.data('instanceid'));
 
 				while (sheet.cssRules.length) {
@@ -18171,7 +18188,7 @@ Mura.DOMSelection = Mura.Core.extend(
 							metastyles=styleSupport.metastyles;
 						}
 
-						if(!resizeAction){
+						if(!windowResponse){
 							var selector='div.mura-object[data-instanceid="' + obj.data('instanceid') + '"] .mura-object-meta';
 
 							if (metastyles && typeof metastyles.backgroundColor != 'undefined' && metastyles.backgroundColor
@@ -18216,7 +18233,7 @@ Mura.DOMSelection = Mura.Core.extend(
 							meta.css(metastyles);
 						}
 
-						if(fullsize && obj.is('.mura-object-label-left, .mura-object-label-right')){
+						if(obj.is('.mura-object-label-left, .mura-object-label-right')){
 							var left=meta.css('marginLeft');
 							var right=meta.css('marginRight')
 							if(!(left=='0px' && right=='0px') && left.charAt(0) != "-" && right.charAt(0) != "-"){
@@ -18234,7 +18251,7 @@ Mura.DOMSelection = Mura.Core.extend(
 
 			var selector='div.mura-object[data-instanceid="' + obj.data('instanceid') + '"] .mura-object-content';
 
-			if (!resizeAction && contentstyles && typeof contentstyles.backgroundColor != 'undefined' && contentstyles.backgroundColor
+			if (!windowResponse && contentstyles && typeof contentstyles.backgroundColor != 'undefined' && contentstyles.backgroundColor
 				&& typeof contentstyles.backgroundImage != 'undefined' && contentstyles.backgroundImage) {
 				var style =selector + '::before{content: ""; position: absolute;	top: 0; right: 0;left: 0;bottom:0; background:' + contentstyles.backgroundColor + '}';
 				sheet.insertRule(
@@ -18247,7 +18264,7 @@ Mura.DOMSelection = Mura.Core.extend(
 				);
 			}
 
-			if(!resizeAction && contentstyles && contentstyles.color){
+			if(!windowResponse && contentstyles && contentstyles.color){
 				var style=	selector + ', ' + selector + ' label, ' + selector + ' p, ' + selector + ' h1, ' + selector + ' h2, ' + selector + ' h3, ' + selector + ' h4, ' + selector + ' h5, ' + selector + ' h6, ' +selector + ' a:link, ' + selector + ' a:visited, '  + selector + ' a:hover, ' + selector + ' a:active { color:' + contentstyles.color + ';} ';
 				sheet.insertRule(
 					style,
@@ -18278,11 +18295,14 @@ Mura.DOMSelection = Mura.Core.extend(
 					content.css(contentstyles);
 				}
 
-				if(fullsize && obj.is('.mura-object-label-left, .mura-object-label-right')){
+				if(obj.is('.mura-object-label-left, .mura-object-label-right')){
 					var left=content.css('marginLeft');
 					var right=content.css('marginRight')
 					if(!(left=='0px' && right=='0px') && left.charAt(0) != "-" && right.charAt(0) != "-"){
-						content.css('width','calc(50% - (' + left + ' + ' + right + '))');
+						if(fullsize){
+							content.css('width','calc(50% - (' + left + ' + ' + right + '))');
+						}
+						Mura.windowResponsiveModules[obj.data('instanceid')]=true;
 					}
 				}
 			}
@@ -18290,45 +18310,47 @@ Mura.DOMSelection = Mura.Core.extend(
 			var width='100%';
 			var adjust=false;
 
-			if(fullsize){
-				if(obj.is('.mura-one')){
-					width='8.33%';adjust=true;
-				} else if(obj.is('.mura-two')){
-					width='16.66%';adjust=true;
-				} else if(obj.is('.mura-three')){
-					width='25%';adjust=true;
-				} else if(obj.is('.mura-four')){
-					width='33.33%';adjust=true;
-				} else if(obj.is('.mura-five')){
-					width='41.66%';adjust=true;
-				} else if(obj.is('.mura-six')){
-					width='50%';adjust=true;
-				} else if(obj.is('.mura-seven')){
-					width='58.33';adjust=true;
-				} else if(obj.is('.mura-eigth')){
-					width='66.66%';adjust=true;
-				} else if(obj.is('.mura-nine')){
-					width='75%';adjust=true;
-				} else if(obj.is('.mura-ten')){
-					width='83.33%';adjust=true;
-				} else if(obj.is('.mura-eleven')){
-					width='91.66%';adjust=true;
-				} else if(obj.is('.mura-twelve')){
-					width='100%';adjust=true;
-				} else if(obj.is('.mura-one-third')){
-					width='33.33%';adjust=true;
-				} else if(obj.is('.mura-two-thirds')){
-					width='66.66%';adjust=true;
-				} else if(obj.is('.mura-one-half')){
-					width='50%';adjust=true;
-				}
 
-				if(adjust){
-					var left=obj.css('marginLeft');
-					var right=obj.css('marginRight')
-					if(!(left=='0px' && right=='0px') && left.charAt(0) != "-" && right.charAt(0) != "-"){
+			if(obj.is('.mura-one')){
+				width='8.33%';adjust=true;
+			} else if(obj.is('.mura-two')){
+				width='16.66%';adjust=true;
+			} else if(obj.is('.mura-three')){
+				width='25%';adjust=true;
+			} else if(obj.is('.mura-four')){
+				width='33.33%';adjust=true;
+			} else if(obj.is('.mura-five')){
+				width='41.66%';adjust=true;
+			} else if(obj.is('.mura-six')){
+				width='50%';adjust=true;
+			} else if(obj.is('.mura-seven')){
+				width='58.33';adjust=true;
+			} else if(obj.is('.mura-eigth')){
+				width='66.66%';adjust=true;
+			} else if(obj.is('.mura-nine')){
+				width='75%';adjust=true;
+			} else if(obj.is('.mura-ten')){
+				width='83.33%';adjust=true;
+			} else if(obj.is('.mura-eleven')){
+				width='91.66%';adjust=true;
+			} else if(obj.is('.mura-twelve')){
+				width='100%';adjust=true;
+			} else if(obj.is('.mura-one-third')){
+				width='33.33%';adjust=true;
+			} else if(obj.is('.mura-two-thirds')){
+				width='66.66%';adjust=true;
+			} else if(obj.is('.mura-one-half')){
+				width='50%';adjust=true;
+			}
+
+			if(adjust){
+				var left=obj.css('marginLeft');
+				var right=obj.css('marginRight')
+				if(!(left=='0px' && right=='0px') && left.charAt(0) != "-" && right.charAt(0) != "-"){
+					if(fullsize){
 						obj.css('width','calc(' + width + ' - (' + left + ' + ' + right + '))');
 					}
+					Mura.windowResponsiveModules[obj.data('instanceid')]=true;
 				}
 			}
 
