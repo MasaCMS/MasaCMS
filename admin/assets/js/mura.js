@@ -18090,7 +18090,7 @@ Mura.DOMSelection = Mura.Core.extend(
 							var selectors=styleParts[0].split(',');
 							selectors.forEach(function(subSelector){
 								try{
-									var subStyle=selector + ' ' + subSelector + '{' + styleParts[1] + '}';
+									var subStyle=selector + ' ' + subSelector.replace(/\$self/g,'') + '{' + styleParts[1] + '}';
 									sheet.insertRule(
 										subStyle,
 										sheet.cssRules.length
