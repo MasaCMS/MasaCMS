@@ -478,6 +478,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif contentBean.getIsNew()>
 				<cfset contentBean.setContentID( arguments.keyFactory.get(contentBean.getContentID()) ) />
 				<cfset contentBean.setDisplay( 1 ) />
+				<cfset contentBean.set('topOrBottom','bottom')>
 
 				<cfset contentData.remoteID = contentData.contentID />
 				<cfif StructKeyExists(keys,contentData.parentid)>
