@@ -24,7 +24,6 @@ config: {
   this.container.append("<div id='" + target + "'><component :is='currentView'></component></div>");
   this.target = target;
   this.main(); // Delegating to main()
-
   Mura.loader()
     .loadcss(Mura.corepath + '/vendor/codemirror/codemirror.css')
     .loadjs(
@@ -1336,7 +1335,7 @@ config: {
         <actionwindow v-if="isDisplayWindow" :settings="settings" :isDisplayWindow="isDisplayWindow" :currentIndex="currentIndex" :currentFile="currentFile" :error="error"></actionwindow>
         <div class="mura-header">
           <ul class="breadcrumb">
-            <li @click="setDirDepth(-1)"><a><i class="mi-home"></i>Home</a></li>
+            <li @click="setDirDepth(-1)"><a><i class="mi-home"></i>{{resourcepath}}</a></li>
             <li v-for="(item,index) in foldertree" @click="setDirDepth(index)"><a><i class="mi-folder-open"></i>{{item}}</a></li>
           </ul>
         </div>  
@@ -1384,6 +1383,7 @@ config: {
       itemsper: 25,
       message: '',
       editfilelist: self.editfilelist,
+      resourcepath: this.config.resourcepath.replace('_',' '),
       response: {pageindex: 0}
     },
     ready: function() {

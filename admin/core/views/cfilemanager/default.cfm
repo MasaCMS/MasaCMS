@@ -50,13 +50,7 @@
 </cfif>
 <cfoutput>
 <div class="mura-header">
-	<cfif session.resourceType eq "assets">
-	 <h1>#application.rbFactory.getKeyValue(session.rb,"layout.userassets")#</h1>
-	<cfelseif session.resourceType eq "files">
-	 <h1>#application.rbFactory.getKeyValue(session.rb,"layout.sitefiles")#</h1>
-	<cfelseif session.resourceType eq "root">
-	 <h1>#application.rbFactory.getKeyValue(session.rb,"layout.applicationroot")#</h1>
-	</cfif>
+  <h1>#rc.$.rbKey("layout.filemanager")#</h1>
 	<div class="nav-module-specific">
     <div class="mura-nav-group">
 		  <a class="btn<cfif session.resourceType eq 'assets'> active</cfif>" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cFilemanager.default&siteid=#session.siteid#&&resourceType=assets"><i class="mi-folder-open"></i> #application.rbFactory.getKeyValue(session.rb,"layout.userassets")#</a>
