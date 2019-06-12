@@ -180,7 +180,7 @@ h3.mura-login-auth-heading{
 	<div id="wrapper">
 		<cfif application.settingsManager.getSite(request.siteID).getEnableLockdown() eq "maintenance">
 			<div class="alert">#application.settingsManager.getSite(request.siteID).getSite()# is currently undergoing maintenance.</div>
-				
+
 		<cfelseif application.settingsManager.getSite(request.siteID).getEnableLockdown() eq "development">
 			<form method="post" action="<cfif application.configBean.getLockdownHTTPS() eq true>#replacenocase(arguments.$.getContentRenderer().createHREF(siteid = request.siteid, filename = arguments.event.getScope().currentfilename, complete = true), "http:", "https:")#</cfif>">
 
@@ -215,15 +215,16 @@ h3.mura-login-auth-heading{
 
 				<label for="lockp">Password</label>
 				<input type="password" name="lockp" id="lockp" class="text" />
-
+				<cfif not $.globalConfig().getValue(property="sessionBasedLockdown",defaultValue=false)>
 				<label for="expires">Log me in for:</label>
-				<select name="expires">
-					<option value="session">Session</option>
-					<option value="1">One Day</option>
-					<option value="7">One Week</option>
-					<option value="30">One Month</option>
-					<option value="10950">Forever</option>
-				</select>
+					<select name="expires">
+						<option value="session">Session</option>
+						<option value="1">One Day</option>
+						<option value="7">One Week</option>
+						<option value="30">One Month</option>
+						<option value="10950">Forever</option>
+					</select>
+				</cfif>
 
 				<input type="hidden" name="locks" value="true" />
 				<cfif len(event.getValue('locks'))>

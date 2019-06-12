@@ -175,14 +175,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif not arguments.lockdownCheck>
 				<cfset loginByQuery(rsUser)/>
 			<cfelse>
-				<cfswitch expression="#arguments.lockdownExpries#">
-					<cfcase value="1,7,30,10950">
-						<cfset application.utility.setCookie(name="passedLockdown", value=true, expires=arguments.lockdownExpries)>
-					</cfcase>
-					<cfcase value="session">
-						<cfset application.utility.setCookie(name="passedLockdown", value=true, expires="session")>
-					</cfcase>
-				</cfswitch>
+				<cfif variables.configBean.getValue(property="sessionBasedLockdown",defaultValue=false)>
+					<cfset sessionData.passedLockdown=true>
+				<cfelse>
+					<cfswitch expression="#arguments.lockdownExpries#">
+						<cfcase value="1,7,30,10950">
+							<cfset application.utility.setCookie(name="passedLockdown", value=true, expires=arguments.lockdownExpries)>
+						</cfcase>
+						<cfcase value="session">
+							<cfset application.utility.setCookie(name="passedLockdown", value=true, expires="session")>
+						</cfcase>
+					</cfswitch>
+				</cfif>
 			</cfif>
 
 			<cfset strikes.clear()>
