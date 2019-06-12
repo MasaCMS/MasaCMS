@@ -2,7 +2,7 @@ MuraFileBrowser = {
 
 config: {
     resourcepath: "User_Assets",
-		directory: "",
+    directory: "",
     height: 600,
     selectMode: 0,
     endpoint: '',
@@ -19,13 +19,10 @@ config: {
   var target =  "_" + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
   this.config=Mura.extend(config,this.config);
-
   this.endpoint =  Mura.apiEndpoint + "filebrowser/";
-
   this.container = Mura("#MuraFileBrowserContainer");
   this.container.append("<div id='" + target + "'><component :is='currentView'></component></div>");
   this.target = target;
-
   this.main(); // Delegating to main()
 
   Mura.loader()
@@ -208,13 +205,13 @@ config: {
     baseurl += "&pageindex=" + pageindex;
   }
 
-	if(itemsper) {
+  if(itemsper) {
     baseurl += "&itemsperpage=" + itemsper;
   }
 
-	if(filterResults.length) {
-		baseurl += "&filterResults=" + filterResults;
-	}
+  if(filterResults.length) {
+    baseurl += "&filterResults=" + filterResults;
+  }
 
   Mura.get( baseurl )
     .then(
@@ -371,7 +368,6 @@ config: {
       }
     );
 
-
 }
 , crop: function( canvas,clear ) {
 
@@ -447,7 +443,6 @@ config: {
         element.style.height = Math.abs(corners.y - corners.startY) + 'px';
         element.style.left = (corners.x - corners.startX < 0) ? corners.x + 'px' : corners.startX + 'px';
         element.style.top = (corners.y - corners.startY < 0) ? corners.y + 'px' : corners.startY + 'px';
-
 
         canvas.appendChild(element);
         canvas.style.cursor = "crosshair";
@@ -638,7 +633,6 @@ config: {
       }
     }
   });
-
 
   Vue.component('addfolderwindow', {
     props: ["currentFile"],
@@ -953,14 +947,14 @@ config: {
           <modemenu v-if="location"></modemenu>
       </div>
     `,
-		data: function() {
-			return {
+    data: function() {
+      return {
 
-			}
-		},
-		computed: {
+      }
+    },
+    computed: {
 
-	  },
+    },
     methods: {
       applyPage: function(goto) {
           var pageindex = 1;
@@ -1083,26 +1077,25 @@ config: {
       }
       , applyItemsPer: function() {
         this.$root.itemsper = this.itemsper;
-				this.$root.refresh('',1)
+        this.$root.refresh('',1)
       }
     }
 
   });
-
 
   Vue.component('listmode', {
     props: ['files','folders','foldertree','isDisplayContext','currentFile','settings'],
     template: `
       <div class="listmode-wrapper">
         <table class="mura-table-grid">
-        	<tbody>
-        		<tr>
-        			<th class="actions"></th>
+          <tbody>
+            <tr>
+              <th class="actions"></th>
 
-        			<th class="var-width">{{settings.rb.filebrowser_filename}}</th>
-        			<th>{{settings.rb.filebrowser_size}}</th>
-        			<th>{{settings.rb.filebrowser_modified}}</th>
-        		</tr>
+              <th class="var-width">{{settings.rb.filebrowser_filename}}</th>
+              <th>{{settings.rb.filebrowser_size}}</th>
+              <th>{{settings.rb.filebrowser_modified}}</th>
+            </tr>
             <tr v-if="foldertree.length">
               <td>
                 <a href="#" @click.prevent="back()">
@@ -1111,33 +1104,32 @@ config: {
                 </a>
               </td>
             </tr>
-        		<tr v-for="(file,index) in files">
-        			<td class="actions">
-        				<a href="#" :id="'fileitem-'+index" class="show-actions" @click.prevent="openMenu($event,file,index)"><i class="mi-ellipsis-v"></i></a>
-        				<div class="actions-menu hide">
-        					<ul class="actions-list">
-        						<li class="edit"><a @contextmenu="openMenu($event,file,index)"><i class="mi-pencil"></i>View</a></li>
-        					</ul>
-        				</div>
-        			</td>
-        			<td class="var-width" v-if="parseInt(file.isfile)">
+            <tr v-for="(file,index) in files">
+              <td class="actions">
+                <a href="#" :id="'fileitem-'+index" class="show-actions" @click.prevent="openMenu($event,file,index)"><i class="mi-ellipsis-v"></i></a>
+                <div class="actions-menu hide">
+                  <ul class="actions-list">
+                    <li class="edit"><a @contextmenu="openMenu($event,file,index)"><i class="mi-pencil"></i>View</a></li>
+                  </ul>
+                </div>
+              </td>
+              <td class="var-width" v-if="parseInt(file.isfile)">
                 <a href="#" @click.prevent="viewFile(file,index)">{{file.fullname}}</a>
               </td>
               <td v-else class="var-width">
                 <a href="#" @click.prevent="refresh(file.name)"><i class="mi-folder"></i> {{file.fullname}}</a>
               </td>
-        			<td>
+              <td>
                 <i v-if="parseInt(file.isfile)">
-        					{{file.size}}K
+                  {{file.size}}K
                 </i>
-        			</td>
-        			<td>
-        					{{file.lastmodifiedshort}}
-        			</td>
-        		</tr>
+              </td>
+              <td>
+                  {{file.lastmodifiedshort}}
+              </td>
+            </tr>
 
-
-        	</tbody>
+          </tbody>
         </table>
         <contextmenu :currentFile="this.$parent.currentFile" :isDisplayContext="this.$root.isDisplayContext" v-if="isDisplayContext" :menux="menux" :menuy="menuy"></contextmenu>
       </div>`,
@@ -1161,9 +1153,9 @@ config: {
         this.$root.currentFile = file;
         this.$root.currentIndex = index;
 
-				if(this.checkImageType(file,index)) {
+        if(this.checkImageType(file,index)) {
           fileViewer.isDisplayWindow = "VIEW";
-				}
+        }
         else if(this.checkFileEditable(file,index)) {
           fileViewer.editFile(this.successEditFile);
         }
@@ -1172,19 +1164,19 @@ config: {
         this.currentFile.content = response.data.content;
         fileViewer.isDisplayWindow = "EDIT";
       }
-			, isViewable: function(file,index){
-				this.$root.currentFile = file;
-				this.$root.currentIndex = index;
-				return fileViewer.isViewable();
-			}
-			, checkFileEditable: function(file,index) {
-				this.$root.currentFile = file;
-				this.$root.currentIndex = index;
+      , isViewable: function(file,index){
+        this.$root.currentFile = file;
+        this.$root.currentIndex = index;
+        return fileViewer.isViewable();
+      }
+      , checkFileEditable: function(file,index) {
+        this.$root.currentFile = file;
+        this.$root.currentIndex = index;
         return fileViewer.checkFileEditable();
       }
       , checkImageType: function(file,index) {
-				this.$root.currentFile = file;
-				this.$root.currentIndex = index;
+        this.$root.currentFile = file;
+        this.$root.currentIndex = index;
         return fileViewer.checkImageType();
       }
       , checkIsFile: function() {
@@ -1285,8 +1277,8 @@ config: {
         this.menux = Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().left)+5;
         this.menuy =  Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().top)+10 + window.scrollX;
 
-				this.$root.currentFile = file;
-				this.$root.currentIndex = index;
+        this.$root.currentFile = file;
+        this.$root.currentIndex = index;
 
         this.$nextTick(function () {
           this.$root.isDisplayContext = 1;
@@ -1341,10 +1333,12 @@ config: {
         <gallerywindow v-if="isDisplayWindow=='VIEW'" :settings="settings" :currentFile="currentFile" :currentIndex="currentIndex"></gallerywindow>
         <imageeditwindow v-if="isDisplayWindow=='EDITIMAGE'" :settings="settings" :currentFile="currentFile" :currentIndex="currentIndex"></imageeditwindow>
         <actionwindow v-if="isDisplayWindow" :settings="settings" :isDisplayWindow="isDisplayWindow" :currentIndex="currentIndex" :currentFile="currentFile" :error="error"></actionwindow>
-        <div class="fileviewer-breadcrumb">
-          <i class="mi-home" @click="setDirDepth(-1)"></i>
-          <i v-for="(item,index) in foldertree" class="mi-angle-double-right fa-padleft" @click="setDirDepth(index)"> {{item}}</i>
-        </div>
+        <div class="mura-header">
+          <ul class="breadcrumb">
+            <li @click="setDirDepth(-1)"><a><i class="mi-home"></i>Home</a></li>
+            <li v-for="(item,index) in foldertree" @click="setDirDepth(index)"><a><i class="mi-folder-open"></i>{{item}}</a></li>
+          </ul>
+        </div>  
         <div class="fileviewer-droptarget">
           <form enctype="multipart/form-data" novalidate v-if="isStart || isSave">
             <input type="file" multiple :name="uploadField" :disabled="isSave" @change="filesChanged($event.target.name, $event.target.files);" accept="*.*" class="file-input-field">
@@ -1621,7 +1615,7 @@ config: {
       , checkSelectMode: function() {
         return MuraFileBrowser.config.selectMode;
       }
-			, isViewable: function() {
+      , isViewable: function() {
           var editlist = this.settings.editfilelist;
           var imagelist = this.settings.imagelist;
           for(var i = 0;i<editlist.length;i++) {
@@ -1629,7 +1623,7 @@ config: {
               return true;
             }
           }
-					for(var i = 0;i<imagelist.length;i++) {
+          for(var i = 0;i<imagelist.length;i++) {
             if(this.currentFile.ext.toLowerCase() == imagelist[i]) {
               return true;
             }
