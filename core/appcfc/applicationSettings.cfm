@@ -371,6 +371,8 @@ if ( this.ormenabled ) {
 
 if(request.muraInDocker && (len(getSystemEnvironmentSetting('MURA_DATABASE')) || len(getSystemEnvironmentSetting('MURA_DBCONNECTIONSTRING')))){
 
+	param name="this.datasources" default={};
+
 	if(server.coldfusion.productname == 'lucee'){
 		driverVarName='type';
 		connectionStringVarName='connectionString';
@@ -415,9 +417,9 @@ if(request.muraInDocker && (len(getSystemEnvironmentSetting('MURA_DATABASE')) ||
 		}
 	}
 
-
 	if (len(getSystemEnvironmentSetting('MURA_DBCONNECTIONSTRING'))) {
 		if(!structKeyExists(this.datasources,'#getSystemEnvironmentSetting('MURA_DATASOURCE')#')){
+
 			this.datasources['#getSystemEnvironmentSetting('MURA_DATASOURCE')#']={
 				'#driverVarName#' = driverName
 				, '#connectionStringVarName#' = getSystemEnvironmentSetting('MURA_DBCONNECTIONSTRING')
