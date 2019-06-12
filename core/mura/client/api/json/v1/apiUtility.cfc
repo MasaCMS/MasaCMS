@@ -2885,26 +2885,43 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			}
 		}
 
-		if(len(sort)){
+		var isContent=listFindNoCase('content,contentnav',arguments.feed.getEntityName());
 
+		if(len(sort)){
 			var prefix='';
 			var prop='';
 			var useOrderby=true;
 
 			sort=listToArray(sort);
+
 			var orderby=[];
+
 			for(var s in sort){
 				if(len(s) > 1){
 					var prefix=left(s,1);
-					var prop=right(s,len(s)-1);
 
-					if(listFindNoCase(prop,'comments,random,rating')){
+					if(listFind("+,-",prefix)){
+						var prop=right(s,len(s)-1);
+					} else {
+						var prop=s;
+						prefix="+";
+					}
+
+					if(isContent && listFindNoCase('comments,random,rating',prop)){
 						arguments.feed.setSortBy(prop);
 						if(prefix=='-'){
 							feed.setSortDirection('desc');
 						}
 						break;
 						useOrderby=false;
+					}
+
+					if(listLen(prop,'.')==1){
+						if(isContent){
+							prop="tcontent." & prop;
+						} else {
+							prop=feed.getTable() & "." & prop;
+						}
 					}
 
 					if(prefix=='+'){
@@ -2916,7 +2933,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 					}
 				} else {
 
-					if(listFindNoCase(prop,'comments,random,rating')){
+					if(isContent && listFindNoCase('comments,random,rating',prop)){
 						arguments.feed.setSortBy(s);
 						useOrderby=false;
 						break;
@@ -2925,16 +2942,16 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 					arrayAppend(orderby,s);
 				}
 
-  			}
+			}
 
-  			if(useOrderby){
-  				orderby=arrayToList(orderby);
-  				arguments.feed.setOrderBy(orderby);
-  			}
+			if(useOrderby){
+				orderby=arrayToList(orderby);
+				arguments.feed.setOrderBy(orderby);
+			}
 
-  		}
+  	}
 
-		if(listFind('content,contentnav',arguments.feed.getEntityName())){
+		if(isContent){
 			if(isDefined('arguments.params.includeHomePage')){
 				if(isBoolean(arguments.params.includeHomePage)){
 					if(arguments.params.includeHomePage){
