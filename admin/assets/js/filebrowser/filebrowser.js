@@ -1046,9 +1046,10 @@ config: {
 
           <li class="pull-right">
             <select name="itemsper" class="itemsper" @change="applyItemsPer" v-model="itemsper">
-              <option value='10' :selected="itemsper == 10 ? 'selected' : null">10</option>
-              <option value='20' :selected="itemsper == 20 ? 'selected' : null">20</option>
+              <option value='25' :selected="itemsper == 25 ? 'selected' : null">25</option>
               <option value='50' :selected="itemsper == 50 ? 'selected' : null">50</option>
+              <option value='100' :selected="itemsper == 100 ? 'selected' : null">100</option>
+              <option value='9999' :selected="itemsper == 9999 ? 'selected' : null">All</option>
             </select>
           </li>
           <li class="pull-right"><label class="itemsper-label">View in groups of </label></li>
@@ -1380,7 +1381,7 @@ config: {
       filterResults: '',
       sortOn: '',
       sortDir: 'ASC',
-      itemsper: 20,
+      itemsper: 25,
       message: '',
       editfilelist: self.editfilelist,
       response: {pageindex: 0}
