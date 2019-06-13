@@ -1,27 +1,30 @@
 #spinner {
   position: absolute;
-  z-index:    10000;
-  top:        0;
-  left:       0;
-  height:     100%;
-  width:      100%;
-  background: rgba( 0, 0, 0, .2 );
+  z-index: 10000;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, .2);
   no-repeat;
   text-align: center;
   vertical-align: middle;
 }
+
 #spinner i {
   font-size: 50px;
   margin-top: 10%;
 }
+
 .rectangle {
-    border: 1px dashed #fff;
-    position: absolute;
+  border: 1px dashed #fff;
+  position: absolute;
 }
+
 .corner {
-    border: 1px solid #000;
-    width: 3px;
-    height: 3px;
+  border: 1px solid #000;
+  width: 3px;
+  height: 3px;
 }
 
 .fa-padleft {
@@ -99,15 +102,11 @@
   color: #fff;
 }
 
-.filewindow-modemenu .highlight:link,
-.filewindow-modemenu .highlight:visited,
-.filewindow-modemenu .highlight:active,
-.filewindow-modemenu .highlight:hover,
-.filewindow-modemenu .highlight {
+.filewindow-modemenu .highlight:link, .filewindow-modemenu .highlight:visited, .filewindow-modemenu .highlight:active, .filewindow-modemenu .highlight:hover, .filewindow-modemenu .highlight {
   background-color: #e34a35 !important;
   border: 1px solid #e34a35 !important;
 }
-  
+
 .filewindow-modemenu ul {
   float: left;
   margin: 0;
@@ -120,10 +119,11 @@
   margin: 0;
   padding: 0;
 }
+
 .filewindow-modemenu .highlight {
   background-color: #ff0000;
-
 }
+
 .filewindow-modemenu ul li i {
   display: inline;
   padding: 4px;
@@ -148,20 +148,22 @@
   width: 600px;
   height: 200px;
 }
-.gridmode-wrapper{
-    background-color: #fff;
-    border: 1px solid #dbdbdb;
-    border-top: none;
-    border-bottom: none;
-    padding: 24px;
+
+.gridmode-wrapper {
+  background-color: #fff;
+  border: 1px solid #dbdbdb;
+  border-top: none;
+  border-bottom: none;
+  padding: 24px;
 }
+
 .listmode-wrapper .mura-table-grid {
   margin-bottom: 0 !important;
   border-bottom: none;
   border-top: none;
 }
 
-input.filebrowser-filter{
+input.filebrowser-filter {
   border: 1px solid #dbdbdb;
   margin-left: 3px;
   padding-left: 3px;
@@ -171,20 +173,19 @@ input.filebrowser-filter{
   position: relative;
 }
 
-.fileviewer-breadcrumb{
-
+.fileviewer-breadcrumb {
 }
 
-.fileviewer-breadcrumb a{
-  cursor:pointer;
+.fileviewer-breadcrumb a {
+  cursor: pointer;
 }
 
 .fileviewer-droptarget {
-    background-color: #eee;
-    margin: 8px 0 18px 0;
-    overflow: hidden;
-    position: relative;
-    height: 150px;
+  background-color: #eee;
+  margin: 8px 0 18px 0;
+  overflow: hidden;
+  position: relative;
+  height: 150px;
 }
 
 .fileviewer-droptarget p {
@@ -304,11 +305,12 @@ input.filebrowser-filter{
   width: 100%;
   height: 80px;
 }
-.fileviewer-item-icon i{
-    color: #cccccc;
-    font-size: 22px !important;
-    padding-top: 29px;
- } 
+
+.fileviewer-item-icon i {
+  color: #cccccc;
+  font-size: 22px !important;
+  padding-top: 29px;
+}
 
 .fileviewer-item-icon-jpg {
   background-image: url("./assets/images/jpg.png");
@@ -318,13 +320,14 @@ input.filebrowser-filter{
   background-image: url("./assets/images/png.png");
 }
 
-.fileviewer-item-meta{
+.fileviewer-item-meta {
   font-size: 11px;
   height: 80px;
   padding: 9px;
   position: relative;
 }
-.fileviewer-item-meta-details{
+
+.fileviewer-item-meta-details {
   position: absolute;
   bottom: 10px;
 }
@@ -346,7 +349,7 @@ input.filebrowser-filter{
   height: 100%;
   left: 0;
   top: 0;
-  background-color:rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.8);
 }
 
 .fileviewer-gallery {
@@ -355,10 +358,10 @@ input.filebrowser-filter{
   height: 70%;
   margin: 10% auto;
   position: relative;
-  background-color:rgba(0, 0, 0, 0.75);
+  background-color: rgba(0, 0, 0, 0.75);
 }
 
-.fileviewer-image  {
+.fileviewer-image {
   display: block;
   width: 100%;
   height: 100%;
@@ -366,7 +369,6 @@ input.filebrowser-filter{
   position: relative;
   background-repeat: no-repeat;
 }
-
 
 .fileviewer-icon {
   width: 70px;
@@ -382,7 +384,7 @@ input.filebrowser-filter{
   text-align: center;
   width: 100%;
   padding: 10px 0 1px 0;
-  background-color:rgba(0, 0, 0, 0.70);
+  background-color: rgba(0, 0, 0, 0.70);
 }
 
 .fileviewer-gallery-menu ul li {
@@ -390,22 +392,23 @@ input.filebrowser-filter{
   list-style: none;
   color: #000;
   padding: 4px 10px;
-  background-color:rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.5);
 }
 
 .fileviewer-gallery-menu ul li a {
   color: #000;
 }
+
 .fileviewer-gallery-menu input {
   width: 60px;
   padding: 0 5px;
   background-color: #ddd;
 }
+
 .fileviewer-gallery-menu input:disabled {
   background-color: rgba(255, 255, 255, 0.5);
   color: #bbb;
 }
-
 
 .actionwindow-left {
   float: left;
@@ -414,7 +417,7 @@ input.filebrowser-filter{
   position: absolute;
   left: 0;
   top: 48%;
-  background-color:rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.5);
 }
 
 .actionwindow-right {
@@ -424,12 +427,13 @@ input.filebrowser-filter{
   position: absolute;
   right: 0;
   top: 48%;
-  background-color:rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.5);
 }
 
 .fileviewer-icon-jpg {
   background-image: url("./assets/images/jpg.png");
 }
+
 .fileviewer-icon-png {
   background-image: url("./assets/images/png.png");
 }
