@@ -44,7 +44,7 @@
   border: 1px solid #dbdbdb;
   display: block;
   clear: both;
-  height: 48px;
+  height: 52px;
   padding: 6px;
   margin: 0;
 }
@@ -82,10 +82,21 @@
 }
 
 .filewindow-modemenu a.btn {
-  height: 33px;
-  margin-top: -1px;
-  padding: 3px 8px;
   box-sizing: border-box;
+  height: 36px;
+  width: 36px;
+  padding: 3px;
+}
+
+.filewindow-modemenu a.btn i {
+  color: #b5b5b5;
+  font-size: 20px;
+  margin-right: 0;
+  padding-top: 4px;
+}
+
+.filewindow-modemenu a.btn.highlight i {
+  color: #fff;
 }
 
 .filewindow-modemenu .highlight:link,
@@ -96,18 +107,7 @@
   background-color: #e34a35 !important;
   border: 1px solid #e34a35 !important;
 }
-
-.filewindow-modemenu a.btn i {
-  color: #b5b5b5;
-  font-size: 16px;
-  margin-right: 0;
-  padding-top: 4px;
-}
-
-.filewindow-modemenu a.btn.highlight i {
-  color: #fff;
-}
-
+  
 .filewindow-modemenu ul {
   float: left;
   margin: 0;
@@ -161,8 +161,18 @@
   border-top: none;
 }
 
+input.filebrowser-filter{
+  border: 1px solid #dbdbdb;
+  margin-left: 3px;
+  padding-left: 3px;
+}
+
 #renamewindow-wrapper p {
   position: relative;
+}
+
+.fileviewer-breadcrumb{
+
 }
 
 .fileviewer-breadcrumb a{
@@ -170,16 +180,18 @@
 }
 
 .fileviewer-droptarget {
-  position: relative;
-  width: 100%;
-  height: 100px;
-  background-color: #eee;
-  margin-bottom: 12px;
-  overflow: hidden;
+    background-color: #eee;
+    margin: 8px 0 18px 0;
+    overflow: hidden;
+    position: relative;
+    height: 150px;
 }
 
 .fileviewer-droptarget p {
+  font-size: 14px;
   text-align: center;
+  margin-top: 25px;
+  font-weight: bold;
 }
 
 .fileviewer-uploadedfiles {
@@ -199,7 +211,7 @@
 
 .file-input-field {
   opacity: 0; /* invisible but it's there! */
-  width: 96%;
+  width: 100%;
   height: 100%;
   position: absolute;
   cursor: pointer;
