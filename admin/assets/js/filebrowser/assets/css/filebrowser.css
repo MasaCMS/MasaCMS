@@ -1,27 +1,30 @@
 #spinner {
   position: absolute;
-  z-index:    10000;
-  top:        0;
-  left:       0;
-  height:     100%;
-  width:      100%;
-  background: rgba( 0, 0, 0, .2 );
+  z-index: 10000;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, .2);
   no-repeat;
   text-align: center;
   vertical-align: middle;
 }
+
 #spinner i {
   font-size: 50px;
   margin-top: 10%;
 }
+
 .rectangle {
-    border: 1px dashed #fff;
-    position: absolute;
+  border: 1px dashed #fff;
+  position: absolute;
 }
+
 .corner {
-    border: 1px solid #000;
-    width: 3px;
-    height: 3px;
+  border: 1px solid #000;
+  width: 3px;
+  height: 3px;
 }
 
 .fa-padleft {
@@ -44,8 +47,8 @@
   border: 1px solid #dbdbdb;
   display: block;
   clear: both;
-  height: 48px;
-  padding: 6px;
+  height: 52px;
+  padding: 7px 0 0 7px;
   margin: 0;
 }
 
@@ -57,6 +60,17 @@
 .filewindow-navmenu .pagination > li select {
   height: 26px;
   margin-top: 4px;
+}
+.filewindow-navmenu .pagination li.paging a{
+  margin: 5px 0;
+  background-color: transparent;
+}
+.filewindow-navmenu .pagination li.paging-last{
+  margin-right: 22px;
+}
+.filewindow-navmenu .pagination li.paging a.disabled{
+  opacity: .5;
+  cursor: default;
 }
 
 .filewindow-navmenu p {
@@ -75,6 +89,7 @@
 .filewindow-modemenu {
   float: left;
   margin: 0;
+  width: 50%;
 }
 
 .filewindow-modemenu .btn-group {
@@ -82,30 +97,26 @@
 }
 
 .filewindow-modemenu a.btn {
-  height: 33px;
-  margin-top: -1px;
-  padding: 3px 8px;
   box-sizing: border-box;
-}
-
-.filewindow-modemenu .highlight:link,
-.filewindow-modemenu .highlight:visited,
-.filewindow-modemenu .highlight:active,
-.filewindow-modemenu .highlight:hover,
-.filewindow-modemenu .highlight {
-  background-color: #e34a35 !important;
-  border: 1px solid #e34a35 !important;
+  height: 36px;
+  width: 36px;
+  padding: 3px;
 }
 
 .filewindow-modemenu a.btn i {
   color: #b5b5b5;
-  font-size: 16px;
+  font-size: 20px;
   margin-right: 0;
   padding-top: 4px;
 }
 
 .filewindow-modemenu a.btn.highlight i {
   color: #fff;
+}
+
+.filewindow-modemenu .highlight:link, .filewindow-modemenu .highlight:visited, .filewindow-modemenu .highlight:active, .filewindow-modemenu .highlight:hover, .filewindow-modemenu .highlight {
+  background-color: #e34a35 !important;
+  border: 1px solid #e34a35 !important;
 }
 
 .filewindow-modemenu ul {
@@ -120,10 +131,11 @@
   margin: 0;
   padding: 0;
 }
+
 .filewindow-modemenu .highlight {
   background-color: #ff0000;
-
 }
+
 .filewindow-modemenu ul li i {
   display: inline;
   padding: 4px;
@@ -148,38 +160,52 @@
   width: 600px;
   height: 200px;
 }
-.gridmode-wrapper{
-    background-color: #fff;
-    border: 1px solid #dbdbdb;
-    border-top: none;
-    border-bottom: none;
-    padding: 24px;
+
+.gridmode-wrapper {
+  background-color: #fff;
+  border: 1px solid #dbdbdb;
+  border-top: none;
+  border-bottom: none;
+  padding: 24px;
 }
+
 .listmode-wrapper .mura-table-grid {
   margin-bottom: 0 !important;
   border-bottom: none;
   border-top: none;
 }
 
+input.filebrowser-filter {
+  border: 1px solid #dbdbdb;
+  margin-left: 10px;
+  padding-left: 7px;
+  height: 35px;
+  border-radius: 3px;
+  width: calc(100% - 240px);
+}
+
 #renamewindow-wrapper p {
   position: relative;
 }
 
-.fileviewer-breadcrumb a{
-  cursor:pointer;
+.breadcrumb a {
+  cursor: pointer;
 }
 
 .fileviewer-droptarget {
-  position: relative;
-  width: 100%;
-  height: 100px;
-  background-color: #eee;
-  margin-bottom: 12px;
+  background-color: #e8e8e8;
+  margin: 8px 0 18px 0;
   overflow: hidden;
+  position: relative;
+  height: 150px;
+  border: 1px solid #dbdbdb;
 }
 
 .fileviewer-droptarget p {
+  font-size: 14px;
   text-align: center;
+  margin-top: 25px;
+  font-weight: bold;
 }
 
 .fileviewer-uploadedfiles {
@@ -199,7 +225,7 @@
 
 .file-input-field {
   opacity: 0; /* invisible but it's there! */
-  width: 96%;
+  width: 100%;
   height: 100%;
   position: absolute;
   cursor: pointer;
@@ -240,7 +266,7 @@
   font-size: 4em;
   text-align: center;
   position: absolute;
-  top: 20px;
+  top: 54px;
   left: 47%;
   color: #ddd;
 }
@@ -292,11 +318,12 @@
   width: 100%;
   height: 80px;
 }
-.fileviewer-item-icon i{
-    color: #cccccc;
-    font-size: 22px !important;
-    padding-top: 29px;
- } 
+
+.fileviewer-item-icon i {
+  color: #cccccc;
+  font-size: 22px !important;
+  padding-top: 29px;
+}
 
 .fileviewer-item-icon-jpg {
   background-image: url("./assets/images/jpg.png");
@@ -306,13 +333,14 @@
   background-image: url("./assets/images/png.png");
 }
 
-.fileviewer-item-meta{
+.fileviewer-item-meta {
   font-size: 11px;
   height: 80px;
   padding: 9px;
   position: relative;
 }
-.fileviewer-item-meta-details{
+
+.fileviewer-item-meta-details {
   position: absolute;
   bottom: 10px;
 }
@@ -323,7 +351,7 @@
 
 .itemsper-label {
   font-size: 12px;
-  padding: 8px 8px 0 0;
+  padding: 8px 3px 0 0;
 }
 
 .fileviewer-modal {
@@ -334,7 +362,7 @@
   height: 100%;
   left: 0;
   top: 0;
-  background-color:rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.8);
 }
 
 .fileviewer-gallery {
@@ -343,10 +371,10 @@
   height: 70%;
   margin: 10% auto;
   position: relative;
-  background-color:rgba(0, 0, 0, 0.75);
+  background-color: rgba(0, 0, 0, 0.75);
 }
 
-.fileviewer-image  {
+.fileviewer-image {
   display: block;
   width: 100%;
   height: 100%;
@@ -354,7 +382,6 @@
   position: relative;
   background-repeat: no-repeat;
 }
-
 
 .fileviewer-icon {
   width: 70px;
@@ -370,7 +397,7 @@
   text-align: center;
   width: 100%;
   padding: 10px 0 1px 0;
-  background-color:rgba(0, 0, 0, 0.70);
+  background-color: rgba(0, 0, 0, 0.70);
 }
 
 .fileviewer-gallery-menu ul li {
@@ -378,22 +405,23 @@
   list-style: none;
   color: #000;
   padding: 4px 10px;
-  background-color:rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.5);
 }
 
 .fileviewer-gallery-menu ul li a {
   color: #000;
 }
+
 .fileviewer-gallery-menu input {
   width: 60px;
   padding: 0 5px;
   background-color: #ddd;
 }
+
 .fileviewer-gallery-menu input:disabled {
   background-color: rgba(255, 255, 255, 0.5);
   color: #bbb;
 }
-
 
 .actionwindow-left {
   float: left;
@@ -402,7 +430,7 @@
   position: absolute;
   left: 0;
   top: 48%;
-  background-color:rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.5);
 }
 
 .actionwindow-right {
@@ -412,12 +440,13 @@
   position: absolute;
   right: 0;
   top: 48%;
-  background-color:rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.5);
 }
 
 .fileviewer-icon-jpg {
   background-image: url("./assets/images/jpg.png");
 }
+
 .fileviewer-icon-png {
   background-image: url("./assets/images/png.png");
 }
