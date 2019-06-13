@@ -48,7 +48,7 @@
   display: block;
   clear: both;
   height: 52px;
-  padding: 6px;
+  padding: 7px 0 0 7px;
   margin: 0;
 }
 
@@ -60,6 +60,17 @@
 .filewindow-navmenu .pagination > li select {
   height: 26px;
   margin-top: 4px;
+}
+.filewindow-navmenu .pagination li.paging a{
+  margin: 5px 0;
+  background-color: transparent;
+}
+.filewindow-navmenu .pagination li.paging-last{
+  margin-right: 22px;
+}
+.filewindow-navmenu .pagination li.paging a.disabled{
+  opacity: .5;
+  cursor: default;
 }
 
 .filewindow-navmenu p {
@@ -78,6 +89,7 @@
 .filewindow-modemenu {
   float: left;
   margin: 0;
+  width: 50%;
 }
 
 .filewindow-modemenu .btn-group {
@@ -165,8 +177,11 @@
 
 input.filebrowser-filter {
   border: 1px solid #dbdbdb;
-  margin-left: 3px;
-  padding-left: 3px;
+  margin-left: 10px;
+  padding-left: 7px;
+  height: 35px;
+  border-radius: 3px;
+  width: calc(100% - 150px);
 }
 
 #renamewindow-wrapper p {
@@ -181,11 +196,12 @@ input.filebrowser-filter {
 }
 
 .fileviewer-droptarget {
-  background-color: #eee;
+  background-color: #e8e8e8;
   margin: 8px 0 18px 0;
   overflow: hidden;
   position: relative;
   height: 150px;
+  border: 1px solid #dbdbdb;
 }
 
 .fileviewer-droptarget p {
@@ -253,7 +269,7 @@ input.filebrowser-filter {
   font-size: 4em;
   text-align: center;
   position: absolute;
-  top: 20px;
+  top: 54px;
   left: 47%;
   color: #ddd;
 }
@@ -338,7 +354,7 @@ input.filebrowser-filter {
 
 .itemsper-label {
   font-size: 12px;
-  padding: 8px 8px 0 0;
+  padding: 8px 3px 0 0;
 }
 
 .fileviewer-modal {

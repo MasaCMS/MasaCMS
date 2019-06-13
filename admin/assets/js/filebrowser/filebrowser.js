@@ -1030,18 +1030,38 @@ config: {
           {{response.pageindex}} of {{response.totalpages}} <!-- ({{response.totalitems}}) includes folders -->
           </p>
         <ul class="pagination">
-          <li><a href="#" v-if="links.first" @click.prevent="applyPage('first')">
-            <i class="mi-angle-double-left"></i>
-          </a></li>
-          <li><a href="#" v-if="links.previous" @click.prevent="applyPage('previous')">
-            <i class="mi-angle-left"></i>
-          </a></li>
-          <li><a href="#" v-if="links.next" @click.prevent="applyPage('next')">
-            <i class="mi-angle-right"></i>
-          </a></li>
-          <li><a href="#" v-if="links.last" @click.prevent="applyPage('last')">
-            <i class="mi-angle-double-right"></i>
-          </a></li>
+          <li class="paging" v-if="links.previous || links.next">
+            <a href="#" v-if="links.first" @click.prevent="applyPage('first')">
+              <i class="mi-angle-double-left"></i>
+            </a>
+            <a v-else class="disabled">
+              <i class="mi-angle-double-left"></i>
+            </a>
+          </li>
+          <li class="paging" v-if="links.previous || links.next">
+            <a href="#" v-if="links.previous" @click.prevent="applyPage('previous')">
+              <i class="mi-angle-left"></i>
+            </a>
+            <a v-else class="disabled">
+              <i class="mi-angle-left"></i>
+            </a>
+          </li>
+          <li class="paging" v-if="links.previous || links.next">
+            <a href="#" v-if="links.next" @click.prevent="applyPage('next')">
+              <i class="mi-angle-right"></i>
+            </a>
+            <a v-else class="disabled">
+              <i class="mi-angle-right"></i>
+            </a>
+          </li>
+          <li class="paging paging-last" v-if="links.previous || links.next">
+            <a href="#" v-if="links.last" @click.prevent="applyPage('last')">
+              <i class="mi-angle-double-right"></i>
+            </a>
+            <a v-else class="disabled">
+              <i class="mi-angle-double-right"></i>
+            </a>
+          </li>
 
           <li class="pull-right">
             <select name="itemsper" class="itemsper" @change="applyItemsPer" v-model="itemsper">
