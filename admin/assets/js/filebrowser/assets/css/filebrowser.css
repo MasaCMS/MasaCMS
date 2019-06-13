@@ -188,10 +188,7 @@ input.filebrowser-filter {
   position: relative;
 }
 
-.fileviewer-breadcrumb {
-}
-
-.fileviewer-breadcrumb a {
+.breadcrumb a {
   cursor: pointer;
 }
 
