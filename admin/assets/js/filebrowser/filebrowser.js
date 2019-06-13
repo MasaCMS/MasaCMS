@@ -1108,22 +1108,20 @@ config: {
     template: `
       <div class="listmode-wrapper">
         <table class="mura-table-grid">
-          <tbody>
+          <thead>
             <tr>
-              <th class="actions"></th>
-
+              <th class="actions">
+                <a v-if="foldertree.length" href="#" @click.prevent="back()">
+                  &nbsp;
+                  <i class="mi-arrow-up"></i>
+                </a>
+              </th>
               <th class="var-width">{{settings.rb.filebrowser_filename}}</th>
               <th>{{settings.rb.filebrowser_size}}</th>
               <th>{{settings.rb.filebrowser_modified}}</th>
             </tr>
-            <tr v-if="foldertree.length">
-              <td>
-                <a href="#" @click.prevent="back()">
-                  &nbsp;
-                  <i class="mi-arrow-up"></i>
-                </a>
-              </td>
-            </tr>
+          </thead>
+          <tbody>
             <tr v-for="(file,index) in files">
               <td class="actions">
                 <a href="#" :id="'fileitem-'+index" class="show-actions" @click.prevent="openMenu($event,file,index)"><i class="mi-ellipsis-v"></i></a>
