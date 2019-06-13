@@ -181,7 +181,7 @@ input.filebrowser-filter {
   padding-left: 7px;
   height: 35px;
   border-radius: 3px;
-  width: calc(100% - 150px);
+  width: calc(100% - 240px);
 }
 
 #renamewindow-wrapper p {
