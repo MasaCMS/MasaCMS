@@ -689,7 +689,7 @@ config: {
                   <li><a @click="deleteFile()"><i class="mi-trash"> Delete</i></a></li>
                   <li><a @click="closewindow()"><i class="mi-times">Close</i></a></li>
                 </ul>
-              <p>{{currentFile.fullname}} ({{currentFile.size}}k <span v-if="checkImageType()">{{currentFile.info.width}}x{{currentFile.info.height}}</span>)</p>
+              <p>{{currentFile.fullname}} ({{currentFile.size}}kb <span v-if="checkImageType()">{{currentFile.info.width}}x{{currentFile.info.height}}</span>)</p>
           </div>
         </div>
       </div>
@@ -794,7 +794,7 @@ config: {
                 <li><a @click="cancel()"><i class="mi-times"> Cancel</i></a></li>
               </span>
             </ul>
-            <p>{{currentFile.fullname}} ({{currentFile.size}}k {{currentFile.info.width}}x{{currentFile.info.height}})</p>
+            <p>{{currentFile.fullname}} ({{currentFile.size}}kb {{currentFile.info.width}}x{{currentFile.info.height}})</p>
           </div>
         </div>
       </div>
@@ -1138,9 +1138,12 @@ config: {
                 <a href="#" @click.prevent="refresh(file.name)"><i class="mi-folder"></i> {{file.fullname}}</a>
               </td>
               <td>
-                <i v-if="parseInt(file.isfile)">
-                  {{file.size}}K
-                </i>
+                <div v-if="parseInt(file.isfile)">
+                  {{file.size}}kb
+                </div>
+                <div v-else>
+                  --
+                </div> 
               </td>
               <td>
                   {{file.lastmodifiedshort}}
@@ -1253,7 +1256,7 @@ config: {
               <div class="fileviewer-item-meta-details">
                 <div v-if="parseInt(file.isfile)" class="fileviewer-item-meta-size">
                   {{file.size}}kb
-                </div>
+                </div> 
               </div>
             </div>
           </div>
