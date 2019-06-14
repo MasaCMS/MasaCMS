@@ -1113,7 +1113,7 @@ config: {
               <th class="actions">
                 <a v-if="foldertree.length" class="folder-back" href="#" @click.prevent="back()">
                   &nbsp;
-                  <i class="mi-arrow-up"></i>
+                  <i class="mi-arrow-circle-o-left"></i>
                 </a>
               </th>
               <th class="var-width">{{settings.rb.filebrowser_filename}}</th>
