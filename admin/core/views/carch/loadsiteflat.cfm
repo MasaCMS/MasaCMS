@@ -759,6 +759,15 @@ if(len($.siteConfig('customTagGroups'))){
 			toggleNavFilters(jQuery('##navFiltersToggle'));
 		</cfif>
 
+		jQuery('td.item').on('click',function(e){
+			var el = e.target;
+			var elType = el.tagName;
+			var editLink = $(el).find('a.draftprompt');
+			if (elType == 'TD' || elType == 'UL' || elType == 'H2'){
+					$(editLink).trigger('click');
+			}
+		})
+
   });
 
 	function clearFlatviewFilter(){
