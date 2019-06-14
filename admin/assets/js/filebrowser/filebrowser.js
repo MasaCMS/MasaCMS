@@ -1027,7 +1027,7 @@ config: {
           <p v-if="isbottomnav">
           {{response.pageindex}} of {{response.totalpages}} <!-- ({{response.totalitems}}) includes folders -->
           </p>
-        <ul class="pagination" v-if="response.totalpages">
+        <ul class="pagination" v-if="response.totalitems>=25">
           <li class="paging" v-if="links.previous || links.next">
             <a href="#" v-if="links.first" @click.prevent="applyPage('first')">
               <i class="mi-angle-double-left"></i>
