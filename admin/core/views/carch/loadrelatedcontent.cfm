@@ -276,7 +276,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div>
 
 		<div class="mura-related-external" style="display:none;">
-			<div id="draggableContainmentExternal" class="mura-control-group" style="display:none;">
+			<div class="draggableContainmentExternal mura-control-group" style="display:none;">
 				<div class="list-table search-results">
 					<div class="list-table-content-set">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.availableurls')#</label></div>
 					<ul class="rcDraggable list-table-items"></ul>
@@ -380,7 +380,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif rc.entitytype eq 'content'>
 		<div class="mura-control-group mura-related-internal mura-related-ui mura-related-ui__content">
 			<cfset started=false>
-				<div id="draggableContainmentInternal" class="list-table search-results">
+				<div class="draggableContainmentInternal list-table search-results">
 					<div class="list-table-content-set">
 						<cfoutput><cfif len( contentPoolSiteIDs )>#$.getBean('settingsManager').getSite($.event('siteId')).getSite()#:</cfif>
 							#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.searchresults')# <cfif rc.rslist.recordcount>(1-#min(rc.rslist.recordcount,100)# of #rc.rslist.recordcount#)</cfif></cfoutput>
@@ -416,7 +416,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset rc.rslist=getRelatedFeed($,siteId).getQuery()>
 					<cfset started=false>
 
-					<div id="draggableContainmentInternal" class="list-table search-results">
+					<div class="draggableContainmentInternal list-table search-results">
 						<div class="list-table-content-set">
 							<cfoutput>#$.getBean('settingsManager').getSite(siteId).getSite()#:
 							#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.searchresults')# <cfif rc.rslist.recordcount>(1-#min(rc.rslist.recordcount,100)# of #rc.rslist.recordcount#)</cfif></cfoutput>
@@ -468,7 +468,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<div class="mura-control-group mura-related-ui mura-related-ui__#esapiEncode('html_attr',rc.entitytype)#">
 			<cfset started=false>
-				<div id="draggableContainmentInternal" class="list-table search-results">
+				<div class="draggableContainmentInternal list-table search-results">
 					<div class="list-table-content-set">
 							#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.searchresults')# <cfif results.getRecordcount()>(1-#min(results.getRecordcount(),100)# of #results.getRecordcount()#)</cfif>
 					</div>
