@@ -1029,7 +1029,7 @@ config: {
           <p v-if="isbottomnav">
           {{response.pageindex}} of {{response.totalpages}} <!-- ({{response.totalitems}}) includes folders -->
           </p>
-        <ul class="pagination">
+        <ul class="pagination" v-if="response.totalpages">
           <li class="paging" v-if="links.previous || links.next">
             <a href="#" v-if="links.first" @click.prevent="applyPage('first')">
               <i class="mi-angle-double-left"></i>
@@ -1122,6 +1122,12 @@ config: {
             </tr>
           </thead>
           <tbody>
+            <tr v-if="files.length==0">
+              <td class="actions"></td>
+              <td class="var-width">No Results</td>
+              <td></td>
+              <td></td>
+            </tr> 
             <tr v-for="(file,index) in files">
               <td class="actions">
                 <a href="#" :id="'fileitem-'+index" class="show-actions" @click.prevent="openMenu($event,file,index)"><i class="mi-ellipsis-v"></i></a>
@@ -1131,11 +1137,9 @@ config: {
                   </ul>
                 </div>
               </td>
-              <td class="var-width" v-if="parseInt(file.isfile)">
-                <a href="#" @click.prevent="viewFile(file,index)">{{file.fullname}}</a>
-              </td>
-              <td v-else class="var-width">
-                <a href="#" @click.prevent="refresh(file.name)"><i class="mi-folder"></i> {{file.fullname}}</a>
+              <td class="var-width">
+                <a v-if="parseInt(file.isfile)" href="#" @click.prevent="viewFile(file,index)">{{file.fullname}}</a>
+                <a v-else href="#" @click.prevent="refresh(file.name)"><i class="mi-folder"></i> {{file.fullname}}</a>
               </td>
               <td>
                 <div v-if="parseInt(file.isfile)">
