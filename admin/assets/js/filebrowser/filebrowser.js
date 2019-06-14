@@ -473,10 +473,10 @@ config: {
     template: `
     <div id="newContentMenu" class="addNew" v-bind:style="{ left: (menux + 20) + 'px',top: menuy + 'px' }">
         <ul id="newContentOptions">
-          <li v-if="checkIsFile() && checkSelectMode()"><a href="#" @click.prevent="selectFile()"><i class="mi-check"> Select</i></a></li>
-          <li v-if="checkIsFile() && checkFileEditable()"><a href="#" @click.prevent="editFile()"><i class="mi-pencil"> Edit</i></a></li>
-          <li v-if="checkIsFile() && checkImageType()"><a href="#" @click.prevent="viewFile()"><i class="mi-image"> View</i></a></li>
-          <li v-if="checkIsFile() && checkImageType()"><a @click.prevent="duplicateFile()"><i class="mi-copy"> Duplicate</i></a></li>
+          <li v-if="checkIsFile() && checkSelectMode()"><a href="#" @click.prevent="selectFile()"><i class="mi-check"></i>Select</a></li>
+          <li v-if="checkIsFile() && checkFileEditable()"><a href="#" @click.prevent="editFile()"><i class="mi-pencil"></i>Edit</a></li>
+          <li v-if="checkIsFile() && checkImageType()"><a href="#" @click.prevent="viewFile()"><i class="mi-image"></i>View</a></li>
+          <li v-if="checkIsFile() && checkImageType()"><a @click.prevent="duplicateFile()"><i class="mi-copy"></i>Duplicate</a></li>
           <li><a href="#" @click.prevent="renameFile()"><i class="mi-edit"> Rename</i></a></li>
           <li v-if="checkIsFile()"><a href="#" @click="downloadFile()"><i class="mi-download"> Download</i></a></li>
           <li class="delete"><a href="#" @click="deleteFile()"><i class="mi-trash"> Delete</i></a></li>
@@ -679,13 +679,13 @@ config: {
               <div class="actionwindow-right" @click="nextimage"><i class="mi-caret-right"></i></div>
               <div class="fileviewer-gallery-menu">
                 <ul>
-                  <li v-if="checkImageType() && checkSelectMode()"><a @click="selectFile()"><i class="mi-check"> Select</i></a></li>
-                <li v-if="checkImageType()"><a @click="editImage()"><i class="mi-check"> Edit Image</i></a></li>
-                  <li v-if="checkFileEditable()"><a  @click="editFile()"><i class="mi-pencil"> Edit</i></a></li>
-                  <li><a @click="renameFile()"><i class="mi-edit"> Rename</i></a></li>
-                  <li v-if="checkIsFile()"><a @click="downloadFile()"><i class="mi-download">Download</i></a></li>
-                  <li><a @click="deleteFile()"><i class="mi-trash"> Delete</i></a></li>
-                  <li><a @click="closewindow()"><i class="mi-times">Close</i></a></li>
+                  <li v-if="checkImageType() && checkSelectMode()"><a @click="selectFile()"><i class="mi-check"></i>Select</a></li>
+                  <li v-if="checkImageType()"><a @click="editImage()"><i class="mi-check"></i>Edit Image</a></li>
+                  <li v-if="checkFileEditable()"><a @click="editFile()"><i class="mi-pencil"></i>Edit</a></li>
+                  <li><a @click="renameFile()"><i class="mi-edit"></i>Rename</a></li>
+                  <li v-if="checkIsFile()"><a @click="downloadFile()"><i class="mi-download"></i>Download</a></li>
+                  <li><a @click="deleteFile()"><i class="mi-trash"></i>Delete</a></li>
+                  <li><a @click="closewindow()"><i class="mi-times"></i>Close</a></li>
                 </ul>
               <p>{{currentFile.fullname}} ({{currentFile.size}}kb <span v-if="checkImageType()">{{currentFile.info.width}}x{{currentFile.info.height}}</span>)</p>
           </div>
