@@ -454,15 +454,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			searchableProps=sample.getSearchableProps();
 			if(arrayLen(searchableProps) && len(rc.keywords)){
 				feed.where();
+				feed.openGrouping();
 				for(p in searchableProps){
-					feed.andProp(p).containsValue(rc.keywords);
+					feed.orProp(p).containsValue(rc.keywords);
 				}
+				feed.closeGrouping();
 			}
 
 			results=feed.getIterator();
 
 		</cfscript>
 		<cfoutput>
+
 		<div class="mura-control-group mura-related-ui mura-related-ui__#esapiEncode('html_attr',rc.entitytype)#">
 			<cfset started=false>
 				<div id="draggableContainmentInternal" class="list-table search-results">

@@ -840,10 +840,18 @@ buttons: {
 			// ignore parent container
 			if (!($(this).attr('id') == el.parent().attr('id'))) {
 				// disable if not in allowed list
+
+				var custom=(el.attr('data-content-type').split('/')[0].toLowerCase()=='custom');
+				if (custom && !$(this).attr('data-accept').length || $(this).attr('data-accept').length && $(this).attr('data-accept').indexOf(el.attr('data-content-type')) == -1) {
+					$(this).sortable("disable");
+					$(this).parent().addClass('disabled');
+				}
+				/*
 				if ($(this).attr('data-accept').length > 0 && $(this).attr('data-accept').indexOf(el.attr('data-content-type')) == -1) {
 					$(this).sortable("disable");
 					$(this).parent().addClass('disabled');
 				}
+				*/
 				// disable if already in list
 				if ($(this).find('[data-contentid="' + el.attr('data-contentid') + '"]').length > 0) {
 					$(this).sortable("disable");
