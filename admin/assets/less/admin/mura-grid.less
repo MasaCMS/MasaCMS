@@ -210,7 +210,6 @@
 
 /* @end content filters */
 
-
 .mura-grid {
 			border: 1px solid #DBDBDB;
 			border-top: 0;
@@ -741,10 +740,8 @@
 			li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li .add { margin-right: 713px; }
 			li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li .title { max-width: 20%; }
 
-
 		}
 		/* @end #mura-nodes */
-
 
 	#tabFlat {
 
@@ -783,9 +780,7 @@
 				}
 		}
 
-
 		.mura-table-grid {
-
 			float: left;
 			width: 100%;
 
@@ -844,7 +839,6 @@
 			font-size: 11px;
 			white-space: nowrap;
 
-
 				&:after {
 				content: "/";
 				margin-left: .5em;
@@ -857,7 +851,6 @@
 				&.categories,&.tags { white-space: normal; }
 			}
 		}
-
 
 		.thumbnail {
 			float: left;
@@ -931,7 +924,6 @@
 				&.preview { padding-right: 3px !important; }
 				&.download { padding-right: 2px !important; }
 
-
 				}
 
 			i {
@@ -998,7 +990,6 @@
 		line-height: 2.2 !important;
 		display: inline-block;
 	}
-
 
 	/* @end */
 
@@ -1407,7 +1398,6 @@
 
 	/* @end */
 
-
 	/* @group Quick Edit */
 
 	.mura-quickEdit {
@@ -1487,7 +1477,6 @@
 
 		} // .large
 
-
 		.mura-control-group{
 		margin-bottom: 5px;
 
@@ -1508,7 +1497,6 @@
 			}
 
 		} // .mura-control-group
-
 
 		h1,
 		label,
@@ -1550,7 +1538,6 @@
 
 				}	
 
-
 				}
 			}
 
@@ -1582,7 +1569,6 @@
 			.border-radius(0) !important;
 			}
 
-		
 		label.checkbox.inline, 
 		.mura-control-group label.checkbox.inline{
 				padding-left: 19px !important;
@@ -1876,10 +1862,7 @@
 	} 
 	// /.actions
 
-
-			
 		}
-
 
 	.bullet { color: @iconColor;
 		font-size: 20px;
@@ -1928,7 +1911,7 @@
 		&.actions{
 			min-width: 48px;
 
-			a.folder-back i{
+			a.folder-back{
 				margin-left: -6px;
 			}
 		}
@@ -1951,7 +1934,6 @@
 		color: lighten(@iconColor,0%);
 		min-height: 16px;
 		width: 16px;
-
 
 		&.icon-ban-circle,
 		&.icon-eye-close { font-size: 16px; }
@@ -2074,11 +2056,16 @@ p + .mura-table-grid { margin-top: 12px;}
 }
 
 .mura-table-grid {
+	background-color: #fff;
 	margin: 0 0 16px 0;
 	border-collapse: collapse;
 	border: 1px solid #DBDBDB;
 	clear: both;
 	width: 100%;
+
+	tr:not(:last-child){
+		border-bottom: 1px solid #dbdbdb;
+	}
 }
 
 h3 + table {
@@ -2118,7 +2105,6 @@ h3 + table {
 #popularContent #topPages{
 	float: left;
 }
-
 
 #popUp table {
 	width: 100%;
@@ -2298,7 +2284,6 @@ table.cfdebug td a {
 .mura-row {
 	background: @white;
 }
-
 
 .table tbody tr:hover td,
 .table tbody tr:hover th,
