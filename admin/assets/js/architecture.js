@@ -857,8 +857,19 @@ buttons: {
 		if(typeof external == 'undefined'){
 			external =true;
 		}
+
+		var entitytype=$('input[name="entitytype"]:checked');
+		if(!entitytype.length){
+			entitytype=$('input[name="entitytype"]');
+		}
+		if(entitytype.length){
+			entitytype=entitytype.val();
+		} else {
+			entitytype='content';
+		}
+
 		var url = './';
-		var pars = 'muraAction=cArch.loadRelatedContent&compactDisplay=true&contentid=' + contentid + '&siteid=' + siteid + '&external=' + external + '&isNew=' + isNew + '&relatedcontentsetid=' + relatedcontentsetid + '&' + values + '&cacheid=' + Math.random();
+		var pars = 'muraAction=cArch.loadRelatedContent&compactDisplay=true&contentid=' + contentid + '&siteid=' + siteid + '&external=' + external + '&isNew=' + isNew + '&relatedcontentsetid=' + relatedcontentsetid + '&' + values +  '&entitytype=' + entitytype + '&cacheid=' + Math.random();
 
 		var d = $('#selectRelatedContent');
 		d.html('<div class="load-inline"></div>');
@@ -976,8 +987,8 @@ buttons: {
 
 					// ignore parent container
 					if (!($sortable.attr('id') == $currentItem.parent().attr('id'))) {
-
-						if ($sortable.attr('data-accept').length > 0 && $sortable.attr('data-accept').indexOf($currentItem.attr('data-content-type')) == -1) {
+						var custom=($currentItem.attr('data-content-type').split('/')[0].toLowerCase()=='custom');
+						if (custom && !$sortable.attr('data-accept').length || $sortable.attr('data-accept').length && $sortable.attr('data-accept').indexOf($currentItem.attr('data-content-type')) == -1) {
 							$($this).attr('disabled',true);
 						}
 					}

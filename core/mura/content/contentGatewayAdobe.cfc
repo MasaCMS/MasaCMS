@@ -2136,241 +2136,273 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="reverseContentID"  type="string" />
 	<cfargument name="navOnly" type="boolean" required="yes" default="false" />
 	<cfargument name="cachedWithin" type="any" required="yes" default="#createTimeSpan(0,0,0,0)#" />
+	<cfargument name="entitytype" type="string" required="yes" default="content" />
 
 	<cfset var rsRelatedContent ="" />
 	<cfset var dbType=variables.configBean.getDbType() />
 	<cfset var tableModifier="">
-	<cfset var nowAdjusted="">
-
-	<cfif request.muraChangesetPreview and isStruct(getCurrentUser().getValue("ChangesetPreviewData"))>
-		<cfset nowAdjusted=getCurrentUser().getValue("ChangesetPreviewData").publishDate>
-	</cfif>
-
-	<cfif isDate(request.muraPointInTime)>
-		<cfset nowAdjusted=request.muraPointInTime>
-	</cfif>
-
-	<cfif not isdate(nowAdjusted)>
-		<cfset nowAdjusted=arguments.today>
-	</cfif>
-
-	<cfset nowAdjusted=variables.utility.datetimeToTimespanInterval(nowAdjusted,arguments.cachedWithin)>
 
 	<cfif dbtype eq "MSSQL">
 		<cfset tableModifier="with (nolock)">
 	</cfif>
 
-	<cfif not listFindNoCase('menutitle,title,lastupdate,releasedate,orderno,displaystart,displaystop,created,credits,type,subtype,comments,rating,orderno',arguments.sortby)>
-		<cfset arguments.sortBy='orderno'>
-	</cfif>
+	<cfif arguments.entitytype eq 'content' or not len(arguments.entitytype)>
 
-	<cfif arguments.reverse and arguments.sortby eq 'orderno'>
-		<cfset arguments.sortby="menutitle">
-		<cfset arguments.sortDirection="asc">
-	</cfif>
+		<cfset var nowAdjusted="">
 
-	<cfif not listFindNoCase('asc,desc',arguments.sortDirection)>
-		<cfset arguments.sortDirection='asc'>
-	</cfif>
-
-	<cfif arguments.relatedContentSetID eq '0'>
-		<cfset arguments.relatedContentSetID='00000000000000000000000000000000000'>
-	</cfif>
-
-	<cfif arguments.sortby eq 'mxpRelevance' >
-		<cfif not isDefined('session.mura.mxp')>
-			<cfset session.mura.mxp=getBean('marketingManager').getDefaults()>
-		</cfif>
-		<cfparam name="session.mura.mxp.trackingProperties.personaid" default=''>
-		<cfparam name="session.mura.mxp.trackingProperties.stageid" default=''>
-
-		<cfset var personaid=session.mura.mxp.trackingProperties.personaid>
-		<cfset var stageid=session.mura.mxp.trackingProperties.stageid>
-
-		<cfif isDefined('url.personaid')>
-			<cfset personaid=url.personaid>
-			<cfset stageid=''>
+		<cfif request.muraChangesetPreview and isStruct(getCurrentUser().getValue("ChangesetPreviewData"))>
+			<cfset nowAdjusted=getCurrentUser().getValue("ChangesetPreviewData").publishDate>
 		</cfif>
 
-		<cfif isDefined('form.personaid')>
-			<cfset personaid=form.personaid>
-			<cfset stageid=''>
+		<cfif isDate(request.muraPointInTime)>
+			<cfset nowAdjusted=request.muraPointInTime>
 		</cfif>
 
-		<cfset var mxpRelevanceSort=true>
-	<cfelse>
-		<cfset var personaid="">
-		<cfset var stageid="">
-		<cfset var mxpRelevanceSort=false>
-	</cfif>
+		<cfif not isdate(nowAdjusted)>
+			<cfset nowAdjusted=arguments.today>
+		</cfif>
 
-	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsRelatedContent',cachedWithin=arguments.cachedWithin)#">
-	SELECT tcontent.title, tcontent.releasedate, tcontent.menuTitle, tcontent.lastupdate, tcontent.lastupdatebyid, tcontent.summary, tcontent.filename, tcontent.type, tcontent.contentid,
-	tcontent.target,tcontent.targetParams, tcontent.restricted, tcontent.restrictgroups, tcontent.displaystart, tcontent.displaystop, tcontent.orderno,tcontent.sortBy,tcontent.sortDirection,
-	tcontent.fileid, tcontent.credits, tcontent.remoteSource, tcontent.remoteSourceURL, tcontent.remoteURL, tcontent.subtype,
-	tfiles.fileSize,tfiles.fileExt,tcontent.path, tcontent.siteid, tcontent.contenthistid, tcr.contentid as relatedFromContentID,
-	tcr.relatedContentSetID, tcr.orderNo, tcontent.displayInterval, tcontent.display
-	<cfif mxpRelevanceSort>
-	,tracktotal.track_total_score as total_score, (<cfif len(stageid)>stagetotal.stage_points + </cfif>personatotal.persona_points) as total_points
-	</cfif>
-	FROM  tcontent Left Join tfiles ON (tcontent.fileID=tfiles.fileID)
+		<cfset nowAdjusted=variables.utility.datetimeToTimespanInterval(nowAdjusted,arguments.cachedWithin)>
 
-	<cfif mxpRelevanceSort>
-		left join (
-			select sum(persona.points) persona_points, persona.contenthistid
-			from mxp_personapoints persona
-			where persona.personaid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#personaid#">
-			group by persona.contenthistid
-		) personatotal on (tcontent.contenthistid = personatotal.contenthistid)
+		<cfif not listFindNoCase('menutitle,title,lastupdate,releasedate,orderno,displaystart,displaystop,created,credits,type,subtype,comments,rating,orderno',arguments.sortby)>
+			<cfset arguments.sortBy='orderno'>
+		</cfif>
 
-		<cfif len(stageid)>
+		<cfif arguments.reverse and arguments.sortby eq 'orderno'>
+			<cfset arguments.sortby="menutitle">
+			<cfset arguments.sortDirection="asc">
+		</cfif>
+
+		<cfif not listFindNoCase('asc,desc',arguments.sortDirection)>
+			<cfset arguments.sortDirection='asc'>
+		</cfif>
+
+		<cfif arguments.relatedContentSetID eq '0'>
+			<cfset arguments.relatedContentSetID='00000000000000000000000000000000000'>
+		</cfif>
+
+		<cfif arguments.sortby eq 'mxpRelevance' >
+			<cfif not isDefined('session.mura.mxp')>
+				<cfset session.mura.mxp=getBean('marketingManager').getDefaults()>
+			</cfif>
+			<cfparam name="session.mura.mxp.trackingProperties.personaid" default=''>
+			<cfparam name="session.mura.mxp.trackingProperties.stageid" default=''>
+
+			<cfset var personaid=session.mura.mxp.trackingProperties.personaid>
+			<cfset var stageid=session.mura.mxp.trackingProperties.stageid>
+
+			<cfif isDefined('url.personaid')>
+				<cfset personaid=url.personaid>
+				<cfset stageid=''>
+			</cfif>
+
+			<cfif isDefined('form.personaid')>
+				<cfset personaid=form.personaid>
+				<cfset stageid=''>
+			</cfif>
+
+			<cfset var mxpRelevanceSort=true>
+		<cfelse>
+			<cfset var personaid="">
+			<cfset var stageid="">
+			<cfset var mxpRelevanceSort=false>
+		</cfif>
+
+		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsRelatedContent',cachedWithin=arguments.cachedWithin)#">
+		SELECT tcontent.title, tcontent.releasedate, tcontent.menuTitle, tcontent.lastupdate, tcontent.lastupdatebyid, tcontent.summary, tcontent.filename, tcontent.type, tcontent.contentid,
+		tcontent.target,tcontent.targetParams, tcontent.restricted, tcontent.restrictgroups, tcontent.displaystart, tcontent.displaystop, tcontent.orderno,tcontent.sortBy,tcontent.sortDirection,
+		tcontent.fileid, tcontent.credits, tcontent.remoteSource, tcontent.remoteSourceURL, tcontent.remoteURL, tcontent.subtype,
+		tfiles.fileSize,tfiles.fileExt,tcontent.path, tcontent.siteid, tcontent.contenthistid, tcr.contentid as relatedFromContentID,
+		tcr.relatedContentSetID, tcr.orderNo, tcontent.displayInterval, tcontent.display
+		<cfif mxpRelevanceSort>
+		,tracktotal.track_total_score as total_score, (<cfif len(stageid)>stagetotal.stage_points + </cfif>personatotal.persona_points) as total_points
+		</cfif>
+		FROM  tcontent Left Join tfiles ON (tcontent.fileID=tfiles.fileID)
+
+		<cfif mxpRelevanceSort>
 			left join (
-				select sum(stage.points) stage_points, stage.contenthistid
-				from mxp_stagepoints stage
-				where stage.stageid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#stageid#">
-				group by stage.contenthistid
-			) stagetotal on (tcontent.contenthistid = stagetotal.contenthistid)
-		</cfif>
+				select sum(persona.points) persona_points, persona.contenthistid
+				from mxp_personapoints persona
+				where persona.personaid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#personaid#">
+				group by persona.contenthistid
+			) personatotal on (tcontent.contenthistid = personatotal.contenthistid)
 
-		left join (
-			select sum(track.points) track_total_score, track.contentid
-			from mxp_conversiontrack track
-			where track.created >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd('m',-1,nowAdjusted)#">
-			and track.points > 0
-			group by track.contentid
-		) tracktotal on (tcontent.contentid=tracktotal.contentid)
-	</cfif>
-
-	<cfif arguments.reverse>
-		inner join tcontentrelated tcr #tableModifier# on (tcontent.contentHistID = tcr.contentHistID)
-
-		<cfif len(arguments.name)>
-			left join tclassextendrcsets tcrs #tableModifier# on (tcr.relatedContentSetID=tcrs.relatedContentSetID)
-		</cfif>
-
-		where tcr.relatedID in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.reverseContentID#" list="true"/>)
-
-		<cfif len(arguments.name)>
-			and (tcrs.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.name#"/>
-				<cfif arguments.name eq 'Default'>
-					or tcrs.name is null
-				</cfif>
-				)
-		<cfelseif len(arguments.relatedContentSetID)>
-			and (
-				tcr.relatedContentSetID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.relatedContentSetID#"/>
-				<cfif arguments.relatedContentSetID eq "00000000000000000000000000000000000">
-					or tcr.relatedContentSetID is null
-				</cfif>
-				)
-		</cfif>
-
-	<cfelse>
-		inner join tcontentrelated tcr #tableModifier# on (tcontent.contentID = tcr.relatedID)
-
-		<cfif len(arguments.name)>
-			left join tclassextendrcsets tcrs #tableModifier# on (tcr.relatedContentSetID=tcrs.relatedContentSetID)
-		</cfif>
-
-		where tcr.contenthistid in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contenthistid#" list="true"/>)
-
-		<cfif len(arguments.name)>
-			and (tcrs.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.name#"/>
-				<cfif arguments.name eq 'Default'>
-					or tcrs.name is null
-				</cfif>
-				)
-		<cfelseif len(arguments.relatedContentSetID)>
-			and (
-				tcr.relatedContentSetID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.relatedContentSetID#"/>
-				<cfif arguments.relatedContentSetID eq "00000000000000000000000000000000000">
-					or tcr.relatedContentSetID is null
-				</cfif>
-				)
-		</cfif>
-	</cfif>
-
-	<!--- and tcontent.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> --->
-	and tcontent.siteid IN (<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.settingsManager.getSite(arguments.siteid).getContentPoolID()#" list="true">)
-	<cfif arguments.navOnly>
-		and tcontent.isnav=1
-	</cfif>
-
-	<cfif arguments.liveOnly>
-		#renderActiveClause("tcontent",arguments.siteID)#
-
-	 	AND (
-			(
-			  	tcontent.Display = 2
-			  	AND (
-				  		(
-				  			tcontent.DisplayStart >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#arguments.today#">
-							AND tcontent.parentID in (select contentID from tcontent
-															where type='Calendar'
-															#renderActiveClause("tcontent",arguments.siteID)#
-															and siteid IN (<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.settingsManager.getSite(arguments.siteid).getContentPoolID()#" list="true">)
-														   )
-						 )
-					   OR
-					   	(
-					   		tcontent.DisplayStart <= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
-							AND
-							(
-								tcontent.DisplayStop >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
-								or tcontent.DisplayStop is null
-							)
-					   )
-				)
-		  	)
-		   	OR
-		   	(
-		   		tcontent.Display = 1
-		   	)
-		)
-	<cfelse>
-			and tcontent.active=1
-	</cfif>
-
-	#renderMobileClause()#
-
-	order by
-
-	<cfswitch expression="#arguments.sortBy#">
-		<cfcase value="menutitle,title,lastupdate,releasedate,displaystart,displaystop,created,tcontent.credits,type,subtype">
-			<cfif variables.configBean.getDbType() neq "oracle" or listFindNoCase("lastUpdate,releaseDate,created,displayStart,displayStop,orderno", arguments.sortBy)>
-				tcontent.#arguments.sortBy# #arguments.sortDirection#
-			<cfelse>
-				lower(tcontent.#arguments.sortBy#) #arguments.sortDirection#
+			<cfif len(stageid)>
+				left join (
+					select sum(stage.points) stage_points, stage.contenthistid
+					from mxp_stagepoints stage
+					where stage.stageid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#stageid#">
+					group by stage.contenthistid
+				) stagetotal on (tcontent.contenthistid = stagetotal.contenthistid)
 			</cfif>
-		</cfcase>
-		<cfcase value="orderno">
-			<cfif len(arguments.relatedContentSetID) or len(arguments.name)>
-				tcr.orderNo #arguments.sortDirection#
-			<cfelse>
-				tcontent.orderno #arguments.sortDirection#
-			</cfif>
-		</cfcase>
-		<cfcase value="rating">
-			tcontentstats.rating #arguments.sortDirection#, tcontentstats.totalVotes  #arguments.sortDirection#
-		</cfcase>
-		<cfcase value="comments">
-			tcontentstats.comments #arguments.sortDirection#
-		</cfcase>
-		<cfdefaultcase>
-			<cfif mxpRelevanceSort>
-				total_points #REReplace(arguments.sortDirection,"[^0-9A-Za-z\._,\- ]","","all")# , total_score #REReplace(arguments.sortDirection,"[^0-9A-Za-z\._,\- ]","","all")#, tcontent.releaseDate #REReplace(arguments.sortDirection,"[^0-9A-Za-z\._,\- ]","","all")#,tcontent.lastUpdate #REReplace(arguments.sortDirection,"[^0-9A-Za-z\._,\- ]","","all")#
-			<cfelse>
-				tcontent.orderno asc
-			</cfif>
-		</cfdefaultcase>
-	</cfswitch>
 
-	</cfquery>
+			left join (
+				select sum(track.points) track_total_score, track.contentid
+				from mxp_conversiontrack track
+				where track.created >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd('m',-1,nowAdjusted)#">
+				and track.points > 0
+				group by track.contentid
+			) tracktotal on (tcontent.contentid=tracktotal.contentid)
+		</cfif>
 
-	<cfif arguments.liveOnly>
-		<cfreturn variables.contentIntervalManager.applyByMenuTypeAndDate(query=rsRelatedContent,menuType="default",menuDate=nowAdjusted)>
+		<cfif arguments.reverse>
+			inner join tcontentrelated tcr #tableModifier# on (tcontent.contentHistID = tcr.contentHistID)
+
+			<cfif len(arguments.name)>
+				left join tclassextendrcsets tcrs #tableModifier# on (tcr.relatedContentSetID=tcrs.relatedContentSetID)
+			</cfif>
+
+			where tcr.relatedID in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.reverseContentID#" list="true"/>)
+
+			<cfif len(arguments.name)>
+				and (tcrs.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.name#"/>
+					<cfif arguments.name eq 'Default'>
+						or tcrs.name is null
+					</cfif>
+					)
+			<cfelseif len(arguments.relatedContentSetID)>
+				and (
+					tcr.relatedContentSetID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.relatedContentSetID#"/>
+					<cfif arguments.relatedContentSetID eq "00000000000000000000000000000000000">
+						or tcr.relatedContentSetID is null
+					</cfif>
+					)
+			</cfif>
+
+		<cfelse>
+			inner join tcontentrelated tcr #tableModifier# on (tcontent.contentID = tcr.relatedID)
+
+			<cfif len(arguments.name)>
+				left join tclassextendrcsets tcrs #tableModifier# on (tcr.relatedContentSetID=tcrs.relatedContentSetID)
+			</cfif>
+
+			where tcr.contenthistid in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contenthistid#" list="true"/>)
+
+			<cfif len(arguments.name)>
+				and (tcrs.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.name#"/>
+					<cfif arguments.name eq 'Default'>
+						or tcrs.name is null
+					</cfif>
+					)
+			<cfelseif len(arguments.relatedContentSetID)>
+				and (
+					tcr.relatedContentSetID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.relatedContentSetID#"/>
+					<cfif arguments.relatedContentSetID eq "00000000000000000000000000000000000">
+						or tcr.relatedContentSetID is null
+					</cfif>
+					)
+			</cfif>
+		</cfif>
+
+		<!--- and tcontent.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> --->
+		and tcontent.siteid IN (<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.settingsManager.getSite(arguments.siteid).getContentPoolID()#" list="true">)
+		<cfif arguments.navOnly>
+			and tcontent.isnav=1
+		</cfif>
+
+		<cfif arguments.liveOnly>
+			#renderActiveClause("tcontent",arguments.siteID)#
+
+		 	AND (
+				(
+				  	tcontent.Display = 2
+				  	AND (
+					  		(
+					  			tcontent.DisplayStart >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#arguments.today#">
+								AND tcontent.parentID in (select contentID from tcontent
+																where type='Calendar'
+																#renderActiveClause("tcontent",arguments.siteID)#
+																and siteid IN (<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.settingsManager.getSite(arguments.siteid).getContentPoolID()#" list="true">)
+															   )
+							 )
+						   OR
+						   	(
+						   		tcontent.DisplayStart <= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
+								AND
+								(
+									tcontent.DisplayStop >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
+									or tcontent.DisplayStop is null
+								)
+						   )
+					)
+			  	)
+			   	OR
+			   	(
+			   		tcontent.Display = 1
+			   	)
+			)
+		<cfelse>
+				and tcontent.active=1
+		</cfif>
+
+		#renderMobileClause()#
+
+		order by
+
+		<cfswitch expression="#arguments.sortBy#">
+			<cfcase value="menutitle,title,lastupdate,releasedate,displaystart,displaystop,created,tcontent.credits,type,subtype">
+				<cfif variables.configBean.getDbType() neq "oracle" or listFindNoCase("lastUpdate,releaseDate,created,displayStart,displayStop,orderno", arguments.sortBy)>
+					tcontent.#arguments.sortBy# #arguments.sortDirection#
+				<cfelse>
+					lower(tcontent.#arguments.sortBy#) #arguments.sortDirection#
+				</cfif>
+			</cfcase>
+			<cfcase value="orderno">
+				<cfif len(arguments.relatedContentSetID) or len(arguments.name)>
+					tcr.orderNo #arguments.sortDirection#
+				<cfelse>
+					tcontent.orderno #arguments.sortDirection#
+				</cfif>
+			</cfcase>
+			<cfcase value="rating">
+				tcontentstats.rating #arguments.sortDirection#, tcontentstats.totalVotes  #arguments.sortDirection#
+			</cfcase>
+			<cfcase value="comments">
+				tcontentstats.comments #arguments.sortDirection#
+			</cfcase>
+			<cfdefaultcase>
+				<cfif mxpRelevanceSort>
+					total_points #REReplace(arguments.sortDirection,"[^0-9A-Za-z\._,\- ]","","all")# , total_score #REReplace(arguments.sortDirection,"[^0-9A-Za-z\._,\- ]","","all")#, tcontent.releaseDate #REReplace(arguments.sortDirection,"[^0-9A-Za-z\._,\- ]","","all")#,tcontent.lastUpdate #REReplace(arguments.sortDirection,"[^0-9A-Za-z\._,\- ]","","all")#
+				<cfelse>
+					tcontent.orderno asc
+				</cfif>
+			</cfdefaultcase>
+		</cfswitch>
+
+		</cfquery>
+
+		<cfif arguments.liveOnly>
+			<cfreturn variables.contentIntervalManager.applyByMenuTypeAndDate(query=rsRelatedContent,menuType="default",menuDate=nowAdjusted)>
+		<cfelse>
+			<cfreturn rsRelatedContent />
+		</cfif>
 	<cfelse>
-		<cfreturn rsRelatedContent />
+
+		<cfset var sample=getBean(arguments.entitytype)>
+		<cfquery name="rsRelatedContent">
+			select #sample.getTable()#.* from #sample.getTable()# #tableModifier# inner join tcontentrelated #tableModifier#
+		 	on (#sample.getTable()#.#sample.getPrimarykey()#=tcontentrelated.relatedid)
+			inner join tclassextendrcsets #tableModifier# on (tcontentrelated.relatedcontentsetid=tclassextendrcsets.relatedcontentsetid)
+			where tcontentrelated.contenthistid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contenthistid#">
+
+			<cfif len(arguments.name)>
+				and (tclassextendrcsets.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.name#"/>
+					<cfif arguments.name eq 'Default'>
+						or tclassextendrcsets.name is null
+					</cfif>
+					)
+			<cfelseif len(arguments.relatedContentSetID)>
+				and (
+					tcontentrelated.relatedContentSetID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.relatedContentSetID#"/>
+					<cfif arguments.relatedContentSetID eq "00000000000000000000000000000000000">
+						or tcontentrelated.relatedContentSetID is null
+					</cfif>
+					)
+			</cfif>
+
+			order by tcontentrelated.orderno
+		</cfquery>
+		<cfreturn rsRelatedContent>
 	</cfif>
 
 </cffunction>

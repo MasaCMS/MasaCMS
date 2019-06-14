@@ -1479,4 +1479,26 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 		}
 	}
 
+	function getListViewProps(){
+		var props=getProperties();
+		var result=[];
+		for(p in props){
+			if(structKeyExists(props[p],'listview') && props[p].listview){
+				ArrayAppend(result,p);
+			}
+		}
+		return result;
+	}
+
+	function getSearchableProps(){
+		var props=getProperties();
+		var result=[];
+		for(p in props){
+			if(structKeyExists(props[p],'datatype') && listFindNoCase('longtext,text,varchar',props[p].datatype)){
+				ArrayAppend(result,p);
+			}
+		}
+		return result;
+	}
+
 }

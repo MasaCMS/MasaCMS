@@ -109,7 +109,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<select name="source" id="relatedcontent">
 					<cfloop from="1" to="#arrayLen(relatedContentSets)#" index="s">
 						<cfset rcsBean = relatedContentSets[s]/>
-						<option value="#rcsBean.getRelatedContentSetId()#"<cfif objectParams.source eq rcsBean.getRelatedContentSetId()> selected</cfif>>#rcsBean.getName()#</option>
+						<cfif rcsBean.getEntityType() eq "content">
+							<option value="#rcsBean.getRelatedContentSetId()#"<cfif objectParams.source eq rcsBean.getRelatedContentSetId()> selected</cfif>>#rcsBean.getName()#</option>
+						</cfif>
 					</cfloop>
 					<option value="custom"<cfif objectParams.source eq 'custom'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.custom')#</option>
 					<option value="reverse"<cfif objectParams.source eq 'reverse'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.reverse')#</option>

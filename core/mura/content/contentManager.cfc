@@ -2185,7 +2185,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="reverseContentID"  type="string" />
 		<cfargument name="navOnly" type="boolean" required="yes" default="false" />
 		<cfargument name="cachedWithin" type="any" required="yes" default="#createTimeSpan(0,0,0,0)#" />
+		<cfargument name="entitytype" type="string" required="yes" default="" />
+		<cfargument name="contentBean" type="any" required="yes" default="" />
 
+		<cfif not len(arguments.entitytype)>
+			<cfif not len(arguments.relatedcontentsetid) or listFindNoCase('00000000000000000000000000000000000,default',arguments.relatedcontentsetid)>
+				<cfset arguments.entitytype="content">
+			<cfelseif StructKeyExists(arguments, "contentBean") and IsObject(arguments.contentBean)>
+				<cfset var subtype=getBean('configBean').getClassExtensionManager().getSubTypeByName(arguments.contentBean.getType(), arguments.contentBean.getSubType(), arguments.contentBean.getSiteid())>
+				<cfif isValid('uuid',arguments.relatedcontentsetid)>
+					<cfset arguments.entitytype=getBean('relatedContentSet').loadBy(subtypid=subtype.getSubTypeID(),relatedcontentsetid=arguments.relatedcontentsetid,siteid=arguments.siteid).getEntityType()>
+				<cfelse>
+					<cfset arguments.entitytype=getBean('relatedContentSet').loadBy(subtypid=subtype.getSubTypeID(),name=arguments.relatedcontentsetid,siteid=arguments.siteid).getEntityType()>
+				</cfif>
+			<cfelse>
+				<cfset arguments.entitytype='content'>
+			</cfif>
+		</cfif>
 		<cfreturn variables.contentGateway.getRelatedContent(argumentCollection=arguments) />
 	</cffunction>
 
@@ -2202,9 +2218,33 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="reverseContentID"  type="string" />
 		<cfargument name="navOnly" type="boolean" required="yes" default="false" />
 		<cfargument name="cachedWithin" type="any" required="yes" default="#createTimeSpan(0,0,0,0)#" />
+		<cfargument name="entitytype" type="string" required="yes" default="" />
+		<cfargument name="contentBean" type="any" required="yes" default="" />
+
+		<cfif not len(arguments.entitytype)>
+			<cfif not len(arguments.relatedcontentsetid) or listFindNoCase('00000000000000000000000000000000000,default',arguments.relatedcontentsetid)>
+				<cfset arguments.entitytype="content">
+			<cfelseif StructKeyExists(arguments, "contentBean") and IsObject(arguments.contentBean)>
+				<cfset var subtype=getBean('configBean').getClassExtensionManager().getSubTypeByName(arguments.contentBean.getType(), arguments.contentBean.getSubType(), arguments.contentBean.getSiteid())>
+				<cfif isValid('uuid',arguments.relatedcontentsetid)>
+					<cfset arguments.entitytype=getBean('relatedContentSet').loadBy(subtypid=subtype.getSubTypeID(),relatedcontentsetid=arguments.relatedcontentsetid,siteid=arguments.siteid).getEntityType()>
+				<cfelse>
+					<cfset arguments.entitytype=getBean('relatedContentSet').loadBy(subtypid=subtype.getSubTypeID(),name=arguments.relatedcontentsetid,siteid=arguments.siteid).getEntityType()>
+				</cfif>
+			<cfelse>
+				<cfset arguments.entitytype='content'>
+			</cfif>
+		</cfif>
 
 		<cfset var rs=getRelatedContent(argumentCollection=arguments) />
-		<cfset var it = getBean("contentIterator")>
+
+		<cfif getServiceFactory().containsBean("#arguments.entityType#Iterator")>
+			<cfset var it=getBean("#arguments.entityType#Iterator")>
+		<cfelse>
+			<cfset var it=getBean("beanIterator")>
+			<cfset it.setEntityName(arguments.entityType)>
+		</cfif>
+
 		<cfset it.setQuery(rs)>
 		<cfreturn it/>
 	</cffunction>
