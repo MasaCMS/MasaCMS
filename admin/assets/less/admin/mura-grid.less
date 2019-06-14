@@ -135,7 +135,7 @@
   		height: 22px;
   	}
   	.tagSelector .tag a i{
-  		color: #FFF;
+  		color: @white;
 	    float: right;
   		font-size: 11px;
 	    font-weight: normal;
@@ -161,7 +161,7 @@
 	    height: 36px;
 	    padding: 6px 15px;
 	    line-height: 1.6;
-	    background-color: #fff;
+	    background-color: @white;
 	    background-image: none;
 	    color: #646464;
 	    border: 1px solid #e6e6e6;
@@ -186,7 +186,7 @@
   	}
 
   	#category-select-list{
-			background-color: #fff;
+			background-color: @white;
 			border: 1px solid #E6E6E6;
 			padding: 12px;
 			top: 60px;
@@ -210,15 +210,15 @@
 
 /* @end content filters */
 
-
 .mura-grid {
+			background: #f7f7f7;
 			border: 1px solid #DBDBDB;
+			border-bottom: 0;
 			border-top: 0;
 			float: none;
-			background: #f7f7f7;
 			font-size: 13px;
-			position: relative;
 			margin-bottom: 16px;
+			position: relative;
 
 			.ui-draggable-dragging {
 				.box-shadow(0px 0px 8px #666);
@@ -263,111 +263,116 @@
 				cursor: auto;
 			}
 
+			> dl:last-child{
+				border-bottom: none;
+			}
+
 			dl {
 				background-color: @white;
 				float: left;
 				width: auto;
 				margin: 0;
-			}
+				border-bottom: 1px solid #dbdbdb;
+	
+				&.alt {
+					background-color: @white;
+				}
+				
+				&.mura-grid-hdr {
+					background-color: #f4f3f3;
+				}
 
-			dl.alt {
-				background-color: #F6FAFE;
-			}
-
-			dl.mura-grid-hdr {
-				background-color: #f4f3f3;
-			}
-
-			dt, dd  {
-				color: #333232;
-				// border-right: 1px solid #DBDBDB;
-				text-align: center;
-				float: left;
-				margin: 0 !important;
-				line-height: 28px;
-				height: 28px;
-			}
-
-			dt {
-				width: 405px;
-				text-align: left;
-				padding: 0 5px 0 0 !important;
-				font-weight: normal;
-				position: relative;
-			}
-
-			dd {
-				padding: 0 5px;
-				position: relative;
-			}
-
-			dt a {
-				display: block;
-				height: auto;
-				min-height: inherit;
-				line-height: inherit;
-				white-space: wrap;
-				padding: 0 5px 0 0;
-				float: left;
-				color: @grayDarker;
-			}
-
-			dt a.title {
-				overflow: hidden;
-				position: relative;
-				.text-overflow;
-
-				&:hover { border-bottom: none; }
-				&.locked {}
-
-				&:before {
-					position: relative;
-					top: 2px;
-					margin-left: 0;
-					margin-right: 2px;
-					font-size: 18px;
-					line-height: 14px;
-					color: @iconColor;
-					display: inline-block;
-					width: 22px;
+				dt, dd  {
+					color: #333232;
+					// border-right: 1px solid #DBDBDB;
 					text-align: center;
-					font-family: FontAwesome;
-					}
+					float: left;
+					margin: 0 !important;
+					line-height: 48px;
+					height: 48px;
+				}
 
-				&.file {
-
-					padding-left: 0;
+				dt {
+					width: 405px;
+					text-align: left;
+					padding: 0 5px 0 0 !important;
+					font-weight: normal;
 					position: relative;
+				}
+
+				dd {
+					padding: 0 5px;
+					position: relative;
+				}
+
+				dt a {
+					display: block;
+					height: auto;
+					min-height: inherit;
+					line-height: inherit;
+					white-space: wrap;
+					padding: 0 5px 0 0;
+					float: left;
+					color: @grayDarker;
+				}
+
+				dt a.title {
+					overflow: hidden;
+					position: relative;
+					.text-overflow;
+
+					&:hover { border-bottom: none; }
+					&.locked {}
 
 					&:before {
-						background: @iconColor;
-						border-radius:2px;
-						color: @white;
-						display: block;
-						content: attr(data-filetype);
-						float: left;
-						font-family: 'SilkscreenNormal';
-						font-size: 8px;
-						left: 0;
-						line-height: 10px;
-						overflow: hidden;
-						padding: 3px 4px 2px;
 						position: relative;
-						text-shadow: -1px -1px 0 rgba(0,0,0,.2);
-						top: 7px;
-						width: auto;
-					}
+						top: 2px;
+						margin-left: 0;
+						margin-right: 2px;
+						font-size: 18px;
+						line-height: 14px;
+						color: @iconColor;
+						display: inline-block;
+						width: 22px;
+						text-align: center;
+						font-family: FontAwesome;
+						}
 
-					&.gif,
-					&.png,
-					&.jpg,
-					&.jpeg {
+					&.file {
 
 						padding-left: 0;
+						position: relative;
 
 						&:before {
+							background: @iconColor;
+							border-radius:2px;
+							color: @white;
+							display: block;
+							content: attr(data-filetype);
+							float: left;
+							font-family: 'SilkscreenNormal';
+							font-size: 8px;
+							left: 0;
+							line-height: 10px;
+							overflow: hidden;
+							padding: 3px 4px 2px;
 							position: relative;
-							top: 3px;
+							text-shadow: -1px -1px 0 rgba(0,0,0,.2);
+							top: 7px;
+							width: auto;
+						}
+
+						&.gif,
+						&.png,
+						&.jpg,
+						&.jpeg {
+
+							padding-left: 0;
+
+							&:before {
+								position: relative;
+								top: 3px;
+							}
 						}
 					}
 				}
@@ -457,14 +462,16 @@
 				height: 28px;
 				line-height: 27px;
 				padding: 0;
-				margin-left: -11px;
+				margin-left: -15px;
 				cursor: pointer;
 
 				&:before {
 					.icon-font('FontAwesome');
-					font-size: 13px;
 					color: @iconColor;
-					margin-top: 2px;
+					font-size: 13px;
+					margin-left: -12px;	
+					margin-top: 12px;
+					padding: 0 12px;
 					}
 
 				&.open:before {
@@ -545,11 +552,9 @@
 				border-right: none;
 				color: #7a7a7a;
 				font-style: normal;
-				height: 26px;
-				line-height: 24px;
-				padding: 0;
-				padding-left: 5px;
-				padding-right: 5px;
+				height: 48px;
+				line-height: 48px;
+				padding: 0 5px;
 				text-align: center;
 				white-space: nowrap;
 			}
@@ -741,10 +746,8 @@
 			li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li .add { margin-right: 713px; }
 			li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li .title { max-width: 20%; }
 
-
 		}
 		/* @end #mura-nodes */
-
 
 	#tabFlat {
 
@@ -783,14 +786,12 @@
 				}
 		}
 
-
 		.mura-table-grid {
-
 			float: left;
 			width: 100%;
 
 			td {
-				vertical-align: top;
+				vertical-align: middle;
 				padding-top: 10px;
 
 				&.add { padding-top: 8px; }
@@ -844,7 +845,6 @@
 			font-size: 11px;
 			white-space: nowrap;
 
-
 				&:after {
 				content: "/";
 				margin-left: .5em;
@@ -857,7 +857,6 @@
 				&.categories,&.tags { white-space: normal; }
 			}
 		}
-
 
 		.thumbnail {
 			float: left;
@@ -931,7 +930,6 @@
 				&.preview { padding-right: 3px !important; }
 				&.download { padding-right: 2px !important; }
 
-
 				}
 
 			i {
@@ -998,7 +996,6 @@
 		line-height: 2.2 !important;
 		display: inline-block;
 	}
-
 
 	/* @end */
 
@@ -1407,11 +1404,10 @@
 
 	/* @end */
 
-
 	/* @group Quick Edit */
 
 	.mura-quickEdit {
-		background-color: #FFF;
+		background-color: @white;
 		.border-radius(1px);
 		bottom: 34px;
 		box-shadow: 0 0 0 1px rgba(68, 68, 68, 0.11);
@@ -1487,7 +1483,6 @@
 
 		} // .large
 
-
 		.mura-control-group{
 		margin-bottom: 5px;
 
@@ -1508,7 +1503,6 @@
 			}
 
 		} // .mura-control-group
-
 
 		h1,
 		label,
@@ -1550,7 +1544,6 @@
 
 				}	
 
-
 				}
 			}
 
@@ -1582,7 +1575,6 @@
 			.border-radius(0) !important;
 			}
 
-		
 		label.checkbox.inline, 
 		.mura-control-group label.checkbox.inline{
 				padding-left: 19px !important;
@@ -1629,7 +1621,7 @@
 		li label {
 			width: 160px;
 			display: block;
-			color: #fff;
+			color: @white;
 			font-size: @qeFontSize;
 			clear: right;
 			text-align: left;
@@ -1818,7 +1810,7 @@
 			font-size: 16px;
 		}
 		div.actions-menu{
-	    background-color: #FFF;
+	    background-color: @white;
 	    border-radius: 1px;
 	    box-shadow: 1px 3px 18px rgba(0,0,0,.35);
 	    font-size: 13px;
@@ -1876,10 +1868,7 @@
 	} 
 	// /.actions
 
-
-			
 		}
-
 
 	.bullet { color: @iconColor;
 		font-size: 20px;
@@ -1897,11 +1886,9 @@
 			}
 
 	td {
-		padding: 4px 8px 3px !important;
+    padding: 14px 8px 12px!important;
 		border-left: 1px solid #DBDBDB;
-		//border-right: 1px solid #DBDBDB;
 		white-space: nowrap;
-		//text-align: center;
 		width: 1%;
 
 		&.add {
@@ -1923,6 +1910,24 @@
 		padding-top: 0 !important;
 	}
 
+	> thead > tr > th{
+		vertical-align: middle;
+		padding: 5px 12px;
+
+		&.actions{
+			min-width: 48px;
+
+			a.folder-back{
+
+				i{
+					font-size: 22px;
+				}
+				margin-left: -6px;
+			}
+		}
+
+	}
+
 	a > i {
 
 		/*
@@ -1939,7 +1944,6 @@
 		color: lighten(@iconColor,0%);
 		min-height: 16px;
 		width: 16px;
-
 
 		&.icon-ban-circle,
 		&.icon-eye-close { font-size: 16px; }
@@ -1991,7 +1995,7 @@ p + .mura-table-grid { margin-top: 12px;}
 
 #newContentMenu {
 
-	background-color: #FFF;
+	background-color: @white;
 	border-radius: 1px;
 	box-shadow: 1px 3px 18px rgba(0,0,0,.35);
 	font-size: 13px;
@@ -2062,11 +2066,16 @@ p + .mura-table-grid { margin-top: 12px;}
 }
 
 .mura-table-grid {
+	background-color: @white;
 	margin: 0 0 16px 0;
 	border-collapse: collapse;
 	border: 1px solid #DBDBDB;
 	clear: both;
 	width: 100%;
+
+	tr:not(:last-child){
+		border-bottom: 1px solid #dbdbdb;
+	}
 }
 
 h3 + table {
@@ -2107,7 +2116,6 @@ h3 + table {
 	float: left;
 }
 
-
 #popUp table {
 	width: 100%;
 }
@@ -2123,7 +2131,7 @@ table + .divide {
 .mura-table-grid th.alt {
 	text-align: left;
 	background-image: none;
-	background-color: #f7f7f7;
+	background-color: @white;
 	font-weight: normal;
 	border: 0;
 }
@@ -2155,7 +2163,7 @@ table + .divide {
 	border-left: none !important;
 }
 .mura-table-grid .alt td {
-	background-color: #fcfeff;
+	background-color: @white;
 }
 
 .mura-table-grid  td.email {
@@ -2205,7 +2213,7 @@ table + .divide {
 
 	i {
 		width: 16px;
-		margin: 2px auto 0;
+		margin: 12px auto 0;
 	}
 
 }
@@ -2276,7 +2284,7 @@ table.cfdebug {
 
 table.cfdebug td {
 	text-align: left;
-	background: #fff;
+	background: @white;
 }
 
 table.cfdebug td a {
@@ -2286,7 +2294,6 @@ table.cfdebug td a {
 .mura-row {
 	background: @white;
 }
-
 
 .table tbody tr:hover td,
 .table tbody tr:hover th,

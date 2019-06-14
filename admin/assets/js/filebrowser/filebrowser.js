@@ -572,15 +572,15 @@ config: {
   Vue.component('renamewindow', {
     props: ["currentFile"],
     template: `
-      <div class="actionwindow-formwrapper">
+      <div class="ui-dialog dialog-nobg actionwindow-formwrapper">
         <div>
-          <h3>Rename</h3>
-          <label>
-            Name:
-            <input v-model="filename"></input>
-          </label>
+          <span class="ui-dialog-title">Rename</span>
+            <div>
+              <label>Name:</label>
+              <input type="text" v-model="filename"></input>
+            </div>
         </div>
-        <div>
+        <div class="buttonset">
           <button @click="updateRename()">Save</button>
           <button @click="cancel()">Cancel</button>
         </div>
@@ -611,12 +611,12 @@ config: {
   Vue.component('errorwindow', {
     props: ['error'],
     template: `
-      <div class="actionwindow-formwrapper">
+      <div class="ui-dialog dialog-confirm ui-dialog actionwindow-formwrapper">
         <div>
-          <h3>Error</h3>
+          <span class="ui-dialog-title">Error</span>
           <h4>{{error}}</h4>
         </div>
-        <div>
+        <div class="buttonset">
           <button @click="cancel()">Close</button>
         </div>
       </div>
@@ -636,15 +636,13 @@ config: {
   Vue.component('addfolderwindow', {
     props: ["currentFile"],
     template: `
-      <div class="actionwindow-formwrapper">
+      <div class="ui-dialog dialog-nobg actionwindow-formwrapper">
         <div>
-          <h3>Add Folder</h3>
-          <label>
+          <span class="ui-dialog-title">Add Folder</span>
             Name:
-            <input v-model="foldername"></input>
-          </label>
+            <input type="text" v-model="foldername"></input>
         </div>
-        <div>
+        <div class="buttonset">
           <button @click="newFolder()">Save</button>
           <button @click="cancel()">Cancel</button>
         </div>
@@ -689,7 +687,7 @@ config: {
                   <li><a @click="deleteFile()"><i class="mi-trash"> Delete</i></a></li>
                   <li><a @click="closewindow()"><i class="mi-times">Close</i></a></li>
                 </ul>
-              <p>{{currentFile.fullname}} ({{currentFile.size}}k <span v-if="checkImageType()">{{currentFile.info.width}}x{{currentFile.info.height}}</span>)</p>
+              <p>{{currentFile.fullname}} ({{currentFile.size}}kb <span v-if="checkImageType()">{{currentFile.info.width}}x{{currentFile.info.height}}</span>)</p>
           </div>
         </div>
       </div>
@@ -794,7 +792,7 @@ config: {
                 <li><a @click="cancel()"><i class="mi-times"> Cancel</i></a></li>
               </span>
             </ul>
-            <p>{{currentFile.fullname}} ({{currentFile.size}}k {{currentFile.info.width}}x{{currentFile.info.height}})</p>
+            <p>{{currentFile.fullname}} ({{currentFile.size}}kb {{currentFile.info.width}}x{{currentFile.info.height}})</p>
           </div>
         </div>
       </div>
@@ -858,13 +856,13 @@ config: {
   Vue.component('deletewindow', {
     props: ["currentFile"],
     template: `
-      <div class="actionwindow-formwrapper">
-        <h3>Delete</h3>
-        <label>
+      <div class="ui-dialog dialog-confirm actionwindow-formwrapper">
+        <span class="ui-dialog-title">Delete</span>
           <p>Confirm Deletion: {{currentFile.fullname}}</p>
-          <button @click="doDelete()">Delete</button>
-          <button @click="cancel()">Cancel</button>
-        </label>
+          <div class="buttonset">
+            <button @click="doDelete()">Delete</button>
+            <button @click="cancel()">Cancel</button>
+          </div>
       </div>
     `,
     data() {
@@ -884,13 +882,13 @@ config: {
   Vue.component('editwindow', {
     props: ["currentFile"],
     template: `
-      <div class="actionwindow-formwrapper">
-        <h3>Edit</h3>
-        <label>
-          <textarea id="contenteditfield" class="editwindow" v-model="filecontent" style="width: 400">abba</textarea>
+      <div class="ui-dialog dialog-nobg actionwindow-formwrapper">
+        <span class="ui-dialog-title">Edit</span>
+        <textarea id="contenteditfield" class="editwindow" v-model="filecontent"></textarea>
+        <div class="buttonset">
           <button @click="updateContent()">Update</button>
           <button @click="cancel()">Cancel</button>
-        </label>
+        </div>
       </div>
     `,
     data() {
@@ -1029,7 +1027,7 @@ config: {
           <p v-if="isbottomnav">
           {{response.pageindex}} of {{response.totalpages}} <!-- ({{response.totalitems}}) includes folders -->
           </p>
-        <ul class="pagination">
+        <ul class="pagination" v-if="response.totalitems>=25">
           <li class="paging" v-if="links.previous || links.next">
             <a href="#" v-if="links.first" @click.prevent="applyPage('first')">
               <i class="mi-angle-double-left"></i>
@@ -1108,22 +1106,26 @@ config: {
     template: `
       <div class="listmode-wrapper">
         <table class="mura-table-grid">
-          <tbody>
+          <thead>
             <tr>
-              <th class="actions"></th>
-
+              <th class="actions">
+                <a v-if="foldertree.length" class="folder-back" href="#" @click.prevent="back()">
+                  &nbsp;
+                  <i class="mi-arrow-circle-o-left"></i>
+                </a>
+              </th>
               <th class="var-width">{{settings.rb.filebrowser_filename}}</th>
               <th>{{settings.rb.filebrowser_size}}</th>
               <th>{{settings.rb.filebrowser_modified}}</th>
             </tr>
-            <tr v-if="foldertree.length">
-              <td>
-                <a href="#" @click.prevent="back()">
-                  &nbsp;
-                  <i class="mi-arrow-up"></i>
-                </a>
-              </td>
-            </tr>
+          </thead>
+          <tbody>
+            <tr v-if="files.length==0">
+              <td class="actions"></td>
+              <td class="var-width">No Results</td>
+              <td></td>
+              <td></td>
+            </tr> 
             <tr v-for="(file,index) in files">
               <td class="actions">
                 <a href="#" :id="'fileitem-'+index" class="show-actions" @click.prevent="openMenu($event,file,index)"><i class="mi-ellipsis-v"></i></a>
@@ -1133,16 +1135,17 @@ config: {
                   </ul>
                 </div>
               </td>
-              <td class="var-width" v-if="parseInt(file.isfile)">
-                <a href="#" @click.prevent="viewFile(file,index)">{{file.fullname}}</a>
-              </td>
-              <td v-else class="var-width">
-                <a href="#" @click.prevent="refresh(file.name)"><i class="mi-folder"></i> {{file.fullname}}</a>
+              <td class="var-width">
+                <a v-if="parseInt(file.isfile)" href="#" @click.prevent="viewFile(file,index)">{{file.fullname}}</a>
+                <a v-else href="#" @click.prevent="refresh(file.name)"><i class="mi-folder"></i> {{file.fullname}}</a>
               </td>
               <td>
-                <i v-if="parseInt(file.isfile)">
-                  {{file.size}}K
-                </i>
+                <div v-if="parseInt(file.isfile)">
+                  {{file.size}}kb
+                </div>
+                <div v-else>
+                  --
+                </div> 
               </td>
               <td>
                   {{file.lastmodifiedshort}}
@@ -1255,7 +1258,7 @@ config: {
               <div class="fileviewer-item-meta-details">
                 <div v-if="parseInt(file.isfile)" class="fileviewer-item-meta-size">
                   {{file.size}}kb
-                </div>
+                </div> 
               </div>
             </div>
           </div>

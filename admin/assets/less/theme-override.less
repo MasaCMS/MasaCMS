@@ -439,9 +439,10 @@ a.title + .tooltip.top .tooltip-arrow {
   border-bottom-color: @mura-red;
 }
 
-/* table striping */
+/* override table striping */
 .mura-table-grid:not(.no-stripe) > tbody > tr:nth-of-type(odd) {
-    background-color: #F6FAFE !important;
+    background-color: #FFF !important;
+    /*background-color: #F6FAFE !important;*/
 }
 
 .mura-table-grid:not(.no-stripe) > tbody > tr:hover {
@@ -454,6 +455,7 @@ a.title + .tooltip.top .tooltip-arrow {
 .mura-table-grid>thead>tr>td,
 .mura-table-grid>thead>tr>th {
   border: none;
+  vertical-align: middle;
 }
 .mura-table-grid>tbody>tr:first-child>th,
 .mura-table-grid>thead>tr>th {
