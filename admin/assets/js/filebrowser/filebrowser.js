@@ -479,7 +479,7 @@ config: {
           <li v-if="checkIsFile() && checkImageType()"><a @click.prevent="duplicateFile()"><i class="mi-copy"> Duplicate</i></a></li>
           <li><a href="#" @click.prevent="renameFile()"><i class="mi-edit"> Rename</i></a></li>
           <li v-if="checkIsFile()"><a href="#" @click="downloadFile()"><i class="mi-download"> Download</i></a></li>
-          <li><a href="#" @click="deleteFile()"><i class="mi-trash"> Delete</i></a></li>
+          <li class="delete"><a href="#" @click="deleteFile()"><i class="mi-trash"> Delete</i></a></li>
         </ul>
       </div>
     `,
