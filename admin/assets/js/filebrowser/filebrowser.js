@@ -1111,7 +1111,7 @@ config: {
           <thead>
             <tr>
               <th class="actions">
-                <a v-if="foldertree.length" href="#" @click.prevent="back()">
+                <a v-if="foldertree.length" class="folder-back" href="#" @click.prevent="back()">
                   &nbsp;
                   <i class="mi-arrow-up"></i>
                 </a>
