@@ -572,15 +572,15 @@ config: {
   Vue.component('renamewindow', {
     props: ["currentFile"],
     template: `
-      <div class="actionwindow-formwrapper">
+      <div class="ui-dialog dialog-nobg actionwindow-formwrapper">
         <div>
-          <h3>Rename</h3>
-          <label>
-            Name:
-            <input v-model="filename"></input>
-          </label>
+          <span class="ui-dialog-title">Rename</span>
+            <div>
+              <label>Name:</label>
+              <input type="text" v-model="filename"></input>
+            </div>
         </div>
-        <div>
+        <div class="buttonset">
           <button @click="updateRename()">Save</button>
           <button @click="cancel()">Cancel</button>
         </div>
@@ -611,12 +611,12 @@ config: {
   Vue.component('errorwindow', {
     props: ['error'],
     template: `
-      <div class="actionwindow-formwrapper">
+      <div class="ui-dialog dialog-confirm ui-dialog actionwindow-formwrapper">
         <div>
-          <h3>Error</h3>
+          <span class="ui-dialog-title">Error</span>
           <h4>{{error}}</h4>
         </div>
-        <div>
+        <div class="buttonset">
           <button @click="cancel()">Close</button>
         </div>
       </div>
@@ -636,15 +636,13 @@ config: {
   Vue.component('addfolderwindow', {
     props: ["currentFile"],
     template: `
-      <div class="actionwindow-formwrapper">
+      <div class="ui-dialog dialog-nobg actionwindow-formwrapper">
         <div>
-          <h3>Add Folder</h3>
-          <label>
+          <span class="ui-dialog-title">Add Folder</span>
             Name:
-            <input v-model="foldername"></input>
-          </label>
+            <input type="text" v-model="foldername"></input>
         </div>
-        <div>
+        <div class="buttonset">
           <button @click="newFolder()">Save</button>
           <button @click="cancel()">Cancel</button>
         </div>
@@ -858,13 +856,13 @@ config: {
   Vue.component('deletewindow', {
     props: ["currentFile"],
     template: `
-      <div class="actionwindow-formwrapper">
-        <h3>Delete</h3>
-        <label>
+      <div class="ui-dialog dialog-confirm actionwindow-formwrapper">
+        <span class="ui-dialog-title">Delete</span>
           <p>Confirm Deletion: {{currentFile.fullname}}</p>
-          <button @click="doDelete()">Delete</button>
-          <button @click="cancel()">Cancel</button>
-        </label>
+          <div class="buttonset">
+            <button @click="doDelete()">Delete</button>
+            <button @click="cancel()">Cancel</button>
+          </div>
       </div>
     `,
     data() {
@@ -884,13 +882,13 @@ config: {
   Vue.component('editwindow', {
     props: ["currentFile"],
     template: `
-      <div class="actionwindow-formwrapper">
-        <h3>Edit</h3>
-        <label>
-          <textarea id="contenteditfield" class="editwindow" v-model="filecontent" style="width: 400">abba</textarea>
+      <div class="ui-dialog dialog-nobg actionwindow-formwrapper">
+        <span class="ui-dialog-title">Edit</span>
+        <textarea id="contenteditfield" class="editwindow" v-model="filecontent"></textarea>
+        <div class="buttonset">
           <button @click="updateContent()">Update</button>
           <button @click="cancel()">Cancel</button>
-        </label>
+        </div>
       </div>
     `,
     data() {

@@ -150,15 +150,14 @@
 }
 
 .actionwindow-formwrapper {
-  border: 2px solid #666;
-  padding: 10px 5px 5px;
-  box-shadow: 3px 3px 2px #aaa;
-  border-radius: 5px;
+  height: auto;
+  min-height: 205px;
+  min-width: 450px;
 }
 
 .actionwindow-formwrapper .editwindow {
   width: 600px;
-  height: 200px;
+  min-height: 330px;
 }
 
 .gridmode-wrapper {
@@ -175,15 +174,23 @@
   border-top: none;
 }
 
+ui.dialog input[type=text],
+ui.dialog textarea,
 input.filebrowser-filter {
   border: 1px solid #dbdbdb;
   margin-left: 10px;
   padding-left: 7px;
   height: 35px;
   border-radius: 3px;
-  width: calc(100% - 240px);
 }
 
+.ui-dialog .CodeMirror{
+  clear:both;
+}
+
+input.filebrowser-filter {
+  width: calc(100% - 240px);
+}
 #renamewindow-wrapper p {
   position: relative;
 }
@@ -229,6 +236,10 @@ input.filebrowser-filter {
   height: 100%;
   position: absolute;
   cursor: pointer;
+}
+
+#contenteditfield{
+  min-width: 400px;
 }
 
 .upload-icon {
@@ -278,9 +289,6 @@ input.filebrowser-filter {
   background-repeat: no-repeat;
   background-position: center;
   background-image: url("../images/loading.gif");
-}
-
-.filewindow-wrapper {
 }
 
 .fileviewer-item {

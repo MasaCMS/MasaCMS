@@ -66,6 +66,7 @@
   font-size: 24px;
   line-height: 1.2;
   padding: 0;
+  width: 100%;
 }
 
 .ui-dialog #draft-prompt>p:first-child {
@@ -99,20 +100,31 @@
   }
 } // ui-dialog-content
 
+.ui-dialog .buttonset,
 .ui-dialog .ui-dialog-buttonpane{
   margin: 26px 0 8px;
 }
+.ui-dialog .buttonset{  
+    text-align: right;
+    margin-top: 58px;
+}
+.ui-dialog .ui-buttonset,
 .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset{
   float:right;
   text-align: right;
 }
 
+.ui-dialog .buttonset button,
 .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset .ui-button{
   float:none;
   margin-left: 13px;
   background-color: @mura-red;
   background-position: 0 0 !important;
   border-radius: 1px !important;
+  border: none;
+  color: #fff !important;
+  font-weight: 400;
+  padding: .4em 1.1em;
 
 
   &.mura-primary{
@@ -127,18 +139,12 @@
   color: #fff;
 }
 
-.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset .ui-button{
-  background-color: #EEE;
-  border: none;
-  color: #fff !important;
-  font-weight: 400;
-  padding: .4em 1.1em;
-}
-
+.ui-dialog .buttonset button:hover,
 .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset .ui-button.ui-state-hover{
   background-color: #DDDEDD;
   background-position: 0 0;
 }
+.ui-dialog .buttonset .ui-button:hover,
 .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset .ui-button .ui-state-hover{
   background-color:#FFF;
 }
