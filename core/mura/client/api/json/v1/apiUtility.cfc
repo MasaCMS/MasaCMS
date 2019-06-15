@@ -2920,7 +2920,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 						if(isContent){
 							prop="tcontent." & prop;
 						} else {
-							prop=feed.getTable() & "." & prop;
+							prop=feed.getEntity().getTable() & "." & prop;
 						}
 					}
 
