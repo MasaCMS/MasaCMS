@@ -57,6 +57,8 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 	      .asString('title')
 		  	.asInteger('isnew')
 	      .asBoolean('saveErrors')
+				.asBoolean('scaffold')
+				.asBoolean('dynamic')
 				.asInteger('expires_at')
 				.asInteger('expires_in');
 
@@ -2895,7 +2897,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			sort=listToArray(sort);
 
 			var orderby=[];
-			
+
 			for(var s in sort){
 				if(len(s) > 1){
 					var prefix=left(s,1);
@@ -2920,7 +2922,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 						if(isContent){
 							prop="tcontent." & prop;
 						} else {
-							prop=feed.getTable() & "." & prop;
+							prop=feed.getEntity().getTable() & "." & prop;
 						}
 					}
 

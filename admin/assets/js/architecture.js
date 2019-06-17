@@ -888,7 +888,7 @@ buttons: {
 			}
 			$('#selectRelatedContent .load-inline').spin(false);
 			$('#selectRelatedContent').html(data);
-			$('#draggableContainmentInternal').on('scroll',function(){$('#mura-rc-quickedit').hide()});
+			$('.draggableContainmentInternal').on('scroll',function(){$('#mura-rc-quickedit').hide()});
 
 			$(".rcDraggable li.item").draggable({
 				connectToSortable: '.rcSortable',
@@ -1034,6 +1034,8 @@ buttons: {
 		$(".rcSortable").sortable({
 			connectWith: ".rcSortable",
 			revert: true,
+			appendTo: 'body',
+			helper: 'clone',
 			update: function( event, ui ) {
 				siteManager.updateBuckets();
 				if (ui.item.find('a.delete').length == 0) {
@@ -1046,6 +1048,12 @@ buttons: {
 				siteManager.updateRCForm();
 
 				siteManager.setupRCResultIcon($('#selectRelatedContent button[value="'+ ui.item.attr('data-contentid') + '"]'));
+			},
+			start:function(){
+				siteManager.bindMouse();
+			},
+			stop:function(){
+				siteManager.enableBuckets()
 			},
 			cancel: "li.empty"
 		}).disableSelection();

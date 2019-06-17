@@ -574,7 +574,7 @@ component
 
 			if(arguments.settings) {
 				// list of allowable editable files and files displayed as "images"
-				var editfilelist = listToArray(m.globalConfig().getValue(property='filebrowsereditlist',defaultValue="txt,cfm,cfc,hbs,html,htm,cfml,js,css,json,xml.cfm,js.cfm,less,properties,scss,xml,yml")); // settings.ini.cfm: filebrowsereditlist
+				var editfilelist = listToArray(m.globalConfig().getValue(property='filebrowsereditlist',defaultValue="txt,cfm,cfc,hbs,html,htm,cfml,min.js,js,min.css,css,json,xml.cfm,js.cfm,less,properties,scss,xml,yml")); // settings.ini.cfm: filebrowsereditlist
 				var imagelist = listToArray(m.globalConfig().get(property='filebrowserimagelist',defaultValue="gif,jpg,jpeg,png")); // settings.ini.cfm: filebrowserimagelist
 				var rb = getResourceBundle(arguments.siteid);
 				response.settings = {
