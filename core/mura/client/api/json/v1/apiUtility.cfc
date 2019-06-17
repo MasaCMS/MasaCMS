@@ -57,6 +57,8 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 	      .asString('title')
 		  	.asInteger('isnew')
 	      .asBoolean('saveErrors')
+				.asBoolean('scaffold')
+				.asBoolean('dynamic')
 				.asInteger('expires_at')
 				.asInteger('expires_in');
 
