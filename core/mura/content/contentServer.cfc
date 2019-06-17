@@ -198,8 +198,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfif isValid("UUID",last)>
 			<cfset var redirect=getBean('userRedirect').loadBy(redirectid=last)>
-
-			<cfif redirect.exists() and len(redirect.getURL())>
+			<cfset var = usercheck = !StructKeyExists(url, 'userID') ? '' : url.userId />
+			<cfif redirect.exists() and len(redirect.getURL()) && usercheck == redirect.get('userid')>
 				<cfset redirect.apply()>
 			</cfif>
 		</cfif>

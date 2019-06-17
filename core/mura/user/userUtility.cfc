@@ -511,7 +511,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset editProfileURL=protocol & urlBase & site.getEditProfileURL()>
 	</cfif>
 
-	<cfset returnURL="#protocol##urlBase##site.getContentRenderer().getURLStem(site.getSiteID(),returnID)#">
+	<cfset returnURL="#protocol##urlBase##site.getContentRenderer().getURLStem(site.getSiteID(),returnID)#?userID=#arguments.args.userID#">
 <cfelse>
 	<cfset urlBase="#listFirst(cgi.http_host,':')##variables.configBean.getServerPort()##variables.configBean.getContext()#">
 	<cfset site=variables.settingsManager.getSite("default")>
@@ -522,7 +522,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset protocol="https://">
 	</cfif>
 
-	<cfset returnURL="#protocol##urlBase##site.getContentRenderer().getURLStem(site.getSiteID(),returnID)#">
+	<cfset returnURL="#protocol##urlBase##site.getContentRenderer().getURLStem(site.getSiteID(),returnID)#?userID=#arguments.args.userID#">
 	<cfset editProfileURL =protocol & urlBase & "#variables.configBean.getAdminDir()#/?muraAction=cEditProfile.edit">
 
 </cfif>
@@ -539,8 +539,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <!--- add extra attributes --->
 <cfset editProfileURL=editProfileURL & "&returnID=#returnID#&returnUserID=#arguments.args.userID#">
+<!--- see if the user requesting a redirect has a record already --->
+<cfset redirectBean = getBean('userRedirect') />
+<!--- create a feed using the userid --->
+<cfset redirectChecker = getFeed('userRedirect').where().prop('userid').isEQ(arguments.args.userID).getIterator() />
+<!--- loop feed to check for existing --->
+<cfloop condition="#redirectChecker.hasNext()#" >
+	<cfset usersRedirects = redirectChecker.next() />
+	<!--- If it's not a new request delete the previous request --->
+	<cfif !usersRedirects.get('isnew')>
+		<cfset usersRedirects.delete() />
+	</cfif>
+</cfloop>
 
-<cfset getBean('userRedirect').set(
+<cfset redirectBean.set(
 	{
 		redirectid=returnID,
 		url=editProfileURL,
@@ -783,7 +795,51 @@ Thanks for using #contactName#</cfoutput>
 
 <cffunction name="returnLoginCheck" output="false">
 <cfargument name="$">
-	<cfset var rs="">
+
+	<cfset var rs="" />
+	<!--- load up redirect bean --->
+	<cfset var redirect=getBean('userRedirect').loadBy(redirectid=arguments.$.event('returnID')) />
+
+	<!--- If they have the redirect id and return userid from the magic link --->
+	<cfif len(arguments.$.event('returnID')) && len(arguments.$.event('returnUserID')) >
+
+		<!--- logout current user --->
+		<cfif arguments.$.currentUser().isLoggedIn() >
+			<cfset arguments.$.currentUser().logout() />
+		</cfif>
+
+		<!--- Make sure bean is valid --->
+		<cfif redirect.exists() && redirect.getCreated() GTE dateAdd("d",-variables.configBean.get('mfadayslinkvalid'),now()) && $.event('returnUserID') == redirect.getUserID() >
+			<cfset var userUtility = getBean('userUtility') />
+			<cfset var user=redirect.getUser() />
+			<cfset 	var sessionData = getSession() />
+
+			<cfif user.exists()>
+				<cfif variables.configBean.get('mfa') && variables.configBean.get('mfaperdevice')>
+					<cfset sessionData.mfa={
+							userid=user.get('userid'),
+							siteid=user.get('siteid'),
+							username=user.get('username'),
+							returnUrl=redirect.get('url'),
+							rememberMe=true,
+							deviceid=cookie.mxp_trackingid,
+							failedchallenge=false
+						} >
+
+						<cfset userUtility.loginByUserID(argumentCollection=sessionData.mfa) />
+				<cfelse>
+						<cfset user.login()>
+				</cfif>
+			</cfif>
+
+			<cfset structDelete(session,"siteArray") />
+		<cfelse>
+			<!--- If it's no longer valid, send to homepage and display login --->
+			<cfset $.redirect('location'='/?display=login&linkexpired=true','addToken'=false,statusCode='301' ) />
+		</cfif>
+	</cfif>
+
+	<!--- <cfset var rs="">
 	<cfif len(arguments.$.event('returnID')) and len(arguments.$.event('returnUserID'))>
 		<cfset var redirect=getBean('userRedirect').loadBy(redirectid=arguments.$.event('returnID'))>
 		<cfif redirect.exists()
@@ -795,7 +851,7 @@ Thanks for using #contactName#</cfoutput>
 			</cfif>
 			<cfset structDelete(session,"siteArray")>
 		</cfif>
-	</cfif>
+	</cfif> --->
 </cffunction>
 
 <cffunction name="splitFullName" output="false">
