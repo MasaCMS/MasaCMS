@@ -111,7 +111,24 @@ component extends="mura.bean.beanORM" table='tfiles' entityName="file" hint="Thi
 		} else {
 
 			serializeExif();
-			
+
+			if(listLast(get('filename'),'.') == 'css'){
+				set({
+					contentType="text",
+					contentSubType="css",
+					});
+			} else if(listLast(get('filename'),'.') == 'js'){
+				set({
+					contentType="text",
+					contentSubType="javascript",
+					});
+			}	 else if(listFindNoCase('html,htm',listLast(get('filename'),'.'))){
+				set({
+					contentType="text",
+					contentSubType="html",
+					});
+			}
+
 			super.save();
 		}
 		return this;
