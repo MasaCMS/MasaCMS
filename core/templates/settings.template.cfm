@@ -68,6 +68,7 @@ maxsourceimagewidth=4000
 mfa=false
 mfaperdevice=false
 mfasendauthcode=true
+mfadayslinkvalid=1
 notifywithversionlink=true
 offline404=true
 ormautomanagesession=false
