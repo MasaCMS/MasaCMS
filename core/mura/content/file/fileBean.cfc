@@ -119,7 +119,7 @@ component extends="mura.bean.beanORM" table='tfiles' entityName="file" hint="Thi
 					});
 			} else if(listLast(get('filename'),'.') == 'js'){
 				set({
-					contentType="text",
+					contentType="application",
 					contentSubType="javascript",
 					});
 			}	 else if(listFindNoCase('html,htm',listLast(get('filename'),'.'))){
