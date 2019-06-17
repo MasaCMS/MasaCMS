@@ -803,7 +803,29 @@ Mura(function() {
 		},
 		mounted: function() {
 			//this.hide();
-			this.showList('entity');
+			var urlParams=Mura.getQueryStringParams();
+
+			if(urlParams.entityname){
+				if(urlParams.entityid){
+					if(urlParams.relatesto){
+						var self=this;
+						MuraScaffold.get(
+							function(data){
+								self.showRelatedList(urlParams.relatesto,data.entity)
+							},
+							urlParams.entityname,
+							urlParams.entityid
+					 );
+					} else {
+						this.showForm(urlParams.entityname,urlParams.entityid);
+					}
+				} else {
+						this.showList(urlParams.entityname);
+				}
+
+			} else {
+				this.showList('entity');
+			}
 		},
 		destroyed: function() {
 			console.log('main destroyed');
