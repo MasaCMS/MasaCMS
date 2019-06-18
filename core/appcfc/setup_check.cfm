@@ -3,7 +3,16 @@ if ( request.muraInDocker) {
 	// MySQL, MSSQL
 
 	if(isDefined('this.datasources.nodatabase') && len(getSystemEnvironmentSetting('MURA_DATABASE'))){
-		cfdbinfo(datasource="nodatabase",type='dbnames',name="rsdbnames");
+		try {
+			cfdbinfo(datasource="nodatabase",type='dbnames',name="rsdbnames");
+		} catch (e) {
+			if ( len(application.configBean.getValue("dbConnectionErrorTemplate")) ) {
+				include application.configBean.getValue("dbConnectionErrorTemplate");
+			} else {
+				include getINIProperty('dbconnectionerrortemplate');
+			}
+			return
+		}
 
 		if ( !ListFindNoCase(ValueList(rsdbnames.DATABASE_NAME), request.muraSysEnv.MURA_DATABASE) ) {
 			databaseName = request.muraSysEnv.MURA_DATABASE;
