@@ -38,7 +38,7 @@ Mura(function() {
 			});
 		},
 
-		get: function( listener,entityname,id,properties,params ) {
+		get: function(listener,entityname,id,properties,params,doNotFollowEdit) {
 			var self = this;
 			var entity = {};
 			var data = {};
@@ -51,7 +51,7 @@ Mura(function() {
 				.then(function(entity) {
 					//Read properties for UI.
 
-					if(typeof entity.properties.links.edit != 'undefined'){
+					if(!doNotFollowEdit && typeof entity.properties.links.edit != 'undefined'){
 						location.href=entity.properties.links.edit;
 						return
 					}
@@ -89,7 +89,7 @@ Mura(function() {
 				.then(function(entity) {
 					//Read properties for UI.
 
-					if(typeof entity.properties.links.edit != 'undefined'){
+					if(!doNotFollowEdit && typeof entity.properties.links.edit != 'undefined'){
 						location.href=entity.properties.links.edit;
 						return
 					}
@@ -183,6 +183,10 @@ Mura(function() {
 
 			if(sortBy) {
 				feed.sort(sortBy,sortDir);
+			}
+
+			if(entityname=='content'){
+				feed.includeHomepage(1).showExcludeSearch(1).showNavOnly(1);
 			}
 
 			Mura.getEntity(entityname).new().then(
@@ -811,10 +815,13 @@ Mura(function() {
 						var self=this;
 						MuraScaffold.get(
 							function(data){
-								self.showRelatedList(urlParams.relatesto,data.entity)
+								self.showRelatedList(urlParams.relatesto,data.entity,true)
 							},
 							urlParams.entityname,
-							urlParams.entityid
+							urlParams.entityid,
+							{},
+							{},
+							true
 					 );
 					} else {
 						this.showForm(urlParams.entityname,urlParams.entityid);

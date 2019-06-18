@@ -64,7 +64,7 @@ component extends="mura.bean.beanExtendable" entityName="content" table="tconten
 	property name="displayStop" type="date" default="";
 	property name="body" type="string" default="" html="true";
 	property name="title" type="string" default="" required="true";
-	property name="menuTitle" type="string" default="";
+	property name="menuTitle" type="string" default="" listview=true;
 	property name="URLTitle" type="string" default="";
 	property name="HTMLTitle" type="string" default="";
 	property name="filename" type="string" default="";
@@ -134,7 +134,7 @@ component extends="mura.bean.beanExtendable" entityName="content" table="tconten
 	property name="approvalGroupID" type="string" default="" comparable="false" persistent="false";
 	property name="approvalChainOverride" type="boolean" default="false" comparable="false" persistent="false";
 	property name="relatedContentSetData" type="any" persistent="false";
-	variables.primaryKey = 'contenthistid';
+	variables.primaryKey = 'contentid';
 	variables.entityName = 'content';
 	variables.instanceName= 'title';
 
