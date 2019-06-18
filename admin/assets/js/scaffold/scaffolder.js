@@ -834,13 +834,21 @@ Mura(function() {
 							{},
 							true
 					 );
-				 } else if(coreBean){
+				 } else if(!coreBean){
 						this.showForm(initParams.entityname,initParams.entityid);
+					} else {
+						if(initParams.relatesto){
+							this.showList(initParams.relatesto);
+						} else {
+							this.showList('entity');
+						}
+					}
+				} else if (!coreBean) {
+					if(initParams.relatesto){
+						this.showList(initParams.relatesto);
 					} else {
 						this.showList('entity');
 					}
-				} else if (!coreBean) {
-						this.showList(initParams.entityname);
 				} else {
 					this.showList('entity');
 				}
