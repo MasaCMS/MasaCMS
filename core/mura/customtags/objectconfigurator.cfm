@@ -37,19 +37,12 @@
 		<cfparam name="request.haspositionoptions" default="false">
 		<cfparam name="attributes.params.isbodyobject" default="false">
 
-		<!---
-		<cfparam name="request.textcoloroptions" default="">
-		<cfif structKeyExists($.getContentRenderer(),'textColorOptions')>
-			<cfset request.textColorOptions = $.getContentRenderer().textColorOptions>
-		</cfif>
-		--->
 		<cfparam name="request.colorOptions" default="">
 		<cfif structKeyExists($.getContentRenderer(),'coloroptions')>
 			<cfset request.colorOptions = $.getContentRenderer().coloroptions>
 		<cfelseif structKeyExists($.getContentRenderer(),'colorArray')>
 			<cfset request.colorOptions = $.getContentRenderer().colorArray>
 		</cfif>
-
 
 		<cfparam name="request.modulethemeoptions" default="#arrayNew(1)#">
 		<cfif structKeyExists($.getContentRenderer(),'modulethemeoptions') and isArray($.getContentRenderer().modulethemeoptions)>
