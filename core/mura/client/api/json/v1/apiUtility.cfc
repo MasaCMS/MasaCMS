@@ -3412,7 +3412,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				);
 				structDelete(packagedItems,'links');
 				packagedItems.name=rssets[i].getName();
-				packagedItems.entityname='content';
+				packagedItems.entityname=rssets[i].getEntityType();
 				packagedItems.relatedcontentsetid=rssets[i].getRelatedContentSetID();
 				packagedItems.siteid=arguments.siteid;
 

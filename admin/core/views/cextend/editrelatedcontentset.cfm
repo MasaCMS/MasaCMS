@@ -70,7 +70,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</div>
 			<cfset entities=$.getFeed('entity').where().prop('name').isNEQ('content').sort('displayName').getIterator()>
 			<div class="mura-control-group">
-			<label>Entity Name</label>
+			<label>Entity Type</label>
 			<select name="entitytype" class="select">
 				<option value="content"<cfif not len(rcsBean.getEntityName()) or rcsBean.getEntityName() eq 'content'>selected</cfif>>Site Content</option>
 				<!---
