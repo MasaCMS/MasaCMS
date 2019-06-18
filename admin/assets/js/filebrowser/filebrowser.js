@@ -226,9 +226,12 @@ config: {
     );
 }
 
-, loadBaseDirectory: function( onSuccess,onError ) {
+, loadBaseDirectory: function( onSuccess,onError,directory ) {
   var self = this;
-  var baseurl = this.endpoint + "/browse" + "?resourcepath=" + this.config.resourcepath + "&directory=" + this.config.directory + "&settings=1";
+
+  var dir = directory ? directory : this.config.directory;
+
+  var baseurl = this.endpoint + "/browse" + "?resourcepath=" + this.config.resourcepath + "&directory=" + dir + "&settings=1";
 
   if(!this.validate()) {
     return error("No Access");
@@ -674,7 +677,7 @@ config: {
     template: `
       <div class="fileviewer-modal">
         <div class="fileviewer-gallery" v-click-outside="closewindow">
-          <div class="fileviewer-image" :style="{ 'background-image': 'url(' + encodeURI(currentFile.url) + ')' }"></div>
+          <div class="fileviewer-image" :style="{ 'background-image': 'url(' + encodeURI(currentFile.url) + '?' + Math.ceil(Math.random()*100000) + ')' }"></div>
             <div>
               <div class="actionwindow-left" @click="lastimage"><i class="mi-caret-left"></i></div>
               <div class="actionwindow-right" @click="nextimage"><i class="mi-caret-right"></i></div>
@@ -760,7 +763,7 @@ config: {
     props: ["currentFile","currentIndex"],
     template: `
        <div class="fileviewer-modal">
-        <div class="fileviewer-image" id="imagediv" :style="{ 'background-image': 'url(' + encodeURI(currentFile.url) + ')' }"></div>
+        <div class="fileviewer-image" id="imagediv" :style="{ 'background-image': 'url(' + encodeURI(currentFile.url) + '?' + Math.ceil(Math.random()*100000) + ')' }"></div>
         <div>
           <div class="fileviewer-gallery-menu">
             <ul>
@@ -1003,8 +1006,14 @@ config: {
     },
     methods: {
       switchMode: function(mode) {
-        this.$root.displaymode = this.viewmode = mode;
 
+        var fdata = {
+          displaymode: JSON.parse(JSON.stringify(mode))
+        }
+
+        Mura.createCookie( 'fbDisplayMode',JSON.stringify(fdata),1000);
+
+        this.$root.displaymode = this.viewmode = mode;
       }
       , newFolder: function() {
         fileViewer.isDisplayWindow = 'ADDFOLDER';
@@ -1126,7 +1135,7 @@ config: {
               <td class="var-width">No Results</td>
               <td></td>
               <td></td>
-            </tr> 
+            </tr>
             <tr v-for="(file,index) in files">
               <td class="actions">
                 <a href="#" :id="'fileitem-'+index" class="show-actions" @click.prevent="openMenu($event,file,index)"><i class="mi-ellipsis-v"></i></a>
@@ -1146,7 +1155,7 @@ config: {
                 </div>
                 <div v-else>
                   --
-                </div> 
+                </div>
               </td>
               <td>
                   {{file.lastmodifiedshort}}
@@ -1259,7 +1268,7 @@ config: {
               <div class="fileviewer-item-meta-details">
                 <div v-if="parseInt(file.isfile)" class="fileviewer-item-meta-size">
                   {{file.size}}kb
-                </div> 
+                </div>
               </div>
             </div>
           </div>
@@ -1362,7 +1371,7 @@ config: {
             <li @click="setDirDepth(-1)"><a><i class="mi-home"></i>{{resourcepath}}</a></li>
             <li v-for="(item,index) in foldertree" @click="setDirDepth(index)"><a><i class="mi-folder-open"></i>{{item}}</a></li>
           </ul>
-        </div>  
+        </div>
         <div class="fileviewer-droptarget">
           <form enctype="multipart/form-data" novalidate v-if="isStart || isSave">
             <input type="file" multiple :name="uploadField" :disabled="isSave" @change="filesChanged($event.target.name, $event.target.files);" accept="*.*" class="file-input-field">
@@ -1587,6 +1596,12 @@ config: {
         this.isDisplayContext = "";
         this.spinnermodal = 1;
 
+        var fdata = {
+          foldertree: JSON.parse(JSON.stringify(this.foldertree))
+        }
+
+        Mura.createCookie( 'fbFolderTree',JSON.stringify(fdata),1);
+
         self.loadDirectory(dir,pageindex,this.displayResults,this.displayError,this.filterResults,this.sortOn,this.sortDir,this.itemsper,displaywindow);
       }
       , back: function() {
@@ -1688,7 +1703,37 @@ config: {
           this.spinnermodal = 1;
         });
         this.selectMode = self.config.selectMode;
-        self.loadBaseDirectory(this.displayResults,this.displayError);
+// folder cookie
+
+        var dir = "";
+
+        var cFolder = Mura.readCookie( 'fbFolderTree');
+        if(cFolder) {
+          var cFolderJSON = JSON.parse(cFolder);
+
+          if(cFolderJSON.foldertree) {
+            this.$root.foldertree = cFolderJSON.foldertree;
+
+            for(var i=0;i<this.foldertree.length;i++) {
+              dir = dir + "/" + this.foldertree[i];
+            }
+
+          }
+        }
+
+// displaymode cookie
+        var cDisplay = Mura.readCookie( 'fbDisplayMode' );
+
+        if(cDisplay) {
+          var fbDisplayJSON = JSON.parse(cDisplay);
+
+          if(fbDisplayJSON.displaymode)
+            this.$root.displaymode = this.viewmode = fbDisplayJSON.displaymode;
+
+        }
+
+        self.loadBaseDirectory(this.displayResults,this.displayError,dir);
+
         window.addEventListener('mouseup', function(event) {
 //        fileViewer.isDisplayContext = 0;
         });
