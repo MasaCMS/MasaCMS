@@ -1,3 +1,4 @@
+// todo: audit for resource bundle keys
 MuraFileBrowser = {
 
 config: {
@@ -476,7 +477,7 @@ config: {
           <li v-if="checkIsFile() && checkSelectMode()"><a href="#" @click.prevent="selectFile()"><i class="mi-check"></i>Select</a></li>
           <li v-if="checkIsFile() && checkFileEditable()"><a href="#" @click.prevent="editFile()"><i class="mi-pencil"></i>Edit</a></li>
           <li v-if="checkIsFile() && checkImageType()"><a href="#" @click.prevent="viewFile()"><i class="mi-image"></i>View</a></li>
-          <li v-if="checkIsFile() && checkImageType()"><a @click.prevent="duplicateFile()"><i class="mi-copy"></i>Duplicate</a></li>
+          <li v-if="checkIsFile() && checkImageType()"><a href="#" @click.prevent="duplicateFile()"><i class="mi-copy"></i>Duplicate</a></li>
           <li><a href="#" @click.prevent="renameFile()"><i class="mi-edit"> Rename</i></a></li>
           <li v-if="checkIsFile()"><a href="#" @click="downloadFile()"><i class="mi-download"> Download</i></a></li>
           <li class="delete"><a href="#" @click="deleteFile()"><i class="mi-trash"> Delete</i></a></li>
@@ -1367,7 +1368,7 @@ config: {
             <input type="file" multiple :name="uploadField" :disabled="isSave" @change="filesChanged($event.target.name, $event.target.files);" accept="*.*" class="file-input-field">
             <p v-if="isStart" class="upload-icon">
               {{settings.rb.filebrowser_draghere}}
-            </>
+            </p>
             <p v-if="isSave" class="download-icon">
               {{settings.rb.filebrowser_uploading}} ({{fileCount}})
               <ul class="fileviewer-uploadedfiles">
