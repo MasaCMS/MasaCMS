@@ -25,6 +25,7 @@ cookiepath=
 createRequiredDirectories=true
 customtagpaths=
 datasource=
+dbconnectionerrortemplate=/muraWRM/core/templates/dbconnectionerror.html
 dbpassword=
 dbtype=
 dbtablespace=USERS
