@@ -82,8 +82,8 @@
 				<cfset errorMessage = variables.$.rbKey('login.failed') />
 			<cfelseif variables.$.event('failedchallenge') eq 'true'>
 				<cfset errorMessage = variables.$.rbKey('login.incorrectauthorizationcode') />
-			<cfelseif variables.$.event('linkexpired' eq 'true')>
-				<cfset errorMessage = 'The link you have entered is expired, please contact your authorizer for more information.' />
+			<cfelseif variables.$.event('linkinvalid') eq 'true'>
+				<cfset errorMessage = 'The link you have entered is invalid or expired.' />
 			</cfif>
 
 			<cfif Len(errorMessage)>

@@ -201,6 +201,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset var = usercheck = !StructKeyExists(url, 'userID') ? '' : url.userId />
 			<cfif redirect.exists() and len(redirect.getURL()) && usercheck == redirect.get('userid')>
 				<cfset redirect.apply()>
+			<cfelse>
+				<!--- If it's no longer valid, send to homepage and display login --->
+				<cfset getBean('contentRenderer').redirect('location'='/?display=login&linkinvalid=true','addToken'=false,statusCode='301' ) />
 			</cfif>
 		</cfif>
 

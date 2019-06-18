@@ -835,7 +835,7 @@ Thanks for using #contactName#</cfoutput>
 			<cfset structDelete(session,"siteArray") />
 		<cfelse>
 			<!--- If it's no longer valid, send to homepage and display login --->
-			<cfset $.redirect('location'='/?display=login&linkexpired=true','addToken'=false,statusCode='301' ) />
+			<cfset $.redirect('location'='/?display=login&linkinvalid=true','addToken'=false,statusCode='301' ) />
 		</cfif>
 	</cfif>
 
