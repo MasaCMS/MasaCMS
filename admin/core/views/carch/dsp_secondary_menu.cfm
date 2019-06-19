@@ -273,13 +273,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset hasManyArray=rc.contentBean.getHasManyPropArray()>
 					<cfloop array="#hasManyArray#" index="i">
 						<cfif structKeyExists(i,'scaffold') and i.scaffold>
-								<li><a href="./?muraAction=cArch.list&activeTab=2&entityid=#esapiEncode('url',rc.contentid)#&entityname=content&siteid=#esapiEncode('url',rc.siteid)#&relatesto=#esapiEncode('url',i.cfc)#"><i class="mi-cube"></i> #esapiEncode('html',i.cfc)#</a></li>
+								<cfset beanInstance=rc.$.getBean(i.cfc)>
+								<li><a href="./?muraAction=cArch.list&activeTab=2&entityid=#esapiEncode('url',rc.contentid)#&entityname=content&siteid=#esapiEncode('url',rc.siteid)#&relatesto=#esapiEncode('url',i.cfc)#"><i class="mi-cube"></i> #esapiEncode('html',beanInstance.pluralizeHasRefName(beanInstance.getEntityDisplayName()))#</a></li>
 						</cfif>
 					</cfloop>
 					<cfset hasOneArray=rc.contentBean.getHasOnePropArray()>
 					<cfloop array="#hasOneArray#" index="i">
 						<cfif structKeyExists(i,'scaffold') and i.scaffold>
-								<li><a href="./?muraAction=cArch.list&activeTab=2&entityid=#esapiEncode('url',rc.contentid)#&entityname=content&siteid=#esapiEncode('url',rc.siteid)#&relatesto=#esapiEncode('url',i.cfc)#"><i class="mi-cube"></i> #esapiEncode('html',i.cfc)#</a></li>
+							<cfset beanInstance=rc.$.getBean(i.cfc)>
+							<li><a href="./?muraAction=cArch.list&activeTab=2&entityid=#esapiEncode('url',rc.contentid)#&entityname=content&siteid=#esapiEncode('url',rc.siteid)#&relatesto=#esapiEncode('url',i.cfc)#"><i class="mi-cube"></i> #esapiEncode('html',beanInstance.pluralizeHasRefName(beanInstance.getEntityDisplayName()))# #beanInstance.getEntityDisplayName()#</a></li>
 						</cfif>
 					</cfloop>
 				</ul>

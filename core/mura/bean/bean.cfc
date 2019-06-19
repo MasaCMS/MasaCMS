@@ -1035,7 +1035,7 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 		}
 
 		arguments.ref.scaffold=(getScaffold() || getDynamic());
-		
+
 		param name="application.objectMappings.#arguments.cfc#" default={};
 		param name="application.objectMappings.#arguments.cfc#.#arguments.type#" default=[];
 
@@ -1055,7 +1055,7 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 		if(right(arguments.name,1) != 's'){
 			return arguments.name & 's';
 		} else {
-			arguments.name;
+			return arguments.name;
 		}
 	}
 
