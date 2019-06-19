@@ -813,11 +813,12 @@ Mura(function() {
 			if(!initParams.entityname){
 				Mura.extend(initParams,this.getStoredState());
 			}
-
+			this.currentView = "";
 			if(initParams.entityname){
 				var coreBean=['content','user','group','category','comment','address','changeset'].indexOf(initParams.entityname) > -1;
-
+				
 				if(initParams.entityid){
+
 					if(initParams.relatesto){
 						var self=this;
 						MuraScaffold.get(
