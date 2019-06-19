@@ -454,6 +454,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 			  <cfset tokens.next().delete()>
 	 		  </cfloop>
 	    </cfif>
+
+		<!--- Load up redirect bean with provided userid --->
+		<cfset var redirectBean = getBean('userRedirectBean').loadBy(userid=arguments.userBean.get('userid')) />
+		<!--- if it's not new we need to remove any --->
+		<cfif !redirectBean.get('isnew')>
+			<!--- remove any existing redirect records once the user is updated --->
+			<cfset var userUtility = getBean('userUtility') />
+			<cfset userUtility.removePrevRedirects(userid=redirectBean.getUserID()) />
+		</cfif>
 	<!--- </cfif> --->
 
 </cffunction>
