@@ -424,7 +424,6 @@ config: {
     }
 
     canvas.onmousedown = function (e) {
-
       if (element !== null) {
       }
       else {
@@ -474,7 +473,7 @@ config: {
   Vue.component('contextmenu', {
     props: ["currentFile","menuy","menux"],
     template: `
-    <div id="newContentMenu" class="addNew" v-bind:style="{ left: (menux + 20) + 'px',top: menuy + 'px' }">
+    <div id="newContentMenu" class="addNew" v-bind:style="{ left: (menux + 20) + 'px',top: getTop() + 'px' }">
         <ul id="newContentOptions">
           <li v-if="checkIsFile() && checkSelectMode()"><a href="#" @click.prevent="selectFile()"><i class="mi-check"> Select</i></a></li>
           <li v-if="checkIsFile() && checkFileEditable()"><a href="#" @click.prevent="editFile()"><i class="mi-pencil"> Edit</i></a></li>
@@ -504,7 +503,9 @@ config: {
 
         return ;
       }
-
+      , getTop: function() {
+        return this.menuy + window.pageYOffset;
+      }
      , selectFile: function() {
         if(MuraFileBrowser.config.selectMode == 1) {
           window.opener.CKEDITOR.tools.callFunction(self.callback,fileViewer.currentFile.url);
@@ -683,7 +684,7 @@ config: {
               <div class="fileviewer-gallery-menu">
                 <ul>
                   <li v-if="checkImageType() && checkSelectMode()"><a @click="selectFile()"><i class="mi-check"> Select</i></a></li>
-                <li v-if="checkImageType()"><a @click="editImage()"><i class="mi-check"> Edit Image</i></a></li>
+                <li v-if="checkImageType()"><a @click="editImage()"><i class="mi-image"> Edit</i></a></li>
                   <li v-if="checkFileEditable()"><a  @click="editFile()"><i class="mi-pencil"> Edit</i></a></li>
                   <li><a @click="renameFile()"><i class="mi-edit"> Rename</i></a></li>
                   <li v-if="checkIsFile()"><a @click="downloadFile()"><i class="mi-download">Download</i></a></li>
@@ -772,7 +773,7 @@ config: {
                 <li><a @click="rotateRight()"><i class="mi-rotate-right"> Rotate Right</i></a></li>
                 <li><a @click="rotateLeft()"><i class="mi-rotate-left"> Rotate Left</i></a></li>
                 <li><a @click="resize()"><i class="mi-expand"> Resize</i></a></li>
-                <li><a @click="cancel()"><i class="mi-times"> Cancel</i></a></li>
+                <li><a @click="cancel()"><i class="mi-chevron-left"> Back</i></a></li>
               </span>
               <!--- CROP --->
               <span  v-if="editmode=='CROP'">
@@ -911,15 +912,18 @@ config: {
         editor.commands["selectAll"](this.editor);
       },
       autoFormat: function() {
+        /*
         editor.setCursor(0,0);
         CodeMirror.commands["selectAll"](editor);
         editor.autoFormatRange(editor.getCursor(true), editor.getCursor(false));
         editor.setSize(500, 500);
         editor.setCursor(0,0);
+        */
       }
     }
     , mounted: function() {
       this.filecontent = this.currentFile.content;
+      /*
           editor = CodeMirror.fromTextArea(document.getElementById('contenteditfield'), {
           value: this.currentFile.content,
           mode:  "html",
@@ -930,12 +934,14 @@ config: {
           theme: 'monokai'
         }
       );
+
       editor.getDoc().setValue(this.currentFile.content);
       this.autoFormat();
       ed = this;
       editor.on('change', function(cm) {
         ed.filecontent = cm.getValue();
       });
+*/
     }
   });
 
@@ -1171,6 +1177,9 @@ config: {
         menuy: 0
       }
     }
+    , mounted: function() {
+      this.$root.isDisplayContext = 0;
+    }
     , methods: {
       refresh: function( directory,index ) {
         this.$root.refresh( directory,index );
@@ -1218,9 +1227,6 @@ config: {
 
         this.$root.isDisplayContext = 0;
 
-        if(this.$root.contextListener) {
-        }
-
         var left = Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().left) - 26;
         var top =  Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().top) + window.scrollX;
 
@@ -1244,6 +1250,7 @@ config: {
     props: ['files','folders','foldertree','isDisplayContext','currentFile'],
     template: `
       <div class="gridmode-wrapper">
+      IDC: {{isDisplayContext}}
         <div v-if="foldertree.length" class="fileviewer-item" @click="back()">
           <div class="fileviewer-item-icon">
             <i class="mi-arrow-circle-o-left"></i>
@@ -1298,6 +1305,9 @@ config: {
           offsety: 0
       }
     }
+    , mounted: function() {
+      this.$root.isDisplayContext = 0;
+    }
     , methods: {
       refresh: function( directory,index ) {
         this.$root.refresh( directory,index );
@@ -1311,6 +1321,9 @@ config: {
 
         this.$root.currentFile = file;
         this.$root.currentIndex = index;
+
+        this.$root.isDisplayContext = 0;
+
 
         this.$nextTick(function () {
           this.$root.isDisplayContext = 1;
@@ -1344,12 +1357,18 @@ config: {
   Vue.component('spinner', {
     template: `
       <div id="spinner">
-        <i class="fa fa-spinner fa-spin"></i>
+
       </div>`,
     data() {
       return {};
-    },
-    methods: {
+    }
+    , mounted: function() {
+      $("#spinner").spin(spinnerArgs);
+    }
+    , destroyed:  function() {
+      $("#spinner").spin(!1);
+    }
+    , methods: {
 
     }
   });
@@ -1379,11 +1398,6 @@ config: {
             </>
             <p v-if="isSave" class="download-icon">
               {{settings.rb.filebrowser_uploading}} ({{fileCount}})
-              <ul class="fileviewer-uploadedfiles">
-                <li v-for="file in uploadedFiles">
-                  {{file.fullname}} ({{Math.floor(file.size/1000)}}kb)
-                </li>
-              </ul>
             </p>
           </form>
         </div>
