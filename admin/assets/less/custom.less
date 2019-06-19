@@ -2216,7 +2216,35 @@ body#clogin.modal-wrapper #mura-content {
     border-bottom: none;
     border-radius: 0;
     padding: 0;
+    position: relative;
+
+    a > i{
+      margin-right: 12px;
+    }
+    
+    a.collapse{
+      
+        &:before{
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          right: 15px;
+          display: inline-block;
+          font-family: FontAwesome;
+          color: rgba(255,255,255,.25);
+          content: "\f107";
+        }
+
+        &.collapsed{
+          &:before{
+          content: "\f105";
+        }
+
+      }
+    
+    }
   }
+
   .mura-panel-heading:hover {
     background-color: #f4f3f3;
     border-radius: 0;
