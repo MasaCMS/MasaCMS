@@ -1036,7 +1036,7 @@ config: {
   });
 
   Vue.component('navmenu', {
-    props: ["links","isbottomnav","response"],
+    props: ["links","isbottomnav","response","itemsper"],
     template: `
         <div class="filewindow-navmenu">
           <p v-if="isbottomnav">
@@ -1077,7 +1077,7 @@ config: {
           </li>
 
           <li class="pull-right">
-            <select name="itemsper" class="itemsper" @change="applyItemsPer" v-model="itemsper">
+            <select class="itemsper" @change="applyItemsPer" v-model="itemsper">
               <option value='25' :selected="itemsper == 25 ? 'selected' : null">25</option>
               <option value='50' :selected="itemsper == 50 ? 'selected' : null">50</option>
               <option value='100' :selected="itemsper == 100 ? 'selected' : null">100</option>
@@ -1090,7 +1090,6 @@ config: {
       </div>
     `,
     data() {
-        return {itemsper:this.$root.itemsper};
     },
     methods: {
       applyPage: function(goto) {
@@ -1110,7 +1109,7 @@ config: {
       }
       , applyItemsPer: function() {
         this.$root.itemsper = this.itemsper;
-        this.$root.refresh('',1)
+        this.$root.refresh();
       }
     }
 
@@ -1250,7 +1249,6 @@ config: {
     props: ['files','folders','foldertree','isDisplayContext','currentFile'],
     template: `
       <div class="gridmode-wrapper">
-      IDC: {{isDisplayContext}}
         <div v-if="foldertree.length" class="fileviewer-item" @click="back()">
           <div class="fileviewer-item-icon">
             <i class="mi-arrow-circle-o-left"></i>
