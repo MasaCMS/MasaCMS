@@ -11,11 +11,13 @@
 				</div> <!--- /end  mura-panel-body --->
 			</div> <!--- /end panel --->
 			</cfif>
+
 			<div class="mura-panel panel">
 				<div class="mura-panel-heading" role="tab" id="heading-labeling">
 					<h4 class="mura-panel-title">
-						<a class="collapsed" role="button" data-toggle="collapse" data-parent="##configurator-panels" href="##panel-labeling" aria-expanded="false" aria-controls="panel-labeling">
-							Label
+						<a class="collapse collapsed" role="button" data-toggle="collapse" data-parent="##configurator-panels" href="##panel-labeling" aria-expanded="false" aria-controls="panel-labeling">
+							<!--- todo: rb key for label --->
+							<i class="mi-sticky-note"></i>Label
 						</a>
 					</h4>
 				</div>
@@ -29,7 +31,7 @@
 						<cfelse>
 						<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.label')#</label>
 						</cfif>
-						<input name="label" type="text" class="objectParam" maxlength="50" value="#esapiEncode('html_attr',objectParams.label)#"/>
+						<input id="labelText" name="label" type="text" class="objectParam" maxlength="50" value="#esapiEncode('html_attr',objectParams.label)#"/>
 					</div>
 				</div>
 	</cfoutput>
