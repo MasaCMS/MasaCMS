@@ -2812,13 +2812,10 @@ Display Objects
 					(
 					 	StructKeyExists(sessionData, 'mura')
 					 	and (
-							(listFind(sessionData.mura.memberships,'S2IsPrivate;#application.settingsManager.getSite(variables.event.getValue('siteID')).getPrivateUserPoolID()#') and getBean('permUtility').getModulePerm("00000000000000000000000000000000000",variables.event.getValue('siteID')))
+							(getBean('permUtility').getModulePerm("00000000000000000000000000000000000",variables.event.getValue('siteID')))
 							or listFind(sessionData.mura.memberships,'S2')
 						)
-					) or (
-						listFindNoCase("editor,author",variables.event.getValue('r').perm)
-						and this.showMemberToolBar
-					)
+					) 
 				) and getShowAdminToolBar()
 			) and not request.muraExportHTML />
 		</cfif>
