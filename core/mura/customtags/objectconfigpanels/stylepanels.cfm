@@ -102,8 +102,8 @@
 				<div class="container">
 					<cfinclude template="objectconfigpanelstyleobject.cfm">
 				</div> <!--- /end container --->
-			</div> <!--- /end  mura-panel-body --->
-		</div> <!--- /end  mura-panel-collapse --->
+			</div> <!--- /end mura-panel-body --->
+		</div> <!--- /end panel-collapse --->
 	</div> <!--- /end object panel --->
 
 <!--- meta/label style panel --->
@@ -122,8 +122,8 @@
 				<div class="container" id="labelContainer">
 					<cfinclude template="objectconfigpanelstylemeta.cfm">
 				</div> <!--- /end container --->
-			</div> <!--- /end  mura-panel-body --->
-		</div> <!--- /end  mura-panel-collapse --->
+			</div> <!--- /end mura-panel-body --->
+		</div> <!--- /end panel-collapse --->
 	</div> <!--- /end label panel --->
 </cfif>
 
@@ -141,8 +141,8 @@
 				<div class="container">
 					<cfinclude template="objectconfigpanelstylecontent.cfm">
 				</div> <!--- /end container --->
-			</div> <!--- /end  mura-panel-body --->
-		</div> <!--- /end  mura-panel-collapse --->
+			</div> <!--- /end mura-panel-body --->
+		</div> <!--- /end panel-collapse --->
 	</div> <!--- /end content panel --->
 
 	<cfoutput>
