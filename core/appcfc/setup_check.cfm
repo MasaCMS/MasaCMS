@@ -1,9 +1,30 @@
 <cfscript>
 if ( request.muraInDocker) {
 	// MySQL, MSSQL
-
+	application.dbmaintenance = getINIProperty('dbmaintenance') == "true";
+	if (application.dbmaintenance) {
+		if (Len(getINIProperty('dbmaintenancetemplate'))) {
+			include getINIProperty('dbmaintenancetemplate');
+		} else {
+			include getINIProperty('errortemplate');
+		}
+		abort;
+	}
+	
+	application.dbconnectionerror = false;
 	if(isDefined('this.datasources.nodatabase') && len(getSystemEnvironmentSetting('MURA_DATABASE'))){
-		cfdbinfo(datasource="nodatabase",type='dbnames',name="rsdbnames");
+		// Attempt to connect to database
+		try {
+			cfdbinfo(datasource="nodatabase",type='dbnames',name="rsdbnames");
+		} catch (e) {
+			application.dbconnectionerror = true;
+			if (Len(getINIProperty('dbconnectionerrortemplate'))) {
+				include getINIProperty('dbconnectionerrortemplate');
+			} else {
+				include getINIProperty('errortemplate');
+			}
+			abort;
+		}
 
 		if ( !ListFindNoCase(ValueList(rsdbnames.DATABASE_NAME), request.muraSysEnv.MURA_DATABASE) ) {
 			databaseName = request.muraSysEnv.MURA_DATABASE;
