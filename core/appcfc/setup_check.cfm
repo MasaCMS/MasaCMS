@@ -3,7 +3,11 @@ if ( request.muraInDocker) {
 	// MySQL, MSSQL
 	application.dbmaintenance = getINIProperty('dbmaintenance') == "true";
 	if (application.dbmaintenance) {
-		include getINIProperty('dbmaintenancetemplate');
+		if (Len(getINIProperty('dbmaintenancetemplate'))) {
+			include getINIProperty('dbmaintenancetemplate');
+		} else {
+			include getINIProperty('errortemplate');
+		}
 		abort;
 	}
 	
@@ -14,7 +18,11 @@ if ( request.muraInDocker) {
 			cfdbinfo(datasource="nodatabase",type='dbnames',name="rsdbnames");
 		} catch (e) {
 			application.dbconnectionerror = true;
-			include getINIProperty('dbconnectionerrortemplate');
+			if (Len(getINIProperty('dbconnectionerrortemplate'))) {
+				include getINIProperty('dbconnectionerrortemplate');
+			} else {
+				include getINIProperty('errortemplate');
+			}
 			abort;
 		}
 
