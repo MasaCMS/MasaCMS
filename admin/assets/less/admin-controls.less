@@ -339,7 +339,7 @@
             }
             /* /nested panels */
             &.no-header {
-                .mura-panel-heading {
+               &> .mura-panel .mura-panel-heading {
                     display: none !important;
                     margin: 0 !important;
                     padding: 0 !important;
@@ -351,6 +351,9 @@
                 cursor: pointer;
                 margin: 8px 0;
                 padding: 6px 10px;
+            }
+            #panel-gds-object{
+                margin-top: -16px;
             }
             .panel-gds-box span {
                 font-size: 12px;

@@ -154,19 +154,8 @@
 			<div id="panel-style" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-style">
 				<div class="mura-panel-body">
 					<div class="container">
-							<!--- nested panels --->
-							<div class="mura-control-group">
-								<!--- todo: rbkeys for box labels --->s
-								<div class="panel-gds-box active" id="panel-gds-object" data-gdsel="panel-style-object"><span>Module</span> .mura-object
-									<cfif request.hasmetaoptions>
-										<div class="panel-gds-box" id="panel-gds-meta" data-gdsel="panel-style-label"<cfif not len(attributes.params.label)> style="display:none"</cfif>><span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.label')#</span>  .mura-object-meta</div>
-									</cfif>
-									<div class="panel-gds-box" id="panel-gds-content" data-gdsel="panel-style-content"><span>Content</span> .mura-object-content</div>
-								</div>
-								<div class="mura-panel-group" id="style-panels" role="tablist" aria-multiselectable="true">
-									<cfinclude template="objectconfigpanels/stylepanels.cfm">
-								</div> <!--- /end panel group --->
-							</div> <!--- /end mura control group --->
+						<!--- nested panels --->
+						<cfinclude template="objectconfigpanels/stylepanels.cfm">
 					</div> <!--- /end container --->
 				</div> <!--- /end  mura-panel-body --->
 			</div> <!--- /end  mura-panel-collapse --->

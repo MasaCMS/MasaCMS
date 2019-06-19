@@ -1,7 +1,5 @@
 <cfoutput>
 
-	<div class="mura-panel-group" id="style-object-panels" role="tablist" aria-multiselectable="true">
-
 	<cfif arrayLen(request.modulethemeoptions)>
 	<div class="mura-control-group">
 		<label>Theme</label>
@@ -13,6 +11,7 @@
 		</select>
 	</div>
 	</cfif>
+	
 	<cfif request.haspositionoptions>
 		<div class="mura-control-group">
 			<label>Target Device</label>
@@ -349,6 +348,4 @@
 			})
 		</script>
 	</div>
-
-</div> <!--- /end  mura-panel-group --->
 </cfoutput>

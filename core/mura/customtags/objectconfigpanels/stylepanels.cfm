@@ -76,7 +76,19 @@
 	}
 </cfscript>
 
-	<!--- object/module panel--->
+<!--- todo: rbkeys for box labels --->
+<cfoutput>
+	<div class="panel-gds-box active" id="panel-gds-object" data-gdsel="panel-style-object"><span>Module</span> .mura-object
+		<cfif request.hasmetaoptions>
+			<div class="panel-gds-box" id="panel-gds-meta" data-gdsel="panel-style-label"<cfif not len(attributes.params.label)> style="display:none"</cfif>><span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.label')#</span>  .mura-object-meta</div>
+		</cfif>
+		<div class="panel-gds-box" id="panel-gds-content" data-gdsel="panel-style-content"><span>Content</span> .mura-object-content</div>
+	</div>
+</cfoutput>
+
+<div class="mura-panel-group" id="style-panels" role="tablist" aria-multiselectable="true">
+
+	<!--- object/module style panel--->
 	<div class="mura-panel panel">
 		<div class="mura-panel-heading" role="tab" id="heading-style-object">
 			<h4 class="mura-panel-title">
@@ -94,7 +106,7 @@
 		</div> <!--- /end  mura-panel-collapse --->
 	</div> <!--- /end object panel --->
 
-<!--- meta/label panel --->
+<!--- meta/label style panel --->
 <cfif request.hasmetaoptions and not (IsBoolean(attributes.params.isbodyobject) and attributes.params.isbodyobject)>
 	<!--- label --->
 	<div class="mura-panel panel">
@@ -115,7 +127,7 @@
 	</div> <!--- /end label panel --->
 </cfif>
 
-<!--- content --->
+<!--- content style panel --->
 	<div class="mura-panel panel">
 		<div class="mura-panel-heading" role="tab" id="heading-style-content">
 			<h4 class="mura-panel-title">
@@ -139,3 +151,5 @@
 		<input class="styleSupport" name="css" id="csscustom" type="hidden" value="#esapiEncode('html_attr',attributes.params.stylesupport.css)#"/>
 	</div>
 	</cfoutput>
+
+</div> <!--- /end panel group --->
