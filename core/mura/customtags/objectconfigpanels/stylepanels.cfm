@@ -76,14 +76,66 @@
 	}
 </cfscript>
 
-	<!--- object panel--->
-	<cfinclude template="objectconfigpanelstyleobject.cfm">
+	<!--- object/module panel--->
+	<div class="mura-panel panel">
+		<div class="mura-panel-heading" role="tab" id="heading-style-object">
+			<h4 class="mura-panel-title">
+				<a class="collapse collapsed" role="button" data-toggle="collapse" data-parent="#configurator-panels" href="#panel-style-object" aria-expanded="false" aria-controls="panel-style-object">
+					Module
+				</a>
+			</h4>
+		</div>
+		<div id="panel-style-object" class="panel-collapse collapse" role="tabpanel" aria-labeledby="heading-style-object">
+			<div class="mura-panel-body">
+				<div class="container">
+					<cfinclude template="objectconfigpanelstyleobject.cfm">
+				</div> <!--- /end container --->
+			</div> <!--- /end  mura-panel-body --->
+		</div> <!--- /end  mura-panel-collapse --->
+	</div> <!--- /end object panel --->
 
-	<cfinclude template="objectconfigpanelstylemeta.cfm">
+<!--- meta/label panel --->
+<cfif request.hasmetaoptions and not (IsBoolean(attributes.params.isbodyobject) and attributes.params.isbodyobject)>
+	<!--- label --->
+	<div class="mura-panel panel">
+		<div class="mura-panel-heading" role="tab" id="heading-style-label">
+			<h4 class="mura-panel-title">
+				<a class="collapse collapsed" role="button" data-toggle="collapse" data-parent="#configurator-panels" href="#panel-style-label" aria-expanded="false" aria-controls="panel-style-label">
+					Label
+				</a>
+			</h4>
+		</div>
+		<div id="panel-style-label" class="panel-collapse collapse" role="tabpanel" aria-labeledby="heading-style-label">
+			<div class="mura-panel-body">
+				<div class="container" id="labelContainer">
+					<cfinclude template="objectconfigpanelstylemeta.cfm">
+				</div> <!--- /end container --->
+			</div> <!--- /end  mura-panel-body --->
+		</div> <!--- /end  mura-panel-collapse --->
+	</div> <!--- /end label panel --->
+</cfif>
+
+<!--- content --->
+	<div class="mura-panel panel">
+		<div class="mura-panel-heading" role="tab" id="heading-style-content">
+			<h4 class="mura-panel-title">
+				<a class="collapse collapsed" role="button" data-toggle="collapse" data-parent="#configurator-panels" href="#panel-style-content" aria-expanded="false" aria-controls="panel-style-content">
+					Content
+				</a>
+			</h4>
+		</div>
+		<div id="panel-style-content" class="panel-collapse collapse" role="tabpanel" aria-labeledby="heading-style-content">
+			<div class="mura-panel-body">
+				<div class="container">
+					<cfinclude template="objectconfigpanelstylecontent.cfm">
+				</div> <!--- /end container --->
+			</div> <!--- /end  mura-panel-body --->
+		</div> <!--- /end  mura-panel-collapse --->
+	</div> <!--- /end content panel --->
 
 	<cfoutput>
-	<input name="class" type="hidden" class="objectParam" value="#esapiEncode('html_attr',attributes.params.class)#"/>
-	<input class="styleSupport" name="css" id="csscustom" type="hidden" value="#esapiEncode('html_attr',attributes.params.stylesupport.css)#"/>
+	<div>
+		<input name="class" type="hidden" class="objectParam" value="#esapiEncode('html_attr',attributes.params.class)#"/>
+		<input class="styleSupport" name="css" id="csscustom" type="hidden" value="#esapiEncode('html_attr',attributes.params.stylesupport.css)#"/>
+	</div>
 	</cfoutput>
-	<!--- content panel --->
-	<cfinclude template="objectconfigpanelstylecontent.cfm">
