@@ -1029,14 +1029,13 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 	}
 
 	function appendHasRef(cfc,type,ref){
-		var found=false;
-		return;
-		param name="request.muraattachormlinks" default=false;
 
-		if(!request.muraattachormlinks || !(structKeyExists(arguments.ref,'name') && len(arguments.ref.name ))){
+		if((!(getScaffold() || getDynamic()) && listFindNoCase('content,user,group,address,comment,category,changeset',arguments.cfc)) || !(structKeyExists(arguments.ref,'name') && len(arguments.ref.name ))){
 			return;
 		}
 
+		arguments.ref.scaffold=(getScaffold() || getDynamic());
+		
 		param name="application.objectMappings.#arguments.cfc#" default={};
 		param name="application.objectMappings.#arguments.cfc#.#arguments.type#" default=[];
 

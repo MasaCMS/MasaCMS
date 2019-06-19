@@ -807,29 +807,51 @@ Mura(function() {
 		},
 		mounted: function() {
 			//this.hide();
-			var urlParams=Mura.getQueryStringParams();
 
-			if(urlParams.entityname){
-				if(urlParams.entityid){
-					if(urlParams.relatesto){
+			var initParams=Mura.getQueryStringParams();
+
+			if(!initParams.entityname){
+				Mura.extend(initParams,this.getStoredState());
+			}
+
+			if(initParams.entityname){
+				var coreBean=['content','user','group','category','comment','address','changeset'].indexOf(initParams.entityname) > -1;
+
+				if(initParams.entityid){
+					if(initParams.relatesto){
 						var self=this;
 						MuraScaffold.get(
 							function(data){
-								self.showRelatedList(urlParams.relatesto,data.entity,true)
+								if(data.entity.exists()){
+									self.showRelatedList(initParams.relatesto,data.entity,true)
+								} else {
+									self.showList(initParams.entityname);
+								}
 							},
-							urlParams.entityname,
-							urlParams.entityid,
+							initParams.entityname,
+							initParams.entityid,
 							{},
 							{},
 							true
 					 );
+				 } else if(!coreBean){
+						this.showForm(initParams.entityname,initParams.entityid);
 					} else {
-						this.showForm(urlParams.entityname,urlParams.entityid);
+						if(initParams.relatesto){
+							this.showList(initParams.relatesto);
+						} else {
+							this.showList('entity');
+						}
+					}
+				} else if (!coreBean) {
+					if(initParams.relatesto){
+						this.showList(initParams.relatesto);
+					} else {
+						this.showList('entity');
 					}
 				} else {
-						this.showList(urlParams.entityname);
+					this.showList('entity');
 				}
-
 			} else {
 				this.showList('entity');
 			}
@@ -838,6 +860,28 @@ Mura(function() {
 			console.log('main destroyed');
 		},
 		methods: {
+
+			setStoredState:function(state){
+				if(typeof state=='object'){
+					Mura.createCookie('mura_scaffolder',encodeURIComponent(JSON.stringify(state)));
+				}
+			},
+
+			getStoredState:function(){
+				var initParams=Mura.getQueryStringParams();
+
+				try{
+					var storedParams=Mura.readCookie('mura_scaffolder');
+					storedParams=JSON.parse(storedParams);
+					if(typeof storedParams != 'object'){
+						storedParams={};
+					}
+				} catch(e){
+					storedParams={};
+				}
+				return storedParams;
+			},
+
 			clickSave: function( entityname ) {
 				this.errordata = {};
 
@@ -980,6 +1024,13 @@ Mura(function() {
 				this.errordata = {};
 				this.entityname = entityname;
 
+				this.setStoredState(
+					{
+						entityid:this.entityid,
+						entityname:this.entityname
+					}
+				);
+
 				if(this.currentparent.properties && this.currentparent.properties.entityname == entityname) {
 					this.currentparent = {};
 				}
@@ -1026,6 +1077,13 @@ Mura(function() {
 				if(entityname=='entity'){
 					this.currentparent={};
 				}
+
+				this.setStoredState(
+					{
+						entityname:this.entityname
+					}
+				);
+
 				this.sortBy='';
 				this.sortDir='';
 				this.entityname = entityname;
@@ -1042,6 +1100,14 @@ Mura(function() {
 				this.entityname = entityname;
 				this.currentView = 'scaffold-list-template';
 				this.currentparent = parent;
+
+				this.setStoredState(
+					{
+						entityname:this.currentparent.get('entityname'),
+						entityid:this.currentparent.get('id'),
+						relatesto:this.entityname
+					}
+				);
 
 				var self=this;
 
@@ -1074,6 +1140,8 @@ Mura(function() {
 
 					if(filter){
 						filters.push(filter);
+					} else {
+						filters.push({property:properties.primarykey,value:self.currentparent.properties[properties.primarykey]});
 					}
 
 					MuraScaffold.feed( self.doRelatedList,entityname,self.itemsper,self.sortBy,self.sortDir,filters,false);

@@ -456,9 +456,7 @@ if ( application.setupComplete ) {
 		}
 	}
 
-	request.muraattachormlinks=true;
 	application.serviceFactory.loadDynamicEntities();
-	request.muraattachormlinks=false;
 
 	application.appAutoUpdated=false;
 

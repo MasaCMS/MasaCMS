@@ -57,7 +57,7 @@ component extends="controller" output="false" {
 		var qs="";
 		var rsDefault=structNew();
 		arguments.rc.siteid="";
-		if ( !listFind(session.mura.memberships,'S2IsPrivate') ) {
+		if ( !getCurrentUser().isLoggedIn() ) {
 			variables.fw.redirect(action="clogin.main",path="./");
 		}
 		rsList=application.settingsManager.getUserSites(session.siteArray,listFind(session.mura.memberships,'S2'));
@@ -81,8 +81,8 @@ component extends="controller" output="false" {
 			rsDefault=qs.execute(sql="SELECT siteid FROM rsList order by orderno").getResult();
 			arguments.rc.siteid=rsDefault.siteid;
 		}
-		if ( len(arguments.rc.siteid) ) {
-			if ( rc.$.siteConfig().getValue(property='showDashboard',defaultValue=0) ) {
+		if ( len(arguments.rc.siteid)) {
+			if ( rc.$.siteConfig().getValue(property='showDashboard',defaultValue=0) && listFind(session.mura.memberships,'S2IsPrivate') ) {
 				variables.fw.redirect(action="cDashboard.main",append="siteid",path="./");
 			} else {
 				arguments.rc.moduleid="00000000000000000000000000000000000";
@@ -90,7 +90,11 @@ component extends="controller" output="false" {
 				variables.fw.redirect(action="cArch.list",append="siteid,moduleid,topid",path="./");
 			}
 		}
-		variables.fw.redirect(action="cMessage.noAccess",path="./");
+		if(listFind(session.mura.memberships,'S2IsPrivate')){
+			variables.fw.redirect(action="cMessage.noAccess",path="./");
+		} else {
+			variables.fw.redirect(action="clogin.main",path="./");
+		}
 	}
 
 }
