@@ -100,7 +100,7 @@
 				<cfset settingsManager=rc.$.getBean('settingsManager')>
 				<cfloop query="theSiteList" startrow="1" endrow="100">
 					<cfsilent>
-						<cfif settingsManager.getSite(theSiteList.siteID).getValue(property='showDashboard',defaultValue=0)>
+						<cfif settingsManager.getSite(theSiteList.siteID).getValue(property='showDashboard',defaultValue=0) and rc.$.currentUser().isSystemUser()>
 							<cfset baseURL="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cDashboard.main">
 						<cfelse>
 							<cfset baseURL="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cArch.list&amp;moduleID=00000000000000000000000000000000000&amp;topID=00000000000000000000000000000000001">

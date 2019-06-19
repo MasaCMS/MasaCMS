@@ -416,9 +416,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<li id="adminPreview-suspend" class="suspend" style="display:none;"<!--- class="dropdown"--->><a href="##" title="" onClick="return false;"><i class="mi-mobile"></i></a></li>
 							</cfif>
 							<!---</cfif>--->
-							<cfif $.currentUser().isPrivateUser()>
-								<li><a href="#variables.adminLink#" title="#application.rbFactory.getKeyValue(session.rb,'layout.sitemanager')#"><i class="mi-sitemap"></i></a></li>
-							</cfif>
+							<li><a href="#variables.adminLink#" title="#application.rbFactory.getKeyValue(session.rb,'layout.sitemanager')#"><i class="mi-sitemap"></i></a></li>
 						</ul>
 					</cfif>
 					<!--- BEGIN CHANGESETS --->
@@ -498,13 +496,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						#afterMenu#
 					</cfif>
 				</cfif>
-				<cfif listFindNoCase(session.mura.memberships,'S2IsPrivate')>
-					<cfif $.siteConfig().getValue(property='showDashboard',defaultValue=0)>
-						<ul id="adminDashboard">
-							<li><a href="#$.siteConfig().getAdminPath(complete=completeurls)#/?muraAction=cDashboard.main&siteid=#esapiEncode('url',$.event('siteid'))#&span=1" title="Dashboard"><i class="mi-dashboard"></i> Dashboard</a></li>
-						</ul>
-					</cfif>
+
+				<cfif $.currentUser().isSystemUser() and $.siteConfig().getValue(property='showDashboard',defaultValue=0)>
+					<ul id="adminDashboard">
+						<li><a href="#$.siteConfig().getAdminPath(complete=completeurls)#/?muraAction=cDashboard.main&siteid=#esapiEncode('url',$.event('siteid'))#&span=1" title="Dashboard"><i class="mi-dashboard"></i> Dashboard</a></li>
+					</ul>
 				</cfif>
+
 				<cfif $.currentUser().isLoggedIn()>
 					<ul id="tools-user">
 						<li id="adminLogOut"><a href="?doaction=logout" title="#application.rbFactory.getKeyValue(session.rb,'layout.logout')#"><i class="mi-sign-out"></i><span>#application.rbFactory.getKeyValue(session.rb,'layout.logout')#</span></a></li>
