@@ -3905,6 +3905,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset variables[i] = arguments[i]>
 		</cfloop>
 
+		<cfif arguments.fromSiteID eq arguments.toSiteID>
+			<cfreturn >
+		</cfif>
+
 		<cfset variables.siteID=arguments.fromSiteID>
 		<cfset pluginEvent.init(variables)>
 		<cfset application.pluginManager.announceEvent("onSiteCopy",pluginEvent)>
@@ -3912,7 +3916,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset fileDelim=application.configBean.getFileDelim() />
 		<cfset rsPlugins=application.pluginManager.getSitePlugins(arguments.fromsiteid)>
 		<cfset keys=createObject("component","mura.publisherKeys").init('copy',application.utility)>
-
 
 		<!---<cfthread action="run" name="thread0">--->
 			<cfset getToWork(fromSiteID=fromsiteid, toSiteID=tositeid, fromDSN=fromDSN, toDSN=toDSN, contentMode='all', keyFactory=keys, keyMode="copy")>
@@ -3932,15 +3935,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<!---<cfif fromWebRoot neq fromFileDir>--->
 			<!---<cfthread action="run" name="thread3">--->
-				<cfset copySiteFiles("#fromFileDir##fileDelim##fromsiteid##fileDelim#cache#fileDelim#file#fileDelim#", "#toFileDir##fileDelim##tositeid##fileDelim#cache#fileDelim#file#fileDelim#",keys) />
+				<cfset copySiteFiles("#fromFileDir##fileDelim##fromsiteid##fileDelim#cache#fileDelim#file#fileDelim#", "#toFileDir##fileDelim##tositeid##fileDelim#cache#fileDelim#file#fileDelim#",keys, "", arguments.fromsiteid, arguments.tositeid) />
 			<!---</cfthread>--->
 		<!---</cfif>--->
 
-		<cfif arguments.toWebRoot neq arguments.toAssetDir>
+		<!---<cfif arguments.toWebRoot neq arguments.toAssetDir>--->
 			<!---<cfthread action="run" name="thread4">--->
-				<cfset application.utility.copyDir("#fromAssetDir##fileDelim##fromsiteid##fileDelim#assets#fileDelim#", "#toAssetDir##fileDelim##tositeid##fileDelim#assets#fileDelim#") />
+
+			<cfset application.utility.copyDir("#fromAssetDir##fileDelim##fromsiteid##fileDelim#assets#fileDelim#", "#toAssetDir##fileDelim##tositeid##fileDelim#assets#fileDelim#") />
+
 			<!---</cfthread>--->
-		</cfif>
+		<!---</cfif>--->
+		
 		<!---
 		<cfthread action="join" name="thread0" />
 		--->
@@ -3951,9 +3957,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<!---</cfthread>--->
 
 		<!---<cfthread action="run" name="thread6">--->
-			<cfif fromSiteID neq toSiteID>
+			<!---<cfif fromSiteID neq toSiteID>--->
 				<cfset application.contentUtility.findAndReplace("/#fromsiteID#/", "/#toSiteID#/", "#toSiteID#")>
-			</cfif>
+			<!---</cfif>--->
 		<!---</cfthread>--->
 
 		<cfset getBean("contentUtility").updateGlobalMaterializedPath(siteid=arguments.toSiteID,datasource=arguments.toDSN) />
@@ -3988,6 +3994,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="destDir" default="" required="true" />
 		<cfargument name="keyFactory" required="true" />
 		<cfargument name="sinceDate" default="" />
+		<cfargument name="fromsiteid" default="" />
+		<cfargument name="tositeid" default="" />
 		<cfset var rs = "" />
 		<cfset var keys=arguments.keyFactory>
 		<cfset var newFile="">
@@ -4025,8 +4033,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cftry>
 			<cfelse>
 				<!--- <cftry> --->
-
-					<cfset fileWriter.copyFile(source="#rs.directory##fileDelim##rs.name#", destination=replaceNoCase('#rs.directory##fileDelim#',arguments.baseDir,arguments.destDir))>
+					<cfset fileWriter.copyFile(source="#rs.directory##fileDelim##rs.name#", destination=replaceNoCase('#rs.directory##fileDelim#',expandPath(arguments.baseDir),expandPath(arguments.destDir)))>
 
 					<cfset newFile=listFirst(rs.name,".")>
 
@@ -4036,7 +4043,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfset newFile=keys.get(newFile) & "." & listLast(rs.name,".")>
 					</cfif>
 
-					<cfset fileWriter.renameFile(source="#replaceNoCase('#rs.directory##fileDelim#',arguments.baseDir,arguments.destDir)##rs.name#", destination="#replaceNoCase('#rs.directory##fileDelim#',arguments.baseDir,arguments.destDir)##newFile#")>
+					<cfset fileWriter.renameFile(source="#replaceNoCase('#rs.directory##fileDelim#',arguments.baseDir,arguments.destDir)##rs.name#", destination="#replaceNoCase('#rs.directory##fileDelim#',expandPath(arguments.baseDir),expandPath(arguments.destDir))##newFile#")>
 				<!--- 	<cfcatch></cfcatch>
 				</cftry> --->
 			</cfif>

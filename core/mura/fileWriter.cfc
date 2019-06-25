@@ -288,8 +288,8 @@
 		<cfset var errors=arrayNew(1)>
 		<cfset var copyItem="">
 
-		<cfset arguments.baseDir=pathFormat(arguments.baseDir)>
-		<cfset arguments.destDir=pathFormat(arguments.destDir)>
+		<cfset arguments.baseDir=pathFormat(expandPath(arguments.baseDir))>
+		<cfset arguments.destDir=pathFormat(expandPath(arguments.destDir))>
 		<cfset arguments.excludeList=pathFormat(arguments.excludeList)>
 
 		<cfif arguments.baseDir neq arguments.destDir>
@@ -344,13 +344,13 @@
 
 			<cfloop query="rs">
 				<cfset copyItem="#replace('#rs.directory#/',arguments.baseDir,arguments.destDir)#">
-				<cfif fileExists(copyItem)>
-					<cffile action="delete" file="#copyItem#">
+				<cfif fileExists("#copyItem#/#rs.name#")>
+					<cffile action="delete" file="#copyItem#/#rs.name#">
 				</cfif>
 
 				<cftry>
 					<cfset copyFile(source="#rs.directory#/#rs.name#", destination=copyItem, sinceDate=arguments.sinceDate)>
-					<cfcatch><cfset arrayAppend(errors,copyItem)></cfcatch>
+					<cfcatch><cfset arrayAppend(errors,"#copyItem#/#rs.name#")></cfcatch>
 				</cftry>
 			</cfloop>
 		</cfif>
