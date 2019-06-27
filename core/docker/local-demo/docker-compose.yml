@@ -1,4 +1,4 @@
-version: '2.1'
+version: '3.5'
 
 services:
   #Mura Server
@@ -19,6 +19,8 @@ services:
       MURA_DATASOURCE: muradb
       MURA_DATABASE: muradb
       MURA_DBTYPE: mysql
+      MURA_DBCONNECTIONSTRING: "jdbc:mysql://mura_demo_mysql:3306/muradb?useUnicode=true&characterEncoding=UTF-8&useLegacyDatetimeCode=true"
+      MURA_DBCLASS: com.mysql.jdbc.Driver
       MURA_DBUSERNAME: root
       MURA_DBPASSWORD: NOT_SECURE_CHANGE
       MURA_DBHOST: mura_demo_mysql
