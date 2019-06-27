@@ -41,16 +41,16 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.bean.bean" entityName="comment" table="tcontentcomments" output="false" hint="This provides content comment functionality">
+<cfcomponent extends="mura.bean.bean" entityName="comment" table="tcontentcomments" orderby="entered asc" output="false" hint="This provides content comment functionality">
 <cfproperty name="commentID" fieldType="id" type="string" default="">
 <cfproperty name="content" fieldtype="many-to-one" fkcolumn="contentid" cfc="content">
 <cfproperty name="kids" fieldtype="one-to-many" cfc="comment" nested=true orderby="created asc" cascade="delete">
 <cfproperty name="parent" fieldtype="many-to-one" cfc="comment" fkcolumn="parentid">
 <cfproperty name="site" fieldtype="many-to-one" cfc="site" fkcolumn="siteID">
-<cfproperty name="comments" type="string" default="">
+<cfproperty name="comments" type="string" required="true" default="">
 <cfproperty name="url" type="string" default="">
 <cfproperty name="name" type="string" default="">
-<cfproperty name="email" type="string" default="">
+<cfproperty name="email" required="true" validate="email" default="">
 <cfproperty name="entered" type="date" default="">
 <cfproperty name="subscribe" type="numeric" default="0">
 <cfproperty name="isApproved" type="numeric" default="0">
@@ -282,49 +282,53 @@ function getCommenter() output=false {
 	<cfreturn rs/>
 </cffunction>
 
-<cffunction name="delete">
-	<cfset var pluginManager=getPluginManager()>
-	<cfset var pluginEvent=createObject("component","mura.event")>
-	<cfset var eventArgs=structNew()>
+<cffunction name="delete" access="remote" output="false">
+	<cfif allowModuleAccess()>
+		<cfset var pluginManager=getPluginManager()>
+		<cfset var pluginEvent=createObject("component","mura.event")>
+		<cfset var eventArgs=structNew()>
 
-	<cfset eventArgs.siteID=variables.instance.siteID>
-	<cfset eventArgs.commentBean=this>
-  <cfset eventArgs.bean=this>
-	<cfset pluginEvent.init(eventArgs)>
+		<cfset eventArgs.siteID=variables.instance.siteID>
+		<cfset eventArgs.commentBean=this>
+	  <cfset eventArgs.bean=this>
+		<cfset pluginEvent.init(eventArgs)>
 
-	<cfset pluginManager.announceEvent(eventToAnnounce="onBeforeCommentDelete",currentEventObject=pluginEvent,objectid=getValue("commentid"))>
+		<cfset pluginManager.announceEvent(eventToAnnounce="onBeforeCommentDelete",currentEventObject=pluginEvent,objectid=getValue("commentid"))>
 
-	<cfquery>
-		update tcontentcomments set isDeleted = 1 where commentID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#">
-	</cfquery>
+		<cfquery>
+			update tcontentcomments set isDeleted = 1 where commentID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#">
+		</cfquery>
 
-	<cfset pluginManager.announceEvent(eventToAnnounce="onAfterCommentDelete",currentEventObject=pluginEvent,objectid=getValue("commentid"))>
+		<cfset pluginManager.announceEvent(eventToAnnounce="onAfterCommentDelete",currentEventObject=pluginEvent,objectid=getValue("commentid"))>
 
-	<cfset variables.contentManager.setCommentStat(variables.instance.contentID,variables.instance.siteID) />
+		<cfset variables.contentManager.setCommentStat(variables.instance.contentID,variables.instance.siteID) />
+	</cfif>
 </cffunction>
 
-<cffunction name="undelete">
-	<cfset var pluginManager=getPluginManager()>
-	<cfset var currentEventObject=createObject("component","mura.event")>
-	<cfset var eventArgs=structNew()>
+<cffunction name="undelete" access="remote" output="false">
+	<cfif allowModuleAccess()>
+		<cfset var pluginManager=getPluginManager()>
+		<cfset var currentEventObject=createObject("component","mura.event")>
+		<cfset var eventArgs=structNew()>
 
-	<cfset eventArgs.siteID=variables.instance.siteID>
-	<cfset eventArgs.commentBean=this>
-  <cfset eventArgs.bean=this>
-	<cfset currentEventObject.init(eventArgs)>
+		<cfset eventArgs.siteID=variables.instance.siteID>
+		<cfset eventArgs.commentBean=this>
+	  <cfset eventArgs.bean=this>
+		<cfset currentEventObject.init(eventArgs)>
 
-	<cfset pluginManager.announceEvent(eventToAnnounce="onBeforeCommentUndelete",currentEventObject=currentEventObject,objectid=getValue("commentid"))>
+		<cfset pluginManager.announceEvent(eventToAnnounce="onBeforeCommentUndelete",currentEventObject=currentEventObject,objectid=getValue("commentid"))>
 
-	<cfquery>
-		update tcontentcomments set isDeleted = 0 where commentID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#">
-	</cfquery>
+		<cfquery>
+			update tcontentcomments set isDeleted = 0 where commentID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#">
+		</cfquery>
 
-	<cfset pluginManager.announceEvent(eventToAnnounce="onAfterCommentUndelete",currentEventObject=currentEventObject,objectid=getValue("commentid"))>
+		<cfset pluginManager.announceEvent(eventToAnnounce="onAfterCommentUndelete",currentEventObject=currentEventObject,objectid=getValue("commentid"))>
 
-	<cfset variables.contentManager.setCommentStat(variables.instance.contentID,variables.instance.siteID) />
+		<cfset variables.contentManager.setCommentStat(variables.instance.contentID,variables.instance.siteID) />
+	</cfif>
 </cffunction>
 
-<cffunction name="flag">
+<cffunction name="flag" access="remote" output="false">
 	<cfset var pluginManager=getPluginManager()>
 	<cfset var currentEventObject=createObject("component","mura.event")>
 	<cfset var eventArgs=structNew()>
@@ -345,46 +349,50 @@ function getCommenter() output=false {
 	<cfset variables.contentManager.setCommentStat(variables.instance.contentID,variables.instance.siteID) />
 </cffunction>
 
-<cffunction name="markAsSpam" output="false">
-	<cfset var pluginManager=getPluginManager()>
-	<cfset var currentEventObject=createObject("component","mura.event")>
-	<cfset var eventArgs=structNew()>
+<cffunction name="markAsSpam" access="remote" output="false">
+	<cfif allowModuleAccess()>
+		<cfset var pluginManager=getPluginManager()>
+		<cfset var currentEventObject=createObject("component","mura.event")>
+		<cfset var eventArgs=structNew()>
 
-	<cfset eventArgs.siteID=variables.instance.siteID>
-	<cfset eventArgs.commentBean=this>
-  <cfset eventArgs.bean=this>
-	<cfset currentEventObject.init(eventArgs)>
+		<cfset eventArgs.siteID=variables.instance.siteID>
+		<cfset eventArgs.commentBean=this>
+	  <cfset eventArgs.bean=this>
+		<cfset currentEventObject.init(eventArgs)>
 
-	<cfset pluginManager.announceEvent(eventToAnnounce="onBeforeCommentMarkAsSpam",currentEventObject=currentEventObject,objectid=getValue("commentid"))>
+		<cfset pluginManager.announceEvent(eventToAnnounce="onBeforeCommentMarkAsSpam",currentEventObject=currentEventObject,objectid=getValue("commentid"))>
 
-	<cfquery>
-		update tcontentcomments set	isSpam = 1 where commentID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#">
-	</cfquery>
+		<cfquery>
+			update tcontentcomments set	isSpam = 1 where commentID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#">
+		</cfquery>
 
-	<cfset pluginManager.announceEvent(eventToAnnounce="onAfterCommentMarkAsSpam",currentEventObject=currentEventObject,objectid=getValue("commentid"))>
+		<cfset pluginManager.announceEvent(eventToAnnounce="onAfterCommentMarkAsSpam",currentEventObject=currentEventObject,objectid=getValue("commentid"))>
 
-	<cfset variables.contentManager.setCommentStat(variables.instance.contentID,variables.instance.siteID) />
+		<cfset variables.contentManager.setCommentStat(variables.instance.contentID,variables.instance.siteID) />
+	</cfif>
 </cffunction>
 
-<cffunction name="unMarkAsSpam" output="false">
-	<cfset var pluginManager=getPluginManager()>
-	<cfset var currentEventObject=createObject("component","mura.event")>
-	<cfset var eventArgs=structNew()>
+<cffunction name="unMarkAsSpam" access="remote" output="false">
+	<cfif allowModuleAccess()>
+		<cfset var pluginManager=getPluginManager()>
+		<cfset var currentEventObject=createObject("component","mura.event")>
+		<cfset var eventArgs=structNew()>
 
-	<cfset eventArgs.siteID=variables.instance.siteID>
-	<cfset eventArgs.commentBean=this>
-  <cfset eventArgs.bean=this>
-	<cfset currentEventObject.init(eventArgs)>
+		<cfset eventArgs.siteID=variables.instance.siteID>
+		<cfset eventArgs.commentBean=this>
+	  <cfset eventArgs.bean=this>
+		<cfset currentEventObject.init(eventArgs)>
 
-	<cfset pluginManager.announceEvent(eventToAnnounce="onBeforeCommentUnMarkAsSpam",currentEventObject=currentEventObject,objectid=getValue("commentid"))>
+		<cfset pluginManager.announceEvent(eventToAnnounce="onBeforeCommentUnMarkAsSpam",currentEventObject=currentEventObject,objectid=getValue("commentid"))>
 
-	<cfquery>
-		update tcontentcomments set isSpam = 0 where commentID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#">
-	</cfquery>
+		<cfquery>
+			update tcontentcomments set isSpam = 0 where commentID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#">
+		</cfquery>
 
-	<cfset pluginManager.announceEvent(eventToAnnounce="onAfterCommentUnMarkAsSpam",currentEventObject=currentEventObject,objectid=getValue("commentid"))>
+		<cfset pluginManager.announceEvent(eventToAnnounce="onAfterCommentUnMarkAsSpam",currentEventObject=currentEventObject,objectid=getValue("commentid"))>
 
-	<cfset variables.contentManager.setCommentStat(variables.instance.contentID,variables.instance.siteID) />
+		<cfset variables.contentManager.setCommentStat(variables.instance.contentID,variables.instance.siteID) />
+	</cfif>
 </cffunction>
 
 <cffunction name="save" output="false">
@@ -404,6 +412,14 @@ function getCommenter() output=false {
 	<cfset structAppend(eventArgs, arguments)>
 
 	<cfset currentEventObject.init(eventArgs)>
+
+	<cfif allowModuleAccess()>
+		<cfif not exists()>
+			<cfset variables.instance.isapproved=1>
+		</cfif>
+	<cfelse>
+		<cfset variables.instance.isapproved=getBean('settingsManager').getSite(variables.instance.siteid).getCommentApprovalDefault()>
+	</cfif>
 
 	<cfif len(variables.instance.parentID)>
 		<cfset path=variables.contentManager.getCommentBean().setCommentID(variables.instance.parentID).load().getPath()>
@@ -692,6 +708,43 @@ To Unsubscribe Click Here:
 	</cfquery>
 
 	<cfreturn rsCommentCrumbData>
+</cffunction>
+
+<cffunction name="allowQueryParams" output="false">
+	<cfargument name="params">
+	<cfargument name="m">
+	<cfparam name="arguments.params.isspam" default=0>
+	<cfparam name="arguments.params.isdeleted" default=0>
+	<cfparam name="arguments.param.isapproved" default="0">
+	<cfif not allowModuleAccess()>
+		<cfset arguments.params.fields="comments,links,entered,isspam,flagcount,parentid,name,isapproved,kids,isdeleted,userid,subscribe,isnew,contentid,path,siteid,id,remoteid,contenthistid">
+		<cfset params.isspam=0>
+		<cfset params.isdeleted=0>
+		<cfset param.isapproved=1><!--- this get explicitly set in the save method --->
+	<cfelse>
+		<cfset arguments.params.fields="comments,email,links,entered,isspam,flagcount,parentid,name,isapproved,kids,isdeleted,userid,subscribe,isnew,contentid,path,siteid,id,remoteid,contenthistid">
+	</cfif>
+	<cfreturn true>
+</cffunction>
+
+<cffunction name="allowModuleAccess" output="false">
+	<cfset var sessionData=getSession()>
+	<cfreturn not request.muraapirequest or  (
+			(listFind(sessionData.mura.memberships,'Admin;#getBean('settingsManager').getSite(get('siteid')).getPrivateUserPoolID()#;0')
+			or listFind(sessionData.mura.memberships,'S2'))
+			or (
+				getBean('permUtility').getModulePerm('00000000000000000000000000000000015',get('siteid'))
+				and getBean('permUtility').getModulePerm('00000000000000000000000000000000000',get('siteid'))
+			)
+		)>
+</cffunction>
+
+<cffunction name="allowSave" output="false">
+	<cfif allowModuleAccess()>
+		<cfreturn true>
+	<cfelse>
+		<cfreturn not exists()>
+	</cfif>
 </cffunction>
 
 </cfcomponent>
