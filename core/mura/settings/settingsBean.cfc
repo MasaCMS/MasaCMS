@@ -608,10 +608,10 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 			return variables.instance.cacheFactories["#arguments.name#"];
 		} else {
 			// if not variables.instance.cacheCapacity
-			variables.instance.cacheFactories["#arguments.name#"]=application.settingsManager.createCacheFactory(freeMemoryThreshold=variables.instance.cacheFreeMemoryThreshold,name=arguments.name,siteID=variables.instance.siteID);
+			variables.instance.cacheFactories["#arguments.name#"]=getBean("settingsManager").createCacheFactory(freeMemoryThreshold=variables.instance.cacheFreeMemoryThreshold,name=arguments.name,siteID=variables.instance.siteID);
 			/*
 			}
-				variables.instance.cacheFactories["#arguments.name#"]=application.settingsManager.createCacheFactory(capacity=variables.instance.cacheCapacity,freeMemoryThreshold=variables.instance.cacheFreeMemoryThreshold,name=arguments.name,siteID=variables.instance.siteID);
+				variables.instance.cacheFactories["#arguments.name#"]=getBean("settingsManager").createCacheFactory(capacity=variables.instance.cacheCapacity,freeMemoryThreshold=variables.instance.cacheFreeMemoryThreshold,name=arguments.name,siteID=variables.instance.siteID);
 			}
 		*/
 			return variables.instance.cacheFactories["#arguments.name#"];
