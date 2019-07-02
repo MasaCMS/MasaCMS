@@ -64,7 +64,7 @@ component extends="mura.bean.beanExtendable" entityName="content" table="tconten
 	property name="displayStop" type="date" default="";
 	property name="body" type="string" default="" html="true";
 	property name="title" type="string" default="" required="true";
-	property name="menuTitle" type="string" default="";
+	property name="menuTitle" type="string" default="" listview=true;
 	property name="URLTitle" type="string" default="";
 	property name="HTMLTitle" type="string" default="";
 	property name="filename" type="string" default="";
@@ -134,7 +134,7 @@ component extends="mura.bean.beanExtendable" entityName="content" table="tconten
 	property name="approvalGroupID" type="string" default="" comparable="false" persistent="false";
 	property name="approvalChainOverride" type="boolean" default="false" comparable="false" persistent="false";
 	property name="relatedContentSetData" type="any" persistent="false";
-	variables.primaryKey = 'contenthistid';
+	variables.primaryKey = 'contentid';
 	variables.entityName = 'content';
 	variables.instanceName= 'title';
 
@@ -452,6 +452,12 @@ component extends="mura.bean.beanExtendable" entityName="content" table="tconten
 		and listFindNoCase('File',variables.instance.type)
 		and !(len(variables.instance.newfile) || len(variables.instance.fileID)) ) {
 			variables.instance.errors.filemissing=variables.settingsManager.getSite(variables.instance.siteID).getRBFactory().getKey("sitemanager.filemissing");
+		}
+
+		if(not application.configBean.getValue(property='keepMetaKeywords',defaultValue=false)
+			&& len(getCanonicalURL())
+			&& !isValid('url',getCanonicalURL())){
+			variables.instance.errors.canonicalurl=variables.settingsManager.getSite(variables.instance.siteID).getRBFactory().getKey("sitemanager.canonicalurlinvalid");
 		}
 
 		var site=application.settingsManager.getSite(variables.instance.siteID);
@@ -1014,15 +1020,13 @@ component extends="mura.bean.beanExtendable" entityName="content" table="tconten
 	}
 
 	public function getRelatedContentQuery(required boolean liveOnly="true", required date today="#now()#", string sortBy="orderno", string sortDirection="asc", string relatedContentSetID="", string name="", boolean reverse="false", required boolean navOnly="false", required any cachedWithin="#createTimeSpan(0,0,0,0)#") output=false {
-		return variables.contentManager.getRelatedContent(variables.instance.siteID, getContentHistID(), arguments.liveOnly, arguments.today, arguments.sortBy, arguments.sortDirection, arguments.relatedContentSetID, arguments.name, arguments.reverse, getContentID(),arguments.navOnly);
+		return variables.contentManager.getRelatedContent(variables.instance.siteID, getContentHistID(), arguments.liveOnly, arguments.today, arguments.sortBy, arguments.sortDirection, arguments.relatedContentSetID, arguments.name, arguments.reverse, getContentID(),arguments.navOnly,arguments.cachedWithin,'',this);
 	}
 
-	public function getRelatedContentIterator(required boolean liveOnly="true", required date today="#now()#", string sortBy="orderno", string sortDirection="asc", string relatedContentSetID="", string name="", boolean reverse="false", required boolean navOnly="false", required any cachedWithin="#createTimeSpan(0,0,0,0)#") output=false {
-		var q=getRelatedContentQuery(argumentCollection=arguments);
-		var it=getBean("contentIterator");
-		it.setQuery(q);
-		return it;
+	public function getRelatedContentIterator(required boolean liveOnly="true", required date today="#now()#", string sortBy="orderno", string sortDirection="asc", string relatedContentSetID="", string name="", boolean reverse="false", required boolean navOnly="false", required any cachedWithin="#createTimeSpan(0,0,0,0)#",entitytype="content") output=false {
+		return variables.contentManager.getRelatedContentIterator(variables.instance.siteID, getContentHistID(), arguments.liveOnly, arguments.today, arguments.sortBy, arguments.sortDirection, arguments.relatedContentSetID, arguments.name, arguments.reverse, getContentID(),arguments.navOnly,arguments.cachedWithin,'',this);
 	}
+
 
 	public function save() output=false {
 		var obj="";
@@ -1503,7 +1507,7 @@ component extends="mura.bean.beanExtendable" entityName="content" table="tconten
 	}
 
 	function setCanonicalURL(CanonicalURL){
-		if(isValid('URL',arguments.canonicalURL)){
+		if(isValid('URL',arguments.canonicalURL) || !len(arguments.canonicalURL)){
 			variables.instance.metakeywords=arguments.canonicalURL;
 		}
 
