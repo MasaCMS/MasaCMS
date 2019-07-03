@@ -3444,13 +3444,16 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		return trim(arguments.str);
 	}
 
-	function getCustomImageSizeIterator(siteid){
+	ffunction getCustomImageSizeIterator(siteid){
 		if(!isDefined('variables.images')){
 			variables.images=getBean('settingsManager').getSite(arguments.siteid).getCustomImageSizeIterator();
 		}
 		if(!isdefined('request.muracustomimageiterator')){
 			request.muraCustomImageIterator=duplicate(variables.images);
 		}
+
+		request.muraCustomImageIterator.reset();
+
 		return request.muraCustomImageIterator;
 	}
 
