@@ -402,6 +402,10 @@ component extends="mura.bean.bean" entityname="dataCollection" hint="This provid
 			sendto=listAppend(sendto,getFormBean().getResponseSendTo());
 		}
 
+		if(!len(sendto)){
+			return this;
+		}
+		
 		var bodyStruct = '';
 		var mailer=getBean('mailer');
 
