@@ -433,12 +433,12 @@ if(request.muraInDocker && (len(getSystemEnvironmentSetting('MURA_DATABASE')) ||
 		}
 
 		if (len(getSystemEnvironmentSetting('MURA_DBBUNDLENAME'))) {
-				this.datasources['#getSystemEnvironmentSetting('MURA_DATASOURCE')#'].bundleName = getSystemEnvironmentSetting('MURA_DBBUNDLENAME');
-			}
+			this.datasources['#getSystemEnvironmentSetting('MURA_DATASOURCE')#'].bundleName = getSystemEnvironmentSetting('MURA_DBBUNDLENAME');
+		}
 
-			if (len(getSystemEnvironmentSetting('MURA_DBBUNDLEVERSION'))) {
-				this.datasources['#getSystemEnvironmentSetting('MURA_DATASOURCE')#'].bundleVersion = getSystemEnvironmentSetting('MURA_DBBUNDLEVERSION');
-			}
+		if (len(getSystemEnvironmentSetting('MURA_DBBUNDLEVERSION'))) {
+			this.datasources['#getSystemEnvironmentSetting('MURA_DATASOURCE')#'].bundleVersion = getSystemEnvironmentSetting('MURA_DBBUNDLEVERSION');
+		}
 
 		if (len(getSystemEnvironmentSetting('MURA_DATABASE'))) {
 			connectionString=replaceNoCase(getSystemEnvironmentSetting('MURA_DBCONNECTIONSTRING'),"=#getSystemEnvironmentSetting('MURA_DATABASE')#","=");
