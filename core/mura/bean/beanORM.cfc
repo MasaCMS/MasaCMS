@@ -1001,6 +1001,7 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 	}
 
 	function hasColumn(column){
+		getColumns();
 		return isDefined("application.objectMappings.#getValue('entityName')#.columns.#arguments.column#");
 	}
 
