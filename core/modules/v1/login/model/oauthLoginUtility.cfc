@@ -81,9 +81,16 @@ component extends="mura.cfobject" accessors=true output=false {
 		var isNewAdmin = false;
 		var isNewSuperUser = false;
 
+		oAuth.domain = listLast(oAuth.email, '@');
+
+		// only allow users from a specififed domain list
+		var allowedDomain = m.getBean('configBean').getAllowedDomain();
+		if (len(allowedDomain) && !listFindNoCase(allowedDomain, arguments.oAuth.domain)) {
+			userBean.setInActive('1');
+		}
+
 		// If user's email domain is in the allowedAdminDomain list, add them to admin group.
 		var allowedAdminDomain = m.getBean('configBean').getAllowedAdminDomain();
-		oAuth.domain = listLast(oAuth.email, '@');
 		if (listFindNoCase(allowedAdminDomain, arguments.oAuth.domain)) {
 			userBean.setIsPublic('0');
 		}
