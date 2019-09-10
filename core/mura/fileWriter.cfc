@@ -288,8 +288,8 @@
 		<cfset var errors=arrayNew(1)>
 		<cfset var copyItem="">
 
-		<cfset arguments.baseDir=pathFormat(expandPath(arguments.baseDir))>
-		<cfset arguments.destDir=pathFormat(expandPath(arguments.destDir))>
+		<cfset arguments.baseDir=pathFormat(conditionalExpandPath(arguments.baseDir))>
+		<cfset arguments.destDir=pathFormat(conditionalExpandPath(arguments.destDir))>
 		<cfset arguments.excludeList=pathFormat(arguments.excludeList)>
 
 		<cfif arguments.baseDir neq arguments.destDir>
@@ -446,4 +446,22 @@
 		<cfreturn rs>
 	</cffunction>
 
+	<cfscript>
+		function conditionalExpandPath(path){
+			if(find(":",arguments.path)){
+				return path;
+			} else {
+				if(directoryExists(path)){
+					return path;
+				} else{
+					var expandedPath=expandPath(arguments.path);
+					if(directoryExists(expandedPath)){
+						return expandedPath;
+					} else {
+						return arguments.path;
+					}
+				}
+			}
+		}
+	</cfscript>
 </cfcomponent>
