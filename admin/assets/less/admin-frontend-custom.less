@@ -3,9 +3,6 @@
 	  background-image: none!important;
 	  background-color: rgba(255,255,255,.8)!important;
 	}
-	#frontEndToolsModalTarget{
-		position: static !important;
-	}
 
 	#frontEndToolsModalContainer {
 	 /* position: [Set in dialog.js]; */
@@ -21,7 +18,7 @@
 	#frontEndToolsModalBody {
 	  position: relative;
 	  overflow: visible;
-	  top: 48px;
+	  top: 70px;
 	  margin: 0 auto;
 	  padding: 0;
 	  background: transparent;
@@ -33,15 +30,9 @@
 
 	#frontEndToolsModaliframe {
 	  width: 100%;
-	  min-height: 360px;
+	  min-height: 400px;
 	  background: transparent;
 	  .border-radius(2px);
-	  box-shadow: 0 20px 50px 0 rgba(0,0,0,.3);
-
-		&:not(.frontEndToolsPreview){
-	    max-height: 90vh !important;
-    	overflow: auto !important;
-		}
 	}
 
 	.modal-configurator #frontEndToolsModaliframe {
@@ -100,8 +91,8 @@
 
 	#closeDiv {
 		position: absolute;
-		left: -11px;
-		top: -11px;
+		left: -10px;
+		top: -10px;
 		z-index: 50000;
 	}
 
@@ -113,7 +104,7 @@
 		border: 0 !important;
 		box-shadow: none !important;
 		cursor: pointer !important;
-		height: 18px !important;
+		height: 20px !important;
 		margin: 0 !important;
 		padding: 0 !important;
 		width: auto !important;
@@ -122,8 +113,8 @@
 
 	#frontEndToolsHandle img{
 		position: fixed !important;
-			left: 11px !important;
-			top: 9px !important;
+			left: 10px !important;
+			top: 10px !important;
 	}		
 	#frontEndToolsHandleText img{
 		position: fixed !important;
@@ -213,7 +204,7 @@
 			color: rgba(255,255,255,.7) !important;
 			font-size: @feToolbarIconSize !important;
 			position: relative !important;
-			top: 2px !important;
+			top: 1px !important;
 			overflow: visible !important;
 			padding-top: 0 !important;
 			padding-bottom: 0 !important;
@@ -236,7 +227,7 @@
 				border-top-color: rgba(255,255,255,.25) !important;
 				margin-left: 5px !important;
 				margin-right: 5px !important;
-				margin-top: 10px !important;
+				margin-top: 3px !important;
 			}
 
 		&:first-child a {
@@ -257,6 +248,7 @@
 		> a {
 			border: 0 !important;
 			min-width: 72px !important;
+		 	padding-top: 2px !important;
 		}
 
 		&#adminStatus{
@@ -264,7 +256,7 @@
 			min-width: 72px !important;
 
 			&> a {
-				background-color: @mura-red !important;
+				background-color: @mura-blue !important;
 				border-radius: 0 !important;
 				}
 			}
@@ -321,18 +313,13 @@
 			line-height: .8 !important;
 			margin-right: 4px !important;
 			overflow: visible !important;
-			padding: 4px 4px 3px 5px !important;
+			padding: 5px 6px 5px 5px !important;
 			position: relative !important;
 			text-align: center !important;
-			top: -1px !important;
 				&.list-alt {
 					top: 2px !important;
 				}
 
-			}
-
-			& > b.caret{
-				margin-top: 2px !important;
 			}
 		}
 	}
@@ -344,13 +331,13 @@
 			    text-overflow: ellipsis!important;
 			    white-space: nowrap;
 			}
-			 > li > a{
+			 > li a{
 				padding: 0 6px !important;
 			}
 		}
 		#frontEndTools > ul#tools-version{
 			margin-left: 0 !important;
-			 > li > a{
+			 > li a{
 				padding: 0 7px !important;
 			}
 		}
@@ -415,10 +402,10 @@
 	#frontEndTools > #tools-user,
 	#frontEndTools > #tools-version,
 	#frontEndTools > #tools-changesets {
-
+		margin-top: 1px !important;
 		&> li > a{
-			height: @feToolBarHeight - 2 !important;
-			line-height: @feToolBarHeight !important;
+			height: 38px !important;
+			line-height: 38px !important;
 		}
 	}	
 
@@ -428,7 +415,6 @@
 		> li {
 		float: right !important;
 		margin-right: 16px !important;
-		margin-top: 1px !important;
 		padding: 0 !important;
 		border: 0 !important;
 		font-size: @feToolbarFontSize !important;
@@ -462,23 +448,20 @@
 		font-style: normal !important;
 		line-height: 30px !important;
 		list-style: none !important;
-		margin: 0 !important;
 		min-width: 95px !important;
-		position: relative !important;
-		text-align: left !important;
-		margin: 0 !important;
+		position: relative;
+		text-align: left;
 
 			> a {
-			background-color: @mura-red !important;
+			background-color: @mura-blue !important;
 			background-image: none !important;
-			border-color: #4882cc !important;
+			border-color: #4882cc;
 			color: @white !important;
 			cursor: pointer !important;
 			display: inline-block !important; 
 			font-size: @feToolbarFontSize !important;
-			padding: 0 12px 2px 12px !important;
+			padding: 2px 12px !important;
 			position: relative !important;
-			margin: 0 !important;
 
 			&:hover {
 
@@ -502,16 +485,10 @@
 				cursor: default !important;						
 
 				i{	
-					-webkit-animation: fa-spin 1.6s infinite linear;
-					animation: fa-spin 1.6s infinite linear;	
-					margin-left: -1px !important;
-					margin-right: 3px !important;
-					/* font-size: @feToolbarFontSize !important; */
-
-					&:before{
-						content:'\f110';
-					}
-
+					-webkit-animation: fa-spin 2s infinite linear;
+					animation: fa-spin 2s infinite linear;	
+					font-size: @feToolbarFontSize !important;				
+					margin-right: 1px !important;
 				}
 
 				&:hover i{
@@ -563,30 +540,20 @@
 			cursor: pointer !important;
 			display: block !important;
 			margin: 0 !important;
-	    padding: 2px 4px !important;
-	    top: auto;
-	    right: auto;
-	    bottom: auto;
-	    left: auto;
-			
-				&:first-child{
-					a{
-						padding-top: 7px !important;
-					}
-				}
+			padding: 0;
 
 			}
 
 		a {
+			color: #CCC !important;
+			padding: 5px 10px !important;
+			line-height: 1.2 !important;
+			float: none !important;
+			display: block !important;
+			height: auto !important;
+			cursor: pointer !important;
 			background: transparent !important;
 			.border-radius(0);
-			color: #CCC !important;
-			cursor: pointer !important;
-			display: block !important;
-			float: none !important;
-			height: auto !important;
-			line-height: 1.2 !important;
-    	padding: 5px 10px 5px 12px!important;
 			}
 
 		li > a:hover {
@@ -597,16 +564,11 @@
 		i {
 			display: inline-block !important;
 			margin-left: 0 !important;
-			margin-right: 4px !important;
+			margin-right: 2px !important;
 			min-width: 16px !important;
 			text-align: center !important;
 			top: 1px !important;
-				&.mi-th{
-					top: 2px !important;
-					margin-left: -2px !important;
-				}
 			}
-
 
 		li > a:hover i {
 			color: @white !important;
@@ -614,10 +576,6 @@
 
 	}
 
-	#frontEndTools #adminDelete{
-    border-top: 1px dotted rgba(255,255,255,.2);
-    margin-top: 2px !important;
-	}
 
 	#frontEndTools > ul li.dropdown-submenu {
 
@@ -647,11 +605,6 @@
 		}
 	}
 
-	/* bug fix for absolute positioned changeset dropdown */
-	#frontEndTools > ul > li#cs-title > ul.dropdown-menu[x-placement=bottom-start] { 
-	    transform: translate3d(0px, @feToolBarHeight - 1, 0px) !important;
-	}
-
 	#frontEndTools > ul > li#adminSave .dropdown-menu,
 	#frontEndTools > ul > li#adminPreview .dropdown-menu{
 		margin-left: 0 !important;
@@ -662,7 +615,6 @@
 	#frontEndTools .dropdown-submenu:hover > .dropdown-menu{
 	    display:block;
 	}
-
 
 	/* strongarm mura admin toolbar - blocks some theme items from bleeding into the toolbar */
 
