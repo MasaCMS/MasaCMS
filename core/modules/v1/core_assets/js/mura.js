@@ -17882,7 +17882,7 @@ Mura.DOMSelection = Mura.Core.extend(
 				var self=this;
 				function watcher(){
 					if(Mura.markupInitted){
-						Mura(self).append(el);
+						Mura(self).prepend(el);
 						Mura.processDisplayObject(el,true,true).then(resolve, reject);
 					} else {
 						setTimeout(watcher);
