@@ -593,7 +593,7 @@ The #contactName# staff</cfoutput>
 <cfoutput>Dear #firstname#,
 
 We received a request to reset the password associated with this
-e-mail address. If you made this request, please follow the
+email address. If you made this request, please follow the
 instructions below.
 
 (If you did not request to have your password reset you can safely
