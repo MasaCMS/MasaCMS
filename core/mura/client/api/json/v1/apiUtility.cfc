@@ -1387,6 +1387,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		}
 
 		if(structKeyExists(arguments.response,'data') && isStruct(arguments.response.data)){
+			var $=getBean('$').init(variables.siteid);
 			if(isBoolean($.event('useDataNamespace')) ){
 				if(!$.event('useDataNamespace')){
 					structAppend(arguments.response,arguments.response.data);
