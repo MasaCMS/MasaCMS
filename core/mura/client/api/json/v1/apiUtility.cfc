@@ -8,6 +8,12 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		var context=configBean.getContext();
 		var site=getBean('settingsManager').getSite(variables.siteid);
 
+		variables.useDataNamespaceForAPI=configBean.getValue(property='useDataNamespaceForAPI',defaultValue=true);
+
+		if(isDefined('renderer.useDataNamespaceForAPI') && isBoolean(renderer.useDataNamespaceForAPI)){
+			variables.useDataNamespaceForAPI=renderer.useDataNamespaceForAPI;
+		}
+
 		/*
 		if( getBean('utility').isHTTPS() || YesNoFormat(site.getUseSSL()) ){
 			var protocol="https://";
@@ -1377,6 +1383,11 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		if(application.configBean.getValue(property='suppressAPIParams',defaultValue=true) && isDefined('response.params')){
 			structDelete(response,'params');
+		}
+
+		if(!variables.useDataNamespaceForAPI && structKeyExists(arguments.response,'data') && isStruct(arguments.response.data)){
+			structAppend(arguments.response,arguments.response.data);
+			structDelete(arguments.response,'data');
 		}
 
 		if(isDefined('arguments.response.data.shunter') && arguments.response.data.shunter){
