@@ -1386,9 +1386,16 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			structDelete(response,'params');
 		}
 
-		if(!variables.useDataNamespaceForAPI && structKeyExists(arguments.response,'data') && isStruct(arguments.response.data)){
-			structAppend(arguments.response,arguments.response.data);
-			structDelete(arguments.response,'data');
+		if(structKeyExists(arguments.response,'data') && isStruct(arguments.response.data)){
+			if(isBoolean($.event('useDataNamespace')) ){
+				if(!$.event('useDataNamespace')){
+					structAppend(arguments.response,arguments.response.data);
+					structDelete(arguments.response,'data');
+				}
+			} else if(!variables.useDataNamespaceForAPI){
+				structAppend(arguments.response,arguments.response.data);
+				structDelete(arguments.response,'data');
+			}
 		}
 
 		if(isDefined('arguments.response.data.shunter') && arguments.response.data.shunter){
