@@ -23,8 +23,6 @@
 
 	var utility=Mura;
 
-	utility('mura-editable-label').show();
-
 	var adminProxy;
 
 	<cfif len($.globalConfig('admindomain'))>

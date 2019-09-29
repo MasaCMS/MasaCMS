@@ -524,6 +524,8 @@
 
 				//iframe.attr('src',iframe.data('preloadsrc'));
 
+				Mura('label.mura-editable-label').show()
+
 				obj.find('.mxp-editable').each(function() {
 					var item = Mura(this);
 

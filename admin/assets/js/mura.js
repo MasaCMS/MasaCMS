@@ -2269,6 +2269,7 @@ var Mura=(function(){
 
 	function resetAsyncObject(el,empty) {
 		var self = Mura(el);
+
 		if(typeof empty =='undefined'){
 			empty=true;
 		}
@@ -2301,15 +2302,8 @@ var Mura=(function(){
 
 			self.find('.mura-object[data-object="container"]').each(
 				function() {
-					var self = Mura(this);
-					var content = self.children('div.mura-object-content');
-
-					if (content.length && empty) {
-						self.data('content', content.html());
-					}
-					if(empty){
-						content.html('');
-					}
+					resetAsyncObject(this,empty);
+					
 				});
 
 			self.find('.mura-object-meta').html('');
@@ -3210,6 +3204,11 @@ var Mura=(function(){
 	function getBreakpoint(){
 		if(typeof document != 'undefined'){
 			var width=document.documentElement.clientWidth;
+			
+			if(Mura.editing){
+				width=width-300;
+			}
+		
 			if(width >=1200){
 				return 'lg';
 			} else if(width >=992){
@@ -3438,9 +3437,7 @@ var Mura=(function(){
 					Mura(document).on("keydown", function(event) {
 						loginCheck(event.which);
 					});
-
-					Mura('label.mura-editable-label').show();
-
+					
 					Mura.breakpoint=getBreakpoint();
 					Mura.windowResponsiveModules={};
 
@@ -17883,7 +17880,7 @@ Mura.DOMSelection = Mura.Core.extend(
 				var self=this;
 				function watcher(){
 					if(Mura.markupInitted){
-						Mura(self).append(el);
+						Mura(self).prepend(el);
 						Mura.processDisplayObject(el,true,true).then(resolve, reject);
 					} else {
 						setTimeout(watcher);
@@ -17941,7 +17938,7 @@ Mura.DOMSelection = Mura.Core.extend(
 			if (typeof el == 'string') {
 				this.insertAdjacentHTML('beforebegin', el);
 			} else {
-				this.parent.insertBefore(el,this);
+				this.parentNode.insertBefore(el,this);
 			}
 		});
 		return this;
@@ -18199,8 +18196,9 @@ Mura.DOMSelection = Mura.Core.extend(
 					break;
 				}
 			}
+			
 			var fullsize=breakpoints.indexOf('mura-' + Mura.getBreakpoint()) >= breakpoints.indexOf(objBreakpoint);
-
+		
 			Mura.windowResponsiveModules=Mura.windowResponsiveModules||{};
 			Mura.windowResponsiveModules[obj.data('instanceid')]=false;
 
@@ -18281,7 +18279,7 @@ Mura.DOMSelection = Mura.Core.extend(
 
 				if(styleSupport && objectstyles){
 					if(objectstyles && objectstyles.color){
-						var style=selector + ', ' + selector + ' label, ' + selector + ' p, ' + selector + ' h1, ' + selector + ' h2, ' + selector + ' h3, ' + selector + ' h4, ' + selector + ' h5, ' + selector + ' h6, ' +selector + ' a:link, ' + selector + ' a:visited, '  + selector + ' a:hover, ' + selector + ' a:active { color:' + objectstyles.color + ';} ';
+						var style=selector + ', ' + selector + ' label, ' + selector + ' p, ' + selector + ' h1, ' + selector + ' h2, ' + selector + ' h3, ' + selector + ' h4, ' + selector + ' h5, ' + selector + ' h6, ' +selector + ' a:link, ' + selector + ' a:visited, '  + selector + ' a:hover, ' + selector + ' .breadcrumb-item + .breadcrumb-item::before, ' + selector + ' a:active { color:' + objectstyles.color + ';} ';
 						sheet.insertRule(
 							style,
 							sheet.cssRules.length
@@ -18344,8 +18342,7 @@ Mura.DOMSelection = Mura.Core.extend(
 							var selector='div.mura-object[data-instanceid="' + obj.data('instanceid') + '"] .mura-object-meta';
 
 							if(metastyles && metastyles.color){
-
-								var style = selector + ', ' + selector + ' label, ' + selector + ' p, ' + selector + ' h1, ' + selector + ' h2, ' + selector + ' h3, ' + selector + ' h4, ' + selector + ' h5, ' + selector + ' h6, ' +selector + ' a:link, ' + selector + ' a:visited, '  + selector + ' a:hover, ' + selector + ' a:active { color:' + metastyles.color + ';} ';
+								var style=selector + ', ' + selector + ' label, ' + selector + ' p, ' + selector + ' h1, ' + selector + ' h2, ' + selector + ' h3, ' + selector + ' h4, ' + selector + ' h5, ' + selector + ' h6, ' +selector + ' a:link, ' + selector + ' a:visited, '  + selector + ' a:hover, ' + selector + ' .breadcrumb-item + .breadcrumb-item::before, ' + selector + ' a:active { color:' + metastyles.color + ';} ';
 								sheet.insertRule(
 									style,
 									sheet.cssRules.length
@@ -18399,7 +18396,7 @@ Mura.DOMSelection = Mura.Core.extend(
 			}
 
 			if(!windowResponse && contentstyles && contentstyles.color){
-				var style=	selector + ', ' + selector + ' label, ' + selector + ' p, ' + selector + ' h1, ' + selector + ' h2, ' + selector + ' h3, ' + selector + ' h4, ' + selector + ' h5, ' + selector + ' h6, ' +selector + ' a:link, ' + selector + ' a:visited, '  + selector + ' a:hover, ' + selector + ' a:active { color:' + contentstyles.color + ';} ';
+				var style=selector + ', ' + selector + ' label, ' + selector + ' p, ' + selector + ' h1, ' + selector + ' h2, ' + selector + ' h3, ' + selector + ' h4, ' + selector + ' h5, ' + selector + ' h6, ' +selector + ' a:link, ' + selector + ' a:visited, '  + selector + ' a:hover, ' + selector + ' .breadcrumb-item + .breadcrumb-item::before, ' + selector + ' a:active { color:' + contentstyles.color + ';} ';
 				sheet.insertRule(
 					style,
 					sheet.cssRules.length
@@ -18441,52 +18438,50 @@ Mura.DOMSelection = Mura.Core.extend(
 				}
 			}
 
-			var width='100%';
-
-			if(obj.is('.mura-one')){
-				width='8.33%';
-			} else if(obj.is('.mura-two')){
-				width='16.66%';
-			} else if(obj.is('.mura-three')){
-				width='25%';
-			} else if(obj.is('.mura-four')){
-				width='33.33%';
-			} else if(obj.is('.mura-five')){
-				width='41.66%';
-			} else if(obj.is('.mura-six')){
-				width='50%';
-			} else if(obj.is('.mura-seven')){
-				width='58.33';
-			} else if(obj.is('.mura-eigth')){
-				width='66.66%';
-			} else if(obj.is('.mura-nine')){
-				width='75%';
-			} else if(obj.is('.mura-ten')){
-				width='83.33%';
-			} else if(obj.is('.mura-eleven')){
-				width='91.66%';
-			} else if(obj.is('.mura-twelve')){
-				width='100%';
-			} else if(obj.is('.mura-one-third')){
-				width='33.33%';
-			} else if(obj.is('.mura-two-thirds')){
-				width='66.66%';
-			} else if(obj.is('.mura-one-half')){
-				width='50%';
-			} else {
-				width='100%';
-			}
-
 			var left=obj.css('marginLeft');
 			var right=obj.css('marginRight')
-
+			
 			if(!obj.is('.mura-center') && !(left=='0px' && right=='0px') && !(left=='auto' || right=='auto') && left.charAt(0) != "-" && right.charAt(0) != "-"){
 				if(fullsize){
+					var width='100%';
+
+					if(obj.is('.mura-one')){
+						width='8.33%';
+					} else if(obj.is('.mura-two')){
+						width='16.66%';
+					} else if(obj.is('.mura-three')){
+						width='25%';
+					} else if(obj.is('.mura-four')){
+						width='33.33%';
+					} else if(obj.is('.mura-five')){
+						width='41.66%';
+					} else if(obj.is('.mura-six')){
+						width='50%';
+					} else if(obj.is('.mura-seven')){
+						width='58.33';
+					} else if(obj.is('.mura-eigth')){
+						width='66.66%';
+					} else if(obj.is('.mura-nine')){
+						width='75%';
+					} else if(obj.is('.mura-ten')){
+						width='83.33%';
+					} else if(obj.is('.mura-eleven')){
+						width='91.66%';
+					} else if(obj.is('.mura-twelve')){
+						width='100%';
+					} else if(obj.is('.mura-one-third')){
+						width='33.33%';
+					} else if(obj.is('.mura-two-thirds')){
+						width='66.66%';
+					} else if(obj.is('.mura-one-half')){
+						width='50%';
+					} else {
+						width='100%';
+					}
 					obj.css('width','calc(' + width + ' - (' + left + ' + ' + right + '))');
 				}
 				Mura.windowResponsiveModules[obj.data('instanceid')]=true;
 			}
-
 
 			if(obj.css('paddingTop').replace(/[^0-9]/g,'') != '0' || obj.css('paddingLeft').replace(/[^0-9]/g,'') != '0'){
 				obj.addClass('mura-object-pin-tools');
