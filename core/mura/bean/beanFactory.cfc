@@ -223,7 +223,7 @@ component extends="ioc" hint="This provides the primary bean factory that all co
 
       if(len(arguments.siteid)){
         getBean('configBean').registerBean(
-          componentPath="murawrm.modules.dynamic_entities.model.beans.#arguments.entityname#",
+          componentPath="muraWRM.modules.dynamic_entities.model.beans.#arguments.entityname#",
           siteid=arguments.siteid,
           moduleid="00000000000000000000000000000000000",
           forceSchemaCheck=true

@@ -204,7 +204,7 @@ try {
 	hasPluginMappings=false;
 }
 this.mappings["/cfformprotect"] = variables.baseDir & "/core/vendor/cfformprotect";
-this.mappings["/murawrm/tasks/widgets/cfformprotect"] = variables.baseDir & "core/vendor/cfformprotect";
+this.mappings["/muraWRM/tasks/widgets/cfformprotect"] = variables.baseDir & "core/vendor/cfformprotect";
 request.userAgent = LCase( CGI.http_user_agent );
 if ( !this.sessionManagement ) {
 	request.muraSessionManagement=false;

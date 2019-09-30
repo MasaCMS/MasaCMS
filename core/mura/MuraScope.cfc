@@ -414,7 +414,7 @@ function getThemeRenderer() output=false {
 		hashKey=hash(arguments.staticDirectory);
 		if ( !structKeyExists(application.cfstatic,hashKey) ) {
 			if ( !len(arguments.staticUrl) ) {
-				arguments.staticUrl=replace(globalConfig("context") & right(arguments.staticDirectory,len(arguments.staticDirectory)-len(expandPath("/murawrm"))), "\","/","all");
+				arguments.staticUrl=replace(globalConfig("context") & right(arguments.staticDirectory,len(arguments.staticDirectory)-len(expandPath("/muraWRM"))), "\","/","all");
 			}
 			if ( !directoryExists(arguments.staticDirectory & "/compiled") ) {
 				getBean("fileWriter").createDir(arguments.staticDirectory & "/compiled");

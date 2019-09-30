@@ -930,9 +930,9 @@ if ( application.setupComplete ) {
 	commitTracePoint(variables.tracePoint);
 
 	//These were added to remove previous resource bundles tha were two specific
-	if(fileExists(expandPath("/murawrm/core/mura/resourceBundle/resources/en_US.properties"))){
+	if(fileExists(expandPath("/muraWRM/core/mura/resourceBundle/resources/en_US.properties"))){
 		local.fileWriter=application.Mura.getBean('fileWriter');
-		local.rs=application.Mura.getBean('fileWriter').getDirectoryList(expandPath("/murawrm/core/mura/resourceBundle/resources/"));
+		local.rs=application.Mura.getBean('fileWriter').getDirectoryList(expandPath("/muraWRM/core/mura/resourceBundle/resources/"));
 		for(local.i=1;local.i <= local.rs.recordcount;local.i++){
 			if(listLen(listFirst(local.rs.name[local.i],'.'),'_') > 1){
 				fileDelete(local.rs.directory[local.i] & "/" & local.rs.name[local.i]);
@@ -940,9 +940,9 @@ if ( application.setupComplete ) {
 		}
 	}
 
-	if(fileExists(expandPath("/murawrm/core/modules/v1/core_assets/resource_bundles/en_US.properties"))){
+	if(fileExists(expandPath("/muraWRM/core/modules/v1/core_assets/resource_bundles/en_US.properties"))){
 		local.fileWriter=application.Mura.getBean('fileWriter');
-		local.rs=application.Mura.getBean('fileWriter').getDirectoryList(expandPath("/murawrm/core/modules/v1/core_assets/resource_bundles/"));
+		local.rs=application.Mura.getBean('fileWriter').getDirectoryList(expandPath("/muraWRM/core/modules/v1/core_assets/resource_bundles/"));
 		for(local.i=1;local.i <= local.rs.recordcount;local.i++){
 			if(listLen(listFirst(local.rs.name[local.i],'.'),'_') > 1 && !listFind('zh_TW.properties,zh_CN.properties',local.rs.name[local.i])){
 				fileDelete(local.rs.directory[local.i] & "/" & local.rs.name[local.i]);
