@@ -334,9 +334,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfif>
 
+		<!---
 		<cfif directoryExists("#variables.configBean.getSiteDir()#/#bean.getSiteID()#")>
 			<cfthrow message="A directory with the same name as the SiteID you entered is already being used.">
 		</cfif>
+		--->
 
 		<cfset variables.utility.logEvent("SiteID:#bean.getSiteID()# Site:#bean.getSite()# was created","mura-settings","Information",true) />
 		<cfif structKeyExists(arguments.data,"extendSetID") and len(arguments.data.extendSetID)>
