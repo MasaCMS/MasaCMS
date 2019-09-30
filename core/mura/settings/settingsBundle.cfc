@@ -233,7 +233,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		--->
 
 		<cfif arguments.bundleMode neq 'plugin' and len(arguments.siteID)>
+			<!---
 			<cfset  getBean("fileManager").cleanFileCache(arguments.siteID)>
+			--->
 			<cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#sitefiles.zip",directory=siteRoot,recurse="true",sinceDate=arguments.sinceDate)>
 
 			<!--- If the theme does not live in the site directory add it from the global directory --->
@@ -374,8 +376,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 
 		<cfif len(arguments.siteID)>
+			<!---
 			<cfset  getBean("fileManager").cleanFileCache(arguments.siteID)>
-
+			--->
 			<cfset var assetdir=variables.configBean.getValue('assetdir') & '/' & getBean('settingsManager').getSite(arguments.siteid).getFilePoolID() />
 			<cfset var filedir=variables.configBean.getValue('filedir') & '/' & getBean('settingsManager').getSite(arguments.siteid).getFilePoolID() />
 			<cfset var bodyFileArray=[]>
