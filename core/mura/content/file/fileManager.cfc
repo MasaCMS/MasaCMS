@@ -1020,6 +1020,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfset cropper=imageRead(source)>
 
+		<!---
+			This a workaround to ensure jpegs can be process 
+			https://luceeserver.atlassian.net/browse/LDEV-1874
+		--->
+		<cfif listFindNoCase('jpg,jpeg',rsMeta.fileExt)>
+			<cfset var origCropper=cropper>
+			<cfset cropper = imageNew("", origCropper.width, origCropper.height, "rgb") />
+			<cfset imagePaste(cropper, origCropper, 0, 0) />
+		</cfif>
+
 		<cfif isDefined('arguments.x')>
 			<cfset imageCrop(cropper,arguments.x,arguments.y,arguments.width,arguments.height)>
 			<cfset ImageWrite(cropper,file,variables.configBean.getImageQuality())>
