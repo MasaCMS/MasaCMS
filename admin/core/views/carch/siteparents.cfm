@@ -87,7 +87,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset counter=counter+1/>
 			</cfif>
 		</cfif>
-    	<cfoutput query="rc.rslist" startrow="1" maxrows="100">
+    	<cfoutput query="rc.rslist" startrow="1" maxrows="150">
 				<cfif rc.rslist.contentid neq rc.parentid>
 					<cfset crumbdata=application.contentManager.getCrumbList(rc.rslist.contentid, rc.siteid)/>
 			    <cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
