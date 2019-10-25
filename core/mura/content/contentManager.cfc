@@ -459,7 +459,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 
 			<cfif useCache>
-				<cfset key="filename" & arguments.siteid & arguments.filename  & arguments.type/>
+				<cfset key="filename" & arguments.siteid & lcase(arguments.filename)  & arguments.type/>
 
 				<!--- check to see if it is cached. if not then pass in the context --->
 				<!--- otherwise grab it from the cache --->
@@ -505,7 +505,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
 		<cfargument name="contentBean" required="true" default="">
 		<cfargument name="type" required="yes" default=""/>
-		<cfset var key="remoteID" & arguments.siteid & arguments.remoteID  & arguments.type/>
+		<cfset var key="remoteID" & arguments.siteid & lcase(arguments.remoteID)  & arguments.type/>
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
 		<cfset var cacheFactory=site.getCacheFactory(name="data")/>
 		<cfset var bean=arguments.contentBean/>
@@ -573,7 +573,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
 		<cfargument name="contentBean" required="true" default="">
 		<cfargument name="type" required="yes" default=""/>
-		<cfset var key="title" & arguments.siteid & arguments.title  & arguments.type/>
+		<cfset var key="title" & arguments.siteid & lcase(arguments.title)  & arguments.type/>
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
 		<cfset var cacheFactory=site.getCacheFactory(name="data")/>
 		<cfset var bean=arguments.contentBean/>
@@ -641,7 +641,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
 		<cfargument name="contentBean" required="true" default="">
 		<cfargument name="type" required="yes" default=""/>
-		<cfset var key="urltitle" & arguments.siteid & arguments.urltitle  & arguments.type/>
+		<cfset var key="urltitle" & arguments.siteid & lcase(arguments.urltitle)  & arguments.type/>
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
 		<cfset var cacheFactory=site.getCacheFactory(name="data")/>
 		<cfset var bean=arguments.contentBean/>
@@ -2846,15 +2846,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset purgeContentCacheKey(cache, "crumb"  & arguments.contentBean.getSiteID() & arguments.contentBean.getContentID(),false)>
 
 		<cfif len(arguments.contentBean.getRemoteID())>
-			<cfset purgeContentCacheKey(cache,"remoteID" & arguments.contentBean.getSiteID() & arguments.contentBean.getRemoteID())>
+			<cfset purgeContentCacheKey(cache,"remoteID" & arguments.contentBean.getSiteID() & lcase(arguments.contentBean.getRemoteID()))>
 		</cfif>
 
 		<cfif len(arguments.contentBean.getFilename()) or arguments.contentBean.getContentID() eq "00000000000000000000000000000000001">
-			<cfset purgeContentCacheKey(cache,"filename" & arguments.contentBean.getSiteID() & arguments.contentBean.getFilename())>
+			<cfset purgeContentCacheKey(cache,"filename" & arguments.contentBean.getSiteID() & lcase(arguments.contentBean.getFilename()))>
 		</cfif>
 
-		<cfset purgeContentCacheKey(cache,"title" & arguments.contentBean.getSiteID() & arguments.contentBean.getTitle())>
-		<cfset purgeContentCacheKey(cache,"urltitle" & arguments.contentBean.getSiteID() & arguments.contentBean.getURLTitle())>
+		<cfset purgeContentCacheKey(cache,"title" & arguments.contentBean.getSiteID() & lcase(arguments.contentBean.getTitle()))>
+		<cfset purgeContentCacheKey(cache,"urltitle" & arguments.contentBean.getSiteID() & lcase(arguments.contentBean.getURLTitle()))>
 
 		<cfset history=arguments.contentBean.getVersionHistoryIterator()>
 
