@@ -162,22 +162,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif not isNumeric(variables.$.event('year'))>
 					<cfset variables.$.event('year',year(now()))>
 				</cfif>
-
+				<cfset args=structCopy(objectParams)>
 				<cfif isNumeric(variables.$.event('day')) and variables.$.event('day')
 					and variables.$.event('filterBy') eq "releaseDate">
-					<cfset objectParams.type="releaseDate">
-					<cfset objectParams.today=createDate(variables.$.event('year'),variables.$.event('month'),variables.$.event('day'))>
+					<cfset args.type="releaseDate">
+					<cfset args.today=createDate(variables.$.event('year'),variables.$.event('month'),variables.$.event('day'))>
 				<cfelseif variables.$.event('filterBy') eq "releaseMonth">
-					<cfset objectParams.type="releaseMonth">
-					<cfset objectParams.today=createDate(variables.$.event('year'),variables.$.event('month'),1)>
+					<cfset args.type="releaseMonth">
+					<cfset args.today=createDate(variables.$.event('year'),variables.$.event('month'),1)>
 				<cfelseif variables.$.event('filterBy') eq "releaseYear">
-					<cfset objectParams.type="releaseYear">
-					<cfset objectParams.today=createDate(variables.$.event('year'),1,1)>
+					<cfset args.type="releaseYear">
+					<cfset args.today=createDate(variables.$.event('year'),1,1)>
 				<cfelse>
-					<cfset objectParams.today=now()>
-					<cfset objectParams.type="default">
+					<cfset args.today=now()>
+					<cfset args.type="default">
 				</cfif>
-				<cfset objectParams.categoryid=$.event('categoryid')>
+				<cfset args.categoryid=$.event('categoryid')>
 
 				<cfset variables.maxPortalItems=variables.$.globalConfig("maxPortalItems")>
 				<cfif not isNumeric(variables.maxPortalItems)>
@@ -185,21 +185,36 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 
 				<cfif variables.$.siteConfig('extranet') eq 1 and variables.$.event('r').restrict eq 1>
-					<cfset objectParams.applyPermFilter=true/>
+					<cfset args.applyPermFilter=true/>
 				<cfelse>
-					<cfset objectParams.applyPermFilter=false/>
+					<cfset args.applyPermFilter=false/>
 				</cfif>
 
 				<cfif not len(objectParams.sortBy)>
-					<cfset objectParams.sortBy=$.content('sortBy')>
+					<cfset args.sortBy=$.content('sortBy')>
 				</cfif>
 
 				<cfif not len(objectParams.sortDirection)>
-					<cfset objectParams.sortDirection=$.content('sortDirection')>
+					<cfset args.sortDirection=$.content('sortDirection')>
 				</cfif>
 
-				<cfset iterator=$.content().set(objectParams).setType('Folder').getKidsIterator(argumentCollection=objectParams)>
-				<cfset iterator.setNextN(objectParams.nextn)>
+				<cfset args.parentid=$.content('contentid')>
+				<cfset args.siteid=$.content('siteid')>
+				<cfset args.type='Folder'>
+
+				<cfif not (structkeyExists(objectParams,'targetattr') and objectParams.targetattr eq 'objectparams') and isNumeric(objectParams.maxItems)>
+					<cfset args.size=objectParams.maxItems>
+				<cfelse>
+					<cfset args.size=variables.maxPortalItems>
+					<cfset objectParams.maxItems="">
+				</cfif>
+
+				<cfif not isNumeric(args.size) or not args.size or args.size gt variables.maxPortalItems>
+					<cfset args.size=variables.maxPortalItems>
+				</cfif>
+				
+				<cfset iterator=$.getBean('contentManager').getKidsIterator(argumentCollection=args)>
+				<cfset iterator.setNextN(objectParams.nextN)>
 				<cfset iterator.setStartRow(variables.$.event('startrow'))>
 
 			</cfcase>
