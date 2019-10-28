@@ -985,6 +985,11 @@
 			<cfparam name="arguments.objectparams.contentcssid" default="">
 			<cfparam name="arguments.objectparams.contentcssstyles" default="">
 
+			<!--- Secondary check that contentcssid is defined per ACF12 patch bug--->
+			<cfif not isdefined('arguments.objectparams.contentcssid')>
+				<cfset arguments.objectparams.contentcssid="">
+			</cfif>
+			
 			<cfif arguments.returnFormat eq 'struct'>
 				<cfif len(arguments.content)>
 					<cfreturn {
