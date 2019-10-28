@@ -985,7 +985,6 @@
 			<cfparam name="arguments.objectparams.contentcssid" default="">
 			<cfparam name="arguments.objectparams.contentcssstyles" default="">
 
-
 			<cfif arguments.returnFormat eq 'struct'>
 				<cfif len(arguments.content)>
 					<cfset var returnStruct={
