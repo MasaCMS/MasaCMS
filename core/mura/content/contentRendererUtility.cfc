@@ -985,23 +985,20 @@
 			<cfparam name="arguments.objectparams.contentcssid" default="">
 			<cfparam name="arguments.objectparams.contentcssstyles" default="">
 
-			<!--- Secondary check that contentcssid is defined per ACF12 patch bug--->
-			<cfif not isdefined('arguments.objectparams.contentcssid')>
-				<cfset arguments.objectparams.contentcssid="">
-			</cfif>
-			
+
 			<cfif arguments.returnFormat eq 'struct'>
 				<cfif len(arguments.content)>
-					<cfreturn {
+					<cfset var returnStruct={
 								header=openingDiv & '<div id="#esapiEncode('html_attr',trim(arguments.objectparams.contentcssid))#" class="#esapiEncode('html_attr',trim('mura-object-content #arguments.objectparams.contentcssclass#'))#" style="#$.renderCssStyles(objectparams.contentcssstyles)#">',
 								footer="</div></div>"
 							}>
 				<cfelse>
-					<cfreturn {
+					<cfset var returnStruct={
 								header=openingDiv,
 								footer="</div>"
 							}>
 				</cfif>
+				<cfreturn returnStruct>
 			<cfelse>
 				<cfif len(arguments.content)>
 					<cfreturn openingDiv & '<div id="#esapiEncode('html_attr',trim(arguments.objectparams.contentcssid))#" class="#esapiEncode('html_attr',trim('mura-object-content #arguments.objectparams.contentcssclass#'))#" style="#$.renderCssStyles(objectparams.contentcssstyles)#">' & arguments.content & '</div></div>'>
