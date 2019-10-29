@@ -54,11 +54,19 @@ component extends="mura.cfobject" output="false" hint="This is used by advanced 
 
 	public any function init(name,siteid){
 
-		variables.cacheName=arguments.siteID & "-" & arguments.name;
+		var cachePrefix=getBean('configBean').get('AdvancedCachePrefix');
 
+		variables.cacheName=arguments.siteID & "-" &arguments.name;
+		
+		if(len(cachePrefix)){
+			variables.cacheName=cachePrefix & "-" & variables.cacheName;
+		}
+
+		/*
         if(!cacheRegionExists(variables.cacheName) ) {
 			cacheRegionNew(variables.cacheName);
 		}
+		*/
 
 		return this;
 	}
