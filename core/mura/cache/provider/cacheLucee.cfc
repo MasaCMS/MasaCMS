@@ -59,9 +59,8 @@ component extends="mura.cfobject" output="false" hint="This is used by advanced 
 			variables.cacheName=cachePrefix & "-" & variables.cacheName;
 		}
 
-
 		/*
-    if(!cacheRegionExists(variables.cacheName) ) {
+    	if(!cacheRegionExists(variables.cacheName) ) {
 			cacheRegionNew(variables.cacheName);
 		}
 		*/
