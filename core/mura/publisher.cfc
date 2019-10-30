@@ -3891,6 +3891,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="toAssetDir" required="yes" default="#application.configBean.getAssetDir()#">
 		<cfargument name="fromAssetPath" required="yes" default="#application.configBean.getAssetPath()#">
 		<cfargument name="toAssetPath" required="yes" default="#application.configBean.getAssetPath()#">
+		<cfargument name="fromSiteDir" required="yes" default="#application.configBean.getSiteDir()#">
+		<cfargument name="toSiteDir" required="yes" default="#application.configBean.getSiteDir()#">
 
 		<cfset var i=""/>
 		<cfset var j=""/>
@@ -3922,43 +3924,43 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<!---</cfthread>--->
 
 		<!---<cfthread action="run" name="thread1">--->
-			<cfset application.utility.copyDir("#fromWebRoot##fileDelim##fromsiteid##fileDelim#", "#toWebRoot##fileDelim##tositeid##fileDelim#","cache#fileDelim#file") />
+			<cfset application.utility.copyDir("#arguments.fromSiteDir##fileDelim##arguments.fromsiteid##fileDelim#", "#arguments.toSiteDir##fileDelim##arguments.tositeid##fileDelim#","cache#fileDelim#file") />
 		<!---</cfthread>--->
 
 		<cfif arguments.fromWebRoot neq arguments.toWebRoot>
 			<cfloop query="rsPlugins">
 				<!---<cfthread action="run" name="thread2#rsPlugins.currentRow#">--->
-					<cfset application.utility.copyDir("#fromWebRoot##fileDelim#plugins#fileDelim##rsPlugins.directory##fileDelim#", "#toWebRoot##fileDelim#plugins#fileDelim##rsPlugins.directory##fileDelim#") />
+					<cfset application.utility.copyDir("#arguments.fromWebRoot##fileDelim#plugins#fileDelim##rsPlugins.directory##fileDelim#", "#arguments.toWebRoot##fileDelim#plugins#fileDelim##rsPlugins.directory##fileDelim#") />
 				<!---</cfthread>--->
 			</cfloop>
 		</cfif>
 
 		<!---<cfif fromWebRoot neq fromFileDir>--->
 			<!---<cfthread action="run" name="thread3">--->
-				<cfset copySiteFiles("#fromFileDir##fileDelim##fromsiteid##fileDelim#cache#fileDelim#file#fileDelim#", "#toFileDir##fileDelim##tositeid##fileDelim#cache#fileDelim#file#fileDelim#",keys, "", arguments.fromsiteid, arguments.tositeid) />
+				<cfset copySiteFiles("#arguments.fromFileDir##fileDelim##arguments.fromsiteid##fileDelim#cache#fileDelim#file#fileDelim#", "#arguments.toFileDir##fileDelim##arguments.tositeid##fileDelim#cache#fileDelim#file#fileDelim#",keys, "", arguments.fromsiteid, arguments.tositeid) />
 			<!---</cfthread>--->
 		<!---</cfif>--->
 
 		<!---<cfif arguments.toWebRoot neq arguments.toAssetDir>--->
 			<!---<cfthread action="run" name="thread4">--->
 
-			<cfset application.utility.copyDir("#fromAssetDir##fileDelim##fromsiteid##fileDelim#assets#fileDelim#", "#toAssetDir##fileDelim##tositeid##fileDelim#assets#fileDelim#") />
+			<cfset application.utility.copyDir("#arguments.fromAssetDir##fileDelim##arguments.fromsiteid##fileDelim#assets#fileDelim#", "#arguments.toAssetDir##fileDelim##arguments.tositeid##fileDelim#assets#fileDelim#") />
 
 			<!---</cfthread>--->
 		<!---</cfif>--->
-		
+
 		<!---
 		<cfthread action="join" name="thread0" />
 		--->
 		<!---<cfthread action="run" name="thread5">--->
 			<cfif fromAssetPath neq toAssetPath>
-				<cfset application.contentUtility.findAndReplace("#fromAssetPath#/", "#toAssetPath#/", "#toSiteID#")>
+				<cfset application.contentUtility.findAndReplace("#arguments.fromAssetPath#/", "#arguments.toAssetPath#/", "#arguments.toSiteID#")>
 			</cfif>
 		<!---</cfthread>--->
 
 		<!---<cfthread action="run" name="thread6">--->
 			<!---<cfif fromSiteID neq toSiteID>--->
-				<cfset application.contentUtility.findAndReplace("/#fromsiteID#/", "/#toSiteID#/", "#toSiteID#")>
+				<cfset application.contentUtility.findAndReplace("/#arguments.fromsiteID#/", "/#arguments.toSiteID#/", "#arguments.toSiteID#")>
 			<!---</cfif>--->
 		<!---</cfthread>--->
 
