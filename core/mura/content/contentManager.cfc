@@ -2677,7 +2677,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="bean" required="true">
 		<cfargument name="usePlaceholder" required="true" default="true">
 
-		<cfreturn return len(arguments.bean.getValue('fileID')) && listFindNoCase('jpg,jpeg,png,gif,svg',arguments.bean.getValue('fileEXT')) || arguments.usePlaceholder && len(variables.settingsManager.getSite(arguments.bean.getValue('siteid')).getPlaceholderImgID())>
+		<cfreturn len(arguments.bean.getValue('fileID')) && listFindNoCase('jpg,jpeg,png,gif,svg',arguments.bean.getValue('fileEXT')) || arguments.usePlaceholder && len(variables.settingsManager.getSite(arguments.bean.getValue('siteid')).getPlaceholderImgID())>
 	</cffunction>
 
 	<cffunction name="getImageURL" output="false">
