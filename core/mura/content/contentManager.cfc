@@ -2673,6 +2673,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn variables.settingsManager.getSite(arguments.bean.getValue("siteID")).getContentRenderer().createHREF(arguments.bean.getValue("type"), arguments.bean.getValue("filename"), arguments.bean.getValue("siteID"), arguments.bean.getValue("contentID"), arguments.bean.getValue("target"), arguments.bean.getValue("targetParams"), arguments.queryString, application.configBean.getContext(), application.configBean.getStub(), application.configBean.getIndexFile(), arguments.complete, arguments.showMeta, arguments.bean, arguments.secure)>
 	</cffunction>
 
+	<cffunction name="hasImage" output="false">
+		<cfargument name="bean" required="true">
+		<cfargument name="usePlaceholder" required="true" default="true">
+
+		<cfreturn return len(arguments.bean.getValue('fileID')) && listFindNoCase('jpg,jpeg,png,gif,svg',arguments.bean.getValue('fileEXT')) || arguments.usePlaceholder && len(variables.settingsManager.getSite(arguments.bean.getValue('siteid')).getPlaceholderImgID())>
+	</cffunction>
+
 	<cffunction name="getImageURL" output="false">
 		<cfargument name="bean" required="true">
 		<cfargument name="size" required="true" default="undefined">

@@ -1457,7 +1457,7 @@ component extends="mura.bean.beanExtendable" entityName="content" table="tconten
 	}
 
 	public function hasImage(usePlaceholder="true") {
-		return len(getValue('fileID')) && listFindNoCase('jpg,jpeg,png,gif,svg',getValue('fileEXT')) || arguments.usePlaceholder && len(variables.settingsManager.getSite(getValue('siteid')).getPlaceholderImgId());
+		return variables.contentManager.hasImage(bean=this,usePlaceholder=arguments.usePlaceholder);
 	}
 
 	public function getStatusID() output=false {
