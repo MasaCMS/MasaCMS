@@ -289,17 +289,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif variables.configBean.getValue('assetdir') neq variables.configBean.getSiteDir()>
 				<cfset zipDir = variables.configBean.getValue('assetdir') & '/' & filePoolID />
 				<cffile action="write" file="#zipDir#/blank.txt" output="empty file" />
-				<!--- <cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#assetfiles.zip",directory=zipDir,recurse="true",sinceDate=arguments.sinceDate,excludeDirs="cache")> --->
+				<cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#assetfiles.zip",directory=zipDir,recurse="true",sinceDate=arguments.sinceDate,excludeDirs="cache")>
+				<!---
 				<cfzip action="zip" source="#zipDir#" file="#variables.backupDir#assetfiles.zip" recurse="true">
 				<cfzip action="delete" file="#variables.backupDir#assetfiles.zip" entryPath="cache">
-			</cfif>
+				--->
+				</cfif>
 			<cfif variables.configBean.getValue('filedir') neq variables.configBean.getSiteDir()>
 				<cfset zipDir = variables.configBean.getValue('filedir') & '/' & filePoolID />
 				<cffile action="write" file="#zipDir#/blank.txt" output="empty file" />
-				<!--- <cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#filefiles.zip",directory=zipDir,recurse="true",sinceDate=arguments.sinceDate,excludeDirs="assets")> --->
+				<cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#filefiles.zip",directory=zipDir,recurse="true",sinceDate=arguments.sinceDate,excludeDirs="assets")>
+				<!---
 				<cfzip action="zip" source="#zipDir#" file="#variables.backupDir#filefiles.zip" recurse="true">
 				<cfzip action="delete" file="#variables.backupDir#filefiles.zip" entryPath="assets">
-
+				--->
 				<cfif len(deleteList)>
 					<cfset variables.zipTool.deleteFiles(zipFilePath="#variables.backupDir#filefiles.zip",files="#deleteList#")>
 				</cfif>
