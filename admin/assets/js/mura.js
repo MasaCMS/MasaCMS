@@ -2905,10 +2905,24 @@ var Mura=(function(){
 								self.innerHTML = Mura.preloaderMarkup;
 							}
 						}
+
+						var requestType='get';
+						var requestData=filterUnwantedParams(data);
+						var postCheck=new RegExp(/<\/?[a-z][\s\S]*>/i);
+
+						for(var p in requestData){
+							if(requestData.hasOwnProperty(p) 
+								&& requestData[p]
+								&& postCheck.test(requestData[p])
+							){
+								requestType='post';
+								break;
+							}
+						}
 						ajax({
 							url: Mura.apiEndpoint + '?method=processAsyncObject',
-							type: 'get',
-							data: filterUnwantedParams(data),
+							type: requestType,
+							data: requestData,
 							success: function(resp) {
 								handleResponse(obj,resp);
 								if (typeof resolve =='function') {
@@ -7684,11 +7698,11 @@ var _exception = __webpack_require__(54);
 
 var _exception2 = _interopRequireDefault(_exception);
 
-var _helpers = __webpack_require__(361);
+var _helpers = __webpack_require__(362);
 
-var _decorators = __webpack_require__(369);
+var _decorators = __webpack_require__(370);
 
-var _logger = __webpack_require__(371);
+var _logger = __webpack_require__(372);
 
 var _logger2 = _interopRequireDefault(_logger);
 
@@ -13365,6 +13379,7 @@ __webpack_require__(355);
 __webpack_require__(356);
 __webpack_require__(357);
 __webpack_require__(358);
+__webpack_require__(359);
 
 if(Mura.isInNode()){
 	/*
@@ -18353,6 +18368,10 @@ Mura.DOMSelection = Mura.Core.extend(
 							selector + ' * {color:inherit}',
 							sheet.cssRules.length
 						);
+						sheet.insertRule(
+							selector + ' hr { border-color:' + objectstyles.color + ';}',
+							sheet.cssRules.length
+						);
 					}
 				}
 
@@ -18416,6 +18435,10 @@ Mura.DOMSelection = Mura.Core.extend(
 									selector + ' * {color:inherit}',
 									sheet.cssRules.length
 								);
+								sheet.insertRule(
+									selector + ' hr { border-color:' + metastyles.color + ';}',
+									sheet.cssRules.length
+								);
 							}
 						}
 
@@ -18468,6 +18491,10 @@ Mura.DOMSelection = Mura.Core.extend(
 				);
 				sheet.insertRule(
 					selector + ' * {color:inherit}',
+					sheet.cssRules.length
+				);
+				sheet.insertRule(
+					selector + ' hr { border-color:' + contentstyles.color + ';}',
 					sheet.cssRules.length
 				);
 			}
@@ -20861,6 +20888,36 @@ Mura.DisplayObject.Text=Mura.UI.Text;
 
 var Mura=__webpack_require__(9);
 /**
+ * Creates a new Mura.UI.Text
+ * @name  Mura.UI.Hr
+ * @class
+ * @extends Mura.UI
+ * @memberof  Mura
+ */
+
+Mura.UI.Hr=Mura.UI.extend(
+/** @lends Mura.DisplayObject.Hr.prototype */
+{
+	renderClient:function(){
+		Mura(this.context.targetEl).html("<hr>");
+		this.trigger('afterRender');
+	},
+
+	renderServer:function(){
+        return "<hr>";
+	
+	}
+});
+
+Mura.DisplayObject.Hr=Mura.UI.Hr;
+
+
+/***/ }),
+/* 356 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Mura=__webpack_require__(9);
+/**
  * Creates a new Mura.UI.Embed
  * @name  Mura.UI.Embed
  * @class
@@ -20885,7 +20942,7 @@ Mura.DisplayObject.Embed=Mura.UI.Embed;
 
 
 /***/ }),
-/* 356 */
+/* 357 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Mura=__webpack_require__(9);
@@ -20915,7 +20972,7 @@ Mura.DisplayObject.Image=Mura.UI.Image;
 
 
 /***/ }),
-/* 357 */
+/* 358 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Mura=__webpack_require__(9);
@@ -21079,12 +21136,12 @@ Mura.Module.Collection=Mura.UI.Collection;
 
 
 /***/ }),
-/* 358 */
+/* 359 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 var Mura=__webpack_require__(9);
-var Handlebars=__webpack_require__(359);
+var Handlebars=__webpack_require__(360);
 Mura.Handlebars=Handlebars.create();
 Mura.templatesLoaded=false;
 Handlebars.noConflict();
@@ -21144,20 +21201,20 @@ Mura.templates['image']=function(context){
 	return source;
 }
 
-__webpack_require__(375);
-
-
-/***/ }),
-/* 359 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// Create a simple path alias to allow browserify to resolve
-// the runtime on a supported path.
-module.exports = __webpack_require__(360)['default'];
+__webpack_require__(376);
 
 
 /***/ }),
 /* 360 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// Create a simple path alias to allow browserify to resolve
+// the runtime on a supported path.
+module.exports = __webpack_require__(361)['default'];
+
+
+/***/ }),
+/* 361 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21179,7 +21236,7 @@ var base = _interopRequireWildcard(_handlebarsBase);
 // Each of these augment the Handlebars object. No need to setup here.
 // (This is done to easily share code between commonjs and browse envs)
 
-var _handlebarsSafeString = __webpack_require__(372);
+var _handlebarsSafeString = __webpack_require__(373);
 
 var _handlebarsSafeString2 = _interopRequireDefault(_handlebarsSafeString);
 
@@ -21191,11 +21248,11 @@ var _handlebarsUtils = __webpack_require__(30);
 
 var Utils = _interopRequireWildcard(_handlebarsUtils);
 
-var _handlebarsRuntime = __webpack_require__(373);
+var _handlebarsRuntime = __webpack_require__(374);
 
 var runtime = _interopRequireWildcard(_handlebarsRuntime);
 
-var _handlebarsNoConflict = __webpack_require__(374);
+var _handlebarsNoConflict = __webpack_require__(375);
 
 var _handlebarsNoConflict2 = _interopRequireDefault(_handlebarsNoConflict);
 
@@ -21230,7 +21287,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 361 */
+/* 362 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21242,31 +21299,31 @@ exports.registerDefaultHelpers = registerDefaultHelpers;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _helpersBlockHelperMissing = __webpack_require__(362);
+var _helpersBlockHelperMissing = __webpack_require__(363);
 
 var _helpersBlockHelperMissing2 = _interopRequireDefault(_helpersBlockHelperMissing);
 
-var _helpersEach = __webpack_require__(363);
+var _helpersEach = __webpack_require__(364);
 
 var _helpersEach2 = _interopRequireDefault(_helpersEach);
 
-var _helpersHelperMissing = __webpack_require__(364);
+var _helpersHelperMissing = __webpack_require__(365);
 
 var _helpersHelperMissing2 = _interopRequireDefault(_helpersHelperMissing);
 
-var _helpersIf = __webpack_require__(365);
+var _helpersIf = __webpack_require__(366);
 
 var _helpersIf2 = _interopRequireDefault(_helpersIf);
 
-var _helpersLog = __webpack_require__(366);
+var _helpersLog = __webpack_require__(367);
 
 var _helpersLog2 = _interopRequireDefault(_helpersLog);
 
-var _helpersLookup = __webpack_require__(367);
+var _helpersLookup = __webpack_require__(368);
 
 var _helpersLookup2 = _interopRequireDefault(_helpersLookup);
 
-var _helpersWith = __webpack_require__(368);
+var _helpersWith = __webpack_require__(369);
 
 var _helpersWith2 = _interopRequireDefault(_helpersWith);
 
@@ -21283,7 +21340,7 @@ function registerDefaultHelpers(instance) {
 
 
 /***/ }),
-/* 362 */
+/* 363 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21329,7 +21386,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 363 */
+/* 364 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21430,7 +21487,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 364 */
+/* 365 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21462,7 +21519,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 365 */
+/* 366 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21498,7 +21555,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 366 */
+/* 367 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21531,7 +21588,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 367 */
+/* 368 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21556,7 +21613,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 368 */
+/* 369 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21596,7 +21653,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 369 */
+/* 370 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21608,7 +21665,7 @@ exports.registerDefaultDecorators = registerDefaultDecorators;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _decoratorsInline = __webpack_require__(370);
+var _decoratorsInline = __webpack_require__(371);
 
 var _decoratorsInline2 = _interopRequireDefault(_decoratorsInline);
 
@@ -21619,7 +21676,7 @@ function registerDefaultDecorators(instance) {
 
 
 /***/ }),
-/* 370 */
+/* 371 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21655,7 +21712,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 371 */
+/* 372 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21709,7 +21766,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 372 */
+/* 373 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21731,7 +21788,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 373 */
+/* 374 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22045,7 +22102,7 @@ function executeDecorators(fn, prog, container, depths, data, blockParams) {
 
 
 /***/ }),
-/* 374 */
+/* 375 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22073,7 +22130,7 @@ module.exports = exports['default'];
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(69)))
 
 /***/ }),
-/* 375 */
+/* 376 */
 /***/ (function(module, exports, __webpack_require__) {
 
 this["Mura"]=__webpack_require__(9);
