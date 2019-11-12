@@ -2058,11 +2058,11 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 					}
 
 					temp['#f#']=prop;
-					structDelete(vals,'password');
 				}
 			}
 
 			vals=temp;
+			structDelete(vals,'password');
 		} else {
 			vals=structCopy(arguments.entity.getAllValues(expand=true));
 			structDelete(vals,'addObjects');
