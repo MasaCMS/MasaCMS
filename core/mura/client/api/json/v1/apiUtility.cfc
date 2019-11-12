@@ -2058,6 +2058,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 					}
 
 					temp['#f#']=prop;
+					structDelete(vals,'password');
 				}
 			}
 
