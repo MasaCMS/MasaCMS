@@ -2978,6 +2978,7 @@ select * from rs order by name
 <cfargument name="applyglobal" required="true" default="true">
 <cfargument name="objectid" required="true" default="">
 
+<cflock name="addEventHandler#application.instanceID#" type="exclusive" timeout="200">
 	<cfset var i = "">
 	<cfset var handlerData=structNew()>
 	<cfset var eventhandler=arguments.component>
@@ -3089,7 +3090,7 @@ select * from rs order by name
 			</cfif>
 		</cfif>
 	</cfloop>
-
+</cflock>
 </cffunction>
 
 <cffunction name="getEventHandlerFromPath" output="false">
