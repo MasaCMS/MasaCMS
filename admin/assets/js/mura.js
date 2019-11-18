@@ -2282,7 +2282,7 @@ var Mura=(function(){
 		var data=self.data();
 
 		for(var p in data){
-			if(data.hasOwnProperty(p) && (typeof p == 'undefined') || data[p] == ''){
+			if(data.hasOwnProperty(p) && (typeof p == 'undefined' || data[p] === '')){
 				self.removeAttr('data-' + p);
 			}
 		}
