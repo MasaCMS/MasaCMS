@@ -59,6 +59,8 @@
 	<cfset objectparams.standardOptions=true>
 	<!-- This allows you to force a layout.--->
 	<cfset objectparams.forceLayout=false>
+	<!-- Folders should not be limited --->
+	<cfset objectparams.maxitems="">
 
 	<!--- This is for legacy support.  You don't need this when using layout manager --->
 	<cfif not $.getContentRenderer().useLayoutManager()>
