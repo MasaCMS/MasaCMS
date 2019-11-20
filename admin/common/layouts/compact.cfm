@@ -248,7 +248,6 @@
 			});
 
 			mura.init({
-				processMarkup:false,
 				context:'#esapiEncode("javascript",rc.$.globalConfig('context'))#',
 				themepath:'#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#',
 				siteid:<cfif isDefined('session.siteid') and len(session.siteid)>'#esapiEncode("javascript",session.siteid)#'<cfelse>'default'</cfif>
