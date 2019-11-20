@@ -95,8 +95,6 @@ if ( !application.setupComplete || (not application.appInitialized || structKeyE
 if ( application.setupComplete ) {
 	application.appInitialized=false;
 	request.muraShowTrace=true;
-	application.appInitialized=false;
-	request.muraShowTrace=true;
 	variables.iniPath = "#variables.basedir#/config/settings.ini.cfm";
 	variables.iniSections=getProfileSections(variables.iniPath);
 	variables.iniProperties=structNew();

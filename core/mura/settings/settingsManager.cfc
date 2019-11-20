@@ -501,26 +501,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfparam name="variables.sites" default="#structNew()#">
 
-	<cfif not structKeyExists(variables,'sites')>
-		<cfset setSites(missingOnly=true)>
-	</cfif>
-
 	<cftry>
-	<cfreturn variables.sites['#arguments.siteid#'] />
-	<cfcatch>
-			<cflock name="buildSites#application.instanceID#" timeout="200">
+		<cfreturn variables.sites['#arguments.siteid#'] />
+		<cfcatch>
+			<cfif application.appInitialized>
+				<cflock name="buildSites#application.instanceID#" timeout="200">
+					<cfif structKeyExists(variables.sites,'#arguments.siteid#')>
+						<cfreturn variables.sites['#arguments.siteid#'] />
+					<cfelse>
+						<cfset setSites(missingOnly=true) />
+					</cfif>
+				</cflock>
 				<cfif structKeyExists(variables.sites,'#arguments.siteid#')>
 					<cfreturn variables.sites['#arguments.siteid#'] />
 				<cfelse>
-					<cfset setSites(missingOnly=true) />
+					<cfreturn variables.sites['default'] />
 				</cfif>
-			</cflock>
-			<cfif structKeyExists(variables.sites,'#arguments.siteid#')>
-				<cfreturn variables.sites['#arguments.siteid#'] />
 			<cfelse>
 				<cfreturn variables.sites['default'] />
 			</cfif>
-	</cfcatch>
+		</cfcatch>
 	</cftry>
 </cffunction>
 
