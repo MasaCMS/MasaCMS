@@ -1693,9 +1693,9 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		];
 		var dir="";
 		for ( dir in lookupArray ) {
-			registerContentTypeDir(dir=dir,deferred=arguments.deferred);
+			arguments.deferred=registerContentTypeDir(dir=dir,deferred=arguments.deferred);
 		}
-		return this;
+		return arguments.deferred;
 	}
 
 	public function discoverContentTypes() output=false {
@@ -1779,13 +1779,13 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 							deferredModule.package="";
 						}
 						if ( directoryExists('#rs.directory[row]#/#rs.name[row]#/display_objects') ) {
-							registerDisplayObjectDir(dir='#arguments.dir#/#rs.name[row]#/display_objects',deferred=arguments.deferred);
+							arguments.deferred=registerDisplayObjectDir(dir='#arguments.dir#/#rs.name[row]#/display_objects',deferred=arguments.deferred);
 						}
 						if ( directoryExists('#rs.directory[row]#/#rs.name[row]#/modules') ) {
-							registerDisplayObjectDir(dir='#arguments.dir#/#rs.name[row]#/modules',conditional=true,deferred=arguments.deferred);
+							arguments.deferred=registerDisplayObjectDir(dir='#arguments.dir#/#rs.name[row]#/modules',conditional=true,deferred=arguments.deferred);
 						}
 						if ( directoryExists('#rs.directory[row]#/#rs.name[row]#/content_types') ) {
-							registerContentTypeDir(dir='#arguments.dir#/#rs.name[row]#/content_types',deferred=arguments.deferred);
+							arguments.deferred=registerContentTypeDir(dir='#arguments.dir#/#rs.name[row]#/content_types',deferred=arguments.deferred);
 						}
 						if ( directoryExists('#rs.directory#/#rs.name[row]#/resource_bundles') ) {
 							variables.instance.rbFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(getRBFactory(),'#rs.directory[row]#/#rs.name[row]#/resource_bundles',getJavaLocale());
@@ -1821,7 +1821,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 			}
 			arrayPrepend(variables.instance.contentTypeLoopUpArray,arguments.dir);
 		}
-		return this;
+		return arguments.deferred;
 	}
 
 	public function registerDisplayObjectDir(dir, conditional="true", package="", custom="true",deferred=[]) output=false {
@@ -1843,7 +1843,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 
 		if ( directoryExists(expandedDir) ) {
 			rs=getBean('fileWriter').getDirectoryList( directory=expandedDir, type="dir");
-
+			
 			if(rs.recordcount){
 				if(get('isNew')){
 					deferredModule={};
@@ -1957,13 +1957,13 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 						}
 
 						if ( directoryExists('#rs.directory[row]#/#rs.name[row]#/display_objects') ) {
-							registerDisplayObjectDir(dir='#arguments.dir#/#rs.name[row]#/display_objects',deferred=arguments.deferred);
+							arguments.deferred=registerDisplayObjectDir(dir='#arguments.dir#/#rs.name[row]#/display_objects',deferred=arguments.deferred);
 						}
 						if ( directoryExists('#rs.directory[row]#/#rs.name[row]#/modules') ) {
-							registerDisplayObjectDir(dir='#arguments.dir#/#rs.name[row]#/modules',conditional=true,deferred=arguments.deferred);
+							arguments.deferred=registerDisplayObjectDir(dir='#arguments.dir#/#rs.name[row]#/modules',conditional=true,deferred=arguments.deferred);
 						}
 						if ( directoryExists('#rs.directory[row]#/#rs.name[row]#/content_types') ) {
-							registerContentTypeDir(dir='#arguments.dir#/#rs.name[row]#/content_types',deferred=arguments.deferred);
+							arguments.deferred=registerContentTypeDir(dir='#arguments.dir#/#rs.name[row]#/content_types',deferred=arguments.deferred);
 						}
 						if ( directoryExists('#rs.directory[row]#/#rs.name[row]#/resource_bundles') ) {
 							variables.instance.rbFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(getRBFactory(),'#rs.directory[row]#/#rs.name[row]#/resource_bundles',getJavaLocale());
@@ -2000,7 +2000,8 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 				arrayPrepend(variables.instance.displayObjectLookUpArray,arguments.dir);
 			}
 		}
-		return this;
+
+		return arguments.deferred;
 	}
 
 	public function registerModuleDir(dir, conditional="true", package="", custom="true",deferred=[]) output=false {
@@ -2103,10 +2104,10 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		for ( dir in lookupArray ) {
 			custom= listFindNoCase('/muraWRM/modules,/muraWRM/display_objects',dir);
 			conditional=false;
-			registerDisplayObjectDir(dir=dir,conditional=conditional,custom=custom,deferred=arguments.deferred);
+			arguments.deferred=registerDisplayObjectDir(dir=dir,conditional=conditional,custom=custom,deferred=arguments.deferred);
 		}
 
-		return this;
+		return arguments.deferred;
 	}
 
 	public function discoverModules() output=false {

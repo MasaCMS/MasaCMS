@@ -416,7 +416,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset tracepoint1=initTracepoint("Loading global modules")>
 	
 		<cfset var siteTemplate=getBean('site')>
-		<cfset siteTemplate.discoverGlobalModules(muraDeferredModuleAssets).discoverGlobalContentTypes(muraDeferredModuleAssets)>
+		<cfset muraDeferredModuleAssets=siteTemplate.discoverGlobalModules(muraDeferredModuleAssets)>
+		<cfset muraDeferredModuleAssets=siteTemplate.discoverGlobalContentTypes(muraDeferredModuleAssets)>
 	
 		<cfif not isDefined('request.muraBaseRBFactory')>
 			<cfset request.muraBaseRBFactory=siteTemplate.getRBFactory()>
