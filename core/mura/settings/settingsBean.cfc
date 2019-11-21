@@ -2003,7 +2003,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		return this;
 	}
 
-	public function registerModuleDir(dir, conditional="true", package="", custom="true") output=false {
+	public function registerModuleDir(dir, conditional="true", package="", custom="true",deferred=[]) output=false {
 		return registerDisplayObjectDir(arguments=arguments);
 	}
 
