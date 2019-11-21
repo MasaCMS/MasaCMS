@@ -410,19 +410,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset rs=getList(clearCache=true) />
 		</cfif>
 
-		<cfset request.muraDeferredModuleAssets=[]>
+		<cfset var muraDeferredModuleAssets=[]>
 		<cfset request.muraDeferredModuleErrors=[]>
 		
 		<cfset tracepoint1=initTracepoint("Loading global modules")>
 	
-		<cfif not isDefined('request.siteTemplate')>
-			<cfset request.siteTemplate=getBean('site')>
-			<cfset request.siteTemplate.discoverGlobalModules().discoverGlobalContentTypes()>
-		</cfif>
+		<cfset var siteTemplate=getBean('site')>
+		<cfset siteTemplate.discoverGlobalModules(muraDeferredModuleAssets).discoverGlobalContentTypes(muraDeferredModuleAssets)>
+	
 		<cfif not isDefined('request.muraBaseRBFactory')>
-			<cfset request.muraBaseRBFactory=request.siteTemplate.getRBFactory()>
+			<cfset request.muraBaseRBFactory=siteTemplate.getRBFactory()>
 		</cfif>
-
+	
 		<cfset commitTracepoint(tracepoint1)>
 
 		<cfparam name="variables.sites" default="#structNew()#">
@@ -444,17 +443,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.sites=builtSites>
 
 		<cfset tracepoint1=initTracepoint("Loading deferred global assets")>
-		<cfif arrayLen(request.muraDeferredModuleAssets)>
+		<cfif arrayLen(muraDeferredModuleAssets)>
 			<cfif arguments.missingOnly>
-				<cfloop from="1" to="#arrayLen(request.muraDeferredModuleAssets)#" index="i">
-					<cfif structKeyExists(request.muraDeferredModuleAssets[i],'modelDir') and len(request.muraDeferredModuleAssets[i].modelDir)>
-						<cfset variables.configBean.registerBeanDir(dir=request.muraDeferredModuleAssets[i].modelDir,package=request.muraDeferredModuleAssets[i].package,siteid=structKeyList(foundSites),applyGlobal=false)>
+				<cfloop from="1" to="#arrayLen(muraDeferredModuleAssets)#" index="i">
+					<cfif structKeyExists(muraDeferredModuleAssets[i],'modelDir') and len(muraDeferredModuleAssets[i].modelDir)>
+						<cfset variables.configBean.registerBeanDir(dir=muraDeferredModuleAssets[i].modelDir,package=muraDeferredModuleAssets[i].package,siteid=structKeyList(foundSites),applyGlobal=false)>
 					</cfif>
 				</cfloop>
 			<cfelse>
-				<cfloop from="1" to="#arrayLen(request.muraDeferredModuleAssets)#" index="i">
-					<cfif structKeyExists(request.muraDeferredModuleAssets[i],'modelDir') and len(request.muraDeferredModuleAssets[i].modelDir)>
-						<cfset variables.configBean.registerBeanDir(dir=request.muraDeferredModuleAssets[i].modelDir,package=request.muraDeferredModuleAssets[i].package,siteid=valuelist(rs.siteid),applyGlobal=true)>
+				<cfloop from="1" to="#arrayLen(muraDeferredModuleAssets)#" index="i">
+					<cfif structKeyExists(muraDeferredModuleAssets[i],'modelDir') and len(muraDeferredModuleAssets[i].modelDir)>
+						<cfset variables.configBean.registerBeanDir(dir=muraDeferredModuleAssets[i].modelDir,package=muraDeferredModuleAssets[i].package,siteid=valuelist(rs.siteid),applyGlobal=true)>
 					</cfif>
 				</cfloop>
 			</cfif>
@@ -468,21 +467,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif structKeyExists(foundSites,'#rs.siteid#')>
 				<cfset builtSites['#rs.siteid#'].getRBFactory()>
 				<cfset tracepoint2=initTracepoint("Loading site: #rs.siteid#")>
-				<cfif arrayLen(request.muraDeferredModuleAssets)>
-					<cfloop from="1" to="#arrayLen(request.muraDeferredModuleAssets)#" index="i">
-							<cfif structKeyExists(request.muraDeferredModuleAssets[i],'config')>
-								<cfset variables.configBean.getClassExtensionManager().loadConfigXML(request.muraDeferredModuleAssets[i].config,rs.siteid)>
+				<cfif arrayLen(muraDeferredModuleAssets)>
+					<cfloop from="1" to="#arrayLen(muraDeferredModuleAssets)#" index="i">
+							<cfif structKeyExists(muraDeferredModuleAssets[i],'config')>
+								<cfset variables.configBean.getClassExtensionManager().loadConfigXML(muraDeferredModuleAssets[i].config,rs.siteid)>
 							</cfif>
 					</cfloop>
 				</cfif>
 
 				<cfset builtSites['#rs.siteid#']
-					.set('displayObjectLookup',duplicate(request.siteTemplate.get('displayObjectLookup')))
-					.set('displayObjectLookUpArray',duplicate(request.siteTemplate.get('displayObjectLookUpArray')))
+					.set('displayObjectLookup',duplicate(siteTemplate.get('displayObjectLookup')))
+					.set('displayObjectLookUpArray',duplicate(siteTemplate.get('displayObjectLookUpArray')))
 					.discoverModules()>
 
 				<cfset builtSites['#rs.siteid#']
-					.set('contentTypeLookUpArray',duplicate(request.siteTemplate.get('contentTypeLookUpArray')))
+					.set('contentTypeLookUpArray',duplicate(siteTemplate.get('contentTypeLookUpArray')))
 					.discoverContentTypes()>
 
 				<cfset builtSites['#rs.siteid#'].discoverBeans()>
