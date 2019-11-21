@@ -1735,7 +1735,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		var rs="";
 		var config="";
 		var expandedDir="";
-		var deferred={};
+		var deferredModule={};
 
 		if(reFindNoCase("^[a-zA-Z]:\\",arguments.dir)){
 			expandedDir=arguments.dir;
@@ -1833,7 +1833,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		var objectfound=(arguments.conditional) ? false : true;
 		var expandedDir="";
 		var utility=getBean('utility');
-		var deferred={};
+		var deferredModule={};
 
 		if(reFindNoCase("^[a-zA-Z]:\\",arguments.dir)){
 			expandedDir=arguments.dir;
