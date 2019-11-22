@@ -470,26 +470,19 @@ if ( application.setupComplete ) {
 	if ( application.serviceFactory.containsBean('advertiserManager') ) {
 		variables.serviceList=listAppend(variables.serviceList,'advertiserManager');
 	}
-	//  These application level services use the beanServicePlaceHolder to lazy load the bean
+	//  These application level services
 
 	for(variables.i in listToArray(variables.serviceList)){
 		variables.tracepoint=variables.tracer.initTracepoint("Instantiating #variables.i#");
-		try {
-			application["#variables.i#"]=application.serviceFactory.getBean("#variables.i#");
-		} catch (any error) {
-			writeLog(type="Error", file="exception", text="Error instantiating '#variables.i#': #serializeJSON(error.stacktrace)#");
-			if ( application.configBean.getDebuggingEnabled() ) {
-				writeDump( var=variables.i );
-				writeDump( var=error, abort=true );
-			}
-		}
+		application["#variables.i#"]=application.serviceFactory.getBean("#variables.i#");
 		variables.tracer.commitTracepoint(variables.tracepoint);
-		application.mura=application.serviceFactory.getBean('mura');
 	}
 
+	application.mura=application.serviceFactory.getBean('mura');
 	request.muraattachormlinks=true;
 
-	//  End beanServicePlaceHolders
+	//  End
+
 	variables.temp='';
 	application.badwords = ReReplaceNoCase(trim(variables.temp), "," , "|" , "ALL");
 	variables.tracepoint=variables.tracer.initTracepoint("Instantiating classExtensionManager");
