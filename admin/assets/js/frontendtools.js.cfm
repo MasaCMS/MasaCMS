@@ -2295,7 +2295,7 @@
 	window.muraInlineEditor=window.MuraInlineEditor;
 	Mura.handleObjectClick=openFrontEndToolsModal;
 	Mura.initFrontendUI=initFrontendUI;
-	Mura.lmv="7.1";
+	Mura.lmv=1;
 	Mura.layoutmanagertoolbar='<div class="frontEndToolsModal mura"><span class="mura-edit-icon"></span></div>';
 
 	<cfif url.contenttype eq 'Variation'>

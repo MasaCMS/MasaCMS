@@ -2081,7 +2081,7 @@ var Mura=(function(){
 				},
 
 				function() {
-					if(typeof Mura.lmv && Mura.lmv=="7.1"){
+					if(Mura.lmv==1){
 						if (typeof openFrontEndToolsModal == 'function') {
 							find(".frontEndToolsModal").on('click',
 								function(event) {
@@ -2617,7 +2617,7 @@ var Mura=(function(){
 									obj.children('.frontEndToolsModal').children('.mura-edit-label').addClass(obj.data('objecticonclass'));
 								}
 
-								if(typeof Mura.lmv && Mura.lmv=="7.1"){
+								if(Mura.lmv==1){
 									var openToolbar=function(event){
 										event.preventDefault();
 										openFrontEndToolsModal(this);
@@ -3644,8 +3644,8 @@ var Mura=(function(){
 			normalizeRequestHandler:normalizeRequestHandler,
 			getStyleSheet:getStyleSheet,
 			getBreakpoint:getBreakpoint,
-			lmv:"10",
-			inAdmin:false
+			inAdmin:false,
+			lmv:2
 		}
 	);
 
@@ -18588,49 +18588,51 @@ Mura.DOMSelection = Mura.Core.extend(
 				}
 			}
 
-			var left=obj.css('marginLeft');
-			var right=obj.css('marginRight')
-			
-			if(!obj.is('.mura-center') && !(left=='0px' && right=='0px') && !(left=='auto' || right=='auto') && left.charAt(0) != "-" && right.charAt(0) != "-"){
-				if(fullsize){
-					var width='100%';
+			if(Mura.lmv>1){
+				var left=obj.css('marginLeft');
+				var right=obj.css('marginRight')
+				
+				if(!obj.is('.mura-center') && !(left=='0px' && right=='0px') && !(left=='auto' || right=='auto') && left.charAt(0) != "-" && right.charAt(0) != "-"){
+					if(fullsize){
+						var width='100%';
 
-					if(obj.is('.mura-one')){
-						width='8.33%';
-					} else if(obj.is('.mura-two')){
-						width='16.66%';
-					} else if(obj.is('.mura-three')){
-						width='25%';
-					} else if(obj.is('.mura-four')){
-						width='33.33%';
-					} else if(obj.is('.mura-five')){
-						width='41.66%';
-					} else if(obj.is('.mura-six')){
-						width='50%';
-					} else if(obj.is('.mura-seven')){
-						width='58.33';
-					} else if(obj.is('.mura-eigth')){
-						width='66.66%';
-					} else if(obj.is('.mura-nine')){
-						width='75%';
-					} else if(obj.is('.mura-ten')){
-						width='83.33%';
-					} else if(obj.is('.mura-eleven')){
-						width='91.66%';
-					} else if(obj.is('.mura-twelve')){
-						width='100%';
-					} else if(obj.is('.mura-one-third')){
-						width='33.33%';
-					} else if(obj.is('.mura-two-thirds')){
-						width='66.66%';
-					} else if(obj.is('.mura-one-half')){
-						width='50%';
-					} else {
-						width='100%';
+						if(obj.is('.mura-one')){
+							width='8.33%';
+						} else if(obj.is('.mura-two')){
+							width='16.66%';
+						} else if(obj.is('.mura-three')){
+							width='25%';
+						} else if(obj.is('.mura-four')){
+							width='33.33%';
+						} else if(obj.is('.mura-five')){
+							width='41.66%';
+						} else if(obj.is('.mura-six')){
+							width='50%';
+						} else if(obj.is('.mura-seven')){
+							width='58.33';
+						} else if(obj.is('.mura-eigth')){
+							width='66.66%';
+						} else if(obj.is('.mura-nine')){
+							width='75%';
+						} else if(obj.is('.mura-ten')){
+							width='83.33%';
+						} else if(obj.is('.mura-eleven')){
+							width='91.66%';
+						} else if(obj.is('.mura-twelve')){
+							width='100%';
+						} else if(obj.is('.mura-one-third')){
+							width='33.33%';
+						} else if(obj.is('.mura-two-thirds')){
+							width='66.66%';
+						} else if(obj.is('.mura-one-half')){
+							width='50%';
+						} else {
+							width='100%';
+						}
+						obj.css('width','calc(' + width + ' - (' + left + ' + ' + right + '))');
 					}
-					obj.css('width','calc(' + width + ' - (' + left + ' + ' + right + '))');
+					Mura.windowResponsiveModules[obj.data('instanceid')]=true;
 				}
-				Mura.windowResponsiveModules[obj.data('instanceid')]=true;
 			}
 
 			if(obj.css('paddingTop').replace(/[^0-9]/g,'') != '0' || obj.css('paddingLeft').replace(/[^0-9]/g,'') != '0'){
