@@ -2946,7 +2946,7 @@ var Mura=(function(){
 						type: requestType,
 						data: requestData,
 						success: function(resp) {
-							obj=Mura('[data-instanceid="' + obj.data('instanceid') + '"]');
+							obj=Mura('div.mura-object[data-instanceid="' + obj.data('instanceid') + '"]');
 							handleResponse(obj,resp);
 							if (typeof resolve =='function') {
 								if(typeof resolve.call == 'undefined'){
