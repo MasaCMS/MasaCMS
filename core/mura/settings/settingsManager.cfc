@@ -448,13 +448,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif arguments.missingOnly>
 				<cfloop from="1" to="#arrayLen(muraDeferredModuleAssets)#" index="i">
 					<cfif structKeyExists(muraDeferredModuleAssets[i],'modelDir') and len(muraDeferredModuleAssets[i].modelDir)>
-						<cfset variables.configBean.registerBeanDir(dir=muraDeferredModuleAssets[i].modelDir,package=muraDeferredModuleAssets[i].package,siteid=structKeyList(foundSites),applyGlobal=false)>
+						<cfset variables.configBean.registerBeanDir(dir=muraDeferredModuleAssets[i].modelDir,package=muraDeferredModuleAssets[i].package,siteid=structKeyList(foundSites))>
 					</cfif>
 				</cfloop>
 			<cfelse>
 				<cfloop from="1" to="#arrayLen(muraDeferredModuleAssets)#" index="i">
 					<cfif structKeyExists(muraDeferredModuleAssets[i],'modelDir') and len(muraDeferredModuleAssets[i].modelDir)>
-						<cfset variables.configBean.registerBeanDir(dir=muraDeferredModuleAssets[i].modelDir,package=muraDeferredModuleAssets[i].package,siteid=valuelist(rs.siteid),applyGlobal=true)>
+						<cfset variables.configBean.registerBeanDir(dir=muraDeferredModuleAssets[i].modelDir,package=muraDeferredModuleAssets[i].package,siteid=valuelist(rs.siteid))>
 					</cfif>
 				</cfloop>
 			</cfif>

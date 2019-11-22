@@ -119,6 +119,27 @@ for(secret in listToArray(structKeyList(request.muraSecrets))){
 }
 */
 
+for(handlerKey in application.appHandlerLookUp){
+	handler=application.appHandlerLookUp['#handlerKey#'];
+	if(structKeyExists(handler,'onApplicationLoad') 
+		&& (!structKeyExists(handler,'appliedAppLoad') || !handler.appliedAppLoad)
+	){
+		lock name="appInitBlock#application.instanceID#" type="exclusive" timeout="200" {
+			lock name="setSites#application.instanceID#" type="exclusive" timeout="200" {
+				if((!structKeyExists(handler,'appliedAppLoad') || !handler.appliedAppLoad)){
+					try{
+						$=getBean('$').init();
+						handler.onApplicationLoad($=$,m=$,Mura=$,event=$.event());
+						handler.appliedAppLoad=true;
+					} catch(any e){
+						writeLog(type="Error", file="exception", text="Error Registering Handler: #serializeJSON(e)#");
+					}
+				}
+			}
+		}
+	}
+}
+
 application.userManager.setUserStructDefaults();
 sessionData=application.userManager.getSession();
 if ( isDefined("url.showTrace") && isBoolean(url.showTrace) ) {

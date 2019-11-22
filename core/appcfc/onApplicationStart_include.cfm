@@ -51,6 +51,8 @@ param name="application.sessionTrackingThrottle" default=true;
 param name="application.instanceID" default=createUUID();
 param name="application.CFVersion" default=listFirst(SERVER.COLDFUSION.PRODUCTVERSION);
 param name="application.setupComplete" default=false;
+param name="application.appHandlerLookUp" default={};
+
 request.muraAppreloaded=true;
 
 if ( left(server.coldfusion.productversion,5) == "9,0,0" || listFirst(server.coldfusion.productversion) < 9 ) {
@@ -184,6 +186,7 @@ if ( application.setupComplete ) {
   }
 
 	application.configBean=new mura.configBean().set(variables.iniProperties);
+	application.appHandlerLookUp={};
 
 	variables.serviceFactory=new mura.bean.beanFactory("/mura",{
 			recurse=true,
