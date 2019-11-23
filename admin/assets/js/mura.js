@@ -18588,51 +18588,49 @@ Mura.DOMSelection = Mura.Core.extend(
 				}
 			}
 
-			if(Mura.lmv>1){
-				var left=obj.css('marginLeft');
-				var right=obj.css('marginRight')
-				
-				if(!obj.is('.mura-center') && !(left=='0px' && right=='0px') && !(left=='auto' || right=='auto') && left.charAt(0) != "-" && right.charAt(0) != "-"){
-					if(fullsize){
-						var width='100%';
+			var left=obj.css('marginLeft');
+			var right=obj.css('marginRight')
+			
+			if(!obj.is('.mura-center') && !(left=='0px' && right=='0px') && !(left=='auto' || right=='auto') && left.charAt(0) != "-" && right.charAt(0) != "-"){
+				if(fullsize){
+					var width='100%';
 
-						if(obj.is('.mura-one')){
-							width='8.33%';
-						} else if(obj.is('.mura-two')){
-							width='16.66%';
-						} else if(obj.is('.mura-three')){
-							width='25%';
-						} else if(obj.is('.mura-four')){
-							width='33.33%';
-						} else if(obj.is('.mura-five')){
-							width='41.66%';
-						} else if(obj.is('.mura-six')){
-							width='50%';
-						} else if(obj.is('.mura-seven')){
-							width='58.33';
-						} else if(obj.is('.mura-eigth')){
-							width='66.66%';
-						} else if(obj.is('.mura-nine')){
-							width='75%';
-						} else if(obj.is('.mura-ten')){
-							width='83.33%';
-						} else if(obj.is('.mura-eleven')){
-							width='91.66%';
-						} else if(obj.is('.mura-twelve')){
-							width='100%';
-						} else if(obj.is('.mura-one-third')){
-							width='33.33%';
-						} else if(obj.is('.mura-two-thirds')){
-							width='66.66%';
-						} else if(obj.is('.mura-one-half')){
-							width='50%';
-						} else {
-							width='100%';
-						}
-						obj.css('width','calc(' + width + ' - (' + left + ' + ' + right + '))');
+					if(obj.is('.mura-one')){
+						width='8.33%';
+					} else if(obj.is('.mura-two')){
+						width='16.66%';
+					} else if(obj.is('.mura-three')){
+						width='25%';
+					} else if(obj.is('.mura-four')){
+						width='33.33%';
+					} else if(obj.is('.mura-five')){
+						width='41.66%';
+					} else if(obj.is('.mura-six')){
+						width='50%';
+					} else if(obj.is('.mura-seven')){
+						width='58.33';
+					} else if(obj.is('.mura-eigth')){
+						width='66.66%';
+					} else if(obj.is('.mura-nine')){
+						width='75%';
+					} else if(obj.is('.mura-ten')){
+						width='83.33%';
+					} else if(obj.is('.mura-eleven')){
+						width='91.66%';
+					} else if(obj.is('.mura-twelve')){
+						width='100%';
+					} else if(obj.is('.mura-one-third')){
+						width='33.33%';
+					} else if(obj.is('.mura-two-thirds')){
+						width='66.66%';
+					} else if(obj.is('.mura-one-half')){
+						width='50%';
+					} else {
+						width='100%';
 					}
-					Mura.windowResponsiveModules[obj.data('instanceid')]=true;
+					obj.css('width','calc(' + width + ' - (' + left + ' + ' + right + '))');
 				}
+				Mura.windowResponsiveModules[obj.data('instanceid')]=true;
 			}
 
 			if(obj.css('paddingTop').replace(/[^0-9]/g,'') != '0' || obj.css('paddingLeft').replace(/[^0-9]/g,'') != '0'){
