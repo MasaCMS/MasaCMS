@@ -2081,22 +2081,10 @@ var Mura=(function(){
 				},
 
 				function() {
-					if(Mura.lmv==1){
-						if (typeof openFrontEndToolsModal == 'function') {
-							find(".frontEndToolsModal").on('click',
-								function(event) {
-									event.preventDefault();
-									openFrontEndToolsModal(this);
-								}
-							);
-						}
-					} else {
-						if (Mura.handleObjectClick == 'function') {
-							find('.mura-object, .frontEndToolsModal').on('click',Mura.handleObjectClick);
-						}
+					if (Mura.handleObjectClick == 'function') {
+						find('.mura-object, .frontEndToolsModal').on('click',Mura.handleObjectClick);
 					}
 					
-
 					if (typeof window !='undefined' && typeof window.document != 'undefined'	&& window.MuraInlineEditor
 							&& window.MuraInlineEditor.checkforImageCroppers) {
 							find("img").each(function() {
@@ -2616,20 +2604,9 @@ var Mura=(function(){
 								if(obj.data('objecticonclass')){
 									obj.children('.frontEndToolsModal').children('.mura-edit-label').addClass(obj.data('objecticonclass'));
 								}
-
-								if(Mura.lmv==1){
-									var openToolbar=function(event){
-										event.preventDefault();
-										openFrontEndToolsModal(this);
-									};
-	
-									obj.find(".frontEndToolsModal").each(function(){
-										Mura(this).off('click',openToolbar).on('click',openToolbar);
-									})
-								} else {
-									obj.off('click',Mura.handleObjectClick).on('click',Mura.handleObjectClick);
-								}
 								
+								obj.off('click',Mura.handleObjectClick).on('click',Mura.handleObjectClick);
+							
 								obj.find("img").each(function(){MuraInlineEditor.checkforImageCroppers(this);});
 
 								obj

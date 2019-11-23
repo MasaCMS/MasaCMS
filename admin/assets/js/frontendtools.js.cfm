@@ -315,6 +315,30 @@
 		return initFrontendUI(a,isnew);
 	};
 
+	var openToolbar=function(event){
+		if(!window.Mura.editing){
+			return;
+		}
+		var source = Mura(event.target || event.srcElement);
+
+		if(source.is('.frontEndToolsModal') ){
+			event.preventDefault();
+			event.stopPropagation();
+			openFrontEndToolsModal(this);
+		} else if(source.is('.mura-object') ){
+			event.preventDefault();
+			event.stopPropagation();
+			openFrontEndToolsModal(source.node);
+		} else if (!source.is('a, button, input, select, textarea')) {
+			var parentObj=source.closest('.mura-object');
+			if(parentObj.length){
+				event.preventDefault();
+				event.stopPropagation();
+				openFrontEndToolsModal(parentObj.children('.frontEndToolsModal').node);
+			}
+		}
+	};
+	
 	var initFrontendUI=function(a,isnew){
 		var src=a.href;
 		var editableObj=utility(a);
@@ -1157,12 +1181,6 @@
 
 			<cfif $.getContentRenderer().useLayoutManager()>
 			if(window.Mura.layoutmanager){
-				var openToolbar=function(event){
-					event.preventDefault();
-					//console.log("fet:" + 1106)
-					openFrontEndToolsModal(this);
-				};
-
 				Mura("img").each(function(){MuraInlineEditor.checkforImageCroppers(this);});
 
 				MuraInlineEditor.setAnchorSaveChecks(document);
