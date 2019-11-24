@@ -52,6 +52,7 @@
 		    </div>
 		    --->
 		</div>
+		#rc.objectname#
 		<cfif not listFindNoCase('folder,calendar,gallery',rc.object) and not isdefined('rc.isBody')>
 			<div class="form-actions" style="display:none">
 
