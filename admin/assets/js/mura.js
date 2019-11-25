@@ -2199,7 +2199,7 @@ var Mura=(function(){
 				type: 'POST',
 				data: data,
 				success: function(resp) {
-					//obj=Mura('div[data-instanceid="' + obj.data('instanceid') + '"]');
+					obj=Mura('div[data-instanceid="' + obj.data('instanceid') + '"]');
 					setTimeout(function(){handleResponse(obj, resp)},0);
 				}
 			}
@@ -2241,7 +2241,7 @@ var Mura=(function(){
 				type: 'POST',
 				data: data,
 				success: function(resp) {
-					//obj=Mura('div[data-instanceid="' + obj.data('instanceid') + '"]');
+					obj=Mura('div[data-instanceid="' + obj.data('instanceid') + '"]');
 					setTimeout(function(){handleResponse(obj, resp)},0);
 				}
 			}
@@ -2911,7 +2911,7 @@ var Mura=(function(){
 						type: requestType,
 						data: requestData,
 						success: function(resp) {
-							//obj=Mura('div[data-instanceid="' + obj.data('instanceid') + '"]');
+							obj=Mura('div[data-instanceid="' + obj.data('instanceid') + '"]');
 							setTimeout(function(){
 								handleResponse(obj, resp)
 								if (typeof resolve =='function') {
