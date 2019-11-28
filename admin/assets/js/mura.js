@@ -575,8 +575,8 @@ var Mura=(function(){
 			}
 		}
 
-		for (script in scripts) {
-			evalScript(scripts[script]);
+		for (var $script in scripts) {
+			evalScript(scripts[$script]);
 		}
 	}
 
