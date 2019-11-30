@@ -127,7 +127,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					&& typeof(anchors[i].getAttribute('href')) == 'string'
 					&& anchors[i].getAttribute('href').indexOf('##') == -1
 					&& anchors[i].getAttribute('href').indexOf('mailto') == -1) {
-		   			anchors[i].onclick = setRequestedURL;
+					if(!$(anchors[i]).hasClass("nav-submenu")){
+					   anchors[i].onclick = setRequestedURL;
+					}
 				}
 			} catch(err){}
 		}
