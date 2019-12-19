@@ -2013,48 +2013,51 @@ var Mura=(function(){
 					}
 
 					if (find(".g-recaptcha-container").length) {
-						loader().loadjs(
-							"https://www.recaptcha.net/recaptcha/api.js?onload=MuraCheckForReCaptcha&render=explicit&hl=" +
-							Mura.reCAPTCHALanguage,
+						loader().loadjs("https://www.recaptcha.net/recaptcha/api.js?onload=MuraCheckForReCaptcha&render=explicit&hl=" + Mura.reCAPTCHALanguage,
 							function() {
-								find(
-										".g-recaptcha-container"
-								).each(function(el) {
-									var self =	el;
+								find(".g-recaptcha-container").each(function(el) {
+									var notready=0;;
+								
+									window.MuraCheckForReCaptcha=function() {
+										Mura('.g-recaptcha-container').each(function(){
+											var self=this;
 
-									window.MuraCheckForReCaptcha =
-									function() {
 											if (
 												typeof grecaptcha ==	'object'
 												&& typeof grecaptcha.render != 'undefined'
 												&&	!self.innerHTML
 											) {
 
-											self
-												.setAttribute(
-													'data-widgetid',
-													grecaptcha
-													.render(
-														self.getAttribute('id'),
-														{
-															'sitekey': self.getAttribute('data-sitekey'),
-															'theme': self.getAttribute('data-theme'),
-															'type': self.getAttribute('data-type')
-														}
-													)
-												);
-										} else {
+												self
+													.setAttribute(
+														'data-widgetid',
+														grecaptcha
+														.render(
+															self.getAttribute('id'),
+															{
+																'sitekey': self.getAttribute('data-sitekey'),
+																'theme': self.getAttribute('data-theme'),
+																'type': self.getAttribute('data-type')
+															}
+														)
+													);
+											} else {
+												notready++;
+											}
+										})
+											
+										if(notready){
 											setTimeout(
-													function() {
-														window.MuraCheckForReCaptcha();
-													},
-													10
+												function() {
+													window.MuraCheckForReCaptcha();
+												},
+												10
 											);
 										}
+		
 									}
 
 									window.MuraCheckForReCaptcha();
-
 								});
 							}
 						);

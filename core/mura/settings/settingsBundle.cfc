@@ -41,7 +41,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.cfobject" output="false" hint="This provides site bundling functionality">
+<cfcomponent extends="mura.baseobject" output="false" hint="This provides site bundling functionality">
 
 	<cffunction name="init" output="false">
 		<cfset variables.configBean	= application.configBean />
@@ -611,27 +611,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 					<cfif not fileExists( getBundle() & "filefiles.zip" )>
 						<cfset destDir = variables.configBean.getValue('filedir') & '/' & filePoolID />
-						<cfzip file="#zipPath#" action="unzip" overwrite="true" destination="#destDir#" entrypath="cache">
-						<!---<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=destDir, overwriteFiles=true, extractDirs="cache")>--->
+						<!---<cfzip file="#zipPath#" action="unzip" overwrite="true" destination="#destDir#" entrypath="cache">--->
+						<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=destDir, overwriteFiles=true, extractDirs="cache")>
 					</cfif>
 
 					<cfif not fileExists( getBundle() & "assetfiles.zip" )>
 						<cfset destDir = variables.configBean.getValue('assetdir') & '/' & filePoolID />
-						<cfzip file="#zipPath#" action="unzip" overwrite="true" destination="#destDir#" entrypath="assets">
-						<!---<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=destDir, overwriteFiles=true, extractDirs="assets")>--->
+						<!---<cfzip file="#zipPath#" action="unzip" overwrite="true" destination="#destDir#" entrypath="assets">--->
+						<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=destDir, overwriteFiles=true, extractDirs="assets")>
 					</cfif>
 				</cfif>
 				<cfif fileExists( getBundle() & "assetfiles.zip" )>
 					<cfset zipPath = getBundle() & "assetfiles.zip" />
 					<cfset destDir = variables.configBean.getValue('assetdir') & '/' & filePoolID />
-					<cfzip file="#zipPath#" action="unzip" overwrite="true" destination="#destDir#">
-					<!---<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=destDir, overwriteFiles=true)>--->
+					<!---<cfzip file="#zipPath#" action="unzip" overwrite="true" destination="#destDir#">--->
+					<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=destDir, overwriteFiles=true)>
 				</cfif>
 				<cfif fileExists( getBundle() & "filefiles.zip" )>
 					<cfset zipPath = getBundle() & "filefiles.zip" />
 					<cfset destDir = variables.configBean.getValue('filedir') & '/' & filePoolID />
-					<cfzip file="#zipPath#" action="unzip" overwrite="true" destination="#destDir#">
-					<!---<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=destDir, overwriteFiles=true)>--->
+					<!---<cfzip file="#zipPath#" action="unzip" overwrite="true" destination="#destDir#">--->
+					<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=destDir, overwriteFiles=true)>
 				</cfif>
 			</cfif>
 			<cfif arguments.renderingMode eq "all">
@@ -669,8 +669,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset variables.fileWriter.createDir(directory=getBundle() & "plugins")>
 			</cfif>
 
-			<cfzip file="#getBundle()#pluginfiles.zip" action="unzip" overwrite="true" destination="#getBundle()#plugins">
-			<!---<cfset variables.zipTool.Extract(zipFilePath=getBundle() & "pluginfiles.zip",extractPath=getBundle() & "plugins", overwriteFiles=true)>--->
+			<!---<cfzip file="#getBundle()#pluginfiles.zip" action="unzip" overwrite="true" destination="#getBundle()#plugins">--->
+			<cfset variables.zipTool.Extract(zipFilePath=getBundle() & "pluginfiles.zip",extractPath=getBundle() & "plugins", overwriteFiles=true)>
 
 			<cfloop query="rstplugins">
 
@@ -1619,7 +1619,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					smallImageWidth,smallImageHeight,
 					mediumImageWidth,mediumImageHeight,
 					columnCount,columnNames,primaryColumn,baseID,customtaggroups,
-					placeholderImgID,placeholderImgExt
+					placeholderImgID,placeholderImgExt,isremote
 				    from tsettings where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 				</cfquery>
 
@@ -1631,8 +1631,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfquery>
 
 				<cfset setValue("rstimagesizes",rstimagesizes)>
+				
+				<cfset var site=getBean('settingsManager').getSite(arguments.siteID)>
 
 				<cfset setValue("assetPath",application.configBean.getAssetPath())>
+				<cfset setValue("fileAssetPath",site.getFileAssetPath(complete=site.get('isRemote')))>
 				<cfset setValue("context",application.configBean.getContext())>
 			</cfif>
 
@@ -1958,3 +1961,4 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn variables.data />
 	</cffunction>
 </cfcomponent>
+
