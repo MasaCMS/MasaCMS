@@ -484,7 +484,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif end>
 					<cfset pathlist = mid(arguments.content,find,end-find) />
 					<cfloop list="#pathlist#" index="path">
-						<cfset path=trim(path)>
+						<cfset path=trim(listFirst(path,")"))>
 						<cfif len(path)>
 							<cfset block = {} />
 							<cfset pathArray = ListToArray( path,"/" ) />
