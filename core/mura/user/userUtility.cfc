@@ -183,7 +183,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<cfset application.utility.setCookie(name="passedLockdown", value=true, expires=arguments.lockdownExpries)>
 						</cfcase>
 						<cfcase value="session">
-							<cfset application.utility.setCookie(name="passedLockdown", value=true, expires="session")>
+							<cfset application.utility.setCookie(name="passedLockdown", value=true, expires="session only")>
 						</cfcase>
 					</cfswitch>
 				</cfif>
