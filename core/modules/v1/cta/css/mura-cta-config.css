@@ -6,19 +6,15 @@
 
 .mura-cta {
 	position: relative;
-	z-index: 9999;
+	z-index: 10003;
 }
-
 
 .mura-cta-empty {
 	position: relative;
 	bottom: 5px;
 	overflow: hidden;
 	padding: .75rem 1.25rem;
-	margin-bottom: 1rem;
-	margin-left: 5px;
-	margin-right: 5px;
-	margin-top: 8px;
+	margin: 1rem .8rem .5rem;
 	border: 1px solid transparent;
 	border-radius: .25rem;
 	background-color: #d9edf7;
@@ -204,7 +200,11 @@
 	/* themeable options */
 	background-color: #fff;
 	padding: 30px; /* size of inside dismiss button */
-	box-shadow: 0 0 20px 0 rgba(0,0,0,.5);
+	box-shadow: rgba(0, 0, 0, 0.14) 0 3px 32px 0;
+}
+
+.mura-cta__item__wrapper [data-mura-cta-type="inline"] {
+	box-shadow: none;
 }
 
 /* ------------------------------

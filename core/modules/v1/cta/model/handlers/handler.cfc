@@ -1,4 +1,4 @@
-component extends="mura.cfobject" {
+component extends="mura.baseobject" {
 
 	function onRenderstart(m){
 		if(!len(m.event('amp')) || !(isBoolean(m.event('amp')) && !m.event('amp'))){
