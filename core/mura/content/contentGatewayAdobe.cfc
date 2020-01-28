@@ -861,20 +861,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 		SELECT categoryparent.name parentname, tcontentcategories.parentID, tcontentcategories.categoryID, tcontentcategories.filename, Count(tcontent.contenthistID) as "Count", tcontentcategories.name
-		from tcontent
-		inner join tcontentcategoryassign
-			ON (tcontent.contenthistID=tcontentcategoryassign.contentHistID
-				and tcontent.siteID=tcontentcategoryassign.siteID)
-		inner join tcontentcategories
-			ON	(tcontentcategoryassign.categoryID=tcontentcategories.categoryID
-			and tcontentcategoryassign.siteID=tcontentcategories.siteID
-			)
-		left join tcontentcategories categoryparent
-			ON	(tcontentcategories.parentid=categoryparent.categoryID)
-		WHERE
-			1=1
-		     <cfif len(arguments.parentID)>
-		     	AND tcontent.parentid in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.parentid#"/>)
+			from tcontent
+			inner join tcontentcategoryassign
+				ON (tcontent.contenthistID=tcontentcategoryassign.contentHistID)
+			inner join tcontentcategories
+				ON	(tcontentcategoryassign.categoryID=tcontentcategories.categoryID)
+			left join tcontentcategories categoryparent
+				ON	(tcontentcategories.parentid=categoryparent.categoryID)
+			WHERE 1=1
+			<cfif len(arguments.parentID)>
+				AND tcontent.parentid in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.parentid#"/>)
 			</cfif>
 
 			#renderActiveClause("tcontent",arguments.siteID)#
