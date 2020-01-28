@@ -59,6 +59,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.shortDateFormat="short"/>
 <cfset this.showMetaList="jpg,jpeg,png,gif,svg">
 <cfset this.imageInList="jpg,jpeg,png,gif,svg">
+<cfset this.defaultCollectionDisplayList="Date,Title,Image,Summary,Credits"/>
 <cfset this.directImages=true/>
 <cfset this.personalization="user">
 <cfset this.hasEditableObjects=false>

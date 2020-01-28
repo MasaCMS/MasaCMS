@@ -85,6 +85,7 @@
 		//this.shortDateFormat="short";
 		//this.showMetaList="jpg,jpeg,png,gif";
 		//this.imageInList="jpg,jpeg,png,gif";
+		//this.defaultCollectionDisplayList="Date,Title,Image,Summary,Credits";
 		//this.directImages=true;
 		//this.personalization="user";
 		//this.showAdminToolBar=true;

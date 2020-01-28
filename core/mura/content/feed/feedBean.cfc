@@ -648,7 +648,12 @@ component extends="mura.bean.beanFeed" entityName="feed" table="tcontentfeeds" o
 		var hasRating=false;
 		var hasComments=false;
 		if ( !len(variables.instance.displayList) ) {
-			variables.instance.displayList="Date,Title,Image,Summary,Credits";
+			var renderer=getBean('settingsManager').getSite(get('siteid')).getContentRenderer();
+			if(structKeyExists(renderer,'defaultCollectionDisplayList')){
+				variables.instance.displayList=renderer.defaultCollectionDisplayList;
+			} else {
+				variables.instance.displayList="Date,Title,Image,Summary,Credits";
+			}
 			hasRating=listFindNoCase(variables.instance.displayList,"Rating");
 			hasComments=listFindNoCase(variables.instance.displayList,"Comments");
 			if ( variables.instance.displayComments && !hasComments ) {

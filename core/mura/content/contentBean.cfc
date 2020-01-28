@@ -752,7 +752,12 @@ component extends="mura.bean.beanExtendable" entityName="content" table="tconten
 
 	public function getDisplayList() output=false {
 		if ( !len(variables.instance.responseDisplayFields) ) {
-			return "Image,Date,Title,Summary,Credits";
+			var renderer=getBean('settingsManager').getSite(get('siteid'))).getContentRenderer();
+			if(structKeyExists(renderer,'defaultCollectionDisplayList')){
+				return renderer.defaultCollectionDisplayList;
+			} else {
+				return "Date,Title,Image,Summary,Credits";
+			}
 		} else {
 			return variables.instance.responseDisplayFields;
 		}
