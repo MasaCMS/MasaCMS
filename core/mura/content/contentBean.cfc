@@ -752,7 +752,7 @@ component extends="mura.bean.beanExtendable" entityName="content" table="tconten
 
 	public function getDisplayList() output=false {
 		if ( !len(variables.instance.responseDisplayFields) ) {
-			var renderer=getBean('settingsManager').getSite(get('siteid'))).getContentRenderer();
+			var renderer=getBean('settingsManager').getSite(get('siteid')).getContentRenderer();
 			if(structKeyExists(renderer,'defaultCollectionDisplayList')){
 				return renderer.defaultCollectionDisplayList;
 			} else {
