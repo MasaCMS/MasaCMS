@@ -45,7 +45,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfparam name="objectParams.sourcetype" default="">
 	<cfparam name="objectParams.source" default="">
 	<cfparam name="objectParams.layout" default="default">
-	<cfparam name="objectParams.displaylist" default="Image,Date,Title,Summary,Credits,Tags">
+	<cfparam name="this.defaultCollectionDisplayList" default="Image,Date,Title,Summary,Credits,Tags">
+	<cfparam name="objectParams.displayList" default="#this.defaultCollectionDisplayList#">
 	<cfparam name="objectParams.items" default="">
 	<cfparam name="objectParams.maxitems" default="4">
 	<cfparam name="objectParams.nextN" default="20">

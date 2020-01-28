@@ -49,12 +49,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="objectParams.sortby" default="Title">
 <cfparam name="objectParams.sortdirection" default="ASC">
 <cfparam name="objectParams.object" default="">
-<cfparam name="objectParams.displaylist" default="Image,Date,Title,Summary,Credits,Tags">
+
+
+<cfif not isDefined('objectParams.displayList')>
+	<cfset renderer=rc.$.siteConfig().getContentRenderer()>
+	<cfif isDefined('renderer.defaultCollectionDisplayList')>
+		<cfset objectParams.displayList=renderer.defaultCollectionDisplayList>
+	<cfelse>
+		<cfset objectParams.displayList="Image,Date,Title,Summary,Credits,Tags">
+	</cfif>
+</cfif>
+
 <cfset feed=rc.$.getBean("feed").loadBy(feedID=objectParams.source)>
 <cfset feed.set(objectParams)>
-<cfparam name="objectParams.sourcetype" default="local">
-<cfparam name="objectParams.render" default="server">
-<cfparam name="objectParams.async" default="false">
 <cfset isExternal=false>
 </cfsilent>
 <cfoutput>

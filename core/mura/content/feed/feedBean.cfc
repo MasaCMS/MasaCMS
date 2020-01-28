@@ -647,26 +647,32 @@ component extends="mura.bean.beanFeed" entityName="feed" table="tcontentfeeds" o
 	public function getDisplayList() output=false {
 		var hasRating=false;
 		var hasComments=false;
+
 		if ( !len(variables.instance.displayList) ) {
 			var renderer=getBean('settingsManager').getSite(get('siteid')).getContentRenderer();
+			
 			if(structKeyExists(renderer,'defaultCollectionDisplayList')){
 				variables.instance.displayList=renderer.defaultCollectionDisplayList;
 			} else {
 				variables.instance.displayList="Date,Title,Image,Summary,Credits";
+				hasRating=listFindNoCase(variables.instance.displayList,"Rating");
+				hasComments=listFindNoCase(variables.instance.displayList,"Comments");
+
+				if ( variables.instance.displayComments && !hasComments ) {
+					variables.instance.displayList=listAppend(variables.instance.displayList,"Comments");
+				} else if ( !variables.instance.displayComments && hasComments ) {
+					variables.instance.displayList=listDeleteAt(variables.instance.displayList,hasComments);
+				}
+
+				variables.instance.displayList=listAppend(variables.instance.displayList,"Tags");
+
+				if ( variables.instance.displayRatings && !hasRating ) {
+					variables.instance.displayList=listAppend(variables.instance.displayList,"Rating");
+				} else if ( !variables.instance.displayRatings && hasRating ) {
+					variables.instance.displayList=listDeleteAt(variables.instance.displayList,hasRating);
+				}
 			}
-			hasRating=listFindNoCase(variables.instance.displayList,"Rating");
-			hasComments=listFindNoCase(variables.instance.displayList,"Comments");
-			if ( variables.instance.displayComments && !hasComments ) {
-				variables.instance.displayList=listAppend(variables.instance.displayList,"Comments");
-			} else if ( !variables.instance.displayComments && hasComments ) {
-				variables.instance.displayList=listDeleteAt(variables.instance.displayList,hasComments);
-			}
-			variables.instance.displayList=listAppend(variables.instance.displayList,"Tags");
-			if ( variables.instance.displayRatings && !hasRating ) {
-				variables.instance.displayList=listAppend(variables.instance.displayList,"Rating");
-			} else if ( !variables.instance.displayRatings && hasRating ) {
-				variables.instance.displayList=listDeleteAt(variables.instance.displayList,hasRating);
-			}
+
 		}
 		return variables.instance.displayList;
 	}

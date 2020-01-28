@@ -756,7 +756,7 @@ component extends="mura.bean.beanExtendable" entityName="content" table="tconten
 			if(structKeyExists(renderer,'defaultCollectionDisplayList')){
 				return renderer.defaultCollectionDisplayList;
 			} else {
-				return "Date,Title,Image,Summary,Credits";
+				return "Date,Title,Image,Summary,Credits,Tags";
 			}
 		} else {
 			return variables.instance.responseDisplayFields;
