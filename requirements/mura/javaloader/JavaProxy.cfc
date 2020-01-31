@@ -64,7 +64,11 @@ Mark Mandel		27/08/2007		Created
 
 		constructor = _resolveMethodByParams("Constructor", _getClass().getConstructors(), arguments);
 
-		instance = constructor.newInstance(_buildArgumentArray(arguments));
+		if (StructCount(arguments) > 0){
+		   instance = constructor.newInstance(_buildArgumentArray(arguments));
+		} else {
+		   instance = constructor.newInstance(JavaCast("null", 0));
+		}
 
 		_setClassInstance(instance);
 
