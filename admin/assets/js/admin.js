@@ -217,14 +217,8 @@ function isDate(dtStr) {
 	return true;
 }
 
-function isEmail(cur) {
-	var string1 = cur
-	if(string1.indexOf("@") == -1 || string1.indexOf(".") == -1) {
-		return false;
-	} else {
-		return true;
-	}
-
+function isEmail(e) {
+	return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
 }
 
 function isColor(c){
