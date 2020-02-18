@@ -80,7 +80,7 @@ component extends="mura.cfobject" {
 			public=true,
 			fields="parentid,moduleid,path,contentid,contenthistid,changesetid,siteid,active,approved,title,menutitle,summary,tags,type,subtype,displayStart,displayStop,display,filename,url,assocurl,isNew"
 		});
-		
+
 		registerEntity('comment',{
 			public=true,
 			moduleid='00000000000000000000000000000000015',
@@ -586,37 +586,37 @@ component extends="mura.cfobject" {
 		catch (authorization e){
 			responseObject.setContentType('application/json; charset=utf-8');
 			responseObject.setStatus(401);
-			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code=401,'message'='Insufficient Account Permissions'}});
+			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={'code'=401,'message'='Insufficient Account Permissions'}});
 		}
 
 		catch (disabled e){
 			responseObject.setContentType('application/json; charset=utf-8');
 			responseObject.setStatus(400);
-			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code=400,'message'='The JSON API is currently disabled'}});
+			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={'code'=400,'message'='The JSON API is currently disabled'}});
 		}
 
 		catch (invalidParameters e){
 			responseObject.setContentType('application/json; charset=utf-8');
 			responseObject.setStatus(400);
-			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code=400,'message'='Insufficient parameters'}});
+			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={'code'=400,'message'='Insufficient parameters'}});
 		}
 
 		catch (invalidMethodCall e){
 			responseObject.setContentType('application/json; charset=utf-8');
 			responseObject.setStatus(400);
-			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code=400,'message'="Invalid method call"}});
+			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={'code'=400,'message'="Invalid method call"}});
 		}
 
 		catch (badRequest e){
 			responseObject.setContentType('application/json; charset=utf-8');
 			responseObject.setStatus(400);
-			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code=400,'message'="Bad Request"}});
+			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={'code'=400,'message'="Bad Request"}});
 		}
 
 		catch (invalidTokens e){
 			responseObject.setContentType('application/json; charset=utf-8');
 			responseObject.setStatus(400);
-			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code=400,'message'="Invalid CSRF tokens"}});
+			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={'code'=400,'message'="Invalid CSRF tokens"}});
 		}
 
 		catch (Any e){
@@ -625,9 +625,9 @@ component extends="mura.cfobject" {
 			responseObject.setStatus(500);
 
 			if(getBean('configBean').getDebuggingEnabled()){
-				return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='server_error','message'="Unhandeld Exception",'stacktrace'=e}});
+				return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={'code'='server_error','message'="Unhandeld Exception",'stacktrace'=e}});
 			} else {
-				return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='server_error','message'="Unhandeld Exception"}});
+				return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={'code'='server_error','message'="Unhandeld Exception"}});
 			}
 
 		}
