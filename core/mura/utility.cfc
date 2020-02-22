@@ -165,7 +165,7 @@
 <cfargument name="siteid" type="string" default="" required="yes"/>
 <cfargument name="displaypoolid" type="string" default="" required="yes"/>
 	<cfset var webroot=expandPath('/muraWRM')>
-
+	<cfset var basedir="">
 	<!--- make sure that the file cache directory exists, for node level files --->
 	<cfif not directoryExists("#variables.configBean.getFileDir()#/#arguments.siteid#/cache/file")>
 
@@ -192,20 +192,20 @@
 	<!--- Double checking that it sees the new property on autoupdated instances--->
 	<cfif len(variables.configBean.getSiteDir())>
 		<cfif directoryExists('#variables.configBean.getSiteDir()#/#arguments.siteid#/includes')>
-			<cfset var basedir="#variables.configBean.getSiteDir()#/#arguments.siteid#/includes">
+			<cfset basedir="#variables.configBean.getSiteDir()#/#arguments.siteid#/includes">
 		<cfelse>
-			<cfset var basedir="#variables.configBean.getSiteDir()#/#arguments.siteid#">
+			<cfset basedir="#variables.configBean.getSiteDir()#/#arguments.siteid#">
 		</cfif>
 
 		<cfif not directoryExists(basedir) and arguments.displaypoolid neq arguments.siteid>
 			<cfif directoryExists('#variables.configBean.getSiteDir()#/#arguments.displaypoolid#/includes')>
-				<cfset var basedir="#variables.configBean.getSiteDir()#/#arguments.displaypoolid#/includes">
+				<cfset basedir="#variables.configBean.getSiteDir()#/#arguments.displaypoolid#/includes">
 			<cfelse>
-				<cfset var basedir="#variables.configBean.getSiteDir()#/#arguments.displaypoolid#">
+				<cfset basedir="#variables.configBean.getSiteDir()#/#arguments.displaypoolid#">
 			</cfif>
 		</cfif>
 	<cfelse>
-		<cfset var basedir="#webroot#/#arguments.siteid#/includes">
+		<cfset basedir="#webroot#/#arguments.siteid#/includes">
 
 		<cfif not directoryExists(basedir) and arguments.displaypoolid neq arguments.siteid>
 			<cfset basedir="#webroot#/#arguments.displaypoolid#/includes">
