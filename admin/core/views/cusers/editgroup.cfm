@@ -243,7 +243,7 @@
 							</select>
 						</div>
 					</cfif>
-					<!--- <span id="extendSetsBasic"></span> --->
+					<span id="extendSetsBasic"></span>
 				</div> <!-- /.block-content -->
 
 		<cfif rsSubTypes.recordcount or arrayLen(pluginEventMappings)>
