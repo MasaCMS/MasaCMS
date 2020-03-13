@@ -91,6 +91,10 @@ component output="false" hint="This provides base functionality to all Mura core
 		return this;
 	}
 
+	public function isORM(){
+		return false;
+	}
+
 	public function getConfigBean() output=false {
 		return application.configBean;
 	}

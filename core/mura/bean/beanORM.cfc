@@ -125,6 +125,10 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 		}
 	}
 
+	public function isORM(){
+		return true;
+	}
+
 	function set(property,propertyValue){
 
 		if(!isDefined('arguments.data') ){

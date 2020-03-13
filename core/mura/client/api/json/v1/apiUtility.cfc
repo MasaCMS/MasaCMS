@@ -969,14 +969,15 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				params.method='findall';
 			} else if(!isDefined("params.siteid") || !(isDefined("params.entityName") && len(params.entityName) && getServiceFactory().containsBean(params.entityName)) ){
 				if(isDefined('params.entityName') && right(params.entityName,1) == 's'){
-					params.entityName=left(params.entityName,len(params.entityName)-1);
+					var entitycheck=left(params.entityName,len(params.entityName)-1);
 
-
-					if( !getServiceFactory().containsBean(params.entityName)){
-						throw(type="invalidParameters");
+					if( getServiceFactory().containsBean(entitycheck)){
+						params.entityName=entitycheck;
+					} else { 
+						doubleCheckEntityName(params.entityName);
 					}
 				} else {
-					throw(type="invalidParameters");
+					doubleCheckEntityName(params.entityName);
 				}
 			}
 
@@ -1223,7 +1224,9 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 					var primaryKey=application.objectMappings['#params.entityName#'].primaryKey;
 				} else if (getServiceFactory().containsBean(params.entityname)){
 					var primaryKey=getBean(params.entityname).getPrimaryKey();
-				}
+				} else {
+					var primaryKey='undefined';
+				}					}
 			}
 
 			if(httpRequestData.method=='GET' && isValid('variableName',primaryKey) && isDefined('params.#primaryKey#') && len(params['#primaryKey#'])){
@@ -1252,17 +1255,28 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 							params.method='findMany';
 							result=findMany(argumentCollection=params);
 						} else {
-							params.method='findOne';
-							result=findOne(argumentCollection=params);
+							if(isValid('uuid',params.id) || params.id=='00000000000000000000000000000000001'){
+								params.method='findOne';
+								result=findOne(argumentCollection=params);
+							} else {
+								result=doubleCheckEntityMethod(params.entityname,params.id,params,false);
+							}
 						}
 
 					} else {
-						if(structCount(url)){
-							params.method='findQuery';
-							result=findQuery(argumentCollection=params);
-						} else {
-							params.method='findAll';
-							result=findAll(argumentCollection=params);
+						if(arrayLen(pathInfo) == 3 
+							&& !(
+								isValid('uuid',pathInfo[3]) 
+								|| pathInfo[3]=='00000000000000000000000000000000001'
+								)
+						){
+							if(structCount(url)){
+								params.method='findQuery';
+								result=findQuery(argumentCollection=params);
+							} else {
+								params.method='findAll';
+								result=findAll(argumentCollection=params);
+							}
 						}
 					}
 
@@ -1330,6 +1344,14 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			return serializeResponse(statusCode=400,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={'code'='invalid_request','message'='Invalid parameters'}});
 		}
 
+		catch (invalidEntityCall e){
+			param name="params.method" default="undefined";
+			if(!isDefined('#params.method#')){
+				params.method='invalid';
+			}
+			return serializeResponse(statusCode=400,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={'code'='invalid_request','message'='Invalid reference to persisted entity'}});
+		}
+
 		catch (invalidMethodCall e){
 			param name="params.method" default="undefined";
 			if(!isDefined('#params.method#')){
@@ -1368,6 +1390,66 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		}
 
+	}
+
+	variables.entityChecks={};
+
+	function doubleCheckEntityName(entityName){
+		arguments.entityName=REReplace(arguments.entityName,"[^0-9A-Za-z_]\*","","all");
+		var found=false;
+		
+		if(!structKeyExists(variables.entityChecks,'#arguments.entityname#')
+			|| DateDiff('n', variables.entityChecks['#arguments.entityname#'], now())
+		){
+			var lookupdata=getBean('settingsManager').getDeferredModuleAssets();
+			
+			variables.entityChecks['#arguments.entityname#']=now();
+
+			for(var asset in lookupdata.assets){
+				if(structKeyExists(asset,'modelDir') and len(asset.modelDir)){
+					if(fileExists(asset.modelDir & "/" & arguments.entityName & ".cfc") 
+					|| fileExists(asset.modelDir & "/beans/" & arguments.entityName & ".cfc")
+						|| fileExists(asset.modelDir & "/entities/" & arguments.entityName & ".cfc")
+						|| fileExists(asset.modelDir & "/services/" & arguments.entityName & ".cfc")
+					){
+						var rsSites=getBean('settingsManager').getList(clearCache=true);
+						getBean('configBean').registerBeanDir(dir=asset.modelDir,package=asset.package,siteid=valueList(rsSites.siteid),forceSchemaCheck=true);
+						found=true;
+						break;
+					}
+				}
+			}
+		}
+		if(!found){
+			throw(type="invalidEntityCall");
+		}
+	}
+
+	function doubleCheckEntityMethod(entityName,method,params,throwError=false){
+		//This fires when the entity does exists, but the method doesn't
+		if(isValid('variableName',arguments.method)){
+			var entity=getBean(arguments.entityName);
+			entity.getProperties(rebuild=true);
+
+			if(isDefined('application.objectmappings.#arguments.entityName#.remoteFunctions.#arguments.method#')) {
+				url.method=arguments.method;
+				arguments.params.method=arguments.method;
+
+				structDelete(params,'id');
+
+				return evaluate('entity.#arguments.method#(argumentCollection=params)');	
+			} else if (arguments.throwError){
+				throw(type="invalidMethodCall");
+			} else {
+				params.method='findOne';
+				return findOne(argumentCollection=arguments.params);
+			}
+		} else if (arguments.throwError){
+			throw(type="invalidMethodCall");
+		} else {
+			params.method='findOne';
+			return findOne(argumentCollection=arguments.params);
+		}
 	}
 
 	function serializeResponse(response,statusCode=200){
@@ -1593,7 +1675,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		} else {
 			if(!getServiceFactory().containsBean(arguments.bean)){
 				if(arguments.throwError){
-					throw(type='invalidParameters');
+					throw(type='invalidEntityCall');
 				}
 				return false;
 			}

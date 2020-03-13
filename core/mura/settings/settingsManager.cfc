@@ -393,6 +393,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
+<cffunction name="getDeferredModuleAssets" output="false">
+	<cfset returnStruct={
+		assets=[],
+		siteTemplate=getBean('site')
+	}>
+
+	<cfset request.muraDeferredModuleErrors=[]>
+	<cfset returnStruct.assets=returnStruct.siteTemplate.discoverGlobalModules(returnStruct.assets)>
+	<cfset returnStruct.assets=returnStruct.siteTemplate.discoverGlobalContentTypes(returnStruct.assets)>
+	<cfreturn returnStruct>
+</cffunction>
+
 <cffunction name="setSites" output="false">
 	<cfargument name="missingOnly" default="false">
 
@@ -410,15 +422,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset rs=getList(clearCache=true) />
 		</cfif>
 
-		<cfset var muraDeferredModuleAssets=[]>
-		<cfset request.muraDeferredModuleErrors=[]>
+		<cfset var template=getDeferredModuleAssets()>
 		
+		<cfset var muraDeferredModuleAssets=template.assets>
+		<cfset var siteTemplate=template.siteTemplate>
+
 		<cfset tracepoint1=initTracepoint("Loading global modules")>
-	
-		<cfset var siteTemplate=getBean('site')>
-		<cfset muraDeferredModuleAssets=siteTemplate.discoverGlobalModules(muraDeferredModuleAssets)>
-		<cfset muraDeferredModuleAssets=siteTemplate.discoverGlobalContentTypes(muraDeferredModuleAssets)>
-	
+
 		<cfif not isDefined('request.muraBaseRBFactory')>
 			<cfset request.muraBaseRBFactory=siteTemplate.getRBFactory()>
 		</cfif>
@@ -464,7 +474,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfset tracepoint1=initTracepoint("Loading site modules")>
 		<cfloop query="rs">
-
 			<cfif structKeyExists(foundSites,'#rs.siteid#')>
 				<cfset builtSites['#rs.siteid#'].getRBFactory()>
 				<cfset tracepoint2=initTracepoint("Loading site: #rs.siteid#")>

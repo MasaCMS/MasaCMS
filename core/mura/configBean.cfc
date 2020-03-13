@@ -1820,6 +1820,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="package">
 	<cfargument name="siteid" hint="Can be a list" default="">
 	<cfargument name="moduleid" default="00000000000000000000000000000000000">
+	<cfargument name="forceSchemaCheck" default="false">
 
 	<cfset var rs="">
 	<cfset var expandedDir="">
@@ -1838,9 +1839,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfloop query="rs">
 			<!--- Registers handlers last so that that all entities defined will be available --->
 			<cfif rs.type eq 'dir' and not listFindNoCase('archived,archive,handlers,eventhandlers,event_handlers',rs.name)>
-				<cfset registerBeanDir(dir=listAppend(arguments.dir,rs.name,'/'),package=arguments.package & "." & rs.name,siteid=arguments.siteid,moduleid=arguments.moduleid)>
+				<cfset registerBeanDir(dir=listAppend(arguments.dir,rs.name,'/'),package=arguments.package & "." & rs.name,siteid=arguments.siteid,moduleid=arguments.moduleid,forceSchemaCheck=arguments.forceSchemaCheck)>
 			<cfelseif rs.type neq 'dir' and listLast(rs.name,'.') eq 'cfc'>
-				<cfset registerBean(componentPath="#package#.#listFirst(rs.name,'.')#",siteid=arguments.siteid,moduleid=arguments.moduleid)>
+				<cfset registerBean(componentPath="#package#.#listFirst(rs.name,'.')#",siteid=arguments.siteid,moduleid=arguments.moduleid,forceSchemaCheck=arguments.forceSchemaCheck)>
 			</cfif>
 		</cfloop>
 
@@ -1952,18 +1953,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset commitTracepoint(tracepoint)>
 	<cfelseif getServiceFactory().containsBean(beanName)>
 		<cfset var entity=getBean(beanName)>
-		<cfloop list="#arguments.siteid#" index="local.i">
-			<cfset getBean('settingsManager').getSite(local.i).getApi('json','v1').registerEntity(
-				entityName=beanName,
-				config={
-				moduleid=arguments.moduleid,
-				public=application.objectMappings['#entity.getEntityName()#'].public,
-				fields=fields
-				},
-				beanInstance=entity,
-				registered=true
-			)>
-		</cfloop>
+		<cfif isDefined('entity.isORM') and entity.isOrm()>
+			<cfloop list="#arguments.siteid#" index="local.i">
+				<cfset getBean('settingsManager').getSite(local.i).getApi('json','v1').registerEntity(
+					entityName=beanName,
+					config={
+					moduleid=arguments.moduleid,
+					public=application.objectMappings['#entity.getEntityName()#'].public,
+					fields=fields
+					},
+					beanInstance=entity,
+					registered=true
+				)>
+			</cfloop>
+		</cfif>
 	</cfif>
 
 	<cfreturn this>

@@ -589,9 +589,9 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 
 		getEntityName();
 
-		if(!isdefined('application.objectMappings.#variables.entityName#.properties')){
+		if(arguments.rebuild || !isdefined('application.objectMappings.#variables.entityName#.properties')){
 			lock type="exclusive" name="muraORM#variables.entityName##application.instanceID#" timeout="5" {
-				if(!isdefined('application.objectMappings.#variables.entityName#.properties')){
+				if(arguments.rebuild || !isdefined('application.objectMappings.#variables.entityName#.properties')){
 					var pname='';
 					var i='';
 					var prop={};
