@@ -585,7 +585,7 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 		return application.objectMappings[variables.entityName].hasOne;
 	}
 
-	function getProperties(){
+	function getProperties(rebuild=false){
 
 		getEntityName();
 

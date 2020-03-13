@@ -702,7 +702,7 @@ if ( application.setupComplete ) {
 		variables.tracePoint=initTracepoint("Checking required directories");
 		if ( !directoryExists("#application.configBean.getWebRoot()#/plugins") ) {
 			try {
-				local.fileWriter.( mode=777, directory="#application.configBean.getWebRoot()#/plugins" );
+				local.fileWriter.createDir( mode=777, directory="#application.configBean.getWebRoot()#/plugins" );
 			} catch (any cfcatch) {
 				local.fileWriter.createDir(directory="#application.configBean.getWebRoot()#/plugins");
 			}

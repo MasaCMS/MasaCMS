@@ -1226,7 +1226,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 					var primaryKey=getBean(params.entityname).getPrimaryKey();
 				} else {
 					var primaryKey='undefined';
-				}					}
+				}
 			}
 
 			if(httpRequestData.method=='GET' && isValid('variableName',primaryKey) && isDefined('params.#primaryKey#') && len(params['#primaryKey#'])){
