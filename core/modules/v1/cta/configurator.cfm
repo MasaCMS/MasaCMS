@@ -17,7 +17,8 @@
     <cfparam name="objectparams.animate" default="ttb">
     <cfparam name="objectparams.animatespeed" default="fast">
     <cfparam name="objectparams.width" default="md">
-		<cfparam name="objectparams.statsid" default="#createUUID()#">
+    <cfparam name="objectparams.statsid" default="#createUUID()#">
+    <cfparam name="objectparams.instanceclass" default="">
 
     <cfif not isnumeric(objectparams.scroll)>
         <cfset objectparams.scroll=0>
@@ -333,12 +334,11 @@
                 </div>
             </div>
 
-      	<cfparam name="attributes.params.instanceclass" default="">
 	      <div class="mura-control-group">
 					<label>
 						#application.rbFactory.getKeyValue(session.rb,'collections.cssclass')#
 					</label>
-					<input name="instanceclass" class="objectParam" type="text" value="#esapiEncode('html_attr',attributes.params.instanceclass)#" maxlength="255">
+					<input name="instanceclass" class="objectParam" type="text" value="#esapiEncode('html_attr',objectparams.instanceclass)#" maxlength="255">
 					</div>
           </div>
         </div>
