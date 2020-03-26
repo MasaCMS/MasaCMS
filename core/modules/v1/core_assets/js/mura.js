@@ -18326,12 +18326,10 @@ Mura.DOMSelection = Mura.Core.extend(
 	/**
 	 * processDisplayObject - Handles processing of display object params to selection
 	 *
-	 * @param	{object} data Display object params
 	 * @return {Promise}
 	 */
-	processDisplayObject: function(data) {
+	processDisplayObject: function() {
 		var self = this;
-		delete data.method;
 		return new Promise(function(resolve, reject) {
 			self.each(function() {
 				Mura.processDisplayObject(
@@ -18345,11 +18343,10 @@ Mura.DOMSelection = Mura.Core.extend(
 	/**
 	 * processModule - Prepends display object to selected items
 	 *
-	 * @param	{object} data Display objectparams (including object='objectkey')
 	 * @return {Promise}
 	 */
-	processModule: function(data) {
-		return this.processDisplayObject(data);
+	processModule: function() {
+		return this.processDisplayObject();
 	},
 
 	/**
@@ -18703,7 +18700,30 @@ Mura.DOMSelection = Mura.Core.extend(
 				if(hasLayeredBg){
 					styles.backgroundImage='linear-gradient(' + styles.backgroundColor + ', ' + styles.backgroundColor +' ), ' + styles.backgroundImage;
 				}
-			 }
+			}
+
+			function handleTextColor(sheet,selector,styles){
+				try{
+					if(styles.color){
+						var style=selector + ', ' + selector + ' label, ' + selector + ' p, ' + selector + ' h1, ' + selector + ' h2, ' + selector + ' h3, ' + selector + ' h4, ' + selector + ' h5, ' + selector + ' h6, ' +selector + ' a:link, ' + selector + ' a:visited, '  + selector + ' a:hover, ' + selector + ' .breadcrumb-item + .breadcrumb-item::before, ' + selector + ' a:active { color:' + styles.color + ';} ';
+						sheet.insertRule(
+							style,
+							sheet.cssRules.length
+						);
+						sheet.insertRule(
+							selector + ' * {color:inherit}',
+							sheet.cssRules.length
+						);
+						sheet.insertRule(
+							selector + ' hr { border-color:' + styles.color + ';}',
+							sheet.cssRules.length
+						);
+					}
+				} catch (e){
+					console.log("error adding color: " + styles.color);
+					console.log(e);
+				}
+			}
 			 
 			var obj=Mura(el);
 			var breakpoints=['mura-xs','mura-sm','mura-md','mura-lg'];
@@ -18780,7 +18800,6 @@ Mura.DOMSelection = Mura.Core.extend(
 				Mura.windowResponsiveModules[obj.data('instanceid')]=true;
 			}
 
-			var hasLayeredBg=false;
 			if(!windowResponse){
 				var sheet=Mura.getStyleSheet('mura-styles-' + obj.data('instanceid'));
 
@@ -18821,26 +18840,8 @@ Mura.DOMSelection = Mura.Core.extend(
 						console.log(e);
 					}
 				}
-				try{
-					if(objectstyles.color){
-						var style=selector + ', ' + selector + ' label, ' + selector + ' p, ' + selector + ' h1, ' + selector + ' h2, ' + selector + ' h3, ' + selector + ' h4, ' + selector + ' h5, ' + selector + ' h6, ' +selector + ' a:link, ' + selector + ' a:visited, '  + selector + ' a:hover, ' + selector + ' .breadcrumb-item + .breadcrumb-item::before, ' + selector + ' a:active { color:' + objectstyles.color + ';} ';
-						sheet.insertRule(
-							style,
-							sheet.cssRules.length
-						);
-						sheet.insertRule(
-							selector + ' * {color:inherit}',
-							sheet.cssRules.length
-						);
-						sheet.insertRule(
-							selector + ' hr { border-color:' + objectstyles.color + ';}',
-							sheet.cssRules.length
-						);
-					}
-				} catch (e){
-					console.log("error adding color: " + objectstyles.color);
-					console.log(e);
-				}
+
+				handleTextColor(sheet,selector,objectstyles);
 				
 				if(typeof styleSupport['object_lg_styles'] == 'string'){
 					styleSupport['object_lg_styles']={};
@@ -18876,6 +18877,9 @@ Mura.DOMSelection = Mura.Core.extend(
 					}
 				}
 
+				handleTextColor(sheet,selector,objectAccumulator);
+				handleTextColor(sheet,selector2,objectAccumulator);
+
 				if(typeof styleSupport['object_md_styles'] == 'string'){
 					styleSupport['object_md_styles']={};
 				}
@@ -18909,6 +18913,9 @@ Mura.DOMSelection = Mura.Core.extend(
 						console.log(e);
 					}
 				}
+
+				handleTextColor(sheet,selector,objectAccumulator);
+				handleTextColor(sheet,selector2,objectAccumulator);
 
 				if(typeof styleSupport['object_sm_styles'] == 'string'){
 					styleSupport['object_sm_styles']={};
@@ -18944,6 +18951,9 @@ Mura.DOMSelection = Mura.Core.extend(
 					}
 				}
 
+				handleTextColor(sheet,selector,objectAccumulator);
+				handleTextColor(sheet,selector2,objectAccumulator);
+
 				if(typeof styleSupport['object_xs_styles'] == 'string'){
 					styleSupport['object_xs_styles']={};
 				}
@@ -18978,6 +18988,9 @@ Mura.DOMSelection = Mura.Core.extend(
 						console.log(e);
 					}
 				}
+
+				handleTextColor(sheet,selector,objectAccumulator);
+				handleTextColor(sheet,selector2,objectAccumulator);
 
 				if(styleSupport.css){
 					var styles=styleSupport.css.split('}');
@@ -22095,7 +22108,7 @@ Mura.templates['meta']=function(context){
 		context.labeltag='h2';
 	}
 	if(context.label){
-		return '<div class="mura-object-meta-wrapper"><div class="mura-object-meta"><' + Mura.escapeHTML(context.labeltag) + '>' + Mura.escapeHTML(context.label) + '</' + Mura.escapeHTML(context.labeltag) + '></div></div>';
+		return '<div class="mura-object-meta-wrapper"><div class="mura-object-meta"><' + Mura.escapeHTML(context.labeltag) + '>' + Mura.escapeHTML(context.label) + '</' + Mura.escapeHTML(context.labeltag) + '></div></div><div class="mura-flex-break"></div>';
 	} else {
 		return '';
 	}
