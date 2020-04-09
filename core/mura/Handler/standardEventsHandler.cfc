@@ -916,6 +916,7 @@
 				siteid=$.event('siteID'),
 				contentid=$.content('contentid'),
 				contenthistid=$.content('contenthistid'),
+				changesetid=$.content('changesetid'),
 				siteID=$.event('siteID'),
 				context=$.siteConfig().getRootPath(complete=1),
 				nocache=$.event('nocache'),
