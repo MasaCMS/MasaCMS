@@ -46,25 +46,25 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		variables.userUtility=getBean('userUtility');
 
 		variables.serializer = new mura.jsonSerializer()
-	      .asString('csrf_token_expires')
-	      .asString('csrf_token')
-	      .asString('id')
-	      .asString('url')
-	      .asDate('start')
-	      .asDate('end')
-	      .asInteger('startindex')
-	      .asInteger('endindex')
-	      .asInteger('itemsperpage')
-	      .asInteger('endindex')
-	      .asInteger('totalpages')
-	      .asInteger('totalitems')
-	      .asInteger('pageindex')
-	      .asInteger('code')
-	      .asString('title')
-		  	.asInteger('isnew')
-	      .asBoolean('saveErrors')
-				.asInteger('expires_at')
-				.asInteger('expires_in');
+			.asString('csrf_token_expires')
+			.asString('csrf_token')
+			.asString('id')
+			.asString('url')
+			.asDate('start')
+			.asDate('end')
+			.asInteger('startindex')
+			.asInteger('endindex')
+			.asInteger('itemsperpage')
+			.asInteger('endindex')
+			.asInteger('totalpages')
+			.asInteger('totalitems')
+			.asInteger('pageindex')
+			.asInteger('code')
+			.asString('title')
+			.asInteger('isnew')
+	      	.asBoolean('saveErrors')
+			.asInteger('expires_at')
+			.asInteger('expires_in');
 
 	    registerEntity('site',{
 	    	public=true,
@@ -1234,9 +1234,10 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			}
 
 			structAppend(form,params);
-
+		
 			switch(method){
 				case "GET":
+				
 					if((isDefined('params.id') || (params.entityName=='content') && isDefined('params.contenthistid'))){
 						if(!isDefined('params.id') && (params.entityName=='content' && isDefined('params.contenthistid'))){
 							params.id=params.contenthistid;
@@ -1251,6 +1252,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 								params.method='findPermissions';
 								result=findPermissions(argumentCollection=params);
 						} else if(listLen(params.id) > 1){
+						
 							params.ids=params.id;
 							params.method='findMany';
 							result=findMany(argumentCollection=params);
@@ -1261,8 +1263,9 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 							} else {
 								result=doubleCheckEntityMethod(params.entityname,params.id,params,false);
 							}
+							
 						}
-
+						
 					} else {
 						if(arrayLen(pathInfo) == 3 
 							&& !(
@@ -1270,6 +1273,8 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 								|| pathInfo[3]=='00000000000000000000000000000000001'
 								)
 						){
+							result=doubleCheckEntityMethod(params.entityname,pathInfo[3],params,true);
+						} else {
 							if(structCount(url)){
 								params.method='findQuery';
 								result=findQuery(argumentCollection=params);
@@ -1279,6 +1284,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 							}
 						}
 					}
+
 
 				break;
 
@@ -2702,7 +2708,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		if(!allowAccess(arguments.entityName,$)){
 			throw(type="authorization");
 		}
-
+		
 		checkForChangesetRequest(arguments.entityName,arguments.siteid);
 
 		var propName='';
