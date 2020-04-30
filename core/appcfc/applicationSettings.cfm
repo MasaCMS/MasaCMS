@@ -189,12 +189,6 @@ this.mappings["/mura"] = variables.baseDir & "/core/mura";
 this.mappings["/testbox"] = variables.baseDir & "/core/vendor/testbox";
 this.mappings["/docbox"] = variables.baseDir & "/core/vendor/docbox";
 
-s3assets=getINIProperty("s3assets","");
-
-if (len(s3assets)) {
-    this.mappings["/s3assets"] = s3assets;
-}
-
 variables.context=evalSetting(getINIProperty("context",""));
 
 try {
@@ -579,11 +573,20 @@ this.javaSettings = {
 };
 
 // Amazon S3 Credentials
-try {
+if(len(getINIProperty('s3accessKeyId',''))){
 	this.s3.accessKeyId=evalSetting(getINIProperty('s3accessKeyId',''));
+}
+
+if(len(getINIProperty('s3awsSecretKey',''))){
 	this.s3.awsSecretKey=evalSetting(getINIProperty('s3awsSecretKey',''));
-} catch(any e) {
-	// not supported
+} 
+
+if(len(getINIProperty('s3SecretKey',''))){
+	this.s3.awsSecretKey=evalSetting(getINIProperty('s3SecretKey',''));
+} 
+
+if(len(getINIProperty('s3Acl',''))){
+	this.s3.acl=evalSetting(getINIProperty('s3Acl',''));
 }
 
 function initINI(required string iniPath) output=false {

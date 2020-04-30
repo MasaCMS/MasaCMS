@@ -237,13 +237,10 @@
 	<cffunction name="createDir" output="false">
 		<cfargument name="directory">
 		<cfargument name="mode" required="true" default="#variables.defaultFileMode#">
-		<!--- Skip if using Amazon S3 --->
-		<cfif Not ListFindNoCase('s3', Left(arguments.directory, 2))>
-			<cfif variables.useMode >
-				<cfdirectory action="create" mode="#arguments.mode#" directory="#arguments.directory#"/>
-			<cfelse>
-				<cfdirectory action="create" directory="#arguments.directory#"/>
-			</cfif>
+		<cfif variables.useMode >
+			<cfdirectory action="create" mode="#arguments.mode#" directory="#arguments.directory#"/>
+		<cfelse>
+			<cfdirectory action="create" directory="#arguments.directory#"/>
 		</cfif>
 		<cfreturn this />
 	</cffunction>

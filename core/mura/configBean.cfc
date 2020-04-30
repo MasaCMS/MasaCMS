@@ -257,6 +257,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset variables.instance.version=getVersionFromFile()>
 
+	<cfif isDefined('arguments.config.s3assets') and len(arguments.config.s3assets)>
+		<cfif right(arguments.config.s3assets,1) neq "/">
+			<cfset arguments.config.s3assets=arguments.config.s3assets & "/">
+		</cfif>
+		<cfset arguments.config.fileDir=arguments.config.s3assets & listRest(arguments.config.fileDir,"/")>
+		<cfif isDefined('arguments.config.assetdir')>
+			<cfset arguments.config.assetdir=arguments.config.s3assets & listRest(arguments.config.assetdir,"/")>
+		</cfif>
+	</cfif>
+
 	<cfset setWebRoot(arguments.config.webroot)/>
 	<cfset setContext(arguments.config.context)/>
 	<cfset setAssetPath(arguments.config.assetPath)/>
