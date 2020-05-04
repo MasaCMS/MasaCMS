@@ -101,6 +101,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var themeDir="">
 		<cfset var doFindAndReplace=false>
 
+		<cfset var hasStructuredAssets = not isdefined('arguments.Bundle.getValue') or arguments.Bundle.getValue("hasstructuredassets",true) />
+
+		<cfif isBoolean(hasStructuredAssets) and NOT hasStructuredAssets>			
+			<cfset arguments.keyMode = "publish">
+		</cfif>
+		
 		<cfsetting requestTimeout = "7200">
 
 		<cfif structKeyExists(arguments,"Bundle")>
@@ -231,7 +237,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif isDefined("rssite.theme")>
 				<cfset themeDir=rssite.theme>
 			</cfif>
-			<cfset arguments.Bundle.unpackFiles( arguments.toSiteID,arguments.keyFactory,arguments.toDSN, arguments.moduleID, arguments.errors , arguments.renderingMode, arguments.contentMode, arguments.pluginMode, arguments.lastDeployment,arguments.keyMode,themeDir) />
+			<cfset arguments.Bundle.unpackFiles( 
+				arguments.toSiteID,
+				arguments.keyFactory,
+				arguments.toDSN, 
+				arguments.moduleID, 
+				arguments.errors , 
+				arguments.renderingMode, 
+				arguments.contentMode, 
+				arguments.pluginMode,
+				arguments.lastDeployment,
+				arguments.keyMode,
+				hasStructuredAssets,
+				themeDir) />
 
 			<cfif arguments.pluginMode neq "none">
 				<cfset getToWorkPlugins(argumentCollection=arguments)>
