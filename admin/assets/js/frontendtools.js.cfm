@@ -1435,7 +1435,7 @@
 	
 					Mura(".mura-object").each(initObject);
 	
-					Mura('div.mura-object[data-targetattr]').each(function(){
+					Mura('div.mura-body-object, div.mura-object[data-targetattr]').each(function(){
 						var item=Mura(this);
 						item.addClass("mura-active");
 						item.children('.frontEndToolsModal').remove();
@@ -1833,7 +1833,7 @@
 	
 							utility.extend(MuraInlineEditor.data,nestedObjectAttributes);
 	
-							utility('div.mura-object[data-targetattr]').each(function(){
+							utility('div.mura-body-object,div.mura-object[data-targetattr]').each(function(){
 								var item=utility(this);
 	
 								if(item.data('targetattr')=='objectparams'){
