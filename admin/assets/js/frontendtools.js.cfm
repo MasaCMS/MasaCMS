@@ -106,7 +106,7 @@
 	
 									delete data.runtime;
 	
-									if(item.is('div.mura-object[data-targetattr]')){
+									if(item.is('div.mura-body-object,div.mura-object[data-targetattr]')){
 										data.hasTargetAttr=true;
 									}
 	
@@ -190,7 +190,7 @@
 	
 					delete data.runtime;
 	
-					if(item.is('div.mura-object[data-targetattr]')){
+					if(item.is('div.mura-body-object,div.mura-object[data-targetattr]')){
 						data.hasTargetAttr=true;
 					}
 	
@@ -508,7 +508,7 @@
 	
 				var src= adminLoc + '?muraAction=cArch.frontEndConfigurator&compactDisplay=true&siteid=' + Mura.siteid + '&instanceid=' +  editableObj.data('instanceid') + '&contenthistid=' + Mura.contenthistid + '&contentid=' + Mura.contentid + '&parentid=' + Mura.parentid + '&object=' +  editableObj.data('object') + '&objectid=' +  editableObj.data('objectid') + '&layoutmanager=' +  Mura.layoutmanager + '&objectname=' + encodeURIComponent(editableObj.data('objectname')) + '&contenttype=' + Mura.type + '&contentsubtype=' +encodeURIComponent(Mura.subtype) + '&sourceFrame=' + targetFrame + '&objecticonclass=' + encodeURIComponent(editableObj.data('objecticonclass')) + '&isnew=' + isnew + '&isflex=' + isflex;
 				
-				if(editableObj.is("div.mura-object[data-targetattr]")){
+				if(editableObj.is("div.mura-body-object,div.mura-object[data-targetattr]")){
 					src+='&hasTargetAttr=true';
 				}
 			}
@@ -1435,7 +1435,7 @@
 	
 					Mura(".mura-object").each(initObject);
 	
-					Mura('div.mura-object[data-targetattr]').each(function(){
+					Mura('div.mura-body-object,div.mura-object[data-targetattr]').each(function(){
 						var item=Mura(this);
 						item.addClass("mura-active");
 						item.children('.frontEndToolsModal').remove();
@@ -1833,7 +1833,7 @@
 	
 							utility.extend(MuraInlineEditor.data,nestedObjectAttributes);
 	
-							utility('div.mura-object[data-targetattr]').each(function(){
+							utility('div.mura-body-object,div.mura-object[data-targetattr]').each(function(){
 								var item=utility(this);
 	
 								if(item.data('targetattr')=='objectparams'){
@@ -1874,8 +1874,13 @@
 								delete params['pagenum'];
 								delete params['nextnid'];
 								delete params['origininstanceid'];
-	
-								MuraInlineEditor.data[item.data('targetattr')]=encodeURIComponent(JSON.stringify(params));
+								
+								if(item.is('div.mura-body-object')){
+									MuraInlineEditor.data['objectparams']=encodeURIComponent(JSON.stringify(params));
+								} else {
+									MuraInlineEditor.data[item.data('targetattr')]=encodeURIComponent(JSON.stringify(params));
+								}
+								
 	
 							});
 	
