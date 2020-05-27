@@ -792,4 +792,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	}
 </cfscript>
 
+<cffunction name="getPasswordExpired" output="false">
+	<cfif not getBean('configBean').passwordsExpire() or not exists()>
+		<cfreturn false>
+	</cfif>
+
+	<cfif not isDate(get('passwordCreated'))>
+		<cfreturn true>
+	</cfif>
+	
+	<cfset var expireIn=getBean('configBean').getValue(property="expirePasswords", defaultValue=0)>
+
+	<cfif not isNumeric(expireIn) or expireIn eq 0>	
+		<cfreturn false>
+	<cfelse>
+		<cfreturn getPasswordExpiration(expireIn) lt now()>
+	</cfif>
+
+</cffunction>
+
+<cffunction name="getPasswordExpiration" output="false">
+	<cfargument name="expiresIn" default="#getBean('configBean').getValue(property="expirePasswords", defaultValue=0)#">
+	<cfreturn dateAdd('d',arguments.expiresIn,get('passwordCreated'))>
+</cffunction>
+
 </cfcomponent>

@@ -225,6 +225,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
+<cffunction name="passwordsExpire" output="false">
+	<cfset var expireIn=getValue(property="expirePasswords", defaultValue=0)>
+
+	<cfif not isNumeric(expireIn) or expireIn eq 0>	
+		<cfreturn false>
+	<cfelse>
+		<cfreturn true>
+	</cfif>
+</cffunction>
+
 <cffunction name="set" output="true">
 	<cfargument name="property" required="true">
 	<cfargument name="propertyValue">

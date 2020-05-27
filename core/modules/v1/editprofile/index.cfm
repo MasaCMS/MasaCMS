@@ -56,6 +56,10 @@
 		<cfset request.userBean=application.userManager.read(session.mura.userID) />
 	</cfif>
 
+	<cfif request.userBean.exists() and request.userBean.getPasswordExpired()>
+		<cfset request.userBean.getErrors().passwordExpired=variables.Mura.rbKey("layout.passwordexpirednotice")>
+	</cfif>
+
 	<cfparam name="msg" default="#variables.$.rbKey('user.message')#">
 </cfsilent>
 <cfoutput>

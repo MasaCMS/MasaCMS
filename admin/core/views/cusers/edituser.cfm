@@ -187,6 +187,30 @@
 							</div>
 							<cfif not lockedSuper>
 
+								<cfif $.globalConfig().passwordsExpire()>
+									<div id="passwordexpired" class="help-block-inline" <cfif not rc.userBean.getPasswordExpired()> style="display:none;"</cfif>>#$.rbKey('user.passwordexpired')#</div>
+									
+									<div id="expirepassword" class="mura-control-group" <cfif rc.userBean.getPasswordExpired()> style="display:none;"</cfif>>
+										<button type="button" id="expirepasswordbtn" class="btn">#$.rbKey('user.expirepassword')#</button>
+									</div>
+									<script>
+										$(function(){
+											$('##expirepasswordbtn').on('click',function(){
+												confirmDialog(
+													"#esapiEncode('javascript',$.rbKey('user.expirepasswordconfirm'))#",
+													function(){
+														Mura.get('./?muraAction=cusers.expirepassword&userid=#esapiEncode('url',rc.userBean.getUserID())#&siteid=#esapiEncode('url',rc.userBean.getSiteID())#')
+														.then(function(){
+															Mura('##expirepassword').hide();
+															Mura('##passwordexpired').show();
+														})
+													}
+												);
+											})
+										});
+									</script>
+								</cfif>
+								
 								<cfif isBoolean($.globalConfig('strongpasswords')) and $.globalConfig('strongpasswords')>
 									<div class="help-block-inline">#$.rbKey('user.passwordstrengthhelptext')#</div>
 								</cfif>
