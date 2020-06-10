@@ -199,6 +199,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.forceDirectoryStructure=true>
 <cfset variables.instance.suppressAPIParams=true>
 <cfset variables.instance.sessionBasedLockdown=true>
+<cfset variables.instance.autoPurgeOutputCache=true>
 
 <cffunction name="OnMissingMethod" output="false" hint="Handles missing method exceptions.">
 <cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />

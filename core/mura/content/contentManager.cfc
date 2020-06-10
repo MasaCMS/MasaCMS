@@ -1625,7 +1625,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					}
 				</cfscript>
 
-				<cfif doPurgeOutputCache>
+				<cfif doPurgeOutputCache and variables.configBean.getValue(property='autoPurgeOutputCache',defaultValue=true)>
 					<cfset variables.settingsManager.getSite(arguments.data.siteid).purgeCache(name="output") />
 				</cfif>
 				<cfif doPurgeContentCache>
@@ -1818,7 +1818,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cflock>
 
 	<cfif NOT currentBean.getIsNew()>
-		<cfset variables.settingsManager.getSite(currentBean.getSiteID()).purgeCache(name="output") />
+		<cfif variables.configBean.getValue(property='autoPurgeOutputCache',defaultValue=true)>
+			<cfset variables.settingsManager.getSite(currentBean.getSiteID()).purgeCache(name="output") />
+		</cfif>
 		<cfset purgeContentCache(contentBean=currentBean)>
 	</cfif>
 

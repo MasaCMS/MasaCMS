@@ -517,7 +517,9 @@ and (form['p#replacelist(rsGroups.userid,"-","")#'] eq 'Editor'
 
 </cfloop>
 
+<cfif getBean('configBean').getValue(property='autoPurgeOutputCache',defaultValue=true)>
 	<cfset variables.settingsManager.getSite(arguments.data.siteid).purgeCache(name="output")>
+</cfif>
 </cffunction>
 
 <cffunction name="updateGroup" output="true">
@@ -631,7 +633,9 @@ WHERE tcontent.ContentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#argum
 
 	</cfloop>
 
-	<cfset variables.settingsManager.getSite(arguments.data.siteid).purgeCache(name="output")>
+	<cfif getBean('configBean').getValue(property='autoPurgeOutputCache',defaultValue=true)>
+		<cfset variables.settingsManager.getSite(arguments.data.siteid).purgeCache(name="output")>
+	</cfif>
 
 </cffunction>
 

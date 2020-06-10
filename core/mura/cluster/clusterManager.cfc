@@ -61,7 +61,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif listFindNoCase('output,data',arguments.name)>
 			<cfset broadcastCommand("getBean('settingsManager').getSite('#arguments.siteID#').purgeCache(name='#arguments.name#',broadcast=false)")>
 		<cfelse>
-			<cfset broadcastCommand("getBean('settingsManager').getSite('#arguments.siteID#').purgeCache(name='output',broadcast=false)")>
+			<cfif variables.configBean.getValue(property='autoPurgeOutputCache',defaultValue=true)>
+				<cfset broadcastCommand("getBean('settingsManager').getSite('#arguments.siteID#').purgeCache(name='output',broadcast=false)")>
+			</cfif>
 			<cfset broadcastCommand("getBean('settingsManager').getSite('#arguments.siteID#').purgeCache(name='data',broadcast=false)")>
 		</cfif>
 
