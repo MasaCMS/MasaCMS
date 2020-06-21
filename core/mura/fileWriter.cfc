@@ -419,7 +419,7 @@
 		</cfif>
 	</cffunction>
 
-	<cffunction name="PathFormat" access="private" output="no" hint="Convert path into Windows or Unix format.">
+	<cffunction name="PathFormat" output="no" hint="Convert path into Windows or Unix format.">
 		<cfargument name="path" required="yes" type="string" hint="The path to convert.">
 		<cfset arguments.path = Replace(arguments.path, "\", "/", "ALL")>
 		<cfreturn arguments.path>
