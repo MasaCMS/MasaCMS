@@ -143,6 +143,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.broadcastCachePurges=true />
 <cfset variables.instance.broadcastAppreloads=true />
 <cfset variables.instance.broadcastWithProxy=true />
+<cfset variables.instance.clearOldBroadcastCommands=true>
 <cfset variables.instance.readOnlyDatasource="" />
 <cfset variables.instance.readOnlyDbUsername="" />
 <cfset variables.instance.readOnlyDbPassword="" />
