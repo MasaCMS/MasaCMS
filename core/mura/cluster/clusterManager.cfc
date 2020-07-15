@@ -249,7 +249,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="clearOldCommands" output="false">
-	<cfif variables.broadcastClusterCommands>
+	<cfif variables.clearOldBroadcastCommands>
 		<cfquery>
 			delete from tclusterpeers
 			where instanceid in (select instanceid from
