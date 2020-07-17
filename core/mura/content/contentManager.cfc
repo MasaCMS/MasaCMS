@@ -861,12 +861,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cffunction name="formatRegionObjectsString" output="false">
 		<cfargument name="rs"/>
-		<cfset var str="">
+		<cfset var region=[]>
+		<cfset var obj=[]>
 		<cfloop query="rs">
-			<cfset str=listAppend(str,"#rs.object#~#rs.name#~#rs.objectID#~#rs.params#","^")>
+			<cfset obj=[rs.object,rs.name,rs.objectID,rs.params]> 
+			<cfset arrayAppend(region,obj)>
 		</cfloop>
 
-		<cfreturn str>
+		<cfreturn serializeJSON(region)>
 	</cffunction>
 
 	<cffunction name="setMaterializedPath" output="false">

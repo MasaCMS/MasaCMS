@@ -870,23 +870,50 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 		<cfset objectOrder = 0>
 		<cfif isdefined("arguments.data.objectlist#r#")>
 			<cfset objectList =arguments.data["objectlist#r#"] />
-			<cfloop list="#objectlist#" index="i" delimiters="^">
-				<cfset objectOrder=objectOrder+1>
-				<cfquery>
-				insert into tcontentobjects (contentid,contenthistid,object,name,objectid,orderno,siteid,columnid,params)
-				values(
-					<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getcontentid()#" />,
-					<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getcontenthistid()#" />,
-					<cfqueryparam cfsqltype="cf_sql_varchar" value="#listgetat(i,1,"~")#" />,
-					<cfqueryparam cfsqltype="cf_sql_varchar" value="#listgetat(i,2,"~")#" />,
-					<cfqueryparam cfsqltype="cf_sql_varchar" value="#listgetat(i,3,"~")#" />,
-					<cfqueryparam cfsqltype="cf_sql_numeric" value="#objectOrder#" />,
-					<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getsiteid()#" />,
-					<cfqueryparam cfsqltype="cf_sql_numeric" value="#r#" />,
-					<cfif listLen(i,"~") gt 3 ><cfqueryparam cfsqltype="cf_sql_longvarchar" value="#listgetat(i,4,"~")#" /><cfelse>null</cfif>
-					)
-				</cfquery>
-			</cfloop>
+			<cfif isJSON(objectList)>	
+				<cfset objectList=deserializeJSON(objectList)>
+
+				<cfloop array="#objectlist#" item="i">
+					<cfset objectOrder=objectOrder+1>
+					<cfif arrayLen(i) gt 3 and not isJSON(i[4])>
+						<cfset i[4]=serializeJSON(i[4])>
+					</cfif>
+					<cfquery>
+					insert into tcontentobjects (contentid,contenthistid,object,name,objectid,orderno,siteid,columnid,params)
+					values(
+						<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getcontentid()#" />,
+						<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getcontenthistid()#" />,
+						<cfqueryparam cfsqltype="cf_sql_varchar" value="#i[1]#" />,
+						<cfqueryparam cfsqltype="cf_sql_varchar" value="#i[2]#" />,
+						<cfqueryparam cfsqltype="cf_sql_varchar" value="#i[3]#" />,
+						<cfqueryparam cfsqltype="cf_sql_numeric" value="#objectOrder#" />,
+						<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getsiteid()#" />,
+						<cfqueryparam cfsqltype="cf_sql_numeric" value="#r#" />,
+						<cfif arrayLen(i) gt 3 ><cfqueryparam cfsqltype="cf_sql_longvarchar" value="#i[4]#" /><cfelse>null</cfif>
+						)
+					</cfquery>
+				</cfloop>
+
+			<cfelse>
+
+				<cfloop list="#objectlist#" index="i" delimiters="^">
+					<cfset objectOrder=objectOrder+1>
+					<cfquery>
+					insert into tcontentobjects (contentid,contenthistid,object,name,objectid,orderno,siteid,columnid,params)
+					values(
+						<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getcontentid()#" />,
+						<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getcontenthistid()#" />,
+						<cfqueryparam cfsqltype="cf_sql_varchar" value="#listgetat(i,1,"~")#" />,
+						<cfqueryparam cfsqltype="cf_sql_varchar" value="#listgetat(i,2,"~")#" />,
+						<cfqueryparam cfsqltype="cf_sql_varchar" value="#listgetat(i,3,"~")#" />,
+						<cfqueryparam cfsqltype="cf_sql_numeric" value="#objectOrder#" />,
+						<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getsiteid()#" />,
+						<cfqueryparam cfsqltype="cf_sql_numeric" value="#r#" />,
+						<cfif listLen(i,"~") gt 3 ><cfqueryparam cfsqltype="cf_sql_longvarchar" value="#listgetat(i,4,"~")#" /><cfelse>null</cfif>
+						)
+					</cfquery>
+				</cfloop>
+			</cfif>
 
 		<cfelseif arguments.oldContentHistID neq ''>
 			<cfset rsOld=readRegionObjects(arguments.oldContentHistID,arguments.contentBean.getsiteid(),r)/>
