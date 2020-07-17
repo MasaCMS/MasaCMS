@@ -1820,12 +1820,12 @@
 	
 												objectid=item.data('objectid') || 'NA';
 	
-												objectlist.push([item.data('object'),item.data('objectname') , objectid , JSON.stringify(params).replace(/'/g,'&##39;')])
+												objectlist.push([item.data('object'),item.data('objectname') , objectid , JSON.stringify(params)])
 											}
 										});
 	
 										processedRegions['objectlist' + this.getAttribute('data-regionid')]=true;
-										MuraInlineEditor.data['objectlist' + this.getAttribute('data-regionid')]=JSON.stringify(objectlist).replace(/'/g,"&##39;");
+										MuraInlineEditor.data['objectlist' + this.getAttribute('data-regionid')]=JSON.stringify(objectlist);
 										count++;
 									}
 								}
