@@ -159,7 +159,12 @@
 	
 				} else if(parameters["cmd"] == "setLocation"){
 					var newLocation=decodeURIComponent(parameters["location"]);
-					window.location=newLocation;
+		
+					if(newLocation===window.location.href){
+						window.location.reload();
+					} else {
+						window.location.href=newLocation;
+					}
 					if(newLocation.indexOf('##') > -1){
 						MuraInlineEditor.reload();
 					}
