@@ -134,12 +134,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			}
 
 		} else {
-			if(location.href === href){
-				location.reload();
-			} else {
-				location.href="#esapiEncode('javascript',href)#";
-			}
-			
+			location.href="#esapiEncode('javascript',href)#";
 		}
 	}
 </script>
