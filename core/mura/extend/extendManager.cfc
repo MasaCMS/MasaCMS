@@ -386,7 +386,7 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 					</cfif>
 				</cfif>
 			<cfelseif rs.validation eq "Email">
-				<cfif REFindNoCase("^[^@%*<>' ]+@[^@%*<>' ]{1,255}\.[^@%*<>' ]{2,5}", trim(theValue)) eq 0>
+				<cfif REFindNoCase("^[a-zA-Z_0-9-'\+~]+(\.[a-zA-Z_0-9-'\+~]+)*@([a-zA-Z_0-9-]+\.)+[a-zA-Z]{2,7}$", trim(theValue)) eq 0>
 					<cfif len(rs.message)>
 						<cfset errors[rs.name]=rs.message>
 					<cfelse>
