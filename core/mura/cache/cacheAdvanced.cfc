@@ -56,16 +56,36 @@ component extends="mura.cache.cacheAbstract" hint="This allows Mura to use core 
 	}
 
 	public any function set(key,context,timespan=1,idleTime=1) {
-		variables.collection.put( getHashKey( arguments.key ), arguments.context, arguments.timespan, arguments.idleTime );
-
+		try	{
+			variables.collection.put( getHashKey( arguments.key ), arguments.context, arguments.timespan, arguments.idleTime );
+		} catch(Any e){
+			writeLog(type='error',text=serializeJSON(e));
+			return arguments.context;
+		}
 	}
 
 	public any function get(key, context, timespan=createTimeSpan(1,0,0,0), idleTime=createTimeSpan(1,0,0,0)) {
 		var local.exists = has( arguments.key );
 
-    if ( local.exists ) {
-			return variables.collection.get(getHashKey( arguments.key ));
-		} else {
+		try	{
+			if ( local.exists ) {
+				return variables.collection.get(getHashKey( arguments.key ));
+			} else {
+				if ( isDefined("arguments.context") ) {
+						set( arguments.key, arguments.context,arguments.timespan,arguments.idleTime );
+						return arguments.context;
+				} else  if ( hasParent() && getParent().has( arguments.key ) ) {
+					return getParent().get( arguments.key );
+				} else {
+					if ( isDefined("arguments.context") ) {
+							return arguments.context;
+					} else {
+						throw(message="Context not found for '#arguments.key#'");
+					}
+				}
+			}
+		} catch(Any e){
+			writeLog(type='error',text=serializeJSON(e));
 			if ( isDefined("arguments.context") ) {
 				set( arguments.key, arguments.context,arguments.timespan,arguments.idleTime );
 				return arguments.context;
@@ -78,26 +98,45 @@ component extends="mura.cache.cacheAbstract" hint="This allows Mura to use core 
 					throw(message="Context not found for '#arguments.key#'");
 				}
 			}
-		}
+		}		
 	}
 
 	public any function purge(key) {
-		variables.collection.purge(getHashKey( arguments.key ));
+		try	{
+			variables.collection.purge(getHashKey( arguments.key ));
+		} catch(Any e){
+			writeLog(type='error',text=serializeJSON(e));
+		}
 	}
 
 	public any function purgeAll() {
-		variables.collection.purgeAll();
+		try	{
+			variables.collection.purgeAll();
+		} catch(Any e){
+			writeLog(type='error',text=serializeJSON(e));
+		}	
 	}
 
 	public any function getAll() {
-		return variables.collection.getAll();
+		try	{
+			variables.collection.getAll()
+		} catch(Any e){
+			writeLog(type='error',text=serializeJSON(e));
+			return [];
+		}	
 	}
 
 	public any function has(key) {
-		if ( isDefined('request.purgeCache') && yesNoFormat(request.purgeCache)) {
+		try	{
+			if ( isDefined('request.purgeCache') && yesNoFormat(request.purgeCache)) {
+				return false;
+			}
+			return variables.collection.has(getHashKey( arguments.key ) );
+		} catch(Any e){
+			writeLog(type='error',text=serializeJSON(e));
 			return false;
-		}
-		return variables.collection.has(getHashKey( arguments.key ) );
+		}	
+		
 	}
 
 	public any function getCollection() {
