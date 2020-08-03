@@ -841,6 +841,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset arguments.saveFileDir=arguments.saveFileDir & "/">
 		</cfif>
 
+		<!---
 		<cfloop list="#arguments.moduleID#" index="i">
 			<cfset moduleIDSQLlist=listAppend(moduleIDSQLlist,"'#i#'")>
 		</cfloop>
