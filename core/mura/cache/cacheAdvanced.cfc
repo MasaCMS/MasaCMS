@@ -119,7 +119,7 @@ component extends="mura.cache.cacheAbstract" hint="This allows Mura to use core 
 
 	public any function getAll() {
 		try	{
-			variables.collection.getAll()
+			variables.collection.getAll();
 		} catch(Any e){
 			writeLog(type='error',text=serializeJSON(e));
 			return [];
