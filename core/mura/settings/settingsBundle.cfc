@@ -1732,14 +1732,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfloop query="rstplugins">
 				<cfif fileExists(variables.configBean.getPluginDir() & "/#rstplugins.directory#/plugin/plugin.cfc")>
 					<cfset pluginConfig=getPlugin(ID=rstplugins.moduleID, siteID="", cache=false)>
-					<cfset pluginCFC= new "plugins.#rstplugins.directory#.plugin.plugin"() />
+					<cfset pluginCFC= new "plugins.#rstplugins.directory#.plugin.plugin"(pluginConfig) />
 
 					<!--- only call the methods if they have been defined --->
-					<cfif structKeyExists(pluginCFC,"init")>
-						<cfset pluginCFC.init(pluginConfig)>
-						<cfif structKeyExists(pluginCFC,"toBundle")>
-							<cfset pluginCFC.toBundle(pluginConfig=pluginConfig,Bundle=this, siteID=arguments.siteID,includeVersionHistory=arguments.includeVersionHistory)>
-						</cfif>
+					<cfif structKeyExists(pluginCFC,"toBundle")>
+						<cfset pluginCFC.toBundle(pluginConfig=pluginConfig,Bundle=this, siteID=arguments.siteID,includeVersionHistory=arguments.includeVersionHistory)>
 					</cfif>
 				</cfif>
 			</cfloop>
