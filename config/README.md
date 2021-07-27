@@ -14,7 +14,7 @@ Masa CMS will dynamically generate an empty cfapplication.cfm file in this direc
 
 ## Legacy Plugin Support
 
-In MuMasa CMSra 7.2 Application.cfc lifecycle files have been moved to (https://github.com/MasaCMS/MasaCMS/tree/7.2/core/appcfc).  If this causes issues with legacy plugins and updating the plugins is problematic you can a add the following settings.ini.cfm or environment variable and reload. Masa CMS will then add stub files back that simply include the files in the new location.
+In Masa CMS 7.2 Application.cfc lifecycle files have been moved to (https://github.com/MasaCMS/MasaCMS/tree/7.2/core/appcfc).  If this causes issues with legacy plugins and updating the plugins is problematic you can a add the following settings.ini.cfm or environment variable and reload. Masa CMS will then add stub files back that simply include the files in the new location.
 
 ### settings.ini.cfm
 
