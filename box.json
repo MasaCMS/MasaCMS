@@ -1,26 +1,27 @@
 {
-    "name":"Mura CMS",
-    "version":"7.1.505",
-    "author":"Blue River Interactive Group, Inc.",
-    "location":"https://github.com/blueriver/MuraCMS/archive/master.zip",
+    "name":"Masa CMS",
+    "version":"7.2.0",
+    "author":"We Are Orange BV",
+    "location":"https://github.com/MasaCMS/MasaCMS/archive/master.zip",
     "directory":"",
     "createPackageDirectory":false,
     "packageDirectory":"",
-    "homepage":"http://www.getmura.com/",
-    "documentation":"http://docs.getmura.com/",
+    "homepage":"https://www.masacms.com/",
+    "documentation":"https://www.masacms.com/documentation",
     "repository":{
         "type":"Git",
-        "URL":"https://github.com/blueriver/MuraCMS"
+        "URL":"https://github.com/MasaCMS/MasaCMS"
     },
-    "bugs":"https://github.com/blueriver/MuraCMS/issues",
-    "slug":"MuraCMS",
+    "bugs":"https://github.com/MasaCMS/MasaCMS/issues",
+    "slug":"MasaCMS",
     "shortDescription":"A sweet package",
-    "description":"Mura CMS is an open source content management system for CFML, created by Blue River Interactive Group. Mura has been designed to be used by marketing departments, web designers and developers.",
+    "description":"Masa CMS is an open source content management system for CFML, based on the latest open source version of Mura CMS created by Blue River Interactive Group, and forked by We Are Orange BV to create Masa CMS. Masa CMS has been designed to be used by marketing departments, web designers and developers.",
     "instructions":"",
     "changelog":"",
     "type":"cms",
     "keywords":[
         "mura",
+        "masa",
         "cms",
         "cfml",
         "content management system",
@@ -45,7 +46,7 @@
     "license":[
         {
             "type":"GPL-2.0 with execptions",
-            "URL":"https://github.com/blueriver/MuraCMS/blob/develop/license.txt"
+            "URL":"https://github.com/MasaCMS/MasaCMS/blob/main/license.txt"
         }
     ],
     "contributors":[],
@@ -57,7 +58,7 @@
     "installPaths":{
         "testbox":"core/vendor/testbox/",
         "docbox":"core/vendor/docbox/",
-        "MuraBoostrap4":"themes/default/"
+        "MasaBoostrap4":"themes/default/"
     },
     "scripts":{},
     "ignore":[

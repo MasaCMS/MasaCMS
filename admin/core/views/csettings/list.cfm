@@ -84,7 +84,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif application.configBean.getAllowAutoUpdates()>
 				<div class="btn-group">
 					<cfoutput>
-								<a class="btn" href="##" onclick="confirmDialog('WARNING: Do not update your core files unless you have backed up your current Mura install.<cfif application.configBean.getDbType() eq "mssql">\n\nIf your are using MSSQL you must uncheck Maintain Connections in your CF administrator datasource settings before proceeding. You may turn it back on after the update is complete.</cfif>',function(){actionModal('./?muraAction=cSettings.list&action=updateCore#rc.$.renderCSRFTokens(context='updatecore',format='url')#')});return false;"><i class="mi-cloud-download"></i> Update Core Files</a>
+								<a class="btn" href="##" onclick="confirmDialog('WARNING: Do not update your core files unless you have backed up your current Masa CMS install.<cfif application.configBean.getDbType() eq "mssql">\n\nIf your are using MSSQL you must uncheck Maintain Connections in your CF administrator datasource settings before proceeding. You may turn it back on after the update is complete.</cfif>',function(){actionModal('./?muraAction=cSettings.list&action=updateCore#rc.$.renderCSRFTokens(context='updatecore',format='url')#')});return false;"><i class="mi-cloud-download"></i> Update Core Files</a>
 					</cfoutput>
 				</div>
 			</cfif>

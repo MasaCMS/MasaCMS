@@ -1353,7 +1353,7 @@ function CountDown() {
 function fileManagerPopUp() {
 	var finder = new CKFinder();
 	finder.basePath = context + '/core/vendor/ckfinder/';
-	finder.resourceType = '[Advanced] Mura Root';
+	finder.resourceType = '[Advanced] Masa CMS Root';
 	finder.popup();
 	return false;
 }

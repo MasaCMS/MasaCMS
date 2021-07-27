@@ -682,7 +682,7 @@ to your own modified versions of Mura CMS.
 				</div>
 
 				<div class="mura-control-group">
-					<label>Mura ORM Scaffolding (ALPHA)</label>
+					<label>Masa CMS ORM Scaffolding (ALPHA)</label>
 					<label class="radio inline">
 					<input type="radio" name="scaffolding" value="0" <cfif rc.siteBean.getScaffolding() neq 1> checked</cfif>>
 					Off </label>
@@ -1194,7 +1194,7 @@ to your own modified versions of Mura CMS.
 								<input id="bundleImportPluginMode" name="bundleImportPluginMode" value="all" type="checkbox">
 								All Plugins</label>
 					</div>
-						<p class="help-block" style="display:none" id="contentRemovalNotice"><strong>Important:</strong> When importing content from a Mura bundle ALL of the existing content will be deleted.</p>
+						<p class="help-block" style="display:none" id="contentRemovalNotice"><strong>Important:</strong> When importing content from a Masa CMS bundle ALL of the existing content will be deleted.</p>
 						<p class="help-block" style="display:none" id="userNotice"><strong>Important:</strong> Importing users will remove all existing user data which may include the account that you are currently logged in as.</p>
 					</div>
 				 </cfif>

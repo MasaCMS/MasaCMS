@@ -77,16 +77,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfcomponent extends="mura.cfobject" output="false" hint="This provides access the global configuration">
 <cfset variables.instance=structNew()/>
 <cfset variables.instance.mode=""/>
-<cfset variables.autoupdateurl="https://github.com/blueriver/MuraCMS/archive/master.zip"/>
-<cfset variables.instance.version="7.1.0"/>
-<cfset variables.instance.title="Mura CMS"/>
-<cfset variables.instance.projectname="Mura CMS"/>
-<cfset variables.instance.projectname="Mura CMS"/>
+<cfset variables.autoupdateurl="https://github.com/MasaCMS/MasaCMS/archive/main.zip"/>
+<cfset variables.instance.version="7.2.0"/>
+<cfset variables.instance.title="Masa CMS"/>
+<cfset variables.instance.projectname="Masa CMS"/>
+<cfset variables.instance.projectname="Masa CMS"/>
 <cfset variables.instance.webroot=""/>
 <cfset variables.instance.webrootmap="muraWRM"/>
 <cfset variables.instance.mapdir="mura"/>
 <cfset variables.instance.datasource=""/>
-<cfset variables.instance.defaultthemeurl="https://github.com/blueriver/MuraBootstrap4/archive/master.zip">
+<cfset variables.instance.defaultthemeurl="https://github.com/MasaCMS/MasaBootstrap4/archive/main.zip">
 <cfset variables.instance.stub=""/>
 <cfset variables.instance.context=""/>
 <cfset variables.instance.admindomain=""/>
@@ -2143,7 +2143,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfscript>
 
-//Make sure queries set with configBean don't act like Mura ORN customDatasoure.
+//Make sure queries set with configBean don't act like Masa CMS ORM customDatasoure.
 function hasCustomDatasource(){
 	return false;
 }

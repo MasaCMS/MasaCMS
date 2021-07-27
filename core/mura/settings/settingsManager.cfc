@@ -757,7 +757,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfset arguments.errors.message="The bundle was not successfully imported:<br/>ERROR (Full Details Available in 'exception' Log)<br/>: " & cfcatch.message>
 		<cfif findNoCase("duplicate",errors.message)>
-			<cfset arguments.errors.message=arguments.errors.message & "<br/>HINT: This error is most often caused by 'Maintaining Keys' when the bundle data already exists within another site in the current Mura instance.">
+			<cfset arguments.errors.message=arguments.errors.message & "<br/>HINT: This error is most often caused by 'Maintaining Keys' when the bundle data already exists within another site in the current Masa CMS instance.">
 		</cfif>
 		<cfif isDefined("cfcatch.sql") and len(cfcatch.sql)>
 			<cfset arguments.errors.message=arguments.errors.message & "<br/>SQL: " & cfcatch.sql>

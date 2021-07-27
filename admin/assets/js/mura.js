@@ -307,7 +307,7 @@ var Mura=(function(){
 	};
 
 	/**
-	 * trackEvent - This is for Mura Experience Platform. It has no use with Mura standard
+	 * trackEvent - This is for Mura Experience Platform. It has no use with Masa CMS
 	 *
 	 * @param	{object} data event data
 	 * @return {Promise}
@@ -1594,7 +1594,7 @@ var Mura=(function(){
 	}
 
 	/**
-	 * validateForm - Validates Mura form
+	 * validateForm - Validates Masa CMS form
 	 *
 	 * @name validateForm
 	 * @param	{type} frm					Form element to validate
@@ -13882,7 +13882,7 @@ Core.prototype=
 	},
 
 	/**
-	 * trigger - Triggers custom event on Mura objects
+	 * trigger - Triggers custom event on Masa CMS objects
 	 *
 	 * @name Mura.Core.trigger
 	 * @function
@@ -13910,7 +13910,7 @@ Core.prototype=
 /** @lends Mura.Core.prototype */
 
 /**
- * Extend - Allow the creation of new Mura core classes
+ * Extend - Allow the creation of new Masa CMS core classes
  *
  * @name Mura.Core.extend
  * @function
@@ -15551,7 +15551,7 @@ Mura.Entity = Mura.Core.extend(
 	},
 
 	/**
-	 * checkSchema - Checks the schema for Mura ORM entities
+	 * checkSchema - Checks the schema for Masa CMS ORM entities
 	 *
 	 * @return {Promise}
 	 */
@@ -15631,7 +15631,7 @@ Mura.Entity = Mura.Core.extend(
 	},
 
 	/**
-	 * undeclareEntity - Undeclares an Mura ORM entity with service factory
+	 * undeclareEntity - Undeclares an Masa CMS ORM entity with service factory
 	 *
 	 * @return {Promise}
 	 */

@@ -273,7 +273,7 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 		getEntityName();
 
 		if(!getManageSchema()){
-			throw(type="MuraORMError",message="The Mura ORM entity '#getEntityName()#' is not allowed to manage schema.");
+			throw(type="MasaCMSORMError",message="The Masa CMS ORM entity '#getEntityName()#' is not allowed to manage schema.");
 		}
 
 		if(getBean('configBean').getValue(property="applyDbUpdates",defaultValue=true) && hasTable() && !structIsEmpty(props)){
@@ -387,7 +387,7 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 		validate();
 
 		if(getReadOnly()){
-			throw(type="MuraORMError",message="The Mura ORM entity '#getEntityName()#' is read only.");
+			throw(type="MasaCMSORMError",message="The Masa CMS ORM entity '#getEntityName()#' is read only.");
 		}
 
 		pluginManager.announceEvent(eventToAnnounce='onBefore#variables.entityName#Save',currentEventObject=event,objectid=get(get('primaryKey')));

@@ -791,7 +791,7 @@ $( document ).ready(function() {
 
 				if(!json.dynamic || (json.dynamic != true && json.dynamic != "true")) {
 					this.checkIDProp();
-					alert("Sorry, you can only edit dynamic Mura ORM objects.");
+					alert("Sorry, you can only edit dynamic Masa CMS ORM objects.");
 					return;
 				}
 

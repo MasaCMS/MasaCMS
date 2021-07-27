@@ -139,7 +139,7 @@ function ie6Notice()
 	/*------------------------------
 	Create and insert notice text
 	------------------------------*/
-	noticeText = 'You appear to be using Internet Explorer 7 or lower. Future versions of Mura CMS will not support any version of Internet Explorer below IE 8. It is recommended you upgrade to a modern browser such as the latest version of <a href="http://www.microsoft.com/windows/internet-explorer/">Internet Explorer</a>, <a href="https://www.google.com/intl/en/chrome/browser/">Chrome</a>, <a href="http://www.mozilla.com/firefox/">Firefox</a>, <a href="http://www.apple.com/safari/">Safari</a>, or <a href="http://www.opera.com/">Opera</a>.';
+	noticeText = 'You appear to be using Internet Explorer 7 or lower. Future versions of Masa CMS will not support any version of Internet Explorer below IE 8. It is recommended you upgrade to a modern browser such as the latest version of <a href="http://www.microsoft.com/windows/internet-explorer/">Internet Explorer</a>, <a href="https://www.google.com/intl/en/chrome/browser/">Chrome</a>, <a href="http://www.mozilla.com/firefox/">Firefox</a>, <a href="http://www.apple.com/safari/">Safari</a>, or <a href="http://www.opera.com/">Opera</a>.';
 	noticeParagraph.innerHTML=noticeText;
 
 	/*------------------------------

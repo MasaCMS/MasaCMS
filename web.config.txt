@@ -16,7 +16,7 @@
 			  or copy the <rewrite><rules> section below into your working web.config
 			- Enable the rewrite options below by changing the enabled value to "true"
 			- Edit /config/settings.ini.cfm as noted in the comments before each rule
-			- Reload Mura CMS
+			- Reload Masa CMS
 	-->
 
 <configuration>
@@ -31,7 +31,7 @@
 						- set these values in /config/settings.ini.cfm:
 							siteidinurls=0
 							indexfileinurls=0
-						- reload Mura CMS
+						- reload Masa CMS
 	
 					Option 2: URLs without index.cfm
 					Usage:
@@ -39,9 +39,9 @@
 						- set these values in /config/settings.ini.cfm:
 							siteidinurls=1
 							indexfileinurls=0
-						- reload Mura CMS
+						- reload Masa CMS
 				-->
-				<rule name="Mura CMS remove index.cfm" enabled="true">
+				<rule name="Masa CMS remove index.cfm" enabled="true">
 					<match url="^(.*)" ignoreCase="true" />
 					<conditions>
 						<add input="{REQUEST_FILENAME}" matchType="IsFile" ignoreCase="false" negate="true" />
@@ -59,7 +59,7 @@
 						- replace www.domain.com and /siteID/ in each rule
 				-->
 
-				<rule name="Mura CMS SEO: Sitemap" stopProcessing="true" enabled="false">
+				<rule name="Masa CMS SEO: Sitemap" stopProcessing="true" enabled="false">
 					<match url="^sitemap.xml$" />
 					<conditions logicalGrouping="MatchAll">
 						<add input="{HTTP_HOST}" pattern="^www.domain.com$" ignoreCase="false" />
@@ -67,7 +67,7 @@
 					<action type="Rewrite" url="/sites/siteID/sitemap.xml" />
 				</rule>
 
-				<rule name="Mura CMS SEO: Robots" stopProcessing="true" enabled="false">
+				<rule name="Masa CMS SEO: Robots" stopProcessing="true" enabled="false">
 					<match url="^robots.txt$" />
 					<conditions logicalGrouping="MatchAll">
 						<add input="{HTTP_HOST}" pattern="^www.domain.com$" ignoreCase="false" />

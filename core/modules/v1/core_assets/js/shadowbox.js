@@ -24,7 +24,7 @@
  */
 
  if(typeof Mura == 'undefined'){
-     throw 'Unable to load Shadowbox, Mura library not found.';
+     throw 'Unable to load Shadowbox, Masa CMS library not found.';
  }
 
  // create the Shadowbox object first

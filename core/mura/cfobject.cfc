@@ -76,7 +76,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 /**
  * This provides base functionality to all Mura core objects
  */
-component output="false" hint="This provides base functionality to all Mura core objects" {
+component output="false" hint="This provides base functionality to all Masa CMS core objects" {
 
 	if(server.ColdFusion.ProductName != 'Coldfusion Server'){
 		backportdir='';

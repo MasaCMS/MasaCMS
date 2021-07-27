@@ -308,7 +308,7 @@
 				<link>#application.settingsManager.getSite(arguments.feed.getSiteID()).getScheme()#://#application.settingsManager.getSite(arguments.feed.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#</link>
 				<description>#XMLFormat(arguments.feed.getDescription())#</description>
 				<webMaster>#application.settingsManager.getSite(arguments.feed.getSiteID()).getContact()#</webMaster>
-				<generator>http://www.getmura.com</generator>
+				<generator>https://www.masacms.com</generator>
 				<pubDate>#GetHttpTimeString(now())#</pubDate>
 				<language>#XMLFormat(arguments.feed.getLang())#</language>
 				<atom:link href="#application.settingsManager.getSite(arguments.feed.getSiteID()).getScheme()#://#application.settingsManager.getSite(arguments.feed.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/index.cfm/_api/feed/v1/#XmlFormat(arguments.feed.getSiteID())#/?feedID=#XmlFormat(arguments.feed.getFeedID())#" rel="self" type="application/rss+xml" />

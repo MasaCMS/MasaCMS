@@ -84,7 +84,7 @@ fileDelim			= findNoCase('Windows', Server.OS.Name) ? '\' : '/';
 	- first time, using derived path information.
 ------------------------------------------------------------------------>
 <cfif listFindNoCase(muraInstallPath, 'mura', fileDelim) >
-	<cfset criticalError	= '<h1>Mura cannot be installed under a directory called &quot;<strong>mura</strong>&quot;</h1> <p>Please move or rename the install directory and try to install again.</p>' />
+	<cfset criticalError	= '<h1>Masa CMS cannot be installed under a directory called &quot;<strong>mura</strong>&quot;</h1> <p>Please move or rename the install directory and try to install again.</p>' />
 	<cfinclude template="_wrapperStart.cfm" />
 	<cfinclude template="_error.cfm" />
 	<cfinclude template="_wrapperEnd.cfm" />
@@ -93,7 +93,7 @@ fileDelim			= findNoCase('Windows', Server.OS.Name) ? '\' : '/';
 
 
 <!-----------------------------------------------------------------------
-	Pull some basic settings we need to get Mura setup.
+	Pull some basic settings we need to get Masa CMS setup.
 ------------------------------------------------------------------------>
 <cfscript>
 // default message container
@@ -134,7 +134,7 @@ variables.setupProcessComplete	= false;
 	- second time, this time using settings.ini information
 ------------------------------------------------------------------------>
 <cfif listFindNoCase(context, 'mura', fileDelim) >
-	<cfset criticalError	= '<h1>Mura cannot be installed under a directory called &quot;<strong>mura</strong>&quot;</h1> <p>Please move or rename the install directory and try to install again.</p>' />
+	<cfset criticalError	= '<h1>Masa CMS cannot be installed under a directory called &quot;<strong>mura</strong>&quot;</h1> <p>Please move or rename the install directory and try to install again.</p>' />
 	<cfinclude template="_wrapperStart.cfm" />
 	<cfinclude template="_error.cfm" />
 	<cfinclude template="_wrapperEnd.cfm" />

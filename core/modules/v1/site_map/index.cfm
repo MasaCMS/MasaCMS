@@ -74,7 +74,7 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 
-<!--- Matt, 2 things need to happen: add "-tree" to the class; set this.ulNestedClass to no value on the dspNestedNav method below. The value is set in the theme contentRenderer for MuraBootstrap3. --->
+<!--- Matt, 2 things need to happen: add "-tree" to the class; set this.ulNestedClass to no value on the dspNestedNav method below. The value is set in the theme contentRenderer for MasaBootstrap3. --->
 <cfsilent>
 <cfparam name="objectparams.mapclass" default="mura-site-map">
 <cfif objectparams.mapclass eq "mura-site-map">

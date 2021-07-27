@@ -655,7 +655,7 @@ component extends="mura.cfobject" output="false" hint="This provides locale spec
 		if ( !structKeyExists(arguments.mySession,"locale") ) {
 			arguments.mySession.locale="";
 		}
-		//   session.rb is used to tell mura what resource bundle to use for lan translations
+		//   session.rb is used to tell Masa CMS what resource bundle to use for lan translations
 		if ( !Len(arguments.mySession.rb) ) {
 			if ( application.configBean.getDefaultLocale() != "Server" ) {
 				if ( application.configBean.getDefaultLocale() == "Client" ) {
@@ -671,7 +671,7 @@ component extends="mura.cfobject" output="false" hint="This provides locale spec
 				arguments.mySession.rb=application.rbFactory.CF2Java(getLocale());
 			}
 		}
-		//  session.locale  is the locale that mura uses for date formating
+		//  session.locale  is the locale that Masa CMS uses for date formating
 		if ( !len(arguments.mySession.locale) ) {
 			if ( application.configBean.getDefaultLocale() != "Server" ) {
 				if ( application.configBean.getDefaultLocale() == "Client" ) {

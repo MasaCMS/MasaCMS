@@ -188,7 +188,7 @@ This file is part of Mura CMS.
 					<cfloop condition="#it.hasNext()#">
 						<cfset comment = it.next()>
 						<cfset commenter = comment.getCommenter()>
-						<!--- set avatar from Mura's user bean --->
+						<!--- set avatar from the user bean --->
 						<cfset avatar = "">
 						<cfif isValid("UUID", commenter.getRemoteID())>
 							<cfset user = $.getBean('user').loadBy(userID=commenter.getRemoteID())>

@@ -284,7 +284,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<cfif arguments.includeStructuredAssets>
 				<cfset var filePoolID=getBean('settingsManager').getSite(arguments.siteid).getFilePoolID()>
-				<!--- We do not want to include files collected from mura forms or the advertising manager --->
+				<!--- We do not want to include files collected from Masa CMS forms or the advertising manager --->
 				<cfquery name="rsInActivefiles">
 					select fileID,fileExt from tfiles
 					where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#filePoolID#"/>
@@ -426,7 +426,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset var bodyFileArray=[]>
 			<cfset var extensionXML="">
 
- 			<!--- We do not want to include files collected from mura forms or the advertising manager --->
+ 			<!--- We do not want to include files collected from Masa CMS forms or the advertising manager --->
 
 			<cfloop query="rstfiles">
 				<cfif fileExists( "#filedir#/cache/file/#rstfiles.fileid#_source.#rstfiles.fileext#" )>

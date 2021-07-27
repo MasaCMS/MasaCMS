@@ -16,7 +16,7 @@
 <cfinclude template="/muraWRM/core/modules/v1/core_assets/js/mura.min.js">
 
     /*
-    	BEGIN Mura VARIATION TOOLS
+    	BEGIN Masa CMS VARIATION TOOLS
     */
 
     (function (exports) {

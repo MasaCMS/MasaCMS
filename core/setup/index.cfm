@@ -101,7 +101,7 @@ if ( form.action == 'doSetup' ) {
 }
 /* --------------------------------------------------------------------
   If we were able to process the setup form
-  - Tell mura to refresh on next hit
+  - Tell Masa CMS to refresh on next hit
   - Show a happy congrats screen
 ---------------------------------------------------------------------*/
 if ( variables.setupProcessComplete ) {

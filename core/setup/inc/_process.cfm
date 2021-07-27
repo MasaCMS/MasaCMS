@@ -385,7 +385,7 @@ to your own modified versions of Mura CMS.
             </cfcatch>
           </cftry>
             <!---<cfcatch>
-              <cfset message = "<strong>Error:</strong> There was an issue with creating the database. Check to make sure you are using the right database. If this continues to occur you may just have to run the associated database script manually. You can find it within the /core/setup/db folder of Mura." />
+              <cfset message = "<strong>Error:</strong> There was an issue with creating the database. Check to make sure you are using the right database. If this continues to occur you may just have to run the associated database script manually. You can find it within the /core/setup/db folder of Masa CMS." />
             </cfcatch>
           </cftry> --->
         </cfif>

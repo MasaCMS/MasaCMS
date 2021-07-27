@@ -247,10 +247,10 @@ This file is part of Mura CMS.
 	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery.collapsibleCheckboxTree.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery.spin.js" type="text/javascript"></script>
 
-	<!-- Mura js -->
+	<!-- Masa CMS js -->
 	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/mura.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 
-	<!-- Mura Admin JS -->
+	<!-- Masa CMS Admin JS -->
 	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/admin.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 
 	<cfif cgi.http_user_agent contains 'msie'>
@@ -271,7 +271,7 @@ This file is part of Mura CMS.
 	<!-- JSON -->
 	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/json2.js" type="text/javascript"></script>
 
-	<!-- Mura Vars -->
+	<!-- Masa CMS Vars -->
 	<script type="text/javascript">
 	var htmlEditorType='#application.configBean.getValue("htmlEditorType")#';
 	var context='#application.configBean.getContext()#';

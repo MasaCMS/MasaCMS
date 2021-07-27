@@ -334,7 +334,7 @@ This file is part of Mura CMS.
                                 <!--- update core --->
                                 <cfif (not isBoolean(application.configBean.getAllowAutoUpdates()) or application.configBean.getAllowAutoUpdates()) and isDefined('rc.currentUser.renderCSRFTokens')>
                                     <li>
-                                        <a<cfif rc.originalcircuit eq 'cSettings' and rc.action eq 'updateCore'> class="active"</cfif> href="##" onclick="confirmDialog('WARNING: Do not update your core files unless you have backed up your current Mura install.<cfif application.configBean.getDbType() eq "mssql">\n\nIf you are using MSSQL you must uncheck Maintain Connections in your CF administrator datasource settings before proceeding. You may turn it back on after the update is complete.</cfif>',function(){actionModal('#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cSettings.list&action=updateCore#rc.$.renderCSRFTokens(context='updatecore',format='url')#')},'','#rc.$.rbKey('layout.updatemuracore')#','','','','dialog-warning');return false;"><i class="mi-cloud-download"></i><span class="sidebar-mini-hide">#rc.$.rbKey('layout.updatemuracore')#</span></a>
+                                        <a<cfif rc.originalcircuit eq 'cSettings' and rc.action eq 'updateCore'> class="active"</cfif> href="##" onclick="confirmDialog('WARNING: Do not update your core files unless you have backed up your current Masa CMS install.<cfif application.configBean.getDbType() eq "mssql">\n\nIf you are using MSSQL you must uncheck Maintain Connections in your CF administrator datasource settings before proceeding. You may turn it back on after the update is complete.</cfif>',function(){actionModal('#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cSettings.list&action=updateCore#rc.$.renderCSRFTokens(context='updatecore',format='url')#')},'','#rc.$.rbKey('layout.updatemuracore')#','','','','dialog-warning');return false;"><i class="mi-cloud-download"></i><span class="sidebar-mini-hide">#rc.$.rbKey('layout.updatemuracore')#</span></a>
                                     </li>
                                 </cfif>
                                 <!--- reload application --->
@@ -350,23 +350,19 @@ This file is part of Mura CMS.
                         <ul>
                             <!--- docs --->
                             <li>
-                                <a id="navCSS-API" href="http://docs.getmura.com/" target="_blank"><i class="mi-bookmark"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.developers")#</span></a>
+                                <a id="navCSS-API" href="https://www.masacms.com/documentation" target="_blank"><i class="mi-bookmark"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.developers")#</span></a>
                             </li>
                             <!--- editor docs --->
                             <li>
                                 <a id="navFckEditorDocs" href="http://docs.cksource.com/" target="_blank"><i class="mi-bookmark"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.editordocumentation")#</span></a>
                             </li>
-                            <!--- component API --->
-                            <li>
-                                <a id="navProg-API" href="http://www.getmura.com/component-api/7.1/" target="_blank"><i class="mi-bookmark"></i>Component API</a>
-                            </li>
                             <!--- professional support --->
                             <li>
-                                <a id="navHelpDocs" href="http://www.getmura.com/support/professional-support/" target="_blank"><i class="mi-group"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.support")#</span></a>
+                                <a id="navHelpDocs" href="https://www.weareorange.eu/" target="_blank"><i class="mi-group"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.support")#</span></a>
                             </li>
                             <!--- community support --->
                             <li>
-                                <a id="navHelpForums" href="http://www.getmura.com/support/community-support/" target="_blank"><i class="mi-bullhorn"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.supportforum")#</span></a>
+                                <a id="navHelpForums" href="https://www.masacms.com/" target="_blank"><i class="mi-bullhorn"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.supportforum")#</span></a>
                             </li>
                         </ul>
                     </li>
@@ -384,7 +380,7 @@ This file is part of Mura CMS.
                             <!--- update core --->
                             <cfif listFind(session.mura.memberships,'S2') and (not isBoolean(application.configBean.getAllowAutoUpdates()) or application.configBean.getAllowAutoUpdates()) and isDefined('rc.currentUser.renderCSRFTokens')>
                                 <li>
-                                    <a<cfif rc.originalcircuit eq 'cSettings' and rc.action eq 'updateCore'> class="active"</cfif> href="##" onclick="confirmDialog('WARNING: Do not update your core files unless you have backed up your current Mura install.<cfif application.configBean.getDbType() eq "mssql">\n\nIf you are using MSSQL you must uncheck Maintain Connections in your CF administrator datasource settings before proceeding. You may turn it back on after the update is complete.</cfif>',function(){actionModal('#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cSettings.list&action=updateCore#rc.$.renderCSRFTokens(context='updatecore',format='url')#')},'','#rc.$.rbKey('layout.updatemuracore')#','','','','dialog-warning');return false;"><i class="mi-cloud-download"></i><span class="sidebar-mini-hide">#rc.$.rbKey('layout.updatemuracore')#</span></a>
+                                    <a<cfif rc.originalcircuit eq 'cSettings' and rc.action eq 'updateCore'> class="active"</cfif> href="##" onclick="confirmDialog('WARNING: Do not update your core files unless you have backed up your current Masa CMS install.<cfif application.configBean.getDbType() eq "mssql">\n\nIf you are using MSSQL you must uncheck Maintain Connections in your CF administrator datasource settings before proceeding. You may turn it back on after the update is complete.</cfif>',function(){actionModal('#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cSettings.list&action=updateCore#rc.$.renderCSRFTokens(context='updatecore',format='url')#')},'','#rc.$.rbKey('layout.updatemuracore')#','','','','dialog-warning');return false;"><i class="mi-cloud-download"></i><span class="sidebar-mini-hide">#rc.$.rbKey('layout.updatemuracore')#</span></a>
                                 </li>
                             </cfif>
                             <li class="divider"></li>
@@ -429,6 +425,9 @@ This file is part of Mura CMS.
                             <!--- copyright --->
                              <li>
                                 <a href="https://github.com/blueriver/MuraCMS/blob/develop/license.txt" target="_blank"><span><strong>Mura CMS</strong> &copy; #year(now())# blueriver <em>Licensed under GNU General Public License Version 2.0 with exceptions</em></span></a>
+                            </li>
+                             <li>
+                                <a href="https://github.com/MasaCMS/MasaCMS/blob/main/license.txt" target="_blank"><span><strong>Masa CMS</strong> &copy; #year(now())# We Are Orange BV <em>Licensed under GNU General Public License Version 2.0 with exceptions</em></span></a>
                             </li>
                         </ul>
                     </li>

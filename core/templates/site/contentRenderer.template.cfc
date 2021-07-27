@@ -89,7 +89,7 @@ This file is part of Mura CMS.
 			This is the SITE contentRenderer.cfc
 
 			* Add site-specific methods here
-			* You can override Mura's contentRenderer methods in here as well!
+			* You can override Masa CMS's contentRenderer methods in here as well!
 			* Any methods here will be accessible with the following notation:
 				$.yourFunctionName()
 			* You can also adjust various rendering settings on a per-site basis

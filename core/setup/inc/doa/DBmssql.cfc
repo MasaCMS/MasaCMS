@@ -40,7 +40,7 @@
 		<cfargument name="DatabaseName" default="#Application.ApplicationName#" required="false"  type="string" hint="name of the database to connect to, will default to application name.">
 		<cfargument name="UserName" required="false"  type="string" hint="username is needed for mysql,oracle,mssql,postgresql">
 		<cfargument name="Password" required="false"  type="string" hint="password is needed for mysql,oracle,mssql,postgresql">
-		<cfargument name="Description" default="Mura data source" required="false"  type="string" hint="any descriptive text">
+		<cfargument name="Description" default="Masa CMS data source" required="false"  type="string" hint="any descriptive text">
 		<cfargument name="bCreateDB" default="Yes" required="false"  type="boolean" hint="should the database be created at the same time, default = Yes">
 		
 		<cfscript>
@@ -97,7 +97,7 @@
 		    stcArgs.revoke = true;
 			//stcArgs.url = "jdbc:mysql://" & stcArgs.host & ":" & stcArgs.port & "/" & stcArgs.database;
 			//stcArgs.class= "com.mysql.jdbc.Driver";
-			//stcArgs.driver="Mura MySQL Driver";
+			//stcArgs.driver="Masa CMS MySQL Driver";
 			
 			//login again then create DS
 			if (NOT super.fAdobeLogin(Arguments.GWPassword)) {

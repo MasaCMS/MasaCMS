@@ -59,7 +59,7 @@
 			,'Module'
 			,'default'
 			,1
-			,'Mura ORM Scaffolding'
+			,'Masa CMS ORM Scaffolding'
 			,1
 			,1
 			,1

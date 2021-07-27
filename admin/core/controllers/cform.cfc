@@ -127,7 +127,7 @@ component extends="controller" output="false" {
 			var formJSON = fileRead("#tempDir#/#tempFolder#/form.json");
 
 			if(!isJSON(formJSON)) {
-				rc.errormessage="Upload did not contain an exported Mura CMS Form";
+				rc.errormessage="Upload did not contain an exported Masa CMS Form";
 				return;
 			}
 

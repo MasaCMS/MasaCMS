@@ -240,7 +240,7 @@ select * from tplugins order by #arguments.orderby#
 <cfreturn rsAllPlugins/>
 </cffunction>
 
-<cffunction name="deploy" output="false" hint="This method is primarily used internally by Mura. See deployPlugin." >
+<cffunction name="deploy" output="false" hint="This method is primarily used internally by Masa CMS. See deployPlugin." >
 <cfargument name="moduleID" required="true" default="">
 <cfargument name="id" required="true" default="" hint="Either ModuleID, PluginID or Package. Can be used instead of moduleID argument.">
 <cfargument name="useDefaultSettings" required="true" default="false" hint="Deploy default config.xml settings values, not applicable for bundles">

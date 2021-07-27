@@ -88,7 +88,7 @@ param name="application.appHandlerLookUp" default={};
 request.muraAppreloaded=true;
 
 if ( left(server.coldfusion.productversion,5) == "9,0,0" || listFirst(server.coldfusion.productversion) < 9 ) {
-	writeOutput("Mura CMS requires Adobe Coldfusion 9.0.1 or greater compatibility");
+	writeOutput("Masa CMS requires Adobe Coldfusion 9.0.1 or greater compatibility");
 	abort;
 }
 
@@ -115,7 +115,7 @@ if ( !application.setupComplete || (not application.appInitialized || structKeyE
 			} else {
 				//  check to see if the index.cfm page exists in the setup folder
 				if ( !fileExists( variables.basedir & "/core/setup/index.cfm" ) ) {
-					throw( message="Your setup directory is incomplete. Please reset it up from the Mura source." );
+					throw( message="Your setup directory is incomplete. Please reset it up from the Masa CMS source." );
 				}
 				application.setupComplete = false;
 			}
@@ -264,7 +264,7 @@ if ( application.setupComplete ) {
 
 		local.fileWriter=variables.serviceFactory.getBean("fileWriter");
 		/*
-			As of Mura 7.1 there theme with the main MuraCMS repo.
+			As of Masa CMS 7.1 there theme with the main Masa CMS repo.
 			So if there is not any theme installed then pull down the default one
 		*/
 		if ( application.configBean.getCreateRequiredDirectories() ) {
@@ -783,7 +783,7 @@ if ( application.setupComplete ) {
 		application.settingsManager.create({
 			siteid=projectSiteID,
 			domain=domain,
-			site=application.configBean.getValue(property='title',defaultValue='Mura CMS'),
+			site=application.configBean.getValue(property='title',defaultValue='Masa CMS'),
 			orderno=1,
 			autocreated=true
 			});

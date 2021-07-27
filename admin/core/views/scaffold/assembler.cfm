@@ -106,7 +106,7 @@ This file is part of Mura CMS.
 <div id="alert-assembler-saved"></div>
 
 <div class="mura-header">
-  <h1>Custom Mura ORM Entity</h1>
+  <h1>Custom Masa CMS ORM Entity</h1>
 
 	<div class="nav-module-specific btn-group">
 		<!---<a class="btn" href="./?muraAction=scaffold.assembler"><i class="mi-plus-circle"></i> New Entity</a>--->
@@ -134,7 +134,7 @@ This file is part of Mura CMS.
 
 					<div class="block-content">
 						<div class="alert alert-warning">
-						   IMPORTANT: After updating dynamically created entities, a reload of the Mura application may be required.
+						   IMPORTANT: After updating dynamically created entities, a reload of the Masa CMS application may be required.
 						</div>
 							<component :is="currentView" :data="data" :isupdate="isupdate" :rendertypes="rendertypes" :fieldtypes="fieldtypes" :datatypes="datatypes" :model="model" transition="fade" transition-mode="out-in"></component>
 					</div>

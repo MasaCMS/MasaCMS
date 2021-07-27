@@ -84,7 +84,7 @@ setEncoding("form", "utf-8");
 
 if ( left(server.coldfusion.productversion,5) == "9,0,0" || listFirst(server.coldfusion.productversion) < 9 ) {
 
-	writeOutput("Mura CMS requires Adobe Coldfusion 9.0.1 or greater compatibility");
+	writeOutput("Masa CMS requires Adobe Coldfusion 9.0.1 or greater compatibility");
 
 	abort;
 }
@@ -338,6 +338,6 @@ if(local.HSTSMaxAge){
 
 	getPageContext()
 		.getResponse()
-		.setHeader('Generator', 'Mura CMS #application.serviceFactory.getBean('configBean').getVersion()#');
+		.setHeader('Generator', 'Masa CMS #application.serviceFactory.getBean('configBean').getVersion()#');
 
 </cfscript>
