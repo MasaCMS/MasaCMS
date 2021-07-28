@@ -129,7 +129,7 @@ the rest of the app to read a half-written file.
 			<cfset currentConfigFile="#currentDir#/plugin/config.xml.cfm">
 			<cfif fileExists(currentConfigFile)>
 				<cftry>
-					<cfsavecontent variable="currentConfig"><cfoutput><cfinclude template="../plugins/#rsRequirements.name#/plugin/config.xml.cfm"></cfoutput></cfsavecontent>
+					<cfsavecontent variable="currentConfig"><cfoutput><cfinclude template="../../plugins/#rsRequirements.name#/plugin/config.xml.cfm"></cfoutput></cfsavecontent>
 					<cfset currentConfig=xmlParse(currentConfig)>
 					<cfcatch>
 						<cfset currentConfig=structNew()>
