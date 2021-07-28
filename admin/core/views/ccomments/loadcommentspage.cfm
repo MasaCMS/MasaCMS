@@ -9,7 +9,7 @@
 		<cfloop query="rc.q" startrow="#rc.p.startRow#" endrow="#rc.p.endRow#">
 			<cfset rc.comment = rc.$.getBean('comment').set(rc.$.getBean('utility').queryRowToStruct(rc.q, rc.q.currentrow))>
 			<cfset rc.commenter = rc.comment.getCommenter()>
-			<!--- set avatar from Mura's user bean --->
+			<!--- set avatar from the user bean --->
 			<cfset rc.avatar = "">
 			<cfif isValid("UUID", rc.commenter.getRemoteID())>
 				<cfset rc.user = $.getBean('user').loadBy(userID=rc.commenter.getRemoteID())>

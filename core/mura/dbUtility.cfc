@@ -870,10 +870,10 @@
 			</cfswitch>
 		</cfcase>
 		<cfdefaultcase>
-			<cfthrow type="muraorm" message="Unrecognized ORM dbtype #arguments.datatype#. Valid dbtypes are mssqlm mysql, postgresql, nuodb, oracle." />
+			<cfthrow type="MasaCMSorm" message="Unrecognized ORM dbtype #arguments.datatype#. Valid dbtypes are mssqlm mysql, postgresql, nuodb, oracle." />
 		</cfdefaultcase>
 	</cfswitch>
-	<cfthrow type="muraorm" message="Unrecognized ORM datatype #arguments.datatype#. Valid datatypes are varchar, string, char,int, integer, tinyint, boolean, date, datetime, timestamp, text, longtext, float, numeric, double, blob." />
+	<cfthrow type="MasaCMSORM" message="Unrecognized ORM datatype #arguments.datatype#. Valid datatypes are varchar, string, char,int, integer, tinyint, boolean, date, datetime, timestamp, text, longtext, float, numeric, double, blob." />
 </cffunction>
 
 <cffunction name="columnExists" output="false">
@@ -884,7 +884,7 @@
 
 </cffunction>
 
-<cffunction name="generalizeDataType" access="private" output="false" hint="Translates from db to Mura">
+<cffunction name="generalizeDataType" access="private" output="false" hint="Translates from db to Masa CMS">
 <cfargument name="datatype">
 	<!--- These need to match outcomes from transformColumnMetaData--->
 	<cfswitch expression="#arguments.datatype#">
@@ -934,7 +934,7 @@
 
 </cffunction>
 
-<cffunction name="transformColumnMetaData" access="private" output="false" hint="Translates from db to Mura">
+<cffunction name="transformColumnMetaData" access="private" output="false" hint="Translates from db to Masa CMS">
 <cfargument name="rs">
 <cfargument name="table">
 	<cfset var columnsStruct={}>

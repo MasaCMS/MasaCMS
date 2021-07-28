@@ -1,7 +1,7 @@
 version: '2.1'
 
 services:
-  #Mura Server
+  #Masa CMS Server
   mura_oracle_cfml:
     image: ortussolutions/commandbox:adobe2016
     depends_on:

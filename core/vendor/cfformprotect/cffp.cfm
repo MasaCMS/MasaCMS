@@ -1,7 +1,7 @@
 <!--- This path should start from the web root and work forward from
 			there, if you don't have it in the web root --->
 
-<!--- Custom For Mura --->
+<!--- Custom For Masa CMS --->
 <cfset cffpPath = "#application.configBean.getContext()#/core/vendor/cfformprotect">
 <!--- End Custom --->
 

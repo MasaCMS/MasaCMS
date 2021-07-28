@@ -1,1 +1,1 @@
-The files found in this directory are to provide minimal style for Mura CMS display Objects. It is expected that additional style will be applied via a theme.
+The files found in this directory are to provide minimal style for Masa CMS display Objects. It is expected that additional style will be applied via a theme.

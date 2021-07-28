@@ -33,7 +33,7 @@
             warningHtml += '<a style="text-decoration: none; color: black;" href="#close" onclick="this.parentNode.parentNode.style.display=\'none\'; this.parentNode.parentNode.parentNode.childNodes[0].childNodes[0].style.display=\'none\'; return false;">[ close ]</a>';
             warningHtml += '</div>';
             warningHtml += '<div style="text-align:left; margin:auto 10px;">';
-            warningHtml += 'It looks like you are running Internet Explorer in "Compatibility Mode". Because Mura CMS is built using web standards, Mura CMS does not support Internet Explorer in this mode. However, it can easily be toggled to "Standards Mode" via "Internet Options" in Internet Explorer. <a style="'+css_a+'" target="_blank" href="http://blogs.msdn.com/b/ie/archive/2008/08/27/introducing-compatibility-view.aspx">Click here</a> to learn more.';
+            warningHtml += 'It looks like you are running Internet Explorer in "Compatibility Mode". Because Masa CMS is built using web standards, Masa CMS does not support Internet Explorer in this mode. However, it can easily be toggled to "Standards Mode" via "Internet Options" in Internet Explorer. <a style="'+css_a+'" target="_blank" href="http://blogs.msdn.com/b/ie/archive/2008/08/27/introducing-compatibility-view.aspx">Click here</a> to learn more.';
             warningHtml += '</div>';
             warningHtml += '</div>';
 
@@ -68,7 +68,7 @@
             warningHtml += '<a style="text-decoration: none; color: black;" href="#close" onclick="this.parentNode.parentNode.style.display=\'none\'; this.parentNode.parentNode.parentNode.childNodes[0].childNodes[0].style.display=\'none\'; return false;">[ close ]</a>';
             warningHtml += '</div>';
             warningHtml += '<div style="text-align:left; margin:auto 10px;">';
-            warningHtml += 'It looks like you are using an out-of-date version of Internet Explorer. In the future, Mura CMS will only support versions of Internet Explorer 9 and above. <a style="'+css_a+'" target="_blank" href="http://www.microsoft.com/windows/Internet-explorer/default.aspx">Click here</a> to download the latest version! Or you could try';
+            warningHtml += 'It looks like you are using an out-of-date version of Internet Explorer. In the future, Masa CMS will only support versions of Internet Explorer 9 and above. <a style="'+css_a+'" target="_blank" href="http://www.microsoft.com/windows/Internet-explorer/default.aspx">Click here</a> to download the latest version! Or you could try';
             warningHtml += ' <a style="'+css_a+'" target=_blank" href="http://www.google.com/chrome">Chrome</a> or ';
             warningHtml += ' <a style="'+css_a+'" target="_blank" href="http://www.apple.com/safari/download/">Safari</a>.';
             warningHtml += ' <a style="'+css_a+'" target="_blank" href="http://www.mozilla.com/firefox/">Firefox</a>, ';

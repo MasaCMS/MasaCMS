@@ -1498,7 +1498,7 @@
 		<cfset var local = structNew() />
 		<cfset var $ = structNew() />
 
-		<!--- integration point with Mura --->
+		<!--- integration point with Masa CMS --->
 		<cfif structKeyExists( rc, '$' )>
 			<cfset $ = rc.$ />
 			<cfset m = rc.$ />
@@ -1523,7 +1523,7 @@
 		<cfset var local = structNew() />
 		<cfset var $ = structNew() />
 
-		<!--- integration point with Mura --->
+		<!--- integration point with Masa CMS --->
 		<cfif structKeyExists( rc, '$' )>
 			<cfset $ = rc.$ />
 		</cfif>

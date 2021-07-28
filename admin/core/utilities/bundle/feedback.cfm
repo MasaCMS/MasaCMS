@@ -72,7 +72,7 @@ Access Restricted.
 			<cfset mailer = application.configBean.getBean('mailer') />
 			<cfset mailer.sendHTML(emailBody,
 				application.configBean.getBundleDeployErrorEmail(),
-				'Mura CMS',
+				'Masa CMS',
 				'Bundle Error',
 				URL.siteID,
 				application.configBean.getBundleDeployErrorEmail()) />

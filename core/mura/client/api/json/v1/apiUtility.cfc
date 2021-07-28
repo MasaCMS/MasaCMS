@@ -1884,7 +1884,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		}
 	}
 
-	// MURA ORM ADAPTER
+	// Masa CMS ORM ADAPTER
 
 	function save(siteid,entityname,id='new',expand=''){
 
@@ -4092,7 +4092,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 					arrayAppend(response,{
 							"name"= 'feedID',
 							"in"= "query",
-							"description"= "A feedID of a collection defined in the the Mura admin",
+							"description"= "A feedID of a collection defined in the the Masa CMS admin",
 							"required"= false,
 							"type"= "string"
 						});
@@ -4100,7 +4100,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 					arrayAppend(response,{
 							"name"= 'feedName',
 							"in"= "query",
-							"description"= "A the name of a collection defined in the the Mura admin",
+							"description"= "A the name of a collection defined in the the Masa CMS admin",
 							"required"= false,
 							"type"= "string"
 						});
@@ -4291,24 +4291,24 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				"description"= "This is the JSON API for #$.siteConfig().getRootPath(complete=1)#",
 				"version"= "1.0.0",
 				"title"= $.siteConfig('site'),
-				"termsOfService"= "https://getmura.com",
+				"termsOfService"= "https://www.masacms.com",
 				"contact"= {
 				"email"= $.siteConfig('contact')
 			},
 			"license"= {
 				"name"= "GPL-2.0 with execptions",
-				"url"= "https://github.com/blueriver/MuraCMS/blob/develop/license.txt"
+				"url"= "https://github.com/MasaCMS/MasaCMS/blob/main/license.txt"
 			}
 			},
 			"host"= $.siteConfig('domain') & $.siteConfig('serverPort'),
 			"basePath"= "#indexFile#/_api/#arguments.params.mode#/v1/#$.siteConfig('siteid')#",
 			"tags"= [
 				{
-					"name"= "Mura CMS",
+					"name"= "Masa CMS",
 					"description"= "Open source content management system",
 					"externalDocs"= {
 					"description"= "Find out more",
-					"url"= "http://www.getmura.com"
+					"url"= "https://www.masacms.com"
 					}
 				}
 			],
