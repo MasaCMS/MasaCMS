@@ -28,8 +28,8 @@ function CheckAuthentication()
   }
 }
 
-config.licenseName	= '';
-config.licenseKey = '';
+config.licenseName	= application.configBean.getCKFinderLicenseName();
+config.licenseKey = application.configBean.getCKFinderLicenseKey();
 
 /* To make it easy to configure CKFinder, the config.baseUrl and config.baseDir can be used.
  * Those are helper variables used later in this config file.

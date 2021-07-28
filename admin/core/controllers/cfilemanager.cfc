@@ -82,6 +82,10 @@ component extends="controller" output="false" {
 		}
 		param default="assets" name="session.resourceType";
 
+		// disable the ability to go to filemanager if its disabled
+		if ( !getConfigBean().getFilemanagerEnabled()) {
+			location(getConfigBean().getAdminPath());
+		}
 	}
 
 }
