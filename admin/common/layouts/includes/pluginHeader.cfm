@@ -109,7 +109,7 @@ function toggleAdminToolbar(){
 	}
 </script>
 
-	<img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/mura-logo-fe@2x.png" id="frontEndToolsHandle" onclick="if (document.getElementById('frontEndTools').style.display == 'none') { createCookie('FETDISPLAY','',5); } else { createCookie('FETDISPLAY','none',5); } toggleAdminToolbar();" />
+	<img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/masa-logo-fe@2x.png" id="frontEndToolsHandle" onclick="if (document.getElementById('frontEndTools').style.display == 'none') { createCookie('FETDISPLAY','',5); } else { createCookie('FETDISPLAY','none',5); } toggleAdminToolbar();" />
 	<div id="frontEndTools" class="pluginHdr" style="display: #Cookie.fetDisplay#">
 			<ul>
 				<li id="adminPlugIns"><a href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cPlugins.list&siteid=#session.siteid#"><i class="mi-cogs"></i> #rc.$.rbKey("layout.plugins")#</a></li>

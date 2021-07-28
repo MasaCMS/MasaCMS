@@ -98,12 +98,12 @@ This file is part of Mura CMS.
                 <!-- Themes functionality initialized in App() -> uiHandleTheme() -->
                 <div class="btn-group">
                     <span id="brand-logo-lg" class="brand" target="_blank">
-                        <img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/mura-logo-admin@2x.png" class="mura-logo">
+                        <img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/masa-logo-admin@2x.png" class="mura-logo">
                     </span>
                     <span id="brand-logo-min" class="brand" target="_blank">
-                        <img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/mura-icon@2x.png" class="mura-logo">
+                        <img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/masa-icon@2x.png" class="mura-logo">
                         <span class="sidebar-mini-hide">
-                            <img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/mura-logo-text@2x.png" class="mura-logo-text">
+                            <img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/masa-logo-text@2x.png" class="mura-logo-text">
                         </span>
                     </span>
                 </div>

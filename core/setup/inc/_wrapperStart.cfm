@@ -113,7 +113,7 @@ to your own modified versions of Mura CMS.
 				<div id="mura-setup">
 					<div class="block mura-focus-block" id="mura-login-panel">
 					  <div class="focus-block-header">
-					  	<img src="#context#/admin/assets/images/mura-logo-black@2x.png" class="mura-logo">
+					  	<img src="#context#/admin/assets/images/masa-logo-black@2x.png" class="mura-logo">
 					  </div><!-- /focus-block-header -->
 			  	     <div class="block-content">
 				  	 <h3 class="center mura-login-auth-heading">Installation</h3>

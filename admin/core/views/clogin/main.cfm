@@ -81,7 +81,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfsavecontent variable="focusblockheader">
   <div class="focus-block-header">
-  	<img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/mura-logo-black@2x.png" class="mura-logo">
+  	<img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/masa-logo-black@2x.png" class="mura-logo">
   </div><!-- /focus-block-header -->
 </cfsavecontent>
 
