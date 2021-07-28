@@ -352,6 +352,44 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
+<cffunction name="uploadAsset" output="false">
+	<cfargument name="formField" type="string">
+	<cfargument name="siteId" type="string">
+	<cfargument name="folder" type="string">	
+
+	<cftry>
+		<cfset var destFilePath = "/#arguments.siteId##arguments.folder#"/>
+		<cffile action="upload" filefield="#arguments.formField#" destination="#variables.configBean.getFileDir()#/#destFilePath#" nameconflict="MAKEUNIQUE" />
+		<cfset var destFileName = "#createUUID()#-#cffile.serverFile#"/>		
+
+		<cffile action="rename"
+				source="#variables.configBean.getFileDir()#/#destFilePath#/#cffile.serverFile#"
+				destination="#variables.configBean.getFileDir()#/#destFilePath#/#destFileName#">
+		<cfset var filePath = "#application.configBean.getContext()#/index.cfm/_api/asset/image/?filePath=#destFilePath#/#destFileName#">
+		<cfset var data = {"fileName":"#destFileName#","url":"#filePath#","uploaded":1} />		
+
+		<cfcatch>
+			<cfset var data = {"fileName":"","url":"","uploaded":0} />
+		</cfcatch>
+	</cftry>
+	<cfheader name="Content-Type" value="application/json;charset=UTF-8" />
+	<cfreturn serializeJSON(data) />
+</cffunction>
+
+<cffunction name="renderAsset" output="true">
+	<cfargument name="filePath" type="string">
+	<cfargument name="method" type="string">
+
+	<cfset var asset = {
+		fileLocation = "#variables.configBean.getFileDir()##arguments.filePath#",
+		filename = getFileFromPath(arguments.filePath),
+		mimeType = FileGetMimeType(arguments.filePath),
+		dateModified = now()
+	} />
+
+	<cfset streamFile(asset.fileLocation, asset.filename, asset.mimeType, arguments.method, asset.dateModified, false, true)>
+</cffunction>
+
 <cffunction name="renderMimeType" output="true" hint="deprecated in favor of streamFile">
 <cfargument name="mimeType" default="" required="yes" type="string">
 <cfargument name="file" default="" required="yes" type="any">

@@ -582,6 +582,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var emailendpoint="/_api/email/trackopen">
 	<cfset var sitemonitorendpoint="/_api/sitemonitor">
 	<cfset var variationendpoint="/_api/resource/variation">
+	<cfset var assetendpoint="/_api/asset/">
 
 	<cfset var legacyfeedendpoint="/tasks/feed">
 	<cfset var legacyfileendpoint="/tasks/render/">
@@ -728,6 +729,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn "">
 	<cfelseif left(path,len(legacywidgetendpoint)) eq legacywidgetendpoint>
 		<cflocation statuscode="301" addtoken="false" url="#replaceNoCase(cgi.path_info,'/tasks/widgets/','/core/vendor/')#">
+	<cfelseif left(path,len(assetendpoint)) eq assetendpoint>
+		<cfparam name="url.action" default="#listGetAt(path,3,'/')#">
+		<cfparam name="url.filePath" default="">
+		<cfparam name="url.method" default="inline">
+		<cfparam name="url.formField" default="form.upload">
+		<cfparam name="url.siteId" default="">
+		<cfparam name="url.folder" default="/assets/Image/">
+		<cfswitch expression="#url.action#">
+			<cfcase value="upload">
+				<cfreturn application.contentRenderer.uploadAsset(formField=url.formField, siteId=url.siteId, folder=url.folder)>
+			</cfcase>
+			<cfdefaultcase>
+				<cfreturn application.contentRenderer.renderAsset(url.filePath, url.method)>
+			</cfdefaultcase>
+		</cfswitch>
 	</cfif>
 </cffunction>
 

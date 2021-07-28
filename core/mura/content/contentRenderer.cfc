@@ -3083,6 +3083,19 @@ Display Objects
 	<cfreturn variables.contentRendererUtility.renderIntervalDesc(argumentCollection=arguments)>
 </cffunction>
 
+<cffunction name="uploadAsset" output="true">	
+	<cfargument name="formField" type="string">
+	<cfargument name="siteId" type="string">
+	<cfargument name="folder" type="string">
+	<cfreturn getBean('fileManager').uploadAsset(argumentCollection=arguments) />
+</cffunction>
+
+<cffunction name="renderAsset" output="true">
+	<cfargument name="filePath" type="string">
+	<cfargument name="method" type="string">
+	<cfset getBean('fileManager').renderAsset(arguments.filePath, arguments.method) />
+</cffunction>
+
 <cfscript>
 	public any function dspComponent(string componentid, boolean allowEditable=this.showEditableObjects) {
 		return variables.$.dspObject(object='component',objectid=arguments.componentid,allowEditable=arguments.allowEditable);
