@@ -159,9 +159,11 @@ This file is part of Mura CMS.
                     </cfif>
                     <!--- /Content Collections --->
                     <!--- File Manager --->
-                    <li>
-                    <a<cfif rc.originalcircuit eq 'cFilemanager'> class="active"</cfif> href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cFilemanager.default&amp;siteid=#session.siteid#"><i class="mi-folder-open"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.filemanager")#</span></a>
-                    </li>
+                    <cfif application.configBean.getValue('filemanagerenabled')>
+                        <li>
+                            <a<cfif rc.originalcircuit eq 'cFilemanager'> class="active"</cfif> href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cFilemanager.default&amp;siteid=#session.siteid#"><i class="mi-folder-open"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.filemanager")#</span></a>
+                        </li>
+                    </cfif>
                     <!--- /File Manager --->
                     <!--- Advertising, this is not only available in certain legacy situations --->
                       <cfif application.settingsManager.getSite(session.siteid).getAdManager() and  application.permUtility.getModulePerm("00000000000000000000000000000000006",session.siteid)>
@@ -322,11 +324,11 @@ This file is part of Mura CMS.
                                     <a<cfif isDefined('url.addsite')> class="active"</cfif> href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cSettings.editSite&amp;siteid=&amp;addsite"><i class="mi-plus-circle"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.addsite")#</span></a>
                                 </li>
                                 <!--- copy site --->
-																<cfif listFirst(expandPath(rc.$.globalConfig().getFileDir()),":") neq 's3'>
+								<cfif listFirst(expandPath(rc.$.globalConfig().getFileDir()),":") neq 's3'>
 	                                <li>
 	                                    <a<cfif rc.originalcircuit eq 'cSettings' and rc.originalfuseaction eq 'siteCopySelect'> class="active"</cfif> href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cSettings.sitecopyselect"><i class="mi-copy"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.sitecopytool")#</span></a>
 	                                </li>
-																</cfif>
+								</cfif>
                                 <!--- global plugins --->
                                 <li>
                                     <a<cfif rc.originalcircuit eq 'cSettings' and rc.originalfuseaction eq 'list' and isDefined('url.plugins')> class="active"</cfif> href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cSettings.list&plugins##tabPlugins"><i class="mi-plug"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.globalsettings-plugins")#</span></a>

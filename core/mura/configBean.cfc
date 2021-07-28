@@ -233,6 +233,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.suppressAPIParams=true>
 <cfset variables.instance.sessionBasedLockdown=true>
 <cfset variables.instance.autoPurgeOutputCache=true>
+<cfset variables.instance.filemanagerEnabled=false>
+<cfset variables.instance.CKFinderlicenseName="">
+<cfset variables.instance.CKFinderlicenseKey="">
 
 <cffunction name="OnMissingMethod" output="false" hint="Handles missing method exceptions.">
 <cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />
@@ -1599,6 +1602,41 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getEncryptionKey" output="false">
 	<cfreturn variables.instance.encryptionKey />
+</cffunction>
+<cffunction name="setFilemanagerEnabled" output="false">
+	<cfargument name="filemanagerEnabled" />
+	<cfif len(arguments.filemanagerEnabled)>
+		<cfset variables.instance.filemanagerEnabled = arguments.filemanagerEnabled />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getFilemanagerEnabled" output="false">
+	<cfreturn variables.instance.filemanagerEnabled />
+</cffunction>
+
+<cffunction name="setCKFinderLicenseName" output="false">
+	<cfargument name="CKFinderLicenseName" />
+	<cfif len(arguments.CKFinderLicenseName)>
+		<cfset variables.instance.CKFinderLicenseName = arguments.CKFinderLicenseName />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getCKFinderLicenseName" output="false">
+	<cfreturn variables.instance.CKFinderLicenseName />
+</cffunction>
+
+<cffunction name="setCKFinderLicenseKey" output="false">
+	<cfargument name="CKFinderLicenseKey" />
+	<cfif len(arguments.CKFinderLicenseKey)>
+		<cfset variables.instance.CKFinderLicenseKey = arguments.CKFinderLicenseKey />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getCKFinderLicenseKey" output="false">
+	<cfreturn variables.instance.CKFinderLicenseKey />
 </cffunction>
 
 <cffunction name="setMaxArchivedVersions" output="false">
