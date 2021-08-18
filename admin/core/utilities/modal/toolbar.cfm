@@ -267,7 +267,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfsilent>
 		<cfoutput>
 		<div class="mura mura-toolbar" style="display:none;">
-			<a id="frontEndToolsHandle" href="##" onClick="if (document.getElementById('frontEndTools').style.display == 'none') { createCookie('FETDISPLAY','block',5); document.getElementById('masa-fe-logo').src='#variables.$.siteConfig().getAdminPath(complete=completeurls)#/assets/images/masa-logo-fe.svg';} else { createCookie('FETDISPLAY','none',5); document.getElementById('masa-fe-logo').src='#variables.$.siteConfig().getAdminPath(complete=completeurls)#/assets/images/masa-logo-fe-icon.svg'} toggleAdminToolbar(); return false;">
+			<a id="frontEndToolsHandle" href="##" onClick="if (document.getElementById('frontEndTools').style.display == 'none') { createCookie('FETDISPLAY','block',5); document.getElementById('mura-fe-logo').src='#variables.$.siteConfig().getAdminPath(complete=completeurls)#/assets/images/masa-logo-fe.svg';} else { createCookie('FETDISPLAY','none',5); document.getElementById('mura-fe-logo').src='#variables.$.siteConfig().getAdminPath(complete=completeurls)#/assets/images/masa-logo-fe-icon.svg'} toggleAdminToolbar(); return false;">
 				<img id="mura-fe-logo" src="#variables.$.siteConfig().getAdminPath(complete=completeurls)#/assets/images/masa-logo-fe<cfif Cookie.fetDisplay eq 'none'>-icon</cfif>.svg" />
 			</a>
 			<div id="frontEndTools" style="display: #Cookie.fetDisplay#">
