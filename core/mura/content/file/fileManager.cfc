@@ -380,8 +380,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="filePath" type="string">
 	<cfargument name="method" type="string">
 
+	<cfset var fileLocation = "#variables.configBean.getFileDir()##arguments.filePath#">
+
+	<!--- detect url tempering by checking the normalized path eq the configured path --->
+	<cfset filePathArray = arrayNew(1)>
+	<cfset arrayAppend(filePathArray, arguments.filePath)>
+	<cfset normilizedPath = CreateObject("java", "java.nio.file.Paths").get(variables.configBean.getFileDir(), filePathArray).normalize().toString() >
+	<cfif fileLocation NEQ normilizedPath>
+		<!--- return 404 so we don't leak information --->
+		<cfset getBean("contentServer").render404()>
+		<cfreturn>
+	</cfif>
+
 	<cfset var asset = {
-		fileLocation = "#variables.configBean.getFileDir()##arguments.filePath#",
+		fileLocation = fileLocation,
 		filename = getFileFromPath(arguments.filePath),
 		mimeType = FileGetMimeType(arguments.filePath),
 		dateModified = now()

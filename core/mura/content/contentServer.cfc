@@ -741,6 +741,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfreturn application.contentRenderer.uploadAsset(formField=url.formField, siteId=url.siteId, folder=url.folder)>
 			</cfcase>
 			<cfdefaultcase>
+				<cfset url.filePath = replace(url.filePath, "..", "", "ALL")>
 				<cfreturn application.contentRenderer.renderAsset(url.filePath, url.method)>
 			</cfdefaultcase>
 		</cfswitch>
