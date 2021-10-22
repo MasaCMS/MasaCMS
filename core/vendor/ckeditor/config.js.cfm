@@ -239,7 +239,7 @@ CKEDITOR.editorConfig = function( config )
 			config.filebrowserImageBrowseUrl = '';
 			config.filebrowserUploadUrl = '';
 			config.filebrowserImageUploadUrl ='';
-			config.uploadUrl ='#application.configBean.getContext()#/index.cfm/_api/asset/upload/?siteid=#URLEncodedFormat(session.siteid)#;
+			config.uploadUrl ='#application.configBean.getContext()#/index.cfm/_api/asset/upload/?siteid=#URLEncodedFormat(session.siteid)#';
 		</cfif>	
 	</cfif>
 
