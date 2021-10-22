@@ -403,7 +403,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     <cfargument name="path" type="string">
 
     <cfset var pathArray = arrayNew(1)>
-    <cfset arrayAppend(pathArray, rereplaceNoCase(arguments.path, "\.+", ".", "ALL"))>
+    <cfset arrayAppend(pathArray, arguments.path)>
     <cfreturn CreateObject("java", "java.nio.file.Paths").get(prefix, pathArray).normalize().toString()>
 </cffunction>
 
