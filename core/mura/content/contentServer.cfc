@@ -486,6 +486,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfabort>
 </cffunction>
 
+<cffunction name="render401" output="true">
+	<cfheader statuscode="401" statustext="Unauthorized" />
+	<cfcontent reset="true">
+	<cfabort>
+</cffunction>
+
 <cffunction name="render404" output="true">
 	<cfheader statuscode="404" statustext="Content Not Found" />
 	<!--- Must reset the linkservID to prevent recursive 404s --->
@@ -735,10 +741,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfparam name="url.method" default="inline">
 		<cfparam name="url.formField" default="form.upload">
 		<cfparam name="url.siteId" default="">
-		<cfparam name="url.folder" default="/assets/Image/">
+		<cfset var folder = "/assets/Image/">
 		<cfswitch expression="#url.action#">
 			<cfcase value="upload">
-				<cfreturn application.contentRenderer.uploadAsset(formField=url.formField, siteId=url.siteId, folder=url.folder)>
+				<cfif application.permUtility.getModulePerm('00000000000000000000000000000000000',url.siteId)>
+					<cfreturn application.contentRenderer.uploadAsset(formField=url.formField, siteId=url.siteId, folder=url.folder)>
+				<cfelse>
+					<cfset this.render401()>
+				</cfif>
 			</cfcase>
 			<cfdefaultcase>
 				<cfset url.filePath = replace(url.filePath, "..", "", "ALL")>
