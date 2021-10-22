@@ -398,7 +398,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset streamFile(asset.fileLocation, asset.filename, asset.mimeType, arguments.method, asset.dateModified, false, true)>
 </cffunction>
 
-<cffunction name="normalizePath" output="false" hint="return">
+<cffunction name="normalizePath" output="false">
     <cfargument name="prefix" type="string">
     <cfargument name="path" type="string">
 
