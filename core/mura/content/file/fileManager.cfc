@@ -382,7 +382,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset var fileLocation = "#variables.configBean.getFileDir()##arguments.filePath#">
 
-	<cfset this.blockDenormalizedPaths(arguments.filePath)>
+	<!--- detect url tempering by checking the normalized path eq the configured path --->
+	<cfif fileLocation NEQ this.normalizePath(variables.configBean.getFileDir(), filePath)>
+		<!--- return 404 so we don't leak information --->
+		<cfset getBean("contentServer").render404()>
+	</cfif>
 
 	<cfset var asset = {
 		fileLocation = fileLocation,
@@ -394,19 +398,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset streamFile(asset.fileLocation, asset.filename, asset.mimeType, arguments.method, asset.dateModified, false, true)>
 </cffunction>
 
-<cffunction name="blockDenormalizedPaths" output="true">
-	<cfargument name="filePath" type="string">
+<cffunction name="normalizePath" output="false" hint="return">
+    <cfargument name="prefix" type="string">
+    <cfargument name="path" type="string">
 
-	<cfset arguments.filePath = replace(arguments.filePath, "..", "", "ALL")>
-
-	<!--- detect url tempering by checking the normalized path eq the configured path --->
-	<cfset filePathArray = arrayNew(1)>
-	<cfset arrayAppend(filePathArray, arguments.filePath)>
-	<cfset normilizedPath = CreateObject("java", "java.nio.file.Paths").get(variables.configBean.getFileDir(), filePathArray).normalize().toString() >
-	<cfif fileLocation NEQ normilizedPath>
-		<!--- return 404 so we don't leak information --->
-		<cfset getBean("contentServer").render404()>
-	</cfif>
+    <cfset var pathArray = arrayNew(1)>
+    <cfset arrayAppend(pathArray, rereplaceNoCase(arguments.path, "\.+", ".", "ALL"))>
+    <cfreturn CreateObject("java", "java.nio.file.Paths").get(prefix, pathArray).normalize().toString()>
 </cffunction>
 
 <cffunction name="renderMimeType" output="true" hint="deprecated in favor of streamFile">
