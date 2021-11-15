@@ -1,6 +1,6 @@
 <cfset iniPath = getDirectoryFromPath(getCurrentTemplatePath())>
 
-<!--- Custom For Mura --->
+<!--- Custom For Masa CMS --->
 <cfif not isDefined("cffp")>
 	<cfset cffp = CreateObject("component","cffpVerify").init() />
 </cfif>

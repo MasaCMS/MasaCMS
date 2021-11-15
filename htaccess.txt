@@ -14,18 +14,17 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
 # -------------------------------------------------------------------------------
-# MURA REWRITE OPTIONS
+# Masa CMS REWRITE OPTIONS
 #
 # NOTE: If running on Tomcat with sites using the SiteID in the URL
 # a custom servlet mapping will be required for each site.
-# Instructions: http://docs.getmura.com/v6/installation-setup/how-to-add-a-servlet-mapping-for-your-siteid-to-tomcat/
 # -------------------------------------------------------------------------------
 
 # The same rewrite rule actually applies in either option listed below
 # However, configuration of the `settings.ini.cfm` file may vary
 # OPTION 1 :: WITHOUT SiteID
 # In /config/settings.ini.cfm, set both siteidinurls and indexfileinurls to 0
-# and reload the Mura application
+# and reload the Masa CMS application
 # OPTION 2 :: WITH SiteID
 # In /config/settings.ini.cfm, set indexfileinurls to 0
 RewriteRule ^(.*) /index.cfm/$1 [NC,QSA,PT]

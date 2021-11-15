@@ -186,7 +186,7 @@ component extends="controller" output="false" {
 			var componentJSON = fileRead("#tempDir#/#tempFolder#/component.json");
 
 			if(!isJSON(componentJSON)) {
-				rc.errormessage="Upload did not contain an exported Mura CMS component";
+				rc.errormessage="Upload did not contain an exported Masa CMS component";
 				return;
 			}
 

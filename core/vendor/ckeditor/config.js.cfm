@@ -45,7 +45,7 @@ CKEDITOR.editorConfig = function( config )
 
 	<cfoutput>
 	<cfif renderer.getheadline() eq "h1">
-		// Mura page title set to h1
+		// Masa CMS page title set to h1
 		config.format_tags = 'p;h1;h2;h3;h4;h5;pre;address;div';
 		config.format_h1 = { element : '#renderer.getHeaderTag('subHead1')#' };
 		config.format_h2 = { element : '#renderer.getHeaderTag('subHead2')#' };

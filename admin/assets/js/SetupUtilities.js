@@ -1,6 +1,6 @@
 /**
  * @author Bilal Soylu
- * Libary of JS functions to be used during setup of Mura
+ * Libary of JS functions to be used during setup of Masa CMS
  */
 
 
