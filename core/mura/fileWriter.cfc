@@ -1,5 +1,37 @@
 <!---
-  This file is part of Mura CMS.
+  
+This file is part of Masa CMS. Masa CMS is based on Mura CMS, and adopts the  
+same licensing model. It is, therefore, licensed under the Gnu General Public License 
+version 2 only, (GPLv2) subject to the same special exception that appears in the licensing 
+notice set out below. That exception is also granted by the copyright holders of Masa CMS 
+also applies to this file and Masa CMS in general. 
+
+This file has been modified from the original version received from Mura CMS. The 
+change was made on: 2021-07-27
+Although this file is based on Mura™ CMS, Masa CMS is not associated with the copyright 
+holders or developers of Mura™CMS, and the use of the terms Mura™ and Mura™CMS are retained 
+only to ensure software compatibility, and compliance with the terms of the GPLv2 and 
+the exception set out below. That use is not intended to suggest any commercial relationship 
+or endorsement of Mura™CMS by Masa CMS or its developers, copyright holders or sponsors or visa versa. 
+
+If you want an original copy of Mura™ CMS please go to murasoftware.com .  
+For more information about the unaffiliated Masa CMS, please go to masacms.com  
+
+Masa CMS is free software: you can redistribute it and/or modify 
+it under the terms of the GNU General Public License as published by 
+the Free Software Foundation, Version 2 of the License. 
+Masa CMS is distributed in the hope that it will be useful, 
+but WITHOUT ANY WARRANTY; without even the implied warranty of 
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+GNU General Public License for more details. 
+
+You should have received a copy of the GNU General Public License 
+along with Masa CMS. If not, see <http://www.gnu.org/licenses/>. 
+
+The original complete licensing notice from the Mura CMS version of this file is as 
+follows: 
+
+This file is part of Mura CMS.
 
   Mura CMS is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -237,13 +269,10 @@
 	<cffunction name="createDir" output="false">
 		<cfargument name="directory">
 		<cfargument name="mode" required="true" default="#variables.defaultFileMode#">
-		<!--- Skip if using Amazon S3 --->
-		<cfif Not ListFindNoCase('s3', Left(arguments.directory, 2))>
-			<cfif variables.useMode >
-				<cfdirectory action="create" mode="#arguments.mode#" directory="#arguments.directory#"/>
-			<cfelse>
-				<cfdirectory action="create" directory="#arguments.directory#"/>
-			</cfif>
+		<cfif variables.useMode >
+			<cfdirectory action="create" mode="#arguments.mode#" directory="#arguments.directory#"/>
+		<cfelse>
+			<cfdirectory action="create" directory="#arguments.directory#"/>
 		</cfif>
 		<cfreturn this />
 	</cffunction>
@@ -288,8 +317,8 @@
 		<cfset var errors=arrayNew(1)>
 		<cfset var copyItem="">
 
-		<cfset arguments.baseDir=pathFormat(arguments.baseDir)>
-		<cfset arguments.destDir=pathFormat(arguments.destDir)>
+		<cfset arguments.baseDir=pathFormat(conditionalExpandPath(arguments.baseDir))>
+		<cfset arguments.destDir=pathFormat(conditionalExpandPath(arguments.destDir))>
 		<cfset arguments.excludeList=pathFormat(arguments.excludeList)>
 
 		<cfif arguments.baseDir neq arguments.destDir>
@@ -344,13 +373,13 @@
 
 			<cfloop query="rs">
 				<cfset copyItem="#replace('#rs.directory#/',arguments.baseDir,arguments.destDir)#">
-				<cfif fileExists(copyItem)>
-					<cffile action="delete" file="#copyItem#">
+				<cfif fileExists("#copyItem#/#rs.name#")>
+					<cffile action="delete" file="#copyItem#/#rs.name#">
 				</cfif>
 
 				<cftry>
 					<cfset copyFile(source="#rs.directory#/#rs.name#", destination=copyItem, sinceDate=arguments.sinceDate)>
-					<cfcatch><cfset arrayAppend(errors,copyItem)></cfcatch>
+					<cfcatch><cfset arrayAppend(errors,"#copyItem#/#rs.name#")></cfcatch>
 				</cftry>
 			</cfloop>
 		</cfif>
@@ -422,7 +451,7 @@
 		</cfif>
 	</cffunction>
 
-	<cffunction name="PathFormat" access="private" output="no" hint="Convert path into Windows or Unix format.">
+	<cffunction name="PathFormat" output="no" hint="Convert path into Windows or Unix format.">
 		<cfargument name="path" required="yes" type="string" hint="The path to convert.">
 		<cfset arguments.path = Replace(arguments.path, "\", "/", "ALL")>
 		<cfreturn arguments.path>
@@ -446,4 +475,22 @@
 		<cfreturn rs>
 	</cffunction>
 
+	<cfscript>
+		function conditionalExpandPath(path){
+			if(find(":",arguments.path)){
+				return path;
+			} else {
+				if(directoryExists(path)){
+					return path;
+				} else{
+					var expandedPath=expandPath(arguments.path);
+					if(directoryExists(expandedPath)){
+						return expandedPath;
+					} else {
+						return arguments.path;
+					}
+				}
+			}
+		}
+	</cfscript>
 </cfcomponent>

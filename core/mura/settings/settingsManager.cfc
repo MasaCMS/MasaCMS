@@ -1,4 +1,36 @@
-<!--- This file is part of Mura CMS.
+<!--- 
+This file is part of Masa CMS. Masa CMS is based on Mura CMS, and adopts the  
+same licensing model. It is, therefore, licensed under the Gnu General Public License 
+version 2 only, (GPLv2) subject to the same special exception that appears in the licensing 
+notice set out below. That exception is also granted by the copyright holders of Masa CMS 
+also applies to this file and Masa CMS in general. 
+
+This file has been modified from the original version received from Mura CMS. The 
+change was made on: 2021-07-27
+Although this file is based on Mura™ CMS, Masa CMS is not associated with the copyright 
+holders or developers of Mura™CMS, and the use of the terms Mura™ and Mura™CMS are retained 
+only to ensure software compatibility, and compliance with the terms of the GPLv2 and 
+the exception set out below. That use is not intended to suggest any commercial relationship 
+or endorsement of Mura™CMS by Masa CMS or its developers, copyright holders or sponsors or visa versa. 
+
+If you want an original copy of Mura™ CMS please go to murasoftware.com .  
+For more information about the unaffiliated Masa CMS, please go to masacms.com  
+
+Masa CMS is free software: you can redistribute it and/or modify 
+it under the terms of the GNU General Public License as published by 
+the Free Software Foundation, Version 2 of the License. 
+Masa CMS is distributed in the hope that it will be useful, 
+but WITHOUT ANY WARRANTY; without even the implied warranty of 
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+GNU General Public License for more details. 
+
+You should have received a copy of the GNU General Public License 
+along with Masa CMS. If not, see <http://www.gnu.org/licenses/>. 
+
+The original complete licensing notice from the Mura CMS version of this file is as 
+follows: 
+
+This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -334,9 +366,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfif>
 
+		<!---
 		<cfif directoryExists("#variables.configBean.getSiteDir()#/#bean.getSiteID()#")>
 			<cfthrow message="A directory with the same name as the SiteID you entered is already being used.">
 		</cfif>
+		--->
 
 		<cfset variables.utility.logEvent("SiteID:#bean.getSiteID()# Site:#bean.getSite()# was created","mura-settings","Information",true) />
 		<cfif structKeyExists(arguments.data,"extendSetID") and len(arguments.data.extendSetID)>
@@ -391,95 +425,113 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
+<cffunction name="getDeferredModuleAssets" output="false">
+	<cfset returnStruct={
+		assets=[],
+		siteTemplate=getBean('site')
+	}>
+
+	<cfset request.muraDeferredModuleErrors=[]>
+	<cfset returnStruct.assets=returnStruct.siteTemplate.discoverGlobalModules(returnStruct.assets)>
+	<cfset returnStruct.assets=returnStruct.siteTemplate.discoverGlobalContentTypes(returnStruct.assets)>
+	<cfreturn returnStruct>
+</cffunction>
+
 <cffunction name="setSites" output="false">
 	<cfargument name="missingOnly" default="false">
-	<cfset var rs="" />
-	<cfset var builtSites=structNew()>
-	<cfset var foundSites=structNew()>
-	<cfset var siteTemplate=getBean('site')>
-	<cfset var i="">
-	<cfset var tracepoint1=''>
-	<cfset var tracepoint2=''>
 
-	<cfif arguments.missingOnly>
-		<cfset rs=getList() />
-	<cfelse>
-		<cfset rs=getList(clearCache=true) />
-	</cfif>
+	<cflock name="setSites#application.instanceID#" type="exclusive" timeout="200">
+		<cfset var rs="" />
+		<cfset var builtSites=structNew()>
+		<cfset var foundSites=structNew()>
+		<cfset var i="">
+		<cfset var tracepoint1=''>
+		<cfset var tracepoint2=''>
 
-	<cfset request.muraDeferredModuleAssets=[]>
-	<cfset request.muraDeferredModuleErrors=[]>
-	<cfset tracepoint1=initTracepoint("Loading global modules")>
-	<cfset siteTemplate.discoverGlobalModules().discoverGlobalContentTypes()>
-	<cfset request.muraBaseRBFactory=siteTemplate.getRBFactory()>
-	<cfset commitTracepoint(tracepoint1)>
-
-	<cfparam name="variables.sites" default="#structNew()#">
-
-	<cfset tracepoint1=initTracepoint("Checking required directories")>
-	<cfloop query="rs">
-		<cfif arguments.missingOnly and structKeyExists(variables.sites,'#rs.siteid#')>
-			<cfset builtSites['#rs.siteid#']=variables.sites['#rs.siteid#'] />
-		<cfelse>
-			<cfset builtSites['#rs.siteid#']=variables.DAO.read(rs.siteid) />
-			<cfset foundSites['#rs.siteid#']=true>
-		</cfif>
-		<cfif variables.configBean.getCreateRequiredDirectories()>
-			<cfset variables.utility.createRequiredSiteDirectories(rs.siteid,builtSites['#rs.siteid#'].getDisplayPoolID()) />
-		</cfif>
- 	</cfloop>
-	<cfset commitTracepoint(tracepoint1)>
-
-	<cfset variables.sites=builtSites>
-
-	<cfset tracepoint1=initTracepoint("Loading deferred global assets")>
-	<cfif arrayLen(request.muraDeferredModuleAssets)>
 		<cfif arguments.missingOnly>
-			<cfloop from="1" to="#arrayLen(request.muraDeferredModuleAssets)#" index="i">
-					<cfif structKeyExists(request.muraDeferredModuleAssets[i],'modelDir') and len(request.muraDeferredModuleAssets[i].modelDir)>
-							<cfset variables.configBean.registerBeanDir(dir=request.muraDeferredModuleAssets[i].modelDir,package=request.muraDeferredModuleAssets[i].package,siteid=structKeyList(foundSites),applyGlobal=false)>
-					</cfif>
-			</cfloop>
+			<cfset rs=getList() />
 		<cfelse>
-			<cfloop from="1" to="#arrayLen(request.muraDeferredModuleAssets)#" index="i">
-					<cfif structKeyExists(request.muraDeferredModuleAssets[i],'modelDir') and len(request.muraDeferredModuleAssets[i].modelDir)>
-							<cfset variables.configBean.registerBeanDir(dir=request.muraDeferredModuleAssets[i].modelDir,package=request.muraDeferredModuleAssets[i].package,siteid=valuelist(rs.siteid),applyGlobal=true)>
-					</cfif>
-			</cfloop>
+			<cfset rs=getList(clearCache=true) />
 		</cfif>
-	</cfif>
 
-	<cfset commitTracepoint(tracepoint1)>
+		<cfset var template=getDeferredModuleAssets()>
+		
+		<cfset var muraDeferredModuleAssets=template.assets>
+		<cfset var siteTemplate=template.siteTemplate>
 
-	<cfset tracepoint1=initTracepoint("Loading site modules")>
-	<cfloop query="rs">
+		<cfset tracepoint1=initTracepoint("Loading global modules")>
 
-		<cfif structKeyExists(foundSites,'#rs.siteid#')>
-			<cfset builtSites['#rs.siteid#'].getRBFactory()>
-			<cfset tracepoint2=initTracepoint("Loading site: #rs.siteid#")>
-			<cfif arrayLen(request.muraDeferredModuleAssets)>
-				<cfloop from="1" to="#arrayLen(request.muraDeferredModuleAssets)#" index="i">
-						<cfif structKeyExists(request.muraDeferredModuleAssets[i],'config')>
-							<cfset variables.configBean.getClassExtensionManager().loadConfigXML(request.muraDeferredModuleAssets[i].config,rs.siteid)>
-						</cfif>
+		<cfif not isDefined('request.muraBaseRBFactory')>
+			<cfset request.muraBaseRBFactory=siteTemplate.getRBFactory()>
+		</cfif>
+	
+		<cfset commitTracepoint(tracepoint1)>
+
+		<cfparam name="variables.sites" default="#structNew()#">
+
+		<cfset tracepoint1=initTracepoint("Checking required directories")>
+		<cfloop query="rs">
+			<cfif arguments.missingOnly and structKeyExists(variables.sites,'#rs.siteid#')>
+				<cfset builtSites['#rs.siteid#']=variables.sites['#rs.siteid#'] />
+			<cfelse>
+				<cfset builtSites['#rs.siteid#']=variables.DAO.read(rs.siteid) />
+				<cfset foundSites['#rs.siteid#']=true>
+			</cfif>
+			<cfif variables.configBean.getCreateRequiredDirectories()>
+				<cfset variables.utility.createRequiredSiteDirectories(rs.siteid,builtSites['#rs.siteid#'].getDisplayPoolID()) />
+			</cfif>
+		</cfloop>
+		<cfset commitTracepoint(tracepoint1)>
+
+		<cfset variables.sites=builtSites>
+
+		<cfset tracepoint1=initTracepoint("Loading deferred global assets")>
+		<cfif arrayLen(muraDeferredModuleAssets)>
+			<cfif arguments.missingOnly>
+				<cfloop from="1" to="#arrayLen(muraDeferredModuleAssets)#" index="i">
+					<cfif structKeyExists(muraDeferredModuleAssets[i],'modelDir') and len(muraDeferredModuleAssets[i].modelDir)>
+						<cfset variables.configBean.registerBeanDir(dir=muraDeferredModuleAssets[i].modelDir,package=muraDeferredModuleAssets[i].package,siteid=structKeyList(foundSites))>
+					</cfif>
+				</cfloop>
+			<cfelse>
+				<cfloop from="1" to="#arrayLen(muraDeferredModuleAssets)#" index="i">
+					<cfif structKeyExists(muraDeferredModuleAssets[i],'modelDir') and len(muraDeferredModuleAssets[i].modelDir)>
+						<cfset variables.configBean.registerBeanDir(dir=muraDeferredModuleAssets[i].modelDir,package=muraDeferredModuleAssets[i].package,siteid=valuelist(rs.siteid))>
+					</cfif>
 				</cfloop>
 			</cfif>
-
-			<cfset builtSites['#rs.siteid#']
-				.set('displayObjectLookup',duplicate(siteTemplate.get('displayObjectLookup')))
-				.set('displayObjectLookUpArray',duplicate(siteTemplate.get('displayObjectLookUpArray')))
-				.discoverModules()>
-
-			<cfset builtSites['#rs.siteid#']
-				.set('contentTypeLookUpArray',duplicate(siteTemplate.get('contentTypeLookUpArray')))
-				.discoverContentTypes()>
-
-			<cfset builtSites['#rs.siteid#'].discoverBeans()>
-			<cfset commitTracepoint(tracepoint2)>
 		</cfif>
- 	</cfloop>
-	<cfset commitTracepoint(tracepoint1)>
 
+		<cfset commitTracepoint(tracepoint1)>
+
+		<cfset tracepoint1=initTracepoint("Loading site modules")>
+		<cfloop query="rs">
+			<cfif structKeyExists(foundSites,'#rs.siteid#')>
+				<cfset builtSites['#rs.siteid#'].getRBFactory()>
+				<cfset tracepoint2=initTracepoint("Loading site: #rs.siteid#")>
+				<cfif arrayLen(muraDeferredModuleAssets)>
+					<cfloop from="1" to="#arrayLen(muraDeferredModuleAssets)#" index="i">
+							<cfif structKeyExists(muraDeferredModuleAssets[i],'config')>
+								<cfset variables.configBean.getClassExtensionManager().loadConfigXML(muraDeferredModuleAssets[i].config,rs.siteid)>
+							</cfif>
+					</cfloop>
+				</cfif>
+
+				<cfset builtSites['#rs.siteid#']
+					.set('displayObjectLookup',duplicate(siteTemplate.get('displayObjectLookup')))
+					.set('displayObjectLookUpArray',duplicate(siteTemplate.get('displayObjectLookUpArray')))
+					.discoverModules()>
+
+				<cfset builtSites['#rs.siteid#']
+					.set('contentTypeLookUpArray',duplicate(siteTemplate.get('contentTypeLookUpArray')))
+					.discoverContentTypes()>
+
+				<cfset builtSites['#rs.siteid#'].discoverBeans()>
+				<cfset commitTracepoint(tracepoint2)>
+			</cfif>
+		</cfloop>
+		<cfset commitTracepoint(tracepoint1)>
+	</cflock>
 </cffunction>
 
 <cffunction name="getSite" output="false">
@@ -490,26 +542,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfparam name="variables.sites" default="#structNew()#">
 
-	<cfif not structKeyExists(variables,'sites')>
-		<cfset setSites(missingOnly=true)>
-	</cfif>
-
 	<cftry>
-	<cfreturn variables.sites['#arguments.siteid#'] />
-	<cfcatch>
-			<cflock name="buildSites#application.instanceID#" timeout="200">
+		<cfreturn variables.sites['#arguments.siteid#'] />
+		<cfcatch>
+			<cfif application.appInitialized>
+				<cflock name="buildSites#application.instanceID#" timeout="200">
+					<cfif structKeyExists(variables.sites,'#arguments.siteid#')>
+						<cfreturn variables.sites['#arguments.siteid#'] />
+					<cfelse>
+						<cfset setSites(missingOnly=true) />
+					</cfif>
+				</cflock>
 				<cfif structKeyExists(variables.sites,'#arguments.siteid#')>
 					<cfreturn variables.sites['#arguments.siteid#'] />
 				<cfelse>
-					<cfset setSites(missingOnly=true) />
+					<cfreturn variables.sites['default'] />
 				</cfif>
-			</cflock>
-			<cfif structKeyExists(variables.sites,'#arguments.siteid#')>
-				<cfreturn variables.sites['#arguments.siteid#'] />
 			<cfelse>
 				<cfreturn variables.sites['default'] />
 			</cfif>
-	</cfcatch>
+		</cfcatch>
 	</cftry>
 </cffunction>
 
@@ -705,7 +757,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfset arguments.errors.message="The bundle was not successfully imported:<br/>ERROR (Full Details Available in 'exception' Log)<br/>: " & cfcatch.message>
 		<cfif findNoCase("duplicate",errors.message)>
-			<cfset arguments.errors.message=arguments.errors.message & "<br/>HINT: This error is most often caused by 'Maintaining Keys' when the bundle data already exists within another site in the current Mura instance.">
+			<cfset arguments.errors.message=arguments.errors.message & "<br/>HINT: This error is most often caused by 'Maintaining Keys' when the bundle data already exists within another site in the current Masa CMS instance.">
 		</cfif>
 		<cfif isDefined("cfcatch.sql") and len(cfcatch.sql)>
 			<cfset arguments.errors.message=arguments.errors.message & "<br/>SQL: " & cfcatch.sql>

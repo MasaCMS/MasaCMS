@@ -1,4 +1,36 @@
-<!--- This file is part of Mura CMS.
+<!--- 
+This file is part of Masa CMS. Masa CMS is based on Mura CMS, and adopts the  
+same licensing model. It is, therefore, licensed under the Gnu General Public License 
+version 2 only, (GPLv2) subject to the same special exception that appears in the licensing 
+notice set out below. That exception is also granted by the copyright holders of Masa CMS 
+also applies to this file and Masa CMS in general. 
+
+This file has been modified from the original version received from Mura CMS. The 
+change was made on: 2021-07-27
+Although this file is based on Mura™ CMS, Masa CMS is not associated with the copyright 
+holders or developers of Mura™CMS, and the use of the terms Mura™ and Mura™CMS are retained 
+only to ensure software compatibility, and compliance with the terms of the GPLv2 and 
+the exception set out below. That use is not intended to suggest any commercial relationship 
+or endorsement of Mura™CMS by Masa CMS or its developers, copyright holders or sponsors or visa versa. 
+
+If you want an original copy of Mura™ CMS please go to murasoftware.com .  
+For more information about the unaffiliated Masa CMS, please go to masacms.com  
+
+Masa CMS is free software: you can redistribute it and/or modify 
+it under the terms of the GNU General Public License as published by 
+the Free Software Foundation, Version 2 of the License. 
+Masa CMS is distributed in the hope that it will be useful, 
+but WITHOUT ANY WARRANTY; without even the implied warranty of 
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+GNU General Public License for more details. 
+
+You should have received a copy of the GNU General Public License 
+along with Masa CMS. If not, see <http://www.gnu.org/licenses/>. 
+
+The original complete licensing notice from the Mura CMS version of this file is as 
+follows: 
+
+This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -41,7 +73,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.cfobject" hint="This provides communication between Mura instances within a cluster">
+<cfcomponent extends="mura.cfobject" hint="This provides communication between Masa CMS instances within a cluster">
 
 <cffunction name="init" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
@@ -49,7 +81,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.broadcastClusterCommands= variables.configBean.getValue(property='broadcastClusterCommands',defaultValue=true) and not variables.configBean.getValue(property='readonly',defaultValue=false)>
 <cfset variables.broadcastCachePurges=variables.configBean.getValue("broadcastCachePurges") and variables.broadcastClusterCommands>
 <cfset variables.broadcastAppreloads=variables.configBean.getValue("broadcastAppreloads") and variables.broadcastClusterCommands>
-
+<cfset variables.clearOldBroadcastCommands=variables.configBean.getValue(property="clearOldBroadcastCommands",defaultValue=true) and variables.broadcastClusterCommands>
 <cfreturn this />
 </cffunction>
 
@@ -61,7 +93,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif listFindNoCase('output,data',arguments.name)>
 			<cfset broadcastCommand("getBean('settingsManager').getSite('#arguments.siteID#').purgeCache(name='#arguments.name#',broadcast=false)")>
 		<cfelse>
-			<cfset broadcastCommand("getBean('settingsManager').getSite('#arguments.siteID#').purgeCache(name='output',broadcast=false)")>
+			<cfif variables.configBean.getValue(property='autoPurgeOutputCache',defaultValue=true)>
+				<cfset broadcastCommand("getBean('settingsManager').getSite('#arguments.siteID#').purgeCache(name='output',broadcast=false)")>
+			</cfif>
 			<cfset broadcastCommand("getBean('settingsManager').getSite('#arguments.siteID#').purgeCache(name='data',broadcast=false)")>
 		</cfif>
 
@@ -247,7 +281,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="clearOldCommands" output="false">
-	<cfif variables.broadcastClusterCommands>
+	<cfif variables.clearOldBroadcastCommands>
 		<cfquery>
 			delete from tclusterpeers
 			where instanceid in (select instanceid from

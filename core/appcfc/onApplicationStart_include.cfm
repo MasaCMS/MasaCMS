@@ -1,5 +1,37 @@
 <cfscript>
-/*  This file is part of Mura CMS.
+/*  
+This file is part of Masa CMS. Masa CMS is based on Mura CMS, and adopts the  
+same licensing model. It is, therefore, licensed under the Gnu General Public License 
+version 2 only, (GPLv2) subject to the same special exception that appears in the licensing 
+notice set out below. That exception is also granted by the copyright holders of Masa CMS 
+also applies to this file and Masa CMS in general. 
+
+This file has been modified from the original version received from Mura CMS. The 
+change was made on: 2021-07-27
+Although this file is based on Mura™ CMS, Masa CMS is not associated with the copyright 
+holders or developers of Mura™CMS, and the use of the terms Mura™ and Mura™CMS are retained 
+only to ensure software compatibility, and compliance with the terms of the GPLv2 and 
+the exception set out below. That use is not intended to suggest any commercial relationship 
+or endorsement of Mura™CMS by Masa CMS or its developers, copyright holders or sponsors or visa versa. 
+
+If you want an original copy of Mura™ CMS please go to murasoftware.com .  
+For more information about the unaffiliated Masa CMS, please go to masacms.com  
+
+Masa CMS is free software: you can redistribute it and/or modify 
+it under the terms of the GNU General Public License as published by 
+the Free Software Foundation, Version 2 of the License. 
+Masa CMS is distributed in the hope that it will be useful, 
+but WITHOUT ANY WARRANTY; without even the implied warranty of 
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+GNU General Public License for more details. 
+
+You should have received a copy of the GNU General Public License 
+along with Masa CMS. If not, see <http://www.gnu.org/licenses/>. 
+
+The original complete licensing notice from the Mura CMS version of this file is as 
+follows: 
+
+This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -51,10 +83,12 @@ param name="application.sessionTrackingThrottle" default=true;
 param name="application.instanceID" default=createUUID();
 param name="application.CFVersion" default=listFirst(SERVER.COLDFUSION.PRODUCTVERSION);
 param name="application.setupComplete" default=false;
+param name="application.appHandlerLookUp" default={};
+
 request.muraAppreloaded=true;
 
 if ( left(server.coldfusion.productversion,5) == "9,0,0" || listFirst(server.coldfusion.productversion) < 9 ) {
-	writeOutput("Mura CMS requires Adobe Coldfusion 9.0.1 or greater compatibility");
+	writeOutput("Masa CMS requires Adobe Coldfusion 9.0.1 or greater compatibility");
 	abort;
 }
 
@@ -81,7 +115,7 @@ if ( !application.setupComplete || (not application.appInitialized || structKeyE
 			} else {
 				//  check to see if the index.cfm page exists in the setup folder
 				if ( !fileExists( variables.basedir & "/core/setup/index.cfm" ) ) {
-					throw( message="Your setup directory is incomplete. Please reset it up from the Mura source." );
+					throw( message="Your setup directory is incomplete. Please reset it up from the Masa CMS source." );
 				}
 				application.setupComplete = false;
 			}
@@ -93,8 +127,6 @@ if ( !application.setupComplete || (not application.appInitialized || structKeyE
 	}
 }
 if ( application.setupComplete ) {
-	application.appInitialized=false;
-	request.muraShowTrace=true;
 	application.appInitialized=false;
 	request.muraShowTrace=true;
 	variables.iniPath = "#variables.basedir#/config/settings.ini.cfm";
@@ -186,6 +218,7 @@ if ( application.setupComplete ) {
   }
 
 	application.configBean=new mura.configBean().set(variables.iniProperties);
+	application.appHandlerLookUp={};
 
 	variables.serviceFactory=new mura.bean.beanFactory("/mura",{
 			recurse=true,
@@ -231,7 +264,7 @@ if ( application.setupComplete ) {
 
 		local.fileWriter=variables.serviceFactory.getBean("fileWriter");
 		/*
-			As of Mura 7.1 there theme with the main MuraCMS repo.
+			As of Masa CMS 7.1 there theme with the main Masa CMS repo.
 			So if there is not any theme installed then pull down the default one
 		*/
 		if ( application.configBean.getCreateRequiredDirectories() ) {
@@ -465,26 +498,19 @@ if ( application.setupComplete ) {
 	if ( application.serviceFactory.containsBean('advertiserManager') ) {
 		variables.serviceList=listAppend(variables.serviceList,'advertiserManager');
 	}
-	//  These application level services use the beanServicePlaceHolder to lazy load the bean
+	//  These application level services
 
 	for(variables.i in listToArray(variables.serviceList)){
 		variables.tracepoint=variables.tracer.initTracepoint("Instantiating #variables.i#");
-		try {
-			application["#variables.i#"]=application.serviceFactory.getBean("#variables.i#");
-		} catch (any error) {
-			writeLog(type="Error", file="exception", text="Error instantiating '#variables.i#': #serializeJSON(error.stacktrace)#");
-			if ( application.configBean.getDebuggingEnabled() ) {
-				writeDump( var=variables.i );
-				writeDump( var=error, abort=true );
-			}
-		}
+		application["#variables.i#"]=application.serviceFactory.getBean("#variables.i#");
 		variables.tracer.commitTracepoint(variables.tracepoint);
-		application.mura=application.serviceFactory.getBean('mura');
 	}
 
+	application.mura=application.serviceFactory.getBean('mura');
 	request.muraattachormlinks=true;
 
-	//  End beanServicePlaceHolders
+	//  End
+
 	variables.temp='';
 	application.badwords = ReReplaceNoCase(trim(variables.temp), "," , "|" , "ALL");
 	variables.tracepoint=variables.tracer.initTracepoint("Instantiating classExtensionManager");
@@ -753,7 +779,7 @@ if ( application.setupComplete ) {
 		application.settingsManager.create({
 			siteid=projectSiteID,
 			domain=domain,
-			site=application.configBean.getValue(property='title',defaultValue='Mura CMS'),
+			site=application.configBean.getValue(property='title',defaultValue='Masa CMS'),
 			orderno=1,
 			autocreated=true
 			});
@@ -926,9 +952,9 @@ if ( application.setupComplete ) {
 	commitTracePoint(variables.tracePoint);
 
 	//These were added to remove previous resource bundles tha were two specific
-	if(fileExists(expandPath("/murawrm/core/mura/resourceBundle/resources/en_US.properties"))){
+	if(fileExists(expandPath("/muraWRM/core/mura/resourceBundle/resources/en_US.properties"))){
 		local.fileWriter=application.Mura.getBean('fileWriter');
-		local.rs=application.Mura.getBean('fileWriter').getDirectoryList(expandPath("/murawrm/core/mura/resourceBundle/resources/"));
+		local.rs=application.Mura.getBean('fileWriter').getDirectoryList(expandPath("/muraWRM/core/mura/resourceBundle/resources/"));
 		for(local.i=1;local.i <= local.rs.recordcount;local.i++){
 			if(listLen(listFirst(local.rs.name[local.i],'.'),'_') > 1){
 				fileDelete(local.rs.directory[local.i] & "/" & local.rs.name[local.i]);
@@ -936,9 +962,9 @@ if ( application.setupComplete ) {
 		}
 	}
 
-	if(fileExists(expandPath("/murawrm/core/modules/v1/core_assets/resource_bundles/en_US.properties"))){
+	if(fileExists(expandPath("/muraWRM/core/modules/v1/core_assets/resource_bundles/en_US.properties"))){
 		local.fileWriter=application.Mura.getBean('fileWriter');
-		local.rs=application.Mura.getBean('fileWriter').getDirectoryList(expandPath("/murawrm/core/modules/v1/core_assets/resource_bundles/"));
+		local.rs=application.Mura.getBean('fileWriter').getDirectoryList(expandPath("/muraWRM/core/modules/v1/core_assets/resource_bundles/"));
 		for(local.i=1;local.i <= local.rs.recordcount;local.i++){
 			if(listLen(listFirst(local.rs.name[local.i],'.'),'_') > 1 && !listFind('zh_TW.properties,zh_CN.properties',local.rs.name[local.i])){
 				fileDelete(local.rs.directory[local.i] & "/" & local.rs.name[local.i]);

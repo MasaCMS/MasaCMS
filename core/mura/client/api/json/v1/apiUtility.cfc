@@ -7,6 +7,12 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		var configBean=getBean('configBean');
 		var context=configBean.getContext();
 		var site=getBean('settingsManager').getSite(variables.siteid);
+		var renderer=site.getContentRenderer();
+		variables.useDataNamespaceForAPI=configBean.getValue(property='useDataNamespaceForAPI',defaultValue=true);
+
+		if(isDefined('renderer.useDataNamespaceForAPI') && isBoolean(renderer.useDataNamespaceForAPI)){
+			variables.useDataNamespaceForAPI=renderer.useDataNamespaceForAPI;
+		}
 
 		/*
 		if( getBean('utility').isHTTPS() || YesNoFormat(site.getUseSSL()) ){
@@ -40,27 +46,27 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		variables.userUtility=getBean('userUtility');
 
 		variables.serializer = new mura.jsonSerializer()
-	      .asString('csrf_token_expires')
-	      .asString('csrf_token')
-	      .asString('id')
-	      .asString('url')
-	      .asDate('start')
-	      .asDate('end')
-	      .asInteger('startindex')
-	      .asInteger('endindex')
-	      .asInteger('itemsperpage')
-	      .asInteger('endindex')
-	      .asInteger('totalpages')
-	      .asInteger('totalitems')
-	      .asInteger('pageindex')
-	      .asInteger('code')
-	      .asString('title')
-		  	.asInteger('isnew')
-	      .asBoolean('saveErrors')
-				.asBoolean('scaffold')
-				.asBoolean('dynamic')
-				.asInteger('expires_at')
-				.asInteger('expires_in');
+			.asString('csrf_token_expires')
+			.asString('csrf_token')
+			.asString('id')
+			.asString('url')
+			.asDate('start')
+			.asDate('end')
+			.asInteger('startindex')
+			.asInteger('endindex')
+			.asInteger('itemsperpage')
+			.asInteger('endindex')
+			.asInteger('totalpages')
+			.asInteger('totalitems')
+			.asInteger('pageindex')
+			.asInteger('code')
+			.asString('title')
+			.asInteger('isnew')
+	      	.asBoolean('saveErrors')
+			.asBoolean('scaffold')
+			.asBoolean('dynamic')
+			.asInteger('expires_at')
+			.asInteger('expires_in');
 
 	    registerEntity('site',{
 	    	public=true,
@@ -965,14 +971,15 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				params.method='findall';
 			} else if(!isDefined("params.siteid") || !(isDefined("params.entityName") && len(params.entityName) && getServiceFactory().containsBean(params.entityName)) ){
 				if(isDefined('params.entityName') && right(params.entityName,1) == 's'){
-					params.entityName=left(params.entityName,len(params.entityName)-1);
+					var entitycheck=left(params.entityName,len(params.entityName)-1);
 
-
-					if( !getServiceFactory().containsBean(params.entityName)){
-						throw(type="invalidParameters");
+					if( getServiceFactory().containsBean(entitycheck)){
+						params.entityName=entitycheck;
+					} else { 
+						doubleCheckEntityName(params.entityName);
 					}
 				} else {
-					throw(type="invalidParameters");
+					doubleCheckEntityName(params.entityName);
 				}
 			}
 
@@ -1219,6 +1226,8 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 					var primaryKey=application.objectMappings['#params.entityName#'].primaryKey;
 				} else if (getServiceFactory().containsBean(params.entityname)){
 					var primaryKey=getBean(params.entityname).getPrimaryKey();
+				} else {
+					var primaryKey='undefined';
 				}
 			}
 
@@ -1227,9 +1236,10 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			}
 
 			structAppend(form,params);
-
+		
 			switch(method){
 				case "GET":
+				
 					if((isDefined('params.id') || (params.entityName=='content') && isDefined('params.contenthistid'))){
 						if(!isDefined('params.id') && (params.entityName=='content' && isDefined('params.contenthistid'))){
 							params.id=params.contenthistid;
@@ -1244,23 +1254,39 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 								params.method='findPermissions';
 								result=findPermissions(argumentCollection=params);
 						} else if(listLen(params.id) > 1){
+						
 							params.ids=params.id;
 							params.method='findMany';
 							result=findMany(argumentCollection=params);
 						} else {
-							params.method='findOne';
-							result=findOne(argumentCollection=params);
+							if(isValid('uuid',params.id) || params.id=='00000000000000000000000000000000001'){
+								params.method='findOne';
+								result=findOne(argumentCollection=params);
+							} else {
+								result=doubleCheckEntityMethod(params.entityname,params.id,params,false);
+							}
+							
 						}
-
+						
 					} else {
-						if(structCount(url)){
-							params.method='findQuery';
-							result=findQuery(argumentCollection=params);
+						if(arrayLen(pathInfo) == 3 
+							&& !(
+								isValid('uuid',pathInfo[3]) 
+								|| pathInfo[3]=='00000000000000000000000000000000001'
+								)
+						){
+							result=doubleCheckEntityMethod(params.entityname,pathInfo[3],params,true);
 						} else {
-							params.method='findAll';
-							result=findAll(argumentCollection=params);
+							if(structCount(url)){
+								params.method='findQuery';
+								result=findQuery(argumentCollection=params);
+							} else {
+								params.method='findAll';
+								result=findAll(argumentCollection=params);
+							}
 						}
 					}
+
 
 				break;
 
@@ -1291,7 +1317,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			if(!isDefined('#params.method#')){
 				params.method='invalid';
 			}
-			return serializeResponse(statusCode=401,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='invalid_request','message'='Insufficient Account Permissions'}});
+			return serializeResponse(statusCode=401,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={'code'='invalid_request','message'='Insufficient Account Permissions'}});
 		}
 
 		catch (invalidAccessToken e){
@@ -1299,7 +1325,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			if(!isDefined('#params.method#')){
 				params.method='invalid';
 			}
-			return serializeResponse(statusCode=401,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='invalid_token','message'='Invalid Access Token'}});
+			return serializeResponse(statusCode=401,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={'code'='invalid_token','message'='Invalid Access Token'}});
 		}
 
 		catch (accessTokenExpired e){
@@ -1307,7 +1333,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			if(!isDefined('#params.method#')){
 				params.method='invalid';
 			}
-			return serializeResponse(statusCode=401,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='invalid_token','message'='Access Token Expired'}});
+			return serializeResponse(statusCode=401,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={'code'='invalid_token','message'='Access Token Expired'}});
 		}
 
 		catch (disabled e){
@@ -1315,7 +1341,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			if(!isDefined('#params.method#')){
 				params.method='invalid';
 			}
-			return serializeResponse(statusCode=400,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='invalid_request','message'='The JSON API disabled'}});
+			return serializeResponse(statusCode=400,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={'code'='invalid_request','message'='The JSON API disabled'}});
 		}
 
 		catch (invalidParameters e){
@@ -1323,7 +1349,15 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			if(!isDefined('#params.method#')){
 				params.method='invalid';
 			}
-			return serializeResponse(statusCode=400,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='invalid_request','message'='Invalid parameters'}});
+			return serializeResponse(statusCode=400,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={'code'='invalid_request','message'='Invalid parameters'}});
+		}
+
+		catch (invalidEntityCall e){
+			param name="params.method" default="undefined";
+			if(!isDefined('#params.method#')){
+				params.method='invalid';
+			}
+			return serializeResponse(statusCode=400,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={'code'='invalid_request','message'='Invalid reference to persisted entity'}});
 		}
 
 		catch (invalidMethodCall e){
@@ -1331,7 +1365,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			if(!isDefined('#params.method#')){
 				params.method='invalid';
 			}
-			return serializeResponse(statusCode=400,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='invalid_request','message'="Invalid method call"}});
+			return serializeResponse(statusCode=400,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={'code'='invalid_request','message'="Invalid method call"}});
 		}
 
 		catch (badRequest e){
@@ -1339,7 +1373,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			if(!isDefined('#params.method#')){
 				params.method='invalid';
 			}
-			return serializeResponse(statusCode=400,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='invalid_request','message'="Bad Request"}});
+			return serializeResponse(statusCode=400,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={'code'='invalid_request','message'="Bad Request"}});
 		}
 
 		catch (invalidTokens e){
@@ -1347,7 +1381,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			if(!isDefined('#params.method#')){
 				params.method='invalid';
 			}
-			return serializeResponse(statusCode=400,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='invalid_request','message'="Invalid CSRF tokens"}});
+			return serializeResponse(statusCode=400,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={'code'='invalid_request','message'="Invalid CSRF tokens"}});
 		}
 
 		catch (Any e){
@@ -1357,13 +1391,73 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				params.method='invalid';
 			}
 			if(getBean('configBean').getDebuggingEnabled()){
-				return serializeResponse(statusCode=500,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='server_error','message'="Unhandled Exception",'stacktrace'=e}});
+				return serializeResponse(statusCode=500,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={'code'='server_error','message'="Unhandled Exception",'stacktrace'=e}});
 			} else {
-				return serializeResponse(statusCode=500,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='server_error','message'="Unhandled Exception"}});
+				return serializeResponse(statusCode=500,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={'code'='server_error','message'="Unhandled Exception"}});
 			}
 
 		}
 
+	}
+
+	variables.entityChecks={};
+
+	function doubleCheckEntityName(entityName){
+		arguments.entityName=REReplace(arguments.entityName,"[^0-9A-Za-z_]\*","","all");
+		var found=false;
+		
+		if(!structKeyExists(variables.entityChecks,'#arguments.entityname#')
+			|| DateDiff('n', variables.entityChecks['#arguments.entityname#'], now())
+		){
+			var lookupdata=getBean('settingsManager').getDeferredModuleAssets();
+			
+			variables.entityChecks['#arguments.entityname#']=now();
+
+			for(var asset in lookupdata.assets){
+				if(structKeyExists(asset,'modelDir') and len(asset.modelDir)){
+					if(fileExists(asset.modelDir & "/" & arguments.entityName & ".cfc") 
+					|| fileExists(asset.modelDir & "/beans/" & arguments.entityName & ".cfc")
+						|| fileExists(asset.modelDir & "/entities/" & arguments.entityName & ".cfc")
+						|| fileExists(asset.modelDir & "/services/" & arguments.entityName & ".cfc")
+					){
+						var rsSites=getBean('settingsManager').getList(clearCache=true);
+						getBean('configBean').registerBeanDir(dir=asset.modelDir,package=asset.package,siteid=valueList(rsSites.siteid),forceSchemaCheck=true);
+						found=true;
+						break;
+					}
+				}
+			}
+		}
+		if(!found){
+			throw(type="invalidEntityCall");
+		}
+	}
+
+	function doubleCheckEntityMethod(entityName,method,params,throwError=false){
+		//This fires when the entity does exists, but the method doesn't
+		if(isValid('variableName',arguments.method)){
+			var entity=getBean(arguments.entityName);
+			entity.getProperties(rebuild=true);
+
+			if(isDefined('application.objectmappings.#arguments.entityName#.remoteFunctions.#arguments.method#')) {
+				url.method=arguments.method;
+				arguments.params.method=arguments.method;
+
+				structDelete(params,'id');
+
+				return evaluate('entity.#arguments.method#(argumentCollection=params)');	
+			} else if (arguments.throwError){
+				throw(type="invalidMethodCall");
+			} else {
+				params.method='findOne';
+				return findOne(argumentCollection=arguments.params);
+			}
+		} else if (arguments.throwError){
+			throw(type="invalidMethodCall");
+		} else {
+			params.method='findOne';
+			return findOne(argumentCollection=arguments.params);
+		}
 	}
 
 	function serializeResponse(response,statusCode=200){
@@ -1379,6 +1473,19 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		if(application.configBean.getValue(property='suppressAPIParams',defaultValue=true) && isDefined('response.params')){
 			structDelete(response,'params');
+		}
+
+		if(structKeyExists(arguments.response,'data') && isStruct(arguments.response.data)){
+			var $=getBean('$').init(variables.siteid);
+			if(isBoolean($.event('useDataNamespace')) ){
+				if(!$.event('useDataNamespace')){
+					structAppend(arguments.response,arguments.response.data);
+					structDelete(arguments.response,'data');
+				}
+			} else if(!variables.useDataNamespaceForAPI){
+				structAppend(arguments.response,arguments.response.data);
+				structDelete(arguments.response,'data');
+			}
 		}
 
 		if(isDefined('arguments.response.data.shunter') && arguments.response.data.shunter){
@@ -1576,7 +1683,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		} else {
 			if(!getServiceFactory().containsBean(arguments.bean)){
 				if(arguments.throwError){
-					throw(type='invalidParameters');
+					throw(type='invalidEntityCall');
 				}
 				return false;
 			}
@@ -1779,7 +1886,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		}
 	}
 
-	// MURA ORM ADAPTER
+	// Masa CMS ORM ADAPTER
 
 	function save(siteid,entityname,id='new',expand=''){
 
@@ -2044,6 +2151,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			}
 
 			vals=temp;
+			structDelete(vals,'password');
 		} else {
 			vals=structCopy(arguments.entity.getAllValues(expand=true));
 			structDelete(vals,'addObjects');
@@ -2602,7 +2710,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		if(!allowAccess(arguments.entityName,$)){
 			throw(type="authorization");
 		}
-
+		
 		checkForChangesetRequest(arguments.entityName,arguments.siteid);
 
 		var propName='';
@@ -2677,7 +2785,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			var started=false;
 
 			for(var p in arguments.params){
-				if(!listFindNoCase('expanddepth,muraPointInTime,liveOnly,feedid,maxItems,pageIndex,sort,itemsPerPage,sortBy,sortDirection,contentpoolid,shownavonly,showexcludesearch,includehomepage,feedname,expand,useCategoryIntersect',p)){
+				if(!listFindNoCase('expanddepth,muraPointInTime,liveOnly,feedid,maxItems,pageIndex,sort,itemsPerPage,sortBy,sortDirection,contentpoolid,shownavonly,showexcludesearch,includehomepage,feedname,expand,useCategoryIntersect,useDataNamespace',p)){
 					feed.addParam(column=p,criteria=arguments.params[p]);
 
 					if(started){
@@ -2727,7 +2835,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 						baseURL=baseURL & '=' & esapiEncode('url',params[p]);
 					}
 
-					if(!listFindNoCase('expanddepth,expand,muraPointInTime,liveOnly,feedid,cacheid,_cacheid,distinct,fields,entityname,method,maxItems,pageIndex,itemsPerPage,sortBy,sortDirection,contentpoolid,shownavonly,showexcludesearch,includehomepage,feedname,useCategoryIntersect',propName)){
+					if(!listFindNoCase('expanddepth,expand,muraPointInTime,liveOnly,feedid,cacheid,_cacheid,distinct,fields,entityname,method,maxItems,pageIndex,itemsPerPage,sortBy,sortDirection,contentpoolid,shownavonly,showexcludesearch,includehomepage,feedname,useCategoryIntersect,useDataNamespace',propName)){
 						if(propName == 'sort'){
 							advancedsort=listAppend(advancedsort,arguments.params[p]);
 						} else if(!(entity.getEntityName()=='user' && propName=='isPublic')){
@@ -3446,6 +3554,19 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		return trim(arguments.str);
 	}
 
+	function getCustomImageSizeIterator(siteid){
+		if(!isDefined('variables.images')){
+			variables.images=getBean('settingsManager').getSite(arguments.siteid).getCustomImageSizeIterator();
+		}
+		if(!isdefined('request.muracustomimageiterator')){
+			request.muraCustomImageIterator=duplicate(variables.images);
+		}
+
+		request.muraCustomImageIterator.reset();
+
+		return request.muraCustomImageIterator;
+	}
+
 	function setImageURLs(entity,attr="fileid",$){
 
 		if(arguments.attr == 'fileid' && arguments.entity.hasImage()){
@@ -3453,41 +3574,45 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				variables.images=getBean('settingsManager').getSite(entity.getSiteID()).getCustomImageSizeIterator();
 			}
 
+
 			var secure=getBean('settingsManager').getSite(entity.getSiteID()).getUseSSL();
 
 			var returnStruct={
-				small=entity.getImageURL(secure=secure,complete=1,size='small'),
-				medium=entity.getImageURL(secure=secure,complete=1,size='medium'),
-				large=entity.getImageURL(secure=secure,complete=1,size='large'),
-				source=entity.getImageURL(secure=secure,complete=1,size='source')
+				small=arguments.entity.getImageURL(secure=secure,complete=1,size='small'),
+				medium=arguments.entity.getImageURL(secure=secure,complete=1,size='medium'),
+				large=arguments.entity.getImageURL(secure=secure,complete=1,size='large'),
+				source=arguments.entity.getImageURL(secure=secure,complete=1,size='source')
 			};
 
 			var image='';
+			var images=getCustomImageSizeIterator(arguments.entity.getSiteID());
 
-			while(variables.images.hasNext()){
-				image=variables.images.next();
-				returnStruct['#image.getName()#']=entity.getImageURL(secure=secure,complete=1,size=image.getName());
+			while(images.hasNext()){
+				image=images.next();
+				returnStruct['#image.getName()#']=arguments.entity.getImageURL(secure=secure,complete=1,size=image.getName());
 			}
+
 			variables.images.reset();
 		} else if (arguments.attr != 'fileid' && isValid('uuid',entity.get(arguments.attr)) ){
-			 var fileEXT=getBean("fileManager").readMeta(entity.get(arguments.attr)).fileEXT;
+			 var fileEXT=getBean("fileManager").readMeta(arguments.entity.get(arguments.attr)).fileEXT;
 			 if(ListFindNoCase('jpg,jpeg,png,gif,svg', fileEXT)){
 				 if(!isDefined('arguments.$')){
 					 arguments.$=getBean('$').init(arguments.entity.getSiteid());
 				 }
+
 				 if(!isDefined('variables.images')){
 					 variables.images=getBean('settingsManager').getSite(entity.getSiteID()).getCustomImageSizeIterator();
 				 }
 
 				 var image='';
-				 var secure=getBean('settingsManager').getSite(entity.getSiteID()).getUseSSL();
-				 var renderer=$.getContentRenderer();
+				 var secure=getBean('settingsManager').getSite(arguments.entity.getSiteID()).getUseSSL();
+				 var renderer=arguments.$.getContentRenderer();
 
 				 var returnStruct={
-	 				small=renderer.getURLForImage(fileid=entity.get(arguments.attr),secure=secure,complete=1,size='small'),
-	 				medium=renderer.getURLForImage(fileid=entity.get(arguments.attr),secure=secure,complete=1,size='medium'),
-	 				large=renderer.getURLForImage(fileid=entity.get(arguments.attr),secure=secure,complete=1,size='large'),
-	 				source=renderer.getURLForImage(fileid=entity.get(arguments.attr),secure=secure,complete=1,size='source')
+	 				small=renderer.getURLForImage(fileid=arguments.entity.get(arguments.attr),secure=secure,complete=1,size='small'),
+	 				medium=renderer.getURLForImage(fileid=arguments.entity.get(arguments.attr),secure=secure,complete=1,size='medium'),
+	 				large=renderer.getURLForImage(fileid=arguments.entity.get(arguments.attr),secure=secure,complete=1,size='large'),
+	 				source=renderer.getURLForImage(fileid=arguments.entity.get(arguments.attr),secure=secure,complete=1,size='source')
 	 			};
 
 				 while(variables.images.hasNext()){
@@ -3976,7 +4101,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 					arrayAppend(response,{
 							"name"= 'feedID',
 							"in"= "query",
-							"description"= "A feedID of a collection defined in the the Mura admin",
+							"description"= "A feedID of a collection defined in the the Masa CMS admin",
 							"required"= false,
 							"type"= "string"
 						});
@@ -3984,7 +4109,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 					arrayAppend(response,{
 							"name"= 'feedName',
 							"in"= "query",
-							"description"= "A the name of a collection defined in the the Mura admin",
+							"description"= "A the name of a collection defined in the the Masa CMS admin",
 							"required"= false,
 							"type"= "string"
 						});
@@ -4175,24 +4300,24 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				"description"= "This is the JSON API for #$.siteConfig().getRootPath(complete=1)#",
 				"version"= "1.0.0",
 				"title"= $.siteConfig('site'),
-				"termsOfService"= "https://getmura.com",
+				"termsOfService"= "https://www.masacms.com",
 				"contact"= {
 				"email"= $.siteConfig('contact')
 			},
 			"license"= {
 				"name"= "GPL-2.0 with execptions",
-				"url"= "https://github.com/blueriver/MuraCMS/blob/develop/license.txt"
+				"url"= "https://github.com/MasaCMS/MasaCMS/blob/main/license.txt"
 			}
 			},
 			"host"= $.siteConfig('domain') & $.siteConfig('serverPort'),
 			"basePath"= "#indexFile#/_api/#arguments.params.mode#/v1/#$.siteConfig('siteid')#",
 			"tags"= [
 				{
-					"name"= "Mura CMS",
+					"name"= "Masa CMS",
 					"description"= "Open source content management system",
 					"externalDocs"= {
 					"description"= "Find out more",
-					"url"= "http://www.getmura.com"
+					"url"= "https://www.masacms.com"
 					}
 				}
 			],

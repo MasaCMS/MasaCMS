@@ -375,7 +375,7 @@
 			<cfif isSimpleValue(arguments.value)>
 				<cfif not len(arguments.value) or isNumeric(arguments.value) or isBoolean(arguments.value)>
 					<cfreturn arguments.value>
-				<cfelseif isJson(arguments.value)>
+				<cfelseif isJson(arguments.value) and arguments.value neq '-'>
 					<cftry>
 						<cfset arguments.value=deserializeJSON(arguments.value)>
 						<cfcatch>

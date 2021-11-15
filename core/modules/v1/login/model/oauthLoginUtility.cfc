@@ -6,7 +6,7 @@ component extends="mura.cfobject" accessors=true output=false {
 			? application.serviceFactory.getBean('m').init(session.siteid)
 			: application.serviceFactory.getBean('m').init('default');
 
-		var userBean = m.getBean('user').loadBy(remoteId=oAuth.id);
+		var userBean = m.getBean('user').loadBy(remoteId=arguments.oAuth.id);
 
 		// First try to load user by email
 		// (this is for new admin user accounts that were previously created by another site admin)
@@ -81,9 +81,16 @@ component extends="mura.cfobject" accessors=true output=false {
 		var isNewAdmin = false;
 		var isNewSuperUser = false;
 
+		arguments.oAuth.domain = listLast(arguments.oAuth.email, '@');
+
+		// only allow users from a specififed domain list
+		var allowedDomain = m.getBean('configBean').getAllowedDomain();
+		if (len(allowedDomain) && !listFindNoCase(allowedDomain, arguments.oAuth.domain)) {
+			userBean.setInActive('1');
+		}
+
 		// If user's email domain is in the allowedAdminDomain list, add them to admin group.
 		var allowedAdminDomain = m.getBean('configBean').getAllowedAdminDomain();
-		oAuth.domain = listLast(oAuth.email, '@');
 		if (listFindNoCase(allowedAdminDomain, arguments.oAuth.domain)) {
 			userBean.setIsPublic('0');
 		}
@@ -109,6 +116,7 @@ component extends="mura.cfobject" accessors=true output=false {
 		var isAdmin = listFindNoCase(userBean.getGroupId(), adminGroupId) || isNewAdmin;
 		var isSuperUser = userBean.getS2() == '1' || isNewSuperUser;
 		var isExistingUser = userBean.getIsNew() == 0;
+		arguments.oAuth.inActive = userBean.getInActive();
 
 		var enableLockdown = m.siteConfig().getEnableLockdown();
 

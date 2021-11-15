@@ -7,10 +7,10 @@
   "devDependencies": {
     "grunt": "^1.0.4",
     "grunt-contrib-concat": "^1.0.1",
-    "grunt-contrib-handlebars": "^1.0.0",
+    "grunt-contrib-handlebars": "^2.0.0",
     "grunt-contrib-uglify": "^2.2.0",
     "grunt-text-replace": "^0.4.0",
-    "handlebars": "^4.1.2"
+    "handlebars": "^4.7.6"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

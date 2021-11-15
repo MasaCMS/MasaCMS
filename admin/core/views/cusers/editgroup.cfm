@@ -275,7 +275,7 @@ This file is part of Mura CMS.
 							</select>
 						</div>
 					</cfif>
-					<!--- <span id="extendSetsBasic"></span> --->
+					<span id="extendSetsBasic"></span>
 				</div> <!-- /.block-content -->
 
 		<cfif rsSubTypes.recordcount or arrayLen(pluginEventMappings)>

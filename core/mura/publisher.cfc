@@ -1,4 +1,36 @@
-<!--- This file is part of Mura CMS.
+<!--- 
+This file is part of Masa CMS. Masa CMS is based on Mura CMS, and adopts the  
+same licensing model. It is, therefore, licensed under the Gnu General Public License 
+version 2 only, (GPLv2) subject to the same special exception that appears in the licensing 
+notice set out below. That exception is also granted by the copyright holders of Masa CMS 
+also applies to this file and Masa CMS in general. 
+
+This file has been modified from the original version received from Mura CMS. The 
+change was made on: 2021-07-27
+Although this file is based on Mura™ CMS, Masa CMS is not associated with the copyright 
+holders or developers of Mura™CMS, and the use of the terms Mura™ and Mura™CMS are retained 
+only to ensure software compatibility, and compliance with the terms of the GPLv2 and 
+the exception set out below. That use is not intended to suggest any commercial relationship 
+or endorsement of Mura™CMS by Masa CMS or its developers, copyright holders or sponsors or visa versa. 
+
+If you want an original copy of Mura™ CMS please go to murasoftware.com .  
+For more information about the unaffiliated Masa CMS, please go to masacms.com  
+
+Masa CMS is free software: you can redistribute it and/or modify 
+it under the terms of the GNU General Public License as published by 
+the Free Software Foundation, Version 2 of the License. 
+Masa CMS is distributed in the hope that it will be useful, 
+but WITHOUT ANY WARRANTY; without even the implied warranty of 
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+GNU General Public License for more details. 
+
+You should have received a copy of the GNU General Public License 
+along with Masa CMS. If not, see <http://www.gnu.org/licenses/>. 
+
+The original complete licensing notice from the Mura CMS version of this file is as 
+follows: 
+
+This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -101,6 +133,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var themeDir="">
 		<cfset var doFindAndReplace=false>
 
+		<cfset var hasStructuredAssets = not isdefined('arguments.Bundle.getValue') or arguments.Bundle.getValue("hasstructuredassets",true) />
+
+		<cfif isBoolean(hasStructuredAssets) and NOT hasStructuredAssets>			
+			<cfset arguments.keyMode = "publish">
+		</cfif>
+		
 		<cfsetting requestTimeout = "7200">
 
 		<cfif structKeyExists(arguments,"Bundle")>
@@ -231,7 +269,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif isDefined("rssite.theme")>
 				<cfset themeDir=rssite.theme>
 			</cfif>
-			<cfset arguments.Bundle.unpackFiles( arguments.toSiteID,arguments.keyFactory,arguments.toDSN, arguments.moduleID, arguments.errors , arguments.renderingMode, arguments.contentMode, arguments.pluginMode, arguments.lastDeployment,arguments.keyMode,themeDir) />
+			<cfset arguments.Bundle.unpackFiles( 
+				arguments.toSiteID,
+				arguments.keyFactory,
+				arguments.toDSN, 
+				arguments.moduleID, 
+				arguments.errors , 
+				arguments.renderingMode, 
+				arguments.contentMode, 
+				arguments.pluginMode,
+				arguments.lastDeployment,
+				arguments.keyMode,
+				hasStructuredAssets,
+				themeDir) />
 
 			<cfif arguments.pluginMode neq "none">
 				<cfset getToWorkPlugins(argumentCollection=arguments)>
@@ -3155,7 +3205,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfloop condition="local.it.hasNext()">
 					<cfset local.item=local.it.next()>
 					<cfset local.item.setSiteID(arguments.toSiteID)>
-					<cfset local.item.setRelatedContentID(keys.get(local.item.getRelatedContentID()))>
+					<cfset local.item.setRelatedContentSetID(keys.get(local.item.getRelatedContentSetID()))>
 					<cfset local.item.setSubTypeID(keys.get(local.item.getSubTypeID()))>
 					<cfset local.item.save()>
 				</cfloop>
@@ -3891,6 +3941,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="toAssetDir" required="yes" default="#application.configBean.getAssetDir()#">
 		<cfargument name="fromAssetPath" required="yes" default="#application.configBean.getAssetPath()#">
 		<cfargument name="toAssetPath" required="yes" default="#application.configBean.getAssetPath()#">
+		<cfargument name="fromSiteDir" required="yes" default="#application.configBean.getSiteDir()#">
+		<cfargument name="toSiteDir" required="yes" default="#application.configBean.getSiteDir()#">
 
 		<cfset var i=""/>
 		<cfset var j=""/>
@@ -3905,6 +3957,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset variables[i] = arguments[i]>
 		</cfloop>
 
+		<cfif arguments.fromSiteID eq arguments.toSiteID>
+			<cfreturn >
+		</cfif>
+
 		<cfset variables.siteID=arguments.fromSiteID>
 		<cfset pluginEvent.init(variables)>
 		<cfset application.pluginManager.announceEvent("onSiteCopy",pluginEvent)>
@@ -3913,47 +3969,49 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset rsPlugins=application.pluginManager.getSitePlugins(arguments.fromsiteid)>
 		<cfset keys=createObject("component","mura.publisherKeys").init('copy',application.utility)>
 
-
 		<!---<cfthread action="run" name="thread0">--->
 			<cfset getToWork(fromSiteID=fromsiteid, toSiteID=tositeid, fromDSN=fromDSN, toDSN=toDSN, contentMode='all', keyFactory=keys, keyMode="copy")>
 		<!---</cfthread>--->
 
 		<!---<cfthread action="run" name="thread1">--->
-			<cfset application.utility.copyDir("#fromWebRoot##fileDelim##fromsiteid##fileDelim#", "#toWebRoot##fileDelim##tositeid##fileDelim#","cache#fileDelim#file") />
+			<cfset application.utility.copyDir("#arguments.fromSiteDir##fileDelim##arguments.fromsiteid##fileDelim#", "#arguments.toSiteDir##fileDelim##arguments.tositeid##fileDelim#","cache#fileDelim#file") />
 		<!---</cfthread>--->
 
 		<cfif arguments.fromWebRoot neq arguments.toWebRoot>
 			<cfloop query="rsPlugins">
 				<!---<cfthread action="run" name="thread2#rsPlugins.currentRow#">--->
-					<cfset application.utility.copyDir("#fromWebRoot##fileDelim#plugins#fileDelim##rsPlugins.directory##fileDelim#", "#toWebRoot##fileDelim#plugins#fileDelim##rsPlugins.directory##fileDelim#") />
+					<cfset application.utility.copyDir("#arguments.fromWebRoot##fileDelim#plugins#fileDelim##rsPlugins.directory##fileDelim#", "#arguments.toWebRoot##fileDelim#plugins#fileDelim##rsPlugins.directory##fileDelim#") />
 				<!---</cfthread>--->
 			</cfloop>
 		</cfif>
 
 		<!---<cfif fromWebRoot neq fromFileDir>--->
 			<!---<cfthread action="run" name="thread3">--->
-				<cfset copySiteFiles("#fromFileDir##fileDelim##fromsiteid##fileDelim#cache#fileDelim#file#fileDelim#", "#toFileDir##fileDelim##tositeid##fileDelim#cache#fileDelim#file#fileDelim#",keys) />
+				<cfset copySiteFiles("#arguments.fromFileDir##fileDelim##arguments.fromsiteid##fileDelim#cache#fileDelim#file#fileDelim#", "#arguments.toFileDir##fileDelim##arguments.tositeid##fileDelim#cache#fileDelim#file#fileDelim#",keys, "", arguments.fromsiteid, arguments.tositeid) />
 			<!---</cfthread>--->
 		<!---</cfif>--->
 
-		<cfif arguments.toWebRoot neq arguments.toAssetDir>
+		<!---<cfif arguments.toWebRoot neq arguments.toAssetDir>--->
 			<!---<cfthread action="run" name="thread4">--->
-				<cfset application.utility.copyDir("#fromAssetDir##fileDelim##fromsiteid##fileDelim#assets#fileDelim#", "#toAssetDir##fileDelim##tositeid##fileDelim#assets#fileDelim#") />
+
+			<cfset application.utility.copyDir("#arguments.fromAssetDir##fileDelim##arguments.fromsiteid##fileDelim#assets#fileDelim#", "#arguments.toAssetDir##fileDelim##arguments.tositeid##fileDelim#assets#fileDelim#") />
+
 			<!---</cfthread>--->
-		</cfif>
+		<!---</cfif>--->
+
 		<!---
 		<cfthread action="join" name="thread0" />
 		--->
 		<!---<cfthread action="run" name="thread5">--->
 			<cfif fromAssetPath neq toAssetPath>
-				<cfset application.contentUtility.findAndReplace("#fromAssetPath#/", "#toAssetPath#/", "#toSiteID#")>
+				<cfset application.contentUtility.findAndReplace("#arguments.fromAssetPath#/", "#arguments.toAssetPath#/", "#arguments.toSiteID#")>
 			</cfif>
 		<!---</cfthread>--->
 
 		<!---<cfthread action="run" name="thread6">--->
-			<cfif fromSiteID neq toSiteID>
-				<cfset application.contentUtility.findAndReplace("/#fromsiteID#/", "/#toSiteID#/", "#toSiteID#")>
-			</cfif>
+			<!---<cfif fromSiteID neq toSiteID>--->
+				<cfset application.contentUtility.findAndReplace("/#arguments.fromsiteID#/", "/#arguments.toSiteID#/", "#arguments.toSiteID#")>
+			<!---</cfif>--->
 		<!---</cfthread>--->
 
 		<cfset getBean("contentUtility").updateGlobalMaterializedPath(siteid=arguments.toSiteID,datasource=arguments.toDSN) />
@@ -3988,6 +4046,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="destDir" default="" required="true" />
 		<cfargument name="keyFactory" required="true" />
 		<cfargument name="sinceDate" default="" />
+		<cfargument name="fromsiteid" default="" />
+		<cfargument name="tositeid" default="" />
 		<cfset var rs = "" />
 		<cfset var keys=arguments.keyFactory>
 		<cfset var newFile="">
@@ -4025,8 +4085,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cftry>
 			<cfelse>
 				<!--- <cftry> --->
-
-					<cfset fileWriter.copyFile(source="#rs.directory##fileDelim##rs.name#", destination=replaceNoCase('#rs.directory##fileDelim#',arguments.baseDir,arguments.destDir))>
+					<cfset fileWriter.copyFile(source="#rs.directory##fileDelim##rs.name#", destination=replaceNoCase('#rs.directory##fileDelim#',expandPath(arguments.baseDir),expandPath(arguments.destDir)))>
 
 					<cfset newFile=listFirst(rs.name,".")>
 
@@ -4036,7 +4095,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfset newFile=keys.get(newFile) & "." & listLast(rs.name,".")>
 					</cfif>
 
-					<cfset fileWriter.renameFile(source="#replaceNoCase('#rs.directory##fileDelim#',arguments.baseDir,arguments.destDir)##rs.name#", destination="#replaceNoCase('#rs.directory##fileDelim#',arguments.baseDir,arguments.destDir)##newFile#")>
+					<cfset fileWriter.renameFile(source="#replaceNoCase('#rs.directory##fileDelim#',arguments.baseDir,arguments.destDir)##rs.name#", destination="#replaceNoCase('#rs.directory##fileDelim#',expandPath(arguments.baseDir),expandPath(arguments.destDir))##newFile#")>
 				<!--- 	<cfcatch></cfcatch>
 				</cftry> --->
 			</cfif>

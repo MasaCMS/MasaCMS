@@ -28,8 +28,8 @@ function CheckAuthentication()
   }
 }
 
-config.licenseName	= 'Mura CMS';
-config.licenseKey = 'ESBA-KQJ9-U9HR-U4WA-7LCS-LQPG-GGHJ';
+config.licenseName	= application.configBean.getCKFinderLicenseName();
+config.licenseKey = application.configBean.getCKFinderLicenseKey();
 
 /* To make it easy to configure CKFinder, the config.baseUrl and config.baseDir can be used.
  * Those are helper variables used later in this config file.

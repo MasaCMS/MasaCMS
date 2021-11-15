@@ -1,4 +1,36 @@
-<!--- This file is part of Mura CMS.
+<!--- 
+This file is part of Masa CMS. Masa CMS is based on Mura CMS, and adopts the  
+same licensing model. It is, therefore, licensed under the Gnu General Public License 
+version 2 only, (GPLv2) subject to the same special exception that appears in the licensing 
+notice set out below. That exception is also granted by the copyright holders of Masa CMS 
+also applies to this file and Masa CMS in general. 
+
+This file has been modified from the original version received from Mura CMS. The 
+change was made on: 2021-07-27
+Although this file is based on Mura™ CMS, Masa CMS is not associated with the copyright 
+holders or developers of Mura™CMS, and the use of the terms Mura™ and Mura™CMS are retained 
+only to ensure software compatibility, and compliance with the terms of the GPLv2 and 
+the exception set out below. That use is not intended to suggest any commercial relationship 
+or endorsement of Mura™CMS by Masa CMS or its developers, copyright holders or sponsors or visa versa. 
+
+If you want an original copy of Mura™ CMS please go to murasoftware.com .  
+For more information about the unaffiliated Masa CMS, please go to masacms.com  
+
+Masa CMS is free software: you can redistribute it and/or modify 
+it under the terms of the GNU General Public License as published by 
+the Free Software Foundation, Version 2 of the License. 
+Masa CMS is distributed in the hope that it will be useful, 
+but WITHOUT ANY WARRANTY; without even the implied warranty of 
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+GNU General Public License for more details. 
+
+You should have received a copy of the GNU General Public License 
+along with Masa CMS. If not, see <http://www.gnu.org/licenses/>. 
+
+The original complete licensing notice from the Mura CMS version of this file is as 
+follows: 
+
+This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -49,7 +81,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfset variables.data		= StructNew() />
 		<cfset variables.Bundle	= "" />
-		<cfset variables.zipTool	= createObject("component","mura.Zip") />
+		<cfset variables.zipTool	= new mura.Zip() />
 		<cfset variables.fileWriter	= getBean("fileWriter")>
 		<cfset variables.utility	= application.utility.getBean("utility")>
 		<cfset variables.dirName	= "Bundle_#createUUID()#" />
@@ -201,6 +233,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cffunction name="bundleFiles">
 		<cfargument name="siteID" type="string" default="" required="true">
 		<cfargument name="includeVersionHistory" type="boolean" default="true" required="true">
+		<cfargument name="includeStructuredAssets" type="boolean" default="true" required="true">
 		<cfargument name="includeTrash" type="boolean" default="true" required="true">
 		<cfargument name="moduleID" type="string" default="" required="true">
 		<cfargument name="sinceDate" type="any" default="">
@@ -225,7 +258,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif isDate(arguments.sinceDate)>
 			<cfset arguments.includeTrash=true>
 		</cfif>
-
+	
 		<!---
 		<cfloop list="#arguments.moduleID#" index="i">
 			<cfset moduleIDSQLlist=listAppend(moduleIDSQLlist,"'#i#'")>
@@ -233,8 +266,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		--->
 
 		<cfif arguments.bundleMode neq 'plugin' and len(arguments.siteID)>
-			<cfset  getBean("fileManager").cleanFileCache(arguments.siteID)>
-			<cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#sitefiles.zip",directory=siteRoot,recurse="true",sinceDate=arguments.sinceDate)>
+			<cfset getBean("fileManager").cleanFileCache(arguments.siteID)>
+
+			<cfif NOT arguments.includeStructuredAssets>
+				<cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#sitefiles.zip",directory=siteRoot,recurse="true",sinceDate=arguments.sinceDate,excludeDirs="assets|cache")> 
+			<cfelse>
+				<cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#sitefiles.zip",directory=siteRoot,recurse="true",sinceDate=arguments.sinceDate)>
+			</cfif>
 
 			<!--- If the theme does not live in the site directory add it from the global directory --->
 			<cfif (not directoryExists(expandPath($.siteConfig().getIncludePath() & "/includes/themes/#$.siteConfig('theme')#"))
@@ -256,57 +294,83 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfset started=true>
 					</cfif>
 
-					<cfif not arguments.includeTrash>
-						<cfif started>or</cfif> deleted=1
-						<cfset started=true>
-					</cfif>
-
-					<cfif not started>
-						0=1
-					</cfif>
-				)
-
-				<cfif isDate(arguments.sinceDate)>
-					and created >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.sinceDate#">
-				</cfif>
-				<cfif len(site.getPlaceholderImgID())>
-					or fileid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#site.getPlaceholderImgID()#">
-				</cfif>
-			</cfquery>
-
-			<cfloop query="rsInActivefiles">
-				<cfdirectory action="list" name="rscheck" directory="#variables.configBean.getValue('filedir')#/#filePoolID#/cache/file/" filter="#rsInActivefiles.fileID#*">
-				<cfif rscheck.recordcount>
-					<cfloop query="rscheck">
-						<cfset deleteList=listAppend(deleteList,"cache/file/#rscheck.name#","|")>
-					</cfloop>
-				</cfif>
-
-			</cfloop>
-
-			<cfif variables.configBean.getValue('assetdir') neq variables.configBean.getSiteDir()>
-				<cfset zipDir = variables.configBean.getValue('assetdir') & '/' & filePoolID />
-				<cffile action="write" file="#zipDir#/blank.txt" output="empty file" />
-				<!--- <cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#assetfiles.zip",directory=zipDir,recurse="true",sinceDate=arguments.sinceDate,excludeDirs="cache")> --->
-				<cfzip action="zip" source="#zipDir#" file="#variables.backupDir#assetfiles.zip" recurse="true">
-				<cfzip action="delete" file="#variables.backupDir#assetfiles.zip" entryPath="cache">
+			<!--- If the theme does not live in the site directory add it from the global directory --->
+			<cfif (not directoryExists(expandPath($.siteConfig().getIncludePath() & "/includes/themes/#$.siteConfig('theme')#"))
+					or not directoryExists(expandPath($.siteConfig().getIncludePath() & "/themes/#$.siteConfig('theme')#"))
+				) and directoryExists(expandPath($.globalConfig().getWebRoot() & "/themes/#$.siteConfig('theme')#"))>
+				<!---<cfzip action="zip" file="#variables.backupDir#sitefiles.zip" source="#expandPath($.globalConfig().getWebRoot() & '/themes/' & $.siteConfig('theme'))#" prefix="themes/#$.siteConfig('theme')#">--->
+				<cfset variables.zipTool.Extract(zipFilePath="#variables.backupDir#sitefiles.zip",extractPath=expandPath($.globalConfig().getWebRoot() & '/themes/') & $.siteConfig('theme'),  extractDirs="themes/#$.siteConfig('theme')#", overwriteFiles=true)>
 			</cfif>
-			<cfif variables.configBean.getValue('filedir') neq variables.configBean.getSiteDir()>
-				<cfset zipDir = variables.configBean.getValue('filedir') & '/' & filePoolID />
-				<cffile action="write" file="#zipDir#/blank.txt" output="empty file" />
-				<!--- <cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#filefiles.zip",directory=zipDir,recurse="true",sinceDate=arguments.sinceDate,excludeDirs="assets")> --->
-				<cfzip action="zip" source="#zipDir#" file="#variables.backupDir#filefiles.zip" recurse="true">
-				<cfzip action="delete" file="#variables.backupDir#filefiles.zip" entryPath="assets">
 
-				<cfif len(deleteList)>
-					<cfset variables.zipTool.deleteFiles(zipFilePath="#variables.backupDir#filefiles.zip",files="#deleteList#")>
+			<cfif arguments.includeStructuredAssets>
+				<cfset var filePoolID=getBean('settingsManager').getSite(arguments.siteid).getFilePoolID()>
+				<!--- We do not want to include files collected from Masa CMS forms or the advertising manager --->
+				<cfquery name="rsInActivefiles">
+					select fileID,fileExt from tfiles
+					where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#filePoolID#"/>
+					and moduleid in ('00000000000000000000000000000000000','00000000000000000000000000000000003','00000000000000000000000000000000099'<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.includeUsers>,'00000000000000000000000000000000008'</cfif>)
+					and (
+
+						<cfif not arguments.includeVersionHistory and rstfiles.recordcount>
+							fileID not in (#QuotedValueList(rstfiles.fileID)#)
+							<cfset started=true>
+						</cfif>
+
+						<cfif not arguments.includeTrash>
+							<cfif started>or</cfif> deleted=1
+							<cfset started=true>
+						</cfif>
+
+						<cfif not started>
+							0=1
+						</cfif>
+					)
+
+					<cfif isDate(arguments.sinceDate)>
+						and created >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.sinceDate#">
+					</cfif>
+					<cfif len(site.getPlaceholderImgID())>
+						or fileid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#site.getPlaceholderImgID()#">
+					</cfif>
+				</cfquery>
+
+				<cfloop query="rsInActivefiles">
+					<cfdirectory action="list" name="rscheck" directory="#variables.configBean.getValue('filedir')#/#filePoolID#/cache/file/" filter="#rsInActivefiles.fileID#*">
+					<cfif rscheck.recordcount>
+						<cfloop query="rscheck">
+							<cfset deleteList=listAppend(deleteList,"cache/file/#rscheck.name#","|")>
+						</cfloop>
+					</cfif>
+
+				</cfloop>
+
+				<cfif variables.configBean.getValue('assetdir') neq variables.configBean.getSiteDir()>
+					<cfset zipDir = variables.configBean.getValue('assetdir') & '/' & filePoolID />
+					<cffile action="write" file="#zipDir#/blank.txt" output="empty file" />
+					
+					<!---<cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#assetfiles.zip",directory=zipDir,recurse="true",sinceDate=arguments.sinceDate,excludeDirs="cache")>--->
+					<cfzip action="zip" source="#zipDir#" file="#variables.backupDir#assetfiles.zip" recurse="true">
+					<cfzip action="delete" file="#variables.backupDir#assetfiles.zip" entryPath="cache">
+				
 				</cfif>
+				<cfif variables.configBean.getValue('filedir') neq variables.configBean.getSiteDir()>
+					<cfset zipDir = variables.configBean.getValue('filedir') & '/' & filePoolID />
+					<cffile action="write" file="#zipDir#/blank.txt" output="empty file" />
+					
+					<!---<cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#filefiles.zip",directory=zipDir,recurse="true",sinceDate=arguments.sinceDate,excludeDirs="assets")>--->
+					<cfzip action="zip" source="#zipDir#" file="#variables.backupDir#filefiles.zip" recurse="true">
+					<cfzip action="delete" file="#variables.backupDir#filefiles.zip" entryPath="assets">
+		
+					<cfif len(deleteList)>
+						<cfset variables.zipTool.deleteFiles(zipFilePath="#variables.backupDir#filefiles.zip",files="#deleteList#")>
+					</cfif>
 
-			<cfelse>
-				<cfif len(deleteList)>
-					<cfset variables.zipTool.deleteFiles(zipFilePath="#variables.backupDir#sitefiles.zip",files="#deleteList#")>
+				<cfelse>
+					<cfif len(deleteList)>
+						<cfset variables.zipTool.deleteFiles(zipFilePath="#variables.backupDir#sitefiles.zip",files="#deleteList#")>
+					</cfif>
+
 				</cfif>
-
 			</cfif>
 		</cfif>
 
@@ -374,14 +438,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 
 		<cfif len(arguments.siteID)>
+			<!---
 			<cfset  getBean("fileManager").cleanFileCache(arguments.siteID)>
-
+			--->
 			<cfset var assetdir=variables.configBean.getValue('assetdir') & '/' & getBean('settingsManager').getSite(arguments.siteid).getFilePoolID() />
 			<cfset var filedir=variables.configBean.getValue('filedir') & '/' & getBean('settingsManager').getSite(arguments.siteid).getFilePoolID() />
 			<cfset var bodyFileArray=[]>
 			<cfset var extensionXML="">
 
- 			<!--- We do not want to include files collected from mura forms or the advertising manager --->
+ 			<!--- We do not want to include files collected from Masa CMS forms or the advertising manager --->
 
 			<cfloop query="rstfiles">
 				<cfif fileExists( "#filedir#/cache/file/#rstfiles.fileid#_source.#rstfiles.fileext#" )>
@@ -478,7 +543,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif end>
 					<cfset pathlist = mid(arguments.content,find,end-find) />
 					<cfloop list="#pathlist#" index="path">
-						<cfset path=trim(path)>
+						<cfset path=trim(listFirst(path,")"))>
 						<cfif len(path)>
 							<cfset block = {} />
 							<cfset pathArray = ListToArray( path,"/" ) />
@@ -563,6 +628,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="pluginMode" type="any" required="true" default="all">
 		<cfargument name="sinceDate" type="any" required="true" default="">
 		<cfargument name="keyMode" type="string" default="copy" required="true">
+		<cfargument name="hasStructuredAssets" type="boolean" default="true" required="true">
 		<cfargument name="themeDir" type="string" default="" required="true">
 
 		<cfset var zipPath = "" />
@@ -578,6 +644,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var pluginDir="">
 		<cfset var rssite="">
 		<cfset var rsFiles="">
+		<cfset var filename="">
 
 		<cfif not len( getBundle() ) or not directoryExists( getBundle() )>
 			<cfreturn>
@@ -593,60 +660,99 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<!---
 					<cfset variables.utility.deleteDir( variables.configBean.getValue('filedir') & '/'  & filePoolID & '/' & "assets"  )>
 					--->
-					<cftry>
-					<cfset variables.utility.deleteDir( variables.configBean.getValue('filedir') & '/'  & filePoolID & "/cache"  )>
-					<cfset variables.utility.createDir( variables.configBean.getValue('filedir') & '/'  & filePoolID & "/cache"  )>
-					<cfset variables.utility.createDir( variables.configBean.getValue('filedir') & '/'  & filePoolID & "/cache/file"  )>
-					<cfcatch></cfcatch>
-					</cftry>
+					<cfif arguments.hasStructuredAssets>
+						<cftry>
+						<cfset variables.utility.deleteDir( variables.configBean.getValue('filedir') & '/'  & filePoolID & "/cache"  )>
+						<cfset variables.utility.createDir( variables.configBean.getValue('filedir') & '/'  & filePoolID & "/cache"  )>
+						<cfset variables.utility.createDir( variables.configBean.getValue('filedir') & '/'  & filePoolID & "/cache/file"  )>
+
+						<cfset variables.utility.deleteDir( variables.configBean.getValue('assetdir') & '/'  & filePoolID & "/assets"  )>
+						<cfset variables.utility.createDir( variables.configBean.getValue('assetdir') & '/'  & filePoolID & "/assets"  )>
+						<cfcatch></cfcatch>
+						</cftry>
+					</cfif>
 				</cfif>
+
+				<!---
+					Contains work around for
+					https://luceeserver.atlassian.net/browse/LDEV-2660
+				--->
+				<cfset var hasFilesZip= fileExists( getBundle() & "filefiles.zip" )>
+				<cfset var hasAssetsZip= fileExists( getBundle() & "assetfiles.zip" )>
+
 				<cfif fileExists( getBundle() & "sitefiles.zip" )>
 					<cfset zipPath = getBundle() & "sitefiles.zip" />
+				
+					<cfif not hasFilesZip or not hasAssetsZip>
+						<cfset var fileDir = variables.configBean.getValue('filedir') & '/' & filePoolID />
+						<cfset var assetDir = variables.configBean.getValue('assetdir') & '/' & filePoolID />
+						
+						<cfzip file="#zipPath#" action="list" name="rsfiles">
 
-					<cfif not fileExists( getBundle() & "filefiles.zip" )>
-						<cfset destDir = variables.configBean.getValue('filedir') & '/' & filePoolID />
-						<cfzip file="#zipPath#" action="unzip" overwrite="true" destination="#destDir#" entrypath="cache">
-						<!---<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=destDir, overwriteFiles=true, extractDirs="cache")>--->
-					</cfif>
-
-					<cfif not fileExists( getBundle() & "assetfiles.zip" )>
-						<cfset destDir = variables.configBean.getValue('assetdir') & '/' & filePoolID />
-						<cfzip file="#zipPath#" action="unzip" overwrite="true" destination="#destDir#" entrypath="assets">
-						<!---<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=destDir, overwriteFiles=true, extractDirs="assets")>--->
+						<cfloop query="rsfiles">
+							<cfset filename=variables.fileWriter.pathFormat(rsfiles.name)>
+							<cfif not hasFilesZip and listFindNoCase('cache',listFirst(filename,"/"))>
+								<cfif fileExists(fileDir & "/" & filename)>
+									<cfset fileDelete(fileDir & "/" & filename)>
+								</cfif>
+								<cfzip file="#zipPath#" action="unzip" overwrite="false" destination="#fileDir#" entrypath="#rsfiles.directory#" filter="#listLast(filename,'/')#">
+							</cfif>
+							<cfif not hasAssetsZip and listFindNoCase('assets',listFirst(filename,"/"))>
+								<cfif fileExists(assetDir & "/" & filename)>
+									<cfset fileDelete(assetDir & "/" & filename)>
+								</cfif>
+								<cfzip file="#zipPath#" action="unzip" overwrite="false" destination="#assetDir#" entrypath="#rsfiles.directory#" filter="#listLast(filename,'/')#">
+							</cfif>
+						</cfloop>
 					</cfif>
 				</cfif>
-				<cfif fileExists( getBundle() & "assetfiles.zip" )>
+				<cfif hasAssetsZip>
 					<cfset zipPath = getBundle() & "assetfiles.zip" />
 					<cfset destDir = variables.configBean.getValue('assetdir') & '/' & filePoolID />
-					<cfzip file="#zipPath#" action="unzip" overwrite="true" destination="#destDir#">
-					<!---<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=destDir, overwriteFiles=true)>--->
+					<cfzip file="#zipPath#" action="list" name="rsfiles">
+					<cfloop query="rsfiles">
+						<cfset filename=variables.fileWriter.pathFormat(rsfiles.name)>
+						<cfif fileExists(destDir & "/" & filename)>
+							<cfset fileDelete(destDir & "/" & filename)>
+						</cfif>
+						<cfzip file="#zipPath#" action="unzip" overwrite="false" destination="#destDir#" entrypath="#rsfiles.directory#" filter="#listLast(filename,'/')#">
+					</cfloop>
 				</cfif>
-				<cfif fileExists( getBundle() & "filefiles.zip" )>
+				<cfif hasFilesZip>
 					<cfset zipPath = getBundle() & "filefiles.zip" />
 					<cfset destDir = variables.configBean.getValue('filedir') & '/' & filePoolID />
-					<cfzip file="#zipPath#" action="unzip" overwrite="true" destination="#destDir#">
-					<!---<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=destDir, overwriteFiles=true)>--->
+					<cfzip file="#zipPath#" action="list" name="rsfiles">
+					<cfloop query="rsfiles">
+						<cfset filename=variables.fileWriter.pathFormat(rsfiles.name)>
+						<cfif fileExists(destDir & "/" & filename)>
+							<cfset fileDelete(destDir & "/" & filename)>
+						</cfif>
+						<cfzip file="#zipPath#" action="unzip" overwrite="false" destination="#destDir#" entrypath="#rsfiles.directory#" filter="#listLast(filename,'/')#">
+					</cfloop>
 				</cfif>
 			</cfif>
 			<cfif arguments.renderingMode eq "all">
 				<cfset zipPath = getBundle() & "sitefiles.zip" />
+				
 				<cfzip file="#zipPath#" action="list" name="rsfiles">
 
 				<cfloop query="rsfiles">
-					<cfif not listFindNoCase('cache,assets',listFirst(rsfiles.name,"\/"))>
-						<cfzip file="#zipPath#" action="unzip" overwrite="true" destination="#siteRoot#" filter="#rsfiles.name#">
+					<cfset filename=variables.fileWriter.pathFormat(rsfiles.name)>
+					<cfif not listFindNoCase('cache,assets',listFirst(filename,"/"))>
+						<cfif fileExists(siteRoot & "/" & filename)>
+							<cfset fileDelete(siteRoot & "/" & filename)>
+						</cfif>
+						<cfzip file="#zipPath#" action="unzip" overwrite="false" destination="#siteRoot#" entrypath="#rsfiles.directory#" filter="#listLast(filename,'/')#">
 					</cfif>
 				</cfloop>
-
+				
 				<!---<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=siteRoot, overwriteFiles=true, excludeDirs="cache|assets")>--->
 			<cfelseif arguments.renderingMode eq "theme" and len(arguments.themeDir)>
 				<cfset zipPath = getBundle() & "sitefiles.zip" />
+
 				<cfzip file="#zipPath#" action="unzip" overwrite="true" destination="#siteRoot#" entrypath="includes/themes/#arguments.themeDir#">
 				<cfzip file="#zipPath#" action="unzip" overwrite="true" destination="#siteRoot#" entrypath="themes/#arguments.themeDir#">
-				<!---
-				<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=siteRoot, overwriteFiles=true, extractDirs="includes/themes/#arguments.themeDir#")>
-				<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=siteRoot, overwriteFiles=true, extractDirs="themes/#arguments.themeDir#")>
-				--->
+	
 			</cfif>
 		</cfif>
 
@@ -693,6 +799,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="siteID" type="string" default="" required="true">
 		<cfargument name="includeVersionHistory" type="boolean" default="true" required="true">
 		<cfargument name="includeTrash" type="boolean" default="true" required="true">
+		<cfargument name="includeStructuredAssets" type="boolean" default="true" required="true">
 		<cfargument name="includeMetaData" type="boolean" default="true" required="true">
 		<cfargument name="moduleID" type="string" default="" required="true">
 		<cfargument name="bundleName" type="string" default="" required="true">
@@ -791,7 +898,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset moduleIDSQLlist=listAppend(moduleIDSQLlist,"'#i#'")>
 		</cfloop>
 		--->
-
+		
 		<cfif isDate(arguments.sinceDate)>
 			<cfset arguments.includeTrash=true>
 			<cfset arguments.includeUser=false>
@@ -1330,7 +1437,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfquery>
 
 			<cfset setValue("rstfiles",rstfiles)>
-
+			<cfset setValue("hasstructuredassets",arguments.includeStructuredAssets)>
 			<cfset setValue("hasmetadata",arguments.includeMetaData)>
 
 			<cfif arguments.includeMetaData and not len(arguments.changesetID) and not len(arguments.parentid)>
@@ -1613,7 +1720,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					smallImageWidth,smallImageHeight,
 					mediumImageWidth,mediumImageHeight,
 					columnCount,columnNames,primaryColumn,baseID,customtaggroups,
-					placeholderImgID,placeholderImgExt
+					placeholderImgID,placeholderImgExt,isremote
 				    from tsettings where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 				</cfquery>
 
@@ -1625,8 +1732,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfquery>
 
 				<cfset setValue("rstimagesizes",rstimagesizes)>
+				
+				<cfset var site=getBean('settingsManager').getSite(arguments.siteID)>
 
 				<cfset setValue("assetPath",application.configBean.getAssetPath())>
+				<cfset setValue("fileAssetPath",site.getFileAssetPath(complete=site.get('isRemote')))>
 				<cfset setValue("context",application.configBean.getContext())>
 			</cfif>
 
@@ -1674,14 +1784,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfloop query="rstplugins">
 				<cfif fileExists(variables.configBean.getPluginDir() & "/#rstplugins.directory#/plugin/plugin.cfc")>
 					<cfset pluginConfig=getPlugin(ID=rstplugins.moduleID, siteID="", cache=false)>
-					<cfset pluginCFC= createObject("component","plugins.#rstplugins.directory#.plugin.plugin") />
+					<cfset pluginCFC= new "plugins.#rstplugins.directory#.plugin.plugin"(pluginConfig) />
 
 					<!--- only call the methods if they have been defined --->
-					<cfif structKeyExists(pluginCFC,"init")>
-						<cfset pluginCFC.init(pluginConfig)>
-						<cfif structKeyExists(pluginCFC,"toBundle")>
-							<cfset pluginCFC.toBundle(pluginConfig=pluginConfig,Bundle=this, siteID=arguments.siteID,includeVersionHistory=arguments.includeVersionHistory)>
-						</cfif>
+					<cfif structKeyExists(pluginCFC,"toBundle")>
+						<cfset pluginCFC.toBundle(pluginConfig=pluginConfig,Bundle=this, siteID=arguments.siteID,includeVersionHistory=arguments.includeVersionHistory)>
 					</cfif>
 				</cfif>
 			</cfloop>

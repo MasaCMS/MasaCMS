@@ -104,7 +104,7 @@ This file is part of Mura CMS.
 
 		<title>#esapiEncode('html', application.configBean.getTitle())#</title>
     	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0">
-		<meta name="author" content="blueriver">
+		<meta name="author" content="blueriver & We Are Orange BV">
 		<meta name="robots" content="noindex, nofollow, noarchive">
 		<meta http-equiv="cache control" content="no-cache, no-store, must-revalidate">
 
@@ -281,6 +281,7 @@ This file is part of Mura CMS.
 				<cfset site=$.getBean('settingsManager').getSite('default')>
 			</cfif>
 			Mura.init({
+				inAdmin:true,
 				context:'#esapiEncode("javascript",rc.$.globalConfig('context'))#',
 				themepath:'#esapiEncode("javascript",site.getThemeAssetPath(complete=1))#',
 				siteid:'#esapiEncode("javascript",site.getSiteID())#',

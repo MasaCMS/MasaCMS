@@ -1,4 +1,36 @@
-<!--- This file is part of Mura CMS.
+<!--- 
+This file is part of Masa CMS. Masa CMS is based on Mura CMS, and adopts the  
+same licensing model. It is, therefore, licensed under the Gnu General Public License 
+version 2 only, (GPLv2) subject to the same special exception that appears in the licensing 
+notice set out below. That exception is also granted by the copyright holders of Masa CMS 
+also applies to this file and Masa CMS in general. 
+
+This file has been modified from the original version received from Mura CMS. The 
+change was made on: 2021-07-27
+Although this file is based on Mura™ CMS, Masa CMS is not associated with the copyright 
+holders or developers of Mura™CMS, and the use of the terms Mura™ and Mura™CMS are retained 
+only to ensure software compatibility, and compliance with the terms of the GPLv2 and 
+the exception set out below. That use is not intended to suggest any commercial relationship 
+or endorsement of Mura™CMS by Masa CMS or its developers, copyright holders or sponsors or visa versa. 
+
+If you want an original copy of Mura™ CMS please go to murasoftware.com .  
+For more information about the unaffiliated Masa CMS, please go to masacms.com  
+
+Masa CMS is free software: you can redistribute it and/or modify 
+it under the terms of the GNU General Public License as published by 
+the Free Software Foundation, Version 2 of the License. 
+Masa CMS is distributed in the hope that it will be useful, 
+but WITHOUT ANY WARRANTY; without even the implied warranty of 
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+GNU General Public License for more details. 
+
+You should have received a copy of the GNU General Public License 
+along with Masa CMS. If not, see <http://www.gnu.org/licenses/>. 
+
+The original complete licensing notice from the Mura CMS version of this file is as 
+follows: 
+
+This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -457,6 +489,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfabort>
 </cffunction>
 
+<cffunction name="render401" output="true">
+	<cfheader statuscode="401" statustext="Unauthorized" />
+	<cfcontent reset="true">
+	<cfabort>
+</cffunction>
+
 <cffunction name="render404" output="true">
 	<cfheader statuscode="404" statustext="Content Not Found" />
 	<!--- Must reset the linkservID to prevent recursive 404s --->
@@ -553,6 +591,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var emailendpoint="/_api/email/trackopen">
 	<cfset var sitemonitorendpoint="/_api/sitemonitor">
 	<cfset var variationendpoint="/_api/resource/variation">
+	<cfset var assetendpoint="/_api/asset/">
 
 	<cfset var legacyfeedendpoint="/tasks/feed">
 	<cfset var legacyfileendpoint="/tasks/render/">
@@ -699,6 +738,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn "">
 	<cfelseif left(path,len(legacywidgetendpoint)) eq legacywidgetendpoint>
 		<cflocation statuscode="301" addtoken="false" url="#replaceNoCase(cgi.path_info,'/tasks/widgets/','/core/vendor/')#">
+	<cfelseif left(path,len(assetendpoint)) eq assetendpoint>
+		<cfparam name="url.action" default="#listGetAt(path,3,'/')#">
+		<cfparam name="url.filePath" default="">
+		<cfparam name="url.method" default="inline">
+		<cfparam name="url.formField" default="form.upload">
+		<cfparam name="url.siteId" default="">
+		<cfset var folder = "/assets/Image">
+		<cfswitch expression="#url.action#">
+			<cfcase value="upload">
+				<cfif application.permUtility.getModulePerm('00000000000000000000000000000000000',url.siteId)>
+					<cfreturn application.contentRenderer.uploadAsset(formField=url.formField, siteId=url.siteId, folder=folder)>
+				<cfelse>
+					<cfset this.render401()>
+				</cfif>
+			</cfcase>
+			<cfdefaultcase>
+				<cfreturn application.contentRenderer.renderAsset(url.filePath, url.method)>
+			</cfdefaultcase>
+		</cfswitch>
 	</cfif>
 </cffunction>
 

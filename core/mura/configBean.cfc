@@ -1,4 +1,36 @@
-<!--- This file is part of Mura CMS.
+<!--- 
+This file is part of Masa CMS. Masa CMS is based on Mura CMS, and adopts the  
+same licensing model. It is, therefore, licensed under the Gnu General Public License 
+version 2 only, (GPLv2) subject to the same special exception that appears in the licensing 
+notice set out below. That exception is also granted by the copyright holders of Masa CMS 
+also applies to this file and Masa CMS in general. 
+
+This file has been modified from the original version received from Mura CMS. The 
+change was made on: 2021-07-27
+Although this file is based on Mura™ CMS, Masa CMS is not associated with the copyright 
+holders or developers of Mura™CMS, and the use of the terms Mura™ and Mura™CMS are retained 
+only to ensure software compatibility, and compliance with the terms of the GPLv2 and 
+the exception set out below. That use is not intended to suggest any commercial relationship 
+or endorsement of Mura™CMS by Masa CMS or its developers, copyright holders or sponsors or visa versa. 
+
+If you want an original copy of Mura™ CMS please go to murasoftware.com .  
+For more information about the unaffiliated Masa CMS, please go to masacms.com  
+
+Masa CMS is free software: you can redistribute it and/or modify 
+it under the terms of the GNU General Public License as published by 
+the Free Software Foundation, Version 2 of the License. 
+Masa CMS is distributed in the hope that it will be useful, 
+but WITHOUT ANY WARRANTY; without even the implied warranty of 
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+GNU General Public License for more details. 
+
+You should have received a copy of the GNU General Public License 
+along with Masa CMS. If not, see <http://www.gnu.org/licenses/>. 
+
+The original complete licensing notice from the Mura CMS version of this file is as 
+follows: 
+
+This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -45,16 +77,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfcomponent extends="mura.cfobject" output="false" hint="This provides access the global configuration">
 <cfset variables.instance=structNew()/>
 <cfset variables.instance.mode=""/>
-<cfset variables.autoupdateurl="https://github.com/blueriver/MuraCMS/archive/master.zip"/>
+<cfset variables.autoupdateurl="https://github.com/MasaCMS/MasaCMS/archive/main.zip"/>
 <cfset variables.instance.version="7.2.0"/>
-<cfset variables.instance.title="Mura CMS"/>
-<cfset variables.instance.projectname="Mura CMS"/>
-<cfset variables.instance.projectname="Mura CMS"/>
+<cfset variables.instance.title="Masa CMS"/>
+<cfset variables.instance.projectname="Masa CMS"/>
+<cfset variables.instance.projectname="Masa CMS"/>
 <cfset variables.instance.webroot=""/>
 <cfset variables.instance.webrootmap="muraWRM"/>
 <cfset variables.instance.mapdir="mura"/>
 <cfset variables.instance.datasource=""/>
-<cfset variables.instance.defaultthemeurl="https://github.com/blueriver/MuraBootstrap4/archive/master.zip">
+<cfset variables.instance.defaultthemeurl="https://github.com/MasaCMS/MasaBootstrap4/archive/main.zip">
 <cfset variables.instance.stub=""/>
 <cfset variables.instance.context=""/>
 <cfset variables.instance.admindomain=""/>
@@ -143,6 +175,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.broadcastCachePurges=true />
 <cfset variables.instance.broadcastAppreloads=true />
 <cfset variables.instance.broadcastWithProxy=true />
+<cfset variables.instance.clearOldBroadcastCommands=true>
 <cfset variables.instance.readOnlyDatasource="" />
 <cfset variables.instance.readOnlyDbUsername="" />
 <cfset variables.instance.readOnlyDbPassword="" />
@@ -198,7 +231,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.externalConfig="">
 <cfset variables.instance.forceDirectoryStructure=true>
 <cfset variables.instance.suppressAPIParams=true>
-<cfset variables.instance.sessionBasedLockdown=false>
+<cfset variables.instance.sessionBasedLockdown=true>
+<cfset variables.instance.autoPurgeOutputCache=true>
+<cfset variables.instance.filemanagerEnabled=false>
+<cfset variables.instance.CKFinderlicenseName="">
+<cfset variables.instance.CKFinderlicenseKey="">
 
 <cffunction name="OnMissingMethod" output="false" hint="Handles missing method exceptions.">
 <cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />
@@ -223,6 +260,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn "">
 </cfif>
 
+</cffunction>
+
+<cffunction name="passwordsExpire" output="false">
+	<cfset var expireIn=getValue(property="expirePasswords", defaultValue=0)>
+
+	<cfif not isNumeric(expireIn) or expireIn eq 0>	
+		<cfreturn false>
+	<cfelse>
+		<cfreturn true>
+	</cfif>
 </cffunction>
 
 <cffunction name="set" output="true">
@@ -256,6 +303,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfset variables.instance.version=getVersionFromFile()>
+
+	<cfif isDefined('arguments.config.s3assets') and len(arguments.config.s3assets)>
+		<cfif right(arguments.config.s3assets,1) neq "/">
+			<cfset arguments.config.s3assets=arguments.config.s3assets & "/">
+		</cfif>
+		<cfset arguments.config.fileDir=arguments.config.s3assets & listRest(arguments.config.fileDir,"/")>
+		<cfif isDefined('arguments.config.assetdir')>
+			<cfset arguments.config.assetdir=arguments.config.s3assets & listRest(arguments.config.assetdir,"/")>
+		</cfif>
+	</cfif>
 
 	<cfset setWebRoot(arguments.config.webroot)/>
 	<cfset setContext(arguments.config.context)/>
@@ -1546,6 +1603,41 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getEncryptionKey" output="false">
 	<cfreturn variables.instance.encryptionKey />
 </cffunction>
+<cffunction name="setFilemanagerEnabled" output="false">
+	<cfargument name="filemanagerEnabled" />
+	<cfif len(arguments.filemanagerEnabled)>
+		<cfset variables.instance.filemanagerEnabled = arguments.filemanagerEnabled />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getFilemanagerEnabled" output="false">
+	<cfreturn variables.instance.filemanagerEnabled />
+</cffunction>
+
+<cffunction name="setCKFinderLicenseName" output="false">
+	<cfargument name="CKFinderLicenseName" />
+	<cfif len(arguments.CKFinderLicenseName)>
+		<cfset variables.instance.CKFinderLicenseName = arguments.CKFinderLicenseName />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getCKFinderLicenseName" output="false">
+	<cfreturn variables.instance.CKFinderLicenseName />
+</cffunction>
+
+<cffunction name="setCKFinderLicenseKey" output="false">
+	<cfargument name="CKFinderLicenseKey" />
+	<cfif len(arguments.CKFinderLicenseKey)>
+		<cfset variables.instance.CKFinderLicenseKey = arguments.CKFinderLicenseKey />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getCKFinderLicenseKey" output="false">
+	<cfreturn variables.instance.CKFinderLicenseKey />
+</cffunction>
 
 <cffunction name="setMaxArchivedVersions" output="false">
 	<cfargument name="maxArchivedVersions" />
@@ -1821,6 +1913,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="siteid" hint="Can be a list" default="">
 	<cfargument name="moduleid" default="00000000000000000000000000000000000">
 	<cfargument name="applyGlobal" default="true">
+	<cfargument name="forceSchemaCheck" default="false">
+
 	<cfset var rs="">
 	<cfset var expandedDir="">
 
@@ -1838,9 +1932,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfloop query="rs">
 			<!--- Registers handlers last so that that all entities defined will be available --->
 			<cfif rs.type eq 'dir' and not listFindNoCase('archived,archive,handlers,eventhandlers,event_handlers',rs.name)>
-				<cfset registerBeanDir(dir=listAppend(arguments.dir,rs.name,'/'),package=arguments.package & "." & rs.name,siteid=arguments.siteid,moduleid=arguments.moduleid)>
+				<cfset registerBeanDir(dir=listAppend(arguments.dir,rs.name,'/'),package=arguments.package & "." & rs.name,siteid=arguments.siteid,moduleid=arguments.moduleid,forceSchemaCheck=arguments.forceSchemaCheck)>
 			<cfelseif rs.type neq 'dir' and listLast(rs.name,'.') eq 'cfc'>
-				<cfset registerBean(componentPath="#package#.#listFirst(rs.name,'.')#",siteid=arguments.siteid,moduleid=arguments.moduleid)>
+				<cfset registerBean(componentPath="#package#.#listFirst(rs.name,'.')#",siteid=arguments.siteid,moduleid=arguments.moduleid,forceSchemaCheck=arguments.forceSchemaCheck)>
 			</cfif>
 		</cfloop>
 
@@ -1952,18 +2046,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset commitTracepoint(tracepoint)>
 	<cfelseif getServiceFactory().containsBean(beanName)>
 		<cfset var entity=getBean(beanName)>
-		<cfloop list="#arguments.siteid#" index="local.i">
-			<cfset getBean('settingsManager').getSite(local.i).getApi('json','v1').registerEntity(
-				entityName=beanName,
-				config={
-				moduleid=arguments.moduleid,
-				public=application.objectMappings['#entity.getEntityName()#'].public,
-				fields=fields
-				},
-				beanInstance=entity,
-				registered=true
-			)>
-		</cfloop>
+		<cfif isDefined('entity.isORM') and entity.isOrm()>
+			<cfloop list="#arguments.siteid#" index="local.i">
+				<cfset getBean('settingsManager').getSite(local.i).getApi('json','v1').registerEntity(
+					entityName=beanName,
+					config={
+					moduleid=arguments.moduleid,
+					public=application.objectMappings['#entity.getEntityName()#'].public,
+					fields=fields
+					},
+					beanInstance=entity,
+					registered=true
+				)>
+			</cfloop>
+		</cfif>
 	</cfif>
 
 	<cfreturn this>
@@ -2076,7 +2172,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfscript>
 
-//Make sure queries set with configBean don't act like Mura ORN customDatasoure.
+//Make sure queries set with configBean don't act like Masa CMS ORM customDatasoure.
 function hasCustomDatasource(){
 	return false;
 }
