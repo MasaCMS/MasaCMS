@@ -53,7 +53,7 @@ CKEDITOR.editorConfig = function( config )
 		config.format_h4 = { element : '#renderer.getHeaderTag('subHead4')#' };
 		config.format_h5 = { element : '#renderer.getHeaderTag('subHead5')#' };
 	<cfelse>
-		// Mura page title set to h2
+		// Masa CMS page title set to h2
 		config.format_tags = 'p;h1;h2;h3;h4;pre;address;div';
 		config.format_h1 = { element : '#renderer.getHeaderTag('subHead1')#' };
 		config.format_h2 = { element : '#renderer.getHeaderTag('subHead2')#' };
@@ -210,11 +210,36 @@ CKEDITOR.editorConfig = function( config )
 			{name: 'group11', items: ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField']},
 			{name: 'group12', items: ['Styles','Format','-','Maximize','ShowBlocks','About']}
 		];
---->
 
+		config.toolbar_Basic = [
+			{name: 'group1', items: ['Bold','Italic','RemoveFormat','-','NumberedList','BulletedList','-','Link','Unlink']}
+		];
+
+		config.toolbar_FormBuilder = [
+			{name: 'group1', items: ['A11ychecker','Source']},
+			{name: 'group2', items: ['Bold','Italic','RemoveFormat','-','NumberedList','BulletedList','-','Link','Unlink','Format']}
+		];
+
+		config.toolbar_htmlEditor = [
+			{name: 'group0', items:['Styles','Format']},
+			{name: 'group1', items: ['A11ychecker','Source']},
+			{name: 'group2', items: ['Cut','Copy','Paste','PasteText','PasteFromWord']},
+			{name: 'group3', items: ['Bold','Italic','RemoveFormat','-','NumberedList','BulletedList','-','Link','Unlink','-','Image']},
+			{name: 'group4', items: ['Selectlink','SelectComponent','Templates']},
+		];
+
+		config.toolbar_bbcode = [
+			{name: 'group1', items: ['Source','Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink','-','Image']}
+		];
+--->
 	<!--- /Toolbars --->
 
 	config.extraPlugins = 'SelectComponent,Selectlink,leaflet,tableresize,onchange,justify,find,bidi,div,showblocks,forms,templates,pagebreak,codemirror,widget,lineutils,dialog,oembed,sourcedialog,fakeobjects,dialogui,showprotected,balloonpanel,dialogadvtab,a11ychecker,image2';
+
+	<cfif !application.configBean.getCKFinderLicenseName().len() || !application.configBean.getCKFinderLicenseKey().len()>
+		<!--- if no licence add image2 plugin--->	
+		config.extraPlugins += ',image2';	
+	</cfif>
 
 	if(typeof jQuery == 'undefined'){
 		config.toolbar_QuickEdit[0].items.shift()
@@ -277,16 +302,22 @@ CKEDITOR.editorConfig = function( config )
 
 <cfoutput>
 	<cfif isDefined('session.siteid') and application.permUtility.getModulePerm("00000000000000000000000000000000000",session.siteid)>
-		// filebrowser settings needed for inline edit mode
-    // config.removePlugins = 'imageuploader';
-    // config.removePlugins = 'ckfinder';
-    var connectorpath = '#application.configBean.getContext()#/core/vendor/ckeditor/plugins/murafilebrowser/filebrowser.cfm';
-		var uploadpath = '#application.Mura.getBean('settingsManager').getSite(session.siteid).getApi().getEndPoint()#/filebrowser/ckeditor_quick_upload?resourcepath=User_Assets&directory=/';
-		config.filebrowserBrowseUrl = connectorpath + '?resourcepath=User_Assets&displaymode=2';
-		config.filebrowserImageBrowseUrl = connectorpath + '?resourcepath=User_Assets&directory=/Image&displaymode=1';
-    config.filebrowserUploadUrl = uploadpath + "File";
-    config.filebrowserImageUploadUrl = uploadpath + "Image";
-    </cfif>
+		<cfif application.configBean.getCKFinderLicenseName().len() && application.configBean.getCKFinderLicenseKey().len()>
+			// filebrowser settings needed for inline edit mode
+			var connectorpath = '#application.configBean.getContext()#/core/vendor/ckfinder/ckfinder.html';
+			config.filebrowserBrowseUrl = connectorpath;
+			config.filebrowserImageBrowseUrl = connectorpath + '?type=Images';
+			config.filebrowserUploadUrl = '#application.configBean.getContext()#/core/vendor/ckfinder/core/connector/cfm/connector.cfm?command=QuickUpload&type=#URLEncodedFormat(session.siteid)#_User_Assets&currentFolder=%2Files%2F';
+			config.filebrowserImageUploadUrl ='#application.configBean.getContext()#/core/vendor/ckfinder/core/connector/cfm/connector.cfm?command=QuickUpload&type=#URLEncodedFormat(session.siteid)#_User_Assets&currentFolder=%2FImage%2F';
+		<cfelse>
+			// filebrowser settings needed for inline edit mode
+			config.filebrowserBrowseUrl = '';
+			config.filebrowserImageBrowseUrl = '';
+			config.filebrowserUploadUrl = '';
+			config.filebrowserImageUploadUrl ='';
+			config.uploadUrl ='#application.configBean.getContext()#/index.cfm/_api/asset/upload/?siteid=#URLEncodedFormat(session.siteid)#';
+		</cfif>	
+	</cfif>
 
 	<cfset secure=$.getBean('utility').isHTTPS()>
 

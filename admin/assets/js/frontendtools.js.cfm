@@ -1596,11 +1596,11 @@
 
 									objectid=item.data('objectid') || 'NA';
 
-									objectlist.push(item.data('object') + '~' + item.data('objectname') + '~' + objectid + '~' + JSON.stringify(params))
+									objectlist.push([item.data('object'), item.data('objectname'), objectid, JSON.stringify(params)])
 
 								});
 
-								MuraInlineEditor.data['objectlist' + this.getAttribute('data-regionid')]=objectlist.join('^');
+								MuraInlineEditor.data['objectlist' + this.getAttribute('data-regionid')]=JSON.stringify(objectlist);
 								count++;
 							}
 						);
