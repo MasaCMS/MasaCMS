@@ -1873,6 +1873,12 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 			expandedDir=expandPath(arguments.dir);
 		}
 
+		if(reFindNoCase("^[a-zA-Z]:\\",arguments.dir)){
+			expandedDir=arguments.dir;
+		} else {
+			expandedDir=expandPath(arguments.dir);
+		}
+
 		if ( directoryExists(expandedDir) ) {
 			rs=getBean('fileWriter').getDirectoryList( directory=expandedDir, type="dir");
 			

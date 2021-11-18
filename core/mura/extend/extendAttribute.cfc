@@ -536,7 +536,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset renderValue=lsDateFormat(renderValue,sessionData.dateKeyFormat) />
 				</cfif>
 				<cfsavecontent variable="str">
-					<cfoutput><input type="text" name="#key#" class="text<cfif getValidation() eq 'date'> datepicker<cfelseif getValidation() eq 'Color'> colorpicker</cfif>" id="#key#" data-label="#XMLFormat(getlabel())#" value="#HTMLEditFormat(renderValue)#" data-required="#getRequired()#"<cfif len(getvalidation())> data-validate="#getValidation()#"</cfif><cfif getvalidation() eq "Regex"> data-regex="#getRegex()#"</cfif><cfif len(getMessage())> data-message="#XMLFormat(getMessage())#"</cfif> /></cfoutput>
+					<cfoutput>
+						<cfif getValidation() eq 'color'>
+
+							<div class="input-group mura-colorpicker">
+								<span class="input-group-addon"><i class="mura-colorpicker-swatch" style="background-color:#HTMLEditFormat(renderValue)#"></i></span>
+								<input type="text" id="#key#" name="#key#" placeholder="Select Color" autocomplete="off"  value="#HTMLEditFormat(renderValue)#" data-label="#XMLFormat(getlabel())#" data-required="#getRequired()#"<cfif len(getMessage())> data-message="#XMLFormat(getMessage())#"</cfif>>
+							</div>
+
+						<cfelse>
+
+							<input type="text" name="#key#" class="text<cfif getValidation() eq 'date'> datepicker</cfif>" id="#key#" data-label="#XMLFormat(getlabel())#" value="#HTMLEditFormat(renderValue)#" data-required="#getRequired()#"<cfif len(getvalidation())> data-validate="#getValidation()#"</cfif><cfif getvalidation() eq "Regex"> data-regex="#getRegex()#"</cfif><cfif len(getMessage())> data-message="#XMLFormat(getMessage())#"</cfif> />
+
+						</cfif>	
+
+						</cfoutput>
 				</cfsavecontent>
 			<cfelse>
 				<cfsavecontent variable="str"><cfoutput><cf_datetimeselector name="#key#" datetime="#renderValue#" id="#key#" label="#getlabel()#" required="#getRequired()#" validation="#getValidation()#" regex="#getRegex()#" message="#getMessage()#"></cfoutput></cfsavecontent>

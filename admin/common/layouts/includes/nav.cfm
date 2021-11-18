@@ -116,7 +116,7 @@ This file is part of Mura CMS.
                 <!--- main navigation menu --->
                 <ul class="nav-main">
                     <!--- dashboard --->
-                    <cfif rc.$.siteConfig().getValue(property='showDashboard',defaultValue=0)>
+                    <cfif rc.$.siteConfig().getValue(property='showDashboard',defaultValue=0) and rc.$.currentUser().isSystemUser()>
                         <li id="admin-nav-dashboard">
                             <a<cfif rc.originalcircuit eq 'cDashboard'> class="active"</cfif> href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cDashboard.main&amp;siteid=#esapiEncode('url',session.siteid)#&amp;span=#session.dashboardSpan#"><i class="mi-dashboard"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.dashboard")#</span></a>
                         </li>

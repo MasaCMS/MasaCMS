@@ -121,88 +121,84 @@ This file is part of Mura CMS.
 			<![endif]-->
 		</cfif>
 
-    <!-- Favicons -->
-		<link rel="icon" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/ico/favicon.ico" type="image/x-icon" />
-		<link rel="shortcut icon" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/ico/favicon.ico" type="image/x-icon" />
-	    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/ico/apple-touch-icon-144-precomposed.png">
-	    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/ico/apple-touch-icon-114-precomposed.png">
-	    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/ico/apple-touch-icon-72-precomposed.png">
-	    <link rel="apple-touch-icon-precomposed" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/ico/apple-touch-icon-57-precomposed.png">
+		<!--- global admin scripts --->
+		<cfinclude template="includes/html_head.cfm">
 
-		<!-- Spinner JS -->
-		<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/spin.min.js" type="text/javascript"></script>
-		
-		<!-- jQuery -->
-		<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-	  
-	  <!-- OneUI Core JS: Bootstrap, slimScroll, scrollLock, Appear, CountTo, Placeholder, Cookie and App.js -->
-		<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/oneui.min.js"></script>
-
-		<!-- jQuery UI components -->
-		<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery-ui.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-		<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery-ui-i18n.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-		<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery.collapsibleCheckboxTree.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-		<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery.spin.js" type="text/javascript"></script>
-
-		<!-- Masa CMS js -->
-		<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/mura.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-
-		<!-- Masa CMS Admin JS -->
-		<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/admin.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-
-		<!-- CK Editor/Finder -->
-		<script type="text/javascript" src="#application.configBean.getContext()#/core/vendor/ckeditor/ckeditor.js"></script>
-		<script type="text/javascript" src="#application.configBean.getContext()#/core/vendor/ckeditor/adapters/jquery.js"></script>
-
-		<cfif rc.$.event('contenttype') neq 'Variation' and not len(rc.$.event('remoteurl')) and not len(rc.$.event('preloadOnly'))>
-			<script>
-				try{
-					//if you can access window.top.document then ckfinder won't work
-					crossdomainhack=window.top.document;
-					Mura.loader().loadjs('#application.configBean.getContext()#/core/vendor/ckfinder/ckfinder.js');
-				} catch (e){};
-			</script>
-		</cfif>
-
-		<!-- Color Picker -->
-		<script type="text/javascript" src="#application.configBean.getContext()#/core/vendor/colorpicker/js/bootstrap-colorpicker.js?coreversion=#application.coreversion#"></script>
-		<link href="#application.configBean.getContext()#/core/vendor/colorpicker/css/colorpicker.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
-
-		<!-- nice-select: select box replacement (sidebar configurator only) -->
+		<!-- nice-select: select box replacement (sidebar controls) -->
 		<cfif rc.sourceFrame neq 'modal'>
 			<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery.nice-select.min.js" type="text/javascript"></script>
-	    <script type="text/javascript">
-	    	$(document).ready(function() {
-				//$('.mura ##configurator select').niceSelect();
-			});
-	    </script>
 		</cfif>
 		<!-- /nice-select -->
-
-		<!-- JSON -->
-		<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/json2.js" type="text/javascript"></script>
 
 		<!-- Utilities to support iframe communication -->
 		<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery-resize.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 		<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 
-		<script type="text/javascript">
-		var htmlEditorType='#application.configBean.getValue("htmlEditorType")#';
-		var context='#application.configBean.getContext()#';
-		var themepath='#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#';
-		var rb='#lcase(esapiEncode('javascript',session.rb))#';
-		var siteid='#esapiEncode('javascript',session.siteid)#';
-		var activepanel=#esapiEncode('javascript',rc.activepanel)#;
-		var activetab=#esapiEncode('javascript',rc.activetab)#;
-		<cfif $.currentUser().isLoggedIn()>var webroot='#esapiEncode('javascript',left($.globalConfig("webroot"),len($.globalConfig("webroot"))-len($.globalConfig("context"))))#';</cfif>
-		var fileDelim='#esapiEncode('javascript',$.globalConfig("fileDelim"))#';
-		</script>
-
 		<link href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/css/admin.min.css" rel="stylesheet" type="text/css" />
 		#session.dateKey#
 		<script type="text/javascript">
+
+			var resizeTabPane = function(offsetVal=17){
+
+				// set width of pane relative to side controls
+				if ($('##mura-content-body-block').length){
+
+					var blockW = $('##mura-content-body-block').width();
+					var controlW = $('##mura-content-body-block .mura__edit__controls').width();
+					var newW = (blockW - controlW) - offsetVal;
+
+					$('##mura-content-body-block .block-content.tab-content').css('width',newW + 'px');
+					setTimeout(function(){
+						resizeBodyEditor();
+					}, 50)
+				}
+				// set heights, accounting for header
+				if ($('##dspStatusContainer').length){
+					var tabContent = $('##mura-content-body-block>.tab-content');
+					var controls = $('##mura-content-body-block .mura__edit__controls');
+					var statusH = $('##dspStatusContainer').height();
+					var origBlockH = $('##mura-content-body-block').height();
+					var origTabH = $(tabContent).height();
+					var origControlsH = $(controls).height();
+					var newBlockH = origBlockH - statusH;
+					var newTabH = origTabH - statusH + 90;
+					var newControlsH = origControlsH - statusH + 12;
+				
+					$('##mura-content-body-block').css('height',newBlockH);
+					$(tabContent).css('height',newTabH);
+					$(controls).css('height',newControlsH);
+				}	
+
+			}
+
+			// set height of ckeditor content area - called by resizeTabPane()
+			var resizeBodyEditor = function(){
+				if ($('##mura-content-body-render .cke_contents').length){
+					var ckeTopH = $('##mura-content-body-render .cke_top').height();
+					var statusH = 0;
+					var topH = 0;
+
+					if ($("##dspStatusContainer").length){
+						statusH = $("##dspStatusContainer").height();
+					};
+
+				 	topH = statusH + ckeTopH;
+
+					$('##mura-content-body-render .cke_contents').css('height','calc((100vh - ' + topH +  'px) - 260px)');
+				}
+			}
+
+			$(window).on("load", function() {
+				resizeTabPane();
+				$('##mura-content-body-render').show();
+			});
+
 			var frontEndProxy;
 			jQuery(document).ready(function(){
+
+
+				//nice-select
+				$('.mura__edit__controls .mura-control-group select').niceSelect();
 
 				// tabdrop: trigger on page load w/ slight delay
 				if ( $( '.mura-tabs').length ) {
@@ -255,35 +251,48 @@ This file is part of Mura CMS.
 					}
 				};
 
-					// click to close new table actions, category selector filter
-					document.onclick = function(e) {
-					if (jQuery('##newContentMenu').length > 0){
-					  if(!(jQuery(e.target).parents().hasClass('addNew')) && !(jQuery(e.target).parents().hasClass('add')) && !(jQuery(e.target).hasClass('add'))){
-				     	jQuery('##newContentMenu').addClass('hide');
-			    	}
-					};
+				// click to close new table actions, category selector filter
+				document.onclick = function(e) {
+				if (jQuery('##newContentMenu').length > 0){
+				  if(!(jQuery(e.target).parents().hasClass('addNew')) && !(jQuery(e.target).parents().hasClass('add')) && !(jQuery(e.target).hasClass('add'))){
+			     	jQuery('##newContentMenu').addClass('hide');
+		    	}
+				};
 
-					if (jQuery('.actions-menu').length > 0){
-				    if(!(jQuery(e.target).parents().hasClass('actions-menu')) && !(jQuery(e.target).parents().hasClass('actions-list')) && !(jQuery(e.target).parents().hasClass('show-actions')) && !(jQuery(e.target).hasClass('actions-list'))){
-				       jQuery('.actions-menu').addClass('hide');
-			     	}
-					};
+				if (jQuery('.actions-menu').length > 0){
+			    if(!(jQuery(e.target).parents().hasClass('actions-menu')) && !(jQuery(e.target).parents().hasClass('actions-list')) && !(jQuery(e.target).parents().hasClass('show-actions')) && !(jQuery(e.target).hasClass('actions-list'))){
+			       jQuery('.actions-menu').addClass('hide');
+		     	}
+				};
 
-					if(jQuery('##category-select-list').length > 0){
-				    if(!(jQuery(e.target).parents().hasClass('category-select')) && !(jQuery(e.target).parents().hasClass('categories'))){
-				    	jQuery('##category-select-list').slideUp('fast');
-					    }
-						}
-					};
-					// /click to close
+				if(jQuery('##category-select-list').length > 0){
+			    if(!(jQuery(e.target).parents().hasClass('category-select')) && !(jQuery(e.target).parents().hasClass('categories'))){
+			    	jQuery('##category-select-list').slideUp('fast');
+				    }
+					}
+				};
+				// /click to close
 
 			});
 
-			mura.init({
+			<cfif isDefined('session.siteid') and len(session.siteid)>
+				<cfset site=$.getBean('settingsManager').getSite(session.siteid)>
+			<cfelse>
+				<cfset site=$.getBean('settingsManager').getSite('default')>
+			</cfif>
+			Mura.init({
 				inAdmin:true,
 				context:'#esapiEncode("javascript",rc.$.globalConfig('context'))#',
-				themepath:'#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#',
-				siteid:<cfif isDefined('session.siteid') and len(session.siteid)>'#esapiEncode("javascript",session.siteid)#'<cfelse>'default'</cfif>
+				themepath:'#esapiEncode("javascript",site.getThemeAssetPath(complete=1))#',
+				siteid:'#esapiEncode("javascript",site.getSiteID())#',
+				assetpath:'#esapiEncode("javascript",site.getAssetPath(complete=1))#',
+				sitespath:'#esapiEncode("javascript",site.getSitesPath(complete=1))#',
+				corepath:'#esapiEncode("javascript",site.getCorePath(complete=1))#',
+				fileassetpath:'#esapiEncode("javascript",site.getFileAssetPath(complete=1))#',
+				adminpath:'#esapiEncode("javascript",site.getAdminPath(complete=1))#',
+				themepath:'#esapiEncode("javascript",site.getThemeAssetPath(complete=1))#',
+				pluginspath:'#esapiEncode("javascript",site.getPluginsPath(complete=1))#',
+				rootpath:'#esapiEncode("javascript",site.getRootPath(complete=1))#'
 			});
 		</script>
 		#rc.ajax#
@@ -305,9 +314,7 @@ This file is part of Mura CMS.
 
 		</div> <!-- /mura-content -->
 
-		<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery-tagselector.js?coreversion=#application.coreversion#"></script>
-
-		<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/bootstrap-tabdrop.js"></script>
+		<cfinclude template="includes/html_foot.cfm">
 
 	</body>
 </html></cfprocessingdirective>

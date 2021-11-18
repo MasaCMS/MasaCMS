@@ -87,13 +87,74 @@ CKEDITOR.editorConfig = function( config )
 	config.pasteFromWordRemoveStyles = true;
  	config.floatSpacePinnedOffsetY = 32;
 	config.toolbarStartupExpanded=true;
-	config.toolbarCanCollapse = true;
+	config.toolbarCanCollapse = false;
 	config.startupShowBorders = false;
 	// Hide title attriute
 	config.title = false;
 
-	<!--- Toolbars --->
+	<!--- toolbar configs --->
+	config.toolbar_Default = [
+		{name: 'group0', items:['Styles','Format']},
+		{name: 'group1', items:['Bold','Italic','Underline','RemoveFormat']},
+		{name: 'group2', items:['NumberedList','BulletedList','Outdent','Indent','Blockquote']},
+		{name: 'group3', items:['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']},
+		{name: 'group4', items:['Link','Unlink','Anchor']},
+		{name: 'group5', items:['PasteText','PasteFromWord','-','Image','oembed','leaflet','-','Table','HorizontalRule','SpecialChar','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
+		{name: 'group6', items:['Find','A11ychecker','Source','Maximize']}
+	];
 
+	config.toolbar_QuickEdit = [
+		{name: 'group0', items:['Styles','Format']},
+		{name: 'group1', items:['Bold','Italic','Underline','RemoveFormat']},
+		{name: 'group2', items:['NumberedList','BulletedList','Outdent','Indent','Blockquote']},
+		{name: 'group3', items:['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']},
+		{name: 'group4', items:['Link','Unlink','Anchor']},
+		'/',
+		{name: 'group5', items:['PasteText','PasteFromWord','-','Image','oembed','leaflet','-','Table','HorizontalRule','SpecialChar','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
+		{name: 'group6', items:['Find','A11ychecker','Sourcedialog','Maximize']}
+	];
+
+	config.toolbar_Summary = [
+		{name: 'group0', items: ['Bold','Italic','Underline','RemoveFormat','-','NumberedList','BulletedList','-','Link','Unlink']},
+		{name: 'group1', items: ['PasteText','PasteFromWord','-','Image','-','SpecialChar']},
+		{name: 'group2', items: ['A11ychecker','Source']}
+	];
+
+	config.toolbar_Form = [
+		{name: 'group0', items:['Styles','Format']},
+		{name: 'group1', items:['Bold','Italic','Underline','RemoveFormat']},
+		{name: 'group2', items:['NumberedList','BulletedList','Outdent','Indent','Blockquote']},
+		{name: 'group3', items:['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']},
+		{name: 'group4', items:['Link','Unlink','Anchor']},
+		{name: 'group5', items:['PasteText','PasteFromWord','-','Image','oembed','leaflet','-','Table','HorizontalRule','SpecialChar','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
+		{name: 'group6', items:['Find','A11ychecker','Source','Maximize']},
+		{name: 'group11', items: ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField']},
+	];
+
+	config.toolbar_Basic = [
+		{name: 'group1', items: ['Bold','Italic','RemoveFormat','-','NumberedList','BulletedList','-','Link','Unlink']}
+	];
+
+	config.toolbar_FormBuilder = [
+		{name: 'group1', items: ['A11ychecker','Source']},
+		{name: 'group2', items: ['Bold','Italic','RemoveFormat','-','NumberedList','BulletedList','-','Link','Unlink','Format']}
+	];
+
+	config.toolbar_htmlEditor = [
+		{name: 'group0', items:['Styles','Format']},
+		{name: 'group1', items: ['Bold','Italic','Underline','RemoveFormat','-','NumberedList','BulletedList','-','Link','Unlink']},
+		{name: 'group2', items: ['PasteText','PasteFromWord','-','Image','-','SpecialChar']},
+		{name: 'group3', items: ['Selectlink','SelectComponent','Templates']},
+		{name: 'group4', items: ['A11ychecker','Source']}
+
+	];
+
+	config.toolbar_bbcode = [
+		{name: 'group1', items: ['Source','Bold','Italic','RemoveFormat','-','NumberedList','BulletedList','-','Link','Unlink','-','Image']}
+	];
+
+<!--- 7.1 verbose toolbar configs --->
+<!---
 		config.toolbar_Default = [
 			{name: 'group1', items:['A11ychecker','Source']},
 			{name: 'group2', items:['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print']},
@@ -170,10 +231,10 @@ CKEDITOR.editorConfig = function( config )
 		config.toolbar_bbcode = [
 			{name: 'group1', items: ['Source','Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink','-','Image']}
 		];
-
+--->
 	<!--- /Toolbars --->
 
-	config.extraPlugins = 'SelectComponent,Selectlink,leaflet,tableresize,onchange,justify,find,bidi,div,showblocks,forms,templates,pagebreak,codemirror,widget,lineutils,dialog,oembed,sourcedialog,fakeobjects,dialogui,showprotected,balloonpanel,dialogadvtab,a11ychecker';
+	config.extraPlugins = 'SelectComponent,Selectlink,leaflet,tableresize,onchange,justify,find,bidi,div,showblocks,forms,templates,pagebreak,codemirror,widget,lineutils,dialog,oembed,sourcedialog,fakeobjects,dialogui,showprotected,balloonpanel,dialogadvtab,a11ychecker,image2';
 
 	<cfif !application.configBean.getCKFinderLicenseName().len() || !application.configBean.getCKFinderLicenseKey().len()>
 		<!--- if no licence add image2 plugin--->	
@@ -199,15 +260,30 @@ CKEDITOR.editorConfig = function( config )
 		config.extraPlugins += ',muratag';
 	</cfif>
 
+	<cfif cgi.http_referer contains 'carch.edittext'>
+		config.extraPlugins += ',autogrow';
+		config.autoGrow_onStartup = true;
+		config.autoGrow_bottomSpace = 24;
+		try {
+			config.autoGrow_minHeight = window.innerHeight - 290;
+		}
+		catch(err) {
+			config.autoGrow_minHeight = 400;
+		}
+	</cfif>
+
+	//config.extraPlugins += ',MuraFileBrowser';
 	//config.ProtectedTags = 'i';
-	config.protectedSource.push( /<i[^>]*><\/i>/g );
-	config.protectedSource.push( /<div.*?class=".*?mura\-object.*?">.*?<\/div>/g );
-	config.protectedSource.push( /<script.*?>.*?<\/script>/g );
-	config.protectedSource.push( /<ins[\s|\S]+?<\/ins>/g); // Protects <INS> tags
+
+	config.protectedSource.push(/<i[^>]*><\/i>/g);
+	config.protectedSource.push(/<div.*?class=".*?mura\-object.*?">.*?<\/div>/g);
+	config.protectedSource.push(/<script.*?>.*?<\/script>/g);
+	config.protectedSource.push(/<ins[\s|\S]+?<\/ins>/g); // Protects <INS> tags
 
 	// Remove the Resize plugin as it does not make sense to use it in conjunction with the AutoGrow plugin.
-	//removePlugins : 'resize';
+	config.removePlugins = 'resize';
 
+	config.resize_enabled = false;
 	config.entities_additional = "";
 
 	// Code Mirror Plugin - http://ckeditor.com/addon/codemirror
@@ -290,7 +366,6 @@ CKEDITOR.editorConfig = function( config )
 		<cfelseif fileExists(expandPath($.siteConfig("includePath") & '/js/editor/config.js') )>
 			config.customConfig='#$.siteConfig().getAssetPath(useProtocol=0,secure=secure,complete=1,domain=cgi.server_name)#/js/editor/config.js';
 		</cfif>
-
 
 	config.defaultLanguage='#listFirst($.siteConfig('JavaLocale'),'_')#';
 

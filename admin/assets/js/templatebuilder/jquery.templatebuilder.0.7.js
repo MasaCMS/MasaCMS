@@ -190,8 +190,8 @@ This file is part of Mura CMS.
 				_formData.fieldorder = [];
 			}
 
-			console.log('form');
-			console.log(_formData);
+			// console.log('form');
+			// console.log(_formData);
 
 			_dataSets = response.datasets;
 			_formStatus.fields			= {};
@@ -205,7 +205,7 @@ This file is part of Mura CMS.
 		function doAddFields() {
 
 
-			console.log( _currentPage );
+			// console.log( _currentPage );
 
 			jQuery('#mura-tb-fields').empty();
 			_buildList = _formData.pages[ _currentPage ].slice(0);
@@ -222,13 +222,13 @@ This file is part of Mura CMS.
 
 		function setCurrentPageOrder( val ) {
 
-			console.log( "setCurrentPageOrder" );
-			console.log( val );
-			console.log(  _currentPage );
+			// console.log( "setCurrentPageOrder" );
+			// console.log( val );
+			// console.log(  _currentPage );
 
 			_formData.pages[ _currentPage ] = val;
 
-			console.log( _formData.pages[ _currentPage ] );
+			// console.log( _formData.pages[ _currentPage ] );
 
 		}
 
@@ -298,7 +298,7 @@ This file is part of Mura CMS.
 		function addPage( pageNum,isNew ) {
 			$("#mura-form-pages li").removeClass('current');
 
-			console.log('add');
+			// console.log('add');
 
 			var pageblock = '<li id="page-~page~" data-page="~page~"></li>';
 			var pageblock = $(pageblock.replace(/\~page\~/g,pageNum));
@@ -322,8 +322,8 @@ This file is part of Mura CMS.
 		function buildPages( currentPage ) {
 			_currentPage = currentPage;
 
-			console.log( "buildPages" );
-			console.log( _formData );
+			// console.log( "buildPages" );
+			// console.log( _formData );
 
 			jQuery("#mura-form-pages").empty();
 
@@ -361,7 +361,7 @@ This file is part of Mura CMS.
 					}
 
 					setActivePage( pageblockid-1 );
-					console.log(_formData);
+					// console.log(_formData);
 				} );
 			}
 			doAddFields();
@@ -770,7 +770,7 @@ This file is part of Mura CMS.
 //				_currentDataset.sourcetype = 'muraorm';
 			}
 
-			console.log(_currentDataset.sourcetype);
+			// console.log(_currentDataset.sourcetype);
 
 			switch( _currentDataset.sourcetype ) {
 				case "multientity": {

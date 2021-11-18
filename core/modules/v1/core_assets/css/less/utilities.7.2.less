@@ -1,0 +1,327 @@
+// Send to a Friend
+.mura-send-to-friend {
+    background: #fff;
+    padding: 1em 2em 0;
+    h1 {
+        font-size: 1.5em;
+        text-align: center;
+    }
+}
+// used in User Tools pop-up
+.sendToFriend {
+    input[type=text] {
+        width: 300px;
+    }
+    textarea {
+        width: 300px;
+        height: 100px;
+    }
+}
+// Keywords & Highlights
+.keywords, .highlight {
+    background: yellow;
+    padding: .2em;
+}
+// Help Text
+.help-block, .help-inline {}
+.help-block {
+    display: block;
+    margin-bottom: .5em;
+}
+.help-inline {
+    display: inline-block;
+    *display: inline;
+    vertical-align: middle;
+    padding-left: 5px;
+}
+// Data Responses
+.responseMessage {
+    color: red;
+}
+// CK Editor Styles
+li .cke_skin_mura {
+    margin-left: 28%;
+    table {
+        margin-top: 0;
+    }
+}
+/* Grid ~ Credits: http://getskeleton.com
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+.mura-container {
+    position: relative;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    box-sizing: border-box
+}
+.mura-region-inherited, .mura-region-local {
+    width: 100%;
+    float: left;
+		position: relative;
+		box-sizing: border-box;
+
+    box-sizing:border-box .svAsset+.mura-region .mura-region-local, .svAsset+.mura-region .mura-region-local {
+        float: none;
+    }
+
+    .mura-object {
+        width: 100%;
+        box-sizing: border-box;
+				-moz-box-sizing: border-box;
+        float: left;
+        display: block;
+    }
+
+    .mura-column:last-child, .mura-object:last-child {
+        margin-right: 0;
+    }
+    /* Utilities
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+    .mura-full-width {
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .mura-max-full-width {
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+    .mura-pull-right:not(.mura-expanded), .mura-right:not(.mura-expanded) {
+        float: right;
+        margin-left: auto;
+    }
+    .mura-pull-left:not(.mura-expanded), .mura-left:not(.mura-expanded) {
+        float: left;
+        margin-right: auto;
+    }
+    .mura-center {
+        margin: 0 auto;
+    }
+
+    .mura-region-local, .mura-region-inherited {
+        width: 100%;
+        margin-right: 0;
+        display: block; //float: left;
+        box-sizing: border-box;
+    }
+    /* For devices larger than 400px */
+    @media (min-width: 400px) {
+        .mura-container {
+            width: 85%;
+            padding: 0;
+        }
+    }
+
+		/* Extra small doesn't get anything */
+
+    /* For devices larger than 550px */
+		/* small */
+    @media (min-width: 768px) {
+        .mura-container {
+            width: 80%;
+        }
+
+        .mura-column:last-child, .mura-object:last-child {
+            margin-right: 0;
+        }
+
+				.mura-one.mura-object                    { width: 8.33%; }
+				.mura-two.mura-object                    { width: 16.66%; }
+				.mura-three.mura-object                  { width: 25%;  }
+				.mura-four.mura-object                   { width: 33.33%; }
+				.mura-five.mura-object                   { width: 41.66%; }
+				.mura-six.mura-object                    { width: 50%; }
+				.mura-seven.mura-object                  { width: 58.33%; }
+				.mura-eight.mura-object                  { width: 66.66%; }
+				.mura-nine.mura-object                   { width: 75%; }
+				.mura-ten.mura-object                    { width: 83.33%; }
+				.mura-eleven.mura-object                 { width: 91.66%; }
+				.mura-twelve.mura-object                 { width: 100% }
+				.mura-one-third.mura-object               { width: 33.33%; }
+				.mura-two-thirds.mura-object              { width: 66.66%; }
+				.mura-one-half.mura-object                { width: 50%; }
+    }
+		
+		/* medium */
+		@media (max-width: 992px) {
+				.mura-object.mura-md	{ width: 100%; }
+		}
+
+
+			/* medium */
+		@media (max-width: 1200px) {
+				.mura-object.mura-lg	{ width: 100%; }
+		}
+
+
+
+		/* large */
+		@media (min-width: 1200px) {
+
+		}
+
+    .mura-expanded {
+        width: ~"calc(100vw)" !important;
+        left:  ~"calc(-1 * (100vw - 100%) / 2)";
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Utilities
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+    .mura-full-width {
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .mura-max-full-width {
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+    .mura-pull-right, .mura-right {
+        float: right;
+    }
+    .mura-pull-left, .mura-left {
+        float: left;
+    }
+    .mura-center {
+        margin: 0 auto;
+    }
+    .mura-center.mura-object {
+        float: none;
+    }
+}
+
+
+/* Turn off parallax scrolling for all tablets and phones. Increase/decrease the pixels if needed */
+@media only screen and (max-device-width: 1366px) {
+	.mura-object {
+		background-attachment: scroll !important;
+	}
+}
+
+.mura-object, .mura-object-content, .mura-object-meta-wrapper, .mura-object-meta {
+	position: relative;
+	display: block;
+	box-sizing: border-box;
+	height: 100%;
+}
+
+/* For devices larger than 550px */
+@media (min-width: 768px) {
+
+
+	.mura-object.mura-object-label-right > .mura-object-meta-wrapper,
+	.mura-object.mura-object-label-right > .mura-object-content,
+	.mura-object.mura-object-label-left > .mura-object-meta-wrapper,
+	.mura-object.mura-object-label-left > .mura-object-content {
+		position: relative;
+		width: 50%;
+		box-sizing: border-box;
+	}
+
+
+	.mura-object.mura-object-label-right > .mura-object-meta-wrapper {
+		float:right;
+		box-sizing: border-box;
+	}
+
+	.mura-object.mura-object-label-left > .mura-object-meta-wrapper,
+	.mura-object.mura-object-label-left > .mura-object-content  {
+		float:left;
+		box-sizing: border-box;
+	}
+
+
+	.mura-expanded.mura-object.mura-object-label-left {
+		flex-direction: row;
+	}
+
+	.mura-expanded.mura-object.mura-object-label-right{
+		flex-direction: row-reverse;
+	}
+
+	.mura-expanded.mura-object.mura-object-label-right > .mura-object-meta-wrapper,
+	.mura-expanded.mura-object.mura-object-label-right > .mura-object-content,
+	.mura-expanded.mura-object.mura-object-label-left > .mura-object-meta-wrapper,
+	.mura-expanded.mura-object.mura-object-label-left > .mura-object-content {
+		flex-grow: 1;
+		flex-basis: 50%;
+	}
+
+}
+
+.mura-object:not(.mura-object-label-left) > .mura-object-meta-wrapper:after {
+  visibility: hidden;
+  display: block;
+  content: "";
+  clear: both;
+  height: 0;
+}
+
+.mura-object-meta-wrapper {
+	text-align: center;
+}
+
+.mura-object-meta {
+	display: inline-block;
+}
+
+/*
+	div[data-instanceid=""]:before{
+		content: '';
+		position: absolute;
+		top: 0;
+		right: 0;
+		left: 0;
+		bottom: 0;
+		background: rgba(0,0,0,1);
+	}
+*/
+
+.mura-object.mura-expanded {
+		.mura-object-content {
+			text-align: center;
+		}
+}
+
+.mura-object-meta {
+ text-align: center;
+}
+
+/* set full width for expanded containers */
+.mura-sidebar-state__pushed--right {
+
+	.mura-object.mura-expanded {
+	    width: ~"calc(100vw - 300px)" !important;
+	    left: ~"calc(-1 *(100vw - 100% - 300px) / 2)" !important;
+	}
+
+	.mura-object.mura-expanded>.mura-object-content,
+	.mura-object.mura-expanded>.mura-object-meta {
+		opacity: 1;
+	}
+}
+/* Misc
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+hr.mura-hr {
+    margin-top: 3rem;
+    margin-bottom: 3.5rem;
+    border-width: 0;
+    border-top: 1px solid #E1E1E1;
+}
+/* Clearing
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+/* Self Clearing Goodness */
+
+.mura-container:after, .mura-row:after, .mura-cf {
+    content: "";
+    display: table;
+    clear: both;
+}

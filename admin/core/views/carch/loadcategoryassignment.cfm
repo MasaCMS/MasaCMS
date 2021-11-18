@@ -101,9 +101,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<div class="mura-control-group">
 				<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.startdatetime')#</label>
 				<input type="text" id="mura-quickEdit-featureStart" value="#LSDateFormat(rc.featurestart,session.dateKeyFormat)#" class="textAlt datepicker mura-quickEdit-datepicker"><br />
-			</div> <!-- /.mura-control-group -->
 
-			<div class="mura-control-group">
 				<cfif session.localeHasDayParts>
 					<select id="mura-quickEdit-startHour" class="time">
 						<cfloop from="1" to="12" index="h">
@@ -137,9 +135,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<div class="mura-control-group">
 				<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.stopdatetime')#</label>
 				<input type="text" id="mura-quickEdit-featureStop" value="#LSDateFormat(rc.featureStop,session.dateKeyFormat)#" class="textAlt datepicker mura-quickEdit-datepicker"><br />
-			</div> <!-- /.mura-control-group -->
-
-			<div class="mura-control-group">
 
 				<cfif session.localeHasDayParts>
 					<select id="mura-quickEdit-stopHour" class="time">

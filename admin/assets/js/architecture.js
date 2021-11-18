@@ -872,10 +872,18 @@ buttons: {
 			// ignore parent container
 			if (!($(this).attr('id') == el.parent().attr('id'))) {
 				// disable if not in allowed list
+
+				var custom=(el.attr('data-content-type').split('/')[0].toLowerCase()=='custom');
+				if (custom && !$(this).attr('data-accept').length || $(this).attr('data-accept').length && $(this).attr('data-accept').indexOf(el.attr('data-content-type')) == -1) {
+					$(this).sortable("disable");
+					$(this).parent().addClass('disabled');
+				}
+				/*
 				if ($(this).attr('data-accept').length > 0 && $(this).attr('data-accept').indexOf(el.attr('data-content-type')) == -1) {
 					$(this).sortable("disable");
 					$(this).parent().addClass('disabled');
 				}
+				*/
 				// disable if already in list
 				if ($(this).find('[data-contentid="' + el.attr('data-contentid') + '"]').length > 0) {
 					$(this).sortable("disable");
@@ -889,8 +897,19 @@ buttons: {
 		if(typeof external == 'undefined'){
 			external =true;
 		}
+
+		var entitytype=$('input[name="entitytype"]:checked');
+		if(!entitytype.length){
+			entitytype=$('input[name="entitytype"]');
+		}
+		if(entitytype.length){
+			entitytype=entitytype.val();
+		} else {
+			entitytype='content';
+		}
+
 		var url = './';
-		var pars = 'muraAction=cArch.loadRelatedContent&compactDisplay=true&contentid=' + contentid + '&siteid=' + siteid + '&external=' + external + '&isNew=' + isNew + '&relatedcontentsetid=' + relatedcontentsetid + '&' + values + '&cacheid=' + Math.random();
+		var pars = 'muraAction=cArch.loadRelatedContent&compactDisplay=true&contentid=' + contentid + '&siteid=' + siteid + '&external=' + external + '&isNew=' + isNew + '&relatedcontentsetid=' + relatedcontentsetid + '&' + values +  '&entitytype=' + entitytype + '&cacheid=' + Math.random();
 
 		var d = $('#selectRelatedContent');
 		d.html('<div class="load-inline"></div>');
@@ -901,7 +920,7 @@ buttons: {
 			}
 			$('#selectRelatedContent .load-inline').spin(false);
 			$('#selectRelatedContent').html(data);
-			$('#draggableContainmentInternal').on('scroll',function(){$('#mura-rc-quickedit').hide()});
+			$('.draggableContainmentInternal').on('scroll',function(){$('#mura-rc-quickedit').hide()});
 
 			$(".rcDraggable li.item").draggable({
 				connectToSortable: '.rcSortable',
@@ -1008,8 +1027,8 @@ buttons: {
 
 					// ignore parent container
 					if (!($sortable.attr('id') == $currentItem.parent().attr('id'))) {
-
-						if ($sortable.attr('data-accept').length > 0 && $sortable.attr('data-accept').indexOf($currentItem.attr('data-content-type')) == -1) {
+						var custom=($currentItem.attr('data-content-type').split('/')[0].toLowerCase()=='custom');
+						if (custom && !$sortable.attr('data-accept').length || $sortable.attr('data-accept').length && $sortable.attr('data-accept').indexOf($currentItem.attr('data-content-type')) == -1) {
 							$($this).attr('disabled',true);
 						}
 					}
@@ -1047,6 +1066,8 @@ buttons: {
 		$(".rcSortable").sortable({
 			connectWith: ".rcSortable",
 			revert: true,
+			appendTo: 'body',
+			helper: 'clone',
 			update: function( event, ui ) {
 				siteManager.updateBuckets();
 				if (ui.item.find('a.delete').length == 0) {
@@ -1059,6 +1080,12 @@ buttons: {
 				siteManager.updateRCForm();
 
 				siteManager.setupRCResultIcon($('#selectRelatedContent button[value="'+ ui.item.attr('data-contentid') + '"]'));
+			},
+			start:function(){
+				siteManager.bindMouse();
+			},
+			stop:function(){
+				siteManager.enableBuckets()
 			},
 			cancel: "li.empty"
 		}).disableSelection();
@@ -1278,7 +1305,7 @@ buttons: {
 		this.checkExtendSetTargeting();
 		setHTMLEditors();
 		setDatePickers(".tab-content .datepicker", dtLocale);
-		setColorPickers(".tab-content .colorpicker");
+		setColorPickers(".tab-content .mura-colorpicker");
 		setFinders(".tab-content .mura-ckfinder");
 		setToolTips(".tab-content");
 		setFileSelectors();
@@ -2746,7 +2773,7 @@ buttons: {
 			}
 		})
 
-		availableObjectParams['cssstyles']={};
+		var objectstyles={};
 
 		$(".objectStyle, .objectstyle").each(
 
@@ -2755,20 +2782,20 @@ buttons: {
 			if(item.val() != null && ( item.attr("type") != "radio" || (item.attr("type") == "radio"  && item.is(':checked')) ) ) {
 
 				if(typeof item.attr("name") != 'undefined'){
-					if(typeof availableObjectParams['cssstyles'][item.attr("name")] == 'undefined') {
+					if(typeof objectstyles[item.attr("name")] == 'undefined') {
 						if(item.attr("type") == "checkbox" && !item.is(":checked")){
-							availableObjectParams['cssstyles'][item.attr("name")] = '';
+							objectstyles[item.attr("name")] = '';
 						} else {
-							availableObjectParams['cssstyles'][item.attr("name")] = item.val();
+							objectstyles[item.attr("name")] = item.val();
 						}
 					} else if (!(item.attr("type") == "checkbox" && !item.is(":checked")) ){
-						availableObjectParams['cssstyles'][item.attr("name")] = availableObjectParams['cssstyles'][item.attr("name")] + ',' + item.val();
+						objectstyles[item.attr("name")] = objectstyles[item.attr("name")] + ',' + item.val();
 					}
 				}
 			}
 		})
 
-		availableObjectParams['metacssstyles']={};
+		var metastyles={};
 
 		$(".metaStyle, .metastyle").each(
 
@@ -2777,20 +2804,20 @@ buttons: {
 			if(item.val() != null && ( item.attr("type") != "radio" || (item.attr("type") == "radio"  && item.is(':checked')) ) ) {
 
 				if(typeof item.attr("name") != 'undefined'){
-					if(typeof availableObjectParams['metacssstyles'][item.attr("name")] == 'undefined') {
+					if(typeof metastyles[item.attr("name")] == 'undefined') {
 						if(item.attr("type") == "checkbox" && !item.is(":checked")){
-							availableObjectParams['metacssstyles'][item.attr("name")] = '';
+							metastyles[item.attr("name")] = '';
 						} else {
-							availableObjectParams['metacssstyles'][item.attr("name")] = item.val();
+							metastyles[item.attr("name")] = item.val();
 						}
 					} else if (!(item.attr("type") == "checkbox" && !item.is(":checked")) ){
-						availableObjectParams['metacssstyles'][item.attr("name")] = availableObjectParams['metacssstyles'][item.attr("name")] + ',' + item.val();
+						metastyles[item.attr("name")] = metastyles[item.attr("name")] + ',' + item.val();
 					}
 				}
 			}
 		})
 
-		availableObjectParams['contentcssstyles']={};
+		var contentstyles={};
 
 		$(".contentStyle, .contentstyle").each(
 
@@ -2799,14 +2826,36 @@ buttons: {
 			if(item.val() != null && ( item.attr("type") != "radio" || (item.attr("type") == "radio"  && item.is(':checked')) ) ) {
 
 				if(typeof item.attr("name") != 'undefined'){
-					if(typeof availableObjectParams['contentcssstyles'][item.attr("name")] == 'undefined') {
+					if(typeof contentstyles[item.attr("name")] == 'undefined') {
 						if(item.attr("type") == "checkbox" && !item.is(":checked")){
-							availableObjectParams['contentcssstyles'][item.attr("name")] = '';
+							contentstyles[item.attr("name")] = '';
 						} else {
-							availableObjectParams['contentcssstyles'][item.attr("name")] = item.val();
+							contentstyles[item.attr("name")] = item.val();
 						}
 					} else if (!(item.attr("type") == "checkbox" && !item.is(":checked")) ){
-						availableObjectParams['contentcssstyles'][item.attr("name")] = availableObjectParams['contentcssstyles'][item.attr("name")] + ',' + item.val();
+						acontentstyles[item.attr("name")] = contentstyles[item.attr("name")] + ',' + item.val();
+					}
+				}
+			}
+		})
+
+		var stylesupport={};
+
+		$(".styleSupport, .stylesupport").each(
+
+		function() {
+			var item = $(this);
+			if(item.val() != null && ( item.attr("type") != "radio" || (item.attr("type") == "radio"  && item.is(':checked')) ) ) {
+
+				if(typeof item.attr("name") != 'undefined'){
+					if(typeof stylesupport[item.attr("name")] == 'undefined') {
+						if(item.attr("type") == "checkbox" && !item.is(":checked")){
+							stylesupport[item.attr("name")] = '';
+						} else {
+							stylesupport[item.attr("name")] = item.val();
+						}
+					} else if (!(item.attr("type") == "checkbox" && !item.is(":checked")) ){
+						stylesupport['stylesupport'][item.attr("name")] = stylesupport[item.attr("name")] + ',' + item.val();
 					}
 				}
 			}
@@ -2814,9 +2863,10 @@ buttons: {
 
 		this.availableObject = $.extend({}, this.availableObjectTemplate);
 		this.availableObject.params = availableObjectParams;
-		this.availableObject.params.cssstyles=JSON.stringify(this.availableObject.params.cssstyles);
-		this.availableObject.params.metacssstyles=JSON.stringify(this.availableObject.params.metacssstyles);
-		this.availableObject.params.contentcssstyles=JSON.stringify(this.availableObject.params.contentcssstyles);
+		stylesupport.objectstyles=objectstyles;
+		stylesupport.metastyles=metastyles;
+		stylesupport.contentstyles=contentstyles;;
+		this.availableObject.params.stylesupport=JSON.stringify(stylesupport);
 
 		if(typeof originParams == 'object'){
 			this.availableObject.params=$.extend(originParams,this.availableObject.params);
@@ -3098,6 +3148,7 @@ buttons: {
 			data: data,
 			type: 'post',
 			success: function(_resp) {
+				window.configuratorInited;
 				try {
 					resp = eval('(' + _resp + ')');
 				} catch(err) {
@@ -3117,7 +3168,7 @@ buttons: {
 
 				$('.form-actions').show();
 
-	      		niceSelects=$('.mura #configurator select');;
+				niceSelects=$('.mura #configurator select');;
 
 				if(niceSelects.niceSelect){
 					niceSelects.each(function(){
@@ -3188,6 +3239,8 @@ buttons: {
 					$("#actionButtons").show();
 					$("#configuratorNotices").show();
 				}
+				window.configuratorInited=false;
+
 				//initConfiguratorParams();
 			}
 		});
@@ -3287,8 +3340,9 @@ buttons: {
 			}
 		});
 	},
-	updateDisplayObjectParams:function(params){
+	updateDisplayObjectParams:function(params,complete){
 		params=params || {};
+		complete =(typeof complete != 'undefined')? complete :true;
 
 		var url=Mura.setLowerCaseKeys(Mura.getQueryStringParams(location.search));
 
@@ -3302,7 +3356,8 @@ buttons: {
 							cmd:'setObjectParams',
 							reinit:(url.sourceframe=='sidebar') ? false :true,
 							instanceid:url.instanceid,
-							params:params
+							params:params,
+							complete:complete
 							});
 					}
 				);
@@ -3311,7 +3366,8 @@ buttons: {
 					cmd:'setObjectParams',
 					reinit:(url.sourceframe=='sidebar') ? false :true,
 					instanceid:url.instanceid,
-					params:params
+					params:params,
+					complete:complete
 					});
 			}
 		});

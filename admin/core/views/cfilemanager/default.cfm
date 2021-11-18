@@ -82,47 +82,37 @@ This file is part of Mura CMS.
 </cfif>
 <cfoutput>
 <div class="mura-header">
-	<cfif session.resourceType eq "assets">
-	<h1>#application.rbFactory.getKeyValue(session.rb,"layout.userassets")#</h1>
-	<cfelseif session.resourceType eq "files">
-	<h1>#application.rbFactory.getKeyValue(session.rb,"layout.sitefiles")#</h1>
-	<cfelseif session.resourceType eq "root">
-	<h1>#application.rbFactory.getKeyValue(session.rb,"layout.applicationroot")#</h1>
-	</cfif>
-			<div class="nav-module-specific btn-group">
-			  <a class="btn<cfif session.resourceType eq 'assets'> active</cfif>" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cFilemanager.default&siteid=#session.siteid#&&resourceType=assets"><i class="mi-folder-open"></i> #application.rbFactory.getKeyValue(session.rb,"layout.userassets")#</a>
-  <cfif listFind(session.mura.memberships,'S2')>
-	  <cfif application.configBean.getValue(property='fmShowSiteFiles',defaultValue=true)>
-				 	 <a class="btn<cfif session.resourceType eq 'files'> active</cfif>" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cFilemanager.default&siteid=#session.siteid#&resourceType=files"><i class="mi-folder-open"></i> #application.rbFactory.getKeyValue(session.rb,"layout.sitefiles")#</a>
-	  </cfif>
-	  <cfif listFind(session.mura.memberships,'S2') and application.configBean.getValue(property='fmShowApplicationRoot',defaultValue=true)>
-				  	<a class="btn<cfif session.resourceType eq 'root'> active</cfif>" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cFilemanager.default&siteid=#session.siteid#&resourceType=root"><i class="mi-folder-open"></i> #application.rbFactory.getKeyValue(session.rb,"layout.applicationroot")#</a>
-	  </cfif>
-  </cfif>
-			</div>
+  <h1>#rc.$.rbKey("layout.filemanager")#</h1>
+	<div class="nav-module-specific">
+    <div class="mura-nav-group">
+		  <a class="btn<cfif session.resourceType eq 'assets'> active</cfif>" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cFilemanager.default&siteid=#session.siteid#&&resourceType=assets"><i class="mi-folder-open"></i> #application.rbFactory.getKeyValue(session.rb,"layout.userassets")#</a>
+      <cfif listFind(session.mura.memberships,'S2')>
+        <cfif application.configBean.getValue(property='fmShowSiteFiles',defaultValue=true)>
+				  <a class="btn<cfif session.resourceType eq 'files'> active</cfif>" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cFilemanager.default&siteid=#session.siteid#&resourceType=files"><i class="mi-folder-open"></i> #application.rbFactory.getKeyValue(session.rb,"layout.sitefiles")#</a>
+	       </cfif>
+	       <cfif listFind(session.mura.memberships,'S2') and application.configBean.getValue(property='fmShowApplicationRoot',defaultValue=true)>
+          <a class="btn<cfif session.resourceType eq 'root'> active</cfif>" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cFilemanager.default&siteid=#session.siteid#&resourceType=root"><i class="mi-folder-open"></i> #application.rbFactory.getKeyValue(session.rb,"layout.applicationroot")#</a>
+	       </cfif>
+      </cfif>
+	  </div>
+  </div>
 </div> <!-- /.mura-header -->
 
-<div class="block block-constrain">
-		<div class="block block-bordered">
-		  <div class="block-content">
-			<script type="text/javascript">
-			var finder = new CKFinder();
-			finder.basePath = '#application.configBean.getContext()#/core/vendor/ckfinder/';
-			finder.language = '#lcase(session.rb)#';
-			finder.height="600";
-			<cfif session.resourceType eq "assets">
-			finder.resourceType="#esapiEncode('javascript','#session.siteID#_User_Assets')#";
-			<cfelseif session.resourceType eq "files" and application.configBean.getValue(property='fmShowSiteFiles',defaultValue=true)>
-			finder.resourceType="#esapiEncode('javascript','#session.siteID#_Site_Files')#"
-			<cfelseif session.resourceType eq "root" and application.configBean.getValue(property='fmShowApplicationRoot',defaultValue=true)>
-			finder.resourceType="#esapiEncode('javascript','Application_Root')#";
-			<cfelse>
-			finder.resourceType="#esapiEncode('javascript','#session.siteID#_User_Assets')#";
-			</cfif>
-			finder.create();
-			</script>
-		</div> <!-- /.block-content -->
-	</div> <!-- /.block-bordered -->
-</div> <!-- /.block-constrain -->
-
+<div id="MuraFileBrowserContainer"></div>
+  
+<script type="text/javascript">
+  <cfif session.resourceType eq "assets">
+        MuraFileBrowser.config.resourcepath="#esapiEncode('javascript','User_Assets')#";
+  <cfelseif session.resourceType eq "files" and application.configBean.getValue(property='fmShowSiteFiles',defaultValue=true)>
+        MuraFileBrowser.config.resourcepath="#esapiEncode('javascript','Site_Files')#"
+  <cfelseif session.resourceType eq "root" and application.configBean.getValue(property='fmShowApplicationRoot',defaultValue=true)>
+        MuraFileBrowser.config.resourcepath="#esapiEncode('javascript','Application_Root')#";
+  <cfelse>
+        MuraFileBrowser.config.resourcepath="#esapiEncode('javascript','User_Assets')#";
+  </cfif>
+  Mura(function(m) {
+  MuraFileBrowser.config.height=600;
+  MuraFileBrowser.render();
+});
+</script>
 </cfoutput>

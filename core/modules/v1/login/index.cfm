@@ -114,6 +114,8 @@ This file is part of Mura CMS.
 				<cfset errorMessage = variables.$.rbKey('login.failed') />
 			<cfelseif variables.$.event('failedchallenge') eq 'true'>
 				<cfset errorMessage = variables.$.rbKey('login.incorrectauthorizationcode') />
+			<cfelseif variables.$.event('linkinvalid') eq 'true'>
+				<cfset errorMessage = 'The link you have entered is invalid or expired.' />
 			</cfif>
 
 			<cfif Len(errorMessage)>
@@ -179,7 +181,7 @@ This file is part of Mura CMS.
 				<cfelse>
 					<form role="form" id="login" class="mura-login-form #this.loginFormClass# <cfif this.formWrapperClass neq "">#this.formWrapperClass#</cfif>" name="frmLogin" method="post" novalidate="novalidate">
 
-						<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google') or listFindNoCase($.globalConfig().getEnableOauth(), 'facebook') >						
+						<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google') or listFindNoCase($.globalConfig().getEnableOauth(), 'facebook') >
 								<div class="#this.loginFormGroupWrapperClass#">
 									<div class="#this.loginFormSubmitWrapperClass#">
 										<div class="mura-login-auth-wrapper">
@@ -191,7 +193,7 @@ This file is part of Mura CMS.
 											</a>
 										</cfif>
 										<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'facebook')>
-											<a href="#$.getBean('facebookLoginProvider').generateAuthUrl(session.urltoken)#" title="#variables.$.rbKey('login.loginwithfacebook')#" class="mura-login-auth-btn fb"> 
+											<a href="#$.getBean('facebookLoginProvider').generateAuthUrl(session.urltoken)#" title="#variables.$.rbKey('login.loginwithfacebook')#" class="mura-login-auth-btn fb">
 					               	<i class="fa fa-lg fa-facebook mi-facebook"></i>
 			                  	<span>#variables.$.rbKey('login.loginwithfacebook')#</span>
 			 									</a>
@@ -200,7 +202,7 @@ This file is part of Mura CMS.
 								</div>
 							</div>
 						</cfif>
-						
+
 						<div>
 							<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google') or listFindNoCase($.globalConfig().getEnableOauth(), 'facebook') >
 			              <div class="text-divider"><span>#variables.$.rbKey('login.or')#</span></div>

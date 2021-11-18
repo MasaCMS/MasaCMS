@@ -107,49 +107,56 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.editableAttributesArray=[]>
 <cfset this.imageAttributesArray=[]>
 <cfset this.styleLookup={
-		'textAlign'='text-align',
-		'textDecoration'='text-decoration',
-		'textTransform'='text-transform',
-		'textIndent'='text-indent',
-		'textOverflow'='text-overflow',
-		'backgroundImage'='background-image',
-		'backgroundColor'='background-color',
-		'backgroundOrigin'='background-Origin',
-		'backgroundPostition'='background-postition',
-		'backgroundRepeat'='background-repeat',
-		'borderRadius'='border-radius',
-		'borderWidth'='border-width',
-		'borderStyle'='border-style',
-		'boxSizing'='box-sizing',
-		'marginTop'='margin-top',
-		'marginLeft'='margin-left',
-		'marginBottom'='margin-bottom',
-		'marginRight'='margin-right',
-		'paddingTop'='padding-top',
-		'paddingLeft'='padding-left',
-		'paddingBottom'='padding-bottom',
-		'paddingRight'='padding-right',
-		'fontFamily'='font-family',
-		'fontSize'='font-size',
-		'fontWeight'='font-weight',
-		'fontVariant'='font-variant',
-		'outlineStyle'='outline-style',
-		'outlineColor'='outline-color',
-		'outlineWidth'='outline-width',
-		'outlineOffset'='outline-offset',
-		'lineHeight'='line-height',
-		'letterSpacing'='letter-spacing',
-		'wordSpacing'='word-spacing',
-		'whiteSpace'='white-space',
-		'textShadow'='text-shadow',
-		'verticalAlign'='vertical-align',
-		'webkitTransition'='-webkit-transition',
-		'transitionTimingFunction'='transitionTimingFunction',
-		'transitionProperty'='transition-property',
-		'transitionDuration'='transition-duration',
-		'transitionDelay'='transition-delay',
-		'animationName'='animation-name',
-		'animationDuration'='animation-duration'
+	'animationDuration'='animation-duration',
+	'animationName'='animation-name',
+	'backgroundAttachment'='background-attachment',
+	'backgroundRepeat'='background-repeat',
+	'backgroundColor'='background-color',
+	'backgroundColor'='background-color',
+	'backgroundImage'='background-image',
+	'backgroundOrigin'='background-origin',
+	'backgroundPosition'='background-position',
+	'backgroundRepeat'='background-repeat',
+	'backgroundSize'='background-size',
+	'borderRadius'='border-radius',
+	'borderStyle'='border-style',
+	'borderWidth'='border-width',
+	'boxSizing'='box-sizing',
+	'fontFamily'='font-family',
+	'fontSize'='font-size',
+	'fontVariant'='font-variant',
+	'fontWeight'='font-weight',
+	'letterSpacing'='letter-spacing',
+	'lineHeight'='line-height',
+	'marginBottom'='margin-bottom',
+	'marginLeft'='margin-left',
+	'marginRight'='margin-right',
+	'marginTop'='margin-top',
+	'minHeight'='min-height',
+	'opacity'='opacity',
+	'outlineColor'='outline-color',
+	'outlineOffset'='outline-offset',
+	'outlineStyle'='outline-style',
+	'outlineWidth'='outline-width',
+	'paddingBottom'='padding-bottom',
+	'paddingLeft'='padding-left',
+	'paddingRight'='padding-right',
+	'paddingTop'='padding-top',
+	'textAlign'='text-align',
+	'textDecoration'='text-decoration',
+	'textIndent'='text-indent',
+	'textOverflow'='text-overflow',
+	'textShadow'='text-shadow',
+	'textTransform'='text-transform',
+	'transitionDelay'='transition-delay',
+	'transitionDuration'='transition-duration',
+	'transitionProperty'='transition-property',
+	'transitionTimingFunction'='transition-timing-function',
+	'verticalAlign'='vertical-align',
+	'webkitTransition'='-webkit-transition',
+	'whiteSpace'='white-space',
+	'wordSpacing'='word-spacing',
+	'zIndex'='z-index'
 	}>
 
 <!--- Set these to a boolean value to override settings.ini.cfm value--->
@@ -2837,13 +2844,10 @@ Display Objects
 					(
 					 	StructKeyExists(sessionData, 'mura')
 					 	and (
-							(listFind(sessionData.mura.memberships,'S2IsPrivate;#application.settingsManager.getSite(variables.event.getValue('siteID')).getPrivateUserPoolID()#') and getBean('permUtility').getModulePerm("00000000000000000000000000000000000",variables.event.getValue('siteID')))
+							(getBean('permUtility').getModulePerm("00000000000000000000000000000000000",variables.event.getValue('siteID')))
 							or listFind(sessionData.mura.memberships,'S2')
 						)
-					) or (
-						listFindNoCase("editor,author",variables.event.getValue('r').perm)
-						and this.showMemberToolBar
-					)
+					) 
 				) and getShowAdminToolBar()
 			) and not request.muraExportHTML />
 		</cfif>

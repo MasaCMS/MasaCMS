@@ -149,17 +149,21 @@
     margin-left: 83px;
   }
 
+  /* form buttons */
   body.mura-admin{
     .block-content + .mura-actions, 
     .block-content form > .mura-actions,
     form .block-content .mura-actions{
-      width: ~'calc(100% - 285px)';
+      width: ~'calc(100% - 250px)';
     }
-    .sidebar-mini .block-content + .mura-actions, 
-    .sidebar-mini .block-content form > .mura-actions,
-    .sidebar-mini .block-content + .mura-actions{
-      width: ~'calc(100% - 100px)';
-    }
+    .sidebar-mini{
+        .block-content + .mura-actions, 
+        .block-content form > .mura-actions,
+        .block-content + .mura-actions,
+        form .block-content .mura-actions{
+          width: ~'calc(100% - 70px)';
+        }
+      }
   }
 
 }

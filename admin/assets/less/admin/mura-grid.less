@@ -16,7 +16,7 @@
 	margin-top: -28px !important;
 }
 
-#sm-modify-view .dropdown-menu, 
+#sm-modify-view .dropdown-menu,
 #filter-view .dropdown-menu {
 
 	padding: 10px;
@@ -43,7 +43,7 @@
 	label + select {
 		margin-top: 4px;
 	}
-	
+
 	.btn {
 		margin-top: 12px;
 	}
@@ -79,12 +79,15 @@
 }
 
 #navFilterButtons{
+	background-color: transparent;
 	bottom: 0px;
+	box-shadow: none !important;
+	height: 44px;
 	float: right;
-	margin: 14px 0 0 !important;
-  min-width: 280px;
-  margin-top: 14px;
-  padding-bottom: 0 !important;
+	margin: 24px 0 0 !important;
+	min-height: 44px;
+	min-width: 160px;
+	padding: 0 !important;
 	text-align: right;
 	position: relative;
 	width: auto;
@@ -102,7 +105,7 @@
 #navFilterControls{
 	border-top: 1px solid #E4E4E4;
   padding: 13px 0px;
-  margin: 12px 20px; 
+  margin: 12px 20px;
 
   	.mura-layout-row{
   		margin-right: -12px;
@@ -112,9 +115,9 @@
 			margin-bottom: 12px;
   		padding-right: 12px;
 		}
-  	
-  	.mura-control-group input[type=text], 
-  	.mura-control-group label, 
+
+  	.mura-control-group input[type=text],
+  	.mura-control-group label,
   	.mura-control-group select{
   		width: 100% !important;
   	}
@@ -132,7 +135,7 @@
   		height: 22px;
   	}
   	.tagSelector .tag a i{
-  		color: #FFF;
+  		color: @white;
 	    float: right;
   		font-size: 11px;
 	    font-weight: normal;
@@ -148,7 +151,7 @@
   		z-index: 2;
   	}
 
-  	.checkboxTree{	
+  	.checkboxTree{
 
   	}
 
@@ -158,7 +161,7 @@
 	    height: 36px;
 	    padding: 6px 15px;
 	    line-height: 1.6;
-	    background-color: #fff;
+	    background-color: @white;
 	    background-image: none;
 	    color: #646464;
 	    border: 1px solid #e6e6e6;
@@ -183,7 +186,7 @@
   	}
 
   	#category-select-list{
-			background-color: #fff;
+			background-color: @white;
 			border: 1px solid #E6E6E6;
 			padding: 12px;
 			top: 60px;
@@ -197,7 +200,7 @@
 		    	li input[type=checkbox]{
 		    		float: left;
 		    		margin-top: 4px !important;
-		    	}	    		
+		    	}
 	    	}
 
 	    }
@@ -207,15 +210,15 @@
 
 /* @end content filters */
 
-
 .mura-grid {
+			background: #f7f7f7;
 			border: 1px solid #DBDBDB;
+			border-bottom: 0;
 			border-top: 0;
 			float: none;
-			background: #f7f7f7;
 			font-size: 13px;
-			position: relative;
 			margin-bottom: 16px;
+			position: relative;
 
 			.ui-draggable-dragging {
 				.box-shadow(0px 0px 8px #666);
@@ -260,111 +263,117 @@
 				cursor: auto;
 			}
 
+			> dl:last-child{
+				border-bottom: none;
+			}
+
 			dl {
 				background-color: @white;
 				float: left;
 				width: auto;
 				margin: 0;
-			}
+				border-bottom: 1px solid #dbdbdb;
 
-			dl.alt {
-				background-color: #F6FAFE;
-			}
+				&.alt {
+					background-color: @white;
+				}
 
-			dl.mura-grid-hdr {
-				background-color: #f4f3f3;
-			}
+				&.mura-grid-hdr {
+					background-color: #f4f3f3;
+					border-bottom: none;
+				}
 
-			dt, dd  {
-				color: #333232;
-				// border-right: 1px solid #DBDBDB;
-				text-align: center;
-				float: left;
-				margin: 0 !important;
-				line-height: 28px;
-				height: 28px;
-			}
-
-			dt {
-				width: 405px;
-				text-align: left;
-				padding: 0 5px 0 0 !important;
-				font-weight: normal;
-				position: relative;
-			}
-
-			dd {
-				padding: 0 5px;
-				position: relative;
-			}
-
-			dt a {
-				display: block;
-				height: auto;
-				min-height: inherit;
-				line-height: inherit;
-				white-space: wrap;
-				padding: 0 5px 0 0;
-				float: left;
-				color: @grayDarker;
-			}
-
-			dt a.title {
-				overflow: hidden;
-				position: relative;
-				.text-overflow;
-
-				&:hover { border-bottom: none; }
-				&.locked {}
-
-				&:before {
-					position: relative;
-					top: 2px;
-					margin-left: 0;
-					margin-right: 2px;
-					font-size: 18px;
-					line-height: 14px;
-					color: @iconColor;
-					display: inline-block;
-					width: 22px;
+				dt, dd  {
+					color: #333232;
+					// border-right: 1px solid #DBDBDB;
 					text-align: center;
-					font-family: FontAwesome;
-					}
+					float: left;
+					margin: 0 !important;
+					line-height: 42px;
+					height: 42px;
+				}
 
-				&.file {
-
-					padding-left: 0;
+				dt {
+					width: 405px;
+					text-align: left;
+					padding: 0 5px 0 0 !important;
+					font-weight: normal;
 					position: relative;
+				}
+
+				dd {
+					padding: 0 5px;
+					position: relative;
+				}
+
+				dt a {
+					display: block;
+					height: auto;
+					min-height: inherit;
+					line-height: inherit;
+					white-space: wrap;
+					padding: 0 5px 0 0;
+					float: left;
+					color: @grayDarker;
+				}
+
+				dt a.title {
+					overflow: hidden;
+					position: relative;
+					.text-overflow;
+
+					&:hover { border-bottom: none; }
+					&.locked {}
 
 					&:before {
-						background: @iconColor;
-						border-radius:2px;
-						color: @white;
-						display: block;
-						content: attr(data-filetype);
-						float: left;
-						font-family: 'SilkscreenNormal';
-						font-size: 8px;
-						left: 0;
-						line-height: 10px;
-						overflow: hidden;
-						padding: 3px 4px 2px;
 						position: relative;
-						text-shadow: -1px -1px 0 rgba(0,0,0,.2);
-						top: 7px;
-						width: auto;
-					}
+						top: 2px;
+						margin-left: 0;
+						margin-right: 2px;
+						font-size: 18px;
+						line-height: 14px;
+						color: @iconColor;
+						display: inline-block;
+						width: 22px;
+						text-align: center;
+						font-family: FontAwesome;
+						}
 
-					&.gif,
-					&.png,
-					&.jpg,
-					&.jpeg {
+					&.file {
 
 						padding-left: 0;
+						position: relative;
 
 						&:before {
+							background: @iconColor;
+							border-radius:2px;
+							color: @white;
+							display: block;
+							content: attr(data-filetype);
+							float: left;
+							font-family: 'SilkscreenNormal';
+							font-size: 8px;
+							left: 0;
+							line-height: 10px;
+							overflow: hidden;
+							padding: 3px 4px 2px;
 							position: relative;
-							top: 3px;
+							text-shadow: -1px -1px 0 rgba(0,0,0,.2);
+							top: 14px;
+							width: auto;
+						}
+
+						&.gif,
+						&.png,
+						&.jpg,
+						&.jpeg {
+
+							padding-left: 0;
+
+							&:before {
+								position: relative;
+								top: 3px;
+							}
 						}
 					}
 				}
@@ -454,14 +463,16 @@
 				height: 28px;
 				line-height: 27px;
 				padding: 0;
-				margin-left: -11px;
+				margin-left: -15px;
 				cursor: pointer;
 
 				&:before {
 					.icon-font('FontAwesome');
-					font-size: 13px;
 					color: @iconColor;
-					margin-top: 2px;
+					font-size: 14px;
+					margin-left: -12px;
+					margin-top: 8px;
+					padding: 0 12px;
 					}
 
 				&.open:before {
@@ -535,18 +546,16 @@
 				border: none;
 			}
 
-			.mura-grid-hdr dt, 
+			.mura-grid-hdr dt,
 			.mura-grid-hdr dd {
 				.bold-font;
 				border: 1px solid #DBDBDB;
 				border-right: none;
 				color: #7a7a7a;
 				font-style: normal;
-				height: 26px;
-				line-height: 24px;
-				padding: 0;
-				padding-left: 5px;
-				padding-right: 5px;
+				height: 42px;
+				line-height: 42px;
+				padding: 0 5px;
 				text-align: center;
 				white-space: nowrap;
 			}
@@ -618,12 +627,19 @@
 				text-align: center;
 			}
 
+			.tooltip.in{
+				opacity: 1 !important;
+				*{
+					opacity: 1 !important;
+				}
+			}
+
 			li a {
 				width: auto;
 				text-align: left;
-				}	
+				}
 
-			li .add { width: 24px; margin-right: 16px; margin-left: 12px; margin-top: 5px;}
+			li .add { width: 24px; margin-right: 16px; margin-left: 12px; margin-top: 2px;}
 			li .title { max-width: 85%; }
 
 			li li .add { margin-right: 32px; }
@@ -662,9 +678,77 @@
 			li li li li li li li li li li li li li .add { margin-right: 253px; }
 			li li li li li li li li li li li li li .title { max-width: 52.5%; }
 
+			li li li li li li li li li li li li li li .add { margin-right: 273px; }
+			li li li li li li li li li li li li li li .title { max-width: 50%; }
+
+			li li li li li li li li li li li li li li li .add { margin-right: 293px; }
+			li li li li li li li li li li li li li li li .title { max-width: 47.5%; }
+
+			li li li li li li li li li li li li li li li li .add { margin-right: 313px; }
+			li li li li li li li li li li li li li li li li .title { max-width: 45%; }
+
+			li li li li li li li li li li li li li li li li li .add { margin-right: 333px; }
+			li li li li li li li li li li li li li li li li li .title { max-width: 42.5%; }
+
+			li li li li li li li li li li li li li li li li li li .add { margin-right: 353px; }
+			li li li li li li li li li li li li li li li li li li .title { max-width: 40%; }
+
+			li li li li li li li li li li li li li li li li li li li .add { margin-right: 373px; }
+			li li li li li li li li li li li li li li li li li li li .title { max-width: 37.5%; }
+
+			li li li li li li li li li li li li li li li li li li li li .add { margin-right: 393px; }
+			li li li li li li li li li li li li li li li li li li li li .title { max-width: 35%; }
+
+			li li li li li li li li li li li li li li li li li li li li li .add { margin-right: 413px; }
+			li li li li li li li li li li li li li li li li li li li li li .title { max-width: 32.5%; }
+
+			li li li li li li li li li li li li li li li li li li li li li li .add { margin-right: 433px; }
+			li li li li li li li li li li li li li li li li li li li li li li .title { max-width: 30%; }
+
+			li li li li li li li li li li li li li li li li li li li li li li li .add { margin-right: 453px; }
+			li li li li li li li li li li li li li li li li li li li li li li li .title { max-width: 27.5%; }
+
+			li li li li li li li li li li li li li li li li li li li li li li li li .add { margin-right: 473px; }
+			li li li li li li li li li li li li li li li li li li li li li li li li .title { max-width: 25%; }
+
+			li li li li li li li li li li li li li li li li li li li li li li li li li .add { margin-right: 493px; }
+			li li li li li li li li li li li li li li li li li li li li li li li li li .title { max-width: 47.5%; }
+
+			li li li li li li li li li li li li li li li li li li li li li li li li li li .add { margin-right: 513px; }
+			li li li li li li li li li li li li li li li li li li li li li li li li li li .title { max-width: 45%; }
+
+			li li li li li li li li li li li li li li li li li li li li li li li li li li li .add { margin-right: 533px; }
+			li li li li li li li li li li li li li li li li li li li li li li li li li li li .title { max-width: 42.5%; }
+
+			li li li li li li li li li li li li li li li li li li li li li li li li li li li li .add { margin-right: 553px; }
+			li li li li li li li li li li li li li li li li li li li li li li li li li li li li .title { max-width: 40%; }
+
+			li li li li li li li li li li li li li li li li li li li li li li li li li li li li li .add { margin-right: 573px; }
+			li li li li li li li li li li li li li li li li li li li li li li li li li li li li li .title { max-width: 37.5%; }
+
+			li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li .add { margin-right: 593px; }
+			li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li .title { max-width: 35%; }
+
+			li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li .add { margin-right: 613px; }
+			li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li .title { max-width: 32.5%; }
+
+			li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li .add { margin-right: 633px; }
+			li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li .title { max-width: 30%; }
+
+			li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li .add { margin-right: 653px; }
+			li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li .title { max-width: 27.5%; }
+
+			li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li .add { margin-right: 673px; }
+			li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li .title { max-width: 25%; }
+
+			li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li .add { margin-right: 693px; }
+			li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li .title { max-width: 22.5%; }
+
+			li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li .add { margin-right: 713px; }
+			li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li .title { max-width: 20%; }
+
 		}
 		/* @end #mura-nodes */
-
 
 	#tabFlat {
 
@@ -678,13 +762,13 @@
 			color: #545454 !important;
 			cursor: pointer;
 			font-size: 15px;
-			margin-left: 4px;		
+			margin-left: 4px;
 
 				> i{
 					color: @mura-red !important;
 					font-size: 11px;
 					margin-left: 5px;
-				}		
+				}
 		}
 
 		#navReports{
@@ -703,14 +787,12 @@
 				}
 		}
 
-
 		.mura-table-grid {
-
 			float: left;
 			width: 100%;
 
 			td {
-				vertical-align: top;
+				vertical-align: middle;
 				padding-top: 10px;
 
 				&.add { padding-top: 8px; }
@@ -764,7 +846,6 @@
 			font-size: 11px;
 			white-space: nowrap;
 
-
 				&:after {
 				content: "/";
 				margin-left: .5em;
@@ -777,7 +858,6 @@
 				&.categories,&.tags { white-space: normal; }
 			}
 		}
-
 
 		.thumbnail {
 			float: left;
@@ -851,7 +931,6 @@
 				&.preview { padding-right: 3px !important; }
 				&.download { padding-right: 2px !important; }
 
-
 				}
 
 			i {
@@ -918,7 +997,6 @@
 		line-height: 2.2 !important;
 		display: inline-block;
 	}
-
 
 	/* @end */
 
@@ -1327,26 +1405,37 @@
 
 	/* @end */
 
-
 	/* @group Quick Edit */
 
 	.mura-quickEdit {
-		background-color: #272727;
-		opacity: 1;
-		position: absolute;
+		background-color: @white;
+		.border-radius(1px);
 		bottom: 34px;
-		left: 50%;
-		margin-left: -86px;
-		width: 160px;
-		min-height: 70px;
-		z-index: 2;
+		box-shadow: 0 0 0 1px rgba(68, 68, 68, 0.11);
 		display: block;
-		.border-radius(2px);
-		padding: 8px 10px;
-		box-shadow: 0 2px 4px #333232;
-		white-space: normal;
 		font-size: @qeFontSize;
+		left: 50%;
+		margin-left: -108px;
+		min-height: 70px;
+		opacity: 1;
+		padding: 6px 8px 6px;
+		position: absolute;
 		text-align: left;
+		white-space: normal;
+		width: 220px;
+		z-index: 2;
+
+			.form-actions{
+				clear:both;
+				padding: 4px 8px;
+				margin: 6px auto;
+			}
+
+			select, input, textarea{
+				border: none;
+				background-color: #f9f9f9;
+				color: #333;
+			}
 
 			select.time {
 				width: 43px !important;
@@ -1384,7 +1473,7 @@
 			}
 
 			#displayIntervalToLabel{
-				clear: both; 
+				clear: both;
 				margin-left: 121px;
 			}
 
@@ -1395,7 +1484,6 @@
 
 		} // .large
 
-
 		.mura-control-group{
 		margin-bottom: 5px;
 
@@ -1404,7 +1492,7 @@
  			}
 
 			.mura-control-inline{
-				margin-top: 5px; 
+				margin-top: 5px;
 
 				> input{
 					float: left;
@@ -1417,24 +1505,25 @@
 
 		} // .mura-control-group
 
-
 		h1,
 		label,
 		.label {
-			color: #fff !important;
-			font-size: 11px !important;
-			text-align: left;
-			margin: 0 0 8px 0;
+			clear: both;
+			color: #999 !important;
+		    float: left;
+			font-size: 13px !important;
 			font-weight: normal;
+			line-height: 2em;
+			margin: 6px 0 2px;
+			padding: 0;
 			padding-right: 20px;
-			line-height: 1;
+			text-align: left;
 		}
 
 		select + h1{
 			padding-right: 0px;
 			padding-top: 4px;
 		}
-			
 
 		.cancel {
 			position: absolute;
@@ -1443,19 +1532,18 @@
 			cursor: pointer;
 
 				i {
-					font-size: 16px;
 					color: @gray;
+					font-size: 14x;
 					text-shadow: none;
 					top: -3px;
 
 				&:hover{
 					i{
-						color: @gray;			
+						color: @gray;
 						text-shadow: none;
 						}
 
-				}	
-
+				}
 
 				}
 			}
@@ -1488,20 +1576,19 @@
 			.border-radius(0) !important;
 			}
 
-		
-		label.checkbox.inline, 
+		label.checkbox.inline,
 		.mura-control-group label.checkbox.inline{
 				padding-left: 19px !important;
 				margin-bottom: 8px !important;
 		}
-		
+
 		#displayIntervalEnd,
 		#displayIntervalEndAfter{
 			width: 15% !important;
 			margin-left: 0;
 			margin-right: 4px;
 			height: 24px !important;
-			.border-radius(0) !important; 
+			.border-radius(0) !important;
 		}
 
 		.form-actions {
@@ -1518,9 +1605,9 @@
 					padding: 2px 3px;
 					border: 1px solid #A1A1A1 !important;
 					font-size: 11px;
-					
+
 					&.mura-primary{
-						border: 1px solid #6699CC !important;
+						border: 1px solid @mura-red !important;
 					}
 			}
 
@@ -1535,7 +1622,7 @@
 		li label {
 			width: 160px;
 			display: block;
-			color: #fff;
+			color: @white;
 			font-size: @qeFontSize;
 			clear: right;
 			text-align: left;
@@ -1566,16 +1653,47 @@
 
 	.categoryassignment .mura-quickEdit{
 
-			min-width: 160px;
-			width: auto !important;
+		min-width: 160px;
+		width: auto !important;
+		z-index: 99 !important;
+		left: auto;
+	    right: 80%;
+	    bottom: auto;
+	    top: -165%;
 
-			select.time{
-				margin-left: 0 !important;
-			}
+		&:after{
+			left: auto;
+		    right: -19px;
+		    top: 52px;
+		    transform: rotate(270deg);
+		}
 
-			#mura-quickEdit-displayDates{
-				min-width: 245px;
-			}
+		#mura-quickEdit-display{
+			float:left;
+			clear:both;
+		}
+
+		input.datepicker{
+			width: 86px !important;
+			min-width: 85px !important;
+		}
+		select.time{
+			margin-left: 0 !important;
+		    min-width: auto;
+		    width: 43px!important;
+		}
+
+		#mura-quickEdit-displayDates{
+			min-width: 245px;
+		}
+
+		.mura-interval-end input[type=text],
+		.mura-interval-end input[type=text].datepicker,
+		input.datepicker,
+		select{
+			margin-bottom: .25px;
+		}
+
 	}
 
 	.mura-quickEdit:after {
@@ -1584,10 +1702,9 @@
 		z-index: 11;
 		width: 24px;
 		height: 14px;
-		left: 71px;
+		left: 96px;
 		bottom: -14px;
 		background: url('../images/quickedit-bottom.png') no-repeat center bottom;
-		opacity: .95;
 	}
 
 	.mura-quickEdit:hover {
@@ -1596,6 +1713,7 @@
 
 	.mura-quickEdit h1{
 		margin-top: 4px;
+		margin-left: 2px;
 	}
 
 	.mura-quickEdit p{
@@ -1606,12 +1724,12 @@
 
 	#selectedRelatedContent #mura-rc-quickedit{
 		width: 260px;
-	}	
-	
+	}
+
 	#selectedRelatedContent #mura-rc-quickedit ul li label{
 		max-width: ~'calc(100% - 21px)';
 	}
-	
+
 	/* @end */
 
 // Shared Grid Styles
@@ -1619,21 +1737,21 @@
 .mura-grid, .mura-table-grid {
 
 .actions {
-	
+
 	ul {
 		margin: 0 auto;
 		.inline-block;
 		}
-	
+
 	li {
-		list-style: none; 
+		list-style: none;
 		.inline-block;
 		float: none;
 		padding: 0;
 		margin-right: 2px;
 		clear: none !important;
 		line-height: 16px;
-		
+
 /*
 		&.edit { margin-right: 1px; }
 		&.download i { font-size: 16px; top: 1px; }
@@ -1649,42 +1767,42 @@
 		&.view-report {  }
 		&:last-child { padding-right: 0 !important; }
 */
-	
+
 	a {
 		display: inherit;
 		line-height: inherit;
-		
-		&:hover { 
-			text-decoration: none; 
+
+		&:hover {
+			text-decoration: none;
 			color: @grayDarker;
 			}
-		
+
 		}
-	
+
 	i {
-		font-size: 16px;
+		font-size: 14px;
 		height: 16px;
 		width: auto !important;
 		color: @iconColor;
 		position: relative;
 		top: 1px;
-		
-		}	
-	
+
+		}
+
 		&.disabled i {
 			color: @gray;
 			}
-		
+
 		.template i {
 			font-size: 24px;
 			}
 		}
-	
+
 		// new style actions menu
 		position: relative;
 		border-right: none !important;
 
-		&+ th, 
+		&+ th,
 		&+ td{
 			border-left: none !important;
 		}
@@ -1693,7 +1811,7 @@
 			font-size: 16px;
 		}
 		div.actions-menu{
-	    background-color: #FFF;
+	    background-color: @white;
 	    border-radius: 1px;
 	    box-shadow: 1px 3px 18px rgba(0,0,0,.35);
 	    font-size: 13px;
@@ -1741,20 +1859,17 @@
 					text-decoration: none;
 
 					i {
-						 color: #545454; 
+						 color: #545454;
 						}
 
 					}
 
-	    	} 
+	    	}
 	    	// /.actions-menu
-	} 
+	}
 	// /.actions
 
-
-			
 		}
-
 
 	.bullet { color: @iconColor;
 		font-size: 20px;
@@ -1772,11 +1887,9 @@
 			}
 
 	td {
-		padding: 4px 8px 3px !important;
+    padding: 11px 8px 8px!important;
 		border-left: 1px solid #DBDBDB;
-		//border-right: 1px solid #DBDBDB;
 		white-space: nowrap;
-		//text-align: center;
 		width: 1%;
 
 		&.add {
@@ -1787,7 +1900,7 @@
 				line-height: 1;
 				}
 		 }
-	} 
+	}
 	// /td
 
 	th{
@@ -1796,6 +1909,24 @@
 		line-height: 24px !important;
 		padding-bottom: 1px !important;
 		padding-top: 0 !important;
+	}
+
+	> thead > tr > th{
+		vertical-align: middle;
+		padding: 5px 12px;
+
+		&.actions{
+			min-width: 48px;
+
+			a.folder-back{
+
+				i{
+					font-size: 22px;
+				}
+				margin-left: -6px;
+			}
+		}
+
 	}
 
 	a > i {
@@ -1810,11 +1941,10 @@
 	i+span, .bullet+span { display: none; } // Hiding <span> created for screen readers just in case the "title" isn't sufficient on a non-semantic element (i)
 
 	i {
-		font-size: 13px;
+		font-size: 14px;
 		color: lighten(@iconColor,0%);
 		min-height: 16px;
 		width: 16px;
-
 
 		&.icon-ban-circle,
 		&.icon-eye-close { font-size: 16px; }
@@ -1828,8 +1958,7 @@
 
 	.mura-quickEditItem {
 		cursor: pointer;
-		/* border-bottom: 1px dotted; */
-
+		padding: 3px 12px;
 		i {
 			color: @iconColor;
 			}
@@ -1867,7 +1996,7 @@ p + .mura-table-grid { margin-top: 12px;}
 
 #newContentMenu {
 
-	background-color: #FFF;
+	background-color: @white;
 	border-radius: 1px;
 	box-shadow: 1px 3px 18px rgba(0,0,0,.35);
 	font-size: 13px;
@@ -1900,11 +2029,11 @@ p + .mura-table-grid { margin-top: 12px;}
 		padding: 0;
 		position: relative;
 		border-top: 1px dotted rgba(255,255,255,.2);
-			&:first-child { 
-				border-top: 0; 
+			&:first-child {
+				border-top: 0;
 			}
 		}
-		
+
 	li > a {
 		display: block;
 		text-decoration: none;
@@ -1920,8 +2049,8 @@ p + .mura-table-grid { margin-top: 12px;}
 				position: relative;
 			}
 
-			&#newZoom i { 
-				top: 0; 
+			&#newZoom i {
+				top: 0;
 			}
 
 			&:hover {
@@ -1929,7 +2058,7 @@ p + .mura-table-grid { margin-top: 12px;}
 				text-decoration: none;
 
 				i {
-					 color: #545454; 
+					 color: #545454;
 					}
 			}
 
@@ -1938,11 +2067,16 @@ p + .mura-table-grid { margin-top: 12px;}
 }
 
 .mura-table-grid {
+	background-color: @white;
 	margin: 0 0 16px 0;
 	border-collapse: collapse;
 	border: 1px solid #DBDBDB;
 	clear: both;
 	width: 100%;
+
+	tr:not(:last-child){
+		border-bottom: 1px solid #dbdbdb;
+	}
 }
 
 h3 + table {
@@ -1983,7 +2117,6 @@ h3 + table {
 	float: left;
 }
 
-
 #popUp table {
 	width: 100%;
 }
@@ -1999,7 +2132,7 @@ table + .divide {
 .mura-table-grid th.alt {
 	text-align: left;
 	background-image: none;
-	background-color: #f7f7f7;
+	background-color: @white;
 	font-weight: normal;
 	border: 0;
 }
@@ -2017,21 +2150,21 @@ table + .divide {
 	line-height: 1.25em;
 }
 
-#ccategory .mura-table-grid td.add { 
-	padding-top: 0; 
+#ccategory .mura-table-grid td.add {
+	padding-top: 0;
 	border-right: none !important;
 }
-#ccategory .mura-table-grid td.add + td{ 
+#ccategory .mura-table-grid td.add + td{
 	border-left: none !important;
 }
-#ccategory .mura-table-grid th.add { 
+#ccategory .mura-table-grid th.add {
 	border-right: none !important;
 }
-#ccategory .mura-table-grid th.add + th{ 
+#ccategory .mura-table-grid th.add + th{
 	border-left: none !important;
 }
 .mura-table-grid .alt td {
-	background-color: #fcfeff;
+	background-color: @white;
 }
 
 .mura-table-grid  td.email {
@@ -2070,7 +2203,7 @@ table + .divide {
 	margin-top: 8px !important;
 }
 
-.mura-table-grid td.add a, 
+.mura-table-grid td.add a,
 .mura-grid a.add {
 	.inline-block;
 	width: 16px;
@@ -2081,7 +2214,7 @@ table + .divide {
 
 	i {
 		width: 16px;
-		margin: 2px auto 0;
+		margin: 12px auto 0;
 	}
 
 }
@@ -2152,7 +2285,7 @@ table.cfdebug {
 
 table.cfdebug td {
 	text-align: left;
-	background: #fff;
+	background: @white;
 }
 
 table.cfdebug td a {
@@ -2162,7 +2295,6 @@ table.cfdebug td a {
 .mura-row {
 	background: @white;
 }
-
 
 .table tbody tr:hover td,
 .table tbody tr:hover th,

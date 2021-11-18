@@ -34,6 +34,7 @@
 	</cfif>
 
 	<cfif fileMetaData.hasImageFileExt()>
+		<img id="assocImage" src="#request.context.$.getURLForImage(fileid=attributes.bean.getvalue(attributes.property),size=attributes.size,siteid=attributes.bean.getSiteId(),useProtocol=false)#?cacheID=#createUUID()#" />
 		<div class="mura-input-set imageToolsButtonGroup">
 			<cfif fileMetaData.hasCroppableImageFileExt() and listFindNoCase('content,user,group',attributes.bean.getEntityName())>
 				<cfif attributes.bean.getEntityName() eq 'content'>
@@ -63,7 +64,6 @@
 	</cfif>
 	<cfif fileMetaData.hasImageFileExt()>
 		</div>
-		<img id="assocImage" src="#request.context.$.getURLForImage(fileid=attributes.bean.getvalue(attributes.property),size=attributes.size,siteid=attributes.bean.getSiteId(),useProtocol=false)#?cacheID=#createUUID()#" />
 	</cfif>
 
 	<cfif not (attributes.bean.getType() eq 'File' and attributes.property eq 'fileid')>

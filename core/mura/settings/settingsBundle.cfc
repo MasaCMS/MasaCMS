@@ -266,13 +266,33 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		--->
 
 		<cfif arguments.bundleMode neq 'plugin' and len(arguments.siteID)>
-	
+			<cfset getBean("fileManager").cleanFileCache(arguments.siteID)>
+
 			<cfif NOT arguments.includeStructuredAssets>
 				<cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#sitefiles.zip",directory=siteRoot,recurse="true",sinceDate=arguments.sinceDate,excludeDirs="assets|cache")> 
 			<cfelse>
-				<!---<cfset getBean("fileManager").cleanFileCache(arguments.siteID)>--->
 				<cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#sitefiles.zip",directory=siteRoot,recurse="true",sinceDate=arguments.sinceDate)>
 			</cfif>
+
+			<!--- If the theme does not live in the site directory add it from the global directory --->
+			<cfif (not directoryExists(expandPath($.siteConfig().getIncludePath() & "/includes/themes/#$.siteConfig('theme')#"))
+					or not directoryExists(expandPath($.siteConfig().getIncludePath() & "/themes/#$.siteConfig('theme')#"))
+				) and directoryExists(expandPath($.globalConfig().getWebRoot() & "/themes/#$.siteConfig('theme')#"))>
+				<cfzip action="zip" file="#variables.backupDir#sitefiles.zip" source="#expandPath($.globalConfig().getWebRoot() & '/themes/' & $.siteConfig('theme'))#" prefix="themes/#$.siteConfig('theme')#">
+			</cfif>
+
+			<cfset var filePoolID=getBean('settingsManager').getSite(arguments.siteid).getFilePoolID()>
+			<!--- We do not want to include files collected from mura forms or the advertising manager --->
+			<cfquery name="rsInActivefiles">
+				select fileID,fileExt from tfiles
+				where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#filePoolID#"/>
+				and moduleid in ('00000000000000000000000000000000000','00000000000000000000000000000000003','00000000000000000000000000000000099'<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.includeUsers>,'00000000000000000000000000000000008'</cfif>)
+				and (
+
+					<cfif not arguments.includeVersionHistory and rstfiles.recordcount>
+						fileID not in (#QuotedValueList(rstfiles.fileID)#)
+						<cfset started=true>
+					</cfif>
 
 			<!--- If the theme does not live in the site directory add it from the global directory --->
 			<cfif (not directoryExists(expandPath($.siteConfig().getIncludePath() & "/includes/themes/#$.siteConfig('theme')#"))

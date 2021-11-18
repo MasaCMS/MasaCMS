@@ -143,7 +143,7 @@ form .form-submit {
   display: inline;
 }
 .mura-tag-cloud ol .not-popular {
-  font-size: .9em;
+  font-size: 0.9em;
 }
 .mura-tag-cloud ol .not-very-popular {
   font-size: 1.2em;
@@ -201,13 +201,13 @@ form .form-submit {
   border-left: 120px solid #fff;
 }
 .mura-comments dl dt {
-  margin-bottom: .5em;
+  margin-bottom: 0.5em;
 }
 .mura-comments dl dd {
   margin: 0 1em 0 0;
 }
 .mura-comments dl dd.mura-comment p {
-  margin-top: .5em;
+  margin-top: 0.5em;
 }
 .mura-comments dl dd.mura-comment p:first-child {
   margin-top: 0;
@@ -215,7 +215,7 @@ form .form-submit {
 .mura-comments dl dd.mura-comment-date-time {
   color: #666;
   font-size: 1em;
-  margin-bottom: .5em;
+  margin-bottom: 0.5em;
 }
 .mura-comments dl dd.mura-comment-thumb {
   float: left;
@@ -379,15 +379,15 @@ a.mura-asset.zip {
 }
 .mura-calendar th a {
   display: block;
-  padding: .25em;
+  padding: 0.25em;
   text-align: center;
 }
 .mura-calendar td {
   border: 1px solid;
-  font-size: .9em;
+  font-size: 0.9em;
   height: 6em;
   line-height: 1;
-  padding: .5em;
+  padding: 0.5em;
   text-align: left;
   vertical-align: top;
   width: 14%;
@@ -410,14 +410,14 @@ a.mura-asset.zip {
   font-weight: bold;
   height: auto;
   line-height: 1.6;
-  padding: .5em;
+  padding: 0.5em;
   text-align: center;
 }
 .mura-calendar-nav th {
-  font-size: .8em;
+  font-size: 0.8em;
 }
 .mura-calendar-nav td {
-  font-size: .8em;
+  font-size: 0.8em;
   height: auto;
   text-align: center;
 }
@@ -445,7 +445,7 @@ a.mura-asset.zip {
   padding: 0;
 }
 .mura-gallery dl dt {
-  margin: 0 0 .25em;
+  margin: 0 0 0.25em;
   padding: 0;
 }
 .mura-gallery dl dd {
@@ -487,11 +487,11 @@ a.mura-asset.zip {
 }
 .mura-index .releaseDate {
   font-weight: normal;
-  margin-bottom: .5em;
+  margin-bottom: 0.5em;
 }
 .mura-index .summary .readMore,
 .mura-index .readMore {
-  font-size: .9em;
+  font-size: 0.9em;
 }
 .mura-index .credits,
 .mura-index .comments,
@@ -500,7 +500,7 @@ a.mura-asset.zip {
   font-size: 1em;
   float: left;
   margin-bottom: 0;
-  padding: 0 .75em 0 0;
+  padding: 0 0.75em 0 0;
 }
 .sidebar .mura-index,
 aside .mura-index {
@@ -518,7 +518,7 @@ aside .mura-index dt,
 .sidebar .mura-index li h3,
 aside .mura-index li h3 {
   font-size: 16px;
-  margin: 0 0 .25em 0;
+  margin: 0 0 0.25em 0;
 }
 .sidebar .mura-index .credits,
 aside .mura-index .credits,
@@ -529,7 +529,7 @@ aside .mura-index .tags,
 .sidebar .mura-index .rating,
 aside .mura-index .rating {
   float: none;
-  margin-bottom: .35em;
+  margin-bottom: 0.35em;
   padding: 0;
 }
 .content .mura-index,
@@ -554,7 +554,7 @@ aside .hasImage {
 .rating {
   float: left;
   margin-bottom: 0;
-  padding: 0 .75em 0 0;
+  padding: 0 0.75em 0 0;
   font-size: 1em;
 }
 .sidebar .credits,
@@ -566,7 +566,7 @@ aside .comments,
 aside .tags,
 aside .rating {
   float: none;
-  margin-bottom: .35em;
+  margin-bottom: 0.35em;
   padding: 0;
 }
 .rating {
@@ -650,7 +650,7 @@ ol.mura-pager {
 }
 ol.mura-pager li {
   display: inline;
-  margin: 0 .25em;
+  margin: 0 0.25em;
 }
 ol.mura-pager li a {
   display: -moz-inline-block;
@@ -673,7 +673,7 @@ ol.mura-pager li a {
 .folderFeatures dl dt {
   clear: both;
   font-weight: bold;
-  margin: 0 0 .5em;
+  margin: 0 0 0.5em;
   padding: 0;
 }
 .portalFeatures dl dt .releaseDate,
@@ -692,13 +692,13 @@ ol.mura-pager li a {
 }
 .portalFeatures dl dd p,
 .folderFeatures dl dd p {
-  margin: 0 0 .5em;
+  margin: 0 0 0.5em;
   padding: 0;
 }
 .portalFeatures dl dd img,
 .folderFeatures dl dd img {
   float: left;
-  margin: 0 .5em .5em 0;
+  margin: 0 0.5em 0.5em 0;
   padding: 0;
 }
 .portalFeatures a,
@@ -768,11 +768,11 @@ ol.mura-pager li a {
 .keywords,
 .highlight {
   background: yellow;
-  padding: .2em;
+  padding: 0.2em;
 }
 .help-block {
   display: block;
-  margin-bottom: .5em;
+  margin-bottom: 0.5em;
 }
 .help-inline {
   display: inline-block;
@@ -916,11 +916,11 @@ li .cke_skin_mura table {
   }
   .mura-region-inherited .mura-one.mura-object,
   .mura-region-local .mura-one.mura-object {
-    width: 4.66666666667%;
+    width: 4.66666667%;
   }
   .mura-region-inherited .mura-two.mura-object,
   .mura-region-local .mura-two.mura-object {
-    width: 13.3333333333%;
+    width: 13.33333333%;
   }
   .mura-region-inherited .mura-three.mura-object,
   .mura-region-local .mura-three.mura-object {
@@ -928,11 +928,11 @@ li .cke_skin_mura table {
   }
   .mura-region-inherited .mura-four.mura-object,
   .mura-region-local .mura-four.mura-object {
-    width: 30.6666666667%;
+    width: 30.66666667%;
   }
   .mura-region-inherited .mura-five.mura-object,
   .mura-region-local .mura-five.mura-object {
-    width: 39.3333333333%;
+    width: 39.33333333%;
   }
   .mura-region-inherited .mura-six.mura-object,
   .mura-region-local .mura-six.mura-object {
@@ -940,23 +940,23 @@ li .cke_skin_mura table {
   }
   .mura-region-inherited .mura-seven.mura-object,
   .mura-region-local .mura-seven.mura-object {
-    width: 56.6666666667%;
+    width: 56.66666667%;
   }
   .mura-region-inherited .mura-eight.mura-object,
   .mura-region-local .mura-eight.mura-object {
-    width: 65.3333333333%;
+    width: 65.33333333%;
   }
   .mura-region-inherited .mura-nine.mura-object,
   .mura-region-local .mura-nine.mura-object {
-    width: 74.0%;
+    width: 74%;
   }
   .mura-region-inherited .mura-ten.mura-object,
   .mura-region-local .mura-ten.mura-object {
-    width: 82.6666666667%;
+    width: 82.66666667%;
   }
   .mura-region-inherited .mura-eleven.mura-object,
   .mura-region-local .mura-eleven.mura-object {
-    width: 91.3333333333%;
+    width: 91.33333333%;
   }
   .mura-region-inherited .mura-twelve.mura-object,
   .mura-region-local .mura-twelve.mura-object {
@@ -965,11 +965,11 @@ li .cke_skin_mura table {
   }
   .mura-region-inherited .mura-one-third.mura-object,
   .mura-region-local .mura-one-third.mura-object {
-    width: 30.6666666667%;
+    width: 30.66666667%;
   }
   .mura-region-inherited .mura-two-thirds.mura-object,
   .mura-region-local .mura-two-thirds.mura-object {
-    width: 65.3333333333%;
+    width: 65.33333333%;
   }
   .mura-region-inherited .mura-one-half.mura-object,
   .mura-region-local .mura-one-half.mura-object {
@@ -1051,14 +1051,14 @@ hr.mura-hr {
 }
 .mura-search-results .moreResults {
   background: #f2f2f2;
-  margin: .75em 0;
-  padding: .75em;
+  margin: 0.75em 0;
+  padding: 0.75em;
   clear: both;
   display: block;
 }
 .mura-search-again p {
   font-weight: bold;
-  margin-bottom: .5em;
+  margin-bottom: 0.5em;
 }
 .image-left {
   float: left;
@@ -1366,3 +1366,6 @@ hr {
     padding: 10px;
   }
 }
+/* NOTE: References to #svXXXXXXX are deprecated in favor of classes; other ID's may be as well depending on DOM scripting methods */
+
+/*# sourceMappingURL=mura.7.1.css.map */

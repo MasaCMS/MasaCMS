@@ -2,10 +2,10 @@
 
 
 //@jQueryPath: "../css/jquery/default"; Var won't render for some reason
-@import "variables.less";
+@import "../variables.less";
 @import "../css/jquery/default/jquery.ui.base.css";
 @import "jquery-ui-1.10.0.custom.less";
-@import "fonts.less";
+@import "../fonts.less";
 
 // Overriding position: fixed being set in DOM via jQuery UI (but where?)
 // .ui-dialog { position: absolute !important; }
@@ -135,14 +135,17 @@
 			
 		.ui-state-hover {
 			background-image: none;
-			background-color: @grayDarker;
-			}
-			
-		&.ui-datepicker-today > .ui-state-highlight { 
-			background-color: @blue;
+			background-color: @gray;
 			color: @white;
 			}
-		
+		.ui-state-active { 
+			background-color: @mura-red !important;
+			color: @white;
+		}
+				
+		&.ui-datepicker-today > .ui-state-highlight { 
+			background-color: @gray;
+			}
 		}
 	}
 

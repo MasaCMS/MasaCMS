@@ -140,11 +140,11 @@ jQuery(document).ready(function(){
                     <span>Add files...</span>
                     <input type="file" name="files" multiple>
                 </span>
-                <button type="submit" class="btn start mura-file-start">
+                <button type="submit" class="btn start mura-file-start" style="display: none;">
                     <i class="mi-upload"></i>
                     <span>Upload</span>
                 </button>
-                <button type="reset" class="btn cancel mura-file-resets">
+                <button type="reset" class="btn cancel mura-file-resets" style="display: none;">
                     <i class="mi-ban"></i>
                     <span>Cancel</span>
                 </button>
@@ -159,8 +159,8 @@ jQuery(document).ready(function(){
             <!-- The global progress information -->
             <div class="fileupload-progress fade half">
                 <!-- The global progress bar -->
-                <div class="progress">
-                    <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width:0%;"></div>
+                <div class="progress" id="progress-multi-global" style="display: none;">
+                    <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width:0%;"></div>
                 </div>
                 <!-- The extended global progress information -->
                 <div class="progress-extended">&nbsp;</div>
@@ -190,102 +190,6 @@ jQuery(document).ready(function(){
     </form>
 </div>
 </div>
-
-<!---
-<!-- modal-gallery is the modal dialog used for the image gallery -->
-<div id="modal-gallery" class="modal modal-gallery hide fade" data-filter=":odd">
-    <div class="modal-header">
-        <a class="close" data-dismiss="modal">&times;</a>
-        <h3 class="modal-title"></h3>
-    </div>
-    <div class="modal-body"><div class="modal-image"></div></div>
-    <div class="modal-footer">
-        <a class="btn modal-download" target="_blank">
-            <i class="mi-download"></i>
-            <span>Download</span>
-        </a>
-        <a class="btn btn-success modal-play modal-slideshow" data-slideshow="5000">
-            <i class="mi-play icon-white"></i>
-            <span>Slideshow</span>
-        </a>
-        <a class="btn btn-info modal-prev">
-            <i class="mi-arrow-left icon-white"></i>
-            <span>Previous</span>
-        </a>
-        <a class="btn btn-primary modal-next">
-            <span>Next</span>
-            <i class="mi-arrow-right icon-white"></i>
-        </a>
-    </div>
-</div>
---->
-
-<!-- The template to display files available for upload -->
-<!---
-<script id="template-upload" type="text/x-tmpl">
-{% for (var i=0, file; file=o.files[i]; i++) { %}
-    <tr class="template-upload fade">
-        <td class="preview"><span class="fade"></span></td>
-        <td class="name"><span>{%=file.name%}</span></td>
-        <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
-        {% if (file.error) { %}
-            <td class="error" colspan="2"><span class="label label-important">{%=locale.fileupload.error%}</span> {%=locale.fileupload.errors[file.error] || file.error%}</td>
-        {% } else if (o.files.valid && !i) { %}
-            <td>
-                <div class="progress>
-                    <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" style="width:0%;"></div>
-                </div>
-            </td>
-            <td class="start">tet{% if (!o.options.autoUpload) { %}
-                <button class="btn">
-                    <i class="mi-upload icon-white"></i>
-                    <span>{%=locale.fileupload.start%}</span>
-                </button>
-            {% } %}</td>
-        {% } else { %}
-            <td colspan="2"></td>
-        {% } %}
-        <td class="cancel">{% if (!i) { %}
-            <button class="btn">
-                <i class="mi-ban icon-white"></i>
-                <span>{%=locale.fileupload.cancel%}</span>
-            </button>
-        {% } %}</td>
-    </tr>
-{% } %}
-</script>
-<!-- The template to display files available for download -->
-<script id="template-download" type="text/x-tmpl">
-{% for (var i=0, file; file=o.files[i]; i++) { %}
-    <tr class="template-download fade">
-        {% if (file.error) { %}
-            <td></td>
-            <td class="name"><span>{%=file.name%}</span></td>
-            <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
-            <td class="error" colspan="2"><span class="label label-important">{%=locale.fileupload.error%}</span> {%=locale.fileupload.errors[file.error] || file.error%}</td>
-        {% } else { %}
-            <td class="preview">{% if (file.thumbnail_url) { %}
-                <a href="{%=file.edit_url%}" title="{%=file.name%}"<!--- rel="gallery" download="{%=file.name%}"--->><img src="{%=file.thumbnail_url%}"></a>
-            {% } %}</td>
-            <td class="name">
-                <a href="{%=file.edit_url%}" title="{%=file.name%}"<!---rel="{%=file.thumbnail_url&&'gallery'%}" download="{%=file.name%}"--->>{%=file.name%}</a>
-            </td>
-            <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
-            <td colspan="2"></td>
-        {% } %}
-        <td class="delete">
-           <!---
-            <button class="btn btn-danger" data-type="{%=file.delete_type%}" data-url="{%=file.delete_url%}">
-                <i class="mi-trash icon-white"></i>
-                <span>{%=locale.fileupload.destroy%}</span>
-            </button>
-            <input type="checkbox" name="delete" value="1">
-            --->
-        </td>
-    </tr>
-{% } %}
-</script>
---->
 
 <script id="template-upload" type="text/x-tmpl">
 {% for (var i=0, file; file=o.files[i]; i++) {
@@ -335,7 +239,7 @@ jQuery(document).ready(function(){
 
             {% if (!o.files.error) { %}
                 <div class="progress">
-                    <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" style="width:0%;"></div>
+                    <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" style="width:0%;"></div>
                 </div>
                 <p class="size">{%=o.formatFileSize(file.size)%}</p>
             {% } %}
@@ -406,7 +310,7 @@ jQuery(document).ready(function(){
             {% } %}
         </td>
         <td><div class="progress">
-                <div class="progress-bar progress-bar-success complete" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" style="width:100%;"></div>
+                <div class="progress-bar complete" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" style="width:100%;"></div>
             </div>
             <span class="size complete">{%=o.formatFileSize(file.size)%}</span>
         </td>
@@ -520,7 +424,6 @@ $(function () {
 
         $(data.context).find('.editable').each(
             function(){
-
              extraParams[$(this).attr('data-attribute')]=$(this).html();
             }
         );
@@ -534,6 +437,10 @@ $(function () {
     .bind('fileuploadadded',function(e,data){
 
         var id="summaryid" + fileIndex;
+
+        $('##progress-multi-global').show();
+        $('.fileupload-buttonbar .mura-file-start').show();
+        $('.fileupload-buttonbar .mura-file-resets').show();
 
         if(CKEDITOR.instances[id]){
             CKEDITOR.instances[id].destroy();
@@ -564,6 +471,13 @@ $(function () {
                     }
                 );
         }
+
+        $(document).on('click', '.mura-file-resets', function(e){
+            $('##progress-multi-global').hide();
+            $('.fileupload-buttonbar .mura-file-start').hide();
+            $('.fileupload-buttonbar .mura-file-resets').hide();
+
+        })
 
         $(document).on('keypress', '.editable.nolinebreaks', function(e){
 

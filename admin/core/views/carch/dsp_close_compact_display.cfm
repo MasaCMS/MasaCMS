@@ -143,6 +143,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			var cmd={cmd:'setObjectParams',reinit:true,instanceid:'#session.mura.objectInstanceId#',params:{objectid:'#rc.contentBean.getContentId()#'}};
 		<cfelseif rc.contentBean.getType() eq 'Component'>
 			var cmd={cmd:'setObjectParams',reinit:true,instanceid:'#session.mura.objectInstanceId#',params:{objectid:'#rc.contentBean.getContentId()#'}};
+		<cfelseif len(session.mura.objectInstanceId)>
+			var cmd={cmd:'setObjectParams',reinit:true,instanceid:'#session.mura.objectInstanceId#',params:{}};
 		<cfelse>
 			var cmd={cmd:'setLocation',location:encodeURIComponent("#esapiEncode('javascript',href)#")};
 		</cfif>

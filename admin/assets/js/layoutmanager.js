@@ -155,7 +155,7 @@
 
 	function initDraggableObject_hoverout(e){
 		//e.stopPropagation();
-		Mura(this).removeClass('mura-active-target').calculateDisplayObjectStyles();
+		Mura(this).removeClass('mura-active-target');//.calculateDisplayObjectStyles();
 
 	}
 
@@ -167,7 +167,7 @@
 		} else {
 			var EventListenerOptions;
 		}
-		
+
 		obj
 			.off('dragenter', initDraggableObject_dragstart)
 			.off('dragover', initDraggableObject_dragover)
