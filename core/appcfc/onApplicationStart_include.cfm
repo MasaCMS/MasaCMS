@@ -325,6 +325,7 @@ if ( application.setupComplete ) {
 			commitTracePoint(variables.tracePoint1);
 		}
 
+
 		variables.serviceFactory.declareBean("beanValidator", "mura.bean.beanValidator", true);
 
 		variables.serviceFactory.addAlias("scriptProtectionFilter","Portcullis");
@@ -347,6 +348,7 @@ if ( application.setupComplete ) {
 		variables.serviceFactory.addAlias("commentFeed","contentCommentFeedBean");
 		variables.serviceFactory.addAlias("stats","contentStatsBean");
 		variables.serviceFactory.addAlias("changeset","changesetBean");
+		variables.serviceFactory.addAlias("settingsBundle","settingsBundleBean");
 		variables.serviceFactory.addAlias("bundle","settingsBundle");
 		variables.serviceFactory.addAlias("mailingList","mailingListBean");
 		variables.serviceFactory.addAlias("mailingListMember","memberBean");
