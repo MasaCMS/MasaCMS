@@ -145,7 +145,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif thefield neq '' and structkeyexists(arguments.data, thefield)>
 					<cfif findNoCase('attachment',theField) and arguments.data['#thefield#'] neq ''>
 						<cfset scopeCheck={test=arguments.data['#thefield#']}>
-						<cfif not variables.fileManager.requestHasRestrictedFiles(scope=scopeCheck,allowedExtensions=variables.configBean.getFMPublicAllowedExtensions())>
+						<cfif variables.fileManager.requestHasRestrictedFiles(scope=scopeCheck,allowedExtensions=variables.configBean.getFMPublicAllowedExtensions()) eq '0'>
 							<cftry>
 							<cffile action="upload" filefield="#thefield#" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
 							<cfset theFileStruct=variables.fileManager.process(file,siteID) />

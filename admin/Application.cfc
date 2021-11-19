@@ -517,22 +517,25 @@ component extends="framework" output="false" {
 			location(addtoken="false", url="https://" & listFirst(cgi.http_host,':') & page);
 		}
 
-		var headers = getHttpRequestData().headers;
+		var httpRequestData = getHttpRequestData();
 
-		if(structKeyExists(headers,'Origin')){
+		if(structKeyExists(httpRequestData.headers,'Origin')){
+			var PC = getpagecontext().getresponse();
 
-			var origin = headers['Origin'];
-      var originDomain =reReplace(origin, "^\w+://([^\/:]+)[\w\W]*$", "\1", "one");
-	  	var PC = getpagecontext().getresponse();
+			if(application.configBean.getValue(property="cors",defaultValue=true)){
+				var origin = httpRequestData.headers['Origin'];
+				var originDomain =reReplace(origin, "^\w+://([^\/:]+)[\w\W]*$", "\1", "one");
 
-	  	// If the Origin is okay, then echo it back, otherwise leave out the header key
-      for(var domain in application.settingsManager.getAccessControlOriginDomainArray() ){
-        if( domain == originDomain || len(originDomain) > len(domain) && right(originDomain,len(domain)+1)=='.' & domain ){
-          PC.setHeader( 'Access-Control-Allow-Origin', origin );
-          PC.setHeader( 'Access-Control-Allow-Credentials', 'true' );
-        }
-      }
-  	}
+				// If the Origin is okay, then echo it back, otherwise leave out the header key
+				for(var domain in application.settingsManager.getAccessControlOriginDomainArray() ){
+					if( domain == originDomain || len(originDomain) > len(domain) && right(originDomain,len(domain)+1)=='.' & domain ){
+						PC.setHeader( 'Access-Control-Allow-Origin', origin );
+					}
+				}
+			}
+
+			PC.setHeader( 'Access-Control-Allow-Credentials', 'true' );
+		}
 
 		application.rbFactory.setAdminLocale();
 

@@ -116,12 +116,14 @@ component extends="controller" output="false" {
 				obj=it.next();
 				objectID=obj.getObjectID();
 				obj=obj.getObject();
-				if ( structKeyExists(arguments.rc,"parentid")
-				and len(arguments.rc.parentid) == 35
-				and arguments.rc.parentID == objectID ) {
-					obj.setParentID(obj.getparentid());
+				if(!isSimpleValue(obj)){
+					if ( structKeyExists(arguments.rc,"parentid")
+					and len(arguments.rc.parentid) == 35
+					and arguments.rc.parentID == objectID ) {
+						obj.setParentID(obj.getparentid());
+					}
+					obj.setTopOrBottom("bottom").save();
 				}
-				obj.setTopOrBottom("bottom").save();
 			}
 		} else {
 			obj=variables.trashManager.getTrashItem(arguments.rc.objectID).getObject();

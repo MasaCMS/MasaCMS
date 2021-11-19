@@ -10,6 +10,7 @@
 *.log
 *.sublime-project
 *.sublime-workspace
+*.code-workspace
 sftp-config.json
 
 # ignored '.' files and directories
