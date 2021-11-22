@@ -467,9 +467,19 @@ This file is part of Mura CMS.
 			<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforeUser#userBean.getSubType()#Save",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
 		</cfif>
 
-		<cfif variables.fileManager.requestHasRestrictedFiles(scope=userBean.getAllValues(),allowedExtensions=variables.configBean.getFMPublicAllowedExtensions())>
+		<cfset hasRestrictedFiles=variables.fileManager.requestHasRestrictedFiles(scope=userBean.getAllValues())>
+		<cfif len(hasRestrictedFiles) gt 1 and findNoCase('|',hasRestrictedFiles)>
+			<cfset restrictedFilesArray=listToArray(hasRestrictedFiles, '|')>
+			<cfset hasRestrictedFiles=restrictedFilesArray[1]>
+			<cfset fileSize=restrictedFilesArray[2]>
+		</cfif>
+		<cfif hasRestrictedFiles eq '1'>
 			<cfset errors=userBean.getErrors()>
 			<cfset errors.requestHasRestrictedFiles=variables.settingsManager.getSite(userBean.getSiteID()).getRBFactory().getKey('sitemanager.requestHasRestrictedFiles')>
+		</cfif>
+		<cfif hasRestrictedFiles eq '2'>
+			<cfset errors=userBean.getErrors()>
+			<cfset errors.requestHasRestrictedFiles=application.rbFactory.getResourceBundle(session.rb).messageFormat(variables.settingsManager.getSite(userBean.getSiteID()).getRBFactory().getKey('sitemanager.requesthasinvalidsize'),fileSize)>
 		</cfif>
 
 		<cfif structIsEmpty(userBean.getErrors())>
@@ -623,9 +633,19 @@ This file is part of Mura CMS.
 			<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforeUser#userBean.getSubType()#Save",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
 		</cfif>
 
-		<cfif variables.fileManager.requestHasRestrictedFiles(scope=userBean.getAllValues())>
+		<cfset hasRestrictedFiles=variables.fileManager.requestHasRestrictedFiles(scope=userBean.getAllValues())>
+		<cfif len(hasRestrictedFiles) gt 1 and findNoCase('|',hasRestrictedFiles)>
+			<cfset restrictedFilesArray=listToArray(hasRestrictedFiles, '|')>
+			<cfset hasRestrictedFiles=restrictedFilesArray[1]>
+			<cfset fileSize=restrictedFilesArray[2]>
+		</cfif>
+		<cfif hasRestrictedFiles eq '1'>
 			<cfset errors=userBean.getErrors()>
 			<cfset errors.requestHasRestrictedFiles=variables.settingsManager.getSite(userBean.getSiteID()).getRBFactory().getKey('sitemanager.requestHasRestrictedFiles')>
+		</cfif>
+		<cfif hasRestrictedFiles eq '2'>
+			<cfset errors=userBean.getErrors()>
+			<cfset errors.requestHasRestrictedFiles=application.rbFactory.getResourceBundle(session.rb).messageFormat(variables.settingsManager.getSite(userBean.getSiteID()).getRBFactory().getKey('sitemanager.requesthasinvalidsize'),fileSize)>
 		</cfif>
 
 		<cfif structIsEmpty(userBean.getErrors())>

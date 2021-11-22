@@ -135,10 +135,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfset var hasStructuredAssets = not isdefined('arguments.Bundle.getValue') or arguments.Bundle.getValue("hasstructuredassets",true) />
 
-		<cfif isBoolean(hasStructuredAssets) and NOT hasStructuredAssets>			
+		<cfif not isBoolean(hasStructuredAssets)>
+			<cfset hasStructuredAssets=true>
+		</cfif>
+		<cfif hasStructuredAssets and getBean('settingsManager').getSite(arguments.tositeid).getHasSharedFilePool()>
+			<cfthrow message="You are not allowed to deploy bundles that include files to sites with shared file pools">
+		</cfif>
+		<cfif NOT hasStructuredAssets>
 			<cfset arguments.keyMode = "publish">
 		</cfif>
-		
+
 		<cfsetting requestTimeout = "7200">
 
 		<cfif structKeyExists(arguments,"Bundle")>
@@ -507,10 +513,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				select * from rstContentObjects
 				where
 				contentid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rsContent.contentid#"/>
-				and
-				object in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#ValueList(rsObjects.object)#" list="true"/>)
-				and
-				object not in (<cfqueryparam cfsqltype="cf_sql_varchar" value="plugin,component,form" list="true"/>)
+				order by orderno
 			</cfquery>
 
 			<cfquery name="rsContentTags" dbtype="query">
@@ -584,7 +587,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#contentBean.getContentID()#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rsContentObjects.Name neq '',de('no'),de('yes'))#" value="#rsContentObjects.Name#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rsContentObjects.Object neq '',de('no'),de('yes'))#" value="#rsContentObjects.Object#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rsContentObjects.ObjectID neq '',de('no'),de('yes'))#" value="#arguments.keyFactory(rsContentObjects.ObjectID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rsContentObjects.ObjectID neq '',de('no'),de('yes'))#" value="#arguments.keyFactory.get(rsContentObjects.ObjectID)#">,
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rsContentObjects.OrderNo),de(rsContentObjects.OrderNo),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.SiteID#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rsContentObjects.params neq '',de('no'),de('yes'))#" value="#translateObjectParams(rsContentObjects.params,arguments.keyFactory)#">
