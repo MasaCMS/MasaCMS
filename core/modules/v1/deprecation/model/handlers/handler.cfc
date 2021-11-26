@@ -15,7 +15,7 @@ component extends="mura.cfobject" {
 			local.deprecationCallStack = [];			
 			local.deprecationCallStack[1] = 
 			{			
-				function =  "No Deprection CallStack Set"
+				function = "No Deprecation CallStack Set"
 				, lineNumber =  "-1" 
 				, template = "Unknown template"
 			};
