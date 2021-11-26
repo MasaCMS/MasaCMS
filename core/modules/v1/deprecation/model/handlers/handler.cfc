@@ -1,7 +1,7 @@
 component extends="mura.cfobject" {
 
 	// Event handler that intercepts deprecation warnings and write them to a seperate log file
-	// It runs in the global context, so covers ALL Mura sites that are running
+	// It runs in the global context, so covers ALL Mura sites that are running	
 	
 	public void function onLogDeprecation() {			
 		local.deprecationType = arguments.event.getValue('deprecationType');
@@ -25,11 +25,13 @@ component extends="mura.cfobject" {
 	}	
 
 	private void function writeDeprecationToLog(required string deprecationType, required array deprecationCallStack) {				
-		local.logType = 'information';		
+		local.deprecationwarningsenabled = application.configBean.getValue(property='deprecationwarningsenabled');
+		local.deprecationlogfile = application.configBean.getValue(property='deprecationlogfile');
+		local.logType = 'information';	
 		local.numberOfStackTraceLines = 5;
 		local.counter = 1;
-		local.stackTrace = '';	
-
+		local.stackTrace = '';
+		
 		for(line in arguments.deprecationCallStack){	
 			local.stackTrace = local.stackTrace & '#chr(10)##chr(13)#Linenumber: #arguments.deprecationCallStack[counter].lineNumber#: Template: #arguments.deprecationCallStack[counter].template#: Function: #arguments.deprecationCallStack[counter].Function#';
 			local.counter++;			
@@ -40,7 +42,10 @@ component extends="mura.cfobject" {
 
 		// Assemble the log text
 		local.logText = 'Deprecation warning: #arguments.deprecationType#: #local.stackTrace#';		
-		// Write the log file
-		writeLog(type=local.logType, file='mura-deprecations', text=local.logText, application="no");
+		
+		if(local.deprecationwarningsenabled){
+			// Write the log file
+			writeLog(type=local.logType, file=local.deprecationlogfile, text=local.logText, application="no");
+		}
 	}
 }
