@@ -49,7 +49,7 @@ component extends="mura.cfobject" {
 
 			// Do not print items in the stacktrace that are from this handler or the pluginManager.cfc
 			if( local.template != '/app/core/modules/v1/deprecation/model/handlers/handler.cfc'
-				&& local.template != '/app/core/mura/plugin/pluginManager.cfc' ){
+				&& local.template != '/app/core/mura/plugin/pluginManager.cfc'){
 				local.stackTrace = local.stackTrace & '#chr(10)##chr(13)#Linenumber: #local.line.lineNumber#: Template: #local.line.template#: Function: #local.line.Function#';
 				local.linesPrinted++;
 			}
