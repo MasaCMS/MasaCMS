@@ -86,7 +86,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.webrootmap="muraWRM"/>
 <cfset variables.instance.mapdir="mura"/>
 <cfset variables.instance.datasource=""/>
-<cfset variables.instance.defaultthemeurl="https://github.com/MasaCMS/MasaBootstrap4/archive/main.zip">
+<cfset variables.instance.defaultthemeurl="https://github.com/MasaCMS/MasaBootstrap5/archive/main.zip">
 <cfset variables.instance.stub=""/>
 <cfset variables.instance.context=""/>
 <cfset variables.instance.admindomain=""/>
