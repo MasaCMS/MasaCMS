@@ -303,7 +303,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 </cfsilent>
 
 		 <cfif not listFindNoCase('none,read',perm) and rc.rstop.type neq 'module'>
-		   <a class="<cfif isFileIcon>file </cfif>title draftprompt" title="#atitle#" href="./?muraAction=cArch.edit&contenthistid=#rc.rstop.ContentHistID#&siteid=#esapiEncode('url',rc.siteid)#&contentid=#rc.topid#&topid=#esapiEncode('url',rc.topid)#&type=#rc.rstop.type#&parentid=#rc.rstop.parentid#&moduleid=#rc.rstop.moduleid#"<cfif rc.rsTop.type eq 'File'> data-filetype="#lcase(left(rc.rsTop.fileExt,4))#"</cfif> <cfif atooltip>rel="tooltip" data-html="true"</cfif>>
+		   <a class="<cfif isFileIcon>file </cfif>title draftprompt" title="#atitle#" href="./?muraAction=cArch.edit&contenthistid=#rc.rstop.ContentHistID#&siteid=#esapiEncode('url',rc.siteid)#&contentid=#rc.topid#&topid=#esapiEncode('url',rc.topid)#&type=#rc.rstop.type#&parentid=#rc.rstop.parentid#&moduleid=#rc.rstop.moduleid#"<cfif rc.rsTop.type eq 'File'> data-filetype="#lcase(left(rc.rsTop.fileExt,4))#"</cfif> <cfif atooltip>rel="tooltip" data-html="true" data-placement="bottom"</cfif>>
 		 <cfelse>
 		   <a class="title" <cfif rc.rsTop.type eq 'File'> data-filetype="#lcase(left(rc.rsTop.fileExt,4))#"</cfif> <cfif atooltip>rel="tooltip" data-html="true" title="#atitle#"</cfif>>
 		 </cfif>

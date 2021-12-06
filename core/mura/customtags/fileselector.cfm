@@ -61,7 +61,7 @@
 				<cfif attributes.styleFileInput>
 					<div class="mura-input-set assocUploadControls">
 						<!--- placeholder text input shows filename --->
-						<input type="text" data-filename="#esapiEncode('html_attr',attributes.name)#" readonly class="newfile-filename">
+						<input type="file" data-filename="#esapiEncode('html_attr',attributes.name)#" readonly class="newfile-filename">
 						<label class="btn btn-file btn-default">#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.fileselector.selectfile'))#
 							<!--- attribute 'hidden' keeps input functional but not shown --->
 							<input hidden name="#esapiEncode('html_attr',attributes.name)#" id="mura-file-input-#esapiEncode('html_attr',attributes.name)#" type="file" class="mura-file-selector-#esapiEncode('html_attr',attributes.name)#" data-label="#esapiEncode('html_attr',attributes.required)#" data-validation="#esapiEncode('html_attr',attributes.validation)#" data-regex="#esapiEncode('html_attr',attributes.regex)#" data-message="#esapiEncode('html_attr',attributes.message)#">
