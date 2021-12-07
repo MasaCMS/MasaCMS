@@ -288,14 +288,7 @@ var siteManager = {
 
 			alertDialog("The form field 'URL' is required");
 			return false;
-		}
-
-		if(document.contentForm.type.value == 'Page' 
-			&& document.contentForm.canonicalURL.value != '' 
-			&& !isValidURL(document.contentForm.canonicalURL.value)) {		
-			alertDialog("Please enter a valid URL in the 'Canonical URL' field");
-			return false;
-		}
+		}	
 
 		if(!validateForm(document.contentForm)){
 			return false;
@@ -3482,13 +3475,6 @@ quickEditTmpl += '</div>';
 
 function initConfigurator(data, config) {
 	return siteManager.initConfigurator(data, config);
-}
-	
-function isValidURL(inputUrl){
-	if (inputUrl.length < 1 || ( inputUrl.indexOf('http://') < 0 && inputUrl.indexOf('https://') < 0 )) {			
-		return false;
-	}
-	return true;
 }
 
 $(document).ready(function() {
