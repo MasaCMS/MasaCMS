@@ -288,7 +288,7 @@ var siteManager = {
 
 			alertDialog("The form field 'URL' is required");
 			return false;
-		}
+		}	
 
 		if(!validateForm(document.contentForm)){
 			return false;
@@ -962,9 +962,9 @@ buttons: {
 				e.preventDefault();
 				var advSearching = $('#rcAdvancedSearch').is(':visible');
 				var valueSelector = '#internalContent input';
-				// if doing an advanced search, then serialze all elements
+				// if doing an advanced search, then serialze all elements, except the hidden inputs.
 				if (advSearching) {
-					valueSelector = '#selectRelatedContent input, #selectRelatedContent select';
+					valueSelector = '#selectRelatedContent input:not([type=hidden]), #selectRelatedContent select';
 				}
 				$('#mura-rc-quickedit').hide();
 				siteManager.loadRelatedContent(contentid,siteid, 0, $(valueSelector).serialize(), advSearching,external,relatedcontentsetid);
