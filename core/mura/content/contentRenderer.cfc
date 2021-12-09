@@ -2699,10 +2699,10 @@ Display Objects
 
 	<cfset var body=arguments.str>
 	<cfset var errorStr="">
-	<cfset var regex1="(\[sava\]|\[mura\]|\[m\]).+?(\[/sava\]|\[/mura\]|\[/m\])">
-	<cfset var regex2="">
+	<cfset var regex1="(\[sava\]|\[mura\]|\[m\]).+?(\[/sava\]|\[/mura\]|\[/m\])">	
 	<cfset var finder=reFindNoCase(regex1,body,1,"true")>
 	<cfset var tempValue="">
+	<cfset var deprecatedTagUsed = false>
 
 	<cfparam name="this.enableMuraTag" default="true" />
 	<cfparam name="this.enableDynamicContent" default="true" />
@@ -2728,6 +2728,8 @@ Display Objects
 				<cfset tempValue=evaluate("##" & mid(tempValue, 4, len(tempValue)-7) & "##")>
 			<cfelse>
 				<cfset tempValue=evaluate("##" & mid(tempValue, 7, len(tempValue)-13) & "##")>
+				<!--- either [mura] or [sava] tag is used --->
+				<cfset deprecatedTagUsed = true >
 			</cfif>
 
 			<cfif not isDefined("tempValue") or not isSimpleValue(tempValue)>
@@ -2748,6 +2750,11 @@ Display Objects
 		<cfset finder=reFindNoCase(regex1,body,1,"true")>
 		<cfset request.cacheItem=false>
 	</cfloop>
+
+	<cfif deprecatedTagUsed>
+		<cfset variables.$.event().setValue("deprecationType","muraTag")>
+		<cfset variables.$.announceEvent('LogDeprecation')> 
+	</cfif>
 
 	<cfreturn body />
 </cffunction>
