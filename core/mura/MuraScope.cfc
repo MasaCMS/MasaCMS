@@ -84,6 +84,11 @@ component extends="MasaScope" output="false" hint="This provides a utility to ac
     }
 
 	function setCustomMuraScopeKey(name, value) output=false {
+	
+		// Send deprecation warning for using this function
+		super.getEvent().setValue("deprecationType","setCustomMuraScopeKey");
+		super.announceEvent('LogDeprecation');
+
 		super.setCustomMasaScopeKey(arguments.name, arguments.value);
 	}
 }

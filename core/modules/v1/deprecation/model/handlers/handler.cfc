@@ -6,6 +6,7 @@ component extends="mura.cfobject" {
 	variables.deprecationLogDescription = {		
 		muraTag = "Deprecated tags like '[mura]' or '[sava]' are used. Please update your content to only use the '[m]' tag instead."
 		, muraScope = "Deprecated scopes like '$' (dollar) or 'mura' are used. Please update your content to only use the 'm' scope instead."
+		, setCustomMuraScopeKey = "The function 'setCustomMuraScopeKey' has been deprecated. Please use the function 'setCustomMasaScopeKey' instead."
 	};
 	
 	public void function onLogDeprecation() {					
