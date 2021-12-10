@@ -2758,13 +2758,13 @@ Display Objects
 	</cfloop>
 	
 	<cfif deprecatedTagUsed>
-		<cfset variables.$.event().setValue("deprecationType","muraTag")>
-		<cfset variables.$.announceEvent('LogDeprecation')> 
+		<cfset variables.m.event().setValue("deprecationType","muraTag")>
+		<cfset variables.m.announceEvent('LogDeprecation')> 
 	</cfif>
 
 	<cfif deprecatedScopeUsed>
-		<cfset variables.$.event().setValue("deprecationType","muraScope")>
-		<cfset variables.$.announceEvent('LogDeprecation')> 
+		<cfset variables.m.event().setValue("deprecationType","muraScope")>
+		<cfset variables.m.announceEvent('LogDeprecation')> 
 	</cfif>
 
 	<cfreturn body />
