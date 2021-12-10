@@ -433,7 +433,7 @@ function getThemeRenderer() output=false {
 		}
 	}
 
-	function setCustomMuraScopeKey(name, value) output=false {
+	function setCustomMasaScopeKey(name, value) output=false {
 		this['#arguments.name#']=arguments.value;
 		request.customMuraScopeKeys['#arguments.name#']=arguments.value;
 	}

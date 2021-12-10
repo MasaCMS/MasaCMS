@@ -79,8 +79,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 component extends="MasaScope" output="false" hint="This provides a utility to access all Masa CMS functionality" {
 	variables.instance.event="";
 
-	public function init(data) output=false {
-
+	public function init(data) output=false {		
 		return super.init(arguments.data);
     }
+
+	function setCustomMuraScopeKey(name, value) output=false {
+		super.setCustomMasaScopeKey(arguments.name, arguments.value);
+	}
 }
