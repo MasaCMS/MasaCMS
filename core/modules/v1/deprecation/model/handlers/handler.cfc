@@ -3,9 +3,8 @@ component extends="mura.cfobject" {
 	// Event handler that intercepts deprecation warnings and write them to a seperate log file
 	// It runs in the global context, so covers ALL Mura sites that are running	
 
-	variables.deprecationLogDescription = {
-		themeTemplate = "Someting wrong in the template of your theme"
-		, themeEventhandler = "Something wrong in the eventhandler of your theme"
+	variables.deprecationLogDescription = {		
+		muraTag = "Deprecated tags like '[mura]' or '[sava]' are used. Please update your content to only use the '[m]' tag instead."
 	};
 	
 	public void function onLogDeprecation() {					
