@@ -685,7 +685,7 @@
 
 			var v = $('#metabackgroundimageurl').val();
 			var str = "";
-			if (v.length > 3){
+			if (v !== undefined && v.length > 3){
 				str = "url('" + v + "')";
 				$('.meta-css-bg-option').show();
 			} else {
