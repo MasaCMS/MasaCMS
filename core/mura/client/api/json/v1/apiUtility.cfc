@@ -379,23 +379,21 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 			getBean('utility').suppressDebugging();
 
-			var httpRequestData=getHTTPRequestData();
-			var headers = httpRequestData.headers;
+			var headers = getHttpRequestData().headers;
 
 			if( structKeyExists( headers, 'Origin' )){
-				if(getBean('configBean').getValue(property="cors",defaultValue=true)){
-					var origin =  headers['Origin'];
+
+			  	var origin =  headers['Origin'];
 					var originDomain =reReplace(origin, "^\w+://([^\/:]+)[\w\W]*$", "\1", "one");
 
-					// If the Origin is okay, then echo it back, otherwise leave out the header key
+			  	// If the Origin is okay, then echo it back, otherwise leave out the header key
 					for(var domain in application.settingsManager.getAccessControlOriginDomainArray() ){
 						if( domain == originDomain || len(originDomain) > len(domain) && right(originDomain,len(domain)+1)=='.' & domain ){
 							responseObject.setHeader( 'Access-Control-Allow-Origin', origin );
+				   		responseObject.setHeader( 'Access-Control-Allow-Credentials', 'true' );
 						}
 					}
-				}
-				responseObject.setHeader( 'Access-Control-Allow-Credentials', 'true' );
-			}
+		  	}
 
 			var paramsArray=[];
 			var pathInfo=listToArray(arguments.path,'/');
@@ -891,8 +889,6 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 				if(isDefined('#params.method#')){
 
-					getBean('$').init(structCopy(params)).announceEvent('onApiRequest');
-
 					result=evaluate('#params.method#(argumentCollection=params)');
 
 					if(!isJson(result)){
@@ -990,8 +986,6 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			if(!isDefined('params.entityName')){
 				throw(type="invalidParameters");
 			}
-
-			getBean('$').init(structCopy(params)).announceEvent('onApiRequest');
 
 			if (params.entityName == 'site'){
 				params.id=params.siteid;

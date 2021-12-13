@@ -1451,30 +1451,21 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 				arguments.domain=request.muraPreviewDomain;
 			}
 			if ( !isDefined('arguments.domain') || !len(arguments.domain) ) {
-				if(getValue('isRemote')){
+				if(getValue('isRemote') ){
 					arguments.domain=getValue('domain');
 				} else {
-					var potentialDomain=getBean('utility').getRequestHost();
-					if ( len(potentialDomain) && !get('EnforcePrimaryDomain') && isValidDomain(domain=potentialDomain,mode='complete') ) {
-						arguments.domain=potentialDomain;
+					if ( len(cgi.server_name) && !get('EnforcePrimaryDomain') && isValidDomain(domain=cgi.server_name,mode='complete') ) {
+						arguments.domain=cgi.server_name;
 					} else {
 						arguments.domain=getValue('domain');
 					}
 				}
 			}
 			if ( arguments.useProtocol ) {
-				if(getValue('isRemote')){
-					if( getValue("remoteport") == 443){
-						return 'https://' & arguments.domain & getServerPort() & getContext();
-					} else {
-						return 'http://' & arguments.domain & getServerPort() & getContext();
-					}
+				if ( arguments.secure ) {
+					return 'https://' & arguments.domain & getServerPort() & getContext();
 				} else {
-					if ( arguments.secure ) {
-						return 'https://' & arguments.domain & getServerPort() & getContext();
-					} else {
-						return getScheme(arguments.secure) & '://' & arguments.domain & getServerPort() & getContext();
-					}
+					return getScheme(arguments.secure) & '://' & arguments.domain & getServerPort() & getContext();
 				}
 			} else {
 				return '//' & arguments.domain & getServerPort() & getContext();
@@ -1498,9 +1489,8 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 			arguments.domain=request.muraPreviewDomain;
 		}
 		if ( !isDefined('arguments.domain') || !len(arguments.domain) ) {
-			var potentialDomain=getBean('utility').getRequestHost();
-			if ( len(potentialDomain) && !get('EnforcePrimaryDomain') && isValidDomain(domain=potentialDomain,mode='complete') ) {
-				arguments.domain=potentialDomain;
+			if ( len(cgi.server_name) && !get('EnforcePrimaryDomain') && isValidDomain(domain=cgi.server_name,mode='complete') ) {
+				arguments.domain=cgi.server_name;
 			} else {
 				arguments.domain=getValue('domain');
 			}

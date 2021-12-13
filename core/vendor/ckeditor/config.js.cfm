@@ -5,9 +5,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 <cfsetting showdebugoutput="no">
 <cfset $=application.serviceFactory.getBean('$').init(session.siteID)>
-
-<cfset domain=$.getBean('utility').getRequestHost()>
-
 <cfset renderer=$.getContentRenderer()>
 CKEDITOR.editorConfig = function( config )
 {
@@ -328,46 +325,46 @@ CKEDITOR.editorConfig = function( config )
 		config.contentsCss = [];
 
 		<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/css/editor/editor.css.cfm') )>
-			config.contentsCss.push('#$.siteConfig().getThemeAssetPath(useProtocol=0,secure=secure,complete=1,domain=domain)#/css/editor/editor.css.cfm');
+			config.contentsCss.push('#$.siteConfig().getThemeAssetPath(useProtocol=0,secure=secure,complete=1,domain=cgi.server_name)#/css/editor/editor.css.cfm');
 		</cfif>
 
 		<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/css/editor/editor.css') )>
-			config.contentsCss.push('#$.siteConfig().getThemeAssetPath(useProtocol=0,secure=secure,complete=1,domain=domain)#/css/editor/editor.css');
+			config.contentsCss.push('#$.siteConfig().getThemeAssetPath(useProtocol=0,secure=secure,complete=1,domain=cgi.server_name)#/css/editor/editor.css');
 		</cfif>
 
 		<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/css/editor.css.cfm') )>
-			config.contentsCss.push('#$.siteConfig().getThemeAssetPath(useProtocol=0,secure=secure,complete=1,domain=domain)#/css/editor.css.cfm');
+			config.contentsCss.push('#$.siteConfig().getThemeAssetPath(useProtocol=0,secure=secure,complete=1,domain=cgi.server_name)#/css/editor.css.cfm');
 		</cfif>
 
 		<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/css/editor.css') )>
-			config.contentsCss.push('#$.siteConfig().getThemeAssetPath(useProtocol=0,secure=secure,complete=1,domain=domain)#/css/editor.css');
+			config.contentsCss.push('#$.siteConfig().getThemeAssetPath(useProtocol=0,secure=secure,complete=1,domain=cgi.server_name)#/css/editor.css');
 		</cfif>
 
 	<!--- templates --->
 		<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/templates/default.js.cfm') )>
 			config.templates='default';
-			config.templates_files= ['#$.siteConfig().getThemeAssetPath(useProtocol=0,secure=secure,complete=1,domain=domain)#/js/editor/templates/default.js.cfm'];
+			config.templates_files= ['#$.siteConfig().getThemeAssetPath(useProtocol=0,secure=secure,complete=1,domain=cgi.server_name)#/js/editor/templates/default.js.cfm'];
 		<cfelseif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/templates/default.js') )>
 			config.templates='default';
-			config.templates_files= ['#$.siteConfig().getThemeAssetPath(useProtocol=0,secure=secure,complete=1,domain=domain)#/js/editor/templates/default.js'];
+			config.templates_files= ['#$.siteConfig().getThemeAssetPath(useProtocol=0,secure=secure,complete=1,domain=cgi.server_name)#/js/editor/templates/default.js'];
 		</cfif>
 
 	<!--- styleSet --->
 		<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/styles.js.cfm') )>
-			config.stylesSet='default:#$.siteConfig().getThemeAssetPath(useProtocol=0,secure=secure,complete=1,domain=domain)#/js/editor/styles.js.cfm';
+			config.stylesSet='default:#$.siteConfig().getThemeAssetPath(useProtocol=0,secure=secure,complete=1,domain=cgi.server_name)#/js/editor/styles.js.cfm';
 		<cfelseif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/styles.js') )>
-			config.stylesSet='default:#$.siteConfig().getThemeAssetPath(useProtocol=0,secure=secure,complete=1,domain=domain)#/js/editor/styles.js';
+			config.stylesSet='default:#$.siteConfig().getThemeAssetPath(useProtocol=0,secure=secure,complete=1,domain=cgi.server_name)#/js/editor/styles.js';
 		</cfif>
 
 	<!--- customConfig --->
 		<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/config.js.cfm') )>
-			config.customConfig='#$.siteConfig().getThemeAssetPath(useProtocol=0,secure=secure,complete=1,domain=domain)#/js/editor/config.js.cfm';
+			config.customConfig='#$.siteConfig().getThemeAssetPath(useProtocol=0,secure=secure,complete=1,domain=cgi.server_name)#/js/editor/config.js.cfm';
 		<cfelseif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/config.js') )>
-			config.customConfig='#$.siteConfig().getThemeAssetPath(useProtocol=0,secure=secure,complete=1,domain=domain)#/js/editor/config.js';
+			config.customConfig='#$.siteConfig().getThemeAssetPath(useProtocol=0,secure=secure,complete=1,domain=cgi.server_name)#/js/editor/config.js';
 		<cfelseif fileExists(expandPath($.siteConfig("includePath") & '/js/editor/config.js.cfm') )>
-			config.customConfig='#$.siteConfig().getAssetPath(useProtocol=0,secure=secure,complete=1,domain=domain)#/js/editor/config.js.cfm';
+			config.customConfig='#$.siteConfig().getAssetPath(useProtocol=0,secure=secure,complete=1,domain=cgi.server_name)#/js/editor/config.js.cfm';
 		<cfelseif fileExists(expandPath($.siteConfig("includePath") & '/js/editor/config.js') )>
-			config.customConfig='#$.siteConfig().getAssetPath(useProtocol=0,secure=secure,complete=1,domain=domain)#/js/editor/config.js';
+			config.customConfig='#$.siteConfig().getAssetPath(useProtocol=0,secure=secure,complete=1,domain=cgi.server_name)#/js/editor/config.js';
 		</cfif>
 
 	config.defaultLanguage='#listFirst($.siteConfig('JavaLocale'),'_')#';

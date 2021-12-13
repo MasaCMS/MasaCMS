@@ -246,8 +246,6 @@ component extends="controller" output="false" {
 		param default=false name="arguments.rc.saveFile";
 		param default="" name="arguments.rc.saveFileDir";
 		param default="" name="arguments.rc.bundleMode";
-		param default=false name="arguments.rc.includeStructuredAssets";
-
 		if ( len(arguments.rc.saveFileDir) ) {
 			if ( directoryExists(arguments.rc.saveFileDir) ) {
 				arguments.rc.saveFile=true;
@@ -261,7 +259,6 @@ component extends="controller" output="false" {
 			moduleID=arguments.rc.moduleID,
 			BundleName=arguments.rc.BundleName,
 			includeVersionHistory=arguments.rc.includeVersionHistory,
-			includeStructuredAssets=arguments.rc.includeStructuredAssets,
 			includeTrash=arguments.rc.includeTrash,
 			includeMetaData=arguments.rc.includeMetaData,
 			includeMailingListMembers=arguments.rc.includeMailingListMembers,

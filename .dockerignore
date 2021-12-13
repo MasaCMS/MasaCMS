@@ -1,8 +1,6 @@
 .git
 .gitignore
 .gitmodules
-box.json
-server.json
 installation.txt
 license.txt
 README.md

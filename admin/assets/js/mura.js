@@ -795,7 +795,7 @@ var Mura=(function(){
 	}
 
 	/**
-	 * generateOAuthToken - Generate Outh token for REST API
+	 * generateOAuthToken - Generate Outh toke for REST API
 	 *
 	 * @param	{string} grant_type	Grant type (Use client_credentials)
 	 * @param	{type} client_id		 Client ID

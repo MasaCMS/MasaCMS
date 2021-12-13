@@ -233,9 +233,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.suppressAPIParams=true>
 <cfset variables.instance.sessionBasedLockdown=true>
 <cfset variables.instance.autoPurgeOutputCache=true>
-<cfset variables.instance.AllowedImageExtensions="png,jpg,jpeg,gif,webp">
-<cfset variables.instance.maxUploadFileSize=10485760>
-<cfset variables.instance.maxUploadImageSize=10485760>
 <cfset variables.instance.filemanagerEnabled=false>
 <cfset variables.instance.CKFinderlicenseName="">
 <cfset variables.instance.CKFinderlicenseKey="">
@@ -891,6 +888,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<cfreturn this>
 </cffunction>
+
+<!---
+<cffunction name="createGUID" output="false">
+   <cfreturn insert("-", CreateUUID(), 23) />
+</cffunction>
+--->
 
 <cffunction name="loadClassExtensionManager" output="false">
 	<cfset variables.instance.extensionManager=createObject("component","mura.extend.extendManager").init(this) />
@@ -2155,11 +2158,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getVersionFromFile" output="false">
-	<cfif fileExists(expandPath('/muraWRM/core/version.cfm'))>
-		<cfset var version=trim(fileRead(expandPath('/muraWRM/core/version.cfm')))>
+	<cfif fileExists(expandPath('/muraWRM/box.json'))>
+		<cfset var boxConfig=fileRead(expandPath('/muraWRM/box.json'))>
 
-		<cfif len(version)>
-			<cfreturn version>
+		<cfif isJSON(boxConfig)>
+			<cfset boxConfig=deserializeJSON(boxConfig)>
+			<cfif isDefined('boxConfig.version')>
+				<cfreturn boxConfig.version>
+			</cfif>
 		</cfif>
 	</cfif>
 

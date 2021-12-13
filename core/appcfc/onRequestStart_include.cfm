@@ -124,7 +124,7 @@ if ( isDefined("onApplicationStart") ) {
 				)
 		)
 	) ) {
-		lock name="appInitBlock#application.instanceID#" type="exclusive" timeout="600" {
+		lock name="appInitBlock#application.instanceID#" type="exclusive" timeout="200" {
 			if(!(isDefined('url.method') && url.method == 'processAsyncObject')){
 			//  Since the request may have had to wait twice, this code still needs to run
 				if ( (not application.appInitialized || structKeyExists(url,application.appReloadKey)) ) {
@@ -336,9 +336,8 @@ if(local.HSTSMaxAge){
 		.setHeader('Strict-Transport-Security', 'max-age=#application.configBean.getValue(property='HSTSMaxAge',defaultValue=1200)#');
 }
 
-if(application.configBean.getValue(property='generatorheader',defaultValue=true)){
 	getPageContext()
 		.getResponse()
 		.setHeader('Generator', 'Masa CMS #application.serviceFactory.getBean('configBean').getVersion()#');
-}
+
 </cfscript>

@@ -1130,19 +1130,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<!--- END CONTENT TYPE: ALL CONTENT TYPES --->
 
-			<cfset hasRestrictedFiles=variables.fileManager.requestHasRestrictedFiles(scope=newBean.getAllValues())>
-			<cfif len(hasRestrictedFiles) gt 1 and findNoCase('|',hasRestrictedFiles)>
-				<cfset restrictedFilesArray=listToArray(hasRestrictedFiles, '|')>
-				<cfset hasRestrictedFiles=restrictedFilesArray[1]>
-				<cfset fileSize=restrictedFilesArray[2]>
-			</cfif>
-			<cfif hasRestrictedFiles eq '1'>
+			<cfif variables.fileManager.requestHasRestrictedFiles(scope=newBean.getAllValues())>
 				<cfset errors=newBean.getErrors()>
 				<cfset errors.requestHasRestrictedFiles=variables.settingsManager.getSite(newBean.getSiteID()).getRBFactory().getKey('sitemanager.requestHasRestrictedFiles')>
-			</cfif>
-			<cfif hasRestrictedFiles eq '2'>
-				<cfset errors=newBean.getErrors()>
-				<cfset errors.requestHasRestrictedFiles=application.rbFactory.getResourceBundle(session.rb).messageFormat(variables.settingsManager.getSite(newBean.getSiteID()).getRBFactory().getKey('sitemanager.requesthasinvalidsize'),fileSize)>
 			</cfif>
 
 			<cfif  ListFindNoCase(this.TreeLevelList,newBean.getType())>

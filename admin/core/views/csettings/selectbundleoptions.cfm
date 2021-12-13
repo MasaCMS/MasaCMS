@@ -73,8 +73,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
- <!--- license goes here --->
- <cfoutput>
+<cfoutput>
   <script>
 function submitBundle(){
 	if(jQuery("##saveFileDir").val() != ''){
@@ -126,7 +125,7 @@ function checkAll (form) {
   <div class="nav-module-specific btn-group">
       <a class="btn" href="./?muraAction=cSettings.editSite&siteID=#esapiEncode('url',rc.siteID)#"><i class="mi-arrow-circle-left"></i> Back to Site Settings</a>
   </div>
-</div> <!--- /.mura-header --->
+ </div> <!--- /.mura-header --->
 
 <div class="block block-constrain">
 
@@ -143,25 +142,28 @@ function checkAll (form) {
 
   <div class="help-block">A Bundle includes a Site's architecture &amp; content, all rendering files (display objects, themes, javascript, etc.) and any of the items you select below. </div>
 
-      <label class="checkbox"><input type="checkbox" checked name="includeStructuredAssets" value="true">Files Associated with Content</label>
+      <label class="checkbox"><input type="checkbox" name="includeTrash" value="true">
+            Items in Trash Bin</label>
 
-      <label class="checkbox"><input type="checkbox" name="includeTrash" value="true">Items in Trash Bin</label>
+      <label class="checkbox"><input type="checkbox" name="includeVersionHistory" value="true">
+            Content Version Histories</label>
 
-      <label class="checkbox"><input type="checkbox" name="includeVersionHistory" value="true">Content Version Histories</label>
-
-      <label class="checkbox"><input type="checkbox" name="includeMetaData" value="true">Content Comments and Ratings</label>
+      <label class="checkbox"><input type="checkbox" name="includeMetaData" value="true">
+            Content Comments and Ratings</label>
 
       <cfif application.settingsManager.getSite(session.siteid).getemailbroadcaster()>
-        <label class="checkbox"><input type="checkbox" name="includeMailingListMembers" value="true">Mailing List Members</label>
+        <label class="checkbox"><input type="checkbox" name="includeMailingListMembers" value="true">
+            Mailing List Members</label>
       </cfif>
 
-      <label class="checkbox"><input type="checkbox" name="includeFormData" value="true">Form Response Data</label>
-      <cfset siteBean=application.settingsManager.getSite(session.siteID)>
-      <cfif siteBean.getPublicUserPoolID() eq siteBean.getSiteID() and siteBean.getPrivateUserPoolID() eq siteBean.getSiteID()>
-        <label class="checkbox"><input type="checkbox" name="includeUsers" value="true">
-          Site Members &amp; Administrative Users</label>
-      </cfif>
-  </div>
+      <label class="checkbox"><input type="checkbox" name="includeFormData" value="true">
+            Form Response Data</label>
+          <cfset siteBean=application.settingsManager.getSite(session.siteID)>
+          <cfif siteBean.getPublicUserPoolID() eq siteBean.getSiteID() and siteBean.getPrivateUserPoolID() eq siteBean.getSiteID()>
+      <label class="checkbox"><input type="checkbox" name="includeUsers" value="true">
+              Site Members &amp; Administrative Users</label>
+          </cfif>
+        </div>
 
     <div class="mura-control-group">
       <label>Also include selected Plugins:</label>

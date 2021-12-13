@@ -495,8 +495,4 @@ component output="false" hint="This provides base functionality to all Masa CMS 
 		}
 	}
 
-	function logText(text,file='application'){
-		writeLog(type="information",file=arguments.file,text=arguments.text);
-	}
-
 }

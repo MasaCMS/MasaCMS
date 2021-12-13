@@ -280,16 +280,8 @@ component extends="mura.bean.bean" entityname="dataCollection" hint="This provid
 
 		setValue('acceptData','1');
 
-		var hasRestrictedFiles = getBean('fileManager').requestHasRestrictedFiles(scope=getAllValues(),allowedExtensions=getBean('configBean').getFMPublicAllowedExtensions());
-		if (len(hasRestrictedFiles) gt 1 and findNoCase('|',hasRestrictedFiles)){
-			var restrictedFilesArray=listToArray(hasRestrictedFiles, '|');
-			hasRestrictedFiles=restrictedFilesArray[1];
-			var fileSize=restrictedFilesArray[2];
-		}
-		if( hasRestrictedFiles eq '1' ){
+		if(getBean('fileManager').requestHasRestrictedFiles(scope=getAllValues(),allowedExtensions=getBean('configBean').getFMPublicAllowedExtensions())){
 			getErrors().requestHasRestrictedFiles=$.siteConfig().getRBFactory().getKey('sitemanager.requestHasRestrictedFiles');
-		} else if (hasRestrictedFiles eq '2'){
-			getErrors().requestHasRestrictedFiles=$.getBean('resourceBundle').messageFormat($.siteConfig().getRBFactory().getKey('sitemanager.requesthasinvalidsize'),fileSize);
 		}
 
 		if(!len(arguments.fields)){

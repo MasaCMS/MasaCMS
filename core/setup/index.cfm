@@ -87,22 +87,6 @@ to your own modified versions of Mura CMS.
 if ( !structKeyExists( request, 'renderMuraSetup' ) || !request.renderMuraSetup ) {
 	abort;
 }
-
-
-if ( isDefined('url.checkmappings') ){
-  if(!fileExists(variables.baseDir & "/plugins/mappings.cfm")){
-    include "./../appcfc/buildPluginMappings.cfm";
-    writeOutput("mappings created.");
-  } else {
-    writeOutput("mappings already existed.");
-  }
-  abort;
-}
-
-if ( isDefined('url.prewarm') ){
-  include "./prewarming/wrapper.cfm";
-}
-
 /* --------------------------------------------------------------------
   - Read values from existing settings.ini.cfm file.
   - Param some form values.

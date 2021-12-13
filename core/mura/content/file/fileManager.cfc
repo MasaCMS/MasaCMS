@@ -652,13 +652,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="scope" default="#form#">
 	<cfargument name="allowedExtensions" default="#getBean('configBean').getFMAllowedExtensions()#">
 	<cfscript>
-		var temptext='';
+		var tempext='';
 		var classExtensionManager=getBean('configBean').getClassExtensionManager();
-		var allowedImageExtensions=getBean('configBean').getAllowedImageExtensions();
-		var maxUploadFileSize=application.configBean.getValue('maxuploadfilesize');
 
 		if(!len(arguments.allowedExtensions)){
-			return 0;
+			return false;
 		}
 
 		if(structKeyExists(arguments.scope,'siteid')){
@@ -679,18 +677,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					temptext=listLast(getPostedClientFileName(i),'.');
 
 					if(len(tempText) && len(tempText) < 5 && !listFindNoCase(arguments.allowedExtensions,temptext)){
-						return 1;
-					}
-
-					//if image type
-					if (listFindNoCase(allowedImageExtensions, temptext)){
-
-						var path = listLast(arguments.scope['#i#'],',');
-						temptext = getFileInfo(path).size;
-						if (temptext > maxUploadFileSize){
-							temptext = numberFormat(temptext / 1024,'9');
-							return "2|#temptext#kb";
-						}
+						return true;
 					}
 				}
 
@@ -725,14 +712,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					*/
 
 					if(len(tempText) < 5 && !listFindNoCase(arguments.allowedExtensions,temptext)){
-						return 1;
+						return true;
 					}
 				}
 
 			}
 		}
 
-		return 0;
+		return false;
 	</cfscript>
 </cffunction>
 
