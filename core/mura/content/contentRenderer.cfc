@@ -2703,6 +2703,7 @@ Display Objects
 	<cfset var finder=reFindNoCase(regex1,body,1,"true")>
 	<cfset var tempValue="">
 	<cfset var deprecatedTagUsed = false>
+	<cfset var deprecatedScopeUsed = false>
 
 	<cfparam name="this.enableMuraTag" default="true" />
 	<cfparam name="this.enableDynamicContent" default="true" />
@@ -2722,14 +2723,19 @@ Display Objects
 	<!---  still looks for the Sava tag for backward compatibility --->
 	<cfloop condition="#finder.len[1]#">
 		<cftry>
-			<cfset tempValue=mid(body, finder.pos[1], finder.len[1])>
+			<cfset tempValue=mid(body, finder.pos[1], finder.len[1])>		
+
+			<!--- Check if calls to '$' or 'mura' scope are being used --->
+			<cfif FindNoCase('mura.', tempValue) OR FindNoCase('$.',tempValue)>
+				<cfset deprecatedScopeUsed = true>
+			</cfif>
 
 			<cfif left(tempValue,3) eq "[m]">
 				<cfset tempValue=evaluate("##" & mid(tempValue, 4, len(tempValue)-7) & "##")>
 			<cfelse>
 				<cfset tempValue=evaluate("##" & mid(tempValue, 7, len(tempValue)-13) & "##")>
 				<!--- either [mura] or [sava] tag is used --->
-				<cfset deprecatedTagUsed = true >
+				<cfset deprecatedTagUsed = true>
 			</cfif>
 
 			<cfif not isDefined("tempValue") or not isSimpleValue(tempValue)>
@@ -2748,12 +2754,17 @@ Display Objects
 			</cfcatch>
 		</cftry>
 		<cfset finder=reFindNoCase(regex1,body,1,"true")>
-		<cfset request.cacheItem=false>
+		<cfset request.cacheItem=false>		
 	</cfloop>
-
+	
 	<cfif deprecatedTagUsed>
-		<cfset variables.$.event().setValue("deprecationType","muraTag")>
-		<cfset variables.$.announceEvent('LogDeprecation')> 
+		<cfset variables.m.event().setValue("deprecationType","muraTag")>
+		<cfset variables.m.announceEvent('LogDeprecation')> 
+	</cfif>
+
+	<cfif deprecatedScopeUsed>
+		<cfset variables.m.event().setValue("deprecationType","muraScope")>
+		<cfset variables.m.announceEvent('LogDeprecation')> 
 	</cfif>
 
 	<cfreturn body />
