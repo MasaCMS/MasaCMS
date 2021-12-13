@@ -79,21 +79,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 component extends="MasaScope" output="false" hint="This provides a utility to access all Masa CMS functionality" {
 	variables.instance.event="";
 
-	public function init(data) output=false {	
-		
-		// Send deprecation warning for initializing this component
-		super.getEvent().setValue("deprecationType","MuraScopeObject");
-		super.announceEvent('LogDeprecation');
-
+	public function init(data) output=false {		
+		if(structKeyExists(application,"pluginManager")){			
+			// Send deprecation warning for initializing this component
+			super.getEvent().setValue("deprecationType","MuraScopeObject");
+			super.announceEvent('LogDeprecation');		
+		}
 		return super.init(arguments.data);
     }
 
-	function setCustomMuraScopeKey(name, value) output=false {
-	
+	function setCustomMuraScopeKey(name, value) output=false {	
 		// Send deprecation warning for using this function
 		super.getEvent().setValue("deprecationType","setCustomMuraScopeKey");
 		super.announceEvent('LogDeprecation');
-
 		super.setCustomMasaScopeKey(arguments.name, arguments.value);
 	}
 }
