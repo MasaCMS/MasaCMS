@@ -100,10 +100,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remoteurl')#</label>
 					<input type="text" id="remoteURL" name="remoteURL" value="#rc.contentBean.getRemoteURL()#"  maxlength="255">
 					</div>
-
+					
 					<div class="mura-control-group">
-					<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotepublicationdate')#</label>
-					<input type="text" id="remotePubDate" name="remotePubDate" value="#rc.contentBean.getRemotePubDate()#"  maxlength="255">
+						<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotepublicationdate')#</label>						
+						<cf_datetimeselector name="remotePubDate" datetime="#rc.contentBean.getRemotePubDate()#" timeselectwrapper="true">
 					</div>
 
 					<div class="mura-control-group">
