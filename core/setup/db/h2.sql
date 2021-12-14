@@ -427,8 +427,7 @@ CREATE TABLE tsettings (
   contactEmail varchar(100)  default NULL,
   contactPhone varchar(50)  default NULL,
   privateUserPoolID varchar(50)  default NULL,
-  publicUserPoolID varchar(50)  default NULL,
-  advertiserUserPoolID varchar(50)  default NULL,
+  publicUserPoolID varchar(50)  default NULL,  
   orderNo int(10) default NULL,
   emailBroadcasterLimit int(10) NOT NULL default '0',
   feedManager int(10) default NULL,
@@ -458,8 +457,8 @@ CREATE TABLE tsettings (
   mailserverSSL varchar(5) default NULL
 ) ;
 
-INSERT INTO tsettings (SiteID,Site,MaxNestLevel,PageLimit,Locking,Domain,exportLocation,FileDir,Contact,MailserverIP,MailServerUsername,MailServerPassword,EmailBroadcaster,Extranet,ExtranetPublicReg,ExtranetPublicRegNotify,ExtranetSSL,Cache,ViewDepth,NextN,DataCollection,columnCount,columnNames,primaryColumn,publicSubmission,archiveDate,contactName,contactAddress,contactCity,contactState,contactZip,contactEmail,contactPhone,privateUserPoolID,publicUserPoolID,advertiserUserPoolID,orderNo,emailBroadcasterLimit,feedManager,displayPoolID,galleryMainScaleBy,galleryMainScale,gallerySmallScaleBy,gallerySmallScale,galleryMediumScaleBy,galleryMediumScale,sendLoginScript,mailingListConfirmScript,publicSubmissionApprovalScript,reminderScript,loginURL,editProfileURL,CommentApprovalDefault,deploy,lastDeployment,accountActivationScript,useDefaultSMTPServer) VALUES
- ('default','Default',NULL,1000,'none','localhost',NULL,NULL,'masacms@weareorange.eu','mail.server.com','username@server.com','password',0,0,0,NULL,0,0,1,20,1,3,'Left Column^Main Content^Right Column',2,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'default','default','default',1,0,1,'default','y',500,'s',100,'y',250,NULL,NULL,NULL,NULL,'?display=login','?display=editProfile',1,0,NULL,NULL,0);
+INSERT INTO tsettings (SiteID,Site,MaxNestLevel,PageLimit,Locking,Domain,exportLocation,FileDir,Contact,MailserverIP,MailServerUsername,MailServerPassword,EmailBroadcaster,Extranet,ExtranetPublicReg,ExtranetPublicRegNotify,ExtranetSSL,Cache,ViewDepth,NextN,DataCollection,columnCount,columnNames,primaryColumn,publicSubmission,archiveDate,contactName,contactAddress,contactCity,contactState,contactZip,contactEmail,contactPhone,privateUserPoolID,publicUserPoolID,orderNo,emailBroadcasterLimit,feedManager,displayPoolID,galleryMainScaleBy,galleryMainScale,gallerySmallScaleBy,gallerySmallScale,galleryMediumScaleBy,galleryMediumScale,sendLoginScript,mailingListConfirmScript,publicSubmissionApprovalScript,reminderScript,loginURL,editProfileURL,CommentApprovalDefault,deploy,lastDeployment,accountActivationScript,useDefaultSMTPServer) VALUES
+ ('default','Default',NULL,1000,'none','localhost',NULL,NULL,'masacms@weareorange.eu','mail.server.com','username@server.com','password',0,0,0,NULL,0,0,1,20,1,3,'Left Column^Main Content^Right Column',2,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'default','default',1,0,1,'default','y',500,'s',100,'y',250,NULL,NULL,NULL,NULL,'?display=login','?display=editProfile',1,0,NULL,NULL,0);
 
 CREATE TABLE tsystemobjects (
   Object varchar(50)  default NULL,
