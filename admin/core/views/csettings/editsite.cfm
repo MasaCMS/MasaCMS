@@ -614,16 +614,7 @@ to your own modified versions of Mura CMS.
 									<label class="radio inline"><input type="radio" name="dataCollection" value="1" <cfif rc.siteBean.getdataCollection() eq 1> checked</cfif>>On</label>
 						</div>
 						 </cfif>
-
-						<!--- The ad manager is now gone, but can exist in limited legacy situations --->
-					<cfif application.configBean.getAdManager() or rc.siteBean.getadManager()>
-						<div class="mura-control-group">
-							<label>Advertisement Manager</label>
-									<label class="radio inline"><input type="radio" name="adManager" value="0" <cfif rc.siteBean.getadManager() neq 1> checked</cfif>>Off</label>
-									<label class="radio inline"><input type="radio" name="adManager" value="1" <cfif rc.siteBean.getadManager() eq 1> checked</cfif>>On</label>
-
-						</div>
-					</cfif>
+				
 					<div class="mura-control-group">
 							<label>Comments Manager</label>
 							<label class="radio inline"><input type="radio" name="hasComments" value="0" <cfif rc.siteBean.getHasComments() neq 1> checked</cfif>>Off</label>
