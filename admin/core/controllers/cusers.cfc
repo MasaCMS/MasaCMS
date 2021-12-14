@@ -380,17 +380,9 @@ component persistent='false' accessors='true' output='false' extends='controller
 			} else {
 				variables.fw.redirect(action='cUsers.listusers', append='siteid,ispublic', path='./');
 			}
-		}
+		}		
 
-		if ( arguments.rc.routeid == 'adManager' && arguments.rc.action != 'delete' ) {
-			variables.fw.redirect(action='cAdvertising.viewAdvertiser', append='siteid,userid', path='./');
-		}
-
-		if ( arguments.rc.routeid == 'adManager' && arguments.rc.action == 'delete' ) {
-			variables.fw.redirect(action='cAdvertising.listAdvertisers', append='siteid', path='./');
-		}
-
-		if ( arguments.rc.routeid != '' && arguments.rc.routeid != 'adManager' ) {
+		if ( arguments.rc.routeid != '') {
 			arguments.rc.userid = rc.routeid;
 			variables.fw.redirect(action='cUsers.editgroup', append='siteid,userid', path='./');
 		}

@@ -121,22 +121,7 @@
 		<cfquery>
 			delete from tcontentfeedadvancedparams
 			where feedID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
-		</cfquery>
-
-		<!--- ADVERTISING
-		<cftry>
-			<cfquery>
-				delete from tadplacements
-				where campaignID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
-			</cfquery>
-
-			<cfquery>
-				delete from tadplacements
-				where placementID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
-			</cfquery>
-			<cfcatch></cfcatch>
-		</cftry>
-		--->
+		</cfquery>		
 
 		<!--- EMPTY TRASH TABLE--->
 		<cfquery>
