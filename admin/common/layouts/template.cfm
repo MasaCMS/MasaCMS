@@ -156,10 +156,7 @@ This file is part of Mura CMS.
 				</cfcase>
 				<cfcase value="cMessage">
 				<cfset moduleTitle="Message"/>
-				</cfcase>
-				<cfcase value="cAdvertising">
-				<cfset moduleTitle="Advertising Manager"/>
-				</cfcase>
+				</cfcase>				
 				<cfcase value="cEditProfile">
 				<cfset moduleTitle="Edit Profile"/>
 				</cfcase>
