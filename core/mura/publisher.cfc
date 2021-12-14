@@ -873,7 +873,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContentObjects.Name neq '',de('no'),de('yes'))#" value="#rstContentObjects.Name#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContentObjects.Object neq '',de('no'),de('yes'))#" value="#rstContentObjects.Object#">,
 					<cfif arguments.keyMode eq "copy" and arguments.fromDSN eq arguments.toDSN>
-						<cfif listFindNoCase("plugin,adzone", rstContentObjects.object)>
+						<cfif listFindNoCase("plugin", rstContentObjects.object)>
 							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContentObjects.ObjectID neq '',de('no'),de('yes'))#" value="#rstContentObjects.objectID#">,
 						<cfelse>
 							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContentObjects.ObjectID neq '',de('no'),de('yes'))#" value="#keys.get(rstContentObjects.objectID)#">,

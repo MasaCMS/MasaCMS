@@ -800,10 +800,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var rsSettings=""/>
 		<cfset var rstadcampaigns=""/>
 		<cfset var rstadcreatives=""/>
-		<cfset var rstadipwhitelist=""/>
-		<cfset var rstadzones=""/>
-		<cfset var rstadplacements=""/>
-		<cfset var rstadplacementdetails=""/>
+		<cfset var rstadipwhitelist=""/>		
 		<cfset var rstcontentcategoryassign=""/>
 		<cfset var rstcontentfeeds=""/>
 		<cfset var rstcontentfeeditems=""/>

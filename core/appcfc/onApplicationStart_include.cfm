@@ -358,8 +358,7 @@ if ( application.setupComplete ) {
 		//The ad manager has been removed, but may be there in certain legacy conditions
 		if(variables.serviceFactory.containsBean('placementBean')){
 			variables.serviceFactory.addAlias("placement","placementBean");
-			variables.serviceFactory.addAlias("creative","creativeBean");
-			variables.serviceFactory.addAlias("adZone","adZoneBean");
+			variables.serviceFactory.addAlias("creative","creativeBean");			
 			variables.serviceFactory.addAlias("campaign","campaignBean");
 		}
 

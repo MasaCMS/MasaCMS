@@ -98,10 +98,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfcase>
 	<cfcase value="form">
 		<cfinclude template="objectclass/legacy/dsp_forms.cfm">
-	</cfcase>
-	<cfcase value="adzone">
-		<cfinclude template="objectclass/legacy/dsp_adzones.cfm">
-	</cfcase>
+	</cfcase>	
 	<cfcase value="Folder">
 		<cfinclude template="objectclass/legacy/dsp_Folders.cfm">
 	</cfcase>
