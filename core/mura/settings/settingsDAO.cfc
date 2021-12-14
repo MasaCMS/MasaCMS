@@ -611,28 +611,7 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 	  <cfqueryparam cfsqltype="cf_sql_varchar" value="00000000000000000000000000000000001" />,
 	  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
 	)
-   </cfquery>
-
-      <cfquery>
-      Insert into tcontent (siteid,moduleid,parentid,contentid,contenthistid,type,subType,active,title,menutitle,display,approved,isnav ,forceSSL,searchExclude)
-	  values(
-	  <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getsiteid()#">,
-	  '00000000000000000000000000000000006',
-	  '00000000000000000000000000000000END',
-	  '00000000000000000000000000000000006',
-	  '#createuuid()#',
-	  'Module',
-	  'Default',
-	  1,
-	  'Advertisement Manager',
-	  'Advertisement Manager',
-	  1,
-	  1,
-	  1,
-	  0,
-	  0
-	)
-   </cfquery>
+   </cfquery>      
 
    <cfquery>
       Insert into tcontent (siteid,moduleid,parentid,contentid,contenthistid,type,subType,active,title,menutitle,display,approved,isnav ,forceSSL,searchExclude)
