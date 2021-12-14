@@ -57,8 +57,7 @@
     },
     "installPaths":{
         "testbox":"core/vendor/testbox/",
-        "docbox":"core/vendor/docbox/",
-        "MasaBoostrap4":"themes/default/"
+        "docbox":"core/vendor/docbox/"        
     },
     "scripts":{},
     "ignore":[
