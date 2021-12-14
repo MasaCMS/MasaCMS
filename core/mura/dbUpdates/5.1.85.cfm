@@ -1,5 +1,3 @@
-<!--- make sure tadcreatives.target exists --->
-
 <cfquery name="rsCheck">
 select * from tplugindisplayobjects  where 0=1
 </cfquery>

@@ -353,15 +353,7 @@ if ( application.setupComplete ) {
 		variables.serviceFactory.addAlias("mailingList","mailingListBean");
 		variables.serviceFactory.addAlias("mailingListMember","memberBean");
 		variables.serviceFactory.addAlias("groupDAO","userDAO");
-		variables.serviceFactory.addAlias("userRedirect","userRedirectBean");
-
-		//The ad manager has been removed, but may be there in certain legacy conditions
-		if(variables.serviceFactory.containsBean('placementBean')){
-			variables.serviceFactory.addAlias("placement","placementBean");
-			variables.serviceFactory.addAlias("creative","creativeBean");			
-			variables.serviceFactory.addAlias("campaign","campaignBean");
-		}
-
+		variables.serviceFactory.addAlias("userRedirect","userRedirectBean");		
 		variables.serviceFactory.addAlias("rate","rateBean");
 		variables.serviceFactory.addAlias("favorite","favoriteBean");
 		variables.serviceFactory.addAlias("email","emailBean");

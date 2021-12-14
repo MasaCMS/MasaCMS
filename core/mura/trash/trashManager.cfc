@@ -135,27 +135,6 @@
 
 	</cfloop>
 
-	<!---
-	<cftry>
-		<cfquery>
-			delete from tadplacementdetails
-			where placementID not in (select placementID from tadplacements)
-		</cfquery>
-
-		<cfquery>
-			delete from tadplacementcategoryassign
-			where placementID not in (select placementID from tadplacements)
-		</cfquery>
-
-		<cfquery>
-			delete from tadstats
-			where placementID not in (select placementID from tadplacements)
-		</cfquery>
-		<cfcatch></cfcatch>
-	</cftry>
-	--->
-
-
 	<cfset request.muratransaction=request.muratransaction-1>
 
 	<!--- FILES --->
@@ -213,10 +192,8 @@
 	<cfparam name="request.delete#deleteIDHash#" default="0">
 
 	<cfset request["delete#deleteIDHash#"]=request["delete#deleteIDHash#"]+1>
-
-	<cfif listFindNoCase("campaign,creative",arguments.objectClass)>
-		<cfset siteid=getBean('userManager').read(arguments.deleted.getUserID()).getSiteID()>	
-	<cfelseif len(arguments.deleted.getValue('siteid'))>
+	
+	<cfif len(arguments.deleted.getValue('siteid'))>
 		<cfset siteid=arguments.deleted.getValue('siteid')>
 	<cfelse>
 		<cfset siteid=sessionData.siteid>
@@ -306,9 +283,7 @@
 	<cfelseif arguments.deleted.valueExists("parentID")>
 		<cfreturn arguments.deleted.getParentID()>
 	<cfelseif arguments.deleted.getEntityName() eq 'address'>
-		<cfreturn arguments.deleted.getUserID()>
-	<cfelseif arguments.deleted.getEntityName() eq 'placement'>
-		<cfreturn arguments.deleted.getCampaignID()>
+		<cfreturn arguments.deleted.getUserID()>	
 	<cfelse>
 		<cfreturn "NA">
 	</cfif>
