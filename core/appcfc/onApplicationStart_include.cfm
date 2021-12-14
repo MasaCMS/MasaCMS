@@ -494,11 +494,7 @@ if ( application.setupComplete ) {
 
 	application.appAutoUpdated=false;
 
-	variables.serviceList="utility,pluginManager,settingsManager,contentManager,eventManager,contentRenderer,contentUtility,contentGateway,categoryManager,clusterManager,contentServer,changesetManager,scriptProtectionFilter,permUtility,emailManager,loginManager,mailinglistManager,userManager,dataCollectionManager,feedManager,sessionTrackingManager,favoriteManager,raterManager,dashboardManager,autoUpdater";
-	//  The ad manager has been removed, but may be there in certain legacy conditions
-	if ( application.serviceFactory.containsBean('advertiserManager') ) {
-		variables.serviceList=listAppend(variables.serviceList,'advertiserManager');
-	}
+	variables.serviceList="utility,pluginManager,settingsManager,contentManager,eventManager,contentRenderer,contentUtility,contentGateway,categoryManager,clusterManager,contentServer,changesetManager,scriptProtectionFilter,permUtility,emailManager,loginManager,mailinglistManager,userManager,dataCollectionManager,feedManager,sessionTrackingManager,favoriteManager,raterManager,dashboardManager,autoUpdater";	
 	//  These application level services
 
 	for(variables.i in listToArray(variables.serviceList)){

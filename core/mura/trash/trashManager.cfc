@@ -215,9 +215,7 @@
 	<cfset request["delete#deleteIDHash#"]=request["delete#deleteIDHash#"]+1>
 
 	<cfif listFindNoCase("campaign,creative",arguments.objectClass)>
-		<cfset siteid=getBean('userManager').read(arguments.deleted.getUserID()).getSiteID()>
-	<cfelseif arguments.objectClass eq "placement">
-		<cfset siteid=getBean('userManager').read( getBean('advertiserManager').readCampaign(arguments.deleted.getCampaignID()).getUserID() ).getSiteID()>
+		<cfset siteid=getBean('userManager').read(arguments.deleted.getUserID()).getSiteID()>	
 	<cfelseif len(arguments.deleted.getValue('siteid'))>
 		<cfset siteid=arguments.deleted.getValue('siteid')>
 	<cfelse>
