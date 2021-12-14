@@ -203,7 +203,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.lockableNodes=false/>
 <cfset variables.instance.allowLocalFiles=false/>
 <cfset variables.instance.dataCollection=true/>
-<cfset variables.instance.adManager=false/>
 <cfset variables.instance.emailBroadcaster=false/>
 <cfset variables.instance.allowSimpleHTMLForms=true/>
 <cfset variables.instance.manageSessionCookies=true/>

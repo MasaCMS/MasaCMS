@@ -210,8 +210,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		variables.instance.ColumnNames="Left Column^Main Content^Right Column";
 		variables.instance.ExtranetPublicReg=0;
 		variables.instance.PrimaryColumn=2;
-		variables.instance.PublicSubmission=0;
-		variables.instance.adManager=0;
+		variables.instance.PublicSubmission=0;		
 		variables.instance.ContactName="";
 		variables.instance.ContactAddress="";
 		variables.instance.ContactCity="";
@@ -437,15 +436,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 			return variables.instance.dataCollection;
 		}
 	}
-
-	public function getAdManager() output=false {
-		if ( !variables.configBean.getAdManager() ) {
-			return 0;
-		} else {
-			return variables.instance.adManager;
-		}
-	}
-
+	
 	public function getEmailBroadcaster() output=false {
 		if ( !variables.configBean.getEmailBroadcaster() ) {
 			return 0;
