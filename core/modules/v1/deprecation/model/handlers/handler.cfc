@@ -8,6 +8,7 @@ component extends="mura.cfobject" {
 		, muraScope = "Deprecated scopes like '$' (dollar) or 'mura' are used. Please update your content to only use the 'm' scope instead."
 		, setCustomMuraScopeKey = "The function 'setCustomMuraScopeKey' has been deprecated. Please use the function 'setCustomMasaScopeKey' instead."
 		, MuraScopeObject = "The MuraScope.cfc object has been initialized. This will be replaced by the MasaScope.cfc object."
+		, SimpleHTMLForms = "A Simple Form has been created. Simple Forms are deprecated. Please use Forms (with the form builder) instead."
 	};
 	
 	public void function onLogDeprecation() {					

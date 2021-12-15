@@ -721,6 +721,10 @@ $('.clicktocopy').click(function(){
 	<input type="hidden" name="contentid" value="#rc.contentBean.getContentID()#">
 	<input type="hidden" name="ptype" value="#esapiEncode('html_attr',rc.ptype)#">
 	<input type="hidden" name="type" value="#esapiEncode('html_attr',rc.type)#">
+	<cfif structKeyExists(url, 'formType') && url.formType != "">
+		<!--- Only set with new forms --->
+		<input type="hidden" name="formType" value="#url.formType#">
+	</cfif>
 	<input type="hidden" name="subtype" value="#rc.contentBean.getSubType()#">
 	<input type="hidden" name="muraAction" value="cArch.update">
 	<input type="hidden" name="startrow" value="#esapiEncode('html_attr',rc.startrow)#">

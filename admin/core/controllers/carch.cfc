@@ -377,6 +377,11 @@ component extends="controller" output="false" {
 					arguments.rc.contentBean=getBean('content').loadBy(contentID=arguments.rc.contentID, siteid=arguments.rc.siteid).set(arguments.rc);
 				}
 				if ( rc.$.validateCSRFTokens(context=arguments.rc.contentBean.getContentHistID() & "add") ) {
+					if(local.currentBean.getIsNew() && structKeyExists(arguments.rc,"formType") && arguments.rc.formType eq "editor") {
+						// Create deprecation warning when creating new SimpleForms
+						arguments.rc.$.event().setValue("deprecationType","SimpleHTMLForms");
+						arguments.rc.$.announceEvent('LogDeprecation');						
+					}
 					arguments.rc.contentBean=arguments.rc.contentBean.save();
 				} else {
 					arguments.rc.contentBean.validate().getErrors().csrf='Your request contained invalid tokens';
