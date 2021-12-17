@@ -682,7 +682,7 @@ to your own modified versions of Mura CMS.
 				</div>
 
 				<div class="mura-control-group">
-					<label>Masa CMS ORM Scaffolding (ALPHA)</label>
+					<label>Masa CMS ORM Scaffolding (BETA)</label>
 					<label class="radio inline">
 					<input type="radio" name="scaffolding" value="0" <cfif rc.siteBean.getScaffolding() neq 1> checked</cfif>>
 					Off </label>
