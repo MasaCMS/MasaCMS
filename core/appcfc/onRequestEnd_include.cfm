@@ -83,4 +83,13 @@ if ( isDefined("application.eventManager") ) {
 		application.eventManager.announceEvent("onGlobalRequestEnd",createObject("component","mura.event").init());
 	}
 }
+
+// Send deprecation warning about Razuna; only do this once
+if(structKeyExists(application,"sendDeprecationWarningRazuna") && application.sendDeprecationWarningRazuna){
+	variables.current$ = application.serviceFactory.getBean('$').init();
+	variables.current$.event().setValue("deprecationType","Razuna");		
+	application.eventManager.announceEvent("LogDeprecation",variables.current$);
+	// set flag to false
+	application.sendDeprecationWarningRazuna = false;
+}
 </cfscript>

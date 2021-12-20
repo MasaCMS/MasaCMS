@@ -1014,5 +1014,11 @@ if ( application.setupComplete ) {
 	application.sessionTrackingThrottle=false;
 
 	application.clusterManager.clearOldCommands();
+	
+	//Check if Razuna is enable
+	if(application.configBean.getRazuna()){
+		// Set flag to send a deprecation warning
+		application.sendDeprecationWarningRazuna = true;	
+	}
 }
 </cfscript>
