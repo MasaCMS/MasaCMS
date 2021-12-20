@@ -117,8 +117,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 	property name="contactEmail" type="string" default="";
 	property name="contactPhone" type="string" default="";
 	property name="publicUserPoolID" type="string" default="";
-	property name="privateUserPoolID" type="string" default="";
-	property name="advertiserUserPoolID" type="string" default="";
+	property name="privateUserPoolID" type="string" default="";	
 	property name="displayPoolID" type="string" default="";
 	property name="contentPoolID" type="string" default="";
 	property name="categoryPoolID" type="string" default="";
@@ -210,8 +209,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		variables.instance.ColumnNames="Left Column^Main Content^Right Column";
 		variables.instance.ExtranetPublicReg=0;
 		variables.instance.PrimaryColumn=2;
-		variables.instance.PublicSubmission=0;
-		variables.instance.adManager=0;
+		variables.instance.PublicSubmission=0;		
 		variables.instance.ContactName="";
 		variables.instance.ContactAddress="";
 		variables.instance.ContactCity="";
@@ -220,8 +218,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		variables.instance.ContactEmail="";
 		variables.instance.ContactPhone="";
 		variables.instance.PublicUserPoolID="";
-		variables.instance.PrivateUserPoolID="";
-		variables.instance.AdvertiserUserPoolID="";
+		variables.instance.PrivateUserPoolID="";		
 		variables.instance.DisplayPoolID="";
 		variables.instance.ContentPoolID="";
 		variables.instance.CategoryPoolID="";
@@ -333,10 +330,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		}
 		if ( variables.instance.publicUserPoolID == '' ) {
 			variables.instance.publicUserPoolID=variables.instance.siteID;
-		}
-		if ( variables.instance.advertiserUserPoolID == '' ) {
-			variables.instance.advertiserUserPoolID=variables.instance.siteID;
-		}
+		}		
 		if ( variables.instance.displayPoolID == '' ) {
 			variables.instance.displayPoolID=variables.instance.siteID;
 		}
@@ -437,15 +431,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 			return variables.instance.dataCollection;
 		}
 	}
-
-	public function getAdManager() output=false {
-		if ( !variables.configBean.getAdManager() ) {
-			return 0;
-		} else {
-			return variables.instance.adManager;
-		}
-	}
-
+	
 	public function getEmailBroadcaster() output=false {
 		if ( !variables.configBean.getEmailBroadcaster() ) {
 			return 0;

@@ -77,8 +77,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfsavecontent variable="variables.fieldlist"><cfoutput>siteid,pagelimit,domain,domainAlias,enforcePrimaryDomain,contact,locking,site,mailserverip,mailserverusername,mailserverpassword,emailbroadcaster,emailbroadcasterlimit,extranet,extranetPublicReg,extranetssl,
 cache, cacheCapacity, cacheFreeMemoryThreshold, viewdepth,nextn,dataCollection,ExportLocation,
-columnCount,primaryColumn,publicSubmission,adManager,columnNames,contactName,contactAddress,contactCity,contactState,contactZip,contactEmail,contactPhone,
-publicUserPoolID,PrivateUserPoolID,AdvertiserUserPoolID,displayPoolID,filePoolID,categoryPoolID,contentPoolID,orderno,feedManager,
+columnCount,primaryColumn,publicSubmission,columnNames,contactName,contactAddress,contactCity,contactState,contactZip,contactEmail,contactPhone,
+publicUserPoolID,PrivateUserPoolID,displayPoolID,filePoolID,categoryPoolID,contentPoolID,orderno,feedManager,
 largeImageHeight, largeImageWidth, smallImageHeight, smallImageWidth, mediumImageHeight, mediumImageWidth,
 sendLoginScript, sendAuthCodeScript, mailingListConfirmScript,publicSubmissionApprovalScript,reminderScript,ExtranetPublicRegNotify,
 loginURL,editProfileURL,CommentApprovalDefault,deploy,accountActivationScript,
@@ -344,8 +344,7 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 		 ExportLocation =<cfif arguments.bean.getExportLocation() neq ''><cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.bean.getExportLocation())#" /><cfelse>null</cfif>,
 		 columnCount=#arguments.bean.getcolumnCount()#,
 		 primaryColumn=#arguments.bean.getprimaryColumn()#,
-		 publicSubmission=#arguments.bean.getpublicSubmission()#,
-		 adManager=#arguments.bean.getadManager()#,
+		 publicSubmission=#arguments.bean.getpublicSubmission()#,		 
 		 columnNames=<cfif arguments.bean.getcolumnNames() neq ''><cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.bean.getColumnNames())#" /><cfelse>null</cfif>,
 		 contactName=<cfif arguments.bean.getcontactName() neq ''><cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.bean.getContactName())#" /><cfelse>null</cfif>,
 		 contactAddress=<cfif arguments.bean.getcontactAddress() neq ''><cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.bean.getContactAddress())#" /><cfelse>null</cfif>,
@@ -355,8 +354,7 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 		 contactEmail=<cfif arguments.bean.getcontactEmail() neq ''><cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.bean.getContactEmail())#" /><cfelse>null</cfif>,
 		 contactPhone=<cfif arguments.bean.getcontactPhone() neq ''><cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.bean.getContactPhone())#" /><cfelse>null</cfif>,
 		 publicUserPoolID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getPublicUserPoolID()#" />,
-		 privateUserPoolID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getPrivateUserPoolID()#" />,
-		 advertiserUserPoolID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getAdvertiserUserPoolID()#" />,
+		 privateUserPoolID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getPrivateUserPoolID()#" />,		 
 		 displayPoolID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getDisplayPoolID()#" />,
 		 filePoolID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getFilePoolID()#" />,
 		 categoryPoolID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getCategoryPoolID()#" />,
@@ -463,8 +461,7 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 		<cfif arguments.bean.getExportLocation() neq ''><cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.bean.getExportLocation())#" /><cfelse>null</cfif>,
 		#arguments.bean.getcolumnCount()#,
 		#arguments.bean.getprimaryColumn()#,
-		#arguments.bean.getpublicSubmission()#,
-		#arguments.bean.getadmanager()#,
+		#arguments.bean.getpublicSubmission()#,		
 		<cfif arguments.bean.getcolumnNames() neq ''><cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.bean.getColumnNames())#" /><cfelse>null</cfif>,
 		<cfif arguments.bean.getcontactName() neq ''><cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.bean.getContactName())#" /><cfelse>null</cfif>,
 		<cfif arguments.bean.getcontactAddress() neq ''><cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.bean.getContactAddress())#" /><cfelse>null</cfif>,
@@ -474,8 +471,7 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 		<cfif arguments.bean.getcontactEmail() neq ''><cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.bean.getContactEmail())#" /><cfelse>null</cfif>,
 		<cfif arguments.bean.getcontactPhone() neq ''><cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.bean.getContactPhone())#" /><cfelse>null</cfif>,
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getPublicUserPoolID()#" />,
-		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getPrivateUserPoolID()#" />,
-		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getAdvertiserUserPoolID()#" />,
+		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getPrivateUserPoolID()#" />,		
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getDisplayPoolID()#" />,
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getFilePoolID()#" />,
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getCategoryPoolID()#" />,
@@ -611,28 +607,7 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 	  <cfqueryparam cfsqltype="cf_sql_varchar" value="00000000000000000000000000000000001" />,
 	  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
 	)
-   </cfquery>
-
-      <cfquery>
-      Insert into tcontent (siteid,moduleid,parentid,contentid,contenthistid,type,subType,active,title,menutitle,display,approved,isnav ,forceSSL,searchExclude)
-	  values(
-	  <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getsiteid()#">,
-	  '00000000000000000000000000000000006',
-	  '00000000000000000000000000000000END',
-	  '00000000000000000000000000000000006',
-	  '#createuuid()#',
-	  'Module',
-	  'Default',
-	  1,
-	  'Advertisement Manager',
-	  'Advertisement Manager',
-	  1,
-	  1,
-	  1,
-	  0,
-	  0
-	)
-   </cfquery>
+   </cfquery>      
 
    <cfquery>
       Insert into tcontent (siteid,moduleid,parentid,contentid,contenthistid,type,subType,active,title,menutitle,display,approved,isnav ,forceSSL,searchExclude)

@@ -353,16 +353,7 @@ if ( application.setupComplete ) {
 		variables.serviceFactory.addAlias("mailingList","mailingListBean");
 		variables.serviceFactory.addAlias("mailingListMember","memberBean");
 		variables.serviceFactory.addAlias("groupDAO","userDAO");
-		variables.serviceFactory.addAlias("userRedirect","userRedirectBean");
-
-		//The ad manager has been removed, but may be there in certain legacy conditions
-		if(variables.serviceFactory.containsBean('placementBean')){
-			variables.serviceFactory.addAlias("placement","placementBean");
-			variables.serviceFactory.addAlias("creative","creativeBean");
-			variables.serviceFactory.addAlias("adZone","adZoneBean");
-			variables.serviceFactory.addAlias("campaign","campaignBean");
-		}
-
+		variables.serviceFactory.addAlias("userRedirect","userRedirectBean");		
 		variables.serviceFactory.addAlias("rate","rateBean");
 		variables.serviceFactory.addAlias("favorite","favoriteBean");
 		variables.serviceFactory.addAlias("email","emailBean");
@@ -495,11 +486,7 @@ if ( application.setupComplete ) {
 
 	application.appAutoUpdated=false;
 
-	variables.serviceList="utility,pluginManager,settingsManager,contentManager,eventManager,contentRenderer,contentUtility,contentGateway,categoryManager,clusterManager,contentServer,changesetManager,scriptProtectionFilter,permUtility,emailManager,loginManager,mailinglistManager,userManager,dataCollectionManager,feedManager,sessionTrackingManager,favoriteManager,raterManager,dashboardManager,autoUpdater";
-	//  The ad manager has been removed, but may be there in certain legacy conditions
-	if ( application.serviceFactory.containsBean('advertiserManager') ) {
-		variables.serviceList=listAppend(variables.serviceList,'advertiserManager');
-	}
+	variables.serviceList="utility,pluginManager,settingsManager,contentManager,eventManager,contentRenderer,contentUtility,contentGateway,categoryManager,clusterManager,contentServer,changesetManager,scriptProtectionFilter,permUtility,emailManager,loginManager,mailinglistManager,userManager,dataCollectionManager,feedManager,sessionTrackingManager,favoriteManager,raterManager,dashboardManager,autoUpdater";	
 	//  These application level services
 
 	for(variables.i in listToArray(variables.serviceList)){

@@ -519,22 +519,7 @@ to your own modified versions of Mura CMS.
 							</cfloop>
 					</select>
 					</div>
-
-				<!--- The ad manager is now gone, but can exist in limited legacy situations --->
-				<cfif application.configBean.getAdManager() or rc.siteBean.getadManager()>
-					<div class="mura-control-group">
-						<label>#application.rbFactory.getKeyValue(session.rb,'siteconfig.sharedresources.advertiseruserpool')#</label>
-						<select  name="advertiserUserPoolID">
-							<option value="">This site</option>
-							<cfloop query="rsSites">
-								<cfif rsSites.siteid neq rc.siteBean.getSiteID()>
-									<option value="#rsSites.siteid#" <cfif rsSites.siteid eq rc.siteBean.getAdvertiserUserPoolID()>selected</cfif>>#esapiEncode('html',rsSites.site)#</option>
-								</cfif>
-							</cfloop>
-						</select>
-					</div>
-				</cfif>
-
+				
 				<div class="mura-control-group">
 				<label>#application.rbFactory.getKeyValue(session.rb,'siteconfig.sharedresources.displayobjectpool')#</label>
 						<select  name="displayPoolID">
@@ -614,16 +599,7 @@ to your own modified versions of Mura CMS.
 									<label class="radio inline"><input type="radio" name="dataCollection" value="1" <cfif rc.siteBean.getdataCollection() eq 1> checked</cfif>>On</label>
 						</div>
 						 </cfif>
-
-						<!--- The ad manager is now gone, but can exist in limited legacy situations --->
-					<cfif application.configBean.getAdManager() or rc.siteBean.getadManager()>
-						<div class="mura-control-group">
-							<label>Advertisement Manager</label>
-									<label class="radio inline"><input type="radio" name="adManager" value="0" <cfif rc.siteBean.getadManager() neq 1> checked</cfif>>Off</label>
-									<label class="radio inline"><input type="radio" name="adManager" value="1" <cfif rc.siteBean.getadManager() eq 1> checked</cfif>>On</label>
-
-						</div>
-					</cfif>
+				
 					<div class="mura-control-group">
 							<label>Comments Manager</label>
 							<label class="radio inline"><input type="radio" name="hasComments" value="0" <cfif rc.siteBean.getHasComments() neq 1> checked</cfif>>Off</label>

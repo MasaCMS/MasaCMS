@@ -103,10 +103,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   </cfif>
   <cfif rc.originalcircuit eq 'cPublicUsers' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000008')>
     <cfinclude template="/muraWRM#application.configBean.getAdminDir()#/core/views/cpublicusers/dsp_secondary_menu.cfm">
-  </cfif>
-  <cfif rc.originalcircuit eq 'cAdvertising' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000006')>
-    <cfinclude template="/muraWRM#application.configBean.getAdminDir()#/core/views/cadvertising/dsp_secondary_menu.cfm">
-  </cfif>
+  </cfif>  
    <cfif rc.originalcircuit eq 'cEmail' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000005')>
       <cfinclude template="/muraWRM#application.configBean.getAdminDir()#/core/views/cemail/dsp_secondary_menu.cfm">
    </cfif>

@@ -164,13 +164,7 @@ This file is part of Mura CMS.
                             <a<cfif rc.originalcircuit eq 'cFilemanager'> class="active"</cfif> href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cFilemanager.default&amp;siteid=#session.siteid#"><i class="mi-folder-open"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.filemanager")#</span></a>
                         </li>
                     </cfif>
-                    <!--- /File Manager --->
-                    <!--- Advertising, this is not only available in certain legacy situations --->
-                      <cfif application.settingsManager.getSite(session.siteid).getAdManager() and  application.permUtility.getModulePerm("00000000000000000000000000000000006",session.siteid)>
-                        <li><a<cfif rc.originalcircuit eq 'cAdvertising' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000006')> class="active"</cfif> href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cAdvertising.listAdvertisers&amp;siteid=#session.siteid#&amp;moduleid=00000000000000000000000000000000006"><i class="mi-cog"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.advertising")#</span></a>
-                        </li>
-                      </cfif>
-                    <!--- /Advertising --->
+                    <!--- /File Manager --->                 
                     <!--- Email Broadcaster --->
                       <cfif application.settingsManager.getSite(session.siteid).getemailbroadcaster() and  application.permUtility.getModulePerm("00000000000000000000000000000000005",session.siteid)>
                         <li>

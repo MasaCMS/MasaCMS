@@ -139,10 +139,7 @@ component extends="controller" output="false" {
 			arguments.rc.moduleid="00000000000000000000000000000000000";
 			arguments.rc.topid="00000000000000000000000000000000001";
 			variables.fw.redirect(action="cArch.list",append="siteid,topid,moduleid",path="./");
-		}
-		if ( arguments.rc.moduleid == '00000000000000000000000000000000006' ) {
-			variables.fw.redirect(action="cAdvertising.listAdvertisers",append="siteid",path="./");
-		}
+		}		
 		if ( arguments.rc.moduleid == '00000000000000000000000000000000010' ) {
 			variables.fw.redirect(action="cCategory.list",append="siteid",path="./");
 		}

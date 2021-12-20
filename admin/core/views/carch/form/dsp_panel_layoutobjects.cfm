@@ -221,11 +221,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
                               <option value="navigation">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.navigation')#</option>
                               <cfif application.settingsManager.getSite(rc.siteid).getemailbroadcaster()>
                               <option value="mailingList">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mailinglists')#</option>
-                              </cfif>
-                              <cfif application.settingsManager.getSite(rc.siteid).getAdManager()>
-                              <option value="adzone">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.adregions')#</option>
-                              </cfif>
-                                <!--- <option value="category">Categories</option> --->
+                              </cfif>                              
+                              <!--- <option value="category">Categories</option> --->
                               <option value="folder">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.Folders')#</option>
                               <option value="calendar">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.calendars')#</option>
                               <option value="gallery">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.galleries')#</option>

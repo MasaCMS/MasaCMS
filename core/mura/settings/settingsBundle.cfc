@@ -282,7 +282,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 
 			<cfset var filePoolID=getBean('settingsManager').getSite(arguments.siteid).getFilePoolID()>
-			<!--- We do not want to include files collected from mura forms or the advertising manager --->
+			<!--- We do not want to include files collected from mura forms --->
 			<cfquery name="rsInActivefiles">
 				select fileID,fileExt from tfiles
 				where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#filePoolID#"/>
@@ -304,7 +304,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<cfif arguments.includeStructuredAssets>
 				<cfset var filePoolID=getBean('settingsManager').getSite(arguments.siteid).getFilePoolID()>
-				<!--- We do not want to include files collected from Masa CMS forms or the advertising manager --->
+				<!--- We do not want to include files collected from Masa CMS forms --->
 				<cfquery name="rsInActivefiles">
 					select fileID,fileExt from tfiles
 					where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#filePoolID#"/>
@@ -446,7 +446,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset var bodyFileArray=[]>
 			<cfset var extensionXML="">
 
- 			<!--- We do not want to include files collected from Masa CMS forms or the advertising manager --->
+ 			<!--- We do not want to include files collected from Masa CMS forms --->
 
 			<cfloop query="rstfiles">
 				<cfif fileExists( "#filedir#/cache/file/#rstfiles.fileid#_source.#rstfiles.fileext#" )>
@@ -819,13 +819,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var rstcontentObjects=""/>
 		<cfset var rstcontentTags=""/>
 		<cfset var rstsystemobjects=""/>
-		<cfset var rsSettings=""/>
-		<cfset var rstadcampaigns=""/>
-		<cfset var rstadcreatives=""/>
-		<cfset var rstadipwhitelist=""/>
-		<cfset var rstadzones=""/>
-		<cfset var rstadplacements=""/>
-		<cfset var rstadplacementdetails=""/>
+		<cfset var rsSettings=""/>		
 		<cfset var rstcontentcategoryassign=""/>
 		<cfset var rstcontentfeeds=""/>
 		<cfset var rstcontentfeeditems=""/>
@@ -873,8 +867,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var i="">
 		<cfset var availableSpace=0>
 		<cfset var pluginConfig="">
-		<cfset var pluginCFC="">
-		<cfset var rstadplacementcategories="">
+		<cfset var pluginCFC="">		
 		<cfset var rstformresponsepackets="">
 		<cfset var rsCleanDir="">
 		<cfset var rstclassextendrcsets="">
