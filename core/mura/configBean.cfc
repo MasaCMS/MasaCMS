@@ -205,7 +205,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.dataCollection=true/>
 <cfset variables.instance.adManager=false/>
 <cfset variables.instance.emailBroadcaster=false/>
-<cfset variables.instance.allowSimpleHTMLForms=true/>
+<cfset variables.instance.allowSimpleHTMLForms=false/>
 <cfset variables.instance.manageSessionCookies=true/>
 <cfset variables.instance.securecookies=false/>
 <cfset variables.instance.sessioncookiesexpires="never"/>
