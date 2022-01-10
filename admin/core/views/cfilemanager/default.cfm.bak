@@ -105,7 +105,6 @@ follows:
 		<div class="block block-bordered">
 		  <div class="block-content">
 			<script type="text/javascript">
-			var finder = new CKFinder();
 			finder.basePath = '#application.configBean.getContext()#/core/vendor/ckfinder/';
 			finder.language = '#lcase(session.rb)#';
 			finder.height="600";

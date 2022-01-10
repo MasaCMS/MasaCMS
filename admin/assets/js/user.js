@@ -212,7 +212,6 @@ var userManager = {
 		setHTMLEditors();
 		setDatePickers(".tab-content .datepicker", dtLocale);
 		setColorPickers(".tab-content .mura-colorpicker");
-		setFinders(".tab-content .mura-ckfinder");
 		setToolTips(".tab-content");
 		setFileSelectors();
 

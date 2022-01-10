@@ -40,7 +40,6 @@ CKEDITOR.editorConfig = function( config )
 	--->
 
 	CKEditorBasePath='#application.configBean.getContext()#/core/modules/v1';
-	CKFinderBasePath='#application.configBean.getContext()#/core/modules/v1';
 	</cfoutput>
 
 	<cfoutput>

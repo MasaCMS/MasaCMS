@@ -458,49 +458,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#cachefiles.zip",directory="#variables.backupDir#/cache",recurse="true",sinceDate=arguments.sinceDate)>
 
-			<!--- Get CKFinder assets from Body + Summary regions --->
-			<cfloop query="rstcontent">
-				<!--- CKFinder 'Body/Content' Images --->
-				<cfset bodyFileArray = parseFilePaths(arguments.siteID, rstcontent.body)>
-				<cfloop from="1" to="#ArrayLen(bodyFileArray)#" index="i">
-					<cfset ArrayAppend(fileArray, bodyFileArray[i]) />
-				</cfloop>
-				<!--- CKFinder 'Summary' Images ---->
-				<cfset summaryFileArray = parseFilePaths(arguments.siteID, rstcontent.summary) />
-				<cfloop from="1" to="#ArrayLen(summaryFileArray)#" index="i">
-					<cfset ArrayAppend(fileArray, summaryFileArray[i]) />
-				</cfloop>
-				<cfif not structKeyExists(extensions,"#rstcontent.type#.#rstcontent.subtype#")>
-					<cfset extensions["#rstcontent.type#.#rstcontent.subtype#"] = true />
-				</cfif>
-			</cfloop>
-
-			<!--- Get CKFinder assets from Extended Attributes --->
-			<cfloop query="rstclassextenddata">
-				<cfset extendedAttributeFileArray = parseFilePaths(arguments.siteID, rstclassextenddata.attributeValue) />
-				<cfloop from="1" to="#ArrayLen(extendedAttributeFileArray)#" index="i">
-					<cfset ArrayAppend(fileArray, extendedAttributeFileArray[i]) />
-				</cfloop>
-			</cfloop>
-
-			<!--- Copy CKFinder Assets to Backup --->
-			<cfif ArrayLen(fileArray)>
-				<cfloop from="1" to="#ArrayLen(fileArray)#" index="i">
-					<cfscript>
-						backupPath = URLDecode('#variables.backupDir#/#fileArray[i]['path']#', 'utf-8');
-						filePath = URLDecode('#variables.backupDir#/#fileArray[i]['path']#/#fileArray[i]['file']#', 'utf-8');
-					</cfscript>
-
-					<cfif not directoryExists(backupPath)>
-						<cfset directoryCreate(backupPath)/>
-					</cfif>
-
-					<cfif not fileExists(filePath) and fileExists(URLDecode('#assetdir#/#fileArray[i]['path']#/#fileArray[i]['file']#', 'utf-8'))>
-						<cfset fileCopy(URLDecode('#assetdir#/#fileArray[i]['path']#/#fileArray[i]['file']#', 'utf-8'), filePath) />
-					</cfif>
-				</cfloop>
-			</cfif>
-
 			<!--- Prep data for extension XML file --->
 			<cfloop collection="#extensions#" item="i">
 				<cfset item = ListToArray( i,"." ) >

@@ -660,10 +660,6 @@ function CountDown() {
 }
 
 function fileManagerPopUp() {
-	var finder = new CKFinder();
-	finder.basePath = context + '/core/vendor/ckfinder/';
-	finder.resourceType = '[Advanced] Masa CMS Root';
-	finder.popup();
 	return false;
 }
 
@@ -836,7 +832,7 @@ function setFinders(e) {
 }
 
 function wireupExterndalUIWidgets() {
-    setFinders(".mura-ckfinder"), "undefined" != typeof dtLocale && setDatePickers(".datepicker", dtLocale),
+    "undefined" != typeof dtLocale && setDatePickers(".datepicker", dtLocale),
     "undefined" != typeof activetab && setTabs(".mura-tabs", activetab), setHTMLEditors(),
     "undefined" != typeof activepanel && setAccordions(".accordion", activepanel), setCheckboxTrees(),
     setColorPickers(".mura-colorpicker"), setToolTips(".container"), setFileSelectors();

@@ -534,7 +534,6 @@ if ( application.setupComplete ) {
 
 	structDelete(application,"muraAdmin");
 	structDelete(application,"proxyServices");
-	structDelete(application,"CKFinderResources");
 	//  Set up scheduled tasks
 	if ( (len(application.configBean.getServerPort())-1) < 1 ) {
 		variables.port=80;

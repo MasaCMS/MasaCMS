@@ -80,64 +80,6 @@
 				} else {
 					resizeFrontEndToolsModal(decodeURIComponent(parameters["height"]));
 				}
-			} else if(parameters["cmd"] == "openFileManager"){
-					Mura.loader().loadjs(
-					coreLoc +'vendor/ckfinder/ckfinder.js',
-						function(){
-							var target=parameters["target"];
-							var finder = new CKFinder();
-							finder.basePath = coreLoc + 'vendor/ckfinder/';
-
-							<cfif $.siteConfig('isremote')>
-								var completepath="true";
-							<cfelse>
-								var completepath=(typeof parameters["completepath"] != 'undefined') ? parameters.completepath.toString() : "true";
-							</cfif>
-
-							finder.selectActionFunction=function(fileURL){
-
-								var item=Mura('[data-instanceid="' + parameters["instanceid"] + '"]');
-
-								if(completepath.toString().toLowerCase() == 'true'){
-									item.data(parameters["target"],webroot + fileDelim + fileURL)
-								} else {
-									item.data(parameters["target"],fileURL)
-								}
-
-								var data=item.data();
-
-								delete data.runtime;
-
-								if(item.hasClass('mura-body-object')){
-									data.isbodyobject=true;
-								}
-
-								if(parameters["targetFrame"]=='sidebar' && document.getElementById('mura-sidebar-editor').style.display=='none'){
-									Mura('##mura-sidebar-configurator').show();
-								}
-
-								if(typeof parameters.callback == 'undefined'){
-									if(typeof parameters["targetFrame"] != 'undefined' && parameters["targetFrame"].toLowerCase()=='sidebar'){
-										sidebarProxy.post({cmd:'setObjectParams',params:data});
-									} else {
-										modalProxy.post({cmd:'setObjectParams',params:data});
-									}
-								}
-
-								Mura.processAsyncObject(item.node);
-						}
-
-						if(Mura(this).attr('data-resourcetype') =='root'){
-							finder.resourceType='Application_Root';
-						} else if(Mura(this).attr('data-resourcetype') == 'site'){
-							finder.resourceType=Mura.siteid + '_Site_Files';
-						} else {
-							finder.resourceType=Mura.siteid + '_User_Assets';
-						}
-
-						finder.popup();
-					}
-				);
 			} else if(parameters["cmd"] == "close"){
 				closeFrontEndToolsModal();
 			} else if(parameters["cmd"] == "setLocation"){
@@ -2006,13 +1948,6 @@
 			var instance = utility(editorInstance).ckeditorGet();
 			instance.resetDirty();
 			var totalInstances = CKEDITOR.instances;
-			<cfif url.contenttype neq 'Variation'>
-			CKFinder.setupCKEditor(
-			instance, {
-				basePath: '#application.configBean.getContext()#/core/vendor/ckfinder/',
-				rememberLastFolder: true
-			});
-			</cfif>
 		},
 		<cfset csrfTokens=$.generateCSRFTokens(context=node.getContentHistID() & 'add')>
 		data:{

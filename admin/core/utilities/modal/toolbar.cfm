@@ -94,13 +94,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 					window.CKEDITOR_BASEPATH = '#variables.$.siteConfig().getCorePath(complete=completeurls)#/vendor/ckeditor/';
 				}
-				<cfif not $.getContentRenderer().useLayoutManager()>
-				if(!window.CKFinder){
-					Mura.loader().loadjs(
-						'#variables.$.siteConfig().getCorePath(complete=completeurls)#/vendor/ckfinder/ckfinder.js');
-
-				}
-				</cfif>
 
 				Mura.loader().loadjs(
 						'#variables.$.siteConfig().getAdminPath(complete=completeurls)#/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#',
@@ -136,17 +129,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				}
 				window.CKEDITOR_BASEPATH = '#variables.$.siteConfig().getCorePath(complete=completeurls)#/vendor/ckeditor/';
 			}
-			<cfif not $.getContentRenderer().useLayoutManager()>
-			if(!window.CKFinder){
-				if(hasMuraLoader){
-					Mura(function(){
-						Mura.loader().loadjs('#variables.$.siteConfig().getCorePath(complete=completeurls)#/vendor/ckfinder/ckfinder.js');
-					});
-				} else {
-					$.getScript('#variables.$.siteConfig().getCorePath(complete=completeurls)#/vendor/ckfinder/ckfinder.js');
-				}
-			}
-			</cfif>
 			if(hasMuraLoader){
 				Mura(function(){
 					Mura.loader().loadjs('#variables.$.siteConfig().getAdminPath(complete=completeurls)#/assets/js/frontendtools.js.cfm?siteid=#esapiEncode("url",variables.$.event("siteid"))#&contenthistid=#$.content("contenthistid")#&coreversion=#application.coreversion#&showInlineEditor=#getShowInlineEditor()#&cacheid=' + Math.random());

@@ -40,7 +40,6 @@ CKEDITOR.editorConfig = function( config )
 	--->
 
 	CKEditorBasePath='#application.configBean.getContext()#/core/modules/v1';
-	CKFinderBasePath='#application.configBean.getContext()#/core/modules/v1';
 	</cfoutput>
 
 	<cfoutput>
@@ -236,10 +235,7 @@ CKEDITOR.editorConfig = function( config )
 
 	config.extraPlugins = 'SelectComponent,Selectlink,leaflet,tableresize,onchange,justify,find,bidi,div,showblocks,forms,templates,pagebreak,codemirror,widget,lineutils,dialog,oembed,sourcedialog,fakeobjects,dialogui,showprotected,balloonpanel,dialogadvtab,a11ychecker,image2';
 
-	<cfif !application.configBean.getCKFinderLicenseName().len() || !application.configBean.getCKFinderLicenseKey().len()>
-		<!--- if no licence add image2 plugin--->	
-		config.extraPlugins += ',image2';	
-	</cfif>
+	config.extraPlugins += ',image2';	
 
 	if(typeof jQuery == 'undefined'){
 		config.toolbar_QuickEdit[0].items.shift()
@@ -303,7 +299,6 @@ CKEDITOR.editorConfig = function( config )
 <cfoutput>
 	<cfif isDefined('session.siteid') and application.permUtility.getModulePerm("00000000000000000000000000000000000",session.siteid)>
 		// filebrowser settings needed for inline edit mode
-		//var connectorpath = '#application.configBean.getContext()#/core/vendor/ckfinder/ckfinder.html';
 		var connectorpath = '#$.siteConfig().getRootPath()#/core/vendor/ckeditor/plugins/murafilebrowser/filebrowser.cfm';
 		var uploadpath = '#$.siteConfig().getApi().getEndPoint()#/filebrowser/ckeditor_quick_upload?resourcepath=User_Assets&directory=/';
 		config.filebrowserBrowseUrl = connectorpath;
