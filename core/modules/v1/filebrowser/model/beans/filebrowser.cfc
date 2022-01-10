@@ -107,7 +107,6 @@ component
 
 		response.args = arguments;
 
-
 		var currentSite = application.settingsManager.getSite(arguments.siteid);
 		var baseFilePath = getBaseFileDir( arguments.siteid,arguments.resourcePath );
 		var tempDir = m.globalConfig().getTempDir();
@@ -165,6 +164,11 @@ component
 
 		response.info = imageInfo(sourceImage);
 		response.success = 1;
+
+		var info = {};
+		info['filePath'] = filePath;
+		m.event('fileBrowser',info).announceEvent('onAfterFileResize');
+
 		return response;
 	}
 
@@ -209,6 +213,10 @@ component
 
 		ImageWrite(sourceImage,tempDir & timage & "." & arguments.file.ext);
 		fileMove(tempDir & timage & "." & arguments.file.ext,destination);
+
+		var info = {};
+		info['filePath'] = destination;
+		m.event('fileBrowser',info).announceEvent('onAfterFileDuplicate');
 
 		response.success = 1;
 		return response;
@@ -257,6 +265,10 @@ component
 
 		ImageWrite(sourceImage,tempDir & timage & "." & arguments.file.ext);
 		fileMove(tempDir & timage & "." & arguments.file.ext,filePath);
+
+		var info = {};
+		info['filePath'] = filePath;
+		m.event('fileBrowser',info).announceEvent('onAfterFileRotate');
 
 		response.info = imageInfo(sourceImage);
 		response.success = 1;
@@ -333,6 +345,10 @@ component
 		response.info = imageInfo(workImage);
 		response.aspect = aspect;
 
+		var info = {};
+		info['filePath'] = filePath;
+		m.event('fileBrowser',info).announceEvent('onAfterFileCrop');
+
 		response.success = 1;
 		return response;
 	}
@@ -394,7 +410,7 @@ component
 			var item = fileUpload(tempDir,'','',"Overwrite");
 		}
 
-		var dotDelimArray = listToArray(item.serverfile,'.');
+		var dotDelimArray = listToArray(item.clientfile,'.');
 		var newFileName = dotDelimArray[1]  & dateTimeFormat( item.timecreated,'yyyymmddhhnnss'  ) & '.'  & dotDelimArray[arrayLen(dotDelimArray)];
 
 		if(listFindNoCase(allowedExtensions,item.serverfileext)) {
@@ -405,11 +421,27 @@ component
 				directoryCreate(conditionalExpandPath(filePath));
 			}
 			//moving and renaming file
-			var newFilePath=conditionalExpandPath(filePath) & m.globalConfig().getFileDelim() & newFileName;
+			var safePostFix = listToArray(newFileName,".");
+
+			if(ArrayLen(safePostFix) neq 2) {
+				response.success = 0;
+				return serializeJSON({
+					"uploaded": 0,
+					"error": {
+						"message": "File must have an extension type."
+					}
+				});				
+			}
+
+			var safeName = rereplaceNoCase(safePostFix[1],"[[:space:]]","_","ALL");
+			safeName = rereplaceNoCase(safeName,"[^[:alnum:]\_\-]","","ALL") & "." & safePostFix[2];
+			var newFilePath=conditionalExpandPath(filePath) & m.globalConfig().getFileDelim() & safeName;
+
 			fileMove(item.serverdirectory & m.globalConfig().getFileDelim() & item.serverfile, newFilePath );
 
-			announceAssetEvent(newFilePath,'onAfterAssetSave',m,arguments.resourcepath);
-
+			var info = {};
+			info['filePath'] = newFilePath;
+			m.event('fileBrowser',info).announceEvent('onAfterFileUpload');
 		}
 		else {
 			fileDelete(item.serverdirectory & m.globalConfig().getFileDelim() & item.serverfile);
@@ -446,6 +478,7 @@ component
 	remote any function upload( siteid,directory,formData,resourcePath )  {
 		arguments.siteid == "" ? "default" : arguments.siteid;
 		var m=getBean('m').init(arguments.siteid);
+		var info = {};
 
 		if(!m.validateCSRFTokens(context='upload')){
 			throw(type="invalidTokens");
@@ -484,8 +517,23 @@ component
 			var valid = false;
 			if(listFindNoCase(allowedExtensions,item.serverfileext)) {
 					try {
-						fileMove(item.serverdirectory & m.globalConfig().getFileDelim() & item.serverfile,conditionalExpandPath(filePath) & m.globalConfig().getFileDelim() & item.serverfile );
+						var safePostFix = listToArray(item.clientfile,".");
+
+						if(ArrayLen(safePostFix) neq 2) {
+							response.success = 0;
+							response.message = "File must have an extension";
+							return response;			
+						}
+
+						var safeName = rereplaceNoCase(safePostFix[1],"[[:space:]]","_","ALL");
+						safeName = rereplaceNoCase(safeName,"[^[:alnum:]\_\-]","","ALL") & "." & safePostFix[2];
+						var newFilePath=conditionalExpandPath(filePath) & m.globalConfig().getFileDelim() & safeName;
+
+						var finalFilePath = conditionalExpandPath(filePath) & m.globalConfig().getFileDelim() & safeName;
+						fileMove(item.serverdirectory & m.globalConfig().getFileDelim() & item.serverfile, finalFilePath);
 						ArrayAppend(response.saved,item);
+						info['filePath'] = finalFilePath;
+						m.event('fileBrowser',info).announceEvent('onAfterFileUpload');
 					}
 					catch( any e ) {
 						ArrayAppend(e.message,item);
@@ -533,6 +581,10 @@ component
 
 		response['content'] = fileContent;
 
+		var info = {};
+		info['filePath'] = path;
+		m.event('fileBrowser',info).announceEvent('onAfterFileEdit');
+
 		response.success = 1;
 		return response;
 
@@ -572,6 +624,11 @@ component
 			return( e );
 		}
 
+		var info = {};
+		info['filePath'] = path;
+		m.event('fileBrowser',info).announceEvent('onAfterFileUpdate');
+
+
 		response.success = 1;
 		return response;
 	}
@@ -603,8 +660,8 @@ component
 			throw(message="File path illegal");
 		}
 
+		var info = {};
 		try {
-
 			var info = getFileInfo ( path );
 
 			if( info.type == "directory") {
@@ -617,10 +674,15 @@ component
 				}
 				else {
 					fileDelete(path);
+					info['filePath'] = path;
+					m.event('fileBrowser',info).announceEvent('onAfterFileDelete');
+
 				}
 			}
 			else {
 				fileDelete(path);
+				info['filePath'] = path;
+				m.event('fileBrowser',info).announceEvent('onAfterFileDelete');
 			}
 
 		}
@@ -664,12 +726,19 @@ component
 			throw(message="File path illegal");
 		}
 
+		var newFilePath = expandpath(filePath) & application.configBean.getFileDelim() & arguments.name & ext;
+
 		try {
-			var fileContent = filemove(expandpath(filePath) & application.configBean.getFileDelim() & arguments.filename,expandpath(filePath) & application.configBean.getFileDelim() & arguments.name & ext);
+			var fileContent = filemove(expandpath(filePath) & application.configBean.getFileDelim() & arguments.filename,newFilePath);
 		}
 		catch( any e ) {
 			return( e );
 		}
+		var info = {};
+		info['filePath'] = newFilePath;
+		m.event('fileBrowser',info).announceEvent('onAfterFileRename');
+
+
 		response.success = 1;
 		return response;
 	}
@@ -700,12 +769,24 @@ component
 			throw(message="File path illegal");
 		}
 
+		var cleanName = rereplaceNoCase(arguments.name,"[[:space:]]","_","ALL");
+		cleanName = rereplaceNoCase(cleanName,"[^[:alnum:]\_\-]","","ALL");
+
+		if(!len(cleanName)) {
+			throw(message="File name must contain at least one letter/number");
+		}
+
 		try {
-			var fileContent = directorycreate(expandpath(filePath) & application.configBean.getFileDelim() & arguments.name);
+			var fileContent = directorycreate(expandpath(filePath) & application.configBean.getFileDelim() & cleanName);
 		}
 		catch( any e ) {
 			return( e );
 		}
+
+		var info = {};
+		info['filePath'] = expandpath(filePath) & application.configBean.getFileDelim() & arguments.name;
+		m.event('fileBrowser',info).announceEvent('onAfterCreateFolder');
+
 
 		return true;
 	}

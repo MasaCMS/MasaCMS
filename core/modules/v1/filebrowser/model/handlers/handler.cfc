@@ -11,4 +11,12 @@ component
     function onApplicationLoad() {
     }
 
+	/*
+	fileBrowser event listener example
+    function onAfterFileUpload( m,event ) {
+		dump(arguments.event.getValue('fileBrowser'));
+		abort;
+    }
+	*/
+
 }

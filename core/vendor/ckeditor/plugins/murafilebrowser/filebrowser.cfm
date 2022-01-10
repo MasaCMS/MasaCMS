@@ -13,7 +13,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="robots" content="noindex, nofollow" />
 	<cfoutput>
-  <script src="#m.siteConfig().getAdminPath(complete=1)#/assets/js/mura.js"></script>
+  <script src="#m.siteConfig().getAdminPath(complete=1)#/assets/js/mura.min.js"></script>
   <script src="#m.siteConfig().getAdminPath(complete=1)#/assets/js/filebrowser/filebrowser.js"></script>
 	<link href="#m.siteConfig().getAdminPath(complete=1)#/assets/css/admin.min.css" rel="stylesheet" type="text/css" />
 	<link href="#m.siteConfig().getAdminPath(complete=1)#/assets/js/filebrowser/assets/css/filebrowser.css" link rel="stylesheet" type="text/css">

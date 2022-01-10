@@ -302,21 +302,14 @@ CKEDITOR.editorConfig = function( config )
 
 <cfoutput>
 	<cfif isDefined('session.siteid') and application.permUtility.getModulePerm("00000000000000000000000000000000000",session.siteid)>
-		<cfif application.configBean.getCKFinderLicenseName().len() && application.configBean.getCKFinderLicenseKey().len()>
-			// filebrowser settings needed for inline edit mode
-			var connectorpath = '#application.configBean.getContext()#/core/vendor/ckfinder/ckfinder.html';
-			config.filebrowserBrowseUrl = connectorpath;
-			config.filebrowserImageBrowseUrl = connectorpath + '?type=Images';
-			config.filebrowserUploadUrl = '#application.configBean.getContext()#/core/vendor/ckfinder/core/connector/cfm/connector.cfm?command=QuickUpload&type=#URLEncodedFormat(session.siteid)#_User_Assets&currentFolder=%2Files%2F';
-			config.filebrowserImageUploadUrl ='#application.configBean.getContext()#/core/vendor/ckfinder/core/connector/cfm/connector.cfm?command=QuickUpload&type=#URLEncodedFormat(session.siteid)#_User_Assets&currentFolder=%2FImage%2F';
-		<cfelse>
-			// filebrowser settings needed for inline edit mode
-			config.filebrowserBrowseUrl = '';
-			config.filebrowserImageBrowseUrl = '';
-			config.filebrowserUploadUrl = '';
-			config.filebrowserImageUploadUrl ='';
-			config.uploadUrl ='#application.configBean.getContext()#/index.cfm/_api/asset/upload/?siteid=#URLEncodedFormat(session.siteid)#';
-		</cfif>	
+		// filebrowser settings needed for inline edit mode
+		//var connectorpath = '#application.configBean.getContext()#/core/vendor/ckfinder/ckfinder.html';
+		var connectorpath = '#$.siteConfig().getRootPath()#/core/vendor/ckeditor/plugins/murafilebrowser/filebrowser.cfm';
+		var uploadpath = '#$.siteConfig().getApi().getEndPoint()#/filebrowser/ckeditor_quick_upload?resourcepath=User_Assets&directory=/';
+		config.filebrowserBrowseUrl = connectorpath;
+		config.filebrowserImageBrowseUrl = connectorpath + '?type=Images';
+    	config.filebrowserUploadUrl = uploadpath + "File";
+    	config.filebrowserImageUploadUrl = uploadpath + "Image";
 	</cfif>
 
 	<cfset secure=$.getBean('utility').isHTTPS()>
