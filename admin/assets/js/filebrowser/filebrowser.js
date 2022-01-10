@@ -70,7 +70,7 @@ config: {
   }
 
   Mura.get( baseurl )
-    .then(
+    .then (
       //success
       function(response) {
         onSuccess(response);
@@ -85,13 +85,33 @@ config: {
 , doDeleteFile: function( directory,currentFile,onSuccess,onError) {
   var dir = directory == undefined ? "" : directory;
   var baseurl = this.endpoint + "/delete?directory=" + dir + "&filename=" + currentFile.fullname + "&resourcepath=" + this.config.resourcepath;
+  var formData = {
+    resourcepath:this.config.resourcepath,
+    directory:dir,
+    filename:currentFile.fullname
+  };
 
   if(!this.validate()) {
     return error("No Access");
   }
 
+  Mura.getEntity('filebrowser').invokeWithCSRF(
+    'delete',
+    formData,
+    'post'
+  )
+  .then (
+    function(response) {
+      onSuccess(response);
+    },
+    function(response) {
+      this.onError(response);
+    }
+  );
+
+
   Mura.get( baseurl )
-    .then(
+    .then (
       //success
       function(response) {
         onSuccess(response);
@@ -105,89 +125,119 @@ config: {
 
 , doDuplicateFile: function( directory,currentFile,onSuccess,onError) {
   var dir = directory == undefined ? "" : directory;
-  var baseurl = this.endpoint + "/duplicate?directory=" + dir + "&resourcepath=" + this.config.resourcepath;
-
+  var formData = {
+    resourcepath:this.config.resourcepath,
+    completepath:this.config.completepath,
+    directory:dir,
+    file:currentFile
+  };
+  
   if(!this.validate()) {
     return error("No Access");
   }
 
-  var formData = {};
-  formData.file = currentFile;
-
-  Mura.post( baseurl,formData )
-    .then(
-      //success
+  Mura.getEntity('filebrowser').invokeWithCSRF(
+    'duplicate',
+    formData,
+    'post'
+  ).then (
       function(response) {
         onSuccess(response);
       },
-      //fail
       function(response) {
         this.onError(response);
       }
-    );
+  );
+
 }
 
 , doUpdateContent: function( directory,currentFile,content,onSuccess,onError) {
   var dir = directory == undefined ? "" : directory;
-  var baseurl = this.endpoint + "/update?directory=" + dir + "&filename=" + currentFile.fullname + "&resourcepath=" + this.config.resourcepath;
+  var formData = {
+    resourcepath:this.config.resourcepath,
+    completepath:this.config.completepath,
+    directory:dir,
+    filename:currentFile.fullname,
+    content:content
+    };
 
   if(!this.validate()) {
     return error("No Access");
   }
 
-  Mura.post( baseurl,{content: content} )
-    .then(
-      //success
-      function(response) {
-        onSuccess(response);
-      },
-      //fail
-      function(response) {
-        this.onError(response);
-      }
-    );
+  Mura.getEntity('filebrowser').invokeWithCSRF(
+    'update',
+    formData,
+    'post'
+  ).then (
+    function(response) {
+      onSuccess(response);
+    },
+    function(response) {
+      this.onError(response);
+    }
+  );
+
 }
 
 , doRenameFile: function( directory,currentFile,onSuccess,onError) {
   var dir = directory == undefined ? "" : directory;
   var baseurl = this.endpoint + "/rename?directory=" + dir + "&filename=" + currentFile.fullname + "&name=" + currentFile.name + "&resourcepath=" + this.config.resourcepath;
 
+  var formData = {
+    resourcepath:this.config.resourcepath,
+    completepath:this.config.completepath,
+    directory:dir,
+    filename:currentFile.fullname,
+    name:currentFile.name
+  };
+
   if(!this.validate()) {
     return error("No Access");
   }
 
-  Mura.get( baseurl )
-    .then(
-      //success
-      function(response) {
-        onSuccess(response);
-      },
-      //fail
-      function(response) {
-        this.onError(response);
-      }
-    );
+  Mura.getEntity('filebrowser').invokeWithCSRF(
+    'rename',
+    formData,
+    'post'
+  ).then (
+    function(response) {
+      onSuccess(response);
+    },
+    function(response) {
+      this.onError(response);
+    }
+  );
 }
 
 , doNewFolder: function( directory,newfolder,onSuccess ) {
   var dir = directory == undefined ? "" : directory;
-  var baseurl = this.endpoint + "/addfolder?directory=" + dir + "&name=" + newfolder + "&resourcepath=" + this.config.resourcepath;
+  var formData = {
+    resourcepath:this.config.resourcepath,
+    completepath:this.config.completepath,
+    directory:dir,
+    name:newfolder,
+  };
 
   if(!this.validate()) {
     return error("No Access");
   }
 
-  Mura.get( baseurl )
-    .then(
-      //success
-      function(response) {
-        onSuccess(response);
-      },
-      //fail
-      function(response) {
-        onError(response);
-      }
-    );
+  Mura.getEntity('filebrowser').invokeWithCSRF(
+    'addfolder',
+    formData,
+    'post'
+  ).then (
+    //success
+    function(response) {
+      onSuccess(response);
+    },
+    //fail
+    function(response) {
+      onError(response);
+    }
+  );
+
 }
 
 , loadDirectory: function( directory,pageindex,onSuccess,onError,filterResults,sortOn,sortDir,itemsper ) {
@@ -214,7 +264,7 @@ config: {
   }
 
   Mura.get( baseurl )
-    .then(
+    .then (
       //success
       function(response) {
         onSuccess(response);
@@ -238,7 +288,7 @@ config: {
   }
 
   Mura.get( baseurl )
-    .then(
+    .then (
       //success
       function(response) {
         onSuccess(response);
@@ -251,75 +301,89 @@ config: {
 }
 
 , doUpload: function( formData,success,fail ) {
-  var self = this;
-  var baseurl = this.endpoint + "/upload" + "?resourcepath=" + this.config.resourcepath;
+  formData.append('resourcepath',this.config.resourcepath);
+
+  var fData = {};
+  formData.forEach(function(value, key){
+    fData[key] = value;
+  });
+  var json = JSON.stringify(fData);
 
   if(!this.validate()) {
     return error("No Access");
   }
 
-  Mura.post( baseurl,formData )
-    .then(
-      function doSuccess( response ) {
-        success( response );
-      },
-      function doonError( response ) {
-        this.onError(response);
-      }
-    );
+  Mura.getEntity('filebrowser').invokeWithCSRF(
+    'upload',
+    formData,
+    'post'
+  ).then(
+    function doSuccess( response ) {
+      success( response, fail );
+    },
+    function doonError( response ) {
+      this.onError(response);
+    }
+  );
 }
+
 , rotate: function( currentFile,direction,success,error) {
   var self = this;
-  var baseurl = this.endpoint + "rotate" + "?resourcepath=" + this.config.resourcepath;
+  var formData = {
+    resourcepath:this.config.resourcepath,
+    completepath:this.config.completepath,
+    file:JSON.parse(JSON.stringify(currentFile)),
+    direction:direction,
+  };
 
   if(!this.validate()) {
     return error("No Access");
   }
 
-  var formData = {};
-
-  formData.file = JSON.parse(JSON.stringify(currentFile));
-  formData.direction = direction;
-
-  Mura.post( baseurl,formData )
-    .then(
-      function doSuccess( response ) {
-        success( response );
-      },
-      function doonError( response ) {
-        this.onError(response);
-      }
-    );
-
+  Mura.getEntity('filebrowser').invokeWithCSRF(
+    'rotate',
+    formData,
+    'post'
+  ).then (
+    function doSuccess( response ) {
+      success( response );
+    },
+    function doonError( response ) {
+      this.onError(response);
+    }
+  );
 }
 
 , performResize: function( currentFile,dimensions,success,error ) {
   var self = this;
-  var baseurl = this.endpoint + "resize" + "?resourcepath=" + this.config.resourcepath;
+  var formData = {
+    resourcepath:this.config.resourcepath,
+    completepath:this.config.completepath,
+    file:JSON.parse(JSON.stringify(currentFile)),
+    dimensions: dimensions
+  };
 
   if(!this.validate()) {
     return error("No Access");
   }
 
-  var formData = {};
+  Mura.getEntity('filebrowser').invokeWithCSRF(
+    'resize',
+    formData,
+    'post'
+  ).then(
+    function doSuccess( response ) {
+      success( response );
+    },
+    function doonError( response ) {
+      this.onError(response);
+    }
+  );
 
-  formData.file = JSON.parse(JSON.stringify(currentFile));
-  formData.dimensions = dimensions;
-
-  Mura.post( baseurl,formData )
-    .then(
-      function doSuccess( response ) {
-        success( response );
-      },
-      function doonError( response ) {
-        this.onError(response);
-      }
-    );
 }
 
 , performCrop: function( currentFile,success,error ) {
   var self = this;
-  var baseurl = this.endpoint + "processCrop" + "?resourcepath=" + this.config.resourcepath;
 
   if(!this.validate()) {
     return error("No Access");
@@ -361,15 +425,18 @@ config: {
   formData.crop = crop;
   formData.size = size;
 
-  Mura.post( baseurl,formData )
-    .then(
-      function doSuccess( response ) {
-        success( response );
-      },
-      function doonError( response ) {
-        this.onError(response);
-      }
-    );
+  Mura.getEntity('filebrowser').invokeWithCSRF(
+    'processCrop',
+    formData,
+    'post'
+  ).then (
+    function doSuccess( response ) {
+      success( response );
+    },
+    function doonError( response ) {
+      this.onError(response);
+    }
+  );
 
 }
 , crop: function( canvas,clear ) {

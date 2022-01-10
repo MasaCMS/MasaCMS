@@ -14944,10 +14944,17 @@ Mura.Entity = Mura.Core.extend(
 						context: name
 					},
 					success: function(resp) {
-						if (resp.data != 'undefined'	) {
+            if (Mura.formdata && params instanceof FormData) {
+              params.append('csrf_token', resp.data.csrf_token);
+              params.append('csrf_token_expires', resp.data.csrf_token_expires);
+            } else {
+              params = Mura.extend(params, resp.data);
+            }
+
+            if (resp.data != 'undefined'	) {
 							self.invoke(
 								name,
-								Mura.extend(params,resp.data),
+								params,
 								method,
 								eventHandler
 							).then(resolve,reject);

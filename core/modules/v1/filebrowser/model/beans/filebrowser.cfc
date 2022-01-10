@@ -85,11 +85,9 @@ component
 	remote any function resize( resourcePath,file,dimensions ) {
 		var m=getBean('$').init(arguments.siteid);
 
-/*
 		if(!m.validateCSRFTokens(context='resize')){
 			throw(type="invalidTokens");
 		}
-*/
 
 		var permission = checkPerms(arguments.siteid,'editimage',resourcePath);
 		var response = { success: 0 };
@@ -172,6 +170,11 @@ component
 
 	remote any function duplicate( resourcePath,file ) {
 		var m=getBean('$').init(arguments.siteid);
+
+		if(!m.validateCSRFTokens(context='duplicate')){
+			throw(type="invalidTokens");
+		}
+
 		var permission = checkPerms(arguments.siteid,'duplicate',resourcePath);
 		var response = { success: 0 };
 
@@ -213,6 +216,11 @@ component
 
 	remote any function rotate( resourcePath,file,direction ) {
 		var m=getBean('$').init(arguments.siteid);
+
+		if(!m.validateCSRFTokens(context='rotate')){
+			throw(type="invalidTokens");
+		}
+
 		var permission = checkPerms(arguments.siteid,'editimage',resourcePath);
 		var response = { success: 0 };
 
@@ -257,8 +265,19 @@ component
 	}
 
 	remote any function processCrop( resourcePath,file,crop,size ) {
-		var permission = checkPerms(arguments.siteid,'editimage',resourcePath);
+		var m=getBean('$').init(arguments.siteid);
+
+		if(!m.validateCSRFTokens(context='processCrop')){
+			throw(type="invalidTokens");
+		}
+
+		var permission = checkPerms(arguments.siteid,'editimage',arguments.resourcePath);
+
 		var response = { success: 0};
+
+		if(isJSON(arguments.file)) {
+			arguments.file = deserializeJSON(arguments.file);
+		}
 
 		if(!permission.success) {
 			response.permission = permission;
@@ -266,14 +285,13 @@ component
 			return response;
 		}
 
-
-		var m=getBean('$').init(arguments.siteid);
 		var currentSite = application.settingsManager.getSite(arguments.siteid);
 		var baseFilePath = getBaseFileDir( arguments.siteid,arguments.resourcePath );
 		var tempDir = m.globalConfig().getTempDir();
 		var timage = replace(createUUID(),"-","","all");
 		var response = {};
-		var filePath = baseFilePath & rereplace(arguments.file.url,".*?#delim#","");
+		var delim = rereplace(baseFilePath,".*\/","");
+		var filePath = baseFilePath & rereplace(arguments.file.url,".*?#delim#","")
 
 		if(!isPathLegal(arguments.resourcepath,conditionalExpandPath(filePath),arguments.siteid)) {
 			throw(message="File path illegal");
@@ -288,9 +306,6 @@ component
 		if(isJSON(arguments.size)) {
 			arguments.size = deserializeJSON(arguments.size);
 		}
-
-		var delim = rereplace(baseFilePath,".*\/","");
-		var filePath = baseFilePath & rereplace(arguments.file.url,".*?#delim#","")
 
 		var sourceImage = ImageNew(filePath);
 
@@ -322,50 +337,128 @@ component
 		return response;
 	}
 
+	remote any function ckeditor_quick_upload( siteid,directory,formData,resourcePath ) {
+		arguments.siteid == "" ? "default" : arguments.siteid;
 
-	remote any function ckeditor_quick_upload( siteid,directory,formData,resourcePath ){
-		/*
-		{
-			"uploaded": 1,
-			"fileName": "foo.jpg",
-			"url": "/files/foo.jpg"
+		var m=getBean('m').init(arguments.siteid);
+		var sentCSRF = arguments.ckcsrftoken;
+		var cookieCSRF = cookie.ckcsrftoken;
+
+		if(cookieCSRF != cookieCSRF) {
+			return serializeJSON({
+				"uploaded": 0,
+				"error": {
+					"message": "Not supported."
+				}
+			});
 		}
 
-		{
-			"uploaded": 1,
-			"fileName": "foo(2).jpg",
-			"url": "/files/foo(2).jpg",
-			"error": {
-				"message": "A file with the same name already exists. The uploaded file was renamed to \"foo(2).jpg\"."
+		arguments.siteid == "" ? "default" : arguments.siteid;
+		var m=getBean('m').init(arguments.siteid);
+
+		arguments.directory = arguments.directory == "" ? "" : arguments.directory;
+		arguments.directory = rereplace(arguments.directory,"\\",application.configBean.getFileDelim(),"all");
+
+		// hasrestrictedfiles
+
+		var permission = checkPerms(arguments.siteid,'upload',resourcePath);
+		var response = { success: 0,failed: [],saved: []};
+
+		if(!permission.success) {
+			response.permission = permission;
+			response.message = permission.message;
+			return serializeJSON({
+				"uploaded": 0,
+				"error": {
+					"message": "Not allowed."
+				}
+			});
+		}
+
+		var currentSite = application.settingsManager.getSite(arguments.siteid);
+		var pathRoot = currentSite.getAssetPath() & '/assets#arguments.directory#';
+
+		var allowedExtensions = m.getBean('configBean').getFMAllowedExtensions();
+		var tempDir = m.globalConfig().getTempDir();
+
+		var baseFilePath = getBaseFileDir( arguments.siteid,arguments.resourcePath );
+		var filePath = baseFilePath  & m.globalConfig().getFileDelim() & rereplace(arguments.directory,"\.{1,}","\.","all");
+
+		if(!isPathLegal(arguments.siteid,arguments.resourcepath,conditionalExpandPath(filePath))){
+			throw(message="Illegal file path",errorcode ="invalidParameters");
+		}
+
+		if(getBean('configBean').getCompiler()=='Adobe'){
+			var item = fileUpload(tempDir,'',"MakeUnique");
+		} else {
+			var item = fileUpload(tempDir,'','',"Overwrite");
+		}
+
+		var dotDelimArray = listToArray(item.serverfile,'.');
+		var newFileName = dotDelimArray[1]  & dateTimeFormat( item.timecreated,'yyyymmddhhnnss'  ) & '.'  & dotDelimArray[arrayLen(dotDelimArray)];
+
+		if(listFindNoCase(allowedExtensions,item.serverfileext)) {
+			if(fileExists(conditionalExpandPath(filePath) & m.globalConfig().getFileDelim() & item.serverfile)) {
+				fileDelete(conditionalExpandPath(filePath) & m.globalConfig().getFileDelim() & item.serverfile );
 			}
-		}
-
-		{
-			"uploaded": 0,
-			"error": {
-				"message": "The file is too big."
+			if(!directoryExists(conditionalExpandPath(filePath))){
+				directoryCreate(conditionalExpandPath(filePath));
 			}
+			//moving and renaming file
+			var newFilePath=conditionalExpandPath(filePath) & m.globalConfig().getFileDelim() & newFileName;
+			fileMove(item.serverdirectory & m.globalConfig().getFileDelim() & item.serverfile, newFilePath );
+
+			announceAssetEvent(newFilePath,'onAfterAssetSave',m,arguments.resourcepath);
+
+		}
+		else {
+			fileDelete(item.serverdirectory & m.globalConfig().getFileDelim() & item.serverfile);
+			response.success = 0;
+			return serializeJSON({
+				"uploaded": 0,
+				"error": {
+					"message": "File type not allowed."
+				}
+			});
 		}
 
-		*/
+		var fileurl=getBaseResourcePath(arguments.siteid,arguments.resourcePath) & replace(arguments.directory,"\","/","all") & m.globalConfig().getFileDelim() & newFileName;
+		response.success = 1;
 
-		return serializeJSON({
-			"uploaded": 1,
-			"fileName": "foo.jpg",
-			"url": "/files/foo.jpg"
-		});
+		if(response.success) {
+			// this is the only one that counts
+			return serializeJSON({
+				"uploaded": 1,
+				"fileName": item.serverfile,
+				"url": fileurl
+			});
+		}
+		else {
+			return serializeJSON({
+				"uploaded": 0,
+				"error": {
+					"message": "Upload failed."
+				}
+			});
+		}
 	}
 
 	remote any function upload( siteid,directory,formData,resourcePath )  {
+		arguments.siteid == "" ? "default" : arguments.siteid;
+		var m=getBean('m').init(arguments.siteid);
+
+		if(!m.validateCSRFTokens(context='upload')){
+			throw(type="invalidTokens");
+		}
 
 		arguments.siteid == "" ? "default" : arguments.siteid;
 		arguments.directory = arguments.directory == "" ? "" : arguments.directory;
 		arguments.directory = rereplace(arguments.directory,"\\",application.configBean.getFileDelim(),"all");
 
 		// hasrestrictedfiles
-		var m = application.serviceFactory.getBean('m').init(arguments.siteid);
-		var permission = checkPerms(arguments.siteid,'upload',resourcePath);
+		var permission = checkPerms(arguments.siteid,'upload',arguments.resourcePath);
 		var response = { success: 0,failed: [],saved: []};
+
 
 		if(!permission.success) {
 			response.permission = permission;
@@ -413,7 +506,7 @@ component
 		arguments.pageindex == isNumeric(arguments.pageindex) ? arguments.pageindex : 1;
 
 		var m = application.serviceFactory.getBean('m').init(arguments.siteid);
-		var permission = checkPerms(arguments.siteid,'edit',resourcePath);
+		var permission = checkPerms(arguments.siteid,'edit',arguments.resourcePath);
 		var response = { success: 0};
 
 		if(!permission.success) {
@@ -449,7 +542,12 @@ component
 		arguments.siteid == "" ? "default" : arguments.siteid;
 
 		var m = application.serviceFactory.getBean('m').init(arguments.siteid);
-		var permission = checkPerms(arguments.siteid,'write',resourcePath);
+
+		if(!m.validateCSRFTokens(context='update')){
+			throw(type="invalidTokens");
+		}
+
+		var permission = checkPerms(arguments.siteid,'write',arguments.resourcePath);
 		var response = { success: 0};
 
 		if(!permission.success) {
@@ -483,7 +581,12 @@ component
 		arguments.pageindex == isNumeric(arguments.pageindex) ? arguments.pageindex : 1;
 
 		var m = application.serviceFactory.getBean('m').init(arguments.siteid);
-		var permission = checkPerms(arguments.siteid,'delete',resourcePath);
+
+		if(!m.validateCSRFTokens(context='delete')){
+			throw(type="invalidTokens");
+		}
+
+		var permission = checkPerms(arguments.siteid,'delete',arguments.resourcePath);
 		var response = { success: 0};
 
 		if(!permission.success) {
@@ -537,9 +640,14 @@ component
 	remote any function rename( siteid,directory,filename,name,filter="",pageIndex=1,resourcePath )  {
 		arguments.siteid == "" ? "default" : arguments.siteid;
 		arguments.pageindex == isNumeric(arguments.pageindex) ? arguments.pageindex : 1;
-
+		
 		var m = application.serviceFactory.getBean('m').init(arguments.siteid);
-		var permission = checkPerms(arguments.siteid,'rename',resourcePath);
+
+		if(!m.validateCSRFTokens(context='rename')){
+			throw(type="invalidTokens");
+		}
+
+		var permission = checkPerms(arguments.siteid,'rename',arguments.resourcePath);
 		var response = { success: 0};
 
 		if(!permission.success) {
@@ -571,7 +679,12 @@ component
 		arguments.pageindex == isNumeric(arguments.pageindex) ? arguments.pageindex : 1;
 
 		var m = application.serviceFactory.getBean('m').init(arguments.siteid);
-		var permission = checkPerms(arguments.siteid,'addFolder',resourcePath);
+
+		if(!m.validateCSRFTokens(context='addfolder')){
+			throw(type="invalidTokens");
+		}
+
+		var permission = checkPerms(arguments.siteid,'addFolder',arguments.resourcePath);
 		var response = { success: 0};
 
 		if(!permission.success) {
@@ -611,7 +724,7 @@ component
 		arguments.pageindex == isNumeric(arguments.pageindex) ? arguments.pageindex : 1;
 
 		var m=getBean('$').init(arguments.siteid);
-		var permission = checkPerms(arguments.siteid,'browse',resourcePath);
+		var permission = checkPerms(arguments.siteid,'browse',arguments.resourcePath);
 		var response = { success: 0};
 
 		if(!permission.success) {
@@ -764,14 +877,18 @@ component
 	function isPathLegal(resourcePath,path,siteid){
 		var expandedPath = conditionalExpandPath(getBaseFileDir( arguments.siteid,arguments.resourcePath));
 		var rootPath=replaceNoCase(conditionalExpandPath(getBaseFileDir(arguments.siteid,arguments.resourcePath)),"\", "/","ALL");
-//		var rootPath=replace(variables.configBean.getWebRoot(), "\", "/", "ALL");
-//		var rootPath=replace(expandedPath, "\", "/", "ALL");
 
 		if(!hasPermission(arguments.resourcePath)) {
 			return false;
 		}
 
 		arguments.path=replace(expandPath(arguments.path), "\", "/", "ALL");
+
+		// different root than murawrm
+		if( true ) {
+			var realroot = rereplacenocase(arguments.path,"^\/([a-zA-Z]{1,})\/.*","\1");
+			rootPath = replaceNoCase(rootPath, 'murawrm', realroot);
+		}
 
 		var pathcheck = len(arguments.path) >= len(rootPath) && lcase(left(arguments.path,len(rootPath))) == lcase(rootPath);
 
@@ -780,10 +897,10 @@ component
 			writeDump(arguments);
 			writeDump(expandedPath);
 			writeDump(rootPath);
-			writeDump(len(arguments.path) & " >= " & len(rootPath));
-			writeDump(len(arguments.path) >= len(rootPath));
-			writeDump(lcase(left(arguments.path,len(rootPath))) & " == " & lcase(rootPath));
-			writeDump(lcase(left(arguments.path,len(rootPath))) == lcase(rootPath));
+//			writeDump(len(arguments.path) & " >= " & len(rootPath));
+//			writeDump(len(arguments.path) >= len(rootPath));
+//			writeDump(lcase(left(arguments.path,len(rootPath))) & " == " & lcase(rootPath));
+//			writeDump(lcase(left(arguments.path,len(rootPath))) == lcase(rootPath));
 			abort;
 		}
 
