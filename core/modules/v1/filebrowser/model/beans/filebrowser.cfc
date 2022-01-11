@@ -635,13 +635,14 @@ component
 
 	remote any function delete( siteid,directory,filename,filter="",pageIndex=1,resourcePath )  {
 		arguments.siteid == "" ? "default" : arguments.siteid;
-		arguments.pageindex == isNumeric(arguments.pageindex) ? arguments.pageindex : 1;
-
-		var m = application.serviceFactory.getBean('m').init(arguments.siteid);
+		var m=getBean('m').init(arguments.siteid);
+		var info = {};
 
 		if(!m.validateCSRFTokens(context='delete')){
 			throw(type="invalidTokens");
 		}
+
+		arguments.pageindex == isNumeric(arguments.pageindex) ? arguments.pageindex : 1;
 
 		var permission = checkPerms(arguments.siteid,'delete',arguments.resourcePath);
 		var response = { success: 0};
@@ -661,16 +662,15 @@ component
 		}
 
 		var info = {};
-		try {
-			var info = getFileInfo ( path );
 
-			if( info.type == "directory") {
+		try {
+			if(directoryExists(path)) {
 				var list = directoryList( path=path,listinfo="query" );
 
 				if(list.recordcount) {
-						response.message = "Directory is not empty.";
-						throw( message = response.message,object=response,type="customExp");
-						return response;
+					response.message = "Directory is not empty.";
+					throw( message = response.message,object=response,type="customExp");
+					return response;
 				}
 				else {
 					fileDelete(path);
@@ -679,15 +679,17 @@ component
 
 				}
 			}
-			else {
-				fileDelete(path);
+			else if(fileExists(path)) {
+				info = getFileInfo ( path );
 				info['filePath'] = path;
+				fileDelete(path);
 				m.event('fileBrowser',info).announceEvent('onAfterFileDelete');
 			}
 
 		}
 		catch( customExp e ) {
-			throw( message = response.message,object=response,type="customExp");
+			response.success = 0;
+			response.message = e.message;
 			return response;
 		}
 		catch( any e ) {
@@ -726,20 +728,42 @@ component
 			throw(message="File path illegal");
 		}
 
-		var newFilePath = expandpath(filePath) & application.configBean.getFileDelim() & arguments.name & ext;
+		var safeName = rereplaceNoCase(arguments.name,"[[:space:]]","_","ALL");
+		safeName = rereplaceNoCase(safeName,"[^[:alnum:]\_\-]","","ALL");
 
-		try {
-			var fileContent = filemove(expandpath(filePath) & application.configBean.getFileDelim() & arguments.filename,newFilePath);
+		var currentFilePath = expandpath(filePath) & application.configBean.getFileDelim() & arguments.filename
+		var success = 0;
+
+		if(fileExists(currentFilePath)) {
+			var newFilePath = expandpath(filePath) & application.configBean.getFileDelim() & safeName & ext;
+
+			try {
+				var fileContent = filemove(currentFilePath,newFilePath);
+				success = 1;
+			}
+			catch( any e ) {
+				return( e );
+			}
 		}
-		catch( any e ) {
-			return( e );
+		else if(directoryExists(currentFilePath)) {
+			var newFilePath = expandpath(filePath) & application.configBean.getFileDelim() & safeName;
+
+			try {
+				var fileContent = directoryRename(currentFilePath,newFilePath);
+				success = 1;
+			}
+			catch( any e ) {
+				return( e );
+			}
 		}
-		var info = {};
-		info['filePath'] = newFilePath;
-		m.event('fileBrowser',info).announceEvent('onAfterFileRename');
 
+		if(success) {
+			var info = {};
+			info['filePath'] = newFilePath;
+			m.event('fileBrowser',info).announceEvent('onAfterFileRename');
+		}
 
-		response.success = 1;
+		response.success = success;
 		return response;
 	}
 
