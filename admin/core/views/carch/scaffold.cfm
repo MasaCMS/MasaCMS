@@ -415,7 +415,7 @@
 					:data-validate="property.validate ? property.validate : null"
 					:data-validate-message="property.validatemessage ? property.validatemessage : null"
 					>
-					<option v-for="(option,index) in property.optionlist" :value="option" :selected="option == property.default ? 'selected' : null">{{property.optionvaluelist[index]}}</option>
+					<option v-for="(option,index) in property.optionvaluelist" :value="option" :selected="option == property.default ? 'selected' : null">{{property.optionlist[index]}}</option>
 				</select>
 			</div>
 		</div>
