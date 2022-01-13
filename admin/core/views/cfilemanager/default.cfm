@@ -110,6 +110,8 @@ This file is part of Mura CMS.
   <cfelse>
         MuraFileBrowser.config.resourcepath="#esapiEncode('javascript','User_Assets')#";
   </cfif>
+  // Reset folders
+  Mura.createCookie( 'fbFolderTree',JSON.stringify([]),1);
   Mura(function(m) {
   MuraFileBrowser.config.height=600;
   MuraFileBrowser.render();
