@@ -75,6 +75,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <!---
 If building with oracle 19 and contentDAO gives error load the following instead of the active code, error in lines 816 - 916, oracle issue.
+leave in place as issue masacms will error out if an application reload request is submitted and component is marked out.
 
 <cfcomponent extends="mura.cfobject" output="false" hint="This provides content CRUD functionality">
 
