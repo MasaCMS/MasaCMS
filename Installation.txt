@@ -3,9 +3,13 @@ REQUIREMENTS
 - Access to a MySQL 5+, PostgreSQL 8+, Microsoft SQL 2000+ or Oracle 10g+ database server and the ability to add a new database
 - Ability to add a Datasource (DSN) to ColdFusion, Lucee, Administrator
 
-INSTALLATION
 Installing Masa CMS couldn't be easier. Follow the instructions below and you'll be up and running in minutes.
 
+PRE CHECK:
+  1.Unzip folder and rename to appropriate naming convention, DO NOT USE "mura" as name, will cause problems.
+  2.Provide adequate user|group and read write convention at top level, not setting correctly may give off error of inability to write CFFILE on setup.
+
+INSTALLATION PROCEDURE
 1. Create an empty database (e.g., dbMasaCMS).
 
 2. Copy the contents of the Masa CMS .zip file into your webroot (the directory where your site will live).
