@@ -1001,10 +1001,10 @@ if ( application.setupComplete ) {
 
 	application.clusterManager.clearOldCommands();
 	
-	//Check if Razuna is enable
-	if(application.configBean.getRazuna()){
+	//Check if Razuna is enabled
+	if(IsBoolean(application.configBean.getRazuna()) && application.configBean.getRazuna()){
 		// Set flag to send a deprecation warning
-		application.sendDeprecationWarningRazuna = true;	
+		application.sendDeprecationWarningRazuna = true;
 	}
 }
 </cfscript>
