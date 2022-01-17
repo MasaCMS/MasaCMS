@@ -1002,9 +1002,9 @@ MuraFileBrowser = {
 			<div>
 				<div class="fileviewer-gallery-menu">
 				<ul>
-					<!--- MAIN --->
-					<span v-if="editmode==''">
-					<li><a @click="crop()"><i class="mi-crop"> Crop</i></a></li>
+				  <!--- MAIN --->
+				  <span v-if="editmode==''">
+					<!--- <li><a @click="crop()"><i class="mi-crop"> Crop</i></a></li> --->
 					<li><a @click="rotateRight()"><i class="mi-rotate-right"> Rotate Right</i></a></li>
 					<li><a @click="rotateLeft()"><i class="mi-rotate-left"> Rotate Left</i></a></li>
 					<li><a @click="resize()"><i class="mi-expand"> Resize</i></a></li>
