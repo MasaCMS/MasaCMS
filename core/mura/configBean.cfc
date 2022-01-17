@@ -232,7 +232,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.suppressAPIParams=true>
 <cfset variables.instance.sessionBasedLockdown=true>
 <cfset variables.instance.autoPurgeOutputCache=true>
-<cfset variables.instance.filemanagerEnabled=false>
+<cfset variables.instance.filemanagerEnabled=true>
 <cfset variables.instance.deprecationwarningsenabled=true>
 <cfset variables.instance.deprecationlogfile="deprecations">
 

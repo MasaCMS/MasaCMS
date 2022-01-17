@@ -549,6 +549,99 @@ component
 		return response;
 	}
 
+
+
+
+
+
+
+
+
+
+	remote any function children( directory,resourcepath ) {
+		var m=getBean('$').init(arguments.siteid);
+
+		if(!m.validateCSRFTokens(context='children')){
+			throw(type="invalidTokens");
+		}
+
+		var permission = checkPerms(arguments.siteid,'children',resourcePath);
+		var response = { success: 0,folders: [] };
+
+		if(!permission.success) {
+			response.permission = permission;
+			response.message = permission.message;
+			return response;
+		}
+
+		var baseFilePath = getBaseFileDir( arguments.siteid,arguments.resourcePath );
+		var filePath = baseFilePath  & m.globalConfig().getFileDelim() & rereplace(arguments.directory,"\.{1,}","\.","all");
+
+		if(!DirectoryExists(filePath)) {
+			return response;
+		}
+
+		if(!isPathLegal(arguments.resourcepath,conditionalExpandPath(filePath),arguments.siteid)) {
+			throw(message="File path illegal");
+		}
+
+		var folders = directoryList(filePath,false,'name','','',"dir");
+
+		if(ArrayLen(folders)) {
+			response.folders = folders;
+		}
+
+		response.success = 1;
+		return response;
+	}
+
+	remote any function move( siteid,directory,destination,filename,resourcePath )  {
+		var m=getBean('$').init(arguments.siteid);
+		arguments.directory = rereplace(arguments.directory,"\\",application.configBean.getFileDelim(),"all");
+
+		if(!m.validateCSRFTokens(context='move')){
+			throw(type="invalidTokens");
+		}
+
+		var permission = checkPerms(arguments.siteid,'move',resourcePath);
+		var response = { success: 0,folders: [] };
+
+		if(!permission.success) {
+			response.permission = permission;
+			response.message = permission.message;
+			return response;
+		}
+
+		var baseFilePath = getBaseFileDir( arguments.siteid,arguments.resourcePath );
+		var filePath = baseFilePath  & m.globalConfig().getFileDelim() & rereplace(arguments.directory,"\.{1,}","\.","all");
+		var destinationPath = baseFilePath  & m.globalConfig().getFileDelim() & rereplace(arguments.destination,"\.{1,}","\.","all");
+		var tempDir = m.globalConfig().getTempDir();
+
+		if(!isPathLegal(arguments.resourcepath, conditionalExpandPath(filePath),arguments.siteid)){
+			throw(message="Illegal file path A",errorcode ="invalidParameters");
+		}
+		if(!isPathLegal(arguments.resourcepath, conditionalExpandPath(destinationPath),arguments.siteid)){
+			throw(message="Illegal file path B",errorcode ="invalidParameters");
+		}
+
+		if(!DirectoryExists(filePath) || !DirectoryExists(destinationPath)) {
+			response.message = "File or destination does not exist";
+			return response;
+		}
+
+		// always move to the temp directory first!!!
+		var origin=conditionalExpandPath(filePath) & m.globalConfig().getFileDelim() & arguments.filename;
+		var destination=conditionalExpandPath(destinationPath) & m.globalConfig().getFileDelim() & arguments.filename;
+
+		fileMove(origin,tempDir & arguments.filename);
+		fileMove(tempDir & filename,destination);
+
+		var info = {};
+		info['filePath'] = destination;
+		m.event('fileBrowser',info).announceEvent('onAfterFileMove');
+		return response;
+	}
+
 	remote any function edit( siteid,directory,filename,filter="",pageIndex=1,resourcepath )  {
 		arguments.siteid == "" ? "default" : arguments.siteid;
 		arguments.pageindex == isNumeric(arguments.pageindex) ? arguments.pageindex : 1;
@@ -997,15 +1090,16 @@ component
 
 		var pathcheck = len(arguments.path) >= len(rootPath) && lcase(left(arguments.path,len(rootPath))) == lcase(rootPath);
 
+
 		if(!pathcheck) {
 			writeDump("ILLEGAL PATH");
 			writeDump(arguments);
 			writeDump(expandedPath);
 			writeDump(rootPath);
-//			writeDump(len(arguments.path) & " >= " & len(rootPath));
-//			writeDump(len(arguments.path) >= len(rootPath));
-//			writeDump(lcase(left(arguments.path,len(rootPath))) & " == " & lcase(rootPath));
-//			writeDump(lcase(left(arguments.path,len(rootPath))) == lcase(rootPath));
+	//		writeDump(len(arguments.path) & " >= " & len(rootPath));
+	//		writeDump(len(arguments.path) >= len(rootPath));
+	//		writeDump(lcase(left(arguments.path,len(rootPath))) & " == " & lcase(rootPath));
+	//		writeDump(lcase(left(arguments.path,len(rootPath))) == lcase(rootPath));
 			abort;
 		}
 

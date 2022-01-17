@@ -77,7 +77,11 @@ This file is part of Mura CMS.
 <cfparam name="rc.keywords" default="">
 <cfparam name="session.resourceType" default="assets">
 <cfparam name="rc.resourceType" default="">
+<cfparam name="rc.resourceTypeChanged" default="false">
 <cfif len(rc.resourceType)>
+  <cfif session.resourceType != rc.resourceType>
+    <cfset rc.resourceTypeChanged = true>
+  </cfif>
   <cfset session.resourceType=rc.resourceType>
 </cfif>
 <cfoutput>
@@ -109,6 +113,10 @@ This file is part of Mura CMS.
         MuraFileBrowser.config.resourcepath="#esapiEncode('javascript','Application_Root')#";
   <cfelse>
         MuraFileBrowser.config.resourcepath="#esapiEncode('javascript','User_Assets')#";
+  </cfif>
+  <cfif rc.resourceTypeChanged>
+    // Reset folders
+    Mura.createCookie( 'fbFolderTree',JSON.stringify([]),1);
   </cfif>
   Mura(function(m) {
   MuraFileBrowser.config.height=600;
