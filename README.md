@@ -9,4 +9,4 @@
 
 * http://www.masacms.com
 * https://cfml.slack.com
-* https://github.com/MasaCMS/MasaCMS/tree/7.2
+* https://github.com/MasaCMS/MasaCMS/tree/main
