@@ -67,8 +67,8 @@ function compileCoreLESS() {
             `${config.coreLessDirectory}mura.7.0.less`
             , `${config.coreLessDirectory}mura.7.0.skin.less`
             , `${config.coreLessDirectory}mura.7.1.less`
-            , `${config.coreLessDirectory}mura.7.2.less`
-            , `${config.coreLessDirectory}mura.7.2.skin.less`
+            , `${config.coreLessDirectory}mura.7.3.less`
+            , `${config.coreLessDirectory}mura.7.3.skin.less`
         ])
         .pipe(sourcemaps.init())
         .pipe(less(config.lessOptions))
