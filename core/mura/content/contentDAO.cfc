@@ -910,7 +910,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 				< 2016 requires "index"
 				---
 				--->
-				<cfloop array="#objectlist#" item="i">
+				<cfloop array="#objectlist#" index="i">
 					<cfset objectOrder=objectOrder+1>
 					<cfif arrayLen(i) gt 3 and not isJSON(i[4])>
 						<cfset i[4]=serializeJSON(i[4])>
