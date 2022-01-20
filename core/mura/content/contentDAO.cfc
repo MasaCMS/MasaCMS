@@ -904,7 +904,12 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 			<cfset objectList =arguments.data["objectlist#r#"] />
 			<cfif isJSON(objectList)>	
 				<cfset objectList=deserializeJSON(objectList)>
-
+				<!---
+				---
+				if > 2016 "item" works
+				< 2016 requires "index"
+				---
+				--->
 				<cfloop array="#objectlist#" item="i">
 					<cfset objectOrder=objectOrder+1>
 					<cfif arrayLen(i) gt 3 and not isJSON(i[4])>
