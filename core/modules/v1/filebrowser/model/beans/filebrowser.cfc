@@ -1048,7 +1048,7 @@ component
 	// mod from fileWriter.cfc
 	function conditionalExpandPath(path){
 		// windows
-		if(isDefined('server.separator.file') and server.separator.file == "\") {
+		if(structKeyExists(server,"separator") and structKeyExists(server.separator,"file") and server.separator.file == "\" ) {					
 			return expandPath(arguments.path);
 		// else aka linux/mac/...
 		} else {
