@@ -21,14 +21,7 @@ component
 			pathRoot = "/murawrm";
 		}
 		else {
-			pathRoot = currentSite.getAssetDir() & '/assets';
-
-			if(!directoryExists(expandPath(pathRoot & "/File"))){
-				directoryCreate(expandPath(pathRoot & "/File"));
-			}
-			if(!directoryExists(expandPath(pathRoot & "/Image"))){
-				directoryCreate(expandPath(pathRoot & "/Image"));
-			}
+			pathRoot = currentSite.getAssetDir() & '/assets';		
 		}
 
 		return pathRoot;
