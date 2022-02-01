@@ -832,7 +832,7 @@ function setFinders(e) {
 }
 
 function wireupExterndalUIWidgets() {
-    "undefined" != typeof dtLocale && setDatePickers(".datepicker", dtLocale),
+    setFinders(".mura-finder"),"undefined" != typeof dtLocale && setDatePickers(".datepicker", dtLocale),
     "undefined" != typeof activetab && setTabs(".mura-tabs", activetab), setHTMLEditors(),
     "undefined" != typeof activepanel && setAccordions(".accordion", activepanel), setCheckboxTrees(),
     setColorPickers(".mura-colorpicker"), setToolTips(".container"), setFileSelectors();
