@@ -1313,6 +1313,7 @@ buttons: {
 		setHTMLEditors();
 		setDatePickers(".tab-content .datepicker", dtLocale);
 		setColorPickers(".tab-content .mura-colorpicker");
+		setFinders("#mura-content-body-block .mura-finder");
 		setToolTips(".tab-content");
 		setFileSelectors();
 
