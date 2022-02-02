@@ -519,22 +519,7 @@ to your own modified versions of Mura CMS.
 							</cfloop>
 					</select>
 					</div>
-
-				<!--- The ad manager is now gone, but can exist in limited legacy situations --->
-				<cfif application.configBean.getAdManager() or rc.siteBean.getadManager()>
-					<div class="mura-control-group">
-						<label>#application.rbFactory.getKeyValue(session.rb,'siteconfig.sharedresources.advertiseruserpool')#</label>
-						<select  name="advertiserUserPoolID">
-							<option value="">This site</option>
-							<cfloop query="rsSites">
-								<cfif rsSites.siteid neq rc.siteBean.getSiteID()>
-									<option value="#rsSites.siteid#" <cfif rsSites.siteid eq rc.siteBean.getAdvertiserUserPoolID()>selected</cfif>>#esapiEncode('html',rsSites.site)#</option>
-								</cfif>
-							</cfloop>
-						</select>
-					</div>
-				</cfif>
-
+				
 				<div class="mura-control-group">
 				<label>#application.rbFactory.getKeyValue(session.rb,'siteconfig.sharedresources.displayobjectpool')#</label>
 						<select  name="displayPoolID">
@@ -614,16 +599,7 @@ to your own modified versions of Mura CMS.
 									<label class="radio inline"><input type="radio" name="dataCollection" value="1" <cfif rc.siteBean.getdataCollection() eq 1> checked</cfif>>On</label>
 						</div>
 						 </cfif>
-
-						<!--- The ad manager is now gone, but can exist in limited legacy situations --->
-					<cfif application.configBean.getAdManager() or rc.siteBean.getadManager()>
-						<div class="mura-control-group">
-							<label>Advertisement Manager</label>
-									<label class="radio inline"><input type="radio" name="adManager" value="0" <cfif rc.siteBean.getadManager() neq 1> checked</cfif>>Off</label>
-									<label class="radio inline"><input type="radio" name="adManager" value="1" <cfif rc.siteBean.getadManager() eq 1> checked</cfif>>On</label>
-
-						</div>
-					</cfif>
+				
 					<div class="mura-control-group">
 							<label>Comments Manager</label>
 							<label class="radio inline"><input type="radio" name="hasComments" value="0" <cfif rc.siteBean.getHasComments() neq 1> checked</cfif>>Off</label>
@@ -682,7 +658,7 @@ to your own modified versions of Mura CMS.
 				</div>
 
 				<div class="mura-control-group">
-					<label>Masa CMS ORM Scaffolding (ALPHA)</label>
+					<label>Masa CMS ORM Scaffolding (BETA)</label>
 					<label class="radio inline">
 					<input type="radio" name="scaffolding" value="0" <cfif rc.siteBean.getScaffolding() neq 1> checked</cfif>>
 					Off </label>
@@ -760,6 +736,19 @@ to your own modified versions of Mura CMS.
 						<input type="radio" name="useDefaultSMTPServer" value="0" <cfif rc.siteBean.getUseDefaultSMTPServer() neq 1> checked</cfif>>
 						No </label>
 					</div>
+
+			<div class="mura-control-group">
+				<!--- set initial state of Test Email button --->
+				<cfif rc.siteBean.getUseDefaultSMTPServer() eq 1>
+					<cfset variables.testEmailButtonProp = 'disabled' />
+				<cfelse>
+					<cfset variables.testEmailButtonProp = '' />
+				</cfif>
+
+				<button type="button" class="btn btn-secondary mura-primary" onclick="testEmail( event );" id="testEmailSettings" #variables.testEmailButtonProp#>
+					<i class="mi-check-circle"></i> Test Email Settings
+				</button>
+			</div>
 
 				<div class="mura-control-group">
    				<label>Content Pending Script</label>
@@ -974,7 +963,40 @@ to your own modified versions of Mura CMS.
 				);
 		 }
 
-		 $(document).ready(function(){loadCustomImages({siteid:'#esapiEncode('javascript',rc.siteBean.getSiteID())#'})});
+
+		function attachHandlers(){
+			
+			$("input[type='radio'][name='useDefaultSMTPServer']").each(function(){
+				$(this).click(function() {
+
+					if( jQuery('input[name=useDefaultSMTPServer]:checked').val() == 1 ){
+						jQuery('##testEmailSettings').prop( 'disabled', true );
+					} else {
+						jQuery('##testEmailSettings').prop( 'disabled', false );
+					}
+
+				});
+
+				$('ul[data-toggle="tabs"]').on('shown.bs.tab', function(e){
+				       var currentTab = $(e.target).text();
+
+				    	if( currentTab == 'Email' && jQuery('input[name=useDefaultSMTPServer]:checked').val() == 0 ){
+				    		jQuery('##testEmailSettings').prop( 'disabled', false );
+				    	} else {
+				    		jQuery('##testEmailSettings').prop( 'disabled', true );
+				    	}
+
+				   });
+
+			});
+
+		}
+		 
+		$(document).ready(function(){
+		 	loadCustomImages({siteid:'#esapiEncode('javascript',rc.siteBean.getSiteID())#'}); 
+		 	attachHandlers(); 
+		 	jQuery('##testEmailSettings').prop( 'disabled', true ); 
+		});
 
 			</script>
 			<div class="mura-control-group">
@@ -990,7 +1012,7 @@ to your own modified versions of Mura CMS.
 			<div class="mura-control-group">
 				<label>Placeholder Image</label>
 				<div class="mura-control justify">
-					<cf_fileselector b name="newPlaceholderImg" property="placeholderImgID" bean="#rc.siteBean#" deleteKey="deletePlaceholderImg" compactDisplay="#rc.compactDisplay#" locked="0" examplefileext="" >
+					<cf_fileselector name="newPlaceholderImg" property="placeholderImgID" bean="#rc.siteBean#" deleteKey="deletePlaceholderImg" compactDisplay="#rc.compactDisplay#" locked="0" examplefileext="" >
 				</div>
 			</div>
 
@@ -1230,7 +1252,7 @@ to your own modified versions of Mura CMS.
 					</label>
 					<div class="mura-control justify">
 						<input class="text" type="text" name="serverBundlePath" id="serverBundlePath" value="">
-						<input type="button" value="Browse Server" class="mura-ckfinder" data-completepath="true" data-resourcetype="root" data-target="serverBundlePath"/>
+						<input type="button" value="Browse Server" class="mura-finder" data-serverpath="true" data-resourcetype="root" data-target="serverBundlePath"/>
 					</div>
 					<cfif application.configBean.getPostBundles()>
 						<p class="help-block">

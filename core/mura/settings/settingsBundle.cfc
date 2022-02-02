@@ -266,13 +266,33 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		--->
 
 		<cfif arguments.bundleMode neq 'plugin' and len(arguments.siteID)>
-	
+			<cfset getBean("fileManager").cleanFileCache(arguments.siteID)>
+
 			<cfif NOT arguments.includeStructuredAssets>
 				<cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#sitefiles.zip",directory=siteRoot,recurse="true",sinceDate=arguments.sinceDate,excludeDirs="assets|cache")> 
 			<cfelse>
-				<!---<cfset getBean("fileManager").cleanFileCache(arguments.siteID)>--->
 				<cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#sitefiles.zip",directory=siteRoot,recurse="true",sinceDate=arguments.sinceDate)>
 			</cfif>
+
+			<!--- If the theme does not live in the site directory add it from the global directory --->
+			<cfif (not directoryExists(expandPath($.siteConfig().getIncludePath() & "/includes/themes/#$.siteConfig('theme')#"))
+					or not directoryExists(expandPath($.siteConfig().getIncludePath() & "/themes/#$.siteConfig('theme')#"))
+				) and directoryExists(expandPath($.globalConfig().getWebRoot() & "/themes/#$.siteConfig('theme')#"))>
+				<cfzip action="zip" file="#variables.backupDir#sitefiles.zip" source="#expandPath($.globalConfig().getWebRoot() & '/themes/' & $.siteConfig('theme'))#" prefix="themes/#$.siteConfig('theme')#">
+			</cfif>
+
+			<cfset var filePoolID=getBean('settingsManager').getSite(arguments.siteid).getFilePoolID()>
+			<!--- We do not want to include files collected from mura forms --->
+			<cfquery name="rsInActivefiles">
+				select fileID,fileExt from tfiles
+				where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#filePoolID#"/>
+				and moduleid in ('00000000000000000000000000000000000','00000000000000000000000000000000003','00000000000000000000000000000000099'<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.includeUsers>,'00000000000000000000000000000000008'</cfif>)
+				and (
+
+					<cfif not arguments.includeVersionHistory and rstfiles.recordcount>
+						fileID not in (#QuotedValueList(rstfiles.fileID)#)
+						<cfset started=true>
+					</cfif>
 
 			<!--- If the theme does not live in the site directory add it from the global directory --->
 			<cfif (not directoryExists(expandPath($.siteConfig().getIncludePath() & "/includes/themes/#$.siteConfig('theme')#"))
@@ -284,7 +304,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<cfif arguments.includeStructuredAssets>
 				<cfset var filePoolID=getBean('settingsManager').getSite(arguments.siteid).getFilePoolID()>
-				<!--- We do not want to include files collected from Masa CMS forms or the advertising manager --->
+				<!--- We do not want to include files collected from Masa CMS forms --->
 				<cfquery name="rsInActivefiles">
 					select fileID,fileExt from tfiles
 					where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#filePoolID#"/>
@@ -426,7 +446,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset var bodyFileArray=[]>
 			<cfset var extensionXML="">
 
- 			<!--- We do not want to include files collected from Masa CMS forms or the advertising manager --->
+ 			<!--- We do not want to include files collected from Masa CMS forms --->
 
 			<cfloop query="rstfiles">
 				<cfif fileExists( "#filedir#/cache/file/#rstfiles.fileid#_source.#rstfiles.fileext#" )>
@@ -437,49 +457,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfloop>
 
 			<cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#cachefiles.zip",directory="#variables.backupDir#/cache",recurse="true",sinceDate=arguments.sinceDate)>
-
-			<!--- Get CKFinder assets from Body + Summary regions --->
-			<cfloop query="rstcontent">
-				<!--- CKFinder 'Body/Content' Images --->
-				<cfset bodyFileArray = parseFilePaths(arguments.siteID, rstcontent.body)>
-				<cfloop from="1" to="#ArrayLen(bodyFileArray)#" index="i">
-					<cfset ArrayAppend(fileArray, bodyFileArray[i]) />
-				</cfloop>
-				<!--- CKFinder 'Summary' Images ---->
-				<cfset summaryFileArray = parseFilePaths(arguments.siteID, rstcontent.summary) />
-				<cfloop from="1" to="#ArrayLen(summaryFileArray)#" index="i">
-					<cfset ArrayAppend(fileArray, summaryFileArray[i]) />
-				</cfloop>
-				<cfif not structKeyExists(extensions,"#rstcontent.type#.#rstcontent.subtype#")>
-					<cfset extensions["#rstcontent.type#.#rstcontent.subtype#"] = true />
-				</cfif>
-			</cfloop>
-
-			<!--- Get CKFinder assets from Extended Attributes --->
-			<cfloop query="rstclassextenddata">
-				<cfset extendedAttributeFileArray = parseFilePaths(arguments.siteID, rstclassextenddata.attributeValue) />
-				<cfloop from="1" to="#ArrayLen(extendedAttributeFileArray)#" index="i">
-					<cfset ArrayAppend(fileArray, extendedAttributeFileArray[i]) />
-				</cfloop>
-			</cfloop>
-
-			<!--- Copy CKFinder Assets to Backup --->
-			<cfif ArrayLen(fileArray)>
-				<cfloop from="1" to="#ArrayLen(fileArray)#" index="i">
-					<cfscript>
-						backupPath = URLDecode('#variables.backupDir#/#fileArray[i]['path']#', 'utf-8');
-						filePath = URLDecode('#variables.backupDir#/#fileArray[i]['path']#/#fileArray[i]['file']#', 'utf-8');
-					</cfscript>
-
-					<cfif not directoryExists(backupPath)>
-						<cfset directoryCreate(backupPath)/>
-					</cfif>
-
-					<cfif not fileExists(filePath) and fileExists(URLDecode('#assetdir#/#fileArray[i]['path']#/#fileArray[i]['file']#', 'utf-8'))>
-						<cfset fileCopy(URLDecode('#assetdir#/#fileArray[i]['path']#/#fileArray[i]['file']#', 'utf-8'), filePath) />
-					</cfif>
-				</cfloop>
-			</cfif>
 
 			<!--- Prep data for extension XML file --->
 			<cfloop collection="#extensions#" item="i">
@@ -799,13 +776,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var rstcontentObjects=""/>
 		<cfset var rstcontentTags=""/>
 		<cfset var rstsystemobjects=""/>
-		<cfset var rsSettings=""/>
-		<cfset var rstadcampaigns=""/>
-		<cfset var rstadcreatives=""/>
-		<cfset var rstadipwhitelist=""/>
-		<cfset var rstadzones=""/>
-		<cfset var rstadplacements=""/>
-		<cfset var rstadplacementdetails=""/>
+		<cfset var rsSettings=""/>		
 		<cfset var rstcontentcategoryassign=""/>
 		<cfset var rstcontentfeeds=""/>
 		<cfset var rstcontentfeeditems=""/>
@@ -853,8 +824,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var i="">
 		<cfset var availableSpace=0>
 		<cfset var pluginConfig="">
-		<cfset var pluginCFC="">
-		<cfset var rstadplacementcategories="">
+		<cfset var pluginCFC="">		
 		<cfset var rstformresponsepackets="">
 		<cfset var rsCleanDir="">
 		<cfset var rstclassextendrcsets="">

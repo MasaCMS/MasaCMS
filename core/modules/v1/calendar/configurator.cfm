@@ -200,7 +200,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				});
 
-				setColorPickers(".colorpicker");
+				setColorPickers(".mura-colorpicker");
 				setOptionDisplay();
 
 				setLayoutOptions=function(){

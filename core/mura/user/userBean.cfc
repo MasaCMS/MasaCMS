@@ -82,7 +82,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="lname" type="string" default=""/>
 <cfproperty name="username" type="string" default=""/>
 <cfproperty name="password" type="string" default="" />
-<cfproperty name="passwordCreate" type="date" default="" />
+<cfproperty name="passwordCreated" type="date" default="" />
 <cfproperty name="email" type="string" default=""/>
 <cfproperty name="company" type="string" default="" />
 <cfproperty name="jobTitle" type="string" default="" />

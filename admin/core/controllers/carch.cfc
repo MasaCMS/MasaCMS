@@ -53,6 +53,7 @@ component extends="controller" output="false" {
 			param default=false name="arguments.rc.ommitAdvancedTab";
 			param default=false name="arguments.rc.murakeepediting";
 			param default=false name="arguments.rc.locknode";
+			param default=false name="arguments.rc.frontend";
 			if ( !arguments.rc.ommitPublishingTab ) {
 			  param default=0 name="arguments.rc.isNav";
 			  param default="_self" name="arguments.rc.target";
@@ -376,6 +377,11 @@ component extends="controller" output="false" {
 					arguments.rc.contentBean=getBean('content').loadBy(contentID=arguments.rc.contentID, siteid=arguments.rc.siteid).set(arguments.rc);
 				}
 				if ( rc.$.validateCSRFTokens(context=arguments.rc.contentBean.getContentHistID() & "add") ) {
+					if(local.currentBean.getIsNew() && structKeyExists(arguments.rc,"formType") && arguments.rc.formType eq "editor") {
+						// Create deprecation warning when creating new SimpleForms
+						arguments.rc.$.event().setValue("deprecationType","SimpleHTMLForms");
+						arguments.rc.$.announceEvent('LogDeprecation');						
+					}
 					arguments.rc.contentBean=arguments.rc.contentBean.save();
 				} else {
 					arguments.rc.contentBean.validate().getErrors().csrf='Your request contained invalid tokens';
@@ -418,7 +424,11 @@ component extends="controller" output="false" {
 				if ( structIsEmpty(arguments.rc.contentBean.getErrors()) ) {
 					structDelete(session.mura,"editBean");
 					if ( arguments.rc.preview == 0 && !arguments.rc.murakeepediting ) {
-						variables.fw.redirect(action="cArch.list",append="topid,siteid,startrow,moduleid",path="./");
+						if(isBoolean(arguments.rc.frontend) && arguments.rc.frontend){
+							location(url=arguments.rc.contentBean.getURL(complete=true,secure=application.settingsManager.getSite(arguments.rc.contentBean.getSiteID()).getUseSSL()),addtoken=false);
+						} else {
+							variables.fw.redirect(action="cArch.list",append="topid,siteid,startrow,moduleid",path="./");
+						}
 					} else {
 						arguments.rc.parentid=arguments.rc.contentBean.getParentID();
 						arguments.rc.type=arguments.rc.contentBean.getType();

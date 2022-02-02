@@ -107,49 +107,56 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.editableAttributesArray=[]>
 <cfset this.imageAttributesArray=[]>
 <cfset this.styleLookup={
-		'textAlign'='text-align',
-		'textDecoration'='text-decoration',
-		'textTransform'='text-transform',
-		'textIndent'='text-indent',
-		'textOverflow'='text-overflow',
-		'backgroundImage'='background-image',
-		'backgroundColor'='background-color',
-		'backgroundOrigin'='background-Origin',
-		'backgroundPostition'='background-postition',
-		'backgroundRepeat'='background-repeat',
-		'borderRadius'='border-radius',
-		'borderWidth'='border-width',
-		'borderStyle'='border-style',
-		'boxSizing'='box-sizing',
-		'marginTop'='margin-top',
-		'marginLeft'='margin-left',
-		'marginBottom'='margin-bottom',
-		'marginRight'='margin-right',
-		'paddingTop'='padding-top',
-		'paddingLeft'='padding-left',
-		'paddingBottom'='padding-bottom',
-		'paddingRight'='padding-right',
-		'fontFamily'='font-family',
-		'fontSize'='font-size',
-		'fontWeight'='font-weight',
-		'fontVariant'='font-variant',
-		'outlineStyle'='outline-style',
-		'outlineColor'='outline-color',
-		'outlineWidth'='outline-width',
-		'outlineOffset'='outline-offset',
-		'lineHeight'='line-height',
-		'letterSpacing'='letter-spacing',
-		'wordSpacing'='word-spacing',
-		'whiteSpace'='white-space',
-		'textShadow'='text-shadow',
-		'verticalAlign'='vertical-align',
-		'webkitTransition'='-webkit-transition',
-		'transitionTimingFunction'='transitionTimingFunction',
-		'transitionProperty'='transition-property',
-		'transitionDuration'='transition-duration',
-		'transitionDelay'='transition-delay',
-		'animationName'='animation-name',
-		'animationDuration'='animation-duration'
+	'animationDuration'='animation-duration',
+	'animationName'='animation-name',
+	'backgroundAttachment'='background-attachment',
+	'backgroundRepeat'='background-repeat',
+	'backgroundColor'='background-color',
+	'backgroundColor'='background-color',
+	'backgroundImage'='background-image',
+	'backgroundOrigin'='background-origin',
+	'backgroundPosition'='background-position',
+	'backgroundRepeat'='background-repeat',
+	'backgroundSize'='background-size',
+	'borderRadius'='border-radius',
+	'borderStyle'='border-style',
+	'borderWidth'='border-width',
+	'boxSizing'='box-sizing',
+	'fontFamily'='font-family',
+	'fontSize'='font-size',
+	'fontVariant'='font-variant',
+	'fontWeight'='font-weight',
+	'letterSpacing'='letter-spacing',
+	'lineHeight'='line-height',
+	'marginBottom'='margin-bottom',
+	'marginLeft'='margin-left',
+	'marginRight'='margin-right',
+	'marginTop'='margin-top',
+	'minHeight'='min-height',
+	'opacity'='opacity',
+	'outlineColor'='outline-color',
+	'outlineOffset'='outline-offset',
+	'outlineStyle'='outline-style',
+	'outlineWidth'='outline-width',
+	'paddingBottom'='padding-bottom',
+	'paddingLeft'='padding-left',
+	'paddingRight'='padding-right',
+	'paddingTop'='padding-top',
+	'textAlign'='text-align',
+	'textDecoration'='text-decoration',
+	'textIndent'='text-indent',
+	'textOverflow'='text-overflow',
+	'textShadow'='text-shadow',
+	'textTransform'='text-transform',
+	'transitionDelay'='transition-delay',
+	'transitionDuration'='transition-duration',
+	'transitionProperty'='transition-property',
+	'transitionTimingFunction'='transition-timing-function',
+	'verticalAlign'='vertical-align',
+	'webkitTransition'='-webkit-transition',
+	'whiteSpace'='white-space',
+	'wordSpacing'='word-spacing',
+	'zIndex'='z-index'
 	}>
 
 <!--- Set these to a boolean value to override settings.ini.cfm value--->
@@ -2692,10 +2699,11 @@ Display Objects
 
 	<cfset var body=arguments.str>
 	<cfset var errorStr="">
-	<cfset var regex1="(\[sava\]|\[mura\]|\[m\]).+?(\[/sava\]|\[/mura\]|\[/m\])">
-	<cfset var regex2="">
+	<cfset var regex1="(\[sava\]|\[mura\]|\[m\]).+?(\[/sava\]|\[/mura\]|\[/m\])">	
 	<cfset var finder=reFindNoCase(regex1,body,1,"true")>
 	<cfset var tempValue="">
+	<cfset var deprecatedTagUsed = false>
+	<cfset var deprecatedScopeUsed = false>
 
 	<cfparam name="this.enableMuraTag" default="true" />
 	<cfparam name="this.enableDynamicContent" default="true" />
@@ -2715,12 +2723,19 @@ Display Objects
 	<!---  still looks for the Sava tag for backward compatibility --->
 	<cfloop condition="#finder.len[1]#">
 		<cftry>
-			<cfset tempValue=mid(body, finder.pos[1], finder.len[1])>
+			<cfset tempValue=mid(body, finder.pos[1], finder.len[1])>		
+
+			<!--- Check if calls to '$' or 'mura' scope are being used --->
+			<cfif FindNoCase('mura.', tempValue) OR FindNoCase('$.',tempValue)>
+				<cfset deprecatedScopeUsed = true>
+			</cfif>
 
 			<cfif left(tempValue,3) eq "[m]">
 				<cfset tempValue=evaluate("##" & mid(tempValue, 4, len(tempValue)-7) & "##")>
 			<cfelse>
 				<cfset tempValue=evaluate("##" & mid(tempValue, 7, len(tempValue)-13) & "##")>
+				<!--- either [mura] or [sava] tag is used --->
+				<cfset deprecatedTagUsed = true>
 			</cfif>
 
 			<cfif not isDefined("tempValue") or not isSimpleValue(tempValue)>
@@ -2739,8 +2754,18 @@ Display Objects
 			</cfcatch>
 		</cftry>
 		<cfset finder=reFindNoCase(regex1,body,1,"true")>
-		<cfset request.cacheItem=false>
+		<cfset request.cacheItem=false>		
 	</cfloop>
+	
+	<cfif deprecatedTagUsed>
+		<cfset variables.m.event().setValue("deprecationType","muraTag")>
+		<cfset variables.m.announceEvent('LogDeprecation')> 
+	</cfif>
+
+	<cfif deprecatedScopeUsed>
+		<cfset variables.m.event().setValue("deprecationType","muraScope")>
+		<cfset variables.m.announceEvent('LogDeprecation')> 
+	</cfif>
 
 	<cfreturn body />
 </cffunction>
@@ -2837,13 +2862,10 @@ Display Objects
 					(
 					 	StructKeyExists(sessionData, 'mura')
 					 	and (
-							(listFind(sessionData.mura.memberships,'S2IsPrivate;#application.settingsManager.getSite(variables.event.getValue('siteID')).getPrivateUserPoolID()#') and getBean('permUtility').getModulePerm("00000000000000000000000000000000000",variables.event.getValue('siteID')))
+							(getBean('permUtility').getModulePerm("00000000000000000000000000000000000",variables.event.getValue('siteID')))
 							or listFind(sessionData.mura.memberships,'S2')
 						)
-					) or (
-						listFindNoCase("editor,author",variables.event.getValue('r').perm)
-						and this.showMemberToolBar
-					)
+					) 
 				) and getShowAdminToolBar()
 			) and not request.muraExportHTML />
 		</cfif>
@@ -3209,7 +3231,7 @@ Display Objects
 		return '';
 	}
 
-	public function outputMuraCSS(includeskin=true, version='7.2', complete=false, useProtocol=true) {
+	public function outputMuraCSS(includeskin=true, version='7.3', complete=false, useProtocol=true) {
 		if ( !fileExists(expandPath('/muraWRM/core/modules/v1/core_assets/css/mura.' & arguments.version & '.min.css')) ) {
 			arguments.version = '7.0';
 		}

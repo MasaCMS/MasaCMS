@@ -29,31 +29,30 @@
 </cfsilent>
 <cfinclude template="js.cfm">
 <cfif rc.layoutmanager>
-	<cfoutput>
-		<cfif rc.sourceFrame  eq 'modal'>
-			<div class="mura-header">
-				<h1 id="configuratorHeader">Loading...</h1>
-			</div>
-			<div class="block block-constrain">
-				<div class="block block-bordered">
-				  <div class="block-content">
-		</cfif>
-	<div id="configuratorContainer">
-		<cfif rc.sourceFrame eq 'sidebar'>
-			<h1 id="configuratorHeader"></h1>
-			<a class="mura-close" onclick="frontEndProxy.post({cmd:'showobjects'});"><i class="mi-close"></i></a>
-		</cfif>
+<cfoutput>
+<cfif rc.sourceFrame  eq 'modal'>
+	<div class="mura-header">
+		<h1 id="configuratorHeader">Loading...</h1>
+	</div>
+	<div class="block block-constrain">
+		<div class="block block-bordered">
+		  <div class="block-content">
+</cfif>
+			<div id="configuratorContainer">
+				<cfif rc.sourceFrame eq 'sidebar'>
+					<h1 id="configuratorHeader"></h1>
+					<a class="mura-close" onclick="frontEndProxy.post({cmd:'showobjects'});"><i class="mi-close"></i></a>
+				</cfif>
 
-		<div class="clearfix">
-		    <div id="configurator"><div class="load-inline"></div></div>
-		   <!---
-		    <div style="float: right; width: 30%;"><h2>Preview</h2>
-		    	<iframe id="configuratorPreview" style="width:100%;height:700px;" marginheight="0" marginwidth="0" frameborder="0" src=""></iframe>
-		    </div>
-		    --->
-		</div>
-	
-		<cfif not listFindNoCase('folder,calendar,gallery',rc.object) and not isdefined('rc.isBody')>
+				<div class="clearfix">
+					<div id="configurator"><div class="load-inline"></div></div>
+					<!---
+					<div style="float: right; width: 30%;"><h2>Preview</h2>
+					<iframe id="configuratorPreview" style="width:100%;height:700px;" marginheight="0" marginwidth="0" frameborder="0" src=""></iframe>
+					</div>
+					--->
+			</div>
+			<cfif not listFindNoCase('folder,calendar,gallery',rc.object) and not isdefined('rc.isBody')>
 			<div class="form-actions" style="display:none">
 
 				<cfif rc.sourceFrame eq 'modal'>
@@ -63,19 +62,19 @@
 				<a href="##" class="btn mura-delete" id="deleteObject"><i class="mi-trash"></i> #esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.delete"))#</a>
 
 			</div>
-		</cfif>
-	</div><!-- /configuratorContainer -->
-		<cfif rc.sourceFrame eq 'modal'>
-				</div> <!-- /.block-content -->
-			</div> <!-- /.block-bordered -->
-		</div> <!-- /.block-constrain -->
-		</cfif>
+			</cfif>
+		</div><!-- /configuratorContainer -->
+<cfif rc.sourceFrame eq 'modal'>
+		</div> <!-- /.block-content -->
+	</div> <!-- /.block-bordered -->
+</div> <!-- /.block-constrain -->
+</cfif>
 
-	<cfif len(rc.$.event('preloadOnly'))>
-		<script>
-			$('##configurator .load-inline').spin(spinnerArgs2);
-		</script>
-	<cfelse>
+<cfif len(rc.$.event('preloadOnly'))>
+	<script>
+		$('##configurator .load-inline').spin(spinnerArgs2);
+	</script>
+<cfelse>
 	<cfinclude template="dsp_configuratorJS.cfm">
 	<script>
 		$('##configurator .load-inline').spin(spinnerArgs2);
@@ -87,8 +86,15 @@
 		var configOptions={};
 		var originParams={};
 		var originid='#esapiEncode('javascript',rc.objectid)#';
+		window.configuratorInited=false;
 
 		var updateDraft=function(){
+				if(!window.configuratorInited){
+					return;
+				}
+				if(typeof currentPanel == 'undefined'){
+					currentPanel='';
+				}
 
 				siteManager.updateAvailableObject();
 
@@ -112,14 +118,15 @@
 						reload=siteManager.getPluginConfigurator(siteManager.availableObject.params.objectid);
 					}
 
-					console.log(siteManager.availableObject.params);
+//					console.log(siteManager.availableObject.params);
 
 					frontEndProxy.post(
 					{
 						cmd:'setObjectParams',
 						instanceid:instanceid,
 						params:siteManager.availableObject.params,
-						reinit:(reload) ? true : false
+						reinit:(reload) ? true : false,
+						currentPanel:currentPanel
 					});
 
 				}
@@ -135,64 +142,77 @@
 
 					if (parameters["cmd"] == "setObjectParams") {
 
-						if(parameters["params"]){
-							originParams=parameters["params"];
-						}
+						if(typeof parameters["complete"] != 'undefined' && !parameters["complete"]){
 
-						//console.log(parameters)
+							for(var p in parameters["params"]){
+								if(parameters["params"].hasOwnProperty(p)){
+									item=$('[name="' + p + '"]');
+									if(item.length){
+										$('[name="' + p + '"]').val(parameters["params"][p]).trigger('change');
+									}
 
-						if(parameters.params.isbodyobject){
-							$(".form-actions").hide();
-						}
+								}
+							}
+						} else {
 
-						configOptions={
-							'object':'#esapiEncode('javascript',rc.object)#',
-							'objectid':'#esapiEncode('javascript',rc.objectid)#',
-							'name':'#esapiEncode('javascript',rc.objectname)#',
-							'iconclass':'#esapiEncode('javascript',rc.objecticonclass)#',
-							'isnew':'#esapiEncode('javascript',rc.isnew)#',
-							'regionid':'0',
-							'context':'#application.configBean.getContext()#',
-							'params':encodeURIComponent(JSON.stringify(parameters["params"])),
-							'siteid':'#esapiEncode('javascript',rc.siteid)#',
-							'contenthistid':'#esapiEncode('javascript',rc.contenthistid)#',
-							'contentid':'#esapiEncode('javascript',rc.contentID)#',
-							'parentid':'#esapiEncode('javascript',rc.parentID)#',
-							'contenttype':'#esapiEncode('javascript',rc.contenttype)#',
-							'contentsubtype':'#esapiEncode('javascript',rc.contentsubtype)#',
-							'instanceid':'#esapiEncode('javascript',rc.instanceid)#'
-						}
-
-						//console.log(configOptions);
-
-						<cfset configuratorWidth=600>
-
-						<cfif not listFindNoCase('feed,relatedcontent,feed_slideshow,category_summary',rc.object) and $.siteConfig().hasDisplayObject(rc.object)>
-							var configurator=siteManager.getPluginConfigurator('#esapiEncode('javascript',rc.objectid)#');
-
-							if(configurator!=''){
-								window[configurator](
-									configOptions
-								);
-							} else {
-								//console.log(configOptions)
-								siteManager.initGenericConfigurator(configOptions);
+							if(parameters["params"]){
+								originParams=parameters["params"];
 							}
 
-							jQuery("##configuratorHeader").html('#esapiEncode('javascript','<i class="#rc.objecticonclass#"></i> #rc.objectname#')#');
-						<cfelse>
-							<cfswitch expression="#rc.object#">
-								<cfdefaultcase>
-									if(siteManager.objectHasConfigurator(configOptions)){
-										siteManager.configuratorMap[configOptions.object].initConfigurator(configOptions);
-									} else {
-										siteManager.initGenericConfigurator(configOptions);
-									}
-								</cfdefaultcase>
-							</cfswitch>
-						</cfif>
-						//siteManager.loadObjectPreview(configOptions);
+							//console.log(parameters)
 
+							if(parameters.params.isbodyobject){
+								$(".form-actions").hide();
+							}
+
+							configOptions={
+								'object':'#esapiEncode('javascript',rc.object)#',
+								'objectid':'#esapiEncode('javascript',rc.objectid)#',
+								'name':'#esapiEncode('javascript',rc.objectname)#',
+								'iconclass':'#esapiEncode('javascript',rc.objecticonclass)#',
+								'isnew':'#esapiEncode('javascript',rc.isnew)#',
+								'regionid':'0',
+								'context':'#application.configBean.getContext()#',
+								'params':encodeURIComponent(JSON.stringify(parameters["params"])),
+								'siteid':'#esapiEncode('javascript',rc.siteid)#',
+								'contenthistid':'#esapiEncode('javascript',rc.contenthistid)#',
+								'contentid':'#esapiEncode('javascript',rc.contentID)#',
+								'parentid':'#esapiEncode('javascript',rc.parentID)#',
+								'contenttype':'#esapiEncode('javascript',rc.contenttype)#',
+								'contentsubtype':'#esapiEncode('javascript',rc.contentsubtype)#',
+								'instanceid':'#esapiEncode('javascript',rc.instanceid)#'
+							}
+
+							//console.log(configOptions);
+
+							<cfset configuratorWidth=600>
+
+							<cfif not listFindNoCase('feed,relatedcontent,feed_slideshow,category_summary',rc.object) and $.siteConfig().hasDisplayObject(rc.object)>
+								var configurator=siteManager.getPluginConfigurator('#esapiEncode('javascript',rc.objectid)#');
+
+								if(configurator!=''){
+									window[configurator](
+										configOptions
+									);
+								} else {
+									//console.log(configOptions)
+									siteManager.initGenericConfigurator(configOptions);
+								}
+
+								jQuery("##configuratorHeader").html('#esapiEncode('javascript','<i class="#rc.objecticonclass#"></i> #rc.objectname#')#');
+							<cfelse>
+								<cfswitch expression="#rc.object#">
+									<cfdefaultcase>
+										if(siteManager.objectHasConfigurator(configOptions)){
+											siteManager.configuratorMap[configOptions.object].initConfigurator(configOptions);
+										} else {
+											siteManager.initGenericConfigurator(configOptions);
+										}
+									</cfdefaultcase>
+								</cfswitch>
+							</cfif>
+							//siteManager.loadObjectPreview(configOptions);
+						}
 					}
 				}
 
@@ -222,7 +242,7 @@
 			<cfif rc.sourceFrame eq 'modal'>
 			jQuery("##saveConfigDraft").bind("click",updateDraft);
 			<cfelse>
-			jQuery('##configuratorContainer').on('change','.objectParam, .objectparam, .objectStyle, .objectstyle, .metaStyle, .metastyle, .contentStyle, .contentstyle, ##availableObjectSelector',updateDraft);
+			jQuery('##configuratorContainer').on('change','.styleSupport, .stylesupport,.objectParam, .objectparam, .objectStyle, .objectstyle, .metaStyle, .metastyle, .contentStyle, .contentstyle, ##availableObjectSelector',updateDraft);
 			</cfif>
 
 			jQuery("##deleteObject").bind("click",
@@ -241,6 +261,7 @@
 	</cfif>
 	</cfoutput>
 <cfelse>
+<!--- BEGIN LEGACY DISPLAY OBJECTS --->
 	<cfsilent>
 		<cfset rsDisplayObject=application.contentManager.readContentObject(rc.contentHistID,rc.regionID,rc.orderno)>
 		<cfset rc.siteid=rsDisplayObject.siteid>
@@ -625,4 +646,5 @@
 	</script>
 	<cfinclude template="dsp_configuratorJS.cfm">
 	</cfoutput>
+	<!--- END LEGACY DISPLAY OBJECTS --->
 </cfif>

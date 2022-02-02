@@ -78,7 +78,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance=structNew()/>
 <cfset variables.instance.mode=""/>
 <cfset variables.autoupdateurl="https://github.com/MasaCMS/MasaCMS/archive/main.zip"/>
-<cfset variables.instance.version="7.2.0"/>
+<cfset variables.instance.version="7.3"/>
 <cfset variables.instance.title="Masa CMS"/>
 <cfset variables.instance.projectname="Masa CMS"/>
 <cfset variables.instance.projectname="Masa CMS"/>
@@ -86,7 +86,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.webrootmap="muraWRM"/>
 <cfset variables.instance.mapdir="mura"/>
 <cfset variables.instance.datasource=""/>
-<cfset variables.instance.defaultthemeurl="https://github.com/MasaCMS/MasaBootstrap4/archive/main.zip">
+<cfset variables.instance.defaultthemeurl="https://github.com/MasaCMS/MasaBootstrap5/archive/main.zip">
 <cfset variables.instance.stub=""/>
 <cfset variables.instance.context=""/>
 <cfset variables.instance.admindomain=""/>
@@ -157,7 +157,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.confirmSaveAsDraft=true />
 <cfset variables.instance.notifyWithVersionLink=true />
 <cfset variables.instance.scriptProtect=true />
-<cfset variables.instance.scriptProtectExceptions="body,source,params" />
+<cfset variables.instance.scriptProtectExceptions="body,source,params,objectlist1,objectlist2,objectlist3,objectlist4,objectlist5,objectlist6,objectlist7,contenteditfield,content" />
 <cfset variables.instance.appreloadKey="appreload" />
 <cfset variables.instance.loginStrikes=4 />
 <cfset variables.instance.encryptPasswords=true />
@@ -203,9 +203,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.lockableNodes=false/>
 <cfset variables.instance.allowLocalFiles=false/>
 <cfset variables.instance.dataCollection=true/>
-<cfset variables.instance.adManager=false/>
 <cfset variables.instance.emailBroadcaster=false/>
-<cfset variables.instance.allowSimpleHTMLForms=true/>
+<cfset variables.instance.allowSimpleHTMLForms=false/>
 <cfset variables.instance.manageSessionCookies=true/>
 <cfset variables.instance.securecookies=false/>
 <cfset variables.instance.sessioncookiesexpires="never"/>
@@ -233,9 +232,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.suppressAPIParams=true>
 <cfset variables.instance.sessionBasedLockdown=true>
 <cfset variables.instance.autoPurgeOutputCache=true>
-<cfset variables.instance.filemanagerEnabled=false>
-<cfset variables.instance.CKFinderlicenseName="">
-<cfset variables.instance.CKFinderlicenseKey="">
+<cfset variables.instance.filemanagerEnabled=true>
+<cfset variables.instance.deprecationwarningsenabled=true>
+<cfset variables.instance.deprecationlogfile="deprecations">
 
 <cffunction name="OnMissingMethod" output="false" hint="Handles missing method exceptions.">
 <cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />
@@ -1615,30 +1614,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.instance.filemanagerEnabled />
 </cffunction>
 
-<cffunction name="setCKFinderLicenseName" output="false">
-	<cfargument name="CKFinderLicenseName" />
-	<cfif len(arguments.CKFinderLicenseName)>
-		<cfset variables.instance.CKFinderLicenseName = arguments.CKFinderLicenseName />
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getCKFinderLicenseName" output="false">
-	<cfreturn variables.instance.CKFinderLicenseName />
-</cffunction>
-
-<cffunction name="setCKFinderLicenseKey" output="false">
-	<cfargument name="CKFinderLicenseKey" />
-	<cfif len(arguments.CKFinderLicenseKey)>
-		<cfset variables.instance.CKFinderLicenseKey = arguments.CKFinderLicenseKey />
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getCKFinderLicenseKey" output="false">
-	<cfreturn variables.instance.CKFinderLicenseKey />
-</cffunction>
-
 <cffunction name="setMaxArchivedVersions" output="false">
 	<cfargument name="maxArchivedVersions" />
 	<cfif isNumeric(arguments.maxArchivedVersions)>
@@ -1912,6 +1887,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="package">
 	<cfargument name="siteid" hint="Can be a list" default="">
 	<cfargument name="moduleid" default="00000000000000000000000000000000000">
+	<cfargument name="applyGlobal" default="true">
 	<cfargument name="forceSchemaCheck" default="false">
 
 	<cfset var rs="">
@@ -1940,7 +1916,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<!--- Registers handlers last so that that all entities defined will be available --->
 		<cfloop query="rs">
 			<cfif rs.type eq 'dir' and listFindNoCase('handlers,eventhandlers,event_handlers',rs.name)>
-				<cfset registerHandlerDir(dir=listAppend(arguments.dir,rs.name,'/'),package=arguments.package & "." & rs.name,siteid=arguments.siteid,moduleid=arguments.moduleid)>
+				<cfset registerHandlerDir(dir=listAppend(arguments.dir,rs.name,'/'),package=arguments.package & "." & rs.name,siteid=arguments.siteid,moduleid=arguments.moduleid,applyGlobal=arguments.applyGlobal)>
 			</cfif>
 		</cfloop>
 	</cfif>
@@ -2069,6 +2045,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="package">
 	<cfargument name="siteid" hint="Can be a list">
 	<cfargument name="moduleid" default="00000000000000000000000000000000000">
+	<cfargument name="applyGlobal" default="true">
 	<cfset var rs="">
 	<cfif directoryExists(expandPath(arguments.dir))>
 		<cfif not isDefined('arguments.package')>
@@ -2077,45 +2054,34 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var beanName=''>
 		<cfset var beanInstance=''>
 		<cfset var $=''>
-		<cfset var applyGlobal=false>
-	
+		<cfset var applyGlobalDefault=true>
 		<cfdirectory name="rs" directory="#expandPath(arguments.dir)#" action="list" filter="">
 		<cfloop query="rs">
+			<cfset applyGlobalDefault=arguments.applyGlobal>
 			<cfif rs.type eq 'dir'>
 				<cfif listFindNoCase('handlers,eventHandlers',rs.name)>
-					<cfset registerHandlerDir(dir=listAppend(arguments.dir,rs.name,'/'),package=arguments.package & "." & rs.name,siteid=arguments.siteid,moduleid=arguments.moduleid)>
+					<cfset registerHandlerDir(dir=listAppend(arguments.dir,rs.name,'/'),package=arguments.package & "." & rs.name,siteid=arguments.siteid,moduleid=arguments.moduleid,applyGlobal=applyGlobalDefault)>
 				<cfelse>
-					<cfset registerBeanDir(dir=listAppend(arguments.dir,rs.name,'/'),package=arguments.package & "." & rs.name,siteid=arguments.siteid,moduleid=arguments.moduleid)>
+					<cfset registerBeanDir(dir=listAppend(arguments.dir,rs.name,'/'),package=arguments.package & "." & rs.name,siteid=arguments.siteid,moduleid=arguments.moduleid,applyGlobal=applyGlobalDefault)>
 				</cfif>
 			<cfelseif listLast(rs.name,'.') eq 'cfc'>
 				<cfset var tracePoint=initTracepoint("Registering Eventhandler: #package#.#beanName#")>
 				<cftry>
 					<cfset beanName=listFirst(rs.name,'.')>
-					
-					<cfif not structKeyExists(application.appHandlerLookUp,'#package#.#beanName#')>
-						<cfset beanInstance=createObject('component','#package#.#beanName#').init()>
-						<cfset application.appHandlerLookUp['#package#.#beanName#']=beanInstance>
-					<cfelse>
-						<cfset beanInstance=application.appHandlerLookUp['#package#.#beanName#']>
-					</cfif>
-
-					<cfparam name="beanInstance.appliedSites" default="#structNew()#">
-					<cfparam name="beanInstance.appliedGlobal" default=false>
-					<cfparam name="beanInstance.appliedAppLoad" default=false>
+					<cfset beanInstance=createObject('component','#package#.#beanName#').init()>
+					<cfparam name="request.muraAppliedHandlers" default="#structNew()#">
 
 					<cfloop list="#arguments.siteid#" index="local.i">
-						<cfif not structKeyExists(beanInstance.appliedSites,'#local.i#')>
-							<cfif beanInstance.appliedGlobal>
-								<cfset applyGlobal=false>
-							<cfelse>
-								<cfset applyGlobal=true>
+						<cfif not structKeyExists(request.muraAppliedHandlers,'#local.i#_#package#.#beanName#')>
+							<cfif structKeyExists(request.muraAppliedHandlers,'#package#.#beanName#')>
+								<cfset applyGlobalDefault=false>
 							</cfif>
-							<cfset getBean('pluginManager').addEventHandler(component=beanInstance,siteid=local.i,applyglobal=applyGlobal)>
-							<cfset beanInstance.appliedGlobal=true>
-							<cfif isDefined('beanInstance.onApplicationLoad') and not beanInstance.appliedAppLoad>
+							<cfset getBean('pluginManager').addEventHandler(component=beanInstance,siteid=local.i,applyglobal=applyGlobalDefault)>
+							<cfset request.muraAppliedHandlers['#package#.#beanName#']=true>
+							<cfset request.muraAppliedHandlers['#local.i#_#package#.#beanName#']=true>
+							<cfif isDefined('beanInstance.onApplicationLoad') and applyGlobalDefault>
 								<cfset $=getBean('$').init()>
 								<cfset beanInstance.onApplicationLoad($=$,m=$,Mura=$,event=$.event())>
-								<cfset beanInstance.appliedAppLoad=true>
 							</cfif>
 						</cfif>
 					</cfloop>

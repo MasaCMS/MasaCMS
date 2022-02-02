@@ -66,10 +66,7 @@
 						<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectobjecttype')#</option>
 			            <cfif application.settingsManager.getSite($.event('siteid')).getemailbroadcaster()>
 			                <option value="mailingList">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mailinglists')#</option>
-			            </cfif>
-		                <cfif application.settingsManager.getSite($.event('siteid')).getAdManager()>
-		                  <option value="adzone">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.adregions')#</option>
-		                </cfif>
+			            </cfif>		               
 		                <!--- <option value="category">Categories</option> --->
 		                <option value="folder">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.Folders')#</option>
 		                <option value="calendar">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.calendars')#</option>
@@ -147,6 +144,7 @@
 		</div>
 	</div>
 </cfif>
+
 </div>
 <script>
 Mura(function(){

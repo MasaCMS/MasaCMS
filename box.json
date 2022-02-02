@@ -1,21 +1,22 @@
 {
     "name":"Masa CMS",
-    "version":"7.2.1",
+    "version":"7.3",
+    "slug":"MasaCMS",
     "author":"We Are Orange BV",
-    "location":"https://github.com/MasaCMS/MasaCMS/archive/main.zip",
+    "shortDescription":"Masa CMS is an open source content management system for CFML.",
+    "description":"Masa CMS is an open source content management system for CFML, based on the latest open source version of Mura CMS created by Blue River Interactive Group, and forked by We Are Orange BV to create Masa CMS. Masa CMS has been designed to be used by marketing departments, web designers and developers.",
+    "private":false,
+    "location":"MasaCMS/MasaCMS#v7.3",
     "directory":"",
     "createPackageDirectory":false,
     "packageDirectory":"",
     "homepage":"https://www.masacms.com/",
-    "documentation":"https://www.masacms.com/documentation",
+    "documentation":"https://docs.masacms.com/",
     "repository":{
         "type":"Git",
         "URL":"https://github.com/MasaCMS/MasaCMS"
     },
     "bugs":"https://github.com/MasaCMS/MasaCMS/issues",
-    "slug":"MasaCMS",
-    "shortDescription":"A sweet package",
-    "description":"Masa CMS is an open source content management system for CFML, based on the latest open source version of Mura CMS created by Blue River Interactive Group, and forked by We Are Orange BV to create Masa CMS. Masa CMS has been designed to be used by marketing departments, web designers and developers.",
     "instructions":"",
     "changelog":"",
     "type":"cms",
@@ -29,7 +30,6 @@
         "management",
         "system"
     ],
-    "private":false,
     "engines":[
         {
             "type":"lucee",
@@ -57,8 +57,7 @@
     },
     "installPaths":{
         "testbox":"core/vendor/testbox/",
-        "docbox":"core/vendor/docbox/",
-        "MasaBoostrap4":"themes/default/"
+        "docbox":"core/vendor/docbox/"        
     },
     "scripts":{},
     "ignore":[

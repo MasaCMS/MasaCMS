@@ -1,5 +1,5 @@
 <mura name="Component"
-    contenttypes="*"
+    contenttypes=""
     iconclass="mi-clone"
     legacyobjectfile="../dsp_template.cfm"
 />

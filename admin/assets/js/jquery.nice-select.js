@@ -5,19 +5,19 @@
 (function($) {
 
   $.fn.niceSelect = function(method) {
-
+    
     // Methods
-    if (typeof method == 'string') {
+    if (typeof method == 'string') {      
       if (method == 'update') {
         this.each(function() {
           var $select = $(this);
           var $dropdown = $(this).next('.nice-select');
           var open = $dropdown.hasClass('open');
-
+          
           if ($dropdown.length) {
             $dropdown.remove();
             create_nice_select($select);
-
+            
             if (open) {
               $select.next().trigger('click');
             }
@@ -27,7 +27,7 @@
         this.each(function() {
           var $select = $(this);
           var $dropdown = $(this).next('.nice-select');
-
+          
           if ($dropdown.length) {
             $dropdown.remove();
             $select.css('display', '');
@@ -41,10 +41,10 @@
       }
       return this;
     }
-
+      
     // Hide native select
     this.hide();
-
+    
     // Create custom markup
     this.each(function() {
       var $select = $(this);
@@ -53,7 +53,7 @@
         create_nice_select($select);
       }
     });
-
+    
     function create_nice_select($select) {
       $select.after($('<div></div>')
         .addClass('nice-select')
@@ -62,13 +62,13 @@
         .attr('tabindex', $select.attr('disabled') ? null : '0')
         .html('<span class="current"></span><ul class="list"></ul>')
       );
-
+        
       var $dropdown = $select.next();
       var $options = $select.find('option');
       var $selected = $select.find('option:selected');
-
-      $dropdown.find('.current').html($selected.data('display') || $selected.text());
-
+      
+      $dropdown.find('.current').html($selected.data('display') || $selected.text());
+      
       $options.each(function(i) {
         var $option = $(this);
         var display = $option.data('display');
@@ -83,7 +83,7 @@
         );
       });
     }
-
+    
     /* Event listeners */
 
     // Unbind existing events in case that the plugin has been initialized before
@@ -182,6 +182,8 @@
     if (style.pointerEvents !== 'auto') {
       $('html').addClass('no-csspointerevents');
     }
+    
+    return this;
 
     return this;
 

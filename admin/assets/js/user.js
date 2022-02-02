@@ -211,8 +211,7 @@ var userManager = {
 		//checkExtendSetTargeting();
 		setHTMLEditors();
 		setDatePickers(".tab-content .datepicker", dtLocale);
-		setColorPickers(".tab-content .colorpicker");
-		setFinders(".tab-content .mura-ckfinder");
+		setColorPickers(".tab-content .mura-colorpicker");
 		setToolTips(".tab-content");
 		setFileSelectors();
 

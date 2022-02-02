@@ -88,18 +88,7 @@ This file is part of Mura CMS.
         <span class="sidebar-mini-hide">#rc.$.rbKey("layout.modules")#</span>
       </a>
 
-      <ul>
-
-        <!--- Advertising, this is not only available in certain legacy situations --->
-          <cfif application.settingsManager.getSite(session.siteid).getAdManager() and  application.permUtility.getModulePerm("00000000000000000000000000000000006",session.siteid)>
-            <li>
-              <a<cfif rc.originalcircuit eq 'cAdvertising' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000006')> class="active"</cfif> href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cAdvertising.listAdvertisers&amp;siteid=#session.siteid#&amp;moduleid=00000000000000000000000000000000006">
-                <i class="mi-cog"></i>
-                #rc.$.rbKey("layout.advertising")#
-              </a>
-            </li>
-          </cfif>
-        <!--- /Advertising --->
+      <ul> 
 
         <!--- Email Broadcaster --->
           <cfif application.settingsManager.getSite(session.siteid).getemailbroadcaster() and  application.permUtility.getModulePerm("00000000000000000000000000000000005",session.siteid)>

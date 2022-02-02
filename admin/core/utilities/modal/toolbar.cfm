@@ -94,13 +94,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 					window.CKEDITOR_BASEPATH = '#variables.$.siteConfig().getCorePath(complete=completeurls)#/vendor/ckeditor/';
 				}
-				<cfif not $.getContentRenderer().useLayoutManager()>
-				if(!window.CKFinder){
-					Mura.loader().loadjs(
-						'#variables.$.siteConfig().getCorePath(complete=completeurls)#/vendor/ckfinder/ckfinder.js');
-
-				}
-				</cfif>
 
 				Mura.loader().loadjs(
 						'#variables.$.siteConfig().getAdminPath(complete=completeurls)#/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#',
@@ -136,17 +129,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				}
 				window.CKEDITOR_BASEPATH = '#variables.$.siteConfig().getCorePath(complete=completeurls)#/vendor/ckeditor/';
 			}
-			<cfif not $.getContentRenderer().useLayoutManager()>
-			if(!window.CKFinder){
-				if(hasMuraLoader){
-					Mura(function(){
-						Mura.loader().loadjs('#variables.$.siteConfig().getCorePath(complete=completeurls)#/vendor/ckfinder/ckfinder.js');
-					});
-				} else {
-					$.getScript('#variables.$.siteConfig().getCorePath(complete=completeurls)#/vendor/ckfinder/ckfinder.js');
-				}
-			}
-			</cfif>
 			if(hasMuraLoader){
 				Mura(function(){
 					Mura.loader().loadjs('#variables.$.siteConfig().getAdminPath(complete=completeurls)#/assets/js/frontendtools.js.cfm?siteid=#esapiEncode("url",variables.$.event("siteid"))#&contenthistid=#$.content("contenthistid")#&coreversion=#application.coreversion#&showInlineEditor=#getShowInlineEditor()#&cacheid=' + Math.random());
@@ -200,7 +182,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset variables.editLink = variables.editLink & "&amp;type=" & request.contentBean.getType()>
 			<cfset variables.editLink = variables.editLink & "&amp;parentid=" & request.contentBean.getParentID()>
 			<cfset variables.editLink = variables.editLink & "&amp;moduleid=" & request.contentBean.getModuleID()>
-			<cfset variables.editLink = variables.editLink & "&amp;compactDisplay=true">
+			<cfset variables.editLink = variables.editLink & "&amp;frontend=true">
 
 			<cfset variables.newLink = variables.adminBase & "/?muraAction=cArch.loadnewcontentmenu">
 			<cfset variables.newLink = variables.newLink & "&amp;contentid=" & request.contentBean.getContentID()>
@@ -233,7 +215,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset variables.historyLink = variables.historyLink & "&amp;parentid=" & request.contentBean.getParentID()>
 			<cfset variables.historyLink = variables.historyLink & "&amp;moduleid=" & request.contentBean.getModuleID()>
 			<cfset variables.historyLink = variables.historyLink & "&amp;startrow=1">
-			<cfset variables.historyLink = variables.historyLink & "&amp;compactDisplay=true">
 
 			<cfset variables.adminLink = variables.adminBase & "/?muraAction=cArch.list">
 			<cfset variables.adminLink = variables.adminLink & "&amp;siteid=" & request.contentBean.getSiteID()>
@@ -383,7 +364,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<!---
 							<cfif $.content('type') eq 'Variation'>
 							<li id="adminEditPage" class="dropdown"><a onClick="return MuraInlineEditor.init();"><i class="mi-pencil"></i></a></li>
-							<li id="adminVersionHistory"><a href="#variables.historyLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#" #variables.targethook#><i class="mi-history"></i></a></li>
+							<li id="adminVersionHistory"><a href="#variables.historyLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#"><i class="mi-history"></i></a></li>
 							<cfelse>
 							--->
 							<li id="adminEditPage" class="dropdown"><a class="dropdown-toggle"><i class="mi-pencil"></i><b class="caret"></b></a>
@@ -413,7 +394,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 										</li>
 									</cfif>
 									<li id="adminFullEdit">
-										<a href="#variables.editLink#"<cfif variables.dolockcheck> data-configurator="true"</cfif> #variables.targetHook#>
+										<a href="#variables.editLink#"<cfif variables.dolockcheck> data-configurator="true"</cfif>>
 											<cfif $.content('type') eq 'Variation'>
 												<i class="mi-edit"></i> Edit Metadata <!--#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-full')#--->
 											<cfelseif useLayoutManager()>
@@ -441,7 +422,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<li id="adminAddContent"><a href="#variables.newLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.add')#" #variables.targethook# data-configurator="true"><i class="mi-plus"></i></a></li>
 							<li id="adminAddContent-suspend" class="suspend" style="display:none;"><a href="##" title="" onClick="return false;"><i class="mi-plus"></i></a></li>
 							</cfif>
-							<li id="adminVersionHistory"><a href="#variables.historyLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#" #variables.targethook#><i class="mi-history"></i></a></li>
+							<li id="adminVersionHistory"><a href="#variables.historyLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#"><i class="mi-history"></i></a></li>
 							<li id="adminVersionHistory-suspend" class="suspend" style="display:none;"><a href="##" title="" onClick="return false;"><i class="mi-history"></i></a></li>
 							<cfif $.content('type') neq 'Variation'>
 							<li id="adminPreview"<!--- class="dropdown"--->><a href="#esapiEncode(
@@ -449,9 +430,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<li id="adminPreview-suspend" class="suspend" style="display:none;"<!--- class="dropdown"--->><a href="##" title="" onClick="return false;"><i class="mi-mobile"></i></a></li>
 							</cfif>
 							<!---</cfif>--->
-							<cfif $.currentUser().isPrivateUser()>
-								<li><a href="#variables.adminLink#" title="#application.rbFactory.getKeyValue(session.rb,'layout.sitemanager')#" target="admin"><i class="mi-sitemap"></i></a></li>
-							</cfif>
+							<li><a href="#variables.adminLink#" title="#application.rbFactory.getKeyValue(session.rb,'layout.sitemanager')#"><i class="mi-sitemap"></i></a></li>
 						</ul>
 					</cfif>
 					<!--- BEGIN CHANGESETS --->
@@ -531,13 +510,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						#afterMenu#
 					</cfif>
 				</cfif>
-				<cfif listFindNoCase(session.mura.memberships,'S2IsPrivate')>
-					<cfif $.siteConfig().getValue(property='showDashboard',defaultValue=0)>
-						<ul id="adminDashboard">
-							<li><a href="#$.siteConfig().getAdminPath(complete=completeurls)#/?muraAction=cDashboard.main&siteid=#esapiEncode('url',$.event('siteid'))#&span=1" title="Dashboard" target="admin"><i class="mi-dashboard"></i> Dashboard</a></li>
-						</ul>
-					</cfif>
+
+				<cfif $.currentUser().isSystemUser() and $.siteConfig().getValue(property='showDashboard',defaultValue=0)>
+					<ul id="adminDashboard">
+						<li><a href="#$.siteConfig().getAdminPath(complete=completeurls)#/?muraAction=cDashboard.main&siteid=#esapiEncode('url',$.event('siteid'))#&span=1" title="Dashboard"><i class="mi-dashboard"></i> Dashboard</a></li>
+					</ul>
 				</cfif>
+
 				<cfif $.currentUser().isLoggedIn()>
 					<ul id="tools-user">
 						<li id="adminLogOut"><a href="?doaction=logout" title="#application.rbFactory.getKeyValue(session.rb,'layout.logout')#"><i class="mi-sign-out"></i><span>#application.rbFactory.getKeyValue(session.rb,'layout.logout')#</span></a></li>

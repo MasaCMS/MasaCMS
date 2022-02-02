@@ -5,7 +5,7 @@ body {
   font-size: 13px;
 }
 a {
-  color: #69C;
+  color: @mura-red;
 }
 
 a.link-effect:before {
@@ -13,23 +13,23 @@ a.link-effect:before {
 }
 
 a:hover {
-  color: @gray;
+  color: @gray-darker;
 }
 
 a:active{
-  color: @gray !important;
+  color: @gray-darker !important;
 }
 
 a:focus {
-  color: @mura-blue;
+  color: @mura-red;
 }
 
 .text-primary {
-  color: @mura-blue;
+  color: @mura-red;
 }
 
 a.text-primary:hover,a.text-primary:active,a.text-primary:focus,button.text-primary:hover,button.text-primary:active,button.text-primary:focus {
-  color: @mura-blue;
+  color: @mura-red;
   opacity: .75;
 }
 
@@ -70,6 +70,8 @@ a.text-primary-light:hover,a.text-primary-light:active,a.text-primary-light:focu
   font-size: 32px;
   letter-spacing: 0;
   white-space: nowrap;
+  padding: 8px 0;
+  margin-top: 1px;
 }
 
 b,
@@ -317,7 +319,7 @@ ul.pagination,
   background-color:#f5f5f5;
   box-shadow: none;
   -webkit-box-shadow: none;
-  color: #4485f1;
+  color: @mura-red;
 }
 
 .pagination>.active>a,
@@ -329,7 +331,7 @@ ul.pagination,
   background-color: #ebebeb;
   box-shadow: none;
   -webkit-box-shadow: none;
-  color: #4485f1;
+  color: @mura-red;
 }
 
 .pager li>a:hover,
@@ -360,16 +362,61 @@ a.list-group-item:hover,a.list-group-item:focus {
   background-color: #333;
 }
 
+.mura-grid dt .tooltip img{  
+  border: 3px solid #333;
+}
+
 .mura-grid dt .tooltip .tooltip-inner{
   background-color: transparent;
 }
-
-.mura-grid dt .tooltip.left .tooltip-arrow{
-  border-width: 8px 0px 8px 8px;
-  margin-top: -6px;
-  right: 6px;
+.mura-grid dt .tooltip.left{
+  margin-left: 6px;
 }
-.tooltip.top .tooltip-arrow {
+.mura-grid dt .tooltip.left .tooltip-arrow{
+  border-width: 6px 0px 6px 6px;
+  margin-top: -6px;
+  right: 2px;
+}
+
+#mura-nodes li a.title + .tooltip.top{ left: 20px !important;}
+#mura-nodes li li a.title + .tooltip.top{ left: 40px !important;}
+#mura-nodes li li li a.title + .tooltip.top{ left: 60px !important;}
+#mura-nodes li li li li a.title + .tooltip.top{ left: 80px !important;}
+#mura-nodes li li li li li a.title + .tooltip.top{ left: 100px !important;}
+#mura-nodes li li li li li li a.title + .tooltip.top{ left: 120px !important;}
+#mura-nodes li li li li li li a.title + .tooltip.top{ left: 140px !important;}
+#mura-nodes li li li li li li li a.title + .tooltip.top{ left: 160px !important;}
+#mura-nodes li li li li li li li li a.title + .tooltip.top{ left: 180px !important;}
+#mura-nodes li li li li li li li li li a.title + .tooltip.top{ left: 200px !important;}
+#mura-nodes li li li li li li li li li li a.title + .tooltip.top{ left: 210px !important;}
+#mura-nodes li li li li li li li li li li li a.title + .tooltip.top{ left: 220px !important;}
+#mura-nodes li li li li li li li li li li li li a.title + .tooltip.top{ left: 240px !important;}
+#mura-nodes li li li li li li li li li li li li li a.title + .tooltip.top{ left: 260px !important;}
+#mura-nodes li li li li li li li li li li li li li li a.title + .tooltip.top{ left: 280px !important;}
+#mura-nodes li li li li li li li li li li li li li li li a.title + .tooltip.top{ left: 300px !important;}
+#mura-nodes li li li li li li li li li li li li li li li li li a.title + .tooltip.top{ left: 320px !important;}
+#mura-nodes li li li li li li li li li li li li li li li li li li a.title + .tooltip.top{ left: 340px !important;}
+#mura-nodes li li li li li li li li li li li li li li li li li li li a.title + .tooltip.top{ left: 360px !important;}
+#mura-nodes li li li li li li li li li li li li li li li li li li li li a.title + .tooltip.top{ left: 380px !important;}
+#mura-nodes li li li li li li li li li li li li li li li li li li li li li a.title + .tooltip.top{ left: 400px !important;}
+#mura-nodes li li li li li li li li li li li li li li li li li li li li li li a.title + .tooltip.top{ left: 420px !important;}
+#mura-nodes li li li li li li li li li li li li li li li li li li li li li li li a.title + .tooltip.top{ left: 440px !important;}
+#mura-nodes li li li li li li li li li li li li li li li li li li li li li li li li a.title + .tooltip.top{ left: 460px !important;}
+#mura-nodes li li li li li li li li li li li li li li li li li li li li li li li li li a.title + .tooltip.top{ left: 480px !important;}
+#mura-nodes li li li li li li li li li li li li li li li li li li li li li li li li li li a.title + .tooltip.top{ left: 500px !important;}
+#mura-nodes li li li li li li li li li li li li li li li li li li li li li li li li li li li a.title + .tooltip.top{ left: 520px !important;}
+#mura-nodes li li li li li li li li li li li li li li li li li li li li li li li li li li li li a.title + .tooltip.top{ left: 540px !important;}
+#mura-nodes li li li li li li li li li li li li li li li li li li li li li li li li li li li li a.title + .tooltip.top{ left: 440px !important;}
+#mura-nodes li li li li li li li li li li li li li li li li li li li li li li li li li li li li li a.title + .tooltip.top{ left: 560px !important;}
+#mura-nodes li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li a.title + .tooltip.top{ left: 580px !important;}
+#mura-nodes li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li a.title + .tooltip.top{ left: 600px !important;}
+#mura-nodes li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li a.title + .tooltip.top{ left: 620px !important;}
+#mura-nodes li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li a.title + .tooltip.top{ left: 640px !important;}
+#mura-nodes li li li li  li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li a.title + .tooltip.top{ left: 660px !important;}
+#mura-nodes li li li li  li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li a.title + .tooltip.top{ left: 680px !important;}
+#mura-nodes li li li li  li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li li a.title + .tooltip.top{ left: 700px !important;}
+
+a.title + .tooltip.top .tooltip-arrow {
   border-top-color: #333;
 }
 
@@ -392,9 +439,10 @@ a.list-group-item:hover,a.list-group-item:focus {
   border-bottom-color: @mura-red;
 }
 
-/* table striping */
+/* override table striping */
 .mura-table-grid:not(.no-stripe) > tbody > tr:nth-of-type(odd) {
-    background-color: #F6FAFE !important;
+    background-color: #FFF !important;
+    /*background-color: #F6FAFE !important;*/
 }
 
 .mura-table-grid:not(.no-stripe) > tbody > tr:hover {
@@ -407,6 +455,7 @@ a.list-group-item:hover,a.list-group-item:focus {
 .mura-table-grid>thead>tr>td,
 .mura-table-grid>thead>tr>th {
   border: none;
+  vertical-align: middle;
 }
 .mura-table-grid>tbody>tr:first-child>th,
 .mura-table-grid>thead>tr>th {

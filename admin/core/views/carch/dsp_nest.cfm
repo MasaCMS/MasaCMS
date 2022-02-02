@@ -199,7 +199,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfsilent>
 		<cfif verdict neq 'none' and listFindNoCase("jpg,jpeg,png,gif",listLast(rsnest.assocfilename,"."))>
 			<cfset atooltip=true>
-			<cfset atitle="<img class='image-preview' height='80' width='80' src='#$.getURLForImage(fileid=rsnest.fileid,size='small',siteid=rsnest.siteid,fileext=rsnest.fileExt,useProtocol=false)#'>">
+			<cfset atitle="<img class='image-preview' height='86' width='86' src='#$.getURLForImage(fileid=rsnest.fileid,size='small',siteid=rsnest.siteid,fileext=rsnest.fileExt,useProtocol=false)#'>">
 		<cfelse>
 			<cfset atooltip=false>
 			<cfset atitle=''>
@@ -207,7 +207,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfsilent>
 
 	<cfif not listFindNoCase('none,read',verdict)>
-		<a class="<cfif isFileIcon>file </cfif>title draftprompt" title="#atitle#" href="./?muraAction=cArch.edit&contenthistid=#rsnest.ContentHistID#&contentid=#rsnest.ContentID#&type=#rsnest.type#&parentid=#rsnest.parentID#&topid=#esapiEncode('url',attributes.topid)#&siteid=#esapiEncode('url',attributes.siteid)#&moduleid=#rsnest.moduleid#&startrow=#esapiEncode('url',attributes.startrow)#"<cfif rsnest.type eq 'File'> data-filetype="#lcase(left(rsnest.fileExt,4))#"</cfif>  <cfif atooltip>rel="tooltip" data-placement="left" data-html="true"</cfif>>
+		<a class="<cfif isFileIcon>file </cfif>title draftprompt" title="#atitle#" href="./?muraAction=cArch.edit&contenthistid=#rsnest.ContentHistID#&contentid=#rsnest.ContentID#&type=#rsnest.type#&parentid=#rsnest.parentID#&topid=#esapiEncode('url',attributes.topid)#&siteid=#esapiEncode('url',attributes.siteid)#&moduleid=#rsnest.moduleid#&startrow=#esapiEncode('url',attributes.startrow)#"<cfif rsnest.type eq 'File'> data-filetype="#lcase(left(rsnest.fileExt,4))#"</cfif>  <cfif atooltip>rel="tooltip" data-html="true"</cfif>>
 	<cfelse>
 		<a class="<cfif rsnest.type eq 'File'>file </cfif>title"<cfif rsnest.type eq 'File'> data-filetype="#lcase(left(rsnest.fileExt,4))#"</cfif> <cfif atooltip>rel="tooltip" data-html="true" title="#atitle#"</cfif>>
 	</cfif>
@@ -306,13 +306,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	   <cfif rsnest.moduleid eq '00000000000000000000000000000000000' or (rsnest.moduleid eq '00000000000000000000000000000000099' and rsnest.type eq 'Variation')>
 	   <cfswitch expression="#rsnest.type#">
 		   <cfcase value="Page,Folder,Calendar,Gallery">
-		   		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(attributes.siteid).getWebPath(complete=1)##$.getURLStem(attributes.siteid,rsnest.filename)#','#esapiEncode('javascript',rsnest.targetParams)#');"><i class="mi-globe"></i></a></li>
+		   		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="#application.settingsManager.getSite(attributes.siteid).getWebPath(complete=1)##$.getURLStem(attributes.siteid,rsnest.filename)#"><i class="mi-globe"></i></a></li>
 		   </cfcase>
 		   <cfcase value="File,Link">
 		   		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(attributes.siteid).getWebPath(complete=1)##$.getURLStem(attributes.siteid,rsnest.filename)#','#esapiEncode('javascript',rsnest.targetParams)#');"><i class="mi-globe"></i></a></li>
 		   </cfcase>
 		   <cfcase value="Variation">
-		   		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#rsnest.remoteurl#','#esapiEncode('javascript',rsnest.targetParams)#');"><i class="mi-globe"></i></a></li>
+		   		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="#rsnest.remoteurl#"><i class="mi-globe"></i></a></li>
 		   </cfcase>
 		   <cfdefaultcase>
 		   		<li class="preview disabled"><a><i class="mi-globe"></i></a></li>
@@ -338,13 +338,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif rsnest.moduleid eq '00000000000000000000000000000000000' or (rsnest.moduleid eq '00000000000000000000000000000000099' and rsnest.type eq 'Variation')>
 			<cfswitch expression="#rsnest.type#">
 			<cfcase value="Page,Folder,Calendar,Gallery">
-				<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(attributes.siteid).getWebPath(complete=1)##$.getURLStem(attributes.siteid,rsnest.filename)#','#esapiEncode('javascript',rsnest.targetParams)#');"><i class="mi-globe"></i></a></li>
+				<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="#application.settingsManager.getSite(attributes.siteid).getWebPath(complete=1)##$.getURLStem(attributes.siteid,rsnest.filename)#"><i class="mi-globe"></i></a></li>
 			</cfcase>
 			<cfcase value="File,Link">
 				<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(attributes.siteid).getWebPath(complete=1)##$.getURLStem(attributes.siteid,rsnest.filename)#','#esapiEncode('javascript',rsnest.targetParams)#');"><i class="mi-globe"></i></a></li>
 			</cfcase>
 			<cfcase value="Variation">
-				<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#rsnest.remoteurl#','#esapiEncode('javascript',rsnest.targetParams)#');"><i class="mi-globe"></i></a></li>
+				<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="#esapiEncode('url',rsnest.remoteurl)#"><i class="mi-globe"></i></a></li>
 			</cfcase>
 			<cfdefaultcase>
 				<li class="preview disabled"><a><i class="mi-globe"></i></a></li>

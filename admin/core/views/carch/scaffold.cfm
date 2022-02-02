@@ -90,7 +90,7 @@
 						<li><a @click="showAll" onclick="return false;" href="##"><i class="mi-cubes"></i>Custom Entities</a></li>
 						<li>
 							<strong><a href="##" onclick="return false;"><i class="mi-cube"></i>{{entityname}}
-								<span v-if="currentparent && currentparent.properties">(for {{currentparent.properties.entityname}}: <span v-for="item in currentparent.properties._displaylist">{{currentparent.properties[item.name]}}) </span>
+								<span v-if="currentparent && currentparent.properties && Array.isArray(currentparent.properties._displaylist) && currentparent.properties._displaylist.length">(for {{currentparent.properties.entityname}}: <span v-for="item in currentparent.properties._displaylist">{{currentparent.properties[item.name]}})</span>
 						</span>
 						</a></strong>
 						</li>
@@ -415,7 +415,7 @@
 					:data-validate="property.validate ? property.validate : null"
 					:data-validate-message="property.validatemessage ? property.validatemessage : null"
 					>
-					<option v-for="(option,index) in property.optionlist" :value="option" :selected="option == property.default ? 'selected' : null">{{property.optionvaluelist[index]}}</option>
+					<option v-for="(option,index) in property.optionvaluelist" :value="option" :selected="option == property.default ? 'selected' : null">{{property.optionlist[index]}}</option>
 				</select>
 			</div>
 		</div>

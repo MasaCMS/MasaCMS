@@ -34,6 +34,7 @@ web.config
 web.xml
 server-*.json
 server.json
+Mura_CMS_contribution_agreement.pdf
 
 # ignored directories, regardless of location
 compiled/

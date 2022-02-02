@@ -63,6 +63,8 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			.asString('title')
 			.asInteger('isnew')
 	      	.asBoolean('saveErrors')
+			.asBoolean('scaffold')
+			.asBoolean('dynamic')
 			.asInteger('expires_at')
 			.asInteger('expires_in');
 
@@ -1018,7 +1020,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 							if(arrayLen(pathInfo) == 5){
 								params.relatedcontentsetid=pathInfo[5];
 							} else {
-								param name='params.relatedcontentsetid' default=$.globalConfig().getValue(property='relatedcontentsetid', defaultValue="default");
+								param name='params.relatedcontentsetid' default=$.globalConfig().getValue(property='relatedcontentsetid', defaultValue="*");
 							}
 
 							if(!allowAccess(params.entityName,$)){
@@ -3518,7 +3520,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				);
 				structDelete(packagedItems,'links');
 				packagedItems.name=rssets[i].getName();
-				packagedItems.entityname='content';
+				packagedItems.entityname=rssets[i].getEntityType();
 				packagedItems.relatedcontentsetid=rssets[i].getRelatedContentSetID();
 				packagedItems.siteid=arguments.siteid;
 
@@ -3568,6 +3570,9 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 	function setImageURLs(entity,attr="fileid",$){
 
 		if(arguments.attr == 'fileid' && arguments.entity.hasImage()){
+			if(!isDefined('variables.images')){
+				variables.images=getBean('settingsManager').getSite(entity.getSiteID()).getCustomImageSizeIterator();
+			}
 
 
 			var secure=getBean('settingsManager').getSite(entity.getSiteID()).getUseSSL();
@@ -3587,6 +3592,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				returnStruct['#image.getName()#']=arguments.entity.getImageURL(secure=secure,complete=1,size=image.getName());
 			}
 
+			variables.images.reset();
 		} else if (arguments.attr != 'fileid' && isValid('uuid',entity.get(arguments.attr)) ){
 			 var fileEXT=getBean("fileManager").readMeta(arguments.entity.get(arguments.attr)).fileEXT;
 			 if(ListFindNoCase('jpg,jpeg,png,gif,svg', fileEXT)){
@@ -3594,9 +3600,11 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 					 arguments.$=getBean('$').init(arguments.entity.getSiteid());
 				 }
 
+				 if(!isDefined('variables.images')){
+					 variables.images=getBean('settingsManager').getSite(entity.getSiteID()).getCustomImageSizeIterator();
+				 }
 
 				 var image='';
-				 var images=getCustomImageSizeIterator(arguments.entity.getSiteID());
 				 var secure=getBean('settingsManager').getSite(arguments.entity.getSiteID()).getUseSSL();
 				 var renderer=arguments.$.getContentRenderer();
 
@@ -3607,10 +3615,11 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 	 				source=renderer.getURLForImage(fileid=arguments.entity.get(arguments.attr),secure=secure,complete=1,size='source')
 	 			};
 
-				 while(images.hasNext()){
-					 image=images.next();
-					 returnStruct['#image.getName()#']=renderer.getURLForImage(fileid=arguments.entity.get(arguments.attr),secure=secure,complete=1,size=image.getName(),fileExt=fileEXT);
+				 while(variables.images.hasNext()){
+					 image=variables.images.next();
+					 returnStruct['#image.getName()#']=renderer.getURLForImage(fileid=entity.get(arguments.attr),secure=secure,complete=1,size=image.getName(),fileExt=fileEXT);
 				 }
+				 variables.images.reset();
 			 } else {
 				 return returnStruct;
 			 }

@@ -297,28 +297,26 @@ if ( application.setupComplete ) {
 				if ( structKeyExists(request.muraSysEnv,'MURA_DEFAULTTHEMEURL') ) {
 					application.configBean.setDefaultThemeURL(request.muraSysEnv['MURA_DEFAULTTHEMEURL']);
 				}
-
 				try {
 					local.themeZip="install_theme_#createUUID()#.zip";
-
 					try{
-
-						local.httpService=application.configBean.getHTTPService();
-
-						local.httpService.setURL(application.configBean.getDefaultThemeURL());
-						local.httpService.setGetAsBinary("yes");
-						local.theme=httpService.send().getPrefix();
-
-						local.fileWriter.writeFile(file="#application.configBean.getWebRoot()#/#local.themeZip#",output=local.theme.filecontent);
+						if(len(application.configBean.getDefaultThemeURL())){
+							local.httpService=application.configBean.getHTTPService();
+							local.httpService.setURL(application.configBean.getDefaultThemeURL());
+							local.httpService.setGetAsBinary("yes");
+							local.theme=httpService.send().getPrefix();
+							local.fileWriter.writeFile(file="#application.configBean.getWebRoot()#/#local.themeZip#",output=local.theme.filecontent);
+						}
 					} catch (any e){
 						local.fileWriter.copyFile(source="#application.configBean.getWebRoot()#/core/templates/theme.zip.cfm",destination="#application.configBean.getWebRoot()#/#local.themeZip#");
 					}
-
-					local.zipUtil=new mura.Zip();
-					local.zipUtil.Extract(zipFilePath="#application.configBean.getWebRoot()#/#local.themeZip#",extractPath="#application.configBean.getWebRoot()#/themes", overwriteFiles=false);
-					local.themeRS=local.fileWriter.getDirectoryList(directory="#application.configBean.getWebRoot()#/themes",recurse=false,type="dir");
-					local.fileWriter.renameDir(directory="#application.configBean.getWebRoot()#/themes/#local.themeRS.name#",newDirectory="#application.configBean.getWebRoot()#/themes/default");
-					fileDelete("#application.configBean.getWebRoot()#/#local.themeZip#");
+					if(fileExists("#application.configBean.getWebRoot()#/#local.themeZip#")){
+						local.zipUtil=new mura.Zip();
+						local.zipUtil.Extract(zipFilePath="#application.configBean.getWebRoot()#/#local.themeZip#",extractPath="#application.configBean.getWebRoot()#/themes", overwriteFiles=false);
+						local.themeRS=local.fileWriter.getDirectoryList(directory="#application.configBean.getWebRoot()#/themes",recurse=false,type="dir");
+						local.fileWriter.renameDir(directory="#application.configBean.getWebRoot()#/themes/#local.themeRS.name#",newDirectory="#application.configBean.getWebRoot()#/themes/default");
+						fileDelete("#application.configBean.getWebRoot()#/#local.themeZip#");
+					}
 					commitTracePoint(variables.tracepoint2);
 				} catch (any error) {
 					writeLog(type="Error", file="exception", text="Error pullling theme from remote: #serializeJSON(error.stacktrace)#");
@@ -326,6 +324,7 @@ if ( application.setupComplete ) {
 			}
 			commitTracePoint(variables.tracePoint1);
 		}
+
 
 		variables.serviceFactory.declareBean("beanValidator", "mura.bean.beanValidator", true);
 
@@ -349,20 +348,12 @@ if ( application.setupComplete ) {
 		variables.serviceFactory.addAlias("commentFeed","contentCommentFeedBean");
 		variables.serviceFactory.addAlias("stats","contentStatsBean");
 		variables.serviceFactory.addAlias("changeset","changesetBean");
+		variables.serviceFactory.addAlias("settingsBundle","settingsBundleBean");
 		variables.serviceFactory.addAlias("bundle","settingsBundle");
 		variables.serviceFactory.addAlias("mailingList","mailingListBean");
 		variables.serviceFactory.addAlias("mailingListMember","memberBean");
 		variables.serviceFactory.addAlias("groupDAO","userDAO");
-		variables.serviceFactory.addAlias("userRedirect","userRedirectBean");
-
-		//The ad manager has been removed, but may be there in certain legacy conditions
-		if(variables.serviceFactory.containsBean('placementBean')){
-			variables.serviceFactory.addAlias("placement","placementBean");
-			variables.serviceFactory.addAlias("creative","creativeBean");
-			variables.serviceFactory.addAlias("adZone","adZoneBean");
-			variables.serviceFactory.addAlias("campaign","campaignBean");
-		}
-
+		variables.serviceFactory.addAlias("userRedirect","userRedirectBean");		
 		variables.serviceFactory.addAlias("rate","rateBean");
 		variables.serviceFactory.addAlias("favorite","favoriteBean");
 		variables.serviceFactory.addAlias("email","emailBean");
@@ -491,17 +482,11 @@ if ( application.setupComplete ) {
 		}
 	}
 
-	request.muraattachormlinks=true;
 	application.serviceFactory.loadDynamicEntities();
-	request.muraattachormlinks=false;
 
 	application.appAutoUpdated=false;
 
-	variables.serviceList="utility,pluginManager,settingsManager,contentManager,eventManager,contentRenderer,contentUtility,contentGateway,categoryManager,clusterManager,contentServer,changesetManager,scriptProtectionFilter,permUtility,emailManager,loginManager,mailinglistManager,userManager,dataCollectionManager,feedManager,sessionTrackingManager,favoriteManager,raterManager,dashboardManager,autoUpdater";
-	//  The ad manager has been removed, but may be there in certain legacy conditions
-	if ( application.serviceFactory.containsBean('advertiserManager') ) {
-		variables.serviceList=listAppend(variables.serviceList,'advertiserManager');
-	}
+	variables.serviceList="utility,pluginManager,settingsManager,contentManager,eventManager,contentRenderer,contentUtility,contentGateway,categoryManager,clusterManager,contentServer,changesetManager,scriptProtectionFilter,permUtility,emailManager,loginManager,mailinglistManager,userManager,dataCollectionManager,feedManager,sessionTrackingManager,favoriteManager,raterManager,dashboardManager,autoUpdater";	
 	//  These application level services
 
 	for(variables.i in listToArray(variables.serviceList)){
@@ -549,7 +534,6 @@ if ( application.setupComplete ) {
 
 	structDelete(application,"muraAdmin");
 	structDelete(application,"proxyServices");
-	structDelete(application,"CKFinderResources");
 	//  Set up scheduled tasks
 	if ( (len(application.configBean.getServerPort())-1) < 1 ) {
 		variables.port=80;
@@ -1016,5 +1000,11 @@ if ( application.setupComplete ) {
 	application.sessionTrackingThrottle=false;
 
 	application.clusterManager.clearOldCommands();
+	
+	//Check if Razuna is enabled
+	if(IsBoolean(application.configBean.getRazuna()) && application.configBean.getRazuna()){
+		// Set flag to send a deprecation warning
+		application.sendDeprecationWarningRazuna = true;
+	}
 }
 </cfscript>

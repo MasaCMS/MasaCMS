@@ -2,18 +2,29 @@ component extends="mura.bean.beanORM" table="tclassextendrcsets" entityname="rel
 
 	property name="relatedContentSetID" fieldtype="id";
   property name="name" ormtype="varchar" length="50" default="" required="true";
+	property name="entitytype" ormtype="varchar" length="100" default="content";
   property name="availableSubTypes" ormtype="text";
   property name="orderNo" ormtype="int";
 	property name="siteID" ormtype="varchar" length="25" default="";
 	property name="subTypeID" ormtype="varchar" length="35" default="";
 
-	function getRelatedContentQuery(contentHistID){
+		function getRelatedContentQuery(contentHistID){
         var rcSetID = getValue('relatedContentSetID');
-				var rs = getBean('contentManager').getRelatedContent(siteID=getValue('siteID'), contentHistID=arguments.contenthistID, relatedContentSetID=rcSetID,liveOnly=false);
-
+				var rs = getBean('contentManager').getRelatedContent(siteID=getValue('siteID'), contentHistID=arguments.contenthistID, relatedContentSetID=rcSetID,liveOnly=false,entitytype=get('entitytype'));
         return rs;
     }
 
+
+		function setEntityType(entityType=''){
+			if(len(arguments.entitytype)){
+				variables.instance.entitytype=arguments.entitytype;
+			}
+			return this;
+		}
+
+		function getDisplayName(){
+			return getBean('entity').loadBy(name=get('entityType')).getDisplayName();
+		}
 
 		/**
 		 * @ouput false
