@@ -176,6 +176,10 @@ $( document ).ready(function() {
 					item.displayname='groupid';
 				}
 
+				if(item.rendertype == 'file') {
+					item.length = 250;
+				}
+
 				data.properties[x] = item;
 
 			}
@@ -500,6 +504,7 @@ $( document ).ready(function() {
 				{name:'checkbox',label: 'Checkbox'},
 				{name:'radio',label: 'Radio'},
 				{name:'hidden',label: 'Hidden'},
+				{name:'file',label: 'File'},
 				{name:'null',label: 'Do not render'}
 			];
 
@@ -568,6 +573,11 @@ $( document ).ready(function() {
 						// for mysql, defaults not allowed for text, blob, comment
 						if(prop.datatype == 'text')
 							delete prop.default;
+
+						if(prop.rendertype == 'file') {
+							prop.datatype = 'varchar';
+							prop.length = 250;
+						}
 
 						// remove empty attributes
 						for(var x in prop) {
