@@ -616,32 +616,31 @@ MuraFileBrowser = {
 			, getTop: function() {
 			return this.menuy + window.pageYOffset;
 			}
-		 , selectFile: function() {
-			if(MuraFileBrowser.config.selectMode == 1) {
-				window.opener.CKEDITOR.tools.callFunction(self.callback,fileViewer.currentFile.url);
-				window.close();
+			, selectFile: function() {
+				if(MuraFileBrowser.config.selectMode == 1) {
+					window.opener.CKEDITOR.tools.callFunction(self.callback,fileViewer.currentFile.url);
+					window.close();
+				}
+				else {
+					return MuraFileBrowser.config.selectCallback( fileViewer.currentFile );
+				}
 			}
-			else {
-				return MuraFileBrowser.config.selectCallback( fileViewer.currentFile );
-			}
-			}
-	
 			, editFile: function() {
-			fileViewer.editFile(this.successEditFile);
+				fileViewer.editFile(this.successEditFile);
 			}
 			, duplicateFile: function() {
-			fileViewer.duplicateFile(fileViewer.refresh, fileViewer.displayError);
+				fileViewer.duplicateFile(fileViewer.refresh, fileViewer.displayError);
 			}
 			, viewFile: function() {
-			fileViewer.isDisplayWindow = "VIEW";
-			fileViewer.viewFile();
+				fileViewer.isDisplayWindow = "VIEW";
+				fileViewer.viewFile();
 			}
 			, successEditFile: function( response ) {
-			this.currentFile.content = response.data.content;
-			fileViewer.isDisplayWindow = "EDIT";
-			}
+				this.currentFile.content = response.data.content;
+				fileViewer.isDisplayWindow = "EDIT";
+				}
 			, renameFile: function() {
-			fileViewer.isDisplayWindow = "RENAME";
+				fileViewer.isDisplayWindow = "RENAME";
 			}
 			, moveFile: function() {
 				fileViewer.isDisplayWindow = "MOVE";
@@ -943,6 +942,15 @@ MuraFileBrowser = {
 			}
 			, closewindow: function( event ) {
 			this.$root.isDisplayWindow = "";
+			}
+			, selectFile: function() {
+				if(MuraFileBrowser.config.selectMode == 1) {
+					window.opener.CKEDITOR.tools.callFunction(self.callback,fileViewer.currentFile.url);
+					window.close();
+				}
+				else {
+					return MuraFileBrowser.config.selectCallback( fileViewer.currentFile );
+				}
 			}
 			, renameFile: function() {
 			fileViewer.isDisplayWindow = "RENAME";

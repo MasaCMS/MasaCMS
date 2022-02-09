@@ -8,7 +8,7 @@
 </script>
 
 <script src="#$.globalConfig('rootPath')#/core/vendor/vue/vue.js"></script>
-<script src="#$.globalConfig('rootPath')#/admin/assets/js/scaffold/scaffolder.js"></script>
+<script src="#$.globalConfig('rootPath')#/admin/assets/js/scaffold/scaffolder.min.js"></script>
 
 <div class="block-content">
 
