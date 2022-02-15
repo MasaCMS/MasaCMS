@@ -16,6 +16,10 @@ if(!structKeyExists(request.backports,'esapiencode')){
 }
 
 if(request.backports.esapiencode){
-	include '#backportdir#esapiencode.cfm';
+	try {
+		include '#backportdir#esapiencode.cfm';
+	} catch (any e) {
+		include 'esapiencode.cfm';
+	}
 }
 </cfscript>

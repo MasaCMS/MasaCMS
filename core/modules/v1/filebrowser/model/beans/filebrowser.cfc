@@ -1,4 +1,4 @@
-component
+	component
 	entityname="filebrowser"
 	extends="mura.bean.bean"
 	displayname="Mura File Browser"
@@ -105,7 +105,7 @@ component
 		var tempDir = m.globalConfig().getTempDir();
 		var timage = replace(createUUID(),"-","","all");
 		var delim = rereplace(baseFilePath,".*\/","");
-		var filePath = baseFilePath & rereplace(arguments.file.url,".*?#delim#","")
+		var filePath = baseFilePath & rereplace(arguments.file.url,".*?#delim#","");
 		var sourceImage = ImageNew(filePath);
 		var response = {};
 
@@ -137,7 +137,7 @@ component
 				return response;
 			}
 			response.stuff = "WIDTH!";
-			ImageResize(sourceImage,int(arguments.dimensions.width));
+			ImageResize(sourceImage,int(arguments.dimensions.width),'');
 		}
 		else {
 			if(!isNumeric(arguments.dimensions.width) || !isNumeric(arguments.dimensions.height) || arguments.dimensions.width < 1 || arguments.dimensions.height < 1) {
@@ -146,7 +146,7 @@ component
 				return response;
 			}
 			response.stuff = "BARF";
-			ImageResize(sourceImage,int(arguments.dimensions.width),int(arguments.dimensions.height));
+			ImageResize(sourceImage,int(arguments.dimensions.width),int(arguments.dimensions.height),'');
 		}
 
 		var sourceImageInfo = imageInfo(sourceImage);
@@ -190,7 +190,7 @@ component
 		var tempDir = m.globalConfig().getTempDir();
 		var timage = replace(createUUID(),"-","","all");
 		var delim = rereplace(baseFilePath,".*\/","");
-		var filePath = baseFilePath & rereplace(arguments.file.url,".*?#delim#","")
+		var filePath = baseFilePath & rereplace(arguments.file.url,".*?#delim#","");
 		var sourceImage = ImageNew(filePath);
 		var destination = replace(filePath,".#arguments.file.ext#","-copy1.#arguments.file.ext#");
 		var version = 1;
@@ -240,7 +240,7 @@ component
 		var tempDir = m.globalConfig().getTempDir();
 		var timage = replace(createUUID(),"-","","all");
 		var delim = rereplace(baseFilePath,".*\/","");
-		var filePath = baseFilePath & rereplace(arguments.file.url,".*?#delim#","")
+		var filePath = baseFilePath & rereplace(arguments.file.url,".*?#delim#","");
 		var sourceImage = ImageNew(filePath);
 		var response = {};
 		var rotation = 90;
@@ -296,7 +296,7 @@ component
 		var timage = replace(createUUID(),"-","","all");
 		var response = {};
 		var delim = rereplace(baseFilePath,".*\/","");
-		var filePath = baseFilePath & rereplace(arguments.file.url,".*?#delim#","")
+		var filePath = baseFilePath & rereplace(arguments.file.url,".*?#delim#","");
 
 		if(!isPathLegal(arguments.resourcepath,conditionalExpandPath(filePath),arguments.siteid)) {
 			throw(message="File path illegal");
@@ -393,7 +393,8 @@ component
 		var baseFilePath = getBaseFileDir( arguments.siteid,arguments.resourcePath );
 		var filePath = baseFilePath  & m.globalConfig().getFileDelim() & rereplace(arguments.directory,"\.{1,}","\.","all");
 
-		if(!isPathLegal(arguments.siteid,arguments.resourcepath,conditionalExpandPath(filePath))){
+		//if(!isPathLegal(arguments.siteid,arguments.resourcepath,conditionalExpandPath(filePath))){
+		if(!isPathLegal(arguments.resourcepath,conditionalExpandPath(filePath),arguments.siteid)) {
 			throw(message="Illegal file path",errorcode ="invalidParameters");
 		}
 
@@ -502,7 +503,8 @@ component
 			throw(message="File path illegal");
 		}
 
-		response.uploaded = fileUploadAll(destination=tempDir,nameconflict="unique");
+		//response.uploaded = fileUploadAll(destination=tempDir,nameconflict="makeunique");
+		response.uploaded = fileUploadAll(tempdir,'',"makeunique");
 		response.allowedExtensions = allowedExtensions;
 
 		for(var i = 1; i lte ArrayLen(response.uploaded);i++ ) {
@@ -578,7 +580,7 @@ component
 			throw(message="File path illegal");
 		}
 
-		var folders = directoryList(filePath,false,'name','','',"dir");
+		var folders = directoryList(filePath,false,'name','','asc',"dir");
 
 		if(ArrayLen(folders)) {
 			response.folders = folders;
@@ -624,13 +626,16 @@ component
 
 		// always move to the temp directory first!!!
 		var origin=conditionalExpandPath(filePath) & m.globalConfig().getFileDelim() & arguments.filename;
-		var destination=conditionalExpandPath(destinationPath) & m.globalConfig().getFileDelim() & arguments.filename;
+		// var destination=conditionalExpandPath(destinationPath) & m.globalConfig().getFileDelim() & arguments.filename;
+		var finalDestination=conditionalExpandPath(destinationPath) & m.globalConfig().getFileDelim() & arguments.filename;
 
 		fileMove(origin,tempDir & arguments.filename);
-		fileMove(tempDir & filename,destination);
+		// fileMove(tempDir & filename,destination);
+		fileMove(tempDir & filename,finalDestination);
 
 		var info = {};
-		info['filePath'] = destination;
+		// info['filePath'] = destination;
+		info['filePath'] = finalDestination;
 		m.event('fileBrowser',info).announceEvent('onAfterFileMove');
 		return response;
 	}
@@ -741,7 +746,8 @@ component
 
 		var baseFilePath = getBaseFileDir( arguments.siteid,arguments.resourcePath );
 		var filePath = baseFilePath  & m.globalConfig().getFileDelim() & rereplace(arguments.directory,"\.{1,}","\.","all");
-		var path = expandpath(filePath) & application.configBean.getFileDelim() & arguments.filename;
+		// var path = expandpath(filePath) & application.configBean.getFileDelim() & arguments.filename;
+		var path = conditionalExpandPath(filePath) & application.configBean.getFileDelim() & arguments.filename;
 
 		if(!isPathLegal(arguments.resourcepath,conditionalExpandPath(filePath),arguments.siteid)) {
 			throw(message="File path illegal");
@@ -751,11 +757,13 @@ component
 
 		try {
 			if(directoryExists(path)) {
-				var list = directoryList( path=path,listinfo="query" );
+				// var list = directoryList( path=path,listinfo="query" );
+				var list = directoryList(path,false,"query");
 
 				if(list.recordcount) {
 					response.message = "Directory is not empty.";
-					throw( message = response.message,object=response,type="customExp");
+					// throw( message = response.message,object=response,type="customExp");
+					throw(message=response.message);
 					return response;
 				}
 				else {
@@ -817,14 +825,17 @@ component
 		var safeName = rereplaceNoCase(arguments.name,"[[:space:]]","_","ALL");
 		safeName = rereplaceNoCase(safeName,"[^[:alnum:]\_\-]","","ALL");
 
-		var currentFilePath = expandpath(filePath) & application.configBean.getFileDelim() & arguments.filename
+		// var currentFilePath = expandpath(filePath) & application.configBean.getFileDelim() & arguments.filename;
+		var currentFilePath = conditionalexpandpath(filePath) & application.configBean.getFileDelim() & arguments.filename;
 		var success = 0;
 
 		if(fileExists(currentFilePath)) {
-			var newFilePath = expandpath(filePath) & application.configBean.getFileDelim() & safeName & ext;
+			// var newFilePath = expandpath(filePath) & application.configBean.getFileDelim() & safeName & ext;
+			var newFilePath = conditionalexpandpath(filePath) & application.configBean.getFileDelim() & safeName & ext;
 
 			try {
-				var fileContent = filemove(currentFilePath,newFilePath);
+				// var fileContent = filemove(currentFilePath,newFilePath);
+				filemove(currentFilePath,newFilePath);
 				success = 1;
 			}
 			catch( any e ) {
@@ -835,7 +846,8 @@ component
 			var newFilePath = expandpath(filePath) & application.configBean.getFileDelim() & safeName;
 
 			try {
-				var fileContent = directoryRename(currentFilePath,newFilePath);
+				// var fileContent = directoryRename(currentFilePath,newFilePath);
+				directoryRename(currentFilePath,newFilePath);
 				success = 1;
 			}
 			catch( any e ) {
@@ -887,14 +899,16 @@ component
 		}
 
 		try {
-			var fileContent = directorycreate(expandpath(filePath) & application.configBean.getFileDelim() & cleanName);
+			// var fileContent = directorycreate(expandpath(filePath) & application.configBean.getFileDelim() & cleanName);
+			directorycreate(conditionalExpandPath(filePath) & application.configBean.getFileDelim() & cleanName);
 		}
 		catch( any e ) {
 			return( e );
 		}
 
 		var info = {};
-		info['filePath'] = expandpath(filePath) & application.configBean.getFileDelim() & arguments.name;
+		// info['filePath'] = expandpath(filePath) & application.configBean.getFileDelim() & arguments.name;
+		info['filePath'] = conditionalExpandPath(filePath) & application.configBean.getFileDelim() & arguments.name;
 		m.event('fileBrowser',info).announceEvent('onAfterCreateFolder');
 
 
@@ -933,7 +947,7 @@ component
 				editfilelist: editfilelist,
 				imagelist: imagelist,
 				rb: rb
-			}
+			};
 		}
 
 // m.siteConfig().getFileDir() ... OS file path (no siteid)
@@ -941,6 +955,7 @@ component
 
 		var baseFilePath = getBaseFileDir( arguments.siteid,arguments.resourcePath );
 		var filePath = baseFilePath  & m.globalConfig().getFileDelim() & rereplace(arguments.directory,"\.{1,}","\.","all");
+
 
 		if(!isPathLegal(arguments.resourcepath,conditionalExpandPath(filePath),arguments.siteid)) {
 			throw(message="File path illegal");
@@ -969,14 +984,16 @@ component
 		var sqlString = "SELECT * from sourceQuery";
 
 		var qObj = new query();
-		qObj.setName("files")
+		qObj.setName("files");
 		qObj.setDBType("query");
 		qObj.setAttributes(sourceQuery=rsDirectory);
 
 		if(len(arguments.filterResults)) {
-			sqlString &= " where name LIKE :filtername";
+			// sqlString &= " where name LIKE :filtername";
+			sqlString &= " where UPPER(name) LIKE :filtername";
 
-			qObj.addParam( name="filtername",value="%#arguments.filterResults#%",cfsqltype="cf_sql_varchar" );
+			// qObj.addParam( name="filtername",value="%#arguments.filterResults#%",cfsqltype="cf_sql_varchar" );
+			qObj.addParam( name="filtername",value="%#UCase(arguments.filterResults)#%",cfsqltype="cf_sql_varchar" );
 		}
 
 		sqlString &= " ORDER by type,name";
@@ -1013,7 +1030,9 @@ component
 				frow['ext'] = rereplace(frow['fullname'],".[^\.]*\.","");
 
 				if(	frow['isimage'] ) {
-					var iinfo = imageInfo(conditionalExpandPath(filePath) & application.configBean.getFileDelim() & frow['fullname']);
+					var readImage = imageRead(conditionalExpandPath(filePath) & application.configBean.getFileDelim() & frow['fullname']);
+					// var iinfo = imageInfo(conditionalExpandPath(filePath) & application.configBean.getFileDelim() & frow['fullname']);
+					var iinfo = imageInfo(readImage);
 					if( isStruct(iinfo) ) {
 						frow['info']['height'] = iinfo.height;
 						frow['info']['width'] = iinfo.width;
@@ -1073,7 +1092,8 @@ component
 			return false;
 		}
 
-		arguments.path=replace(expandPath(arguments.path), "\", "/", "ALL");
+		// arguments.path=replace(expandPath(arguments.path), "\", "/", "ALL");
+		arguments.path=replace(conditionalExpandPath(arguments.path), "\", "/", "ALL");
 
 		// different root than murawrm
 		if( true ) {
@@ -1087,14 +1107,15 @@ component
 		if(!pathcheck) {
 			writeDump("ILLEGAL PATH");
 			writeDump(arguments);
-			writeDump(expandedPath);
-			writeDump(rootPath);
-	//		writeDump(len(arguments.path) & " >= " & len(rootPath));
-	//		writeDump(len(arguments.path) >= len(rootPath));
-	//		writeDump(lcase(left(arguments.path,len(rootPath))) & " == " & lcase(rootPath));
-	//		writeDump(lcase(left(arguments.path,len(rootPath))) == lcase(rootPath));
+			writeDump('expandedPath: ' & expandedPath & ' ');
+			writeDump('rootPath: ' & rootPath & ' ');
+			writeDump('realroot: ' & realroot & ' ');
+			// writeDump(len(arguments.path) & " >= " & len(rootPath));
+			// writeDump(len(arguments.path) >= len(rootPath));
+			// writeDump(lcase(left(arguments.path,len(rootPath))) & " == " & lcase(rootPath));
+			// writeDump(lcase(left(arguments.path,len(rootPath))) == lcase(rootPath));
 			abort;
-		}
+		} 
 
 		return true;
 	}

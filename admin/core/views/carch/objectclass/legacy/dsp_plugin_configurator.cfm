@@ -15,7 +15,7 @@
 	    modulesOnly=true
 	)/>
 
-	<cfif (!isdefined('rc.subclassid') or !len(rc.subclassid)) && isdefined('rc.moduleid') and len(rc.moduleid)>
+	<cfif (!isdefined('rc.subclassid') or !len(rc.subclassid)) and isdefined('rc.moduleid') and len(rc.moduleid)>
 		<cfset rc.subclassid=rc.moduleid>
 	</cfif>
 </cfsilent>

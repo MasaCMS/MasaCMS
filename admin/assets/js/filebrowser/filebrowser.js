@@ -626,7 +626,7 @@ MuraFileBrowser = {
 			}
 			else {
 				return MuraFileBrowser.config.selectCallback( fileViewer.currentFile );
-			}
+			} 
 			}
 	
 			, editFile: function() {
@@ -949,6 +949,15 @@ MuraFileBrowser = {
 			}
 			, renameFile: function() {
 			fileViewer.isDisplayWindow = "RENAME";
+			}
+		 , selectFile: function() {
+			if(MuraFileBrowser.config.selectMode == 1) {
+				window.opener.CKEDITOR.tools.callFunction(self.callback,fileViewer.currentFile.url);
+				window.close();
+			}
+			else {
+				return MuraFileBrowser.config.selectCallback( fileViewer.currentFile );
+			} 
 			}
 			, editImage: function() {
 			fileViewer.isDisplayWindow = "EDITIMAGE";
@@ -1790,6 +1799,15 @@ MuraFileBrowser = {
 			, setDirDepth: function( depth ) {
 				this.foldertree = this.foldertree.slice(0,depth+1);
 				this.refresh();
+			}
+		 , selectFile: function() {
+			if(MuraFileBrowser.config.selectMode == 1) {
+				window.opener.CKEDITOR.tools.callFunction(self.callback,fileViewer.currentFile.url);
+				window.close();
+			}
+			else { 
+				return MuraFileBrowser.config.selectCallback( fileViewer.currentFile );
+			}
 			}
 			, editFile: function( onSuccess,onError ) {
 			var dir = "";

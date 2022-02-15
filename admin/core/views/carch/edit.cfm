@@ -721,7 +721,7 @@ $('.clicktocopy').click(function(){
 	<input type="hidden" name="contentid" value="#rc.contentBean.getContentID()#">
 	<input type="hidden" name="ptype" value="#esapiEncode('html_attr',rc.ptype)#">
 	<input type="hidden" name="type" value="#esapiEncode('html_attr',rc.type)#">
-	<cfif structKeyExists(url, 'formType') && url.formType != "">
+	<cfif structKeyExists(url, 'formType') and url.formType neq "">
 		<!--- Only set with new forms --->
 		<input type="hidden" name="formType" value="#url.formType#">
 	</cfif>
