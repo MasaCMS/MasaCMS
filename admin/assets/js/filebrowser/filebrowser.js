@@ -626,7 +626,7 @@ MuraFileBrowser = {
 			}
 			else {
 				return MuraFileBrowser.config.selectCallback( fileViewer.currentFile );
-			} 
+			}
 			}
 	
 			, editFile: function() {

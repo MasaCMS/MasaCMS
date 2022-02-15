@@ -1,4 +1,4 @@
-﻿<!--- 
+﻿<!---
 This file is part of Masa CMS. Masa CMS is based on Mura CMS, and adopts the  
 same licensing model. It is, therefore, licensed under the Gnu General Public License 
 version 2 only, (GPLv2) subject to the same special exception that appears in the licensing 
@@ -824,7 +824,7 @@ Thanks for using #contactName#</cfoutput>
 	<cfset var redirect=getBean('userRedirect').loadBy(redirectid=arguments.$.event('returnID')) />
 
 	<!--- If they have the redirect id and return userid from the magic link --->
-	<cfif len(arguments.$.event('returnID')) AND len(arguments.$.event('returnUserID')) >
+	<cfif len(arguments.$.event('returnID')) and len(arguments.$.event('returnUserID')) >
 
 		<!--- logout current user --->
 		<cfif arguments.$.currentUser().isLoggedIn() >
@@ -832,13 +832,13 @@ Thanks for using #contactName#</cfoutput>
 		</cfif>
 
 		<!--- Make sure bean is valid --->
-		<cfif redirect.exists() AND redirect.getCreated() GTE dateAdd("d",-variables.configBean.get('mfadayslinkvalid'),now()) AND arguments.$.event('returnUserID') EQ redirect.getUserID() >
+		<cfif redirect.exists() and redirect.getCreated() gte dateAdd("d",-variables.configBean.get('mfadayslinkvalid'),now()) and arguments.$.event('returnUserID') eq redirect.getUserID() >
 			<cfset var userUtility = getBean('userUtility') />
 			<cfset var user=redirect.getUser() />
 			<cfset 	var sessionData = getSession() />
 
 			<cfif user.exists()>
-				<cfif variables.configBean.get('mfa') AND variables.configBean.get('mfaperdevice')>
+				<cfif variables.configBean.get('mfa') and variables.configBean.get('mfaperdevice')>
 					<cfset sessionData.mfa={
 							userid=user.get('userid'),
 							siteid=user.get('siteid'),

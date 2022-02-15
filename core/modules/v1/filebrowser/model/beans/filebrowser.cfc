@@ -1,4 +1,4 @@
-	component
+component
 	entityname="filebrowser"
 	extends="mura.bean.bean"
 	displayname="Mura File Browser"
@@ -956,7 +956,6 @@
 		var baseFilePath = getBaseFileDir( arguments.siteid,arguments.resourcePath );
 		var filePath = baseFilePath  & m.globalConfig().getFileDelim() & rereplace(arguments.directory,"\.{1,}","\.","all");
 
-
 		if(!isPathLegal(arguments.resourcepath,conditionalExpandPath(filePath),arguments.siteid)) {
 			throw(message="File path illegal");
 		}
@@ -1107,9 +1106,8 @@
 		if(!pathcheck) {
 			writeDump("ILLEGAL PATH");
 			writeDump(arguments);
-			writeDump('expandedPath: ' & expandedPath & ' ');
-			writeDump('rootPath: ' & rootPath & ' ');
-			writeDump('realroot: ' & realroot & ' ');
+			writeDump(expandedPath);
+			writeDump(rootPath);
 			// writeDump(len(arguments.path) & " >= " & len(rootPath));
 			// writeDump(len(arguments.path) >= len(rootPath));
 			// writeDump(lcase(left(arguments.path,len(rootPath))) & " == " & lcase(rootPath));

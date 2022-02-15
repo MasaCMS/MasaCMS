@@ -126,7 +126,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						 <div class="image-option" style="float: left; margin: 0 10px; text-align: center" data-fileid="#rsImages.fileid#">
 							 <img src="#$.getURLForImage(fileid=rsImages.fileid,size='small')#"/>
 							 <figcaption>
-								 <cfif rc.contentid EQ contentid>Current<cfelse>#title#</cfif>
+								 <cfif rc.contentid eq contentid>Current<cfelse>#title#</cfif>
 							 </figcaption>
 						 </div>
 					 </cfloop>

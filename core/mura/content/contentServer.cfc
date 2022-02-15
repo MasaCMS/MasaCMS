@@ -230,8 +230,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfif isValid("UUID",last)>
 			<cfset var redirect=getBean('userRedirect').loadBy(redirectid=last)>
-			<cfset var usercheck = (!StructKeyExists(url, 'userID')) ? '' : url.userId />
-			<cfif redirect.exists() and len(redirect.getURL()) AND usercheck EQ redirect.get('userid')>
+			<cfset var usercheck = !StructKeyExists(url, 'userID') ? '' : url.userId />
+			<cfif redirect.exists() and len(redirect.getURL()) and usercheck eq redirect.get('userid')>
 				<cfset redirect.apply()>
 			<cfelse>
 				<!--- If it's no longer valid, send to homepage and display login --->
