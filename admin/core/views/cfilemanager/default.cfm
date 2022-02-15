@@ -102,7 +102,7 @@ This file is part of Mura CMS.
   </div>
 </div> <!-- /.mura-header -->
 
-<div id="MuraFileBrowserContainer"></div>
+<div id="MasaBrowserContainer"></div>
   
 <script type="text/javascript">
   <cfif session.resourceType eq "assets">

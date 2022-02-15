@@ -1,7 +1,7 @@
 <cfparam name="url.target" default="">
 <cfparam name="url.completepath" default="true">
 <cfoutput>
-<div id="MuraFileBrowserContainer"></div>
+<div id="MasaBrowserContainer"></div>
 <script>
 
 Mura(function(){

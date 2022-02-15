@@ -800,7 +800,7 @@ This file is part of Mura CMS.
             });
         } else $(e).unbind("click").on("click", function() {
             var a = Mura(this);
-            $("#alertDialogMessage").html('<div id="MuraFileBrowserContainer"></div>'), $("#alertDialog").attr("title", "Select File"),
+            $("#alertDialogMessage").html('<div id="MasaBrowserContainer"></div>'), $("#alertDialog").attr("title", "Select File"),
             $("#alertDialog").dialog({
                 resizable: !1,
                 width: 1e3,

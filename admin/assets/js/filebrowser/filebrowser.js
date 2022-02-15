@@ -20,7 +20,7 @@ MuraFileBrowser = {
 	
 		this.config=Mura.extend(config,this.config);
 		this.endpoint =  Mura.apiEndpoint + "filebrowser/";
-		this.container = Mura("#MuraFileBrowserContainer");
+		this.container = Mura("#MasaBrowserContainer");
 		this.container.append("<div id='" + target + "'><component :is='currentView'></component></div>");
 		this.target = target;
 		this.main(); // Delegating to main()
@@ -457,8 +457,8 @@ MuraFileBrowser = {
 			height: 0
 		};
 	
-		crop.x = cropRect.offsetLeft;
-		crop.y = cropRect.offsetTop;
+		crop.x = cropRect.oLeft;
+		crop.y = cropRect.oTop;
 		crop.width = rect.width;
 		crop.height = rect.height;
 	
@@ -503,8 +503,8 @@ MuraFileBrowser = {
 	
 			if (ev.pageX) { //Moz
 				if(e.target != document.getElementById('imagediv')) {
-				corners.x = e.offsetX + e.target.offsetLeft;
-				corners.y = e.offsetY + e.target.offsetTop;
+				corners.x = e.offsetX + e.target.oLeft;
+				corners.y = e.offsetY + e.target.oTop;
 				}
 				else {
 				corners.x = ev.offsetX;
@@ -580,7 +580,7 @@ MuraFileBrowser = {
 		});
 	
 		Vue.component('contextmenu', {
-		props: ["currentFile","menuy","menux"],
+		props: ["currentFile","menuy","menux","bottom"],
 		template: `
 		<div id="newContentMenu" class="addNew" v-bind:style="{ left: (menux + 20) + 'px',top: getTop() + 'px' }">
 			<ul id="newContentOptions">
@@ -1466,8 +1466,8 @@ MuraFileBrowser = {
 	
 			this.$root.isDisplayContext = 0;
 	
-			var left = Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().left) - 26;
-			var top =  Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().top) + window.scrollX;
+			var left = Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().left);
+			var top =  Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().top) + window.scrollX-5;
 	
 			this.$nextTick(function () {
 				this.$root.isDisplayContext = 1;
@@ -1554,25 +1554,50 @@ MuraFileBrowser = {
 			this.$root.back( );
 			}
 			,openMenu: function(e,file,index) {
-			this.menux = Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().left)+5;
-			this.menuy =  Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().top)+10 + window.scrollX;
-	
-			this.$root.currentFile = file;
-			this.$root.currentIndex = index;
-	
-			this.$root.isDisplayContext = 0;
-	
-	
-			this.$nextTick(function () {
-				this.$root.isDisplayContext = 1;
-			})
-	
-			this.$root.isDisplayWindow = '';
-			this.$root.currentFile = file;
-			this.$root.currentFile.index = index;
-			this.$root.currentIndex = index;
-	
-			e.preventDefault();
+				window.index    = index;
+				window.gridMode = true;
+		
+				// gridmode
+				var oLeft = -5;
+				var oTop = -83;
+		
+				// offset positioning relative to parent
+				if (document.getElementById('MasaBrowserContainer')){
+					// is a modal
+					if (document.getElementById('MasaBrowserContainer').parentNode == document.getElementById('alertDialogMessage')){
+						oTop += 57;
+						oLeft += Math.floor(document.getElementById('MasaBrowserContainer').getBoundingClientRect().left);
+					}
+				}
+
+				var menuEl = document.getElementById('fileitem-'+index);
+				var menuleft = Math.floor(menuEl.getBoundingClientRect().left);
+				var menutop = Math.floor(menuEl.getBoundingClientRect().top);
+				var menuheight = Math.floor(menuEl.offsetHeight);
+
+				this.menux = menuleft - 20 - oLeft;
+				this.menuy = menutop - oTop;
+				this.bottom = window.innerHeight;
+
+				if(this.menuy+menuheight+25 > this.bottom) {
+					this.menuy -= menuheight-20;
+				}
+		
+				this.$root.currentFile = file;
+				this.$root.currentIndex = index;
+				
+				this.$root.isDisplayContext = 0;
+		
+				this.$nextTick(function () {
+					this.$root.isDisplayContext = 1;
+				})
+		
+				this.$root.isDisplayWindow = '';
+				this.$root.currentFile = file;
+				this.$root.currentFile.index = index;
+				this.$root.currentIndex = index;
+		
+				e.preventDefault();
 			}
 		}
 		});
