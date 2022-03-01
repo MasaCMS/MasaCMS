@@ -1382,21 +1382,22 @@ MuraFileBrowser = {
 				</tr>
 				<tr v-for="(file,index) in files">
 					<td class="actions">
-					<a href="#" :id="'fileitem-'+index" class="show-actions" @click.prevent="openMenu($event,file,index)"><i class="mi-ellipsis-v"></i></a>
-					<div class="actions-menu hide">
-						<ul class="actions-list">
-						<li class="edit"><a @contextmenu="openMenu($event,file,index)"><i class="mi-pencil"></i>View</a></li>
-						</ul>
-					</div>
+						<a href="#" :id="'fileitem-'+index" class="show-actions" @click.prevent="openMenu($event,file,index)"><i class="mi-ellipsis-v"></i></a>
+						<div class="actions-menu hide">
+							<ul class="actions-list">
+							<li class="edit"><a @contextmenu="openMenu($event,file,index)"><i class="mi-pencil"></i>View</a></li>
+							</ul>
+						</div>
 					</td>
 					<td class="var-width">
-					<a v-if="parseInt(file.isfile)" href="#" @click.prevent="viewFile(file,index)">{{file.fullname}}</a>
-					<a v-else href="#" @click.prevent="refresh(file.name)"><i class="mi-folder"></i> {{file.fullname}}</a>
+						<a v-if="parseInt(file.isfile)" href="#" @click.prevent="viewFile(file,index)">{{file.fullname}}</a>
+						<a v-else href="#" @click.prevent="refresh(file.name)"><i class="mi-folder"></i> {{file.fullname}}</a>
 					</td>
 					<td>
 					<div v-if="parseInt(file.isfile)">
 						{{file.size}}kb
 					</div>
+					
 					<div v-else>
 						--
 					</div>
@@ -1500,36 +1501,38 @@ MuraFileBrowser = {
 				</div>
 			</div>
 			<div v-for="(file,index) in files">
-				<div class="fileviewer-item"  :id="'fileitem-'+index"  v-if="parseInt(file.isfile)" @click="openMenu($event,file,index)">
-				<div class="fileviewer-item-image">
-					<div v-if="0" class="fileviewer-item-icon" :class="['fileviewer-item-icon-' + file.type]"></div>
-					<div v-else class="fileviewer-item-icon" :style="{ 'background-image': 'url(' + encodeURI(file.url) + ')' }"></div>
-				</div>
-				<div class="fileviewer-item-meta">
-					<div class="fileviewer-item-label">
-					{{file.fullname}}
+				<div class="fileviewer-item"  :id="'fileitem-'+index"  v-if="parseInt(file.isfile)">
+					<div class="fileviewer-item-image"  @click="viewFile(file,index)">
+						<div v-if="parseInt(file.isimage)" class="fileviewer-item-icon" :style="{ 'background-image': 'url(' + encodeURI(file.url) + ')' }"></div>
+						<div v-else class="fileviewer-item-icon fileviewer-item-filetype" :class="['fileviewer-item-icon-' + file.type]">{{file.ext}}</div>
 					</div>
-					<div class="fileviewer-item-meta-details">
-					<div v-if="parseInt(file.isfile)" class="fileviewer-item-meta-size">
-						{{file.size}}kb
-					</div>
-					</div>
-				</div>
-				</div>
-				<div class="fileviewer-item" v-else @click="refresh(file.name)">
-				<div class="fileviewer-item-icon">
-					<i class="mi-folder-open"></i>
-				</div>
-				<div class="fileviewer-item-meta">
-					<div class="fileviewer-item-label">
-					{{file.fullname}}
-					</div>
-					<div class="fileviewer-item-meta-details">
-					<div v-if="parseInt(file.isfile)" class="fileviewer-item-meta-size">
-						{{file.size}}kb
-					</div>
+					<div class="fileviewer-item-meta">
+						<div class="fileviewer-item-label">
+						{{file.fullname}}
+						</div>
+						<div class="fileviewer-item-meta-details">
+							<div v-if="parseInt(file.isfile)" class="fileviewer-item-meta-size">
+								{{file.size}}kb
+							</div>
+						</div>
+						<i :id="'btn-'+index" class="btn mi-ellipsis-v" @click="openMenu($event,file,index)"></i>
 					</div>
 				</div>
+				<div class="fileviewer-item" :id="'fileitem-'+index" v-else>
+					<div class="fileviewer-item-icon" @click="refresh(file.name)">
+						<i class="mi-folder-open"></i>
+					</div>
+					<div class="fileviewer-item-meta">
+						<div class="fileviewer-item-label">
+						{{file.fullname}}
+						</div>
+						<div class="fileviewer-item-meta-details">
+							<div v-if="parseInt(file.isfile)" class="fileviewer-item-meta-size">
+								{{file.size}}kb
+							</div>
+						</div>
+						<i :id="'btn-'+index" class="btn mi-ellipsis-v" @click="openMenu($event,file,index)"></i>
+					</div>
 				</div>
 			</div>
 			<div class="clearfix"></div>
@@ -1553,13 +1556,25 @@ MuraFileBrowser = {
 			,back: function( ) {
 			this.$root.back( );
 			}
+			, viewFile: function(file,index) {
+				this.$root.currentFile = file;
+				this.$root.currentIndex = index;
+				if(parseInt(file.isimage)) {
+					fileViewer.isDisplayWindow = "VIEW";
+					fileViewer.viewFile();
+				}
+				else {
+					this.openMenu(null,file,index);
+				}
+			}
 			,openMenu: function(e,file,index) {
 				window.index    = index;
 				window.gridMode = true;
 		
 				// gridmode
-				var oLeft = -5;
-				var oTop = -83;
+
+				var oLeft = 135;
+				var oTop = -3;
 		
 				// offset positioning relative to parent
 				if (document.getElementById('MasaBrowserContainer')){
@@ -1570,17 +1585,25 @@ MuraFileBrowser = {
 					}
 				}
 
-				var menuEl = document.getElementById('fileitem-'+index);
+				var menuEl = document.getElementById('btn-'+index);
 				var menuleft = Math.floor(menuEl.getBoundingClientRect().left);
 				var menutop = Math.floor(menuEl.getBoundingClientRect().top);
-				var menuheight = Math.floor(menuEl.offsetHeight);
+				var menuheight = 170;
+
+				if(!parseInt(file.isfile)) {
+					menuheight = 50;
+				}
+				else if(!parseInt(!file.isimage)) {
+					menuheight = 108;
+				}
+
 
 				this.menux = menuleft - 20 - oLeft;
 				this.menuy = menutop - oTop;
 				this.bottom = window.innerHeight;
 
 				if(this.menuy+menuheight+25 > this.bottom) {
-					this.menuy -= menuheight-20;
+					this.menuy -= menuheight+7;
 				}
 		
 				this.$root.currentFile = file;
@@ -1596,8 +1619,9 @@ MuraFileBrowser = {
 				this.$root.currentFile = file;
 				this.$root.currentFile.index = index;
 				this.$root.currentIndex = index;
-		
-				e.preventDefault();
+				if(e != null) {
+					e.preventDefault();
+				}
 			}
 		}
 		});
@@ -1748,17 +1772,31 @@ MuraFileBrowser = {
 			, updateEdit: function() {
 				self.updateEdit(currentFile);
 			}
-			, displayResults: function(response) {
-			this.response = response.data;
-			this.files = response.data.items;
-			this.folders = response.data.folders;
-	
-			if(response.data.settings) {
-				this.settings = response.data.settings;
-			}
-			this.$nextTick(function () {
-				this.spinnermodal = 0;
-			});
+			, displayResults: function(resp) {
+				var self = this;
+				this.response = resp.data;
+
+				//folder requested does not exist
+				if(parseInt(this.response.dne) == 1) {
+					console.log("Requested folder does not not exist; resetting folder tree to root");
+					this.foldertree = [];
+					var fdata = {
+						foldertree: []
+					}
+					Mura.createCookie( 'fbFolderTree',JSON.stringify(fdata),1);
+					this.$nextTick(function () {
+						self.refresh();
+					});
+				}
+				this.files = this.response.items;
+				this.folders = this.response.folders;
+		
+				if(this.response.settings) {
+					this.settings = this.response.settings;
+				}
+				this.$nextTick(function () {
+					this.spinnermodal = 0;
+				});
 	
 			}
 			, displayError: function( e ) {

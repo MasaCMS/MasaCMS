@@ -101,7 +101,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</div>
 					</div> <!--- /.bigui --->
 				</div>
+
+
+				<div class="mura-control-group extendedattributes-group" id="extendedattributes-container-relatedcontent">
+					<div class="bigui" id="bigui__relatedcontent" data-label="Manage Extended Attributes">
+						<div class="bigui__title">Manage Extended Attributes</div>
+						<div class="bigui__controls">
+							<span id="extendset-container-tabextendedattributestop"></span>
+							<span id="extendset-container-relatedcontent" class="extendset-container extendedattributes-body" data-controlparent="extendedattributes-container-relatedcontent"></span>
+							<span id="extendset-container-tabextendedattributesbottom"></span>
+						</div>
+					</div>
+					<!--- /.bigui --->
+				</div>
 				<input id="relatedContentSetData" type="hidden" name="relatedContentSetData" value="" />	
+
+				<span id="extendset-container-tabrelatedcontentbottom" class="extendset-container"></span>
 			</div>
 		</div>
 	</div> 

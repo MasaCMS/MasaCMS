@@ -427,7 +427,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>	
 			</cfif> <!--- /end mobile nav --->
 
-		   <span id="extendset-container-publishing" class="extendset-container"></span>
+			<div class="mura-control-group extendedattributes-group" id="extendedattributes-container-publishing">
+				<div class="bigui" id="bigui__publishing" data-label="Manage Extended Attributes">
+					<div class="bigui__title">Manage Extended Attributes</div>
+					<div class="bigui__controls">
+						<span id="extendset-container-tabextendedattributestop"></span>
+						<span id="extendset-container-publishing" class="extendset-container extendedattributes-body" data-controlparent="extendedattributes-container-publishing"></span>
+						<span id="extendset-container-tabextendedattributesbottom"></span>
+					</div>
+				</div>
+				<!--- /.bigui --->
+			</div>
+
 
 		   <span id="extendset-container-tabpublishingbottom" class="extendset-container"></span>
 				
