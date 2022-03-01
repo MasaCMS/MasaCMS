@@ -109,7 +109,7 @@ follows:
 	<script type="text/javascript" src="#application.configBean.getContext()#/core/vendor/ckeditor/ckeditor.js"></script>
 	<script type="text/javascript" src="#application.configBean.getContext()#/core/vendor/ckeditor/adapters/jquery.js"></script>
 
-	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/filebrowser/filebrowser.min.js"></script>
+	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/filebrowser/filebrowser.js"></script>
 	<link href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/filebrowser/assets/css/filebrowser.css" link rel="stylesheet" type="text/css"></script>
 
 	<!-- JSON -->
