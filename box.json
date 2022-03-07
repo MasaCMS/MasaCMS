@@ -1,26 +1,27 @@
 {
-    "name":"Masa CMS",
-    "version":"7.3",
-    "slug":"MasaCMS",
-    "author":"We Are Orange BV",
-    "shortDescription":"Masa CMS is an open source content management system for CFML.",
-    "description":"Masa CMS is an open source content management system for CFML, based on the latest open source version of Mura CMS created by Blue River Interactive Group, and forked by We Are Orange BV to create Masa CMS. Masa CMS has been designed to be used by marketing departments, web designers and developers.",
-    "private":false,
-    "location":"MasaCMS/MasaCMS#v7.3",
-    "directory":"",
-    "createPackageDirectory":false,
-    "packageDirectory":"",
-    "homepage":"https://www.masacms.com/",
-    "documentation":"https://docs.masacms.com/",
-    "repository":{
-        "type":"Git",
-        "URL":"https://github.com/MasaCMS/MasaCMS"
+    "name": "Masa CMS",
+    "version": "7.3",
+    "slug": "MasaCMS",
+    "author": "We Are Orange BV",
+    "organization": "MasaCMS",
+    "shortDescription": "Masa CMS is an open source content management system for CFML.",
+    "description": "Masa CMS is an open source content management system for CFML, based on the latest open source version of Mura CMS created by Blue River Interactive Group, and forked by We Are Orange BV to create Masa CMS. Masa CMS has been designed to be used by marketing departments, web designers and developers.",
+    "private": false,
+    "location": "https://github.com/MasaCMS/MasaCMS/archive/refs/heads/7.3.zip",
+    "directory": "",
+    "createPackageDirectory": false,
+    "packageDirectory": "",
+    "homepage": "https://www.masacms.com/",
+    "documentation": "https://docs.masacms.com/",
+    "repository": {
+        "type": "Git",
+        "URL": "https://github.com/MasaCMS/MasaCMS.git"
     },
-    "bugs":"https://github.com/MasaCMS/MasaCMS/issues",
-    "instructions":"",
-    "changelog":"",
-    "type":"cms",
-    "keywords":[
+    "bugs": "https://github.com/MasaCMS/MasaCMS/issues",
+    "instructions": "",
+    "changelog": "",
+    "type": "cms",
+    "keywords": [
         "mura",
         "masa",
         "cms",
@@ -30,37 +31,37 @@
         "management",
         "system"
     ],
-    "engines":[
+    "engines": [
         {
-            "type":"lucee",
-            "version":">=5.x"
+            "type": "lucee",
+            "version": ">=5.x"
         },
         {
-            "type":"adobe",
-            "version":">=11.0.0"
+            "type": "adobe",
+            "version": ">=11.0.0"
         }
     ],
-    "defaultEngine":"lucee",
-    "defaultPort":0,
-    "projectURL":"",
-    "license":[
+    "defaultEngine": "lucee",
+    "defaultPort": 0,
+    "projectURL": "",
+    "license": [
         {
-            "type":"GPL-2.0 with execptions",
-            "URL":"https://github.com/MasaCMS/MasaCMS/blob/main/license.txt"
+            "type": "GPL-2.0 with execptions",
+            "URL": "https://github.com/MasaCMS/MasaCMS/blob/main/license.txt"
         }
     ],
-    "contributors":[],
-    "dependencies":{},
-    "devDependencies":{
-        "testbox":"^2.3.0+00044",
-        "docbox":"^2.0.7+00005"
+    "contributors": [],
+    "dependencies": {},
+    "devDependencies": {
+        "testbox": "^2.3.0+00044",
+        "docbox": "^2.0.7+00005"
     },
-    "installPaths":{
-        "testbox":"core/vendor/testbox/",
-        "docbox":"core/vendor/docbox/"        
+    "installPaths": {
+        "testbox": "core/vendor/testbox/",
+        "docbox": "core/vendor/docbox/"
     },
-    "scripts":{},
-    "ignore":[
+    "scripts": {},
+    "ignore": [
         "**/.*",
         "test",
         "tests"
