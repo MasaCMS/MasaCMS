@@ -91,7 +91,7 @@ Mura(function() {
 
 					if(!doNotFollowEdit && typeof entity.properties.links.edit != 'undefined'){
 						location.href=entity.properties.links.edit;
-						return
+						return;
 					}
 
 					data.model = entity.getAll();
@@ -785,6 +785,19 @@ Mura(function() {
 		props: ['property','model','entity']
 	});
 
+	Vue.component('scaffold-field-file', {
+		template: '#scaffold-field-file',
+		props: ['property','model','entity','list'],
+		mounted: function() {
+			MuraFileBrowser.config.resourcepath="User_Assets";
+			setFinders(
+				'button[data-target="' + this.$props.property.name + '"]'
+				,{resourcepath:"User_Assets",}
+			);
+		}
+	});
+
+
 	Scaffolder = new Vue({
 		el: '#container-scaffold',
 		data: {
@@ -885,6 +898,13 @@ Mura(function() {
 
 			clickSave: function( entityname ) {
 				this.errordata = {};
+
+				var self = this;
+
+				Mura(".selector-file").forEach(function(){
+					var input=Mura(this);
+					self.model[input.attr('name')]=input.val();
+				});
 
 				for(i in CKEDITOR.instances){
 					CKEDITOR.instances[i].updateElement();

@@ -306,6 +306,19 @@ input.filebrowser-filter {
   width: 160px;
 }
 
+.fileviewer-item .mi-ellipsis-v,.fileviewer-item .mi-navicon {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+}
+.fileviewer-item-filetype {
+  position: relative;
+  text-align: center;
+  padding-top: 15px;
+  font-size: 2em;
+  font-weight: 300;
+}
+
 .fileviewer-item-label {
   height: 2em;
   font-size: 13px;

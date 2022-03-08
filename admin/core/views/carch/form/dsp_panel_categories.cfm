@@ -122,9 +122,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</div> <!--- /.bigui --->
 				</div> <!--- /.mura-control-group --->	
 
-				<span id="extendset-container-categorization" class="extendset-container"></span>
-				<span id="extendset-container-tabcategorizationbottom" class="extendset-container"></span>
+				<div class="mura-control-group extendedattributes-group" id="extendedattributes-container-categorization">
+					<div class="bigui" id="bigui__categorization" data-label="Manage Extended Attributes">
+						<div class="bigui__title">Manage Extended Attributes</div>
+						<div class="bigui__controls">
+							<span id="extendset-container-tabextendedattributestop"></span>
+							<span id="extendset-container-categorization" class="extendset-container extendedattributes-body" data-controlparent="extendedattributes-container-categorization"></span>
+							<span id="extendset-container-tabextendedattributesbottom"></span>
+						</div>
+					</div>
+					<!--- /.bigui --->
+				</div>
 
+				<span id="extendset-container-tabcategorizationbottom" class="extendset-container"></span>
 		</div>
 	</div>
 </div> 

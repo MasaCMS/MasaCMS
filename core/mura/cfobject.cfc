@@ -160,7 +160,8 @@ component output="false" hint="This provides base functionality to all Masa CMS 
 	 * The eventManager is the same as the pluginManager.
 	 */
 	public function getEventManager() output=false {
-		return application.eventManager;
+		// return application.eventManager;
+		return application.pluginManager;
 	}
 
 	public function getCurrentUser() output=false {

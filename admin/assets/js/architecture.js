@@ -1264,10 +1264,11 @@ buttons: {
 		var r = eval("(" + data + ")");
 
 		$.each(r, function(name, value) {
-			//alert(name + ": " + value);
+			var tgt = $('#extendset-container-' + name);
 			$('#extendset-container-' + name + ' .load-inline').spin(false);
-			$('#extendset-container-' + name).html(value);
-
+			tgt.html(value);
+			if(value.length)
+				tgt.show();
 		});
 
 		if(r['default'] == '') {
@@ -1281,6 +1282,17 @@ buttons: {
 		} else {
 			$('#tabListDisplayOptionsLI').removeClass('hide');
 		}
+
+		// hide empgy extended attribute manage links
+		$('.extendedattributes-body').each(
+			function() {
+				if($(this).html() == '') {
+					var src = $(this);
+					var tgt = $("#" + src.attr('data-controlparent'));
+					tgt.hide();
+				}
+		});
+		
 
 		if(!r.hassummary) {
 			if(typeof hideSummaryEditor != 'undefined') {

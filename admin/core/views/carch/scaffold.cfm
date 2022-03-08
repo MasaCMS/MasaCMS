@@ -8,7 +8,7 @@
 </script>
 
 <script src="#$.globalConfig('rootPath')#/core/vendor/vue/vue.js"></script>
-<script src="#$.globalConfig('rootPath')#/admin/assets/js/scaffold/scaffolder.js"></script>
+<script src="#$.globalConfig('rootPath')#/admin/assets/js/scaffold/scaffolder.min.js"></script>
 
 <div class="block-content">
 
@@ -224,7 +224,7 @@
 			<li><strong><a href="##" onclick="return false;"><i class="mi-edit"></i>Edit</a></strong></li>
 		</ul>
 			<div class="help-block-inline">*Required</div>
-
+			<form enctype="multipart/form-data" novalidate id="scaffold-form">
 			<template v-for="property in data.properties">
 				<span v-if="property.fieldtype == 'id'">
 						<scaffold-field-text-readonly :property=property :model=data.model :entity=data.entity>~</scaffold-field-text-readonly>
@@ -248,6 +248,7 @@
 					<scaffold-field-checkbox v-else-if="property.rendertype === 'checkbox'" :property=property :model=data.model :entity=data.entity></scaffold-field-checkbox>
 					<scaffold-field-dropdown v-else-if="property.rendertype === 'dropdown'" :property=property :model=data.model :entity=data.entity></scaffold-field-dropdown>
 					<scaffold-field-radio v-else-if="property.rendertype === 'radio'" :property=property :model=data.model :entity=data.entity></scaffold-field-radio>
+					<scaffold-field-file v-else-if="property.rendertype == 'file'" :property=property :model=data.model :entity=data.entity>~</scaffold-field-file>
 					<scaffold-field-text v-else="property.rendertype == 'textbox'" :property=property :model=data.model :entity=data.entity>~</scaffold-field-text>
 				</div>
 			</template>
@@ -256,6 +257,7 @@
 				<a href="##" onclick="return false;" @click="clickSave" class="btn"><i class="mi-check-circle"></i> Save</a>
 				<a href="##" onclick="return false;" v-if="data.model && !data.model.isnew" @click="clickDelete" class="btn"><i class="mi-trash"></i> Delete</a>
 			</div>
+			</form>
 
 		</div>
 	</template>
@@ -443,6 +445,30 @@
 					</label>
 				</div>
 			</div>
+		</div>
+	</template>
+
+	<template id="scaffold-field-file">
+		<div>
+			<div v-if="model.errors && model.errors[property.name]" class="help-block-inline">
+				{{model.errors[property.name]}}
+			</div>
+			<div class="mura-control-group">
+				<label :for="property.name">
+					{{property.displayname ? property.displayname : property.label ? property.label : property.name}}<span v-if="property.required">*</span>
+				</label>
+				<input
+					type="text"
+					v-model="model[property.name]"
+					:name="property.name"
+					:id="property.name"
+					class="selector-file"
+					:value="model[property.name] ? model[property.name] : property.default"
+					:length="property.length"
+					:data-validate="property.validate ? property.validate : null"
+					:data-validate-message="property.validatemessage ? property.validatemessage : null"
+					>
+					<button type="button" class="btn" :data-target="property.name" data-completepath="false" data-serverpath="false"><i class="mi-image"></i> Select File</button></div>
 		</div>
 	</template>
 

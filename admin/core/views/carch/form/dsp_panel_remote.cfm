@@ -117,8 +117,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</div>
 	
 			<!--- /Remote Information --->
-
-			<span id="extendset-container-remote" class="extendset-container"></span>
+			<div class="mura-control-group extendedattributes-group" id="extendedattributes-container-remote">
+				<div class="bigui" id="bigui__remote" data-label="Manage Extended Attributes">
+					<div class="bigui__title">Manage Extended Attributes</div>
+					<div class="bigui__controls">
+						<span id="extendset-container-tabextendedattributestop"></span>
+						<span id="extendset-container-remote" class="extendset-container extendedattributes-body" data-controlparent="extendedattributes-container-remote"></span>
+						<span id="extendset-container-tabextendedattributesbottom"></span>
+					</div>
+				</div>
+				<!--- /.bigui --->
+			</div>
 			<span id="extendset-container-tabremotebottom" class="extendset-container"></span>
 		</div>
 	</div>
