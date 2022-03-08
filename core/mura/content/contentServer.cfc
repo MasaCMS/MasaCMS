@@ -1,4 +1,4 @@
-<!--- 
+﻿<!--- 
 This file is part of Masa CMS. Masa CMS is based on Mura CMS, and adopts the  
 same licensing model. It is, therefore, licensed under the Gnu General Public License 
 version 2 only, (GPLv2) subject to the same special exception that appears in the licensing 
@@ -230,14 +230,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfif isValid("UUID",last)>
 			<cfset var redirect=getBean('userRedirect').loadBy(redirectid=last)>
-			<cfset var = usercheck = !StructKeyExists(url, 'userID') ? '' : url.userId />
-			<cfif redirect.exists() and len(redirect.getURL()) && usercheck == redirect.get('userid')>
+			<cfset var usercheck = !StructKeyExists(url, 'userID') ? '' : url.userId />
+			<cfif redirect.exists() and len(redirect.getURL()) and usercheck eq redirect.get('userid')>
 				<cfset redirect.apply()>
 			<cfelse>
 				<!--- If it's no longer valid, send to homepage and display login --->
-				<cfset getBean('contentRenderer').redirect('location'='/?display=login&linkinvalid=true','addToken'=false,statusCode='301' ) />
+				<cfset getBean('contentRenderer').redirect(location='/?display=login&linkinvalid=true',addToken=false,statusCode='301' ) />
 			</cfif>
-		</cfif>
+		</cfif> 
 
 		<cfif not structKeyExists(request,"preformated")>
 			<cfif find(".",last) and (application.configBean.getAllowedIndexFiles() eq '*' or listFind(application.configBean.getAllowedIndexFiles(),last))>

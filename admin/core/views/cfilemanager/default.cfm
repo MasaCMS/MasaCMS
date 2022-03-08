@@ -79,7 +79,7 @@ This file is part of Mura CMS.
 <cfparam name="rc.resourceType" default="">
 <cfparam name="rc.resourceTypeChanged" default="false">
 <cfif len(rc.resourceType)>
-  <cfif session.resourceType != rc.resourceType>
+  <cfif session.resourceType neq rc.resourceType>
     <cfset rc.resourceTypeChanged = true>
   </cfif>
   <cfset session.resourceType=rc.resourceType>
