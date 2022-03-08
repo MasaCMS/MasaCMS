@@ -64,12 +64,6 @@ component
 			return permission;
 		}
 
-/*
-		if(!m.validateCSRFTokens()) {
-				permission.message = "Invalid CSRF tokens";
-				return permission;
-		}
-*/
 		permission.success = 1;
 		return permission;
 	}
@@ -550,15 +544,6 @@ component
 		return response;
 	}
 
-
-
-
-
-
-
-
-
-
 	remote any function children( directory,resourcepath ) {
 		var m=getBean('$').init(arguments.siteid);
 
@@ -632,15 +617,12 @@ component
 
 		// always move to the temp directory first!!!
 		var origin=conditionalExpandPath(filePath) & m.globalConfig().getFileDelim() & arguments.filename;
-		// var destination=conditionalExpandPath(destinationPath) & m.globalConfig().getFileDelim() & arguments.filename;
 		var finalDestination=conditionalExpandPath(destinationPath) & m.globalConfig().getFileDelim() & arguments.filename;
 
 		fileMove(origin,tempDir & arguments.filename);
-		// fileMove(tempDir & filename,destination);
 		fileMove(tempDir & filename,finalDestination);
 
 		var info = {};
-		// info['filePath'] = destination;
 		info['filePath'] = finalDestination;
 		m.event('fileBrowser',info).announceEvent('onAfterFileMove');
 		return response;
@@ -752,7 +734,6 @@ component
 
 		var baseFilePath = getBaseFileDir( arguments.siteid,arguments.resourcePath );
 		var filePath = baseFilePath  & m.globalConfig().getFileDelim() & rereplace(arguments.directory,"\.{1,}","\.","all");
-		// var path = expandpath(filePath) & application.configBean.getFileDelim() & arguments.filename;
 		var path = conditionalExpandPath(filePath) & application.configBean.getFileDelim() & arguments.filename;
 
 		if(!isPathLegal(arguments.resourcepath,conditionalExpandPath(filePath),arguments.siteid)) {
@@ -763,12 +744,10 @@ component
 
 		try {
 			if(directoryExists(path)) {
-				// var list = directoryList( path=path,listinfo="query" );
 				var list = directoryList(path,false,"query");
 
 				if(list.recordcount) {
 					response.message = "Directory is not empty.";
-					// throw( message = response.message,object=response,type="customExp");
 					throw(message=response.message);
 					return response;
 				}
@@ -831,16 +810,13 @@ component
 		var safeName = rereplaceNoCase(arguments.name,"[[:space:]]","_","ALL");
 		safeName = rereplaceNoCase(safeName,"[^[:alnum:]\_\-]","","ALL");
 
-		// var currentFilePath = expandpath(filePath) & application.configBean.getFileDelim() & arguments.filename;
 		var currentFilePath = conditionalexpandpath(filePath) & application.configBean.getFileDelim() & arguments.filename;
 		var success = 0;
 
 		if(fileExists(currentFilePath)) {
-			// var newFilePath = expandpath(filePath) & application.configBean.getFileDelim() & safeName & ext;
 			var newFilePath = conditionalexpandpath(filePath) & application.configBean.getFileDelim() & safeName & ext;
 
 			try {
-				// var fileContent = filemove(currentFilePath,newFilePath);
 				filemove(currentFilePath,newFilePath);
 				success = 1;
 			}
@@ -852,7 +828,6 @@ component
 			var newFilePath = expandpath(filePath) & application.configBean.getFileDelim() & safeName;
 
 			try {
-				// var fileContent = directoryRename(currentFilePath,newFilePath);
 				directoryRename(currentFilePath,newFilePath);
 				success = 1;
 			}
@@ -905,7 +880,6 @@ component
 		}
 
 		try {
-			// var fileContent = directorycreate(expandpath(filePath) & application.configBean.getFileDelim() & cleanName);
 			directorycreate(conditionalExpandPath(filePath) & application.configBean.getFileDelim() & cleanName);
 		}
 		catch( any e ) {
@@ -913,7 +887,6 @@ component
 		}
 
 		var info = {};
-		// info['filePath'] = expandpath(filePath) & application.configBean.getFileDelim() & arguments.name;
 		info['filePath'] = conditionalExpandPath(filePath) & application.configBean.getFileDelim() & arguments.name;
 		m.event('fileBrowser',info).announceEvent('onAfterCreateFolder');
 
@@ -956,9 +929,6 @@ component
 			};
 		}
 
-// m.siteConfig().getFileDir() ... OS file path (no siteid)
-// m.siteConfig().getFileAssetPath() ... includes siteid (urls)
-
 		var baseFilePath = getBaseFileDir( arguments.siteid,arguments.resourcePath );
 		var filePath = baseFilePath  & m.globalConfig().getFileDelim() & rereplace(arguments.directory,"\.{1,}","\.","all");
 
@@ -975,7 +945,7 @@ component
 		}
 
 
-// move to getBaseResourcePath() --> getFileAssetPath()
+		// move to getBaseResourcePath() --> getFileAssetPath()
 		var assetPath = getBaseResourcePath(arguments.siteid,arguments.resourcePath) & replace(arguments.directory,"\","/","all");
 
 		var frow = {};
@@ -1002,10 +972,8 @@ component
 		qObj.setAttributes(sourceQuery=rsDirectory);
 
 		if(len(arguments.filterResults)) {
-			// sqlString &= " where name LIKE :filtername";
 			sqlString &= " where UPPER(name) LIKE :filtername";
 
-			// qObj.addParam( name="filtername",value="%#arguments.filterResults#%",cfsqltype="cf_sql_varchar" );
 			qObj.addParam( name="filtername",value="%#UCase(arguments.filterResults)#%",cfsqltype="cf_sql_varchar" );
 		}
 
@@ -1026,8 +994,6 @@ component
 		response['totalitems'] = rsFiles.recordCount;
 		response['pre'] = serializeJSON(rsPrefix);
 
-//			response['sql'] = rsExecute.getSQL();
-
 		for(var x = response['startindex'];x <= response['endindex'];x++) {
 			frow = {};
 			frow['isfile'] = rsFiles['type'][x] == 'File' ? 1 : 0;
@@ -1044,7 +1010,6 @@ component
 
 				if(	frow['isimage'] ) {
 					var readImage = imageRead(conditionalExpandPath(filePath) & application.configBean.getFileDelim() & frow['fullname']);
-					// var iinfo = imageInfo(conditionalExpandPath(filePath) & application.configBean.getFileDelim() & frow['fullname']);
 					var iinfo = imageInfo(readImage);
 					if( isStruct(iinfo) ) {
 						frow['info']['height'] = iinfo.height;
@@ -1105,7 +1070,6 @@ component
 			return false;
 		}
 
-		// arguments.path=replace(expandPath(arguments.path), "\", "/", "ALL");
 		arguments.path=replace(conditionalExpandPath(arguments.path), "\", "/", "ALL");
 
 		// different root than murawrm
@@ -1114,20 +1078,17 @@ component
 			rootPath = replaceNoCase(rootPath, 'murawrm', realroot);
 		}
 
+		/*
 		var pathcheck = len(arguments.path) >= len(rootPath) && lcase(left(arguments.path,len(rootPath))) == lcase(rootPath);
-
 
 		if(!pathcheck) {
 			writeDump("ILLEGAL PATH");
 			writeDump(arguments);
 			writeDump(expandedPath);
 			writeDump(rootPath);
-			// writeDump(len(arguments.path) & " >= " & len(rootPath));
-			// writeDump(len(arguments.path) >= len(rootPath));
-			// writeDump(lcase(left(arguments.path,len(rootPath))) & " == " & lcase(rootPath));
-			// writeDump(lcase(left(arguments.path,len(rootPath))) == lcase(rootPath));
 			abort;
-		} 
+		}
+		*/
 
 		return true;
 	}
