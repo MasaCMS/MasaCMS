@@ -155,7 +155,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfloop>
 				</cfif>
 
-				<span id="extendset-container-tags" class="extendset-container"></span>
+				<div class="mura-control-group extendedattributes-group" id="extendedattributes-container-tags">
+					<div class="bigui" id="bigui__tags" data-label="Manage Extended Attributes">
+						<div class="bigui__title">Manage Extended Attributes</div>
+						<div class="bigui__controls">
+							<span id="extendset-container-tabextendedattributestop"></span>
+							<span id="extendset-container-tags" class="extendset-container extendedattributes-body" data-controlparent="extendedattributes-container-tags"></span>
+							<span id="extendset-container-tabextendedattributesbottom"></span>
+						</div>
+					</div>
+					<!--- /.bigui --->
+				</div>
+
 				<span id="extendset-container-tabtagsbottom" class="extendset-container"></span>
 		</div>
 	</div>

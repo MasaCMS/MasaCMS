@@ -228,6 +228,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<textarea name="notes" rows="3" id="abstract">#esapiEncode('html',rc.contentBean.getNotes())#</textarea>
 				</div> <!--- /end mura-control-group --->
 
+
+				<div class="mura-control-group extendedattributes-group" id="extendedattributes-container-summary">
+					<div class="bigui" id="bigui__summary" data-label="Manage Extended Attributes">
+						<div class="bigui__title">Manage Extended Attributes</div>
+						<div class="bigui__controls">
+							<span id="extendset-container-tabextendedattributestop"></span>
+							<span id="extendset-container-summary" class="extendset-container extendedattributes-body" data-controlparent="extendedattributes-container-summary"></span>
+							<span id="extendset-container-tabextendedattributesbottom"></span>
+						</div>
+					</div>
+					<!--- /.bigui --->
+				</div>
+			<span id="extendset-container-tabsummarybottom" class="extendset-container"></span>
 		</div>
 	</div>
 </div> 

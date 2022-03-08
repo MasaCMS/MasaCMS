@@ -243,7 +243,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 									<cfset renderedEvent=$.getBean('pluginManager').renderEvent(eventToRender=eventToRender,currentEventObject=$,index=eventIdx)>
 									<cfif len(trim(renderedEvent))>
-										<cfset tabLabel = Len($.event('tabLabel')) && !ListFindNoCase(tabLabelList, $.event('tabLabel')) ? $.event('tabLabel') : pluginEventMappings[i].pluginName />
+										<cfset tabLabel = Len($.event('tabLabel')) and !ListFindNoCase(tabLabelList, $.event('tabLabel')) ? $.event('tabLabel') : pluginEventMappings[i].pluginName />
 										<cfset tabLabelList=listAppend(tabLabelList, tabLabel)/>
 										<cfset tabID="tab" & $.createCSSID(tabLabel)>
 										<cfif ListFind(tabList,tabID)>

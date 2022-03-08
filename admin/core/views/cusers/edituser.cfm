@@ -765,7 +765,8 @@ This file is part of Mura CMS.
 					<cfloop from="1" to="#arrayLen(pluginEventMappings)#" index="i">
 						<cfset renderedEvent=$.getBean('pluginManager').renderEvent(eventToRender=pluginEventMappings[i].eventName,currentEventObject=$,index=i)>
 						<cfif len(trim(renderedEvent))>
-							<cfset tabLabelList=listAppend(tabLabelList,pluginEventMappings[i].pluginName)>
+							<cfset tabLabel = Len($.event('tabLabel')) && !ListFindNoCase(tabLabelList, $.event('tabLabel')) ? $.event('tabLabel') : pluginEventMappings[i].pluginName /> 
+							<cfset tabLabelList=listAppend(tabLabelList, tabLabel)/> 
 							<cfset tabID="tab" & $.createCSSID(pluginEventMappings[i].pluginName)>
 							<cfset tabList=listAppend(tabList,tabID)>
 							<cfset pluginEvent.setValue("tabList",tabLabelList)>

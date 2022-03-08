@@ -10,7 +10,7 @@ component extends="mura.bean.beanORM" entityname="razunasettings" table="trazuna
 	property name="damPath" length="250";
 
 	function save(){		
-		var razunaEnabled = application.configBean.getValue('razuna')
+		var razunaEnabled = application.configBean.getValue('razuna');
 		if(razunaEnabled){
 			// Create deprecation warning
 			var pluginManager=getBean('pluginManager');
