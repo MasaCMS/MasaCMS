@@ -12,7 +12,6 @@ MuraFileBrowser = {
 	}
 	
 	, prettify: function( tgt ) {
-	
 	}
 	
 	, render: function( config ) {
@@ -21,7 +20,7 @@ MuraFileBrowser = {
 	
 		this.config=Mura.extend(config,this.config);
 		this.endpoint =  Mura.apiEndpoint + "filebrowser/";
-		this.container = Mura("#MuraFileBrowserContainer");
+		this.container = Mura("#MasaBrowserContainer");
 		this.container.append("<div id='" + target + "'><component :is='currentView'></component></div>");
 		this.target = target;
 		this.main(); // Delegating to main()
@@ -30,8 +29,6 @@ MuraFileBrowser = {
 		.loadjs(
 			Mura.adminpath + '/assets/js/vue.min.js',
 			Mura.corepath + '/vendor/codemirror/codemirror.js',
-			// Mura.corepath + '/vendor/codemirror/addon/formatting/formatting.js',
-			// Mura.corepath + '/vendor/codemirror/mode/htmlmixed/htmlmixed.js',
 		function() {
 			self.mountbrowser();
 		 } ) ;
@@ -460,8 +457,8 @@ MuraFileBrowser = {
 			height: 0
 		};
 	
-		crop.x = cropRect.offsetLeft;
-		crop.y = cropRect.offsetTop;
+		crop.x = cropRect.oLeft;
+		crop.y = cropRect.oTop;
 		crop.width = rect.width;
 		crop.height = rect.height;
 	
@@ -506,8 +503,8 @@ MuraFileBrowser = {
 	
 			if (ev.pageX) { //Moz
 				if(e.target != document.getElementById('imagediv')) {
-				corners.x = e.offsetX + e.target.offsetLeft;
-				corners.y = e.offsetY + e.target.offsetTop;
+				corners.x = e.offsetX + e.target.oLeft;
+				corners.y = e.offsetY + e.target.oTop;
 				}
 				else {
 				corners.x = ev.offsetX;
@@ -583,7 +580,7 @@ MuraFileBrowser = {
 		});
 	
 		Vue.component('contextmenu', {
-		props: ["currentFile","menuy","menux"],
+		props: ["currentFile","menuy","menux","bottom"],
 		template: `
 		<div id="newContentMenu" class="addNew" v-bind:style="{ left: (menux + 20) + 'px',top: getTop() + 'px' }">
 			<ul id="newContentOptions">
@@ -619,32 +616,31 @@ MuraFileBrowser = {
 			, getTop: function() {
 			return this.menuy + window.pageYOffset;
 			}
-		 , selectFile: function() {
-			if(MuraFileBrowser.config.selectMode == 1) {
-				window.opener.CKEDITOR.tools.callFunction(self.callback,fileViewer.currentFile.url);
-				window.close();
+			, selectFile: function() {
+				if(MuraFileBrowser.config.selectMode == 1) {
+					window.opener.CKEDITOR.tools.callFunction(self.callback,fileViewer.currentFile.url);
+					window.close();
+				}
+				else {
+					return MuraFileBrowser.config.selectCallback( fileViewer.currentFile );
+				}
 			}
-			else {
-				return MuraFileBrowser.config.selectCallback( fileViewer.currentFile );
-			}
-			}
-	
 			, editFile: function() {
-			fileViewer.editFile(this.successEditFile);
+				fileViewer.editFile(this.successEditFile);
 			}
 			, duplicateFile: function() {
-			fileViewer.duplicateFile(fileViewer.refresh, fileViewer.displayError);
+				fileViewer.duplicateFile(fileViewer.refresh, fileViewer.displayError);
 			}
 			, viewFile: function() {
-			fileViewer.isDisplayWindow = "VIEW";
-			fileViewer.viewFile();
+				fileViewer.isDisplayWindow = "VIEW";
+				fileViewer.viewFile();
 			}
 			, successEditFile: function( response ) {
-			this.currentFile.content = response.data.content;
-			fileViewer.isDisplayWindow = "EDIT";
-			}
+				this.currentFile.content = response.data.content;
+				fileViewer.isDisplayWindow = "EDIT";
+				}
 			, renameFile: function() {
-			fileViewer.isDisplayWindow = "RENAME";
+				fileViewer.isDisplayWindow = "RENAME";
 			}
 			, moveFile: function() {
 				fileViewer.isDisplayWindow = "MOVE";
@@ -946,6 +942,15 @@ MuraFileBrowser = {
 			}
 			, closewindow: function( event ) {
 			this.$root.isDisplayWindow = "";
+			}
+			, selectFile: function() {
+				if(MuraFileBrowser.config.selectMode == 1) {
+					window.opener.CKEDITOR.tools.callFunction(self.callback,fileViewer.currentFile.url);
+					window.close();
+				}
+				else {
+					return MuraFileBrowser.config.selectCallback( fileViewer.currentFile );
+				}
 			}
 			, renameFile: function() {
 			fileViewer.isDisplayWindow = "RENAME";
@@ -1386,21 +1391,22 @@ MuraFileBrowser = {
 				</tr>
 				<tr v-for="(file,index) in files">
 					<td class="actions">
-					<a href="#" :id="'fileitem-'+index" class="show-actions" @click.prevent="openMenu($event,file,index)"><i class="mi-ellipsis-v"></i></a>
-					<div class="actions-menu hide">
-						<ul class="actions-list">
-						<li class="edit"><a @contextmenu="openMenu($event,file,index)"><i class="mi-pencil"></i>View</a></li>
-						</ul>
-					</div>
+						<a href="#" :id="'fileitem-'+index" class="show-actions" @click.prevent="openMenu($event,file,index)"><i class="mi-ellipsis-v"></i></a>
+						<div class="actions-menu hide">
+							<ul class="actions-list">
+							<li class="edit"><a @contextmenu="openMenu($event,file,index)"><i class="mi-pencil"></i>View</a></li>
+							</ul>
+						</div>
 					</td>
 					<td class="var-width">
-					<a v-if="parseInt(file.isfile)" href="#" @click.prevent="viewFile(file,index)">{{file.fullname}}</a>
-					<a v-else href="#" @click.prevent="refresh(file.name)"><i class="mi-folder"></i> {{file.fullname}}</a>
+						<a v-if="parseInt(file.isfile)" href="#" @click.prevent="viewFile(file,index)">{{file.fullname}}</a>
+						<a v-else href="#" @click.prevent="refresh(file.name)"><i class="mi-folder"></i> {{file.fullname}}</a>
 					</td>
 					<td>
 					<div v-if="parseInt(file.isfile)">
 						{{file.size}}kb
 					</div>
+					
 					<div v-else>
 						--
 					</div>
@@ -1470,8 +1476,8 @@ MuraFileBrowser = {
 	
 			this.$root.isDisplayContext = 0;
 	
-			var left = Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().left) - 26;
-			var top =  Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().top) + window.scrollX;
+			var left = Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().left);
+			var top =  Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().top) + window.scrollX-5;
 	
 			this.$nextTick(function () {
 				this.$root.isDisplayContext = 1;
@@ -1504,36 +1510,38 @@ MuraFileBrowser = {
 				</div>
 			</div>
 			<div v-for="(file,index) in files">
-				<div class="fileviewer-item"  :id="'fileitem-'+index"  v-if="parseInt(file.isfile)" @click="openMenu($event,file,index)">
-				<div class="fileviewer-item-image">
-					<div v-if="0" class="fileviewer-item-icon" :class="['fileviewer-item-icon-' + file.type]"></div>
-					<div v-else class="fileviewer-item-icon" :style="{ 'background-image': 'url(' + encodeURI(file.url) + ')' }"></div>
-				</div>
-				<div class="fileviewer-item-meta">
-					<div class="fileviewer-item-label">
-					{{file.fullname}}
+				<div class="fileviewer-item"  :id="'fileitem-'+index"  v-if="parseInt(file.isfile)">
+					<div class="fileviewer-item-image"  @click="viewFile(file,index)">
+						<div v-if="parseInt(file.isimage)" class="fileviewer-item-icon" :style="{ 'background-image': 'url(' + encodeURI(file.url) + ')' }"></div>
+						<div v-else class="fileviewer-item-icon fileviewer-item-filetype" :class="['fileviewer-item-icon-' + file.type]">{{file.ext}}</div>
 					</div>
-					<div class="fileviewer-item-meta-details">
-					<div v-if="parseInt(file.isfile)" class="fileviewer-item-meta-size">
-						{{file.size}}kb
-					</div>
-					</div>
-				</div>
-				</div>
-				<div class="fileviewer-item" v-else @click="refresh(file.name)">
-				<div class="fileviewer-item-icon">
-					<i class="mi-folder-open"></i>
-				</div>
-				<div class="fileviewer-item-meta">
-					<div class="fileviewer-item-label">
-					{{file.fullname}}
-					</div>
-					<div class="fileviewer-item-meta-details">
-					<div v-if="parseInt(file.isfile)" class="fileviewer-item-meta-size">
-						{{file.size}}kb
-					</div>
+					<div class="fileviewer-item-meta">
+						<div class="fileviewer-item-label">
+						{{file.fullname}}
+						</div>
+						<div class="fileviewer-item-meta-details">
+							<div v-if="parseInt(file.isfile)" class="fileviewer-item-meta-size">
+								{{file.size}}kb
+							</div>
+						</div>
+						<i :id="'btn-'+index" class="btn mi-ellipsis-v" @click="openMenu($event,file,index)"></i>
 					</div>
 				</div>
+				<div class="fileviewer-item" :id="'fileitem-'+index" v-else>
+					<div class="fileviewer-item-icon" @click="refresh(file.name)">
+						<i class="mi-folder-open"></i>
+					</div>
+					<div class="fileviewer-item-meta">
+						<div class="fileviewer-item-label">
+						{{file.fullname}}
+						</div>
+						<div class="fileviewer-item-meta-details">
+							<div v-if="parseInt(file.isfile)" class="fileviewer-item-meta-size">
+								{{file.size}}kb
+							</div>
+						</div>
+						<i :id="'btn-'+index" class="btn mi-ellipsis-v" @click="openMenu($event,file,index)"></i>
+					</div>
 				</div>
 			</div>
 			<div class="clearfix"></div>
@@ -1557,26 +1565,72 @@ MuraFileBrowser = {
 			,back: function( ) {
 			this.$root.back( );
 			}
+			, viewFile: function(file,index) {
+				this.$root.currentFile = file;
+				this.$root.currentIndex = index;
+				if(parseInt(file.isimage)) {
+					fileViewer.isDisplayWindow = "VIEW";
+					fileViewer.viewFile();
+				}
+				else {
+					this.openMenu(null,file,index);
+				}
+			}
 			,openMenu: function(e,file,index) {
-			this.menux = Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().left)+5;
-			this.menuy =  Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().top)+10 + window.scrollX;
-	
-			this.$root.currentFile = file;
-			this.$root.currentIndex = index;
-	
-			this.$root.isDisplayContext = 0;
-	
-	
-			this.$nextTick(function () {
-				this.$root.isDisplayContext = 1;
-			})
-	
-			this.$root.isDisplayWindow = '';
-			this.$root.currentFile = file;
-			this.$root.currentFile.index = index;
-			this.$root.currentIndex = index;
-	
-			e.preventDefault();
+				window.index    = index;
+				window.gridMode = true;
+		
+				// gridmode
+
+				var oLeft = 135;
+				var oTop = -3;
+		
+				// offset positioning relative to parent
+				if (document.getElementById('MasaBrowserContainer')){
+					// is a modal
+					if (document.getElementById('MasaBrowserContainer').parentNode == document.getElementById('alertDialogMessage')){
+						oTop += 57;
+						oLeft += Math.floor(document.getElementById('MasaBrowserContainer').getBoundingClientRect().left);
+					}
+				}
+
+				var menuEl = document.getElementById('btn-'+index);
+				var menuleft = Math.floor(menuEl.getBoundingClientRect().left);
+				var menutop = Math.floor(menuEl.getBoundingClientRect().top);
+				var menuheight = 170;
+
+				if(!parseInt(file.isfile)) {
+					menuheight = 50;
+				}
+				else if(!parseInt(!file.isimage)) {
+					menuheight = 108;
+				}
+
+
+				this.menux = menuleft - 20 - oLeft;
+				this.menuy = menutop - oTop;
+				this.bottom = window.innerHeight;
+
+				if(this.menuy+menuheight+25 > this.bottom) {
+					this.menuy -= menuheight+7;
+				}
+		
+				this.$root.currentFile = file;
+				this.$root.currentIndex = index;
+				
+				this.$root.isDisplayContext = 0;
+		
+				this.$nextTick(function () {
+					this.$root.isDisplayContext = 1;
+				})
+		
+				this.$root.isDisplayWindow = '';
+				this.$root.currentFile = file;
+				this.$root.currentFile.index = index;
+				this.$root.currentIndex = index;
+				if(e != null) {
+					e.preventDefault();
+				}
 			}
 		}
 		});
@@ -1727,17 +1781,31 @@ MuraFileBrowser = {
 			, updateEdit: function() {
 				self.updateEdit(currentFile);
 			}
-			, displayResults: function(response) {
-			this.response = response.data;
-			this.files = response.data.items;
-			this.folders = response.data.folders;
-	
-			if(response.data.settings) {
-				this.settings = response.data.settings;
-			}
-			this.$nextTick(function () {
-				this.spinnermodal = 0;
-			});
+			, displayResults: function(resp) {
+				var self = this;
+				this.response = resp.data;
+
+				//folder requested does not exist
+				if(parseInt(this.response.dne) == 1) {
+					console.log("Requested folder does not not exist; resetting folder tree to root");
+					this.foldertree = [];
+					var fdata = {
+						foldertree: []
+					}
+					Mura.createCookie( 'fbFolderTree',JSON.stringify(fdata),1);
+					this.$nextTick(function () {
+						self.refresh();
+					});
+				}
+				this.files = this.response.items;
+				this.folders = this.response.folders;
+		
+				if(this.response.settings) {
+					this.settings = this.response.settings;
+				}
+				this.$nextTick(function () {
+					this.spinnermodal = 0;
+				});
 	
 			}
 			, displayError: function( e ) {

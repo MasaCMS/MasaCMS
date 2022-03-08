@@ -37,7 +37,7 @@
 </head>
 <body class="mura-admin MuraFileBrowserWindow">
 	<div class="mura">
-  	<div id="MuraFileBrowserContainer"></div>
+  	<div id="MasaBrowserContainer"></div>
 	</div>
 </body>
 <cfoutput>

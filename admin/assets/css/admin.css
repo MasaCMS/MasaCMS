@@ -38263,6 +38263,9 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 .mura .bigui .mura-primary > i {
   color: #fff !important;
 }
+.mura div#panel-extendedattributes a {
+  position: relative !important;
+}
 .mura #bigui__categories .categoryAssignment li ul {
   margin: 0 !important;
 }

@@ -404,7 +404,10 @@ component
 			var item = fileUpload(tempDir,'','',"Overwrite");
 		}
 
-		var dotDelimArray = listToArray(item.clientfile,'.');
+		// fix for . in filename
+		var namePostFix = replace(item.clientfile,"~","","all");
+		namePostFix = rereplace(namePostFix,"\.(.[^\.]*)$","~\1");
+		var dotDelimArray = listToArray(namePostFix,'~');
 		var newFileName = dotDelimArray[1]  & dateTimeFormat( item.timecreated,'yyyymmddhhnnss'  ) & '.'  & dotDelimArray[arrayLen(dotDelimArray)];
 
 		if(listFindNoCase(allowedExtensions,item.serverfileext)) {
@@ -512,7 +515,10 @@ component
 			var valid = false;
 			if(listFindNoCase(allowedExtensions,item.serverfileext)) {
 					try {
-						var safePostFix = listToArray(item.clientfile,".");
+						// fix for . in filename
+						var namePostFix = replace(item.clientfile,"~","","all");
+						namePostFix = rereplace(namePostFix,"\.(.[^\.]*)$","~\1");
+						var safePostFix = listToArray(namePostFix,"~");
 
 						if(ArrayLen(safePostFix) neq 2) {
 							response.success = 0;
@@ -930,7 +936,7 @@ component
 
 		var m=getBean('$').init(arguments.siteid);
 		var permission = checkPerms(arguments.siteid,'browse',arguments.resourcePath);
-		var response = { success: 0};
+		var response = { success: 0,dne: 0};
 
 		if(!permission.success) {
 			response.permission = permission;
@@ -955,6 +961,14 @@ component
 
 		var baseFilePath = getBaseFileDir( arguments.siteid,arguments.resourcePath );
 		var filePath = baseFilePath  & m.globalConfig().getFileDelim() & rereplace(arguments.directory,"\.{1,}","\.","all");
+
+		// directory does not exist
+		if(!directoryExists(conditionalExpandPath(filePath))) {
+			response['dne'] = 1;
+			structDelete(cookie,'fbFolderTree');
+			filePath = baseFilePath;
+			return response;
+		}
 
 		if(!isPathLegal(arguments.resourcepath,conditionalExpandPath(filePath),arguments.siteid)) {
 			throw(message="File path illegal");

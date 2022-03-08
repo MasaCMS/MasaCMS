@@ -75,18 +75,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfset tabList=listAppend(tabList,"tabExtendedAttributes")>
 <cfoutput>
-<div class="mura-panel panel">
-	<div class="mura-panel-heading" role="tab" id="heading-extendedattributes">
-		<h4 class="mura-panel-title">
-			<a class="collapse collapsed" role="button" data-toggle="collapse" data-parent="##content-panels" href="##panel-extendedattributes" aria-expanded="false" aria-controls="panel-extendedattributes">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.extendedattributes")#</a>
-		</h4>
-	</div>
-	<div id="panel-extendedattributes" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-extendedattributes" aria-expanded="false" style="height: 0px;">
-		<div class="mura-panel-body">
-			<span id="extendset-container-tabextendedattributestop" class="extendset-container"></span>
-			<span id="extendset-container-default" class="extendset-container"></span>
-			<span id="extendset-container-tabextendedattributesbottom" class="extendset-container"></span>
+	<div class="mura-panel panel">
+		<div class="mura-panel-heading" role="tab" id="heading-extendedattributes">
+			<h4 class="mura-panel-title">
+				<a class="collapse collapsed" role="button" data-toggle="collapse" data-parent="##content-panels" href="##panel-extendedattributes" aria-expanded="false" aria-controls="panel-extendedattributes">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.extendedattributes")#</a>
+			</h4>
 		</div>
-	</div>
-</div> 
+		<div id="panel-extendedattributes" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-extendedattributes" aria-expanded="false" style="height: 0px;">
+			<div class="mura-panel-body">
+				<span id="extendset-container-tabextendedattributestop" class="extendset-container"></span>
+
+				<div class="mura-control-group extendedattributes-group" id="extendedattributes-container-default">
+					<div class="bigui" id="bigui__extended" data-label="Manage Extended Attributes">
+						<div class="bigui__title">Manage Extended Attributes</div>
+						<div class="bigui__controls">
+							<span id="extendset-container-tabextendedattributestop"></span>
+							<span id="extendset-container-default" class="extendset-container extendedattributes-body" data-controlparent="extendedattributes-container-default"></span>
+							<span id="extendset-container-tabextendedattributesbottom"></span>
+						</div>
+					</div>
+					 <!--- /.bigui --->
+				</div>
+				<span id="extendset-container-tabextendedattributesbottom" class="extendset-container"></span>
+			</div>
+		</div>
+	</div> 
 </cfoutput>
