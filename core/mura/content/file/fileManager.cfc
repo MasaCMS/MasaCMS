@@ -243,7 +243,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif listFindNoCase('png,jpg,jpeg,gif',rsFileData.fileExt) and len(arguments.size)>
 					<cfset theFileLocation="#variables.configBean.getFileDir()#/#rsFileData.siteid#/cache/file/#arguments.fileID#_#arguments.size#.#rsFileData.fileExt#" />
 					<cfif not fileExists(theFileLocation)>
-						<cfset theFileLocation="#variables.configBean.getFileDir()#/#rsFileData.siteid#/cache/file/#arguments.fileID#.#rsFileData.fileExt#" />
+						<cfset cropAndScale(fileid=arguments.fileID,size=arguments.size,siteid=rsFileData.siteid)>
 					</cfif>
 				<cfelse>
 					<cfset theFileLocation="#variables.configBean.getFileDir()#/#rsFileData.siteid#/cache/file/#arguments.fileID#.#rsFileData.fileExt#" />
