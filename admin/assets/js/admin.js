@@ -808,14 +808,29 @@ This file is part of Mura CMS.
                     var i = this;
                     MuraFileBrowser.config.height = 600, MuraFileBrowser.config.selectMode = 2, MuraFileBrowser.config.resourcepath = "User_Assets",
                     MuraFileBrowser.config.selectCallback = function(e) {
-                        var t = $('input[name="' + a.data("target") + '"]');
+                        var tgt = $('input[name="' + a.data("target") + '"]');
                         var serverpath=a.attr('data-serverpath');
-                        if(serverpath.toLowerCase()=='true'){
-                            t.val(webroot + e.url);
+                        if(serverpath && serverpath.toLowerCase() == 'true') {
+                            if(e.url.indexOf(e.rootpath) >= 0){
+                                var root=e.url.indexOf(webroot);
+                                if(root >= 0) {
+                                    tgt.val(e.url.substring(root,e.url.length));
+                                } else {
+                                    tgt.val(webroot + e.url.substring(e.rootpath.length,e.url.length));
+                                }
+                            } else {
+                                tgt.val(webroot + e.url);
+                            }
                         } else {
-                            t.val(e.url);
+                            var url=e.url;
+                            if(url.indexOf('?') >= 0) {
+                                url=url + '&cd=' + Math.random();
+                            } else {
+                                url=url + '?cd=' + Math.random();
+                            }
+                            tgt.val(url);
                         }
-                        t.trigger("change");
+                        tgt.trigger("change");
                         $(i).dialog("close");
                     }, MuraFileBrowser.render();
                 },

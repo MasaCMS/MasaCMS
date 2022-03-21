@@ -267,10 +267,10 @@
 
 		   var pos = src.indexOf('?');
 		   if (pos >= 0) {
-		      src = src.substr(0, pos);
+			obj.src = src + '&v=' + Math.random();
+		   } else {
+			obj.src = src + '?v=' + Math.random();
 		   }
-
-		   obj.src = src + '?v=' + Math.random();
 
 		   return false;
 		}

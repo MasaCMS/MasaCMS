@@ -622,6 +622,8 @@ MuraFileBrowser = {
 					window.close();
 				}
 				else {
+					window.close();
+					fileViewer.currentFile.rootpath = MuraFileBrowser.rootpath;
 					return MuraFileBrowser.config.selectCallback( fileViewer.currentFile );
 				}
 			}
@@ -1704,6 +1706,7 @@ MuraFileBrowser = {
 			currentIndex: 0,
 			foldertree: [],
 			fileCount: 0,
+			rootpath: '',
 			files: [],
 			folders: [],
 			spinnermodal: 0,
@@ -1788,6 +1791,7 @@ MuraFileBrowser = {
 						self.refresh();
 					});
 				}
+				MuraFileBrowser.rootpath = this.response.rootpath;
 				this.files = this.response.items;
 				this.folders = this.response.folders;
 		

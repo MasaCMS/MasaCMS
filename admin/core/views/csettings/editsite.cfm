@@ -702,11 +702,11 @@ to your own modified versions of Mura CMS.
 				  	data-content="Do Not Use a Personal Account. Email will be removed from server for tracking purposes."
 				  	data-original-title="WARNING:">
 				  	<i class="mi-warning"></i></span></label>
-						<input name="MailServerUserName" type="text" value="#esapiEncode('html_attr',rc.siteBean.getMailServerUserName())#" size="50" maxlength="50">
+						<input name="MailServerUserName" type="text" value="#esapiEncode('html_attr',rc.siteBean.getMailServerUserName())#" size="255" maxlength="255">
 				</div>
 				<div class="mura-control-group">
 				<label>Mail Server Password</label>
-						<input name="MailServerPassword" type="text" value="#esapiEncode('html_attr',rc.siteBean.getMailServerPassword())#" size="50" maxlength="50">
+						<input name="MailServerPassword" type="text" value="#esapiEncode('html_attr',rc.siteBean.getMailServerPassword())#" size="255" maxlength="255">
 				</div>
 
 			<div class="mura-control-group">
