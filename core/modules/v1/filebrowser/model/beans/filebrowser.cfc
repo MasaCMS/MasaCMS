@@ -985,11 +985,14 @@ component
 		var rsFiles = rsExecute.getResult();
 		var rsPrefix = rsExecute.getPrefix();
 
+		var rootpath= m.getBean('utility').getRequestProtocol() & "://" & m.getBean('utility').getRequestHost() & m.globalConfig('context');
+
 		response['endindex'] = response['endindex'] > rsFiles.recordCount ? rsFiles.recordCount : response['endindex'];
 
 		response['res'] = rsFiles;
 		response['totalpages'] = ceiling(rsFiles.recordCount / response['itemsperpage']);
 		response['totalitems'] = 1;
+		response['rootpath'] = rootpath;
 		response['pageindex'] = arguments.pageindex;
 		response['totalitems'] = rsFiles.recordCount;
 		response['pre'] = serializeJSON(rsPrefix);
