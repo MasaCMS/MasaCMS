@@ -618,7 +618,11 @@ MuraFileBrowser = {
 			}
 			, selectFile: function() {
 				if(MuraFileBrowser.config.selectMode == 1) {
-					window.opener.CKEDITOR.tools.callFunction(self.callback,fileViewer.currentFile.url);
+					var urlstem = fileViewer.currentFile.url;
+					if(urlstem.includes('://')) {
+						urlstem = urlstem.replace(/^(.[^\/]*['\:\/\/'].[^\/]*)(.*)$/,'$2');
+					}
+					window.opener.CKEDITOR.tools.callFunction(self.callback,urlstem);
 					window.close();
 				}
 				else {
@@ -947,7 +951,11 @@ MuraFileBrowser = {
 			}
 			, selectFile: function() {
 				if(MuraFileBrowser.config.selectMode == 1) {
-					window.opener.CKEDITOR.tools.callFunction(self.callback,fileViewer.currentFile.url);
+					var urlstem = fileViewer.currentFile.url;
+					if(urlstem.includes('://')) {
+						urlstem = urlstem.replace(/^(.[^\/]*['\:\/\/'].[^\/]*)(.*)$/,'$2');
+					}
+					window.opener.CKEDITOR.tools.callFunction(self.callback,urlstem);
 					window.close();
 				}
 				else {
