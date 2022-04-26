@@ -1,22 +1,22 @@
 <cfif not isdefined('$')>
-<cfcontent reset="yes" type="application/javascript">
-<cfscript>
-	if(server.coldfusion.productname != 'ColdFusion Server'){
-		backportdir='';
-		include "/mura/backport/backport.cfm";
-	} else {
-		backportdir='/mura/backport/';
-		include "#backportdir#backport.cfm";
-	}
-</cfscript>
-<cfif isDefined("url.siteID")>
-<cfset $=application.serviceFactory.getBean("MuraScope").init(url.siteID)>
-<cfparam name="session.siteid" default="#url.siteid#">
-<cfif not structKeyExists(session,"rb")>
-	<cfset application.rbFactory.resetSessionLocale()>
-</cfif>
-<cfcontent reset="true"><cfparam name="Cookie.fetDisplay" default="">
-</cfif>
+	<cfcontent reset="yes" type="application/javascript">
+	<cfscript>
+		if(server.coldfusion.productname != 'ColdFusion Server'){
+			backportdir='';
+			include "/mura/backport/backport.cfm";
+		} else {
+			backportdir='/mura/backport/';
+			include "#backportdir#backport.cfm";
+		}
+	</cfscript>
+	<cfif structKeyExists(url,"siteID")>
+		<cfset $=application.serviceFactory.getBean("MuraScope").init(url.siteID)>
+		<cfparam name="session.siteid" default="#url.siteid#">
+		<cfif not structKeyExists(session,"rb")>
+			<cfset application.rbFactory.resetSessionLocale()>
+		</cfif>
+		<cfcontent reset="true"><cfparam name="Cookie.fetDisplay" default="">
+	</cfif>
 <cfoutput>(function(window){
 	window.Mura=window.Mura || window.mura || {};
 	window.Mura.layoutmanager=#$.getContentRenderer().useLayoutManager()#;
