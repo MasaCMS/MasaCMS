@@ -290,11 +290,13 @@ var siteManager = {
 			return false;
 		}
 
-		if(document.contentForm.type.value == 'Page' && typeof document.contentForm.canonicalURL !== "undefined" ){
-                        if (document.contentForm.canonicalURL.value != '' && !isValidURL(document.contentForm.canonicalURL.value)) {
-                                alertDialog("Please enter a valid URL in the 'Canonical URL' field");
-                                return false;
-                        }
+		if(document.contentForm.type.value == 'Page' 
+		   && typeof document.contentForm.canonicalURL !== "undefined"
+                   && document.contentForm.canonicalURL.value != '' 
+		   && !isValidURL(document.contentForm.canonicalURL.value
+		) {
+			alertDialog("Please enter a valid URL in the 'Canonical URL' field");
+			return false;
                 }
 
 		if(!validateForm(document.contentForm)){
