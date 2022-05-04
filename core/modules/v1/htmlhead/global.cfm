@@ -76,7 +76,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif request.returnformat neq 'amp' and not $.siteConfig('isRemote')>
 <cfif this.deferMuraJS>
 <cfoutput>
-<script type="text/javascript" src="#$.globalConfig('context')#/core/modules/v1/core_assets/js/mura.min.js?v=#$.globalConfig('version')#" defer="defer"></script>
+<script type="text/javascript" src="#$.globalConfig('context')#/core/modules/v1/core_assets/js/mura.js?v=#$.globalConfig('version')#" defer="defer"></script>
 <script>
 (function(root,config){root.queuedMuraCmds=[],root.queuedMuraPreInitCmds=[],root.deferMuraInit=function(){void 0!==root.Mura&&"function"==typeof root.Mura.init?root.Mura.init(config):("function"!=typeof root.Mura&&(root.mura=root.m=root.Mura=function(o){root.queuedMuraCmds.push(o)},root.Mura.preInit=function(o){root.queuedMuraPreInitCmds.push(o)}),setTimeout(root.deferMuraInit))},root.deferMuraInit();}
 )(this,{

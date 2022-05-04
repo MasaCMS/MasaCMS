@@ -1,1 +1,1 @@
-<mura name="Image" contenttypes="" iconclass="mi-picture-o"/>
+<mura name="Media" contenttypes="*" iconclass="mi-play-circle"/>
