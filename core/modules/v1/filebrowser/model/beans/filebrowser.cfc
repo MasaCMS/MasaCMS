@@ -27,7 +27,7 @@ component
 		return pathRoot;
 	}
 
-	private function getBaseResourcePath( siteid,resourcePath ) {
+	private function getBaseResourcePath( siteid,resourcePath,complete=1 ) {
 		arguments.resourcePath == "" ? "User_Assets" : arguments.resourcePath;
 
 		var pathRoot = "";
@@ -38,10 +38,15 @@ component
 			pathRoot = currentSite.getAssetPath(complete=1);
 		}
 		else if(arguments.resourcePath == "Application_Root") {
-			pathRoot = application.configBean.getRootPath(complete=1);
+			pathRoot = currentSite.getRootPath(complete=arguments.complete);
 		}
 		else {
-			pathRoot = currentSite.getFileAssetPath(complete=1) & '/assets';
+			if(isValid('URL', application.configBean.getAssetPath())) {
+				pathRoot = application.configBean.getAssetPath() & '/assets';
+			}
+			else {
+				pathRoot = currentSite.getFileAssetPath(complete=arguments.complete) & '/assets';
+			}
 		}
 
 		return pathRoot;
@@ -910,6 +915,8 @@ component
 		var m=getBean('$').init(arguments.siteid);
 		var permission = checkPerms(arguments.siteid,'browse',arguments.resourcePath);
 		var response = { success: 0,dne: 0};
+		var editfilelist = "txt,html,htm,css,less,scss"; 
+		var imagelist = "gif,jpg,jpeg,png";
 
 		if(!permission.success) {
 			response.permission = permission;
@@ -919,8 +926,8 @@ component
 
 		if(arguments.settings) {
 			// list of allowable editable files and files displayed as "images"
-			var editfilelist = listToArray(m.globalConfig().getValue(property='filebrowsereditlist',defaultValue="txt,cfm,cfc,hbs,html,htm,cfml,min.js,js,min.css,css,json,xml.cfm,js.cfm,less,properties,scss,xml,yml")); // settings.ini.cfm: filebrowsereditlist
-			var imagelist = listToArray(m.globalConfig().get(property='filebrowserimagelist',defaultValue="gif,jpg,jpeg,png")); // settings.ini.cfm: filebrowserimagelist
+			editfilelist = m.globalConfig().getValue(property='filebrowsereditlist',defaultValue=editfilelist); // settings.ini.cfm: filebrowsereditlist
+			imagelist = m.globalConfig().get(property='filebrowserimagelist',defaultValue=imagelist); // settings.ini.cfm: filebrowserimagelist
 			var rb = getResourceBundle(arguments.siteid);
 			response.settings = {
 				editfilelist: editfilelist,
@@ -930,7 +937,9 @@ component
 		}
 
 		var baseFilePath = getBaseFileDir( arguments.siteid,arguments.resourcePath );
+		var expandedBaseFilePath = conditionalExpandPath(baseFilePath);
 		var filePath = baseFilePath  & m.globalConfig().getFileDelim() & rereplace(arguments.directory,"\.{1,}","\.","all");
+		var expandedFilePath = conditionalExpandPath(filePath);
 
 		// directory does not exist
 		if(!directoryExists(conditionalExpandPath(filePath))) {
@@ -944,10 +953,6 @@ component
 			throw(message="File path illegal");
 		}
 
-
-		// move to getBaseResourcePath() --> getFileAssetPath()
-		var assetPath = getBaseResourcePath(arguments.siteid,arguments.resourcePath) & replace(arguments.directory,"\","/","all");
-
 		var frow = {};
 
 		response['items'] = [];
@@ -958,6 +963,21 @@ component
 		response['directory'] = arguments.directory == "" ? "" : arguments.directory;
 		response['directory'] = rereplace(response['directory'],"\\","\/","all");
 		response['directory'] = rereplace(response['directory'],"$\\","");
+
+		// move to getBaseResourcePath() --> getFileAssetPath()
+		var complete = (m.siteConfig('isremote') || (isdefined('arguments.completepath') && isBoolean(arguments.completepath) && arguments.completepath));
+		var assetPath = "";
+		var preAssetPath = getBean('configBean').get('assetPath');
+
+
+		if(len(preAssetPath)) {
+			preAssetPath = preAssetPath & "/" & arguments.siteid & "/assets" & response['directory'];
+			assetPath = preAssetPath & response['directory'];
+		}
+		else {
+			preAssetPath = getBaseResourcePath(siteid=arguments.siteid,resourcePath=arguments.resourcePath,complete=complete);
+			assetPath = preAssetPath & response['directory'];
+		}
 
 		var rsDirectory = directoryList(conditionalExpandPath(filePath),false,"query");
 
@@ -985,11 +1005,15 @@ component
 		var rsFiles = rsExecute.getResult();
 		var rsPrefix = rsExecute.getPrefix();
 
+		queryAddColumn(rsFiles,'subfolder',[]);
+		for(var i = 1;i <= rsFiles.recordcount;i++) {
+			rsFiles['subfolder'][i] = response['directory'];
+		}
+
 		var rootpath= m.getBean('utility').getRequestProtocol() & "://" & m.getBean('utility').getRequestHost() & m.globalConfig('context');
 
 		response['endindex'] = response['endindex'] > rsFiles.recordCount ? rsFiles.recordCount : response['endindex'];
 
-		response['res'] = rsFiles;
 		response['totalpages'] = ceiling(rsFiles.recordCount / response['itemsperpage']);
 		response['totalitems'] = 1;
 		response['rootpath'] = rootpath;
@@ -998,6 +1022,8 @@ component
 		response['pre'] = serializeJSON(rsPrefix);
 
 		for(var x = response['startindex'];x <= response['endindex'];x++) {
+
+
 			frow = {};
 			frow['isfile'] = rsFiles['type'][x] == 'File' ? 1 : 0;
 			frow['isfolder'] = rsFiles['type'][x] == 'Dir' ? 1 : 0;
@@ -1006,7 +1032,8 @@ component
 			frow['name'] = rereplace(frow['fullname'],"\..*","");
 			frow['type'] = rsFiles['type'][x];
 			frow['ext'] = rereplace(frow['fullname'],".[^\.]*\.","");
-			frow['isimage'] = listfind("jpg,jpeg,gif,png",frow['ext']);
+			frow['isimage'] = listfind(imagelist,frow['ext']);
+
 			frow['info'] = {};
 			if(frow['isfile']) {
 				frow['ext'] = rereplace(frow['fullname'],".[^\.]*\.","");
@@ -1020,9 +1047,12 @@ component
 					}
 				}
 			}
+		
 			frow['lastmodified'] = rsFiles['datelastmodified'][x];
 			frow['lastmodifiedshort'] = LSDateFormat(rsFiles['datelastmodified'][x],m.getShortDateFormat());
-			frow['url'] = assetPath & "/" & frow['fullname'];
+			frow['subfolder'] = rsFiles['subfolder'][x];
+			frow['url'] = preAssetPath & "/" & frow['fullname'];
+
 			ArrayAppend(response['items'],frow,true);
 		}
 
@@ -1075,23 +1105,25 @@ component
 
 		arguments.path=replace(conditionalExpandPath(arguments.path), "\", "/", "ALL");
 
+		var pathcheck = len(arguments.path) >= len(expandedPath) && lcase(left(arguments.path,len(expandedPath))) == lcase(expandedPath);
+
 		// different root than murawrm
-		if( true ) {
+		if(!pathcheck) {
 			var realroot = rereplacenocase(arguments.path,"^\/([a-zA-Z]{1,})\/.*","\1");
 			rootPath = replaceNoCase(rootPath, 'murawrm', realroot);
+			pathcheck = len(arguments.path) >= len(rootPath) && lcase(left(arguments.path,len(rootPath))) == lcase(rootPath);
 		}
 
-		/*
-		var pathcheck = len(arguments.path) >= len(rootPath) && lcase(left(arguments.path,len(rootPath))) == lcase(rootPath);
-
 		if(!pathcheck) {
-			writeDump("ILLEGAL PATH");
+			writeDump("Path Error");
 			writeDump(arguments);
 			writeDump(expandedPath);
 			writeDump(rootPath);
+			writeDump(pathcheck);
+			writeDump(result);
 			abort;
 		}
-		*/
+
 
 		return true;
 	}
