@@ -80,7 +80,7 @@ This file is part of Mura CMS.
 <cfhtmlhead text='<script type="text/javascript" src="assets/js/user.js"></script>'>
 
 <cfoutput>
-<form novalidate="novalidate" action="./?muraAction=cUsers.updateAddress&amp;userid=#esapiEncode('url',rc.userid)#&amp;routeid=#rc.routeid#&amp;siteid=#esapiEncode('url',rc.siteid)#" method="post" enctype="multipart/form-data" name="form1" onsubmit="return userManager.submitForm(this);"  autocomplete="off" >
+<form novalidate="novalidate" action="./?muraAction=cUsers.updateAddress&amp;userid=#esapiEncode('url',rc.userid)#&amp;routeid=#esapiencode('url',rc.routeid)#&amp;siteid=#esapiEncode('url',rc.siteid)#" method="post" enctype="multipart/form-data" name="form1" onsubmit="return userManager.submitForm(this);"  autocomplete="off" >
 
 <div class="mura-header">
 	<h1>#rbKey('user.memberaddressform')#</h1>

@@ -142,7 +142,7 @@ This file is part of Mura CMS.
 	<div class="alert alert-error"><span>#application.utility.displayErrors(rc.userBean.getErrors())#</span></div>
 </cfif>
 
-<form novalidate="novalidate" action="#buildURL(action='cUsers.update', querystring='userid=#rc.userBean.getUserID()#&routeid=#rc.routeid#')#" method="post" enctype="multipart/form-data" name="form1" onsubmit="return userManager.submitForm(this);;" autocomplete="off">
+<form novalidate="novalidate" action="#buildURL(action='cUsers.update', querystring='userid=#rc.userBean.getUserID()#&routeid=#esapiencode('url',rc.routeid)#')#" method="post" enctype="multipart/form-data" name="form1" onsubmit="return userManager.submitForm(this);;" autocomplete="off">
 
 	<div class="block block-constrain">
 
@@ -364,7 +364,7 @@ This file is part of Mura CMS.
 								<div class="mura-control-group">
 									<ul class="navTask nav nav-pills">
 										<li>
-											<a href="./?muraAction=cUsers.editAddress&amp;userid=#esapiEncode('url',rc.userid)#&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;routeID=#rc.routeid#&amp;addressID=">
+											<a href="./?muraAction=cUsers.editAddress&amp;userid=#esapiEncode('url',rc.userid)#&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;routeID=#esapiencode('url',rc.routeid)#&amp;addressID=">
 												<i class="mi-plus-circle"></i> #rbKey('user.addnewaddress')#
 											</a>
 										</li>
@@ -442,7 +442,7 @@ This file is part of Mura CMS.
 													<td nowrap class="actions">
 														<ul>
 															<li class="edit">
-																<a title="#rbKey('user.edit')#" href="./?muraAction=cUsers.editAddress&amp;userid=#esapiEncode('url',rc.userid)#&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;routeID=#rc.routeid#&amp;addressID=#rsAddresses.addressID#">
+																<a title="#rbKey('user.edit')#" href="./?muraAction=cUsers.editAddress&amp;userid=#esapiEncode('url',rc.userid)#&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;routeID=#esapiencode('url',rc.routeid)#&amp;addressID=#rsAddresses.addressID#">
 																	<i class="mi-pencil"></i>
 																</a>
 															</li>
