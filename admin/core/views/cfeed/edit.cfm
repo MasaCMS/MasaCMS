@@ -811,7 +811,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<button class="btn mura-primary" onclick="submitForm(document.forms.form1,'update');return false;"><i class="mi-check-circle"></i>#application.rbFactory.getKeyValue(session.rb,'collections.update')#</button>
 		</cfif>
 		<cfif rc.compactDisplay eq "true">
-			<input type="hidden" name="homeID" value="#rc.homeID#" />
+			<input type="hidden" name="homeID" value="#esapiencode('html_attr',rc.homeID)#" />
 		</cfif>
 		<input type=hidden name="feedID" value="#rc.feedBean.getfeedID()#">
 		<input type="hidden" name="action" value="update">
@@ -1108,7 +1108,7 @@ jQuery(document).ready(function(){
 					</cfif>
 					<button type="button" class="btn mura-primary" onclick="submitForm(document.forms.form1,'update');"><i class="mi-check-circle"></i>#application.rbFactory.getKeyValue(session.rb,'collections.update')#</button>
 					<cfif rc.compactDisplay eq "true">
-						<input type="hidden" name="homeID" value="#rc.homeID#" />
+						<input type="hidden" name="homeID" value="#esapiencode('html_attr',rc.homeID)#" />
 					</cfif>
 					<input type=hidden name="feedID" value="#rc.feedBean.getfeedID()#">
 					<input type="hidden" name="action" value="update">
