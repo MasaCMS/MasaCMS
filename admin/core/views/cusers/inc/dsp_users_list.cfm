@@ -135,7 +135,7 @@ This file is part of Mura CMS.
 												<!--- Remove From Group --->
 													<cfif ListLast(rc.muraAction, '.') eq 'editgroupmembers'>
 														<li class="remove">
-															<a href="#buildURL(action='cusers.removefromgroup', querystring='userid=#local.item.getValue('userid')#&routeid=#rc.userid#&groupid=#rc.userid#&siteid=#esapiEncode('url',rc.siteid)#')#" onclick="return confirmDialog('#jsStringFormat(rbKey('user.removeconfirm'))#',this.href)" rel="tooltip">
+															<a href="#buildURL(action='cusers.removefromgroup', querystring='userid=#local.item.getValue('userid')#&routeid=#esapiencode('url',rc.userid)#&groupid=#esapiencode('url',rc.userid)#&siteid=#esapiEncode('url',rc.siteid)#')#" onclick="return confirmDialog('#jsStringFormat(rbKey('user.removeconfirm'))#',this.href)" rel="tooltip">
 																<i class="mi-minus-circle"></i>#rbKey('user.removeconfirm')#
 															</a>
 														</li>

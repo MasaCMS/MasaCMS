@@ -199,9 +199,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.releasedaterange')#</label>
 			<div class="mura-control-inline">
 				<label>#application.rbFactory.getKeyValue(session.rb,"params.from")#</label>
-				<input type="text" name="rcStartDate" id="rcStartDate" class="datepicker mura-relatedContent-datepicker" placeholder="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.startdate'))#" value="#rc.rcStartDate#" />
+				<input type="text" name="rcStartDate" id="rcStartDate" class="datepicker mura-relatedContent-datepicker" placeholder="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.startdate'))#" value="#esapiencode('html_attr',rc.rcStartDate)#" />
 				<label>#application.rbFactory.getKeyValue(session.rb,"params.to")#</label>
-				 <input type="text" name="rcEndDate" id="rcEndDate" class="datepicker mura-relatedContent-datepicker" placeholder="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.enddate')#" value="#rc.rcEndDate#" />
+				 <input type="text" name="rcEndDate" id="rcEndDate" class="datepicker mura-relatedContent-datepicker" placeholder="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.enddate')#" value="#esapiencode('html_attr',rc.rcEndDate)#" />
 			</div>
 		</div>
 		<div class="mura-control-group">

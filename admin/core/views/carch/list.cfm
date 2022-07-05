@@ -78,7 +78,7 @@ This file is part of Mura CMS.
 <cfset $=request.event.getValue('MuraScope')>
 <cfset poweruser=$.currentUser().isSuperUser() or $.currentUser().isAdminUser()>
 <cfinclude template="js.cfm">
-<cfswitch expression="#rc.moduleID#">
+<cfswitch expression="#rc.moduleid#">
 	<cfcase value="LEGACY">
 		<cfset rc.perm=application.permUtility.getPerm(rc.moduleid,rc.siteid)>
 
@@ -134,18 +134,18 @@ This file is part of Mura CMS.
 						<thead>
 							<tr>
 				  				<th class="var-width">
-				  					<a href="./?muraAction=cArch.list&siteid=#esapiEncode('url',rc.siteid)#&topid=#esapiEncode('url',rc.topid)#&parentid=#esapiEncode('url',rc.parentid)#&moduleid=#rc.moduleID#&sortBy=title&sortDirection=#titleDirection#">
+				  					<a href="./?muraAction=cArch.list&siteid=#esapiEncode('url',rc.siteid)#&topid=#esapiEncode('url',rc.topid)#&parentid=#esapiEncode('url',rc.parentid)#&moduleid=#esapiencode('url',rc.moduleid)#&sortBy=title&sortDirection=#titleDirection#">
 				  						#application.rbFactory.getKeyValue(session.rb,'sitemanager.title')#
 				  					</a>
 				  				</th>
 
 				  				<th>
-				  					<a href="./?muraAction=cArch.list&siteid=#esapiEncode('url',rc.siteid)#&topid=#esapiEncode('url',rc.topid)#&parentid=#esapiEncode('url',rc.parentid)#&moduleid=#rc.moduleID#&sortBy=display&sortDirection=#displayDirection#">
+				  					<a href="./?muraAction=cArch.list&siteid=#esapiEncode('url',rc.siteid)#&topid=#esapiEncode('url',rc.topid)#&parentid=#esapiEncode('url',rc.parentid)#&moduleid=#esapiencode('url',rc.moduleid)#&sortBy=display&sortDirection=#displayDirection#">
 				  						#application.rbFactory.getKeyValue(session.rb,'sitemanager.display')#
 				  					</a>
 				  				</th>
 				  				<th>
-				  					<a href="./?muraAction=cArch.list&siteid=#esapiEncode('url',rc.siteid)#&topid=#esapiEncode('url',rc.topid)#&parentid=#esapiEncode('url',rc.parentid)#&moduleid=#rc.moduleID#&sortBy=lastUpdate&sortDirection=#lastUpdatedDirection#">
+				  					<a href="./?muraAction=cArch.list&siteid=#esapiEncode('url',rc.siteid)#&topid=#esapiEncode('url',rc.topid)#&parentid=#esapiEncode('url',rc.parentid)#&moduleid=#esapiencode('url',rc.moduleid)#&sortBy=lastUpdate&sortDirection=#lastUpdatedDirection#">
 				  						#application.rbFactory.getKeyValue(session.rb,'sitemanager.lastupdated')#
 				  					</a>
 				  				</th>
@@ -177,7 +177,7 @@ This file is part of Mura CMS.
 									<!--- Title --->
 				 					<td class="var-width">
 				 						<cfif verdict neq 'none'>
-				 							<a class="draftprompt" data-siteid="#rc.siteid#" data-contentid="#rc.rstop.contentid#" data-contenthistid="#rc.rstop.contenthistid#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.edit')#" href="./?muraAction=cArch.edit&contenthistid=#rc.rstop.ContentHistID#&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.moduleid#">
+				 							<a class="draftprompt" data-siteid="#rc.siteid#" data-contentid="#rc.rstop.contentid#" data-contenthistid="#rc.rstop.contenthistid#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.edit')#" href="./?muraAction=cArch.edit&contenthistid=#rc.rstop.ContentHistID#&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#esapiencode('url',rc.moduleid)#">
 				 								#left(rc.rstop.menutitle,90)#
 				 							</a>
 				 						<cfelse>
@@ -212,7 +212,7 @@ This file is part of Mura CMS.
 										<ul class="#lcase(rc.rstop.type)#">
 											<cfif verdict neq 'none'>
 												<li class="edit<cfif isLockedBySomeoneElse> disabled</cfif>">
-													<a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#" class="draftprompt" data-siteid="#rc.siteid#" data-contentid="#rc.rstop.contentid#" data-contenthistid="#rc.rstop.contenthistid#" href="./?muraAction=cArch.edit&contenthistid=#rc.rstop.ContentHistID#&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.moduleid#">
+													<a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#" class="draftprompt" data-siteid="#rc.siteid#" data-contentid="#rc.rstop.contentid#" data-contenthistid="#rc.rstop.contenthistid#" href="./?muraAction=cArch.edit&contenthistid=#rc.rstop.ContentHistID#&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#esapiencode('url',rc.moduleid)#">
 																		<i class="mi-pencil"></i>
 													</a>
 												</li>
@@ -220,20 +220,20 @@ This file is part of Mura CMS.
 																	<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#rc.rstop.remoteurl#');"><i class="mi-globe"></i></a></li>
 												</cfif>
 												<li class="version-history">
-													<a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#" href="./?muraAction=cArch.hist&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.moduleid#">
+													<a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#" href="./?muraAction=cArch.hist&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#esapiencode('url',rc.moduleid)#">
 																		<i class="mi-history"></i>
 													</a>
 												</li>
 												<cfif rc.moduleid eq '00000000000000000000000000000000004'>
 													<li class="manage-data">
-														<a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.managedata')#" href="./?muraAction=cArch.datamanager&contentid=#rc.rstop.ContentID#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.moduleid#&contenthistid=#rc.rstop.ContentHistID#&topid=#esapiEncode('url',rc.topid)#&parentid=#esapiEncode('url',rc.parentid)#&type=Form">
+														<a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.managedata')#" href="./?muraAction=cArch.datamanager&contentid=#rc.rstop.ContentID#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#esapiencode('url',rc.moduleid)#&contenthistid=#rc.rstop.ContentHistID#&topid=#esapiEncode('url',rc.topid)#&parentid=#esapiEncode('url',rc.parentid)#&type=Form">
 																			<i class="mi-wrench"></i>
 														</a>
 													</li>
 												</cfif>
 												<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
 													<li class="permissions">
-														<a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.permissions')#" href="./?muraAction=cPerm.main&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.moduleid#&startrow=#rc.startrow#">
+														<a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.permissions')#" href="./?muraAction=cPerm.main&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#esapiencode('url',rc.moduleid)#&startrow=#rc.startrow#">
 																			<i class="mi-group"></i>
 														</a>
 													</li>
@@ -260,7 +260,7 @@ This file is part of Mura CMS.
 											</cfif>
 											<cfif (((rc.locking neq 'all') or (rc.parentid eq '#rc.topid#' and rc.locking eq 'none')) and (verdict eq 'editor') and not rc.rsTop.isLocked eq 1) and not isLockedBySomeoneElse>
 												<li class="delete">
-													<a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" href="./?muraAction=cArch.update&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&action=deleteall&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.moduleid#&parentid=#esapiEncode('url',rc.parentid)##rc.$.renderCSRFTokens(context=rc.rstop.contentid & 'deleteall',format='url')#" onClick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentconfirm'))#',this.href)">
+													<a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" href="./?muraAction=cArch.update&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&action=deleteall&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#esapiencode('url',rc.moduleid)#&parentid=#esapiEncode('url',rc.parentid)##rc.$.renderCSRFTokens(context=rc.rstop.contentid & 'deleteall',format='url')#" onClick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentconfirm'))#',this.href)">
 																		<i class="mi-trash"></i>
 													</a>
 												</li>
@@ -298,7 +298,7 @@ This file is part of Mura CMS.
 									<cfif rc.nextN.currentpagenumber gt 1>
 
 										<li>
-											<a href="./?muraAction=cArch.list&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.moduleid#&topid=#esapiEncode('url',rc.topid)#&startrow=#rc.nextN.previous#&sortBy=#rc.sortBy#&sortDirection=#rc.sortDirection#&searchString=#rc.searchString#">
+											<a href="./?muraAction=cArch.list&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#esapiencode('url',rc.moduleid)#&topid=#esapiEncode('url',rc.topid)#&startrow=#rc.nextN.previous#&sortBy=#rc.sortBy#&sortDirection=#rc.sortDirection#&searchString=#rc.searchString#">
 												<i class="mi-angle-right"></i>
 											</a>
 										</li>
@@ -309,7 +309,7 @@ This file is part of Mura CMS.
 											<li class="active"><a href="##">#i#</a></li>
 										<cfelse>
 											<li>
-												<a href="./?muraAction=cArch.list&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.moduleid#&topid=#esapiEncode('url',rc.topid)#&startrow=#evaluate('(#i#*#rc.nextn.recordsperpage#)-#rc.nextn.recordsperpage#+1')#&sortBy=#rc.sortBy#&sortDirection=#rc.sortDirection#&searchString=#rc.searchString#">
+												<a href="./?muraAction=cArch.list&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#esapiencode('url',rc.moduleid)#&topid=#esapiEncode('url',rc.topid)#&startrow=#evaluate('(#i#*#rc.nextn.recordsperpage#)-#rc.nextn.recordsperpage#+1')#&sortBy=#rc.sortBy#&sortDirection=#rc.sortDirection#&searchString=#rc.searchString#">
 													#i#
 												</a>
 											</li>
@@ -317,7 +317,7 @@ This file is part of Mura CMS.
 									</cfloop>
 						<cfif rc.nextN.currentpagenumber lt rc.nextN.NumberOfPages>
 							<li>
-								<a href="./?muraAction=cArch.list&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.moduleid#&topid=#esapiEncode('url',rc.topid)#&startrow=#rc.nextN.next#&sortBy=#rc.sortBy#&sortDirection=#rc.sortDirection#&searchString=#rc.searchString#"><i class="mi-angle-right"></i></a>
+								<a href="./?muraAction=cArch.list&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#esapiencode('url',rc.moduleid)#&topid=#esapiEncode('url',rc.topid)#&startrow=#rc.nextN.next#&sortBy=#rc.sortBy#&sortDirection=#rc.sortDirection#&searchString=#rc.searchString#"><i class="mi-angle-right"></i></a>
 							</li>
 						</cfif>
 						</ul>
@@ -332,9 +332,9 @@ This file is part of Mura CMS.
 				<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.filters")#</h2>
 				<form class="form-inline" novalidate="novalidate" id="filterByTitle" action="index.cfm" method="get">
 					  <input type="hidden" name="siteid" value="#esapiEncode('html_attr',rc.siteid)#" />
-					  <input type="hidden" name="topid" value="#rc.topID#" />
-					  <input type="hidden" name="parentid" value="#rc.parentID#" />
-					  <input type="hidden" name="moduleid" value="#rc.moduleID#" />
+					  <input type="hidden" name="topid" value="#esapiencode('url',rc.topID)#" />
+					  <input type="hidden" name="parentid" value="#esapiencode('url',rc.parentID)#" />
+					  <input type="hidden" name="moduleid" value="#esapiencode('url',rc.moduleid)#" />
 					  <input type="hidden" name="sortBy" value="" />
 					  <input type="hidden" name="sortDirection" value="" />
 					  <input type="hidden" name="muraAction" value="cArch.list" />
@@ -476,7 +476,7 @@ This file is part of Mura CMS.
 			<cfparam name="rc.type" default="" />
 			<cfparam name="rc.page" default="1" />
 			<cfparam name="rc.subtype" default="" />
-			<cfparam name="session.moduleid" default="#rc.moduleid#" />
+			<cfparam name="session.moduleid" default="#esapiencode('url',rc.moduleid)#" />
 
 			<cfif len($.siteConfig('customTagGroups'))>
 				<cfloop list="#$.siteConfig('customTagGroups')#" index="g" delimiters="^,">
@@ -637,14 +637,14 @@ This file is part of Mura CMS.
 				<cflocation url="./?muraAction=cArch.list&siteid=#esapiEncode('url',rc.siteid)#&moduleid=00000000000000000000000000000000000&topid=00000000000000000000000000000000001" addtoken="false"/>
 			</cfif>
 		</cfsilent>
-
 		<cfoutput>
 			<script>
 				siteID='#session.siteID#';
-				<cfif session.copySiteID eq rc.siteID and isdefined('session.copyModuleID')>
+				<cfif session.copySiteID eq rc.siteID and isdefined('session.copymoduleid')>
+
 				siteManager.copyContentID = '#esapiEncode("javascript",session.copyContentID)#';
 				siteManager.copySiteID = '#esapiEncode("javascript",session.copySiteID)#';
-				siteManager.copyModuleID = '#esapiEncode("javascript",session.copyModuleID)#';
+				siteManager.copymoduleid = '#esapiEncode("javascript",session.copymoduleid)#';
 				siteManager.copyAll = '#esapiEncode("javascript",session.copyAll)#';
 				<cfelse>
 				siteManager.copyContentID = '';
