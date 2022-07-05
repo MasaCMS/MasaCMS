@@ -166,7 +166,7 @@ This file is part of Mura CMS.
 								}
 							</cfscript>
 							<li class="#rc.nextClass#">
-								<a href="##" data-pageno="#rc.prevNo#" class="#rc.nextClass#"><i class="mi-angle-right"></i></a>
+								<a href="##" data-pageno="#esapiencode('html_attr',rc.prevNo)#" class="#rc.nextClass#"><i class="mi-angle-right"></i></a>
 							</li>
 
 					</ul>

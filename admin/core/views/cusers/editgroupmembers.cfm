@@ -90,13 +90,13 @@ This file is part of Mura CMS.
 			#rbKey('user.viewallgroups')#
 		</a>
 		<!--- Edit Group Settings --->
-		<a class="btn" href="#buildURL(action='cusers.editgroup', querystring='userid=#rc.userid#&siteid=#esapiEncode('url',rc.siteid)#')#" onclick="actionModal();">
+		<a class="btn" href="#buildURL(action='cusers.editgroup', querystring='userid=#esapiencode('url',rc.userid)#&siteid=#esapiEncode('url',rc.siteid)#')#" onclick="actionModal();">
 					<i class="mi-pencil"></i>
 			#rbKey('user.editgroupsettings')#
 		</a>
 		<!--- Download Users --->
 	    <cfif rc.it.hasNext()>
-				<a class="btn" href="#buildURL(action='cusers.downloadgroupmembers', querystring='userid=#rc.userid#')#">
+				<a class="btn" href="#buildURL(action='cusers.downloadgroupmembers', querystring='userid=#esapiencode('url',rc.userid)#')#">
 							<i class="mi-download"></i> 
 					#rbKey('user.download')#
 				</a>

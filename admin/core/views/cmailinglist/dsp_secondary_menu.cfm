@@ -89,14 +89,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfcase value="edit">
 				<a class="btn" href="./?muraAction=cMailingList.list&&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-arrow-circle-left"></i> #application.rbFactory.getKeyValue(session.rb,"mailinglistmanager.backtomailinglists")#</a>
 				<cfif rc.mlid neq ''>
-				<a class="btn" href="./?muraAction=cMailingList.listmembers&mlid=#rc.mlid#&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-pencil"></i> #application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.vieweditmembers')#
-				<a class="btn" href="./?muraAction=cMailingList.download&mlid=#rc.mlid#&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-download"></i> #application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.downloadmembers')#</a>
+				<a class="btn" href="./?muraAction=cMailingList.listmembers&mlid=#esapiencode('url',rc.mlid)#&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-pencil"></i> #application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.vieweditmembers')#
+				<a class="btn" href="./?muraAction=cMailingList.download&mlid=#esapiencode('url',rc.mlid)#&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-download"></i> #application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.downloadmembers')#</a>
 				</cfif>	
 			</cfcase>
 			<cfcase value="listmembers">
 				<a class="btn" href="./?muraAction=cMailingList.list&&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-arrow-circle-left"></i> #application.rbFactory.getKeyValue(session.rb,"mailinglistmanager.backtomailinglists")#</a>
-				<a class="btn" href="./?muraAction=cMailingList.Edit&mlid=#rc.mlid#&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-pencil"></i> #application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.editmailinglist')#</a>
-				<a class="btn" href="./?muraAction=cMailingList.download&mlid=#rc.mlid#&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-download"></i> #application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.downloadmembers')#</a>		
+				<a class="btn" href="./?muraAction=cMailingList.Edit&mlid=#esapiencode('url',rc.mlid)#&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-pencil"></i> #application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.editmailinglist')#</a>
+				<a class="btn" href="./?muraAction=cMailingList.download&mlid=#esapiencode('url',rc.mlid)#&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-download"></i> #application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.downloadmembers')#</a>		
 			</cfcase>
 		</cfswitch>
 	</div>

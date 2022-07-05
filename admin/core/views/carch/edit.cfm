@@ -728,7 +728,7 @@ $('.clicktocopy').click(function(){
 	<input type="hidden" name="subtype" value="#rc.contentBean.getSubType()#">
 	<input type="hidden" name="muraAction" value="cArch.update">
 	<input type="hidden" name="startrow" value="#esapiEncode('html_attr',rc.startrow)#">
-	<input type="hidden" name="returnURL" id="txtReturnURL" value="#rc.returnURL#">
+	<input type="hidden" name="returnURL" id="txtReturnURL" value="#esapiencode('url',rc.returnURL)#">
 	<input type="hidden" name="homeID" value="#esapiEncode('html_attr',rc.homeID)#">
 	<input type="hidden" name="cancelpendingapproval" value="false">
 	<input type="hidden" name="murakeepediting" value="false">

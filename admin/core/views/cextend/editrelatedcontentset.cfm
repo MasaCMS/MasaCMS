@@ -148,7 +148,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif not len(rc.relatedContentSetID)>
 						<cfset rc.relatedContentSetID=createUUID()>
 						<button class="btn mura-primary" type="button" onclick="submitForm(document.forms.form1,'add');"><i class="mi-check-circle"></i>Add</button>
-						<input type=hidden name="relatedContentSetID" value="#rc.relatedContentSetID#">
+						<input type=hidden name="relatedContentSetID" value="#esapiencode('html_attr',rc.relatedContentSetID)#">
 					<cfelse>
 						<button class="btn" type="button" onclick="submitForm(document.forms.form1,'delete','Delete Related Content Set?');"><i class="mi-trash"></i>Delete</button>
 						<button class="btn mura-primary" type="button" onclick="submitForm(document.forms.form1,'update');"><i class="mi-check-circle"></i>Update</button>

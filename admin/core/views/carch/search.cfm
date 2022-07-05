@@ -86,7 +86,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<input name="keywords" value="#esapiEncode('html_attr',session.keywords)#" type="text" class="text" maxlength="50" /><input type="button" class="btn" onclick="submitForm(document.forms.siteSearch);" value="Search" />
 	<input type="hidden" name="muraAction" value="cArch.search">
 	<input type="hidden" name="siteid" value="#esapiEncode('html_attr',rc.siteid)#">
-	<input type="hidden" name="moduleid" value="#rc.moduleid#">
+	<input type="hidden" name="moduleid" value="#esapiencode('url',rc.moduleid)#">
 </form>
 <script>
 siteManager.copyContentID = '#session.copyContentID#';
@@ -138,16 +138,16 @@ siteManager.copySiteID = '#session.copySiteID#';
 		<td>#LSDateFormat(rc.rslist.lastupdate,session.dateKeyFormat)#</td>
 
  <td class="actions"><ul class="siteSummary five"><cfif not listFindNoCase('none,read',verdict)>
-       <li class="edit"><a title="Edit" href="./?muraAction=cArch.edit&contenthistid=#rc.rsList.ContentHistID#&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.moduleid#&startrow=#rc.startrow#"><i class="mi-pencil"></i></a></li>
+       <li class="edit"><a title="Edit" href="./?muraAction=cArch.edit&contenthistid=#rc.rsList.ContentHistID#&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#esapiencode('url',rc.moduleid)#&startrow=#rc.startrow#"><i class="mi-pencil"></i></a></li>
 		<li class="preview"><a title="Preview" href="#application.settingsManager.getSite(rc.siteid).getWebPath(complete=1)#$.getURLStem(rc.siteid,rc.rsList.filename)#"><i class="mi-globe"></i></a></li>
-	   <li class="version-history"><a title="Version History" href="./?muraAction=cArch.hist&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&topid=#rc.rsList.contentID#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.moduleid#&startrow=#rc.startrow#"><i class="mi-history"></i></a></li>
+	   <li class="version-history"><a title="Version History" href="./?muraAction=cArch.hist&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&topid=#rc.rsList.contentID#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#esapiencode('url',rc.moduleid)#&startrow=#rc.startrow#"><i class="mi-history"></i></a></li>
         <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
-          <li class="permissions"><a title="Permissions" href="./?muraAction=cPerm.main&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&topid=#rc.rsList.contentID#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.moduleid#&startrow=#rc.startrow#"><i class="mi-group"></i></a></li>
+          <li class="permissions"><a title="Permissions" href="./?muraAction=cPerm.main&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&topid=#rc.rsList.contentID#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#esapiencode('url',rc.moduleid)#&startrow=#rc.startrow#"><i class="mi-group"></i></a></li>
         <cfelse>
 		  <li class="permissions disabled"><a>Permissions</a></li>
 		</cfif>
         <cfif deletable>
-          <li class="delete"><a title="Delete" href="./?muraAction=cArch.update&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&action=deleteall&topid=#rc.rsList.contentID#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.moduleid#&parentid=#esapiEncode('url',rc.parentid)#&startrow=#rc.startrow#"
+          <li class="delete"><a title="Delete" href="./?muraAction=cArch.update&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&action=deleteall&topid=#rc.rsList.contentID#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#esapiencode('url',rc.moduleid)#&parentid=#esapiEncode('url',rc.parentid)#&startrow=#rc.startrow#"
 			<cfif listFindNoCase("Page,Folder,Calendar,Gallery,Link,File",rc.rsList.type)><i class="mi-trash"></i></a></li>
           <cfelseif rc.locking neq 'all'>
           <li class="delete disabled">Delete<i class="mi-trash"></i></li>
@@ -189,19 +189,19 @@ siteManager.copySiteID = '#session.copySiteID#';
 			<ul class="pagination">
 			<cfif rc.nextN.currentpagenumber gt 1>
 				<li>
-					<a href="./?muraAction=cArch.search&siteid=#esapiEncode('url',rc.siteid)#&keywords=#session.keywords#&startrow=#rc.nextn.previous#&moduleid=#rc.moduleid#"><i class="mi-angle-left"></i></a>
+					<a href="./?muraAction=cArch.search&siteid=#esapiEncode('url',rc.siteid)#&keywords=#session.keywords#&startrow=#rc.nextn.previous#&moduleid=#esapiencode('url',rc.moduleid)#"><i class="mi-angle-left"></i></a>
 				</li>
 			</cfif>
 			<cfloop from="#rc.nextN.firstPage#"  to="#rc.nextn.lastPage#" index="i">
 				<cfif rc.nextn.currentpagenumber eq i>
 					<li class="active"><a href="##">#i#</a></li>
 				<cfelse>
-					<li><a href="./?muraAction=cArch.search&siteid=#esapiEncode('url',rc.siteid)#&keywords=#session.keywords#&startrow=#evaluate('(#i#*#rc.nextn.recordsperpage#)-#rc.nextn.recordsperpage#+1')#&moduleid=#rc.moduleid#">#i#</a></li>
+					<li><a href="./?muraAction=cArch.search&siteid=#esapiEncode('url',rc.siteid)#&keywords=#session.keywords#&startrow=#evaluate('(#i#*#rc.nextn.recordsperpage#)-#rc.nextn.recordsperpage#+1')#&moduleid=#esapiencode('url',rc.moduleid)#">#i#</a></li>
 				</cfif>
 			</cfloop>
 			<cfif rc.nextN.currentpagenumber lt rc.nextN.NumberOfPages>
 				<li>
-					<a href="./?muraAction=cArch.search&siteid=#esapiEncode('url',rc.siteid)#&keywords=#session.keywords#&startrow=#rc.nextn.next#&moduleid=#rc.moduleid#"><i class="mi-angle-right"></i></a>
+					<a href="./?muraAction=cArch.search&siteid=#esapiEncode('url',rc.siteid)#&keywords=#session.keywords#&startrow=#rc.nextn.next#&moduleid=#esapiencode('url',rc.moduleid)#"><i class="mi-angle-right"></i></a>
 				</li>
 			</cfif>
 			</cfoutput>
