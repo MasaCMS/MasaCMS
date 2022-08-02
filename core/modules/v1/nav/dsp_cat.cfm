@@ -73,22 +73,15 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
+<cfsilent>
+	<cfparam name="objectparams.categoryid" default="3E827A1E-BBDD-417A-9D326E24B58AFF84" >
+	<cfparam name="objectparams.navMultiLevelWrapperClass" default="" >
+</cfsilent>
 
-<!--- This outputs peer nav and the sub nav of the page you are on if there is any. It omits top level nav for the sake of redundancy and dead-ends if there is no content below the page you are on. Usually works best when used in conjunction with the breadcrumb nav since it changes as you get deeper into a site. --->
-<cfset navOutput=dspNestedNav(
-	contentID=variables.$.getTopVar("contentID"),
-	viewDepth=4,
-	currDepth=1,
-	sortBy=variables.$.getTopVar("sortBy"),
-	sortDirection=variables.$.getTopVar("sortDirection"),
-	subNavExpression="listFindNoCase('Page,Calendar',rsSection.type) and listFind(variables.$.content('path'),rsSection.contentID) and arguments.currDepth lt 4"
-)>
-<cfif len(navOutput)>
-<cfoutput>
-	<nav id="navMultilevel"<cfif this.navMultiLevelWrapperClass neq ""> class="mura-nav-multi-level #this.navMultiLevelWrapperClass#"</cfif>>
-		<cfif len(this.navMultiLevelWrapperBodyClass)><div class="#this.navMultiLevelWrapperBodyClass#"></cfif>
-		#navOutput#
-		<cfif len(this.navMultiLevelWrapperBodyClass)></div></cfif>
-	</nav>
-</cfoutput>
+<cfif len(objectparams.categoryid)>
+  <cfoutput>
+		<nav id="navMultilevel"<cfif objectparams.navMultiLevelWrapperClass neq ""> class="mura-nav-multi-level #objectparams.navMultiLevelWrapperClass#"</cfif>>
+			#m.getBean('catNav').renderCategoryNav(m.event('siteid'),objectparams.categoryid)#
+		</nav>
+  </cfoutput>
 </cfif>
