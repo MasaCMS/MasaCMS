@@ -742,6 +742,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfparam name="url.formField" default="form.upload">
 		<cfparam name="url.siteId" default="">
 		<cfset var folder = "/assets/Image">
+
+		<cfset url.filePath = rereplace(url.filePath,"\.\.[\\]{0,1}[\/]{0,1}","","all")>
+
 		<cfswitch expression="#url.action#">
 			<cfcase value="upload">
 				<cfif application.permUtility.getModulePerm('00000000000000000000000000000000000',url.siteId)>
