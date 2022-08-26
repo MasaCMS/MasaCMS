@@ -507,6 +507,12 @@ component
 
 		//response.uploaded = fileUploadAll(destination=tempDir,nameconflict="makeunique");
 		response.uploaded = fileUploadAll(tempdir,'',"makeunique");
+
+		//do not return temp directory
+		if(isStruct(response.uploaded) and structKeyExists("serverdirectory",response.uploaded)) {
+			structDelete(response.uploaded,"serverdirectory");
+		}
+		
 		response.allowedExtensions = allowedExtensions;
 
 		for(var i = 1; i lte ArrayLen(response.uploaded);i++ ) {
@@ -541,6 +547,7 @@ component
 			}
 			else {
 				fileDelete(item.serverdirectory & m.globalConfig().getFileDelim() & item.serverfile);
+				item.message = "File type not allowed";
 				ArrayAppend(response.failed,item);
 			}
 		}
