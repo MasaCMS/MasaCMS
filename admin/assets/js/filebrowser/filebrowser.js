@@ -1691,6 +1691,11 @@ MuraFileBrowser = {
 				<li v-for="(item,index) in foldertree" @click="setDirDepth(index)"><a><i class="mi-folder-open"></i>{{item}}</a></li>
 				</ul>
 			</div>
+			<div class="mura-header" id="fileviewer-message" v-if="isErrorMessage">
+				<div class="alert alert-error">
+					<span v-html="renderer(this.errorMessage)"></span>
+				</div>	
+			</div>
 			<div class="fileviewer-droptarget">
 				<form enctype="multipart/form-data" novalidate v-if="isStart || isSave">
 				<input type="file" multiple :name="uploadField" :disabled="isSave" @change="filesChanged($event.target.name, $event.target.files);" accept="*.*" class="file-input-field">
@@ -1723,6 +1728,8 @@ MuraFileBrowser = {
 			displaymode: this.config.displaymode,
 			uploadedFiles: [],
 			isDisplayContext: 0,
+			isErrorMessage: 0,
+			errorMessage: '',
 			isDisplayWindow: '',
 			uploadField: "uploadFiles",
 			filterResults: '',
@@ -1751,6 +1758,9 @@ MuraFileBrowser = {
 			}
 		},
 		methods: {
+			renderer(val) {
+				return val;
+			},
 			updateDelete: function() {
 				self.updateDelete(currentFile);
 			}
@@ -1904,12 +1914,19 @@ MuraFileBrowser = {
 	
 			}
 			, refresh: function( folder,pageindex,displaywindow ) {
-			this.message = "";
-			this.spinnermodal = 0;
-			if(displaywindow) {
-				this.isDisplayWindow = "";
-				this.$nextTick(function () {
-				this.$root.isDisplayWindow = displaywindow;
+				this.spinnermodal = 0;
+				if(this.isErrorMessage==1) {
+					this.isErrorMessage=2;
+				}
+				else if(this.isErrorMessage==2) {
+					this.isErrorMessage=0;
+					this.errorMessage = "";			
+				}
+
+				if(displaywindow) {
+					this.isDisplayWindow = "";
+					this.$nextTick(function () {
+					this.$root.isDisplayWindow = displaywindow;
 				});
 			}
 			else
@@ -1977,12 +1994,21 @@ MuraFileBrowser = {
 			}
 			, save: function( formData ) {
 				this.currentState = IS_SAVE;
-	
 				self.doUpload( formData,this.saveComplete );
 			}
-			, saveComplete: function( ) {
-			this.uploadReset();
-			this.refresh();
+			, saveComplete: function(resp) {
+				console.log("SAVED",resp);
+				if(resp.failed && resp.failed.length) {
+					this.isErrorMessage = 1;
+					this.errorMessage = "<ul>";
+					for(var e = 0;e<resp.failed.length;e++) {
+						this.errorMessage += "<li><strong>" + resp.failed[e].clientfile + ":</strong> "  + resp.failed[e].message + "</li>";
+					}
+					this.errorMessage += "</ul>";
+				}
+
+				this.uploadReset();
+				this.refresh();
 			}
 			, checkSelectMode: function() {
 			return MuraFileBrowser.config.selectMode;
