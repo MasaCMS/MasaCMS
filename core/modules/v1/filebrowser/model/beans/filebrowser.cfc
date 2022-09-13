@@ -509,7 +509,7 @@ component
 		response.uploaded = fileUploadAll(tempdir,'',"makeunique");
 
 		//do not return temp directory
-		if(isStruct(response.uploaded) and structKeyExists("serverdirectory",response.uploaded)) {
+		if(isStruct(response.uploaded) and structKeyExists(response.uploaded,"serverdirectory")) {
 			structDelete(response.uploaded,"serverdirectory");
 		}
 		
