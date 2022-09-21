@@ -317,6 +317,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 													showPreview();
 													// custom global resize function fits to content window
 													resizeBodyEditor();
+													<cfif application.configBean.get('showextensionsindefault') eq true>
+													$("##bigui__basic").show();
+													</cfif>
 												}
 											);
 										}
@@ -439,7 +442,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<input type="text" name="responseSendTo" value="#esapiEncode('html_attr',rc.contentBean.getresponseSendTo())#">
 					</div>
 				</cfif>
-
+				<cfif application.configBean.get('showextensionsindefault') eq true>
+				<!--- Manage Extended Hidden --->
+				<cfelse>
 				<div class="mura-control-group extendedattributes-group" id="extendedattributes-container-basic">
 					<div class="bigui" id="bigui__basic" data-label="Manage Extended Attributes">
 						<div class="bigui__title">Manage Extended Attributes</div>
@@ -451,7 +456,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</div>
 					<!--- /.bigui --->
 				</div>
-
+				</cfif>
 
 
 				<span id="extendset-container-tabbasicbottom" class="extendset-container"></span>

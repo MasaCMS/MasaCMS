@@ -38152,6 +38152,18 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
   top: 8px;
   right: 16px;
 }
+.mura #mura-editbox {
+  padding: 4px;
+  overflow-y: auto !important;
+  overflow-x: hidden;
+  height: calc(100vh - 260px);
+  display: block;
+  position: relative;
+  margin-top: 4px;
+}
+.mura .bigui__basic-hide {
+  display: none;
+}
 .mura .bigui {
   display: none;
   position: absolute;
