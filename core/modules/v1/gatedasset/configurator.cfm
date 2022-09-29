@@ -33,8 +33,8 @@
 				</select>
 			</div>
 			<div class="mura-control-group">
-				<label class="mura-control-label">Button Label</label>
-				<input type="text" placeholder="Button Label" id="buttonlabel" name="buttonlabel" class="objectParam" value="#esapiEncode('html_attr',objectparams.buttonlabel)#"/>
+				<label class="mura-control-label">Download Button Label</label>
+				<input type="text" placeholder="Download Button Label" id="buttonlabel" name="buttonlabel" class="objectParam" value="#esapiEncode('html_attr',objectparams.buttonlabel)#"/>
 			</div>
 				<!---<input type="hidden" class="objectParam" name="displaytype" id="displaytype" value="inline">--->
 			<div class="mura-control-group">
@@ -47,7 +47,7 @@
 			</div>
 			<div class="mura-control-group" id="displaytype-modal-label">
 				<label class="mura-control-label">Modal Button Label</label>
-				<input type="text" placeholder="Modal Button Label" id="modalbuttonlabel" name="modalbuttonlabel" class="objectParam" value="#esapiEncode('html_attr',objectparams.modalbuttonlabel)#"/>
+				<input type="text" placeholder="Modal Button Label" name="modalbuttonlabel" class="objectParam" value="#esapiEncode('html_attr',objectparams.modalbuttonlabel)#"/>
 			</div>
 			<div class="mura-control-group">
 				<label class="mura-control-label">Pre Gated Message</label>

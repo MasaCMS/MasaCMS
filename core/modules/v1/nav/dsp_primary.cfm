@@ -1,4 +1,4 @@
- <!--- 
+<!--- 
 This file is part of Masa CMS. Masa CMS is based on Mura CMS, and adopts the  
 same licensing model. It is, therefore, licensed under the Gnu General Public License 
 version 2 only, (GPLv2) subject to the same special exception that appears in the licensing 
@@ -73,38 +73,36 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfsilent>
-	<cfset rc.rsObjects = application.contentManager.getSystemObjects(rc.siteid)/>
-	<cfquery name="rc.rsObjects" dbtype="query">
-		select * from rc.rsObjects where object not like '%nav%'
-		<cfif not application.settingsManager.getSite(rc.siteid).getHasComments()>
-			and object != 'comments'
-		</cfif>
-		and object != 'panel'
-		and object != 'payPalCart'
-		and object != 'related_content'
-		and object != 'tag_cloud'
-		and object != 'event_reminder_form'
-		and object != 'forward_email'
-	</cfquery>
-</cfsilent>
-<cf_objectconfigurator>
-<cfoutput>
-	<div class="mura-layout-row">
-		<div class="mura-control-group">
-			<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectsystemobject')#</label>
-			<select name="object" class="objectParam">
-				<option  value="#esapiEncode('html_attr','Select System Object')#">
-					#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectsystemobject')#
-				</option>
-				<cfloop query="rc.rsObjects">
-					<option <cfif rc.object eq rc.rsobjects.object>selected </cfif>title="#esapiEncode('html_attr',rc.rsObjects.name)#" value="#esapiEncode('javascript',rc.rsobjects.object)#">
-						#esapiEncode('html',rc.rsObjects.name)#
-					</option>
-				</cfloop>
-			</select>
-		</div>
-	</div>
-	<input name="objectid" type="hidden" class="objectParam" value="#esapiEncode('html_attr',rc.contentid)#">
-</cfoutput>
-</cf_objectconfigurator>
+
+<!--- Works just like the standard nav, but omits items in a portal to avoid potentially unmanageably long sub nav for something like a news portal with 100 items --->
+<cfset navOutput=dspFolderNav()>
+ <cfoutput>
+
+				<cf_CacheOMatic key="dspPrimaryNav">
+					#$.dspPrimaryNav(
+						viewDepth=1
+						, id='navPrimary'
+						, class='navbar-nav mr-auto'
+						, displayHome='always'
+						, closeFolders=true
+						, showCurrentChildrenOnly=false
+						, liClass='nav-item'
+						, liHasKidsClass='dropdown'
+						, liHasKidsAttributes=''
+						, liCurrentClass=''
+						, liCurrentAttributes=''
+						, liHasKidsNestedClass=''
+						, aHasKidsClass='dropdown-toggle'
+						, aHasKidsAttributes=''
+						, aCurrentClass='nav-link active'
+						, aCurrentAttributes=''
+						, ulNestedClass='dropdown-menu'
+						, ulNestedAttributes=''
+						, aNotCurrentClass='nav-link'
+						, siteid=$.event('siteid')
+					)#
+				</cf_CacheOMatic>
+
+
+ </cfoutput>
+

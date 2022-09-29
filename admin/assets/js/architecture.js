@@ -302,55 +302,13 @@ This file is part of Mura CMS.
 			if(!validateForm(document.contentForm)){
 				return false;
 			}
-		}
-
-		if(document.contentForm.type.value == 'Link' && document.contentForm.body.value == '') {
-
-			alertDialog("The form field 'URL' is required");
-			return false;
-		}
-
-		if(document.contentForm.type.value == 'Page' 
-			&& typeof document.contentForm.canonicalURL !== 'undefined'
-			&& document.contentForm.canonicalURL.value != ''
-			&& !isValidURL(document.contentForm.canonicalURL.value)
-		) {
-			alertDialog("Please enter a valid URL in the 'Canonical URL' field");
-			return false;
-                }
-
-		if(!validateForm(document.contentForm)){
-			return false;
-		}
-
-		if(document.contentForm.approved.value == 1 && draftremovalnotice != "" && !confirm(draftremovalnotice)) {
-			return false;
-		}
-
-		if(!autosave && typeof(this.hasFileLock) != 'undefined' && !this.fileLockConfirmed && this.hasFileLock && $("input[name='newfile']").val() != '') {
-			confirmDialog(this.unlockfileconfirm, function() {
-				//alert('true')
-				$("#unlockfilewithnew").val("true");
-				if(siteManager.ckContent(false)) {
-					siteManager.submitContentForm();
-				}
-			}, function() {
-				//alert('false')
-				$("#unlockfilewithnew").val("false");
-				if(siteManager.ckContent(false)) {
-					siteManager.submitContentForm();
-				}
-			});
-
-			this.fileLockConfirmed = true;
-			return false;
-		}
-
-		if(!validateOnly){
-			if(!autosave && typeof(this.hasNodeLock) != 'undefined' && this.hasNodeLock && !this.nodeLockConfirmed) {
-	//			alert('b')
-				confirmDialog(this.unlocknodeconfirm, function() {
-
+	
+			if(document.contentForm.approved.value == 1 && draftremovalnotice != "" && !confirm(draftremovalnotice)) {
+				return false;
+			}
+	
+			if(!autosave && typeof(this.hasFileLock) != 'undefined' && !this.fileLockConfirmed && this.hasFileLock && $("input[name='newfile']").val() != '') {
+				confirmDialog(this.unlockfileconfirm, function() {
 					//alert('true')
 					$("#unlockfilewithnew").val("true");
 					if(siteManager.ckContent(false)) {
@@ -2965,6 +2923,7 @@ This file is part of Mura CMS.
 				'tag_cloud':{condition:function(){return siteManager.customtaggroups.length;},'initConfigurator':function(data){siteManager.initTagCloudConfigurator(data);}},
 				'category_summary':{condition:function(){return true;},'initConfigurator':function(data){if(siteManager.allowopenfeeds){siteManager.initCategorySummaryConfigurator(data);} else {siteManager.initGenericConfigurator(data);}}},
 				'archive_nav':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+				'primary_nav':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
 				'calendar_nav':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
 				'category_summary_rss':{condition:function(){return siteManager.allowopenfeeds;},'initConfigurator':function(data){siteManager.initCategorySummaryConfigurator(data);}},
 				'site_map':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initSiteMapConfigurator(data);}},
@@ -2984,7 +2943,6 @@ This file is part of Mura CMS.
 				'standard_nav':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
 				'portal_nav':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
 				'folder_nav':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
-				'category_nav':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
 				'multilevel_nav':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
 				'seq_nav':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
 				'top_nav':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
