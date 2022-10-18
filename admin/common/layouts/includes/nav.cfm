@@ -354,7 +354,7 @@ This file is part of Mura CMS.
                             </li>
                             <!--- professional support --->
                             <li>
-                                <a id="navHelpDocs" href="https://www.weareorange.eu/" target="_blank"><i class="mi-group"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.support")#</span></a>
+                                <a id="navHelpDocs" href="https://www.wearenorth.eu/" target="_blank"><i class="mi-group"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.support")#</span></a>
                             </li>
                             <!--- community support --->
                             <li>
@@ -423,7 +423,7 @@ This file is part of Mura CMS.
                                 <a href="https://github.com/blueriver/MuraCMS/blob/develop/license.txt" target="_blank"><span><strong>Mura CMS</strong> &copy; #year(now())# blueriver <em>Licensed under GNU General Public License Version 2.0 with exceptions</em></span></a>
                             </li>
                              <li>
-                                <a href="https://github.com/MasaCMS/MasaCMS/blob/main/license.txt" target="_blank"><span><strong>Masa CMS</strong> &copy; #year(now())# We Are Orange BV <em>Licensed under GNU General Public License Version 2.0 with exceptions</em></span></a>
+                                <a href="https://github.com/MasaCMS/MasaCMS/blob/main/license.txt" target="_blank"><span><strong>Masa CMS</strong> &copy; #year(now())# We Are North Groep BV <em>Licensed under GNU General Public License Version 2.0 with exceptions</em></span></a>
                             </li>
                         </ul>
                     </li>
