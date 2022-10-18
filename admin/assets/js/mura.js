@@ -22559,4 +22559,4 @@ this["Mura"]["templates"]["view"] = this.Mura.Handlebars.template({"1":function(
 /***/ })
 /******/ ]);
 });
-//# sourceMappingURL=mura.js.map
+//# sourceMappingURL=mura.min.js.map

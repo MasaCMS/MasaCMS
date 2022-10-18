@@ -23,6 +23,13 @@ services:
       MURA_SITEIDINURLS: "false"
       MURA_INDEXFILEINURLS: "false"
       MURA_TESTBOX: "true"
+      #MURA_ASSETPATH: ""
+      #MURA_ASSETDIR: "/s3assets"
+      #MURA_FILEDIR: "/s3assets"
+      #S3_ACCESS_KEY:
+      #S3_SECRET_KEY:
+      #S3_ASSETS_BUCKET:
+      #MURA_S3ASSETS: "s3://${aswAccessKey}:${aswSecretKey}@/${parent_bucket_of_instance_bucket}/"
     volumes:
         - ../../../:/app
     ports:

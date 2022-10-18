@@ -216,7 +216,7 @@ select * from rsSubTypes where subType <> 'Default'
 							<div class="block-content">
 
 								<div class="mura-control-group">
-									<ul class="navTask nav nav-pills"><li><a href="./?muraAction=cusers.editAddress&userID=#session.mura.userID#&siteid=#rc.userBean.getsiteid()#&routeID=#rc.routeid#&addressID=&returnURL=#esapiEncode('url',cgi.query_string)#">#rc.$.rbKey('user.addnewaddress')#</a></li></ul>
+									<ul class="navTask nav nav-pills"><li><a href="./?muraAction=cusers.editAddress&userID=#session.mura.userID#&siteid=#rc.userBean.getsiteid()#&routeID=#esapiencode('url',rc.routeid)#&addressID=&returnURL=#esapiEncode('url',cgi.query_string)#">#rc.$.rbKey('user.addnewaddress')#</a></li></ul>
 
 							      <cfset rsAddresses=rc.userBean.getAddresses()>
 									<cfif rsAddresses.recordcount>
@@ -237,8 +237,8 @@ select * from rsSubTypes where subType <> 'Default'
 										<cfif rsAddresses.addressURL neq ''>#rc.$.rbKey('user.website')#: <a href="#rsAddresses.addressURL#" target="_blank">#rsAddresses.addressURL#</a><br/></cfif>
 										<cfif rsAddresses.addressEmail neq ''>#rc.$.rbKey('user.email')#: <a href="mailto:#rsAddresses.addressEmail#">#rsAddresses.addressEmail#</a></cfif>
 										</td>
-										<td nowrap class="actions"><ul><li class="edit"><a title="#rc.$.rbKey('user.edit')#" href="./?muraAction=cusers.editAddress&userID=#session.mura.userID#&siteid=#rc.userBean.getsiteid()#&routeID=#rc.routeid#&addressID=#rsAddresses.addressID#&returnURL=#esapiEncode('url',cgi.query_string)#"><i class="mi-pencil"></i></a></li>
-										<cfif rsAddresses.isPrimary neq 1><li class="delete"><a title="Delete" href="./?muraAction=cusers.updateAddress&userID=#session.mura.userID#&action=delete&siteid=#rc.userBean.getsiteid()#&routeID=#rc.routeid#&addressID=#rsAddresses.addressID#&returnURL=#esapiEncode('url',cgi.query_string)#" onclick="return confirmDialog('#esapiEncode('javascript',rc.$.rbKey('user.deleteaddressconfirm'))#',this.href);"><i class="mi-trash"></i></a></li><cfelse><i class="mi-trash"></i></cfif></ul></td>
+										<td nowrap class="actions"><ul><li class="edit"><a title="#rc.$.rbKey('user.edit')#" href="./?muraAction=cusers.editAddress&userID=#session.mura.userID#&siteid=#rc.userBean.getsiteid()#&routeID=#esapiencode('url',rc.routeid)#&addressID=#rsAddresses.addressID#&returnURL=#esapiEncode('url',cgi.query_string)#"><i class="mi-pencil"></i></a></li>
+										<cfif rsAddresses.isPrimary neq 1><li class="delete"><a title="Delete" href="./?muraAction=cusers.updateAddress&userID=#session.mura.userID#&action=delete&siteid=#rc.userBean.getsiteid()#&routeID=#esapiencode('url',rc.routeid)#&addressID=#rsAddresses.addressID#&returnURL=#esapiEncode('url',cgi.query_string)#" onclick="return confirmDialog('#esapiEncode('javascript',rc.$.rbKey('user.deleteaddressconfirm'))#',this.href);"><i class="mi-trash"></i></a></li><cfelse><i class="mi-trash"></i></cfif></ul></td>
 									</tr>
 									</cfloop>
 									</table>

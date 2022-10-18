@@ -141,7 +141,7 @@
 								}
 							</cfscript>
 							<li class="#rc.nextClass#">
-								<a href="##" data-pageno="#rc.prevNo#"><i class="mi-angle-right"></i></a>
+								<a href="##" data-pageno="#esapiencode('html_attr',rc.prevNo)#"><i class="mi-angle-right"></i></a>
 							</li>
 						</ul>
 					</div>
@@ -388,7 +388,7 @@
 								}
 							</cfscript>
 							<li class="#rc.nextClass#">
-								<a href="##" data-pageno="#rc.prevNo#">&raquo;</a>
+								<a href="##" data-pageno="#esapiencode('html_attr',rc.prevNo)#">&raquo;</a>
 							</li>
 						</ul>
 					</div>

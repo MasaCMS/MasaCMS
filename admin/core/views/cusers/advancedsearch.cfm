@@ -282,14 +282,14 @@ This file is part of Mura CMS.
 					<ul class="mura-tab-links nav-tabs">
 						<!--- Site Members Tab --->
 							<li<cfif rc.ispublic eq 1> class="active"</cfif>>
-								<a href="#buildURL(action='cusers.advancedsearch', querystring='#rc.qs#ispublic=1')#" onclick="actionModal();">
+								<a href="#buildURL(action='cusers.advancedsearch', querystring='#esapiEncode('url', rc.qs)#ispublic=1')#" onclick="actionModal();">
 									#rbKey('user.sitemembers')#
 								</a>
 							</li>
 
 		        <!--- System Users Tab --->
 							<li<cfif rc.ispublic eq 0> class="active"</cfif>>
-								<a href="#buildURL(action='cusers.advancedsearch', querystring='#rc.qs#ispublic=0')#" onclick="actionModal();">
+								<a href="#buildURL(action='cusers.advancedsearch', querystring='#esapiEncode('url', rc.qs)#ispublic=0')#" onclick="actionModal();">
 									#rbKey('user.systemusers')#
 								</a>
 							</li>
