@@ -6693,6 +6693,11 @@ Mura.DOMSelection = Mura.Core.extend(
       selector = '';
     }
 
+    if (typeof fn === 'undefined') {
+      console.log("ONEV",arguments);
+      return;
+    }
+
     if (eventName == 'ready') {
       if (document.readyState != 'loading') {
         var self = this;
