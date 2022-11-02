@@ -822,6 +822,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			return getBean('settingsManager').getSite(get('siteid')).getAdminPath(complete=1) & '/?muraAction=cusers.edituser&siteid=' &esapiEncode('url',get('siteid')) & '&userid=' & esapiEncode('url',get('userid'));
 		}
 	}
+	
+	remote function pollState() {
+		var current  = getSession();
+		var response = {
+			loggedin=false
+		};
+		if(isDefined('current.mura.isLoggedIn')) {
+			response.loggedin = current.mura.isLoggedIn;
+		}
+		return response;
+	}
+
+
 </cfscript>
 
 <cffunction name="getPasswordExpired" output="false">
