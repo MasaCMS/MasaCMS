@@ -6694,7 +6694,6 @@ Mura.DOMSelection = Mura.Core.extend(
     }
 
     if (typeof fn === 'undefined') {
-      console.log("ONEV",arguments);
       return;
     }
 
