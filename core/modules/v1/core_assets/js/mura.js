@@ -6693,6 +6693,10 @@ Mura.DOMSelection = Mura.Core.extend(
       selector = '';
     }
 
+    if (typeof fn === 'undefined') {
+      return;
+    }
+
     if (eventName == 'ready') {
       if (document.readyState != 'loading') {
         var self = this;
