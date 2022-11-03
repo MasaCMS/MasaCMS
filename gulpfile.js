@@ -10,6 +10,7 @@ const config = {
     adminJSDirectory: 'admin/assets/js/'
     , adminLessDirectory: 'admin/assets/less/'
     , adminCssDirectory: 'admin/assets/css/'
+    , coreJSDirectory: 'core/modules/v1/core_assets/js/'
     , coreLessDirectory: 'core/modules/v1/core_assets/css/less/'
     , coreCssDirectory: 'core/modules/v1/core_assets/css/'
     , jsMinifyOptions: {
@@ -61,6 +62,13 @@ function cleanAdminCSS() {
         .pipe(dest(config.adminCssDirectory));
 }
 
+function buildCoreJS() {
+    // create sourcemaps for the Administrator JS files
+    return src(`${config.coreJSDirectory}**/*.js`)
+        .pipe(minify(config.jsMinifyOptions))
+        .pipe(dest(config.coreJSDirectory))
+}
+
 function compileCoreLESS() {
     // build the LESS files
     return src([
@@ -98,6 +106,7 @@ function watchChanges() {
 exports.buildAdminCSS = series(compileAdminLESS, cleanAdminCSS);
 exports.buildCoreCSS = series(compileCoreLESS, cleanCoreCSS);
 exports.buildAdminJS = buildAdminJS;
+exports.buildCoreJS = buildCoreJS;
 exports.compileAdminLESS = compileAdminLESS;
 exports.cleanAdminCSS = cleanAdminCSS;
 exports.compileCoreLESS = compileCoreLESS;
