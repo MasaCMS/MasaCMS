@@ -277,7 +277,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<!--- If the theme does not live in the site directory add it from the global directory --->
 			<cfif (not directoryExists(expandPath($.siteConfig().getIncludePath() & "/includes/themes/#$.siteConfig('theme')#"))
 					or not directoryExists(expandPath($.siteConfig().getIncludePath() & "/themes/#$.siteConfig('theme')#"))
-				) and directoryExists(expandPath($.globalConfig().getWebRoot() & "/themes/#$.siteConfig('theme')#"))>
+				) and directoryExists(expandPath($.globalConfig().getWebRoot() & "/themes/#$.siteConfig('theme')#"))
+				and 
+				>
 				<cfzip action="zip" file="#variables.backupDir#sitefiles.zip" source="#expandPath($.globalConfig().getWebRoot() & '/themes/' & $.siteConfig('theme'))#" prefix="themes/#$.siteConfig('theme')#">
 			</cfif>
 
@@ -299,7 +301,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					or not directoryExists(expandPath($.siteConfig().getIncludePath() & "/themes/#$.siteConfig('theme')#"))
 				) and directoryExists(expandPath($.globalConfig().getWebRoot() & "/themes/#$.siteConfig('theme')#"))>
 				<!---<cfzip action="zip" file="#variables.backupDir#sitefiles.zip" source="#expandPath($.globalConfig().getWebRoot() & '/themes/' & $.siteConfig('theme'))#" prefix="themes/#$.siteConfig('theme')#">--->
+				<cftry>
 				<cfset variables.zipTool.Extract(zipFilePath="#variables.backupDir#sitefiles.zip",extractPath=expandPath($.globalConfig().getWebRoot() & '/themes/') & $.siteConfig('theme'),  extractDirs="themes/#$.siteConfig('theme')#", overwriteFiles=true)>
+				<cfcatch>
+					<!--- may be in s3 directory, which does not allow extraction via ziptool --->
+				</cfcatch>
+				</cftry>
 			</cfif>
 
 			<cfif arguments.includeStructuredAssets>
