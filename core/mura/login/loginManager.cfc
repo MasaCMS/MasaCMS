@@ -91,7 +91,9 @@ component extends="mura.cfobject" output="false" hint="This provides primary log
 		var rsUser=variables.userDAO.readUserHash(arguments.userid);
 		var isLoggedin=0;
 		var sessionData=getSession();
-		if ( !len(arguments.userHash) || arguments.userHash == rsUser.userHash ) {
+		if ( !getBean('configBean').getValue(property='MFA',defaultValue=false) 
+			&& len(arguments.userid) && len(arguments.userHash) && arguments.userHash == rsUser.userHash
+			) {
 			isloggedin=variables.userUtility.loginByUserID(rsUser.userID,rsUser.siteID);
 		}
 		if ( isloggedin ) {
