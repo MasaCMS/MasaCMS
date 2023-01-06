@@ -1,0 +1,1 @@
+<mura name="Button" contenttypes="*" iconclass="mi-share"/>

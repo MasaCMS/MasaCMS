@@ -78,6 +78,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfquery name="rc.rsObjects" dbtype="query">
 		select * from rc.rsObjects where object like '%nav%'
 	</cfquery>
+
 	<cfset content=rc.$.getBean("content").loadBy(contentID=rc.objectid)>
 	<cfparam name="objectParams.taggroup" default="">
 </cfsilent>

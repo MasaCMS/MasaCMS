@@ -140,6 +140,10 @@ component extends="controller" output="false" {
 	}
 
 	public function dismissAlert(rc) output=false {
+		if(!structKeyExists(session.mura,'alerts')) {
+			session.mura.alerts = structNew();
+			session.mura.alerts['#session.siteid#']={};
+		}
 		var alerts=session.mura.alerts['#rc.siteid#'];
 		if ( listFindNoCase('defaultpasswordnotice,cachenotice',rc.alertid) ) {
 			alerts[rc.alertid]=false;

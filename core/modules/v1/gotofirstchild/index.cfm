@@ -83,9 +83,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfsilent>
 <cfif rs.recordcount>
 	<cfset variables.redirect=variables.$.createHREF(variables.rs.type,variables.rs.filename,variables.rs.siteid,variables.rs.contentid,"","","",variables.$.globalConfig('context'),variables.$.globalConfig('stub'),variables.$.globalConfig('indexFile'))>
-	<cfif not request.muraExportHTML>
-		<cfset variables.$.redirect(variables.redirect) />
+	<cfif !getCurrentUser().isSuperUser()>
+		<cfif not request.muraExportHTML>
+			<cfset variables.$.redirect(variables.redirect) />
+		<cfelse>
+			<cfoutput><script>location.href='#JSStringFormat(variables.redirect)#';</script></cfoutput>
+		</cfif>
 	<cfelse>
-		<cfoutput><script>location.href='#JSStringFormat(variables.redirect)#';</script></cfoutput>
+	 <div>NOTE: Redirect IS non-functional for Site Admins.</div>
 	</cfif>
 </cfif>

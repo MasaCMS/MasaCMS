@@ -1,0 +1,1 @@
+<mura name="Info" contenttypes="*" iconclass="mi-info"/>

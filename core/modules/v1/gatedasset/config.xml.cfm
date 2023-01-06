@@ -1,0 +1,1 @@
+<mura name="GatedAsset" contenttypes="*" iconclass="mi-lock"/>

@@ -464,6 +464,14 @@
 			openFrontEndToolsModal(displayObject, true);
 			Mura.processAsyncObject(displayObject);
 
+			var openToolbar=function(event){
+				event.preventDefault();
+				//console.log("fet:" + 1106);
+				openFrontEndToolsModal(this);
+			};
+			
+			Mura(displayObject).off('click',openToolbar, function() {}).on('click',openToolbar);
+
 			Mura(displayObject).closest('.mura-region-local').data('dirty', true);
 			Mura(displayObject).on('dragover', function() {})
 			Mura('#adminSave').show();

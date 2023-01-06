@@ -535,7 +535,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<!--- start output --->
 	<cfoutput>
-
 	<div class="block block-constrain" id="mura-content-body-block">
 
 		<!--- content editing sidebar --->
@@ -546,16 +545,31 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<!--- todo: rb key placeholder text for "Content Title" --->
 			<!--- todo: style for placeholder see end of custom.less --->
-			<div id="mura-content-title-render" data-placeholder="#esapiEncode('html_attr', rc.contentbean.getType())# Title">#esapiEncode('html_attr',rc.contentBean.gettitle())#</div>
+			<div id="<cfif application.configBean.get('showextensionsindefault') eq true>mura-editbox<cfelse>mura-editbox-none</cfif>">
+				<div id="mura-content-title-render" data-placeholder="#esapiEncode('html_attr', rc.contentbean.getType())# Title">#esapiEncode('html_attr',rc.contentBean.gettitle())#</div>
+				<cfif listFindNoCase("Link,File,",rc.contentBean.getType())>
+					<div id="mura-content-body-render" style="display:none;"><div id="mura-content-body-inner">||#bodyContent#||</div></div>
+				<cfelse>
+					<div id="mura-content-body-render" style="display:none;">#bodyContent#</div>
+				</cfif>
+				<cfif application.configBean.get('showextensionsindefault') eq true>
+					<div class="mura-control-group extendedattributes-group" id="extendedattributes-container-basic">
+						<div id="bigui__basic" <cfif application.configBean.get('showextensionsindefault') eq true>class="bigui__basic-hide"</cfif> data-label="Manage Extended Attributes">
+							<div class="bigui__controls">
+								<span id="extendset-container-tabextendedattributestop"></span>
+								<span id="extendset-container-basic" class="extendset-container extendedattributes-body" data-controlparent="extendedattributes-container-basic"></span>
+								<span id="extendset-container-tabextendedattributesbottom"></span>
+							</div>
+						</div>
+						<!--- /.bigui --->
+					</div>
+				</cfif>
+			</div>
 
-			<cfif listFindNoCase("Link,File,",rc.contentBean.getType())>
-				<div id="mura-content-body-render" style="display:none;"><div id="mura-content-body-inner">#bodyContent#</div></div>
-			<cfelse>
-				<div id="mura-content-body-render" style="display:none;">#bodyContent#</div>
-			</cfif>
 
 			<div class="load-inline tab-preloader"></div>
 			<script>$('.tab-preloader').spin(spinnerArgs2);</script>
+
 
 		</div><!-- /block-content tab content -->
 		#actionButtons#

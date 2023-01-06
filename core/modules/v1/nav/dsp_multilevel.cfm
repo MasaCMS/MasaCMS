@@ -81,7 +81,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	currDepth=1,
 	sortBy=variables.$.getTopVar("sortBy"),
 	sortDirection=variables.$.getTopVar("sortDirection"),
-	subNavExpression="listFindNoCase('Page,Calendar',rsSection.type) and listFind(variables.$.content('path'),rsSection.contentID) and arguments.currDepth lt arguments.viewDepth"
+	subNavExpression="listFindNoCase('Page,Calendar',rsSection.type) and listFind(variables.$.content('path'),rsSection.contentID) and arguments.currDepth lt 4"
 )>
 <cfif len(navOutput)>
 <cfoutput>

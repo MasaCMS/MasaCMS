@@ -136,6 +136,7 @@ This file is part of Mura CMS.
 </cfsilent>
 <cfoutput>
 
+	<cfif len(request.keywords)>
 	<#variables.$.getHeaderTag('headline')#>#variables.$.rbKey('search.searchresults')#</#variables.$.getHeaderTag('headline')#>
 
 	<div id="svSearchResults" class="mura-search-results #this.searchResultWrapperClass#">
@@ -164,7 +165,7 @@ This file is part of Mura CMS.
 				<p>Your request contained invalid tokens</p>
 			</cfif>
 		</div>
-
+		</cfif>
 
 		<cfif variables.totalrecords>
 			<!--- more results --->
@@ -227,8 +228,9 @@ This file is part of Mura CMS.
 		<div class="#this.searchAgainRowClass#">
 			<div class="#this.searchAgainInnerClass#">
 				<form method="post" id="svSearchAgain" name="searchForm" class="mura-search-again #this.searchAgainFormClass#" role="search">
+					<cfif len(request.keywords)>
 					<p>#variables.$.rbKey('search.didnotfind')#</p>
-					<label for="txtKeywords">#variables.$.rbKey('search.keywords')#</label>
+					</cfif>
 					<div class="#this.searchAgainInputWrapperClass#">
 						<input type="text" name="Keywords" id="txtKeywords" class="#this.searchAgainFormInputClass#" value="#esapiEncode('html_attr',request.keywords)#" placeholder="#variables.$.rbKey('search.search')#">
 						<span class="#this.searchAgainButtonWrapperClass#">

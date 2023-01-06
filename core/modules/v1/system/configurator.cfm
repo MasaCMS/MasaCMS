@@ -80,10 +80,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif not application.settingsManager.getSite(rc.siteid).getHasComments()>
 			and object != 'comments'
 		</cfif>
+		and object != 'panel'
 		and object != 'payPalCart'
 		and object != 'related_content'
 		and object != 'tag_cloud'
-		and object != 'goToFirstChild'
 		and object != 'event_reminder_form'
 		and object != 'forward_email'
 	</cfquery>

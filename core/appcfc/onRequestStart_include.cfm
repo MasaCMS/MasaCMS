@@ -222,8 +222,7 @@ try {
 try {
 	if ( isDefined('cookie.userid') && cookie.userid != ''
 		&& isDefined('cookie.userHash') && cookie.userHash != ''
-		&& !sessionData.mura.isLoggedIn 
-		) {
+		&& !sessionData.mura.isLoggedIn ) {
 		application.loginManager.rememberMe(cookie.userid,decrypt(cookie.userHash,application.userManager.readUserPassword(cookie.userid),"cfmx_compat",'hex'));
 	}
 } catch (any cfcatch) {
