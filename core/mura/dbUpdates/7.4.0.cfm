@@ -36,10 +36,10 @@ select siteID from tsettings where siteID not in (select siteID from tcontentobj
 	<cfquery >
 		INSERT INTO tcontentobjects (ContentHistID, ObjectID, Object, ContentID, Name, OrderNo, SiteID, ColumnID, Params) 
 		VALUES (
-			'F2C27B9E-6AD9-442A-BC2F04D2FFA95D4D',
-			'C860E969-BF07-4224-B4B57947C7E2C98A',
+			'#createUUID()#',
+			'#createUUID()#',
 			'primary_nav',
-			'C860E969-BF07-4224-B4B57947C7E2C98A',
+			'#createUUID()#',
 			'Primary Navigation',
 			'1',
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#rscheck.siteID#">,
