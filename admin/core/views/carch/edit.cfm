@@ -554,7 +554,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 				<cfif application.configBean.get('showextensionsindefault') eq true>
 					<div class="mura-control-group extendedattributes-group" id="extendedattributes-container-basic">
-						<div id="bigui__basic" <cfif application.configBean.get('showextensionsindefault') eq true>class="bigui__basic-hide"</cfif> data-label="Manage Extended Attributes">
+						<div id="bigui__basic" data-label="Manage Extended Attributes">
 							<div class="bigui__controls">
 								<span id="extendset-container-tabextendedattributestop"></span>
 								<span id="extendset-container-basic" class="extendset-container extendedattributes-body" data-controlparent="extendedattributes-container-basic"></span>
