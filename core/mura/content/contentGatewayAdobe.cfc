@@ -2241,7 +2241,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		tcontent.target,tcontent.targetParams, tcontent.restricted, tcontent.restrictgroups, tcontent.displaystart, tcontent.displaystop, tcontent.orderno,tcontent.sortBy,tcontent.sortDirection,
 		tcontent.fileid, tcontent.credits, tcontent.remoteSource, tcontent.remoteSourceURL, tcontent.remoteURL, tcontent.subtype,
 		tfiles.fileSize,tfiles.fileExt,tcontent.path, tcontent.siteid, tcontent.contenthistid, tcr.contentid as relatedFromContentID,
-		tcr.relatedContentSetID, tcr.orderNo, tcontent.displayInterval, tcontent.display
+		tcr.relatedContentSetID, tcr.orderNo, tcontent.displayInterval, tcontent.display,'' as parentType
 		<cfif mxpRelevanceSort>
 		,tracktotal.track_total_score as total_score, (<cfif len(stageid)>stagetotal.stage_points + </cfif>personatotal.persona_points) as total_points
 		</cfif>
