@@ -35,7 +35,7 @@ component
 		var currentSite = application.settingsManager.getSite(arguments.siteid);
 
 		if(arguments.resourcePath == "Site_Files") {
-			pathRoot = currentSite.getAssetPath(complete=1);
+			pathRoot = currentSite.getAssetPath(complete=arguments.complete);
 		}
 		else if(arguments.resourcePath == "Application_Root") {
 			pathRoot = currentSite.getRootPath(complete=arguments.complete);
@@ -973,17 +973,21 @@ component
 
 		// move to getBaseResourcePath() --> getFileAssetPath()
 		var complete = (m.siteConfig('isremote') || (isdefined('arguments.completepath') && isBoolean(arguments.completepath) && arguments.completepath));
-		var assetPath = "";
 		var preAssetPath = getBean('configBean').get('assetPath');
-
-
+				
 		if(len(preAssetPath)) {
-			preAssetPath = preAssetPath & "/" & arguments.siteid & "/assets" & response['directory'];
-			assetPath = preAssetPath & response['directory'];
+			if(arguments.resourcePath == "Site_Files") {
+				preAssetPath = preAssetPath & "/" & arguments.siteid & response['directory'];
+			}
+			else if(arguments.resourcePath == "Application_Root") {
+				preAssetPath = response['directory'];
+			}
+			else {
+				preAssetPath = preAssetPath & "/" & arguments.siteid & "/assets" & response['directory'];		
+			}
 		}
 		else {
 			preAssetPath = getBaseResourcePath(siteid=arguments.siteid,resourcePath=arguments.resourcePath,complete=complete);
-			assetPath = preAssetPath & response['directory'];
 		}
 
 		var rsDirectory = directoryList(conditionalExpandPath(filePath),false,"query");
