@@ -36825,7 +36825,7 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 .mura .mura-sidebar__objects-list__object-item {
   box-sizing: border-box;
   display: block;
-  padding: 10px 16px;
+  padding: 6px 12px;
   margin-bottom: 2px;
   font-size: 14px;
   color: #d8d8d8;
@@ -38151,6 +38151,18 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
   position: absolute;
   top: 8px;
   right: 16px;
+}
+.mura #mura-editbox {
+  padding: 4px;
+  overflow-y: auto !important;
+  overflow-x: hidden;
+  height: calc(100vh - 260px);
+  display: block;
+  position: relative;
+  margin-top: 4px;
+}
+.mura .bigui__basic-hide {
+  display: none;
 }
 .mura .bigui {
   display: none;

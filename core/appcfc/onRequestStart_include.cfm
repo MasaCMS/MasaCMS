@@ -220,7 +220,9 @@ try {
 	application.utility.deleteCookie(name="userid");
 }
 try {
-	if ( isDefined('cookie.userid') && cookie.userid != '' && !sessionData.mura.isLoggedIn ) {
+	if ( isDefined('cookie.userid') && cookie.userid != ''
+		&& isDefined('cookie.userHash') && cookie.userHash != ''
+		&& !sessionData.mura.isLoggedIn ) {
 		application.loginManager.rememberMe(cookie.userid,decrypt(cookie.userHash,application.userManager.readUserPassword(cookie.userid),"cfmx_compat",'hex'));
 	}
 } catch (any cfcatch) {
