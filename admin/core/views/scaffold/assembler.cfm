@@ -82,7 +82,7 @@ This file is part of Mura CMS.
 
 <script src="#$.globalConfig('rootPath')#/core/vendor/vue/vue.js"></script>
 <script src="#$.globalConfig('rootPath')##$.globalConfig('adminDir')#/assets/js/scaffold/assembler.min.js"></script>
-<script src="#$.globalConfig('rootPath')##$.globalConfig('adminDir')#/js/scaffold/Sortable.min.js"></script>
+<script src="#$.globalConfig('rootPath')##$.globalConfig('adminDir')#/assets/js/scaffold/Sortable.min.js"></script>
 <script src="#$.globalConfig('rootPath')##$.globalConfig('adminDir')#/assets/js/scaffold/vuedraggable.min.js"></script>
 
 <script>
