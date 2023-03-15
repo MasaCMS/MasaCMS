@@ -973,7 +973,7 @@ component
 
 		// move to getBaseResourcePath() --> getFileAssetPath()
 		var complete = (m.siteConfig('isremote') || (isdefined('arguments.completepath') && isBoolean(arguments.completepath) && arguments.completepath));
-		var preAssetPath = getBean('configBean').get('');
+		var preAssetPath = getBean('configBean').get('assetPath');
 				
 		if(len(preAssetPath)) {
 			if(arguments.resourcePath == "Site_Files") {
