@@ -198,7 +198,9 @@ This file is part of Mura CMS.
 
 
 				//nice-select
-				$('.mura__edit__controls .mura-control-group select').niceSelect();
+				Mura(function(){
+					$('.mura__edit__controls .mura-control-group select').niceSelect();
+				});
 
 				// tabdrop: trigger on page load w/ slight delay
 				if ( $( '.mura-tabs').length ) {
