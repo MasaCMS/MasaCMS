@@ -92,7 +92,7 @@ if ( structKeyExists(application,"pluginManager") && structKeyExists(application
 			return true;
 		}
 		if ( structKeyExists(request.muraHandledEvents,'onSiteMissingTemplate') ) {
-			structKeyDelete(request.muraHandledEvents,'onSiteMissingTemplate');
+			structDelete(request.muraHandledEvents,'onSiteMissingTemplate');
 			return true;
 		}
 	}
@@ -102,7 +102,7 @@ if ( structKeyExists(application,"pluginManager") && structKeyExists(application
 		return true;
 	}
 	if ( structKeyExists(request.muraHandledEvents,'onGlobalMissingTemplate') ) {
-		structKeyDelete(request.muraHandledEvents,'onGlobalMissingTemplate');
+		structDelete(request.muraHandledEvents,'onGlobalMissingTemplate');
 		return true;
 	}
 }
