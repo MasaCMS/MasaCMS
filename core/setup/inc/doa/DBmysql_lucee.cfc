@@ -17,7 +17,7 @@
 			var sErr = "";
 			var sDSNServer = "jdbc:mysql://#Arguments.DatabaseServer#:#Arguments.DatabasePort#/";  //build server part of jdbc string
 			var stcA2 = StructNew();
-			var sClass = "org.gjt.mm.mysql.Driver"; //this is the driver bundled with Railo
+			var sClass = "com.mysql.cj.jdbc.Driver"; //this is the driver bundled with Railo
 			var sDSNPara ="";
 			var sDSN=""; //empty to start
 			//example
