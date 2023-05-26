@@ -258,18 +258,18 @@ This file is part of Mura CMS.
 					</form>
 
 
-					<cfif variables.$.event('doaction') eq 'sendlogin'>
-						<cfset msg2=application.userManager.sendLoginByEmail(variables.$.event('email'), variables.$.event('siteID'),'#urlencodedformat(variables.$.event('returnURL'))#')>
-					</cfif>
-
 					<!--- Forgot Username / Password Form --->
 					<form name="form2" class="mura-send-login #this.forgotPasswordFormClass# <cfif this.formWrapperClass neq "">#this.formWrapperClass#</cfif>" method="post" id="sendLogin" novalidate="novalidate">
 						<div>
 							<h3>#variables.$.rbKey('user.forgetusernameorpassword')#</h3>
 							<p>#variables.$.rbKey('user.forgotloginmessage')#</p>
 
-							<cfif isdefined('msg2')>
-								<cfif FindNoCase('is not a valid',msg2)><div class="#this.loginFormErrorClass#">#HTMLEditFormat(variables.$.siteConfig("rbFactory").getResourceBundle().messageFormat(variables.$.rbKey('user.forgotnotvalid'),variables.$.event('email')))#<cfelseif FindNoCase('no account',msg2)><div class="#this.alertDangerClass#">#HTMLEditFormat(variables.$.siteConfig("rbFactory").getResourceBundle().messageFormat(variables.$.rbKey('user.forgotnotfound'),variables.$.event('email')))#<cfelse><div class="#this.alertSuccessClass#">#variables.$.rbKey('user.forgotsuccess')#</cfif></div>
+							<cfif variables.$.event('doaction') eq 'sendlogin'>
+								<cfset application.userManager.sendLoginByEmail(variables.$.event('email'), variables.$.event('siteID'),'#urlencodedformat(variables.$.event('returnURL'))#')>
+								
+								<div class="#this.alertDangerClass#">
+									#HTMLEditFormat(variables.$.rbKey('user.forgotsuccess'))#
+								</div>
 							</cfif>
 
 							<!--- Email --->

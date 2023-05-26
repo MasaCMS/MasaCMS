@@ -288,21 +288,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<h2>#rc.$.rbKey('login.forgetpassword')#</h2>
 									  <cfset alertclass = ''>
 										<cfsavecontent variable="pwresponse">
-										<cfif rc.status eq 'sendLogin'>
-										  <cfset msg=application.userManager.sendLoginByEmail('#rc.email#','','#esapiEncode("url","#listFirst(cgi.http_host,":")##cgi.SCRIPT_NAME#")#')>
-												<cfif left(msg,2) eq "No">
-												#esapiEncode('html',application.rbFactory.getResourceBundle(session.rb).messageFormat(rc.$.rbKey("login.noaccountexists"),rc.email))#
+											<cfif rc.status eq 'sendLogin'>
+												<cfset application.userManager.sendLoginByEmail('#rc.email#','','#esapiEncode("url","#listFirst(cgi.http_host,":")##cgi.SCRIPT_NAME#")#')>
+												#esapiEncode('html',rc.$.rbKey("login.messagesent"))#
 												<cfset alertclass = "alert alert-error">
-												<cfelseif left(msg,4) eq "Your">
-												#esapiEncode('html',application.rbFactory.getResourceBundle(session.rb).messageFormat(rc.$.rbKey("login.messagesent"),rc.email))#
-												<cfset alertclass = "alert">
-												<cfelse>	#esapiEncode('html',application.rbFactory.getResourceBundle(session.rb).messageFormat(rc.$.rbKey("login.invalidemail"),rc.email))#
-												<cfset alertclass = "alert alert-error">
-												</cfif>
 											<cfelse>
-											#rc.$.rbKey('login.enteremail')#
+												#rc.$.rbKey('login.enteremail')#
 											</cfif>
-								</cfsavecontent>
+										</cfsavecontent>
 									<p id="pw-response" class="#alertclass# clear-both">#pwresponse#</p>
 									<div class="mura-control-group">
 										<label>#rc.$.rbKey('login.emailaddress')#</label>
