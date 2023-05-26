@@ -446,7 +446,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif fileExists("#Bundle.getBundle()#extensions.txt")>
 			<cffile action="read" file="#Bundle.getBundle()#extensions.txt" variable="importExtensions" >
 			<cfif len( importExtensions ) gt 30>
-				<cfset extendManager.loadConfigXML(xmlParse(importExtensions),arguments.siteid) />
+				<cfset extendManager.loadConfigXML(parseXML(importExtensions),arguments.siteid) />
 			</cfif>
 		</cfif>
 

@@ -104,7 +104,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</cfoutput>
 							
 						<CFHTTP url="#feedBean.getChannelLink()#" method="GET" resolveurl="Yes" throwOnError="Yes" />
-						<cfset xmlFeed=xmlParse( REReplace( CFHTTP.FileContent, "^[^<]*", "", "all" ) )/>
+						<cfset xmlFeed=parseXML( REReplace( CFHTTP.FileContent, "^[^<]*", "", "all" ) )/>
 						<cfswitch expression="#feedBean.getVersion()#">
 							<cfcase value="RSS 0.920,RSS 2.0">
 								
