@@ -414,47 +414,42 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="returnURL" type="string" required="yes" default="#listFirst(cgi.http_host,":")##cgi.SCRIPT_NAME#">
 	<cfargument name="subject" required="yes" type="string" default=""/>
 	<cfargument name="message" type="string" default="">
-	<cfset var msg="No account currently exists with the email address '#arguments.email#'.">
 	<cfset var struser=structnew()>
 	<cfset var rsuser = ""/>
 	<cfset var userBean = ""/>
 	<cfset var autoresetpasswords=variables.configBean.getValue("autoresetpasswords")>
 
-		<cfif REFindNoCase("^[^@%*<>' ]+@[^@%*<>' ]{1,255}\.[^@%*<>' ]{2,5}", trim(arguments.email)) neq 0>
-					<cfset rsuser=getUserByEmail('#arguments.email#','#arguments.siteid#')>
+	<cfif REFindNoCase("^[^@%*<>' ]+@[^@%*<>' ]{1,255}\.[^@%*<>' ]{2,5}", trim(arguments.email)) neq 0>
+		<cfset rsuser=getUserByEmail('#arguments.email#','#arguments.siteid#')>
 
-					<cfif rsuser.recordcount>
-						<cfloop query="rsuser">
-						<cfset userBean=variables.userDAO.read(rsuser.userid)>
+		<cfif rsuser.recordcount>
+			<cfloop query="rsuser">
+			<cfset userBean=variables.userDAO.read(rsuser.userid)>
 
-							<cfif userBean.getUsername() neq ''>
-								<cfif autoresetpasswords>
-									<cfset userBean.setPassword(getRandomPassword(12,"alphanumeric","yes")) />
-									<cfset userBean.save() />
-								</cfif>
-
-								<cfset struser=userBean.getAllValues()>
-								<cfset struser.fieldnames='Username,Password'>
-								<cfif arguments.siteid eq ''>
-									<cfset struser.from= variables.configBean.getTitle()/>
-								<cfelse>
-									<cfset struser.from=variables.settingsManager.getSite(arguments.siteid).getSite()>
-								</cfif>
-
-								<cfif not len(arguments.subject)>
-									<cfset arguments.subject='#struser.from# Account Information'>
-								</cfif>
-
-								<cfset sendLogin(struser,'#arguments.email#','#struser.from#',arguments.subject,'#arguments.siteid#','',variables.configBean.getValue("sendLoginBcc"),arguments.message)>
-								<cfset msg="Your account information has been sent to you.">
-							</cfif>
-						</cfloop>
+				<cfif userBean.getUsername() neq ''>
+					<cfif autoresetpasswords>
+						<cfset userBean.setPassword(getRandomPassword(12,"alphanumeric","yes")) />
+						<cfset userBean.save() />
 					</cfif>
-		<cfelse>
-					<cfset  msg="The email address '#arguments.email#' is not a valid format.">
+
+					<cfset struser=userBean.getAllValues()>
+					<cfset struser.fieldnames='Username,Password'>
+					<cfif arguments.siteid eq ''>
+						<cfset struser.from= variables.configBean.getTitle()/>
+					<cfelse>
+						<cfset struser.from=variables.settingsManager.getSite(arguments.siteid).getSite()>
+					</cfif>
+
+					<cfif not len(arguments.subject)>
+						<cfset arguments.subject='#struser.from# Account Information'>
+					</cfif>
+
+					<cfset sendLogin(struser,'#arguments.email#','#struser.from#',arguments.subject,'#arguments.siteid#','',variables.configBean.getValue("sendLoginBcc"),arguments.message)>
+				</cfif>
+			</cfloop>
 		</cfif>
-	<cfreturn msg>
-	</cffunction>
+	</cfif>
+</cffunction>
 
 <cffunction name="sendLoginByUser" output="false" returntype="boolean" >
 	<cfargument name="userBean" type="any">
