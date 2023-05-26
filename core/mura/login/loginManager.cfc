@@ -500,6 +500,8 @@ If you did not request a new authorization, contact #contactEmail#.");
 			}
 		}
 		if ( getBean('configBean').getValue(property='rotateSessions',defaultValue='false') ) {
+		    var j2eeSession = getPageContext().getSession();
+		    j2eeSession.invalidate();
 			sessionInvalidate();
 		}
 		variables.globalUtility.deleteCookie(name="userHash");
