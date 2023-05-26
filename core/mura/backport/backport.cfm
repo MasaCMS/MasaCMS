@@ -5,7 +5,6 @@ if(!structKeyExists(request,'backports')){
 	request.backports={};
 }
 
-
 if(!structKeyExists(request.backports,'esapiencode')){
 	request.backports.esapiencode=false;
 	try{
@@ -21,5 +20,11 @@ if(request.backports.esapiencode){
 	} catch (any e) {
 		include 'esapiencode.cfm';
 	}
+}
+
+if(isDefined('server.lucee')){
+	include '#backportdir#lucee.cfm';
+} else {
+	include '#backportdir#acf.cfm';
 }
 </cfscript>

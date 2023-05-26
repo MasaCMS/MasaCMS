@@ -127,7 +127,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction output="false" name="toXml" hint="Transforms a query into an XML recordset.">
   <cfset var result = "">
   <cfset var i=""/>
-  <cfxml variable="result">
+  <cfsavecontent variable="result">
 <recordset>
   <cfloop query="variables.instance.inQuery">
     <item>
@@ -137,9 +137,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     </item>
   </cfloop>
 </recordset>
-  </cfxml>
+  </cfsavecontent>
 
-  <cfreturn result>
+  <cfreturn parseXML(result)>
 </cffunction>
 
 <!--- Public XML toDelimited(query inQuery) --->

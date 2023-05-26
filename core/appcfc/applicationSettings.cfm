@@ -606,6 +606,13 @@ this.javaSettings = {
 	, watchExtensions=evalSetting(getINIProperty('javaSettingsWatchExtensions','jar,class'))
 };
 
+// XML settings
+this.xmlFeatures = {
+	externalGeneralEntities: false,
+	secure: true,
+	disallowDoctypeDecl: true
+};
+
 // Amazon S3 Credentials
 if(len(getINIProperty('s3accessKeyId',''))){
 	this.s3.accessKeyId=evalSetting(getINIProperty('s3accessKeyId',''));

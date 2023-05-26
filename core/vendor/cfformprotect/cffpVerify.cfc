@@ -404,7 +404,7 @@ NOTES       : Dave Shuck - created
 		<!--- check LinkSleeve results --->
 		<cfif linkSleeveHTTPRequest>
 			<cftry>
-				<cfset responseXML = xmlParse(linkSleeveResponse.fileContent)>
+				<cfset responseXML = parseXML(linkSleeveResponse.fileContent)>
 				<cfset linkSleeveResult = responseXML.methodResponse.params.param.value.int.xmlText>
 				<cfif linkSleeveResult eq 0>
 					<!--- LinkSleeve says this form submission is spam --->

@@ -896,7 +896,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfelse>
 		<cfsavecontent variable="theXML"><cfoutput><cfinclude template="/plugins/#arguments.pluginDir#/plugin/config.xml.cfm"></cfoutput></cfsavecontent>
 	</cfif>
-	<cfreturn xmlParse(theXML)/>
+	<cfreturn parseXML(theXML)/>
 </cffunction>
 
 <cffunction name="getAttributeBean" output="false">

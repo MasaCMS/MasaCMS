@@ -77,7 +77,6 @@ component extends="framework" output="false" {
 
 	include "../core/appcfc/applicationSettings.cfm";
 
-
 	if(server.coldfusion.productname != 'ColdFusion Server'){
 		backportdir='';
 		include "../core/mura/backport/backport.cfm";
