@@ -867,16 +867,16 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			}
 
 			if (isDefined('params.method') && isDefined('#params.method#')){
-				if(!listFindNoCase(variables.config.publicMethods, params.method) ){
-					throw(type="invalidMethodCall");
-				}
-
 				if(!(listFindNoCase('validate,processAsyncObject,generateCSRFTokens',params.method) || apiEnabled)){
 					throw(type='disabled');
 				}
 
 				if(arrayLen(pathInfo) > 1){
 					parseParamsFromPath(pathInfo,params,2);
+				}
+
+				if(!listFindNoCase(variables.config.publicMethods, params.method) ){
+					throw(type="invalidMethodCall");
 				}
 
 				param name="params.siteid" default=variables.siteid;
@@ -887,7 +887,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 				if(isDefined('#params.method#')){
 
-					result=evaluate('#params.method#(argumentCollection=params)');
+					var result=invoke(this,params.method,params);
 
 					if(!isJson(result)){
 						result=serializeResponse(statusCode=200,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'data'=result});
@@ -922,10 +922,6 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				if(isDefined(pathInfo[2]) && pathInfo[2] != 'file'){
 					params.method=pathInfo[2];
 
-					if(!listFindNoCase(variables.config.publicMethods, params.method) ){
-						throw(type="invalidMethodCall");
-					}
-
 					if(!(listFindNoCase('validate,processAsyncObject',params.method) || apiEnabled)){
 						throw(type='disabled');
 					}
@@ -934,7 +930,11 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 						parseParamsFromPath(pathInfo,params,3);
 					}
 
-					result=evaluate('#params.method#(argumentCollection=params)');
+					if(!listFindNoCase(variables.config.publicMethods, params.method)){
+						throw(type="invalidMethodCall");
+					}
+
+					var result=invoke(this,params.method,params);
 
 					if(!isJson(result)){
 						result=serializeResponse(statusCode=200,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'data'=result});
@@ -1081,10 +1081,10 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 								structDelete(params,'id');
 
-								var result=evaluate('entity.#pathInfo[4]#(argumentCollection=params)');
+								var result=invoke(entity,pathInfo[4],params);
 								return serializeResponse(statusCode=200,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'data'=result});
 
-							} else if(isDefined('application.objectmappings.#params.entityName#.properties.#pathInfo[4]#')
+							} else if(isValid('variableName',pathInfo[4]) && isDefined('application.objectmappings.#params.entityName#.properties.#pathInfo[4]#')
 							&& structKeyExists(application.objectmappings[params.entityName].properties[pathInfo[4]],'cfc') ){
 								var relationship=application.objectmappings[params.entityName].properties[pathInfo[4]];
 
@@ -1166,7 +1166,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 						url.method=pathInfo[3];
 
 						var entity=getBean(params.entityName);
-						var result=evaluate('entity.#pathInfo[3]#(argumentCollection=params)');
+						var result=invoke(entity,pathInfo[3],params);
 						return serializeResponse(statusCode=200,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'data'=result});
 					} else if (params.entityName=='content') {
 						params.id=pathInfo[3];
@@ -1443,7 +1443,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 				structDelete(params,'id');
 
-				return evaluate('entity.#arguments.method#(argumentCollection=params)');	
+				return invoke(entity,arguments.method,arguments.params);
 			} else if (arguments.throwError){
 				throw(type="invalidMethodCall");
 			} else {
@@ -1636,11 +1636,17 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		}
 
 		for(var i=1;i<=arrayLen(paramsArray);i++){
-			if(i mod 2){
-				params['#paramsArray[i]#']='';
+			if(paramsArray[i]=='method'){
+				throw(type="invalidMethodCall");
 			} else {
 				var previous=i-1;
 				params['#paramsArray[previous]#']=paramsArray[i];
+				if(i mod 2){
+					params['#paramsArray[i]#']='';
+				} else {
+					var previous=i-1;
+					params['#paramsArray[previous]#']=paramsArray[i];
+				}
 			}
 		}
 	}
@@ -3444,7 +3450,13 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 			if(arrayLen(variables.config.linkMethods)){
 				for(var i in variables.config.linkMethods){
-					evaluate('#i#(entity=arguments.entity,links=links)');
+					if(isDefined('#i#') && isValid('variableName',i)){
+						var params={
+							entity=arguments.entity,
+							links=links
+						};
+						invoke(this,i,params);
+					}
 				}
 			}
 		}
