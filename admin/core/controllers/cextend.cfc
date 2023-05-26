@@ -107,7 +107,7 @@ component extends="controller" output="false" {
 			if ( structKeyExists(arguments.rc,"newfile") && len(arguments.rc.newfile) ) {
 				file = fileManager.upload( "newFile" );
 				fileContent=fileRead("#file.serverdirectory#/#file.serverfile#");
-				application.classExtensionManager.loadConfigXML( xmlParse(filecontent) ,arguments.rc.siteid);
+				application.classExtensionManager.loadConfigXML( parseXML(filecontent) ,arguments.rc.siteid);
 				variables.fw.redirect(action="cExtend.listSubTypes",append="siteid",path="./");
 			}
 		}

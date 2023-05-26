@@ -120,7 +120,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			resolveurl="Yes",
 			throwOnError="Yes")#'>
 
-	<cfset xmlFeed=xmlParse(CFHTTP.FileContent)/>
+	<cfset xmlFeed=parseXML(CFHTTP.FileContent)/>
 	<cfswitch expression="#theImport.feedBean.getVersion()#">
 		<cfcase value="RSS 0.920,RSS 2.0">
 
@@ -258,7 +258,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset data=REReplace( data, "^[^<]*", "", "all" )/>
 
 	<cfif isXML(data)>
-		<cfset response.xml=XMLParse(data)/>
+		<cfset response.xml=parseXML(data)/>
 		<cfif StructKeyExists(response.xml, "rss")>
 			<cfset response.channelTitle =  response.xml.rss.channel.title.xmlText>
 			<cfif isdefined("response.xml.rss.channel.item")>
