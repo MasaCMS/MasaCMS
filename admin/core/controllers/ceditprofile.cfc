@@ -124,6 +124,13 @@ component extends="controller" output="false" {
 	public function update(rc) output=false {
 		if ( rc.$.validateCSRFTokens() ) {
 			request.newImageIDList="";
+			var userBean=variables.userManager.read(session.mura.userID);
+			arguments.rc.userid=userBean.get('userid');
+			arguments.rc.siteid=userBean.get('siteid');
+			structDelete(arguments.rc,'isPublic');
+			structDelete(arguments.rc,'s2');
+			structDelete(arguments.rc,'type');
+			structDelete(arguments.rc,'groupID');
 			arguments.rc.userBean=variables.userManager.update(arguments.rc,false);
 			if ( structIsEmpty(arguments.rc.userBean.getErrors()) ) {
 				structDelete(session.mura,"editBean");
