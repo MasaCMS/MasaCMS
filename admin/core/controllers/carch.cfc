@@ -640,4 +640,11 @@ component extends="controller" output="false" {
 		abort;
 	}
 
+	public function emailTest(rc) output=true {
+		if ( !rc.$.validateCSRFTokens(context="testEmail") ) {
+			writeoutput("Authentication failed, please try again.");
+			abort;
+		}
+	}
+
 }
