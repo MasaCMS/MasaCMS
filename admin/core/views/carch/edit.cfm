@@ -659,15 +659,16 @@ titleBlock.onclick = function(event){
 		var holder = document.createElement('input');
 		holder.style.width = titleBlock.clientWidth + 'px';
 		holder.style.height = titleBlock.clientHeight + 'px';
-		holder.value = titleBlock.innerHTML;
+		holder.value = decodeHTMLEntities(titleBlock.innerHTML);
 		titleBlock.innerHTML = '';
 		titleBlock.appendChild(holder);
 		titleBlock.className = 'editing';
 		holder.focus();
 
 		holder.onkeyup = function(event){
-			var newTitle = holder.value;
+			var newTitle = decodeHTMLEntities(holder.value);
 			var realTitle = document.getElementById('title');
+			console.log(newTitle);
 			realTitle.value = newTitle;
 			if (!($('##panel-basic').hasClass('in'))){
 				$('##heading-basic h4 a').trigger('click');
@@ -678,7 +679,7 @@ titleBlock.onclick = function(event){
 		}
 
 		holder.onblur = function(event){
-			titleBlock.innerHTML = holder.value;
+			titleBlock.innerHTML = encodeHTMLEntities(holder.value);
 			titleBlock.className = '';
 		}
 
@@ -686,8 +687,20 @@ titleBlock.onclick = function(event){
 }
 // Update live title when editing input
 realTitle.onkeyup = function(event){
-	titleBlock.innerHTML = realTitle.value;
+	titleBlock.innerHTML = encodeHTMLEntities(realTitle.value);
 	titleBlock.className = '';
+}
+
+function encodeHTMLEntities(text) {
+  var textArea = document.createElement('textarea');
+  textArea.innerText = text;
+  return textArea.innerHTML;
+}
+
+function decodeHTMLEntities(text) {
+  var textArea = document.createElement('textarea');
+  textArea.innerHTML = text;
+  return textArea.value;
 }
 
 function copyToClipboard(str){
