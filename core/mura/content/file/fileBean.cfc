@@ -50,6 +50,29 @@ component extends="mura.bean.beanORM" table='tfiles' entityName="file" hint="Thi
 			setValue(variables.instance.fileField,form['#variables.instance.fileField#']);
 		}
 	}
+	
+	function validate(fields=''){
+		super.validate(fields=arguments.fields);
+
+		var restrictedFilesArray=[];
+		var filesize=0;
+		var hasRestrictedFiles=getBean('fileManager').requestHasRestrictedFiles(scope=getAllValues());
+
+		if(len(hasRestrictedFiles) > 1 && findNoCase('|',hasRestrictedFiles)){
+			restrictedFilesArray=listToArray(hasRestrictedFiles, '|');
+			hasRestrictedFiles=restrictedFilesArray[1];
+			fileSize=restrictedFilesArray[2];
+		}
+		if(hasRestrictedFiles == '1'){
+			errors=getErrors();
+			errors.requestHasRestrictedFiles=getBean('settingsManager').getSite(getValue('siteid')).getRBFactory().getKey('sitemanager.requestHasRestrictedFiles');
+		} else if(hasRestrictedFiles == '2'){
+			errors=getErrors();
+			errors.requestHasRestrictedFiles=getBean('settingsManager').getSite(getValue('siteid')).getRBFactory().getKey('sitemanager.requestHasInvalidSize') & fileSize;
+		}
+
+		return this;
+	}
 
 	function save(processFile=true){
 		if(arguments.processFile && len(getValue('fileField')) && len(getValue(getValue('fileField')))){
@@ -68,45 +91,48 @@ component extends="mura.bean.beanORM" table='tfiles' entityName="file" hint="Thi
 
 				local.tempFile=fileManager.emulateUpload(filePath=getValue(getValue('fileField')));
 			}
+			var filePath=local.tempFile.serverDirectory & "/" & local.tempFile.serverfilename & '.' & local.tempfile.serverFileExt;
 
-			if(isStruct(local.tempfile.exif)){
-				if(fileManager.allowMetaData(local.tempfile.exif)){
-					local.tempFile.exif=serializeJSON(local.tempFile.exif);
-				} else {
-					setValue('filename','File contains invalid Metadata');
-					if(fileExists(local.tempFile.serverDirectory & "/" & local.tempFile.serverfilename)){
-						fileDelete(local.tempFile.serverDirectory & "/" & local.tempFile.serverfilename);
+			lock name='f#hash(filePath)#save' type='exclusive' timeout=10 {
+				if(isStruct(local.tempfile.exif)){
+					if(fileManager.allowMetaData(local.tempfile.exif)){
+						local.tempFile.exif=serializeJSON(local.tempFile.exif);
+					} else {
+						setValue('filename','File contains invalid Metadata');
+						if(fileExists(local.tempFile.serverDirectory & "/" & local.tempFile.serverfilename & '.' & local.tempfile.serverFileExt)){
+							fileDelete(local.tempfile.serverDirectory & "/" & local.tempfile.serverFilename & '.' & local.tempfile.serverFileExt);
+						}
+						return this;
 					}
-					return this;
 				}
-			}
 
-			var allowableExtensions=getBean('configBean').getFmAllowedExtensions();
-			var allowableMimeTypes=getBean('configBean').getAllowedMimeTypes();
+				var allowableExtensions=getBean('configBean').getFmAllowedExtensions();
+				var allowableMimeTypes=getBean('configBean').getAllowedMimeTypes();
 
-			if((!len(allowableExtensions) || listFindNoCase(allowableExtensions, local.tempFile.serverFileExt)) && (!len(allowableMimeTypes) || listFindNoCase(allowableMimeTypes, '#local.tempFile.contentType#/#local.tempFile.contentSubType#'))){
-				structAppend(variables.instance, local.tempFile);
-				structAppend(variables.instance, fileManager.process(local.tempFile,getValue('siteid')));
-				variables.instance.fileExt=local.tempFile.serverFileExt;
-				variables.instance.filename=local.tempFile.ClientFile;
+				if((!len(allowableExtensions) || listFindNoCase(allowableExtensions, local.tempFile.serverFileExt)) && (!len(allowableMimeTypes) || listFindNoCase(allowableMimeTypes, '#local.tempFile.contentType#/#local.tempFile.contentSubType#'))){
+					structAppend(variables.instance, local.tempFile);
+					structAppend(variables.instance, fileManager.process(local.tempFile,getValue('siteid')));
+					variables.instance.fileExt=local.tempFile.serverFileExt;
+					variables.instance.filename=local.tempFile.ClientFile;
 
-				//writeDump(var=variables.instance,abort=true);
+					//writeDump(var=variables.instance,abort=true);
 
-				param name='variables.instance.content' default='';
-				param name='variables.instance.exif' default={};
+					param name='variables.instance.content' default='';
+					param name='variables.instance.exif' default={};
 
-				fileManager.create(argumentCollection=variables.instance);
+					fileManager.create(argumentCollection=variables.instance);
 
-				setAllValues(getBean('file').loadBy(fileID=getValue('fileID')).getAllValues());
-			}	else {
+					setAllValues(getBean('file').loadBy(fileID=getValue('fileID')).getAllValues());
+				}	else {
 
-				var fileDelim='/';
+					var fileDelim='/';
 
-				try{
-					fileDelete(local.tempfile.serverDirectory & fileDelim & local.tempfile.serverFilename & '.' & local.tempfile.serverFileExt);
-				} catch (Any e){}
+					try{
+						fileDelete(local.tempfile.serverDirectory & fileDelim & local.tempfile.serverFilename & '.' & local.tempfile.serverFileExt);
+					} catch (Any e){}
 
-				setValue('filename','Invalid file type .' & ucase(local.tempfile.serverFileExt));
+					setValue('filename','Invalid file type .' & ucase(local.tempfile.serverFileExt));
+				}
 			}
 		} else {
 

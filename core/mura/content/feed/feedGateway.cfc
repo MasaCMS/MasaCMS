@@ -295,6 +295,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								</cfloop>
 							</cfif>
 							<cfset started=false>
+							<cfset jointable=sanitizedValue(jointable)>
 
 					<cfelseif len(altTable)>
 						tcontent.*
@@ -349,7 +350,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<!--- Join to explicit tables based on join clauses --->
 				<cfloop from="1" to="#arrayLen(local.specifiedjoins)#" index="local.i">
 					<cfif len(local.specifiedjoins[local.i].clause)>
-						#local.specifiedjoins[local.i].jointype# join #local.specifiedjoins[local.i].table# #tableModifier# on (#local.specifiedjoins[local.i].clause#)
+						#sanitizeValue(local.specifiedjoins[local.i].jointype)# join #sanitizeValue(local.specifiedjoins[local.i].table)# #tableModifier# on (#sanitizeValue(local.specifiedjoins[local.i].clause)#)
 					</cfif>
 				</cfloop>
 
@@ -1062,7 +1063,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="sanitizedValue" output="false">
 	<cfargument name="value">
-	<cfreturn REReplace(arguments.value,"[^0-9A-Za-z\._,\- ]\*","","all")>
+	<cfreturn REReplace(arguments.value,"[^0-9A-Za-z\._,\-\*]","","all")>
 </cffunction>
 
 </cfcomponent>
