@@ -109,7 +109,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</ul>
 				</div>
 			</td>
-			<td class="var-width"><a title="Edit" href="./?muraAction=cFeed.edit&feedID=#rc.rsLocal.feedID#&siteid=#esapiEncode('url',rc.siteid)#&type=Local">#rc.rsLocal.name#</a></td>
+			<td class="var-width"><a title="Edit" href="./?muraAction=cFeed.edit&feedID=#rc.rsLocal.feedID#&siteid=#esapiEncode('url',rc.siteid)#&type=Local">#esapiEncode('html', rc.rsLocal.name)#</a></td>
 			<td class="hidden-xs">#rc.rsLocal.lang#</td>
 			<td class="hidden-xs">#rc.rsLocal.maxItems#</td>
 			<td>
@@ -166,7 +166,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</ul>
 		</div>
 		</td>
-		<td class="var-width"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.edit')#" href="./?muraAction=cFeed.edit&feedID=#rc.rsRemote.feedID#&siteid=#esapiEncode('url',rc.siteid)#&type=Remote">#rc.rsRemote.name#</a></td>
+		<td class="var-width"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.edit')#" href="./?muraAction=cFeed.edit&feedID=#rc.rsRemote.feedID#&siteid=#esapiEncode('url',rc.siteid)#&type=Remote">#esapiEncode('html', rc.rsRemote.name)#</a></td>
 		<td class="url var-width">#left(rc.rsRemote.channelLink,70)#</td>
 		<td>#yesnoFormat(rc.rsRemote.isactive)#</td>
 	</tr></cfloop>
