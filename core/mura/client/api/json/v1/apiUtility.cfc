@@ -3634,65 +3634,150 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 	}
 
-	function validate(data='{}',validations='{}') {
+	/* 	
+		If it's a defined entity, then only allow validation on defined properties
+		If it's not a defined entity, then only allow validation on properties that don't match to defined methods
+	*/
+	function lockdownValidations(bean,validations){
+		var sanitizedValidations={};
+		if(structKeyExists(arguments.validations,'properties') && isStruct(arguments.validations.properties)){
+			for(var key in arguments.validations.properties){
+				if(arguments.bean.getEntityName() != 'bean'){
+					if(arguments.bean.hasProperty(key)){
+						sanitizedValidations.properties[key]=arguments.validations.properties[key];
+					}
+				} else {
+					if(!isDefined('arguments.bean.get#key#')){
+						sanitizedValidations.properties[key]=arguments.validations.properties[key];
+					}
+				}
+			}
+		}
+		if(structKeyExists(arguments.validations,'conditions') && isStruct(arguments.validations.conditions)){
+			sanitizedValidations.conditions={};
+			for(var condition in arguments.validations.conditions){
+				for(var key in arguments.validations.conditions['#condition#']){
+					if(arguments.bean.getEntityName() != 'bean'){
+						if(arguments.bean.hasProperty(key)){
+							if(!structKeyExists(sanitizedValidations.conditions,'#condition#')){
+								sanitizedValidations.conditions['#condition#']={};
+							}
+							sanitizedValidations.conditions['#condition#'][key]=arguments.validations.conditions['#condition#'][key];
+						}
+					} else {
+						if(!isDefined('arguments.bean.get#key#')){
+							if(!structKeyExists(sanitizedValidations.conditions,'#condition#')){
+								sanitizedValidations.conditions['#condition#']={};
+							}
+							sanitizedValidations.conditions['#condition#'][key]=arguments.validations.conditions['#condition#'][key];
+						}
+					}
+				}
 
-		arguments.data=urlDecode(arguments.data);
-
-		if(isJSON(arguments.data)){
-			arguments.data=deserializeJSON(arguments.data);
-		} else {
-			throw(type="invalidParameters");
+			}
 		}
 
-		arguments.validations=urlDecode(arguments.validations);
+		return sanitizedValidations;
+	}
 
-		if(isJSON(arguments.validations)){
-			arguments.validations=deserializeJSON(arguments.validations);
-		} else {
-			throw(type="invalidParameters");
+	function validate(data='{}',validations='{}',siteid) {
+		
+		if(isSimpleValue(arguments.data)){
+			arguments.data=urlDecode(arguments.data);
+
+			if(isJSON(arguments.data)){
+				arguments.data=deserializeJSON(arguments.data);
+			} else {
+				throw(type="invalidParameters");
+			}
 		}
 
-		if(!isStruct(arguments.data)){
+		if(isSimpleValue(arguments.validations)){
+			arguments.validations=urlDecode(arguments.validations);
+		
+			if(isJSON(arguments.validations)){
+				arguments.validations=deserializeJSON(arguments.validations);
+			} else {
+				throw(type="invalidParameters");
+			}
+		} 
+
+		if(!isStruct(arguments.data) || !isStruct(arguments.validations)){
 			return {invalid='Invalid validation request'};
 		}
 
-		param name="data.fields" default="";
+		param name="arguments.data.fields" default="";
+		param name="arguments.data.siteid" default=arguments.siteid;
 
-		if(structIsEmpty(arguments.validations) && isDefined('data.entityname') && isDefined('data.siteid')){
+		var $=getBean('Mura').init(arguments.data.siteid);
+
+		param name="request.muraValidationContext" default={};
+
+		var validationContextID=createUUID();
+
+		request.muraValidationContext['#validationContextID#']=arguments.data;
+
+		if(isDefined('arguments.data.entityname') && arguments.data.entityname != 'bean'){
+
+			if(data.entityName=='content'){
+				if(!structKeyExists(arguments.data,'contentid')){
+					arguments.data.contentid=createUUID();
+				}
+			}
+
 			var bean=getBean(arguments.data.entityname);
-			var args={'#bean.getPrimaryKey()#'=arguments.data[bean.getPrimaryKey()]
-			};
 
-			return bean.loadBy(argumentCollection=args).set(arguments.data).validate(arguments.data.fields).getErrors();
+			if(!structKeyExists(arguments.data,'#bean.getPrimaryKey()#')){
+				arguments.data[bean.getPrimaryKey()]=createUUID();
+			}
+			
+			var args={'#bean.getPrimaryKey()#'=arguments.data[bean.getPrimaryKey()]};
+			
+			if(!allowAccess(bean,$)){
+				throw(type="authorization");
+			}
 
+			bean.loadBy(argumentCollection=args);
+			bean.set('siteid',arguments.data.siteid);
+			bean.set('validationContextID',validationContextID);
+			bean.set(bean.getPrimaryKey(),arguments.data[bean.getPrimaryKey()]);
+
+			errors=bean.validate(arguments.data.fields).getErrors();
+		
+			return errors;
 		}
 
 		errors={};
 
 		if(!structIsEmpty(arguments.validations)){
-			structAppend(errors,new mura.bean.bean()
-				.set(data)
-				.setValidations(arguments.validations)
-				.validate(arguments.data.fields)
-				.getErrors()
-			);
-		}
+			var bean=new mura.bean.bean();
 
-		if(isDefined('arguments.data.bean') && isDefined('arguments.data.loadby')){
+			bean.set('validationContextID',validationContextID);
+			bean.setValidations(lockdownValidations(bean,arguments.validations))
+			bean.validate(arguments.data.fields)
+			
+			structAppend(errors,bean.getErrors());
+		}
+	
+		if(isDefined('arguments.data.bean') && isDefined('arguments.data.loadby') && arguments.data.bean != 'bean'){
+
+			var bean=getBean(arguments.data.bean);
 			var args={
 				'#arguments.data.loadby#'=arguments.data[arguments.data.loadby],
 				siteid=arguments.data.siteid
 			};
 
-			structAppend(errors,
-				getBean(arguments.data.bean)
-				.loadBy(argumentCollection=args)
-				.set(arguments.data)
-				.validate(arguments.data.fields)
-				.getErrors()
-			);
-		}
+			if(!allowAccess(bean,$)){
+				throw(type="authorization");
+			}
 
+			bean.loadBy(argumentCollection=args);
+			bean.set('validationContextID',validationContextID);
+			bean.validate(arguments.data.fields)
+				
+			structAppend(errors,bean.getErrors());
+		}
+		
 		return errors;
 
 	}

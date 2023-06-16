@@ -486,6 +486,10 @@ component extends="mura.bean.beanExtendable" entityName="content" table="tconten
 			variables.instance.errors.filemissing=variables.settingsManager.getSite(variables.instance.siteID).getRBFactory().getKey("sitemanager.filemissing");
 		}
 
+		if(listLen(getValue('template'),"/\") gt 1){
+			variables.instance.errors.template="invalid template";
+		}
+
 		if(not application.configBean.getValue(property='keepMetaKeywords',defaultValue=false)
 			&& len(getCanonicalURL())
 			&& !isValid('url',getCanonicalURL())){

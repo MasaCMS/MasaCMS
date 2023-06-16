@@ -1,4 +1,4 @@
-<cfcomponent extends="mura.cfobject" output="false" hint="This provides feed RSS functionality">
+<cfcomponent extends="mura.baseobject" output="false" hint="This provides feed RSS functionality">
 	<cfscript>
 
 	/*
@@ -17,24 +17,13 @@
 		variables.siteid=arguments.siteid;
 
 		var configBean=getBean('configBean');
-		var context=configBean.getContext();
 		var site=getBean('settingsManager').getSite(variables.siteid);
 
-		/*
-		if( getBean('utility').isHTTPS() || YesNoFormat(site.getUseSSL()) ) {
-			var protocol="https://";
-		} else {
-			var protocol="http://";
-		}
-		*/
-
-		//if(configBean.getIndexfileinurls()){
-			variables.endpoint="#site.getResourcePath(complete=1)#/index.cfm/_api/feed/v1/#variables.siteid#";
-		/*
+		if(configBean.getIndexfileinurls() || configBean.getValue(property="indexFileInAPI", defaultValue=true)){
+			variables.endpoint="#site.getResourcePath(complete=1)##application.configBean.getIndexPath()#/_api/feed/v1/#variables.siteid#";
 		} else {
 			variables.endpoint="#site.getResourcePath(complete=1)#/_api/feed/v1/#variables.siteid#";
 		}
-		*/
 
 		variables.config={
 			publicMethods="feed"
@@ -132,16 +121,16 @@
 
 			if (isDefined('params.method') && isDefined('#params.method#')){
 
-				if(!listFindNoCase(variables.config.publicMethods, params.method) ){
-					throw(type="invalidMethodCall");
-				}
-
 				if(arrayLen(pathInfo) > 2){
 					parseParamsFromPath(pathInfo,params,3);
 				}
 
+				if(!listFindNoCase(variables.config.publicMethods, params.method) ){
+					throw(type="invalidMethodCall");
+				}
+
 				if(isDefined('#params.method#')){
-					result=evaluate('#params.method#(argumentCollection=params)');
+					result=invoke(this,'#params.method#',params);
 
 					if(!isXML(result)){
 						result=_serializeWDDX({'data'=result});
@@ -182,7 +171,7 @@
 		}
 
 		catch (Any e){
-			writeLog(type="Error", file="exception", text="#e.stacktrace#");
+			logError(e);
 			responseObject.getresponse().setStatus(500);
 			return _serializeWDDX({'error'={'message'="Unhandled Exception",'stacktrace'=e}});
 		}
@@ -197,11 +186,15 @@
 		}
 
 		for(var i=1;i<=arrayLen(paramsArray);i++){
-			if(i mod 2){
-				params['#paramsArray[i]#']='';
+			if(paramsArray[i]=='method'){
+				throw(type="invalidMethodCall");
 			} else {
-				var previous=i-1;
-				params['#paramsArray[previous]#']=paramsArray[i];
+				if(i mod 2){
+					params['#paramsArray[i]#']='';
+				} else {
+					var previous=i-1;
+					params['#paramsArray[previous]#']=paramsArray[i];
+				}
 			}
 		}
 	}
@@ -311,7 +304,7 @@
 				<generator>https://www.masacms.com</generator>
 				<pubDate>#GetHttpTimeString(now())#</pubDate>
 				<language>#XMLFormat(arguments.feed.getLang())#</language>
-				<atom:link href="#application.settingsManager.getSite(arguments.feed.getSiteID()).getScheme()#://#application.settingsManager.getSite(arguments.feed.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/index.cfm/_api/feed/v1/#XmlFormat(arguments.feed.getSiteID())#/?feedID=#XmlFormat(arguments.feed.getFeedID())#" rel="self" type="application/rss+xml" />
+				<atom:link href="#application.settingsManager.getSite(arguments.feed.getSiteID()).getScheme()#://#application.settingsManager.getSite(arguments.feed.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.configBean.getIndexPath()#/_api/feed/v1/#XmlFormat(arguments.feed.getSiteID())#/?feedID=#XmlFormat(arguments.feed.getFeedID())#" rel="self" type="application/rss+xml" />
 			<cfloop condition="arguments.iterator.hasNext()">
 			<cfsilent>
 				<cfset item=arguments.iterator.next()>
@@ -380,7 +373,7 @@
 					<description>#XMLFormat(itemdescription)#</description>
 					<cfloop query="rsCats"><category>#XMLFormat(rsCats.name)#</category></cfloop>
 					<cfif renderContent and len(itemcontent)><content:encoded><![CDATA[#itemcontent#]]></content:encoded></cfif>
-					<cfif len(item.getFileID())><cfset fileMeta=application.serviceFactory.getBean("fileManager").readMeta(item.getValue('fileID'))><enclosure url="#XMLFormat('#application.settingsManager.getSite(item.getValue('siteid')).getScheme()#://#application.settingsManager.getSite(item.getValue('siteID')).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/index.cfm/_api/render/file/?fileID=#item.getValue('fileID')#&fileEXT=.#item.getValue('fileEXT')#')#" length="#item.getValue('fileSize')#" type="#fileMeta.ContentType#/#fileMeta.ContentSubType#" /></cfif>
+					<cfif len(item.getFileID())><cfset fileMeta=application.serviceFactory.getBean("fileManager").readMeta(item.getValue('fileID'))><enclosure url="#XMLFormat('#application.settingsManager.getSite(item.getValue('siteid')).getScheme()#://#application.settingsManager.getSite(item.getValue('siteID')).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.configBean.getIndexPath()#/_api/render/file/?fileID=#item.getValue('fileID')#&fileEXT=.#item.getValue('fileEXT')#')#" length="#item.getValue('fileSize')#" type="#fileMeta.ContentType#/#fileMeta.ContentSubType#" /></cfif>
 				</item>
 		</cfloop></channel>
 		</rss></cfoutput>
@@ -410,7 +403,7 @@
 			xmlns:dc="http://purl.org/dc/elements/1.1/">
 			<channel>
 				<title>#XMLFormat(arguments.feed.renderName())#</title>
-				<link>http://#listFirst(cgi.http_host,":")#</link>
+				<link>http://#getBean('utility').getRequestHost()#</link>
 				<description>#XMLFormat(arguments.feed.getDescription())#</description>
 				<webMaster>#application.settingsManager.getSite(arguments.feed.getSiteID()).getContact()#</webMaster>
 				<language>#arguments.feed.getLang()#</language>
@@ -442,7 +435,7 @@
 						<link>#theLink#</link>
 						<guid isPermaLink="true">#theLink#</guid>
 						<dc:date>#GetHttpTimeString(thePubDate)#</dc:date>
-						<cfif item.getValue('type') eq "File"><cfset fileMeta=application.serviceFactory.getBean("fileManager").readMeta(item.getValue('fileID'))><enclosure url="#XMLFormat('http://#application.settingsManager.getSite(item.getValue('siteID')).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/index.cfm/_api/render/file/?fileID=#item.getValue('fileID')#&fileEXT=.#item.getValue('fileExt')#')#" length="#fileMeta.filesize#" type="#fileMeta.ContentType#/#fileMeta.ContentSubType#" /></cfif>
+						<cfif item.getValue('type') eq "File"><cfset fileMeta=application.serviceFactory.getBean("fileManager").readMeta(item.getValue('fileID'))><enclosure url="#XMLFormat('http://#application.settingsManager.getSite(item.getValue('siteID')).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.configBean.getIndexPath()#/_api/render/file/?fileID=#item.getValue('fileID')#&fileEXT=.#item.getValue('fileExt')#')#" length="#fileMeta.filesize#" type="#fileMeta.ContentType#/#fileMeta.ContentSubType#" /></cfif>
 					</item>
 			</cfloop>
 			</channel>
