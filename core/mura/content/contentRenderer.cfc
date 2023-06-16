@@ -2971,7 +2971,7 @@ Display Objects
 	<cfif request.muraApiRequest>
 		<cfset request.muraJSONRedirectURL=arguments.location>
 	<cfelse>
-		<cflocation url="#arguments.location#" addtoken="#arguments.addToken#" statusCode="#arguments.statusCode#">
+		<cflocation url="#replace(arguments.location,"\","/","all")#" addtoken="#arguments.addToken#" statusCode="#arguments.statusCode#">
 	</cfif>
 </cffunction>
 
