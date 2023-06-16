@@ -162,7 +162,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset extendSetBean=extendSets[s]/>
 				<li extendSetID="#extendSetBean.getExtendSetID()#">
 								<span id="handle#s#" class="handle" style="display:none;"><i class="mi-arrows"></i></span>
-					<p>#extendSetBean.getName()#</p>
+					<p>#esapiEncode('html', extendSetBean.getName())#</p>
 					<div class="btns">
 									<a title="#rc.$.rbKey('sitemanager.extension.edit')#" href="#rc.$.globalConfig('context')##rc.$.globalConfig('adminDir')#/?muraAction=cExtend.editAttributes&amp;subTypeID=#esapiEncode('url',rc.subTypeID)#&amp;extendSetID=#extendSetBean.getExtendSetID()#&amp;siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-pencil"></i></a>
 									<a title="#rc.$.rbKey('sitemanager.extension.delete')#" href="#rc.$.globalConfig('context')##rc.$.globalConfig('adminDir')#/?muraAction=cExtend.updateSet&amp;action=delete&amp;subTypeID=#esapiEncode('url',rc.subTypeID)#&amp;extendSetID=#extendSetBean.getExtendSetID()#&amp;siteid=#esapiEncode('url',rc.siteid)##rc.$.renderCSRFTokens(context=extendSetBean.getExtendSetID(),format='url')#" onclick="return confirmDialog('Delete  #esapiEncode("javascript","'#extendSetBean.getname()#'")#?',this.href)"><i class="mi-trash"></i></a>
@@ -197,7 +197,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset rcsBean=relatedContentsets[s]/>
 					<li relatedContentSetID="#rcsBean.getRelatedContentSetID()#">
 									<span id="handleRelated#s#" class="handleRelated" style="display:none;"><i class="mi-arrows"></i></span>
-						<p>#rcsBean.getName()#</p>
+						<p>#esapiEncode('html', rcsBean.getName())#</p>
 						<div class="btns">
 										<a title="#rc.$.rbKey('sitemanager.extension.edit')#" href="#rc.$.globalConfig('context')##rc.$.globalConfig('adminDir')#/?muraAction=cExtend.editRelatedContentSet&amp;subTypeID=#esapiEncode('url',rc.subTypeID)#&amp;relatedContentSetID=#rcsBean.getRelatedContentSetID()#&amp;siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-pencil"></i></a>
 										<a title="#rc.$.rbKey('sitemanager.extension.delete')#" href="#rc.$.globalConfig('context')##rc.$.globalConfig('adminDir')#/?muraAction=cExtend.updateRelatedContentSet&amp;action=delete&amp;subTypeID=#esapiEncode('url',rc.subTypeID)#&amp;relatedContentSetID=#rcsBean.getRelatedContentSetID()#&amp;siteid=#esapiEncode('url',rc.siteid)##rc.$.renderCSRFTokens(context=rcsBean.getRelatedContentSetID(),format='url')#" onclick="return confirmDialog('Delete  #esapiEncode("javascript","'#rcsBean.getname()#'")#?',this.href)"><i class="mi-trash"></i></a>
