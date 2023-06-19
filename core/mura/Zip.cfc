@@ -326,7 +326,11 @@
 			var lenPath=0;
 			var inStream="";
 			var skip="no";
-			</cfscript>
+
+		</cfscript>
+			<cfif !isZipSafe(arguments.zipFilePath)>
+				<cfreturn false />
+			</cfif>
 
 			<cfset rsdir=List(arguments.zipFilePath)>
 
@@ -779,6 +783,39 @@
 
 		<cfreturn arguments.path>
 
+	</cffunction>
+
+	<cffunction name="isZipSafe" returntype="boolean" output="false">
+		<cfargument name="zipFilePath" type="string" required="true">
+		
+		<cfset var zip = createObject("java", "java.util.zip.ZipFile").init(PathFormat(arguments.zipFilePath))>
+		
+		<cfset var entries = zip.entries()>
+		
+		<cfloop condition="entries.hasMoreElements()">
+			<cfset var entry = entries.nextElement().getName()>
+			<!--- Check for Zip Slip vulnerability --->
+			<cfif isZipSlipAttack(entry)>
+				<!---<cfthrow message="Zip Slip Attack Detected in Zip File: #arguments.zipFilePath#" type="error">--->
+				<cflog text="Zip Slip Attack Detected in Zip File: #arguments.zipFilePath#" type="error">
+				<cfset zip.close()>
+				<cfreturn false>
+			</cfif>
+		</cfloop>
+		<cfset zip.close()>
+		<cfreturn true>
+	</cffunction>
+
+	<cffunction name="isZipSlipAttack" returntype="boolean" output="false">
+		<cfargument name="filePath" type="string" required="true">
+	
+		<!--- Check for Zip Slip vulnerability --->
+		<cfif reFind(".*\.\.(\/|\\).*", arguments.filePath)>
+			<cflog text="Zip Slip Attack Detected: #arguments.filePath#" type="error">
+			<cfreturn true>
+		</cfif>
+		
+		<cfreturn false>
 	</cffunction>
 
 </cfcomponent>
