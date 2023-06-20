@@ -209,12 +209,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.keywords')#</label>
 								<textarea name="metakeywords" rows="3" id="metakeywords">#esapiEncode('html',rc.contentBean.getMetaKeywords())#</textarea>
 							</div>
-						<cfelse>
-							<div class="mura-control-group">
-								<label>Canonical URL</label>
-								<input type="text" id="canonicalURL" name="canonicalURL" value="#esapiEncode('html_attr',rc.contentBean.getCanonicalURL())#"  maxlength="255">
-								</div>
 						</cfif>
+						<div class="mura-control-group">
+							<label>Canonical URL</label>
+							<input type="text" id="canonicalURL" name="canonicalURL" value="#esapiEncode('html_attr',rc.contentBean.getCanonicalURL())#"  maxlength="255">
+						</div>
 					</cfif>
 
 				</cfif>
