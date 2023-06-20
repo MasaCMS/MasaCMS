@@ -27,7 +27,7 @@
 		<cfelse>
 			<cfhttp url="#baseURL#" result="httpResult"/>
 		</cfif>
-		<cfset xmlResult = xmlParse(httpResult.fileContent)>
+		<cfset xmlResult = parseXML(httpResult.fileContent)>
 		<cfcatch type="any">
 		    <cfreturn result />
 		</cfcatch>

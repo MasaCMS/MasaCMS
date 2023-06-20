@@ -235,7 +235,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<div class="alert alert-info"><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</span></div>
 </cfif>
 
-<!-- This is plugin message targeting --->
+<!--- This is plugin message targeting --->
 <span id="msg">
 #application.pluginManager.renderEvent("onFeedEditMessageRender",event)#
 </span>
@@ -293,7 +293,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<!--- Name --->
 			<div class="mura-control-group">
 				<label>#application.rbFactory.getKeyValue(session.rb,'collections.name')#</label>
-				<input type="text" name="name" required="true" message="#application.rbFactory.getKeyValue(session.rb,'collections.namerequired')#" value="#esapiEncode('html_attr',rc.feedBean.getName())#" maxlength="250"<cfif rc.feedBean.getIsLocked()> disabled="disabled"</cfif>>
+				<input type="text" name="name" required="true" message="#application.rbFactory.getKeyValue(session.rb,'collections.namerequired')#" value="#esapiEncode('html_attr',rc.feedBean.getName())#" maxlength="250"<cfif rc.feedBean.getIsLocked()> disabled="disabled"</cfif> onchange="removePunctuation(this);">
 			</div>
 
 
@@ -939,7 +939,7 @@ jQuery(document).ready(function(){
 
 			<div class="mura-control-group">
 					<label>#application.rbFactory.getKeyValue(session.rb,'collections.name')#</label>
-					<input name="name" type="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'collections.namerequired')#" value="#esapiEncode('html_attr',rc.feedBean.getName())#" maxlength="50">
+					<input name="name" type="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'collections.namerequired')#" value="#esapiEncode('html_attr',rc.feedBean.getName())#" maxlength="50" onchange="removePunctuation(this);">
 			</div>
 			<div class="mura-control-group">
 					<label>#application.rbFactory.getKeyValue(session.rb,'collections.url')#</label>

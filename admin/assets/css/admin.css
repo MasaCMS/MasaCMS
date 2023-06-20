@@ -36825,7 +36825,7 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 .mura .mura-sidebar__objects-list__object-item {
   box-sizing: border-box;
   display: block;
-  padding: 6px 12px;
+  padding: 10px 16px;
   margin-bottom: 2px;
   font-size: 14px;
   color: #d8d8d8;
@@ -38323,11 +38323,11 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 .mura #bigui__categories .mura-grid dl {
   float: none;
   width: 100%;
-  height: 28px;
+  height: 42px;
 }
 .mura #bigui__categories .mura-grid dt {
   width: calc(100% - 75px);
-  line-height: 28px;
+  line-height: 42px;
   border-right: none;
 }
 .mura #bigui__categories .mura-grid dd {
@@ -38566,7 +38566,7 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
   color: #fff !important;
 }
 .mura .mura__edit__controls select:not(#restrictGroups) {
-  display: none;
+  display: none !important;
 }
 .mura .mura__edit__controls .nice-select,
 .mura .mura__edit__controls .mura-control-group > label + .nice-select {

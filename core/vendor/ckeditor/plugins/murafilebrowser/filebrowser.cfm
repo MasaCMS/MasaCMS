@@ -1,5 +1,14 @@
 <cfsilent>
-	<cfinclude template="/mura/backport/backport.cfm">
+
+	<cfscript>
+		if(server.coldfusion.productname != 'ColdFusion Server'){
+			backportdir='';
+			include "../../../../mura/backport/backport.cfm";
+		} else {
+			backportdir='../../../../mura/backport/';
+			include "#backportdir#backport.cfm";
+		}
+	</cfscript>
 	<cfparam name="session.siteid" default="default">
 	<cfparam name="url.resourcepath" default="User_Assets">
 	<cfparam name="url.directory" default="">

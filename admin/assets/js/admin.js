@@ -311,7 +311,7 @@ This file is part of Mura CMS.
             mailSettings.mailPassword = $('input[name="MailServerPassword"]').val();
             mailSettings.mailUseTLS = $('input[name="mailServerTLS"]:checked').val();
             mailSettings.mailUseSSL = $('input[name="mailServerSSL"]:checked').val();
-    
+
         var modalUrl = "index.cfm?muraAction=cArch.emailTest&compactDisplay=true";
     
     
@@ -326,14 +326,25 @@ This file is part of Mura CMS.
                 
                 $("#emailTestDialog .load-inline").spin(spinnerArgs2);
     
-                $.post( modalUrl, mailSettings, function( data ) {
-                    $("#emailTestDialog .load-inline").spin(false);
-                    $('#emailTestDialog').html(data);
+                $.post( Mura.apiEndpoint + '?method=generateCSRFTokens', {context: 'testEmail'}, function( data ) {
+                    var csrf_token = data.data.csrf_token;
+                    var csrf_token_expires = data.data.csrf_token_expires;
+
+                    mailSettings.csrf_token = csrf_token;
+                    mailSettings.csrf_token_expires = csrf_token_expires;
+
+                    $.post( modalUrl, mailSettings, function( data ) {
+                        $("#emailTestDialog .load-inline").spin(false);
+                        $('#emailTestDialog').html(data);
+                    }).fail(function(response) {
+                        $("#emailTestDialog .load-inline").spin(false);
+                        $('#emailTestDialog').html(response.responseText);
+                    });
                 }).fail(function(response) {
                     $("#emailTestDialog .load-inline").spin(false);
-                    $('#emailTestDialog').html(response.responseText);
+                    $('#emailTestDialog').html("Authentication failed, please try again.");
                 });
-    
+
             },
             close: function() {
                 $(this).dialog("destroy");

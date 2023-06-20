@@ -1778,7 +1778,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 							config="";
 						}
 						if ( isXML(config) ) {
-							config=xmlParse(config);
+							config=parseXML(config);
 							if(get('isNew')){
 								deferred.config=config;
 							} else {
@@ -1884,7 +1884,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 							config="";
 						}
 						if ( isXML(config) ) {
-							config=xmlParse(config);
+							config=parseXML(config);
 
 							if ( isDefined('config.displayobject') ) {
 								var baseXML=config.displayobject;

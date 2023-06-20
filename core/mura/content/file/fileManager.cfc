@@ -603,41 +603,45 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset local.fileuploaded=false>
 	<cfset local.filecreateattempt=1>
-	<cfloop condition="not local.fileuploaded">
-		<cfif not fileExists("#local.results.serverDirectory#/#local.results.serverFile#")>
-			<cfif local.isLocalFile>
-				<cfif listFindNoCase('jpg,jpeg',local.results.clientFileExt)>
+
+	<cflock name="f#hash('#local.results.serverDirectory#/#local.results.serverFile#')#emulate" type='exclusive' timeout='10'>
+		<cfloop condition="not local.fileuploaded">
+			<cfif not fileExists("#local.results.serverDirectory#/#local.results.serverFile#")>
+				<cfif local.isLocalFile>
+					<cfif listFindNoCase('jpg,jpeg',local.results.clientFileExt)>
+						<cftry>
+							<cfimage source="#local.filePath#" name="local.imageObj">
+							<cfset local.results.exif=ImageGetEXIFMetadata(local.imageObj)>
+							<cfcatch>
+								<cfset local.results.exif={}>
+							</cfcatch>
+						</cftry>
+					<cfelse>
+						<cfset local.results.exif={}>
+					</cfif>
+					<cffile action="copy" destination="#local.results.serverDirectory#/#local.results.serverFile#" source="#local.filePath#" >
+				<cfelse>
+					<cffile action="write" file="#local.results.serverDirectory#/#local.results.serverFile#" output="#local.remoteGet.fileContent#" >
+					<cfif listFindNoCase('jpg,jpeg',local.results.clientFileExt)>
 					<cftry>
-						<cfimage source="#local.filePath#" name="local.imageObj">
+						<cfimage source="#local.results.serverDirectory#/#local.results.serverFile#" name="local.imageObj">
 						<cfset local.results.exif=ImageGetEXIFMetadata(local.imageObj)>
 						<cfcatch>
 							<cfset local.results.exif={}>
 						</cfcatch>
 					</cftry>
-				<cfelse>
-					<cfset local.results.exif={}>
-				</cfif>
-				<cffile action="copy" destination="#local.results.serverDirectory#/#local.results.serverFile#" source="#local.filePath#" >
-			<cfelse>
-				<cffile action="write" file="#local.results.serverDirectory#/#local.results.serverFile#" output="#local.remoteGet.fileContent#" >
-				<cfif listFindNoCase('jpg,jpeg',local.results.clientFileExt)>
-				<cftry>
-					<cfimage source="#local.results.serverDirectory#/#local.results.serverFile#" name="local.imageObj">
-					<cfset local.results.exif=ImageGetEXIFMetadata(local.imageObj)>
-					<cfcatch>
+					<cfelse>
 						<cfset local.results.exif={}>
-					</cfcatch>
-				</cftry>
-				<cfelse>
-					<cfset local.results.exif={}>
+					</cfif>
 				</cfif>
+				<cfset local.fileuploaded=true>
+			<cfelse>
+				<cfset local.results.serverFilename=local.results.serverFileName & local.filecreateattemp>
+				<cfset local.results.serverFile=local.results.serverFilename & "." & local.results.serverFileExt>
+				<cfset local.filecreateattempt=local.filecreateattempt+1>
 			</cfif>
-			<cfset local.fileuploaded=true>
-		<cfelse>
-			<cfset local.results.serverFile=local.results.serverFileName & local.filecreateattempt & "." & local.results.serverFileExt>
-			<cfset local.filecreateattempt=local.filecreateattempt+1>
-		</cfif>
-	</cfloop>
+		</cfloop>
+	</cflock>
 
 	<cfreturn local.results>
 

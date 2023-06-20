@@ -164,7 +164,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</td>
 					<td class="title">
 						<a title="#rc.$.rbKey('sitemanager.extension.edit')#" href="#rc.$.globalConfig('context')##rc.$.globalConfig('adminDir')#/?muraAction=cExtend.listSets&amp;subTypeID=#rslist.subTypeID#&amp;siteid=#esapiEncode('url',rc.siteid)#">
-							#application.classExtensionManager.getTypeAsString(rslist.type)# / #rslist.subtype#
+							#application.classExtensionManager.getTypeAsString(rslist.type)# / #esapiEncode('html',rslist.subtype)#
 						</a>
 					</td>
 					<td class="var-width">
