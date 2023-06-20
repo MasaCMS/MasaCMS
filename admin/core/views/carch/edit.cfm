@@ -668,7 +668,6 @@ titleBlock.onclick = function(event){
 		holder.onkeyup = function(event){
 			var newTitle = decodeHTMLEntities(holder.value);
 			var realTitle = document.getElementById('title');
-			console.log(newTitle);
 			realTitle.value = newTitle;
 			if (!($('##panel-basic').hasClass('in'))){
 				$('##heading-basic h4 a').trigger('click');
