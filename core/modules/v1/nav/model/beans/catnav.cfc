@@ -15,7 +15,7 @@
 		while(catit.hasNext()) {
 			var it = catit.next();
 			var nav = m.getBean('feed');
-			var nav.setCategoryID(it.getCategoryID());
+			nav.setCategoryID(it.getCategoryID());
 			var navitem = {};
 			navitem.cat = it;
 			navitem.nav = nav;
