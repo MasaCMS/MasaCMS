@@ -204,7 +204,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<!--- extended attributes --->
 						<cfif listFindNoCase(rc.$.getBean('contentManager').ExtendableList,rc.type)>
 							<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Extended Attributes')>
-								<cfset extendSets=application.classExtensionManager.getSubTypeByName(rc.type,rc.contentBean.getSubType(),rc.siteid).getExtendSets(activeOnly=true) />
+								<cfset extendSets=application.classExtensionManager.getSubTypeByName(rc.type,rc.contentBean.getSubType(),rc.siteid).getExtendSets(inherit=true, activeOnly=true) />
 								<cfif arrayLen(extendSets)>
 									<cfinclude template="form/dsp_panel_extended_attributes.cfm">
 								</cfif>
