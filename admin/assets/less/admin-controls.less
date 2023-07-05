@@ -1014,8 +1014,12 @@ body.sidebar-tab {
 
 /* nice-select overrides */
 .mura__edit__controls {
-    select:not(#restrictGroups) {
+    select {
         display: none !important;
+
+        &#restrictGroups, &#notifyEditor {
+            display: block !important;
+        }
     }
     .nice-select, 
     .mura-control-group>label+.nice-select {
