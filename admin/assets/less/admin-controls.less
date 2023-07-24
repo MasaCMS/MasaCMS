@@ -749,9 +749,6 @@ div#panel-extendedattributes a {
     .categoryAssignment li ul {
         margin: 0 !important;
     }
-    .bigui__wrapper{
-        overflow: visible;
-    }
     .mura-grid {
         li {
             float: none;
@@ -1014,8 +1011,12 @@ body.sidebar-tab {
 
 /* nice-select overrides */
 .mura__edit__controls {
-    select:not(#restrictGroups) {
+    select {
         display: none !important;
+
+        &#restrictGroups, &#notifyEditor {
+            display: block !important;
+        }
     }
     .nice-select, 
     .mura-control-group>label+.nice-select {

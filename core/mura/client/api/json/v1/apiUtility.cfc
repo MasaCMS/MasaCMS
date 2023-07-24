@@ -1403,7 +1403,12 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 	variables.entityChecks={};
 
 	function doubleCheckEntityName(entityName){
-		arguments.entityName=REReplace(arguments.entityName,"[^0-9A-Za-z_]\*","","all");
+		arguments.entityName=REReplace(arguments.entityName,"[^0-9A-Za-z_,\-\*]","","all");
+
+		if(!isValid('variableName',arguments.entityName)){
+			throw(type="invalidEntityCall");
+		}
+
 		var found=false;
 		
 		if(!structKeyExists(variables.entityChecks,'#arguments.entityname#')
