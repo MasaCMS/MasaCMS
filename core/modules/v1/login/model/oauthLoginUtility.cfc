@@ -47,11 +47,11 @@ component extends="mura.cfobject" accessors=true output=false {
 			userBean.setPassword(createUUID());
 			userBean.setUsername(arguments.oAuth.username); //Unique?
 			userBean.setRemoteId(arguments.oAuth.id);
-			userBean.setFname(len(arguments.oAuth.given_name) ? arguments.oAuth.given_name : '');
-			userBean.setLname(len(arguments.oAuth.family_name) ? arguments.oAuth.family_name : '');
+			userBean.setFname(structKeyExists(arguments.oAuth, 'given_name') ? arguments.oAuth.given_name : '');
+			userBean.setLname(structKeyExists(arguments.oAuth, 'family_name') ? arguments.oAuth.family_name : '');
 			userBean.setEmail(arguments.oAuth.email); //unique?
-			userBean.setJobTitle(len(arguments.oAuth.jobTitle) ? arguments.oAuth.jobTitle : '');
-			userBean.setMobilePhone(len(arguments.oAuth.mobilePhone) ? arguments.oAuth.mobilePhone : '');
+			userBean.setJobTitle(structKeyExists(arguments.oAuth, 'jobTitle') ? arguments.oAuth.jobTitle : '');
+			userBean.setMobilePhone(structKeyExists(arguments.oAuth, 'mobilePhone') ? arguments.oAuth.mobilePhone : '');
 			userBean.setAddressId('');
 		}
 
