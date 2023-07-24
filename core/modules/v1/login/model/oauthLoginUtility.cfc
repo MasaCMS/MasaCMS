@@ -41,39 +41,17 @@ component extends="mura.cfobject" accessors=true output=false {
 			}
 		}
 
-		// // Handle for difference between facebook and Google returned oAuth objects
-		// if (!structKeyExists(arguments.oAuth, 'given_name')) {
-		// 	if (structKeyExists(arguments.oAuth, 'first_name')) {
-		// 		oAuth.given_name = arguments.oAuth.first_name;
-		// 	} else {
-		// 		oAuth.given_name = arguments.oAuth.name.split(' ')[1];
-		// 	}
-		// }
-		// if (!structKeyExists(arguments.oAuth, 'family_name')) {
-		// 	if (structKeyExists(arguments.oAuth, 'last_name')) {
-		// 		arguments.oAuth.family_name = arguments.oAuth.last_name;
-		// 	} else {
-		// 		nameArray = arguments.oAuth.name.split(" ");
-		// 		arguments.oAuth.family_name = ArrayToList(arraySlice(nameArray, 2), " ");
-		// 	}
-		// }
-		//
-		// if (isNull(arguments.oAuth.email)) {
-		// 	oAuth.email = 'donotreply@domain.com';
-		// 	arguments.oAuth.username = arguments.oAuth.name & createUUID();
-		// } else {
-		// 	arguments.oAuth.username = arguments.oAuth.email;
-		// }
-
-    // Copy across user's info from oAuth if it is a brand new user
+	    // Copy across user's info from oAuth if it is a brand new user
 		if (userBean.getIsNew()) {
 			userBean.setState(''); //This is prevent the state value from triggering an address
 			userBean.setPassword(createUUID());
 			userBean.setUsername(arguments.oAuth.username); //Unique?
 			userBean.setRemoteId(arguments.oAuth.id);
-			userBean.setFname(arguments.oAuth.given_name);
-			userBean.setLname(arguments.oAuth.family_name);
+			userBean.setFname(structKeyExists(arguments.oAuth, 'given_name') ? arguments.oAuth.given_name : '');
+			userBean.setLname(structKeyExists(arguments.oAuth, 'family_name') ? arguments.oAuth.family_name : '');
 			userBean.setEmail(arguments.oAuth.email); //unique?
+			userBean.setJobTitle(structKeyExists(arguments.oAuth, 'jobTitle') ? arguments.oAuth.jobTitle : '');
+			userBean.setMobilePhone(structKeyExists(arguments.oAuth, 'mobilePhone') ? arguments.oAuth.mobilePhone : '');
 			userBean.setAddressId('');
 		}
 

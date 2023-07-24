@@ -11,7 +11,7 @@ component extends="mura.bean.beanORM" entityname="razunasettings" table="trazuna
 
 	function save(){		
 		var razunaEnabled = application.configBean.getValue('razuna');
-		if(razunaEnabled){
+		if(razunaEnabled == "true"){
 			// Create deprecation warning
 			var pluginManager=getBean('pluginManager');
 			var $ = getBean('$').init();
