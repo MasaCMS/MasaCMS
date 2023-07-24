@@ -43075,6 +43075,12 @@ fieldset[disabled] .mura .sidebar-buttons .btn.active {
 .mura .mura-login-auth-btn.fb {
   background-color: #4267b2;
 }
+.mura .mura-login-auth-btn.gh {
+  background-color: #333333;
+}
+.mura .mura-login-auth-btn.az {
+  background-color: #0080ff;
+}
 .mura .mura-login-auth-btn span {
   color: #fff;
   font-size: 16px;

@@ -39,6 +39,12 @@
 .mura-login-auth-btn.fb {
   background-color: #4267b2;
 }
+.mura-login-auth-btn.gh {
+  background-color: #333333;
+}
+.mura-login-auth-btn.az {
+  background-color: #0080ff;
+}
 .mura-login-auth-btn span {
   color: #fff;
   font-size: 16px;
@@ -52,7 +58,7 @@
   height: 40px;
   font-size: 28px;
   float: left;
-  padding: 11px;
+  padding: 6px;
   text-align: center;
   width: 40px;
 }

@@ -181,22 +181,34 @@ This file is part of Mura CMS.
 				<cfelse>
 					<form role="form" id="login" class="mura-login-form #this.loginFormClass# <cfif this.formWrapperClass neq "">#this.formWrapperClass#</cfif>" name="frmLogin" method="post" novalidate="novalidate">
 
-						<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google') or listFindNoCase($.globalConfig().getEnableOauth(), 'facebook') >
+						<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google') or listFindNoCase($.globalConfig().getEnableOauth(), 'facebook') or listFindNoCase($.globalConfig().getEnableOauth(), 'github') or listFindNoCase($.globalConfig().getEnableOauth(), 'azuread') >
 								<div class="#this.loginFormGroupWrapperClass#">
 									<div class="#this.loginFormSubmitWrapperClass#">
 										<div class="mura-login-auth-wrapper">
 										<!--- Use Google oAuth Button --->
 										<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google')>
 											<a href="#$.getBean('googleLoginProvider').generateAuthUrl(session.urltoken)#" title="#variables.$.rbKey('login.loginwithgoogle')#" class="mura-login-auth-btn ggl">
-												<i class="fa fa-lg fa-google mi-google"></i>
+												<i class="fa fa-google mi-google"></i>
 												<span>#variables.$.rbKey('login.loginwithgoogle')#</span>
 											</a>
 										</cfif>
 										<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'facebook')>
 											<a href="#$.getBean('facebookLoginProvider').generateAuthUrl(session.urltoken)#" title="#variables.$.rbKey('login.loginwithfacebook')#" class="mura-login-auth-btn fb">
-					               	<i class="fa fa-lg fa-facebook mi-facebook"></i>
-			                  	<span>#variables.$.rbKey('login.loginwithfacebook')#</span>
-			 									</a>
+												<i class="fa fa-facebook mi-facebook"></i>
+												<span>#variables.$.rbKey('login.loginwithfacebook')#</span>
+											</a>
+										</cfif>
+										<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'github')>
+											<a href="#$.getBean('githubLoginProvider').generateAuthUrl(session.urltoken)#" title="#variables.$.rbKey('login.loginwithgithub')#" class="mura-login-auth-btn gh">
+												<i class="fa fa-github mi-github"></i>
+												<span>#variables.$.rbKey('login.loginwithgithub')#</span>
+											</a>
+										</cfif>
+										<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'azuread')>
+											<a href="#$.getBean('azureadLoginProvider').generateAuthUrl(session.urltoken)#" title="#variables.$.rbKey('login.loginwithazuread')#" class="mura-login-auth-btn az">
+												<i class="fa fa-windows mi-windows"></i>
+												<span>#variables.$.rbKey('login.loginwithazuread')#</span>
+											</a>
 										</cfif>
 									</div>
 								</div>
@@ -204,7 +216,7 @@ This file is part of Mura CMS.
 						</cfif>
 
 						<div>
-							<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google') or listFindNoCase($.globalConfig().getEnableOauth(), 'facebook') >
+							<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google') or listFindNoCase($.globalConfig().getEnableOauth(), 'facebook') or listFindNoCase($.globalConfig().getEnableOauth(), 'github') or listFindNoCase($.globalConfig().getEnableOauth(), 'azuread') >
 			              <div class="text-divider"><span>#variables.$.rbKey('login.or')#</span></div>
 										<h3>#variables.$.rbKey('login.loginwithcredentials')#</h3>
 
