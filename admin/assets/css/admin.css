@@ -38562,8 +38562,12 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 .mura #carch .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset .ui-button:first-child > i {
   color: #fff !important;
 }
-.mura .mura__edit__controls select:not(#restrictGroups) {
+.mura .mura__edit__controls select {
   display: none !important;
+}
+.mura .mura__edit__controls select#restrictGroups,
+.mura .mura__edit__controls select#notifyEditor {
+  display: block !important;
 }
 .mura .mura__edit__controls .nice-select,
 .mura .mura__edit__controls .mura-control-group > label + .nice-select {
