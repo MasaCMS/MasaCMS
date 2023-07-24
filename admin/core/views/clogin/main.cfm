@@ -105,7 +105,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		#focusblockheader#
 
-	    <div class="block-content">
+		<div class="block-content">
 
 				<cfset errorMessage = '' />
 				<cfset isBlocked = StructKeyExists(session, "blockLoginUntil") and isDate(session.blockLoginUntil) and session.blockLoginUntil gt now() />
@@ -146,7 +146,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<form novalidate="novalidate" id="loginForm" name="frmLogin" method="post" action="index.cfm" onsubmit="return submitForm(this);">
 
 							<div class="mura-control-group">
-				      			<label>#rc.$.rbKey('login.enteremailedauthcode')#</label>
+					  			<label>#rc.$.rbKey('login.enteremailedauthcode')#</label>
 								<div class="input-prepend">
 								  	<span class="add-on"><i class="mi-envelope"></i></span><input autocomplete="off" id="authcode" name="authcode" type="text" placeholder="#esapiEncode('html_attr',rc.$.rbKey('login.authorizationcode'))#" />
 								</div>
@@ -154,9 +154,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									<input type="hidden" name="rememberdevice" value="1"/>
 									<!---
 									<div id="remember-device">
-							      	<input type="checkbox" id="rememberdevice" name="rememberdevice" value="1" />
-							     	<label for="rememberdevice">#rc.$.rbKey('login.rememberdevice')#
-							      	</label>
+								  	<input type="checkbox" id="rememberdevice" name="rememberdevice" value="1" />
+								 	<label for="rememberdevice">#rc.$.rbKey('login.rememberdevice')#
+								  	</label>
 									</div>
 									--->
 								</cfif>
@@ -174,31 +174,47 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfelse>
 						<form novalidate="novalidate" id="loginForm" name="frmLogin" method="post" action="index.cfm" onsubmit="return submitForm(this);">
 						  <cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google') or
-						   		listFindNoCase($.globalConfig().getEnableOauth(), 'facebook')>
+						   		listFindNoCase($.globalConfig().getEnableOauth(), 'facebook') or
+								listFindNoCase($.globalConfig().getEnableOauth(), 'github') or
+								listFindNoCase($.globalConfig().getEnableOauth(), 'azuread')>
 								<div class="mura-login-auth-wrapper">
-			              <!--- Use Google oAuth Button --->
-			              <cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google')>
-			                    <a href="#$.getBean('googleLoginProvider').generateAuthUrl(session.urltoken)#" title="#rc.$.rbKey('login.loginwithgoogle')#" class="mura-login-auth-btn ggl">
-			                    	<i class="mi-google"></i>
-			                    	<span>#rc.$.rbKey('login.loginwithgoogle')#</span>
-			                    </a>
-			              </cfif>
-			              <!--- Use Facebook oAuth Button --->
-			              <cfif listFindNoCase($.globalConfig().getEnableOauth(), 'facebook')>
-			                  <a href="#$.getBean('facebookLoginProvider').generateAuthUrl(session.urltoken)#" title="#rc.$.rbKey('login.loginwithfacebook')#" class="mura-login-auth-btn fb">
-			                  	<i class="mi-facebook"></i>
-			                  	<span>#rc.$.rbKey('login.loginwithfacebook')#</span>
-			                  </a>
-			              </cfif>
-			              <div class="text-divider"><span>#rc.$.rbKey('login.or')#</span></div>
-										<h3 class="center mura-login-auth-heading">#rc.$.rbKey('login.loginwithcredentials')#</h3>
-       					</div>
-			        </cfif>
+						  <!--- Use Google oAuth Button --->
+						  <cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google')>
+								<a href="#$.getBean('googleLoginProvider').generateAuthUrl(session.urltoken)#" title="#rc.$.rbKey('login.loginwithgoogle')#" class="mura-login-auth-btn ggl">
+									<i class="mi-google"></i>
+									<span>#rc.$.rbKey('login.loginwithgoogle')#</span>
+								</a>
+						  </cfif>
+						  <!--- Use Facebook oAuth Button --->
+						  <cfif listFindNoCase($.globalConfig().getEnableOauth(), 'facebook')>
+							  <a href="#$.getBean('facebookLoginProvider').generateAuthUrl(session.urltoken)#" title="#rc.$.rbKey('login.loginwithfacebook')#" class="mura-login-auth-btn fb">
+							  	<i class="mi-facebook"></i>
+							  	<span>#rc.$.rbKey('login.loginwithfacebook')#</span>
+							  </a>
+						  </cfif>
+						  <!--- Use GitHub oAuth Button --->
+						  <cfif listFindNoCase($.globalConfig().getEnableOauth(), 'github')>
+							  <a href="#$.getBean('githubLoginProvider').generateAuthUrl(session.urltoken)#" title="#rc.$.rbKey('login.loginwithgithub')#" class="mura-login-auth-btn gh">
+							  	<i class="mi-github"></i>
+							  	<span>#rc.$.rbKey('login.loginwithgithub')#</span>
+							  </a>
+						  </cfif>
+						  <!--- Use Azure AD oAuth Button --->
+						  <cfif listFindNoCase($.globalConfig().getEnableOauth(), 'azuread')>
+							  <a href="#$.getBean('azureADLoginProvider').generateAuthUrl(session.urltoken)#" title="#rc.$.rbKey('login.loginwithazuread')#" class="mura-login-auth-btn az">
+							  	<i class="mi-windows"></i>
+							  	<span>#rc.$.rbKey('login.loginwithazuread')#</span>
+							  </a>
+						  </cfif>
+						<div class="text-divider"><span>#rc.$.rbKey('login.or')#</span></div>
+						<h3 class="center mura-login-auth-heading">#rc.$.rbKey('login.loginwithcredentials')#</h3>
+						</div>
+					</cfif>
 
 							<div class="mura-control-group">
-						    <label>
-						    	#rc.$.rbKey('login.username')#
-						    </label>
+							<label>
+								#rc.$.rbKey('login.username')#
+							</label>
 								<input id="username" name="username" type="text" autofocus="autofocus">
 							</div>
 
@@ -208,30 +224,30 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					  	</div>
 
 							<cfif rc.$.getBean('configBean').getValue(property='MFA',defaultValue=false)>
-    							<div class="mura-control-group half">
-    								<!--- <label>Language</label> --->
-    								<label></label>
-    				      	<select name="rb">
-    									<option value="en_US">English</option>
+								<div class="mura-control-group half">
+									<!--- <label>Language</label> --->
+									<label></label>
+						  	<select name="rb">
+										<option value="en_US">English</option>
 											<!---<option value="zh_CN"<cfif cookie.rb eq "zh_CN"> selected</cfif>>Chinese</option>--->
 											<option value="da"<cfif cookie.rb eq "da"> selected</cfif>>Danish</option>
-    									<option value="de"<cfif cookie.rb eq "de"> selected</cfif>>Deutsch</option>
-    									<option value="nl"<cfif cookie.rb eq "nl"> selected</cfif>>Dutch</option>
+										<option value="de"<cfif cookie.rb eq "de"> selected</cfif>>Deutsch</option>
+										<option value="nl"<cfif cookie.rb eq "nl"> selected</cfif>>Dutch</option>
 											<option value="fil"<cfif cookie.rb eq "fil"> selected</cfif>>Filipino</option>
-    									<option value="fr"<cfif cookie.rb eq "fr"> selected</cfif>>Fran&ccedil;ais</option>
-    									<option value="hu"<cfif cookie.rb eq "hu"> selected</cfif>>Hungarian</option>
+										<option value="fr"<cfif cookie.rb eq "fr"> selected</cfif>>Fran&ccedil;ais</option>
+										<option value="hu"<cfif cookie.rb eq "hu"> selected</cfif>>Hungarian</option>
 											<option value="id"<cfif cookie.rb eq "id"> selected</cfif>>Indonesian</option>
-    									<option value="it"<cfif cookie.rb eq "it"> selected</cfif>>Italian</option>
-    									<option value="pt"<cfif cookie.rb eq "pt"> selected</cfif>>Portuguese</option>
-                      <option value="ru"<cfif cookie.rb eq "ru"> selected</cfif>>Русский</option>
-    									<option value="es"<cfif cookie.rb eq "es"> selected</cfif>>Spanish</option>
-    								</select>
-    						  	</div>
+										<option value="it"<cfif cookie.rb eq "it"> selected</cfif>>Italian</option>
+										<option value="pt"<cfif cookie.rb eq "pt"> selected</cfif>>Portuguese</option>
+					  <option value="ru"<cfif cookie.rb eq "ru"> selected</cfif>>Русский</option>
+										<option value="es"<cfif cookie.rb eq "es"> selected</cfif>>Spanish</option>
+									</select>
+							  	</div>
 							<cfelse>
 								<div class="mura-control-group half" id="remember-me">
-        				          <label class="css-input switch switch-sm switch-primary">
-        				              <input type="checkbox" id="rememberMe" name="rememberMe" value="1" ><span></span> #rc.$.rbKey('login.rememberme')#
-        				          </label>
+								  <label class="css-input switch switch-sm switch-primary">
+									  <input type="checkbox" id="rememberMe" name="rememberMe" value="1" ><span></span> #rc.$.rbKey('login.rememberme')#
+								  </label>
 								</div>
 								<div class="mura-control-group half">
 									<!--- <label>Language</label> --->

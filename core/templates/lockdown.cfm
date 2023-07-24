@@ -5,7 +5,7 @@
 
 <cfoutput>
 <title>#REReplace(application.settingsManager.getSite(request.siteID).getEnableLockdown(), "([a-z]{1})", "\U\1", "ONE" )# Mode</title>
-<link rel="stylesheet" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/fonts/font-awesome/css/font-awesome.css">
+<link rel="stylesheet" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/css/font-awesome.min.css">
 </cfoutput>
 
 <style type="text/css">
@@ -149,6 +149,14 @@ form p#error {
   background-color: #4267b2;
 }
 
+.mura-login-auth-btn.gh{
+  background-color: #333333;
+}
+
+.mura-login-auth-btn.az{
+  background-color: #0080ff;
+}
+
 .mura-login-auth-btn span{
   color: #fff;
   font-size: 16px;
@@ -164,8 +172,8 @@ form p#error {
   float: left;
   padding: 6px;
   text-align: center;
-  width: 40px;
- 	font-family: 'FontAwesome';
+  width: 28px;
+  font-family: 'FontAwesome';
 }
 
 h3.mura-login-auth-heading{
@@ -184,13 +192,13 @@ h3.mura-login-auth-heading{
 		<cfelseif application.settingsManager.getSite(request.siteID).getEnableLockdown() eq "development">
 			<form method="post" action="<cfif application.configBean.getLockdownHTTPS() eq true>#replacenocase(arguments.$.getContentRenderer().createHREF(siteid = request.siteid, filename = arguments.event.getScope().currentfilename, complete = true), "http:", "https:")#</cfif>">
 
-					<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google') or listFindNoCase($.globalConfig().getEnableOauth(), 'facebook') >
+					<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google') or listFindNoCase($.globalConfig().getEnableOauth(), 'facebook') or listFindNoCase($.globalConfig().getEnableOauth(), 'github') or listFindNoCase($.globalConfig().getEnableOauth(), 'azuread') >
 
 						<!--- Use Google oAuth Button --->
 						<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'google')>
 							<div style="padding-bottom: 5px" class="center">
 								<a href="#$.getBean('googleLoginProvider').generateAuthUrl(session.urltoken)#" title="#$.rbKey('login.loginwithgoogle')#" class="mura-login-auth-btn ggl">
-				        	<i class="icon icon-lg icon-google-plus mi-google"></i>
+				        	<i class="fa fa-google mi-google"></i>
 				        	<span>#$.rbKey('login.loginwithgoogle')#</span>
 								</a>
 							</div>
@@ -199,8 +207,26 @@ h3.mura-login-auth-heading{
 						<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'facebook')>
 							<div style="padding-bottom: 5px" class="center">
 								<a href="#$.getBean('facebookLoginProvider').generateAuthUrl(session.urltoken)#" title="#$.rbKey('login.loginwithfacebook')#" class="mura-login-auth-btn fb">
-					      	<i class="icon icon-lg icon-facebook mi-facebook"></i>
+					      	<i class="fa fa-facebook mi-facebook"></i>
 					      	<span>#$.rbKey('login.loginwithfacebook')#</span>
+								</a>
+							</div>
+						</cfif>
+						<!--- Use Github oAuth Button --->
+						<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'github')>
+							<div style="padding-bottom: 5px" class="center">
+								<a href="#$.getBean('githubLoginProvider').generateAuthUrl(session.urltoken)#" title="#$.rbKey('login.loginwithgithub')#" class="mura-login-auth-btn gh">
+					      	<i class="fa fa-github mi-github"></i>
+					      	<span>#$.rbKey('login.loginwithgithub')#</span>
+								</a>
+							</div>
+						</cfif>
+						<!--- Use Azure AD oAuth Button --->
+						<cfif listFindNoCase($.globalConfig().getEnableOauth(), 'azuread')>
+							<div style="padding-bottom: 5px" class="center">
+								<a href="#$.getBean('azureadLoginProvider').generateAuthUrl(session.urltoken)#" title="#$.rbKey('login.loginwithazuread')#" class="mura-login-auth-btn az">
+					      	<i class="fa fa-windows mi-windows"></i>
+					      	<span>#$.rbKey('login.loginwithazuread')#</span>
 								</a>
 							</div>
 						</cfif>
