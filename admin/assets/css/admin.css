@@ -38281,9 +38281,6 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 .mura #bigui__categories .categoryAssignment li ul {
   margin: 0 !important;
 }
-.mura #bigui__categories .bigui__wrapper {
-  overflow: visible;
-}
 .mura #bigui__categories .mura-grid li {
   float: none;
   cursor: default;
