@@ -495,7 +495,7 @@ if ( application.setupComplete ) {
 		variables.tracer.commitTracepoint(variables.tracepoint);
 	}
 
-	// Overwrite wordfilter for scriptProtectionFilter bean of set
+	// Overwrite wordfilter for scriptProtectionFilter bean if set in config
 	param name="newsetting.wordfilter" default="#application.configBean.getWordFilter()#";
 	if(newsetting.wordfilter != ""){
 		application.scriptProtectionFilter.setSettings(newsetting);
