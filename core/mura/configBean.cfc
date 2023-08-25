@@ -78,7 +78,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance=structNew()/>
 <cfset variables.instance.mode=""/>
 <cfset variables.autoupdateurl="https://github.com/MasaCMS/MasaCMS/archive/main.zip"/>
-<cfset variables.instance.version="7.4.3"/>
+<cfset variables.instance.version="7.4.4"/>
 <cfset variables.instance.title="Masa CMS"/>
 <cfset variables.instance.projectname="Masa CMS"/>
 <cfset variables.instance.projectname="Masa CMS"/>
@@ -288,11 +288,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfloop collection="#arguments.config#" item="prop">
 		<cfif not listFindNoCase("webroot,filedir,plugindir,locale,port,assetpath,context",prop)>
-			<cfif isDefined("this.set#prop#")>
-				<cfset tempFunc=this["set#prop#"]>
-				<cfset tempFunc(arguments.config['#prop#'])>
-			<cfelse>
-				<cfset setValue(prop,arguments.config[prop])>
+			<cfif isValid('variableName',prop)>
+				<cfif isDefined("this.set#prop#")>
+					<cfset tempFunc=this["set#prop#"]>
+					<cfset tempFunc(arguments.config['#prop#'])>
+				<cfelse>
+					<cfset setValue(prop,arguments.config[prop])>
+				</cfif>
 			</cfif>
 		</cfif>
 	</cfloop>

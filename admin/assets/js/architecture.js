@@ -973,7 +973,7 @@ This file is part of Mura CMS.
 					var valueSelector = '#internalContent input';
 					// if doing an advanced search, then serialze all elements, except the hidden inputs.
 					if (advSearching) {
-						valueSelector = '#selectRelatedContent input:not([type=hidden]), #selectRelatedContent select';
+						valueSelector = '#selectRelatedContent input:not([type=hidden]):not([name=entitytype]), #selectRelatedContent select';
 					}
 					$('#mura-rc-quickedit').hide();
 					siteManager.loadRelatedContent(contentid,siteid, 0, $(valueSelector).serialize(), advSearching,external,relatedcontentsetid);
