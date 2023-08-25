@@ -995,7 +995,7 @@ component
 		response['startindex'] = 1 + response['itemsperpage'] * pageIndex - response['itemsperpage'];
 		response['endindex'] = response['startindex'] + response['itemsperpage'] - 1;
 
-		if (application.configBean.getValue('fmcaseinsensitive') eq 'true') {
+		if (application.configBean.getValue('fmcaseinsensitive') == 'true') {
 			var sqlString = "SELECT *, UPPER(name) AS upper_name from sourceQuery";
 		} else {
 			var sqlString = "SELECT * from sourceQuery";
@@ -1012,7 +1012,7 @@ component
 			qObj.addParam( name="filtername",value="%#UCase(arguments.filterResults)#%",cfsqltype="cf_sql_varchar" );
 		}
 
-		if (application.configBean.getValue('fmcaseinsensitive') eq 'true') {
+		if (application.configBean.getValue('fmcaseinsensitive') == 'true') {
 			sqlString &= " ORDER by type,upper_name";
 		} else {
 			sqlString &= " ORDER by type,name";
