@@ -548,7 +548,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<div id="<cfif application.configBean.get('showextensionsindefault') eq true>mura-editbox<cfelse>mura-editbox-none</cfif>">
 				<div id="mura-content-title-render" data-placeholder="#esapiEncode('html_attr', rc.contentbean.getType())# Title">#esapiEncode('html_attr',rc.contentBean.gettitle())#</div>
 				<cfif listFindNoCase("Link,File,",rc.contentBean.getType())>
-					<div id="mura-content-body-render" style="display:none;"><div id="mura-content-body-inner">||#bodyContent#||</div></div>
+					<div id="mura-content-body-render" style="display:none;"><div id="mura-content-body-inner">#bodyContent#</div></div>
 				<cfelse>
 					<div id="mura-content-body-render" style="display:none;">#bodyContent#</div>
 				</cfif>

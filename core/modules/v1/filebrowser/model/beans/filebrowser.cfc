@@ -995,7 +995,11 @@ component
 		response['startindex'] = 1 + response['itemsperpage'] * pageIndex - response['itemsperpage'];
 		response['endindex'] = response['startindex'] + response['itemsperpage'] - 1;
 
-		var sqlString = "SELECT * from sourceQuery";
+		if (application.configBean.getValue('fmcaseinsensitive') == 'true') {
+			var sqlString = "SELECT *, UPPER(name) AS upper_name from sourceQuery";
+		} else {
+			var sqlString = "SELECT * from sourceQuery";
+		}
 
 		var qObj = new query();
 		qObj.setName("files");
@@ -1008,7 +1012,11 @@ component
 			qObj.addParam( name="filtername",value="%#UCase(arguments.filterResults)#%",cfsqltype="cf_sql_varchar" );
 		}
 
-		sqlString &= " ORDER by type,name";
+		if (application.configBean.getValue('fmcaseinsensitive') == 'true') {
+			sqlString &= " ORDER by type,upper_name";
+		} else {
+			sqlString &= " ORDER by type,name";
+		}
 
 		qObj.setSQL( sqlString );
 

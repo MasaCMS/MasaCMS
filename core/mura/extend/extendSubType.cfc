@@ -186,7 +186,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfelseif isStruct(arguments.data)>
 
 			<cfloop collection="#arguments.data#" item="prop">
-				<cfif isdefined("variables.instance.#prop#")>
+				<cfif isValid('variableName',prop) and isdefined("variables.instance.#prop#")>
 					<cfset tempFunc=this["set#prop#"]>
           			<cfset tempFunc(arguments.data['#prop#'])>
 				</cfif>

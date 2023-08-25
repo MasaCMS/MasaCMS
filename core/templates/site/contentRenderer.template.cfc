@@ -314,6 +314,25 @@ This file is part of Mura CMS.
 				'9 Column'='mura-grid-nine'
 			};
 
+		/*
+		this.positionoptions = [
+			{value='',label='Auto'}
+			,{value='mura-one', label='One Twelfth'}
+			,{value='mura-two', label='One Sixth'}
+			,{value='mura-three', label='One Fourth'}
+			,{value='mura-four', label='One Third'}
+			,{value='mura-five', label='Five Twelfths'}
+			,{value='mura-six', label='One Half'}
+			,{value='mura-seven', label='Seven Twelfths'}
+			,{value='mura-eight', label='Two Thirds'}
+			,{value='mura-nine', label='Three Fourths'}
+			,{value='mura-ten', label='Five Sixths'}
+			,{value='mura-eleven', label='Eleven Twelfths'}
+			,{value='mura-twelve', label='Full'}
+			,{value='mura-expanded', label='Expanded'}
+		]
+		*/
+
 		this.contentGridPropertyMap={
 				itemEl={tag="div",class="mura-item-meta"},
 				labelEl={tag="span"},
