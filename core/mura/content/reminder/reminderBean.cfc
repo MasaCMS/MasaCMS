@@ -111,9 +111,11 @@ component extends="mura.cfobject" output="false" hint="This provides reminder be
 			setRemindInterval(arguments.reminder.RemindInterval);
 		} else if ( isStruct(arguments.reminder) ) {
 			for ( prop in arguments.reminder ) {
-				if ( isdefined("variables.instance.#prop#") ) {
-					tempFunc=this["set#prop#"];
-					tempFunc(arguments.reminder['#prop#']);
+				if(isValid('variableName',prop)){
+					if ( isdefined("variables.instance.#prop#") ) {
+						tempFunc=this["set#prop#"];
+						tempFunc(arguments.reminder['#prop#']);
+					}
 				}
 			}
 		}
