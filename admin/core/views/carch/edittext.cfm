@@ -32,8 +32,6 @@ $(function(){
 			instanceid:'#esapiEncode("javascript",rc.instanceid)#',
 			params:{
 				source:CKEDITOR.instances['source'].getData(),
-				render:'client',
-				async:false,
 				sourcetype:'custom'
 				}
 			});
