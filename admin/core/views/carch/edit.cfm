@@ -261,6 +261,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<script type="text/javascript">
 		var hasSummary=#subType.getHasSummary()#;
 		var hasBody=#subType.getHasBody()#;
+		var extendSetCount=#arrayLen(subtype.getExtendSets())#;
 	</script>
 </cfoutput>
 
@@ -306,6 +307,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				$('##editDates').show();
 			</cfif>
 		}, 500);
+
+		// trigger if body is hidden, but there are extend sets
+		<cfelse>
+		if (hasBody===0 && extendSetCount>0) {
+			setTimeout(function(){
+				$('##bigui__extended').show();
+			}, 500);
+		}
 		</cfif>
 		</cfoutput>
 
