@@ -4768,6 +4768,19 @@ function wireUpObject(obj, response, attempt) {
                     Mura.initPinnedObject(el);
                   });
                 }
+               
+                // Nucleaire optie
+                Mura('body').find('.mura-object').each(function() {
+                  // if (typeof Mura(this).data('items') == "string") {
+                  //     Mura(this).data('items', Mura(this).data('items').replace(/"/g, ''))
+                  // };                  
+                  // Alleen voor lege object names??
+                  Mura(this).data('objectname', '').find('.mura-edit-icon').on('click', function() {
+                    console.log('inint frtonend UI');
+                      Mura.initFrontendUI(this)
+                  });
+                });              
+
               }
             }
           } else if (lcaseObject == 'form' || lcaseObject == 'component') {
