@@ -4769,7 +4769,7 @@ function wireUpObject(obj, response, attempt) {
                   });
                 }
                
-                // Nucleaire optie
+                // Nucleaire optie die werkt
                 Mura('body').find('.mura-object').each(function() {
                   // if (typeof Mura(this).data('items') == "string") {
                   //     Mura(this).data('items', Mura(this).data('items').replace(/"/g, ''))
