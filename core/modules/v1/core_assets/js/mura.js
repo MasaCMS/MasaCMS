@@ -4768,18 +4768,13 @@ function wireUpObject(obj, response, attempt) {
                     Mura.initPinnedObject(el);
                   });
                 }
-               
-                // Nucleaire optie die werkt
+
                 Mura('body').find('.mura-object').each(function() {
-                  // if (typeof Mura(this).data('items') == "string") {
-                  //     Mura(this).data('items', Mura(this).data('items').replace(/"/g, ''))
-                  // };                  
-                  // Alleen voor lege object names??
+                  // Reset the front-end for all items that have an empty objectname.
                   Mura(this).data('objectname', '').find('.mura-edit-icon').on('click', function() {
-                    console.log('inint frtonend UI');
                       Mura.initFrontendUI(this)
                   });
-                });              
+                });
 
               }
             }
@@ -11209,7 +11204,7 @@ Mura.RequestContext = Mura.Core.extend(
   /**
    * findText - Returns content associated with text
    *
-   * @param	{type} text 
+   * @param	{type} text
    * @param	{type} params Object
    * @return {Promise}
    */
@@ -27786,7 +27781,7 @@ try {
 /************************************************************************/
 /******/ 	// The module cache
 /******/ 	var __webpack_module_cache__ = {};
-/******/ 	
+/******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
 /******/ 		// Check if module is in cache
@@ -27800,14 +27795,14 @@ try {
 /******/ 			// no module.loaded needed
 /******/ 			exports: {}
 /******/ 		};
-/******/ 	
+/******/
 /******/ 		// Execute the module function
 /******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/ 	
+/******/
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-/******/ 	
+/******/
 /************************************************************************/
 /******/ 	/* webpack/runtime/global */
 /******/ 	!function() {
@@ -27820,9 +27815,9 @@ try {
 /******/ 			}
 /******/ 		})();
 /******/ 	}();
-/******/ 	
+/******/
 /************************************************************************/
-/******/ 	
+/******/
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module is referenced by other modules so it can't be inlined
@@ -27830,7 +27825,7 @@ try {
 /******/ 	__webpack_require__(3867);
 /******/ 	__webpack_require__(5666);
 /******/ 	var __webpack_exports__ = __webpack_require__(5579);
-/******/ 	
+/******/
 /******/ 	return __webpack_exports__;
 /******/ })()
 ;
