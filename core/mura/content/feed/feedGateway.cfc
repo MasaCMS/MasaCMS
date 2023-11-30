@@ -350,7 +350,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<!--- Join to explicit tables based on join clauses --->
 				<cfloop from="1" to="#arrayLen(local.specifiedjoins)#" index="local.i">
 					<cfif len(local.specifiedjoins[local.i].clause)>
-						#sanitizeValue(local.specifiedjoins[local.i].jointype)# join #sanitizeValue(local.specifiedjoins[local.i].table)# #tableModifier# on (#sanitizeValue(local.specifiedjoins[local.i].clause)#)
+						#sanitizedValue(local.specifiedjoins[local.i].jointype)# join #sanitizedValue(local.specifiedjoins[local.i].table)# #tableModifier# on (#sanitizedValue(value=local.specifiedjoins[local.i].clause, keepCharacterRegex="=")#)
 					</cfif>
 				</cfloop>
 
@@ -1063,7 +1063,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="sanitizedValue" output="false">
 	<cfargument name="value">
-	<cfreturn REReplace(arguments.value,"[^0-9A-Za-z\._,\-\*]","","all")>
+	<cfargument name="keepCharacterRegex" type="string" required="false" default="" hint="regular expression for characters that should be kept">
+
+	<cfreturn REReplace(arguments.value,"[^0-9A-Za-z\._,\-\*#arguments.keepCharacterRegex#]","","all")>
 </cffunction>
 
 </cfcomponent>
