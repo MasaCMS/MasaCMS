@@ -119,7 +119,7 @@
 
 			//writeDump(var=params,abort=1);
 
-			if (isDefined('params.method') && isDefined('#params.method#')){
+			if (isDefined('params.method') && isValid('variableName',params.method) && isDefined('#params.method#')){
 
 				if(arrayLen(pathInfo) > 2){
 					parseParamsFromPath(pathInfo,params,3);
