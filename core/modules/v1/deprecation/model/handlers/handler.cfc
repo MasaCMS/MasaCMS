@@ -26,7 +26,6 @@ component extends="mura.cfobject" {
 			{
 				lineNumber =  "-1"
 				, template = "Unknown template"
-				// , function = "No Deprecation CallStack Set" // 'function' is a reserved word in ACF
 			};
 		}
 
