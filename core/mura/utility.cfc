@@ -550,16 +550,6 @@ QuerySetCell( myQuery , colName[ c ] , myArray[ r ][colName[ c ] ] , r );
 		return aReturn;
 	}
 
-	function queryToStruct( qry ) {
-
-		var str = {};
-
-		for(var i = 1;i <= qry.recordcount;i++) {
-			str[i] = queryRowToStruct( qry,i);
-		}
-
-		return str;
-	}
 
 	function queryToArray( qry,primarykey="" ) {
 
