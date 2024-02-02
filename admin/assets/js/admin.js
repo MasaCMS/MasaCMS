@@ -534,6 +534,7 @@ This file is part of Mura CMS.
                     });
                 },
                 close: function() {
+                    for(instanceName in CKEDITOR.instances){CKEDITOR.instances[instanceName].destroy()}
                     $(this).dialog("destroy"), $("#newFileMetaContainer").remove(), $.ui.dialog.prototype._focusTabbable = e;
                 }
             });

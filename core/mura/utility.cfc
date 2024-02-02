@@ -97,7 +97,8 @@ This file is part of Mura CMS.
 
 <cffunction name="getBCrypt" output="false">
 	<cfif not isDefined('variables.bCrypt')>
-		<cfif variables.configBean.getValue(property='legacyJavaLoader',defaultValue=false)>
+		<cfset var hasJavaLoader = application.serviceFactory.containsBean("javaLoader")>
+		<cfif hasJavaLoader AND variables.configBean.getValue(property='legacyJavaLoader',defaultValue=false)>
 			<cfset variables.bCrypt=getBean("javaLoader").create("BCrypt")>
 		<cfelse>
 			<cfset variables.bCrypt=createObject("java","BCrypt")>
