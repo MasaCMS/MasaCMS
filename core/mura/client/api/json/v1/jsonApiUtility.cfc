@@ -976,7 +976,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 					if( getServiceFactory().containsBean(entitycheck)){
 						params.entityName=entitycheck;
-					} else { 
+					} else {
 						doubleCheckEntityName(params.entityName);
 					}
 				} else {
@@ -1241,10 +1241,10 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			}
 
 			structAppend(form,params);
-		
+
 			switch(method){
 				case "GET":
-				
+
 					if((isDefined('params.id') || (params.entityName=='content') && isDefined('params.contenthistid'))){
 						if(!isDefined('params.id') && (params.entityName=='content' && isDefined('params.contenthistid'))){
 							params.id=params.contenthistid;
@@ -1259,7 +1259,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 								params.method='findPermissions';
 								result=findPermissions(argumentCollection=params);
 						} else if(listLen(params.id) > 1){
-						
+
 							params.ids=params.id;
 							params.method='findMany';
 							result=findMany(argumentCollection=params);
@@ -1270,13 +1270,13 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 							} else {
 								result=doubleCheckEntityMethod(params.entityname,params.id,params,false);
 							}
-							
+
 						}
-						
+
 					} else {
-						if(arrayLen(pathInfo) == 3 
+						if(arrayLen(pathInfo) == 3
 							&& !(
-								isValid('uuid',pathInfo[3]) 
+								isValid('uuid',pathInfo[3])
 								|| pathInfo[3]=='00000000000000000000000000000000001'
 								)
 						){
@@ -1415,17 +1415,17 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		}
 
 		var found=false;
-		
+
 		if(!structKeyExists(variables.entityChecks,'#arguments.entityname#')
 			|| DateDiff('n', variables.entityChecks['#arguments.entityname#'], now())
 		){
 			var lookupdata=getBean('settingsManager').getDeferredModuleAssets();
-			
+
 			variables.entityChecks['#arguments.entityname#']=now();
 
 			for(var asset in lookupdata.assets){
 				if(structKeyExists(asset,'modelDir') and len(asset.modelDir)){
-					if(fileExists(asset.modelDir & "/" & arguments.entityName & ".cfc") 
+					if(fileExists(asset.modelDir & "/" & arguments.entityName & ".cfc")
 					|| fileExists(asset.modelDir & "/beans/" & arguments.entityName & ".cfc")
 						|| fileExists(asset.modelDir & "/entities/" & arguments.entityName & ".cfc")
 						|| fileExists(asset.modelDir & "/services/" & arguments.entityName & ".cfc")
@@ -1650,7 +1650,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		for(var i=1;i<=arrayLen(paramsArray);i++){
 			if(paramsArray[i]=='method'){
 				throw(type="invalidMethodCall");
-			} else {				
+			} else {
 				if(i mod 2){
 					params['# REReplace(paramsArray[i],"[^0-9A-Za-z\._,\-\*]","","all")#']='';
 				} else {
@@ -2724,7 +2724,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		if(!allowAccess(arguments.entityName,$)){
 			throw(type="authorization");
 		}
-		
+
 		checkForChangesetRequest(arguments.entityName,arguments.siteid);
 
 		var propName='';
@@ -3652,7 +3652,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 	}
 
-	/* 	
+	/*
 		If it's a defined entity, then only allow validation on defined properties
 		If it's not a defined entity, then only allow validation on properties that don't match to defined methods
 	*/
@@ -3695,7 +3695,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 						}
 					}
 				}
-				
+
 			}
 		}
 
@@ -3703,7 +3703,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 	}
 
 	function validate(data='{}',validations='{}',siteid) {
-		
+
 		if(isSimpleValue(arguments.data)){
 			arguments.data=urlDecode(arguments.data);
 
@@ -3716,13 +3716,13 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		if(isSimpleValue(arguments.validations)){
 			arguments.validations=urlDecode(arguments.validations);
-		
+
 			if(isJSON(arguments.validations)){
 				arguments.validations=deserializeJSON(arguments.validations);
 			} else {
 				throw(type="invalidParameters");
 			}
-		} 
+		}
 
 		if(!isStruct(arguments.data) || !isStruct(arguments.validations)){
 			return {invalid='Invalid validation request'};
@@ -3752,9 +3752,9 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			if(!structKeyExists(arguments.data,'#bean.getPrimaryKey()#')){
 				arguments.data[bean.getPrimaryKey()]=createUUID();
 			}
-			
+
 			var args={'#bean.getPrimaryKey()#'=arguments.data[bean.getPrimaryKey()]};
-			
+
 			if(!allowAccess(bean,$)){
 				throw(type="authorization");
 			}
@@ -3765,7 +3765,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			bean.set(bean.getPrimaryKey(),arguments.data[bean.getPrimaryKey()]);
 
 			errors=bean.validate(arguments.data.fields).getErrors();
-		
+
 			return errors;
 		}
 
@@ -3775,12 +3775,12 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			var bean=new mura.bean.bean();
 
 			bean.set('validationContextID',validationContextID);
-			bean.setValidations(lockdownValidations(bean,arguments.validations))
-			bean.validate(arguments.data.fields)
-			
+			bean.setValidations(lockdownValidations(bean,arguments.validations));
+			bean.validate(arguments.data.fields);
+
 			structAppend(errors,bean.getErrors());
 		}
-	
+
 		if(isDefined('arguments.data.bean') && isDefined('arguments.data.loadby') && arguments.data.bean != 'bean'){
 
 			var bean=getBean(arguments.data.bean);
@@ -3795,11 +3795,11 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 			bean.loadBy(argumentCollection=args);
 			bean.set('validationContextID',validationContextID);
-			bean.validate(arguments.data.fields)
-				
+			bean.validate(arguments.data.fields);
+
 			structAppend(errors,bean.getErrors());
 		}
-		
+
 		return errors;
 
 	}

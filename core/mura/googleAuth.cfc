@@ -5,8 +5,9 @@ component extends="mura.cfobject" hint="Google Authenticator"{
 		var qrgen = 'com.warrenstrange.googleauth.GoogleAuthenticatorQRGenerator';
 		var gaconfigbuilder = getGAConfigBuilder(argumentCollection=arguments);
 		var gaconfig = gaconfigbuilder.build();
+		var hasJavaLoader = application.serviceFactory.containsBean("javaLoader");
 
-		if (getBean('configBean').getValue(property='legacyJavaLoader', defaultValue=false)) {
+		if (hasJavaLoader && getBean('configBean').getValue(property='legacyJavaLoader', defaultValue=false)) {
 			variables.googleauth = application.serviceFactory.getBean('javaLoader').create(gauth).init(gaconfig);
 			variables.googleauthqrgenerator = application.serviceFactory.getBean('javaLoader').create(qrgen).init();
 		} else {
@@ -21,8 +22,8 @@ component extends="mura.cfobject" hint="Google Authenticator"{
 		var gacb = '';
 		var googleAuthenticatorConfigBuilder = 'com.warrenstrange.googleauth.GoogleAuthenticatorConfig$GoogleAuthenticatorConfigBuilder';
 		var timeStepSizeInMillis = Val(arguments.timeStepSizeInSeconds) * 1000;
-
-		if (getBean('configBean').getValue(property='legacyJavaLoader', defaultValue=false)) {
+		var hasJavaLoader = application.serviceFactory.containsBean("javaLoader");
+		if (hasJavaLoader && getBean('configBean').getValue(property='legacyJavaLoader', defaultValue=false)) {
 			gacb = application.serviceFactory.getBean('javaLoader').create(googleAuthenticatorConfigBuilder);
 		} else {
 			gacb = CreateObject('java', googleAuthenticatorConfigBuilder);
