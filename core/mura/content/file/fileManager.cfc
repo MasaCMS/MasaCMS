@@ -383,9 +383,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var fileLocation = "#variables.configBean.getFileDir()##arguments.filePath#">
 	<cfset var fileExtension = listLast(arguments.filePath,".")>
 
-	<!--- detect url tempering by checking the normalized path eq the configured path AND also filter .cfm and .cfc files --->
-	<cfif fileLocation NEQ this.normalizePath(variables.configBean.getFileDir(), filePath)
-			OR listFindNoCase("cfc,cfm",fileExtension)>
+	<!--- detect url tempering by checking the normalized path eq the configured path --->
+	<cfif fileLocation NEQ this.normalizePath(variables.configBean.getFileDir(), filePath)>
 		<!--- return 404 so we don't leak information --->
 		<cfset getBean("contentServer").render404()>
 	</cfif>
