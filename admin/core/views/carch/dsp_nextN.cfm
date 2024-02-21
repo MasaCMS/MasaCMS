@@ -109,7 +109,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			  		<li class="active"><a href="##">#i#</a></li>
 			  <cfelse>
 			  		<li>
-			  			<a href="" onclick="return siteManager.loadSiteManager('#esapiEncode('javascript',rc.siteid)#','#esapiEncode('javascript',rc.topid)#','#esapiEncode('javascript',rc.moduleid)#','','','#esapiEncode('javascript',rc.ptype)#',#evaluate('(#i#*#nextN.recordsperpage#)-#nextN.recordsperpage#+1')#);">#i#</a>
+			  			<a href="" onclick="return siteManager.loadSiteManager('#esapiEncode('javascript',rc.siteid)#','#esapiEncode('javascript',rc.topid)#','#esapiEncode('javascript',rc.moduleid)#','','','#esapiEncode('javascript',rc.ptype)#',#val((i*nextN.recordsperpage)-nextN.recordsperpage+1)#);">#i#</a>
 			  		</li>
 			  	</cfif>
 		     </cfloop>

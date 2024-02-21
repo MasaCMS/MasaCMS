@@ -224,7 +224,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif rc.rslist.recordcount and rc.nextN.numberofpages gt 1>
 			#application.rbFactory.getKeyValue(session.rb,"dashboard.session.moreresults")#: <cfif rc.nextN.currentpagenumber gt 1> <a href="./?muraAction=cDashboard.listSessions&startrow=#rc.nextN.previous#&siteid=#esapiEncode('url',rc.siteid)#&direction=#rc.direction#&orderBy=#rc.orderBy#&spanType=#rc.spanType#&span=#rc.span#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,"dashboard.session.prev")#</a></cfif>
 			<cfloop from="#rc.nextN.firstPage#"  to="#rc.nextN.lastPage#" index="i">
-				<cfif rc.nextN.currentpagenumber eq i> #i# <cfelse> <a href="./?muraAction=cDashBoard.listSessions&startrow=#evaluate('(#i#*#rc.nextN.recordsperpage#)-#rc.nextN.recordsperpage#+1')#&siteid=#esapiEncode('url',rc.siteid)#&direction=#rc.direction#&orderBy=#rc.orderBy#&spanType=#rc.spanType#&span=#rc.span#">#i#</a> </cfif></cfloop>
+				<cfif rc.nextN.currentpagenumber eq i> #i# <cfelse> <a href="./?muraAction=cDashBoard.listSessions&startrow=#val((i*rc.nextn.recordsperpage)-rc.nextn.recordsperpage+1)#&siteid=#esapiEncode('url',rc.siteid)#&direction=#rc.direction#&orderBy=#rc.orderBy#&spanType=#rc.spanType#&span=#rc.span#">#i#</a> </cfif></cfloop>
 				<cfif rc.nextN.currentpagenumber lt rc.nextN.NumberOfPages><a href="./?muraAction=cDashboard.listSessions&startrow=#rc.nextN.next#&siteid=#esapiEncode('url',rc.siteid)#&direction=#rc.direction#&orderBy=#rc.orderBy#&spanType=#rc.spanType#&span=#rc.span#">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.next")#&nbsp;&raquo;</a></cfif> 
 
 			</cfif>	  
