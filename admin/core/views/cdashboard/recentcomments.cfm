@@ -131,7 +131,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif comments.recordCount() and comments.pageCount() gt 1>
 	<ul class="pagination">
 		<cfif comments.getPageIndex() gt 1> 
-			<a href="./?muraAction=cDashboard.recentComments&page=#evaluate('comments.getPageIndex()-1')#&siteid=#esapiEncode('url',rc.siteid)#"><li><i class="mi-angle-left"></i></a></li>
+			<a href="./?muraAction=cDashboard.recentComments&page=#val(comments.getPageIndex()-1)#&siteid=#esapiEncode('url',rc.siteid)#"><li><i class="mi-angle-left"></i></a></li>
 			</cfif>
 		<cfloop from="1"  to="#comments.pageCount()#" index="i">
 			<cfif comments.getPageIndex() eq i>
@@ -142,7 +142,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfloop>
 		<cfif comments.getPageIndex() lt comments.pageCount()>
-			<li><a href="./?muraAction=cDashboard.recentComments&page=#evaluate('comments.getPageIndex()+1')#&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-angle-right"></i></a></li>
+			<li><a href="./?muraAction=cDashboard.recentComments&page=#val(comments.getPageIndex()+1)#&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-angle-right"></i></a></li>
 		</cfif>
 	</ul>
 </cfif>	

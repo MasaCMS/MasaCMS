@@ -166,7 +166,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif rc.subclassid neq ''>
 		<div class="mura-control justify">
 		<select name="availableObjects" id="availableObjects" class="multiSelect"
-		        size="#evaluate((application.settingsManager.getSite(rc.siteid).getcolumnCount() * 6)-4)#">
+		        size="#val((application.settingsManager.getSite(rc.siteid).getcolumnCount() * 6)-4)#">
 			<cfloop query="rc.rsSections">
 				<cfif rc.rsSections.contentID eq rc.subclassid>
 					<cfsilent>

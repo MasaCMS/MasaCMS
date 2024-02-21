@@ -96,7 +96,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <li>
 <cfif rslist.isOpen eq 1><input type="checkbox" name="categoryID" class="checkbox" <cfif listfind(attributes.feedBean.getCategoryID(),rslist.categoryID) or listfind(attributes.categoryID,rslist.CategoryID)>checked</cfif> value="#rslist.categoryID#" <cfif not application.permUtility.getCategoryPerm(rslist.restrictGroups,attributes.siteid)>disabled</cfif> > </cfif>#esapiEncode('html',rslist.name)#
 <cfif rslist.hasKids>
-<cf_dsp_categories_nest siteID="#attributes.siteID#" parentID="#rslist.categoryID#" categoryID="#attributes.categoryID#" nestLevel="#evaluate(attributes.nestLevel +1)#"  feedBean="#attributes.feedBean#">
+<cf_dsp_categories_nest siteID="#attributes.siteID#" parentID="#rslist.categoryID#" categoryID="#attributes.categoryID#" nestLevel="#val(attributes.nestLevel +1)#"  feedBean="#attributes.feedBean#">
 </cfif>
 </li>
 </cfoutput>

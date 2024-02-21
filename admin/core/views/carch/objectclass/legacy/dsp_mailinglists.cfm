@@ -97,7 +97,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<div class="mura-layout-row">
 		<div class="mura-control-group">
 		<select name="availableObjects" id="availableObjects" class="multiSelect"
-		        size="#evaluate((application.settingsManager.getSite(rc.siteid).getcolumnCount() * 6)-4)#">
+		        size="#val((application.settingsManager.getSite(rc.siteid).getcolumnCount() * 6)-4)#">
 
 			<option value="{'object':'mailing_list_master','name':'#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mastermailinglistsignupform'))#','objectid':'none'}">
 				#application.rbFactory.getKeyValue(session.rb,

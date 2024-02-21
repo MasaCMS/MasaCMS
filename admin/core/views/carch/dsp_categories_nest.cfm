@@ -99,7 +99,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <li>
 <cfif rslist.isOpen eq 1><input type="checkbox" name="#attributes.elementName#" class="checkbox" <cfif listfind(attributes.categoryID,rslist.CategoryID)>checked</cfif> value="#rslist.categoryID#"/> </cfif>#esapiEncode('html',rslist.name)#
 <cfif rslist.hasKids>
-<cf_dsp_categories_nest siteID="#attributes.siteID#" parentID="#rslist.categoryID#" categoryID="#attributes.categoryID#" nestLevel="#evaluate(attributes.nestLevel +1)#" useID="#attributes.useID#" elementName="#attributes.elementName#">
+<cf_dsp_categories_nest siteID="#attributes.siteID#" parentID="#rslist.categoryID#" categoryID="#attributes.categoryID#" nestLevel="#val(attributes.nestLevel +1)#" useID="#attributes.useID#" elementName="#attributes.elementName#">
 </cfif>
 </li>
 </cfoutput>

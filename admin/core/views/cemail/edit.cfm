@@ -107,14 +107,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
             <span class="label">#application.rbFactory.getKeyValue(session.rb,'email.sent')#:<strong> #sent#</strong></span>
             <span class="label">#application.rbFactory.getKeyValue(session.rb,'email.opens')#:<strong> #opens# (
               <cfif sent gt 0>
-    #evaluate(round((opens/sent)*100))#%
+    #val(round((opens/sent)*100))#%
                 <cfelse>
                 0%
               </cfif>
               )</strong></span>
             <span class="label"><a href="./?muraAction=cEmail.showReturns&emailid=#rc.emailid#&siteid=#esapiEncode('url',rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'email.userswhoclicked')#:</a> <strong>#clicks#</strong> (
               <cfif sent gt 0>
-    #evaluate(round((clicks/sent)*100))#%
+    #val(round((clicks/sent)*100))#%
                 <cfelse>
                 0%
               </cfif>
@@ -123,7 +123,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
             <span class="label"><a href="./?muraAction=cEmail.showReturns&emailid=#rc.emailid#&siteid=#esapiEncode('url',rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'email.totalclicks')#:</a> <strong>#totalClicks# </strong></span>
             <span class="label"><a href="./?muraAction=cEmail.showBounces&emailid=#rc.emailid#&siteid=#esapiEncode('url',rc.siteid)#">Bounces:</a> <strong>#bounces# (
               <cfif sent gt 0>
-    #evaluate(round((bounces/sent)*100))#%
+    #val(round((bounces/sent)*100))#%
                 <cfelse>
                 0%
               </cfif>
