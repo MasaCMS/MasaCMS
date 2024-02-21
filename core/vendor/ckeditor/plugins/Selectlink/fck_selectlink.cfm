@@ -79,7 +79,7 @@ StructAppend(attributes, form, "no");
       	<cfoutput>
       	<cfif request.nextn.currentpagenumber eq i><li class="active"><a href="##">#i#</a></li>
       	<cfelse>
-      		<li><a href="?keywords=#attributes.keywords#&startrow=#evaluate('(#i#*#request.nextn.recordsperpage#)-#request.nextn.recordsperpage#+1')#">#i#</a></li>
+      		<li><a href="?keywords=#attributes.keywords#&startrow=#val((i*request.nextn.recordsperpage)-request.nextn.recordsperpage+1)#">#i#</a></li>
       	</cfif>
       </cfoutput>
       </cfloop>
