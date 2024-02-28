@@ -15072,6 +15072,7 @@ this.Mura.templates.section = this.Mura.Handlebars.template({
   },
   "useData": true
 });
+
 this.Mura.templates.success = this.Mura.Handlebars.template({
   "compiler": [8, ">= 4.3.0"],
   "main": function main(container, depth0, helpers, partials, data) {
@@ -16906,9 +16907,23 @@ Mura.UI.Form = Mura.UI.extend(
         if (!self.ormform) {
           template = template + "_static";
         }
+      } else if (fieldtype == "section") { 
+        if(field.fieldsetopen === '1') {
+          field.label = '';
+          if(self.fieldsetIsOpen === true) {
+            Mura(".field-container-" + self.context.objectid, self.context.formEl).append('<!--close-fieldset-->');
+          }
+          self.fieldsetIsOpen = true;
+
+          Mura(".field-container-" + self.context.objectid, self.context.formEl).append('<!--open-fieldset-label: |' + field.fieldsetid + '| --->');    
+        }
       }
 
+      try {
       var html = Mura.templates[template](field);
+      } catch (e) {
+        console.log("ERROR",e,field);
+      }
       Mura(".field-container-" + self.context.objectid, self.context.formEl).append(html);
     }
   },
@@ -17041,17 +17056,29 @@ Mura.UI.Form = Mura.UI.extend(
 
     var fields = self.formJSON.form.pages[self.currentpage];
 
+    self.fieldsetIsOpen = false;
+
     for (var i = 0; i < fields.length; i++) {
       var field = self.formJSON.form.fields[fields[i]]; //try {
 
       if (field.fieldtype.fieldtype != undefined && field.fieldtype.fieldtype != "") {
         self.renderField(field.fieldtype.fieldtype, field);
-      } //} catch(e){
-      //console.log('Error rendering form field:');
-      //console.log(field);
-      //}
-
+      }
     }
+   if(self.fieldsetIsOpen) {
+      Mura(".field-container-" + self.context.objectid, self.context.formEl).append('<!--close-fieldset-->');
+   }
+
+   let selector = `.field-container-${self.context.objectid}`;
+   let container = document.querySelector(selector);
+   let htmlContent = container.innerHTML;
+   
+   htmlContent = htmlContent.replace(/<!--open-fieldset-label: \|(.+?)\| --->/g, '<fieldset id="$1">');
+   htmlContent = htmlContent.replace(/<!--close-fieldset-->/g, '</fieldset>');
+
+   container.innerHTML = htmlContent;
+   
+
 
     if (self.ishuman && self.currentpage == self.formJSON.form.pages.length - 1) {
       Mura(".field-container-" + self.context.objectid, self.context.formEl).append(self.ishuman);
