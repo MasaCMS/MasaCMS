@@ -289,7 +289,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									  <cfset alertclass = ''>
 										<cfsavecontent variable="pwresponse">
 											<cfif rc.status eq 'sendLogin'>
-												<cfset application.userManager.sendLoginByEmail('#rc.email#','','#esapiEncode("url","#listFirst(cgi.http_host,":")##cgi.SCRIPT_NAME#")#')>
+												<cfset application.userManager.sendLoginByEmail('#rc.email#','')>
 												#esapiEncode('html',rc.$.rbKey("login.messagesent"))#
 												<cfset alertclass = "alert alert-error">
 											<cfelse>
