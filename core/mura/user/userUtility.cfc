@@ -416,8 +416,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var struser=structnew()>
 	<cfset var rsuser = ""/>
 	<cfset var userBean = ""/>
-	<cfset var autoresetpasswords=variables.configBean.getValue("autoresetpasswords")>	
-	<cfset arguments.returnURL=getBean("utility").sanitizeHREF(arguments.returnURL,arguments.siteid)>
+	<cfset var autoresetpasswords=variables.configBean.getValue("autoresetpasswords")>
 
 	<cfif REFindNoCase("^[^@%*<>' ]+@[^@%*<>' ]{1,255}\.[^@%*<>' ]{2,5}", trim(arguments.email)) neq 0>
 		<cfset rsuser=getUserByEmail('#arguments.email#','#arguments.siteid#')>
