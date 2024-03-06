@@ -304,7 +304,7 @@ This file is part of Mura CMS.
 
 	<cfset var loginURL = "" />
 
-	<cfif arguments.event.getValue('isOnDisplay') and arguments.event.getValue('r').restrict and not arguments.event.getValue('r').loggedIn and not listFindNoCase('login,editProfile,search',arguments.event.getValue('display'))>
+	<cfif arguments.event.getValue('isOnDisplay') and arguments.event.getValue('r').restrict and not arguments.event.getValue('r').loggedIn and not listFindNoCase('login,editProfile',arguments.event.getValue('display'))>
 		<cfset loginURL = application.settingsManager.getSite(request.siteid).getLoginURL() />
 		<cfif find('?', loginURL)>
 			<cfset loginURL &= "&returnURL=#URLEncodedFormat(arguments.event.getValue('contentRenderer').getCurrentURL())#" />
@@ -614,7 +614,7 @@ This file is part of Mura CMS.
 					<cfset arguments.event.setValue('passedProtect', arguments.$.getBean('utility').isHuman(arguments.event)) />
 					<cfset arguments.event.setValue('userBean',  getBean("user").loadBy(userID=arguments.event.getValue("userID")).set(eventStruct).save() ) />
 					<cfif structIsEmpty(arguments.event.getValue('userBean').getErrors()) and not arguments.event.valueExists('passwordNoCache')>
-						<cfset application.userManager.sendLoginByUser(arguments.event.getValue('userBean'),arguments.event.getValue('siteid'),arguments.event.getValue('contentRenderer').getCurrentURL(),true) />
+						<cfset application.userManager.sendLoginByUser(arguments.event.getValue('userBean'),arguments.event.getValue('siteid'),true) />
 					<cfelseif structIsEmpty(arguments.event.getValue('userBean').getErrors()) and arguments.event.valueExists('passwordNoCache') and arguments.event.getValue('userBean').getInactive() eq 0>
 						<cfset arguments.event.setValue('userID',arguments.event.getValue('userBean').getUserID()) />
 						<cfset application.loginManager.loginByUserID(eventStruct)>
@@ -707,8 +707,7 @@ This file is part of Mura CMS.
 	<cfargument name="event" required="true">
 
 	<cfif request.returnFormat eq 'HTML' and not len(arguments.event.getValue("previewID")) and (application.configBean.getMode() eq 'production' and yesNoFormat(arguments.event.getValue("muraValidateDomain"))
-		and not application.settingsManager.getSite(request.siteID).isValidDomain(domain:listFirst(cgi.http_host,":"), mode: "either",enforcePrimaryDomain=true))
-			and not (listFirst(cgi.http_host,":") eq 'LOCALHOST' and cgi.HTTP_USER_AGENT eq 'vspider')>
+		and not application.settingsManager.getSite(request.siteID).isValidDomain(domain:listFirst(cgi.http_host,":"), mode: "either",enforcePrimaryDomain=true))>
 		<cfset arguments.event.getHandler("standardWrongDomain").handle(arguments.event)>
 	</cfif>
 </cffunction>

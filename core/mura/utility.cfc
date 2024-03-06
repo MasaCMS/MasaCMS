@@ -1144,20 +1144,40 @@ Blog: www.codfusion.com--->
 <cfreturn local.str>
 </cffunction>
 
+<cffunction name="parseDomain" output="false">
+	<cfargument name="urlstring">
+	<cfset var parsed=reReplace(arguments.urlstring, "^\w+://([^\/:]+)[\w\W]*$", "\1", "one")>
+	<cfif len(parsed) gt 1 and left(parsed,2) eq '//'>
+		<cfset parsed=listFirst(right(parsed,len(parsed)-2),'/')>
+	</cfif>
+	<cfreturn parsed>
+</cffunction>
+
 <cffunction name="sanitizeHref" output="false">
 	<cfargument name="href">
-
-	<cfif len(arguments.href) and listFindNoCase("http,https",listFirst(arguments.href,":"))>
-		<cfset var returnProtocol = listFirst(arguments.href,':') />
-		<cfset var returnDomain = reReplace(arguments.href, "^\w+://([^\/:]+)[\w\W]*$", "\1", "one") />
-		<cfif not listfindNoCase(getBean('settingsManager').getAccessControlOriginDomainList(),returnDomain) and len(returnDomain)>
-			<cfif len(cgi.http_host)>
-				<cfset arguments.href=replace(arguments.href,returnDomain,listFirst(cgi.http_host,":"))>
-			<cfelse>
-				<cfset arguments.href=replace(arguments.href,returnDomain,cgi.server_name)>
-			</cfif>
-		</cfif>
+	<cfargument name="siteid" default="">
+	<cfset var returnProtocol = "">
+	
+	<cfif not len(arguments.siteid)>
+		<cfset sessionData=getSession()>
+		<cfset arguments.siteid=sessionData.siteid>
 	</cfif>
+	
+	<cfset var currentSite  = getBean('settingsManager').getSite(arguments.siteid)>
+
+	<cfif len(arguments.href) and (
+		listFindNoCase("http,https",listFirst(arguments.href,":"))
+		or len(arguments.href) gt 1 and left(arguments.href,2) eq "//"
+	)>	
+		<cfset  returnProtocol = listFirst(arguments.href,':') />	
+	<cfelse>		
+		<cfset returnProtocol = lcase(currentSite.getProtocol()) />				
+	</cfif>
+			
+	<cfset returnDomain = parseDomain(arguments.href) />
+	<cfif not listfindNoCase(getBean('settingsManager').getAccessControlOriginDomainList(),returnDomain) and len(returnDomain)>	
+		<cfset arguments.href=replace(arguments.href,returnDomain,getBean('settingsManager').getSite(arguments.siteid).getDomain())>
+	</cfif>	
 
 	<cfreturn arguments.href>
 </cffunction>
