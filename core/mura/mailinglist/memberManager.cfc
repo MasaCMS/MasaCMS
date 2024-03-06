@@ -188,18 +188,11 @@ and contenthistid in (select contenthistid from tcontentobjects where object='ma
 
 <cfoutput>
 <cfif mailingListconfirmScript neq ''>
-	<cfset theString = mailingListConfirmScript/>
-	<cfset finder=refind('##.+?##',theString,1,"true")>
-	<cfloop condition="#finder.len[1]#">
-		<cftry>
-			<cfset theString=replace(theString,mid(theString, finder.pos[1], finder.len[1]),'#trim(evaluate(mid(theString, finder.pos[1], finder.len[1])))#')>
-			<cfcatch>
-				<cfset theString=replace(theString,mid(theString, finder.pos[1], finder.len[1]),'')>
-			</cfcatch>
-		</cftry>
-		<cfset finder=refind('##.+?##',theString,1,"true")>
-	</cfloop>
-	<cfset mailingListConfirmScript = theString/>
+	<cfscript>
+		var placeholders="##listName##^##returnURL##^##contactEmail##^##contactName##";
+		var replacements="#listName#^#returnURL#^#contactEmail#^#contactName#";
+		mailingListConfirmScript=replaceList(mailingListConfirmScript,placeholders,replacements,"^","^",true);
+	</cfscript>
 
 	<cfsavecontent variable="mailText">
 #mailingListConfirmScript#
