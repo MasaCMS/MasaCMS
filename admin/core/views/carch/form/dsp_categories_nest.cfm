@@ -177,7 +177,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 													<input type="hidden" id="startHour#catTrim#" name="startHour#catTrim#" value="#hour(rsIsMember.featurestart)#">
 													<input type="hidden" id="startDayPart#catTrim#" name="startDayPart#catTrim#" value="AM">
 												<cfelse>
-													<input type="hidden" id="startHour#catTrim#" name="startHour#catTrim#" value="#evaluate('hour(rsIsMember.featurestart)-12')#">
+													<input type="hidden" id="startHour#catTrim#" name="startHour#catTrim#" value="#hour(rsIsMember.featurestart)-12#">
 													<input type="hidden" id="startDayPart#catTrim#" name="startDayPart#catTrim#" value="PM">
 												</cfif>
 											<cfelse>
@@ -198,7 +198,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 													<input type="hidden" id="stopHour#catTrim#" name="stopHour#catTrim#" value="#hour(rsIsMember.featureStop)#">
 													<input type="hidden" id="stopDayPart#catTrim#" name="stopDayPart#catTrim#" value="AM">
 												<cfelse>
-													<input type="hidden" id="stopHour#catTrim#" name="stopHour#catTrim#" value="#evaluate('hour(rsIsMember.featureStop)-12')#">
+													<input type="hidden" id="stopHour#catTrim#" name="stopHour#catTrim#" value="#hour(rsIsMember.featureStop)-12#">
 													<input type="hidden" id="stopDayPart#catTrim#" name="stopDayPart#catTrim#" value="PM">
 												</cfif>
 											<cfelse>
@@ -224,7 +224,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cf_dsp_categories_nest
 						siteID="#attributes.siteID#"
 						parentID="#rslist.categoryID#"
-						nestLevel="#evaluate(attributes.nestLevel +1)#"
+						nestLevel="#val(attributes.nestLevel +1)#"
 						contentBean="#attributes.contentBean#"
 						rsCategoryAssign="#attributes.rsCategoryAssign#"
 						disabled="#attributes.disabled#">

@@ -94,7 +94,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<li class="active"><a href="##">#i#</a></li> 
 			<cfelse> 
 				<li>
-				<a href="./?muraAction=cMailingList.listmembers&mlid=#esapiencode('url',rc.mlid)#&startrow=#evaluate('(#i#*#rc.nextN.recordsperpage#)-#rc.nextN.recordsperpage#+1')#&siteid=#esapiEncode('url',rc.siteid)#">#i#</a> 
+				<a href="./?muraAction=cMailingList.listmembers&mlid=#esapiencode('url',rc.mlid)#&startrow=#val((i*rc.nextn.recordsperpage)-rc.nextn.recordsperpage+1)#&siteid=#esapiEncode('url',rc.siteid)#">#i#</a> 
 				</li>
 			</cfif>
 		</cfloop>

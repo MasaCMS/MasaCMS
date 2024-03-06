@@ -541,7 +541,7 @@
 					qPacked    = entry.getCompressedSize();
 					qCrc       = entry.getCrc();
 
-					if(qSize GT 0) qRatio = Round(Evaluate(100-((qPacked*100)/qSize))) & "%";
+					if(qSize GT 0) qRatio = Round(100-((qPacked*100)/qSize)) & "%";
 					else           qRatio = "0%";
 
 					for(i=1; i LTE ArrayLen(cols); i=i+1)

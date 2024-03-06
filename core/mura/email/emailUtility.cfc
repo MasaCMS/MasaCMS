@@ -212,13 +212,13 @@ This file is part of Mura CMS.
 
 						<cfif rsEmail.format neq "Text">
 							<cfloop list="#HTMLfieldList#" index="f" delimiters="^">
-								<cfset bodyHTML=replace(bodyHTML,"###f###",evaluate("rsAddresses.#f#"),"ALL")>
+								<cfset bodyHTML=replace(bodyHTML,"###f###",rsAddresses["#f#"],"ALL")>
 							</cfloop>
 						</cfif>
 
 						<cfif rsEmail.format neq "HTML">
 							<cfloop list="#TextfieldList#" index="f" delimiters="^">
-								<cfset bodyText=replace(bodyText,"###f###",evaluate("rsAddresses.#f#"),"ALL")>
+								<cfset bodyText=replace(bodyText,"###f###",rsAddresses["#f#"],"ALL")>
 							</cfloop>
 						</cfif>
 

@@ -119,8 +119,8 @@ This file is part of Mura CMS.
 	<cfset variables.recordsperpage=10>
 	<cfset variables.NumberOfPages=Ceiling(variables.totalrecords/variables.recordsperpage)>
 	<cfset variables.CurrentPageNumber=Ceiling(request.StartRow/variables.recordsperpage)>
-	<cfset variables.next=evaluate((request.startrow+variables.recordsperpage))	>
-	<cfset variables.previous=evaluate((request.startrow-variables.recordsperpage))	>
+	<cfset variables.next=val(request.startrow+variables.recordsperpage)	>
+	<cfset variables.previous=val(request.startrow-variables.recordsperpage)	>
 	<cfset variables.through=iif(variables.totalrecords lt variables.next,variables.totalrecords,variables.next-1)>
 
 	<cfset variables.iterator=variables.$.getBean("contentIterator")>

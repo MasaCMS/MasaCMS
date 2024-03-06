@@ -371,7 +371,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
    	 or isOpenSection) and attributes.hasKids>
    <cf_dsp_nest parentid="#rsnest.contentid#"
    locking="#attributes.locking#"
-   nestlevel="#evaluate(attributes.nestlevel + 1)#"
+   nestlevel="#val(attributes.nestlevel + 1)#"
    perm="#verdict#"
    siteid="#attributes.siteid#"
    topid="#attributes.topid#"

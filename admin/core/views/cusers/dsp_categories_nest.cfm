@@ -120,7 +120,7 @@ This file is part of Mura CMS.
 								siteID="#attributes.siteID#" 
 								parentID="#rslist.categoryID#" 
 								categoryID="#attributes.categoryID#" 
-								nestLevel="#evaluate(attributes.nestLevel+1)#" 
+								nestLevel="#val(attributes.nestLevel+1)#" 
 								userBean="#attributes.userBean#">
 
 					</cfif>

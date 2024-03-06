@@ -196,7 +196,7 @@ siteManager.copySiteID = '#session.copySiteID#';
 				<cfif rc.nextn.currentpagenumber eq i>
 					<li class="active"><a href="##">#i#</a></li>
 				<cfelse>
-					<li><a href="./?muraAction=cArch.search&siteid=#esapiEncode('url',rc.siteid)#&keywords=#session.keywords#&startrow=#evaluate('(#i#*#rc.nextn.recordsperpage#)-#rc.nextn.recordsperpage#+1')#&moduleid=#esapiencode('url',rc.moduleid)#">#i#</a></li>
+					<li><a href="./?muraAction=cArch.search&siteid=#esapiEncode('url',rc.siteid)#&keywords=#session.keywords#&startrow=#val((i*rc.nextn.recordsperpage)-rc.nextn.recordsperpage+1)#&moduleid=#esapiencode('url',rc.moduleid)#">#i#</a></li>
 				</cfif>
 			</cfloop>
 			<cfif rc.nextN.currentpagenumber lt rc.nextN.NumberOfPages>

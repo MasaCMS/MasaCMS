@@ -220,7 +220,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<ul class="pagination moreResults">
 							<cfif rc.changesets.getPageIndex() gt 1>
 							<li>
-								<a href="./?muraAction=cChangesets.list&page=#evaluate('#rc.changesets.getPageIndex()#-1')#&siteid=#esapiEncode('url',rc.siteid)#&keywords=#esapiEncode('url',rc.keywords)#&startdate=#esapiEncode('url',rc.startdate)#&stopdate=#esapiEncode('url',rc.stopdate)#&categoryid=#esapiEncode('url',rc.categoryid)#&tags=#esapiEncode('url',rc.tags)#"><i class="mi-angle-left"></i></a>
+								<a href="./?muraAction=cChangesets.list&page=#val(rc.changesets.getPageIndex()-1)#&siteid=#esapiEncode('url',rc.siteid)#&keywords=#esapiEncode('url',rc.keywords)#&startdate=#esapiEncode('url',rc.startdate)#&stopdate=#esapiEncode('url',rc.stopdate)#&categoryid=#esapiEncode('url',rc.categoryid)#&tags=#esapiEncode('url',rc.tags)#"><i class="mi-angle-left"></i></a>
 							</li>
 							</cfif>
 							<cfloop from="1" to="#rc.changesets.pageCount()#" index="i">
@@ -234,7 +234,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</cfloop>
 							<cfif rc.changesets.getPageIndex() lt rc.changesets.pagecount()>
 								<li>
-									<a href="./?muraAction=cChangesets.list&page=#evaluate('#rc.changesets.getPageIndex()#+1')#&siteid=#esapiEncode('url',rc.siteid)#&keywords=#esapiEncode('url',rc.keywords)#&startdate=#esapiEncode('url',rc.startdate)#&stopdate=#esapiEncode('url',rc.stopdate)#&categoryid=#esapiEncode('url',rc.categoryid)#&tags=#esapiEncode('url',rc.tags)#"><i class="mi-angle-right"></i></a>
+									<a href="./?muraAction=cChangesets.list&page=#val(rc.changesets.getPageIndex()+1)#&siteid=#esapiEncode('url',rc.siteid)#&keywords=#esapiEncode('url',rc.keywords)#&startdate=#esapiEncode('url',rc.startdate)#&stopdate=#esapiEncode('url',rc.stopdate)#&categoryid=#esapiEncode('url',rc.categoryid)#&tags=#esapiEncode('url',rc.tags)#"><i class="mi-angle-right"></i></a>
 								</li>
 							</cfif>
 							</ul> <!-- /.pagination -->
