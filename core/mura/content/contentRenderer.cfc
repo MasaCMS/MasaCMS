@@ -1724,7 +1724,10 @@ Display Objects
 </cffunction>
 
 <cffunction name="getBodyDisplayStatus" output="false">
-	<cfif $.event('display') eq 'search'>
+	
+	<cfif not $.event('isOnDisplay')>
+		<cfreturn "offline">	
+	<cfelseif $.event('display') eq 'search'>
 		<cfreturn "search">
 	<cfelseif $.event('display') eq 'editprofile'>
 		<cfreturn "editprofile">
@@ -1734,8 +1737,7 @@ Display Objects
 		<cfreturn "deny">
 	<cfelseif $.event('isOnDisplay') and $.event('r').restrict and not $.event('r').loggedIn>
 		<cfreturn "login">
-	<cfelseif not $.event('isOnDisplay')>
-		<cfreturn "offline">
+		
 	<cfelse>
 		<cfreturn 'default'>
 	</cfif>
