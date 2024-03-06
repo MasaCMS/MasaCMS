@@ -106,11 +106,11 @@ if ( !application.setupComplete || (not application.appInitialized || structKeyE
 			include "/muraWRM/core/appcfc/setup_check.cfm";
 
 			if ( trim( getINIProperty("datasource") ) != ""
-					AND (
-						NOT isDefined( "FORM.#application.setupSubmitButton#" )
-						AND
-						NOT isDefined( "FORM.#application.setupSubmitButtonComplete#" )
-						) ) {
+				AND (
+					NOT (isValid('variableName',application.setupSubmitButton) and isDefined( "FORM.#application.setupSubmitButton#" ))
+					AND
+					NOT (isValid('variableName',application.setupSubmitButtonComplete) and isDefined( "FORM.#application.setupSubmitButtonComplete#" ))
+					) ) {
 				application.setupComplete = true;
 			} else {
 				//  check to see if the index.cfm page exists in the setup folder
