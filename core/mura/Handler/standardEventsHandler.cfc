@@ -614,7 +614,7 @@ This file is part of Mura CMS.
 					<cfset arguments.event.setValue('passedProtect', arguments.$.getBean('utility').isHuman(arguments.event)) />
 					<cfset arguments.event.setValue('userBean',  getBean("user").loadBy(userID=arguments.event.getValue("userID")).set(eventStruct).save() ) />
 					<cfif structIsEmpty(arguments.event.getValue('userBean').getErrors()) and not arguments.event.valueExists('passwordNoCache')>
-						<cfset application.userManager.sendLoginByUser(arguments.event.getValue('userBean'),arguments.event.getValue('siteid'),arguments.event.getValue('contentRenderer').getCurrentURL(),true) />
+						<cfset application.userManager.sendLoginByUser(arguments.event.getValue('userBean'),arguments.event.getValue('siteid'),true) />
 					<cfelseif structIsEmpty(arguments.event.getValue('userBean').getErrors()) and arguments.event.valueExists('passwordNoCache') and arguments.event.getValue('userBean').getInactive() eq 0>
 						<cfset arguments.event.setValue('userID',arguments.event.getValue('userBean').getUserID()) />
 						<cfset application.loginManager.loginByUserID(eventStruct)>

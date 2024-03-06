@@ -410,8 +410,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="sendLoginByEmail" output="false" >
 	<cfargument name="email" type="string">
-	<cfargument name="siteid" type="string" required="yes" default="">
-	<cfargument name="returnURL" type="string" required="yes" default="#listFirst(cgi.http_host,":")##cgi.SCRIPT_NAME#">
+	<cfargument name="siteid" type="string" required="yes" default="">	
 	<cfargument name="subject" required="yes" type="string" default=""/>
 	<cfargument name="message" type="string" default="">
 	<cfset var struser=structnew()>
@@ -454,8 +453,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="sendLoginByUser" output="false" returntype="boolean" >
 	<cfargument name="userBean" type="any">
-	<cfargument name="siteid" type="string" required="yes" default="" >
-	<cfargument name="returnURL" type="string" required="yes" default="#listFirst(cgi.http_host,":")##cgi.SCRIPT_NAME#">
+	<cfargument name="siteid" type="string" required="yes" default="" >	
 	<cfargument name="isPublicReg" required="yes" type="boolean" default="false"/>
 	<cfargument name="subject" required="yes" type="string" default=""/>
 	<cfargument name="message" type="string" default="">

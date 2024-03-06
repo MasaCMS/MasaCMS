@@ -267,7 +267,7 @@ This file is part of Mura CMS.
 							<p>#variables.$.rbKey('user.forgotloginmessage')#</p>
 
 							<cfif variables.$.event('doaction') eq 'sendlogin'>
-								<cfset application.userManager.sendLoginByEmail(variables.$.event('email'), variables.$.event('siteID'),'#urlencodedformat(variables.$.event('returnURL'))#')>
+								<cfset application.userManager.sendLoginByEmail(variables.$.event('email'), variables.$.event('siteID'))>
 								
 								<div class="#this.alertDangerClass#">
 									#HTMLEditFormat(variables.$.rbKey('user.forgotsuccess'))#
