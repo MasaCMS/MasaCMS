@@ -2704,8 +2704,8 @@ Display Objects
 
 	<!--- It the Dyanmic content is not enabled just return the submitted string --->
 	<cfif isBoolean(this.enableDynamicContent) and not this.enableDynamicContent>
-		<cfset str=application.scriptProtectionFilter.filterWords(str,"script,object,applet,embed,layer,ilayer,frameset,param,meta,base,xss,marquee")>
-		<cfset str=application.scriptProtectionFilter.filterTags(str)>
+		<cfset str=application.scriptProtectionFilter.filterWords(str,"script,object,applet,embed,layer,ilayer,frameset,param,meta,base,xss,marquee").cleanText>
+		<cfset str=application.scriptProtectionFilter.filterTags(str).cleanText>
 		<cfreturn str />
 	</cfif>
 
