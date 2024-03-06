@@ -581,19 +581,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	}).save()>
 
 <cfif sendLoginScript neq ''>
-
-<cfset theString = sendLoginScript/>
-<cfset finder=refind('##.+?##',theString,1,"true")>
-<cfloop condition="#finder.len[1]#">
-	<cftry>
-		<cfset theString=replace(theString,mid(theString, finder.pos[1], finder.len[1]),'#trim(evaluate(mid(theString, finder.pos[1], finder.len[1])))#')>
-		<cfcatch>
-			<cfset theString=replace(theString,mid(theString, finder.pos[1], finder.len[1]),'')>
-		</cfcatch>
-	</cftry>
-	<cfset finder=refind('##.+?##',theString,1,"true")>
-</cfloop>
-<cfset sendLoginScript = theString>
+	<cfscript>
+		var placeholders="##firstName##^##lastName##^##username##^##password##^##contactEmail##^##contactName##^##returnURL##";
+		var replacements="#firstName#^#lastName#^#username#^#password#^#contactEmail#^#contactName#^#returnURL#";
+		sendLoginScript=replaceList(sendLoginScript,placeholders,replacements,"^","^",true);	
+	</cfscript>
 
 <cfsavecontent variable="mailText">
 <cfoutput>#sendLoginScript#</cfoutput>
