@@ -125,7 +125,7 @@ follows:
 	var themepath='#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#';
 	var rb='#lcase(esapiEncode('javascript',session.rb))#';
 	var siteid='#esapiEncode('javascript',session.siteid)#';
-	var sessionTimeout=#evaluate("application.configBean.getValue('sessionTimeout') * 60")#;
+	var sessionTimeout=#val(application.configBean.getValue('sessionTimeout') * 60)#;
 	var activepanel=#esapiEncode('javascript',rc.activepanel)#;
 	var activetab=#esapiEncode('javascript',rc.activetab)#;
 	<cfif $.currentUser().isLoggedIn()>var webroot='#esapiEncode('javascript',left($.globalConfig("webroot"),len($.globalConfig("webroot"))-len($.globalConfig("context"))))#';</cfif>

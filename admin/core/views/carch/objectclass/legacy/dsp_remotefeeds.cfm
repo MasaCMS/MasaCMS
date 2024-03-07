@@ -95,7 +95,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<div class="mura-layout-row">
 		<div class="mura-control-group">
 			<select name="availableObjects" id="availableObjects" class="multiSelect"
-			        size="#evaluate((application.settingsManager.getSite(rc.siteid).getcolumnCount() * 6)-4)#">
+			        size="#val((application.settingsManager.getSite(rc.siteid).getcolumnCount() * 6)-4)#">
 				<cfloop query="rc.rslist">
 
 					<cfset title=rc.rslist.name

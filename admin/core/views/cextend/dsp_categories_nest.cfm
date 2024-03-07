@@ -95,7 +95,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput query="rslist">
 <li>
 <cfif rslist.isOpen eq 1><input type="checkbox" name="categoryID" class="checkbox" <cfif listfind(rc.extendSetBean.getCategoryID(),rslist.categoryID) or listfind(rc.categoryID,rslist.CategoryID)>checked</cfif> value="#rslist.categoryID#"> </cfif>#esapiEncode('html',rslist.name)#
-<cf_dsp_categories_nest siteID="#rc.siteID#" parentID="#rslist.categoryID#" categoryID="#rc.categoryID#" nestLevel="#evaluate(rc.nestLevel +1)#" extendSetBean="#rc.extendSetBean#">
+<cf_dsp_categories_nest siteID="#rc.siteID#" parentID="#rslist.categoryID#" categoryID="#rc.categoryID#" nestLevel="#val(rc.nestLevel +1)#" extendSetBean="#rc.extendSetBean#">
 </li>
 </cfoutput>
 </ul>

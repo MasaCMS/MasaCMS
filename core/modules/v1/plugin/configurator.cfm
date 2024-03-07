@@ -173,7 +173,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfquery>
 					<cfif rs.recordcount>
 						<select id="availableObjectSelector" class="multiSelect"
-				        size="#evaluate((application.settingsManager.getSite(rc.siteid).getcolumnCount() * 6)-4)#">
+				        size="#val((application.settingsManager.getSite(rc.siteid).getcolumnCount() * 6)-4)#">
 							<cfloop query="rs">
 								<option value="{'object':'plugin','name':'#esapiEncode('javascript','#rs.name#')#','objectid':'#rs.objectID#',moduleid:'#rs.moduleid#'}" <cfif rc.objectid eq rs.objectid>selected</cfif>>
 									#rs.name#

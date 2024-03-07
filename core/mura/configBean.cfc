@@ -78,7 +78,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance=structNew()/>
 <cfset variables.instance.mode=""/>
 <cfset variables.autoupdateurl="https://github.com/MasaCMS/MasaCMS/archive/main.zip"/>
-<cfset variables.instance.version="7.4.5"/>
+<cfset variables.instance.version="7.4.6"/>
 <cfset variables.instance.title="Masa CMS"/>
 <cfset variables.instance.projectname="Masa CMS"/>
 <cfset variables.instance.projectname="Masa CMS"/>
@@ -139,15 +139,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.imageInterpolation="highQuality" />
 <cfset variables.instance.imageQuality=.95 />
 <cfset variables.instance.clusterIPList="" />
-<cfset variables.instance.enableDynamicContent=true />
-<cfset variables.instance.enableMuraTag=true />
+<cfset variables.instance.enableDynamicContent=false />
+<cfset variables.instance.enableMuraTag=false />
 <cfset variables.instance.dashboard=true />
 <cfset variables.instance.sortPermission="" />
 <cfset variables.instance.proxyUser="" />
 <cfset variables.instance.proxyPassword="" />
 <cfset variables.instance.proxyServer="" />
 <cfset variables.instance.proxyPort="80" />
-<cfset variables.instance.sharableRemoteSessions=true />
+<cfset variables.instance.sharableRemoteSessions=false />
 <cfset variables.instance.siteIDInURLS=true />
 <cfset variables.instance.indexFileInURLS=true />
 <cfset variables.instance.hashURLs=false />

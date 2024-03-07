@@ -162,7 +162,7 @@ This file is part of Mura CMS.
 								<li class="current active"><span>#i#</span></li>
 							<cfelse>
 								<li>
-									<a href="./?startrow=#evaluate('(#i#*#variables.nextN.recordsperpage#)-#variables.nextN.recordsperpage#+1')#&amp;categoryID=#variables.$.event('categoryID')#&amp;relatedID=#request.relatedID#">#i#</a>
+									<a href="./?startrow=#val((i*variables.nextN.recordsperpage)-variables.nextN.recordsperpage+1)#&amp;categoryID=#variables.$.event('categoryID')#&amp;relatedID=#request.relatedID#">#i#</a>
 								</li>
 							</cfif>
 						</cfloop>

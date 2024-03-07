@@ -570,7 +570,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset crumbData=getBean('contentGateway').getCrumblist(arguments.contentBean.getParentID(),arguments.contentBean.getSiteID())>
 		<cfset crumbStr=crumbData[arrayLen(crumbData)].menutitle />
 		<cfif arrayLen(crumbData) gt 1>
-			<cfloop from="#evaluate(arrayLen(crumbData)-1)#" to="1" index="c" step="-1">
+			<cfloop from="#val(arrayLen(crumbData)-1)#" to="1" index="c" step="-1">
 				<cfset crumbStr=crumbStr & " > " & crumbData[c].menutitle>
 			</cfloop>
 		</cfif>

@@ -123,7 +123,7 @@
 
 							<div id="#lcase(s)##f#btns" class="btn-group">
 									<button type="button" class="btn btn-default btn-small cropper-reset" data-fileid="#f#" data-size="#lcase(s)#"><i class="mi-refresh"></i> Reset</button>
-									<button type="button" class="btn btn-default btn-small cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-height="#$.siteConfig('#s#ImageHeight')#" data-width="#$.siteConfig('#s#ImageWidth')#" data-ratio="#evaluate('rc.#s#ImageRatio')#" data-size="#lcase(s)#"><i class="mi-crop"></i> Re-Crop</button>
+									<button type="button" class="btn btn-default btn-small cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-height="#$.siteConfig('#s#ImageHeight')#" data-width="#$.siteConfig('#s#ImageWidth')#" data-ratio="#rc['#s#ImageRatio'])#" data-size="#lcase(s)#"><i class="mi-crop"></i> Re-Crop</button>
 							</div>
 
 							<div class="mura-control justify">
@@ -164,7 +164,7 @@
 
 							<div id="#lcase(s)##f#btns" class="btn-group">
 								<button type="button" class="btn btn-default btn-small cropper-reset" data-fileid="#f#" data-size="#lcase(s)#"><i class="mi-refresh"></i> Reset</button>
-								<button type="button" class="btn btn-default btn-small cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#"  data-height="#$.siteConfig('#s#ImageHeight')#" data-width="#$.siteConfig('#s#ImageWidth')#" data-ratio="#evaluate('rc.#s#ImageRatio')#" data-size="#lcase(s)#"><i class="mi-crop"></i> Re-Crop</button>
+								<button type="button" class="btn btn-default btn-small cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#"  data-height="#$.siteConfig('#s#ImageHeight')#" data-width="#$.siteConfig('#s#ImageWidth')#" data-ratio="#rc['#s#ImageRatio'])#" data-size="#lcase(s)#"><i class="mi-crop"></i> Re-Crop</button>
 							</div>
 
 							<div class="mura-control justify">

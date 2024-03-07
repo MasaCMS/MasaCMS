@@ -94,7 +94,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <ul>
 <cfoutput query="rslist">
 <li><cfif rslist.isOpen eq 1><input type="checkbox" name="categoryID" class="checkbox" <cfif listfind(session.paramCategories,rslist.CategoryID)>checked</cfif> value="#rslist.categoryID#"> </cfif>#rslist.name#
-<cf_dsp_categories_nest_search siteID="#attributes.siteID#" parentID="#rslist.categoryID#" categoryID="#attributes.categoryID#" nestLevel="#evaluate(attributes.nestLevel +1)#" ></li>
+<cf_dsp_categories_nest_search siteID="#attributes.siteID#" parentID="#rslist.categoryID#" categoryID="#attributes.categoryID#" nestLevel="#val(attributes.nestLevel +1)#" ></li>
 </cfoutput>
 </ul>
 </cfif>

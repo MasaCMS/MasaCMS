@@ -148,7 +148,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 <cfif rc.trashIterator.pageCount() gt 1>
 			 <ul class="pagination">
 				 <cfif rc.pageNum gt 1>
-								 <li><a href="?muraAction=cTrash.list&siteid=#esapiEncode('url',rc.siteid)#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#evaluate('rc.pageNum-1')#"><i class="mi-angle-left"></i></a></li>
+								 <li><a href="?muraAction=cTrash.list&siteid=#esapiEncode('url',rc.siteid)#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#val(rc.pageNum-1)#"><i class="mi-angle-left"></i></a></li>
 				 </cfif>
 				 <cfloop from="1"  to="#rc.trashIterator.pageCount()#" index="i">
 
@@ -161,7 +161,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				 </cfloop>
 				<cfif rc.pageNum lt rc.trashIterator.pageCount()>
 					<li>
-						<a href="?muraAction=cTrash.list&siteid=#esapiEncode('url',rc.siteid)#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#evaluate('rc.pageNum+1')#&sinceDate=#esapiEncode('url',$.event('sinceDate'))#&beforeDate=#esapiEncode('url',$.event('beforeDate'))#"><i class="mi-angle-right"></i></a>
+						<a href="?muraAction=cTrash.list&siteid=#esapiEncode('url',rc.siteid)#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#val(rc.pageNum+1)#&sinceDate=#esapiEncode('url',$.event('sinceDate'))#&beforeDate=#esapiEncode('url',$.event('beforeDate'))#"><i class="mi-angle-right"></i></a>
 					</li>
 				</cfif>
 			 </ul>

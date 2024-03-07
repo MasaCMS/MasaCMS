@@ -81,16 +81,34 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<li><div id="button-trash" title="#mmRBF.getKeyValue(session.rb,'formbuilder.delete')#"></div></li>
 				</ul>
 			</div>
-			<ul class="template-form">
-				<li>
-					<label for="label">#mmRBF.getKeyValue(session.rb,'formbuilder.field.label')#</label>
-					<input class="text  tb-label" type="text" name="label" value="" data-label="true">
-				</li>
-				<li>
-					<label for="name">#mmRBF.getKeyValue(session.rb,'formbuilder.field.name')#</label>
-					<input id="tb-name" class="text  disabled" name="name" type="text" value="" maxlength="50" disabled="true" />
-				</li>
-			</ul>
+
+			<div class="ui-tabs" id="ui-tabs">
+			
+				<ul class="template-form">
+					<li>
+						<label for="label">#mmRBF.getKeyValue(session.rb,'formbuilder.field.label')#</label>
+						<input class="text  tb-label" type="text" name="label" value="" data-label="true">
+					</li>
+					<li>
+						<label for="name">#mmRBF.getKeyValue(session.rb,'formbuilder.field.name')#</label>
+						<input id="tb-name" class="text" name="name" type="text" value="" maxlength="50" disabled="true" />
+					</li>
+					<li>
+						<label for="fieldsetopen">As Fieldset?
+						</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<select class="select" name="fieldsetopen">
+								<option value="0">No</option>
+								<option value="1">Yes</option>
+							</select>
+							(label will not appear)
+					</li>
+					<li>
+					<label for="fieldsetid">Fieldset ID</label>
+						<input class="text" type="text" name="fieldsetid" value="" data-label="true">
+					</li>
+				</ul>
+			</div>
 		</div>
+
 	</span>
 </cfoutput>
