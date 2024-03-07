@@ -1247,7 +1247,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 
 	public function getApi(type="json", version="v1") output=false {
 		if ( !isDefined('variables.instance.api#arguments.type##arguments.version#') ) {
-			variables.instance['api#arguments.type##arguments.version#']=evaluate('new mura.client.api.#arguments.type#.#arguments.version#.#arguments.type#apiUtility(siteid=getValue("siteid"))');
+			variables.instance['api#arguments.type##arguments.version#']=evaluate('new mura.client.api.#arguments.type#.#arguments.version#.#arguments.type#ApiUtility(siteid=getValue("siteid"))');
 		}
 		return variables.instance['api#arguments.type##arguments.version#'];
 	}
