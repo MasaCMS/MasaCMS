@@ -423,8 +423,10 @@ This file is part of Mura CMS.
 		    <cfreturn "https">
 		<cfelseif StructKeyExists(headers,"Front-End-Https") and isBoolean(headers["Front-End-Https"]) and headers["Front-End-Https"]>
 			<cfreturn "https">
+		<cfelseif StructKeyExists(headers,"x-https") and isBoolean(headers["x-https"]) and headers["x-https"]>
+			<cfreturn "https">
 		<cfelse>
-		    <cfreturn getPageContext().getRequest().getScheme()>
+			<cfreturn getPageContext().getRequest().getScheme()>
 		</cfif>
 
 		<cfcatch>
