@@ -87,12 +87,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif rc.contentid neq rsnest.contentid>
 	<cfset variables.title=replace(rsNest.menutitle,",","","ALL")>
 	<cfif (rsnest.type eq 'Page' or rsnest.type eq 'Folder' or rsnest.type eq 'Calendar')>
-	<cfset "rc.#rc.parentlist#"=listappend(evaluate("rc.#rc.parentlist#"),"#rsnest.contentid#;#rsnest.filename#")>
+	<cfset "rc.#rc.parentlist#"=listappend(rc['#rc.parentlist#'],"#rsnest.contentid#;#rsnest.filename#")>
 	<cfsavecontent variable="templabel"><cfif rc.nestlevel><cfloop  from="1" to="#rc.NestLevel#" index="I">&nbsp;&nbsp;</cfloop></cfif>#variables.title#</cfsavecontent>
-	<cfset "rc.#rc.parentlabels#"=listappend(evaluate("rc.#rc.parentlabels#"),templabel)>
+	<cfset "rc.#rc.parentlabels#"=listappend(rc['#rc.parentlabels#'],templabel)>
 	</cfif><cfif rsNest.hasKids>
 	 <cf_siteparents parentid="#rsnest.contentid#" 
-	  nestlevel="#evaluate(rc.nestlevel + 1)#" 
+	  nestlevel="#val(rc.nestlevel + 1)#" 
 	  siteid="#rc.siteid#"
 	  moduleid="#rc.moduleid#"
 	  parentlabels="#rc.parentlabels#"

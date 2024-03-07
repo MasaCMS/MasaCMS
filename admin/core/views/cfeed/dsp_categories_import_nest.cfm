@@ -130,7 +130,7 @@ where categoryID='#rslist.categoryID#' and ContentHistID='#attributes.newBean.ge
 		</dd>
 		</dl>
 </cfif>
-<cfif rslist.hasKids><cf_dsp_categories_import_nest siteID="#attributes.siteID#" parentID="#rslist.categoryID#" nestLevel="#evaluate(attributes.nestLevel +1)#" ></cfif>
+<cfif rslist.hasKids><cf_dsp_categories_import_nest siteID="#attributes.siteID#" parentID="#rslist.categoryID#" nestLevel="#val(attributes.nestLevel +1)#" ></cfif>
 </li>
 </ul>
 </li>

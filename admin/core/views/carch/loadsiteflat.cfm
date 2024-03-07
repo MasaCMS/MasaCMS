@@ -399,11 +399,11 @@ if(len($.siteConfig('customTagGroups'))){
 		<p class="search-showing">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.paginationmeta"),args)#</p>
 		<cfif iterator.pageCount() gt 1>
 			<ul class="moreResults pagination">
-				<cfif $.event('page') gt 1><li class="navPrev"><a href="" data-page="#evaluate($.event('page')-1)#"><i class="mi-angle-left"></i></a></li></cfif>
+				<cfif $.event('page') gt 1><li class="navPrev"><a href="" data-page="#val($.event('page')-1)#"><i class="mi-angle-left"></i></a></li></cfif>
 				<cfloop from="#max($.event('page')-2,1)#" to="#min($.event('page')+2,iterator.pageCount())#" index="p">
 				<li<cfif $.event('page') eq p> class="active"</cfif>><a href="" data-page="#p#"<cfif $.event('page') eq p> class="active"</cfif>>#p#</a></li>
 				</cfloop>
-				<cfif $.event('page') lt iterator.pageCount()><li class="navNext"><a href="" data-page="#evaluate($.event('page')+1)#"><i class="mi-angle-right"></i></a></li></cfif>
+				<cfif $.event('page') lt iterator.pageCount()><li class="navNext"><a href="" data-page="#val($.event('page')+1)#"><i class="mi-angle-right"></i></a></li></cfif>
 			</ul>
 		</cfif>
 		</div>

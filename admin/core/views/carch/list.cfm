@@ -309,7 +309,7 @@ This file is part of Mura CMS.
 											<li class="active"><a href="##">#i#</a></li>
 										<cfelse>
 											<li>
-												<a href="./?muraAction=cArch.list&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#esapiencode('url',rc.moduleid)#&topid=#esapiEncode('url',rc.topid)#&startrow=#evaluate('(#i#*#rc.nextn.recordsperpage#)-#rc.nextn.recordsperpage#+1')#&sortBy=#rc.sortBy#&sortDirection=#rc.sortDirection#&searchString=#rc.searchString#">
+												<a href="./?muraAction=cArch.list&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#esapiencode('url',rc.moduleid)#&topid=#esapiEncode('url',rc.topid)#&startrow=#val((i*rc.nextn.recordsperpage)-rc.nextn.recordsperpage+1)#&sortBy=#rc.sortBy#&sortDirection=#rc.sortDirection#&searchString=#rc.searchString#">
 													#i#
 												</a>
 											</li>

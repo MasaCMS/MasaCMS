@@ -138,7 +138,7 @@ This file is part of Mura CMS.
 						</li>
 					<cfelse>
 						<li class="navPrev #this.liPaginationNotCurrentClass#">
-							<a class="#this.aPaginationNotCurrentClass#" href="index#evaluate('#variables.nextn.currentpagenumber#-1')#.html">#this.navPrevDecoration##variables.$.rbKey('list.previous')#</a>
+							<a class="#this.aPaginationNotCurrentClass#" href="index#val(variables.nextn.currentpagenumber-1)#.html">#this.navPrevDecoration##variables.$.rbKey('list.previous')#</a>
 						</li>
 					</cfif>
 				<cfelse>
@@ -158,13 +158,13 @@ This file is part of Mura CMS.
 						<li class="#this.liPaginationNotCurrentClass#"><a class="#this.aPaginationNotCurrentClass#" href="index#i#.html">#i#</a></li>
 						</cfif>
 					<cfelse>
-						<li class="#this.liPaginationNotCurrentClass#"><a class="#this.aPaginationNotCurrentClass#" href="#xmlFormat('?#paginationKey#=#evaluate('(#i#*#variables.nextN.recordsperpage#)-#variables.nextN.recordsperpage#+1')##variables.qrystr#')#">#i#</a></li>
+						<li class="#this.liPaginationNotCurrentClass#"><a class="#this.aPaginationNotCurrentClass#" href="#xmlFormat('?#paginationKey#=#val((i*variables.nextN.recordsperpage)-variables.nextN.recordsperpage+1)##variables.qrystr#')#">#i#</a></li>
 					</cfif>
 				</cfif>
 			</cfloop>
 			<cfif variables.nextN.currentpagenumber lt variables.nextN.NumberOfPages>
 				<cfif request.muraExportHtml>
-					<li class="navNext #this.liPaginationNotCurrentClass#"><a class="#this.aPaginationNotCurrentClass#" href="index#evaluate('#variables.nextn.currentpagenumber#+1')#.html">#variables.$.rbKey('list.next')#&nbsp;&raquo;</a></li>
+					<li class="navNext #this.liPaginationNotCurrentClass#"><a class="#this.aPaginationNotCurrentClass#" href="index#val(variables.nextn.currentpagenumber+1)#.html">#variables.$.rbKey('list.next')#&nbsp;&raquo;</a></li>
 				<cfelse>
 					<li class="navNext #this.liPaginationNotCurrentClass#"><a class="#this.aPaginationNotCurrentClass#" href="#xmlFormat('?#paginationKey#=#variables.nextN.next##variables.qrystr#')#">#variables.$.rbKey('list.next')##this.navNextDecoration#</a></li>
 				</cfif>
