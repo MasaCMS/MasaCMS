@@ -410,8 +410,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="sendLoginByEmail" output="false" >
 	<cfargument name="email" type="string">
-	<cfargument name="siteid" type="string" required="yes" default="">
-	<cfargument name="returnURL" type="string" required="yes" default="#listFirst(cgi.http_host,":")##cgi.SCRIPT_NAME#">
+	<cfargument name="siteid" type="string" required="yes" default="">	
 	<cfargument name="subject" required="yes" type="string" default=""/>
 	<cfargument name="message" type="string" default="">
 	<cfset var struser=structnew()>
@@ -453,8 +452,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="sendLoginByUser" output="false" returntype="boolean" >
 	<cfargument name="userBean" type="any">
-	<cfargument name="siteid" type="string" required="yes" default="" >
-	<cfargument name="returnURL" type="string" required="yes" default="#listFirst(cgi.http_host,":")##cgi.SCRIPT_NAME#">
+	<cfargument name="siteid" type="string" required="yes" default="" >	
 	<cfargument name="isPublicReg" required="yes" type="boolean" default="false"/>
 	<cfargument name="subject" required="yes" type="string" default=""/>
 	<cfargument name="message" type="string" default="">
@@ -520,6 +518,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif arguments.siteid neq ''>
 	<cfset site=variables.settingsManager.getSite(arguments.siteid)>
 	<cfset urlBase="#listFirst(cgi.http_host,':')##site.getServerPort()##site.getContext()#">
+	<cfset urlBase=getBean("utility").sanitizeHREF(urlBase,arguments.siteid)>
 
 	<cfif not len(sendLoginScript)>
 		<cfset sendLoginScript =site.getSendLoginScript()/>
@@ -541,6 +540,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset returnURL="#protocol##urlBase##site.getContentRenderer().getURLStem(site.getSiteID(),returnID)#">
 <cfelse>
 	<cfset urlBase="#listFirst(cgi.http_host,':')##variables.configBean.getServerPort()##variables.configBean.getContext()#">
+	<cfset urlBase=getBean("utility").sanitizeHREF(urlBase,arguments.siteid)>
 	<cfset site=variables.settingsManager.getSite("default")>
 	<cfset contactEmail=variables.configBean.getAdminEmail()/>
 	<cfset contactName=variables.configBean.getTitle()/>
@@ -578,19 +578,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	}).save()>
 
 <cfif sendLoginScript neq ''>
-
-<cfset theString = sendLoginScript/>
-<cfset finder=refind('##.+?##',theString,1,"true")>
-<cfloop condition="#finder.len[1]#">
-	<cftry>
-		<cfset theString=replace(theString,mid(theString, finder.pos[1], finder.len[1]),'#trim(evaluate(mid(theString, finder.pos[1], finder.len[1])))#')>
-		<cfcatch>
-			<cfset theString=replace(theString,mid(theString, finder.pos[1], finder.len[1]),'')>
-		</cfcatch>
-	</cftry>
-	<cfset finder=refind('##.+?##',theString,1,"true")>
-</cfloop>
-<cfset sendLoginScript = theString>
+	<cfscript>
+		var placeholders="##firstName##^##lastName##^##username##^##password##^##contactEmail##^##contactName##^##returnURL##";
+		var replacements="#firstName#^#lastName#^#username#^#password#^#contactEmail#^#contactName#^#returnURL#";
+		sendLoginScript=replaceList(sendLoginScript,placeholders,replacements,"^","^",true);	
+	</cfscript>
 
 <cfsavecontent variable="mailText">
 <cfoutput>#sendLoginScript#</cfoutput>

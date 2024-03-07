@@ -1717,7 +1717,10 @@ Display Objects
 </cffunction>
 
 <cffunction name="getBodyDisplayStatus" output="false">
-	<cfif $.event('display') eq 'search'>
+	
+	<cfif not $.event('isOnDisplay')>
+		<cfreturn "offline">	
+	<cfelseif $.event('display') eq 'search'>
 		<cfreturn "search">
 	<cfelseif $.event('display') eq 'editprofile'>
 		<cfreturn "editprofile">
@@ -1727,8 +1730,7 @@ Display Objects
 		<cfreturn "deny">
 	<cfelseif $.event('isOnDisplay') and $.event('r').restrict and not $.event('r').loggedIn>
 		<cfreturn "login">
-	<cfelseif not $.event('isOnDisplay')>
-		<cfreturn "offline">
+		
 	<cfelse>
 		<cfreturn 'default'>
 	</cfif>
@@ -2702,8 +2704,8 @@ Display Objects
 
 	<!--- It the Dyanmic content is not enabled just return the submitted string --->
 	<cfif isBoolean(this.enableDynamicContent) and not this.enableDynamicContent>
-		<cfset str=application.scriptProtectionFilter.filterWords(str,"script,object,applet,embed,layer,ilayer,frameset,param,meta,base,xss,marquee")>
-		<cfset str=application.scriptProtectionFilter.filterTags(str)>
+		<cfset str=application.scriptProtectionFilter.filterWords(str,"script,object,applet,embed,layer,ilayer,frameset,param,meta,base,xss,marquee").cleanText>
+		<cfset str=application.scriptProtectionFilter.filterTags(str).cleanText>
 		<cfreturn str />
 	</cfif>
 

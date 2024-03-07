@@ -527,10 +527,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfelse>
 				<cfset currentParam=currentItem>
 			</cfif>
-		<cfelseif currentArrayName eq "tagArray">
-			<cfset arguments.event.setValue("display","search")>
-			<cfset arguments.event.setValue("newSearch","true")>
+		<cfelseif currentArrayName eq "tagArray">						
 			<cfset arguments.event.setValue("tag",currentItem)>
+			<cfif not listFindNoCase('login,editProfile',arguments.event.getValue('display'))> 
+				<cfset arguments.event.setValue("display","search")>
+				<cfset arguments.event.setValue("newSearch","true")>
+			</cfif>			
 			<cfset currentArrayName="">
 		<cfelseif currentArrayName eq "linkServIDArray">
 			<cfset arguments.event.setValue("linkServID",currentItem)>

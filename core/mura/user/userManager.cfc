@@ -836,17 +836,15 @@ This file is part of Mura CMS.
 
 	<cffunction name="sendLoginByEmail" output="false">
 		<cfargument name="email" type="string" default=""/>
-		<cfargument name="siteid" type="string" default=""/>
-		<cfargument name="returnURL" type="string" default=""/>
-		<cfreturn variables.userUtility.sendLoginByEmail(arguments.email,arguments.siteid,arguments.returnURL) />
+		<cfargument name="siteid" type="string" default=""/>		
+		<cfreturn variables.userUtility.sendLoginByEmail(arguments.email,arguments.siteid) />
 	</cffunction>
 
 	<cffunction name="sendLoginByUser" output="false">
 		<cfargument name="userBean" type="any"/>
-		<cfargument name="siteid" type="string" default=""/>
-		<cfargument name="returnURL" type="string" default=""/>
+		<cfargument name="siteid" type="string" default=""/>		
 		<cfargument name="isPublicReg" required="yes" type="boolean" default="false"/>
-		<cfreturn variables.userUtility.sendLoginByUser(arguments.userBean,arguments.siteid,arguments.returnURL,arguments.isPublicReg) />
+		<cfreturn variables.userUtility.sendLoginByUser(arguments.userBean,arguments.siteid,arguments.isPublicReg) />
 	</cffunction>
 
 	<cffunction name="createAddress" returntype="struct" output="false">

@@ -103,29 +103,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		and application.configBean.getDashboard()
 		and not application.sessionTrackingThrottle>
 
-		<cfif sessionData.remote_addr eq request.remoteAddr>
-			<cfif cgi.HTTP_USER_AGENT neq 'vspider'>
-
-				<!---<cftry>--->
-				<cfset variables.sessionTrackingDAO.trackRequest(sessionData.REMOTE_ADDR,
-																		arguments.SCRIPT_NAME,
-																		cgi.QUERY_STRING,
-																		listFirst(cgi.http_host,":"),
-																		cgi.HTTP_REFERER,
-																		cgi.USER_AGENT,
-																		arguments.keywords,
-																		sessionData.trackingID,
-																		sessionData.mura.userID,
-																		arguments.siteid,
-																		arguments.contentid,
-																		getCFLocale( trim( replace( listFirst( listFirst(cgi.HTTP_ACCEPT_LANGUAGE,';') ),"-","_") ) ),
-																		cookie.MXP_TRACKINGID,
-																		sessionData.mura.fname,
-																		sessionData.mura.lname,
-																		sessionData.mura.company
-																		)/>
-				<!---<cfcatch><cfreturn ""/></cfcatch></cftry>--->
-			</cfif>
+		<cfif sessionData.remote_addr eq request.remoteAddr>		
+			<!---<cftry>--->
+			<cfset variables.sessionTrackingDAO.trackRequest(sessionData.REMOTE_ADDR,
+																	arguments.SCRIPT_NAME,
+																	cgi.QUERY_STRING,
+																	listFirst(cgi.http_host,":"),
+																	cgi.HTTP_REFERER,
+																	cgi.USER_AGENT,
+																	arguments.keywords,
+																	sessionData.trackingID,
+																	sessionData.mura.userID,
+																	arguments.siteid,
+																	arguments.contentid,
+																	getCFLocale( trim( replace( listFirst( listFirst(cgi.HTTP_ACCEPT_LANGUAGE,';') ),"-","_") ) ),
+																	cookie.MXP_TRACKINGID,
+																	sessionData.mura.fname,
+																	sessionData.mura.lname,
+																	sessionData.mura.company
+																	)/>
+			<!---<cfcatch><cfreturn ""/></cfcatch></cftry>--->			
 			<cfreturn ""/>
 		<cfelse>
 			<cfreturn "killSession"/>
