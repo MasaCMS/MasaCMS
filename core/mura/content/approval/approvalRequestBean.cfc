@@ -189,22 +189,15 @@ component extends="mura.bean.beanORM"  table="tapprovalrequests" entityname="app
 			var returnURL=contentBean.getURL(complete=true,queryString='previewid=#contentBean.getContentHistID()#');
 			var contentName=contentBean.getMenuTitle();
 			var contentType=contentBean.getType() & '/' & contentBean.getSubType();
-
-			var finder=refind('##.+?##',script,1,"true");
-
-			while (finder.len[1]) {
-				try{
-					script=replace(script,mid(script, finder.pos[1], finder.len[1]),'#trim(evaluate(mid(script, finder.pos[1], finder.len[1])))#');
-				} catch(any e){
-					script=replace(script,mid(script, finder.pos[1], finder.len[1]),'');
-				}
-				finder=refind('##.+?##',script,1,"true");
-			}
+	
+			var placeholders="##returnURL##^##contentName##^##contentType##^##approvalHistory##";
+			var replacements="#returnURL#^#contentName#^#contentType#^#approvalHistory#";
+			script=replaceList(script,placeholders,replacements,"^","^",true);
 
 			if(listFindNoCase('Canceled,Rejected,Approved',arguments.actionType)){
 				//try{
 					getBean('mailer').sendText(
-						$.setDynamicContent(script),
+						script,
 						$.event('requester').getEmail(),
 						$.siteConfig('site'),
 						subject,
@@ -216,7 +209,7 @@ component extends="mura.bean.beanORM"  table="tapprovalrequests" entityname="app
 				//try{
 					if(isValid('email',$.event('group').getEmail())){
 						getBean('mailer').sendText(
-							$.setDynamicContent(script),
+							script,
 							$.event('group').getEmail(),
 							$.siteConfig('site'),
 							subject,
@@ -227,7 +220,7 @@ component extends="mura.bean.beanORM"  table="tapprovalrequests" entityname="app
 						var members=$.event('group').getMembersIterator();
 
 						if(members.hasNext()){
-							var emailtext=$.setDynamicContent(script);
+							var emailtext=script;
 
 							while(members.hasNext()){
 								getBean('mailer').sendText(

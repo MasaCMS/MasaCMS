@@ -582,12 +582,15 @@ function getCommenter() output=false {
 	<cfset var configBean=variables.configBean>
 	<cfset var settingsManager=variables.settingsManager>
 	<cfset var utility=getBean("utility")>
-	<cfset var contentBean=getBean('content').loadBy(contentid=variables.instance.contentID)>
+	<cfset var contentBean=getBean('content').loadBy(contentid=variables.instance.contentID)>		
+	<cfset var site=settingsManager.getSite(variables.instance.siteID)>	
+	<cfset var urlBase="#listFirst(cgi.http_host,':')##configBean.getServerPort()##configBean.getContext()#">
+	<cfset urlBase=getBean("utility").sanitizeHREF(urlBase,variables.instance.siteID)>	
 
-	<cfif len(settingsManager.getSite(variables.instance.siteID).getContactEmail())>
-		<cfset contactEmail=settingsManager.getSite(variables.instance.siteID).getContactEmail()>
+	<cfif len(site.getContactEmail())>
+		<cfset contactEmail=site.getContactEmail()>
 	<cfelse>
-		<cfset contactEmail=settingsManager.getSite(variables.instance.siteID).getContact()>
+		<cfset contactEmail=site.getContact()>
 	</cfif>
 	<cfif not len(arguments.script)>
 		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsContent')#">
@@ -596,7 +599,7 @@ function getCommenter() output=false {
 			and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteID#">
 			and active=1
 		</cfquery>
-		<cfset serverpath = "#settingsManager.getSite(variables.instance.siteID).getScheme()#://#listFirst(cgi.http_host,':')##configBean.getServerPort()##configBean.getContext()#/">
+		<cfset serverpath = "#site.getScheme()#://#urlBase#/">
 		<cfif configBean.getSiteIDInURLS()>
 			<cfset serverpath &= '#variables.instance.siteID#/'>
 		</cfif>
