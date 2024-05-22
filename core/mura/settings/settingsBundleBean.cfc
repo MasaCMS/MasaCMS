@@ -284,14 +284,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset var filePoolID=getBean('settingsManager').getSite(arguments.siteid).getFilePoolID()>
 			<!--- We do not want to include files collected from mura forms --->
 			<cfquery name="rsInActivefiles">
-				select fileID,fileExt from tfiles
+				select fileID, fileExt 
+				from tfiles
 				where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#filePoolID#"/>
 				and moduleid in ('00000000000000000000000000000000000','00000000000000000000000000000000003','00000000000000000000000000000000099'<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.includeUsers>,'00000000000000000000000000000000008'</cfif>)
-				and 
-					<cfif not arguments.includeVersionHistory and rstfiles.recordcount>
-						fileID not in (#QuotedValueList(rstfiles.fileID)#)
-						<cfset started=true>
-					</cfif>
+				<cfif not arguments.includeVersionHistory and rstfiles.recordcount>
+					and fileID not in (#QuotedValueList(rstfiles.fileID)#)
+					<cfset started=true>
+				</cfif>
 			</cfquery>
 			<!--- If the theme does not live in the site directory add it from the global directory --->
 			<cfif (not directoryExists(expandPath($.siteConfig().getIncludePath() & "/includes/themes/#$.siteConfig('theme')#"))
