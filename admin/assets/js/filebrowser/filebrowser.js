@@ -2029,7 +2029,7 @@ MuraFileBrowser = {
 				return false;
 			}
 			, checkFileEditable: function() {
-			var editlist = this.settings.editfilelist;
+			var editlist = this.settings.editfilelist.split(",");
 	
 			for(var i = 0;i<editlist.length;i++) {
 				if(this.currentFile.ext.toLowerCase() == editlist[i]) {
@@ -2039,7 +2039,7 @@ MuraFileBrowser = {
 			return false;
 			}
 			, checkImageType: function() {
-			var imagelist = this.settings.imagelist;
+			var imagelist = this.settings.imagelist.split(",");
 				for(var i = 0;i<imagelist.length;i++) {
 				if(this.currentFile.ext.toLowerCase() == imagelist[i]) {
 					return true;
