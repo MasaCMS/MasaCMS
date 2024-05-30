@@ -2014,8 +2014,8 @@ MuraFileBrowser = {
 			return MuraFileBrowser.config.selectMode;
 			}
 			, isViewable: function() {
-				var editlist = this.settings.editfilelist;
-				var imagelist = this.settings.imagelist;
+				var editlist = this.settings.editfilelist.split(",");
+				var imagelist = this.settings.imagelist.split(",");
 				for(var i = 0;i<editlist.length;i++) {
 				if(this.currentFile.ext.toLowerCase() == editlist[i]) {
 					return true;
