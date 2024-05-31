@@ -144,7 +144,7 @@
 
 #actionwindow-wrapper {
   position: absolute;
-  margin: 60px 30%;
+  margin: 30px 30px;
   background-color: #ffffff;
   z-index: 100000;
 }
@@ -152,7 +152,7 @@
 .actionwindow-formwrapper {
   height: auto;
   min-height: 205px;
-  min-width: 450px;
+  min-width: 650px;
 }
 
 .actionwindow-formwrapper .editwindow {
