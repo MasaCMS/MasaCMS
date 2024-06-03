@@ -184,19 +184,6 @@ if ( !isDefined("application.cfstatic") ) {
 	application.cfstatic=structNew();
 }
 //  Making sure that session is valid
-try {
-	if ( yesNoFormat(application.configBean.getValue("useLegacySessions")) && structKeyExists(sessionData,"mura") ) {
-		if ( (not sessionData.mura.isLoggedIn && isValid("UUID",listFirst(getAuthUser(),"^")))
-			or
-		(sessionData.mura.isLoggedIn && !isValid("UUID",listFirst(getAuthUser(),"^"))) ) {
-			variables.tempcookieuserID=cookie.userID;
-			application.loginManager.logout();
-		}
-	}
-} catch (any cfcatch) {
-	application.loginManager.logout();
-}
-
 if (getSystemEnvironmentSetting('MURA_ENABLEDEVELOPMENTSETTINGS') == "true" && structKeyExists(application, "settingsManager")){
 	variables.allSitesEDS = application.settingsManager.getSites();
 	for (variables.siteEDS in variables.allSitesEDS) {

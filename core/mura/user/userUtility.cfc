@@ -90,10 +90,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="setMailer" output="false">
-<cfargument name="mailer"  required="true">
-
+	<cfargument name="mailer"  required="true">
 	<cfset variables.mailer=arguments.mailer />
-
 </cffunction>
 
 <cffunction name="getUserData">
@@ -131,45 +129,31 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsUser')#">
-	SELECT * FROM tusers WHERE
-	username=<cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.username)#">
-	AND Type = 2
-	and inactive=0
+		SELECT 
+			tusers.*,
+			tusercredentials.hash as password 
+		FROM tusers
+			inner join tusercredentials on tusers.userid = tusercredentials.userid
+		WHERE tusers.username = <cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.username)#" />
+			AND tusers.Type = 2 AND tusers.inactive = 0
+			AND tusercredentials.type = 'PASSWORD' AND tusercredentials.disabled is null
 	</cfquery>
 
-	<cfif rsUser.recordcount and not (
-		(
-		 not variables.configBean.getEncryptPasswords()
-		 and rsUser.password eq arguments.password
-		)
-		OR
-
-		(
-
-		 variables.configBean.getEncryptPasswords()
-		 and
-		 	(
-		 		(
-		 			variables.configBean.getJavaEnabled()
-		 			and variables.configBean.getBCryptPasswords()
-		 			and variables.globalUtility.checkBCryptHash(arguments.password,rsUser.password)
-		 		)
-				OR
-				hash(arguments.password) eq rsUser.password
-			)
-		)
-	)>
+	<!--- Check if password matches --->
+	<cfif rsUser.recordcount IS NOT 1 OR NOT variables.globalUtility.checkBCryptHash(arguments.password,rsUser.password)>
 		<cfquery  name="rsUser" dbtype="query">
 			SELECT * FROM rsUser
-			where 0=1
+			WHERE 0=1
 		</cfquery>
-	</cfif>
-	<cfif variables.configBean.getJavaEnabled()
-		and variables.configBean.getBCryptPasswords()
-		and rsUser.recordcount
-		and variables.configBean.getEncryptPasswords()
-		and hash(arguments.password) eq rsuser.password>
-		<cfset variables.userDAO.savePassword(rsuser.userid,arguments.password)>
+	<cfelse>
+		<cfquery>
+			UPDATE tusercredentials
+			SET
+				counter = counter + 1,
+				activity = <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
+			WHERE tusercredentials.userid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rsUser.userId#" />
+				AND tusercredentials.type = 'PASSWORD' AND tusercredentials.disabled is null
+		</cfquery>
 	</cfif>
 
 	<cfreturn rsUser>
@@ -259,49 +243,49 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="loginByUserID" returntype="boolean">
-		<cfargument name="userid" type="string" required="true" default="">
-		<cfargument name="siteid" type="string" required="false" default="">
-		<cfset var rolelist = "" />
-		<cfset var rsUser = "" />
-		<cfset var user = "" />
-		<cfset var group = "" />
-		<cfset var lastLogin = now() />
-		<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />
+	<cfargument name="userid" type="string" required="true" default="">
+	<cfargument name="siteid" type="string" required="false" default="">
+	<cfset var rolelist = "" />
+	<cfset var rsUser = "" />
+	<cfset var user = "" />
+	<cfset var group = "" />
+	<cfset var lastLogin = now() />
+	<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />
 
-		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsUser')#">
-		SELECT * FROM tusers WHERE userid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"> AND Type = 2
-		and inactive=0
-		</cfquery>
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsUser')#">
+	SELECT * FROM tusers WHERE userid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"> AND Type = 2
+	and inactive=0
+	</cfquery>
 
 
-			<cfif rsUser.RecordCount GREATER THAN 0>
+		<cfif rsUser.RecordCount GREATER THAN 0>
 
-				<cfif rsUser.isPublic and variables.settingsManager.getSite(arguments.siteid).getPublicUserPoolID() neq rsUser.siteid>
-					<cfreturn false  >
+			<cfif rsUser.isPublic and variables.settingsManager.getSite(arguments.siteid).getPublicUserPoolID() neq rsUser.siteid>
+				<cfreturn false  >
+			</cfif>
+
+
+			<cfset loginByQuery(rsUser)/>
+
+			<cfset pluginEvent.setValue("username",rsUser.username)>
+			<cfset pluginEvent.setValue("password",rsUser.password)>
+			<cfset pluginEvent.setValue("siteid",rsUser.siteid)>
+			<cfset pluginEvent.setValue("remoteID",rsUser.remoteID)>
+			<cfset pluginEvent.setValue("userID",arguments.userID)>
+
+			<cfif request.muraSessionManagement>
+				<cfif len(arguments.siteID)>
+					<cfset variables.pluginManager.announceEvent('onSiteLoginSuccess',pluginEvent)/>
+				<cfelse>
+					<cfset variables.pluginManager.announceEvent('onGlobalLoginSuccess',pluginEvent)/>
 				</cfif>
+			</cfif>
 
+			<cfreturn true />
+	</cfif>
 
-				<cfset loginByQuery(rsUser)/>
-
-				<cfset pluginEvent.setValue("username",rsUser.username)>
-				<cfset pluginEvent.setValue("password",rsUser.password)>
-				<cfset pluginEvent.setValue("siteid",rsUser.siteid)>
-				<cfset pluginEvent.setValue("remoteID",rsUser.remoteID)>
-				<cfset pluginEvent.setValue("userID",arguments.userID)>
-
-				<cfif request.muraSessionManagement>
-					<cfif len(arguments.siteID)>
-						<cfset variables.pluginManager.announceEvent('onSiteLoginSuccess',pluginEvent)/>
-					<cfelse>
-						<cfset variables.pluginManager.announceEvent('onGlobalLoginSuccess',pluginEvent)/>
-					</cfif>
-				</cfif>
-
-				<cfreturn true />
-		</cfif>
-
-		<cfreturn false />
-	</cffunction>
+	<cfreturn false />
+</cffunction>
 
 <cffunction name="loginByQuery">
 	<cfargument name="rsUser"/>
@@ -337,32 +321,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif request.muraSessionManagement>
 		<cfset structDelete(getSession(),'siteArray')>
-
-		<cfif yesNoFormat(variables.configBean.getValue("useLegacySessions"))>
-			<cflogout>
-
-			<cfif isDate(rsuser.lastLogin)>
-				<cfset lastLogin=rsuser.lastLogin/>
-			</cfif>
-
-			<cfif rsuser.company neq ''>
-				<cfset group=rsuser.company>
-			<cfelse>
-				<cfset group="#rsUser.Fname# #rsUser.Lname#">
-			</cfif>
-
-			<cfif rsuser.lname eq '' and rsuser.fname eq ''>
-				<cfset user=rsuser.company>
-			<cfelse>
-				<cfset user="#rsUser.Fname# #rsUser.Lname#">
-			</cfif>
-
-			<cflogin>
-			<cfloginuser name="#rsuser.userID#^#user#^#dateFormat(lastLogin,'m/d/yy')#^#group#^#rsUser.username#^#dateFormat(rsUser.passwordCreated,'m/d/yy')#^#rsUser.password#"
-			 roles="#rolelist#"
-			password="#rsUser.password#">
-			</cflogin>
-		</cfif>
 
 		<cfquery>
 		UPDATE tusers SET LastLogin = <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
@@ -406,7 +364,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfquery>
 
 	<cfreturn rsCheck>
-	</cffunction>
+</cffunction>
 
 <cffunction name="sendLoginByEmail" output="false" >
 	<cfargument name="email" type="string">
@@ -423,7 +381,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfif rsuser.recordcount>
 			<cfloop query="rsuser">
-			<cfset userBean=variables.userDAO.read(rsuser.userid)>
+				<cfset userBean=variables.userDAO.read(rsuser.userid)>
 
 				<cfif userBean.getUsername() neq ''>
 					<cfif autoresetpasswords>
@@ -488,208 +446,208 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="sendLogin" output="false">
-<cfargument name="args" type="struct" default="#structnew()#">
-<cfargument name="sendto" type="string" default="">
-<cfargument name="from" type="string" default="">
-<cfargument name="subject" type="string" default="">
-<cfargument name="siteid" type="string" default="">
-<cfargument name="reply" required="yes" type="string" default="">
-<cfargument name="bcc"  required="yes" type="string" default="">
-<cfargument name="message" type="string" default="">
+	<cfargument name="args" type="struct" default="#structnew()#">
+	<cfargument name="sendto" type="string" default="">
+	<cfargument name="from" type="string" default="">
+	<cfargument name="subject" type="string" default="">
+	<cfargument name="siteid" type="string" default="">
+	<cfargument name="reply" required="yes" type="string" default="">
+	<cfargument name="bcc"  required="yes" type="string" default="">
+	<cfargument name="message" type="string" default="">
 
-<cfset var sendLoginScript=arguments.message/>
-<cfset var mailText=""/>
-<cfset var username=arguments.args.username/>
-<cfset var password=arguments.args.password/>
-<cfset var firstname=arguments.args.fname/>
-<cfset var lastname=arguments.args.lname/>
-<cfset var contactEmail=""/>
-<cfset var contactName=""/>
-<cfset var finder=""/>
-<cfset var theString=""/>
-<cfset var autoresetpasswords=variables.configBean.getValue("autoresetpasswords")>
-<cfset var returnID=createUUID()>
-<cfset var editProfileURL="">
-<cfset var returnURL="">
-<cfset var protocol="http://">
-<cfset var urlBase="">
-<cfset var site="">
+	<cfset var sendLoginScript=arguments.message/>
+	<cfset var mailText=""/>
+	<cfset var username=arguments.args.username/>
+	<cfset var password=arguments.args.password/>
+	<cfset var firstname=arguments.args.fname/>
+	<cfset var lastname=arguments.args.lname/>
+	<cfset var contactEmail=""/>
+	<cfset var contactName=""/>
+	<cfset var finder=""/>
+	<cfset var theString=""/>
+	<cfset var autoresetpasswords=variables.configBean.getValue("autoresetpasswords")>
+	<cfset var returnID=createUUID()>
+	<cfset var editProfileURL="">
+	<cfset var returnURL="">
+	<cfset var protocol="http://">
+	<cfset var urlBase="">
+	<cfset var site="">
 
-<cfif arguments.siteid neq ''>
-	<cfset site=variables.settingsManager.getSite(arguments.siteid)>
-	<cfset urlBase="#listFirst(cgi.http_host,':')##site.getServerPort()##site.getContext()#">
-	<cfset urlBase=getBean("utility").sanitizeHREF(urlBase,arguments.siteid)>
+	<cfif arguments.siteid neq ''>
+		<cfset site=variables.settingsManager.getSite(arguments.siteid)>
+		<cfset urlBase="#listFirst(cgi.http_host,':')##site.getServerPort()##site.getContext()#">
+		<cfset urlBase=getBean("utility").sanitizeHREF(urlBase,arguments.siteid)>
 
-	<cfif not len(sendLoginScript)>
-		<cfset sendLoginScript =site.getSendLoginScript()/>
-	</cfif>
+		<cfif not len(sendLoginScript)>
+			<cfset sendLoginScript =site.getSendLoginScript()/>
+		</cfif>
 
-	<cfset contactEmail=site.getContact()/>
-	<cfset contactName=site.getSite()/>
+		<cfset contactEmail=site.getContact()/>
+		<cfset contactName=site.getSite()/>
 
-	<cfif site.getExtranetSSL() or site.getUseSSL()>
-		<cfset protocol="https://">
-	</cfif>
+		<cfif site.getExtranetSSL() or site.getUseSSL()>
+			<cfset protocol="https://">
+		</cfif>
 
-	<cfif left(site.getEditProfileURL(),4) eq "http">
-		<cfset editProfileURL=site.getEditProfileURL()>
+		<cfif left(site.getEditProfileURL(),4) eq "http">
+			<cfset editProfileURL=site.getEditProfileURL()>
+		<cfelse>
+			<cfset editProfileURL=protocol & urlBase & site.getEditProfileURL()>
+		</cfif>
+
+		<cfset returnURL="#protocol##urlBase##site.getContentRenderer().getURLStem(site.getSiteID(),returnID)#?userID=#arguments.args.userID#">
 	<cfelse>
-		<cfset editProfileURL=protocol & urlBase & site.getEditProfileURL()>
+		<cfset urlBase="#listFirst(cgi.http_host,':')##variables.configBean.getServerPort()##variables.configBean.getContext()#">
+		<cfset urlBase=getBean("utility").sanitizeHREF(urlBase,arguments.siteid)>
+		<cfset site=variables.settingsManager.getSite("default")>
+		<cfset contactEmail=variables.configBean.getAdminEmail()/>
+		<cfset contactName=variables.configBean.getTitle()/>
+
+		<cfif variables.configBean.getAdminSSL()>
+			<cfset protocol="https://">
+		</cfif>
+
+		<cfset returnURL="#protocol##urlBase##site.getContentRenderer().getURLStem(site.getSiteID(),returnID)#?userID=#arguments.args.userID#">
+		<cfset editProfileURL =protocol & urlBase & "#variables.configBean.getAdminDir()#/?muraAction=cEditProfile.edit">
+
 	</cfif>
 
-	<cfset returnURL="#protocol##urlBase##site.getContentRenderer().getURLStem(site.getSiteID(),returnID)#?userID=#arguments.args.userID#">
-<cfelse>
-	<cfset urlBase="#listFirst(cgi.http_host,':')##variables.configBean.getServerPort()##variables.configBean.getContext()#">
-	<cfset urlBase=getBean("utility").sanitizeHREF(urlBase,arguments.siteid)>
-	<cfset site=variables.settingsManager.getSite("default")>
-	<cfset contactEmail=variables.configBean.getAdminEmail()/>
-	<cfset contactName=variables.configBean.getTitle()/>
-
-	<cfif variables.configBean.getAdminSSL()>
-		<cfset protocol="https://">
+	<!--- make sure that there is a ? in the editProfileURL--->
+	<cfif not find("?",editProfileURL)>
+		<cfset editProfileURL=editProfileURL & "?">
 	</cfif>
 
-	<cfset returnURL="#protocol##urlBase##site.getContentRenderer().getURLStem(site.getSiteID(),returnID)#?userID=#arguments.args.userID#">
-	<cfset editProfileURL =protocol & urlBase & "#variables.configBean.getAdminDir()#/?muraAction=cEditProfile.edit">
+	<cfif not len(arguments.siteID)>
+		<!--- add extra attributes --->
+		<cfset editProfileURL=editProfileURL & "&siteID=#arguments.args.siteID#">
+	</cfif>
 
-</cfif>
-
-<!--- make sure that there is a ? in the editProfileURL--->
-<cfif not find("?",editProfileURL)>
-	<cfset editProfileURL=editProfileURL & "?">
-</cfif>
-
-<cfif not len(arguments.siteID)>
 	<!--- add extra attributes --->
-	<cfset editProfileURL=editProfileURL & "&siteID=#arguments.args.siteID#">
-</cfif>
+	<cfset editProfileURL=editProfileURL & "&returnID=#returnID#&returnUserID=#arguments.args.userID#">
 
-<!--- add extra attributes --->
-<cfset editProfileURL=editProfileURL & "&returnID=#returnID#&returnUserID=#arguments.args.userID#">
+	<!--- see if the user requesting a redirect has a record already --->
+	<cfset removePrevRedirects(userid=arguments.args.userID) />
 
-<!--- see if the user requesting a redirect has a record already --->
-<cfset removePrevRedirects(userid=arguments.args.userID) />
+	<cfset redirectBean.set(
+		{
+			redirectid=returnID,
+			url=editProfileURL,
+			userid=arguments.args.userID,
+			siteid=arguments.args.siteid,
+			created=now()
 
-<cfset redirectBean.set(
-	{
-		redirectid=returnID,
-		url=editProfileURL,
-		userid=arguments.args.userID,
-		siteid=arguments.args.siteid,
-		created=now()
+		}).save()>
 
-	}).save()>
+	<cfif sendLoginScript neq ''>
+		<cfscript>
+			var placeholders="##firstName##^##lastName##^##username##^##password##^##contactEmail##^##contactName##^##returnURL##";
+			var replacements="#firstName#^#lastName#^#username#^#password#^#contactEmail#^#contactName#^#returnURL#";
+			sendLoginScript=replaceList(sendLoginScript,placeholders,replacements,"^","^",true);	
+		</cfscript>
 
-<cfif sendLoginScript neq ''>
-	<cfscript>
-		var placeholders="##firstName##^##lastName##^##username##^##password##^##contactEmail##^##contactName##^##returnURL##";
-		var replacements="#firstName#^#lastName#^#username#^#password#^#contactEmail#^#contactName#^#returnURL#";
-		sendLoginScript=replaceList(sendLoginScript,placeholders,replacements,"^","^",true);	
-	</cfscript>
+	<cfsavecontent variable="mailText">
+	<cfoutput>#sendLoginScript#</cfoutput>
+	</cfsavecontent>
 
-<cfsavecontent variable="mailText">
-<cfoutput>#sendLoginScript#</cfoutput>
-</cfsavecontent>
+	<cfelseif autoresetpasswords>
 
-<cfelseif autoresetpasswords>
+	<cfsavecontent variable="mailText">
+	<cfoutput>Dear #firstname#,
 
-<cfsavecontent variable="mailText">
-<cfoutput>Dear #firstname#,
+	You have requested your login information be sent to you.
 
-You have requested your login information be sent to you.
+	Username: #username#
+	Password: #password#
 
-Username: #username#
-Password: #password#
+	Please contact #contactEmail# if you
+	have any questions or comments on this process.
 
-Please contact #contactEmail# if you
-have any questions or comments on this process.
+	Thank you,
 
-Thank you,
+	The #contactName# staff</cfoutput>
+	</cfsavecontent>
 
-The #contactName# staff</cfoutput>
-</cfsavecontent>
+	<cfelse>
 
-<cfelse>
+	<cfsavecontent variable="mailText">
+	<cfoutput>Dear #firstname#,
 
-<cfsavecontent variable="mailText">
-<cfoutput>Dear #firstname#,
+	We received a request to reset the password associated with this
+	email address. If you made this request, please follow the
+	instructions below.
 
-We received a request to reset the password associated with this
-email address. If you made this request, please follow the
-instructions below.
+	(If you did not request to have your password reset you can safely
+	ignore this email.)
 
-(If you did not request to have your password reset you can safely
-ignore this email.)
+	Please click the link below to access your account and reset your password:
 
-Please click the link below to access your account and reset your password:
+	#returnURL#
 
-#returnURL#
+	If clicking the link doesn't seem to work, you can copy and paste the
+	link into your browser's address window, or retype it there. Once you
+	have returned to #contactName#, you can then access your account and reset
+	your password.
 
-If clicking the link doesn't seem to work, you can copy and paste the
-link into your browser's address window, or retype it there. Once you
-have returned to #contactName#, you can then access your account and reset
-your password.
+	Thanks for using #contactName#</cfoutput>
+	</cfsavecontent>
 
-Thanks for using #contactName#</cfoutput>
-</cfsavecontent>
+	</cfif>
 
-</cfif>
-
-<cfset variables.mailer.sendText(mailText,
-				arguments.sendto,
-				arguments.from,
-				arguments.subject,
-				arguments.siteid
-				) />
+	<cfset variables.mailer.sendText(mailText,
+					arguments.sendto,
+					arguments.from,
+					arguments.subject,
+					arguments.siteid
+					) />
 
 
 </cffunction>
 
 <cffunction name="sendActivationNotification" output="false">
-<cfargument name="userBean" type="any">
+	<cfargument name="userBean" type="any">
 
-<cfset var accountactivationscript=""/>
-<cfset var sendLoginScript=""/>
-<cfset var mailText=""/>
-<cfset var contactEmail=""/>
-<cfset var contactName=""/>
-<cfset var firstName=""/>
-<cfset var lastName=""/>
-<cfset var username=""/>
-<cfset var finder=""/>
-<cfset var theString=""/>
+	<cfset var accountactivationscript=""/>
+	<cfset var sendLoginScript=""/>
+	<cfset var mailText=""/>
+	<cfset var contactEmail=""/>
+	<cfset var contactName=""/>
+	<cfset var firstName=""/>
+	<cfset var lastName=""/>
+	<cfset var username=""/>
+	<cfset var finder=""/>
+	<cfset var theString=""/>
 
-<cfset accountActivationScript = variables.settingsManager.getSite(arguments.userBean.getSiteID()).getAccountActivationScript()/>
-<cfset contactEmail=variables.settingsManager.getSite(arguments.userBean.getSiteID()).getContact()/>
-<cfset contactName=variables.settingsManager.getSite(arguments.userBean.getSiteID()).getSite()/>
-<cfset firstName=arguments.userBean.getFname() />
-<cfset lastName=arguments.userBean.getLname() />
-<cfset username=arguments.userBean.getUsername() />
+	<cfset accountActivationScript = variables.settingsManager.getSite(arguments.userBean.getSiteID()).getAccountActivationScript()/>
+	<cfset contactEmail=variables.settingsManager.getSite(arguments.userBean.getSiteID()).getContact()/>
+	<cfset contactName=variables.settingsManager.getSite(arguments.userBean.getSiteID()).getSite()/>
+	<cfset firstName=arguments.userBean.getFname() />
+	<cfset lastName=arguments.userBean.getLname() />
+	<cfset username=arguments.userBean.getUsername() />
 
-<cfif accountActivationScript neq ''>
-	<cfset theString = accountActivationScript />
-	<cfset finder=refind('##.+?##',theString,1,"true")>
-	<cfloop condition="#finder.len[1]#">
-		<cftry>
-			<cfset theString=replace(theString,mid(theString, finder.pos[1], finder.len[1]),'#trim(evaluate(mid(theString, finder.pos[1], finder.len[1])))#')>
-			<cfcatch>
-				<cfset theString=replace(theString,mid(theString, finder.pos[1], finder.len[1]),'')>
-			</cfcatch>
-		</cftry>
+	<cfif accountActivationScript neq ''>
+		<cfset theString = accountActivationScript />
 		<cfset finder=refind('##.+?##',theString,1,"true")>
-	</cfloop>
-	<cfset accountActivationScript = theString/>
+		<cfloop condition="#finder.len[1]#">
+			<cftry>
+				<cfset theString=replace(theString,mid(theString, finder.pos[1], finder.len[1]),'#trim(evaluate(mid(theString, finder.pos[1], finder.len[1])))#')>
+				<cfcatch>
+					<cfset theString=replace(theString,mid(theString, finder.pos[1], finder.len[1]),'')>
+				</cfcatch>
+			</cftry>
+			<cfset finder=refind('##.+?##',theString,1,"true")>
+		</cfloop>
+		<cfset accountActivationScript = theString/>
 
 
-<cfset variables.mailer.sendText(accountActivationScript,
-				arguments.userBean.getEmail(),
-				variables.settingsManager.getSite(arguments.userBean.getSiteID()).getSite(),
-				"Your website account at #variables.settingsManager.getSite(arguments.userBean.getSiteID()).getSite()# is now active",
-				arguments.userBean.getSiteID()
-				) />
+		<cfset variables.mailer.sendText(accountActivationScript,
+					arguments.userBean.getEmail(),
+					variables.settingsManager.getSite(arguments.userBean.getSiteID()).getSite(),
+					"Your website account at #variables.settingsManager.getSite(arguments.userBean.getSiteID()).getSite()# is now active",
+					arguments.userBean.getSiteID()
+					) />
 
 
-</cfif>
+	</cfif>
 
 </cffunction>
 
@@ -747,64 +705,64 @@ Thanks for using #contactName#</cfoutput>
 </cffunction>
 
 <cffunction name="setUserStruct" output="false">
-<cfargument name="user">
-<cfargument name="memberships" required="true" default="">
-<cfargument name="membershipids" required="true" default="">
+	<cfargument name="user">
+	<cfargument name="memberships" required="true" default="">
+	<cfargument name="membershipids" required="true" default="">
 
-<cfset var sessionData=getSession()>
+	<cfset var sessionData=getSession()>
 
-<cfparam name="sessionData.rememberMe" type="numeric" default="0" />
-<cfparam name="sessionData.loginAttempts" type="numeric" default="0" />
-<cfparam name="sessionData.blockLoginUntil" type="string" default="" />
+	<cfparam name="sessionData.rememberMe" type="numeric" default="0" />
+	<cfparam name="sessionData.loginAttempts" type="numeric" default="0" />
+	<cfparam name="sessionData.blockLoginUntil" type="string" default="" />
 
-<!--- clear out all existing values --->
-<cfset sessionData.mura=structNew()>
-<cfparam name="sessionData.mura.csrfsecretkey" default="#createUUID()#">
-<cfparam name="sessionData.mura.csrfusedtokens" default="#structNew()#">
+	<!--- clear out all existing values --->
+	<cfset sessionData.mura=structNew()>
+	<cfparam name="sessionData.mura.csrfsecretkey" default="#createUUID()#">
+	<cfparam name="sessionData.mura.csrfusedtokens" default="#structNew()#">
 
-<cfif structKeyExists(arguments,"user")>
-	<cfset sessionData.mura.isLoggedIn=true>
-	<cfset sessionData.mura.userID=arguments.user.userID>
-	<cfset sessionData.mura.username=arguments.user.username>
-	<cfset sessionData.mura.siteID=arguments.user.siteid>
-	<cfset sessionData.mura.subtype=arguments.user.subtype>
-	<cfset sessionData.mura.password=arguments.user.password>
-	<cfset sessionData.mura.fname=arguments.user.fname>
-	<cfset sessionData.mura.lname=arguments.user.lname>
-	<cfset sessionData.mura.email=arguments.user.email>
-	<cfset sessionData.mura.remoteID=arguments.user.remoteID>
-	<cfset sessionData.mura.company=arguments.user.company>
-	<cfset sessionData.mura.lastlogin=arguments.user.lastlogin>
-	<cfset sessionData.mura.passwordCreated=arguments.user.passwordCreated>
-	<cfset sessionData.mura.memberships=arguments.memberships>
-	<cfif structKeyExists(arguments.user,'groupID')>
-		<cfset sessionData.mura.membershipids=arguments.user.groupID>
+	<cfif structKeyExists(arguments,"user")>
+		<cfset sessionData.mura.isLoggedIn=true>
+		<cfset sessionData.mura.userID=arguments.user.userID>
+		<cfset sessionData.mura.username=arguments.user.username>
+		<cfset sessionData.mura.siteID=arguments.user.siteid>
+		<cfset sessionData.mura.subtype=arguments.user.subtype>
+		<cfset sessionData.mura.password=''>
+		<cfset sessionData.mura.fname=arguments.user.fname>
+		<cfset sessionData.mura.lname=arguments.user.lname>
+		<cfset sessionData.mura.email=arguments.user.email>
+		<cfset sessionData.mura.remoteID=arguments.user.remoteID>
+		<cfset sessionData.mura.company=arguments.user.company>
+		<cfset sessionData.mura.lastlogin=arguments.user.lastlogin>
+		<cfset sessionData.mura.passwordCreated=''>
+		<cfset sessionData.mura.memberships=arguments.memberships>
+		<cfif structKeyExists(arguments.user,'groupID')>
+			<cfset sessionData.mura.membershipids=arguments.user.groupID>
+		<cfelse>
+			<cfset sessionData.mura.membershipids=arguments.membershipids>
+		</cfif>
 	<cfelse>
-		<cfset sessionData.mura.membershipids=arguments.membershipids>
+		<cfset sessionData.mura.isLoggedIn=false>
+		<cfset sessionData.mura.userID="">
+		<cfset sessionData.mura.siteID="">
+		<cfset sessionData.mura.subtype="Default">
+		<cfset sessionData.mura.username="">
+		<cfset sessionData.mura.password="">
+		<cfset sessionData.mura.fname="">
+		<cfset sessionData.mura.lname="">
+		<cfset sessionData.mura.company="">
+		<cfset sessionData.mura.lastlogin="">
+		<cfset sessionData.mura.passwordCreated="">
+		<cfset sessionData.mura.email="">
+		<cfset sessionData.mura.remoteID="">
+		<cfset sessionData.mura.memberships="">
+		<cfset sessionData.mura.membershipids="">
+		<cfset sessionData.mura.showTrace=false>
 	</cfif>
-<cfelse>
-	<cfset sessionData.mura.isLoggedIn=false>
-	<cfset sessionData.mura.userID="">
-	<cfset sessionData.mura.siteID="">
-	<cfset sessionData.mura.subtype="Default">
-	<cfset sessionData.mura.username="">
-	<cfset sessionData.mura.password="">
-	<cfset sessionData.mura.fname="">
-	<cfset sessionData.mura.lname="">
-	<cfset sessionData.mura.company="">
-	<cfset sessionData.mura.lastlogin="">
-	<cfset sessionData.mura.passwordCreated="">
-	<cfset sessionData.mura.email="">
-	<cfset sessionData.mura.remoteID="">
-	<cfset sessionData.mura.memberships="">
-	<cfset sessionData.mura.membershipids="">
-	<cfset sessionData.mura.showTrace=false>
-</cfif>
 
 </cffunction>
 
 <cffunction name="returnLoginCheck" output="false">
-<cfargument name="$">
+	<cfargument name="$">
 
 	<cfset var rs="" />
 	<!--- load up redirect bean --->

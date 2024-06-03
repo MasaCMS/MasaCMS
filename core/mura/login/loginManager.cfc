@@ -489,11 +489,6 @@ If you did not request a new authorization, contact #contactEmail#.");
 			getPluginManager().announceEvent('onGlobalLogout',pluginEvent);
 			getPluginManager().announceEvent('onBeforeGlobalLogout',pluginEvent);
 		}
-		if ( yesNoFormat(getBean('configBean').getValue("useLegacySessions")) ) {
-
-			getBean('utility').legacyLogout();
-
-		}
 		for ( local.i in session ) {
 			if ( !listFindNoCase('cfid,cftoken,sessionid,urltoken,jsessionid',local.i) ) {
 				structDelete(session,local.i);

@@ -184,7 +184,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.trackSessionInNewThread=true />
 <cfset variables.instance.cfStaticJavaLoaderScope="application">
 <cfset variables.instance.URLTitleDelim="-">
-<cfset variables.instance.BCryptLogRounds=10>
+<cfset variables.instance.BCryptLogRounds=13>
 <cfset variables.instance.BCryptReseedFrequency=60>
 <cfset variables.instance.maxSourceImageWidth=4000>
 <cfset variables.dbUtility="">
@@ -1562,14 +1562,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setEncryptPasswords" output="false">
 	<cfargument name="encryptPasswords" />
-	<cfif isBoolean(arguments.encryptPasswords)>
-		<cfset variables.instance.encryptPasswords = arguments.encryptPasswords />
+	<cfif NOT isBoolean(arguments.encryptPasswords) OR NOT arguments.encryptPasswords>
+		<cfthrow message="encryptPasswords is mandatory" />
 	</cfif>
 	<cfreturn this>
 </cffunction>
 
 <cffunction name="getEncryptPasswords" returntype="boolean" output="false">
-	<cfreturn variables.instance.encryptPasswords />
+	<cfreturn true />
 </cffunction>
 
 <cffunction name="setAutoResetPasswords" output="false">

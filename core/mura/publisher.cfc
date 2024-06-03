@@ -2430,7 +2430,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				<cfloop query="rstusers">
 					<cfquery datasource="#arguments.toDSN#">
-						INSERT INTO tusers  (UserID, RemoteID, s2, Fname, Lname, Password, PasswordCreated,
+						INSERT INTO tusers  (UserID, RemoteID, s2, Fname, Lname,
 						Email, GroupName, Type, subType, ContactForm, LastUpdate, lastupdateby, lastupdatebyid,InActive, username,  perm, isPublic,
 						company,jobtitle,subscribe,siteid,website,notes,mobilePhone,
 						description,interests,photoFileID,keepPrivate,IMName,IMService,created,tags, tablist)
@@ -2440,8 +2440,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						 #rstusers.s2#,
 						 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstusers.Fname neq '',de('no'),de('yes'))#" value="#rstusers.fname#">,
 						  <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstusers.Lname neq '',de('no'),de('yes'))#" value="#rstusers.lname#">,
-				         <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstusers.Password neq '',de('no'),de('yes'))#" value="#rstusers.password#">,
-						 <cfif isDate(rstusers.passwordCreated)>#createODBCDateTime(rstusers.passwordCreated)#<cfelse>null</cfif>,
 						 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstusers.Email neq '',de('no'),de('yes'))#" value="#rstusers.email#">,
 				         <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstusers.GroupName neq '',de('no'),de('yes'))#" value="#rstusers.groupname#">,
 				         #rstusers.Type#,

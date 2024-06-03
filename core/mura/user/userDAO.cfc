@@ -75,7 +75,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.cfobject" output="false" hint="This provides user CRUD functionality">
 
-<cfset variables.fieldList="tusers.userID, tusers.GroupName, tusers.Fname, tusers.Lname, tusers.UserName,tusers.PasswordCreated, tusers.Email, tusers.Company, tusers.JobTitle, tusers.MobilePhone, tusers.Website, tusers.Type, tusers.subType, tusers.ContactForm, tusers.S2, tusers.LastLogin, tusers.LastUpdate, tusers.LastUpdateBy, tusers.LastUpdateByID, tusers.Perm, tusers.InActive, tusers.IsPublic, tusers.SiteID, tusers.Subscribe, tusers.Notes, tusers.description, tusers.Interests, tusers.keepPrivate, tusers.PhotoFileID, tusers.IMName, tusers.IMService, tusers.Created, tusers.RemoteID, tusers.Tags, tusers.tablist, tfiles.fileEXT photoFileExt">
+<cfset variables.fieldList="tusers.userID, tusers.GroupName, tusers.Fname, tusers.Lname, tusers.UserName, tusers.Email, tusers.Company, tusers.JobTitle, tusers.MobilePhone, tusers.Website, tusers.Type, tusers.subType, tusers.ContactForm, tusers.S2, tusers.LastLogin, tusers.LastUpdate, tusers.LastUpdateBy, tusers.LastUpdateByID, tusers.Perm, tusers.InActive, tusers.IsPublic, tusers.SiteID, tusers.Subscribe, tusers.Notes, tusers.description, tusers.Interests, tusers.keepPrivate, tusers.PhotoFileID, tusers.IMName, tusers.IMService, tusers.Created, tusers.RemoteID, tusers.Tags, tusers.tablist, tfiles.fileEXT photoFileExt">
 
 <cffunction name="init" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
@@ -301,7 +301,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="userBean" type="any" />
 
  <cfquery>
-        INSERT INTO tusers  (UserID, RemoteID, s2, Fname, Lname, Password, PasswordCreated,
+        INSERT INTO tusers  (UserID, RemoteID, s2, Fname, Lname,
 		Email, GroupName, Type, subType, ContactForm, LastUpdate, lastupdateby, lastupdatebyid,InActive, username,  perm, isPublic,
 		company,jobtitle,subscribe,siteid,website,notes,mobilePhone,
 		description,interests,photoFileID,keepPrivate,IMName,IMService,created,tags, tablist)
@@ -311,8 +311,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 #arguments.userBean.gets2()#,
 		 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getFname() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getFname()#">,
 		  <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getLname() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getLname()#">,
-         <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getPassword() neq '',de('no'),de('yes'))#" value="#iif(variables.configBean.getEncryptPasswords(),de('#encryptPassword(arguments.userBean.getPassword())#'),de('#arguments.userBean.getPassword()#'))#">,
-		 <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">,
 		 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getEmail() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getEmail()#">,
          <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getGroupName() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getGroupName()#">,
          #arguments.userBean.getType()#,
@@ -345,6 +343,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
    </CFQUERY>
 
+	<cfif arguments.userBean.getPassword() neq ''>
+		<cfset savePassword(arguments.userBean.getuserid(), arguments.userBean.getPassword()) />
+	</cfif>
+
   <!---  <cfif arguments.userBean.getType() eq 2> --->
    <cfset createUserMemberships(arguments.userBean.getUserID(),arguments.userBean.getGroupID()) />
    <cfset clearBadMemberships(arguments.userBean) />
@@ -371,6 +373,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 	<cfset tokens.next().delete()>
 		</cfloop>
 
+		<cfquery>
+		DELETE FROM tusercredentials where userid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userid#">
+		</cfquery>
 		<cfquery>
 		DELETE FROM tusers where userid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userid#">
 		</cfquery>
@@ -414,10 +419,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	  	 Lname =  <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getLname() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getLname()#">,
 	  	 GroupName =  <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getGroupname() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getGroupname()#">,
          Email =  <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getEmail() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getEmail()#">,
-        <cfif arguments.userBean.getPassword() neq ''>
-		 Password = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getPassword() neq '',de('no'),de('yes'))#" value="#iif(variables.configBean.getEncryptPasswords(),de('#encryptPassword(arguments.userBean.getPassword())#'),de('#arguments.userBean.getPassword()#'))#">,
-		 passwordCreated =<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">,
-		 </cfif>
 		 s2 =#arguments.userBean.gets2()#,
          Type = #arguments.userBean.getType()#,
 		 subType = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getSubType() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getSubType()#">,
@@ -455,6 +456,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
        WHERE UserID = '#arguments.userBean.getUserID()#'
    </CFQUERY>
 
+	<cfif arguments.userBean.getPassword() neq ''>
+		<cfset savePassword(arguments.userBean.getuserid(), arguments.userBean.getPassword()) />
+	</cfif>
 
 	<!--- <cfif arguments.userBean.gettype() EQ 2 > --->
 		<cfif arguments.updateGroups>
@@ -683,37 +687,89 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="encryptPassword" output="false">
 	<cfargument name="password">
-	<cfif variables.configBean.getJavaEnabled() and variables.configBean.getBCryptPasswords()>
-		<cfreturn variables.utility.toBCryptHash(arguments.password)>
-	<cfelse>
-		<cfreturn hash(arguments.password)>
-	</cfif>
+	<cfreturn variables.utility.toBCryptHash(arguments.password)>
 </cffunction>
 
 <cffunction name="savePassword" output="false">
 	<cfargument name="userid" type="string" />
 	<cfargument name="password" type="string" />
 
-	 <cfquery>
-      UPDATE tusers SET
-	  	 password =  <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.password neq '',de('no'),de('yes'))#" value="#iif(variables.configBean.getEncryptPasswords(),de('#encryptPassword(arguments.password)#'),de('#arguments.password#'))#">,
-		 passwordCreated =<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
-       WHERE UserID =<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#">
-   </CFQUERY>
+	<!--- If the password is the same as the current one, we silently ignore the save --->
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsUserCurrentPassword')#">
+		SELECT *
+		FROM tusercredentials
+		WHERE UserID =<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#">
+			AND type = 'PASSWORD'
+			AND disabled IS null
+		ORDER BY version DESC
+	</cfquery>
+	<cfloop query="rsUserCurrentPassword">
+		<cfif variables.utility.checkBCryptHash(arguments.password, rsUserCurrentPassword.hash)>
+			<!--- It is the same --->
+			<cfreturn />
+		</cfif>
+	</cfloop>
+
+	<cftransaction>
+		<!--- Check the new password has not recently been used --->
+		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsUserPreviousPasswords', maxrows=6)#">
+			SELECT *
+			FROM tusercredentials
+			WHERE UserID =<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#">
+				AND type = 'PASSWORD'
+			ORDER BY version DESC
+		</cfquery>
+		<cfloop query="rsUserPreviousPasswords">
+			<cfif variables.utility.checkBCryptHash(arguments.password, rsUserPreviousPasswords.hash)>
+				<cfthrow message="Password may not be the same as a previous password" />
+			</cfif>
+		</cfloop>
+
+		<!--- Disable all previous passwords --->
+		<cfquery>
+			UPDATE tusercredentials
+			SET
+				disabled = <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
+			WHERE UserID =<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#">
+				AND disabled IS null
+				AND type = 'PASSWORD'
+		</cfquery>
+
+		<!--- Find the next version for this user --->
+		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsUserLastVersion')#">
+			SELECT max(version) as maxVersion
+			FROM tusercredentials
+			WHERE UserID =<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#">
+		</cfquery>
+		<cfset local.nextVersion = rsUserLastVersion.maxVersion is not '' ? rsUserLastVersion.maxVersion + 1 : 1 />
+
+		<cfquery>
+			INSERT INTO tusercredentials (UserID, version, `type`, alias, created, updated, hash)
+			VALUES (
+				<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#" />, 
+				<cfqueryparam cfsqltype="cf_sql_integer" value="#local.nextVersion#" />, 
+				'PASSWORD', 
+				'PASSWORD', 
+				CURRENT_TIMESTAMP, 
+				CURRENT_TIMESTAMP, 
+				<cfqueryparam cfsqltype="cf_sql_varchar" value="#encryptPassword(arguments.password)#" />
+			)
+		</cfquery>
+	</cftransaction>
 </cffunction>
 
 <cffunction name="readUserHash" output="false">
 	<cfargument name="userid" type="string" />
 	<cfset var rsUserHash="">
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsUserHash')#">
-      SELECT userID,password as userHash,siteID,isPublic from tusers
-       WHERE UserID =<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#">
-   </cfquery>
-	<cfif not variables.configBean.getEncryptPasswords()>
-		<cfquery name="rsUserHash" dbtype="query">
-	      SELECT userID,'#variables.utility.toBCryptHash(rs.userHash)#' as userHash,siteID,isPublic from rsUserHash
-	   	</cfquery>
-	</cfif>
+		SELECT 
+			tusers.userID, tusers.siteID, tusers.isPublic,
+			tusercredentials.hash as userHash 
+		from tusers
+			inner join tusercredentials on tusers.userid = tusercredentials.userid
+		WHERE tusers.UserID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#" />
+			AND tusercredentials.type = 'PASSWORD' and tusercredentials.disabled is null
+	</cfquery>
 	<cfreturn rsUserHash/>
 </cffunction>
 
