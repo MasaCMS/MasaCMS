@@ -1135,4 +1135,126 @@ This file is part of Mura CMS.
 		<cfreturn variables.userDAO.readAddress(argumentCollection=arguments)>
 	</cffunction>
 
+	<!--- staat op verkeerde plek, moet in userCreditals.cfc --->
+	<cffunction name="registerCredentialsStep1" output="false">
+        <cfset var challenge = '{
+            "rp": {
+                "id": "localhost",
+                "name": "startRegistration"
+            },
+            "user": {
+                "id": "MTc=",
+                "name": "jd",
+                "displayName": "John Doe"
+            },
+            "challenge": {
+                "value": "MDEyMzQ1Njc4OWFiY2RlZjAxMjM0NTY3ODlhYmNkZWY="
+            },
+            "pubKeyCredParams": [],
+            "timeout": 60000,
+            "excludeCredentials": [],
+            "authenticatorSelection": null,
+            "attestation": "direct",
+            "extensions": null
+        }' >
+
+        <cfcontent type="application/json" reset="true" /><cfoutput>#challenge#</cfoutput>
+        <cfabort>
+    </cffunction>
+
+
+	<!--- functions for regististerCrendtialsStep2 --->
+	<cfscript>
+        function getJsonBody() {
+            var json = ToString(GetHttpRequestData().content);
+            if (!isJSON(json)) {
+                throw (message = "Invalid JSON string", type = "ArgumentException", errorCode = "400")
+            }
+            return json;
+        }
+        function urlSafeBase64Encode(str) {
+            return createObject("java", "java.util.Base64").getUrlEncoder().withoutPadding().encodeToString(str.getBytes("UTF-8"));
+        }
+        function urlSafeBase64Decode(str) {
+            var bytes = createObject("java", "java.util.Base64").getUrlDecoder().decode(str);
+            return createObject("java", "java.lang.String").init(bytes);
+        }
+        function urlSafeBase64ToBytes(str) {
+            var bytes = createObject("java", "java.util.Base64").getUrlDecoder().decode(str);
+            return bytes;
+        }
+    </cfscript>
+
+	<!--- Move this code to userCrendentials.cfc --->
+	<cffunction name="registerCredentialsStep2" output="false">
+		<cfset json = ToString(GetHttpRequestData().content) />
+		<cfif !isJSON(json)>
+			<cfthrow errorCode="400" type="ArgumentException" message="Invalid JSON string" />
+		</cfif>
+		<cfset jsonObject = deserializeJSON(json) />
+		<cfset clientDataJSON = deserializeJSON(urlSafeBase64Decode(jsonObject.response.clientDataJSON)) />
+
+		<!---
+		<cfdump var="#jsonObject#" />
+		<cfdump var="#clientDataJSON#" />
+		--->
+
+		<!--- The libraries dont work yet, because they are not loaded in the project --->
+
+		<!--- Server data --->
+		<cfset serverProperty = createObject("java", "com.webauthn4j.server.ServerProperty")
+			.init(
+				createObject("java", "com.webauthn4j.data.client.Origin").init(application.origin),
+				application.rpId,
+				createObject("java", "com.webauthn4j.data.client.challenge.DefaultChallenge").init(session.challenge),
+				JavaCast( "null", 0 )
+			) />
+
+		<!--- Client data --->
+		<cfset transports = javaCast("java.util.Set", createObject("java", "java.util.HashSet").init(["ble","hybrid","internal","nfc","usb"] )) />
+		<cfset registrationRequest = createObject("java", "com.webauthn4j.data.RegistrationRequest")
+			.init(
+				urlSafeBase64ToBytes(jsonObject.response.attestationObject),
+				urlSafeBase64ToBytes(jsonObject.response.clientDataJSON),
+				JavaCast( "null", 0 ),
+				transports
+				)
+			/>
+
+		<!--- Check client response can be parsed --->
+		<cfset userVerificationRequired = false />
+		<cfset userPresenceRequired = true />
+		<cfset registrationParameters = createObject("java", "com.webauthn4j.data.RegistrationParameters")
+			.init(
+				serverProperty,
+				JavaCast( "null", 0 ),
+				userVerificationRequired,
+				userPresenceRequired
+				)
+			/>
+
+		<!--- Check client response can be parsed --->
+		<cfset registrationData = application.webAuthnManager.parse(registrationRequest) />
+
+		<!--- Check response validity --->
+		<cfset application.webAuthnManager.validate(registrationData, registrationParameters) />
+
+		<cfset credentialRecord = createObject("java", "com.webauthn4j.credential.CoreCredentialRecordImpl")
+			.init(
+				registrationData.getAttestationObject()
+				)
+			/>
+
+		<!--- Store in credentials store --->
+		<cfset arrayAppend(application.credentials, {
+				"id": jsonObject.id,
+				"name": "jochem@warenorth.eu",
+				"displayName": "Jochem",
+				"credentialRecord": credentialRecord
+			}) />
+
+		<cfcontent type="application/json" reset="true" /><cfoutput>#json#</cfoutput>
+		<cfabort>
+</cffunction>
+
 </cfcomponent>

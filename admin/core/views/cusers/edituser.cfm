@@ -76,6 +76,7 @@ This file is part of Mura CMS.
 --->
 <cfhtmlhead text="#session.dateKey#" />
 <cfhtmlhead text='<script type="text/javascript" src="assets/js/user.js"></script>'>
+<cfhtmlhead text='<script type="text/javascript" src="assets/js/usercredentials.js"></script>'>
 <cfsilent>
 	<cfscript>
 		event = request.event;
@@ -821,7 +822,7 @@ This file is part of Mura CMS.
 							<div class="mura-control-group">
 								<div class="mura-input-set">
 									<input class="mura-3 mura-constrain" id="credential-alias" value="" type="text" maxlength="50" placeholder="Type in alias for new credential" />
-									<button type="button" class="btn btn-default mura-file-type-selector" value="Add"><i class="mi-key"></i> Add Credential</button>
+									<button type="button" class="btn btn-default mura-file-type-selector" onclick="registerCredentials();" value="Add"><i class="mi-key"></i> Add Credential</button>
 								</div>
 							</div>
 						</div>

@@ -79,6 +79,7 @@ component persistent='false' accessors='true' output='false' extends='controller
 	property name='userManager';
 	property name='settingsManager';
 
+
 	public any function setUserManager(userManager) {
 		variables.userManager = arguments.userManager;
 	}
@@ -385,6 +386,14 @@ component persistent='false' accessors='true' output='false' extends='controller
 		} else {
 			variables.fw.redirect(action='cUsers.edituser', preserve='siteid,userid,routeid', path='./');
 		}
+	}
+
+	public any function registerCredentialsStep1(rc) {
+		getUserManager().registerCredentialsStep1();
+	}
+
+	public any function registerCredentialsStep2(rc) {
+		getUserManager().registerCredentialsStep2();
 	}
 
 	public any function route(rc) {
