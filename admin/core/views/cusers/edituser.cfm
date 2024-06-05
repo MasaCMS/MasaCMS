@@ -772,44 +772,47 @@ This file is part of Mura CMS.
 							<h3 class="block-title">Credentials</h3>
 						</div> <!-- /.block header -->
 						<div class="block-content">
-							<!--- <cfdump var="#rsAddresses#"> --->
-							<table class="table table-striped table-condensed table-bordered mura-table-grid">
-								<tr>
-									<th>Type</th>
-									<th>Created</th>
-									<th>Alias</th>
-									<th>Revoke</th>
-								</tr>
-								<cfloop query="rsAddresses">
+							<cfset rsCredentials=rc.userBean.getCredentials()>
+							<cfdump var="#rsCredentials#">
+							<cfif rsCredentials.recordcount>
+								<table class="table table-striped table-condensed table-bordered mura-table-grid">
 									<tr>
-										<td>
-											<cfif rsAddresses.address1 neq ''>
-												#esapiEncode('html',rsAddresses.address1)#
-											</cfif>
-										</td>
-
-										<td>
-											#esapiEncode('html',dateTimeFormat(now(),"yyyy-dd-mm HH:nn:ss"))#
-										</td>
-
-										<td>
-											<cfif rsAddresses.city neq ''>
-												#esapiEncode('html',rsAddresses.city)#
-											</cfif>
-										</td>
-
-										<td nowrap class="actions">
-											<ul>
-												<li class="delete">
-													<a title="Delete" href="./?muraAction=cUsers.updateAddress&amp;userid=#esapiEncode('url',rc.userid)#&amp;action=delete&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;routeID=#esapiEncode('url',rc.routeid)#&amp;addressID=#rsAddresses.addressID#" onclick="return confirmDialog('#jsStringFormat(rbKey('user.deleteaddressconfirm'))#',this.href);">
-														<i class="mi-trash"></i>
-													</a>
-												</li>
-											</ul>
-										</td>
+										<th>Type</th>
+										<th>Created</th>
+										<th>Alias</th>
+										<th>Revoke</th>
 									</tr>
-								</cfloop>
-							</table>
+									<cfloop query="rsAddresses">
+										<tr>
+											<td>
+												<cfif rsCredentials.type neq ''>
+													#esapiEncode('html',rsCredentials.type)#
+												</cfif>
+											</td>
+
+											<td>
+												#esapiEncode('html',dateTimeFormat(rsCredentials.created,"yyyy-dd-mm HH:nn:ss"))#
+											</td>
+
+											<td>
+												<cfif rsCredentials.alias neq ''>
+													#esapiEncode('html',rsCredentials.alias)#
+												</cfif>
+											</td>
+
+											<td nowrap class="actions">
+												<ul>
+													<li class="delete">
+														<a title="Delete" href="./?muraAction=cUsers.updateAddress&amp;userid=#esapiEncode('url',rc.userid)#&amp;action=delete&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;routeID=#esapiEncode('url',rc.routeid)#&amp;addressID=#rsAddresses.addressID#" onclick="return confirmDialog('#jsStringFormat(rbKey('user.deleteaddressconfirm'))#',this.href);">
+															<i class="mi-trash"></i>
+														</a>
+													</li>
+												</ul>
+											</td>
+										</tr>
+									</cfloop>
+								</table>
+							</cfif>
 
 							<!--- Form --->
 							<div class="mura-control-group">
