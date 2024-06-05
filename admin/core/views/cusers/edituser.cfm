@@ -800,13 +800,17 @@ This file is part of Mura CMS.
 											</td>
 
 											<td nowrap class="actions">
-												<ul>
-													<li class="delete">
-														<a title="Delete" href="./?muraAction=cUsers.updateAddress&amp;userid=#esapiEncode('url',rc.userid)#&amp;action=delete&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;routeID=#esapiEncode('url',rc.routeid)#&amp;addressID=#rsAddresses.addressID#" onclick="return confirmDialog('#jsStringFormat(rbKey('user.deleteaddressconfirm'))#',this.href);">
-															<i class="mi-trash"></i>
-														</a>
-													</li>
-												</ul>
+												<cfif rsCredentials.type neq 'password'>
+													<ul>
+														<li class="delete">
+															<a title="Delete" href="./?muraAction=cUsers.updateCredentials&amp;userid=#rsCredentials.userID#&amp;action=delete&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;routeID=#esapiEncode('url',rc.routeid)#&amp;version=#rsCredentials.version#" onclick="return confirmDialog('#jsStringFormat(rbKey('user.deletecredentialconfirm'))#',this.href);">
+																<i class="mi-trash"></i>
+															</a>
+														</li>
+													</ul>
+												<cfelse>
+													-
+												</cfif>
 											</td>
 										</tr>
 									</cfloop>

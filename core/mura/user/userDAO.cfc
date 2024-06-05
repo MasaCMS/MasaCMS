@@ -879,6 +879,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
+<cffunction name="deleteCredential" output="false">
+	<cfargument name="userid" type="string" required="yes" />
+	<cfargument name="version" type="string" required="yes" />
+
+	<cfquery>
+		DELETE FROM tusercredentials WHERE userid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userid#">
+		AND version = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.version#">
+	</cfquery>
+</cffunction>
+
 <cffunction name="deleteUserAddresses" output="false">
 		<cfargument name="userID" type="String" />
 

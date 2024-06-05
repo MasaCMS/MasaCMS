@@ -943,6 +943,12 @@ This file is part of Mura CMS.
 		<cfset purgeUserCache(userID=addressBean.getUserID())>
 	</cffunction>
 
+	<cffunction name="deleteCredential" output="false">
+		<cfargument name="userid" type="string" default=""/>
+		<cfargument name="version" type="string" default=""/>
+		<cfset variables.userDAO.deleteCredential(userid=arguments.userid, version=arguments.version) />
+	</cffunction>
+
 	<cffunction name="getCurrentUserID" output="false">
 		<cfset var sessionData=getSession()>
 		<cfreturn sessionData.mura.userID />
