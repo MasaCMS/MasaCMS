@@ -2,16 +2,14 @@
 	Constraints we want on the database:
 	1 all user credentials require a user
 		constaint FK_tusercredentials_tusers FOREIGN KEY (UserId) REFERENCES tusers (UserId),
-	2 all user credential versions are unique per user so we can enforce absolute ordering
-		constaint UQ_tusercredentials_version UNIQUE (UserId, version)
-	3 users may have at most 1 active (disabled IS NULL) password (type = 'PASSWORD')
+	2 users may have at most 1 active (disabled IS NULL) password (type = 'PASSWORD')
 		constaint UQ_tusercredentials_password UNIQUE (UserId) WHERE type = 'PASSWORD' AND disabled IS NULL
-	4 active (disabled IS NULL) passkeys (type = 'PASSKEY' AND credentialId IS NOT null) must be unique
+	3 active (disabled IS NULL) passkeys (type = 'PASSKEY' AND credentialId IS NOT null) must be unique
 		constaint UQ_tusercredentials_passkey UNIQUE (credentialId) WHERE type = 'PASSKEY' AND credentialId IS NOT null AND disabled IS NULL
 
-	Not all databases can do filtered constraints (3 and 4), so some of it will not be enforced in certain databases. This is OK because:
-	- if a user has multiple active password, they can not log in
-	- if a duplicate passkey is detected, the user can not log in
+	Not all databases can do filtered constraints (2 and 3), so some of it will not be enforced in certain databases. This is OK because:
+	2. if a user has multiple active password, they can not log in
+	3. if a duplicate passkey is detected, the user can not log in
 --->
 
 <!--- Migrate all bcrypt passwords to the new table and drop everything --->
@@ -23,10 +21,10 @@
 		WHERE username = 'admin' and (password = 'admin' OR password = '21232F297A57A5A743894A0E4A801FC3')
 	</cfquery>
 	<cfquery>
-		INSERT INTO tusercredentials (UserId, version, TYPE, alias, created, updated, activity, hash)
+		INSERT INTO tusercredentials (usercredentialid, UserId, TYPE, alias, created, updated, activity, hash)
 		SELECT
 			UserId,
-			1,
+			UserId,
 			'PASSWORD',
 			'PASSWORD',
 			passwordCreated,
@@ -52,8 +50,8 @@
 			<cftransaction>
 				<cfquery>
 				CREATE TABLE [dbo].[tusercredentials] (
-					UserId varchar(36) not null,
-					version integer not null default 1,
+					usercredentialid varchar(35) not null,
+					UserId varchar(35) not null,
 					type varchar(36) not null,
 					alias varchar(36),
 					created datetime not null default now(),
@@ -67,7 +65,7 @@
 					credentialId varchar(36) default null,
 					challenge varchar(255) default null,
 					key varchar(4000) default null,
-					constraint PK_tusercredentials PRIMARY KEY (UserId, version),
+					constraint PK_tusercredentials PRIMARY KEY (id),
 					constraint FK_tusercredentials_tusers FOREIGN KEY (UserId) REFERENCES tusers (UserId),
 					constraint UQ_tusercredentials_credentialId UNIQUE KEY (credentialId, disabled)
 				)
@@ -81,8 +79,8 @@
 			<cftransaction>
 				<cfquery>
 					CREATE TABLE tusercredentials (
+						usercredentialid char(35) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
 						`UserID` char(35) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
-						version integer not null default 1,
 						type varchar(36) not null,
 						alias varchar(36),
 						created datetime not null default now(),
@@ -96,7 +94,7 @@
 						credentialId varchar(36) default null,
 						challenge varchar(255) default null,
 						keypass varchar(4000) default null,
-						CONSTRAINT PK_tusercredentials PRIMARY KEY (UserId, version),
+						CONSTRAINT PK_tusercredentials PRIMARY KEY (usercredentialid),
 						CONSTRAINT FK_tusercredentials_tusers FOREIGN KEY (UserId) REFERENCES tusers (UserId),
 						CONSTRAINT UQ_tusercredentials_credentialId UNIQUE KEY (credentialId, disabled)
 					)

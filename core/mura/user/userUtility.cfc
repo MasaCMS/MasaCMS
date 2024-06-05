@@ -131,7 +131,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsUser')#">
 		SELECT 
 			tusers.*,
-			tusercredentials.hash as password 
+			tusercredentials.hash as password, tusercredentials.usercredentialid as userCredentialId
 		FROM tusers
 			inner join tusercredentials on tusers.userid = tusercredentials.userid
 		WHERE tusers.username = <cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.username)#" />
@@ -147,12 +147,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfquery>
 	<cfelse>
 		<cfquery>
-			UPDATE tusercredentials
-			SET
-				counter = counter + 1,
-				activity = <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
-			WHERE tusercredentials.userid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rsUser.userId#" />
-				AND tusercredentials.type = 'PASSWORD' AND tusercredentials.disabled is null
+			UPDATE	tusercredentials
+			SET		counter = counter + 1,
+					activity = <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
+			WHERE 	usercredentialid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rsUser.userCredentialId#" />
 		</cfquery>
 	</cfif>
 

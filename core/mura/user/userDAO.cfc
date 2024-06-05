@@ -701,7 +701,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		WHERE UserID =<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#">
 			AND type = 'PASSWORD'
 			AND disabled IS null
-		ORDER BY version DESC
+		ORDER BY created DESC
 	</cfquery>
 	<cfloop query="rsUserCurrentPassword">
 		<cfif variables.utility.checkBCryptHash(arguments.password, rsUserCurrentPassword.hash)>
@@ -717,7 +717,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			FROM tusercredentials
 			WHERE UserID =<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#">
 				AND type = 'PASSWORD'
-			ORDER BY version DESC
+			ORDER BY created DESC
 		</cfquery>
 		<cfloop query="rsUserPreviousPasswords">
 			<cfif variables.utility.checkBCryptHash(arguments.password, rsUserPreviousPasswords.hash)>
@@ -735,16 +735,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				AND type = 'PASSWORD'
 		</cfquery>
 
-		<!--- Find the next version for this user --->
-		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsUserLastVersion')#">
-			SELECT max(version) as maxVersion
-			FROM tusercredentials
-			WHERE UserID =<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#">
-		</cfquery>
-		<cfset local.nextVersion = rsUserLastVersion.maxVersion is not '' ? rsUserLastVersion.maxVersion + 1 : 1 />
-
 		<cfquery>
-			INSERT INTO tusercredentials (UserID, version, `type`, alias, created, updated, hash)
+			INSERT INTO tusercredentials (usercredentialid, UserID, `type`, alias, created, updated, hash)
 			VALUES (
 				<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#" />,
 				<cfqueryparam cfsqltype="cf_sql_integer" value="#local.nextVersion#" />,
