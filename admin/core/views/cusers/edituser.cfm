@@ -773,7 +773,6 @@ This file is part of Mura CMS.
 						</div> <!-- /.block header -->
 						<div class="block-content">
 							<cfset rsCredentials=rc.userBean.getCredentials()>
-							<cfdump var="#rsCredentials#">
 							<cfif rsCredentials.recordcount>
 								<table class="table table-striped table-condensed table-bordered mura-table-grid">
 									<tr>
@@ -782,7 +781,7 @@ This file is part of Mura CMS.
 										<th>Alias</th>
 										<th>Revoke</th>
 									</tr>
-									<cfloop query="rsAddresses">
+									<cfloop query="rsCredentials">
 										<tr>
 											<td>
 												<cfif rsCredentials.type neq ''>
