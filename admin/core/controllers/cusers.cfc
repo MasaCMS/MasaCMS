@@ -374,7 +374,7 @@ component persistent='false' accessors='true' output='false' extends='controller
 	public any function updateCredentials(rc) {
 		switch(arguments.rc.action) {
 			case 'Delete' :
-				getUserManager().deleteCredential(userid=arguments.rc.userid, version=arguments.rc.version);
+				getUserManager().deleteCredential(userCredentialid=arguments.rc.userCredentialid);
 				break;
 			// case 'Add' :
 			// 	getUserManager().createAddress(arguments.rc);

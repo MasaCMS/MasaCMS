@@ -804,7 +804,7 @@ This file is part of Mura CMS.
 												<cfif rsCredentials.type neq 'password'>
 													<ul>
 														<li class="delete">
-															<a title="Delete" href="./?muraAction=cUsers.updateCredentials&amp;userid=#rsCredentials.userID#&amp;action=delete&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;routeID=#esapiEncode('url',rc.routeid)#&amp;version=#rsCredentials.version#" onclick="return confirmDialog('#jsStringFormat(rbKey('user.deletecredentialconfirm'))#',this.href);">
+															<a title="Delete" href="./?muraAction=cUsers.updateCredentials&amp;userid=#esapiEncode('url',rc.userid)#&amp;action=delete&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;routeID=#esapiEncode('url',rc.routeid)#&amp;userCredentialId=#rsCredentials.userCredentialId#" onclick="return confirmDialog('#jsStringFormat(rbKey('user.deletecredentialconfirm'))#',this.href);">
 																<i class="mi-trash"></i>
 															</a>
 														</li>

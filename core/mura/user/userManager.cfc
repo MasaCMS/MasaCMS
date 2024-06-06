@@ -944,9 +944,8 @@ This file is part of Mura CMS.
 	</cffunction>
 
 	<cffunction name="deleteCredential" output="false">
-		<cfargument name="userid" type="string" default=""/>
-		<cfargument name="version" type="string" default=""/>
-		<cfset variables.userDAO.deleteCredential(userid=arguments.userid, version=arguments.version) />
+		<cfargument name="userCredentialId" type="string" default=""/>
+		<cfset variables.userDAO.deleteCredential(userCredentialId=arguments.userCredentialId) />
 	</cffunction>
 
 	<cffunction name="getCurrentUserID" output="false">
