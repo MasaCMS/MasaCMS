@@ -879,6 +879,36 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfquery>
 </cffunction>
 
+<cffunction name="insertCredential" output="false">
+	<cfargument name="userID" type="string" required="yes" />
+	<cfargument name="type" type="string" required="yes" />
+	<cfargument name="alias" type="string" required="yes" />
+	<cfargument name="counter" type="string" required="yes" />
+	<cfargument name="hash" type="string" required="yes" />
+	<cfargument name="credentialID" type="string" required="yes" />
+	<cfargument name="challenge" type="string" required="yes" />
+	<cfargument name="keypass" type="string" required="yes" />
+	<cfquery>
+		INSERT INTO tusercredentials
+		(usercredentialid, UserID, `type`, alias, created, updated, `counter`, activity, `hash`, credentialId, challenge, keypass)
+		VALUES(
+
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#createUUID()#">
+			, <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#">
+			, <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#">
+			, <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.alias#">
+			, <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
+			, <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
+			, <cfqueryparam cfsqltype="cf_sql_bigint" value="#arguments.counter#">
+			, <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
+			, <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.hash#">
+			, <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.credentialId#">
+			, <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.challenge#">
+			, <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.keypass#">
+			);
+	</cfquery>
+</cffunction>
+
 <cffunction name="deleteUserAddresses" output="false">
 		<cfargument name="userID" type="String" />
 

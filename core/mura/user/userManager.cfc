@@ -1198,6 +1198,18 @@ This file is part of Mura CMS.
 		<cfdump var="#clientDataJSON#" />
 		--->
 
+		<!--- WIP hier gaan we alvast een dummy record in de DB stoppen om iets van een DAO te hebben--->
+		<cfset variables.userDAO.insertCredential(
+					userID= "D98AE78A-83EB-4D82-8C0BB1CF31510F92"
+					, type= "PASSKEY"
+					, alias= "MyAlias"
+					, counter= randRange(0,1000000)
+					, hash= "Myhash"
+					, credentialID= "MyCredentialID"
+					, challenge= "ILoveAGoodChallenge"
+					, keypass= "ThougShallNotKeyPass"
+		) />
+
 		<!--- The libraries dont work yet, because they are not loaded in the project --->
 
 		<!--- Server data --->
