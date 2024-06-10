@@ -738,10 +738,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfquery>
 			INSERT INTO tusercredentials (usercredentialid, UserID, `type`, alias, created, updated, hash)
 			VALUES (
+				<cfqueryparam cfsqltype="cf_sql_varchar" value="#createUUID()#" />,
 				<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#" />,
-				<cfqueryparam cfsqltype="cf_sql_integer" value="#local.nextVersion#" />,
 				'PASSWORD',
-				'PASSWORD',
+				'********',
 				CURRENT_TIMESTAMP,
 				CURRENT_TIMESTAMP,
 				<cfqueryparam cfsqltype="cf_sql_varchar" value="#encryptPassword(arguments.password)#" />
@@ -763,6 +763,31 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			AND tusercredentials.type = 'PASSWORD' and tusercredentials.disabled is null
 	</cfquery>
 	<cfreturn rsUserHash/>
+</cffunction>
+
+<cffunction name="getByCredentialId" output="false">
+	<cfargument name="credentialId" type="string" />
+	<cfset var rsCredential="">
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsCredential')#">
+		SELECT
+			tusercredentials.*
+		from tusers
+			inner join tusercredentials on tusers.userid = tusercredentials.userid
+		WHERE tusercredentials.credentialid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.credentialId#" />
+			AND tusercredentials.type = 'PASSKEY' and tusercredentials.disabled is null
+			AND tusers.inactive = trueFalseFormat(value)
+	</cfquery>
+	<cfreturn rsCredential/>
+</cffunction>
+
+<cffunction name="updateCredentialUsage" output="false">
+	<cfargument name="userCredentialId" type="string" />
+	<cfquery>
+		UPDATE tusercredentials
+		SET counter = counter + 1
+			, activity = <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#" />
+		WHERE tusercredentials.userCredentialid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userCredentialId#" />
+	</cfquery>
 </cffunction>
 
 <cffunction name="readAddress" output="false">
@@ -964,7 +989,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		select *
 		from tusercredentials
 		where userID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#">
-		order by created
+		order by activity desc
 	</cfquery>
 
 	<cfreturn rsCredentials />

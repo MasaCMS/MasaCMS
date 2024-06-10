@@ -252,7 +252,17 @@ if ( application.setupComplete ) {
 						loadPaths=[
 									expandPath('/mura/lib/jBCrypt-0.3'),
 									expandPath('/mura/lib/diff_match_patch.jar'),
-									expandPath('/mura/lib/googleauth.jar')
+									expandPath('/mura/lib/webauthn4cfml-0.0.1.jar'),
+									expandPath("/mura/lib/webauthn4j-core-0.24.0.RELEASE.jar"),
+									expandPath("/mura/lib/webauthn4j-util-0.24.0.RELEASE.jar"),
+									expandPath("/mura/lib/jackson-core-2.17.0.jar"),
+									expandPath("/mura/lib/jackson-annotations-2.17.0.jar"),
+									expandPath("/mura/lib/jackson-databind-2.17.0.jar"),
+									expandPath("/mura/lib/jackson-dataformat-cbor-2.17.0.jar"),
+									expandPath("/mura/lib/jackson-datatype-jsr310-2.17.0.jar"),
+									expandPath("/mura/lib/jkerby-asn1-2.0.3.jar"),
+									expandPath("/mura/lib/slf4j-api-2.0.13.jar"),
+									expandPath("/mura/lib/annotations-24.1.0.jar")
 								]
 					)
 				);

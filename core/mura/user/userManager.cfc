@@ -1134,35 +1134,7 @@ This file is part of Mura CMS.
 		<cfreturn variables.userDAO.readAddress(argumentCollection=arguments)>
 	</cffunction>
 
-	<!--- staat op verkeerde plek, moet in userCreditals.cfc --->
-	<cffunction name="registerCredentialsStep1" output="false">
-        <cfset var challenge = '{
-            "rp": {
-                "id": "localhost",
-                "name": "startRegistration"
-            },
-            "user": {
-                "id": "MTc=",
-                "name": "jd",
-                "displayName": "John Doe"
-            },
-            "challenge": {
-                "value": "MDEyMzQ1Njc4OWFiY2RlZjAxMjM0NTY3ODlhYmNkZWY="
-            },
-            "pubKeyCredParams": [],
-            "timeout": 60000,
-            "excludeCredentials": [],
-            "authenticatorSelection": null,
-            "attestation": "direct",
-            "extensions": null
-        }' >
-
-        <cfcontent type="application/json" reset="true" /><cfoutput>#challenge#</cfoutput>
-        <cfabort>
-    </cffunction>
-
-
-	<!--- functions for regististerCrendtialsStep2 --->
+	<!--- Move this code to separate CFC for passkeys --->
 	<cfscript>
         function getJsonBody() {
             var json = ToString(GetHttpRequestData().content);
@@ -1182,90 +1154,108 @@ This file is part of Mura CMS.
             var bytes = createObject("java", "java.util.Base64").getUrlDecoder().decode(str);
             return bytes;
         }
+        function rpId() {
+            return len(cgi.server_name) ? cgi.server_name : "localhost";
+        }
+        function origin() {
+			var protocol = cgi.https IS "on" ? "https://" : "http://";
+            return protocol & cgi.http_host & "/";
+        }
+		function webAuthnManager() { 
+			return createObject("java", "eu.wearenorth.webauthn4cfml.CfmlWebAuthnManager")
+            	.init(rpId(), "Masa CMS", origin());
+		}
+		function credentialImpl(credentialId, counter, attestationStatement, authenticatorExtensions, attestedCredentialData) { 
+			var credential =  createObject("java", "eu.wearenorth.webauthn4cfml.CfmlCredential").init();
+			credential.credentialId = credentialId;
+			credential.counter = counter;
+			credential.attestationStatement = attestationStatement;
+			credential.authenticatorExtensions = authenticatorExtensions;
+			credential.attestedCredentialData = attestedCredentialData;
+		}
     </cfscript>
 
-	<!--- Move this code to userCrendentials.cfc --->
+	<cffunction name="registerCredentialsStep1" output="false">
+		<cfargument name="rc" />
+		<cfset session.passkeyChallenge = createGuid() />
+        <cfset var challenge = {
+            "rp": {
+                "id": rpId(),
+                "name": "Masa CMS"
+            },
+            "user": {
+                "id": urlSafeBase64Encode(rc.$.currentUser().getUserId()),
+                "name": rc.$.currentUser().getUsername(),
+                "displayName": rc.$.currentUser().getUserId()
+            },
+            "challenge": {
+                "value": urlSafeBase64Encode(session.passkeyChallenge)
+            },
+            "pubKeyCredParams": [],
+            "timeout": 60000,
+            "excludeCredentials": [],
+            "attestation": "direct"
+        } >
+        <cfcontent type="application/json" reset="true" /><cfoutput>#serializeJSON(challenge)#</cfoutput>
+        <cfabort>
+    </cffunction>
+
 	<cffunction name="registerCredentialsStep2" output="false">
-		<cfset json = ToString(GetHttpRequestData().content) />
-		<cfif !isJSON(json)>
-			<cfthrow errorCode="400" type="ArgumentException" message="Invalid JSON string" />
-		</cfif>
-		<cfset jsonObject = deserializeJSON(json) />
-		<cfset clientDataJSON = deserializeJSON(urlSafeBase64Decode(jsonObject.response.clientDataJSON)) />
+		<cfargument name="rc" />
 
-		<!---
-		<cfdump var="#jsonObject#" />
-		<cfdump var="#clientDataJSON#" />
-		--->
+		<!--- Only 1 attempt --->
+		<cfset var passkeyChallenge = session.passkeyChallenge />
+		<cfset structDelete(session, "passkeyChallenge") />
 
-		<!--- WIP hier gaan we alvast een dummy record in de DB stoppen om iets van een DAO te hebben --->
+		<cfset var webAuthnManager = webAuthnManager() />
+		<cfset var credential = webAuthnManager.validateRegistration(passkeyChallenge, getJsonBody()) />
 		<cfset variables.userDAO.insertCredential(
 					userID = session.mura.userID
 					, type = "PASSKEY"
 					, alias = "MyAlias"
-					, counter = randRange(0,1000000)
-					, hash = "Myhash"
-					, credentialID = "MyCredentialID"
-					, challenge = "ILoveAGoodChallenge"
-					, keypass = "ThyShallNotKeyPass"
+					, counter = credential.getCounter()
+					, hash = credential.getCredentialId()
+					, credentialID = credential.getCredentialId()
+					, challenge = passkeyChallenge
+					, keypass = serializeJSON({
+						attestationStatement: credential.getAttestationStatement(),
+						authenticatorExtensions: credential.getAuthenticatorExtensions(),
+						attestedCredentialData: credential.getAttestedCredentialData(),
+						})
 		) />
+		<cfcontent type="application/json" reset="true" />{"status": "OK"}
+		<cfabort />
+	</cffunction>
 
-		<!--- The libraries dont work yet, because they are not loaded in the project --->
+	<cffunction name="loginStep1" output="false">
+		<cfargument name="rc" />
+		<cfset session.loginChallenge = createGUID() />
+		<cfset loginOptions = application.webAuthnManager.startAuthentication(session.loginChallenge) />
+		<cfcontent type="application/json" reset="true" /><cfoutput>#loginOptions#</cfoutput>
+        <cfabort>
+    </cffunction>
 
-		<!--- Server data --->
-		<cfset serverProperty = createObject("java", "com.webauthn4j.server.ServerProperty")
-			.init(
-				createObject("java", "com.webauthn4j.data.client.Origin").init(application.origin),
-				application.rpId,
-				createObject("java", "com.webauthn4j.data.client.challenge.DefaultChallenge").init(session.challenge),
-				JavaCast( "null", 0 )
-			) />
+	<cffunction name="loginStep2" output="false">
+		<cfargument name="rc" />
 
-		<!--- Client data --->
-		<cfset transports = javaCast("java.util.Set", createObject("java", "java.util.HashSet").init(["ble","hybrid","internal","nfc","usb"] )) />
-		<cfset registrationRequest = createObject("java", "com.webauthn4j.data.RegistrationRequest")
-			.init(
-				urlSafeBase64ToBytes(jsonObject.response.attestationObject),
-				urlSafeBase64ToBytes(jsonObject.response.clientDataJSON),
-				JavaCast( "null", 0 ),
-				transports
-				)
-			/>
+		<!--- Only 1 attempt --->
+		<cfset var loginChallenge = session.loginChallenge />
+		<cfset structDelete(session, "loginChallenge") />
 
-		<!--- Check client response can be parsed --->
-		<cfset userVerificationRequired = false />
-		<cfset userPresenceRequired = true />
-		<cfset registrationParameters = createObject("java", "com.webauthn4j.data.RegistrationParameters")
-			.init(
-				serverProperty,
-				JavaCast( "null", 0 ),
-				userVerificationRequired,
-				userPresenceRequired
-				)
-			/>
+		<cfset var webAuthnManager = webAuthnManager() />
+		<cfset credentialId = webAuthnManager.extractCredentialId(jsonBody) />
 
-		<!--- Check client response can be parsed --->
-		<cfset registrationData = application.webAuthnManager.parse(registrationRequest) />
+		<cfset var rsCredential = variables.userDAO.getByCredentialId(credentialId) />
+		<cfif rsCredential.recordCount IS NOT 1>
+			<cfthrow message="Incorrect credential" />
+		</cfif>
+		<cfset credential = credentialImpl(credentialId, rsCredential.counter, rsCredential.attestationStatement, rsCredential.authenticatorExtensions, rsCredential.attestedCredentialData) />
+		<cfset webAuthnManager.validateAuthentication(credential, loginChallenge, jsonBody) />
 
-		<!--- Check response validity --->
-		<cfset application.webAuthnManager.validate(registrationData, registrationParameters) />
-
-		<cfset credentialRecord = createObject("java", "com.webauthn4j.credential.CoreCredentialRecordImpl")
-			.init(
-				registrationData.getAttestationObject()
-				)
-			/>
-
-		<!--- Store in credentials store --->
-		<cfset arrayAppend(application.credentials, {
-				"id": jsonObject.id,
-				"name": "jochem@warenorth.eu",
-				"displayName": "Jochem",
-				"credentialRecord": credentialRecord
-			}) />
-
-		<cfcontent type="application/json" reset="true" /><cfoutput>#json#</cfoutput>
-		<cfabort>
-</cffunction>
+		<!--- Update the usage counter --->
+		<cfset variables.userDAO.updateCredentialUsage(rsCredential.userCredentialId) />
+		<cfcontent type="application/json" reset="true" />{"status": "OK"}
+		<cfabort />
+	</cffunction>
 
 </cfcomponent>

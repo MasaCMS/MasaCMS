@@ -26,7 +26,7 @@
 			UserId,
 			UserId,
 			'PASSWORD',
-			'PASSWORD',
+			'********',
 			passwordCreated,
 			LastUpdate,
 			lastLogin,

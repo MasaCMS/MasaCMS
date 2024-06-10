@@ -777,13 +777,21 @@ This file is part of Mura CMS.
 							<cfif rsCredentials.recordcount>
 								<table class="table table-striped table-condensed table-bordered mura-table-grid">
 									<tr>
-										<th>Type</th>
-										<th>Created</th>
 										<th>Alias</th>
+										<th>Type</th>
+										<th>Last used</th>
+										<th>Times used</th>
+										<th>Created</th>
 										<th>Revoke</th>
 									</tr>
 									<cfloop query="rsCredentials">
 										<tr>
+											<td>
+												<cfif rsCredentials.alias neq ''>
+													#esapiEncode('html',rsCredentials.alias)#
+												</cfif>
+											</td>
+
 											<td>
 												<cfif rsCredentials.type neq ''>
 													#esapiEncode('html',rsCredentials.type)#
@@ -791,26 +799,31 @@ This file is part of Mura CMS.
 											</td>
 
 											<td>
-												#esapiEncode('html',dateTimeFormat(rsCredentials.created,"yyyy-dd-mm HH:nn:ss"))#
+												#esapiEncode('html',dateTimeFormat(rsCredentials.activity,"yyyy-dd-mm HH:nn:ss"))#
 											</td>
 
 											<td>
-												<cfif rsCredentials.alias neq ''>
-													#esapiEncode('html',rsCredentials.alias)#
-												</cfif>
+												#esapiEncode('html',rsCredentials.counter)#
+											</td>
+
+											<td>
+												#esapiEncode('html',dateTimeFormat(rsCredentials.created,"yyyy-dd-mm HH:nn:ss"))#
 											</td>
 
 											<td nowrap class="actions">
-												<cfif rsCredentials.type neq 'password'>
-													<ul>
-														<li class="delete">
-															<a title="Delete" href="./?muraAction=cUsers.updateCredentials&amp;userid=#esapiEncode('url',rc.userid)#&amp;action=delete&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;routeID=#esapiEncode('url',rc.routeid)#&amp;userCredentialId=#rsCredentials.userCredentialId#" onclick="return confirmDialog('#jsStringFormat(rbKey('user.deletecredentialconfirm'))#',this.href);">
-																<i class="mi-trash"></i>
-															</a>
-														</li>
-													</ul>
+												<cfif rsCredentials.disabled neq ''>
+													Revoked on #esapiEncode('html',dateTimeFormat(rsCredentials.disabled,"yyyy-dd-mm HH:nn:ss"))#
 												<cfelse>
-													-
+													<cfif rsCredentials.type neq 'password'>
+														<ul>
+															<li class="delete">
+																<a title="Delete" href="./?muraAction=cUsers.updateCredentials&amp;userid=#esapiEncode('url',rc.userid)#&amp;action=delete&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;routeID=#esapiEncode('url',rc.routeid)#&amp;userCredentialId=#rsCredentials.userCredentialId#" onclick="return confirmDialog('#jsStringFormat(rbKey('user.deletecredentialconfirm'))#',this.href);">
+																	<i class="mi-trash"></i>
+																</a>
+															</li>
+														</ul>
+													<cfelse>
+													</cfif>
 												</cfif>
 											</td>
 										</tr>

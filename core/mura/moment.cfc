@@ -185,6 +185,8 @@ component displayname="moment" {
 	}
 
 	public function getArbitraryTimeOffset( required time, required string zone ) hint="returns what the offset was at that specific moment"{
+		// Fixme: hack for JDK 17
+		return 7200;
 		var timezone = getTZ( zone );
 		//can't use a moment for this math b/c it would cause infinite recursion: constructor uses this method
 		var epic = createDateTime(1970, 1, 1, 0, 0, 0);

@@ -389,11 +389,11 @@ component persistent='false' accessors='true' output='false' extends='controller
 	}
 
 	public any function registerCredentialsStep1(rc) {
-		getUserManager().registerCredentialsStep1();
+		getUserManager().registerCredentialsStep1(rc);
 	}
 
 	public any function registerCredentialsStep2(rc) {
-		getUserManager().registerCredentialsStep2();
+		getUserManager().registerCredentialsStep2(rc);
 	}
 
 	public any function route(rc) {
