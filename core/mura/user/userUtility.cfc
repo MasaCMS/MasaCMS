@@ -251,8 +251,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />
 
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsUser')#">
-	SELECT * FROM tusers WHERE userid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"> AND Type = 2
-	and inactive=0
+	SELECT * 
+	FROM tusers 
+	WHERE userid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"> AND Type = 2
+	  and inactive=0
 	</cfquery>
 
 
@@ -266,7 +268,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset loginByQuery(rsUser)/>
 
 			<cfset pluginEvent.setValue("username",rsUser.username)>
-			<cfset pluginEvent.setValue("password",rsUser.password)>
+			<cfset pluginEvent.setValue("password",'')>
 			<cfset pluginEvent.setValue("siteid",rsUser.siteid)>
 			<cfset pluginEvent.setValue("remoteID",rsUser.remoteID)>
 			<cfset pluginEvent.setValue("userID",arguments.userID)>
