@@ -1,0 +1,37 @@
+/**
+ * [MasaAuthenticator](https://github.com/MasaCMS/MasaAuthenticator)
+ * By: [We Are Orange BV](https://github.com/weareorange) and [Steve Withington](https://github.com/stevewithington)
+ */
+.masaauth-challenge-wrapper {
+    line-height: 1;
+    background: white;
+    max-width: 100%;
+}
+.masaauth-challenge-wrapper ol {
+    padding: 1em 0 1em 1em;
+}
+.masaauth-challenge-wrapper ol li {
+    padding: 0 0 0.5em 0.5em;
+    line-height: 1.4;
+}
+.masaauth-challenge-wrapper figure {
+    clear: both;
+    display: block;
+    border: none;
+}
+.masaauth-challenge-wrapper ol ul {
+    padding: 1em;
+}
+.masaauth-challenge-wrapper hr {
+    margin: 1em 0;
+    border-top: 1px solid #ddd;
+}
+.masaauth-challenge-wrapper h1 {
+    padding: 0 0 0.5em 0;
+}
+.masaauth-challenge-wrapper #masaauth-lost-wrapper {
+    text-align: center;
+}
+.masaauth-challenge-wrapper #masaauth-print-backup-codes {
+    margin-bottom: 1em;
+}

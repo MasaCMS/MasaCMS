@@ -103,6 +103,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rsuser>
 </cffunction>
 
+<cffunction name="getPasskeys" output="false">
+	<cfargument name="userId" type="string" required="true" default="">
+
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsPasskeys')#">
+		SELECT 
+			tusers.*,
+			tusercredentials.hash as password, tusercredentials.usercredentialid as userCredentialId
+		FROM tusers
+			inner join tusercredentials on tusers.userid = tusercredentials.userid
+		WHERE tusers.userId = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userId#" />
+			AND tusers.Type = 2 AND tusers.inactive = 0
+			AND tusercredentials.type = 'PASSKEY' AND tusercredentials.disabled is null
+	</cfquery>
+
+	<cfreturn rsPasskeys>
+
+</cffunction>
+
 <cffunction name="lookupByCredentials"  output="false">
 	<cfargument name="username" type="string" required="true" default="">
 	<cfargument name="password" type="string" required="true" default="">

@@ -775,7 +775,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			inner join tusercredentials on tusers.userid = tusercredentials.userid
 		WHERE tusercredentials.credentialid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.credentialId#" />
 			AND tusercredentials.type = 'PASSKEY' and tusercredentials.disabled is null
-			AND tusers.inactive = trueFalseFormat(value)
+			AND tusers.inactive = 0
 	</cfquery>
 	<cfreturn rsCredential/>
 </cffunction>

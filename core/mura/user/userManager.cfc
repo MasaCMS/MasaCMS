@@ -1168,10 +1168,11 @@ This file is part of Mura CMS.
 		function credentialImpl(credentialId, counter, attestationStatement, authenticatorExtensions, attestedCredentialData) { 
 			var credential =  createObject("java", "eu.wearenorth.webauthn4cfml.CfmlCredential").init();
 			credential.credentialId = credentialId;
-			credential.counter = counter;
+			credential.counter = 0;
 			credential.attestationStatement = attestationStatement;
 			credential.authenticatorExtensions = authenticatorExtensions;
 			credential.attestedCredentialData = attestedCredentialData;
+			return credential;
 		}
     </cfscript>
 
@@ -1230,32 +1231,35 @@ This file is part of Mura CMS.
 	<cffunction name="loginStep1" output="false">
 		<cfargument name="rc" />
 		<cfset session.loginChallenge = createGUID() />
-		<cfset loginOptions = application.webAuthnManager.startAuthentication(session.loginChallenge) />
-		<cfcontent type="application/json" reset="true" /><cfoutput>#loginOptions#</cfoutput>
-        <cfabort>
+		<cfset var webAuthnManager = webAuthnManager() />
+		<cfset loginOptions = webAuthnManager.startAuthentication(session.loginChallenge) />
+		<cfreturn loginOptions />
     </cffunction>
 
 	<cffunction name="loginStep2" output="false">
-		<cfargument name="rc" />
+		<cfargument name="jsonBody" />
 
 		<!--- Only 1 attempt --->
 		<cfset var loginChallenge = session.loginChallenge />
 		<cfset structDelete(session, "loginChallenge") />
 
+		<!--- Extract ID --->
 		<cfset var webAuthnManager = webAuthnManager() />
 		<cfset credentialId = webAuthnManager.extractCredentialId(jsonBody) />
 
+		<!--- Reconstruct keypass --->
 		<cfset var rsCredential = variables.userDAO.getByCredentialId(credentialId) />
 		<cfif rsCredential.recordCount IS NOT 1>
 			<cfthrow message="Incorrect credential" />
 		</cfif>
-		<cfset credential = credentialImpl(credentialId, rsCredential.counter, rsCredential.attestationStatement, rsCredential.authenticatorExtensions, rsCredential.attestedCredentialData) />
+		<cfset var keypass = deserializeJSON(rsCredential.keypass) />
+		<cfset credential = credentialImpl(credentialId, rsCredential.counter, keypass.attestationStatement, keypass.authenticatorExtensions, keypass.attestedCredentialData) />
+
+		<!--- Verify --->
 		<cfset webAuthnManager.validateAuthentication(credential, loginChallenge, jsonBody) />
 
 		<!--- Update the usage counter --->
 		<cfset variables.userDAO.updateCredentialUsage(rsCredential.userCredentialId) />
-		<cfcontent type="application/json" reset="true" />{"status": "OK"}
-		<cfabort />
 	</cffunction>
 
 </cfcomponent>
