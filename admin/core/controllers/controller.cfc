@@ -83,7 +83,7 @@ component extends="mura.cfobject" accessors="true" output="false" {
 	public function secure(rc) output=false {
 
 		if ( !session.mura.isLoggedIn ) {
-			var currentAdminPath = variables.configBean.getAdminPath(useProtocol=true,domain=cgi.server_name);
+			var currentAdminPath = variables.utility.sanitizeHREF(variables.configBean.getAdminPath(useProtocol=true,domain=cgi.server_name));
 			request.context.returnURL = currentAdminPath & replaceNoCase(request.context.currentURL,".","","one");
 			variables.fw.redirect(action="cLogin.main",append="returnURL,compactDisplay",path="./");
 		} else {
