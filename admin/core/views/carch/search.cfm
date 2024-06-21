@@ -139,7 +139,7 @@ siteManager.copySiteID = '#session.copySiteID#';
 
  <td class="actions"><ul class="siteSummary five"><cfif not listFindNoCase('none,read',verdict)>
        <li class="edit"><a title="Edit" href="./?muraAction=cArch.edit&contenthistid=#rc.rsList.ContentHistID#&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#esapiencode('url',rc.moduleid)#&startrow=#rc.startrow#"><i class="mi-pencil"></i></a></li>
-		<li class="preview"><a title="Preview" href="#application.settingsManager.getSite(rc.siteid).getWebPath(complete=1)#$.getURLStem(rc.siteid,rc.rsList.filename)#"><i class="mi-globe"></i></a></li>
+		<li class="preview"><a title="Preview" href="#application.settingsManager.getSite(rc.siteid).getWebPath(complete=1)##$.getURLStem(rc.siteid,rc.rsList.filename)#"><i class="mi-globe"></i></a></li>
 	   <li class="version-history"><a title="Version History" href="./?muraAction=cArch.hist&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&topid=#rc.rsList.contentID#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#esapiencode('url',rc.moduleid)#&startrow=#rc.startrow#"><i class="mi-history"></i></a></li>
         <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
           <li class="permissions"><a title="Permissions" href="./?muraAction=cPerm.main&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&topid=#rc.rsList.contentID#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#esapiencode('url',rc.moduleid)#&startrow=#rc.startrow#"><i class="mi-group"></i></a></li>
@@ -147,9 +147,14 @@ siteManager.copySiteID = '#session.copySiteID#';
 		  <li class="permissions disabled"><a>Permissions</a></li>
 		</cfif>
         <cfif deletable>
-          <li class="delete"><a title="Delete" href="./?muraAction=cArch.update&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&action=deleteall&topid=#rc.rsList.contentID#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#esapiencode('url',rc.moduleid)#&parentid=#esapiEncode('url',rc.parentid)#&startrow=#rc.startrow#"
-			<cfif listFindNoCase("Page,Folder,Calendar,Gallery,Link,File",rc.rsList.type)><i class="mi-trash"></i></a></li>
-          <cfelseif rc.locking neq 'all'>
+          <li class="delete">
+			<a title="Delete" href="./?muraAction=cArch.update&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&action=deleteall&topid=#rc.rsList.contentID#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#esapiencode('url',rc.moduleid)#&parentid=#esapiEncode('url',rc.parentid)#&startrow=#rc.startrow#">
+				<cfif listFindNoCase("Page,Folder,Calendar,Gallery,Link,File",rc.rsList.type)>
+					<i class="mi-trash"></i>
+				</cfif>
+			</a>
+		  </li>
+		<cfelseif rc.locking neq 'all'>
           <li class="delete disabled">Delete<i class="mi-trash"></i></li>
         </cfif>
         <cfelse>
