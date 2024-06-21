@@ -146,7 +146,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif parsed_path_info eq cgi.script_name or parsed_path_info & "index.cfm" eq cgi.script_name>
 		<cfset cgi_path=""/>
 	<cfelse>
-		<cfset cgi_path=getBean('utility').sanitizeHref(parsed_path_info) />
+		<cfset cgi_path=parsed_path_info />
 	</cfif>
 
 	<cfif left(cgi_path,1) neq "/">
