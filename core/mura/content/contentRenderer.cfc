@@ -1,34 +1,34 @@
-<!--- 
-This file is part of Masa CMS. Masa CMS is based on Mura CMS, and adopts the  
-same licensing model. It is, therefore, licensed under the Gnu General Public License 
-version 2 only, (GPLv2) subject to the same special exception that appears in the licensing 
-notice set out below. That exception is also granted by the copyright holders of Masa CMS 
-also applies to this file and Masa CMS in general. 
+<!---
+This file is part of Masa CMS. Masa CMS is based on Mura CMS, and adopts the
+same licensing model. It is, therefore, licensed under the Gnu General Public License
+version 2 only, (GPLv2) subject to the same special exception that appears in the licensing
+notice set out below. That exception is also granted by the copyright holders of Masa CMS
+also applies to this file and Masa CMS in general.
 
-This file has been modified from the original version received from Mura CMS. The 
+This file has been modified from the original version received from Mura CMS. The
 change was made on: 2021-07-27
-Although this file is based on Mura™ CMS, Masa CMS is not associated with the copyright 
-holders or developers of Mura™CMS, and the use of the terms Mura™ and Mura™CMS are retained 
-only to ensure software compatibility, and compliance with the terms of the GPLv2 and 
-the exception set out below. That use is not intended to suggest any commercial relationship 
-or endorsement of Mura™CMS by Masa CMS or its developers, copyright holders or sponsors or visa versa. 
+Although this file is based on Mura™ CMS, Masa CMS is not associated with the copyright
+holders or developers of Mura™CMS, and the use of the terms Mura™ and Mura™CMS are retained
+only to ensure software compatibility, and compliance with the terms of the GPLv2 and
+the exception set out below. That use is not intended to suggest any commercial relationship
+or endorsement of Mura™CMS by Masa CMS or its developers, copyright holders or sponsors or visa versa.
 
 If you want an original copy of Mura™ CMS please go to murasoftware.com .  
-For more information about the unaffiliated Masa CMS, please go to masacms.com  
+For more information about the unaffiliated Masa CMS, please go to masacms.com
 
-Masa CMS is free software: you can redistribute it and/or modify 
-it under the terms of the GNU General Public License as published by 
-the Free Software Foundation, Version 2 of the License. 
-Masa CMS is distributed in the hope that it will be useful, 
-but WITHOUT ANY WARRANTY; without even the implied warranty of 
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
-GNU General Public License for more details. 
+Masa CMS is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, Version 2 of the License.
+Masa CMS is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License 
-along with Masa CMS. If not, see <http://www.gnu.org/licenses/>. 
+You should have received a copy of the GNU General Public License
+along with Masa CMS. If not, see <http://www.gnu.org/licenses/>.
 
-The original complete licensing notice from the Mura CMS version of this file is as 
-follows: 
+The original complete licensing notice from the Mura CMS version of this file is as
+follows:
 
 This file is part of Mura CMS.
 
@@ -697,7 +697,7 @@ Display Objects
 		if(isDefined('url.enableFrontEndTools') && isBoolean(url.enableFrontEndTools)){
 			session.enableFrontEndTools = url.enableFrontEndTools;
 		}
-		
+
 		if(isDEfined('session.enableFrontEndTools') && isBoolean(session.enableFrontEndTools)){
 			this.enableFrontEndTools = session.enableFrontEndTools;
 		} else {
@@ -1724,9 +1724,9 @@ Display Objects
 </cffunction>
 
 <cffunction name="getBodyDisplayStatus" output="false">
-	
+
 	<cfif not $.event('isOnDisplay')>
-		<cfreturn "offline">	
+		<cfreturn "offline">
 	<cfelseif $.event('display') eq 'search'>
 		<cfreturn "search">
 	<cfelseif $.event('display') eq 'editprofile'>
@@ -1737,7 +1737,7 @@ Display Objects
 		<cfreturn "deny">
 	<cfelseif $.event('isOnDisplay') and $.event('r').restrict and not $.event('r').loggedIn>
 		<cfreturn "login">
-		
+
 	<cfelse>
 		<cfreturn 'default'>
 	</cfif>
@@ -2701,7 +2701,7 @@ Display Objects
 
 	<cfset var body=arguments.str>
 	<cfset var errorStr="">
-	<cfset var regex1="(\[sava\]|\[mura\]|\[m\]).+?(\[/sava\]|\[/mura\]|\[/m\])">	
+	<cfset var regex1="(\[sava\]|\[mura\]|\[m\]).+?(\[/sava\]|\[/mura\]|\[/m\])">
 	<cfset var finder=reFindNoCase(regex1,body,1,"true")>
 	<cfset var tempValue="">
 	<cfset var deprecatedTagUsed = false>
@@ -2710,9 +2710,8 @@ Display Objects
 	<cfparam name="this.enableMuraTag" default="true" />
 	<cfparam name="this.enableDynamicContent" default="true" />
 
-	<!--- It the Dyanmic content is not enabled just return the submitted string --->
+	<!--- If the Dyanmic content is not enabled just return the submitted string --->
 	<cfif isBoolean(this.enableDynamicContent) and not this.enableDynamicContent>
-		<cfset str=application.scriptProtectionFilter.filterWords(str,"script,object,applet,embed,layer,ilayer,frameset,param,meta,base,xss,marquee").cleanText>
 		<cfset str=application.scriptProtectionFilter.filterTags(str).cleanText>
 		<cfreturn str />
 	</cfif>
@@ -2725,7 +2724,7 @@ Display Objects
 	<!---  still looks for the Sava tag for backward compatibility --->
 	<cfloop condition="#finder.len[1]#">
 		<cftry>
-			<cfset tempValue=mid(body, finder.pos[1], finder.len[1])>		
+			<cfset tempValue=mid(body, finder.pos[1], finder.len[1])>
 
 			<!--- Check if calls to '$' or 'mura' scope are being used --->
 			<cfif FindNoCase('mura.', tempValue) OR FindNoCase('$.',tempValue)>
@@ -2756,17 +2755,17 @@ Display Objects
 			</cfcatch>
 		</cftry>
 		<cfset finder=reFindNoCase(regex1,body,1,"true")>
-		<cfset request.cacheItem=false>		
+		<cfset request.cacheItem=false>
 	</cfloop>
-	
+
 	<cfif deprecatedTagUsed>
 		<cfset variables.m.event().setValue("deprecationType","muraTag")>
-		<cfset variables.m.announceEvent('LogDeprecation')> 
+		<cfset variables.m.announceEvent('LogDeprecation')>
 	</cfif>
 
 	<cfif deprecatedScopeUsed>
 		<cfset variables.m.event().setValue("deprecationType","muraScope")>
-		<cfset variables.m.announceEvent('LogDeprecation')> 
+		<cfset variables.m.announceEvent('LogDeprecation')>
 	</cfif>
 
 	<cfreturn body />
@@ -2867,7 +2866,7 @@ Display Objects
 							(getBean('permUtility').getModulePerm("00000000000000000000000000000000000",variables.event.getValue('siteID')))
 							or listFind(sessionData.mura.memberships,'S2')
 						)
-					) 
+					)
 				) and getShowAdminToolBar()
 			) and not request.muraExportHTML />
 		</cfif>
@@ -3107,7 +3106,7 @@ Display Objects
 	<cfreturn variables.contentRendererUtility.renderIntervalDesc(argumentCollection=arguments)>
 </cffunction>
 
-<cffunction name="uploadAsset" output="true">	
+<cffunction name="uploadAsset" output="true">
 	<cfargument name="formField" type="string">
 	<cfargument name="siteId" type="string">
 	<cfargument name="folder" type="string">
