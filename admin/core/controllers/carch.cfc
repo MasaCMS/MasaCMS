@@ -26,7 +26,7 @@ component extends="controller" output="false" {
 			param default="" name="arguments.rc.contentid";
 			param default="Page" name="arguments.rc.ptype";
 			param default="Page" name="arguments.rc.type";
-			param default=createuuid(), name="arguments.rc.contentHistID";
+			param default=createuuid() name="arguments.rc.contentHistID";
 			param default="" name="arguments.rc.parenthistid";
 			param default="" name="arguments.rc.notify";
 			param default=0 name="arguments.rc.preview";

@@ -92,7 +92,7 @@ component extends="controller" output="false" {
 		param default="" name="arguments.rc.approvalExempt";
 		param default="" name="arguments.rc.chainID";
 		param default="" name="arguments.rc.exemptID";
-		param default=00000000000000000000000000000000001, name="arguments.rc.topid";
+		param default=00000000000000000000000000000000001 name="arguments.rc.topid";
 	}
 
 	public function update(rc) output=false {
