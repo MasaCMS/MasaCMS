@@ -240,7 +240,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset pluginEvent.init(arguments)>
 				<cfset pluginManager.announceEvent("onBeforeFileRender",pluginEvent)>
 
-				<cfif listFindNoCase('png,jpg,jpeg,gif',rsFileData.fileExt) and len(arguments.size)>
+				<cfif listFindNoCase('png,jpg,jpeg,gif,webp',rsFileData.fileExt) and len(arguments.size)>
 					<cfset theFileLocation="#variables.configBean.getFileDir()#/#rsFileData.siteid#/cache/file/#arguments.fileID#_#arguments.size#.#rsFileData.fileExt#" />
 					<cfif not fileExists(theFileLocation)>
 						<cfset cropAndScale(fileid=arguments.fileID,size=arguments.size,siteid=rsFileData.siteid)>
@@ -827,7 +827,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsDB')#">
 		select #arguments.fields# from tfiles
 		where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
-		and fileEXT in ('jpg','jpeg','png','gif')
+		and fileEXT in ('jpg','jpeg','png','gif','webp')
 	</cfquery>
 
 	<cfreturn rsDB />
@@ -977,7 +977,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset arguments.fileEXT=getBean("fileManager").readMeta(arguments.fileID).fileEXT>
 	</cfif>
 
-	<cfif not ListFindNoCase('jpg,jpeg,png,gif,svg', arguments.fileEXT)>
+	<cfif not ListFindNoCase('jpg,jpeg,png,gif,svg,webp', arguments.fileEXT)>
 		<cfreturn ''>
 	</cfif>
 
