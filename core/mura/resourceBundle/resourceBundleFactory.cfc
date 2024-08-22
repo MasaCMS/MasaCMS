@@ -710,4 +710,11 @@ component extends="mura.cfobject" output="false" hint="This provides locale spec
 		setAdminLocale(arguments.mySession);
 	}
 
+	public boolean function isSupportedLocale(required string locale){
+		var translation = this.CF2Java(arguments.locale);
+		if(len(translation) == 5 && listLen(translation,"_") == 2){
+			return true;
+		}
+		return false;
+	}
 }
