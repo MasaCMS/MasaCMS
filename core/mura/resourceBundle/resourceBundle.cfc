@@ -218,20 +218,17 @@ component extends="mura.cfobject" output="false" hint="This provides access to l
 	}
 
 	function getKeyStructure( key ) {
-		if( StructKeyExists(variables.resourceBundleStruct,"key") ) {
-			return variables.resourceBundleStruct[key];
-		}
+		if( StructKeyExists(variables.resourceBundleStruct,arguments.key) ) {
+			return variables.resourceBundleStruct[arguments.key];
+		} else {
+			variables.resourceBundleStruct[arguments.key] = {};
 
-		var keyStruct = {};
-
-		for(var i in variables.resourceBundle) {
-			if( left( i,len(arguments.key) ) eq key ) {
-				variables.resourceBundleStruct[key][replace(i,".","_","all")] = variables.resourceBundle[i];
+			for(var i in variables.resourceBundle) {
+				if( left( i,len(arguments.key) ) eq arguments.key ) {
+					variables.resourceBundleStruct[arguments.key][replace(i,".","_","all")] = variables.resourceBundle[i];
+				}
 			}
+			return variables.resourceBundleStruct[arguments.key];
 		}
-
-		return variables.resourceBundleStruct[key];
-
 	}
-
 }
