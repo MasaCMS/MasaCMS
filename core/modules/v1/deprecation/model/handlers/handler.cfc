@@ -10,6 +10,7 @@ component extends="mura.cfobject" {
 		, MuraScopeObject = "The MuraScope.cfc object has been initialized. This will be replaced by the MasaScope.cfc object."
 		, SimpleHTMLForms = "A Simple Form has been created. Simple Forms are deprecated. Please use Forms (with the form builder) instead."
 		, Razuna = "Razuna is enabled on this MasaCMS istallation. Razuna is deprecated. Migrate to different Digital Asset Management system."
+		, UnSupportedLocale =  'A site is using an unsupported Locale. These Locales will be removed from Masa in the future. Use a supported Locale instead.'
 	};
 
 	public void function onLogDeprecation() {
