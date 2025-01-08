@@ -21,7 +21,7 @@ component
 			pathRoot = "/murawrm";
 		}
 		else {
-			pathRoot = currentSite.getAssetDir() & '/assets';		
+			pathRoot = currentSite.getAssetDir() & '/assets';
 		}
 
 		return pathRoot;
@@ -426,7 +426,7 @@ component
 					"error": {
 						"message": "File must have an extension type."
 					}
-				});				
+				});
 			}
 
 			var safeName = rereplaceNoCase(safePostFix[1],"[[:space:]]","_","ALL");
@@ -512,7 +512,7 @@ component
 		if(isStruct(response.uploaded) and structKeyExists(response.uploaded,"serverdirectory")) {
 			structDelete(response.uploaded,"serverdirectory");
 		}
-		
+
 		response.allowedExtensions = allowedExtensions;
 
 		for(var i = 1; i lte ArrayLen(response.uploaded);i++ ) {
@@ -528,7 +528,7 @@ component
 						if(ArrayLen(safePostFix) neq 2) {
 							response.success = 0;
 							response.message = "File must have an extension";
-							return response;			
+							return response;
 						}
 
 						var safeName = rereplaceNoCase(safePostFix[1],"[[:space:]]","_","ALL");
@@ -795,7 +795,7 @@ component
 	remote any function rename( siteid,directory,filename,name,filter="",pageIndex=1,resourcePath )  {
 		arguments.siteid == "" ? "default" : arguments.siteid;
 		arguments.pageindex == isNumeric(arguments.pageindex) ? arguments.pageindex : 1;
-		
+
 		var m = application.serviceFactory.getBean('m').init(arguments.siteid);
 
 		if(!m.validateCSRFTokens(context='rename')){
@@ -922,7 +922,7 @@ component
 		var m=getBean('$').init(arguments.siteid);
 		var permission = checkPerms(arguments.siteid,'browse',arguments.resourcePath);
 		var response = { success: 0,dne: 0};
-		var editfilelist = "txt,html,htm,css,less,scss"; 
+		var editfilelist = "txt,html,htm,css,less,scss";
 		var imagelist = "gif,jpg,jpeg,png";
 
 		if(!permission.success) {
@@ -974,7 +974,7 @@ component
 		// move to getBaseResourcePath() --> getFileAssetPath()
 		var complete = (m.siteConfig('isremote') || (isdefined('arguments.completepath') && isBoolean(arguments.completepath) && arguments.completepath));
 		var preAssetPath = getBean('configBean').get('assetPath');
-				
+
 		if(len(preAssetPath)) {
 			if(arguments.resourcePath == "Site_Files") {
 				preAssetPath = preAssetPath & "/" & arguments.siteid & response['directory'];
@@ -983,7 +983,7 @@ component
 				preAssetPath = response['directory'];
 			}
 			else {
-				preAssetPath = preAssetPath & "/" & arguments.siteid & "/assets" & response['directory'];		
+				preAssetPath = preAssetPath & "/" & arguments.siteid & "/assets" & response['directory'];
 			}
 		}
 		else {
@@ -1056,17 +1056,21 @@ component
 			frow['info'] = {};
 			if(frow['isfile']) {
 				frow['ext'] = rereplace(frow['fullname'],".[^\.]*\.","");
-
-				if(	frow['isimage'] ) {
-					var readImage = imageRead(conditionalExpandPath(filePath) & application.configBean.getFileDelim() & frow['fullname']);
-					var iinfo = imageInfo(readImage);
-					if( isStruct(iinfo) ) {
-						frow['info']['height'] = iinfo.height;
-						frow['info']['width'] = iinfo.width;
+				if( frow['isimage'] ) {
+				// Reading an image could fail
+				try {
+						var readImage = imageRead(conditionalExpandPath(filePath) & application.configBean.getFileDelim() & frow['fullname']);
+						var iinfo = imageInfo(readImage);
+						if( isStruct(iinfo)) {
+								frow['info']['height'] = iinfo.height;
+								frow['info']['width'] = iinfo.width;
+							}
+					} catch (any e) {
+						// Do nothing; reading image has failed, no width and height info is available
 					}
 				}
 			}
-		
+
 			frow['lastmodified'] = rsFiles['datelastmodified'][x];
 			frow['lastmodifiedshort'] = LSDateFormat(rsFiles['datelastmodified'][x],m.getShortDateFormat());
 			frow['subfolder'] = rsFiles['subfolder'][x];
@@ -1097,7 +1101,7 @@ component
 	// mod from fileWriter.cfc
 	function conditionalExpandPath(path){
 		// windows
-		if(structKeyExists(server,"separator") and structKeyExists(server.separator,"file") and server.separator.file == "\" ) {					
+		if(structKeyExists(server,"separator") and structKeyExists(server.separator,"file") and server.separator.file == "\" ) {
 			return expandPath(arguments.path);
 		// else aka linux/mac/...
 		} else {
