@@ -218,6 +218,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.MFAPerDeviceEnabled=false/>
 <cfset variables.instance.MFAEnabled=false/>
 <cfset variables.instance.MFASendAuthCode=true/>
+<cfset variables.instance.MFADaysLinkValid=1/>
 <cfset variables.instance.FMAllowedExtensions='7z,aiff,asf,avi,bmp,csv,doc,docx,eps,fla,flv,gif,gz,gzip,ics,jpeg,jpg,json,key,keynote,mid,mov,mp3,mp4,mpc,mpeg,mpg,numbers,ods,odt,pages,pdf,png,ppt,pptx,ppsx,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,svg,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,xml,zip,m4v,less'>
 <cfset variables.instance.FMPublicAllowedExtensions='7z,aiff,asf,avi,bmp,csv,doc,docx,eps,fla,flv,gif,gz,gzip,ics,jpeg,jpg,json,key,keynote,mid,mov,mp3,mp4,mpc,mpeg,mpg,numbers,ods,odt,pages,pdf,png,ppt,pptx,ppsx,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,svg,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,xml,zip,m4v,less'>
 <cfset variables.instance.adminDir="/admin"/>
