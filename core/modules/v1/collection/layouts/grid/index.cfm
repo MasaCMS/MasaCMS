@@ -101,7 +101,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif objectparams.modalimages>
 						<a href="#item.getImageURL(size='large')#" title="#esapiEncode('html_attr',item.getValue('title'))#" data-rel="shadowbox[gallery]" class="#this.contentListItemImageLinkClass#"><img src="#item.getImageURL(argumentCollection=imageSizeArgs)#" alt="#esapiEncode('html_attr',item.getValue('title'))#"></a>
 					<cfelse>
-						<a href="#item.getURL()#"><img src="#item.getImageURL(argumentCollection=imageSizeArgs)#" alt="#esapiEncode('html_attr',item.getValue('title'))#"></a>
+						<a href="#item.getURL()#"<cfif item.getTarget() eq '_blank'> target="_blank"</cfif> ><img src="#item.getImageURL(argumentCollection=imageSizeArgs)#" alt="#esapiEncode('html_attr',item.getValue('title'))#"></a>
 					</cfif>
 				</cfif>
 			</div>
