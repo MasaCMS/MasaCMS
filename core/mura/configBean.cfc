@@ -78,7 +78,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance=structNew()/>
 <cfset variables.instance.mode=""/>
 <cfset variables.autoupdateurl="https://github.com/MasaCMS/MasaCMS/archive/main.zip"/>
-<cfset variables.instance.version="7.4.7"/>
+<cfset variables.instance.version="7.4.8"/>
 <cfset variables.instance.title="Masa CMS"/>
 <cfset variables.instance.projectname="Masa CMS"/>
 <cfset variables.instance.projectname="Masa CMS"/>
