@@ -1265,8 +1265,8 @@ MuraFileBrowser = {
 			var fdata = {
 				displaymode: JSON.parse(JSON.stringify(mode))
 			}
-	
-			Mura.createCookie( 'fbDisplayMode',JSON.stringify(fdata),1000);
+			// URL encodes the JSON string to safely handle special characters in the cookie value
+			Mura.createCookie( 'fbDisplayMode',encodeURIComponent(JSON.stringify(fdata)),1000);
 	
 			this.$root.displaymode = this.viewmode = mode;
 			}
@@ -2083,8 +2083,9 @@ MuraFileBrowser = {
 			var cDisplay = Mura.readCookie( 'fbDisplayMode' );
 	
 			if(cDisplay) {
-				var fbDisplayJSON = JSON.parse(cDisplay);
-	
+				var decodedDisplay = decodeURIComponent(cDisplay);
+		        var fbDisplayJSON = JSON.parse(decodedDisplay);
+        
 				if(fbDisplayJSON.displaymode)
 				this.$root.displaymode = this.viewmode = fbDisplayJSON.displaymode;
 	
