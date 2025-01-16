@@ -1,34 +1,34 @@
-<!--- 
-This file is part of Masa CMS. Masa CMS is based on Mura CMS, and adopts the  
-same licensing model. It is, therefore, licensed under the Gnu General Public License 
-version 2 only, (GPLv2) subject to the same special exception that appears in the licensing 
-notice set out below. That exception is also granted by the copyright holders of Masa CMS 
-also applies to this file and Masa CMS in general. 
+<!---
+This file is part of Masa CMS. Masa CMS is based on Mura CMS, and adopts the
+same licensing model. It is, therefore, licensed under the Gnu General Public License
+version 2 only, (GPLv2) subject to the same special exception that appears in the licensing
+notice set out below. That exception is also granted by the copyright holders of Masa CMS
+also applies to this file and Masa CMS in general.
 
-This file has been modified from the original version received from Mura CMS. The 
+This file has been modified from the original version received from Mura CMS. The
 change was made on: 2021-07-27
-Although this file is based on Mura™ CMS, Masa CMS is not associated with the copyright 
-holders or developers of Mura™CMS, and the use of the terms Mura™ and Mura™CMS are retained 
-only to ensure software compatibility, and compliance with the terms of the GPLv2 and 
-the exception set out below. That use is not intended to suggest any commercial relationship 
-or endorsement of Mura™CMS by Masa CMS or its developers, copyright holders or sponsors or visa versa. 
+Although this file is based on Mura™ CMS, Masa CMS is not associated with the copyright
+holders or developers of Mura™CMS, and the use of the terms Mura™ and Mura™CMS are retained
+only to ensure software compatibility, and compliance with the terms of the GPLv2 and
+the exception set out below. That use is not intended to suggest any commercial relationship
+or endorsement of Mura™CMS by Masa CMS or its developers, copyright holders or sponsors or visa versa.
 
 If you want an original copy of Mura™ CMS please go to murasoftware.com .  
-For more information about the unaffiliated Masa CMS, please go to masacms.com  
+For more information about the unaffiliated Masa CMS, please go to masacms.com
 
-Masa CMS is free software: you can redistribute it and/or modify 
-it under the terms of the GNU General Public License as published by 
-the Free Software Foundation, Version 2 of the License. 
-Masa CMS is distributed in the hope that it will be useful, 
-but WITHOUT ANY WARRANTY; without even the implied warranty of 
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
-GNU General Public License for more details. 
+Masa CMS is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, Version 2 of the License.
+Masa CMS is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License 
-along with Masa CMS. If not, see <http://www.gnu.org/licenses/>. 
+You should have received a copy of the GNU General Public License
+along with Masa CMS. If not, see <http://www.gnu.org/licenses/>.
 
-The original complete licensing notice from the Mura CMS version of this file is as 
-follows: 
+The original complete licensing notice from the Mura CMS version of this file is as
+follows:
 
 This file is part of Mura CMS.
 
@@ -258,7 +258,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif isDate(arguments.sinceDate)>
 			<cfset arguments.includeTrash=true>
 		</cfif>
-	
+
 		<!---
 		<cfloop list="#arguments.moduleID#" index="i">
 			<cfset moduleIDSQLlist=listAppend(moduleIDSQLlist,"'#i#'")>
@@ -269,7 +269,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset getBean("fileManager").cleanFileCache(arguments.siteID)>
 
 			<cfif NOT arguments.includeStructuredAssets>
-				<cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#sitefiles.zip",directory=siteRoot,recurse="true",sinceDate=arguments.sinceDate,excludeDirs="assets|cache")> 
+				<cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#sitefiles.zip",directory=siteRoot,recurse="true",sinceDate=arguments.sinceDate,excludeDirs="assets|cache")>
 			<cfelse>
 				<cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#sitefiles.zip",directory=siteRoot,recurse="true",sinceDate=arguments.sinceDate)>
 			</cfif>
@@ -284,7 +284,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset var filePoolID=getBean('settingsManager').getSite(arguments.siteid).getFilePoolID()>
 			<!--- We do not want to include files collected from mura forms --->
 			<cfquery name="rsInActivefiles">
-				select fileID, fileExt 
+				select fileID, fileExt
 				from tfiles
 				where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#filePoolID#"/>
 				and moduleid in ('00000000000000000000000000000000000','00000000000000000000000000000000003','00000000000000000000000000000000099'<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.includeUsers>,'00000000000000000000000000000000008'</cfif>)
@@ -343,32 +343,65 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				</cfloop>
 
+				<!--- Is S3 being used to store assets? There's likely a better way to determine this. --->
+				<cfset var assetsStoredInS3 = len(server.system.environment.MURA_S3ASSETS ?: "")>
+
 				<cfif variables.configBean.getValue('assetdir') neq variables.configBean.getSiteDir()>
 					<cfset zipDir = variables.configBean.getValue('assetdir') & '/' & filePoolID />
 					<cffile action="write" file="#zipDir#/blank.txt" output="empty file" />
-					
-					<!---<cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#assetfiles.zip",directory=zipDir,recurse="true",sinceDate=arguments.sinceDate,excludeDirs="cache")>--->
-					<cfzip action="zip" source="#zipDir#" file="#variables.backupDir#assetfiles.zip" recurse="true">
+
+					<cfif assetsStoredInS3>
+						<!--- Create a temporary local directory --->
+						<cfset var tempDir = getTempDirectory() & createUUID() & "/">
+						<cfdirectory action="create" directory="#tempDir#">
+
+						<!--- Copy S3 files to local temp directory --->
+						<cfset directoryCopy(zipDir, tempDir, true)>
+
+						<!--- Zip the local files --->
+						<cfzip action="zip" source="#tempDir#" file="#variables.backupDir#assetfiles.zip" recurse="true">
+
+						<!--- Delete temp directory after zipping --->
+						<cfdirectory action="delete" directory="#tempDir#" recurse="true">
+					<cfelse>
+						<!---<cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#assetfiles.zip",directory=zipDir,recurse="true",sinceDate=arguments.sinceDate,excludeDirs="cache")>--->
+						<cfzip action="zip" source="#zipDir#" file="#variables.backupDir#assetfiles.zip" recurse="true">
+					</cfif>
+
 					<cfzip action="delete" file="#variables.backupDir#assetfiles.zip" entryPath="cache">
-				
 				</cfif>
+
 				<cfif variables.configBean.getValue('filedir') neq variables.configBean.getSiteDir()>
 					<cfset zipDir = variables.configBean.getValue('filedir') & '/' & filePoolID />
 					<cffile action="write" file="#zipDir#/blank.txt" output="empty file" />
-					
-					<!---<cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#filefiles.zip",directory=zipDir,recurse="true",sinceDate=arguments.sinceDate,excludeDirs="assets")>--->
-					<cfzip action="zip" source="#zipDir#" file="#variables.backupDir#filefiles.zip" recurse="true">
+
+					<cfif assetsStoredInS3>
+						<!--- Create a temporary local directory --->
+						<cfset var tempDir = getTempDirectory() & createUUID() & "/">
+						<cfdirectory action="create" directory="#tempDir#">
+
+						<!--- Copy S3 files to local temp directory --->
+						<cfset directoryCopy(zipDir, tempDir, true)>
+
+						<!--- Zip the local files --->
+						<cfzip action="zip" source="#tempDir#" file="#variables.backupDir#filefiles.zip" recurse="true">
+
+						<!--- Delete temp directory after zipping --->
+						<cfdirectory action="delete" directory="#tempDir#" recurse="true">
+					<cfelse>
+						<!---<cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#filefiles.zip",directory=zipDir,recurse="true",sinceDate=arguments.sinceDate,excludeDirs="assets")>--->
+						<cfzip action="zip" source="#zipDir#" file="#variables.backupDir#filefiles.zip" recurse="true">
+					</cfif>
+
 					<cfzip action="delete" file="#variables.backupDir#filefiles.zip" entryPath="assets">
-		
+
 					<cfif len(deleteList)>
 						<cfset variables.zipTool.deleteFiles(zipFilePath="#variables.backupDir#filefiles.zip",files="#deleteList#")>
 					</cfif>
-
 				<cfelse>
 					<cfif len(deleteList)>
 						<cfset variables.zipTool.deleteFiles(zipFilePath="#variables.backupDir#sitefiles.zip",files="#deleteList#")>
 					</cfif>
-
 				</cfif>
 			</cfif>
 		</cfif>
@@ -616,11 +649,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				<cfif fileExists( getBundle() & "sitefiles.zip" )>
 					<cfset zipPath = getBundle() & "sitefiles.zip" />
-				
+
 					<cfif not hasFilesZip or not hasAssetsZip>
 						<cfset var fileDir = variables.configBean.getValue('filedir') & '/' & filePoolID />
 						<cfset var assetDir = variables.configBean.getValue('assetdir') & '/' & filePoolID />
-						
+
 						<cfzip file="#zipPath#" action="list" name="rsfiles">
 
 						<cfloop query="rsfiles">
@@ -667,7 +700,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 			<cfif arguments.renderingMode eq "all">
 				<cfset zipPath = getBundle() & "sitefiles.zip" />
-				
+
 				<cfzip file="#zipPath#" action="list" name="rsfiles">
 
 				<cfloop query="rsfiles">
@@ -679,14 +712,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfzip file="#zipPath#" action="unzip" overwrite="false" destination="#siteRoot#" entrypath="#rsfiles.directory#" filter="#listLast(filename,'/')#">
 					</cfif>
 				</cfloop>
-				
+
 				<!---<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=siteRoot, overwriteFiles=true, excludeDirs="cache|assets")>--->
 			<cfelseif arguments.renderingMode eq "theme" and len(arguments.themeDir)>
 				<cfset zipPath = getBundle() & "sitefiles.zip" />
 
 				<cfzip file="#zipPath#" action="unzip" overwrite="true" destination="#siteRoot#" entrypath="includes/themes/#arguments.themeDir#">
 				<cfzip file="#zipPath#" action="unzip" overwrite="true" destination="#siteRoot#" entrypath="themes/#arguments.themeDir#">
-	
+
 			</cfif>
 		</cfif>
 
@@ -753,7 +786,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var rstcontentObjects=""/>
 		<cfset var rstcontentTags=""/>
 		<cfset var rstsystemobjects=""/>
-		<cfset var rsSettings=""/>		
+		<cfset var rsSettings=""/>
 		<cfset var rstcontentcategoryassign=""/>
 		<cfset var rstcontentfeeds=""/>
 		<cfset var rstcontentfeeditems=""/>
@@ -802,7 +835,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var availableSpace=0>
 		<cfset var pluginConfig="">
 		<cfset var pluginCFC="">
-		
+
 		<cfset var rstformresponsepackets="">
 		<cfset var rsCleanDir="">
 		<cfset var rstclassextendrcsets="">
@@ -826,7 +859,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset moduleIDSQLlist=listAppend(moduleIDSQLlist,"'#i#'")>
 		</cfloop>
 		--->
-		
+
 		<cfif isDate(arguments.sinceDate)>
 			<cfset arguments.includeTrash=true>
 			<cfset arguments.includeUser=false>
@@ -1660,7 +1693,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfquery>
 
 				<cfset setValue("rstimagesizes",rstimagesizes)>
-				
+
 				<cfset var site=getBean('settingsManager').getSite(arguments.siteID)>
 
 				<cfset setValue("assetPath",application.configBean.getAssetPath())>
