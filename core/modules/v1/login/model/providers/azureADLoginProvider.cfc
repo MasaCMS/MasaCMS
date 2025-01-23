@@ -1,4 +1,4 @@
-component extends="baseLoginProvider" accessors=true output=true {
+component extends="baseLoginProvider" accessors=true output=false {
 
 	variables.providerName='azuread';
 
