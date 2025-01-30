@@ -522,7 +522,7 @@
 			</cfcase>
 			<cfcase value="nuodb">
 				<cftransaction>
-					<cfset tempName="F" & left(hash(arguments.column),15)>
+					<cfset tempName="F" & left(hash(arguments.column,'CFMX_COMPAT'),15)>
 					<cfif columnExists(table=arguments.table,column=tempName)>
 						<cfset dropColumn(table=arguments.table,column=tempName)>
 					</cfif>
@@ -558,7 +558,7 @@
 			</cfcase>
 			<cfcase value="oracle">
 				<cftransaction>
-					<cfset tempName="F" & left(hash(arguments.column),15)>
+					<cfset tempName="F" & left(hash(arguments.column,'CFMX_COMPAT'),15)>
 					<cfif columnExists(table=arguments.table,column=tempName)>
 						<cfset dropColumn(table=arguments.table,column=tempName)>
 					</cfif>

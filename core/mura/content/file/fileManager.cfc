@@ -605,7 +605,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset local.fileuploaded=false>
 	<cfset local.filecreateattempt=1>
 
-	<cflock name="f#hash('#local.results.serverDirectory#/#local.results.serverFile#')#emulate" type='exclusive' timeout='10'>
+	<cflock name="f#hash('#local.results.serverDirectory#/#local.results.serverFile#','CFMX_COMPAT')#emulate" type='exclusive' timeout='10'>
 		<cfloop condition="not local.fileuploaded">
 			<cfif not fileExists("#local.results.serverDirectory#/#local.results.serverFile#")>
 				<cfif local.isLocalFile>

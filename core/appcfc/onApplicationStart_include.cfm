@@ -101,8 +101,8 @@ if ( !application.setupComplete || (not application.appInitialized || structKeyE
 		if ( directoryExists( variables.basedir & "/core/setup" ) ) {
 			application.setupComplete = false;
 			//  check the settings
-			param name="application.setupSubmitButton" default="A#hash( createUUID() )#";
-			param name="application.setupSubmitButtonComplete" default="A#hash( createUUID() )#";
+			param name="application.setupSubmitButton" default="A#hash( createUUID(), 'CFMX_COMPAT')#";
+			param name="application.setupSubmitButtonComplete" default="A#hash( createUUID(), 'CFMX_COMPAT')#";
 			include "/muraWRM/core/appcfc/setup_check.cfm";
 
 			if ( trim( getINIProperty("datasource") ) != ""

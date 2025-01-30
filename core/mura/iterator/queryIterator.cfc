@@ -38,7 +38,7 @@ component extends="mura.cfobject" displayname="Iterator" output="false" hint="Th
 		variables.recordIndex = 0;
 		variables._recordcount = 0;
 		variables.pageIndex = 1;
-		variables.iteratorID="i" & hash(createUUID());
+		variables.iteratorID="i" & hash(createUUID(),'CFMX_COMPAT');
 		return THIS;
 	}
 

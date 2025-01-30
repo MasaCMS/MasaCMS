@@ -418,18 +418,18 @@
 					<cfset local.data.previewMap[local.assignments.contentID].publishDate=local.prereqs.publishDate>
 					<cfset local.data.previewMap[local.assignments.contentID].dependent=true>
 
-					<cfset local.data.lookupMap[hash(local.assignments.contentID)]=	local.assignments.contentHistID>
+					<cfset local.data.lookupMap[hash(local.assignments.contentID,'CFMX_COMPAT')]=	local.assignments.contentHistID>
 
 					<cfif len(local.assignments.urltitle)>
-							<cfset local.data.lookupMap[hash(local.assignments.urltitle)]=	local.assignments.contentHistID>
+							<cfset local.data.lookupMap[hash(local.assignments.urltitle,'CFMX_COMPAT')]=	local.assignments.contentHistID>
 					</cfif>
 
 					<cfif len(local.assignments.remoteid)>
-						<cfset local.data.lookupMap[hash(local.assignments.remoteid)]=	local.assignments.contentHistID>
+						<cfset local.data.lookupMap[hash(local.assignments.remoteid,'CFMX_COMPAT')]=	local.assignments.contentHistID>
 					</cfif>
 
 					<cfif len(local.assignments.filename)>
-						<cfset local.data.lookupMap[hash(local.assignments.filename)]=	local.assignments.contentHistID>
+						<cfset local.data.lookupMap[hash(local.assignments.filename,'CFMX_COMPAT')]=	local.assignments.contentHistID>
 					</cfif>
 
 				</cfloop>
@@ -455,15 +455,15 @@
 			<cfset local.data.lookupMap[local.assignments.contentID]=	local.assignments.contentHistID>
 
 			<cfif len(local.assignments.urltitle)>
-					<cfset local.data.lookupMap[hash(local.assignments.urltitle)]=	local.assignments.contentHistID>
+					<cfset local.data.lookupMap[hash(local.assignments.urltitle,'CFMX_COMPAT')]=	local.assignments.contentHistID>
 			</cfif>
 
 			<cfif len(local.assignments.remoteid)>
-				<cfset local.data.lookupMap[hash(local.assignments.remoteid)]=	local.assignments.contentHistID>
+				<cfset local.data.lookupMap[hash(local.assignments.remoteid,'CFMX_COMPAT')]=	local.assignments.contentHistID>
 			</cfif>
 
 			<cfif len(local.assignments.filename)>
-				<cfset local.data.lookupMap[hash(local.assignments.filename)]=	local.assignments.contentHistID>
+				<cfset local.data.lookupMap[hash(local.assignments.filename,'CFMX_COMPAT')]=	local.assignments.contentHistID>
 			</cfif>
 		</cfloop>
 	</cfif>

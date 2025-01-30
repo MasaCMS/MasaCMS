@@ -164,7 +164,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.sessionTimeout=180 />
 <cfset variables.instance.tempDir="" />
 <cfset variables.instance.autoresetpasswords=true />
-<cfset variables.instance.encryptionKey=hash(getCurrentTemplatePath()) />
+<cfset variables.instance.encryptionKey=hash(getCurrentTemplatePath(),'CFMX_COMPAT') />
 <cfset variables.instance.uselegacysessions=false />
 <cfset variables.instance.customUrlVarDelimiters="_">
 <cfset variables.instance.strongPasswordRegex="(?=^.{7,15}$)(?=.*\d)(?![.\n])(?=.*[a-z])(?=.*[A-Z]).*$">
@@ -1934,7 +1934,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfparam name="request.muraORMchecked" default="#structNew()#">
 
-	<cfset var checkKey='b#hash(arguments.componentPath)#'>
+	<cfset var checkKey='b#hash(arguments.componentPath,'CFMX_COMPAT')#'>
 	<cfset var ioc=getServiceFactory()>
 	<cfset var checkSchema=isDefined('url.applydbupdates') and not structKeyExists(request.muraORMchecked,'#checkKey#') OR arguments.forceSchemaCheck>
 	<cfset var isSingleton=not listFindNoCase(arguments.componentPath,'entities','.') and not listFindNoCase(arguments.componentPath,'beans','.')>

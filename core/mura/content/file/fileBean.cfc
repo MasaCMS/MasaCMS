@@ -50,7 +50,7 @@ component extends="mura.bean.beanORM" table='tfiles' entityName="file" hint="Thi
 			setValue(variables.instance.fileField,form['#variables.instance.fileField#']);
 		}
 	}
-	
+
 	function validate(fields=''){
 		super.validate(fields=arguments.fields);
 
@@ -93,7 +93,7 @@ component extends="mura.bean.beanORM" table='tfiles' entityName="file" hint="Thi
 			}
 			var filePath=local.tempFile.serverDirectory & "/" & local.tempFile.serverfilename & '.' & local.tempfile.serverFileExt;
 
-			lock name='f#hash(filePath)#save' type='exclusive' timeout=10 {
+			lock name='f#hash(filePath,'CFMX_COMPAT')#save' type='exclusive' timeout=10 {
 				if(isStruct(local.tempfile.exif)){
 					if(fileManager.allowMetaData(local.tempfile.exif)){
 						local.tempFile.exif=serializeJSON(local.tempFile.exif);

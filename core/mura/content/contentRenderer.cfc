@@ -1987,7 +1987,7 @@ Display Objects
 					<cfoutput>#dspObject(objectid=$.content('contentid'),object=$.content('type'),params=arguments.params,bodyRender=true)#</cfoutput>
 				<cfelse>
 					<cfif $.content('type') eq 'folder'>
-						<cf_CacheOMatic key="folderBody#$.content('contentid')##hash(cgi.query_string)#" nocache="#$.event('r').restrict#">
+						<cf_CacheOMatic key="folderBody#$.content('contentid')##hash(cgi.query_string,'CFMX_COMPAT')#" nocache="#$.event('r').restrict#">
 						 <cfset var filePath=$.siteConfig().lookupDisplayObjectFilePath('dsp_portal.cfm')>
 						 <cfif len(filePath)>
 						 	<cfoutput>#$.dspObject_Include(thefile='dsp_portal.cfm',params=arguments.params)#</cfoutput>
@@ -2001,14 +2001,14 @@ Display Objects
 						</cfif>
 						</cf_CacheOMatic>
 					<cfelseif $.content('type') eq 'calendar'>
-						<cf_CacheOMatic key="calendarBody#$.content('contentid')##hash(cgi.query_string)#" nocache="#$.event('r').restrict#">
+						<cf_CacheOMatic key="calendarBody#$.content('contentid')##hash(cgi.query_string,'CFMX_COMPAT')#" nocache="#$.event('r').restrict#">
 						 	 <cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('calendar/index.cfm')>
 						 	 <cfif len(filePath)>
 							 	<cfoutput>#$.dspObject_Include(thefile='calendar/index.cfm',params=arguments.params)#</cfoutput>
 							 </cfif>
 						</cf_CacheOMatic>
 					<cfelseif variables.$.content('type') eq 'gallery'>
-						<cf_CacheOMatic key="galleryBody#$.content('contentid')##hash(cgi.query_string)#" nocache="#$.event('r').restrict#">
+						<cf_CacheOMatic key="galleryBody#$.content('contentid')##hash(cgi.query_string,'CFMX_COMPAT')#" nocache="#$.event('r').restrict#">
 						 	 <cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('gallery/index.cfm')>
 						 	 <cfif len(filePath)>
 							 	<cfoutput>#$.dspObject_Include(thefile='gallery/index.cfm',params=arguments.params)#</cfoutput>
