@@ -15,7 +15,7 @@
 	limitations under the License.
 */
 
-	this.name = hash( getBaseTemplatePath() );
+	this.name = hash( getBaseTemplatePath(),'CFMX_COMPAT');
 	if ( len( getContextRoot() ) ) {
 		variables.cgiScriptName = replace( CGI.SCRIPT_NAME, getContextRoot(), '' );
 		variables.cgiPathInfo = replace( CGI.PATH_INFO, getContextRoot(), '' );

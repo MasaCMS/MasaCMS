@@ -15,7 +15,7 @@ component extends="mura.bean.beanORM" entityName='oauthClient' table="toauthclie
 
     function save(){
         if(!len(get('clientsecret'))){
-            set('clientsecret',hash(encrypt(get('clientid'),generateSecretKey('AES'))));
+            set('clientsecret',hash(encrypt(get('clientid'),generateSecretKey('AES')),'CFMX_COMPAT'));
         }
         super.save(argumentCollection=arguments);
         return this;
