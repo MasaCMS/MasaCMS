@@ -9,7 +9,7 @@ component extends="mura.bean.beanORM" entityName='oauthToken' table="toauthtoken
 
     function save(){
         if(isValid('uuid',get('token'))){
-            set('token',"000" & hash(encrypt(get('token'),generateSecretKey('AES')),'CFMX_COMPAT'));
+            set('token',"000" & hash(encrypt(get('token'),generateSecretKey('AES'),'CFMX_COMPAT'),'CFMX_COMPAT'));
         }
 
         if(!isDate(get('expires'))){

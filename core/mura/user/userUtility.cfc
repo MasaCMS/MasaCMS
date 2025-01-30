@@ -738,7 +738,7 @@ Thanks for using #contactName#</cfoutput>
 	</cfswitch>
 
 	<cfloop from="1" to="#arguments.Length#" index="i">
-	 <cfset ThisNum = RandRange(1,listlen(charlist, "|"))>
+	 <cfset ThisNum = RandRange(1,listlen(charlist, "|"),'CFMX_COMPAT ')>
 	 <cfset ThisChar = ListGetAt(Charlist, ThisNum, "|")>
 	 <cfset ThisPass = ListAppend(ThisPass, ThisChar, " ")>
 	</cfloop>

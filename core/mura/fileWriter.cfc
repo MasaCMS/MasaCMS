@@ -124,7 +124,7 @@ This file is part of Mura CMS.
 					<cffile action="copy" source="#arguments.source#" destination="#arguments.destination#" />
 				</cfif>
 				<cfcatch>
-					<cfset sleep(RandRange(500, 1000))>
+					<cfset sleep(RandRange(500, 1000,'CFMX_COMPAT'))>
 					<cfif fileExists(arguments.destination)>
 						<cfset fileDelete(arguments.destination)>
 					</cfif>

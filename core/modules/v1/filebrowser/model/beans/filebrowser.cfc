@@ -149,7 +149,7 @@ component
 		}
 
 		var sourceImageInfo = imageInfo(sourceImage);
-		var destination = replace(filePath,".#arguments.file.ext#","-resize-#randrange(10000,99999)#.#arguments.file.ext#");
+		var destination = replace(filePath,".#arguments.file.ext#","-resize-#randrange(10000,99999,'CFMX_COMPAT')#.#arguments.file.ext#");
 
 		ImageWrite(sourceImage,tempDir & timage & "." & arguments.file.ext);
 		fileMove(tempDir & timage & "." & arguments.file.ext,filePath);
