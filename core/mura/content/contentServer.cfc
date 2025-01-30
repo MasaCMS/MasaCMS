@@ -530,12 +530,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfelse>
 				<cfset currentParam=currentItem>
 			</cfif>
-		<cfelseif currentArrayName eq "tagArray">						
+		<cfelseif currentArrayName eq "tagArray">
 			<cfset arguments.event.setValue("tag",currentItem)>
-			<cfif not listFindNoCase('login,editProfile',arguments.event.getValue('display'))> 
+			<cfif not listFindNoCase('login,editProfile',arguments.event.getValue('display'))>
 				<cfset arguments.event.setValue("display","search")>
 				<cfset arguments.event.setValue("newSearch","true")>
-			</cfif>			
+			</cfif>
 			<cfset currentArrayName="">
 		<cfelseif currentArrayName eq "linkServIDArray">
 			<cfset arguments.event.setValue("linkServID",currentItem)>
@@ -837,12 +837,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 			</cfloop>
 
-			<cfset request.muraOutputCacheOffset=hash(previewData.changesetIDList)>
+			<cfset request.muraOutputCacheOffset=hash(previewData.changesetIDList,'CFMX_COMPAT')>
 		<cfelse>
 			<cfif getBean('changeset').loadBy(changesetID=previewData.changesetid,siteid=previewData.siteID).getLastUpdate() gt previewData.lastApplied>
 				<cfset getBean('changesetManager').setSessionPreviewData(changesetid=previewData.changesetid,append=isDefined('url.append'),showToolBar=request.muraChangesetPreviewToolbar)>
 			</cfif>
-			<cfset request.muraOutputCacheOffset=hash(previewData.changesetid)>
+			<cfset request.muraOutputCacheOffset=hash(previewData.changesetid,'CFMX_COMPAT')>
 		</cfif>
 	</cfif>
 </cffunction>

@@ -348,7 +348,7 @@
 				</cfloop>
 				</cfquery>
 				<cfloop query="rsDir">
-					<cfset extractStruct["#hash(PathFormat(rsdir.entry))#"]=true>
+					<cfset extractStruct["#hash(PathFormat(rsdir.entry),'CFMX_COMPAT')#"]=true>
 				</cfloop>
 			</cfif>
 
@@ -367,7 +367,7 @@
 				</cfloop>
 				</cfquery>
 				<cfloop query="rsDir">
-					<cfset excludeStruct["#hash(PathFormat(rsdir.entry))#"]=true>
+					<cfset excludeStruct["#hash(PathFormat(rsdir.entry),'CFMX_COMPAT')#"]=true>
 				</cfloop>
 			</cfif>
 
@@ -395,7 +395,7 @@
 				while(entries.hasMoreElements())
 				{
 					entry = entries.nextElement();
-					entryHash = hash(pathFormat(entry.getName()));
+					entryHash = hash(pathFormat(entry.getName()),'CFMX_COMPAT');
 
 					if(NOT entry.isDirectory()
 						AND
@@ -787,11 +787,11 @@
 
 	<cffunction name="isZipSafe" returntype="boolean" output="false">
 		<cfargument name="zipFilePath" type="string" required="true">
-		
+
 		<cfset var zip = createObject("java", "java.util.zip.ZipFile").init(PathFormat(arguments.zipFilePath))>
-		
+
 		<cfset var entries = zip.entries()>
-		
+
 		<cfloop condition="entries.hasMoreElements()">
 			<cfset var entry = entries.nextElement().getName()>
 			<!--- Check for Zip Slip vulnerability --->
@@ -808,13 +808,13 @@
 
 	<cffunction name="isZipSlipAttack" returntype="boolean" output="false">
 		<cfargument name="filePath" type="string" required="true">
-	
+
 		<!--- Check for Zip Slip vulnerability --->
 		<cfif reFind(".*\.\.(\/|\\).*", arguments.filePath)>
 			<cflog text="Zip Slip Attack Detected: #arguments.filePath#" type="error">
 			<cfreturn true>
 		</cfif>
-		
+
 		<cfreturn false>
 	</cffunction>
 

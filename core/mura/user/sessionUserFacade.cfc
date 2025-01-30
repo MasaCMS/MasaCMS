@@ -218,14 +218,14 @@ component extends="mura.cfobject" output="false" hint="This provides access to t
 				return false;
 			}
 			if ( application.cfversion < 10 ) {
-				if ( arguments.$.event('csrf_token_expires') > (now() + 0) && arguments.$.event('csrf_token') == hash(arguments.context & variables.sessionData.mura.csrfsecretkey & arguments.$.event('csrf_token_expires')) ) {
+				if ( arguments.$.event('csrf_token_expires') > (now() + 0) && arguments.$.event('csrf_token') == hash(arguments.context & variables.sessionData.mura.csrfsecretkey & arguments.$.event('csrf_token_expires'),'CFMX_COMPAT') ) {
 					variables.sessionData.mura.csrfusedtokens["#arguments.$.event('csrf_token')#"]=now();
 					return true;
 				} else {
 					return false;
 				}
 			} else {
-				if ( arguments.$.event('csrf_token_expires') > datetimeformat(now(),'yyMMddHHnnsslll') && arguments.$.event('csrf_token') == hash(arguments.context & variables.sessionData.mura.csrfsecretkey & arguments.$.event('csrf_token_expires')) ) {
+				if ( arguments.$.event('csrf_token_expires') > datetimeformat(now(),'yyMMddHHnnsslll') && arguments.$.event('csrf_token') == hash(arguments.context & variables.sessionData.mura.csrfsecretkey & arguments.$.event('csrf_token_expires'),'CFMX_COMPAT') ) {
 					variables.sessionData.mura.csrfusedtokens["#arguments.$.event('csrf_token')#"]=now();
 					return true;
 				} else {
@@ -247,7 +247,7 @@ component extends="mura.cfobject" output="false" hint="This provides access to t
 			}
 			return {
 				expires=expires,
-				token=hash(arguments.context & variables.sessionData.mura.csrfsecretkey & expires)
+				token=hash(arguments.context & variables.sessionData.mura.csrfsecretkey & expires,'CFMX_COMPAT')
 			};
 		}
 

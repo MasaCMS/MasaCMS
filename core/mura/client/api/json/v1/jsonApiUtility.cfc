@@ -1507,7 +1507,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		var result= getSerializer().serialize(arguments.response);
 
-		cfheader( name="ETag", value=hash(result));
+		cfheader( name="ETag", value=hash(result,'CFMX_COMPAT'));
 
 		return getSerializer().serialize(arguments.response);
 	}

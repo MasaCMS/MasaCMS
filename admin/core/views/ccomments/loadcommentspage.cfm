@@ -21,7 +21,7 @@
 				<cfif len(rc.avatar)>
 					<dd class="gravatar"><img src="#esapiencode('html_attr',rc.avatar)#"></dd>
 				<cfelse>
-					<dd class="gravatar"><img src="#application.settingsManager.getSite(rc.siteid).getScheme()#://www.gravatar.com/avatar/#lcase(Hash(lcase(esapiEncode('html_attr',rc.comment.getEmail()))))#" /></dd>
+					<dd class="gravatar"><img src="#application.settingsManager.getSite(rc.siteid).getScheme()#://www.gravatar.com/avatar/#lcase(Hash(lcase(esapiEncode('html_attr',rc.comment.getEmail())),'CFMX_COMPAT'))#" /></dd>
 				</cfif>
 				<dt>
 					#esapiEncode('html',rc.comment.getName())#

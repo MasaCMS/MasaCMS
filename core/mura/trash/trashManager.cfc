@@ -121,7 +121,7 @@
 		<cfquery>
 			delete from tcontentfeedadvancedparams
 			where feedID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
-		</cfquery>		
+		</cfquery>
 
 		<!--- EMPTY TRASH TABLE--->
 		<cfquery>
@@ -187,12 +187,12 @@
 	</cfif>
 
 	<cfset deleteID=arguments.deleted.getValue("muraDeleteID")>
-	<cfset deleteIDHash=Hash(deleteID)>
+	<cfset deleteIDHash=Hash(deleteID,'CFMX_COMPAT')>
 
 	<cfparam name="request.delete#deleteIDHash#" default="0">
 
 	<cfset request["delete#deleteIDHash#"]=request["delete#deleteIDHash#"]+1>
-	
+
 	<cfif len(arguments.deleted.getValue('siteid'))>
 		<cfset siteid=arguments.deleted.getValue('siteid')>
 	<cfelse>
@@ -283,7 +283,7 @@
 	<cfelseif arguments.deleted.valueExists("parentID")>
 		<cfreturn arguments.deleted.getParentID()>
 	<cfelseif arguments.deleted.getEntityName() eq 'address'>
-		<cfreturn arguments.deleted.getUserID()>	
+		<cfreturn arguments.deleted.getUserID()>
 	<cfelse>
 		<cfreturn "NA">
 	</cfif>
