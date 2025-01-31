@@ -3,10 +3,18 @@ component extends="baseLoginProvider" accessors=true output=false {
 	variables.providerName='azuread';
 
 	public function generateAuthUrl(state) {
+		var authUrl = "";
+		var azureADTenant = lcase(variables.configBean.getAzureADTenant());
 
 		setReturnURL();
 
-		var authUrl = "https://login.microsoftonline.com/#variables.configBean.getAzureADTenantID()#/oauth2/v2.0/authorize?";
+		if(azureADTenant != ""){
+			authUrl = "https://login.microsoftonline.com/#azureADTenant#/oauth2/v2.0/authorize?";
+			authUrl &= "tenant=#variables.configBean.getAzureADTenantID()#&";
+		} else {
+			authUrl = "https://login.microsoftonline.com/#variables.configBean.getAzureADTenantID()#/oauth2/v2.0/authorize?";
+		}
+
 		authUrl &= "client_id=#variables.configBean.getAzureADClientID()#&";
 		authUrl &= "response_type=code&";
 		authUrl &= "redirect_uri=#urlEncodedFormat(getCallbackURL())#&";
