@@ -9,30 +9,18 @@ component extends="baseLoginProvider" accessors=true output=false {
 		setReturnURL();
 
 		if(azureADTenant != ""){
-			var lsValidAzureADTenantSettings = "common,organizations,consumers";
-			if(!listFindNoCase(lsValidAzureADTenantSettings,azureADTenant)){
-				throw( message="The setting for multi-tenant Azure AD is incorrect. The value supplied is: '#azureADTenant#'. Valid values are '#lsValidAzureADTenantSettings#'.");
-			}
-
 			authUrl = "https://login.microsoftonline.com/#azureADTenant#/oauth2/v2.0/authorize?";
 			authUrl &= "tenant=#variables.configBean.getAzureADTenantID()#&";
-			authUrl &= "client_id=#variables.configBean.getAzureADClientID()#&";
-			authUrl &= "response_type=code&";
-			authUrl &= "redirect_uri=#urlEncodedFormat(getCallbackURL())#&";
-			authUrl &= "response_mode=query&";
-			authUrl &= "scope=https%3A%2F%2Fgraph.microsoft.com%2Fuser.read&";
-			authUrl &= "state=#urlEncodedFormat(state)#&";
-
 		} else {
-
 			authUrl = "https://login.microsoftonline.com/#variables.configBean.getAzureADTenantID()#/oauth2/v2.0/authorize?";
-			authUrl &= "client_id=#variables.configBean.getAzureADClientID()#&";
-			authUrl &= "response_type=code&";
-			authUrl &= "redirect_uri=#urlEncodedFormat(getCallbackURL())#&";
-			authUrl &= "response_mode=query&";
-			authUrl &= "scope=https%3A%2F%2Fgraph.microsoft.com%2Fuser.read&";
-			authUrl &= "state=#urlEncodedFormat(state)#&";
 		}
+
+		authUrl &= "client_id=#variables.configBean.getAzureADClientID()#&";
+		authUrl &= "response_type=code&";
+		authUrl &= "redirect_uri=#urlEncodedFormat(getCallbackURL())#&";
+		authUrl &= "response_mode=query&";
+		authUrl &= "scope=https%3A%2F%2Fgraph.microsoft.com%2Fuser.read&";
+		authUrl &= "state=#urlEncodedFormat(state)#&";
 
 		return authUrl;
 	}

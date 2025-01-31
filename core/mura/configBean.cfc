@@ -2113,7 +2113,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif len(variables.instance.siteDir)>
 		<cfreturn '/muraWRM/#variables.instance.siteDir#'>
 	<cfelse>
-		<cfreturn'/muraWRM'>
+		<cfreturn '/muraWRM'>
 	</cfif>
 </cffunction>
 
@@ -2121,7 +2121,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif len(variables.instance.siteDir)>
 		<cfreturn 'muraWRM.#variables.instance.siteDir#'>
 	<cfelse>
-		<cfreturn'muraWRM'>
+		<cfreturn 'muraWRM'>
 	</cfif>
 </cffunction>
 
