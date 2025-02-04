@@ -236,6 +236,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.filemanagerEnabled=true>
 <cfset variables.instance.deprecationwarningsenabled=true>
 <cfset variables.instance.deprecationlogfile="deprecations">
+<cfset variables.instance.tagFilter="script,object,applet,embed,form,input,layer,ilayer,frame,iframe,frameset,param,meta,base,style,xss,marquee">
 
 <cffunction name="OnMissingMethod" output="false" hint="Handles missing method exceptions.">
 <cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />
@@ -2146,6 +2147,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfreturn variables.instance.version>
+
+	<cffunction name="getTagFilter" output="false">
+		<cfreturn variables.instance.tagFilter />
+	</cffunction>
 </cffunction>
 
 <cfscript>

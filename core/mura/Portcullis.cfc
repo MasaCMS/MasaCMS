@@ -53,7 +53,7 @@
 	<cfset variables.instance.blockCRLF = false/>									<!---Block CRLF (carriage return line feed) hacks, this particular hack has limited abilities so this could be overkill--->
 
 	<cfset variables.instance.sqlFilter = "select,insert,update,delete,create,drop,alter,declare,execute,--,xp_,sp_sqlexecute,table_cursor,cast\(,exec\(,eval\(,information_schema"/>
-	<cfset variables.instance.tagFilter = "script,object,applet,embed,form,input,layer,ilayer,frame,iframe,frameset,param,meta,base,style,xss,marquee"/>
+	<cfset variables.instance.tagFilter = application.configBean.gettagFilter()/>
 	<cfset variables.instance.wordFilter = "qss,onError,onEvent,onLoad,onClick,onDblClick,onKeyDown,onKeyPress,onKeyUp,onMouseDown,onMouseOut,onMouseUp,onMouseOver,onBlur,onChange,onFocus,onSelect,javascript:,vbscript:,\.cookie,\.toString,:expr,:expression,\.fromCharCode,String\."/>
 
 	<cfset variables.instance.thisServer = lcase(CGI.SERVER_NAME)/>
