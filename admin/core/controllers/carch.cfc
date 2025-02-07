@@ -36,14 +36,14 @@ component extends="controller" output="false" {
 			param default="" name="arguments.rc.compactDisplay";
 			param default="" name="arguments.rc.returnURL";
 			param default="" name="arguments.rc.homeID";
-			param default=variables.configBean.getDatasource(), name="arguments.rc.datasource";
+			param default=variables.configBean.getDatasource() name="arguments.rc.datasource";
 			param default="" name="arguments.rc.objectid";
 			param default=false name="arguments.rc.locking";
 			param default="" name="arguments.rc.moduleAssign";
 			param default=0 name="arguments.rc.orderno";
 			param default=false name="arguments.rc.cancelPendingApproval";
-			param default=variables.settingsManager.getSite(arguments.rc.siteid).getviewdepth(), name="session.mura.viewDepth";
-			param default=variables.settingsManager.getSite(arguments.rc.siteid).getnextN(), name="session.mura.nextN";
+			param default=variables.settingsManager.getSite(arguments.rc.siteid).getviewdepth() name="session.mura.viewDepth";
+			param default=variables.settingsManager.getSite(arguments.rc.siteid).getnextN() name="session.mura.nextN";
 			param default="" name="session.keywords";
 			param default="" name="arguments.rc.date1";
 			param default="" name="arguments.rc.date2";
