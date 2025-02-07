@@ -191,7 +191,7 @@ This file is part of Mura CMS.
 										<cfif rc.rstop.Display and (rc.rstop.Display eq 1 and rc.rstop.approved)>
 															<i class="mi-check" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#"></i>
 											<span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#</span>
-										<cfelseif(rc.rstop.Display eq 2 and rc.rstop.approved)>
+										<cfelseif (rc.rstop.Display eq 2 and rc.rstop.approved)>
 											#LSDateFormat(rc.rstop.displaystart,"short")# - #LSDateFormat(rc.rstop.displaystop,"short")#
 										<cfelse>
 															<i class="mi-ban" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.no')#"></i>

@@ -474,7 +474,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			</cfif>
 
-			<cfif(variables.instance.username eq "" or not checkUsername())>
+			<cfif (variables.instance.username eq "" or not checkUsername())>
 				<cfset variables.instance.errors.username=variables.settingsManager.getSite(variables.instance.siteID).getRBFactory().getResourceBundle().messageFormat( variables.settingsManager.getSite(variables.instance.siteID).getRBFactory().getKey("user.usernamevalidate") , variables.instance.username ) />
 			</cfif>
 
