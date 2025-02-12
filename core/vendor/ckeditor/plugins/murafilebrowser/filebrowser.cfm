@@ -3,9 +3,9 @@
 	<cfscript>
 		if(server.coldfusion.productname != 'ColdFusion Server'){
 			backportdir='';
-			include "../../../../mura/backport/backport.cfm";
+			include "/mura/backport/backport.cfm";
 		} else {
-			backportdir='../../../../mura/backport/';
+			backportdir='/mura/backport/';
 			include "#backportdir#backport.cfm";
 		}
 	</cfscript>
