@@ -1,3 +1,5 @@
+'use strict';
+
 const { series, parallel, src, dest, watch } = require('gulp');
 const path = require('path');
 const minify = require('gulp-minify');
