@@ -96,7 +96,7 @@ component output="false" extends="mura.cfobject" hint="This provides a utility t
 	}
 
 	public function has(key) output=false {
-		return variables.keys.hasValue(hash(arguments.key,,"CFMX_COMPAT"));
+		return variables.keys.hasValue(hash(arguments.key,"CFMX_COMPAT"));
 	}
 
 	public function get(key, required defaultValue="#variables.utility.getUUID()#") output=false {
