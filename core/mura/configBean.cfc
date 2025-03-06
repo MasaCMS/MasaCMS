@@ -1478,6 +1478,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.instance.indexFileInURLS />
 </cffunction>
 
+<cffunction name="getIndexFileInAPI" returntype="boolean" output="false">
+	<cfreturn variables.instance.indexFileInAPI />
+</cffunction>
+
+<cffunction name="setIndexFileInAPI" output="false">
+	<cfargument name="indexFileInAPI" />
+	<cfif isBoolean(arguments.indexFileInAPI)>
+		<cfset variables.instance.indexFileInAPI = arguments.indexFileInAPI />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="setStrictExtendedData" output="false">
 	<cfargument name="strictExtendedData" />
 	<cfif isBoolean(arguments.strictExtendedData)>
