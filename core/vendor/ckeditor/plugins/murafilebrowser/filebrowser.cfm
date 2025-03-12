@@ -39,7 +39,8 @@
 		adminpath:'#esapiEncode("javascript",m.siteConfig().getAdminPath(complete=1))#',
 		themepath:'#esapiEncode("javascript",m.siteConfig().getThemeAssetPath(complete=1))#',
 		pluginspath:'#esapiEncode("javascript",m.siteConfig().getPluginsPath(complete=1))#',
-		rootpath:'#esapiEncode("javascript",m.siteConfig().getRootPath(complete=1))#'
+		rootpath:'#esapiEncode("javascript",m.siteConfig().getRootPath(complete=1))#',
+		indexfileinapi: #m.globalConfig('indexfileinapi')#
 	});
   </script>
 	</cfoutput>

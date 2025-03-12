@@ -217,6 +217,12 @@ if ( application.setupComplete ) {
   	fileDelete(expandPath("/mura/content/file/image.cfc"));
   }
 
+	// If 'indexFileInAPI' is not set in the properties and 'indexFileInURLS' == false, then set 'indexFileInAPI' also to false
+	if(!structKeyExists(variables.iniProperties,"indexFileInAPI")
+		&& structKeyExists(variables.iniProperties,"indexFileInURLS")
+		&& !variables.iniProperties.indexFileInURLS) {
+			variables.iniProperties.indexFileInAPI = false;
+  	}
 	application.configBean=new mura.configBean().set(variables.iniProperties);
 	application.appHandlerLookUp={};
 

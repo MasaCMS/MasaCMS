@@ -150,6 +150,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.sharableRemoteSessions=false />
 <cfset variables.instance.siteIDInURLS=true />
 <cfset variables.instance.indexFileInURLS=true />
+<cfset variables.instance.indexFileInAPI=true />
 <cfset variables.instance.hashURLs=false />
 <cfset variables.instance.strictExtendedData=true />
 <cfset variables.instance.purgeDrafts=true />
@@ -1475,6 +1476,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getIndexFileInURLS" returntype="boolean" output="false">
 	<cfreturn variables.instance.indexFileInURLS />
+</cffunction>
+
+<cffunction name="getIndexFileInAPI" returntype="boolean" output="false">
+	<cfreturn variables.instance.indexFileInAPI />
+</cffunction>
+
+<cffunction name="setIndexFileInAPI" output="false">
+	<cfargument name="indexFileInAPI" />
+	<cfif isBoolean(arguments.indexFileInAPI)>
+		<cfset variables.instance.indexFileInAPI = arguments.indexFileInAPI />
+	</cfif>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="setStrictExtendedData" output="false">
