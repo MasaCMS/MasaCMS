@@ -1,7 +1,7 @@
 component extends='mura.cfobject' {
  
   function onRenderStart(m) {
-    arguments.m.addToHTMLFootQueue('<script src="/core/modules/v1/gatedasset/assets/js/module.js"></script>');
+    arguments.m.addToHTMLFootQueue('<script #m.getMuraJSDeferredString()# src="/core/modules/v1/gatedasset/assets/js/module.js"></script>');
   }
  
   function onGatedAssetSuccess(m) {
