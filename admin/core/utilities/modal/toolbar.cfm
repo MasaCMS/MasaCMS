@@ -245,7 +245,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<cfset variables.approvalrequestlink = variables.adminBase & "/?muraAction=cArch.statusmodal&compactDisplay=true&contenthistid=#$.content('contenthistid')#&siteid=#$.content('siteid')#&mode=frontend">
 
-			<cfhtmlhead text='<script type="text/javascript" src="#m.globalConfig('adminDir')#/assets/js/jquery/jquery.min.js"></script>'>
+
+			<cfhtmlhead text='<script type="text/javascript" src="#m.globalConfig('context')##m.globalConfig('adminDir')#/assets/js/jquery/jquery.min.js"></script>'>
 		</cfsilent>
 		<cfoutput>
 		<div class="mura mura-toolbar" style="display:none;">
