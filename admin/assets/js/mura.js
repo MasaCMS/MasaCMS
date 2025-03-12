@@ -3225,20 +3225,20 @@ var Mura=(function(){
 			config.fileassetpath = config.assetpath;
 		}
 
-    if (typeof config.indexfileinapi == 'undefined') {
-      if (typeof Mura.indexfileinapi != 'undefined') {
-        config.indexfileinapi = Mura.indexfileinapi;
-      } else {
-        config.indexfileinapi = true;
-      }
-    }
+		if (typeof config.indexfileinapi == 'undefined') {
+			if (typeof Mura.indexfileinapi != 'undefined') {
+				config.indexfileinapi = Mura.indexfileinapi;
+			} else {
+				config.indexfileinapi = true;
+			}
+		}
 
 		if (!config.apiEndpoint) {
-      if (config.indexfileinapi) {
-        config.apiEndpoint = config.context + '/index.cfm/_api/json/v1/' + config.siteid + '/';
-      } else {
-        config.apiEndpoint = config.context + '/_api/json/v1/' + config.siteid + '/';
-      }
+			if (config.indexfileinapi) {
+				config.apiEndpoint = config.context + '/index.cfm/_api/json/v1/' + config.siteid + '/';
+			} else {
+				config.apiEndpoint = config.context + '/_api/json/v1/' + config.siteid + '/';
+			}
 		}
 
 		if (!config.pluginspath) {
