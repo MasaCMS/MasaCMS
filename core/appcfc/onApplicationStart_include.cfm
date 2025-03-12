@@ -217,12 +217,18 @@ if ( application.setupComplete ) {
   	fileDelete(expandPath("/mura/content/file/image.cfc"));
   }
 
+	// If 'indexFileInAPI' is not set in the properties and 'indexFileInURLS' == false, then set 'indexFileInAPI' also to false
+	if(!structKeyExists(variables.iniProperties,"indexFileInAPI")
+		&& structKeyExists(variables.iniProperties,"indexFileInURLS")
+		&& !variables.iniProperties.indexFileInURLS) {
+			variables.iniProperties.indexFileInAPI = false;
+  	}
 	application.configBean=new mura.configBean().set(variables.iniProperties);
 	application.appHandlerLookUp={};
 
 	variables.serviceFactory=new mura.bean.beanFactory("/mura",{
 			recurse=true,
-			exclude=["/.","/mura/autoUpdater/global","/mura/configBean.cfc","/mura/bean/beanFactory.cfc","/mura/cache/provider","/mura/moment.cfc","/mura/client/oath"],
+			exclude=["/.","/mura/autoUpdater/global","/mura/configBean.cfc","/mura/bean/beanFactory.cfc","/mura/cache/provider","/mura/moment.cfc","/mura/client/oath","/mura/client/api/json/v1/apiUtility.cfc","/mura/client/api/feed/v1/apiUtility.cfc"],
 			strict=application.configBean.getStrictFactory(),
 			transientPattern = "(Iterator|Bean|executor|MuraScope|Event|dbUtility|extendObject)$"
 			});

@@ -3,9 +3,9 @@
 	<cfscript>
 		if(server.coldfusion.productname != 'ColdFusion Server'){
 			backportdir='';
-			include "../../../../mura/backport/backport.cfm";
+			include "/mura/backport/backport.cfm";
 		} else {
-			backportdir='../../../../mura/backport/';
+			backportdir='/mura/backport/';
 			include "#backportdir#backport.cfm";
 		}
 	</cfscript>
@@ -39,7 +39,8 @@
 		adminpath:'#esapiEncode("javascript",m.siteConfig().getAdminPath(complete=1))#',
 		themepath:'#esapiEncode("javascript",m.siteConfig().getThemeAssetPath(complete=1))#',
 		pluginspath:'#esapiEncode("javascript",m.siteConfig().getPluginsPath(complete=1))#',
-		rootpath:'#esapiEncode("javascript",m.siteConfig().getRootPath(complete=1))#'
+		rootpath:'#esapiEncode("javascript",m.siteConfig().getRootPath(complete=1))#',
+		indexfileinapi: #m.globalConfig('indexfileinapi')#
 	});
   </script>
 	</cfoutput>
