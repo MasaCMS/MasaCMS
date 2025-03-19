@@ -134,9 +134,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfloop from="#maxItems#" to="1" index="i" step="-1">
 
 			<cftry>
-			  <cfset feedItemId=hash(left(items[i].guid.xmlText,255),"CFMX_COMPAT") />
+			  <cfset feedItemId=hash(left(items[i].guid.xmlText,255),application.defaulthashalgorithm) />
 			    <cfcatch>
-			      <cfset feedItemId=hash(left(items[i].link.xmlText,255),"CFMX_COMPAT") />
+			      <cfset feedItemId=hash(left(items[i].link.xmlText,255),application.defaulthashalgorithm) />
 			    </cfcatch>
 			</cftry>
 

@@ -118,9 +118,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfloop from="1" to="#maxItems#" index="i">
 							<cfsilent>
 							<cftry>
-								<cfset remoteID=hash(left(items[i].guid.xmlText,255),"CFMX_COMPAT") />
+								<cfset remoteID=hash(left(items[i].guid.xmlText,255),application.defaulthashalgorithm) />
 								<cfcatch>
-									<cfset remoteID=hash(left(items[i].link.xmlText,255),"CFMX_COMPAT") />
+									<cfset remoteID=hash(left(items[i].link.xmlText,255),application.defaulthashalgorithm) />
 								</cfcatch>
 							</cftry>
 

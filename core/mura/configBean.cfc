@@ -236,6 +236,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.filemanagerEnabled=true>
 <cfset variables.instance.deprecationwarningsenabled=true>
 <cfset variables.instance.deprecationlogfile="deprecations">
+<cfset variables.instance.defaulthashalgorithm=application.defaulthashalgorithm>
 
 <cffunction name="OnMissingMethod" output="false" hint="Handles missing method exceptions.">
 <cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />

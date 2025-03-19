@@ -317,7 +317,7 @@ component extends="mura.bean.bean" entityname="dataCollection" hint="This provid
 				}
 			}
 
-			if(!(!len(getValue('hKey')) or getValue('hKey') eq hash(getValue('uKey'),"CFMX_COMPAT")) ){
+			if(!(!len(getValue('hKey')) or getValue('hKey') eq hash(getValue('uKey'),application.defaulthashalgorithm)) ){
 				setValue('acceptError','Captcha');
 				setValue('acceptData','0');
 				variables.instance.errors.SecurityCode=getBean('settingsManager').getSite(getValue('siteid')).getRBFactory().getKey("captcha.error");

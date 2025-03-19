@@ -155,7 +155,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 			and variables.globalUtility.checkBCryptHash(arguments.password,rsUser.password)
 		 		)
 				OR
-				hash(arguments.password,"CFMX_COMPAT") eq rsUser.password
+				hash(arguments.password,application.defaulthashalgorithm) eq rsUser.password
 			)
 		)
 	)>
@@ -168,7 +168,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		and variables.configBean.getBCryptPasswords()
 		and rsUser.recordcount
 		and variables.configBean.getEncryptPasswords()
-		and hash(arguments.password,"CFMX_COMPAT") eq rsuser.password>
+		and hash(arguments.password,application.defaulthashalgorithm) eq rsuser.password>
 		<cfset variables.userDAO.savePassword(rsuser.userid,arguments.password)>
 	</cfif>
 

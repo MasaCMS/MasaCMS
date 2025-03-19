@@ -494,7 +494,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						and tusers.username=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.username#">
 						and (tusers.password=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.password#">
 							or
-						     tusers.password=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#trim(hash(arguments.password,"CFMX_COMPAT"))#">)
+						     tusers.password=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#trim(hash(arguments.password,application.defaulthashalgorithm))#">)
 						</cfif>
 						and tusers.siteid='#application.settingsManager.getSite(arguments.feedBean.getSiteID()).getPublicUserPoolID()#'
 

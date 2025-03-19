@@ -686,7 +686,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif variables.configBean.getJavaEnabled() and variables.configBean.getBCryptPasswords()>
 		<cfreturn variables.utility.toBCryptHash(arguments.password)>
 	<cfelse>
-		<cfreturn hash(arguments.password,"CFMX_COMPAT")>
+		<cfreturn hash(arguments.password,application.defaulthashalgorithm)>
 	</cfif>
 </cffunction>
 
