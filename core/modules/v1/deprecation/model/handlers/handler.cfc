@@ -9,8 +9,9 @@ component extends="mura.cfobject" {
 		, setCustomMuraScopeKey = "The function 'setCustomMuraScopeKey' has been deprecated. Please use the function 'setCustomMasaScopeKey' instead."
 		, MuraScopeObject = "The MuraScope.cfc object has been initialized. This will be replaced by the MasaScope.cfc object."
 		, SimpleHTMLForms = "A Simple Form has been created. Simple Forms are deprecated. Please use Forms (with the form builder) instead."
-		, Razuna = "Razuna is enabled on this MasaCMS istallation. Razuna is deprecated. Migrate to different Digital Asset Management system."
-		, UnSupportedLocale =  'A site is using an unsupported Locale. These Locales will be removed from Masa in the future. Use a supported Locale instead.'
+		, Razuna = "Razuna is enabled on this MasaCMS installation. Razuna is deprecated. Migrate to different Digital Asset Management system."
+		, UnSupportedLocale = "A site is using an unsupported Locale. These Locales will be removed from Masa in the future. Use a supported Locale instead."
+		, UseLegacySessions = "LegacySessions are enabled on this MasaCMS installation. Legacysessions are deprecated and will be removed in the future."
 	};
 
 	public void function onLogDeprecation() {

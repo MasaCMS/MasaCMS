@@ -1012,5 +1012,11 @@ if ( application.setupComplete ) {
 		// Set flag to send a deprecation warning
 		application.sendDeprecationWarningRazuna = true;
 	}
+
+	//Check if useLegacySessions is enabled
+	if(IsBoolean(application.configBean.getValue("useLegacySessions")) && application.configBean.getValue("useLegacySessions")){
+		// Set flag to send a deprecation warning
+		application.sendDeprecationWarningUseLegacySessions = true;
+	}
 }
 </cfscript>
