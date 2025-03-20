@@ -94,7 +94,7 @@ if(structKeyExists(application,"sendDeprecationWarningRazuna") && application.se
 }
 
 // Send deprecation warning about useLegacySessions; only do this once
-if(tstructKeyExists(application,"sendDeprecationWarningUseLegacySessions") && application.sendDeprecationWarningUseLegacySessions){
+if(structKeyExists(application,"sendDeprecationWarningUseLegacySessions") && application.sendDeprecationWarningUseLegacySessions){
 	variables.current$ = application.serviceFactory.getBean('$').init();
 	variables.current$.event().setValue("deprecationType","UseLegacySessions");
 	application.eventManager.announceEvent("LogDeprecation",variables.current$);
