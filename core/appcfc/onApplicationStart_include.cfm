@@ -1018,5 +1018,11 @@ if ( application.setupComplete ) {
 		// Set flag to send a deprecation warning
 		application.sendDeprecationWarningUseLegacySessions = true;
 	}
+
+	//Check if bcryptpasswords are disabled
+	if(IsBoolean(application.configBean.getValue("bcryptpasswords")) && !application.configBean.getValue("bcryptpasswords")){
+		// Set flag to send a deprecation warning
+		application.sendDeprecationWarningNonBCryptPasswords = true;
+	}
 }
 </cfscript>

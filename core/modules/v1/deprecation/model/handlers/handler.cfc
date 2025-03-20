@@ -12,6 +12,7 @@ component extends="mura.cfobject" {
 		, Razuna = "Razuna is enabled on this MasaCMS installation. Razuna is deprecated. Migrate to different Digital Asset Management system."
 		, UnSupportedLocale = "A site is using an unsupported Locale. These Locales will be removed from Masa in the future. Use a supported Locale instead."
 		, UseLegacySessions = "LegacySessions are enabled on this MasaCMS installation. Legacysessions are deprecated and will be removed in the future."
+		, NonBCryptPasswords = "You are using non BCrypt passwords hashes on this installation. Please update you password hashing to BCrypt. Non BCrypt hashes are deprecated."
 	};
 
 	public void function onLogDeprecation() {

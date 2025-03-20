@@ -101,4 +101,14 @@ if(structKeyExists(application,"sendDeprecationWarningUseLegacySessions") && app
 	// set flag to false
 	application.sendDeprecationWarningUseLegacySessions = false;
 }
+
+// Send deprecation warning about not using the BCrypt Hashing for passwords; only do this once
+if(structKeyExists(application,"sendDeprecationWarningNonBCryptPasswords") && application.sendDeprecationWarningNonBCryptPasswords){
+	variables.current$ = application.serviceFactory.getBean('$').init();
+	variables.current$.event().setValue("deprecationType","NonBCryptPasswords");
+	application.eventManager.announceEvent("LogDeprecation",variables.current$);
+	// set flag to false
+	application.sendDeprecationWarningNonBCryptPasswords = false;
+}
+
 </cfscript>
