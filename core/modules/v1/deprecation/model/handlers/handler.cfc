@@ -13,6 +13,7 @@ component extends="mura.cfobject" {
 		, UnSupportedLocale = "A site is using an unsupported Locale. These Locales will be removed from Masa in the future. Use a supported Locale instead."
 		, UseLegacySessions = "LegacySessions are enabled on this MasaCMS installation. Legacysessions are deprecated and will be removed in the future."
 		, NonBCryptPasswords = "You are using non BCrypt passwords hashes on this installation. Please update you password hashing to BCrypt. Non BCrypt hashes are deprecated."
+		, StoreSetACL = "When resizing an image and 'directImages=true' is set in the contentrenderer.cfc and uploading it to AWS S3, then Masa also sets the ACL on your bucket. This feature is deprecated."
 	};
 
 	public void function onLogDeprecation() {
