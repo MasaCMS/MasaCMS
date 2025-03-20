@@ -213,7 +213,7 @@ if ( fileExists(expandPath("/muraWRM/config/settings.custom.vars.cfm")) ) {
 try {
 	if ( (not isdefined('cookie.userid') || cookie.userid == '') && structKeyExists(sessionData,"rememberMe") && session.rememberMe == 1 && sessionData.mura.isLoggedIn ) {
 		application.utility.setCookie(name="userid",value=sessionData.mura.userID);
-		application.utility.setCookie(name="userHash",value=encrypt(application.userManager.readUserHash(sessionData.mura.userID).userHash,application.userManager.readUserPassword(cookie.userid),application.defaulthashalgorithm,'hex'));
+		application.utility.setCookie(name="userHash",value=encrypt(application.userManager.readUserHash(sessionData.mura.userID).userHash,application.userManager.readUserPassword(cookie.userid),application.configBean.getDefaultHashAlgorithm(),'hex'));
 	}
 } catch (any cfcatch) {
 	application.utility.deleteCookie(name="userHash");
@@ -223,7 +223,7 @@ try {
 	if ( isDefined('cookie.userid') && cookie.userid != ''
 		&& isDefined('cookie.userHash') && cookie.userHash != ''
 		&& !sessionData.mura.isLoggedIn ) {
-		application.loginManager.rememberMe(cookie.userid,decrypt(cookie.userHash,application.userManager.readUserPassword(cookie.userid),application.defaulthashalgorithm,'hex'));
+		application.loginManager.rememberMe(cookie.userid,decrypt(cookie.userHash,application.userManager.readUserPassword(cookie.userid),application.configBean.getDefaultHashAlgorithm(),'hex'));
 	}
 } catch (any cfcatch) {
 }

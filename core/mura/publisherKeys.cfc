@@ -96,7 +96,7 @@ component output="false" extends="mura.cfobject" hint="This provides a utility t
 	}
 
 	public function has(key) output=false {
-		return variables.keys.hasValue(hash(arguments.key,application.defaulthashalgorithm));
+		return variables.keys.hasValue(hash(arguments.key,application.configBean.getDefaultHashAlgorithm()));
 	}
 
 	public function get(key, required defaultValue="#variables.utility.getUUID()#") output=false {
@@ -104,7 +104,7 @@ component output="false" extends="mura.cfobject" hint="This provides a utility t
 			return arguments.key;
 		} else {
 			if ( left(key,32) != '00000000000000000000000000000000' ) {
-				return variables.keys.getValue(hash(arguments.key,application.defaulthashalgorithm),arguments.defaultValue);
+				return variables.keys.getValue(hash(arguments.key,application.configBean.getDefaultHashAlgorithm()),arguments.defaultValue);
 			} else {
 				return key;
 			}

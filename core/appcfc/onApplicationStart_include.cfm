@@ -504,8 +504,6 @@ if ( application.setupComplete ) {
 	application.mura=application.serviceFactory.getBean('mura');
 	request.muraattachormlinks=true;
 
-	application.defaulthashalgorithm = application.configBean.getValue('defaulthashalgorithm');
-
 	//  End
 
 	variables.temp='';

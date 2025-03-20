@@ -368,7 +368,7 @@ to your own modified versions of Mura CMS.
              <cfquery attributeCollection="#queryAttrs#">
               UPDATE tusers
               SET username=<cfqueryparam cfsqltype="cf_sql_varchar" value="#form.admin_username#">,
-                password=<cfqueryparam cfsqltype="cf_sql_varchar" value="#hash(form.admin_password,application.defaulthashalgorithm)#">,
+                password=<cfqueryparam cfsqltype="cf_sql_varchar" value="#hash(form.admin_password,application.configBean.getDefaultHashAlgorithm())#">,
                 email=<cfqueryparam cfsqltype="cf_sql_varchar" value="#form.production_adminemail#">
               where userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#adminUserID#">
             </cfquery>

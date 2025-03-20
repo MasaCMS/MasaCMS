@@ -484,7 +484,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 		<!--- If captcha data has been submitted validate it --->
-		<cfif not (not len(variables.instance.hKey) or variables.instance.hKey eq hash(variables.instance.uKey,application.defaulthashalgorithm))>
+		<cfif not (not len(variables.instance.hKey) or variables.instance.hKey eq hash(variables.instance.uKey,application.configBean.getDefaultHashAlgorithm()))>
 		<cfset variables.instance.errors.SecurityCode=variables.settingsManager.getSite(variables.instance.siteID).getRBFactory().getKey("captcha.error")/>
 		</cfif>
 
