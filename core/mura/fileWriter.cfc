@@ -471,6 +471,7 @@ This file is part of Mura CMS.
 		<cfargument name="filter" default="*">
 		<cfargument name="type" default="all">
 		<cfset var rs="">
+		<cfdirectory directory="#arguments.directory#" filter="#arguments.filter#" type="#arguments.type#" name="rs" action="list">
 		<cfreturn rs>
 	</cffunction>
 
