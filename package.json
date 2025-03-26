@@ -1,6 +1,6 @@
 {
   "name": "masacms",
-  "version": "7.5",
+  "version": "7.5.0",
   "description": "[Masa CMS](http://www.masacms.com) is a digital experience platform, created by [blueriver](http://www.blueriver.com) as Mura CMS, forked by [We Are North](https://www.wearenorth.eu). Masa CMS was designed to build ambitious web, multi-channel, business-to-business and business-to-employee applications, and create Flow in the digital experience for Content Managers, Content Contributors, Marketers and Developers.",
   "main": "gulpfile.js",
   "devDependencies": {
