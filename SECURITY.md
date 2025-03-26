@@ -6,6 +6,7 @@ These are the version of Masa CMS currently being supported with security update
 
 | Version | Supported          |
 | ------- | ------------------ |
+| 7.5.x   | :white_check_mark: |
 | 7.4.x   | :white_check_mark: |
 | 7.3.x   | :white_check_mark: |
 | 7.2.x   | :white_check_mark: |
