@@ -23,13 +23,11 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		*/
 
-		//if(configBean.getIndexfileinurls()){
+		if(configBean.getIndexFileinApi()){
 			variables.endpoint="#site.getResourcePath(complete=1)#/index.cfm/_api/json/v1/#variables.siteid#";
-		/*
 		} else {
 			variables.endpoint="#site.getResourcePath(complete=1)#/_api/json/v1/#variables.siteid#";
 		}
-		*/
 
 		variables.config={
 			linkMethods=[],

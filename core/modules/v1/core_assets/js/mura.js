@@ -17069,15 +17069,15 @@ Mura.UI.Form = Mura.UI.extend(
       Mura(".field-container-" + self.context.objectid, self.context.formEl).append('<!--close-fieldset-->');
    }
 
-   let selector = `.field-container-${self.context.objectid}`;
-   let container = document.querySelector(selector);
-   let htmlContent = container.innerHTML;
-   
+   var selector = `.field-container-${self.context.objectid}`;
+   var container = document.querySelector(selector);
+   var htmlContent = container.innerHTML;
+
    htmlContent = htmlContent.replace(/<!--open-fieldset-label: \|(.+?)\| --->/g, '<fieldset id="$1">');
    htmlContent = htmlContent.replace(/<!--close-fieldset-->/g, '</fieldset>');
 
    container.innerHTML = htmlContent;
-   
+
 
 
     if (self.ishuman && self.currentpage == self.formJSON.form.pages.length - 1) {

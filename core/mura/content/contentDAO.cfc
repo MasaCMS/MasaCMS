@@ -622,7 +622,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 			null
 		</cfif>,
 		<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.contentBean.getMetaDesc() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getMetaDesc()#">,
-		<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.contentBean.getMetaKeyWords() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getMetaKeywords()#">,
+		<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.contentBean.getMetaKeyWords(conditional=false) neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getMetaKeywords(conditional=false)#">,
 		<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.contentBean.getBody() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getBody()#"> ,
 		<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.contentBean.getSummary() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getSummary()#">,
 		<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.contentBean.getPath() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getPath()#">,
