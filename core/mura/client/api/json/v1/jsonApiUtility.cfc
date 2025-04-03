@@ -1838,11 +1838,11 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		var result='invalid';
 
 
-		var httpService = new http();
-		httpService.setMethod("get");
-		httpService.setCharset("utf-8");
-		httpService.setUrl("https://bpi.briteverify.com/emails.json?address=#arguments.email#&apikey=#$.siteConfig('mmpBrightVerifyAPIKey')#");
-		var result=httpService.send().getPrefix();
+		cfhttp(url="https://bpi.briteverify.com/emails.json?address=#arguments.email#&apikey=#$.siteConfig('mmpBrightVerifyAPIKey')#",
+			method="get",
+			charset="utf-8",
+			result=result
+		);
 
 		try{
 			var response=getSerializer().serialize(result.filecontent);

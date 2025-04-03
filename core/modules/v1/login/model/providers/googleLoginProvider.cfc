@@ -54,13 +54,14 @@ component extends="baseLoginProvider" accessors=true output=false {
 	}
 
 	public function getProfile(accesstoken) {
-		var h = new http();
-		h.setURL("https://www.googleapis.com/oauth2/v1/userinfo");
-		h.setMethod("get");
-		h.addParam(type="header",name="Authorization",value="OAuth #accesstoken#");
-		h.addParam(type="header",name="GData-Version",value="3");
-		h.setResolveURL(true);
-		var result = h.send().getPrefix();
+		cfhttp(url="https://www.googleapis.com/oauth2/v1/userinfo",
+				 method="get",
+				 resolveURL="true",
+				 result=result)
+				 {
+					cfhttpparam(type="header",name="Authorization",value="OAuth #accesstoken#");
+					cfhttpparam(type="header",name="GData-Version",value="3");
+				};
 		return deserializeJSON(result.filecontent.toString());
 	}
 
@@ -72,13 +73,14 @@ component extends="baseLoginProvider" accessors=true output=false {
 			 postBody = postBody & "redirect_uri=" & UrlEncodedFormat(getCallbackURL()) & "&";
 			 postBody = postBody & "grant_type=authorization_code";
 
-			var h = new http();
-			h.setURL("https://accounts.google.com/o/oauth2/token");
-			h.setMethod("post");
-			h.addParam(type="header",name="Content-Type",value="application/x-www-form-urlencoded");
-			h.addParam(type="body",value="#postBody#");
-			h.setResolveURL(true);
-			var result = h.send().getPrefix();
+			 cfhttp(url="https://accounts.google.com/o/oauth2/token",
+					method="post",
+					resolveURL="true",
+					result=result)
+					{
+						cfhttpparam(type="header",name="Content-Type",value="application/x-www-form-urlencoded");
+						cfhttpparam(type="body",value="#postBody#");
+					};
 			return deserializeJSON(result.filecontent.toString());
 	}
 

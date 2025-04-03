@@ -4,11 +4,7 @@
 	configuratorMarkup='';
 
 	if(isValid("url", objectConfig.configurator)){
-		httpService=application.configBean.getHTTPService();
-		lhttpService.setMethod("get");
-		httpService.setCharset("utf-8");
-		httpService.setURL(objectConfig.configurator);
-		configuratorMarkup=httpService.send().getPrefix();
+		configuratorMarkup=application.configBean.getHTTPService(url=objectConfig.configurator, method="get", charset="utf-8");
 	} else if(len(objectConfig.configurator)){
 		configuratorMarkup=objectConfig.configurator;
 	}

@@ -63,12 +63,13 @@ component extends="baseLoginProvider" accessors=true output=false {
 	}
 
 	public function getProfile(accesstoken) {
-		var h = new http();
-		h.setURL("https://api.github.com/user");
-		h.setMethod("get");
-		h.addParam(type="url",name="access_token",value="#accesstoken#");
-		h.setResolveURL(true);
-		var result = h.send().getPrefix();
+		cfhttp(url="https://api.github.com/user",
+				method="get",
+				resolveURL="true",
+				result=result
+				){
+					cfhttpparam(type="url",name="access_token",value="#accesstoken#");
+				};
 		return deserializeJSON(result.filecontent.toString());
 	}
 
@@ -79,14 +80,15 @@ component extends="baseLoginProvider" accessors=true output=false {
 			 postBody = postBody & "client_secret=" & UrlEncodedFormat(variables.configBean.getGithubClientSecret()) & "&";
 			 postBody = postBody & "redirect_uri=" & UrlEncodedFormat(getCallbackURL()) & "&";
 
-			var h = new http();
-			h.setURL("https://github.com/login/oauth/access_token");
-			h.setMethod("post");
-			h.addParam(type="header",name="Content-Type",value="application/x-www-form-urlencoded");
-			h.addParam(type="header",name="Accept",value="application/json");
-			h.addParam(type="body",value="#postBody#");
-			h.setResolveURL(true);
-			var result = h.send().getPrefix();
+			 cfhttp(url="https://github.com/login/oauth/access_token",
+			 method="post",
+			 resolveURL="true",
+			 result=result)
+			 {
+				 cfhttpparam(type="header",name="Content-Type",value="application/x-www-form-urlencoded");
+				 cfhttpparam(type="header",name="Accept",value="application/json");
+				 cfhttpparam(type="body",value="#postBody#");
+			 };
 
 			return deserializeJSON(result.filecontent.toString());
 	}
