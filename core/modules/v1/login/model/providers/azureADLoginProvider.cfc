@@ -68,13 +68,14 @@ component extends="baseLoginProvider" accessors=true output=false {
 	}
 
 	public function getProfile(accesstoken) {
-		var h = new http();
-		h.setURL("https://graph.microsoft.com/v1.0/me");
-		h.setMethod("get");
-		h.addParam(type="header",name="Authorization",value="Bearer #accesstoken#");
-		h.addParam(type="header",name="Content-Type",value="application/json");
-		h.setResolveURL(true);
-		var result = h.send().getPrefix();
+		cfhttp(url="https://graph.microsoft.com/v1.0/me",
+				method="get",
+				resolveURL="true",
+				result=result)
+				{
+					cfhttpparam(type="header",name="Authorization",value="Bearer #accesstoken#");
+					cfhttpparam(type="header",name="Content-Type",value="application/json");
+				};
 		return deserializeJSON(result.filecontent.toString());
 	}
 

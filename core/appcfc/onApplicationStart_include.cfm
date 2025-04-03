@@ -307,10 +307,11 @@ if ( application.setupComplete ) {
 					local.themeZip="install_theme_#createUUID()#.zip";
 					try{
 						if(len(application.configBean.getDefaultThemeURL())){
-							local.httpService=application.configBean.getHTTPService();
-							local.httpService.setURL(application.configBean.getDefaultThemeURL());
-							local.httpService.setGetAsBinary("yes");
-							local.theme=httpService.send().getPrefix();
+							local.theme=application.configBean.getHTTPService(
+								url=application.configBean.getDefaultThemeURL(),
+								 method="get",
+								 charset="utf-8"
+							);
 							local.fileWriter.writeFile(file="#application.configBean.getWebRoot()#/#local.themeZip#",output=local.theme.filecontent);
 						}
 					} catch (any e){
@@ -461,11 +462,11 @@ if ( application.setupComplete ) {
 	if (len(application.configBean.getValue('externalConfig'))) {
 
 		if(isValid('url',application.configBean.getValue('externalConfig'))){
-			httpService=application.configBean.getHTTPService();
-			httpService.setMethod("get");
-			httpService.setCharset("utf-8");
-			httpService.setURL(application.configBean.getValue('externalConfig'));
-			config=httpService.send().getPrefix().filecontent;
+			config=application.configBean.getHTTPService(
+				url = application.configBean.getValue('externalConfig'),
+				method = "get",
+				charset = "utf-8"
+			);
 		} else if (fileExists(application.configBean.getValue('externalConfig'))) {
 			config=fileRead(application.configBean.getValue('externalConfig'),'utf-8');
 		}

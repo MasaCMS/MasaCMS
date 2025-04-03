@@ -140,21 +140,21 @@ limitations under the License.
 			</cfif>
 		</cfif>
 		<cfif len(application.configBean.getProxyServer())>
-		<cfhttp url="#s3Url(bucket, objectKey, 'regular', 30, 'HEAD')#"
-			method="HEAD"
-			timeout="30"
-			throwonerror="false"
-			result="result"
-			proxyUser="#application.configBean.getProxyUser()#"
-			proxyPassword="#application.configBean.getProxyPassword()#"
-			proxyServer="#application.configBean.getProxyServer()#"
-			proxyPort="#application.configBean.getProxyPort()#"/>
+			<cfhttp url="#s3Url(bucket, objectKey, 'regular', 30, 'HEAD')#"
+				method="HEAD"
+				timeout="30"
+				throwonerror="false"
+				result="result"
+				proxyUser="#application.configBean.getProxyUser()#"
+				proxyPassword="#application.configBean.getProxyPassword()#"
+				proxyServer="#application.configBean.getProxyServer()#"
+				proxyPort="#application.configBean.getProxyPort()#"/>
 		<cfelse>
-		<cfhttp url="#s3Url(bucket, objectKey, 'regular', 30, 'HEAD')#"
-			method="HEAD"
-			timeout="30"
-			throwonerror="false"
-			result="result"/>
+			<cfhttp url="#s3Url(bucket, objectKey, 'regular', 30, 'HEAD')#"
+				method="HEAD"
+				timeout="30"
+				throwonerror="false"
+				result="result"/>
 		</cfif>
 		<cfreturn val(trim(result.statusCode)) EQ 200 />
 	</cffunction>
@@ -176,21 +176,21 @@ limitations under the License.
 		<cfset var result = "" />
 		<cfset var retry = false />
 		<cfif len(application.configBean.getProxyServer())>
-		<cfhttp url="#s3Url(bucket, objectKey, 'regular', 30, 'DELETE')#"
-			method="DELETE"
-			timeout="15"
-			throwonerror="false"
-			result="result"
-			proxyUser="#application.configBean.getProxyUser()#"
-			proxyPassword="#application.configBean.getProxyPassword()#"
-			proxyServer="#application.configBean.getProxyServer()#"
-			proxyPort="#application.configBean.getProxyPort()#"/>
+			<cfhttp url="#s3Url(bucket, objectKey, 'regular', 30, 'DELETE')#"
+				method="DELETE"
+				timeout="15"
+				throwonerror="false"
+				result="result"
+				proxyUser="#application.configBean.getProxyUser()#"
+				proxyPassword="#application.configBean.getProxyPassword()#"
+				proxyServer="#application.configBean.getProxyServer()#"
+				proxyPort="#application.configBean.getProxyPort()#"/>
 		<cfelse>
-		<cfhttp url="#s3Url(bucket, objectKey, 'regular', 30, 'DELETE')#"
-			method="DELETE"
-			timeout="15"
-			throwonerror="false"
-			result="result"/>
+			<cfhttp url="#s3Url(bucket, objectKey, 'regular', 30, 'DELETE')#"
+				method="DELETE"
+				timeout="15"
+				throwonerror="false"
+				result="result"/>
 		</cfif>
 		<cfif result.statusCode LT 200 OR result.statusCode GTE 300>
 			<cfset retry = attemptCount LT 3 AND (
