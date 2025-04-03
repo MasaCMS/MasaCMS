@@ -31,7 +31,7 @@
 </cfscript>
 </cfsilent>
 <cfoutput>
-	<div data-name="#esapiEncode('html_attr',attributes.name)#" data-property="#esapiEncode('html_attr',attributes.property)#" data-fileid="#esapiEncode('html_attr',attributes.bean.getValue(attributes.property))#" data-filetype="#esapiEncode('html_attr',filetype)#" data-contentid="#attributes.bean.getcontentid()#" data-siteid="#attributes.bean.getSiteID()#" class="mura-file-selector #attributes.class#">			
+	<div data-name="#esapiEncode('html_attr',attributes.name)#" data-property="#esapiEncode('html_attr',attributes.property)#" data-fileid="#esapiEncode('html_attr',attributes.bean.getValue(attributes.property))#" data-filetype="#esapiEncode('html_attr',filetype)#" data-contentid="#attributes.bean.getcontentid()#" data-siteid="#attributes.bean.getSiteID()#" class="mura-file-selector #attributes.class#">
 		<div class="mura-input-set mura-file-selector-tabs" data-toggle="buttons-radio">
 			<button type="button" style="display:none">placeholder</button>
 			<button type="button" class="btn btn-default mura-file-type-selector active" value="Upload"><i class="mi-upload"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.fileselector.viaupload')#</button>
@@ -55,7 +55,7 @@
 
 			<div class="mura-control-group">
 					<input type="text" name="#attributes.name#" class="mura-file-selector-#attributes.name# span6" type="url" placeholder="http://www.domain.com/yourfile.#attributes.examplefileext#"	value=""
-					data-label="#HTMLEditFormat(attributes.label)#" data-label="#HTMLEditFormat(attributes.required)#" data-validate="#HTMLEditFormat(attributes.validation)#" data-regex="#HTMLEditFormat(attributes.regex)#" data-message="#HTMLEditFormat(attributes.message)#">
+					data-label="#encodeForHTMLAttribute(attributes.label)#" data-label="#encodeForHTMLAttribute(attributes.required)#" data-validate="#encodeForHTMLAttribute(attributes.validation)#" data-regex="#encodeForHTMLAttribute(attributes.regex)#" data-message="#encodeForHTMLAttribute(attributes.message)#">
 					<a style="display:none;" class="btn btn-default file-meta-open" href="" onclick="return openFileMetaData('#attributes.bean.getContentHistID()#','','#attributes.bean.getSiteID()#','#attributes.property#');"><i class="mi-info-circle"></i></a>
 			</div>
 
@@ -70,7 +70,7 @@
 
 			<div class="mura-control-group">
 					<div class="input-append">
-						<input type="text" name="#attributes.name#" class="mura-file-selector-#attributes.name# span6 razuna-url" type="url" placeholder="http://#razunaSettings.getHostName()#" data-label="#HTMLEditFormat(attributes.label)#" data-label="#HTMLEditFormat(attributes.required)#" data-validate="#HTMLEditFormat(attributes.validation)#" data-regex="#HTMLEditFormat(attributes.regex)#" data-message="#HTMLEditFormat(attributes.message)#">
+						<input type="text" name="#attributes.name#" class="mura-file-selector-#attributes.name# span6 razuna-url" type="url" placeholder="http://#razunaSettings.getHostName()#" data-label="#encodeForHTMLAttribute(attributes.label)#" data-label="#encodeForHTMLAttribute(attributes.required)#" data-validate="#encodeForHTMLAttribute(attributes.validation)#" data-regex="#encodeForHTMLAttribute(attributes.regex)#" data-message="#encodeForHTMLAttribute(attributes.message)#">
 						<a style="display:none;" class="btn btn-default file-meta-open" href="" onclick="return openFileMetaData('#attributes.bean.getContentHistID()#','','#attributes.bean.getSiteID()#','#attributes.property#');"><i class="mi-info-circle"></i></a>
 						<button type="button" onclick="renderRazunaWindow('newfile');" class="btn btn-razuna"><i class="mi-external-link-sign"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.launchrazuna')#</button>
 					</div>

@@ -879,7 +879,7 @@ Blog: www.codfusion.com--->
 			<ol>
 				<cfloop from="1" to="#arrayLen(request.muraTraceRoute)#" index="i">
 					<cfset tracePoint=request.muraTraceRoute[i]>
-					<li>#HTMLEditFormat(tracePoint.detail)# <span class="duration">(<cfif isDefined("tracePoint.duration")>#tracePoint.duration#<cfelse>ERROR</cfif> | <cfif isDefined("tracePoint.total")>#tracePoint.total#<cfelse>ERROR</cfif>)</span></li>
+					<li>#encodeForHtml(tracePoint.detail)# <span class="duration">(<cfif isDefined("tracePoint.duration")>#tracePoint.duration#<cfelse>ERROR</cfif> | <cfif isDefined("tracePoint.total")>#tracePoint.total#<cfelse>ERROR</cfif>)</span></li>
 				</cfloop>
 			</ol>
 			<cfset total=getTickCount()-request.muraRequestStart>
@@ -1157,27 +1157,27 @@ Blog: www.codfusion.com--->
 	<cfargument name="href">
 	<cfargument name="siteid" default="">
 	<cfset var returnProtocol = "">
-	
+
 	<cfif not len(arguments.siteid)>
 		<cfset sessionData=getSession()>
 		<cfset arguments.siteid=sessionData.siteid>
 	</cfif>
-	
+
 	<cfset var currentSite  = getBean('settingsManager').getSite(arguments.siteid)>
 
 	<cfif len(arguments.href) and (
 		listFindNoCase("http,https",listFirst(arguments.href,":"))
 		or len(arguments.href) gt 1 and left(arguments.href,2) eq "//"
-	)>	
-		<cfset  returnProtocol = listFirst(arguments.href,':') />	
-	<cfelse>		
-		<cfset returnProtocol = lcase(currentSite.getProtocol()) />				
+	)>
+		<cfset  returnProtocol = listFirst(arguments.href,':') />
+	<cfelse>
+		<cfset returnProtocol = lcase(currentSite.getProtocol()) />
 	</cfif>
-			
+
 	<cfset returnDomain = parseDomain(arguments.href) />
-	<cfif not listfindNoCase(getBean('settingsManager').getAccessControlOriginDomainList(),returnDomain) and len(returnDomain)>	
+	<cfif not listfindNoCase(getBean('settingsManager').getAccessControlOriginDomainList(),returnDomain) and len(returnDomain)>
 		<cfset arguments.href=replace(arguments.href,returnDomain,getBean('settingsManager').getSite(arguments.siteid).getDomain())>
-	</cfif>	
+	</cfif>
 
 	<cfreturn arguments.href>
 </cffunction>

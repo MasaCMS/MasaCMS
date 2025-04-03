@@ -124,6 +124,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 )#
 
 <cfif len(objectParams.viewalllink)>
-	<a class="view-all" href="#objectParams.viewalllink#">#HTMLEditFormat(objectParams.viewalllabel)#</a>
+	<a class="view-all" href="#objectParams.viewalllink#">#encodeForHtml(objectParams.viewalllabel)#</a>
 </cfif>
 </cfoutput>

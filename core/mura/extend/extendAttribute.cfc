@@ -527,7 +527,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfswitch expression="#getType()#">
 		<cfcase value="Hidden">
-			<cfsavecontent variable="str"><cfoutput><input type="hidden" name="#key#" id="#key#" data-label="#XMLFormat(getlabel())#" value="#HTMLEditFormat(renderValue)#" /></cfoutput></cfsavecontent>
+			<cfsavecontent variable="str"><cfoutput><input type="hidden" name="#key#" id="#key#" data-label="#XMLFormat(getlabel())#" value="#encodeForHTMLAttribute(renderValue)#" /></cfoutput></cfsavecontent>
 		</cfcase>
 		<cfcase value="TextBox,Text">
 			<cfif getValidation() neq 'datetime'>
@@ -540,15 +540,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfif getValidation() eq 'color'>
 
 							<div class="input-group mura-colorpicker">
-								<span class="input-group-addon"><i class="mura-colorpicker-swatch" style="background-color:#HTMLEditFormat(renderValue)#"></i></span>
-								<input type="text" id="#key#" name="#key#" placeholder="Select Color" autocomplete="off"  value="#HTMLEditFormat(renderValue)#" data-label="#XMLFormat(getlabel())#" data-required="#getRequired()#"<cfif len(getMessage())> data-message="#XMLFormat(getMessage())#"</cfif>>
+								<span class="input-group-addon"><i class="mura-colorpicker-swatch" style="background-color:#encodeForCSS(renderValue)#"></i></span>
+								<input type="text" id="#key#" name="#key#" placeholder="Select Color" autocomplete="off"  value="#encodeForHTMLAttribute(renderValue)#" data-label="#XMLFormat(getlabel())#" data-required="#getRequired()#"<cfif len(getMessage())> data-message="#XMLFormat(getMessage())#"</cfif>>
 							</div>
 
 						<cfelse>
 
-							<input type="text" name="#key#" class="text<cfif getValidation() eq 'date'> datepicker</cfif>" id="#key#" data-label="#XMLFormat(getlabel())#" value="#HTMLEditFormat(renderValue)#" data-required="#getRequired()#"<cfif len(getvalidation())> data-validate="#getValidation()#"</cfif><cfif getvalidation() eq "Regex"> data-regex="#getRegex()#"</cfif><cfif len(getMessage())> data-message="#XMLFormat(getMessage())#"</cfif> />
+							<input type="text" name="#key#" class="text<cfif getValidation() eq 'date'> datepicker</cfif>" id="#key#" data-label="#XMLFormat(getlabel())#" value="#encodeForHTMLAttribute(renderValue)#" data-required="#getRequired()#"<cfif len(getvalidation())> data-validate="#getValidation()#"</cfif><cfif getvalidation() eq "Regex"> data-regex="#getRegex()#"</cfif><cfif len(getMessage())> data-message="#XMLFormat(getMessage())#"</cfif> />
 
-						</cfif>	
+						</cfif>
 
 						</cfoutput>
 				</cfsavecontent>
@@ -557,7 +557,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfcase>
 		<cfcase value="TextArea,HTMLEditor">
-			<cfsavecontent variable="str"><cfoutput><textarea name="#key#" id="#key#" data-label="#XMLFormat(getlabel())#" data-required="#getRequired()#"<cfif len(getMessage())> data-message="#XMLFormat(getMessage())#"</cfif><cfif getType() eq "HTMLEditor"> class="htmlEditor"</cfif><cfif len(getvalidation())> data-validate="#getValidation()#"</cfif><cfif getvalidation() eq "Regex"> data-regex="#getRegex()#"</cfif>>#HTMLEditFormat(renderValue)#</textarea></cfoutput></cfsavecontent>
+			<cfsavecontent variable="str"><cfoutput><textarea name="#key#" id="#key#" data-label="#XMLFormat(getlabel())#" data-required="#getRequired()#"<cfif len(getMessage())> data-message="#XMLFormat(getMessage())#"</cfif><cfif getType() eq "HTMLEditor"> class="htmlEditor"</cfif><cfif len(getvalidation())> data-validate="#getValidation()#"</cfif><cfif getvalidation() eq "Regex"> data-regex="#getRegex()#"</cfif>>#encodeForHtml(renderValue)#</textarea></cfoutput></cfsavecontent>
 		</cfcase>
 		<cfcase value="SelectBox,MultiSelectBox">
 			<cfset optionlist=variables.contentRenderer.setDynamicContent(getOptionList())/>

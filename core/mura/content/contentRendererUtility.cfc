@@ -48,7 +48,7 @@
 				<cfset icon=arguments.renderer.renderIcon(arguments.crumbdata[i])>
 				<cfset isFileIcon=arguments.crumbdata[i].type eq 'File' and listFirst(icon,"-") neq "mi">
 			</cfsilent>
-			<li class="#icon# #locked#<cfif isFileIcon> file</cfif>"<cfif isFileIcon> data-filetype="#left(icon,4)#"</cfif>> #HTMLEditformat(arguments.crumbdata[i].menutitle)#</li>
+			<li class="#icon# #locked#<cfif isFileIcon> file</cfif>"<cfif isFileIcon> data-filetype="#left(icon,4)#"</cfif>> #encodeForHtml(arguments.crumbdata[i].menutitle)#</li>
 		</cfloop>
 		<cfsilent>
 			<cfif locked eq "locked" or arguments.crumbdata[1].restricted eq 1>
@@ -57,7 +57,7 @@
 			<cfset icon=arguments.renderer.renderIcon(arguments.crumbdata[1])>
 			<cfset isFileIcon=arguments.crumbdata[1].type eq 'File' and listFirst(icon,"-") neq "mi">
 		</cfsilent>
-		<li class="#icon# #locked#<cfif isFileIcon> file</cfif>"<cfif isFileIcon> data-filetype="#left(icon,4)#"</cfif>> <strong>#HTMLEditformat(arguments.crumbdata[1].menutitle)#</strong></li>
+		<li class="#icon# #locked#<cfif isFileIcon> file</cfif>"<cfif isFileIcon> data-filetype="#left(icon,4)#"</cfif>> <strong>#encodeForHtml(arguments.crumbdata[1].menutitle)#</strong></li>
 		</ul></cfoutput></cfsavecontent>
 
 		<cfreturn content />
@@ -109,8 +109,8 @@
 					dataString=dataString & ' data-validate="#arguments.validation#"';
 				}
 
-				dataString=dataString & ' data-message="#HTMLEditFormat(arguments.message)#"';
-				dataString=dataString & ' data-label="#HTMLEditFormat(arguments.label)#"';
+				dataString=dataString & ' data-message="#encodeForHTMLAttribute(arguments.message)#"';
+				dataString=dataString & ' data-label="#encodeForHTMLAttribute(arguments.label)#"';
 
 				if(arguments.type == 'HTMLEditor' ){
 					inline='';
@@ -375,7 +375,7 @@
 		<cfsavecontent variable="str">
 			<cfoutput>
 			<ul class="editableObjectControl">
-				<li class="edit"><a href="#arguments.editLink#" data-configurator="#arguments.isConfigurator#" title="#htmlEditFormat('Edit')#" #arguments.renderer.generateEditableHook()#></a></li>
+				<li class="edit"><a href="#arguments.editLink#" data-configurator="#arguments.isConfigurator#" title="#encodeForHTMLAttribute('Edit')#" #arguments.renderer.generateEditableHook()#></a></li>
 			</ul>
 			</cfoutput>
 		</cfsavecontent>
@@ -522,9 +522,9 @@
 			</cfif>
 			<cfset returnString="<" & arguments.renderer.getContentListPropertyValue(labelEl,'tag',arguments.contentListPropertyMap) &  arguments.renderer.getContentListAttributes(labelEl,'',arguments.contentListPropertyMap) & ">">
 			<cfif structKeyExists(propStruct, "rbKey")>
-				<cfset returnString=returnString & htmlEditFormat(arguments.renderer.getMuraScope().rbKey(propStruct.rbkey))>
+				<cfset returnString=returnString & encodeForHtmlAttribute(arguments.renderer.getMuraScope().rbKey(propStruct.rbkey))>
 			<cfelseif structKeyExists(propStruct, "label")>
-				<cfset returnString=returnString & htmlEditFormat(propStruct.label)>
+				<cfset returnString=returnString & encodeForHtmlAttribute(propStruct.label)>
 			<cfelse>
 				<cfset returnString=returnString & arguments.property>
 			</cfif>
@@ -744,7 +744,7 @@
 				href="" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#arguments.crumbdata[I].siteid#','#arguments.crumbdata[I].contentid#','#arguments.crumbdata[I].moduleid#','','','#arguments.crumbdata[I].type#',1)});"
 			<cfelse>
 				href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cArch.list&siteid=#arguments.crumbdata[I].siteid#&topid=#arguments.crumbdata[I].contentid#&moduleid=#arguments.crumbdata[I].moduleid#&activeTab=0"
-			</cfif>><i class="#icon#"></i>#HTMLEditformat(arguments.crumbdata[I].menutitle)#</a></li>
+			</cfif>><i class="#icon#"></i>#encodeForHtml(arguments.crumbdata[I].menutitle)#</a></li>
 		</cfloop>
 		<cfsilent>
 			<cfif not structKeyExists(arguments.crumbdata[1],'moduleid')>
@@ -761,7 +761,7 @@
 			href="" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#arguments.crumbdata[1].siteid#','#arguments.crumbdata[1].contentid#','#arguments.crumbdata[1].moduleid#','','','#arguments.crumbdata[1].type#',1)});"
 		<cfelse>
 			href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cArch.list&siteid=#arguments.crumbdata[1].siteid#&topid=#arguments.crumbdata[1].contentid#&moduleid=#arguments.crumbdata[1].moduleid#&activeTab=0"
-		</cfif>><i class="#icon#"></i>#HTMLEditformat(arguments.crumbdata[1].menutitle)#</a></strong></li>
+		</cfif>><i class="#icon#"></i>#encodeForHtml(arguments.crumbdata[1].menutitle)#</a></strong></li>
 		</ul></cfoutput></cfsavecontent>
 
 		<cfreturn content />
@@ -1326,7 +1326,7 @@
 				<cfcase value="ad"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_ad.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator)></cfcase>
 				<cfcase value="comments"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_comments.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator)></cfcase>
 				<cfcase value="event_reminder_form"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_event_reminder_form.cfm",cachekey=cacheKeyContentId,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname,returnformat=arguments.returnformat)></cfcase>
-				<cfcase value="forward_email"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_forward_email.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname,returnformat=arguments.returnformat)></cfcase>				
+				<cfcase value="forward_email"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_forward_email.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname,returnformat=arguments.returnformat)></cfcase>
 				<cfcase value="feed">
 					<cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteID=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_feed.cfm",cacheKey=cacheKeyObjectId  & arguments.renderer.getListFormat() & "startrow#request.startrow#",params=arguments.params,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname,returnformat=arguments.returnformat)>
 				</cfcase>
@@ -1637,9 +1637,9 @@
 			<cfcase value="Link,File">
 				<cfif not request.muraExportHTML>
 					<cfif arguments.hashURLS>
-						<cfset href=HTMLEditFormat("#begin##arguments.renderer.getURLStem(arguments.siteid,'#arguments.filename##arguments.querystring#')#") />
+						<cfset href=encodeForURL("#begin##arguments.renderer.getURLStem(arguments.siteid,'#arguments.filename##arguments.querystring#')#") />
 					<cfelse>
-						<cfset href=HTMLEditFormat("#begin##arguments.renderer.getURLStem(arguments.siteid,'#arguments.filename#')##arguments.querystring#") />
+						<cfset href=encodeForURL("#begin##arguments.renderer.getURLStem(arguments.siteid,'#arguments.filename#')##arguments.querystring#") />
 					</cfif>
 				<cfelseif arguments.type eq "Link">
 					<cfset href=arguments.bean.getBody()>
@@ -1649,9 +1649,9 @@
 			</cfcase>
 			<cfdefaultcase>
 				<cfif arguments.hashURLS>
-					<cfset href=HTMLEditFormat("#begin##arguments.renderer.getURLStem(arguments.siteid,'#arguments.filename##arguments.querystring#')#") />
+					<cfset href=encodeForURL("#begin##arguments.renderer.getURLStem(arguments.siteid,'#arguments.filename##arguments.querystring#')#") />
 				<cfelse>
-					<cfset href=HTMLEditFormat("#begin##arguments.renderer.getURLStem(arguments.siteid,'#arguments.filename#')##arguments.querystring#") />
+					<cfset href=encodeForURL("#begin##arguments.renderer.getURLStem(arguments.siteid,'#arguments.filename#')##arguments.querystring#") />
 				</cfif>
 			</cfdefaultcase>
 		</cfswitch>
@@ -1765,9 +1765,9 @@
 
 		<cfset href=arguments.renderer.createHREF(type=arguments.type,filename=arguments.filename,siteid=arguments.siteid,contentid=arguments.contentid,target=arguments.target,targetparams=iif(arguments.filename eq event.getValue('contentBean').getfilename(),de(''),de(arguments.targetParams)),querystring=arguments.queryString,context=arguments.context,stub=arguments.stub,indexfile=arguments.indexFile,complete=arguments.complete,showmeta=arguments.showMeta,secure=arguments.secure)>
 		<cfif arguments.isBreadCrumb>
-			<cfset link='<a itemprop="item" href="#href#"#iif(len(arguments.target) and arguments.target neq '_self',de(' target="#arguments.target#"'),de(""))##iif(len(theClass),de(' class="#theClass#"'),de(""))##iif(len(arguments.id),de(' id="#arguments.id#"'),de(""))##iif(arguments.showCurrent,de(' #replace(arguments.aCurrentAttributes,"##","####","all")#'),de(""))##iif(arguments.isParent and len(arguments.aHasKidsAttributes),de(' #replace(arguments.aHasKidsAttributes,"##","####","all")#'),de(""))#><span itemprop="name">#HTMLEditFormat(arguments.title)#</span></a>' />
+			<cfset link='<a itemprop="item" href="#href#"#iif(len(arguments.target) and arguments.target neq '_self',de(' target="#arguments.target#"'),de(""))##iif(len(theClass),de(' class="#theClass#"'),de(""))##iif(len(arguments.id),de(' id="#arguments.id#"'),de(""))##iif(arguments.showCurrent,de(' #replace(arguments.aCurrentAttributes,"##","####","all")#'),de(""))##iif(arguments.isParent and len(arguments.aHasKidsAttributes),de(' #replace(arguments.aHasKidsAttributes,"##","####","all")#'),de(""))#><span itemprop="name">#encodeForHtml(arguments.title)#</span></a>' />
 		<cfelse>
-			<cfset link='<a href="#href#"#iif(len(arguments.target) and arguments.target neq '_self',de(' target="#arguments.target#"'),de(""))##iif(len(theClass),de(' class="#theClass#"'),de(""))##iif(len(arguments.id),de(' id="#arguments.id#"'),de(""))##iif(arguments.showCurrent,de(' #replace(arguments.aCurrentAttributes,"##","####","all")#'),de(""))##iif(arguments.isParent and len(arguments.aHasKidsAttributes),de(' #replace(arguments.aHasKidsAttributes,"##","####","all")#'),de(""))#>#HTMLEditFormat(arguments.title)#</a>' />
+			<cfset link='<a href="#href#"#iif(len(arguments.target) and arguments.target neq '_self',de(' target="#arguments.target#"'),de(""))##iif(len(theClass),de(' class="#theClass#"'),de(""))##iif(len(arguments.id),de(' id="#arguments.id#"'),de(""))##iif(arguments.showCurrent,de(' #replace(arguments.aCurrentAttributes,"##","####","all")#'),de(""))##iif(arguments.isParent and len(arguments.aHasKidsAttributes),de(' #replace(arguments.aHasKidsAttributes,"##","####","all")#'),de(""))#>#encodeForHtml(arguments.title)#</a>' />
 		</cfif>
 
 		<cfreturn link>

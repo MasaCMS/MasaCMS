@@ -202,7 +202,7 @@ This file is part of Mura CMS.
 						#variables.$.getContentListPropertyValue(arguments.field,"openingInnerMarkUp")#
 							#variables.$.getContentListLabel(arguments.field)#
 							<cfif arguments.type eq "Search" && this.searchShowNumbers eq 1><span class="record-index">#arguments.iterator.getRecordIndex()#.</span> </cfif>
-							<a href="#arguments.item.getURL()#"<cfif arguments.item.getTarget() eq '_blank'> target="_blank"</cfif>>#HTMLEditFormat(arguments.item.getMenuTitle())#</a>
+							<a href="#arguments.item.getURL()#"<cfif arguments.item.getTarget() eq '_blank'> target="_blank"</cfif>>#encodeForHtml(arguments.item.getMenuTitle())#</a>
 						#variables.$.getContentListPropertyValue(arguments.field,"closingInnerMarkUp")#
 						</#variables.$.getContentListPropertyValue(arguments.field,'tag')#>
 					</cfcase>
@@ -211,11 +211,11 @@ This file is part of Mura CMS.
 						<#variables.$.getContentListPropertyValue(arguments.field,'tag')# #variables.$.getContentListAttributes(arguments.field)#>
 						#variables.$.getContentListPropertyValue(arguments.field,"openingInnerMarkUp")#
 							<cfif variables.$.event('muraMobileTemplate')>
-							<img src="#arguments.item.getImageURL(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight)#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/>
+							<img src="#arguments.item.getImageURL(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight)#"  alt="#encodeForHTMLAttribute(arguments.item.getValue('title'))#"/>
 							<cfelseif arguments.modalimages>
-							<a href="#arguments.item.getImageURL(size='large')#" title="#HTMLEditFormat(arguments.item.getValue('title'))#" data-rel="shadowbox[gallery]" class="#this.contentListItemImageLinkClass#"><img src="#arguments.item.getImageURL(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight)#" alt="#HTMLEditFormat(arguments.item.getValue('title'))#"/></a>
+							<a href="#arguments.item.getImageURL(size='large')#" title="#encodeForHTMLAttribute(arguments.item.getValue('title'))#" data-rel="shadowbox[gallery]" class="#this.contentListItemImageLinkClass#"><img src="#arguments.item.getImageURL(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight)#" alt="#encodeForHTMLAttribute(arguments.item.getValue('title'))#"/></a>
 							<cfelse>
-							<a href="#arguments.item.getURL()#"<cfif arguments.item.getTarget() eq '_blank'> target="_blank"</cfif> title="#HTMLEditFormat(arguments.item.getValue('title'))#" class="#this.contentListItemImageLinkClass#"><img src="#arguments.item.getImageURL(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight)#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/></a>
+							<a href="#arguments.item.getURL()#"<cfif arguments.item.getTarget() eq '_blank'> target="_blank"</cfif> title="#encodeForHTMLAttribute(arguments.item.getValue('title'))#" class="#this.contentListItemImageLinkClass#"><img src="#arguments.item.getImageURL(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight)#"  alt="#encodeForHTMLAttribute(arguments.item.getValue('title'))#"/></a>
 							</cfif>
 						#variables.$.getContentListPropertyValue(arguments.field,"closingInnerMarkUp")#
 						</#variables.$.getContentListPropertyValue(arguments.field,'tag')#>
@@ -276,7 +276,7 @@ This file is part of Mura CMS.
 						 	<#variables.$.getContentListPropertyValue(arguments.field,'tag')# #variables.$.getContentListAttributes(arguments.field)#>
 						 	#variables.$.getContentListPropertyValue(arguments.field,"openingInnerMarkUp")#
 						 		#variables.$.getContentListLabel(arguments.field)#
-						 		#HTMLEditFormat(arguments.item.getValue('credits'))#
+						 		#encodeForHtml(arguments.item.getValue('credits'))#
 						 	#variables.$.getContentListPropertyValue(arguments.field,"closingInnerMarkUp")#
 						 	</#variables.$.getContentListPropertyValue(arguments.field,'tag')#>
 						</cfif>
@@ -311,7 +311,7 @@ This file is part of Mura CMS.
 								#variables.$.getContentListLabel(arguments.field)#
 								<cfloop from="1" to="#arguments.tagLen#" index="t">
 								<cfset arguments.tag=#trim(listgetAt(arguments.item.getValue('tags'),t))#>
-								<a href="#variables.$.createHREF(filename='#variables.$.event('currentFilenameAdjusted')#/tag/#urlEncodedFormat(arguments.tag)#')#">#HTMLEditFormat(arguments.tag)#</a><cfif arguments.tagLen gt t>, </cfif>
+								<a href="#variables.$.createHREF(filename='#variables.$.event('currentFilenameAdjusted')#/tag/#urlEncodedFormat(arguments.tag)#')#">#encodeForHtml(arguments.tag)#</a><cfif arguments.tagLen gt t>, </cfif>
 								</cfloop>
 							#variables.$.getContentListPropertyValue(arguments.field,"closingInnerMarkUp")#
 							</#variables.$.getContentListPropertyValue(arguments.field,'tag')#>
@@ -333,7 +333,7 @@ This file is part of Mura CMS.
 						 	<#variables.$.getContentListPropertyValue(arguments.field,'tag')# #variables.$.getContentListAttributes(arguments.field,'sys#uCase(left(arguments.field,1))##iif(len(arguments.field) gt 1,de('#right(arguments.field,len(arguments.field)-1)#'),de(''))#')#">
 						 	#variables.$.getContentListPropertyValue(arguments.field,"openingInnerMarkUp")#
 						 			#variables.$.getContentListLabel(arguments.field)#
-						 			#HTMLEditFormat(arguments.item.getValue(arguments.field))#
+						 			#encodeForHtml(arguments.item.getValue(arguments.field))#
 						 	#variables.$.getContentListPropertyValue(arguments.field,"closingInnerMarkUp")#
 						 	</#variables.$.getContentListPropertyValue(arguments.field,'tag')#>
 						</cfif>

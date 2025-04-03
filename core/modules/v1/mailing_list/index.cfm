@@ -129,11 +129,11 @@ This file is part of Mura CMS.
 			<!--- THE FORM --->
 			<form role="form" class="#this.mailingListFormClass#" name="frmMailingList" action="?nocache=1" method="post" onsubmit="return Mura.validateForm(this);" novalidate="novalidate" >
 				<fieldset>
-					<legend>#HTMLEditFormat(variables.rslist.name)#</legend>
+					<legend>#encodeForHtml(variables.rslist.name)#</legend>
 
 					<!--- Form Description --->
 					<cfif #variables.rslist.description# neq ''>
-						<div class="description">#HTMLEditFormat(variables.rslist.description)#</div>
+						<div class="description">#encodeForHtml(variables.rslist.description)#</div>
 					</cfif>
 
 					<cfif variables.rslist.isPurge neq 1>
@@ -145,7 +145,7 @@ This file is part of Mura CMS.
 								<ins>(#variables.$.rbKey('mailinglist.required')#)</ins>
 							</label>
 							<div class="#this.mailingListFormFieldWrapperClass#">
-								<input type="text" id="txtNameFirst" class="#this.mailingListFormInputClass#" name="fname" maxlength="50" data-required="true" data-message="#HTMLEditFormat(variables.$.rbKey('mailinglist.fnamerequired'))#"/>
+								<input type="text" id="txtNameFirst" class="#this.mailingListFormInputClass#" name="fname" maxlength="50" data-required="true" data-message="#encodeForHTMLAttribute(variables.$.rbKey('mailinglist.fnamerequired'))#"/>
 							</div>
 						</div>
 
@@ -156,7 +156,7 @@ This file is part of Mura CMS.
 								<ins>(#variables.$.rbKey('mailinglist.required')#)</ins>
 							</label>
 							<div class="#this.mailingListFormFieldWrapperClass#">
-								<input type="text" id="txtNameLast" class="#this.mailingListFormInputClass#" name="lname" maxlength="50" data-required="true" data-message="#HTMLEditFormat(variables.$.rbKey('mailinglist.lnamerequired'))#"/>
+								<input type="text" id="txtNameLast" class="#this.mailingListFormInputClass#" name="lname" maxlength="50" data-required="true" data-message="#encodeForHTMLAttribute(variables.$.rbKey('mailinglist.lnamerequired'))#"/>
 							</div>
 						</div>
 
@@ -178,7 +178,7 @@ This file is part of Mura CMS.
 							<ins>(#variables.$.rbKey('mailinglist.required')#)</ins>
 						</label>
 						<div class="#this.mailingListFormFieldWrapperClass#">
-							<input type="text" id="txtEmail" class="#this.mailingListFormInputClass#" name="email" maxlength="50" data-required="true" data-validate="email" data-message="#HTMLEditFormat(variables.$.rbKey('mailinglist.emailvalidate'))#"/>
+							<input type="text" id="txtEmail" class="#this.mailingListFormInputClass#" name="email" maxlength="50" data-required="true" data-validate="email" data-message="#encodeForHTMLAttribute(variables.$.rbKey('mailinglist.emailvalidate'))#"/>
 						</div>
 					</div>
 				</fieldset>
@@ -194,7 +194,7 @@ This file is part of Mura CMS.
 						<!--- Subscribe --->
 						<div class="#this.mailingListFormGroupWrapperClass#">
 							<div class="#this.mailingListSubmitWrapperClass#">
-								<input type="submit" class="#this.mailingListSubmitClass#" value="#HTMLEditFormat(variables.$.rbKey('mailinglist.subscribe'))#" />
+								<input type="submit" class="#this.mailingListSubmitClass#" value="#encodeForHTMLAttribute(variables.$.rbKey('mailinglist.subscribe'))#" />
 							</div>
 						</div>
 					<cfelse>
@@ -203,7 +203,7 @@ This file is part of Mura CMS.
 						<!--- Unsubscribe --->
 						<div class="#this.mailingListFormGroupWrapperClass#">
 							<div class="#this.mailingListSubmitWrapperClass#">
-								<input type="submit" class="#this.mailingListSubmitClass#" value="#HTMLEditFormat(variables.$.rbKey('mailinglist.unsubscribe'))#" />
+								<input type="submit" class="#this.mailingListSubmitClass#" value="#encodeForHTMLAttribute(variables.$.rbKey('mailinglist.unsubscribe'))#" />
 							</div>
 						</div>
 					</cfif>

@@ -1,5 +1,5 @@
 <!---
-	Author       : Raymond Camden 
+	Author       : Raymond Camden
 	--->
 <cfset oGeo = createObject("component", "googlegeocode")>
 
@@ -19,21 +19,21 @@
 <cfoutput>
 <p>
 <form action="index.cfm" method="post">
-Enter an address: <input type="text" name="address" value="#HTMLEditFormat(form.address)#"> <input type="submit" value="Geocode!">
+Enter an address: <input type="text" name="address" value="#encodeForHTMLAttribute(form.address)#"> <input type="submit" value="Geocode!">
 </form>
 </p>
 </cfoutput>
 
 <cfif len(trim(form.address))>
-	<!--- Here I call the geoCode Google API to retrieve the Longitude and latitude of an address 
-		it returns floating point numbers that can be inserted into the address table like the one I have 
+	<!--- Here I call the geoCode Google API to retrieve the Longitude and latitude of an address
+		it returns floating point numbers that can be inserted into the address table like the one I have
 		attached --->
 	<cfset result = oGeo.geocode(key,trim(form.address))>
-	
+
 	<cfdump var="#result#" label="Geocode Information">
 
 	<cfif structKeyExists(result, "latitude") and structKeyExists(result, "longitude")>
-	<cfoutput>	
+	<cfoutput>
 	<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=#key#" type="text/javascript"></script>
     <script type="text/javascript">
     //<![CDATA[
@@ -50,8 +50,8 @@ Enter an address: <input type="text" name="address" value="#HTMLEditFormat(form.
     }
     //]]>
     </script>
-    
-    <div id="map" style="width: 500px; height: 300px"></div>	
+
+    <div id="map" style="width: 500px; height: 300px"></div>
 	</cfoutput>
 	</cfif>
 </cfif>

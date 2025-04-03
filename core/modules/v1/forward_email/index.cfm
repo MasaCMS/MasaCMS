@@ -99,11 +99,11 @@ This file is part of Mura CMS.
    <fieldset>
    <legend>#variables.$.rbKey('email.uptofive')#<legend>
    <ul>
-   <li><input name="to1" data-message="#htmlEditFormat(variables.$.rbKey('email.emailrequired'))#" data-validate="email" data-required="true"></li>
-   <li><input name="to2" data-message="#htmlEditFormat(variables.$.rbKey('email.emailvalidate'))#" data-validate="email" data-required="no"></li>
-   <li><input name="to3" data-message="#htmlEditFormat(variables.$.rbKey('email.emailvalidate'))#" data-validate="email" data-required="no"></li>
-   <li><input name="to4" data-message="#htmlEditFormat(variables.$.rbKey('email.emailvalidate'))#" data-validate="email" data-required="no"></li>
-   <li><input name="to5" data-message="#htmlEditFormat(variables.$.rbKey('email.emailvalidate'))#" data-validate="email" data-required="no"></li>
+   <li><input name="to1" data-message="#encodeForHTMLAttribute(variables.$.rbKey('email.emailrequired'))#" data-validate="email" data-required="true"></li>
+   <li><input name="to2" data-message="#encodeForHTMLAttribute(variables.$.rbKey('email.emailvalidate'))#" data-validate="email" data-required="no"></li>
+   <li><input name="to3" data-message="#encodeForHTMLAttribute(variables.$.rbKey('email.emailvalidate'))#" data-validate="email" data-required="no"></li>
+   <li><input name="to4" data-message="#encodeForHTMLAttribute(variables.$.rbKey('email.emailvalidate'))#" data-validate="email" data-required="no"></li>
+   <li><input name="to5" data-message="#encodeForHTMLAttribute(variables.$.rbKey('email.emailvalidate'))#" data-validate="email" data-required="no"></li>
    </ul>
 
    <div>
@@ -111,11 +111,11 @@ This file is part of Mura CMS.
    </div>
 
    <input name="doaction" value="forwardEmail" type="hidden"/>
-   <input name="emailid" value="#HTMLEditFormat(variables.$.event('emailID'))#" type="hidden"/>
-   <input name="from" value="#HTMLEditFormat(variables.$.event('from'))#" type="hidden"/>
-   <input name="origin" value="#HTMLEditFormat(variables.$.event('origin'))#" type="hidden"/>
+   <input name="emailid" value="#encodeForHTMLAttribute(variables.$.event('emailID'))#" type="hidden"/>
+   <input name="from" value="#encodeForHTMLAttribute(variables.$.event('from'))#" type="hidden"/>
+   <input name="origin" value="#encodeForHTMLAttribute(variables.$.event('origin'))#" type="hidden"/>
    <fieldset>
-   <input class="submit" type="submit" value="#HTMLEditFormat(variables.$.rbKey('email.submit'))#"/>
+   <input class="submit" type="submit" value="#encodeForHTMLAttribute(variables.$.rbKey('email.submit'))#"/>
    </form>
    </cfif>
 </div>

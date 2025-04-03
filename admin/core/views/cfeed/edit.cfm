@@ -308,7 +308,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									<option value="#$.event('siteid')#" <cfif listFind(rc.feedBean.getContentPoolID(), $.event('siteid'))>selected</cfif>>This site</option>
 									<cfloop list="#$.siteConfig('contentPoolID')#" index="p">
 											<cfif p neq rc.feedBean.getSiteID()>
-												<option value="#esapiEncode('html_attr',p)#" <cfif listFind(rc.feedBean.getContentPoolID(), p)>selected</cfif>>#HTMLEditFormat($.getBean('settingsManager').getSite(p).getSite())#</option>
+												<option value="#esapiEncode('html_attr',p)#" <cfif listFind(rc.feedBean.getContentPoolID(), p)>selected</cfif>>#encodeForHtml($.getBean('settingsManager').getSite(p).getSite())#</option>
 										</cfif>
 									</cfloop>
 									</select>

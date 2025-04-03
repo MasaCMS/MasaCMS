@@ -103,7 +103,7 @@ This file is part of Mura CMS.
 		</cfsilent>
 		<cfoutput>
 			<#variables.$.getHeaderTag('subHead2')#>
-				#HTMLEditFormat(variables.formBean.getValue('title'))# #variables.$.rbKey('form.dataresponses.responses')#
+				#encodeForHtml(variables.formBean.getValue('title'))# #variables.$.rbKey('form.dataresponses.responses')#
 			</#variables.$.getHeaderTag('subHead2')#>
 		</cfoutput>
 		<table class="<cfoutput>#this.dataResponseTableClass#</cfoutput>">
@@ -117,9 +117,9 @@ This file is part of Mura CMS.
 				</tr>
 			</thead>
 			<tbody>
-				<cfoutput 
-					query="variables.rsdata" 
-					startrow="#request.startRow#" 
+				<cfoutput
+					query="variables.rsdata"
+					startrow="#request.startRow#"
 					maxrows="#variables.nextN.RecordsPerPage#">
 					<tr>
 						<cfsilent>
@@ -139,9 +139,9 @@ This file is part of Mura CMS.
 									<a  href="http://#application.settingsManager.getSite(session.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/index.cfm/_api/render/file//index.cfm?fileID=#variables.fvalue#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.viewattachment')#</a>
 								<cfelse>
 									<a href="./?dataResponseView=detail&amp;responseid=#variables.rsdata.responseid#">
-										#HTMLEditFormat(variables.fvalue)#
+										#encodeForHtml(variables.fvalue)#
 									</a>
-								</cfif>	
+								</cfif>
 							</td>
 						</cfloop>
 					</tr>

@@ -71,10 +71,10 @@
 						encodedString = arguments.inputString;
 						break;
 					case 'html' :
-						encodedString = htmlEditFormat(arguments.inputString);
+						encodedString = encodeForHtml(arguments.inputString);
 						break;
 					case 'html_attr' :
-						encodedString = htmlEditFormat(arguments.inputString);
+						encodedString = encodeForHtmlAttribute(arguments.inputString);
 						break;
 					case 'javascript' :
 						encodedString = JSStringFormat(arguments.inputString);

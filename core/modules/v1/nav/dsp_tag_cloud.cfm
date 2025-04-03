@@ -136,9 +136,9 @@ This file is part of Mura CMS.
 							</cfif>
 						</span>
 						<cfif len(arguments.taggroup)>
-							<a href="#variables.$.createHREF(filename='#arguments.filename#/tag/#urlEncodedFormat(variables.tags.tag)#/_/taggroup/#urlEncodedFormat(arguments.taggroup)#')#" class="tag">#HTMLEditFormat(variables.tags.tag)#</a>
+							<a href="#variables.$.createHREF(filename='#arguments.filename#/tag/#urlEncodedFormat(variables.tags.tag)#/_/taggroup/#urlEncodedFormat(arguments.taggroup)#')#" class="tag">#encodeForHtml(variables.tags.tag)#</a>
 						<cfelse>
-							<a href="#variables.$.createHREF(filename='#arguments.filename#/tag/#urlEncodedFormat(variables.tags.tag)#')#" class="tag">#HTMLEditFormat(variables.tags.tag)#</a>
+							<a href="#variables.$.createHREF(filename='#arguments.filename#/tag/#urlEncodedFormat(variables.tags.tag)#')#" class="tag">#encodeForHtml(variables.tags.tag)#</a>
 						</cfif>
 					</li>
 				</cfloop>

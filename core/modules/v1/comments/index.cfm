@@ -1,35 +1,35 @@
 <!---
-	
-This file is part of Masa CMS. Masa CMS is based on Mura CMS, and adopts the  
-same licensing model. It is, therefore, licensed under the Gnu General Public License 
-version 2 only, (GPLv2) subject to the same special exception that appears in the licensing 
-notice set out below. That exception is also granted by the copyright holders of Masa CMS 
-also applies to this file and Masa CMS in general. 
 
-This file has been modified from the original version received from Mura CMS. The 
+This file is part of Masa CMS. Masa CMS is based on Mura CMS, and adopts the
+same licensing model. It is, therefore, licensed under the Gnu General Public License
+version 2 only, (GPLv2) subject to the same special exception that appears in the licensing
+notice set out below. That exception is also granted by the copyright holders of Masa CMS
+also applies to this file and Masa CMS in general.
+
+This file has been modified from the original version received from Mura CMS. The
 change was made on: 2021-07-27
-Although this file is based on Mura™ CMS, Masa CMS is not associated with the copyright 
-holders or developers of Mura™CMS, and the use of the terms Mura™ and Mura™CMS are retained 
-only to ensure software compatibility, and compliance with the terms of the GPLv2 and 
-the exception set out below. That use is not intended to suggest any commercial relationship 
-or endorsement of Mura™CMS by Masa CMS or its developers, copyright holders or sponsors or visa versa. 
+Although this file is based on Mura™ CMS, Masa CMS is not associated with the copyright
+holders or developers of Mura™CMS, and the use of the terms Mura™ and Mura™CMS are retained
+only to ensure software compatibility, and compliance with the terms of the GPLv2 and
+the exception set out below. That use is not intended to suggest any commercial relationship
+or endorsement of Mura™CMS by Masa CMS or its developers, copyright holders or sponsors or visa versa.
 
 If you want an original copy of Mura™ CMS please go to murasoftware.com .  
-For more information about the unaffiliated Masa CMS, please go to masacms.com  
+For more information about the unaffiliated Masa CMS, please go to masacms.com
 
-Masa CMS is free software: you can redistribute it and/or modify 
-it under the terms of the GNU General Public License as published by 
-the Free Software Foundation, Version 2 of the License. 
-Masa CMS is distributed in the hope that it will be useful, 
-but WITHOUT ANY WARRANTY; without even the implied warranty of 
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
-GNU General Public License for more details. 
+Masa CMS is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, Version 2 of the License.
+Masa CMS is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License 
-along with Masa CMS. If not, see <http://www.gnu.org/licenses/>. 
+You should have received a copy of the GNU General Public License
+along with Masa CMS. If not, see <http://www.gnu.org/licenses/>.
 
-The original complete licensing notice from the Mura CMS version of this file is as 
-follows: 
+The original complete licensing notice from the Mura CMS version of this file is as
+follows:
 
 This file is part of Mura CMS.
 
@@ -327,7 +327,7 @@ This file is part of Mura CMS.
 							<div class="req #this.commentFieldWrapperClass#">
 								<label class="#this.commentFieldLabelClass#" for="txtName">#variables.$.rbKey('comments.name')#<ins> (#variables.$.rbKey('comments.required')#)</ins></label>
 								<div class="#this.commentInputWrapperClass#">
-									<input id="txtName" name="name" type="text" class="#this.commentInputClass#" maxlength="50" data-required="true" data-message="#htmlEditFormat(variables.$.rbKey('comments.namerequired'))#" value="#HTMLEditFormat(request.name)#">
+									<input id="txtName" name="name" type="text" class="#this.commentInputClass#" maxlength="50" data-required="true" data-message="#encodeForHTMLAttribute(variables.$.rbKey('comments.namerequired'))#" value="#encodeForHTMLAttribute(request.name)#">
 								</div>
 							</div>
 
@@ -335,7 +335,7 @@ This file is part of Mura CMS.
 							<div class="req #this.commentFieldWrapperClass#">
 								<label class="#this.commentFieldLabelClass#" for="txtEmail">#variables.$.rbKey('comments.email')#<ins> (#variables.$.rbKey('comments.required')#)</ins></label>
 								<div class="#this.commentInputWrapperClass#">
-									<input id="txtEmail" name="email" type="text" class="#this.commentInputClass#" maxlength="50" data-required="true" data-message="#htmlEditFormat(variables.$.rbKey('comments.emailvalidate'))#" value="#HTMLEditFormat(request.email)#">
+									<input id="txtEmail" name="email" type="text" class="#this.commentInputClass#" maxlength="50" data-required="true" data-message="#encodeForHTMLAttribute(variables.$.rbKey('comments.emailvalidate'))#" value="#encodeForHTMLAttribute(request.email)#">
 								</div>
 							</div>
 
@@ -343,7 +343,7 @@ This file is part of Mura CMS.
 							<div class="#this.commentFieldWrapperClass#">
 								<label for="txtUrl" class="#this.commentFieldLabelClass#">#variables.$.rbKey('comments.url')#</label>
 								<div class="#this.commentInputWrapperClass#">
-									<input id="txtUrl" name="url" type="text" class="#this.commentInputClass#" maxlength="50" value="#HTMLEditFormat(request.url)#">
+									<input id="txtUrl" name="url" type="text" class="#this.commentInputClass#" maxlength="50" value="#encodeForHTMLAttribute(request.url)#">
 								</div>
 							</div>
 
@@ -351,7 +351,7 @@ This file is part of Mura CMS.
 							<div class="req #this.commentFieldWrapperClass#">
 								<label for="txtComment" class="#this.commentFieldLabelClass#">#variables.$.rbKey('comments.comment')#<ins> (#variables.$.rbKey('comments.required')#)</ins></label>
 								<div class="#this.commentInputWrapperClass#">
-									<textarea rows="5" id="txtComment" class="#this.commentInputClass#" name="comments" data-message="#htmlEditFormat(variables.$.rbKey('comments.commentrequired'))#" data-required="true">#HTMLEditFormat(request.comments)#</textarea>
+									<textarea rows="5" id="txtComment" class="#this.commentInputClass#" name="comments" data-message="#encodeForHTMLAttribute(variables.$.rbKey('comments.commentrequired'))#" data-required="true">#encodeForHtml(request.comments)#</textarea>
 								</div>
 							</div>
 
@@ -396,7 +396,7 @@ This file is part of Mura CMS.
 							<input type="hidden" name="parentid" value="">
 							<input type="hidden" name="commenteditmode" value="add">
 							<input type="hidden" name="linkServID" value="#variables.$.content('contentID')#">
-							<button type="submit" class="#this.commentSubmitButtonClass#">#htmlEditFormat(variables.$.rbKey('comments.submit'))#</button>
+							<button type="submit" class="#this.commentSubmitButtonClass#">#encodeForHtml(variables.$.rbKey('comments.submit'))#</button>
 						</div>
 					</div>
 				</form>

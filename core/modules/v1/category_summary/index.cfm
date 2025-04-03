@@ -99,7 +99,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset viewAllURL="#$.siteConfig('context')##getURLStem($.event('siteID'),section.getFilename())#">
 	<cfif len($.event('relatedID'))>
-		<cfset viewAllURL=viewAllURL & "?relatedID=#HTMLEditFormat($.event('relatedID'))#">
+		<cfset viewAllURL=viewAllURL & "?relatedID=#encodeForURL($.event('relatedID'))#">
 	</cfif>
 </cfsilent>
 	<cfif rs.recordcount>
@@ -112,12 +112,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif len(rs.filename)>
 			<cfset categoryURL="#$.siteConfig('context')##getURLStem($.event('siteID'),section.getFilename() & '/category/' & rs.filename)#">
 			<cfif len($.event('relatedID'))>
-				<cfset categoryURL=categoryURL & "?relatedID=#HTMLEditFormat($.event('relatedID'))#">
+				<cfset categoryURL=categoryURL & "?relatedID=#encodeForURL($.event('relatedID'))#">
 			</cfif>
 		<cfelse>
 			<cfset categoryURL="#$.siteConfig('context')##getURLStem($.event('siteID'),section.getFilename())#?categoryID=#rs.categoryID#">
 			<cfif len($.event('relatedID'))>
-				<cfset categoryURL=categoryURL & "&relatedID=#HTMLEditFormat($.event('relatedID'))#">
+				<cfset categoryURL=categoryURL & "&relatedID=#encodeForURL($.event('relatedID'))#">
 			</cfif>
 		</cfif>
 		</cfsilent>

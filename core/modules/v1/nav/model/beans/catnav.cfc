@@ -46,13 +46,13 @@
 				<cfset cat = categorynav[ct].cat />
 				<cfif it.hasNext()>
 				<li class="nav-item nav-section <cfif arguments.depth gt 0>ml-5 bl-1</cfif><cfif ct eq 1> first</cfif>">
-					#HTMLEditFormat(cat.getName())#
+					#encodeForHtml(cat.getName())#
 					<ul class="nav flex-column">
 					<cfloop condition="#it.hasNext()#">
 						<cfset item = it.next() />
 						<li <cfif (it.getCurrentIndex() EQ 1)> class="nav-item first"<cfelseif (it.getCurrentIndex() EQ it.getRecordCount())> class="nav-item last"</cfif>>
 							<a href="#item.getURL()#">
-								#HTMLEditFormat(item.getMenuTitle())#
+								#encodeForHtml(item.getMenuTitle())#
 							</a>
 						</li>
 					</cfloop>

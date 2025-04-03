@@ -85,7 +85,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<fieldset>
 	<ol>
 	<li class="req control-group"><label class="control-label" for="email">#variables.$.rbKey('event.email')#*</label>
-	<input id="email" name="email" data-required="true" data-validate="email" data-message="#htmlEditFormat(variables.$.rbKey('event.emailvalidate'))#"></li>
+	<input id="email" name="email" data-required="true" data-validate="email" data-message="#encodeForHTMLAttribute(variables.$.rbKey('event.emailvalidate'))#"></li>
 	<li class="req control-group"><label class="control-label" for="interval">#variables.$.rbKey('event.sendmeareminder')#</label>
 	<select id="interval" name="interval">
 	<option value="0">0 #variables.$.rbKey('event.minutes')#</option>
@@ -109,7 +109,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</ol>
 	</fieldset>
 	<input name="doaction" value="setReminder" type="hidden"/>
-	<input class="btn" type="submit" value="#htmlEditFormat(variables.$.rbKey('event.submit'))#"/>
+	<input class="btn" type="submit" value="#encodeForHTMLAttribute(variables.$.rbKey('event.submit'))#"/>
 	</form>
 </div>
 </cfoutput>

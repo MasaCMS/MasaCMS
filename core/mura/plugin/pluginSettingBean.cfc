@@ -237,7 +237,7 @@ component extends="mura.bean.bean" output="false" hint="This provides plugin con
 			case  "Text":
 			case  "TextBox":
 				savecontent variable="str" {
-						writeOutput("<input type=""text"" name=""#key#"" id=""#key#"" label=""#XMLFormat(getlabel())#"" value=""#HTMLEditFormat(renderValue)#"" required=""#getRequired()#""");
+						writeOutput("<input type=""text"" name=""#key#"" id=""#key#"" label=""#XMLFormat(getlabel())#"" value=""#encodeForHTMLAttribute(renderValue)#"" required=""#getRequired()#""");
 						if ( len(getvalidation()) ) {
 
 							writeOutput("validate=""#getValidation()#""");
@@ -262,7 +262,7 @@ component extends="mura.bean.bean" output="false" hint="This provides plugin con
 							writeOutput("message=""#XMLFormat(getMessage())#""");
 						}
 
-						writeOutput(">#HTMLEditFormat(renderValue)#</textarea>");
+						writeOutput(">#encodeForHtml(renderValue)#</textarea>");
 				}
 				break;
 			case  "Select":

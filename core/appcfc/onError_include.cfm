@@ -92,13 +92,6 @@ if ( !request.muraTemplateMissing ) {
 			hasesapiencode=true;
 		} catch (Any e){
 			hasesapiencode=false;
-
-			try{
-				encodeForHTML('html');
-				hasencodeforhtml=true;
-			} catch (Any e){
-				hasencodeforhtml=false;
-			}
 		}
 
 	local.logData={stacktrace=arguments.exception.stacktrace};
@@ -187,12 +180,9 @@ if ( !request.muraTemplateMissing ) {
 		if ( hasesapiencode ) {
 
 			writeOutput("#esapiEncode('html',errorData.Message)#");
-		} else if ( hasencodeforhtml ) {
-
-			writeOutput("#encodeForHTML(errorData.Message)#");
 		} else {
 
-			writeOutput("#htmlEditFormat(errorData.Message)#");
+			writeOutput("#encodeForHtml(errorData.Message)#");
 		}
 
 		writeOutput("<br /></h2>");
@@ -205,12 +195,9 @@ if ( !request.muraTemplateMissing ) {
 		if ( hasesapiencode ) {
 
 			writeOutput("#esapiEncode('html',errorData.DataSource)#");
-		} else if ( hasencodeforhtml ) {
-
-			writeOutput("#encodeForHTML(errorData.DataSource)#");
 		} else {
 
-			writeOutput("#htmlEditFormat(errorData.DataSource)#");
+			writeOutput("#encodeForHtml(errorData.DataSource)#");
 		}
 
 		writeOutput("<br /></h3>");
@@ -223,12 +210,9 @@ if ( !request.muraTemplateMissing ) {
 		if ( hasesapiencode ) {
 
 			writeOutput("#esapiEncode('html',errorData.sql)#");
-		} else if ( hasencodeforhtml ) {
-
-			writeOutput("#encodeForHTML(errorData.sql)#");
 		} else {
 
-			writeOutput("#htmlEditFormat(errorData.sql)#");
+			writeOutput("#encodeForHTML(errorData.sql)#");
 		}
 
 		writeOutput("<br /></h4>");
@@ -241,12 +225,8 @@ if ( !request.muraTemplateMissing ) {
 		if ( hasesapiencode ) {
 
 			writeOutput("#esapiEncode('html',errorData.errorCode)#");
-		} else if ( hasencodeforhtml ) {
-
-			writeOutput("#encodeForHTML(errorData.errorCode)#");
 		} else {
-
-			writeOutput("#htmlEditFormat(errorData.errorCode)#");
+			writeOutput("#encodeForHTML(errorData.errorCode)#");
 		}
 
 		writeOutput("<br /></h3>");
@@ -259,12 +239,9 @@ if ( !request.muraTemplateMissing ) {
 		if ( hasesapiencode ) {
 
 			writeOutput("#esapiEncode('html',errorData.type)#");
-		} else if ( hasencodeforhtml ) {
-
-			writeOutput("#encodeForHTML(errorData.type)#");
 		} else {
 
-			writeOutput("#htmlEditFormat(errorData.type)#");
+			writeOutput("#encodeForHTML(errorData.type)#");
 		}
 
 		writeOutput("<br /></h3>");
@@ -276,12 +253,9 @@ if ( !request.muraTemplateMissing ) {
 		if ( hasesapiencode ) {
 
 			writeOutput("#esapiEncode('html',errorData.Detail)#");
-		} else if ( hasencodeforhtml ) {
-
-			writeOutput("#encodeForHTML(errorData.Detail)#");
 		} else {
 
-			writeOutput("#htmlEditFormat(errorData.Detail)#");
+			writeOutput("#encodeForHTML(errorData.Detail)#");
 		}
 
 		writeOutput("<br /></h3>");
@@ -293,12 +267,9 @@ if ( !request.muraTemplateMissing ) {
 		if ( hasesapiencode ) {
 
 			writeOutput("#esapiEncode('html',errorData.extendedInfo)#");
-		} else if ( hasencodeforhtml ) {
-
-			writeOutput("#encodeForHTML(errorData.extendedInfo)#");
 		} else {
 
-			writeOutput("#htmlEditFormat(errorData.extendedInfo)#");
+			writeOutput("#encodeForHTML(errorData.extendedInfo)#");
 		}
 
 		writeOutput("<br /></h3>");
@@ -310,12 +281,9 @@ if ( !request.muraTemplateMissing ) {
 		if ( hasesapiencode ) {
 
 			writeOutput("#esapiEncode('html',errorData.StackTrace)#");
-		} else if ( hasencodeforhtml ) {
-
-			writeOutput("#encodeForHTML(errorData.StackTrace)#");
 		} else {
 
-			writeOutput("#htmlEditFormat(errorData.StackTrace)#");
+			writeOutput("#encodeForHTML(errorData.StackTrace)#");
 		}
 
 		writeOutput("</pre><br />");
@@ -349,7 +317,7 @@ if ( !request.muraTemplateMissing ) {
 
 					writeOutput("Type: #esapiEncode('html',errorContexts.TYPE)#<br />");
 				}
-			} else if ( hasencodeforhtml ) {
+			} else {
 				if ( isDefined('errorContexts.COLUMN') ) {
 
 					writeOutput("Column: #encodeForHTML(errorContexts.COLUMN)#<br />");
@@ -373,31 +341,6 @@ if ( !request.muraTemplateMissing ) {
 				if ( isDefined('errorContexts.TYPE') ) {
 
 					writeOutput("Type: #encodeForHTML(errorContexts.TYPE)#<br />");
-				}
-			} else {
-				if ( isDefined('errorContexts.COLUMN') ) {
-
-					writeOutput("Column: #htmlEditFormat(errorContexts.COLUMN)#<br />");
-				}
-				if ( isDefined('errorContexts.ID') ) {
-
-					writeOutput("ID: #htmlEditFormat(errorContexts.ID)#<br />");
-				}
-				if ( isDefined('errorContexts.Line') ) {
-
-					writeOutput("Line: #htmlEditFormat(errorContexts.Line)#<br />");
-				}
-				if ( isDefined('errorContexts.RAW_TRACE') ) {
-
-					writeOutput("Raw Trace: #htmlEditFormat(errorContexts.RAW_TRACE)#<br />");
-				}
-				if ( isDefined('errorContexts.TEMPLATE') ) {
-
-					writeOutput("Template: #htmlEditFormat(errorContexts.TEMPLATE)#<br />");
-				}
-				if ( isDefined('errorContexts.TYPE') ) {
-
-					writeOutput("Type: #htmlEditFormat(errorContexts.TYPE)#<br />");
 				}
 			}
 

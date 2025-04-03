@@ -116,10 +116,10 @@ This file is part of Mura CMS.
 					<div class="req #this.editProfileFormGroupWrapperClass#">
 						<label class="#this.editProfileFieldLabelClass#" for="firstName">
 							#variables.$.rbKey('user.fname')#
-							<ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins>
+							<ins>(#encodeForHtml(variables.$.rbKey('user.required'))#)</ins>
 						</label>
 						<div class="#this.editProfileFormFieldsWrapperClass#">
-							<input class="#this.editProfileFormFieldsClass#" type="text" id="firstName" name="fname" value="#HTMLEditFormat(request.userBean.getfname())#" data-required="true" data-message="#htmlEditFormat(variables.$.rbKey('user.fnamerequired'))#" maxlength="50" placeholder="#variables.$.rbKey('user.fname')#">
+							<input class="#this.editProfileFormFieldsClass#" type="text" id="firstName" name="fname" value="#encodeForHTMLAttribute(request.userBean.getfname())#" data-required="true" data-message="#encodeForHTMLAttribute(variables.$.rbKey('user.fnamerequired'))#" maxlength="50" placeholder="#variables.$.rbKey('user.fname')#">
 						</div>
 					</div>
 
@@ -127,10 +127,10 @@ This file is part of Mura CMS.
 					<div class="req #this.editProfileFormGroupWrapperClass#">
 						<label class="#this.editProfileFieldLabelClass#" for="lastName">
 							#variables.$.rbKey('user.lname')#
-							<ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins>
+							<ins>(#encodeForHtml(variables.$.rbKey('user.required'))#)</ins>
 						</label>
 						<div class="#this.editProfileFormFieldsWrapperClass#">
-							<input class="#this.editProfileFormFieldsClass#" type="text" id="lastName" name="lname" value="#HTMLEditFormat(request.userBean.getlname())#" data-required="true" data-message="#htmlEditFormat(variables.$.rbKey('user.lnamerequired'))#" maxlength="50" placeholder="#variables.$.rbKey('user.lname')#">
+							<input class="#this.editProfileFormFieldsClass#" type="text" id="lastName" name="lname" value="#encodeForHTMLAttribute(request.userBean.getlname())#" data-required="true" data-message="#encodeForHTMLAttribute(variables.$.rbKey('user.lnamerequired'))#" maxlength="50" placeholder="#variables.$.rbKey('user.lname')#">
 						</div>
 					</div>
 
@@ -138,10 +138,10 @@ This file is part of Mura CMS.
 					<div class="req #this.editProfileFormGroupWrapperClass#">
 						<label class="#this.editProfileFieldLabelClass#" for="usernametxt">
 							#variables.$.rbKey('user.username')#
-							<ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins>
+							<ins>(#encodeForHtml(variables.$.rbKey('user.required'))#)</ins>
 						</label>
 						<div class="#this.editProfileFormFieldsWrapperClass#">
-							<input class="#this.editProfileFormFieldsClass#" type="text" id="usernametxt" name="username" value="#HTMLEditFormat(request.userBean.getUserName())#" data-required="true" data-message="#htmlEditFormat(variables.$.rbKey('user.usernamerequired'))#" maxlength="50" placeholder="#variables.$.rbKey('user.username')#">
+							<input class="#this.editProfileFormFieldsClass#" type="text" id="usernametxt" name="username" value="#encodeForHTMLAttribute(request.userBean.getUserName())#" data-required="true" data-message="#encodeForHTMLAttribute(variables.$.rbKey('user.usernamerequired'))#" maxlength="50" placeholder="#variables.$.rbKey('user.username')#">
 						</div>
 					</div>
 
@@ -149,7 +149,7 @@ This file is part of Mura CMS.
 					<div class="#this.editProfileFormGroupWrapperClass#">
 						<label class="#this.editProfileFieldLabelClass#" for="companytxt">#variables.$.rbKey('user.organization')#</label>
 						<div class="#this.editProfileFormFieldsWrapperClass#">
-							<input class="#this.editProfileFormFieldsClass#" type="text" id="companytxt" name="company" value="#HTMLEditFormat(request.userBean.getCompany())#" maxlength="50" placeholder="#variables.$.rbKey('user.organization')#">
+							<input class="#this.editProfileFormFieldsClass#" type="text" id="companytxt" name="company" value="#encodeForHTMLAttribute(request.userBean.getCompany())#" maxlength="50" placeholder="#variables.$.rbKey('user.organization')#">
 						</div>
 					</div>
 
@@ -157,10 +157,10 @@ This file is part of Mura CMS.
 					<div class="req #this.editProfileFormGroupWrapperClass#">
 						<label class="#this.editProfileFieldLabelClass#" for="emailtxt">
 							#variables.$.rbKey('user.email')#
-							<ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins>
+							<ins>(#encodeForHtml(variables.$.rbKey('user.required'))#)</ins>
 						</label>
 						<div class="#this.editProfileFormFieldsWrapperClass#">
-							<input class="#this.editProfileFormFieldsClass#" type="text" id="emailtxt" name="email" value="#HTMLEditFormat(request.userBean.getEmail())#" maxlength="50" data-required="true" placeholder="#variables.$.rbKey('user.email')#" data-message="#HTMLEditFormat(variables.$.rbKey('user.emailvalidate'))#">
+							<input class="#this.editProfileFormFieldsClass#" type="text" id="emailtxt" name="email" value="#encodeForHTMLAttribute(request.userBean.getEmail())#" maxlength="50" data-required="true" placeholder="#variables.$.rbKey('user.email')#" data-message="#encodeForHTMLAttribute(variables.$.rbKey('user.emailvalidate'))#">
 						</div>
 					</div>
 
@@ -169,10 +169,10 @@ This file is part of Mura CMS.
 						<div class="req #this.editProfileFormGroupWrapperClass#">
 							<label class="#this.editProfileFieldLabelClass#" for="email2xt">
 								#variables.$.rbKey('user.emailconfirm')#
-								<ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins>
+								<ins>(#encodeForHtml(variables.$.rbKey('user.required'))#)</ins>
 							</label>
 							<div class="#this.editProfileFormFieldsWrapperClass#">
-								<input class="#this.editProfileFormFieldsClass#" type="text" id="email2xt" name="email2" value="" maxlength="50" data-required="true" data-validate="match" matchfield="email" placeholder="#variables.$.rbKey('user.emailconfirm')#" data-message="#HTMLEditFormat(variables.$.rbKey('user.emailconfirmvalidate'))#" />
+								<input class="#this.editProfileFormFieldsClass#" type="text" id="email2xt" name="email2" value="" maxlength="50" data-required="true" data-validate="match" matchfield="email" placeholder="#variables.$.rbKey('user.emailconfirm')#" data-message="#encodeForHTMLAttribute(variables.$.rbKey('user.emailconfirmvalidate'))#" />
 							</div>
 						</div>
 					</cfif>
@@ -190,10 +190,10 @@ This file is part of Mura CMS.
 					<div class="req #this.editProfileFormGroupWrapperClass#">
 						<label class="#this.editProfileFieldLabelClass#" for="passwordtxt">
 							#variables.$.rbKey('user.password')#
-							<ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins>
+							<ins>(#encodeForHtml(variables.$.rbKey('user.required'))#)</ins>
 						</label>
 						<div class="#this.editProfileFormFieldsWrapperClass#">
-							<input class="#this.editProfileFormFieldsClass#" type="password" name="passwordNoCache" id="passwordtxt" data-validate="match" matchfield="password2" value=""  maxlength="50" <cfif not session.mura.isloggedin>data-required="true"</cfif> placeholder="#variables.$.rbKey('user.password')#" data-message="#HTMLEditFormat(variables.$.rbKey('user.passwordvalidate'))#" autocomplete="off"/>
+							<input class="#this.editProfileFormFieldsClass#" type="password" name="passwordNoCache" id="passwordtxt" data-validate="match" matchfield="password2" value=""  maxlength="50" <cfif not session.mura.isloggedin>data-required="true"</cfif> placeholder="#variables.$.rbKey('user.password')#" data-message="#encodeForHTMLAttribute(variables.$.rbKey('user.passwordvalidate'))#" autocomplete="off"/>
 						</div>
 					</div>
 
@@ -201,10 +201,10 @@ This file is part of Mura CMS.
 					<div class="req #this.editProfileFormGroupWrapperClass#">
 						<label class="#this.editProfileFieldLabelClass#" for="password2txt">
 							#variables.$.rbKey('user.passwordconfirm')#
-							<ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins>
+							<ins>(#encodeForHtml(variables.$.rbKey('user.required'))#)</ins>
 						</label>
 						<div class="#this.editProfileFormFieldsWrapperClass#">
-							<input class="#this.editProfileFormFieldsClass#" type="password" name="password2" id="password2txt" value=""  maxlength="50" <cfif not session.mura.isloggedin>data-required="true"</cfif> placeholder="#variables.$.rbKey('user.passwordconfirm')#" data-message="#HTMLEditFormat(variables.$.rbKey('user.passwordconfirmrequired'))#" autocomplete="off"/>
+							<input class="#this.editProfileFormFieldsClass#" type="password" name="password2" id="password2txt" value=""  maxlength="50" <cfif not session.mura.isloggedin>data-required="true"</cfif> placeholder="#variables.$.rbKey('user.passwordconfirm')#" data-message="#encodeForHTMLAttribute(variables.$.rbKey('user.passwordconfirmrequired'))#" autocomplete="off"/>
 						</div>
 					</div>
 
@@ -274,13 +274,13 @@ This file is part of Mura CMS.
 									<cfif not listFind("TextArea,MultiSelectBox",attributeBean.getType())>
 										<label class="#this.editProfileFieldLabelClass#" for="ext#attributeBean.getAttributeID()#">
 											#attributeBean.getLabel()#
-											<cfif attributeBean.getRequired()><ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins></cfif>
+											<cfif attributeBean.getRequired()><ins>(#encodeForHtml(variables.$.rbKey('user.required'))#)</ins></cfif>
 											<!--- <cfif len(attributeBean.gethint())><br />#attributeBean.gethint()#</cfif> --->
 										</label>
 									<cfelse>
 										<label class="#this.editProfileFieldLabelClass#" for="ext#attributeBean.getAttributeID()#">
 											#attributeBean.getLabel()#
-											<cfif attributeBean.getRequired()><ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins></cfif>
+											<cfif attributeBean.getRequired()><ins>(#encodeForHtml(variables.$.rbKey('user.required'))#)</ins></cfif>
 											<cfif len(attributeBean.gethint())><span class="#this.editProfileHelpBlockClass#">#attributeBean.gethint()#</span></cfif>
 										</label>
 									</cfif>
@@ -329,20 +329,20 @@ This file is part of Mura CMS.
 				<div class="#this.editProfileFormGroupWrapperClass#">
 					<div class="#this.editProfileSubmitButtonWrapperClass#">
 						<cfif session.mura.isLoggedIn>
-							<button type="submit" class="#this.editProfileSubmitButtonClass#">#htmlEditFormat(variables.$.rbKey('user.updateprofile'))#</button>
+							<button type="submit" class="#this.editProfileSubmitButtonClass#">#encodeForHtml(variables.$.rbKey('user.updateprofile'))#</button>
 							<input type="hidden" name="userid" value="#session.mura.userID#">
 							<input type="hidden" name="doaction" value="updateprofile">
 						<cfelse>
 							<input type="hidden" name="userid" value="">
 							<input type="hidden" name="isPublic" value="1">
 							<input type="hidden" name="inactive" value="0"> <!--- Set the value to "1" to require admin approval of new accounts --->
-							<button type="submit" class="#this.editProfileSubmitButtonClass#">#htmlEditFormat(variables.$.rbKey('user.createprofile'))#</button>
+							<button type="submit" class="#this.editProfileSubmitButtonClass#">#encodeForHtml(variables.$.rbKey('user.createprofile'))#</button>
 							<input type="hidden" name="doaction" value="createprofile">
 							<!--- <input type="hidden" name="groupID" value="[userid from Group Detail page url]"> Add users to a specific group --->
 						</cfif>
 
-						<input type="hidden" name="siteid" value="#HTMLEditFormat(variables.$.event('siteID'))#">
-						<input type="hidden" name="returnURL" value="#HTMLEditFormat(request.returnURL)#">
+						<input type="hidden" name="siteid" value="#encodeForHTMLAttribute(variables.$.event('siteID'))#">
+						<input type="hidden" name="returnURL" value="#encodeForHTMLAttribute(request.returnURL)#">
 						<input type="hidden" name="display" value="editprofile">
 						#variables.$.renderCSRFTokens(format='form',context='editprofile')#
 					</div>

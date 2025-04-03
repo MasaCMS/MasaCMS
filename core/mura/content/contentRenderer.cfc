@@ -1465,7 +1465,7 @@ Display Objects
 
 	<cfsavecontent variable="theNav">
 		<cfif getSite().getExtranet() eq 1 and sessionData.mura.isLoggedIn>
-			<cfoutput><ul id="#arguments.id#"><li><a href="#application.configBean.getIndexFile()#?doaction=logout&nocache=1">Log Out #HTMLEditFormat("#sessionData.mura.fname# #sessionData.mura.lname#")#</a></li><li><a href="#application.settingsManager.getSite(variables.event.getValue('siteID')).getEditProfileURL()#&returnURL=#returnURL#&nocache=1">Edit Profile</a></li></ul></cfoutput>
+			<cfoutput><ul id="#arguments.id#"><li><a href="#application.configBean.getIndexFile()#?doaction=logout&nocache=1">Log Out #encodeForHtml("#sessionData.mura.fname# #sessionData.mura.lname#")#</a></li><li><a href="#application.settingsManager.getSite(variables.event.getValue('siteID')).getEditProfileURL()#&returnURL=#returnURL#&nocache=1">Edit Profile</a></li></ul></cfoutput>
 		</cfif>
 	</cfsavecontent>
 
@@ -1867,7 +1867,7 @@ Display Objects
 								<cfset loadShadowBoxJS() />
 								<cfoutput>
 								<div id="svAssetDetail" class="mura-asset-detail image">
-								<a href="#variables.$.content().getImageURL(size='large')#" title="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" #this.shadowboxattribute#="shadowbox[body]" id="svAsset" class="mura-asset"><img src="#variables.$.content().getImageURL(argumentCollection=arguments.metaImageSizeArgs)#" class="imgMed #arguments.metaImageClass#" alt="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" /></a>
+								<a href="#variables.$.content().getImageURL(size='large')#" title="#encodeForHTMLAttribute(variables.event.getValue('contentBean').getMenuTitle())#" #this.shadowboxattribute#="shadowbox[body]" id="svAsset" class="mura-asset"><img src="#variables.$.content().getImageURL(argumentCollection=arguments.metaImageSizeArgs)#" class="imgMed #arguments.metaImageClass#" alt="#encodeForHTMLAttribute(variables.event.getValue('contentBean').getMenuTitle())#" /></a>
 								#renderEditableAttribute(attribute="summary",type="htmlEditor")#
 								</div>
 								</cfoutput>
@@ -1875,7 +1875,7 @@ Display Objects
 								<cfoutput>
 								<div id="svAssetDetail" class="mura-asset-detail file">
 								#renderEditableAttribute(attribute="summary",type="htmlEditor")#
-								<a href="#$.content().getURL('showMeta=2&ext=.#$.content().getFileExt()#')#" title="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" id="svAsset" class="mura-asset #lcase(variables.event.getValue('contentBean').getFileExt())#">Download File</a>
+								<a href="#$.content().getURL('showMeta=2&ext=.#$.content().getFileExt()#')#" title="#encodeForHTMLAttribute(variables.event.getValue('contentBean').getMenuTitle())#" id="svAsset" class="mura-asset #lcase(variables.event.getValue('contentBean').getFileExt())#">Download File</a>
 								</div>
 								</cfoutput>
 						</cfif>
@@ -1884,7 +1884,7 @@ Display Objects
 						<cfoutput>
 						<div id="svAssetDetail" class="mura-asset-detail link">
 							#renderEditableAttribute(attribute="summary",type="htmlEditor")#
-							<a href="#$.content().getURL('showMeta=2&ext=.#$.content().getFileExt()#')#" title="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" id="svAsset" class="mura-asset url">View Link</a>
+							<a href="#$.content().getURL('showMeta=2&ext=.#$.content().getFileExt()#')#" title="#encodeForHTMLAttribute(variables.event.getValue('contentBean').getMenuTitle())#" id="svAsset" class="mura-asset url">View Link</a>
 						</div>
 						</cfoutput>
 					</cfcase>
@@ -1897,17 +1897,17 @@ Display Objects
 									<cfoutput>
 										<cfif arguments.includeMetaHREF><cfset loadShadowBoxJS() /></cfif>
 										<div class="mura-asset">
-											<cfif arguments.includeMetaHREF><a href="#variables.$.content().getImageURL(size='large')#" title="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" #this.shadowboxattribute#="shadowbox[body]"></cfif><img src="#variables.$.content().getImageURL(argumentCollection=arguments.metaImageSizeArgs)#" class="imgMed #arguments.metaImageClass#" alt="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" /><cfif arguments.includeMetaHREF></a></cfif>
+											<cfif arguments.includeMetaHREF><a href="#variables.$.content().getImageURL(size='large')#" title="#encodeForHTMLAttribute(variables.event.getValue('contentBean').getMenuTitle())#" #this.shadowboxattribute#="shadowbox[body]"></cfif><img src="#variables.$.content().getImageURL(argumentCollection=arguments.metaImageSizeArgs)#" class="imgMed #arguments.metaImageClass#" alt="#encodeForHTMLAttribute(variables.event.getValue('contentBean').getMenuTitle())#" /><cfif arguments.includeMetaHREF></a></cfif>
 										</div>
 									</cfoutput>
 								<cfelse>
 									<cfoutput>
 									<cfif arguments.includeMetaHREF>
 										<cfset loadShadowBoxJS() />
-										<a href="#variables.$.content().getImageURL(size='large')#" title="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" #this.shadowboxattribute#="shadowbox[body]" id="svAsset" class="mura-asset"><img src="#variables.$.content().getImageURL(argumentCollection=arguments.metaImageSizeArgs)#" class="imgMed #arguments.metaImageClass#" alt="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" /></a>
+										<a href="#variables.$.content().getImageURL(size='large')#" title="#encodeForHTMLAttribute(variables.event.getValue('contentBean').getMenuTitle())#" #this.shadowboxattribute#="shadowbox[body]" id="svAsset" class="mura-asset"><img src="#variables.$.content().getImageURL(argumentCollection=arguments.metaImageSizeArgs)#" class="imgMed #arguments.metaImageClass#" alt="#encodeForHTMLAttribute(variables.event.getValue('contentBean').getMenuTitle())#" /></a>
 									<cfelse>
 										<div id="svAsset" class="mura-asset">
-										<img src="#variables.$.content().getImageURL(argumentCollection=arguments.metaImageSizeArgs)#" class="imgMed #arguments.metaImageClass#" alt="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" />
+										<img src="#variables.$.content().getImageURL(argumentCollection=arguments.metaImageSizeArgs)#" class="imgMed #arguments.metaImageClass#" alt="#encodeForHTMLAttribute(variables.event.getValue('contentBean').getMenuTitle())#" />
 										</div>
 									</cfif>
 									</cfoutput>
@@ -2163,7 +2163,7 @@ Display Objects
 
 				<cfset started=true>
 				<ul<cfif arguments.currDepth eq 1>#iif(arguments.id neq '',de(' id="#arguments.id#"'),de(''))##iif(arguments.menuClass neq '',de(' class="#arguments.menuClass#"'),de(''))#<cfelse><cfif len(arguments.ulNestedClass)> class="#arguments.ulNestedClass#"</cfif><cfif len(arguments.ulNestedAttributes)> #arguments.ulNestedAttributes#</cfif></cfif>>
-				<li class="first<cfif variables.event.getValue('contentBean').getcontentid() eq arguments.contentid> #arguments.liCurrentClass#</cfif><cfif len(arguments.liClass)> #arguments.liClass#</cfif>"<cfif arguments.setLIIds> id="navHome"</cfif><cfif len(arguments.liCurrentAttributes)> #arguments.liCurrentAttributes#</cfif>><a href="#homeLink#"<cfif len(arguments.aCurrentClass) and $.content('contentID') eq '00000000000000000000000000000000001'> class="#arguments.aCurrentClass#"<cfelseif len(arguments.aNotCurrentClass)> class="#arguments.aNotCurrentClass#"</cfif><cfif len(arguments.aCurrentAttributes)> #arguments.aCurrentAttributes#</cfif>>#HTMLEditFormat(rsHome.menuTitle)#</a></li>
+				<li class="first<cfif variables.event.getValue('contentBean').getcontentid() eq arguments.contentid> #arguments.liCurrentClass#</cfif><cfif len(arguments.liClass)> #arguments.liClass#</cfif>"<cfif arguments.setLIIds> id="navHome"</cfif><cfif len(arguments.liCurrentAttributes)> #arguments.liCurrentAttributes#</cfif>><a href="#homeLink#"<cfif len(arguments.aCurrentClass) and $.content('contentID') eq '00000000000000000000000000000000001'> class="#arguments.aCurrentClass#"<cfelseif len(arguments.aNotCurrentClass)> class="#arguments.aNotCurrentClass#"</cfif><cfif len(arguments.aCurrentAttributes)> #arguments.aCurrentAttributes#</cfif>>#encodeForHtml(rsHome.menuTitle)#</a></li>
 			</cfif>
 
 			<cfloop query="rsSection">

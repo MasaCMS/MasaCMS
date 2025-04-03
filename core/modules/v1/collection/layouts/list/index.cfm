@@ -99,7 +99,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 )#
 
 <cfif len(arguments.objectParams.viewalllink)>
-	<a class="view-all" href="#arguments.objectParams.viewalllink#">#HTMLEditFormat(arguments.objectParams.viewalllabel)#</a>
+	<a class="view-all" href="#arguments.objectParams.viewalllink#">#encodeForHtml(arguments.objectParams.viewalllabel)#</a>
 </cfif>
 <div style="clear:both"></div>
 </cfoutput>
