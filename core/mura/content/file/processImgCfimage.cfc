@@ -233,18 +233,6 @@ This file is part of Mura CMS.
 
 				<cfset resizeImage(height=arguments.height,width=arguments.width,image=NewImageSource)>
 
-				<cfif listFirst(expandPath(NewImageSource),':') eq 's3' and len(arguments.siteID) and getBean('settingsManager').getSite(arguments.siteid).getContentRenderer().directImages>
-					<cftry>
-					<cfset storeSetACL(expandPath(NewImageSource),[{group="all", permission="read"}])>
-					<!--- Create deprecation warning when setting ACL on AWS bucket --->
-					<cfset var pluginManager=getBean('pluginManager')>
-					<cfset var current$ = getBean('$').init()>
-					<cfset current$.event().setValue("deprecationType","StoreSetACL")>
-					<cfset pluginManager.announceEvent(eventToAnnounce='LogDeprecation',currentEventObject=current$)>
-					<cfcatch></cfcatch>
-					</cftry>
-				</cfif>
-
 				<cfif not doesImageFileExist(NewImageSource,arguments.attempt)>
 					<cfset variables.fileWriter.copyFile(source=OriginalImageFile,destination=NewImageSource,mode="744")>
 				</cfif>
