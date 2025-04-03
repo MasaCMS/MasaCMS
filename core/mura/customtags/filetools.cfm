@@ -28,7 +28,7 @@
 		)>
 	     <div class="mura-file #lcase(attributes.bean.getFileExt())#">
 	     	<!--- <p class="current-file">Current File</p><br> --->
-		 	<i class="<cfif fileMetaData.hasImageFileExt()>mi-picture<cfelse>mi-file-text-o</cfif> mi-2x"></i> #HTMLEditFormat(fileMetaData.getFilename())#<cfif attributes.property eq 'fileid' and attributes.bean.getMajorVersion()> (v#attributes.bean.getMajorVersion()#.#attributes.bean.getMinorVersion()#)</cfif>
+		 	<i class="<cfif fileMetaData.hasImageFileExt()>mi-picture<cfelse>mi-file-text-o</cfif> mi-2x"></i> #encodeForHtml(fileMetaData.getFilename())#<cfif attributes.property eq 'fileid' and attributes.bean.getMajorVersion()> (v#attributes.bean.getMajorVersion()#.#attributes.bean.getMinorVersion()#)</cfif>
 	     </div>
 
 	</cfif>

@@ -217,9 +217,9 @@ This file is part of Mura CMS.
 								</cfif>
 
 								<cfif len(local.commenterURL)>
-									<a href="#local.commenterURL#" target="_blank">#htmleditformat(local.commenterName)#</a>
+									<a href="#local.commenterURL#" target="_blank">#encodeForHtml(local.commenterName)#</a>
 								<cfelse>
-									#htmleditformat(local.commenterName)#
+									#encodeForHtml(local.commenterName)#
 								</cfif>
 								<cfif len(comment.getParentID())>
 									<em>(#$.rbKey('comments.inreplyto')#: <a href="##" class="mura-in-reply-to" data-parentid="#comment.getParentID()#">#comment.getParent().getName()#</a>)</em>
@@ -227,7 +227,7 @@ This file is part of Mura CMS.
 								<cfif isEditor>
 								<div class="mura-comment-admin-button-wrapper #renderer.commentAdminButtonWrapperClass#">
 									<cfif isEditor and len(local.commenterEmail)>
-										<a class="mura-comment-user-email #renderer.commentUserEmailClass#" href="javascript:Mura.noSpam('#listFirst(htmlEditFormat(local.commenterEmail),'@')#','#listlast(HTMLEditFormat(local.commenterEmail),'@')#')" onfocus="this.blur();">#$.rbKey('comments.email')#</a>
+										<a class="mura-comment-user-email #renderer.commentUserEmailClass#" href="javascript:Mura.noSpam('#listFirst(encodeForJavaScript(local.commenterEmail),'@')#','#listlast(encodeForJavaScript(local.commenterEmail),'@')#')" onfocus="this.blur();">#$.rbKey('comments.email')#</a>
 									</cfif>
 									<cfif isEditor>
 										<cfif yesnoformat(application.configBean.getValue("editablecomments"))>
@@ -249,7 +249,7 @@ This file is part of Mura CMS.
 								<dd class="mura-comment-thumb #renderer.commentThumbClass#"><img src="#gravatarURL#/avatar/#lcase(Hash(lcase(local.commenterEmail)))#" /></dd>
 							</cfif>
 							<dd class="mura-comment #renderer.commentClass#">
-								#$.setParagraphs(htmleditformat(comment.getComments()))#
+								#$.setParagraphs(encodeForHtml(comment.getComments()))#
 							</dd>
 							<dd class="mura-comment-date-time #renderer.commentDateTimeClass#">
 								#LSDateFormat(comment.getEntered(),"long")#, #LSTimeFormat(comment.getEntered(),"short")#
@@ -266,7 +266,7 @@ This file is part of Mura CMS.
 
 				<!--- MOAR --->
 				<cfif it.getPageIndex() lt it.pageCount()>
-					<div class="mura-comment-more-comments-container #renderer.commentMoreCommentsContainer#"><a id="mura-more-comments" class="#renderer.commentMoreCommentsDownClass#" href="##" data-pageno="#it.getPageIndex()+1#" data-siteid="#HTMLEditFormat($.event('siteID'))#">#$.rbKey('comments.morecomments')#</a></div>
+					<div class="mura-comment-more-comments-container #renderer.commentMoreCommentsContainer#"><a id="mura-more-comments" class="#renderer.commentMoreCommentsDownClass#" href="##" data-pageno="#it.getPageIndex()+1#" data-siteid="#encodeForHTMLAttribute($.event('siteID'))#">#$.rbKey('comments.morecomments')#</a></div>
 				</cfif>
 
 			</cfoutput>

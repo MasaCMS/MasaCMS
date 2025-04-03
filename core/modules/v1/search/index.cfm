@@ -145,17 +145,17 @@ This file is part of Mura CMS.
 				<cfset variables.args=arrayNew(1)>
 				<cfset variables.args[1]=session.rsSearch.recordcount>
 				<cfif len(request.tag)>
-					<cfset variables.args[2]=htmlEditFormat(request.tag)>
+					<cfset variables.args[2]=encodeForHtml(request.tag)>
 					<cfif len(request.searchSectionID)>
-						<cfset variables.args[3]=htmlEditFormat(variables.sectionBean.getTitle())>
+						<cfset variables.args[3]=encodeForHtml(variables.sectionBean.getTitle())>
 						<p>#variables.$.siteConfig("rbFactory").getResourceBundle().messageFormat(variables.$.rbKey('search.searchtagsection'),variables.args)#</p>
 					<cfelse>
 						<p>#variables.$.siteConfig("rbFactory").getResourceBundle().messageFormat(variables.$.rbKey('search.searchtag'),variables.args)#</p>
 					</cfif>
 				<cfelse>
-					<cfset variables.args[2]=htmlEditFormat(request.keywords)>
+					<cfset variables.args[2]=encodeForHtml(request.keywords)>
 					<cfif len(request.searchSectionID)>
-						<cfset variables.args[3]=htmlEditFormat(variables.sectionBean.getTitle())>
+						<cfset variables.args[3]=encodeForHtml(variables.sectionBean.getTitle())>
 				 		<p>#variables.$.siteConfig("rbFactory").getResourceBundle().messageFormat(variables.$.rbKey('search.searchkeywordsection'),variables.args)#</p>
 					<cfelse>
 						<p>#variables.$.siteConfig("rbFactory").getResourceBundle().messageFormat(variables.$.rbKey('search.searchkeyword'),variables.args)#</p>
@@ -176,12 +176,12 @@ This file is part of Mura CMS.
 						<ul class="pager">
 						<cfif variables.previous gte 1>
 							<li class="navPrev">
-								<a href="?startrow=#variables.previous#&amp;display=search&amp;keywords=#HTMLEditFormat(request.keywords)#&amp;searchSectionID=#HTMLEditFormat(request.searchSectionID)#&amp;tag=#HTMLEditFormat(request.tag)#">#variables.$.rbKey('search.prev')#</a>
+								<a href="?startrow=#variables.previous#&amp;display=search&amp;keywords=#encodeForURL(request.keywords)#&amp;searchSectionID=#encodeForURL(request.searchSectionID)#&amp;tag=#encodeForURL(request.tag)#">#variables.$.rbKey('search.prev')#</a>
 							</li>
 						</cfif>
 						<cfif session.rsSearch.recordcount gt 0 and variables.through lt session.rsSearch.recordcount>
 							<li class="navNext">
-								<a href="?startrow=#next#&amp;display=search&amp;keywords=#HTMLEditFormat(request.keywords)#&amp;searchSectionID=#HTMLEditFormat(request.searchSectionID)#&amp;tag=#HTMLEditFormat(request.tag)#">#variables.$.rbKey('search.next')#</a>
+								<a href="?startrow=#next#&amp;display=search&amp;keywords=#encodeForURL(request.keywords)#&amp;searchSectionID=#encodeForURL(request.searchSectionID)#&amp;tag=#encodeForURL(request.tag)#">#variables.$.rbKey('search.next')#</a>
 							</li>
 						</cfif>
 						</ul>
@@ -210,12 +210,12 @@ This file is part of Mura CMS.
 						<ul class="#this.searchResultsPagerClass#">
 						<cfif variables.previous gte 1>
 							<li class="navPrev">
-								<a href="./?startrow=#variables.previous#&amp;display=search&amp;keywords=#HTMLEditFormat(request.keywords)#&amp;searchSectionID=#HTMLEditFormat(request.searchSectionID)#&amp;tag=#HTMLEditFormat(request.tag)#">#variables.$.rbKey('search.prev')#</a>
+								<a href="./?startrow=#variables.previous#&amp;display=search&amp;keywords=#encodeForURL(request.keywords)#&amp;searchSectionID=#encodeForURL(request.searchSectionID)#&amp;tag=#encodeForURL(request.tag)#">#variables.$.rbKey('search.prev')#</a>
 							</li>
 						</cfif>
 						<cfif session.rsSearch.recordcount gt 0 and  variables.through lt session.rsSearch.recordcount>
 							<li class="navNext">
-								<a href="./?startrow=#next#&amp;display=search&amp;keywords=#HTMLEditFormat(request.keywords)#&amp;searchSectionID=#HTMLEditFormat(request.searchSectionID)#&amp;tag=#HTMLEditFormat(request.tag)#">#variables.$.rbKey('search.next')#</a>
+								<a href="./?startrow=#next#&amp;display=search&amp;keywords=#encodeForURL(request.keywords)#&amp;searchSectionID=#encodeForURL(request.searchSectionID)#&amp;tag=#encodeForURL(request.tag)#">#variables.$.rbKey('search.next')#</a>
 							</li>
 						</cfif>
 						</ul>
@@ -242,7 +242,7 @@ This file is part of Mura CMS.
 					<input type="hidden" name="display" value="search">
 					<input type="hidden" name="newSearch" value="true">
 					<input type="hidden" name="noCache" value="1">
-					<input type="hidden" name="searchSectionID" value="#HTMLEditFormat(request.searchSectionID)#">
+					<input type="hidden" name="searchSectionID" value="#encodeForHTMLAttribute(request.searchSectionID)#">
 					#variables.$.renderCSRFTokens(format='form',context='search')#
 				</form>
 			</div>

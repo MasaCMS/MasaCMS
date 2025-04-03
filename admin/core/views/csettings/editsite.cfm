@@ -555,7 +555,7 @@ to your own modified versions of Mura CMS.
 							<option value="">This site</option>
 							<cfloop query="rsSites">
 								<cfif rsSites.siteid neq rc.siteBean.getSiteID()>
-									<option value="#rsSites.siteid#" <cfif rsSites.siteid eq rc.siteBean.getCategoryPoolID()>selected</cfif>>#HTMLEditFormat(rsSites.site)#</option>
+									<option value="#rsSites.siteid#" <cfif rsSites.siteid eq rc.siteBean.getCategoryPoolID()>selected</cfif>>#encodeForHtml(rsSites.site)#</option>
 								</cfif>
 							</cfloop>
 						</select>
@@ -567,7 +567,7 @@ to your own modified versions of Mura CMS.
 								<option value="#$.event('siteid')#" <cfif listFind(rc.siteBean.getContentPoolID(), $.event('siteid'))>selected</cfif>>This site</option>
 								<cfloop query="rsSites">
 									<cfif rsSites.siteid neq rc.siteBean.getSiteID()>
-										<option value="#rsSites.siteid#" <cfif listFind(rc.siteBean.getContentPoolID(), rsSites.siteid)>selected</cfif>>#HTMLEditFormat(rsSites.site)#</option>
+										<option value="#rsSites.siteid#" <cfif listFind(rc.siteBean.getContentPoolID(), rsSites.siteid)>selected</cfif>>#encodeForHtml(rsSites.site)#</option>
 									</cfif>
 								</cfloop>
 							</select>

@@ -127,7 +127,7 @@ This file is part of Mura CMS.
 							<ins>(#variables.$.rbKey('mailinglist.required')#)</ins>
 						</label>
 						<div class="#this.mailingListFormFieldWrapperClass#">
-							<input id="txtNameFirst" class="#this.mailingListFormInputClass#" type="text" name="fname" maxlength="50" data-required="true" data-message="#HTMLEditFormat(variables.$.rbKey('mailinglist.fnamerequired'))#" />
+							<input id="txtNameFirst" class="#this.mailingListFormInputClass#" type="text" name="fname" maxlength="50" data-required="true" data-message="#encodeForHTMLAttribute(variables.$.rbKey('mailinglist.fnamerequired'))#" />
 						</div>
 					</div>
 
@@ -138,7 +138,7 @@ This file is part of Mura CMS.
 							<ins>(#variables.$.rbKey('mailinglist.required')#)</ins>
 						</label>
 						<div class="#this.mailingListFormFieldWrapperClass#">
-							<input id="txtNameLast" class="#this.mailingListFormInputClass#" type="text" name="lname" maxlength="50" data-required="true" data-message="#HTMLEditFormat(variables.$.rbKey('mailinglist.lnamerequired'))#" />
+							<input id="txtNameLast" class="#this.mailingListFormInputClass#" type="text" name="lname" maxlength="50" data-required="true" data-message="#encodeForHTMLAttribute(variables.$.rbKey('mailinglist.lnamerequired'))#" />
 						</div>
 					</div>
 
@@ -154,7 +154,7 @@ This file is part of Mura CMS.
 					<div class="#this.mailingListFormGroupWrapperClass# req">
 						<label for="txtEmail" class="#this.mailingListFormLabelClass#">#variables.$.rbKey('mailinglist.email')#<ins> (#variables.$.rbKey('mailinglist.required')#)</ins></label>
 						<div class="#this.mailingListFormFieldWrapperClass#">
-							<input id="txtEmail" class="#this.mailingListFormInputClass#" type="text" name="email" maxlength="50" data-required="true" data-validate="email" data-message="#HTMLEditFormat(variables.$.rbKey('mailinglist.emailvalidate'))#" />
+							<input id="txtEmail" class="#this.mailingListFormInputClass#" type="text" name="email" maxlength="50" data-required="true" data-validate="email" data-message="#encodeForHTMLAttribute(variables.$.rbKey('mailinglist.emailvalidate'))#" />
 						</div>
 					</div>
 				</fieldset>
@@ -185,7 +185,7 @@ This file is part of Mura CMS.
 					<input type="hidden" name="linkServID" value="#variables.$.content('contentID')#" />
 					<div class="#this.mailingListFormGroupWrapperClass#">
 						<div class="#this.mailingListSubmitWrapperClass#">
-							<input type="submit" class="#this.mailingListSubmitClass#" value="#HTMLEditFormat(variables.$.rbKey('mailinglist.submit'))#" />
+							<input type="submit" class="#this.mailingListSubmitClass#" value="#encodeForHTMLAttribute(variables.$.rbKey('mailinglist.submit'))#" />
 						</div>
 					</div>
 				</div>

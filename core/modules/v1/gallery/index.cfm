@@ -188,16 +188,16 @@ This file is part of Mura CMS.
 					</cfif>
 				</cfsilent>
 				<li class="#variables.class# #this.galleryLIClass#"<cfif isNumeric(variables.imageWidth) && this.galleryImageStyles eq true> style="width:#variables.imageWidth#px;"</cfif>>
-					<a href="#variables.item.getImageURL(size='large')#" title="#HTMLEditFormat(variables.item.getValue('title'))#" data-rel="shadowbox[gallery]" class="gallery #this.galleryThumbnailClass#"><img src="#variables.item.getImageURL(argumentCollection=imageArgs)#" alt="#HTMLEditFormat(variables.item.getValue('title'))#"/></a>
+					<a href="#variables.item.getImageURL(size='large')#" title="#encodeForHTMLAttribute(variables.item.getValue('title'))#" data-rel="shadowbox[gallery]" class="gallery #this.galleryThumbnailClass#"><img src="#variables.item.getImageURL(argumentCollection=imageArgs)#" alt="#encodeForHTMLAttribute(variables.item.getValue('title'))#"/></a>
 				 	<dl>
 				 	<cfloop list="#variables.$.content("displayList")#" index="field">
 						<cfswitch expression="#field#">
 							<cfcase value="Title">
 								<dt>
 								 	<cfif listFindNoCase(variables.$.content("displayList"),"comments")>
-								 		<a href="?linkServID=#variables.item.getValue('contentid')#&categoryID=#HTMLEditFormat(variables.$.event('categoryID'))#&relatedID=#HTMLEditFormat(request.relatedID)#" title="#HTMLEditFormat(variables.item.getValue('title'))#">#HTMLEditFormat(variables.item.getValue('menutitle'))#</a>
+								 		<a href="?linkServID=#variables.item.getValue('contentid')#&categoryID=#encodeForURL(variables.$.event('categoryID'))#&relatedID=#encodeForURL(request.relatedID)#" title="#encodeForHTMLAttribute(variables.item.getValue('title'))#">#encodeForHTML(variables.item.getValue('menutitle'))#</a>
 								 	<cfelse>
-								 		#HTMLEditFormat(variables.item.getValue('menutitle'))#
+								 		#encodeForHtml(variables.item.getValue('menutitle'))#
 								 	</cfif>
 								</dt>
 							</cfcase>
@@ -210,11 +210,11 @@ This file is part of Mura CMS.
 							</cfcase>
 							<cfcase value="Credits">
 							 	<cfif variables.item.getValue('credits') neq "">
-							 		<dd class="credits">#variables.$.rbKey('list.by')# #HTMLEditFormat(variables.item.getValue('credits'))#</dd>
+							 		<dd class="credits">#variables.$.rbKey('list.by')# #encodeForHtml(variables.item.getValue('credits'))#</dd>
 							 	</cfif>
 							</cfcase>
 							<cfcase value="Comments">
-						 		<dd class="comments"><a href="?linkServID=#variables.item.getValue('contentid')#&categoryID=#HTMLEditFormat(variables.$.event('categoryID'))#&relatedID=#HTMLEditFormat(request.relatedID)#" title="#HTMLEditFormat(variables.item.getValue('title'))#">#variables.$.rbKey('list.comments')# (#variables.$.getBean('contentGateway').getCommentCount(variables.$.event('siteID'),variables.item.getValue('contentid'))#)</a></dd>
+						 		<dd class="comments"><a href="?linkServID=#variables.item.getValue('contentid')#&categoryID=#encodeForURL(variables.$.event('categoryID'))#&relatedID=#encodeForURL(request.relatedID)#" title="#encodeForHTMLAttribute(variables.item.getValue('title'))#">#variables.$.rbKey('list.comments')# (#variables.$.getBean('contentGateway').getCommentCount(variables.$.event('siteID'),variables.item.getValue('contentid'))#)</a></dd>
 						 	 </cfcase>
 							<cfcase value="Tags">
 							 	<cfif len(variables.item.getValue('tags'))>
@@ -233,7 +233,7 @@ This file is part of Mura CMS.
 						 	</cfcase>
 						 	<cfdefaultcase>
 								<cfif len(variables.item.getValue(field))>
-								 	<dd class="#lcase(field)#">#HTMLEditFormat(variables.item.getValue(field))#</dd>
+								 	<dd class="#lcase(field)#">#encodeForHtml(variables.item.getValue(field))#</dd>
 								</cfif>
 							</cfdefaultcase>
 						</cfswitch>

@@ -224,7 +224,7 @@ This file is part of Mura CMS.
 					 	<#variables.$.getContentListPropertyValue(arguments.field,'tag',arguments.propertyMapFinal)# class="mura-item-meta__credits">
 					 	#variables.$.getContentListPropertyValue(arguments.field,"openingInnerMarkUp",arguments.propertyMapFinal)#
 					 		#variables.$.getContentListLabel(arguments.field)#
-					 		#HTMLEditFormat(arguments.item.getValue('credits'))#
+					 		#encodeForHtml(arguments.item.getValue('credits'))#
 					 	#variables.$.getContentListPropertyValue(arguments.field,"closingInnerMarkUp",arguments.propertyMapFinal)#
 					 	</#variables.$.getContentListPropertyValue(arguments.field,'tag',arguments.propertyMapFinal)#>
 					</cfif>

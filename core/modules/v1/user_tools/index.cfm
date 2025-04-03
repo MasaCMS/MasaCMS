@@ -98,7 +98,7 @@ This file is part of Mura CMS.
 					<div class="req #this.userToolsFormGroupWrapperClass#">
 						<label class="#this.userToolsLoginFormLabelClass#" for="txtUserName">
 							#variables.$.rbKey('user.username')#
-							<ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins>
+							<ins>(#encodeForHtml(variables.$.rbKey('user.required'))#)</ins>
 						</label>
 						<div class="#this.userToolsLoginFormInputWrapperClass#">
 							<input type="text" id="txtUserName" name="username" class="#this.userToolsLoginFormInputClass#" placeholder="#variables.$.rbKey('user.username')#">
@@ -109,7 +109,7 @@ This file is part of Mura CMS.
 					<div class="req #this.userToolsFormGroupWrapperClass#">
 						<label class="#this.userToolsLoginFormLabelClass#" for="txtPassword">
 							#variables.$.rbKey('user.password')#
-							<ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins>
+							<ins>(#encodeForHtml(variables.$.rbKey('user.required'))#)</ins>
 						</label>
 						<div class="#this.userToolsLoginFormInputWrapperClass#">
 							<input type="password" id="txtPassword" name="password" class="#this.userToolsLoginFormInputClass#" placeholder="#variables.$.rbKey('user.password')#"  autocomplete="off">
@@ -141,7 +141,7 @@ This file is part of Mura CMS.
 		<cfelse>
 			<cfif session.mura.isLoggedIn>
 				<div id="svSessionTools" class="mura-user-tools-session #this.userToolsWrapperClass#">
-					<p id="welcome">#variables.$.rbKey('user.welcome')#, #HTMLEditFormat("#session.mura.fname# #session.mura.lname#")#</p>
+					<p id="welcome">#variables.$.rbKey('user.welcome')#, #encodeForHtml("#session.mura.fname# #session.mura.lname#")#</p>
 				 	<ul id="navSession">
 						<li id="navEditProfile"><a class="#this.userToolsEditProfileLinkClass#" href="#variables.$.siteConfig().getEditProfileURL()#&amp;nocache=1&amp;returnURL=#esapiEncode('url',variables.$.getCurrentURL())#">#variables.$.rbKey('user.editprofile')#</a></li>
 						<li id="navLogout"><a class="#this.userToolsLogoutLinkClass#" href="./?doaction=logout">#variables.$.rbKey('user.logout')#</a></li>

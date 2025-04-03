@@ -145,10 +145,10 @@ This file is part of Mura CMS.
 								<div class="req #this.loginFormGroupWrapperClass#">
 									<label for="txtUsername" class="#this.loginFormFieldLabelClass#">
 										#variables.$.rbKey('user.authcode')#
-										<ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins>
+										<ins>(#encodeForHtml(variables.$.rbKey('user.required'))#)</ins>
 									</label>
 									<div class="#this.loginFormFieldWrapperClass#">
-										<input autocomplete="off" class="#this.loginFormFieldClass#" type="text" id="txtUsername" placeholder="#variables.$.rbKey('user.authcode')#" name="authcode" data-required="true" data-message="#htmlEditFormat(variables.$.rbKey('user.authcoderequired'))#" autofocus>
+										<input autocomplete="off" class="#this.loginFormFieldClass#" type="text" id="txtUsername" placeholder="#variables.$.rbKey('user.authcode')#" name="authcode" data-required="true" data-message="#encodeForHTMLAttribute(variables.$.rbKey('user.authcoderequired'))#" autofocus>
 									</div>
 								</div>
 
@@ -158,7 +158,7 @@ This file is part of Mura CMS.
 									<div class="#this.loginFormGroupWrapperClass#">
 										<div class="#this.loginFormPrefsClass#">
 											<label class="#this.loginFormCheckboxClass#" for="cbRememberDevice" >
-												<input type="checkbox" id="cbRememberDevice" name="rememberdevice" value="1"> #htmlEditFormat(variables.$.rbKey('user.rememberdevice'))#
+												<input type="checkbox" id="cbRememberDevice" name="rememberdevice" value="1"> #encodeForHtml(variables.$.rbKey('user.rememberdevice'))#
 											</label>
 										</div>
 									</div>
@@ -168,7 +168,7 @@ This file is part of Mura CMS.
 
 								<div class="#this.loginFormGroupWrapperClass#">
 									<div class="#this.loginFormSubmitWrapperClass#">
-										<button type="submit" class="#this.loginFormSubmitClass#">#htmlEditFormat(variables.$.rbKey('user.submitauthcode'))#</button>
+										<button type="submit" class="#this.loginFormSubmitClass#">#encodeForHtml(variables.$.rbKey('user.submitauthcode'))#</button>
 									</div>
 								</div>
 								#variables.$.renderCSRFTokens(format='form',context='login')#
@@ -228,10 +228,10 @@ This file is part of Mura CMS.
 							<div class="req #this.loginFormGroupWrapperClass#">
 								<label for="txtUsername" class="#this.loginFormFieldLabelClass#">
 									#variables.$.rbKey('user.username')#
-									<ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins>
+									<ins>(#encodeForHtml(variables.$.rbKey('user.required'))#)</ins>
 								</label>
 								<div class="#this.loginFormFieldWrapperClass#">
-									<input class="#this.loginFormFieldClass#" type="text" id="txtUsername" placeholder="#variables.$.rbKey('user.username')#" name="username" data-required="true" data-message="#htmlEditFormat(variables.$.rbKey('user.usernamerequired'))#" autofocus>
+									<input class="#this.loginFormFieldClass#" type="text" id="txtUsername" placeholder="#variables.$.rbKey('user.username')#" name="username" data-required="true" data-message="#encodeForHTMLAttribute(variables.$.rbKey('user.usernamerequired'))#" autofocus>
 								</div>
 							</div>
 
@@ -239,10 +239,10 @@ This file is part of Mura CMS.
 							<div class="req #this.loginFormGroupWrapperClass#">
 								<label for="txtPassword" class="#this.loginFormFieldLabelClass#">
 									#variables.$.rbKey('user.password')#
-									<ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins>
+									<ins>(#encodeForHtml(variables.$.rbKey('user.required'))#)</ins>
 								</label>
 								<div class="#this.loginFormFieldWrapperClass#">
-									<input class="#this.loginFormFieldClass#" type="password" id="txtPassword" name="password" placeholder="#variables.$.rbKey('user.password')#" data-required="true" data-message="#htmlEditFormat(variables.$.rbKey('user.passwordrequired'))#" autocomplete="off">
+									<input class="#this.loginFormFieldClass#" type="password" id="txtPassword" name="password" placeholder="#variables.$.rbKey('user.password')#" data-required="true" data-message="#encodeForHTMLAttribute(variables.$.rbKey('user.passwordrequired'))#" autocomplete="off">
 								</div>
 							</div>
 
@@ -251,7 +251,7 @@ This file is part of Mura CMS.
 								<div class="#this.loginFormGroupWrapperClass#">
 									<div class="#this.loginFormPrefsClass#">
 										<label class="#this.loginFormCheckboxClass#" for="cbRememberMe" >
-											<input type="checkbox" id="cbRememberMe" name="rememberMe" value="1"> #htmlEditFormat(variables.$.rbKey('user.rememberme'))#
+											<input type="checkbox" id="cbRememberMe" name="rememberMe" value="1"> #encodeForHtml(variables.$.rbKey('user.rememberme'))#
 										</label>
 									</div>
 								</div>
@@ -260,13 +260,13 @@ This file is part of Mura CMS.
 							<!--- Login Button --->
 							<div class="#this.loginFormGroupWrapperClass#">
 								<div class="#this.loginFormSubmitWrapperClass#">
-									<button type="submit" class="#this.loginFormSubmitClass#">#htmlEditFormat(variables.$.rbKey('user.login'))#</button>
+									<button type="submit" class="#this.loginFormSubmitClass#">#encodeForHtml(variables.$.rbKey('user.login'))#</button>
 								</div>
 							</div>
 
 							<input type="hidden" name="doaction" value="login">
-							<input type="hidden" name="linkServID" value="#HTMLEditFormat(variables.$.event('linkServID'))#">
-							<input type="hidden" name="returnURL" value="#HTMLEditFormat(variables.$.event('returnURL'))#">
+							<input type="hidden" name="linkServID" value="#encodeForHTMLAttribute(variables.$.event('linkServID'))#">
+							<input type="hidden" name="returnURL" value="#encodeForHTMLAttribute(variables.$.event('returnURL'))#">
 							#variables.$.renderCSRFTokens(format='form',context='login')#
 						</div>
 					</form>
@@ -280,9 +280,9 @@ This file is part of Mura CMS.
 
 							<cfif variables.$.event('doaction') eq 'sendlogin'>
 								<cfset application.userManager.sendLoginByEmail(variables.$.event('email'), variables.$.event('siteID'))>
-								
+
 								<div class="#this.alertDangerClass#">
-									#HTMLEditFormat(variables.$.rbKey('user.forgotsuccess'))#
+									#encodeForHtml(variables.$.rbKey('user.forgotsuccess'))#
 								</div>
 							</cfif>
 
@@ -290,21 +290,21 @@ This file is part of Mura CMS.
 							<div class="#this.loginFormGroupWrapperClass#">
 								<label class="#this.loginFormFieldLabelClass#" for="txtEmail">#variables.$.rbKey('user.email')#</label>
 								<div class="#this.loginFormFieldWrapperClass#">
-									<input id="txtEmail" name="email" class="#this.loginFormFieldClass#" type="text" placeholder="#variables.$.rbKey('user.email')#" data-validate="email" data-required="true" data-message="#htmlEditFormat(variables.$.rbKey('user.emailvalidate'))#" />
+									<input id="txtEmail" name="email" class="#this.loginFormFieldClass#" type="text" placeholder="#variables.$.rbKey('user.email')#" data-validate="email" data-required="true" data-message="#encodeForHTMLAttribute(variables.$.rbKey('user.emailvalidate'))#" />
 								</div>
 							</div>
 
 							<!--- Submit Button --->
 							<div class="#this.loginFormGroupWrapperClass#">
 								<div class="#this.loginFormSubmitWrapperClass#">
-									<button type="submit" class="#this.loginFormSubmitClass#">#htmlEditFormat(variables.$.rbKey('user.getpassword'))#</button>
+									<button type="submit" class="#this.loginFormSubmitClass#">#encodeForHtml(variables.$.rbKey('user.getpassword'))#</button>
 								</div>
 							</div>
 
 							<input type="hidden" name="doaction" value="sendlogin">
-							<input type="hidden" name="linkServID" value="#HTMLEditFormat(variables.$.event('linkServID'))#">
+							<input type="hidden" name="linkServID" value="#encodeForHTMLAttribute(variables.$.event('linkServID'))#">
 							<input type="hidden" name="display" value="login">
-							<input type="hidden" name="returnURL" value="#HTMLEditFormat(variables.$.event('returnURL'))#">
+							<input type="hidden" name="returnURL" value="#encodeForHTMLAttribute(variables.$.event('returnURL'))#">
 						</div>
 					</form>
 

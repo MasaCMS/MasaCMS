@@ -101,7 +101,7 @@ component output="false" displayname="FCKeditor" hint="Create an instance of the
 	else
 		sHeightCSS = this.height & "px";
 
-	result = "<textarea name=""#this.instanceName#"" rows=""4"" cols=""40"" style=""width: #sWidthCSS#; height: #sHeightCSS#"">#HTMLEditFormat(this.value)#</textarea>" & chr(13) & chr(10);
+	result = "<textarea name=""#this.instanceName#"" rows=""4"" cols=""40"" style=""width: #sWidthCSS#; height: #sHeightCSS#"">#encodeForHtml(this.value)#</textarea>" & chr(13) & chr(10);
 		return result;
 	}
 
@@ -123,7 +123,7 @@ component output="false" displayname="FCKeditor" hint="Create an instance of the
 	if( len( this.toolbarSet ) )
 		sURL = sURL & "&amp;Toolbar=" & this.toolbarSet;
 
-		result = result & "<input type=""hidden"" id=""#this.instanceName#"" name=""#this.instanceName#"" value=""#HTMLEditFormat(this.value)#"" style=""display:none"" />" & chr(13) & chr(10);
+		result = result & "<input type=""hidden"" id=""#this.instanceName#"" name=""#this.instanceName#"" value=""#encodeForHTMLAttribute(this.value)#"" style=""display:none"" />" & chr(13) & chr(10);
 	result = result & "<input type=""hidden"" id=""#this.instanceName#___Config"" value=""#GetConfigFieldString()#"" style=""display:none"" />" & chr(13) & chr(10);
 	result = result & "<invalidTag id=""#this.instanceName#___Frame"" src=""#sURL#"" width=""#this.width#"" height=""#this.height#"" frameborder=""0"" scrolling=""no""></iframe>" & chr(13) & chr(10);
 		return result;
@@ -184,7 +184,7 @@ component output="false" displayname="FCKeditor" hint="Create an instance of the
 			else if( isBoolean( fieldValue) )
 				fieldValue = "false";
 
-			sParams = sParams & HTMLEditFormat( fieldName ) & '=' & HTMLEditFormat( fieldValue );
+			sParams = sParams & encodeForURL( fieldName ) & '=' & encodeForURL( fieldValue );
 		}
 	}
 	return sParams;

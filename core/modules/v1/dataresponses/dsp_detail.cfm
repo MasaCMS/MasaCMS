@@ -98,7 +98,7 @@ This file is part of Mura CMS.
 	<cfoutput>
 		<div id="dsp_detail" class="dataResponses">
 			<#variables.$.getHeaderTag('subHead2')#>
-				#HTMLEditFormat(variables.formBean.getValue('title'))# #variables.$.rbKey('form.dataresponses.response')#
+				#encodeForHtml(variables.formBean.getValue('title'))# #variables.$.rbKey('form.dataresponses.response')#
 			</#variables.$.getHeaderTag('subHead2')#>
 			<a class="actionItem" href="##" onclick="history.go(-1); return false;">#variables.$.rbKey('form.dataresponses.returntolist')#</a>
 			<dl class="#this.dataResponseListClass#">
@@ -109,12 +109,12 @@ This file is part of Mura CMS.
 							<cfset variables.fValue="">
 						</cfcatch>
 					</cftry>
-					<dt>#HTMLEditFormat(variables.f)#</dt>
+					<dt>#encodeForHtml(variables.f)#</dt>
 					<dd>
 						<cfif findNoCase('attachment',variables.f) and isValid("UUID",fvalue)>
 							<a  href="http://#application.settingsManager.getSite(session.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/index.cfm/_api/render/file/?fileID=#variables.fvalue#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.viewattachment')#</a>
 						<cfelse>
-							#variables.$.setParagraphs(htmleditformat(variables.fvalue))#
+							#variables.$.setParagraphs(encodeForHtml(variables.fvalue))#
 						</cfif>
 					</dd>
 				</cfloop>

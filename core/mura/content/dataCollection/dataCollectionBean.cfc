@@ -549,7 +549,7 @@ component extends="mura.bean.bean" entityname="dataCollection" hint="This provid
 		}
 
 		if(!$.getContentRenderer().useLayoutManager() && bean.getDisplayTitle() > 0){
-			returnStr='<#arguments.$.getHeaderTag('subHead1')#>#HTMLEditFormat(bean.getTitle())#</#arguments.$.getHeaderTag('subHead1')#>';
+			returnStr='<#arguments.$.getHeaderTag('subHead1')#>#encodeForHtml(bean.getTitle())#</#arguments.$.getHeaderTag('subHead1')#>';
 		}
 
 		param name="form.formid" default="";

@@ -95,7 +95,7 @@ This file is part of Mura CMS.
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Message from #HTMLEditFormat(rsEmail.site)#</title>
+<title>Message from #encodeForHtml(rsEmail.site)#</title>
 </head>
 <body>
 	#bodyHtml#
