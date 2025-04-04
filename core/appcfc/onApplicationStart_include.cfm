@@ -892,35 +892,54 @@ if ( application.setupComplete ) {
 
 	if(!application.configBean.getValue(property='readonly',defaultValue=false)){
 		variables.tracePoint=initTracePoint("Updating Legacy URL data");
-		qs=new Query();
-
-		variables.legacyURLs=qs.execute(sql="select contenthistID, contentID,parentId,siteID,filename,urlTitle,filename from tcontent where type in ('File','Link')
+		variables.legacyURLs = queryExecute(
+			sql = "select contenthistID, contentID,parentId,siteID,filename,urlTitle,filename from tcontent where type in ('File','Link')
 			and active=1
 			and body is null
-			and filename is not null").getResult();
+			and filename is not null"
+		);
 
 		variables.legacyURLsIterator=application.serviceFactory.getBean("contentIterator").setQuery(variables.legacyURLs);
 
 		while ( variables.legacyURLsIterator.hasNext() ) {
 			variables.item=variables.legacyURLsIterator.next();
-
-			qs=new Query();
-			qs.addParam(name="contentid", cfsqltype="cf_sql_varchar", value=variables.item.getContentID() );
-			qs.addParam(name="siteid", cfsqltype="cf_sql_varchar", value=variables.item.getSiteID() );
-
-			qs.execute(sql="update tcontent set body=filename where contentID= :contentid and siteid = :siteid and body is null");
+			queryExecute(
+				sql = "update tcontent set body=filename where contentID= :contentid and siteid = :siteid and body is null"
+				, params = {
+					contentid: {
+						value: variables.item.getContentID(),
+						type: "varchar"
+					}
+					, siteid: {
+						value: variables.item.getSiteID(),
+						type: "varchar"
+					}
+				}
+			);
 
 			application.serviceFactory.getBean("contentUtility").setUniqueFilename(variables.item);
 			try {
-
-				qs=new Query();
-
-				qs.addParam( name="filename",cfsqltype="cf_sql_varchar", value=variables.item.getFilename() );
-				qs.addParam(name="urltitle", cfsqltype="cf_sql_varchar", value=variables.item.getURLTitle() );
-				qs.addParam(name="contentid", cfsqltype="cf_sql_varchar", value=variables.item.getContentID() );
-				qs.addParam(name="siteid", cfsqltype="cf_sql_varchar", value=variables.item.getSiteID() );
-
-				qs.execute(sql="update tcontent set filename= :filename, urlTitle= :urltitle where contentid= :contentid and siteid= :siteid");
+				queryExecute(
+					sql = "update tcontent set filename= :filename, urlTitle= :urltitle where contentid= :contentid and siteid= :siteid"
+					, params = {
+						filename: {
+							value: variables.item.getFilename(),
+							type: "varchar"
+						}
+						, urltitle: {
+							value: variables.item.getURLTitle(),
+							type: "varchar"
+						}
+						, contentid: {
+							value: variables.item.getContentID(),
+							type: "varchar"
+						}
+						, siteid: {
+							value: variables.item.getSiteID(),
+							type: "varchar"
+						}
+					}
+				);
 
 			} catch (any cfcatch) {
 				throw( message="An error occurred trying to create a filename for #variables.item.getFilename()#" );

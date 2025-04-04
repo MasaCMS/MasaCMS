@@ -743,13 +743,10 @@ component extends="mura.bean.beanFeed" entityName="feed" table="tcontentfeeds" o
 		var rsExtend=variables.configBean.getClassExtensionManager().getExtendedAttributeList(variables.instance.siteid,"tcontent");
 		if ( rsExtend.recordcount ) {
 
-			var qs=new Query();
-			qs.setDbType('query');
-			qs.setAttributes(rsExtend=rsExtend);
-
-			rsExtend=qs.execute(sql="select attribute from rsExtend
-				group by attribute
-				order by attribute").getResult();
+			rsExtend = queryExecute(
+				sql = "select attribute from rsExtend group by attribute order by attribute"
+				, options = { dbtype = "query" }
+			);
 
 			returnList=returnList & "," & valueList(rsExtend.attribute);
 		}

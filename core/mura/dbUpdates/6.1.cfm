@@ -18,7 +18,8 @@
 	dbUtility.setTable("tfiles");
 	if(getDbType() == 'MySQL'  && dbUtility.version().database_productname=='MySQL'){
 		if(!dbUtility.columnExists('caption')){
-			new Query().execute(sql="ALTER TABLE tfiles
+ 			queryExecute(
+				sql = "ALTER TABLE tfiles
 				ADD COLUMN caption text,
 				ADD COLUMN credits varchar(255),
 				ADD COLUMN alttext varchar(255),
@@ -36,8 +37,7 @@
 
 		try{
 			if(!dbUtility.columnExists('exif')){
-				new Query().execute(sql="ALTER TABLE tfiles
-					ADD COLUMN exif text");
+				queryExecute(sql = "ALTER TABLE tfiles ADD COLUMN exif text");
 			}
 		} catch(Any e){}
 

@@ -971,119 +971,96 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 			themeDir="#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/themes";
 			if ( directoryExists(themeDir) ) {
 				rsDirs=getBean('fileWriter').getDirectoryList(directory=themeDir, type='dir');
-				qs=getQueryService();
-				qs.setAttributes(rsDirs=rsDirs);
-				qs.setDbType('query');
 				if(isQuery(rs)){
-					qs.setAttributes(rs=rs);
-					rs=qs.execute(sql="
-						select * from rsDirs where type='Dir' and name not like '%.svn'
-						union
-						select * from rs
-					").getResult();
+					rs = queryExecute(sql = "select * from rsDirs where type='Dir' and name not like '%.svn'
+											union
+											select * from rs"
+									, options = { dbtype = "query"}
+					);
 				}else {
-					rs=qs.execute(sql="
-						select * from rsDirs where type='Dir' and name not like '%.svn'
-					").getResult();
+					rs = queryExecute(sql = "select * from rsDirs where type='Dir' and name not like '%.svn'"
+									, options = { dbtype = "query"}
+					);
 				}
 			}
 			themeDir="#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/includes/themes";
 			if ( directoryExists(themeDir) ) {
 				rsDirs=getBean('fileWriter').getDirectoryList(directory=themeDir, type='dir');
-				qs=getQueryService();
-				qs.setAttributes(rsDirs=rsDirs);
-				qs.setDbType('query');
 				if(isQuery(rs)){
-					qs.setAttributes(rs=rs);
-					rs=qs.execute(sql="
-						select * from rsDirs where type='Dir' and name not like '%.svn'
-						union
-						select * from rs
-					").getResult();
+					rs = queryExecute(sql = "select * from rsDirs where type='Dir' and name not like '%.svn'
+											union
+											select * from rs"
+									, options = { dbtype = "query"}
+					);
 				}else {
-					rs=qs.execute(sql="
-						select * from rsDirs where type='Dir' and name not like '%.svn'
-					").getResult();
+					rs = queryExecute(sql = "select * from rsDirs where type='Dir' and name not like '%.svn'"
+									, options = { dbtype = "query"}
+					);
 				}
 			}
 
 			themeDir="#expandPath('/#variables.configBean.getWebRootMap()#')#/themes";
 
 			if ( directoryExists(themeDir) ) {
-				rsDirs=getBean('fileWriter').getDirectoryList(directory=themeDir, type='dir');
-				qs=getQueryService();
-				qs.setAttributes(rsDirs=rsDirs);
-				qs.setDbType('query');
+				rsDirs=getBean('fileWriter').getDirectoryList(directory=themeDir, type='dir');				;
 				if(isQuery(rs)){
-					qs.setAttributes(rs=rs);
-					rs=qs.execute(sql="
-						select * from rsDirs where type='Dir' and name not like '%.svn'
-						union
-						select * from rs
-					").getResult();
+					rs = queryExecute(sql = "select * from rsDirs where type='Dir' and name not like '%.svn'
+											union
+											select * from rs"
+									, options = { dbtype = "query"}
+					);
+
 				}else {
-					rs=qs.execute(sql="
-						select * from rsDirs where type='Dir' and name not like '%.svn'
-					").getResult();
+					rs = queryExecute(sql = "select * from rsDirs where type='Dir' and name not like '%.svn'"
+									, options = { dbtype = "query"}
+					);
 				}
 			}
 		} else {
 			themeDir="#variables.configBean.getSiteDir()#/default/themes";
 			if ( directoryExists(themeDir) ) {
 				rsDirs=getBean('fileWriter').getDirectoryList(directory=themeDir, type='dir');
-				qs=getQueryService();
-				qs.setAttributes(rsDirs=rsDirs);
-				qs.setDbType('query');
 				if(isQuery(rs)){
-					qs.setAttributes(rs=rs);
-					rs=qs.execute(sql="
-						select * from rsDirs where type='Dir' and name not like '%.svn'
-						union
-						select * from rs
-					").getResult();
+					rs = queryExecute(sql = "select * from rsDirs where type='Dir' and name not like '%.svn'
+											union
+											select * from rs"
+									, options = { dbtype = "query"}
+					);
 				}else {
-					rs=qs.execute(sql="
-						select * from rsDirs where type='Dir' and name not like '%.svn'
-					").getResult();
+					rs = queryExecute(sql = "select * from rsDirs where type='Dir' and name not like '%.svn'"
+									, options = { dbtype = "query"}
+					);
 				}
 			}
 			themeDir="#variables.configBean.getSiteDir()#/default/includes/themes";
 			if ( directoryExists(themeDir) ) {
 				rsDirs=getBean('fileWriter').getDirectoryList(directory=themeDir, type='dir');
-				qs=getQueryService();
-				qs.setAttributes(rsDirs=rsDirs);
-				qs.setDbType('query');
 				if(isQuery(rs)){
-					qs.setAttributes(rs=rs);
-					rs=qs.execute(sql="
-						select * from rsDirs where type='Dir' and name not like '%.svn'
-						union
-						select * from rs
-					").getResult();
+					rs = queryExecute(sql = "select * from rsDirs where type='Dir' and name not like '%.svn'
+											union
+											select * from rs"
+									, options = { dbtype = "query"}
+					);
 				}else {
-					rs=qs.execute(sql="
-						select * from rsDirs where type='Dir' and name not like '%.svn'
-					").getResult();
+					rs = queryExecute(sql = "select * from rsDirs where type='Dir' and name not like '%.svn'"
+									, options = { dbtype = "query"}
+					);
 				}
 			}
 			themeDir="#expandPath('/#variables.configBean.getWebRootMap()#')#/themes";
 
 			if ( directoryExists(themeDir) ) {
 				rsDirs=getBean('fileWriter').getDirectoryList(directory=themeDir, type='dir');
-				qs=getQueryService();
-				qs.setAttributes(rsDirs=rsDirs);
-				qs.setDbType('query');
 				if(isQuery(rs)){
-					qs.setAttributes(rs=rs);
-					rs=qs.execute(sql="
-						select * from rsDirs where type='Dir' and name not like '%.svn'
-						union
-						select * from rs
-					").getResult();
+					rs = queryExecute(sql = "select * from rsDirs where type='Dir' and name not like '%.svn'
+											union
+											select * from rs"
+									, options = { dbtype = "query"}
+					);
 				}else {
-					rs=qs.execute(sql="
-						select * from rsDirs where type='Dir' and name not like '%.svn'
-					").getResult();
+					rs = queryExecute(sql = "select * from rsDirs where type='Dir' and name not like '%.svn'"
+									, options = { dbtype = "query"}
+					);
 				}
 			}
 		}
@@ -1105,12 +1082,10 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 				dir="#getTemplateIncludeDir()#/#lcase(arguments.type)#s";
 				if ( directoryExists(dir) ) {
 					rs=getBean('fileWriter').getDirectoryList( filter="*.cfm|*.html|*.htm|*.hbs", directory=dir );
-					qs=getQueryService();
-					qs.setAttributes(rs=rs);
-					qs.setDbType('query');
-					rs=qs.execute(sql="
-						select * from rs order by name
-					").getResult();
+					rs=queryExecute(
+							sql = "select * from rs order by name"
+							, options = { dbtype = "query"}
+					);
 				} else {
 					rs=queryNew("empty");
 				}
@@ -1118,12 +1093,10 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 			default:
 				if(directoryExists(getTemplateIncludeDir())){
 					rs=getBean('fileWriter').getDirectoryList( filter="*.cfm|*.html|*.htm|*.hbs", directory=getTemplateIncludeDir() );
-					qs=getQueryService();
-					qs.setAttributes(rs=rs);
-					qs.setDbType('query');
-					rs=qs.execute(sql="
-						select * from rs order by name
-					").getResult();
+					rs=queryExecute(
+						sql = "select * from rs order by name"
+						, options = { dbtype = "query"}
+				);
 				} else {
 					rs=queryNew("empty");
 				}
@@ -1145,15 +1118,12 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 				if ( directoryExists(dir) ) {
 					rs=getBean('fileWriter').getDirectoryList( directory=dir ,type='dir');
 					if ( rs.recordcount ) {
-						qs=getQueryService();
-						qs.setAttributes(rs=rs);
-						qs.setAttributes(rsFinal=rsFinal);
-						qs.setDbType('query');
-						rsFinal=qs.execute(sql="
-						select name from rsFinal
-						union
-						select name from rs
-						").getResult();
+						rsFinal = queryExecute(
+								sql = "	select name from rsFinal
+										union
+										select name from rs"
+								, options = { dbtype = "query"}
+						);
 					}
 				}
 			}
@@ -1173,13 +1143,11 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 				}
 			}
 
-			qs=getQueryService();
-			qs.setAttributes(rsFinal=rsFinal);
-			qs.setDbType('query');
-			rsFinal=qs.execute(sql="
-			select distinct name from rsFinal
-			order by name asc
-			").getResult();
+			rsFinal = queryExecute(
+						sql = "select distinct name from rsFinalorder by name asc"
+						, options = { dbtype = "query"}
+					);
+
 			variables.instance.collectionLayouts=rsFinal;
 		}
 		return variables.instance.collectionLayouts;
@@ -1274,11 +1242,22 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 
 	public function getCustomImageSizeQuery(reset="false") output=false {
 		var rsCustomImageSizeQuery="";
-		var qs=getQueryService(readOnly=true);
-		qs.addParam(name="siteid", cfsqltype="cf_sql_varchar", value=variables.instance.siteid );
-		rsCustomImageSizeQuery=qs.execute(sql="
-		select sizeid,siteid,name,height,width from timagesizes where siteID= :siteid
-		").getResult();
+		var rsCustomImageSizeQuery = queryExecute(
+			sql = "select sizeid,siteid,name,height,width from timagesizes where siteID= :siteid"
+			, params = {
+				siteid: {
+					value: variables.instance.siteid,
+					type: "varchar"
+				}
+			}
+			, options = { readOnly = true}
+		);
+
+
+
+
+
+
 		return rsCustomImageSizeQuery;
 	}
 
@@ -1321,12 +1300,22 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 			if ( getValue('siteid') != getValue('filePoolID') ) {
 				variables.instance.hasSharedFilePool=true;
 			} else {
-				var rs="";
-				var qs=getQueryService(readOnly=true);
-				qs.addParam(name="siteid", cfsqltype="cf_sql_varchar", value=getValue('siteid'));
-				qs.addParam(name="filepoolid", cfsqltype="cf_sql_varchar", value=getValue('siteid'));
-				variables.instance.hasSharedFilePool=qs.execute(sql="select count(*) as counter from tsettings
-				where filePoolID= :filePoolID and siteid!= :siteid").getResult().counter;
+				var rs = queryExecute(
+					sql = "select count(*) as counter from tsettings
+					where filePoolID= :filePoolID and siteid!= :siteid"
+					, params = {
+						siteid: {
+							value: getValue('siteid'),
+							type: "varchar"
+						}
+						, 	filepoolid: {
+							value: getValue('siteid'),
+							type: "varchar"
+						}
+					}
+					, options = { readOnly = true }
+				);
+				variables.instance.hasSharedFilePool=rs.counter;
 			}
 		}
 		return variables.instance.hasSharedFilePool;
@@ -1726,16 +1715,21 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		for ( dir in lookupArray ) {
 			registerContentTypeDir(dir=dir);
 		}
-		var qs=getQueryService(readOnly=true);
-		qs.addParam(name="siteid",cfsqltype="cf_sql_varchar",value=getValue('siteid'));
 
-		var rs=qs.execute(sql="
-		select tplugins.package
-		from tplugins inner join tcontent on tplugins.moduleid = tcontent.contentid
-		where tcontent.siteid= :siteid
-		and tplugins.deployed=1
-		order by tplugins.loadPriority desc
-		").getResult();
+		var rs = queryExecute(
+			sql = "select tplugins.package
+			from tplugins inner join tcontent on tplugins.moduleid = tcontent.contentid
+			where tcontent.siteid= :siteid
+			and tplugins.deployed=1
+			order by tplugins.loadPriority desc"
+			, params = {
+				siteid: {
+					value: getValue('siteid'),
+					type: "varchar"
+				}
+			}
+			, options = { readOnly = true}
+		);
 
 		if(rs.recordcount){
 			for(var row=1;row <= rs.recordcount;row++){
@@ -2155,15 +2149,21 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 			conditional=false;
 			registerDisplayObjectDir(dir=dir,conditional=conditional,custom=custom);
 		}
-		var qs=getQueryService(readOnly=true);
-		qs.addParam(name="siteid",cfsqltype="cf_sql_varchar",value=getValue('siteid'));
-		var rs=qs.execute(sql="
-		select tplugins.package
-		from tplugins inner join tcontent on tplugins.moduleid = tcontent.contentid
-		where tcontent.siteid= :siteid
-		and tplugins.deployed=1
-		order by tplugins.loadPriority desc
-		").getResult();
+
+		var rs = queryExecute(
+			sql = "select tplugins.package
+					from tplugins inner join tcontent on tplugins.moduleid = tcontent.contentid
+					where tcontent.siteid= :siteid
+					and tplugins.deployed=1
+					order by tplugins.loadPriority desc"
+			, params = {
+				siteid: {
+					value: getValue('siteid'),
+					type: "varchar"
+				}
+			}
+			, options = { readOnly = true}
+		);
 
 		if(rs.recordcount){
 			for(var row=1;row <= rs.recordcount;row++){
