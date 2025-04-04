@@ -10,7 +10,7 @@ if ( request.muraInDocker) {
 		}
 		abort;
 	}
-	
+
 	application.dbconnectionerror = false;
 	if(isDefined('this.datasources.nodatabase') && len(getSystemEnvironmentSetting('MURA_DATABASE'))){
 		// Attempt to connect to database
@@ -31,10 +31,13 @@ if ( request.muraInDocker) {
 			if (request.muraSysEnv.MURA_DBTYPE == 'mysql' && request.muraSysEnv.MURA_DATABASE contains '-') {
 				databaseName = "`#databaseName#`";
 			}
-			q = new Query(datasource="nodatabase");
 
 			try {
-					q.execute(sql='CREATE DATABASE #databaseName#');
+					queryExecute(
+						sql = "CREATE DATABASE #databaseName#"
+						, options = { datasource="nodatabase"}
+					);
+
 					FORM['#application.setupSubmitButton#']=true;
 					FORM['#application.setupSubmitButtonComplete#']=true;
 					FORM['setupSubmitButton']=true;
@@ -45,9 +48,7 @@ if ( request.muraInDocker) {
 		}
 	}
 	if( request.muraSysEnv.MURA_DBTYPE == 'postgresql'){
-		qs=new Query();
-
-		if(!qs.execute(sql="select table_name from information_schema.tables where table_schema = current_schema() and lower(table_name)='tcontent'").getResult().recordcount){
+		if(!queryExecute(sql="select table_name from information_schema.tables where table_schema = current_schema() and lower(table_name)='tcontent'").recordcount){
 			FORM['#application.setupSubmitButton#']=true;
 			FORM['#application.setupSubmitButtonComplete#']=true;
 			FORM['setupSubmitButton']=true;
@@ -55,9 +56,7 @@ if ( request.muraInDocker) {
 		}
 
 	} else if(request.muraSysEnv.MURA_DBTYPE == 'oracle'){
-		qs=new Query();
-
-		if(!qs.execute(sql="select TABLE_NAME from user_tables where lower(table_name)='tcontent'").getResult().recordcount){
+		if(!queryExecute(sql="select TABLE_NAME from user_tables where lower(table_name)='tcontent'").recordcount){
 			FORM['#application.setupSubmitButton#']=true;
 			FORM['#application.setupSubmitButtonComplete#']=true;
 			FORM['setupSubmitButton']=true;

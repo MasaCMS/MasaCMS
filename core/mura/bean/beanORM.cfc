@@ -1,35 +1,35 @@
 /*
 
-This file is part of Masa CMS. Masa CMS is based on Mura CMS, and adopts the  
-same licensing model. It is, therefore, licensed under the Gnu General Public License 
-version 2 only, (GPLv2) subject to the same special exception that appears in the licensing 
-notice set out below. That exception is also granted by the copyright holders of Masa CMS 
-also applies to this file and Masa CMS in general. 
+This file is part of Masa CMS. Masa CMS is based on Mura CMS, and adopts the
+same licensing model. It is, therefore, licensed under the Gnu General Public License
+version 2 only, (GPLv2) subject to the same special exception that appears in the licensing
+notice set out below. That exception is also granted by the copyright holders of Masa CMS
+also applies to this file and Masa CMS in general.
 
-This file has been modified from the original version received from Mura CMS. The 
+This file has been modified from the original version received from Mura CMS. The
 change was made on: 2021-07-27
-Although this file is based on Mura™ CMS, Masa CMS is not associated with the copyright 
-holders or developers of Mura™CMS, and the use of the terms Mura™ and Mura™CMS are retained 
-only to ensure software compatibility, and compliance with the terms of the GPLv2 and 
-the exception set out below. That use is not intended to suggest any commercial relationship 
-or endorsement of Mura™CMS by Masa CMS or its developers, copyright holders or sponsors or visa versa. 
+Although this file is based on Mura™ CMS, Masa CMS is not associated with the copyright
+holders or developers of Mura™CMS, and the use of the terms Mura™ and Mura™CMS are retained
+only to ensure software compatibility, and compliance with the terms of the GPLv2 and
+the exception set out below. That use is not intended to suggest any commercial relationship
+or endorsement of Mura™CMS by Masa CMS or its developers, copyright holders or sponsors or visa versa.
 
 If you want an original copy of Mura™ CMS please go to murasoftware.com .  
-For more information about the unaffiliated Masa CMS, please go to masacms.com  
+For more information about the unaffiliated Masa CMS, please go to masacms.com
 
-Masa CMS is free software: you can redistribute it and/or modify 
-it under the terms of the GNU General Public License as published by 
-the Free Software Foundation, Version 2 of the License. 
-Masa CMS is distributed in the hope that it will be useful, 
-but WITHOUT ANY WARRANTY; without even the implied warranty of 
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
-GNU General Public License for more details. 
+Masa CMS is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, Version 2 of the License.
+Masa CMS is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License 
-along with Masa CMS. If not, see <http://www.gnu.org/licenses/>. 
+You should have received a copy of the GNU General Public License
+along with Masa CMS. If not, see <http://www.gnu.org/licenses/>.
 
-The original complete licensing notice from the Mura CMS version of this file is as 
-follows: 
+The original complete licensing notice from the Mura CMS version of this file is as
+follows:
 
 This file is part of Mura CMS.
 
@@ -312,57 +312,60 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 		return super.getQueryAttrs(argumentCollection=arguments);
 	}
 
-	function getQueryService(readOnly=getReadOnly()){
-		return super.getQueryService(argumentCollection=arguments);
-	}
-
-	private function getQueryParamType(datatype){
+	private function getQueryExecuteParamType(datatype){
 		if(arguments.datatype=='int'){
-			return "cf_sql_integer";
+			return "integer";
 		} else if (arguments.datatype=='boolean'){
-			return "cf_sql_bit";
+			return "bit";
 		} else {
-			return "cf_sql_" & arguments.datatype;
+			return arguments.datatype;
 		}
 	}
 
-	private function addQueryParam(qs,prop,value){
+	private function getQueryExecuteParam(prop,value){
 		var paramArgs={};
 		var columns=getColumns();
+		var paramName = '';
+		var paramValue = '';
+		var paramType = '';
+		var paramNull = '';
 
 		if(arguments.prop.persistent){
-
-			paramArgs={name=arguments.prop.column,cfsqltype=getQueryParamType(columns[arguments.prop.column].datatype)};
+			paramName = '#arguments.prop.column#';
+			paramType = getQueryExecuteParamType(columns[arguments.prop.column].datatype);
 
 			if(structKeyExists(arguments,'value')){
-				paramArgs.null=arguments.prop.nullable and (not len(arguments.value) or arguments.value eq "null");
+				paramNull=arguments.prop.nullable and (not len(arguments.value) or arguments.value eq "null");
 			}	else {
 				arguments.value='null';
-				paramArgs.null=arguments.prop.nullable and (not len(variables.instance[arguments.prop.column]) or variables.instance[arguments.prop.column] eq "null");
+				paramNull=arguments.prop.nullable and (not len(variables.instance[arguments.prop.column]) or variables.instance[arguments.prop.column] eq "null");
 			}
 
 			if(arguments.prop.column == getDiscriminatorColumn()){
-				paramArgs.value=getDiscriminatorValue();
+				paramValue=getDiscriminatorValue();
 			} else {
-				paramArgs.value=arguments.value;
+				paramValue=arguments.value;
 			}
 
-			if(listFindNoCase('int,smalllint,tinyint',columns[arguments.prop.column].datatype) && isNumeric(paramArgs.value)){
-				paramArgs.value=int(paramArgs.value);
+			if(listFindNoCase('int,smalllint,tinyint',columns[arguments.prop.column].datatype) && isNumeric(paramValue)){
+				paramValue=int(paramValue);
 			} else if(columns[arguments.prop.column].datatype eq 'datetime'){
-				paramArgs.cfsqltype='cf_sql_timestamp';
-				paramArgs.value=parseDateArg(paramArgs.value);
+				paramType='timestamp';
+				paramValue=parseDateArg(paramValue);
 			} else if(listFindNoCase('text,longtext',columns[arguments.prop.column].datatype)){
-				paramArgs.cfsqltype='cf_sql_longvarchar';
+				paramType='longvarchar';
 			}
 
-			arguments.qs.addParam(argumentCollection=paramArgs);
-
-			return true;
-		} else {
-			return false;
+			paramArgs =	{
+				'#paramName#' : {
+					value: paramValue
+					, type: paramType
+					, null: paramNull
+				}
+			};
 		}
 
+		return paramArgs;
 	}
 
 	function validate(){
@@ -398,7 +401,8 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 			var prop={};
 			var started=false;
 			var sql='';
-			var qs=getQueryService();
+			var rsPK = '';
+			var queryParams = {};
 
 			// Set lastupdate columns if defined
 			if (structkeyexists(props, "lastupdate") && listFindNoCase('datetime,timestamp',props.lastupdate.datatype)) {
@@ -419,16 +423,24 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 				}
 			}
 
-			qs.addParam(name='primarykey',value=variables.instance[getPrimaryKey()],cfsqltype='cf_sql_varchar');
+			rsPK = queryExecute(
+				sql = "select #getPrimaryKey()# from #getTable()# where #getPrimaryKey()# = :primarykey"
+				, params = {
+					primarykey: {
+						value: variables.instance[getPrimaryKey()],
+						type: "varchar"
+					}
+				}
+			);
 
-			if(!getIsHistorical() && qs.execute(sql='select #getPrimaryKey()# from #getTable()# where #getPrimaryKey()# = :primarykey').getResult().recordcount){
+			if(!getIsHistorical() && rsPK.recordcount){
 
 				pluginManager.announceEvent(eventToAnnounce='onBefore#variables.entityName#Update',currentEventObject=event,objectid=get(get('primaryKey')));
 				preUpdate();
 
 				for (prop in props){
 					if(props[prop].persistent){
-						addQueryParam(qs,props[prop],variables.instance[props[prop].column]);
+						queryParams.append(getQueryExecuteParam(props[prop],variables.instance[props[prop].column]));
 					}
 				}
 
@@ -465,7 +477,7 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 						}
 					}
 
-					qs.execute(sql=sql);
+					queryExecute(sql=sql, params = queryParams);
 
 					if(getUseCache()){
 						purgeCache();
@@ -496,7 +508,7 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 
 				for (prop in props){
 					if(props[prop].persistent){
-						addQueryParam(qs,props[prop],variables.instance[props[prop].column]);
+						queryParams.append(getQueryExecuteParam(props[prop],variables.instance[props[prop].column]));
 					}
 				}
 
@@ -537,7 +549,7 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 						}
 					}
 
-					qs.execute(sql=sql);
+					queryExecute(sql=sql, params = queryParams);
 
 					if(getUseCache()){
 						purgeCache();
@@ -726,9 +738,15 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 			set('deleted',1);
 			save(argumentCollection=arguments);
 		} else {
-			var qs=getQueryService();
-			qs.addParam(name='primarykey',value=variables.instance[getPrimaryKey()],cfsqltype='cf_sql_varchar');
-			qs.execute(sql='delete from #getTable()# where #getPrimaryKey()# = :primarykey');
+			queryExecute(
+				sql = "delete from #getTable()# where #getPrimaryKey()# = :primarykey"
+				, params = {
+					primarykey: {
+						value: variables.instance[getPrimaryKey()],
+						type: "varchar"
+					}
+				}
+			);
 		}
 
 		if(getUseCache()){
@@ -748,7 +766,6 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 	}
 
 	function loadBy(returnFormat="self",cachedWithin=createTimeSpan(0,0,0,0)){
-		var qs=getQueryService(readOnly=true,cachedWithin=arguments.cachedWithin);
 		var sql="";
 		var props=getProperties();
 		var prop="";
@@ -762,6 +779,8 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 		var primaryOnly=true;
 		var primaryFound=false;
 		var primarykeyargvalue='';
+		var pointInTime = '';
+		var queryParams = {};
 
 		if(!isDefined('arguments.siteid') && hasProperty('siteid') && len(getValue('siteID'))){
 			arguments.siteid=getValue('siteID');
@@ -769,10 +788,19 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 
 		if(getIsHistorical()){
 			if(isDate(request.muraPointInTime)){
-				qs.addParam(name="pointInTime",cfsqltype="cf_sql_timestamp",value=request.muraPointInTime);
+				pointInTime = request.muraPointInTime;
 			} else {
-				qs.addParam(name="pointInTime",cfsqltype="cf_sql_timestamp",value=now());
+				pointInTime = now();
 			}
+
+			queryParams.append(
+				{
+					pointInTime :  {
+						value: pointInTime
+						, type: "timestamp"
+					}
+				}
+			);
 		}
 
 		savecontent variable="sql"{
@@ -832,7 +860,7 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 						foundDiscriminator=true;
 					}
 
-					addQueryParam(qs,props[prop],arguments[arg]);
+					queryParams.append(getQueryExecuteParam(props[prop],arguments[arg]));
 
 					if(not started){
 						writeOutput("where ");
@@ -885,28 +913,48 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 						setValue("frommuracache",true);
 						commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: #getEntityName()#, key: #cacheKey#}"));
 					} else {
-						rs=qs.execute(sql=sql).getResult();
+						rs = queryExecute(
+							sql = sql
+							, params = queryParams
+							, options = { readOnly = true, cachedWithin = arguments.cachedWithin }
+						);
+
 						if(rs.recordcount){
 							cache.get(cacheKey,rs);
 						}
 						commitTracePoint(initTracePoint(detail="DATA CACHE MISS: {class: #getEntityName()#, key: #cacheKey#}"));
 					}
 				} catch(any e){
-					rs=qs.execute(sql=sql).getResult();
+					rs = queryExecute(
+						sql = sql
+						, params = queryParams
+						, options = { readOnly = true, cachedWithin = arguments.cachedWithin }
+					);
+
 					if(rs.recordcount){
 						cache.get(cacheKey,rs);
 					}
 					commitTracePoint(initTracePoint(detail="DATA CACHE MISS: {class: #getEntityName()#, key: #cacheKey#}"));
 				}
 			} else {
-				rs=qs.execute(sql=sql).getResult();
+				rs = queryExecute(
+					sql = sql
+					, params = queryParams
+					, options = { readOnly = true, cachedWithin = arguments.cachedWithin }
+				);
+
 				if(rs.recordcount){
 					cache.get(cacheKey,rs);
 				}
 				commitTracePoint(initTracePoint(detail="DATA CACHE MISS: {class: #getEntityName()#, key: #cacheKey#}"));
 			}
 		} else {
-			rs=qs.execute(sql=sql).getResult();
+
+			rs = queryExecute(
+				sql = sql
+				, params = queryParams
+				, options = { readOnly = true, cachedWithin = arguments.cachedWithin }
+			);
 		}
 
 		if(rs.recordcount){
@@ -957,14 +1005,29 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 	}
 
 	function toBundle(bundle,siteid){
-		var qs=getQueryService(readOnly=true);
-
+		var rs = "";
 		if(hasColumn('siteid') && structKeyExists(arguments,'siteid')){
-			qs.setSQL("select * from #getTable()# where siteid = :siteid");
-			qs.addParam(name="siteid",cfsqltype="cf_sql_varchar",value=arguments.siteid);
-			arguments.bundle.setValue("rs" & getTable(),qs.execute().getResult());
+			rs = queryExecute(
+				sql = "select * from #getTable()# where siteid = :siteid"
+				, params = {
+					siteid: {
+						value: arguments.siteid,
+						type: "varchar"
+					}
+				}
+				, options = { readOnly = true}
+			);
+
+			arguments.bundle.setValue("rs" & getTable(),rs);
+
+
 		} else {
-			arguments.bundle.setValue("rs" & getTable(),qs.execute(sql="select * from #getTable()#").getResult());
+			rs = queryExecute(
+				sql = "select * from #getTable()#"
+				, options = { readOnly = true}
+			);
+
+			arguments.bundle.setValue("rs" & getTable(),rs);
 		}
 		return this;
 	}

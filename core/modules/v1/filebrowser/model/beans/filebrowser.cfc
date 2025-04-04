@@ -995,20 +995,15 @@ component
 		response['endindex'] = response['startindex'] + response['itemsperpage'] - 1;
 
 		if (application.configBean.getValue('fmcaseinsensitive') == 'true') {
-			var sqlString = "SELECT *, UPPER(name) AS upper_name from sourceQuery";
+			var sqlString = "SELECT *, UPPER(name) AS upper_name from rsDirectory";
 		} else {
-			var sqlString = "SELECT * from sourceQuery";
+			var sqlString = "SELECT * from rsDirectory";
 		}
 
-		var qObj = new query();
-		qObj.setName("files");
-		qObj.setDBType("query");
-		qObj.setAttributes(sourceQuery=rsDirectory);
-
+		var qryParams = [];
 		if(len(arguments.filterResults)) {
 			sqlString &= " where UPPER(name) LIKE :filtername";
-
-			qObj.addParam( name="filtername",value="%#UCase(arguments.filterResults)#%",cfsqltype="cf_sql_varchar" );
+			qryParams = [ filtername= { value="%#UCase(arguments.filterResults)#%", sqltype='varchar' } ];
 		}
 
 		if (application.configBean.getValue('fmcaseinsensitive') == 'true') {
@@ -1017,11 +1012,12 @@ component
 			sqlString &= " ORDER by type,name";
 		}
 
-		qObj.setSQL( sqlString );
+		var rsFiles = "";
+		var rsPrefix = "";
 
-		var rsExecute = qObj.execute();
-		var rsFiles = rsExecute.getResult();
-		var rsPrefix = rsExecute.getPrefix();
+		query name="rsFiles" dbtype="query" result="rsPrefix" params=#qryParams# {
+			echo(sqlString);
+		}
 
 		queryAddColumn(rsFiles,'subfolder',[]);
 		for(var i = 1;i <= rsFiles.recordcount;i++) {

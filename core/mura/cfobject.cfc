@@ -300,10 +300,6 @@ component output="false" hint="This provides base functionality to all Masa CMS 
 		}
 	}
 
-	function getQueryService(readOnly=false){
-		return new Query(argumentCollection=getQueryAttrs(argumentCollection=arguments));
-	}
-
 	function getHTTPService(required string url , string method="get" , string charset="utf-8"){
 		var configBean=getBean('configBean');
 		var httpResult="";

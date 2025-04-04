@@ -1,35 +1,35 @@
 /*
-	
-This file is part of Masa CMS. Masa CMS is based on Mura CMS, and adopts the  
-same licensing model. It is, therefore, licensed under the Gnu General Public License 
-version 2 only, (GPLv2) subject to the same special exception that appears in the licensing 
-notice set out below. That exception is also granted by the copyright holders of Masa CMS 
-also applies to this file and Masa CMS in general. 
 
-This file has been modified from the original version received from Mura CMS. The 
+This file is part of Masa CMS. Masa CMS is based on Mura CMS, and adopts the
+same licensing model. It is, therefore, licensed under the Gnu General Public License
+version 2 only, (GPLv2) subject to the same special exception that appears in the licensing
+notice set out below. That exception is also granted by the copyright holders of Masa CMS
+also applies to this file and Masa CMS in general.
+
+This file has been modified from the original version received from Mura CMS. The
 change was made on: 2021-07-27
-Although this file is based on Mura™ CMS, Masa CMS is not associated with the copyright 
-holders or developers of Mura™CMS, and the use of the terms Mura™ and Mura™CMS are retained 
-only to ensure software compatibility, and compliance with the terms of the GPLv2 and 
-the exception set out below. That use is not intended to suggest any commercial relationship 
-or endorsement of Mura™CMS by Masa CMS or its developers, copyright holders or sponsors or visa versa. 
+Although this file is based on Mura™ CMS, Masa CMS is not associated with the copyright
+holders or developers of Mura™CMS, and the use of the terms Mura™ and Mura™CMS are retained
+only to ensure software compatibility, and compliance with the terms of the GPLv2 and
+the exception set out below. That use is not intended to suggest any commercial relationship
+or endorsement of Mura™CMS by Masa CMS or its developers, copyright holders or sponsors or visa versa.
 
 If you want an original copy of Mura™ CMS please go to murasoftware.com .  
-For more information about the unaffiliated Masa CMS, please go to masacms.com  
+For more information about the unaffiliated Masa CMS, please go to masacms.com
 
-Masa CMS is free software: you can redistribute it and/or modify 
-it under the terms of the GNU General Public License as published by 
-the Free Software Foundation, Version 2 of the License. 
-Masa CMS is distributed in the hope that it will be useful, 
-but WITHOUT ANY WARRANTY; without even the implied warranty of 
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
-GNU General Public License for more details. 
+Masa CMS is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, Version 2 of the License.
+Masa CMS is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License 
-along with Masa CMS. If not, see <http://www.gnu.org/licenses/>. 
+You should have received a copy of the GNU General Public License
+along with Masa CMS. If not, see <http://www.gnu.org/licenses/>.
 
-The original complete licensing notice from the Mura CMS version of this file is as 
-follows: 
+The original complete licensing notice from the Mura CMS version of this file is as
+follows:
 
 This file is part of Mura CMS.
 
@@ -115,11 +115,11 @@ component persistent="false" accessors="true" output="false" extends="mura.cfobj
 		, numeric maxItems=1000
 	) {
 		var local = {};
-		var qComments = new Query(datasource=getConfigBean().getReadOnlyDatasource());
 		var rsComments = '';
 		var dbtype=getConfigBean().getDbType();
 
 		local.qryStr='';
+		local.qryParam={};
 
 		if(dbtype eq "mssql" and arguments.maxItems){
 			local.qryStr='SELECT top ' & arguments.maxItems
@@ -137,93 +137,94 @@ component persistent="false" accessors="true" output="false" extends="mura.cfobj
 		// siteid
 		if ( StructKeyExists(arguments, 'siteid') ) {
 			local.qryStr &= ' AND siteid = ( :siteid ) ';
-			qComments.addParam(name='siteid', value=arguments.siteid, cfsqltype='cf_sql_varchar');
+			qryParam.append({ siteID: { value: arguments.siteid, type: "varchar"}});
 		}
 
 		// commentid
 		if ( StructKeyExists(arguments, 'commentid') ) {
 			local.qryStr &= ' AND commentid = ( :commentid ) ';
-			qComments.addParam(name='commentid', value=arguments.commentid, cfsqltype='cf_sql_varchar');
+			qryParam.append({ commentid: { value: arguments.commentid, type: "varchar"}});
 		}
 
 		// keywords
 		if ( StructKeyExists(arguments, 'keywords') ) {
 			local.qryStr &= ' AND (comments like ( :comments ) ';
-			qComments.addParam(name='comments', value="%#arguments.keywords#%", cfsqltype='cf_sql_varchar');
+			qryParam.append({ comments: { value: "%#arguments.keywords#%", type: "varchar"}});
 			local.qryStr &= ' OR name like ( :name )) ';
-			qComments.addParam(name='name', value="%#arguments.keywords#%", cfsqltype='cf_sql_varchar');
+			qryParam.append({ name: { value: "%#arguments.keywords#%", type: "varchar"}});
 		}
 
 		//contentid
 		if ( StructKeyExists(arguments, 'contentid') and len(arguments.contentid)) {
 			local.qryStr &= ' AND contentid = ( :contentid ) ';
-			qComments.addParam(name='contentid', value=arguments.contentid, cfsqltype='cf_sql_varchar');
+			qryParam.append({ contentid: { value: arguments.contentid, type: "varchar"}});
 		}
 
 		// parentid
 		if ( StructKeyExists(arguments, 'parentid') ) {
 			local.qryStr &= ' AND parentid = ( :parentid ) ';
-			qComments.addParam(name='parentid', value=arguments.parentid, cfsqltype='cf_sql_varchar');
+			qryParam.append({ parentid: { value: arguments.parentid, type: "varchar"}});
 		}
 
 		// remoteid
 		if ( StructKeyExists(arguments, 'remoteid') ) {
 			local.qryStr &= ' AND remoteid = ( :remoteid ) ';
-			qComments.addParam(name='remoteid', value=arguments.remoteid, cfsqltype='cf_sql_varchar');
+			qryParam.append({ remoteid: { value: arguments.remoteid, type: "varchar"}});
 		}
 
 		// ip
 		if ( StructKeyExists(arguments, 'ip') ) {
 			local.qryStr &= ' AND ip = ( :ip ) ';
-			qComments.addParam(name='ip', value=arguments.ip, cfsqltype='cf_sql_varchar');
+			qryParam.append({ ip: { value: arguments.ip, type: "varchar"}});
 		}
 
 		// email
 		if ( StructKeyExists(arguments, 'email') ) {
 			local.qryStr &= ' AND email = ( :email ) ';
-			qComments.addParam(name='email', value=arguments.email, cfsqltype='cf_sql_varchar');
+			qryParam.append({ email: { value: arguments.email, type: "varchar"}});
 		}
 
 		// name
 		if ( StructKeyExists(arguments, 'name') ) {
 			local.qryStr &= ' AND name = ( :name ) ';
-			qComments.addParam(name='name', value=arguments.name, cfsqltype='cf_sql_varchar');
+			qryParam.append({ name: { value: arguments.name, type: "varchar"}});
 		}
 
 		// isapproved
 		if ( StructKeyExists(arguments, 'isapproved') ) {
 			local.qryStr &= ' AND isapproved = ( :isapproved ) ';
-			qComments.addParam(name='isapproved', value=arguments.isapproved, cfsqltype='cf_sql_integer');
+			qryParam.append({ isapproved: { value: arguments.isapproved, type: "integer"}});
 		}
 
 		// isspam
 		if ( StructKeyExists(arguments, 'isspam') ) {
 			local.qryStr &= ' AND isspam = ( :isspam ) ';
-			qComments.addParam(name='isspam', value=arguments.isspam, cfsqltype='cf_sql_integer');
+			qryParam.append({ isspam: { value: arguments.isspam, type: "integer"}});
 		}
 
 		// isdeleted
 		if ( StructKeyExists(arguments, 'isdeleted') ) {
 			local.qryStr &= ' AND isdeleted = ( :isdeleted ) ';
-			qComments.addParam(name='isdeleted', value=arguments.isdeleted, cfsqltype='cf_sql_integer');
+			qryParam.append({ isdeleted: { value: arguments.isdeleted, type: "integer"}});
 		}
 
 		// startdate
 		if ( StructKeyExists(arguments, 'startdate') && isDate(arguments.startdate) ) {
 			local.qryStr &= ' AND entered >= :startdate ';
-			qComments.addParam(name='startdate', value=arguments.startdate, cfsqltype='cf_sql_date');
+			qryParam.append({ startdate: { value: arguments.startdate, type: "date"}});
 		}
 
 		// enddate
 		if ( StructKeyExists(arguments, 'enddate') && isDate(arguments.enddate) ) {
 			local.qryStr &= ' AND entered <= :enddate ';
-			qComments.addParam(name='enddate', value=createODBCDateTime(createDateTime(year(arguments.enddate), month(arguments.enddate), day(arguments.enddate), 23, 59, 59)), cfsqltype='cf_sql_timestamp');
+			qryParam.append({ enddate: { value: createODBCDateTime(createDateTime(year(arguments.enddate), month(arguments.enddate), day(arguments.enddate), 23, 59, 59)), type: "timestamp"}});
+
 		}
 
 		// categoryID
 		if ( StructKeyExists(arguments, 'categoryID') && len(arguments.categoryID) ) {
 			local.qryStr &= ' AND contentID in ( select distinct contentID from tcontentcategoryassign where categoryID in ( :categoryID ) ) ';
-			qComments.addParam(name='categoryID', value=arguments.categoryID, cfsqltype='cf_sql_varchar', list='true');
+			qryParam.append({ categoryID: { value: arguments.categoryID, type: "varchar"}});
 		}
 
 		local.qryStr &= ' ORDER BY ' & arguments.sortby & ' ' & arguments.sortdirection;
@@ -241,9 +242,11 @@ component persistent="false" accessors="true" output="false" extends="mura.cfobj
 			local.qryStr=local.qryStr & ' ) where ROWNUM <=  ' & arguments.maxItems;
 		}
 
-		//rsComments = qComments.setSQL(local.qryStr).execute().getResult(); // breaks in ACF9: https://github.com/stevewithington/MuraComments/issues/2 .. using workaround instead
-		qComments.setSQL(local.qryStr);
-		rsComments = qComments.execute().getResult();
+		rsComments = queryExecute(
+			sql = local.qryStr
+			, params = local.qryParam
+			, options = { datasouce = getConfigBean().getReadOnlyDatasource() }
+		);
 
 		if ( arguments.returnCountOnly ) {
 			return rsComments.recordcount;
@@ -389,9 +392,7 @@ component persistent="false" accessors="true" output="false" extends="mura.cfobj
 
 	public boolean function purgeDeletedComments(string siteid) {
 		var local = {};
-		var qDeleted = new Query(datasource=getConfigBean().getReadOnlyDatasource());
 		var purged = true;
-
 		local.qryStr = '
 			DELETE
 			FROM tcontentcomments
@@ -402,18 +403,25 @@ component persistent="false" accessors="true" output="false" extends="mura.cfobj
 		// siteid
 		if ( StructKeyExists(arguments, 'siteid') ) {
 			local.qryStr &= ' AND siteid = ( :siteid ) ';
-			qDeleted.addParam(name='siteid', value=arguments.siteid, cfsqltype='cf_sql_varchar');
 		}
 
-		qDeleted.setSQL(local.qryStr);
-
 		try {
-			qDeleted.execute().getResult();
+			queryExecute(
+				sql = local.qryStr
+				, params = {
+					siteid: {
+						value: arguments.siteid,
+						type: "varchar"
+					}
+				}
+				, options = {
+					datasource = getConfigBean().getReadOnlyDatasource()
+				}
+			);
 		} catch(any e) {
 			purged = false;
 		}
 
 		return purged;
 	}
-
 }
