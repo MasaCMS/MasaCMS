@@ -1965,7 +1965,7 @@ Display Objects
 		<cfset $.noIndex()>
 		<cfset eventOutput=application.pluginManager.renderEvent("onContentOfflineRender",$)>
 		<cfif $.globalConfig().getValue(property="offline404", defaultValue="true")>
-			<cfheader statuscode="404" statustext="Content Not Found" />
+			<cfheader statuscode="404" />
 		</cfif>
 		<cfif len(eventOutput)>
 		<cfoutput>#eventOutput#</cfoutput>

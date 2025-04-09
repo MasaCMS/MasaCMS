@@ -507,7 +507,7 @@ This file is part of Mura CMS.
 			<cfset arguments.event.getContentBean().setBody("The requested version of this content could not be found.")>
 		</cfif>
 		<cfif request.returnFormat neq 'json' and request.muraFrontEndRequest >
-			<cfheader statuscode="404" statustext="Content Not Found" />
+			<cfheader statuscode="404" />
 		</cfif>
 
 		<cfset var renderer=arguments.$.getContentRenderer()>

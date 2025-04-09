@@ -497,13 +497,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="render401" output="true">
-	<cfheader statuscode="401" statustext="Unauthorized" />
+	<cfheader statuscode="401" />
 	<cfcontent reset="true">
 	<cfabort>
 </cffunction>
 
 <cffunction name="render404" output="true">
-	<cfheader statuscode="404" statustext="Content Not Found" />
+	<cfheader statuscode="404" />
 	<!--- Must reset the linkservID to prevent recursive 404s --->
 	<cfset request.linkServID="">
 	<cfset renderFilename("404",true,false)>
@@ -537,12 +537,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfelse>
 				<cfset currentParam=currentItem>
 			</cfif>
-		<cfelseif currentArrayName eq "tagArray">						
+		<cfelseif currentArrayName eq "tagArray">
 			<cfset arguments.event.setValue("tag",currentItem)>
-			<cfif not listFindNoCase('login,editProfile',arguments.event.getValue('display'))> 
+			<cfif not listFindNoCase('login,editProfile',arguments.event.getValue('display'))>
 				<cfset arguments.event.setValue("display","search")>
 				<cfset arguments.event.setValue("newSearch","true")>
-			</cfif>			
+			</cfif>
 			<cfset currentArrayName="">
 		<cfelseif currentArrayName eq "linkServIDArray">
 			<cfset arguments.event.setValue("linkServID",currentItem)>
