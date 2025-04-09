@@ -1548,10 +1548,6 @@ Blog: www.codfusion.com--->
 	<cfschedule attributeCollection="#arguments#">
 </cffunction>
 
-<cffunction name="legacyLogout" output="false">
-	<cflogout>
-</cffunction>
-
 <cffunction name="invokeMethod" output="false">
 		<cfargument name="component">
 		<cfargument name="methodName">

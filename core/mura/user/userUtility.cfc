@@ -338,35 +338,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif request.muraSessionManagement>
 		<cfset structDelete(getSession(),'siteArray')>
 
-		<cfif yesNoFormat(variables.configBean.getValue("useLegacySessions"))>
-			<cflogout>
-
-			<cfif isDate(rsuser.lastLogin)>
-				<cfset lastLogin=rsuser.lastLogin/>
-			</cfif>
-
-			<cfif rsuser.company neq ''>
-				<cfset group=rsuser.company>
-			<cfelse>
-				<cfset group="#rsUser.Fname# #rsUser.Lname#">
-			</cfif>
-
-			<cfif rsuser.lname eq '' and rsuser.fname eq ''>
-				<cfset user=rsuser.company>
-			<cfelse>
-				<cfset user="#rsUser.Fname# #rsUser.Lname#">
-			</cfif>
-
-			<cflogin>
-			<cfloginuser name="#rsuser.userID#^#user#^#dateFormat(lastLogin,'m/d/yy')#^#group#^#rsUser.username#^#dateFormat(rsUser.passwordCreated,'m/d/yy')#^#rsUser.password#"
-			 roles="#rolelist#"
-			password="#rsUser.password#">
-			</cflogin>
-		</cfif>
-
 		<cfquery>
-		UPDATE tusers SET LastLogin = <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
-		WHERE tusers.UserID='#rsUser.UserID#'
+			UPDATE	tusers
+			SET		LastLogin = <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
+			WHERE	tusers.UserID='#rsUser.UserID#'
 		</cfquery>
 
 		<cfif isDefined('cookie.userid') and cookie.userid neq rsuser.userid>
