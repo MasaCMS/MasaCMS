@@ -194,7 +194,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.loadcontentby='filename'/>
 <cfset variables.instance.strictfactory=false/>
 <cfset variables.instance.managelinks=true/>
-<cfset variables.instance.hasRazuna=false>
 <cfset variables.instance.purgecomments=true />
 <cfset variables.instance.defaultflatviewrange=0 />
 <cfset variables.instance.defaultflatviewtable="" />

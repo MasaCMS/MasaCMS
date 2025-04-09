@@ -84,15 +84,6 @@ if ( isDefined("application.eventManager") ) {
 	}
 }
 
-// Send deprecation warning about Razuna; only do this once
-if(structKeyExists(application,"sendDeprecationWarningRazuna") && application.sendDeprecationWarningRazuna){
-	variables.current$ = application.serviceFactory.getBean('$').init();
-	variables.current$.event().setValue("deprecationType","Razuna");
-	application.eventManager.announceEvent("LogDeprecation",variables.current$);
-	// set flag to false
-	application.sendDeprecationWarningRazuna = false;
-}
-
 // Send deprecation warning about useLegacySessions; only do this once
 if(structKeyExists(application,"sendDeprecationWarningUseLegacySessions") && application.sendDeprecationWarningUseLegacySessions){
 	variables.current$ = application.serviceFactory.getBean('$').init();

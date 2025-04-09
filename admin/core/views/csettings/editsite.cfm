@@ -131,11 +131,6 @@ to your own modified versions of Mura CMS.
 			<cfset tabList='tabBasic,tabContactinfo,tabSharedresources,tabModules,tabEmail,tabImages,tabExtranet,tabDisplayregions,tabBundles'>
 		</cfif>
 
-		<cfif rc.$.globalConfig().getValue(property='razuna',defaultValue=false)>
-			<cfset tabLabelList=listAppend(tabLabelList,'Razuna')>
-			<cfset tabList=listAppend(tabList,'tabRazuna')>
-		</cfif>
-
 	</cfoutput> <cfoutput query="rsPluginScripts" group="pluginid"> <cfoutput>
 			<cfset tabLabelList=listAppend(tabLabelList,rsPluginScripts.name)/>
 			<cfset tabList=listAppend(tabList,"tab" & $.createCSSID(rsPluginScripts.name))>
@@ -1291,55 +1286,6 @@ to your own modified versions of Mura CMS.
 			</cfif>
 		</div> <!--- /.block --->
 	</div> <!--- /.tab-pane --->
-	<cfif rc.$.globalConfig().getValue(property='razuna',defaultValue=false)>
-		<cfset rc.razunaSettings=rc.siteBean.getRazunaSettings()>
-		<div id="tabRazuna" class="tab-pane">
-			<div class="block block-bordered">
-				<!-- block header -->
-			  <div class="block-header">
-					<h3 class="block-title">Razuna Settings</h3>
-			  </div>
-			  <!-- /block header -->
-			  <div class="block-content">
-			<!---
-			<div class="mura-control-group">
-				<label for="razuna_servertype">Server Type</label>
-				<div class="mura-control justify">
-					<label for="razuna_servertype_hosted" class="radio inline">
-						<input type="radio" name="servertype" value="cloud" id="razuna_servertype_cloud" <cfif rc.razunaSettings.getServerType() eq "cloud">checked="checked"</cfif>> Hosted (razuna.com)
-					</label>
-					<label for="razuna_servertype_self" class="radio inline">
-						<input type="radio" name="servertype" value="local" id="razuna_servertype_local" <cfif rc.razunaSettings.getServerType() eq "local">checked="checked"</cfif>> Self hosted
-					</label>
-				</div>
-			</div>
-			--->
-			<input type="hidden" name="servertype" value="local">
-			<div class="mura-control-group">
-				<label for="razuna_hostname">Hostname <span class="help-block">Example: yourcompany.razuna.com or localhost:8080/razuna</span></label>
-					<input type="text" value="#esapiEncode('html_attr',rc.razunaSettings.getHostName())#" id="razuna_hostname" name="hostname">
-
-				</div>
-
-			<div class="mura-control-group">
-				<label for="hostid">Host ID <span class="help-block">Example: 496</span></label>
-					<input type="text" value="#esapiEncode('html_attr',rc.razunaSettings.getHostID())#" id="razuna_hostid" name="hostid">
-			</div>
-
-			<div class="mura-control-group">
-				<label for="dampath">DAM Path <span class="help-block">Example: /demo/dam</span></label>
-					<input type="text" value="#esapiEncode('html_attr',rc.razunaSettings.getDAMPath())#" id="razuna_dampath" name="damPath">
-			</div>
-
-			<div class="mura-control-group">
-				<label for="razuna_api_key">API Key</label>
-					<input type="text" value="#esapiEncode('html_attr',rc.razunaSettings.getApiKey())#" id="razuna_api_key" name="apikey">
-			</div>
-
-			</div> <!--- /.block-content --->
-		</div> <!--- /.block --->
-	</div> <!--- /.tab-pane --->
-	</cfif>
 
 	</cfoutput>
 	<cfoutput query="rsPluginScripts" group="pluginID">

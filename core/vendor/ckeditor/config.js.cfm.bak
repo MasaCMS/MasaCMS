@@ -207,7 +207,7 @@ CKEDITOR.editorConfig = function( config )
 			{name: 'group11', items: ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField']},
 			{name: 'group12', items: ['Styles','Format','-','Maximize','ShowBlocks','About']}
 		];
---->		
+--->
 
 	<!--- /Toolbars --->
 
@@ -223,10 +223,6 @@ CKEDITOR.editorConfig = function( config )
 		ep.pop();
 		config.extraPlugins=ep.join()
 	}
-
-	<cfif len($.siteConfig().getRazunaSettings().getApiKey())>
-		config.extraPlugins += ',razuna';
-	</cfif>
 
 	<cfif application.configBean.getEnableMuraTag()>
 		config.extraPlugins += ',muratag';

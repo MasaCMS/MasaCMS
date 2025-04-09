@@ -37,9 +37,6 @@
 			<button type="button" class="btn btn-default mura-file-type-selector active" value="Upload"><i class="mi-upload"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.fileselector.viaupload')#</button>
 			<button type="button" class="btn btn-default mura-file-type-selector" value="URL"><i class="mi-download"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.fileselector.viaurl')#</button>
 			<button type="button" class="btn btn-default mura-file-type-selector" value="Existing"><i class="mi-file-picture-o"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.fileselector.selectexisting')#</button>
-			<cfif len(application.serviceFactory.getBean('settingsManager').getSite(attributes.bean.getSiteID()).getRazunaSettings().getHostname())>
-			<button type="button" class="btn btn-default mura-file-type-selector btn-razuna-icon" value="URL-Razuna"><i></i> Razuna</button>
-			</cfif>
 		</div>
 
 		<div id="mura-file-upload-#esapiEncode('html_attr',attributes.name)#" class="mura-file-option mura-file-upload fileTypeOption#esapiEncode('html_attr',attributes.name)#">
@@ -64,20 +61,6 @@
 		<div id="mura-file-existing-#attributes.name#" class="mura-file-option mura-file-existing fileTypeOption#attributes.name#">
 
 		</div>
-		<cfset razunaSettings = application.serviceFactory.getBean('settingsManager').getSite(attributes.bean.getSiteID()).getRazunaSettings()>
-		<cfif len(razunaSettings.getAPIKey())>
-		<div id="mura-file-url-#attributes.name#" class="mura-file-option mura-file-url-razuna fileTypeOption#attributes.name#">
-
-			<div class="mura-control-group">
-					<div class="input-append">
-						<input type="text" name="#attributes.name#" class="mura-file-selector-#attributes.name# span6 razuna-url" type="url" placeholder="http://#razunaSettings.getHostName()#" data-label="#encodeForHTMLAttribute(attributes.label)#" data-label="#encodeForHTMLAttribute(attributes.required)#" data-validate="#encodeForHTMLAttribute(attributes.validation)#" data-regex="#encodeForHTMLAttribute(attributes.regex)#" data-message="#encodeForHTMLAttribute(attributes.message)#">
-						<a style="display:none;" class="btn btn-default file-meta-open" href="" onclick="return openFileMetaData('#attributes.bean.getContentHistID()#','','#attributes.bean.getSiteID()#','#attributes.property#');"><i class="mi-info-circle"></i></a>
-						<button type="button" onclick="renderRazunaWindow('newfile');" class="btn btn-razuna"><i class="mi-external-link-sign"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.launchrazuna')#</button>
-					</div>
-			</div>
-
-		</div>
-		</cfif>
 
 		<cfif attributes.bean.getType() eq 'File' and attributes.property eq 'fileid' and len(attributes.bean.getFileID())>
 
