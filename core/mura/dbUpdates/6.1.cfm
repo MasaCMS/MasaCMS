@@ -9,7 +9,6 @@
 	getBean('relatedContentSet').checkSchema();
 	getBean('fileMetaData').checkSchema();
 	//getBean('file').checkSchema();
-	getBean('razunaSettings').checkSchema();
 	getBean('contentFilenameArchive').checkSchema();
 	getBean('commenter').checkSchema();
 	getBean('changesetCategoryAssignment').checkSchema();

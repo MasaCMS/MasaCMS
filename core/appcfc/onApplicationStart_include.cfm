@@ -379,7 +379,6 @@ if ( application.setupComplete ) {
 		variables.serviceFactory.addAlias("relatedContentSet","extendRelatedContentSetBean");
 		variables.serviceFactory.addAlias("fileMetaData","contentFileMetaDataBean");
 		variables.serviceFactory.addAlias("file","fileBean");
-		variables.serviceFactory.addAlias("razunaSettings","razunaSettingsBean");
 		variables.serviceFactory.addAlias("contentFilenameArchive","contentFilenameArchiveBean");
 		variables.serviceFactory.addAlias("commenter","contentCommenterBean");
 		variables.serviceFactory.addAlias("changesetCategoryAssignment","changesetCategoryAssignmentBean");
@@ -442,7 +441,6 @@ if ( application.setupComplete ) {
 		variables.serviceFactory.getBean('relatedContentSet');
 		variables.serviceFactory.getBean('fileMetaData');
 		variables.serviceFactory.getBean('file');
-		variables.serviceFactory.getBean('razunaSettings');
 		variables.serviceFactory.getBean('contentFilenameArchive');
 		variables.serviceFactory.getBean('commenter');
 		variables.serviceFactory.getBean('userDevice');
@@ -1032,12 +1030,6 @@ if ( application.setupComplete ) {
 	application.sessionTrackingThrottle=false;
 
 	application.clusterManager.clearOldCommands();
-
-	//Check if Razuna is enabled
-	if(IsBoolean(application.configBean.getRazuna()) && application.configBean.getRazuna()){
-		// Set flag to send a deprecation warning
-		application.sendDeprecationWarningRazuna = true;
-	}
 
 	//Check if useLegacySessions is enabled
 	if(IsBoolean(application.configBean.getValue("useLegacySessions")) && application.configBean.getValue("useLegacySessions")){

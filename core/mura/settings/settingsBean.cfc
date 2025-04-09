@@ -1281,13 +1281,6 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		return UCase(getScheme(arguments.secure));
 	}
 
-	public function getRazunaSettings() output=false {
-		if ( !structKeyExists(variables,'razunaSettings') ) {
-			variables.razunaSettings=getBean('razunaSettings').loadBy(siteid=getValue('siteid'));
-		}
-		return variables.razunaSettings;
-	}
-
 	public function getContentPoolID() output=false {
 		if ( !listFindNoCase(variables.instance.contentPoolID,getValue('siteid')) ) {
 			//variables.instance.contentPoolID=listAppend(arguments.contentPoolID,getValue('siteid'));

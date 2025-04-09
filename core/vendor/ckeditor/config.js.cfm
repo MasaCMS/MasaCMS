@@ -235,7 +235,7 @@ CKEDITOR.editorConfig = function( config )
 
 	config.extraPlugins = 'SelectComponent,Selectlink,leaflet,tableresize,onchange,justify,find,bidi,div,showblocks,forms,templates,pagebreak,codemirror,widget,lineutils,dialog,oembed,sourcedialog,fakeobjects,dialogui,showprotected,balloonpanel,dialogadvtab,a11ychecker,image2';
 
-	config.extraPlugins += ',image2';	
+	config.extraPlugins += ',image2';
 
 	if(typeof jQuery == 'undefined'){
 		config.toolbar_QuickEdit[0].items.shift()
@@ -247,10 +247,6 @@ CKEDITOR.editorConfig = function( config )
 		ep.pop();
 		config.extraPlugins=ep.join()
 	}
-
-	<cfif len($.siteConfig().getRazunaSettings().getApiKey())>
-		config.extraPlugins += ',razuna';
-	</cfif>
 
 	<cfif application.configBean.getEnableMuraTag()>
 		config.extraPlugins += ',muratag';
