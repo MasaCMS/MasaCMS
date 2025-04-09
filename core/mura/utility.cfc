@@ -1382,9 +1382,8 @@ Blog: www.codfusion.com--->
 
 <!--- Stashing some support for tags here until CF10 support is dropped --->
 <cffunction name="setHeader" output="false">
-	<cfargument name="statustext">
 	<cfargument name="statuscode">
-	<cfheader statustext="#arguments.statustext#" statuscode="#arguments.statuscode#">
+	<cfheader statuscode="#arguments.statuscode#">
 </cffunction>
 
 <cffunction name="resetContent" output="false">

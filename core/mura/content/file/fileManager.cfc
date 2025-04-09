@@ -919,7 +919,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cftry>
 			<cfif structkeyexists(cgi, "http_if_modified_since")>
 				<cfif parsedatetime(cgi.http_if_modified_since) gt arguments.lastModified>
-				 	 <cfheader statuscode=304 statustext="Not modified"/>
+				 	 <cfheader statuscode=304 />
 				 	 <cfabort/>
 			 	</cfif>
 			</cfif>

@@ -74,7 +74,7 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cftry>
-<cfheader statustext="An Error Occurred" statuscode="500">
+<cfheader statuscode="500">
 <cfcatch></cfcatch>
 </cftry>
 <cfscript>
@@ -134,7 +134,7 @@ if ( !request.muraTemplateMissing ) {
 				mailto=application.configBean.getMailserverusername();
 				if(isDefined('application.serviceFactory')){
 					application.serviceFactory.getBean('utility').resetContent();
-					application.serviceFactory.getBean('utility').setHeader( statustext="An Error Occurred", statuscode=500 );
+					application.serviceFactory.getBean('utility').setHeader( statuscode=500 );
 				}
 				if ( len(application.configBean.getValue("errorTemplate")) ) {
 					include application.configBean.getValue('errorTemplate');
@@ -148,7 +148,7 @@ if ( !request.muraTemplateMissing ) {
 	}
 	try {
 		if(isDefined('application.serviceFactory')){
-			application.serviceFactory.getBean('utility').setHeader( statustext="An Error Occurred", statuscode=500 );
+			application.serviceFactory.getBean('utility').setHeader( statuscode=500 );
 		}
 	} catch (any cfcatch) {
 	}
