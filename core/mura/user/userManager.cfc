@@ -1016,13 +1016,7 @@ This file is part of Mura CMS.
 		<cfset var user="">
 		<cfset var sessionData=getSession()>
 		<cfif not structKeyExists(sessionData,"mura")>
-			<cfif yesNoFormat(variables.configBean.getValue("useLegacySessions"))
-					and len(getAuthUser()) and isValid("UUID",listFirst(getAuthUser(),"^"))>
-				<cfset user=read(listFirst(getAuthUser(),"^"))>
-				<cfset variables.userUtility.setUserStruct(user.getAllValues())>
-			<cfelse>
-				<cfset variables.userUtility.setUserStruct()>
-			</cfif>
+			<cfset variables.userUtility.setUserStruct()>
 		</cfif>
 		<cfparam name="sessionData.mura.membershipids" default="" />
 	</cffunction>

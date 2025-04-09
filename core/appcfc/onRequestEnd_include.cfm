@@ -14,7 +14,7 @@ only to ensure software compatibility, and compliance with the terms of the GPLv
 the exception set out below. That use is not intended to suggest any commercial relationship
 or endorsement of Mura™CMS by Masa CMS or its developers, copyright holders or sponsors or visa versa.
 
-If you want an original copy of Mura™ CMS please go to murasoftware.com .  
+If you want an original copy of Mura™ CMS please go to murasoftware.com .
 For more information about the unaffiliated Masa CMS, please go to masacms.com
 
 Masa CMS is free software: you can redistribute it and/or modify
@@ -82,15 +82,6 @@ if ( isDefined("application.eventManager") ) {
 	} else {
 		application.eventManager.announceEvent("onGlobalRequestEnd",createObject("component","mura.event").init());
 	}
-}
-
-// Send deprecation warning about useLegacySessions; only do this once
-if(structKeyExists(application,"sendDeprecationWarningUseLegacySessions") && application.sendDeprecationWarningUseLegacySessions){
-	variables.current$ = application.serviceFactory.getBean('$').init();
-	variables.current$.event().setValue("deprecationType","UseLegacySessions");
-	application.eventManager.announceEvent("LogDeprecation",variables.current$);
-	// set flag to false
-	application.sendDeprecationWarningUseLegacySessions = false;
 }
 
 // Send deprecation warning about not using the BCrypt Hashing for passwords; only do this once
