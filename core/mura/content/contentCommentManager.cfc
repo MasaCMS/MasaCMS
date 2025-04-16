@@ -137,94 +137,94 @@ component persistent="false" accessors="true" output="false" extends="mura.cfobj
 		// siteid
 		if ( StructKeyExists(arguments, 'siteid') ) {
 			local.qryStr &= ' AND siteid = ( :siteid ) ';
-			qryParam.append({ siteID: { value: arguments.siteid, type: "varchar"}});
+			qryParam.append({ siteID: { value: arguments.siteid, cfsqltype: "varchar"}});
 		}
 
 		// commentid
 		if ( StructKeyExists(arguments, 'commentid') ) {
 			local.qryStr &= ' AND commentid = ( :commentid ) ';
-			qryParam.append({ commentid: { value: arguments.commentid, type: "varchar"}});
+			qryParam.append({ commentid: { value: arguments.commentid, cfsqltype: "varchar"}});
 		}
 
 		// keywords
 		if ( StructKeyExists(arguments, 'keywords') ) {
 			local.qryStr &= ' AND (comments like ( :comments ) ';
-			qryParam.append({ comments: { value: "%#arguments.keywords#%", type: "varchar"}});
+			qryParam.append({ comments: { value: "%#arguments.keywords#%", cfsqltype: "varchar"}});
 			local.qryStr &= ' OR name like ( :name )) ';
-			qryParam.append({ name: { value: "%#arguments.keywords#%", type: "varchar"}});
+			qryParam.append({ name: { value: "%#arguments.keywords#%", cfsqltype: "varchar"}});
 		}
 
 		//contentid
 		if ( StructKeyExists(arguments, 'contentid') and len(arguments.contentid)) {
 			local.qryStr &= ' AND contentid = ( :contentid ) ';
-			qryParam.append({ contentid: { value: arguments.contentid, type: "varchar"}});
+			qryParam.append({ contentid: { value: arguments.contentid, cfsqltype: "varchar"}});
 		}
 
 		// parentid
 		if ( StructKeyExists(arguments, 'parentid') ) {
 			local.qryStr &= ' AND parentid = ( :parentid ) ';
-			qryParam.append({ parentid: { value: arguments.parentid, type: "varchar"}});
+			qryParam.append({ parentid: { value: arguments.parentid, cfsqltype: "varchar"}});
 		}
 
 		// remoteid
 		if ( StructKeyExists(arguments, 'remoteid') ) {
 			local.qryStr &= ' AND remoteid = ( :remoteid ) ';
-			qryParam.append({ remoteid: { value: arguments.remoteid, type: "varchar"}});
+			qryParam.append({ remoteid: { value: arguments.remoteid, cfsqltype: "varchar"}});
 		}
 
 		// ip
 		if ( StructKeyExists(arguments, 'ip') ) {
 			local.qryStr &= ' AND ip = ( :ip ) ';
-			qryParam.append({ ip: { value: arguments.ip, type: "varchar"}});
+			qryParam.append({ ip: { value: arguments.ip, cfsqltype: "varchar"}});
 		}
 
 		// email
 		if ( StructKeyExists(arguments, 'email') ) {
 			local.qryStr &= ' AND email = ( :email ) ';
-			qryParam.append({ email: { value: arguments.email, type: "varchar"}});
+			qryParam.append({ email: { value: arguments.email, cfsqltype: "varchar"}});
 		}
 
 		// name
 		if ( StructKeyExists(arguments, 'name') ) {
 			local.qryStr &= ' AND name = ( :name ) ';
-			qryParam.append({ name: { value: arguments.name, type: "varchar"}});
+			qryParam.append({ name: { value: arguments.name, cfsqltype: "varchar"}});
 		}
 
 		// isapproved
 		if ( StructKeyExists(arguments, 'isapproved') ) {
 			local.qryStr &= ' AND isapproved = ( :isapproved ) ';
-			qryParam.append({ isapproved: { value: arguments.isapproved, type: "integer"}});
+			qryParam.append({ isapproved: { value: arguments.isapproved, cfsqltype: "integer"}});
 		}
 
 		// isspam
 		if ( StructKeyExists(arguments, 'isspam') ) {
 			local.qryStr &= ' AND isspam = ( :isspam ) ';
-			qryParam.append({ isspam: { value: arguments.isspam, type: "integer"}});
+			qryParam.append({ isspam: { value: arguments.isspam, cfqltype: "integer"}});
 		}
 
 		// isdeleted
 		if ( StructKeyExists(arguments, 'isdeleted') ) {
 			local.qryStr &= ' AND isdeleted = ( :isdeleted ) ';
-			qryParam.append({ isdeleted: { value: arguments.isdeleted, type: "integer"}});
+			qryParam.append({ isdeleted: { value: arguments.isdeleted, cfsqltype: "integer"}});
 		}
 
 		// startdate
 		if ( StructKeyExists(arguments, 'startdate') && isDate(arguments.startdate) ) {
 			local.qryStr &= ' AND entered >= :startdate ';
-			qryParam.append({ startdate: { value: arguments.startdate, type: "date"}});
+			qryParam.append({ startdate: { value: arguments.startdate, cfsqltype: "date"}});
 		}
 
 		// enddate
 		if ( StructKeyExists(arguments, 'enddate') && isDate(arguments.enddate) ) {
 			local.qryStr &= ' AND entered <= :enddate ';
-			qryParam.append({ enddate: { value: createODBCDateTime(createDateTime(year(arguments.enddate), month(arguments.enddate), day(arguments.enddate), 23, 59, 59)), type: "timestamp"}});
+			qryParam.append({ enddate: { value: createODBCDateTime(createDateTime(year(arguments.enddate), month(arguments.enddate), day(arguments.enddate), 23, 59, 59)), cfsqltype: "timestamp"}});
 
 		}
 
 		// categoryID
 		if ( StructKeyExists(arguments, 'categoryID') && len(arguments.categoryID) ) {
 			local.qryStr &= ' AND contentID in ( select distinct contentID from tcontentcategoryassign where categoryID in ( :categoryID ) ) ';
-			qryParam.append({ categoryID: { value: arguments.categoryID, type: "varchar"}});
+			qryParam.append({ categoryID: { value: arguments.categoryID, cfsqltype: "varchar"}});
 		}
 
 		local.qryStr &= ' ORDER BY ' & arguments.sortby & ' ' & arguments.sortdirection;

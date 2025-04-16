@@ -27,15 +27,15 @@ component extends="mura.bean.beanORM"  table="tapprovalchains" entityname="appro
 			, params = {
 				publicPoolID: {
 					value: site.getPublicUserPoolID(),
-					type: "varchar"
+					cfsqltype: "varchar"
 				}
 				, privatePoolID: {
 					value: site.getPrivateUserPoolID(),
-					type: "varchar"
+					cfsqltype: "varchar"
 				}
 				,  chainid: {
 					value: getValue('chainid'),
-					type: "varchar"
+					cfsqltype: "varchar"
 				}
 			}
 		);
@@ -102,15 +102,15 @@ component extends="mura.bean.beanORM"  table="tapprovalchains" entityname="appro
 				, params = {
 					groupID: {
 						value: groupid,
-						type: "varchar"
+						cfsqltype: "varchar"
 					}
 					, firstID: {
 						value: firstid,
-						type: "varchar"
+						cfsqltype: "varchar"
 					}
 					,  chainID: {
 						value: getValue('chainID'),
-						type: "varchar"
+						cfsqltype: "varchar"
 					}
 				}
 			);
@@ -122,7 +122,7 @@ component extends="mura.bean.beanORM"  table="tapprovalchains" entityname="appro
 				, params = {
 					chainID: {
 						value: getValue('chainID'),
-						type: "varchar"
+						cfsqltype: "varchar"
 					}
 				}
 			);

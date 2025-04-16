@@ -30,11 +30,11 @@ component extends="mura.bean.beanORM"  table="tapprovalmemberships" entityname="
 			, params = {
 				groupid: {
 					value: getValue('groupid'),
-					type: "varchar"
+					cfsqltype: "varchar"
 				}
 				,  chainid: {
 					value: getValue('chainid'),
-					type: "varchar"
+					cfsqltype: "varchar"
 				}
 			}
 		);

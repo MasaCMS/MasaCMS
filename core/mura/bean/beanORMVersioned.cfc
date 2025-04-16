@@ -102,7 +102,7 @@ component extends="mura.bean.beanORM" versioned=true bundleable=true hint="This 
 				, params = {
 					contenthistid: {
 						value: arguments.contenthistid,
-						type: "varchar"
+						cfsqltype: "varchar"
 					}
 				}
 			);
@@ -114,7 +114,7 @@ component extends="mura.bean.beanORM" versioned=true bundleable=true hint="This 
 					, params = {
 						siteid: {
 							value: arguments.siteid,
-							type: "varchar"
+							cfsqltype: "varchar"
 						}
 					}
 				);
@@ -124,7 +124,7 @@ component extends="mura.bean.beanORM" versioned=true bundleable=true hint="This 
 					, params = {
 						siteid: {
 							value: arguments.siteid,
-							type: "varchar"
+							cfsqltype: "varchar"
 						}
 					}
 				);
