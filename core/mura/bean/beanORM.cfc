@@ -359,7 +359,7 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 			paramArgs =	{
 				'#paramName#' : {
 					value: paramValue
-					, type: paramType
+					, cfsqltype: paramType
 					, null: paramNull
 				}
 			};
@@ -428,7 +428,7 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 				, params = {
 					primarykey: {
 						value: variables.instance[getPrimaryKey()],
-						type: "varchar"
+						cfsqltype: "varchar"
 					}
 				}
 			);
@@ -743,7 +743,7 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 				, params = {
 					primarykey: {
 						value: variables.instance[getPrimaryKey()],
-						type: "varchar"
+						cfsqltype: "varchar"
 					}
 				}
 			);
@@ -1012,7 +1012,7 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 				, params = {
 					siteid: {
 						value: arguments.siteid,
-						type: "varchar"
+						cfsqltype: "varchar"
 					}
 				}
 				, options = { readOnly = true}

@@ -86,7 +86,7 @@ component extends="mura.bean.beanORM" historical=true bundleable=true hint="This
 			, params = {
 				primarykey: {
 					value: get(get('primaryKey')),
-					type: "varchar"
+					cfsqltype: "varchar"
 				}
 			}
 		);

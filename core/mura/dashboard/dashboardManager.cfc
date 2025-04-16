@@ -229,15 +229,15 @@ component extends="mura.cfobject" output="false" {
 			, params = {
 				urlToken: {
 					value: arguments.urlToken,
-					type: "varchar"
+					cfsqltype: "varchar"
 				}
 				, originalUrlToken: {
 					value: arguments.originalUrlToken,
-					type: "varchar"
+					cfsqltype: "varchar"
 				}
 				, entered: {
 					value: LSDateFormat(arguments.beforeDate,'mm/dd/yyyy'),
-					type: "timestamp"
+					cfsqltype: "timestamp"
 				}
 			}
 			, options = { readOnly = true}

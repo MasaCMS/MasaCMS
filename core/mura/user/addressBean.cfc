@@ -261,7 +261,7 @@ component extends="mura.bean.beanExtendable" entityName="address" table="tuserad
 			, params = {
 				addressid: {
 					value: getAddressID(),
-					type: "varchar"
+					cfsqltype: "varchar"
 				}
 			}
 		);

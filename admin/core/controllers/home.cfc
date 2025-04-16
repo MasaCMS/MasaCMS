@@ -100,7 +100,7 @@ component extends="controller" output="false" {
 				, params = {
 					siteID:  {
 						value: siteID
-						, type: "varchar"
+						, cfsqltype: "varchar"
 					}
 				}
 				, options = { dbtype = "query"}

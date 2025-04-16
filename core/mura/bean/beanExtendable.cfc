@@ -214,7 +214,7 @@ component extends="mura.bean.bean" output="false" hint="This provides functional
 					, params = {
 						name: {
 						value: arguments.name,
-						type: "varchar"
+						cfsqltype: "varchar"
 						}
 					}
 					, options = { dbtype = "query"}
@@ -227,7 +227,7 @@ component extends="mura.bean.bean" output="false" hint="This provides functional
 					, params = {
 						id: {
 						value: rsExtendSet.extendsetid,
-						type: "varchar"
+						cfsqltype: "varchar"
 						}
 					}
 					, options = { dbtype = "query"}

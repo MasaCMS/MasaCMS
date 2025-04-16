@@ -1247,7 +1247,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 			, params = {
 				siteid: {
 					value: variables.instance.siteid,
-					type: "varchar"
+					cfsqltype: "varchar"
 				}
 			}
 			, options = { readOnly = true}
@@ -1299,11 +1299,11 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 					, params = {
 						siteid: {
 							value: getValue('siteid'),
-							type: "varchar"
+							cfsqltype: "varchar"
 						}
 						, 	filepoolid: {
 							value: getValue('siteid'),
-							type: "varchar"
+							cfsqltype: "varchar"
 						}
 					}
 					, options = { readOnly = true }
@@ -1718,7 +1718,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 			, params = {
 				siteid: {
 					value: getValue('siteid'),
-					type: "varchar"
+					cfsqltype: "varchar"
 				}
 			}
 			, options = { readOnly = true}
@@ -2152,7 +2152,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 			, params = {
 				siteid: {
 					value: getValue('siteid'),
-					type: "varchar"
+					cfsqltype: "varchar"
 				}
 			}
 			, options = { readOnly = true}
