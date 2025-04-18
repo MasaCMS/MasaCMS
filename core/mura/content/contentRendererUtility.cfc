@@ -1637,9 +1637,9 @@
 			<cfcase value="Link,File">
 				<cfif not request.muraExportHTML>
 					<cfif arguments.hashURLS>
-						<cfset href=encodeForURL("#begin##arguments.renderer.getURLStem(arguments.siteid,'#arguments.filename##arguments.querystring#')#") />
+						<cfset href="#begin##arguments.renderer.getURLStem(arguments.siteid,'#arguments.filename##arguments.querystring#')#" />
 					<cfelse>
-						<cfset href=encodeForURL("#begin##arguments.renderer.getURLStem(arguments.siteid,'#arguments.filename#')##arguments.querystring#") />
+						<cfset href="#begin##arguments.renderer.getURLStem(arguments.siteid,'#arguments.filename#')##arguments.querystring#" />
 					</cfif>
 				<cfelseif arguments.type eq "Link">
 					<cfset href=arguments.bean.getBody()>
@@ -1649,9 +1649,9 @@
 			</cfcase>
 			<cfdefaultcase>
 				<cfif arguments.hashURLS>
-					<cfset href=encodeForURL("#begin##arguments.renderer.getURLStem(arguments.siteid,'#arguments.filename##arguments.querystring#')#") />
+					<cfset href="#begin##arguments.renderer.getURLStem(arguments.siteid,'#arguments.filename##arguments.querystring#')#" />
 				<cfelse>
-					<cfset href=encodeForURL("#begin##arguments.renderer.getURLStem(arguments.siteid,'#arguments.filename#')##arguments.querystring#") />
+					<cfset href="#begin##arguments.renderer.getURLStem(arguments.siteid,'#arguments.filename#')##arguments.querystring#" />
 				</cfif>
 			</cfdefaultcase>
 		</cfswitch>
