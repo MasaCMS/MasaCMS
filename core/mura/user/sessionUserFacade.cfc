@@ -243,7 +243,8 @@ component extends="mura.cfobject" output="false" hint="This provides access to t
 			} else {
 				var currentDateTime = now();
 				var milliseconds = datetimeFormat(currentDateTime,'lll');
-				var expires=dateTimeFormat(dateAdd('l',milliseconds,(currentDateTime + arguments.timespan)),'yyMMddHHnnsslll');
+//				var expires=dateTimeFormat(dateAdd('l',milliseconds,(currentDateTime + arguments.timespan)),'yyMMddHHnnsslll');
+				var expires=dateTimeFormat(dateAdd('h', 3, now()),'yyMMddHHnnsslll');
 			}
 			return {
 				expires=expires,

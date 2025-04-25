@@ -308,8 +308,7 @@ if ( !this.sessionManagement ) {
 	// How long do session vars persist?
 	if ( request.tracksession ) {
 		iniSessionTimeout = evalSetting(getINIProperty('sessionTimeout',180));
-		iniSessionTimeout = iniSessionTimeout >= 1 ? iniSessionTimeout : 180;
-		this.sessionTimeout = CreateTimeSpan(0,0,iniSessionTimeout,0);
+		this.sessionTimeout = iniSessionTimeout >= 1 ? iniSessionTimeout : 180;
 	} else {
 		this.sessionTimeout = CreateTimeSpan(0,0,0,2);
 	}
@@ -341,8 +340,9 @@ if ( request.muraSessionManagement && len(evalSetting(getINIProperty("cookiedoma
 }
 if ( len(getINIProperty("datasource","")) ) {
 	//  You can't depend on 9 supporting datasource as struct
-	if ( listFirst(SERVER.COLDFUSION.PRODUCTVERSION) > 9
-		or listGetAt(SERVER.COLDFUSION.PRODUCTVERSION,3) > 0 ) {
+	if ( structKeyExists(server, 'lucee') ) {
+		this.datasource = evalSetting(getINIProperty("datasource",""));
+	} else {
 		this.datasource = structNew();
 		this.datasource.name = evalSetting(getINIProperty("datasource",""));
 
@@ -354,8 +354,6 @@ if ( len(getINIProperty("datasource","")) ) {
 		if ( len(dbPassword) ) {
 			this.datasource.password = dbPassword;
 		}
-	} else {
-		this.datasource = evalSetting(getINIProperty("datasource",""));
 	}
 } else {
 	this.ormenabled=false;
@@ -399,7 +397,7 @@ if(request.muraInDocker && (len(getSystemEnvironmentSetting('MURA_DATABASE')) ||
 
 	param name="this.datasources" default={};
 
-	if(server.coldfusion.productname == 'lucee'){
+	if(server.coldfusion.productname == 'lucee' && !structKeyExists(server,'boxlang')){
 		driverVarName='type';
 		connectionStringVarName='connectionString';
 
@@ -426,7 +424,7 @@ if(request.muraInDocker && (len(getSystemEnvironmentSetting('MURA_DATABASE')) ||
 
 		switch(getSystemEnvironmentSetting('MURA_DBTYPE')){
 			case 'mysql':
-				driverName='MySQL5';
+				driverName='MySQL';
 				break;
 			case 'mssql':
 				driverName='MSSQLServer';
@@ -444,7 +442,7 @@ if(request.muraInDocker && (len(getSystemEnvironmentSetting('MURA_DATABASE')) ||
 	}
 
 	if (len(getSystemEnvironmentSetting('MURA_DBCONNECTIONSTRING'))) {
-		if(!structKeyExists(this.datasources,'#getSystemEnvironmentSetting('MURA_DATASOURCE')#')){
+		if(!structKeyExists(this.datasources,'#getSystemEnvironmentSetting('MURA_DATASOURCE')#') && !structKeyExists(server,'boxlang')){
 
 			this.datasources['#getSystemEnvironmentSetting('MURA_DATASOURCE')#']={
 				'#driverVarName#' = driverName
@@ -453,6 +451,19 @@ if(request.muraInDocker && (len(getSystemEnvironmentSetting('MURA_DATABASE')) ||
 				, 'password' = getSystemEnvironmentSetting('MURA_DBPASSWORD')
 				, 'clob' = true
 				, 'blob' = true
+			};
+
+			if (len(getSystemEnvironmentSetting('MURA_DBCLASS'))) {
+				this.datasources['#getSystemEnvironmentSetting('MURA_DATASOURCE')#'].class = getSystemEnvironmentSetting('MURA_DBCLASS');
+			}
+		} else {
+			this.datasources['#getSystemEnvironmentSetting('MURA_DATASOURCE')#']={
+				"driver" = "#getSystemEnvironmentSetting('MURA_DBTYPE')#"
+				, "host" = "#getSystemEnvironmentSetting('MURA_DBHOST')#"
+                , "port" = "#getSystemEnvironmentSetting('MURA_DBPORT')#"
+               	, "database" = "#getSystemEnvironmentSetting('MURA_DATASOURCE')#"
+				, "username" = "#getSystemEnvironmentSetting('MURA_DBUSERNAME')#"
+				, "password" = "#getSystemEnvironmentSetting('MURA_DBPASSWORD')#"
 			};
 
 			if (len(getSystemEnvironmentSetting('MURA_DBCLASS'))) {
@@ -516,7 +527,7 @@ if(request.muraInDocker && (len(getSystemEnvironmentSetting('MURA_DATABASE')) ||
 			};
 	}
 
-	if (server.coldfusion.productname == 'lucee') {
+	if (server.coldfusion.productname == 'lucee' && !structKeyExists(server,'boxlang')) {
 		if(len(getSystemEnvironmentSetting('MURA_DBTIMEZONE'))){
 			this.datasources["#getSystemEnvironmentSetting('MURA_DATASOURCE')#"].timezone=getSystemEnvironmentSetting('MURA_DBTIMEZONE');
 		}
@@ -539,7 +550,7 @@ if(request.muraInDocker && (len(getSystemEnvironmentSetting('MURA_DATABASE')) ||
 	}
 }
 
-if (server.coldfusion.productname == 'lucee') {
+if (server.coldfusion.productname == 'lucee'  && !structKeyExists(server,'boxlang')) {
 	if(len(getSystemEnvironmentSetting('MURA_MEMCACHEDSESSIONSERVER'))){
 		this.cache.connections["muramemcachedsessions"] = {
 				class: "org.lucee.extension.io.cache.memcache.MemCacheRaw"
@@ -640,6 +651,7 @@ function initINI(required string iniPath) output=false {
 	variables.ini = structNew();
 	file=fileRead(variables.iniPath);
 
+	
 	for(line in listToArray(file,"#chr(10)##chr(13)#")){
 		line=trim(line);
 
@@ -665,15 +677,15 @@ function initINI(required string iniPath) output=false {
 	 * Returns a struct with section names and values set to list of section entry names. This behaves much like the CF built-in function getProfileSections().
 	 */
 	struct function getINISections() output=false {
-	var sections = structNew();
-	var sectionName = "";
+		var sections = structNew();
+		var sectionName = "";
 
-	for(sectionName in ListToArray(structKeyList( variables.ini ))){
-		sections[ sectionName ] = structKeyList( variables.ini[ sectionName ] );
+		for(sectionName in ListToArray(structKeyList( variables.ini ))){
+			sections[ sectionName ] = structKeyList( variables.ini[ sectionName ] );
+		}
+
+		return sections;
 	}
-
-	return sections;
-}
 
 function evalSetting(value) output=false {
 	if ( left(arguments.value,2) == "${"

@@ -232,7 +232,7 @@ try{
 	dbUtility.setTable('tcontentpublicsubmissionapprovals')
 		.addPrimaryKey('contentID,siteID');
 } catch(Any e){
-	writeLog(serializeJSON(e));
+	writeLog(e);
 }
 
 try{

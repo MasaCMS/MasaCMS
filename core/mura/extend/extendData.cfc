@@ -90,14 +90,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="init" output="false">
 	<cfargument name="configBean">
 	<cfargument name="baseID"/>
-	<cfargument name="dataTable" required="true" default="tclassextenddata"/>
+	<cfargument name="dataTable" default="tclassextenddata"/>
 	<cfargument name="type"/>
 	<cfargument name="subType"/>
 	<cfargument name="siteID"/>
 	<cfargument name="sourceIterator" default=""/>
 
 	<cfset variables.configBean=arguments.configBean />
-	<cfset setBaseID(arguments.baseID)/>
+	<cfif structKeyExists(arguments,"baseID")>
+		<cfset setBaseID(arguments.baseID)/>
+	</cfif>
 	<cfset setDataTable(arguments.dataTable)/>
 	<cfset setDefinitions(arguments.configBean.getClassExtensionManager().getDefinitionsQuery())>
 
@@ -306,7 +308,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfquery name="rsCombine" dbtype="query">
 			select baseID, name, type, validation, label, attributeID, defaultValue, extendSetID<cfif variables.configBean.getDBType() neq "oracle">, attributeValue</cfif>
 			from rsExtended
-
+<!---
 			union all
 
 			select '' baseID, attributename as name, type, validation, label, attributeID, defaultValue, extendSetID<cfif variables.configBean.getDBType() neq "oracle">, '' attributeValue</cfif>
@@ -329,10 +331,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif rsExtended.recordcount>
 			and attributeID not in (#ListQualify(ValueList(rsExtended.attributeid), "'", ",", "char")#)
 			</cfif>
-
+--->
 		</cfquery>
 
-		<cfset queryAddColumn(rsCombine,"datetimevalue","cf_sql_Timestamp",arrayNew(1))>
+		<cfset queryAddColumn(rsCombine,"datetimevalue","timestamp",arrayNew(1))>
 		<cfloop query='rsExtended'>
 			<cfloop query='rsCombine'>
 				<cfif rsExtended.attributeID eq rsCombine.attributeID>
