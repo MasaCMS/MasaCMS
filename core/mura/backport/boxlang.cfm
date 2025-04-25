@@ -3,7 +3,7 @@
         cflog(type="Error", log="exception", exception=arguments.e);
     }
 
-    function parseXML(equired string xmlString){
+    function parseXML(required string xmlString){
         return xmlParse(xmlString);
     }
 

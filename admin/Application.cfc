@@ -350,7 +350,7 @@ component extends="framework" output="false" {
 		request.muraAdminRequest=true;
 
 		if(ListFirst(server.coldfusion.productVersion) >= 10){
-			param name="cookie.rb" default={value='',expires='never',httponly=true,secure=application.configBean.getSecureCookies()};
+			param name="cookie.rb" default={value='',expires=now().add("yyyy", 1),httponly=true,secure=application.configBean.getSecureCookies()};
 		} else {
 			param name="cookie.rb" default='';
 		}
@@ -360,7 +360,7 @@ component extends="framework" output="false" {
 		if(len(request.context.rb)){
 			session.rb=request.context.rb;
 			if(ListFirst(server.coldfusion.productVersion) >= 10){
-				cookie.rb={value="#session.rb#",expires="never",httponly=true,secure=application.configBean.getSecureCookies()};
+				cookie.rb={value="#session.rb#",expires=now().add("yyyy", 1),httponly=true,secure=application.configBean.getSecureCookies()};
 			}
 		}
 

@@ -74,6 +74,12 @@
 		<cfquery attributeCollection="#getQueryAttrs(name='rscheck')#">
 			select TABLE_NAME from user_tables
 		</cfquery>
+	<cfelseif  variables.dbtype eq'mysql'>
+		<cfquery attributeCollection="#getQueryAttrs(name='rscheck')#">
+			SELECT table_name 
+			FROM information_schema.tables 
+			WHERE table_schema = 'masadb'
+		</cfquery>
 	<cfelse>
 		<cfdbinfo attributeCollection="#getQueryAttrs(pattern='%',name='rsCheck',type='tables')#">
 	</cfif>
@@ -136,16 +142,29 @@
 			</cfcase>
 			--->
 			<cfcase value="mssql,postgresql">
-			<cfquery attributeCollection="#getQueryAttrs(name='rs')#">
-					select column_name,
-					character_maximum_length column_size,
-					data_type type_name,
-					column_default column_default_value,
-					is_nullable,
-					numeric_precision data_precision
-					from information_schema.columns
-					where lower(TABLE_NAME)='#lcase(arguments.table)#'
-			</cfquery>
+				<cfquery attributeCollection="#getQueryAttrs(name='rs')#">
+						select column_name,
+						character_maximum_length column_size,
+						data_type type_name,
+						column_default column_default_value,
+						is_nullable,
+						numeric_precision data_precision
+						from information_schema.columns
+						where lower(TABLE_NAME)='#lcase(arguments.table)#'
+				</cfquery>
+			</cfcase>
+
+			<cfcase value="mysql">
+				<cfquery attributeCollection="#getQueryAttrs(name='rs')#">
+						SELECT column_name,
+						character_maximum_length column_size,
+						data_type type_name,
+						column_default column_default_value,
+						is_nullable,
+						numeric_precision data_precision
+						FROM information_schema.columns
+						WHERE lower(TABLE_NAME)='#lcase(arguments.table)#'
+				</cfquery>
 			</cfcase>
 			<cfdefaultcase>
 				<cfdbinfo attributeCollection="#getQueryAttrs(name='rs',table='#qualifySchema(arguments.table)#',type='columns')#">
