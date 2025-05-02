@@ -210,12 +210,6 @@ component extends="controller" output="false" {
 				session.userFilesPath = "#application.configBean.getAssetPath()#/default/assets/";
 				arguments.rc.siteid="default";
 			}
-
-			if(!variables.settingsManager.getSite(arguments.rc.siteid).getRBFactory().isSupportedLocale(bean.getSiteLocale())) {
-				// Create deprecation warning when setting an unsupporrted Locale
-				arguments.rc.$.event().setValue("deprecationType","UnSupportedLocale");
-				arguments.rc.$.announceEvent('LogDeprecation');
-			}
 		}
 		if ( listFind(session.mura.memberships,'S2') ) {
 			variables.fw.redirect(action="cSettings.list",path="./");

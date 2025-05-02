@@ -230,16 +230,22 @@ to your own modified versions of Mura CMS.
 							<div class="mura-control-group">
 								<label>Locale</label>
 								<select name="siteLocale">
-								<option value="">Default</option>
-								<cfloop list="#listSort(server.coldfusion.supportedLocales,'textnocase','ASC')#" index="l">
-										<option value="#l#"<cfif rc.siteBean.getSiteLocale() eq l> selected</cfif>>
-											#l#
-											<cfif NOT application.rbFactory.isSupportedLocale(l)>
-												(not supported, deprecated)
-											</cfif>
+									<option value="">Default</option>
+
+									<cfif NOT application.rbFactory.isSupportedLocale(rc.siteBean.getSiteLocale())>
+										<option value="#rc.siteBean.getSiteLocale()#" selected>
+											#rc.siteBean.getSiteLocale()# (NOT SUPPORTED)
 										</option>
+									</cfif>
+
+									<cfloop list="#listSort(server.coldfusion.supportedLocales,'textnocase','ASC')#" index="l">
+										<cfif application.rbFactory.isSupportedLocale(l)>
+											<option value="#l#"<cfif rc.siteBean.getSiteLocale() eq l> selected</cfif>>
+												#l#
+											</option>
+										</cfif>
 									</cfloop>
-							</select>
+								</select>
 							</div>
 
 							<div class="mura-control-group">
