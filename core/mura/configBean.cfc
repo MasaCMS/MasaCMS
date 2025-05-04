@@ -210,7 +210,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.cookiedomain=""/>
 <cfset variables.instance.cookiepath=""/>
 <cfset variables.instance.javaEnabled=true/>
-<cfset variables.instance.bCryptPasswords=true/>
 <cfset variables.instance.allowQueryCaching=true/>
 <cfset variables.instance.skipCleanFileCache=false/>
 <cfset variables.instance.saveEmptyExtendedValues=true/>
