@@ -147,16 +147,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		(
 
 		 variables.configBean.getEncryptPasswords()
-		 and
-		 	(
-		 		(
-		 			variables.configBean.getJavaEnabled()
-		 			and variables.configBean.getBCryptPasswords()
-		 			and variables.globalUtility.checkBCryptHash(arguments.password,rsUser.password)
-		 		)
-				OR
-				hash(arguments.password,application.configBean.getDefaultHashAlgorithm()) eq rsUser.password
-			)
+		 and variables.globalUtility.checkBCryptHash(arguments.password,rsUser.password)
+
 		)
 	)>
 		<cfquery  name="rsUser" dbtype="query">
@@ -164,14 +156,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			where 0=1
 		</cfquery>
 	</cfif>
-	<cfif variables.configBean.getJavaEnabled()
-		and variables.configBean.getBCryptPasswords()
-		and rsUser.recordcount
-		and variables.configBean.getEncryptPasswords()
-		and hash(arguments.password,application.configBean.getDefaultHashAlgorithm()) eq rsuser.password>
-		<cfset variables.userDAO.savePassword(rsuser.userid,arguments.password)>
-	</cfif>
-
 	<cfreturn rsUser>
 
 </cffunction>

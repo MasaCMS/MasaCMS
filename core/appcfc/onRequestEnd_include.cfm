@@ -83,14 +83,4 @@ if ( isDefined("application.eventManager") ) {
 		application.eventManager.announceEvent("onGlobalRequestEnd",createObject("component","mura.event").init());
 	}
 }
-
-// Send deprecation warning about not using the BCrypt Hashing for passwords; only do this once
-if(structKeyExists(application,"sendDeprecationWarningNonBCryptPasswords") && application.sendDeprecationWarningNonBCryptPasswords){
-	variables.current$ = application.serviceFactory.getBean('$').init();
-	variables.current$.event().setValue("deprecationType","NonBCryptPasswords");
-	application.eventManager.announceEvent("LogDeprecation",variables.current$);
-	// set flag to false
-	application.sendDeprecationWarningNonBCryptPasswords = false;
-}
-
 </cfscript>

@@ -15,7 +15,6 @@ assetpath=
 autodiscoverplugins=false
 autoresetpasswords=false
 autoupdateurl=https://github.com/MasaCMS/MasaCMS/archive/main.zip
-bcryptpasswords=true
 clientmanagement=false
 clientstorage=
 confirmsaveasdraft=true

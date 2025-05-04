@@ -468,52 +468,51 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="allowFeed" output="false" returntype="boolean">
-			<cfargument name="feedBean" type="any"  />
-			<cfargument name="username"  type="string" default="" />
-			<cfargument name="password"  type="string" default="" />
-			<cfargument name="userID"  type="string" default="" />
+	<cfargument name="feedBean" type="any"  />
+	<cfargument name="username"  type="string" default="" />
+	<cfargument name="password"  type="string" default="" />
+	<cfargument name="userID"  type="string" default="" />
 
-			<cfset var rs="" />
-			<cfset var rLen=listLen(arguments.feedBean.getRestrictGroups()) />
-			<cfset var G = 0 />
-			<cfset var sessionData=getSession()>
+	<cfset var rs="" />
+	<cfset var rLen=listLen(arguments.feedBean.getRestrictGroups()) />
+	<cfset var G = 0 />
+	<cfset var sessionData=getSession()>
 
-			<cfif listFind(sessionData.mura.memberships,'S2IsPrivate;#arguments.feedBean.getSiteID()#')>
-				<cfreturn true />
-			<cfelseif arguments.feedBean.getIsNew()>
-				<cfreturn false>
-			<cfelseif  arguments.feedBean.getRestricted()>
-						<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-						select tusers.userid from tusers
-						<cfif rLen> inner join tusersmemb
-						on(tusers.userid=tusersmemb.userid)</cfif>
-						where tusers.type=2
-						<cfif len(arguments.userID)>
-							tusers.userID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.userID#">
-						<cfelse>
-						and tusers.username=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.username#">
-						and (tusers.password=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.password#">
-							or
-						     tusers.password=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#trim(hash(arguments.password,application.configBean.getDefaultHashAlgorithm()))#">)
-						</cfif>
-						and tusers.siteid='#application.settingsManager.getSite(arguments.feedBean.getSiteID()).getPublicUserPoolID()#'
+	<cfif listFind(sessionData.mura.memberships,'S2IsPrivate;#arguments.feedBean.getSiteID()#')>
+		<cfreturn true />
+	<cfelseif arguments.feedBean.getIsNew()>
+		<cfreturn false>
+	<cfelseif arguments.feedBean.getRestricted()>
+		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+			select tusers.userid, tusers.password  from tusers
+				<cfif rLen> inner join tusersmemb
+					on(tusers.userid=tusersmemb.userid)
+				</cfif>
+			where tusers.type=2
+				<cfif len(arguments.userID)>
+					and tusers.userID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.userID#">
+				<cfelse>
+					and tusers.username=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.username#">
+				</cfif>
+				and tusers.siteid='#application.settingsManager.getSite(arguments.feedBean.getSiteID()).getPublicUserPoolID()#'
 
-						<cfif rLen>
-						and tusersmemb.groupid in (
-						<cfloop from="1" to="#rlen#" index="g">
+				<cfif rLen>
+					and tusersmemb.groupid in (
+					<cfloop from="1" to="#rlen#" index="g">
 						<cfqueryparam cfsqltype="cf_sql_varchar" value="#listGetAt(arguments.feedBean.getRestrictGroups(),g)#">
 						<cfif g lt rlen>,</cfif>
-						</cfloop>)
-						</cfif>
-						</cfquery>
+					</cfloop>)
+				</cfif>
+		</cfquery>
 
-						<cfif not rs.recordcount>
-							<cfreturn false />
-						</cfif>
-			<cfelse>
-				<cfreturn true>
-			</cfif>
+		<cfif rs.recordcount GT 0 AND not len(arguments.userID)>
+			<cfreturn variables.globalUtility.checkBCryptHash(arguments.password,rs.password)>
+		</cfif>
 
+		<cfreturn rs.recordcount>
+	<cfelse>
+		<cfreturn true>
+	</cfif>
 </cffunction>
 
 <cffunction name="getDefaultFeeds" output="false">

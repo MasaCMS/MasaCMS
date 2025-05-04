@@ -9,7 +9,6 @@ component extends="mura.cfobject" {
 		, setCustomMuraScopeKey = "The function 'setCustomMuraScopeKey' has been deprecated. Please use the function 'setCustomMasaScopeKey' instead."
 		, MuraScopeObject = "The MuraScope.cfc object has been initialized. This will be replaced by the MasaScope.cfc object."
 		, SimpleHTMLForms = "A Simple Form has been created. Simple Forms are deprecated. Please use Forms (with the form builder) instead."
-		, NonBCryptPasswords = "You are using non BCrypt passwords hashes on this installation. Please update you password hashing to BCrypt. Non BCrypt hashes are deprecated."
 	};
 
 	public void function onLogDeprecation() {

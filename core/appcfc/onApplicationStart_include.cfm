@@ -1029,11 +1029,5 @@ if ( application.setupComplete ) {
 	application.sessionTrackingThrottle=false;
 
 	application.clusterManager.clearOldCommands();
-
-	//Check if bcryptpasswords are disabled
-	if(IsBoolean(application.configBean.getValue("bcryptpasswords")) && !application.configBean.getValue("bcryptpasswords")){
-		// Set flag to send a deprecation warning
-		application.sendDeprecationWarningNonBCryptPasswords = true;
-	}
 }
 </cfscript>
