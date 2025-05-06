@@ -110,7 +110,7 @@ component accessors=true output=false hint="This provides the ability to interac
 		charset="utf-8",
 		result = recaptchaResponse.result )
 		{
-		   cfhttpparam(type='formfield', name='secret', value=getSecret());
+		   cfhttpparam(type='formfield', name='secret', value=this.getSecret());
 		   cfhttpparam(type='formfield', name='remoteip', value=arguments.remoteip);
 		   cfhttpparam(type='formfield', name='response', value=arguments.response);
 	   };
@@ -119,7 +119,7 @@ component accessors=true output=false hint="This provides the ability to interac
 				method="post",
 				charset="utf-8",
 				result = recaptchaResponse.result ){
-			cfhttpparam(type='formfield', name='secret', value=getSecret());
+			cfhttpparam(type='formfield', name='secret', value=this.getSecret());
 			cfhttpparam(type='formfield', name='remoteip', value=arguments.remoteip);
 			cfhttpparam(type='formfield', name='response', value=arguments.response);
 		};
