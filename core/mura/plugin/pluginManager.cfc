@@ -172,37 +172,37 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	</cfquery>
 
-	<cfquery name="variables.rsScripts" dbtype="query">
+	<cfquery name="rsScripts" dbtype="query">
 	select * from rsScripts1
 	union
 	select * from rsScripts2
 	</cfquery>
 
-	<cfquery name="variables.rsScripts" dbtype="query">
+	<cfquery name="rsScripts" dbtype="query">
 	select * from rsScripts order by loadPriority
 	</cfquery>
 
 	<cfif not variables.eventHandlersLoaded>
-		<cfloop query="variables.rsScripts">
+		<cfloop query="rsScripts">
 			<cfset arrayAppend(variables.eventHandlers,variables.rsScripts.currentrow)>
 			<cfset handlerData=structNew()>
 			<cfset handlerData.index=arrayLen(variables.eventHandlers)>
-			<cfset handlerData.pluginName=variables.rsScripts.name>
+			<cfset handlerData.pluginName=rsScripts.name>
 
-			<cfif left(variables.rsScripts.runat,8) neq "onGlobal" and variables.rsScripts.runat neq "onApplicationLoad">
-				<cfset siteIDadjusted=adjustSiteID(variables.rsScripts.siteID)>
+			<cfif left(rsScripts.runat,8) neq "onGlobal" and rsScripts.runat neq "onApplicationLoad">
+				<cfset siteIDadjusted=adjustSiteID(rsScripts.siteID)>
 				<cfif not StructKeyExists(variables.siteListeners,siteIDadjusted)>
 					<cfset variables.siteListeners[siteIDadjusted]=structNew()>
 				</cfif>
-				<cfif not structKeyExists(variables.siteListeners[siteIDadjusted],variables.rsScripts.runat)>
-					<cfset variables.siteListeners[siteIDadjusted][variables.rsScripts.runat]=arrayNew(1)>
+				<cfif not structKeyExists(variables.siteListeners[siteIDadjusted],rsScripts.runat)>
+					<cfset variables.siteListeners[siteIDadjusted][rsScripts.runat]=arrayNew(1)>
 				</cfif>
-				<cfset arrayAppend( variables.siteListeners[siteIDadjusted][variables.rsScripts.runat] , handlerData)>
+				<cfset arrayAppend( variables.siteListeners[siteIDadjusted][rsScripts.runat] , handlerData)>
 			<cfelse>
-				<cfif not structKeyExists(variables.globalListeners,variables.rsScripts.runat)>
-					<cfset variables.globalListeners[variables.rsScripts.runat]=arrayNew(1)>
+				<cfif not structKeyExists(variables.globalListeners,rsScripts.runat)>
+					<cfset variables.globalListeners[rsScripts.runat]=arrayNew(1)>
 				</cfif>
-				<cfset arrayAppend( variables.globalListeners[variables.rsScripts.runat], handlerData)>
+				<cfset arrayAppend( variables.globalListeners[rsScripts.runat], handlerData)>
 			</cfif>
 		</cfloop>
 		<cfset variables.eventHandlersLoaded=true>
