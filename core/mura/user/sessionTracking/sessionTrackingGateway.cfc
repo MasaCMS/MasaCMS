@@ -288,14 +288,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	entered >=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd(arguments.spanType,-arguments.span,now())#">
 	<cfif arguments.siteID neq ''>
 	and tsessiontracking.siteID = 
-		<!---
-			Tried to conditionally use cachedwithin but it throws errors on some compilers when used with cfqueryparam
-			<cfif server.coldfusion.productname eq "ColdFusion Server" and listFirst(server.coldfusion.productversion) lt 8>
-			'#arguments.siteID#'
-		<cfelse>
-		--->
-			<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
-		<!---</cfif>--->
+		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
 	</cfif>
 	<cfif arguments.membersOnly>
 	and tsessiontracking.fname is not null

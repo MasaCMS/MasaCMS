@@ -1,14 +1,6 @@
 <cfif not isdefined('$')>
 	<cfcontent reset="yes" type="application/javascript">
-	<cfscript>
-		if(server.coldfusion.productname != 'ColdFusion Server'){
-			backportdir='';
-			include "/mura/backport/backport.cfm";
-		} else {
-			backportdir='/mura/backport/';
-			include "#backportdir#backport.cfm";
-		}
-	</cfscript>
+	<cfinclude template="/mura/backport/backport.cfm">
 	<cfif structKeyExists(url,"siteID")>
 		<cfset $=application.serviceFactory.getBean("MuraScope").init(url.siteID)>
 		<cfparam name="session.siteid" default="#url.siteid#">

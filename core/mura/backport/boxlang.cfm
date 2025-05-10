@@ -8,10 +8,15 @@
     }
 
     function masaFileWrite(required string filePath, required string data) {
-        fileWrite(filePath, data);
+        var writer = createObject("java", "java.io.BufferedWriter")
+            .init(createObject("java", "java.io.FilterWriter")
+                .init(arguments.filePath)
+            );
+        writer.write(data);
+        writer.close();
     }
 
     function masaFileCopy(required string source, required string destination) {
-        fileCopy(source, destination);
+        masaFileWrite(destination, fileRead(source));
     }
 </cfscript>

@@ -121,7 +121,7 @@ if (len( webRoot ) AND left( trim( context ), len( webRoot ) ) IS NOT webRoot) {
 }
 
 // determine server type
-theCFServer		= ((server.ColdFusion.ProductName CONTAINS "ColdFusion") ? 'ColdFusion': 'Lucee');
+theCFServer		= (structKeyExists(server, 'lucee') ? 'Lucee' : 'ColdFusion');
 
 // at this point we assume the installation it's setup yet and we need to show the form
 variables.setupProcessComplete	= false;
@@ -177,4 +177,3 @@ variables.setupProcessComplete	= false;
 <cfif not len(FORM.production_encryptionkey)>
 	<cfset FORM.production_encryptionkey=generateSecretKey('AES')>
 </cfif>
-<!--- <cfdump var="#form#" abort="true"> --->

@@ -75,16 +75,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 <cfsilent>
-<cfscript>
-	if(server.coldfusion.productname != 'ColdFusion Server'){
-		backportdir='';
-		include "/mura/backport/backport.cfm";
-	} else {
-		backportdir='/mura/backport/';
-		include "#backportdir#backport.cfm";
-	}
-</cfscript>
-
+<cfinclude template="/mura/backport/backport.cfm">
 <cfparam name="attributes.siteID" default="">
 <cfparam name="attributes.parentID" default="">
 <cfparam name="attributes.categoryID" default="">

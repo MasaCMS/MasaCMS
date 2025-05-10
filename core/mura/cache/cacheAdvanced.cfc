@@ -77,7 +77,7 @@ component extends="mura.cache.cacheAbstract" hint="This allows Masa CMS to use c
 
 	public any function init(name,siteid) {
 		lock name="creatingCache#arguments.name##arguments.siteid#" type="exclusive" timeout=90{
-			if ( ListFindNoCase('Railo,Lucee',  server.coldfusion.productname) ) {
+			if ( structKeyExists(server, 'lucee') ) {
 				variables.collection=new provider.cacheLucee(argumentCollection=arguments);
 			} else {
 				variables.collection=new provider.cacheAdobe(argumentCollection=arguments);

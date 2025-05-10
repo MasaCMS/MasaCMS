@@ -82,12 +82,6 @@ param name="application.instanceID" default=createUUID();
 setEncoding("url", "utf-8");
 setEncoding("form", "utf-8");
 
-if ( left(server.coldfusion.productversion,5) == "9,0,0" || listFirst(server.coldfusion.productversion) < 9 ) {
-
-	writeOutput("Masa CMS requires Adobe Coldfusion 9.0.1 or greater compatibility");
-
-	abort;
-}
 /*  Double check that the application has started properly.
 If it has not, set application.appInitialized=false. */
 try {
