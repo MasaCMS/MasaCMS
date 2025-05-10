@@ -206,7 +206,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfif arrayLen(updatedArray)>
-		<cfif server.ColdFusion.ProductName neq "Coldfusion Server">
+		<cfif structKetExists(server, 'lucee')>
 			<cfscript>pagePoolClear();</cfscript>
 		</cfif>
 	</cfif>

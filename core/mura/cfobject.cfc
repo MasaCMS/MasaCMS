@@ -78,13 +78,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  */
 component output="false" hint="This provides base functionality to all Masa CMS core objects" {
 
-	if(server.ColdFusion.ProductName != 'Coldfusion Server'){
-		backportdir='';
-		include "/mura/backport/backport.cfm";
-	} else {
-		backportdir='/mura/backport/';
-		include "#backportdir#backport.cfm";
-	}
+	include "/mura/backport/backport.cfm";
 
 	public function init() output=false {
 		return this;

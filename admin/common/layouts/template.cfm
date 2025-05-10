@@ -76,15 +76,7 @@ This file is part of Mura CMS.
 --->
 <cfoutput><cfprocessingdirective suppressWhitespace="true"><!DOCTYPE html>
 <cfif not isdefined('request.backported')>
-	<cfscript>
-		if(server.coldfusion.productname != 'ColdFusion Server'){
-			backportdir='';
-			include "/mura/backport/backport.cfm";
-		} else {
-			backportdir='/mura/backport/';
-			include "#backportdir#backport.cfm";
-		}
-	</cfscript>
+	<cfinclude template="/mura/backport/backport.cfm">
 </cfif>
 <cfif cgi.http_user_agent contains 'msie'>
 	<!--[if IE 8 ]><html class="mura ie ie8" lang="#esapiEncode('html_attr',session.locale)#"><![endif]-->

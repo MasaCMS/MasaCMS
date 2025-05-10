@@ -132,7 +132,7 @@
 			this.dbType = this.settingsIni.get( "production", "dbtype" );
 			//determine app server
 			this.CFServerType = "ColdFusion";
-			if (server.ColdFusion.ProductName CONTAINS "Railo" or server.ColdFusion.ProductName CONTAINS "Lucee"){
+			if (structKeyExists(server, "Lucee")) {
 				this.CFServerType = "Lucee";
 			}
 		</cfscript>

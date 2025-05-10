@@ -342,18 +342,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset setPluginDir("#getWebRoot()#/plugins")/>
 	</cfif>
 
-	<cfswitch expression="#server.coldfusion.productName#">
-	<cfcase value="Railo">
-		<cfset setCompiler("Railo")/>
-	</cfcase>
-	<cfcase value="Lucee">
-		<cfset setCompiler("Lucee")/>
-	</cfcase>
-	<cfdefaultcase>
-		<cfset setCompiler("Adobe")/>
-	</cfdefaultcase>
-	</cfswitch>
-
 	<cfif not len(variables.instance.readOnlyDatasource)>
 		<cfset variables.instance.readOnlyDatasource=variables.instance.datasource>
 	</cfif>
@@ -699,13 +687,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getCompiler" output="false">
-	<cfreturn variables.instance.compiler />
-</cffunction>
-
-<cffunction name="setCompiler" output="false">
-	<cfargument name="compiler" type="string" />
-	<cfset variables.instance.compiler = arguments.compiler />
-	<cfreturn this>
+	<cfif structKeyExists(server, 'boxlang')>
+		<cfreturn 'BoxLang' />
+	</cfif>
+	<cfif structKeyExists(server, 'lucee')>
+		<cfreturn 'Lucee' />
+	</cfif>
+	<cfreturn 'Adobe' />
 </cffunction>
 
 <cffunction name="getServerPort" output="false">
