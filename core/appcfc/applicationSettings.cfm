@@ -309,7 +309,7 @@ if ( !this.sessionManagement ) {
 	if ( request.tracksession ) {
 		iniSessionTimeout = evalSetting(getINIProperty('sessionTimeout',180));
 		iniSessionTimeout = iniSessionTimeout >= 1 ? iniSessionTimeout : 180;
-		this.sessionTimeout = (evalSetting(getINIProperty("sessionTimeout","180")) / 24) / 60;
+		this.sessionTimeout = CreateTimeSpan(0,0,iniSessionTimeout,0);
 	} else {
 		this.sessionTimeout = CreateTimeSpan(0,0,0,2);
 	}
