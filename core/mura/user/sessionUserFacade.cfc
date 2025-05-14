@@ -243,8 +243,12 @@ component extends="mura.cfobject" output="false" hint="This provides access to t
 			} else {
 				var currentDateTime = now();
 				var milliseconds = datetimeFormat(currentDateTime,'lll');
-//				var expires=dateTimeFormat(dateAdd('l',milliseconds,(currentDateTime + arguments.timespan)),'yyMMddHHnnsslll');
-				var expires=dateTimeFormat(dateAdd('h', 3, now()),'yyMMddHHnnsslll');
+
+				if ( server.keyExists("Boxlang") ) {
+					var expires=dateTimeFormat(createObject( "java", "java.util.Date" ).init(javaCast( "long", (currentDateTime + arguments.timespan.toMillis()) )),'yyMMddHHnnsslll');
+				} else {
+					var expires=dateTimeFormat(dateAdd('l',milliseconds,(currentDateTime + arguments.timespan)),'yyMMddHHnnsslll');
+				}
 			}
 			return {
 				expires=expires,
