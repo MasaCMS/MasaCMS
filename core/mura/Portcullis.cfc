@@ -264,9 +264,11 @@
 		<cfif isDefined("form.fieldnames") and variables.instance.checkReferer eq true and isSafeReferer() eq false>
 			<cfset blocked = true/>
  		<cfelse>
+			<!--- temp Boxlang workaround --->
+			<cfset iplog = variables.internal.iplog/>
 			<cfquery dbtype="query" name="find">
 			SELECT blocked
-			FROM variables.internal.iplog
+			FROM iplog
 			WHERE IP = <cfqueryparam cfsqltype="cf_sql_varchar" maxlength="100" value="#arguments.ipAddress#">
 			</cfquery>
 			<cfif find.blocked eq 1>
