@@ -317,6 +317,7 @@ this.timeout =  getINIProperty("requesttimeout","1000");
 //  define a list of custom tag paths.
 this.customtagpaths =  evalSetting(getINIProperty("customtagpaths",""));
 this.customtagpaths = listAppend(this.customtagpaths,variables.baseDir  &  "/core/mura/customtags/");
+this.customtagpaths = listAppend(this.customtagpaths,variables.baseDir  &  "/admin/core/views/carch");
 this.clientManagement = evalSetting(getINIProperty("clientManagement","false"));
 variables.clientStorageCheck=evalSetting(getINIProperty("clientStorage",""));
 if ( len(variables.clientStorageCheck) ) {
