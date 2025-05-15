@@ -97,66 +97,69 @@ to your own modified versions of Mura CMS.
     password="#FORM.production_dbpassword#",
     name="rs"
   }>
+
   <cfif not len(FORM.production_dbusername)>
     <cfset structDelete(queryAttrs,'username')>
     <cfset structDelete(queryAttrs,'password')>
   </cfif>
-  <cftry>
-    <!--- do not run if we do not have a datasource (bsoylu 6/6/2010)  --->
-    <cfif Form.production_datasource NEQ "" and IsDefined("Form.auto_create") AND IsBoolean(Form.auto_create) AND not Form.auto_create>
-      <!--- try to run a basic query --->
-      <cfquery attributeCollection="#queryAttrs#">
-        SELECT COUNT( contentid )
-        FROM tcontent
-      </cfquery>
-      <!--- state that the db is already created --->
-      <cfset dbCreated = true />
-    <cfelseif Form.production_datasource EQ "" AND IsDefined("Form.auto_create") AND IsBoolean(Form.auto_create) AND Form.auto_create>
-      <!--- set this to create DB (bsoylu 6/6/2010)  --->
-      <cfset errorType = "database" />
-    <cfelseif Form.production_datasource EQ "" AND IsDefined("Form.auto_create") AND IsBoolean(Form.auto_create) AND NOT Form.auto_create>
-      <!--- no datasource has been specified (bsoylu 6/6/2010)  --->
-      <cfset errorType = "datasource" />
-    <cfelse>
-      <!--- If we need to create a database & datasource --->
-      <cfset errorType = "database" />
-    </cfif>
-    <!--- purposly pose an error since the user decided to try and build the database --->
-    <!---
-    <cfif isDefined( "FORM.createDatabase" )>
-      <cfset errorType = "database" />
-    </cfif>
-    --->
-    <cfcatch type="database">
-      <!--- combine the message and detail so we can check against the both as the CFML engines do not contain similar structures of information --->
-      <cfset msg = cfcatch.message & cfcatch.detail />
-      <!--- check to see if the db is there --->
-      <cfif FindNoCase( "tcontent", msg ) or FindNoCase( "00942", msg )>
+  <cfif not server.keyExists('boxlang')>
+    <cftry>
+      <!--- do not run if we do not have a datasource (bsoylu 6/6/2010)  --->
+      <cfif Form.production_datasource NEQ "" and IsDefined("Form.auto_create") AND IsBoolean(Form.auto_create) AND not Form.auto_create >
+        <!--- try to run a basic query --->
+        <cfquery attributeCollection="#queryAttrs#">
+          SELECT COUNT( contentid )
+          FROM tcontent
+        </cfquery>
+        <!--- state that the db is already created --->
+        <cfset dbCreated = true />
+      <cfelseif Form.production_datasource EQ "" AND IsDefined("Form.auto_create") AND IsBoolean(Form.auto_create) AND Form.auto_create>
+        <!--- set this to create DB (bsoylu 6/6/2010)  --->
+        <cfset errorType = "database" />
+      <cfelseif Form.production_datasource EQ "" AND IsDefined("Form.auto_create") AND IsBoolean(Form.auto_create) AND NOT Form.auto_create >
+        <!--- no datasource has been specified (bsoylu 6/6/2010)  --->
+        <cfset errorType = "datasource" />
+      <cfelse>
+        <!--- If we need to create a database & datasource --->
         <cfset errorType = "database" />
       </cfif>
-      <!--- check to see if it's a datasource error --->
-      <cfif REFindNoCase( "datasource (.*?) doesn't exist", msg )
-        OR REFindNoCase( "can't connect to datasource (.*?)", msg )
-        OR FindNoCase( "Login failed", msg )
-        OR FindNoCase( "Access denied", msg )>
-        <cfset errorType = "datasource" />
+      <!--- purposly pose an error since the user decided to try and build the database --->
+      <!---
+      <cfif isDefined( "FORM.createDatabase" )>
+        <cfset errorType = "database" />
       </cfif>
-      <!--- check to see if it's a broken pipe error --->
-      <cfif FindNoCase( "broken pipe", msg )>
-        <cfset errorType = "brokenpipe" />
-      </cfif>
-      <!--- if an error is not caught then catch it anyways and log it to a file for review --->
-      <cfif not len(errorType)>
+      --->
+      <cfcatch type="database">
+        <!--- combine the message and detail so we can check against the both as the CFML engines do not contain similar structures of information --->
+        <cfset msg = cfcatch.message & cfcatch.detail />
+        <!--- check to see if the db is there --->
+        <cfif FindNoCase( "tcontent", msg ) or FindNoCase( "00942", msg )>
+          <cfset errorType = "database" />
+        </cfif>
+        <!--- check to see if it's a datasource error --->
+        <cfif REFindNoCase( "datasource (.*?) doesn't exist", msg )
+          OR REFindNoCase( "can't connect to datasource (.*?)", msg )
+          OR FindNoCase( "Login failed", msg )
+          OR FindNoCase( "Access denied", msg )>
+          <cfset errorType = "datasource" />
+        </cfif>
+        <!--- check to see if it's a broken pipe error --->
+        <cfif FindNoCase( "broken pipe", msg )>
+          <cfset errorType = "brokenpipe" />
+        </cfif>
+        <!--- if an error is not caught then catch it anyways and log it to a file for review --->
+        <cfif not len(errorType)>
+          <cfset errorType = "unknown" />
+          <cfset errorFile = recordError( cfcatch ) />
+        </cfif>
+      </cfcatch>
+      <cfcatch type="any">
+        <!--- if an error is not caught then catch it anyways and log it to a file for review --->
         <cfset errorType = "unknown" />
         <cfset errorFile = recordError( cfcatch ) />
-      </cfif>
-    </cfcatch>
-    <cfcatch type="any">
-      <!--- if an error is not caught then catch it anyways and log it to a file for review --->
-      <cfset errorType = "unknown" />
-      <cfset errorFile = recordError( cfcatch ) />
-    </cfcatch>
-  </cftry>
+      </cfcatch>
+    </cftry>
+  </cfif>
   <!--- check to make sure the dbtype is not blank --->
   <cfif FORM.production_dbtype IS "">
     <cfset errorType = "dbtype" />
@@ -226,7 +229,7 @@ to your own modified versions of Mura CMS.
             };
           </cfscript>
 
-            <cfif form.production_dbtype eq 'Oracle'>
+          <cfif form.production_dbtype eq 'Oracle'>
             <cfset form.production_dbtablespace=ucase(form.production_dbtablespace)>
 
             <cfquery attributeCollection="#queryAttrs#">
@@ -336,18 +339,18 @@ to your own modified versions of Mura CMS.
                   </cfif>
                 </cfloop>
               </cfcase>
-				<cfcase value="postgresql,nuodb">
-				  <cfset aSql = ListToArray(sql, ';')>
-				  <!--- loop over items --->
-				  <cfloop index="x" from="1" to="#arrayLen(aSql) - 1#">
-					<!--- we placed a small check here to skip empty rows --->
-					<cfif len( trim( aSql[x] ) )>
-					  <cfquery attributeCollection="#queryAttrs#">
-						#keepSingleQuotes(aSql[x])#
-					  </cfquery>
-					</cfif>
-				  </cfloop>
-				</cfcase>
+              <cfcase value="postgresql,nuodb">
+                <cfset aSql = ListToArray(sql, ';')>
+                <!--- loop over items --->
+                <cfloop index="x" from="1" to="#arrayLen(aSql) - 1#">
+                  <!--- we placed a small check here to skip empty rows --->
+                  <cfif len( trim( aSql[x] ) )>
+                    <cfquery attributeCollection="#queryAttrs#">
+                      #keepSingleQuotes(aSql[x])#
+                    </cfquery>
+                  </cfif>
+                </cfloop>
+              </cfcase>
             </cfswitch>
             <!--- update the domain to be local to the domain the server is being installed on --->
             <cfset domain=listFirst(cgi.http_host,":")>
@@ -365,7 +368,7 @@ to your own modified versions of Mura CMS.
                 galleryMainScaleBy='y',
                 galleryMainScale=600
             </cfquery>
-             <cfquery attributeCollection="#queryAttrs#">
+            <cfquery attributeCollection="#queryAttrs#">
               UPDATE tusers
               SET username=<cfqueryparam cfsqltype="cf_sql_varchar" value="#form.admin_username#">,
                 password=<cfqueryparam cfsqltype="cf_sql_varchar" value="#hash(form.admin_password,variables.production_defaulthashalgorithm)#">,
