@@ -101,10 +101,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.utility=arguments.utility>
 	<cfset variables.standardEventsHandler=arguments.standardEventsHandler>
 	<cfset variables.fileWriter=arguments.fileWriter>
-
-	<cfif variables.configBean.getJavaEnabled()>
-		<cfset variables.zipTool=createObject("component","mura.Zip")>
-	</cfif>
+	<cfset variables.zipTool=createObject("component","mura.Zip")>
 
 	<cfif isdefined("url.safemode") and isDefined("sessionData.mura.memberships") and listFindNoCase(sessionData.mura.memberships,"S2")>
 		<cfset loadPlugins(safeMode=true)>

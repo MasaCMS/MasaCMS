@@ -137,20 +137,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	and inactive=0
 	</cfquery>
 
-	<cfif rsUser.recordcount and not (
-		(
-		 not variables.configBean.getEncryptPasswords()
-		 and rsUser.password eq arguments.password
-		)
-		OR
-
-		(
-
-		 variables.configBean.getEncryptPasswords()
-		 and variables.globalUtility.checkBCryptHash(arguments.password,rsUser.password)
-
-		)
-	)>
+	<cfif rsUser.recordcount and not variables.globalUtility.checkBCryptHash(arguments.password,rsUser.password)>
 		<cfquery  name="rsUser" dbtype="query">
 			SELECT * FROM rsUser
 			where 0=1

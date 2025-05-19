@@ -89,9 +89,7 @@ to your own modified versions of Mura CMS.
 			<cfif rc.action eq "updateFiles">
 				<a class="btn" href="./?muraAction=cSettings.editSite&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-pencil"></i> Edit Site</a>
 			</cfif>
-			<cfif application.configBean.getJavaEnabled()>
-				<a  class="btn" href="?muraAction=cSettings.selectBundleOptions&siteID=#esapiEncode('url',rc.siteBean.getSiteID())#"><i class="mi-gift"></i> Create Site Bundle</a>
-			</cfif>
+			<a  class="btn" href="?muraAction=cSettings.selectBundleOptions&siteID=#esapiEncode('url',rc.siteBean.getSiteID())#"><i class="mi-gift"></i> Create Site Bundle</a>
 			<cfif len(rc.siteBean.getExportLocation()) and directoryExists(rc.siteBean.getExportLocation())>
 				<a  class="btn" href="##" onclick="confirmDialog('Export static HTML files to #esapiEncode("javascript","'#rc.siteBean.getExportLocation()#'")#.',function(){actionModal('./?muraAction=csettings.exportHTML&siteID=#rc.siteBean.getSiteID()#')});return false;"><i class="mi-share"></i> Export Static HTML (BETA)</a>
 			</cfif>
@@ -1181,7 +1179,6 @@ to your own modified versions of Mura CMS.
 
 		<!--- Site Bundles --->
 		<div id="tabBundles" class="tab-pane">
-			<cfif application.configBean.getJavaEnabled()>
 			<div class="block block-bordered">
 				<!-- block header -->
 			  <div class="block-header">
@@ -1281,15 +1278,6 @@ to your own modified versions of Mura CMS.
 				</cfif>
 
 			</div> <!--- /.block-content --->
-			<cfelse>
-			<div class="block block-bordered">
-				<div class="mura-control-group">
-					<div class="help-block-empty">
-						Java is disabled. This feature is unavailable.
-					</div>
-				</div>
-			</div>
-			</cfif>
 		</div> <!--- /.block --->
 	</div> <!--- /.tab-pane --->
 
