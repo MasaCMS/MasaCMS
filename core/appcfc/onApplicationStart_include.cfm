@@ -252,7 +252,7 @@ if ( application.setupComplete ) {
 			variables.serviceFactory.addAlias("contentGateway","contentGatewayLucee");
 		}
 
-		if(getINIProperty("javaEnabled",true) && not request.muraInDocker && getINIProperty("legacyJavaLoader",false)){
+		if(not request.muraInDocker && getINIProperty("legacyJavaLoader",false)){
 			variables.serviceFactory.addBean('javaLoader',
 					new mura.javaloader.JavaLoader(
 						loadPaths=[

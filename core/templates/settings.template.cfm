@@ -51,7 +51,6 @@ haslockablenodes=false
 HSTSMaxAge=1200
 imageinterpolation=highQuality
 indexfileinurls=true
-javaenabled=true
 javasettingsloadcoldfusionclasspath=true
 ;javasettingsloadpaths=/core/vendor/lib
 javasettingswatchextensions=jar,class

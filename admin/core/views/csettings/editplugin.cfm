@@ -87,7 +87,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="mura-header">
 	<h1>Plugin Settings</h1>
 
-	<cfif rsPlugin.recordcount and rsPlugin.deployed and application.configBean.getJavaEnabled()>
+	<cfif rsPlugin.recordcount and rsPlugin.deployed>
 		<div class="nav-module-specific btn-group">
 			<a class="btn" href="./?muraAction=cSettings.updatePluginVersion&moduleid=#esapiEncode('url',rc.moduleid)#"><i class="mi-gears"></i> Update Plugin Version</a>
 			<a class="btn" href="./index.cfm?muraAction=cSettings.createBundle&moduleid=#esapiEncode('url',rc.moduleid)#&siteID=&BundleName=#esapiEncode('url',application.serviceFactory.getBean('contentUtility').formatFilename(rsPlugin.name))#&bundleMode=plugin#rc.$.renderCSRFTokens(context='createbundle' & rc.moduleid, format='url')#"><i class="mi-download"></i> Create and Download Plugin Bundle</a>

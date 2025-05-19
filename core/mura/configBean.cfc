@@ -161,7 +161,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.scriptProtectExceptions="body,source,params,objectlist1,objectlist2,objectlist3,objectlist4,objectlist5,objectlist6,objectlist7,contenteditfield,content" />
 <cfset variables.instance.appreloadKey="appreload" />
 <cfset variables.instance.loginStrikes=4 />
-<cfset variables.instance.encryptPasswords=true />
 <cfset variables.instance.sessionTimeout=180 />
 <cfset variables.instance.tempDir="" />
 <cfset variables.instance.autoresetpasswords=true />
@@ -209,7 +208,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.sessioncookiesexpires="never"/>
 <cfset variables.instance.cookiedomain=""/>
 <cfset variables.instance.cookiepath=""/>
-<cfset variables.instance.javaEnabled=true/>
 <cfset variables.instance.allowQueryCaching=true/>
 <cfset variables.instance.skipCleanFileCache=false/>
 <cfset variables.instance.saveEmptyExtendedValues=true/>
@@ -1558,18 +1556,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getScriptProtect" returntype="boolean" output="false">
 	<cfreturn variables.instance.scriptProtect />
-</cffunction>
-
-<cffunction name="setEncryptPasswords" output="false">
-	<cfargument name="encryptPasswords" />
-	<cfif isBoolean(arguments.encryptPasswords)>
-		<cfset variables.instance.encryptPasswords = arguments.encryptPasswords />
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getEncryptPasswords" returntype="boolean" output="false">
-	<cfreturn variables.instance.encryptPasswords />
 </cffunction>
 
 <cffunction name="setAutoResetPasswords" output="false">
