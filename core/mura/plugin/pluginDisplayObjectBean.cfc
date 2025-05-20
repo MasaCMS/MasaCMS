@@ -202,7 +202,7 @@ function load() output=false {
 
 <cffunction name="loadByName"  output="false">
 	<cfset var rs=""/>
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery attributeCollection="#getQueryAttrs(name="rs")#">
 	select objectID,moduleID,name,location,displayobjectfile,displaymethod, docache, configuratorInit, configuratorJS
 	from tplugindisplayobjects
 	where moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getModuleID()#">
@@ -215,7 +215,7 @@ function load() output=false {
 
 <cffunction name="getQuery"  output="false">
 	<cfset var rs=""/>
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery attributeCollection="#getQueryAttrs(name="rs")#">
 	select objectID,moduleID,name,location,displayobjectfile,displaymethod, docache, configuratorInit, configuratorJS
 	from tplugindisplayobjects
 	where objectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getObjectID()#">
@@ -225,7 +225,7 @@ function load() output=false {
 </cffunction>
 
 <cffunction name="delete">
-	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery attributeCollection="#getQueryAttrs()#">
 	delete from tplugindisplayobjects
 	where objectID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getObjectID()#">
 	</cfquery>
@@ -237,9 +237,9 @@ function load() output=false {
 <cfset var pluginXML=""/>
 
 	<cfif not len(getLocation())>
-		<cfquery name="rsLocation" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		select location from tplugindisplayobjects
-		where moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getModuleID()#">
+		<cfquery attributeCollection="#getQueryAttrs(name="rsLocation")#">
+			select location from tplugindisplayobjects
+			where moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getModuleID()#">
 		</cfquery>
 
 		<cfif len(rsLocation.location)>
@@ -256,22 +256,22 @@ function load() output=false {
 
 	<cfif getQuery().recordcount>
 
-		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		update tplugindisplayobjects set
-			moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getModuleID()#">,
-			name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#left(getName(),50)#">,
-			location=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getLocation()#">,
-			displayObjectFile=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDisplayObjectFile()#">,
-			displayMethod=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDisplayMethod()#">,
-			docache=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDoCache()#">,
-			configuratorInit=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getConfiguratorInit()#">,
-			configuratorJS=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getconfiguratorJS()#">
-		where objectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getObjectID()#">
+		<cfquery attributeCollection="#getQueryAttrs()#">
+			update tplugindisplayobjects set
+				moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getModuleID()#">,
+				name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#left(getName(),50)#">,
+				location=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getLocation()#">,
+				displayObjectFile=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDisplayObjectFile()#">,
+				displayMethod=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDisplayMethod()#">,
+				docache=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDoCache()#">,
+				configuratorInit=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getConfiguratorInit()#">,
+				configuratorJS=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getconfiguratorJS()#">
+			where objectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getObjectID()#">
 		</cfquery>
 
 	<cfelse>
 
-		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery attributeCollection="#getQueryAttrs()#">
 			insert into tplugindisplayobjects (objectID,moduleID,name,location,displayobjectfile,displaymethod,docache,configuratorInit,configuratorJS) values (
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getObjectID()#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getModuleID()#">,

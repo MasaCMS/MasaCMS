@@ -1,4 +1,4 @@
-<cfquery name="variables.rsTotal" datasource="#application.configBean.getDatasource(mode='readOnly')#" username="#application.configBean.getDBUsername(mode='readOnly')#" password="#application.configBean.getDBPassword(mode='readOnly')#">
+<cfquery attributeCollection="#application.configBean.getReadOnlyQRYAttrs(name="variables.rsTotal")#">
 select count(pollValue) as qty from tformresponsequestions where FormID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#$.event('formBean').getValue('contentID')#"/> and pollValue is not null
 </cfquery>
 
@@ -6,7 +6,7 @@ select count(pollValue) as qty from tformresponsequestions where FormID=<cfquery
 <ul class="pollResults">
 <cfloop list="#request.polllist#" index="variables.i">
 <cfsilent>
-	<cfquery name="variables.rsSubTotal" datasource="#application.configBean.getDatasource(mode='readOnly')#" username="#application.configBean.getDBUsername(mode='readOnly')#" password="#application.configBean.getDBPassword(mode='readOnly')#">
+	<cfquery attributeCollection="#application.configBean.getReadOnlyQRYAttrs(name="variables.rsSubTotal")#">
 		SELECT tformresponsequestions.pollValue, Count(tformresponsequestions.pollValue) AS qty
 		FROM tformresponsequestions
 		GROUP BY tformresponsequestions.pollValue, tformresponsequestions.formID

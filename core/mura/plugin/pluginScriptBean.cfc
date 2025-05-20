@@ -117,28 +117,28 @@ function load() output=false {
 
 <cffunction name="getQuery"  output="false">
 	<cfset var rs=""/>
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	select scriptID, moduleID, scriptfile, runat, docache from tpluginscripts where scriptID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getScriptID()#">
+	<cfquery attributeCollection="#getQueryAttrs(name="rs")#">
+		select scriptID, moduleID, scriptfile, runat, docache from tpluginscripts where scriptID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getScriptID()#">
 	</cfquery>
 
 	<cfreturn rs/>
 </cffunction>
 
 <cffunction name="delete">
-	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	delete from tpluginscripts
-	where scriptID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getScriptID()#">
+	<cfquery attributeCollection="#getQueryAttrs()#">
+		delete from tpluginscripts
+		where scriptID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getScriptID()#">
 	</cfquery>
 </cffunction>
 
-<cffunction name="save"  output="false">
-<cfset var rs=""/>
-<cfset var rsLocation=""/>
-<cfset var pluginXML=""/>
+<cffunction name="save" output="false">
+	<cfset var rs=""/>
+	<cfset var rsLocation=""/>
+	<cfset var pluginXML=""/>
 
 	<cfif getQuery().recordcount>
 
-		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery attributeCollection="#getQueryAttrs()#">
 		update tpluginscripts set
 			moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.moduleID#">,
 			runat=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.runAt#">,
@@ -149,7 +149,7 @@ function load() output=false {
 
 	<cfelse>
 
-		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery attributeCollection="#getQueryAttrs()#">
 			insert into tpluginscripts (scriptID,moduleID,runat,scriptfile,docache) values (
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getScriptID()#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.moduleID#">,

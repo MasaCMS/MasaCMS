@@ -52,7 +52,7 @@ Access Restricted.
 	<cfset result = application.settingsManager.pushBundle(siteID, bundleFileName, serverArgs)>
 	<cfoutput>
 		<cfif trim(result) contains "Deployment Successful">
-			<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
+			<cfquery attributeCollection="#application.configBean.getQueryAttrs()#">
 				update tsettings set lastDeployment = #createODBCDateTime(now())#
 				where siteID = <cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#siteID#">
 			</cfquery>

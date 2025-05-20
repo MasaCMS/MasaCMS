@@ -147,12 +147,12 @@ Mura CMS.
 			<cfset arguments.data=arguments.data.getAllValues()>
 		</cfif>
 		
-		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+		<cfquery attributeCollection="#getQueryAttrs(name="rs", readOnly=true)#">
 			select emailID from temails where emailID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.emailID#">
 		</cfquery>
 		
 		<cfif structKeyExists(arguments.data,"fromMuraTrash")>
-			<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+			<cfquery attributeCollection="#getQueryAttrs(name="rs")#">
 			update temails set isDeleted=0 where emailID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.emailID#">
 			</cfquery>
 			<cfset emailBean=read(arguments.data.emailID)>

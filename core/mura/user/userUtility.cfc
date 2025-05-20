@@ -99,7 +99,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getUserData">
 	<cfargument name="userid" type="string" default="#getSession().mura.userID#">
 	<cfset var rsuser=""/>
-	<cfquery name="rsuser" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery attributeCollection="#getQueryAttrs(name="rsuser", readOnly=true)#">
 	select * from tusers where userid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#">
 	</cfquery>
 	<cfreturn rsuser>
@@ -130,11 +130,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cfif>
 
-	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsUser')#">
-	SELECT * FROM tusers WHERE
-	username=<cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.username)#">
-	AND Type = 2
-	and inactive=0
+	<cfquery attributeCollection="#getQueryAttrs(name="rsUser", readOnly=true)#">
+		SELECT * FROM tusers WHERE
+		username=<cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.username)#">
+		AND Type = 2
+		and inactive=0
 	</cfquery>
 
 	<cfif rsUser.recordcount and not variables.globalUtility.checkBCryptHash(arguments.password,rsUser.password)>

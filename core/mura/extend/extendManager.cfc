@@ -186,14 +186,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="buildDefinitionsQuery" output="false">
-<cfargument name="datasource" required="true" default="#application.configBean.getDatasource()#">
-<cfargument name="dbUsername" required="true" default="#application.configBean.getDbUsername()#">
-<cfargument name="dbPassword" required="true" default="#application.configBean.getDbPassword()#">
+	<cfargument name="datasource" required="true" default="#application.configBean.getDatasource()#">
+	<cfargument name="dbUsername" required="true" default="#application.configBean.getDbUsername()#">
+	<cfargument name="dbPassword" required="true" default="#application.configBean.getDbPassword()#">
+	
 	<cfset var rs="">
 
-	<cfif arguments.datasource neq variables.configBean.getDatasource()>
-		<cfset arguments.dbUsername="">
-		<cfset arguments.dbPassword="">
+	<cfset attributeCollection = getQueryAttrs(name="rs", readOnly=true) />
+	<cfif arguments.datasource neq attributeCollection.datasource>
+		<cfset attributeCollection.datasource = arguments.datasource />
+		<cfset attributeCollection.username = arguments.dbUsername />
+		<cfset attributeCollection.password = arguments.dbPassword />
 	</cfif>
 
 	<cfif variables.configBean.getDBType() eq 'MSSQL'>
@@ -202,7 +205,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var tableModifier="">
 	</cfif>
 
-		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
+	<cfquery attributeCollection="#attributeCollection#">
 		select tclassextend.subtypeid, tclassextend.siteid, tclassextend.basekeyfield, tclassextend.datatable, tclassextend.type,
 		tclassextend.subtype, tclassextendsets.extendsetid, tclassextendsets.categoryid, tclassextendsets.name extendsetname,
 		tclassextendsets.container, tclassextendattributes.attributeid, tclassextendattributes.name attributename,

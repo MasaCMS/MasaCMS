@@ -97,12 +97,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset var rsFeeds ="" />
 
-	<cfquery name="rsFeeds" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-	select * from tcontentfeeds
-	where siteID= <cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.siteID#">
-	and Type= <cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.type#">
-	<cfif arguments.publicOnly>
-	and isPublic=1
+	<cfquery attributeCollection="#getQueryAttrs(name="rsFeeds", readOnly=true)#">
+		select * from tcontentfeeds
+		where siteID= <cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.siteID#">
+		and Type= <cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.type#">
+		<cfif arguments.publicOnly>
+		and isPublic=1
 	</cfif>
 
 	<cfif arguments.activeOnly>
@@ -119,11 +119,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset var rsDefaultFeeds ="" />
 
-	<cfquery name="rsDefaultFeeds" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-	select * from tcontentfeeds
-	where siteID= <cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.siteID#">
-	and isDefault=1
-	order by name
+	<cfquery attributeCollection="#getQueryAttrs(name="rsDefaultFeeds", readOnly=true)#">
+		select * from tcontentfeeds
+		where siteID= <cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.siteID#">
+		and isDefault=1
+		order by name
 	</cfquery>
 
 	<cfreturn rsDefaultFeeds />
@@ -955,18 +955,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var theListLen =listLen(arguments.feedBean.getContentID()) />
 	<cfset var I = 0 />
 
-	<cfquery name="rsFeedItems" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	select contentID, menutitle, type, siteid from tcontent where
-	active=1 and
-	<cfif theListLen>
-	(<cfloop from="1" to="#theListLen#" index="I">
-	contentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#listGetAt(arguments.feedBean.getContentID(),I)#" />
-	<cfif I lt theListLen> or </cfif>
-	</cfloop>)
-	AND siteID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.feedBean.getContentPoolID()#" />)
-	<cfelse>
-	tcontent.contentid=''
-	</cfif>
+	<cfquery attributeCollection="#getQueryAttrs(name="rsFeedItems")#">
+		select contentID, menutitle, type, siteid from tcontent where
+		active=1 and
+		<cfif theListLen>
+		(<cfloop from="1" to="#theListLen#" index="I">
+		contentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#listGetAt(arguments.feedBean.getContentID(),I)#" />
+		<cfif I lt theListLen> or </cfif>
+		</cfloop>)
+		AND siteID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.feedBean.getContentPoolID()#" />)
+		<cfelse>
+		tcontent.contentid=''
+		</cfif>
 	</cfquery>
 
 	<cfreturn rsFeedItems />
@@ -978,20 +978,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset var rsFeedByCategory ="" />
 
-	<cfquery name="rsFeedByCategory" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-
-	SELECT name, channelLink, type
-	FROM tcontentfeeds
-	where feedID in
-	(select feedID from tcontentfeeditems where itemID
-	<cfif arguments.categoryID eq "all">
-	in (select categoryID from tcontentcategories where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />)
-	<cfelse>
-	 = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.categoryID#" />
-	 </cfif>
-	 and type = 'categoryID')
-	 and siteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
-
+	<cfquery attributeCollection="#getQueryAttrs(name="rsFeedByCategory")#">
+		SELECT name, channelLink, type
+		FROM tcontentfeeds
+		where feedID in
+		(select feedID from tcontentfeeditems where itemID
+		<cfif arguments.categoryID eq "all">
+		in (select categoryID from tcontentcategories where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />)
+		<cfelse>
+		= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.categoryID#" />
+		</cfif>
+		and type = 'categoryID')
+		and siteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 	</cfquery>
 
 	<cfreturn rsFeedByCategory />
@@ -1003,14 +1001,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset var rsFeedTypeCount= ''/>
 
-	<cfquery name="rsFeedTypeCount" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	select count(*) as Total from tcontentfeeds
-	where isactive=1
-	<cfif arguments.siteID neq ''>
-	and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-	</cfif>
-	<cfif arguments.type neq ''>
-	and type=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#"/>
+	<cfquery attributeCollection="#getQueryAttrs(name="rsFeedTypeCount")#">
+		select count(*) as Total from tcontentfeeds
+		where isactive=1
+		<cfif arguments.siteID neq ''>
+		and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+		</cfif>
+		<cfif arguments.type neq ''>
+		and type=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#"/>
 	</cfif>
 
 	</cfquery>

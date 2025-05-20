@@ -160,12 +160,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset redirectID=createUUID() />
 				<cfset reviewLink='#application.settingsManager.getSite(arguments.siteID).getScheme()#://#application.settingsManager.getSite(arguments.siteID).getDomain()##variables.configBean.getServerPort()##application.configBean.getContext()#/index.cfm/_api/render/file/?fileID=#fields["#form_element#"]#&method=attachment' />
 
-				<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-				insert into tredirects (redirectID,URL,created) values(
-				<cfqueryparam cfsqltype="cf_sql_varchar" value="#redirectID#" >,
-				<cfqueryparam cfsqltype="cf_sql_varchar" value="#reviewLink#" >,
-				<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
-				)
+				<cfquery attributeCollection="#getQueryAttrs()#">
+					insert into tredirects (redirectID,URL,created) values(
+						<cfqueryparam cfsqltype="cf_sql_varchar" value="#redirectID#" >,
+						<cfqueryparam cfsqltype="cf_sql_varchar" value="#reviewLink#" >,
+						<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
+					)
 				</cfquery>
 
 				<cfset tmt_mail_body = tmt_mail_body & form_element & ": " & "#application.settingsManager.getSite(arguments.siteID).getScheme()#://#application.settingsManager.getSite(arguments.siteID).getDomain()##variables.configBean.getServerPort()##application.configBean.getContext()##variables.contentRenderer.getURLStem(arguments.siteID,redirectID)#" & tmt_cr>

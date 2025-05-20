@@ -363,11 +363,11 @@ This file is part of Mura CMS.
 <cffunction name="createRedirectID" output="false">
 	<cfargument name="theLink" required="true">
 	<cfset var redirectID= createUUID() />
-	<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery attributeCollection="#getQueryAttrs()#">
 		insert into tredirects (redirectID,URL,created) values(
-		<cfqueryparam cfsqltype="cf_sql_varchar" value="#redirectID#" >,
-		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.theLink#" >,
-		#createODBCDateTime(now())#
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#redirectID#" >,
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.theLink#" >,
+			#createODBCDateTime(now())#
 		)
 	</cfquery>
 
