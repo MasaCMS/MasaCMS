@@ -604,20 +604,20 @@ This file is part of Mura CMS.
 					<cfif isdefined('rc.orderid') >
 						<cfloop from="1" to="#listlen(rc.orderid)#" index="i">
 							<cfset newOrderNo=(rc.startrow+i)-1>
-							<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" >
+							<cfquery attributeCollection="#application.configBean.getQueryAttrs()#">
 							update tcontent set orderno= #newOrderNo# where contentid ='#listgetat(rc.orderid,i)#'
 							</cfquery>
 						</cfloop>
 					</cfif>
 
-					<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" >
+					<cfquery attributeCollection="#application.configBean.getQueryAttrs()#">
 					update tcontent set sortBy='#rc.sortBy#',sortDirection='#rc.sortDirection#' where contentid ='#rc.topid#'
 					</cfquery>
 
 					<cfif rc.sortBy eq 'orderno' and  not isdefined('rc.orderid')>
 						<cfset rsSetOrder=application.contentManager.getNest('#rc.topid#',rc.siteid,rc.rsTop.sortBy,rc.rsTop.sortDirection)>
 						<cfloop query="rsSetOrder">
-							<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" >
+							<cfquery attributeCollection="#application.configBean.getQueryAttrs()#">
 							update tcontent set orderno= #rsSetOrder.currentrow# where contentid ='#rsSetOrder.contentID#'
 							</cfquery>
 						</cfloop>

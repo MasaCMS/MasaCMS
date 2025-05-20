@@ -89,39 +89,39 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="updateGlobalMaterializedPath" output="false">
-<cfargument name="siteID">
-<cfargument name="parentID" required="true" default="">
-<cfargument name="path" required="true" default=""/>
-<cfargument name="datasource" required="true" default="#variables.dsn#"/>
+	<cfargument name="siteID">
+	<cfargument name="parentID" required="true" default="">
+	<cfargument name="path" required="true" default=""/>
+	<cfargument name="datasource" required="true" default="#variables.dsn#"/>
 
-<cfset var rs="" />
-<cfset var newPath = "" />
-<cfset var updateDSN=arguments.datasource>
-<cfset var updatePWD="">
-<cfset var updateUSER="">
+	<cfset var rs="" />
+	<cfset var newPath = "" />
+	<cfset var updateDSN=arguments.datasource>
+	<cfset var updatePWD="">
+	<cfset var updateUSER="">
 
-<cfif updateDSN eq variables.dsn>
-	<cfset updatePWD=variables.configBean.getDBPassword()>
-	<cfset updateUSER=variables.configBean.getDBUsername()>
-</cfif>
+	<cfset attributeCollection = getQueryAttrs(name="rs") />
+	<cfif updateDSN neq variables.dsn>
+		<cfset attributeCollection.datasource = updateDSN />
+	</cfif>
 
-<cfquery name="rs" datasource="#updateDSN#" username="#updateUSER#" password="#updatePWD#">
-select categoryID from tcontentcategories
-where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
-<cfif arguments.parentID neq ''>
-and parentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentID#" />
-<cfelse>
-and parentID is null
-</cfif>
-</cfquery>
+	<cfquery attributeCollection="#attributeCollection#">
+		select categoryID from tcontentcategories
+		where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
+		<cfif arguments.parentID neq ''>
+			and parentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentID#" />
+		<cfelse>
+			and parentID is null
+		</cfif>
+	</cfquery>
 
 	<cfloop query="rs">
 		<cfset newPath=listappend(arguments.path,rs.categoryID) />
-		<cfquery datasource="#updateDSN#" username="#updateUSER#" password="#updatePWD#">
-		update tcontentcategories
-		set path=<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#newPath#" />
-		where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
-		and categoryID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.categoryID#" />
+		<cfquery attributeCollection="#attributeCollection#">
+			update tcontentcategories
+			set path=<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#newPath#" />
+			where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
+			and categoryID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.categoryID#" />
 		</cfquery>
 		<cfset this.updateGlobalMaterializedPath(arguments.siteID,rs.categoryID,newPath,updateDSN) />
 	</cfloop>

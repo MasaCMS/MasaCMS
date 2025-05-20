@@ -20,8 +20,8 @@
 <cffunction name="getQuery" output="false">
 	<cfset var rs="">
 
-	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
-	select * from tuserstrikes where username=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.username#">
+	<cfquery attributeCollection="#getQueryAttrs(name="rs", readOnly=true)#">
+		select * from tuserstrikes where username=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.username#">
 	</cfquery>
 
 	<cfif not rs.recordcount>

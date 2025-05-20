@@ -95,7 +95,7 @@ Mura CMS.
 
 	<cffunction name="create" output="false">
 		<cfargument name="emailBean" type="any" />
-		<cfquery  datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery attributeCollection="#getQueryAttrs()#">
 	        INSERT INTO temails  (EmailID, Subject,BodyText, BodyHtml,
 			  CreatedDate, LastUpdateBy, LastUpdateByID, GroupList, Status, DeliveryDate, siteid, replyto,format,fromLabel,template)
 	     VALUES(
@@ -127,7 +127,7 @@ Mura CMS.
 		<cfset var emailBean=getBean("email") />
 		<cfset var rs ="" />
 		
-		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+		<cfquery attributeCollection="#getQueryAttrs(name="rs", readOnly=true)#">
 		Select * from temails where 
 		emailid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.emailID#" />
 		</cfquery>
@@ -142,7 +142,7 @@ Mura CMS.
 	<cffunction name="update" output="false" >
 		<cfargument name="emailBean" type="any" />
 		
-	 	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	 	<cfquery attributeCollection="#getQueryAttrs()#">
 	 		UPDATE temails set 
 			 subject =  <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.emailBean.getSubject() neq '',de('no'),de('yes'))#" value="#arguments.emailBean.getSubject()#">, 
 			
@@ -167,15 +167,15 @@ Mura CMS.
 	<cffunction name="delete" output="false" >
 		<cfargument name="emailid" type="string" />
 		
-		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" >
-		<!---DELETE FROM temails where emailid='#arguments.emailID#'  --->
-		UPDATE temails
-		SET isDeleted = 1
-		where emailid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.emailID#" />
+		<cfquery attributeCollection="#getQueryAttrs()#">
+			<!---DELETE FROM temails where emailid='#arguments.emailID#'  --->
+			UPDATE temails
+			SET isDeleted = 1
+			where emailid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.emailID#" />
 		</cfquery>
 		
 		<!--- need to track emails, so don't delete from this log
-		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" >
+		<cfquery attributeCollection="#getQueryAttrs()#">
 		DELETE FROM temailstats where emailid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.emailID#" />
 		</cfquery>
 		--->

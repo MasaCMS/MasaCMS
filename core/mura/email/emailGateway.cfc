@@ -97,7 +97,7 @@ Mura CMS.
 		<cfargument name="siteid" type="string" />
 		<cfset var rsPrivateGroups = "" />
 	
-		<cfquery name="rsPrivateGroups" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+		<cfquery attributeCollection="#getQueryAttrs(name="rsPrivateGroups", readOnly=true)#">
 			select * from tusers where ispublic=0 and type=1 and siteid='#application.settingsManager.getSite(arguments.siteid).getPrivateUserPoolId()#'  order by groupname
 		</cfquery>
 		
@@ -107,7 +107,7 @@ Mura CMS.
 	<cffunction name="getPublicGroups" output="false">
 		<cfargument name="siteid" type="string" />
 		<cfset var rs ="" />
-		<cfquery name="rs"  datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+		<cfquery attributeCollection="#getQueryAttrs(name="rs", readOnly=true)#">
 			select * from tusers where ispublic=1 and type=1 and siteid='#application.settingsManager.getSite(arguments.siteid).getPublicUserPoolID()#'  order by groupname
 		</cfquery>
 		<cfreturn rs />
@@ -116,8 +116,8 @@ Mura CMS.
 	<cffunction name="getMailingLists" output="false">
 		<cfargument name="siteid" type="string" />
 		<cfset var rs ="" />
-		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-		select * from tmailinglist where ispurge=0 and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" /> order by name
+		<cfquery attributeCollection="#getQueryAttrs(name="rs", readOnly=true)#">
+			select * from tmailinglist where ispurge=0 and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" /> order by name
 		</cfquery>
 		<cfreturn rs />
 	</cffunction>
@@ -152,7 +152,7 @@ Mura CMS.
 			<cfset session.emaillist.direction = data.direction>
 		</cfif>
 		
-		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+		<cfquery attributeCollection="#getQueryAttrs(name="rs", readOnly=true)#">
 			select temails.emailid, subject, status, createddate, deliverydate, lastupdatebyid, numbersent
 			from temails
 			where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#data.siteID#" />
@@ -196,20 +196,20 @@ Mura CMS.
 		<cfset var returnVar=0/>
 		
 		<cfif arguments.type eq "returnClick" or arguments.type eq "emailOpen" or arguments.type eq "sent" or arguments.type eq "bounce">
-			<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+			<cfquery attributeCollection="#getQueryAttrs(name="rs", readOnly=true)#">
 				select count(#arguments.type#) as stat from temailstats
 				where emailid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.emailID#" />
 				and #arguments.type# = 1
 			</cfquery>
 			<cfset returnVar = rs.stat>
 		<cfelseif arguments.type eq "returnUnique">
-			<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+			<cfquery attributeCollection="#getQueryAttrs(name="rs", readOnly=true)#">
 				select distinct(url)from temailreturnstats
 				where emailid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.emailID#" />
 			</cfquery>
 			<cfset returnVar = rs.recordCount>
 		<cfelseif arguments.type eq "returnAll">	
-			<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+			<cfquery attributeCollection="#getQueryAttrs(name="rs", readOnly=true)#">
 				select count(emailID) as stat from temailreturnstats
 				where emailid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.emailID#" />
 			</cfquery>
@@ -223,7 +223,7 @@ Mura CMS.
 	
 		<cfset var rs=""/>
 		 
-		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+		<cfquery attributeCollection="#getQueryAttrs(name="rs", readOnly=true)#">
 			SELECT count(email) as bounceCount, email  
 			from temailstats where 
 			emailid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.emailID#" /> and bounce = 1
@@ -239,7 +239,7 @@ Mura CMS.
 	
 		<cfset var rs=""/>
 		
-		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+		<cfquery attributeCollection="#getQueryAttrs(name="rs", readOnly=true)#">
 			SELECT count(email) as bounceCount, email  
 			from temails
 			inner join temailstats on temails.emailid = temailstats.emailid
@@ -259,7 +259,7 @@ Mura CMS.
 	
 		<cfset var rs=""/>
 		
-		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+		<cfquery attributeCollection="#getQueryAttrs(name="rs", readOnly=true)#">
 			SELECT count(url) as returnCount, url 
 			from temailreturnstats where 
 			emailid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.emailID#" /> group by url 
@@ -274,7 +274,7 @@ Mura CMS.
 	
 		<cfset var rs=""/>
 		
-		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+		<cfquery attributeCollection="#getQueryAttrs(name="rs", readOnly=true)#">
 			SELECT distinct(email)
 			from temailreturnstats where 
 			emailid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.emailID#" />
@@ -291,7 +291,7 @@ Mura CMS.
 		<cfset var returnVar=""/>
 		<cfset var rs=""/>
 		
-		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+		<cfquery attributeCollection="#getQueryAttrs(name="rs", readOnly=true)#">
 			SELECT COUNT(temails.EmailID) AS emailCount
 			FROM temails INNER JOIN
 			temailstats ON temails.EmailID = temailstats.EmailID
@@ -312,7 +312,7 @@ Mura CMS.
 		<cfset var i = "">
 		
 		<cfloop from="1" to="#listLen(arguments.data.bouncedEmail)#" index="i">
-			<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+			<cfquery attributeCollection="#getQueryAttrs(name="rs")#">
 				DELETE FROM tmailinglistmembers WHERE email IN (<cfqueryparam cfsqltype="cf_sql_varchar" value="#listGetAt(arguments.data.bouncedEmail,i)#" />)
 			</cfquery>
 		</cfloop>
@@ -329,7 +329,7 @@ Mura CMS.
 		<cfset var start ="" />
 		<cfset var dbType=variables.configBean.getDbType() />
 		
-		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+		<cfquery attributeCollection="#getQueryAttrs(name="rs", readOnly=true)#">
 			<cfif dbType eq "oracle">select * from (</cfif>
 			select <cfif dbType eq "mssql">Top #arguments.limit#</cfif>
 			temails.emailid, subject, status, createddate, deliverydate, lastupdatebyid, numbersent

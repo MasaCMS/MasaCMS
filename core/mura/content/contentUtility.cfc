@@ -1096,32 +1096,32 @@ Sincerely,
 </cffunction>
 
 <cffunction name="updateGlobalMaterializedPath" output="false">
-<cfargument name="siteID">
-<cfargument name="parentID" required="true" default="00000000000000000000000000000000END">
-<cfargument name="path" required="true" default=""/>
-<cfargument name="datasource" required="true" default="#variables.configBean.getDatasource()#"/>
+	<cfargument name="siteID">
+	<cfargument name="parentID" required="true" default="00000000000000000000000000000000END">
+	<cfargument name="path" required="true" default=""/>
+	<cfargument name="datasource" required="true" default="#variables.configBean.getDatasource()#"/>
 
-<cfset var rs="" />
-<cfset var newPath = "" />
-<cfset var updateDSN=arguments.datasource>
-<cfset var updatePWD="">
-<cfset var updateUSER="">
+	<cfset var rs="" />
+	<cfset var newPath = "" />
+	<cfset var updateDSN=arguments.datasource>
+	<cfset var updatePWD="">
+	<cfset var updateUSER="">
 
-<cfif updateDSN eq variables.configBean.getDatasource()>
-	<cfset updatePWD=variables.configBean.getDBPassword()>
-	<cfset updateUSER=variables.configBean.getDBUsername()>
-</cfif>
+	<cfset attributeCollection = getQueryAttrs(name="rs") />
+	<cfif updateDSN neq variables.dsn>
+		<cfset attributeCollection.datasource = updateDSN />
+	</cfif>
 
-<cfquery name="rs" datasource="#updateDSN#" username="#updateUSER#" password="#updatePWD#">
-select contentID from tcontent
-where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
-and parentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentID#" />
-and active=1
-</cfquery>
+	<cfquery attributeCollection="#attributeCollection#">
+		select contentID from tcontent
+		where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
+		and parentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentID#" />
+		and active=1
+	</cfquery>
 
 	<cfloop query="rs">
 		<cfset newPath=listappend(arguments.path,rs.contentID) />
-		<cfquery datasource="#updateDSN#" username="#updateUSER#" password="#updatePWD#">
+		<cfquery attributeCollection="#attributeCollection#">
 		update tcontent
 		set path=<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#newPath#" />
 		where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
@@ -1133,35 +1133,35 @@ and active=1
 </cffunction>
 
 <cffunction name="updateGlobalCommentsMaterializedPath" output="false">
-<cfargument name="siteID">
-<cfargument name="parentID" required="true" default="">
-<cfargument name="path" required="true" default=""/>
-<cfargument name="datasource" required="true" default="#variables.configBean.getDatasource()#"/>
+	<cfargument name="siteID">
+	<cfargument name="parentID" required="true" default="">
+	<cfargument name="path" required="true" default=""/>
+	<cfargument name="datasource" required="true" default="#variables.configBean.getDatasource()#"/>
 
-<cfset var rs="" />
-<cfset var newPath = "" />
-<cfset var updateDSN=arguments.datasource>
-<cfset var updatePWD="">
-<cfset var updateUSER="">
+	<cfset var rs="" />
+	<cfset var newPath = "" />
+	<cfset var updateDSN=arguments.datasource>
+	<cfset var updatePWD="">
+	<cfset var updateUSER="">
 
-<cfif updateDSN eq variables.configBean.getDatasource()>
-	<cfset updatePWD=variables.configBean.getDBPassword()>
-	<cfset updateUSER=variables.configBean.getDBUsername()>
-</cfif>
+	<cfset attributeCollection = getQueryAttrs(name="rs") />
+	<cfif updateDSN neq variables.dsn>
+		<cfset attributeCollection.datasource = updateDSN />
+	</cfif>
 
-<cfquery name="rs" datasource="#updateDSN#" username="#updateUSER#" password="#updatePWD#">
-select commentID from tcontentcomments
-where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
-<cfif len(arguments.parentID)>
-and parentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentID#" />
-<cfelse>
-and parentID is null
-</cfif>
-</cfquery>
+	<cfquery attributeCollection="#attributeCollection#">
+		select commentID from tcontentcomments
+		where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
+		<cfif len(arguments.parentID)>
+		and parentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentID#" />
+		<cfelse>
+		and parentID is null
+		</cfif>
+	</cfquery>
 
 	<cfloop query="rs">
 		<cfset newPath=listappend(arguments.path,rs.commentID) />
-		<cfquery datasource="#updateDSN#" username="#updateUSER#" password="#updatePWD#">
+		<cfquery attributeCollection="#attributeCollection#">
 		update tcontentcomments
 		set path=<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#newPath#" />
 		where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
@@ -1184,46 +1184,46 @@ and parentID is null
 	<cfset var newStringValue ="" />
 
 	<cfif arguments.find neq "/">
-		<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		select contentID, contentHistID, siteID, filename from tcontent
-		where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-		and filename like <cfqueryparam value="%#arguments.find#%" cfsqltype="cf_sql_varchar">
-		and active=1 and type in ('Page','Calendar','Folder','Gallery','Link','Component','Form')
+		<cfquery attributeCollection="#getQueryAttrs(name="rs")#">
+			select contentID, contentHistID, siteID, filename from tcontent
+			where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+			and filename like <cfqueryparam value="%#arguments.find#%" cfsqltype="cf_sql_varchar">
+			and active=1 and type in ('Page','Calendar','Folder','Gallery','Link','Component','Form')
 		</cfquery>
 
 		<cfloop query="rs">
 			<cfset newfilename = replaceNoCase(rs.filename,"#arguments.find#","#arguments.replace#","ALL")>
-			<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-			update tcontent set filename=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newfilename#"/>
-			where contenthistid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.contenthistid#"/>
+			<cfquery attributeCollection="#getQueryAttrs()#">
+				update tcontent set filename=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newfilename#"/>
+				where contenthistid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.contenthistid#"/>
 			</cfquery>
 		</cfloop>
 
-		<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#" name="rs"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+		<cfquery attributeCollection="#getQueryAttrs(name="rs", readOly=true)#">
 			select contenthistid, body from tcontent where body like <cfqueryparam value="%#arguments.find#%" cfsqltype="cf_sql_varchar"> and siteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 			and type in ('Page','Calendar','Folder','Gallery','Link','Component','Form')
 		</cfquery>
 
 		<cfloop query="rs">
 			<cfset newbody = replaceNoCase(BODY,"#arguments.find#","#arguments.replace#","ALL")>
-			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-			update tcontent set body = <cfqueryparam value="#newBody#" cfsqltype="cf_sql_longvarchar"> where contenthistid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.contenthistID#"/>
+			<cfquery attributeCollection="#getQueryAttrs()#">
+				update tcontent set body = <cfqueryparam value="#newBody#" cfsqltype="cf_sql_longvarchar"> where contenthistid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.contenthistID#"/>
 			</cfquery>
 		</cfloop>
 
-		<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#" name="rs"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+		<cfquery attributeCollection="#getQueryAttrs(name="rs", readOnly=true)#">
 			select contenthistid, summary from tcontent where summary like <cfqueryparam value="%#arguments.find#%" cfsqltype="cf_sql_varchar"> and siteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 			and type in ('Page','Calendar','Folder','Gallery','Link','Component','Form')
 		</cfquery>
 
 		<cfloop query="rs">
 			<cfset newSummary = replaceNoCase(rs.summary,"#arguments.find#","#arguments.replace#","ALL")>
-			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-			update tcontent set summary = <cfqueryparam value="#newSummary#" cfsqltype="cf_sql_longvarchar"> where contenthistid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.contenthistID#"/>
+			<cfquery attributeCollection="#getQueryAttrs()#">
+				update tcontent set summary = <cfqueryparam value="#newSummary#" cfsqltype="cf_sql_longvarchar"> where contenthistid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.contenthistID#"/>
 			</cfquery>
 		</cfloop>
 
-		<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#" name="rs">
+		<cfquery attributeCollection="#getQueryAttrs(name="rs", readOnly=true)#">
 			select tclassextenddata.dataid, tclassextenddata.attributevalue, tclassextenddata.stringvalue from tclassextenddata
 			inner join tclassextendattributes on (tclassextenddata.attributeid=tclassextendattributes.attributeid)
 			where
@@ -1825,10 +1825,10 @@ and parentID is null
 			<cfreturn />
 		</cfif>
 
-		<cfquery name="rsRelated" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-		select contenthistid,relatedid from tcontentrelated
-		where contentid = <cfqueryparam value="#arguments.contentID#" cfsqltype="cf_sql_varchar">
-		and siteID = <cfqueryparam value="#arguments.destinationSiteID#" cfsqltype="cf_sql_varchar">
+		<cfquery attributeCollection="#getQueryAttrs(name="rsRelated", readOnly=true)#">
+			select contenthistid,relatedid from tcontentrelated
+			where contentid = <cfqueryparam value="#arguments.contentID#" cfsqltype="cf_sql_varchar">
+			and siteID = <cfqueryparam value="#arguments.destinationSiteID#" cfsqltype="cf_sql_varchar">
 		</cfquery>
 
 		<cfloop query="rsRelated">
@@ -1836,16 +1836,16 @@ and parentID is null
 
 			<cfif not relatedContentBean.getIsNew()>
 				<cftry>
-				<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-				insert into tcontentrelated
-				(contentHistID,relatedID,contentID,siteID)
-				values
-				(
-				<cfqueryparam value="#contentBean.getContentHistID()#" cfsqltype="cf_sql_varchar">,
-				<cfqueryparam value="#relatedContentBean.getContentID()#" cfsqltype="cf_sql_varchar">,
-				<cfqueryparam value="#arguments.contentID#" cfsqltype="cf_sql_varchar">,
-				<cfqueryparam value="#arguments.destinationSiteID#" cfsqltype="cf_sql_varchar">
-				)
+				<cfquery attributeCollection="#getQueryAttrs()#">
+					insert into tcontentrelated
+					(contentHistID,relatedID,contentID,siteID)
+					values
+					(
+					<cfqueryparam value="#contentBean.getContentHistID()#" cfsqltype="cf_sql_varchar">,
+					<cfqueryparam value="#relatedContentBean.getContentID()#" cfsqltype="cf_sql_varchar">,
+					<cfqueryparam value="#arguments.contentID#" cfsqltype="cf_sql_varchar">,
+					<cfqueryparam value="#arguments.destinationSiteID#" cfsqltype="cf_sql_varchar">
+					)
 				</cfquery>
 				<cfcatch></cfcatch>
 				</cftry>
@@ -1860,7 +1860,7 @@ and parentID is null
         <cfset var rsSortParent = "" />
         <cfset var rsSortOrder = "" />
 
-        <cfquery name="rsSortParent" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+        <cfquery attributeCollection="#getQueryAttrs(name="rsSortParent", readOnly=true)#">
             SELECT
                 orderNo,contentID
             FROM
@@ -1881,7 +1881,7 @@ and parentID is null
         </cfquery>
 
         <cfloop query="rsSortParent">
-            <cfquery name="rsSortOrder" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+            <cfquery attributeCollection="#getQueryAttrs(name="rsSortOrder", readOnly=true)#">
                 UPDATE tcontent
                 SET
                     orderNo = <cfqueryparam value="#rsSortParent.orderNo#" cfsqltype="cf_sql_integer">
@@ -1939,7 +1939,7 @@ and parentID is null
 		<cfset var data = StructNew() />
 		<cfset var column = "" />
 
-		<cfquery name="rsCategories" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+		<cfquery attributeCollection="#getQueryAttrs(name="rsCategories", readOnly=true)#">
 			SELECT
 				*
 			FROM
@@ -1955,7 +1955,7 @@ and parentID is null
 		</cfquery>
 
 		<cfloop query="rsCategories">
-			<cfquery name="rsCategoryExists"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+			<cfquery attributeCollection="#getQueryAttrs(name="rsCategoryExists", readOnly=true)#">
 				SELECT
 					categoryID
 				FROM

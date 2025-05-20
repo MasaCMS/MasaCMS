@@ -391,7 +391,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset var isList=isListParam()>
 
-	<cfquery attributeCollection="#application.configBean.getReadOnlyQRYAttrs(name='rs',maxrows=maxrows)#">
+	<cfquery attributeCollection="#getQueryAttrs(name="rs", readOnly=true, maxrows=maxrows)#">
 			select #arguments.table#.baseID from #arguments.table# #arguments.tableModifier#
 			<cfif isNumeric(getField())>
 				where #arguments.table#.attributeID=<cfqueryparam cfsqltype="cf_sql_numeric" value="#getField()#">

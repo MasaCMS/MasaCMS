@@ -128,11 +128,8 @@ This file is part of Mura CMS.
 <cfsilent>
 <cfset navTools=createObject("component","navTools").init($)>
 <cfset navID=arguments.objectID>
-<cfquery datasource="#application.configBean.getDatasource()#"
-		username="#application.configBean.getDBUsername()#"
-		password="#application.configBean.getDBPassword()#"
-		name="rsSection">
-		select filename,menutitle,type from tcontent where siteid=<cfqueryparam value="#$.event('siteID')#" cfsqltype="varchar"> and contentid=<cfqueryparam value="#arguments.objectid#" cfsqltype="varchar"> and approved=1 and active=1 and display=1
+<cfquery attributeCollection="#application.configBean.getQueryAttrs(name="rsSection")#">
+	select filename,menutitle,type from tcontent where siteid=<cfqueryparam value="#$.event('siteID')#" cfsqltype="varchar"> and contentid=<cfqueryparam value="#arguments.objectid#" cfsqltype="varchar"> and approved=1 and active=1 and display=1
 </cfquery>
 
 <cfset navPath="#$.siteConfig('context')##getURLStem($.event('siteID'),rsSection.filename)#">

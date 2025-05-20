@@ -433,8 +433,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfthrow type="custom" message="The attribute 'FEEDID' is required when saving a feed.">
 	</cfif>
 
-	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" name="rs">
-	select feedID from tcontentfeeds where feedID=<cfqueryparam value="#feedID#">
+	<cfquery attributeCollection="#getQueryAttrs(name="rs")#">
+		select feedID from tcontentfeeds where feedID=<cfqueryparam value="#feedID#">
 	</cfquery>
 
 	<cfif rs.recordcount>
@@ -483,7 +483,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelseif arguments.feedBean.getIsNew()>
 		<cfreturn false>
 	<cfelseif arguments.feedBean.getRestricted()>
-		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+		<cfquery attributeCollection="#getQueryAttrs(name="rs", readOnly=true)#">
 			select tusers.userid, tusers.password  from tusers
 				<cfif rLen> inner join tusersmemb
 					on(tusers.userid=tusersmemb.userid)

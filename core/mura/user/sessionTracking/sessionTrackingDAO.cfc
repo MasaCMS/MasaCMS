@@ -218,9 +218,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
        	<cfset variables.lastPurge = requestTime>
 		
-		<cfquery datasource="#variables.datasource#" username="#variables.dbUsername#" password="#variables.dbPassword#">
-		delete from tsessiontracking 
-		where entered <  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd('d',-variables.sessionHistory,now())#">
+		<cfquery attributeCollection="#application.configBean.getQueryAttrs()#">
+			delete from tsessiontracking 
+			where entered <  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd('d',-variables.sessionHistory,now())#">
 		</cfquery>
 	</cfif>
 </cffunction>

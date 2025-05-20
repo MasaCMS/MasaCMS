@@ -132,26 +132,26 @@ This file is part of Mura CMS.
 		<cfset var template=""/>
 		<cfset var site=""/>
 
-		<cfquery name="rsEmailList" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+		<cfquery attributeCollection="#getQueryAttrs(name="rsEmailList", readOnly=true)#">
 			Select EmailID from temails where deliverydate <=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#"> and status = 0 and deliverydate is not null and isDeleted = 0
 		</cfquery>
 
 		<cfloop list="#valuelist(rsemaillist.emailid)#" index="email">
 
-			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+			<cfquery attributeCollection="#getQueryAttrs(name="rs")#">
 				update temails set status = 99 where emailid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#email#" />
 			</cfquery>
 
-			<cfquery name="rsEmail" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+			<cfquery attributeCollection="#getQueryAttrs(name="rsEmail", readOnly=true)#">
 				select temails.*, tsettings.* from temails inner join tsettings on (temails.siteid=tsettings.siteid) where emailid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#email#" />
 			</cfquery>
 
-			<cfquery name="rsReturnForm" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+			<cfquery attributeCollection="#getQueryAttrs(name="rsReturnForm", readOnly=true)#">
 				select filename from tcontent where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#rsEmail.siteID#" /> and active =1 and ((display=1) or (display=2  and tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#"> AND tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">))
 				and contenthistid in (select contenthistid from tcontentobjects where object='mailing_list_master')
 			</cfquery>
 
-			<cfquery name="rsForwardForm" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+			<cfquery attributeCollection="#getQueryAttrs(name="rsForwardForm", readOnly=true)#">
 				select filename from tcontent where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#rsEmail.siteID#" /> and active =1 and ((display=1) or (display=2  and tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#"> AND tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">))
 				and contenthistid in (select contenthistid from tcontentobjects where object='forward_email')
 			</cfquery>
@@ -277,11 +277,11 @@ This file is part of Mura CMS.
 				</cfloop>
 
 				<cfif isnumeric(rsemail.numbersent)>
-					<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+					<cfquery attributeCollection="#getQueryAttrs()#">
 						update temails set status=1, NumberSent=#counter#+numbersent where emailid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#rsEmail.emailID#" />
 					</cfquery>
 				<cfelse>
-					<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+					<cfquery attributeCollection="#getQueryAttrs()#">
 						update temails set status=1, NumberSent=#counter# where emailid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#rsEmail.emailID#" />
 					</cfquery>
 				</cfif>
@@ -324,16 +324,16 @@ This file is part of Mura CMS.
 		<cfset member.siteid=arguments.data.siteid>
 		<cfset memberBean=variables.mailingListManager.readMember(member)/>
 
-		<cfquery name="rsEmail" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+		<cfquery attributeCollection="#getQueryAttrs(name="rsEmail", readOnly=true)#">
 			select temails.*, tsettings.* from temails inner join tsettings on (temails.siteid=tsettings.siteid) where emailid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.emailID#" />
 		</cfquery>
 
-		<cfquery name="rsReturnForm" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+		<cfquery attributeCollection="#getQueryAttrs(name="rsReturnForm", readOnly=true)#">
 			select filename from tcontent where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#rsEmail.siteID#" /> and active =1 and ((display=1) or (display=2  and tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#"> AND tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">))
 			and contenthistid in (select contenthistid from tcontentobjects where object='mailing_list_master')
 		</cfquery>
 
-		<cfquery name="rsForwardForm" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+		<cfquery attributeCollection="#getQueryAttrs(name="rsForwardForm", readOnly=true)#">
 			select filename from tcontent where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#rsEmail.siteID#" /> and active =1 and ((display=1) or (display=2  and tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#"> AND tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">))
 			and contenthistid in (select contenthistid from tcontentobjects where object='forward_email')
 		</cfquery>
@@ -436,11 +436,11 @@ This file is part of Mura CMS.
 		</cfloop>
 
 		<cfif isnumeric(rsemail.numbersent) and listlen(arguments.data.to) gt 0>
-			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+			<cfquery attributeCollection="#getQueryAttrs()#">
 				update temails set status=1, NumberSent=#listlen(arguments.data.to)#+numbersent where emailid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#rsEmail.emailID#" />
 			</cfquery>
 			<cfelse>
-			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+			<cfquery attributeCollection="#getQueryAttrs()#">
 				update temails set status=1, NumberSent=#listlen(arguments.data.to)# where emailid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#rsEmail.emailID#" />
 			</cfquery>
 		</cfif>
@@ -455,7 +455,7 @@ This file is part of Mura CMS.
 
 		<!--- add a flag for the corresponding action: return, bounce, open --->
 		<cfif arguments.type eq "returnClick" or arguments.type eq "bounce" or arguments.type eq "emailOpen">
-			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+			<cfquery attributeCollection="#getQueryAttrs()#">
 				update temailstats
 				set #arguments.type# = 1
 				where emailid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#left(arguments.emailID,35)#" />
@@ -470,7 +470,7 @@ This file is part of Mura CMS.
 				<cfset returnUrl = "http://#listFirst(cgi.http_host,":")##cgi.script_name#">
 			</cfif>
 			<!--- track what link was clicked --->
-			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+			<cfquery attributeCollection="#getQueryAttrs()#">
 				insert into temailreturnstats
 				(emailid, email, url, created)
 				VALUES
@@ -480,7 +480,7 @@ This file is part of Mura CMS.
 
 		<cfif arguments.type eq "sent">
 			<!--- track a sent email --->
-			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+			<cfquery attributeCollection="#getQueryAttrs()#">
 				Insert Into temailstats (emailid,email,created,#arguments.type#)
 				values(<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.emailID#" />,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.email#" />,<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">,1)
 			</cfquery>
@@ -596,7 +596,7 @@ This file is part of Mura CMS.
 		<cfset var G=0/>
 		<cfset var f=0/>
 
-		<cfquery name="rsAddressesPre" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+		<cfquery attributeCollection="#getQueryAttrs(name="rsAddressesPre", readOnly=true)#">
 			SELECT DISTINCT tusers.Email, tusers.fname, tusers.lname, tusers.company, NULL AS mlid
 			FROM tusersmemb
 				INNER JOIN tusers ON tusersmemb.UserID = tusers.UserID
@@ -648,7 +648,7 @@ This file is part of Mura CMS.
 				AND tmailinglistmembers.isVerified = 1
 		</cfquery>
 
-		<cfquery name="rsUnsubscribe" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+		<cfquery attributeCollection="#getQueryAttrs(name="rsUnsubscribe", readOnly=true)#">
 			SELECT tmailinglistmembers.email
 			FROM tmailinglistmembers
 				INNER JOIN tmailinglist ON (tmailinglistmembers.mlid=tmailinglist.mlid)

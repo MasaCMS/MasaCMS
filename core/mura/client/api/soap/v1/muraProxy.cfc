@@ -93,7 +93,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif loginSuccess>
 		<cfwddx action="cfml2wddx" output="sessionData" input="#session.mura#">
 
-		<cfquery name="rsSession" datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
+		<cfquery attributeCollection="#getQueryAttrs(name="rsSession")#">
 			select * from tuserremotesessions
 			where userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#session.mura.userID#">
 		</cfquery>
@@ -101,7 +101,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif rsSession.recordcount>
 
 			<cfif rsSession.lastAccessed gte dateAdd("h",-3,now()) and application.configBean.getSharableRemoteSessions()>
-				<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
+				<cfquery attributeCollection="#getQueryAttrs()#">
 					update tuserremotesessions set
 					data=<cfqueryparam cfsqltype="cf_sql_varchar" value="#sessionData#">,
 					lastAccessed=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
@@ -111,7 +111,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset authToken=rsSession.AuthToken>
 
 			<cfelse>
-				<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
+				<cfquery attributeCollection="#getQueryAttrs()#">
 					update tuserremotesessions set
 					authToken=<cfqueryparam cfsqltype="cf_sql_varchar" value="#authToken#">,
 					data=<cfqueryparam cfsqltype="cf_sql_varchar" value="#sessionData#">,
@@ -122,7 +122,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			</cfif>
 		<cfelse>
-			<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
+			<cfquery attributeCollection="#getQueryAttrs()#">
 				INSERT Into tuserremotesessions (userID,authToken,data,created,lastAccessed)
 				values(
 				<cfqueryparam cfsqltype="cf_sql_varchar" value="#session.mura.userID#">,
@@ -151,7 +151,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="logout" output="false" access="remote">
 	<cfargument name="authToken">
 
-	<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
+	<cfquery attributeCollection="#getQueryAttrs()#">
 		update tuserremotesessions set
 		lastAccessed=#createODBCDateTime(dateAdd("h",-3,now()))#
 		where authToken=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.authToken#">
@@ -182,7 +182,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif not len(arguments.authToken)>
 		<cfreturn false>
 	<cfelse>
-		<cfquery name="rsSession" datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
+		<cfquery attributeCollection="#getQueryAttrs(name="rsSession")#">
 			select authToken from tuserremotesessions
 			where authtoken=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.authToken#">
 			and lastAccessed > #createODBCDateTime(dateAdd("h",-3,now()))#
@@ -197,12 +197,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rsSession="">
 	<cfset var sessionData=structNew()>
 
-	<cfquery name="rsSession" datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
+	<cfquery attributeCollection="#getQueryAttrs(name="rsSession")#">
 		select * from tuserremotesessions
 		where authtoken=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.authToken#">
 	</cfquery>
 
-	<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
+	<cfquery attributeCollection="#getQueryAttrs()#">
 		update tuserremotesessions
 		set lastAccessed=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
 		where authToken=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.authToken#">
