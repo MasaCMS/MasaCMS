@@ -73,8 +73,7 @@ component
 		return permission;
 	}
 
-
-	remote any function resize( resourcePath,file,dimensions ) {
+	remote any function resize( resourcePath,file,dimensions,method,entityname,completepath,fieldnames,siteid,csrf_token,csrf_token_expires) {
 		var m=getBean('$').init(arguments.siteid);
 
 		if(!m.validateCSRFTokens(context='resize')){
@@ -145,7 +144,7 @@ component
 				return response;
 			}
 			response.stuff = "BARF";
-			ImageResize(sourceImage,int(arguments.dimensions.width),int(arguments.dimensions.height),'');
+			ImageResize(sourceImage,int(arguments.dimensions.width),int(arguments.dimensions.height),'highestQuality');
 		}
 
 		var sourceImageInfo = imageInfo(sourceImage);
@@ -164,7 +163,7 @@ component
 		return response;
 	}
 
-	remote any function duplicate( resourcePath,file ) {
+	remote any function duplicate( resourcePath,file,method,entityname,directory,completepath,siteid,fieldnames,csrf_token,csrf_token_expires) {
 		var m=getBean('$').init(arguments.siteid);
 
 		if(!m.validateCSRFTokens(context='duplicate')){
@@ -214,7 +213,7 @@ component
 		return response;
 	}
 
-	remote any function rotate( resourcePath,file,direction ) {
+	remote any function rotate( resourcePath,file,direction,method,entityname,siteid,completepath,fieldnames,csrf_token,csrf_token_expires) {
 		var m=getBean('$').init(arguments.siteid);
 
 		if(!m.validateCSRFTokens(context='rotate')){
@@ -268,7 +267,7 @@ component
 
 	}
 
-	remote any function processCrop( resourcePath,file,crop,size ) {
+	remote any function processCrop( resourcePath,file,crop,size,method,entityname,completepath,fieldnames,siteid,csrf_token,csrf_token_expires ) {
 		var m=getBean('$').init(arguments.siteid);
 
 		if(!m.validateCSRFTokens(context='processCrop')){
@@ -345,7 +344,7 @@ component
 		return response;
 	}
 
-	remote any function ckeditor_quick_upload( siteid,directory,formData,resourcePath ) {
+	remote any function ckeditor_quick_upload( siteid,directory,formData,resourcePath,method,entityname,completepath,fieldnames,uploadfiles,csrf_token,csrf_token_expires) {
 		arguments.siteid == "" ? "default" : arguments.siteid;
 
 		var m=getBean('m').init(arguments.siteid);
@@ -471,7 +470,7 @@ component
 		}
 	}
 
-	remote any function upload( siteid,directory,formData,resourcePath )  {
+	remote any function upload( siteid,directory,formData,resourcePath,method,entityname,completepath,fieldnames,uploadfiles,csrf_token,csrf_token_expires)  {
 		arguments.siteid == "" ? "default" : arguments.siteid;
 		var m=getBean('m').init(arguments.siteid);
 		var info = {};
@@ -556,7 +555,7 @@ component
 		return response;
 	}
 
-	remote any function children( directory,resourcepath ) {
+	remote any function children( directory,resourcepath,method,entityname,completepath,fieldnames,siteid,csrf_token,csrf_token_expires) {
 		var m=getBean('$').init(arguments.siteid);
 
 		if(!m.validateCSRFTokens(context='children')){
@@ -593,7 +592,7 @@ component
 		return response;
 	}
 
-	remote any function move( siteid,directory,destination,filename,resourcePath )  {
+	remote any function move( siteid,directory,destination,filename,resourcePath,method,entityname,completepath,fieldnames,csrf_token,csrf_token_expires)  {
 		var m=getBean('$').init(arguments.siteid);
 		arguments.directory = rereplace(arguments.directory,"\\",application.configBean.getFileDelim(),"all");
 
@@ -640,7 +639,7 @@ component
 		return response;
 	}
 
-	remote any function edit( siteid,directory,filename,filter="",pageIndex=1,resourcepath )  {
+	remote any function edit( siteid,directory,filename,filter="",pageIndex=1,resourcePath,method,entityname,completepath,fieldnames,csrf_token,csrf_token_expires) {
 		arguments.siteid == "" ? "default" : arguments.siteid;
 		arguments.pageindex == isNumeric(arguments.pageindex) ? arguments.pageindex : 1;
 
@@ -681,7 +680,7 @@ component
 
 	}
 
-	remote any function update( siteid,directory,filename,filter="",resourcepath,content )  {
+	remote any function update( siteid,directory,filename,filter="",resourcePath,method,entityname,completepath,fieldnames,content,csrf_token,csrf_token_expires)  {
 		arguments.siteid == "" ? "default" : arguments.siteid;
 
 		var m = application.serviceFactory.getBean('m').init(arguments.siteid);
@@ -724,7 +723,7 @@ component
 		return response;
 	}
 
-	remote any function delete( siteid,directory,filename,filter="",pageIndex=1,resourcePath )  {
+	remote any function delete( siteid,directory,filename,filter="",pageIndex=1,resourcePath,method,entityname,completepath,fieldnames,csrf_token,csrf_token_expires) {
 		arguments.siteid == "" ? "default" : arguments.siteid;
 		var m=getBean('m').init(arguments.siteid);
 		var info = {};
@@ -792,7 +791,7 @@ component
 		return response;
 	}
 
-	remote any function rename( siteid,directory,filename,name,filter="",pageIndex=1,resourcePath )  {
+	remote any function rename( siteid,directory,filename,name,filter="",pageIndex=1,resourcePath,method,entityname,completepath,fieldnames,csrf_token,csrf_token_expires)  {
 		arguments.siteid == "" ? "default" : arguments.siteid;
 		arguments.pageindex == isNumeric(arguments.pageindex) ? arguments.pageindex : 1;
 
@@ -858,7 +857,7 @@ component
 		return response;
 	}
 
-	remote any function addFolder( siteid,directory,name,filter="",pageIndex=1,resourcePath )  {
+	remote any function addFolder( siteid,directory,name,filter="",pageIndex=1,resourcePath,method,entityname,completepath,fieldnames,csrf_token,csrf_token_expires)  {
 		arguments.siteid == "" ? "default" : arguments.siteid;
 		arguments.pageindex == isNumeric(arguments.pageindex) ? arguments.pageindex : 1;
 
@@ -914,7 +913,7 @@ component
 		return rb;
 	}
 
-	remote any function browse( siteid,directory,filterResults="",pageIndex=1,sortOn,sortDir,resourcePath,itemsPerPage=20,settings=0 )  {
+	remote any function browse( siteid,directory,filterResults="",pageIndex=1,sortOn,sortDir,resourcePath,itemsPerPage=20,settings=0,method,entityname)  {
 
 		arguments.siteid == "" ? "default" : arguments.siteid;
 		arguments.pageindex == isNumeric(arguments.pageindex) ? arguments.pageindex : 1;
