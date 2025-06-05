@@ -1780,7 +1780,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 						if ( isXML(config) ) {
 							config=parseXML(config);
 							if(get('isNew')){
-								deferred.config=config;
+								deferredModule.config=config;
 							} else {
 								variables.configBean.getClassExtensionManager().loadConfigXML(config,getValue('siteid'));
 							}
