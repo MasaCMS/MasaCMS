@@ -3528,7 +3528,7 @@ function addLoadEvent(func) {
 }
 
 function noSpam(user, domain) {
-  locationstring = "mailto:" + user + "@" + domain;
+  var locationstring = "mailto:" + user + "@" + domain;
   location = locationstring;
 }
 /**
@@ -16907,7 +16907,7 @@ Mura.UI.Form = Mura.UI.extend(
         if (!self.ormform) {
           template = template + "_static";
         }
-      } else if (fieldtype == "section") { 
+      } else if (fieldtype == "section") {
         if(field.fieldsetopen === '1') {
           field.label = '';
           if(self.fieldsetIsOpen === true) {
@@ -16915,7 +16915,7 @@ Mura.UI.Form = Mura.UI.extend(
           }
           self.fieldsetIsOpen = true;
 
-          Mura(".field-container-" + self.context.objectid, self.context.formEl).append('<!--open-fieldset-label: |' + field.fieldsetid + '| --->');    
+          Mura(".field-container-" + self.context.objectid, self.context.formEl).append('<!--open-fieldset-label: |' + field.fieldsetid + '| --->');
         }
       }
 

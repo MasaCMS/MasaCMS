@@ -1252,7 +1252,7 @@ var Mura=(function(){
 	}
 
 	function noSpam(user, domain) {
-		locationstring = "mailto:" + user + "@" + domain;
+		var locationstring = "mailto:" + user + "@" + domain;
 		location = locationstring;
 	}
 
