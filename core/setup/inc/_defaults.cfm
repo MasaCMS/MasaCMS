@@ -172,6 +172,7 @@ variables.setupProcessComplete	= false;
 <cfparam name="FORM.production_cfpassword"			default="" />
 <!--- EncryptionKey --->
 <cfparam name="FORM.production_encryptionkey"	default="#settingsIni.get( "production", "encryptionkey" )#" />
+<cfparam name="variables.production_defaulthashalgorithm"	default="#settingsIni.get( "production", "defaulthashalgorithm" )#" />
 
 <cfif not len(FORM.production_encryptionkey)>
 	<cfset FORM.production_encryptionkey=generateSecretKey('AES')>
