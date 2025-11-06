@@ -28,7 +28,7 @@
 	var adminProxy;
 
 	<cfif len($.globalConfig('admindomain'))>
-		var adminDomain="#$.globalConfig('admindomain')#";
+		var adminDomain="#application.configBean.getCurrentAdminDomain()#";
 	<cfelseif $.siteConfig().getValue('isRemote')>
 		var adminDomain="#$.siteConfig().getValue('resourceDomain')#";
 	<cfelse>

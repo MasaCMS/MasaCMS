@@ -511,6 +511,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.instance.adminDomain />
 </cffunction>
 
+<cffunction name="getCurrentAdminDomain" output="false">
+	<cfif variables.instance.adminDomain neq "" >
+		<cfset var adminDomains = variables.instance.adminDomain>
+		<cfif ListFindNoCase(adminDomains, listFirst(cgi.http_host,":"))>
+			<cfreturn listFirst(cgi.http_host,":")>
+		<cfelse>
+			<cfreturn ''>
+		</cfif>
+	<cfelse>
+		<cfreturn ''>
+	</cfif>
+</cffunction>
+
+<cffunction name="isAdminDomain" output="false">
+	<cfif ListFindNoCase(variables.instance.adminDomain, listFirst(cgi.http_host,":"))>
+		<cfreturn true>
+	<cfelse>
+		<cfreturn false>
+	</cfif>
+</cffunction>
+
 <cffunction name="setAdminDomain" output="false">
 	<cfargument name="AdminDomain" type="String" />
 	<cfset variables.instance.AdminDomain = arguments.AdminDomain />
@@ -1839,9 +1860,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif len( arguments.domain )>
 		<cfif arguments.useProtocol>
-			<cfreturn getScheme() & '://' & arguments.domain & getServerPort() & getValue('context') & getValue('adminDir')>
+			<cfreturn getScheme() & '://' & getCurrentAdminDomain() & getServerPort() & getValue('context') & getValue('adminDir')>
 		<cfelse>
-			<cfreturn '//' & arguments.domain & getServerPort() & getValue('context') & getValue('adminDir')>
+			<cfreturn '//' & getCurrentAdminDomain() & getServerPort() & getValue('context') & getValue('adminDir')>
 		</cfif>
 	<cfelse>
 		<cfreturn getValue('context') &  getValue('adminDir')>
@@ -1856,9 +1877,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<cfif len( getValue('admindomain') )>
 			<cfif arguments.useProtocol>
-				<cfreturn getScheme(arguments.secure) & '://' & getValue('admindomain') & getServerPort() & getValue('context') & "/plugins">
+				<cfreturn getScheme(arguments.secure) & '://' & getCurrentAdminDomain() & getServerPort() & getValue('context') & "/plugins">
 			<cfelse>
-				<cfreturn '//' & getValue('admindomain') & getServerPort() & getValue('context') & "/plugins">
+				<cfreturn '//' & getCurrentAdminDomain() & getServerPort() & getValue('context') & "/plugins">
 			</cfif>
 		<cfelse>
 			<cfreturn getValue('context') & "/plugins">
@@ -1875,9 +1896,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<cfif len( getValue('admindomain') )>
 			<cfif arguments.useProtocol>
-				<cfreturn getScheme(arguments.secure) & '://' & getValue('admindomain') & getServerPort() & getValue('context') & "/core">
+				<cfreturn getScheme(arguments.secure) & '://' & getCurrentAdminDomain() & getServerPort() & getValue('context') & "/core">
 			<cfelse>
-				<cfreturn '//' & getValue('admindomain') & getServerPort() & getValue('context') & "/core">
+				<cfreturn '//' & getCurrentAdminDomain() & getServerPort() & getValue('context') & "/core">
 			</cfif>
 		<cfelse>
 			<cfreturn getValue('context') & "/core">
