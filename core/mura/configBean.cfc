@@ -1859,10 +1859,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="domain" default="#getValue('admindomain')#">
 
 	<cfif len( arguments.domain )>
+		<cfset var currentDomain = arguments.domain>
+		<!--- Is the domain the admin domain setting? --->
+		<cfif currentDomain eq getValue('admindomain')>
+			<!--- Determine the current admin domain from this list --->
+			<cfset currentDomain = getCurrentAdminDomain()>
+		</cfif>
 		<cfif arguments.useProtocol>
-			<cfreturn getScheme() & '://' & getCurrentAdminDomain() & getServerPort() & getValue('context') & getValue('adminDir')>
+			<cfreturn getScheme() & '://' & currentDomain & getServerPort() & getValue('context') & getValue('adminDir')>
 		<cfelse>
-			<cfreturn '//' & getCurrentAdminDomain() & getServerPort() & getValue('context') & getValue('adminDir')>
+			<cfreturn '//' & currentDomain & getServerPort() & getValue('context') & getValue('adminDir')>
 		</cfif>
 	<cfelse>
 		<cfreturn getValue('context') &  getValue('adminDir')>
