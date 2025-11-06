@@ -2850,26 +2850,33 @@ Display Objects
 </cffunction>
 
 <cffunction name="getShowToolbar" output="false">
-	<cfif not request.muraSessionManagement>
-		<cfreturn false>
-	<cfelse>
-		<cfset var sessionData=getSession()>
-		<cfreturn this.enableFrontEndTools
-			and (
-				request.muraChangesetPreviewToolbar
-				and (
-					this.showMemberToolBar or this.showAdminToolBar
-				) or (
-					(
-					 	StructKeyExists(sessionData, 'mura')
-					 	and (
-							(getBean('permUtility').getModulePerm("00000000000000000000000000000000000",variables.event.getValue('siteID')))
-							or listFind(sessionData.mura.memberships,'S2')
-						)
-					)
-				) and getShowAdminToolBar()
-			) and not request.muraExportHTML />
-		</cfif>
+    <cfif not request.muraSessionManagement>
+        <cfreturn false>
+    <cfelse>
+        <cfset var sessionData=getSession()>
+
+        <cfset var isAdminDomain = true>
+        <cfif application.configBean.getAdminDomain() neq ''
+              and not application.configBean.isAdminDomain()>
+                <cfset isAdminDomain = false>
+        </cfif>
+
+        <cfreturn isAdminDomain and this.enableFrontEndTools
+            and (
+                request.muraChangesetPreviewToolbar
+                and (
+                    this.showMemberToolBar or this.showAdminToolBar
+                ) or (
+                    (
+                        StructKeyExists(sessionData, 'mura')
+                        and (
+                            (getBean('permUtility').getModulePerm("00000000000000000000000000000000000",variables.event.getValue('siteID')))
+                            or listFind(sessionData.mura.memberships,'S2')
+                        )
+                    )
+                ) and getShowAdminToolBar()
+            ) and not request.muraExportHTML />
+        </cfif>
 </cffunction>
 
 <cffunction name="hasFETools" output="false">
