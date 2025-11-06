@@ -442,7 +442,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cftry>
 	</cfloop>
 
-	<cfif listFirst(cgi.http_host,":") eq application.configBean.getAdminDomain()>
+	<cfif application.configBean.getAdminDomain() neq "" and application.configBean.isAdminDomain()>
 		<cfset getBean('contentRenderer').redirect("#application.configBean.getContext()##application.configBean.getAdminDir()#/")>
 	<cfelse>
 		<cfset site=application.settingsManager.getSite(rsSites.siteID)>
@@ -530,12 +530,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfelse>
 				<cfset currentParam=currentItem>
 			</cfif>
-		<cfelseif currentArrayName eq "tagArray">						
+		<cfelseif currentArrayName eq "tagArray">
 			<cfset arguments.event.setValue("tag",currentItem)>
-			<cfif not listFindNoCase('login,editProfile',arguments.event.getValue('display'))> 
+			<cfif not listFindNoCase('login,editProfile',arguments.event.getValue('display'))>
 				<cfset arguments.event.setValue("display","search")>
 				<cfset arguments.event.setValue("newSearch","true")>
-			</cfif>			
+			</cfif>
 			<cfset currentArrayName="">
 		<cfelseif currentArrayName eq "linkServIDArray">
 			<cfset arguments.event.setValue("linkServID",currentItem)>
