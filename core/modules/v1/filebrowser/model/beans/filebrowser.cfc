@@ -1015,9 +1015,7 @@ component
 		var rsFiles = "";
 		var rsPrefix = "";
 
-		query name="rsFiles" dbtype="query" result="rsPrefix" params=#qryParams# {
-			echo(sqlString);
-		}
+		rsFiles = QueryExecute( sql= sqlString, params = qryParams, options= { dbtype = "query", result = "rsPrefix"} );
 
 		queryAddColumn(rsFiles,'subfolder',[]);
 		for(var i = 1;i <= rsFiles.recordcount;i++) {
