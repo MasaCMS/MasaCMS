@@ -75,6 +75,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfsilent>
 <cfparam name="objectParams.maxitems" default="4">
+<cfparam name="objectParams.sourcetype" default="">
 <cfparam name="objectParams.source" default="">
 <cfparam name="objectParams.layout" default="default">
 <cfparam name="objectParams.forcelayout" default="false">
