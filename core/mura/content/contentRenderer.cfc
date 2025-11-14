@@ -3264,6 +3264,7 @@ Display Objects
 
 		if(isStruct(arguments.styles)){
 			for(var s in arguments.styles){
+				if (!len(arguments.styles[s])) continue;
 				if(structKeyExists(this.styleLookup,'#s#')){
 					returnString=returnString & ' ' & this.styleLookup['#s#'] & ':' & arguments.styles[s] & ';';
 				} else {
