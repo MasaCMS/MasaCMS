@@ -42,7 +42,7 @@
       */
      getStyle: function(el, style){
          //console.log(style + ': ' +  Mura(el).css(style))
-         return Mura(el).css(style);
+         return Mura(el).css(style)||"0";
      },
 
      /**
@@ -453,11 +453,14 @@
 
             loading:    'Loading',
 
-            close:      '<span class="shortcut">C</span>lose',
+            //close:      '<span class="shortcut">C</span>lose',
+            close:     '×', 
 
-            next:       '<span class="shortcut">N</span>ext',
+            //next:       '<span class="shortcut">N</span>ext',
+            next:      '⏵', 
 
-            prev:       '<span class="shortcut">P</span>revious',
+            //prev:       '<span class="shortcut">P</span>revious',
+            prev:      '⏴',
 
             errors:     {
                 single: 'You must install the <a href="{0}">{1}</a> browser plugin to view this content.',
@@ -1277,7 +1280,7 @@
                     counter += '>' + (i + 1) + '</a>';
                 }
             }else{
-                counter = (current + 1) + ' of ' + current_gallery.length;
+                counter = (current + 1) + ' / ' + current_gallery.length;
             }
             appendHTML(tool_i, String.format(options.skin.counter, counter));
         }
