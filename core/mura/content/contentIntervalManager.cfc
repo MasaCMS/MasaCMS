@@ -258,10 +258,10 @@
 
 	<cfargument
 		name="current"
-		type="date"
+		type="any"
 		required="true"
 		default="0"
-		hint="The From date for our date span (inclusive)."
+		hint="The From date for our date span (inclusive). Pass 0 or empty string when not applicable."
 		/>
 
 
