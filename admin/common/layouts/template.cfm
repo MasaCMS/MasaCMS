@@ -286,7 +286,7 @@ This file is part of Mura CMS.
 	</script>
 
 	#session.dateKey#
-	#rc.ajax#
+	#request.ajax#
 
 	<cfif rc.originalcircuit neq "cLogin">
 		<script>

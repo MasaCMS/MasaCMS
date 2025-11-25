@@ -286,7 +286,7 @@ This file is part of Mura CMS.
 				siteid:<cfif isDefined('session.siteid') and len(session.siteid)>'#esapiEncode("javascript",session.siteid)#'<cfelse>'default'</cfif>
 			});
 		</script>
-		#rc.ajax#
+		#request.ajax#
 
 		<cfif cgi.http_user_agent contains 'msie'>
 			<!--[if lte IE 8]>
