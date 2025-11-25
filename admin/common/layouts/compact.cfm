@@ -297,7 +297,7 @@ This file is part of Mura CMS.
 				rootpath:'#esapiEncode("javascript",site.getRootPath(complete=1))#'
 			});
 		</script>
-		#rc.ajax#
+		#request.ajax#
 
 		<cfif cgi.http_user_agent contains 'msie'>
 			<!--[if lte IE 8]>

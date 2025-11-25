@@ -227,7 +227,7 @@ This file is part of Mura CMS.
 	</cfif>
 
 	#session.dateKey#
-	#rc.ajax#
+	#request.ajax#
 
 	<cfif rc.originalcircuit neq "cLogin">
 		<script>
