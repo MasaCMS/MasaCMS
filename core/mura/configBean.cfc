@@ -511,16 +511,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.instance.adminDomain />
 </cffunction>
 
-<cffunction name="getCurrentAdminDomain" output="false">
+<cffunction name="getCurrentAdminDomain" output="false" hint="Returns the current admin domain based on the cgi.http_host value. When not on an admin domain, it returns the current domain.">
 	<cfif variables.instance.adminDomain neq "" >
 		<cfset var adminDomains = variables.instance.adminDomain>
 		<cfif ListFindNoCase(adminDomains, listFirst(cgi.http_host,":"))>
 			<cfreturn listFirst(cgi.http_host,":")>
 		<cfelse>
-			<cfreturn ''>
+			<cfreturn cgi.http_host>
 		</cfif>
 	<cfelse>
-		<cfreturn ''>
+		<cfreturn cgi.http_host>
 	</cfif>
 </cffunction>
 
@@ -1881,7 +1881,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif len(variables.instance.pluginsPath)>
 		<cfreturn variables.instance.pluginsPath>
 	<cfelse>
-		<cfif len( getValue('admindomain') )>
+		<cfif len( getValue('admindomain') ) && cgi.http_host eq getCurrentAdminDomain()>
 			<cfif arguments.useProtocol>
 				<cfreturn getScheme(arguments.secure) & '://' & getCurrentAdminDomain() & getServerPort() & getValue('context') & "/plugins">
 			<cfelse>
@@ -1900,7 +1900,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif len(variables.instance.corepath)>
 		<cfreturn variables.instance.corepath>
 	<cfelse>
-		<cfif len( getValue('admindomain') )>
+		<cfif len( getValue('admindomain') ) && cgi.http_host eq getCurrentAdminDomain()>
 			<cfif arguments.useProtocol>
 				<cfreturn getScheme(arguments.secure) & '://' & getCurrentAdminDomain() & getServerPort() & getValue('context') & "/core">
 			<cfelse>
