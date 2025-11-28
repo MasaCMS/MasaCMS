@@ -1791,6 +1791,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cfif>
 
+	<cfif this.getCompiler() eq 'boxlang'>
+		<cfset structDelete(arguments,'username')>
+		<cfset structDelete(arguments,'password')>
+	</cfif>
+
 	<cfif not getValue(property='allowQueryCaching',defaultValue=true)>
 		<cfset structDelete(arguments,'cachedWithin')>
 	</cfif>
