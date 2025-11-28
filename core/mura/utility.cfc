@@ -643,6 +643,9 @@ Blog: www.codfusion.com--->
 					<cfset local.key=listFirst(local.item,"=")>
 					<cfset sessionTokens["#local.key#"]=listLast(local.item,"=")>
 				</cfloop>
+				<cfif !sessionTokens.keyExists("CFTOKEN")>
+					<cfset sessionTokens.CFTOKEN = 0>
+				</cfif>
 			<cfelse>
 				<cfreturn>
 			</cfif>
