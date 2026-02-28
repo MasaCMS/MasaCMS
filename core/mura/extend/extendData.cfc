@@ -308,7 +308,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfquery name="rsCombine" dbtype="query">
 			select baseID, name, type, validation, label, attributeID, defaultValue, extendSetID<cfif variables.configBean.getDBType() neq "oracle">, attributeValue</cfif>
 			from rsExtended
-<!---
 			union all
 
 			select '' baseID, attributename as name, type, validation, label, attributeID, defaultValue, extendSetID<cfif variables.configBean.getDBType() neq "oracle">, '' attributeValue</cfif>
@@ -331,7 +330,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif rsExtended.recordcount>
 			and attributeID not in (#ListQualify(ValueList(rsExtended.attributeid), "'", ",", "char")#)
 			</cfif>
---->
 		</cfquery>
 
 		<cfset queryAddColumn(rsCombine,"datetimevalue","timestamp",arrayNew(1))>
