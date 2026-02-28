@@ -222,6 +222,8 @@
 			</cfloop>
 		</cfif>
 
+		<cfset cleanLog()/>
+
 		<cfif variables.instance.log eq true and detected gt 0>
 			<cfset setLog(arguments.ipAddress)/>
 			<cfset cleanLog()/>
@@ -248,9 +250,11 @@
 		<cfargument name="ipAddress" required="true" type="String">
 		<cfset var find = ""/>
 
+		<cfset var iplog = variables.internal.iplog/>
 		<cfquery dbtype="query" name="find">
-		select IP from variables.internal.iplog
-		where IP = <cfqueryparam cfsqltype="cf_sql_varchar" maxlength="100" value="#arguments.ipAddress#">
+			SELECT 	IP 
+			FROM 	iplog
+			WHERE 	IP = <cfqueryparam cfsqltype="cf_sql_varchar" maxlength="100" value="#arguments.ipAddress#">
 		</cfquery>
 
 		<cfreturn YesNoFormat(find.recordcount)/>
@@ -264,12 +268,11 @@
 		<cfif isDefined("form.fieldnames") and variables.instance.checkReferer eq true and isSafeReferer() eq false>
 			<cfset blocked = true/>
  		<cfelse>
-			<!--- temp Boxlang workaround --->
-			<cfset iplog = variables.internal.iplog/>
+			<cfset var iplog = variables.internal.iplog/>
 			<cfquery dbtype="query" name="find">
-			SELECT blocked
-			FROM iplog
-			WHERE IP = <cfqueryparam cfsqltype="cf_sql_varchar" maxlength="100" value="#arguments.ipAddress#">
+				SELECT 	blocked
+				FROM 	iplog
+				WHERE 	IP = <cfqueryparam cfsqltype="cf_sql_varchar" maxlength="100" value="#arguments.ipAddress#">
 			</cfquery>
 			<cfif find.blocked eq 1>
 				<cfset blocked = true/>
@@ -282,10 +285,11 @@
 	<cffunction name="cleanLog" output="false">
 		<cfset var cutoff = 0 - variables.instance.blockTime/>
 
+		<cfset var iplog = variables.internal.iplog/>
 		<cfquery dbtype="query" name="variables.internal.iplog">
-		SELECT IP, Attempts, Blocked, DateBlocked
-		FROM variables.internal.iplog
-		WHERE DateBlocked > <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateadd("s",cutoff,now())#">
+			SELECT 	IP, Attempts, Blocked, DateBlocked
+			FROM 	iplog
+			WHERE 	DateBlocked > <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateadd("s",cutoff,now())#">
 		</cfquery>
 
 		<cfreturn true/>
@@ -296,25 +300,27 @@
 		<cfset var attempts = 0/>
 		<cfset var find = ""/>
 
+		<cfset var iplog = variables.internal.iplog/>
+
 		<cfquery dbtype="query" name="find">
-		SELECT attempts
-		FROM variables.internal.iplog
-		WHERE IP = <cfqueryparam cfsqltype="cf_sql_varchar" maxlength="100" value="#arguments.ipAddress#">
+			SELECT 	attempts
+			FROM 	iplog
+			WHERE 	IP = <cfqueryparam cfsqltype="cf_sql_varchar" maxlength="100" value="#arguments.ipAddress#">
 		</cfquery>
 		<cfset attempts = val(find.attempts) + 1/>
 
 		<cfquery dbtype="query" name="variables.internal.iplog">
-		<cfif variables.instance.ipBlock eq true and variables.instance.allowedAttempts lte attempts>
-		SELECT IP, #attempts# AS Attempts, 1 AS Blocked, #now()# as DateBlocked
-		<cfelse>
-		SELECT IP, #attempts# AS Attempts, Blocked, #now()# as DateBlocked
-		</cfif>
-		FROM variables.internal.iplog
-		WHERE IP = <cfqueryparam cfsqltype="cf_sql_varchar" maxlength="100" value="#arguments.ipAddress#">
-		UNION
-		SELECT IP, Attempts, Blocked, DateBlocked
-		FROM variables.internal.iplog
-		WHERE NOT IP = <cfqueryparam cfsqltype="cf_sql_varchar" maxlength="100" value="#arguments.ipAddress#">
+			<cfif variables.instance.ipBlock eq true and variables.instance.allowedAttempts lte attempts>
+			SELECT 	IP, #attempts# AS Attempts, 1 AS Blocked, #now()# as DateBlocked
+			<cfelse>
+			SELECT 	IP, #attempts# AS Attempts, Blocked, #now()# as DateBlocked
+			</cfif>
+			FROM 	iplog
+			WHERE 	IP = <cfqueryparam cfsqltype="cf_sql_varchar" maxlength="100" value="#arguments.ipAddress#">
+			UNION
+			SELECT 	IP, Attempts, Blocked, DateBlocked
+			FROM 	iplog
+			WHERE 	NOT IP = <cfqueryparam cfsqltype="cf_sql_varchar" maxlength="100" value="#arguments.ipAddress#">
 		</cfquery>
 
 		<cfreturn true/>
@@ -323,10 +329,11 @@
 	<cffunction name="removeIPfromLog" output="false">
 		<cfargument name="ipAddress" required="true" type="String">
 
+		<cfset var iplog = variables.internal.iplog/>
 		<cfquery dbtype="query" name="variables.internal.iplog">
-		SELECT *
-		FROM variables.internal.iplog
-		WHERE IP <> <cfqueryparam cfsqltype="cf_sql_varchar" maxlength="100" value="#arguments.ipAddress#">
+			SELECT 	*
+			FROM 	iplog
+			WHERE 	IP <> <cfqueryparam cfsqltype="cf_sql_varchar" maxlength="100" value="#arguments.ipAddress#">
 		</cfquery>
 
 		<cfreturn true/>
