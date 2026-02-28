@@ -53,7 +53,7 @@
     "contributors":[],
     "dependencies":{},
     "devDependencies":{
-        "testbox":"^4.5.0+5",
+        "testbox":"^6.5.0+18",
         "docbox":"^2.0.7+00005"
     },
     "installPaths":{
