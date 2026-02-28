@@ -398,7 +398,7 @@ if(request.muraInDocker && (len(getSystemEnvironmentSetting('MURA_DATABASE')) ||
 
 	param name="this.datasources" default={};
 
-	if(server.coldfusion.productname == 'lucee' && !structKeyExists(server,'boxlang')){
+	if(server.coldfusion.productname == 'lucee'){
 		driverVarName='type';
 		connectionStringVarName='connectionString';
 
@@ -425,7 +425,7 @@ if(request.muraInDocker && (len(getSystemEnvironmentSetting('MURA_DATABASE')) ||
 
 		switch(getSystemEnvironmentSetting('MURA_DBTYPE')){
 			case 'mysql':
-				driverName='MySQL';
+				driverName='MySQL5';
 				break;
 			case 'mssql':
 				driverName='MSSQLServer';
@@ -443,7 +443,7 @@ if(request.muraInDocker && (len(getSystemEnvironmentSetting('MURA_DATABASE')) ||
 	}
 
 	if (len(getSystemEnvironmentSetting('MURA_DBCONNECTIONSTRING'))) {
-		if(!structKeyExists(this.datasources,'#getSystemEnvironmentSetting('MURA_DATASOURCE')#') && !structKeyExists(server,'boxlang')){
+		if(!structKeyExists(this.datasources,'#getSystemEnvironmentSetting('MURA_DATASOURCE')#')){
 
 			this.datasources['#getSystemEnvironmentSetting('MURA_DATASOURCE')#']={
 				'#driverVarName#' = driverName
@@ -452,19 +452,6 @@ if(request.muraInDocker && (len(getSystemEnvironmentSetting('MURA_DATABASE')) ||
 				, 'password' = getSystemEnvironmentSetting('MURA_DBPASSWORD')
 				, 'clob' = true
 				, 'blob' = true
-			};
-
-			if (len(getSystemEnvironmentSetting('MURA_DBCLASS'))) {
-				this.datasources['#getSystemEnvironmentSetting('MURA_DATASOURCE')#'].class = getSystemEnvironmentSetting('MURA_DBCLASS');
-			}
-		} else {
-			this.datasources['#getSystemEnvironmentSetting('MURA_DATASOURCE')#']={
-				"driver" = "#getSystemEnvironmentSetting('MURA_DBTYPE')#"
-				, "host" = "#getSystemEnvironmentSetting('MURA_DBHOST')#"
-                , "port" = "#getSystemEnvironmentSetting('MURA_DBPORT')#"
-               	, "database" = "#getSystemEnvironmentSetting('MURA_DATASOURCE')#"
-				, "username" = "#getSystemEnvironmentSetting('MURA_DBUSERNAME')#"
-				, "password" = "#getSystemEnvironmentSetting('MURA_DBPASSWORD')#"
 			};
 
 			if (len(getSystemEnvironmentSetting('MURA_DBCLASS'))) {
@@ -528,7 +515,7 @@ if(request.muraInDocker && (len(getSystemEnvironmentSetting('MURA_DATABASE')) ||
 			};
 	}
 
-	if (server.coldfusion.productname == 'lucee' && !structKeyExists(server,'boxlang')) {
+	if (server.coldfusion.productname == 'lucee') {
 		if(len(getSystemEnvironmentSetting('MURA_DBTIMEZONE'))){
 			this.datasources["#getSystemEnvironmentSetting('MURA_DATASOURCE')#"].timezone=getSystemEnvironmentSetting('MURA_DBTIMEZONE');
 		}
@@ -551,7 +538,7 @@ if(request.muraInDocker && (len(getSystemEnvironmentSetting('MURA_DATABASE')) ||
 	}
 }
 
-if (server.coldfusion.productname == 'lucee'  && !structKeyExists(server,'boxlang')) {
+if (server.coldfusion.productname == 'lucee') {
 	if(len(getSystemEnvironmentSetting('MURA_MEMCACHEDSESSIONSERVER'))){
 		this.cache.connections["muramemcachedsessions"] = {
 				class: "org.lucee.extension.io.cache.memcache.MemCacheRaw"
