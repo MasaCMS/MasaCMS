@@ -624,7 +624,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfswitch>
 	</cfif>
 
-	<cfquery attributeCollection="#getQueryAttrs(name='rsPermited')#">
+	<cfquery attributeCollection="#getQueryAttrs(name='rs')#">
 		select subTypeID,type,subtype,siteid from tclassextend where subTypeID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getSubTypeID()#">
 	</cfquery>
 
