@@ -2154,8 +2154,8 @@ Display Objects
 
 			<cfif not homeDisplayed and arguments.currDepth eq 1 and (arguments.displayHome eq "Always" or (arguments.displayHome eq "Conditional" and variables.event.getValue('contentBean').getcontentid() neq "00000000000000000000000000000000001"))>
 				<cfsilent>
-					<cfquery name="rsHome" datasource="#application.configBean.getReadOnlyDatasource()#" username="#application.configBean.getReadOnlyDbUsername()#" password="#application.configBean.getReadOnlyDbPassword()#">
-					select menutitle,filename from tcontent where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"> and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"> and active=1
+					<cfquery attributeCollection="#getQueryAttrs(name="rsHome", readOnly=true)#">
+						select menutitle,filename from tcontent where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"> and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"> and active=1
 					</cfquery>
 					<cfset homeLink="#application.configBean.getContext()##getURLStem(arguments.siteid,rsHome.filename)#">
 					<cfset homeDisplayed = true>

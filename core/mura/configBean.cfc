@@ -1042,22 +1042,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cftry>
 		<cfswitch expression="#getDbType()#">
 		<cfcase value="mssql">
-			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+			<cfquery attributeCollection="#getQueryAttrs()#">
 			CREATE INDEX IX_#arguments.table#_#arguments.column# ON #arguments.table# (#arguments.column#)
 			</cfquery>
 		</cfcase>
 		<cfcase value="mysql">
-			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+			<cfquery attributeCollection="#getQueryAttrs()#">
 			CREATE INDEX IX_#arguments.table#_#arguments.column# ON #arguments.table# (#arguments.column#)
 			</cfquery>
 		</cfcase>
 		<cfcase value="postgresql">
-			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+			<cfquery attributeCollection="#getQueryAttrs()#">
 			CREATE INDEX IX_#arguments.table#_#arguments.column# ON #arguments.table# (#arguments.column#)
 			</cfquery>
 		</cfcase>
 		<cfcase value="oracle">
-			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+			<cfquery attributeCollection="#getQueryAttrs()#">
 			CREATE INDEX #right("IX_#arguments.table#_#arguments.column#",30)# ON #arguments.table# (#arguments.column#)
 			</cfquery>
 		</cfcase>
@@ -1088,22 +1088,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif not rsCheck.recordcount>
 	<cfswitch expression="#getDbType()#">
 	<cfcase value="mssql">
-		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		<cfquery attributeCollection="#getQueryAttrs()#">
 		DROP INDEX IX_#arguments.table#_#arguments.column# on #arguments.table#
 		</cfquery>
 	</cfcase>
 	<cfcase value="mysql">
-		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		<cfquery attributeCollection="#getQueryAttrs()#">
 		DROP INDEX IX_#arguments.table#_#arguments.column# on #arguments.table#
 		</cfquery>
 	</cfcase>
 	<cfcase value="postgresql">
-		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		<cfquery attributeCollection="#getQueryAttrs()#">
 		DROP INDEX IX_#arguments.table#_#arguments.column# on #arguments.table#
 		</cfquery>
 	</cfcase>
 	<cfcase value="oracle">
-		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		<cfquery attributeCollection="#getQueryAttrs()#">
 		DROP INDEX IX_#arguments.table#_#arguments.column#
 		</cfquery>
 	</cfcase>
@@ -1132,22 +1132,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif not rsCheck.recordcount>
 	<cfswitch expression="#getDbType()#">
 	<cfcase value="mssql">
-		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		<cfquery attributeCollection="#getQueryAttrs()#">
 		ALTER TABLE #arguments.table# DROP COLUMN #arguments.column#
 		</cfquery>
 	</cfcase>
 	<cfcase value="mysql">
-		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		<cfquery attributeCollection="#getQueryAttrs()#">
 		ALTER TABLE #arguments.table# DROP COLUMN #arguments.column#
 		</cfquery>
 	</cfcase>
 	<cfcase value="postgresql">
-		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		<cfquery attributeCollection="#getQueryAttrs()#">
 		ALTER TABLE #arguments.table# DROP COLUMN #arguments.column#
 		</cfquery>
 	</cfcase>
 	<cfcase value="oracle">
-		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		<cfquery attributeCollection="#getQueryAttrs()#">
 		ALTER TABLE #arguments.table# DROP COLUMN #arguments.column#
 		</cfquery>
 	</cfcase>
@@ -1789,6 +1789,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset structDelete(arguments,'username')>
 			<cfset structDelete(arguments,'password')>
 		</cfif>
+	</cfif>
+
+	<cfif this.getCompiler() eq 'boxlang'>
+		<cfset structDelete(arguments,'username')>
+		<cfset structDelete(arguments,'password')>
 	</cfif>
 
 	<cfif not getValue(property='allowQueryCaching',defaultValue=true)>

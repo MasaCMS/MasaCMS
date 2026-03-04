@@ -144,7 +144,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset result = pushBundle(siteID, bundleFileName, serverArgs)>
 		</cfloop>
 
-		<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
+		<cfquery attributeCollection="#getQueryAttrs()#">
 			update tsettings set lastDeployment = #createODBCDateTime(now())#
 			where siteID = <cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.siteID#">
 		</cfquery>
@@ -217,8 +217,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif arguments.orderID neq ''>
 		<cfloop from="1" to="#listlen(arguments.orderid)#" index="i">
-		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		update tsettings set orderno= #listgetat(arguments.orderno,i)# where siteid ='#listgetat(arguments.orderid,i)#'
+		<cfquery attributeCollection="#getQueryAttrs()#">
+			update tsettings set orderno= #listgetat(arguments.orderno,i)# where siteid ='#listgetat(arguments.orderid,i)#'
 		</cfquery>
 		</cfloop>
 	</cfif>
@@ -233,8 +233,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  <cfset var i=0/>
 	<cfif arguments.deploy neq '' and arguments.orderID neq ''>
 		<cfloop from="1" to="#listlen(arguments.orderid)#" index="i">
-		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		update tsettings set deploy= #listgetat(arguments.deploy,i)# where siteid ='#listgetat(arguments.orderid,i)#'
+		<cfquery attributeCollection="#getQueryAttrs()#">
+			update tsettings set deploy= #listgetat(arguments.deploy,i)# where siteid ='#listgetat(arguments.orderid,i)#'
 		</cfquery>
 		</cfloop>
 	</cfif>
@@ -348,8 +348,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif structIsEmpty(bean.getErrors()) and  bean.getSiteID() neq ''>
 
-		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-		select siteid from tsettings where siteid='#bean.getSiteID()#'
+		<cfquery attributeCollection="#getQueryAttrs(name="rs", readOnly=true)#">
+			select siteid from tsettings where siteid='#bean.getSiteID()#'
 		</cfquery>
 
 		<cfif rs.recordcount>
@@ -817,8 +817,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfthrow type="custom" message="The attribute 'SITEID' is required when saving a site settingsBean.">
 	</cfif>
 
-	<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#" name="rs">
-	select siteID from tsettings where siteID=<cfqueryparam value="#arguments.data.siteID#">
+	<cfquery attributeCollection="#getQueryAttrs(name="rs", readOnly=true)#">
+		select siteID from tsettings where siteID=<cfqueryparam value="#arguments.data.siteID#">
 	</cfquery>
 
 	<cfif rs.recordcount>

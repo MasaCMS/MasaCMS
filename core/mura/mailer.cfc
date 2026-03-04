@@ -165,12 +165,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset site=variables.settingsManager.getSite(arguments.siteid)>
 					<cfset reviewLink='#site.getResourcePath(complete=1)#/index.cfm/_api/render/file/?fileID=#fields["#form_element#"]#&method=attachment' />
 
-					<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-					insert into tredirects (redirectID,URL,created) values(
-					<cfqueryparam cfsqltype="cf_sql_varchar" value="#redirectID#" >,
-					<cfqueryparam cfsqltype="cf_sql_varchar" value="#reviewLink#" >,
-					<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
-					)
+					<cfquery attributeCollection="#getQueryAttrs()#">
+						insert into tredirects (redirectID,URL,created) values(
+							<cfqueryparam cfsqltype="cf_sql_varchar" value="#redirectID#" >,
+							<cfqueryparam cfsqltype="cf_sql_varchar" value="#reviewLink#" >,
+							<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
+						)
 					</cfquery>
 
 					<cfset tmt_mail_body = tmt_mail_body & form_element & ": " & "#site.getWebPath(complete=1)##site.getContentRenderer().getURLStem(arguments.siteID,redirectID)#" & tmt_cr>

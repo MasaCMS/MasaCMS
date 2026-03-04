@@ -624,8 +624,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfswitch>
 	</cfif>
 
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-	select subTypeID,type,subtype,siteid from tclassextend where subTypeID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getSubTypeID()#">
+	<cfquery attributeCollection="#getQueryAttrs(name='rs')#">
+		select subTypeID,type,subtype,siteid from tclassextend where subTypeID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getSubTypeID()#">
 	</cfquery>
 
 	<cfif rs.recordcount>
@@ -731,10 +731,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfloop>
 	</cfif>
 
-	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	delete from tclassextend
-	where
-	subTypeID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getsubtypeID()#">
+	<cfquery attributeCollection="#getQueryAttrs()#">
+		delete from tclassextend
+		where
+		subTypeID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getsubtypeID()#">
 	</cfquery>
 
 	<cfif not listFindNoCase("Custom,Site,Base",getType())>

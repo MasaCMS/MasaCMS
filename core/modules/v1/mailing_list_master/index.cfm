@@ -84,7 +84,7 @@ This file is part of Mura CMS.
 	Mura CMS.
 --->
 <cfsilent>
-	<cfquery datasource="#application.configBean.getDatasource(mode='readOnly')#" username="#application.configBean.getDBUsername(mode='readOnly')#" password="#application.configBean.getDBPassword(mode='readOnly')#" name="variables.rslist">
+	<cfquery attributeCollection="#application.configBean.getReadOnlyQRYAttrs(name="variables.rslist")#">
 		SELECT mlid, name, description
 		FROM tmailinglist
 		WHERE siteid=<cfqueryparam value="#variables.$.event('siteID')#" cfsqltype="varchar">

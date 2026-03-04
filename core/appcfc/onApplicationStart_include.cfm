@@ -133,6 +133,10 @@ if ( application.setupComplete ) {
 	variables.iniSections=getProfileSections(variables.iniPath);
 	variables.iniProperties=structNew();
 
+	if(structKeyExists(server,'boxlang')){
+		variables.iniSections.settings = structKeyList(variables.iniSections.settings);
+	}
+
 	for(variables.p in listToArray(variables.iniSections.settings)){
 		variables.envVar='MURA_#UCASE(variables.p)#';
 			if ( structKeyExists(request.muraSysEnv,variables.envVar) ) {
@@ -149,6 +153,10 @@ if ( application.setupComplete ) {
 				variables.iniProperties[variables.p]=mid(variables.iniProperties[variables.p],3,len(variables.iniProperties[variables.p])-4);
 				variables.iniProperties[variables.p] = evaluate(variables.iniProperties[variables.p]);
 			}
+	}
+
+	if(structKeyExists(server,'boxlang')){
+		variables.iniSections[ variables.iniProperties.mode] = structKeyList(variables.iniSections[ variables.iniProperties.mode])
 	}
 
 	for(variables.p in listToArray(variables.iniSections[ variables.iniProperties.mode])){

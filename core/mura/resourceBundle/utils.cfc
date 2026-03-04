@@ -362,11 +362,11 @@ component extends="mura.cfobject" output="false" hint="This provides resource bu
 
 			for(f in ListToArray(formatTest,dtCh)){
 				if ( listFind("2024,24",f) ) {
-					variables.dateKeyFormat=listAppend(variables.dateKeyFormat,"YYYY",dtCh);
+					variables.dateKeyFormat=listAppend(variables.dateKeyFormat,"yyyy",dtCh);
 				} else if ( f == 11 ) {
-					variables.dateKeyFormat=listAppend(variables.dateKeyFormat,"MM",dtCh);
+					variables.dateKeyFormat=listAppend(variables.dateKeyFormat,"mm",dtCh);
 				} else {
-					variables.dateKeyFormat=listAppend(variables.dateKeyFormat,"DD",dtCh);
+					variables.dateKeyFormat=listAppend(variables.dateKeyFormat,"dd",dtCh);
 				}
 			}
 

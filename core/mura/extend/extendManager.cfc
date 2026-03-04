@@ -186,14 +186,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="buildDefinitionsQuery" output="false">
-<cfargument name="datasource" required="true" default="#application.configBean.getDatasource()#">
-<cfargument name="dbUsername" required="true" default="#application.configBean.getDbUsername()#">
-<cfargument name="dbPassword" required="true" default="#application.configBean.getDbPassword()#">
+	<cfargument name="datasource" required="true" default="#application.configBean.getDatasource()#">
+	<cfargument name="dbUsername" required="true" default="#application.configBean.getDbUsername()#">
+	<cfargument name="dbPassword" required="true" default="#application.configBean.getDbPassword()#">
+	
 	<cfset var rs="">
 
-	<cfif arguments.datasource neq variables.configBean.getDatasource()>
-		<cfset arguments.dbUsername="">
-		<cfset arguments.dbPassword="">
+	<cfset attributeCollection = getQueryAttrs(name="rs", readOnly=true) />
+	<cfif arguments.datasource neq attributeCollection.datasource>
+		<cfset attributeCollection.datasource = arguments.datasource />
+		<cfset attributeCollection.username = arguments.dbUsername />
+		<cfset attributeCollection.password = arguments.dbPassword />
 	</cfif>
 
 	<cfif variables.configBean.getDBType() eq 'MSSQL'>
@@ -202,34 +205,34 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var tableModifier="">
 	</cfif>
 
-	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
-	select tclassextend.subtypeid, tclassextend.siteid, tclassextend.basekeyfield, tclassextend.datatable, tclassextend.type,
-	tclassextend.subtype, tclassextendsets.extendsetid, tclassextendsets.categoryid, tclassextendsets.name extendsetname,
-	tclassextendsets.container, tclassextendattributes.attributeid, tclassextendattributes.name attributename,
-	<cfif variables.configBean.getDBType() eq "oracle">
-		to_char(tclassextendattributes.label) as label
-	<cfelse>
-		tclassextendattributes.label
-	</cfif>,
-	tclassextendattributes.hint, tclassextendattributes.type inputtype, tclassextendattributes.required,
-	tclassextendattributes.validation, tclassextendattributes.regex, tclassextendattributes.message, tclassextendattributes.optionlist,
-	tclassextendattributes.optionlabellist, tclassextendattributes.defaultvalue,
-	tclassextend.hasSummary,tclassextend.hasBody,tclassextendattributes.adminonly,
-	<cfif variables.configBean.getDBType() eq "oracle">
-		to_char(tclassextend.description) as description
-	<cfelse>
-		tclassextend.description
-	</cfif>,
-	<cfif variables.configBean.getDBType() eq "oracle">
-		to_char(tclassextend.availableSubTypes) as availableSubTypes
-	<cfelse>
-		tclassextend.availableSubTypes
-	</cfif>
-	,tclassextend.iconclass
-	from tclassextend #tableModifier#
-	inner join tclassextendsets #tableModifier# on (tclassextend.subtypeid=tclassextendsets.subtypeid)
-	inner join tclassextendattributes #tableModifier# on (tclassextendsets.extendsetid=tclassextendattributes.extendsetid)
-	order by tclassextend.siteID, tclassextend.type, tclassextend.subtype, tclassextendsets.orderno, tclassextendattributes.orderno
+	<cfquery attributeCollection="#attributeCollection#">
+		select tclassextend.subtypeid, tclassextend.siteid, tclassextend.basekeyfield, tclassextend.datatable, tclassextend.type,
+		tclassextend.subtype, tclassextendsets.extendsetid, tclassextendsets.categoryid, tclassextendsets.name extendsetname,
+		tclassextendsets.container, tclassextendattributes.attributeid, tclassextendattributes.name attributename,
+		<cfif variables.configBean.getDBType() eq "oracle">
+			to_char(tclassextendattributes.label) as label
+		<cfelse>
+			tclassextendattributes.label
+		</cfif>,
+		tclassextendattributes.hint, tclassextendattributes.type inputtype, tclassextendattributes.required,
+		tclassextendattributes.validation, tclassextendattributes.regex, tclassextendattributes.message, tclassextendattributes.optionlist,
+		tclassextendattributes.optionlabellist, tclassextendattributes.defaultvalue,
+		tclassextend.hasSummary,tclassextend.hasBody,tclassextendattributes.adminonly,
+		<cfif variables.configBean.getDBType() eq "oracle">
+			to_char(tclassextend.description) as description
+		<cfelse>
+			tclassextend.description
+		</cfif>,
+		<cfif variables.configBean.getDBType() eq "oracle">
+			to_char(tclassextend.availableSubTypes) as availableSubTypes
+		<cfelse>
+			tclassextend.availableSubTypes
+		</cfif>
+		,tclassextend.iconclass
+		from tclassextend #tableModifier#
+		inner join tclassextendsets #tableModifier# on (tclassextend.subtypeid=tclassextendsets.subtypeid)
+		inner join tclassextendattributes #tableModifier# on (tclassextendsets.extendsetid=tclassextendattributes.extendsetid)
+		order by tclassextend.siteID, tclassextend.type, tclassextend.subtype, tclassextendsets.orderno, tclassextendattributes.orderno
 	</cfquery>
 
 	<cfreturn rs>

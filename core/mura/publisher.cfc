@@ -3478,7 +3478,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		--->
 
-		<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
+		<cfquery attributeCollection="#getQueryAttrs()#">
 			update tsettings set lastDeployment = #createODBCDateTime(now())#
 			where siteID=<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.siteID#">
 		</cfquery>
@@ -3597,7 +3597,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset publish(arguments.siteid)>
 		<cfelse>
 			<!--- publish all sites --->
-			<cfquery name="rsSites"datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
+			<cfquery attributeCollection="#getQueryAttrs(name="rsSites")#">
 				select siteid, deploy from tsettings
 			</cfquery>
 			<cfloop query="rsSites">

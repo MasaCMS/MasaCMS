@@ -382,10 +382,10 @@ This file is part of Mura CMS.
                             <li class="divider"></li>
                             <!--- server version --->
                             <li>
-                                <a class="no-link" href="##"> <span><strong>#rc.$.rbKey('version.appserver')#</strong> #listFirst(server.coldfusion.productname,' ')#
-                                    <cfif structKeyExists(server,'railo') and structKeyExists(server.railo,'version') >(#server.railo.version#)
-                                    <cfelseif structKeyExists(server,'lucee') and structKeyExists(server.lucee,'version') >(#server.railo.version#)
-                                    <cfelseif structKeyExists(server,'coldfusion') and structKeyExists(server.coldfusion,'productversion') >(#server.coldfusion.productversion#)</cfif></span></a>
+                                <a class="no-link" href="##"> <span><strong>#rc.$.rbKey('version.appserver')#</strong>
+                                    <cfif structKeyExists(server,'boxlang') and structKeyExists(server.boxlang,'version') >Boxlang (#server.boxlang.version#)
+                                    <cfelseif structKeyExists(server,'lucee') and structKeyExists(server.lucee,'version') >Lucee (#server.lucee.version#)
+                                    <cfelseif structKeyExists(server,'coldfusion') and structKeyExists(server.coldfusion,'productversion') >#listFirst(server.coldfusion.productname,' ')# (#server.coldfusion.productversion#)</cfif></span></a>
                             </li>
                             <li>
                                 <a class="no-link" href="##"> <span><strong>#rc.$.rbKey('version.dbserver')#</strong> #rc.$.getBean('dbUtility').version().database_productname# (#rc.$.getBean('dbUtility').version().database_version#)</span></a>

@@ -441,7 +441,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			)
 			</cfquery>
 
-			<cfquery name="rs"  datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+			<cfquery attributeCollection="#getQueryAttrs(name="rs", readOnly=true)#">
 			select max(attributeID) as newID  from tclassextendattributes
 			</cfquery>
 

@@ -308,22 +308,22 @@ if ( !this.sessionManagement ) {
 	// How long do session vars persist?
 	if ( request.tracksession ) {
 		iniSessionTimeout = evalSetting(getINIProperty('sessionTimeout',180));
-		iniSessionTimeout = iniSessionTimeout >= 1 ? iniSessionTimeout : 180;
-		this.sessionTimeout = CreateTimeSpan(0,0,iniSessionTimeout,0);
+		this.sessionTimeout = iniSessionTimeout >= 1 ? iniSessionTimeout : 180;
 	} else {
 		this.sessionTimeout = CreateTimeSpan(0,0,0,2);
 	}
 }
 this.timeout =  getINIProperty("requesttimeout","1000");
 //  define a list of custom tag paths.
-this.customtagpaths =  evalSetting(getINIProperty("customtagpaths",""));
+this.customtagpaths = evalSetting(getINIProperty("customtagpaths",""));
 this.customtagpaths = listAppend(this.customtagpaths,variables.baseDir  &  "/core/mura/customtags/");
+this.customtagpaths = listAppend(this.customtagpaths,variables.baseDir  &  "/admin/core/views/carch");
 this.clientManagement = evalSetting(getINIProperty("clientManagement","false"));
 variables.clientStorageCheck=evalSetting(getINIProperty("clientStorage",""));
 if ( len(variables.clientStorageCheck) ) {
 	this.clientStorage = variables.clientStorageCheck;
 }
-this.ormenabled =  evalSetting(getINIProperty("ormenabled","true"));
+this.ormenabled = evalSetting(getINIProperty("ormenabled","true"));
 this.ormSettings={};
 this.ormSettings.cfclocation=[];
 try {
@@ -341,8 +341,9 @@ if ( request.muraSessionManagement && len(evalSetting(getINIProperty("cookiedoma
 }
 if ( len(getINIProperty("datasource","")) ) {
 	//  You can't depend on 9 supporting datasource as struct
-	if ( listFirst(SERVER.COLDFUSION.PRODUCTVERSION) > 9
-		or listGetAt(SERVER.COLDFUSION.PRODUCTVERSION,3) > 0 ) {
+	if ( structKeyExists(server, 'lucee') ) {
+		this.datasource = evalSetting(getINIProperty("datasource",""));
+	} else {
 		this.datasource = structNew();
 		this.datasource.name = evalSetting(getINIProperty("datasource",""));
 
@@ -354,8 +355,6 @@ if ( len(getINIProperty("datasource","")) ) {
 		if ( len(dbPassword) ) {
 			this.datasource.password = dbPassword;
 		}
-	} else {
-		this.datasource = evalSetting(getINIProperty("datasource",""));
 	}
 } else {
 	this.ormenabled=false;
@@ -640,6 +639,7 @@ function initINI(required string iniPath) output=false {
 	variables.ini = structNew();
 	file=fileRead(variables.iniPath);
 
+	
 	for(line in listToArray(file,"#chr(10)##chr(13)#")){
 		line=trim(line);
 
@@ -665,15 +665,15 @@ function initINI(required string iniPath) output=false {
 	 * Returns a struct with section names and values set to list of section entry names. This behaves much like the CF built-in function getProfileSections().
 	 */
 	struct function getINISections() output=false {
-	var sections = structNew();
-	var sectionName = "";
+		var sections = structNew();
+		var sectionName = "";
 
-	for(sectionName in ListToArray(structKeyList( variables.ini ))){
-		sections[ sectionName ] = structKeyList( variables.ini[ sectionName ] );
+		for(sectionName in ListToArray(structKeyList( variables.ini ))){
+			sections[ sectionName ] = structKeyList( variables.ini[ sectionName ] );
+		}
+
+		return sections;
 	}
-
-	return sections;
-}
 
 function evalSetting(value) output=false {
 	if ( left(arguments.value,2) == "${"

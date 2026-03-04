@@ -390,8 +390,8 @@ This file is part of Mura CMS.
 			<cfthrow type="custom" message="The attribute 'USERID' is required when saving a user.">
 		</cfif>
 
-		<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#" name="rs">
-		select userID from tusers where userID=<cfqueryparam value="#arguments.data.userID#">
+		<cfquery attributeCollection="#getQueryAttrs(name="rs", readOnly=true)#">
+			select userID from tusers where userID=<cfqueryparam value="#arguments.data.userID#">
 		</cfquery>
 
 		<cfif rs.recordcount>

@@ -178,9 +178,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset var finder=""/>
 <cfset var theString=""/>
 
-<cfquery name="rsReturnForm" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-select filename from tcontent where siteid='#arguments.siteid#'  and active =1 and ((display=1) or (display=2  and tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#"> AND tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">)) 
-and contenthistid in (select contenthistid from tcontentobjects where object='mailing_list_master')	
+<cfquery attributeCollection="#getQueryAttrs(name="rsReturnForm", readOnly=true)#">
+	select filename from tcontent where siteid='#arguments.siteid#'  and active =1 and ((display=1) or (display=2  and tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#"> AND tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">)) 
+	and contenthistid in (select contenthistid from tcontentobjects where object='mailing_list_master')	
 </cfquery>
 
 <cfset returnURL="#application.settingsManager.getSite(arguments.siteID).getScheme()#://#variables.settingsManager.getSite(arguments.siteid).getDomain()##variables.configBean.getServerPort()##variables.configBean.getContext()##variables.contentRenderer.getURLStem(arguments.siteid,rsreturnform.filename)#?doaction=validateMember&mlid=#arguments.mlid#&siteid=#URLEncodedFormat(arguments.siteid)#&email=#arguments.sendto#&nocache=1"/>

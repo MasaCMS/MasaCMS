@@ -121,7 +121,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<form novalidate="novalidate" method="post" name="frmSettings" action="./?muraAction=cSettings.updatePlugin" onsubmit="return submitForm(document.frmSettings);">
 					<cfsilent>
-						<cfquery name="rsLocation" datasource="#application.configbean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
+						<cfquery attributeCollection="#application.configBean.getQueryAttrs(name="rsLocation")#">
 							select location from tplugindisplayobjects
 							where moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rc.ModuleID#">
 						</cfquery>

@@ -74,6 +74,12 @@
 		<cfquery attributeCollection="#getQueryAttrs(name='rscheck')#">
 			select TABLE_NAME from user_tables
 		</cfquery>
+	<cfelseif variables.dbtype eq 'mysql'>
+		<cfquery attributeCollection="#getQueryAttrs(name='rscheck')#">
+			SELECT table_name 
+			FROM information_schema.tables 
+			WHERE table_schema = DATABASE()
+		</cfquery>
 	<cfelse>
 		<cfdbinfo attributeCollection="#getQueryAttrs(pattern='%',name='rsCheck',type='tables')#">
 	</cfif>
@@ -96,23 +102,19 @@
 		<cfswitch expression="#variables.dbtype#">
 			<cfcase value="oracle">
 				<cfquery attributeCollection="#getQueryAttrs(name='rs')#">
-					SELECT column_name,
-					data_length column_size,
-					data_type type_name,
-					data_default column_default_value,
-					nullable is_nullable,
-					 data_precision
-					FROM user_tab_cols
-					WHERE table_name=UPPER('#arguments.table#')
-			</cfquery>
+					SELECT 	column_name,
+							data_length column_size,
+							data_type type_name,
+							data_default column_default_value,
+							nullable is_nullable,
+							data_precision
+					FROM 	user_tab_cols
+					WHERE 	table_name=UPPER('#arguments.table#')
+				</cfquery>
 			</cfcase>
 			<!---
 			<cfcase value="nuodb">
-				<cfquery
-				name="rs"
-				datasource="#variables.datasource#"
-				username="#variables.dbusername#"
-				password="#variables.dbpassword#">
+				<cfquery attributeCollection="#getQueryAttrs(name='rs')#">
 					SELECT field ,
 					length,
 					datatype ,
@@ -121,31 +123,31 @@
 					precision
 					FROM system.fields
 					WHERE tablename='#ucase(arguments.table)#'
-			</cfquery>
-			<cfquery
-				name="rs"
-				dbtype="query">
-					SELECT field column_name,
-					length column_size,
-					datatype type_name,
-					defaultvalue column_default_value,
-					is_nullable,
-					precision data_precision
-					FROM rs
-			</cfquery>
+				</cfquery>
+				<cfquery
+					name="rs"
+					dbtype="query">
+						SELECT field column_name,
+						length column_size,
+						datatype type_name,
+						defaultvalue column_default_value,
+						is_nullable,
+						precision data_precision
+						FROM rs
+				</cfquery>
 			</cfcase>
 			--->
-			<cfcase value="mssql,postgresql">
-			<cfquery attributeCollection="#getQueryAttrs(name='rs')#">
-					select column_name,
-					character_maximum_length column_size,
-					data_type type_name,
-					column_default column_default_value,
-					is_nullable,
-					numeric_precision data_precision
-					from information_schema.columns
-					where lower(TABLE_NAME)='#lcase(arguments.table)#'
-			</cfquery>
+			<cfcase value="mysql,mssql,postgresql">
+				<cfquery attributeCollection="#getQueryAttrs(name='rs')#">
+					select 	column_name,
+							character_maximum_length column_size,
+							data_type type_name,
+							column_default column_default_value,
+							is_nullable,
+							numeric_precision data_precision
+					from 	information_schema.columns
+					where 	lower(TABLE_NAME)='#lcase(arguments.table)#'
+				</cfquery>
 			</cfcase>
 			<cfdefaultcase>
 				<cfdbinfo attributeCollection="#getQueryAttrs(name='rs',table='#qualifySchema(arguments.table)#',type='columns')#">

@@ -363,11 +363,11 @@ This file is part of Mura CMS.
 <cffunction name="createRedirectID" output="false">
 	<cfargument name="theLink" required="true">
 	<cfset var redirectID= createUUID() />
-	<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery attributeCollection="#getQueryAttrs()#">
 		insert into tredirects (redirectID,URL,created) values(
-		<cfqueryparam cfsqltype="cf_sql_varchar" value="#redirectID#" >,
-		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.theLink#" >,
-		#createODBCDateTime(now())#
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#redirectID#" >,
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.theLink#" >,
+			#createODBCDateTime(now())#
 		)
 	</cfquery>
 
@@ -424,7 +424,12 @@ This file is part of Mura CMS.
 		<cfelseif StructKeyExists(headers,"Front-End-Https") and isBoolean(headers["Front-End-Https"]) and headers["Front-End-Https"]>
 			<cfreturn "https">
 		<cfelse>
-		    <cfreturn getPageContext().getRequest().getScheme()>
+			<cfif server.keyExists("boxlang")>
+				<cfset returnValue = listFirst(cgi.request_url, ":")>
+			<cfelse>
+			    <cfset returnValue = getPageContext().getRequest().getScheme()>
+			</cfif>
+			<cfreturn returnValue>
 		</cfif>
 
 		<cfcatch>
@@ -638,6 +643,9 @@ Blog: www.codfusion.com--->
 					<cfset local.key=listFirst(local.item,"=")>
 					<cfset sessionTokens["#local.key#"]=listLast(local.item,"=")>
 				</cfloop>
+				<cfif !sessionTokens.keyExists("CFTOKEN")>
+					<cfset sessionTokens.CFTOKEN = 0>
+				</cfif>
 			<cfelse>
 				<cfreturn>
 			</cfif>

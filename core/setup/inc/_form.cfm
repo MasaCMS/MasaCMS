@@ -121,18 +121,20 @@ to your own modified versions of Mura CMS.
 							</select>
 					</div>
 
-					<div class="mura-control-group database-config" >
-						<label class="css-input switch switch-sm switch-primary">
-							<input type="checkbox" id="auto_create" name="auto_create" value="1"
-							<cfif len(trim(form.auto_create)) and val(form.auto_create)>checked</cfif>
-							><span></span> <label>Create a new database</label>
+					<cfif not server.keyExists('boxlang')>
+						<div class="mura-control-group database-config" >
+							<label class="css-input switch switch-sm switch-primary">
+								<input type="checkbox" id="auto_create" name="auto_create" value="1"
+								<cfif len(trim(form.auto_create)) and val(form.auto_create)>checked</cfif>
+								><span></span> <label>Create a new database</label>
 
-								<span data-toggle="popover" title="" data-placement="right"
-								  	data-content="If your database already exists, leave this turned off and enter the datasource connection details. To create a new database on the server, turn this option on and complete the required information."
-								  	data-original-title="Create a new database"> <i class="mi-question-circle"></i> </span>
+									<span data-toggle="popover" title="" data-placement="right"
+										data-content="If your database already exists, leave this turned off and enter the datasource connection details. To create a new database on the server, turn this option on and complete the required information."
+										data-original-title="Create a new database"> <i class="mi-question-circle"></i> </span>
 
-						</label>
-					</div>
+							</label>
+						</div>
+					</cfif>
 
 					<div class="mura-control-group database-create-yes">
 						<label>#theCFServer# Password</label>
@@ -155,19 +157,21 @@ to your own modified versions of Mura CMS.
 						<input type="text" name="production_datasource" value="#FORM.production_datasource#" />
 					</div>
 
-					<div class="mura-control-group database-config">
-						<label>Database Username</label>
-						<input type="text" name="production_dbusername" value="#FORM.production_dbusername#" />
-						<p class="help-block database-create-no">Optional if already configured in #theCFServer# admin.</p>
-						<p class="help-block database-create-yes">Required to create database.</p>
-					</div>
+					<cfif not server.keyExists('boxlang')>
+						<div class="mura-control-group database-config">
+							<label>Database Username</label>
+							<input type="text" name="production_dbusername" value="#FORM.production_dbusername#" />
+							<p class="help-block database-create-no">Optional if already configured in #theCFServer# admin.</p>
+							<p class="help-block database-create-yes">Required to create database.</p>
+						</div>
 
-					<div class="mura-control-group database-config">
-						<label>Database Password</label>
-						<input type="password" name="production_dbpassword" value="#FORM.production_dbpassword#" />
-						<p class="help-block database-create-no">Optional if already configured in #theCFServer# admin.</p>
-						<p class="help-block database-create-yes">Required to create database.</p>
-					</div>
+						<div class="mura-control-group database-config">
+							<label>Database Password</label>
+							<input type="password" name="production_dbpassword" value="#FORM.production_dbpassword#" />
+							<p class="help-block database-create-no">Optional if already configured in #theCFServer# admin.</p>
+							<p class="help-block database-create-yes">Required to create database.</p>
+						</div>
+					</cfif>
 
 			</div>
 			<!--- /TAB-DATABASE --->
