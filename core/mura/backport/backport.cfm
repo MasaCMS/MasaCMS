@@ -4,14 +4,14 @@ request.backported=true;
 try{
 	esapiencode('html', 'test');
 } catch (any e){
-	include './esapiencode.cfm';
+	include '/core/mura/backport/esapiencode.cfm';
 }
 
 if(structKeyExists(server, 'boxlang')){
-	include './boxlang.cfm';
+	include '/core/mura/backport/boxlang.cfm';
 } else if(structKeyExists(server, 'lucee')){
-	include './lucee.cfm';
+	include '/core/mura/backport/lucee.cfm';
 } else {
-	include './acf.cfm';
+	include '/core/mura/backport/acf.cfm';
 }
 </cfscript>
