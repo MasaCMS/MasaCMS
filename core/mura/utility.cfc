@@ -87,12 +87,13 @@ This file is part of Mura CMS.
 <cfcomponent extends="mura.cfobject" output="false" hint="This provides global utility methods">
 
 <cffunction name="init" output="false">
-<cfargument name="configBean" type="any" required="yes"/>
-<cfargument name="fileWriter" type="any" required="yes"/>
-<cfset variables.configBean=arguments.configBean />
-<cfset variables.fileWriter=arguments.fileWriter />
+	<cfargument name="configBean" type="any" required="yes"/>
+	<cfargument name="fileWriter" type="any" required="yes"/>
+	
+	<cfset variables.configBean = arguments.configBean />
+	<cfset variables.fileWriter = arguments.fileWriter />
 
-<cfreturn this >
+	<cfreturn this >
 </cffunction>
 
 <cffunction name="getBCrypt" output="false">
@@ -850,23 +851,23 @@ Blog: www.codfusion.com--->
 </cffunction>
 
 <cffunction name="toBCryptHash" output="false">
-        <cfargument name="string">
-        <cfargument name="logRounds" default="#variables.configBean.getBCryptLogRounds()#">
-        <cfset var hash = getBCrypt().hashpw(JavaCast('string',arguments.string), this.getCryptoSalt(logRounds=arguments.logRounds) )>
-        <cfreturn hash >
+	<cfargument name="string">
+	<cfargument name="logRounds" default="#variables.configBean.getBCryptLogRounds()#">
+	<cfset var hash = getBCrypt().hashpw(JavaCast('string',arguments.string), this.getCryptoSalt(logRounds=arguments.logRounds) )>
+	<cfreturn hash >
 </cffunction>
 
 <cffunction name="checkBCryptHash" output="false">
-        <cfargument name="string">
-        <cfargument name="hash">
-        <cfset var match = "" />
-        <cftry>
+	<cfargument name="string">
+	<cfargument name="hash">
+	<cfset var match = "" />
+	<cftry>
         <cfset match = getBCrypt().checkpw(JavaCast('string',arguments.string), JavaCast('string',arguments.hash))>
         <cfcatch>
-                <cfset match = false>
+			<cfset match = false>
         </cfcatch>
-        </cftry>
-        <cfreturn match />
+	</cftry>
+	<cfreturn match />
 </cffunction>
 
 <cffunction name="checkForInstanceOf" output="false">

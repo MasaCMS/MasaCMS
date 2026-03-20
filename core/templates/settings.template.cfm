@@ -122,3 +122,4 @@ usedefaultsmtpserver=true
 usefilemode=false
 variations=false
 windowdocumentdomain=
+defaulthashalgorithm=SHA-256

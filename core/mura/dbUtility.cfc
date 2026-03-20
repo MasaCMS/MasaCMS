@@ -137,7 +137,7 @@
 				</cfquery>
 			</cfcase>
 			--->
-			<cfcase value="mysql,mssql,postgresql">
+			<cfcase value="mysql">
 				<cfquery attributeCollection="#getQueryAttrs(name='rs')#">
 					select 	column_name,
 							character_maximum_length column_size,
@@ -147,6 +147,33 @@
 							numeric_precision data_precision
 					from 	information_schema.columns
 					where 	lower(TABLE_NAME)='#lcase(arguments.table)#'
+							and table_schema = DATABASE()
+				</cfquery>
+			</cfcase>
+			<cfcase value="mssql">
+				<cfquery attributeCollection="#getQueryAttrs(name='rs')#">
+					select 	column_name,
+							character_maximum_length column_size,
+							data_type type_name,
+							column_default column_default_value,
+							is_nullable,
+							numeric_precision data_precision
+					from 	information_schema.columns
+					where 	lower(TABLE_NAME)='#lcase(arguments.table)#'
+							and table_catalog = DB_NAME()
+				</cfquery>
+			</cfcase>
+			<cfcase value="postgresql">
+				<cfquery attributeCollection="#getQueryAttrs(name='rs')#">
+					select 	column_name,
+							character_maximum_length column_size,
+							data_type type_name,
+							column_default column_default_value,
+							is_nullable,
+							numeric_precision data_precision
+					from 	information_schema.columns
+					where 	lower(TABLE_NAME)='#lcase(arguments.table)#'
+							and table_schema = current_schema()
 				</cfquery>
 			</cfcase>
 			<cfdefaultcase>

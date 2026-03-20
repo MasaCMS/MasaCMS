@@ -123,6 +123,12 @@ if (len( webRoot ) AND left( trim( context ), len( webRoot ) ) IS NOT webRoot) {
 // determine server type
 theCFServer		= (structKeyExists(server, 'lucee') ? 'Lucee' : 'ColdFusion');
 
+// create utility object
+variables.utility = createobject("component","mura.utility").init(
+	configBean = createObject("component","mura.configBean").init(settingsIni),
+	fileWriter = createObject("component","mura.fileWriter").init()
+);
+
 // at this point we assume the installation it's setup yet and we need to show the form
 variables.setupProcessComplete	= false;
 </cfscript>
@@ -172,7 +178,6 @@ variables.setupProcessComplete	= false;
 <cfparam name="FORM.production_cfpassword"			default="" />
 <!--- EncryptionKey --->
 <cfparam name="FORM.production_encryptionkey"	default="#settingsIni.get( "production", "encryptionkey" )#" />
-<cfparam name="variables.production_defaulthashalgorithm"	default="#settingsIni.get( "production", "defaulthashalgorithm" )#" />
 
 <cfif not len(FORM.production_encryptionkey)>
 	<cfset FORM.production_encryptionkey=generateSecretKey('AES')>
