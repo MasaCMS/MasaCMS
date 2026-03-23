@@ -183,7 +183,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.trackSessionInNewThread=true />
 <cfset variables.instance.cfStaticJavaLoaderScope="application">
 <cfset variables.instance.URLTitleDelim="-">
-<cfset variables.instance.BCryptLogRounds=10>
+<cfset variables.instance.BCryptLogRounds=12>
 <cfset variables.instance.BCryptReseedFrequency=60>
 <cfset variables.instance.maxSourceImageWidth=4000>
 <cfset variables.dbUtility="">
