@@ -12,7 +12,7 @@
 		}
 
 		application.dbconnectionerror = false;
-		var activateSetup = false;
+		activateSetup = false;
 
 		if(this.datasources.KeyExists('nodatabase') && len(getSystemEnvironmentSetting('MURA_DATABASE'))){
 			// Attempt to connect to database
