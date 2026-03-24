@@ -93,14 +93,12 @@ to your own modified versions of Mura CMS.
 
   <cfset queryAttrs={
     datasource="#FORM.production_datasource#",
-    username="#FORM.production_dbusername#",
-    password="#FORM.production_dbpassword#",
     name="rs"
   }>
 
-  <cfif not len(FORM.production_dbusername)>
-    <cfset structDelete(queryAttrs,'username')>
-    <cfset structDelete(queryAttrs,'password')>
+  <cfif len(FORM.production_dbusername)>
+    <cfset queryAttrs.username = FORM.production_dbusername>
+    <cfset queryAttrs.password = FORM.production_dbpassword>
   </cfif>
   <cftry>
     <!--- do not run if we do not have a datasource (bsoylu 6/6/2010)  --->
@@ -291,8 +289,9 @@ to your own modified versions of Mura CMS.
                 <cfloop index="x" from="1" to="#arrayLen(aSql) - 1#">
                   <!--- we placed a small check here to skip empty rows --->
                   <cfif len( trim( aSql[x] ) )>
+                    <cfset currentSQL = mssqlFormat(aSql[x],MSSQLversion)>
                     <cfquery attributeCollection="#queryAttrs#">
-                      #mssqlFormat(aSql[x],MSSQLversion)#
+                      #preserveSingleQuotes(currentSQL)#
                     </cfquery>
                   </cfif>
                 </cfloop>
@@ -313,8 +312,9 @@ to your own modified versions of Mura CMS.
                       <cfset s=replace(s,"/","","ALL")>
                       <cfset s=replace(s,chr(13)," ","ALL")>
                     </cfif>
+                    <cfset currentSQL = s>
                     <cfquery attributeCollection="#queryAttrs#">
-                      #keepSingleQuotes(s)#
+                      #preserveSingleQuotes(currentSQL)#
                     </cfquery>
                   </cfif>
                 </cfloop>
@@ -326,8 +326,9 @@ to your own modified versions of Mura CMS.
                 <cfloop index="x" from="1" to="#arrayLen(aSql) - 1#">
                   <!--- we placed a small check here to skip empty rows --->
                   <cfif len( trim( aSql[x] ) )>
+                    <cfset currentSQL = aSql[x]>
                     <cfquery attributeCollection="#queryAttrs#">
-                      #preserveSingleQuotes(aSql[x])#
+                      #preserveSingleQuotes(currentSQL)#
                     </cfquery>
                   </cfif>
                 </cfloop>
@@ -338,8 +339,9 @@ to your own modified versions of Mura CMS.
                 <cfloop index="x" from="1" to="#arrayLen(aSql) - 1#">
                   <!--- we placed a small check here to skip empty rows --->
                   <cfif len( trim( aSql[x] ) )>
+                    <cfset currentSQL = aSql[x]>
                     <cfquery attributeCollection="#queryAttrs#">
-                      #keepSingleQuotes(aSql[x])#
+                      #preserveSingleQuotes(currentSQL)#
                     </cfquery>
                   </cfif>
                 </cfloop>
@@ -364,7 +366,7 @@ to your own modified versions of Mura CMS.
             <cfquery attributeCollection="#queryAttrs#">
               UPDATE tusers
               SET username=<cfqueryparam cfsqltype="cf_sql_varchar" value="#form.admin_username#">,
-                password=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.utility.toBCryptHash(form.admin_password)#">,
+                password=<cfqueryparam cfsqltype="cf_sql_varchar" value="#toBCryptHash(form.admin_password)#">,
                 email=<cfqueryparam cfsqltype="cf_sql_varchar" value="#form.production_adminemail#">
               where userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#adminUserID#">
             </cfquery>
