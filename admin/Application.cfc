@@ -77,7 +77,13 @@ component extends="framework" output="false" {
 
 	include "../core/appcfc/applicationSettings.cfm";
 
-	include "../core/mura/backport/backport.cfm";
+	if(server.coldfusion.productname != 'ColdFusion Server'){
+		backportdir='';
+		include "../core/mura/backport/backport.cfm";
+	} else {
+		backportdir='../core/mura/backport/';
+		include "#backportdir#backport.cfm";
+	}
 
 /*
 	if(not hasMainMappings){

@@ -1,17 +1,19 @@
+<cfparam name="path" default="" />
+
 <cfscript>
 request.backported=true;
 
 try{
 	esapiencode('html', 'test');
 } catch (any e){
-	include '/core/mura/backport/esapiencode.cfm';
+	include path & '#backportdir#esapiencode.cfm';
 }
 
 if(structKeyExists(server, 'boxlang')){
-	include '/core/mura/backport/boxlang.cfm';
+	include path & '#backportdir#boxlang.cfm';
 } else if(structKeyExists(server, 'lucee')){
-	include '/core/mura/backport/lucee.cfm';
+	include path & '#backportdir#lucee.cfm';
 } else {
-	include '/core/mura/backport/acf.cfm';
+	include path & '#backportdir#acf.cfm';
 }
 </cfscript>
