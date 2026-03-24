@@ -123,12 +123,6 @@ if (len( webRoot ) AND left( trim( context ), len( webRoot ) ) IS NOT webRoot) {
 // determine server type
 theCFServer		= (structKeyExists(server, 'lucee') ? 'Lucee' : 'ColdFusion');
 
-// create utility object
-variables.utility = createobject("component","mura.utility").init(
-	configBean = createObject("component","mura.configBean").init(settingsIni),
-	fileWriter = createObject("component","mura.fileWriter").init()
-);
-
 // at this point we assume the installation it's setup yet and we need to show the form
 variables.setupProcessComplete	= false;
 </cfscript>
