@@ -1,6 +1,14 @@
 <cfif thisTag.ExecutionMode eq 'start'>
 	<cfsilent>
-		<cfinclude template="/mura/backport/backport.cfm">
+		<cfscript>
+			if(server.coldfusion.productname != 'ColdFusion Server'){
+				backportdir='';
+				include "/mura/backport/backport.cfm";
+			} else {
+				backportdir='/mura/backport/';
+				include "#backportdir#backport.cfm";
+			}
+		</cfscript>
 
 		<cfset $=application.serviceFactory.getBean("muraScope").init(session.siteid)>
 
