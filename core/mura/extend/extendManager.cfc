@@ -193,6 +193,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rs="">
 
 	<cfset attributeCollection = getQueryAttrs(name="rs", readOnly=true) />
+
 	<cfif arguments.datasource neq attributeCollection.datasource>
 		<cfset attributeCollection.datasource = arguments.datasource />
 		<cfset attributeCollection.username = arguments.dbUsername />
