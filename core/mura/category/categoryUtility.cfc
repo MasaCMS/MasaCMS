@@ -84,7 +84,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.configBean=arguments.configBean />
 		<cfset variables.settingsManager=arguments.settingsManager />
 		<cfset variables.categoryGateway=arguments.categoryGateway />
-		<cfset variables.dsn=variables.configBean.getDatasource()/>
 	<cfreturn this />
 </cffunction>
 
@@ -92,20 +91,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="siteID">
 	<cfargument name="parentID" required="true" default="">
 	<cfargument name="path" required="true" default=""/>
-	<cfargument name="datasource" required="true" default="#variables.dsn#"/>
+	<cfargument name="datasource" required="true" default="#variables.configBean.getDatasource()#"/>
 
 	<cfset var rs="" />
 	<cfset var newPath = "" />
-	<cfset var updateDSN=arguments.datasource>
-	<cfset var updatePWD="">
-	<cfset var updateUSER="">
 
-	<cfset attributeCollection = getQueryAttrs(name="rs") />
-	<cfif updateDSN neq variables.dsn>
-		<cfset attributeCollection.datasource = updateDSN />
-	</cfif>
-
-	<cfquery attributeCollection="#attributeCollection#">
+	<cfquery attributeCollection="#getQueryAttrs(name="rs", datasource=arguments.datasource)#">
 		select categoryID from tcontentcategories
 		where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 		<cfif arguments.parentID neq ''>
@@ -117,13 +108,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfloop query="rs">
 		<cfset newPath=listappend(arguments.path,rs.categoryID) />
-		<cfquery attributeCollection="#attributeCollection#">
+		<cfquery attributeCollection="#getQueryAttrs(datasource=arguments.datasource)#">
 			update tcontentcategories
 			set path=<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#newPath#" />
 			where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 			and categoryID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.categoryID#" />
 		</cfquery>
-		<cfset this.updateGlobalMaterializedPath(arguments.siteID,rs.categoryID,newPath,updateDSN) />
+		<cfset this.updateGlobalMaterializedPath(arguments.siteID,rs.categoryID,newPath,arguments.datasource) />
 	</cfloop>
 
 </cffunction>
