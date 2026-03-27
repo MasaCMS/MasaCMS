@@ -1032,4 +1032,5 @@ This file is part of Mura CMS.
 		$.event().getTranslator('standardHTML').translate(arguments.$);
 	</cfscript>
 </cffunction>
+
 </cfcomponent>

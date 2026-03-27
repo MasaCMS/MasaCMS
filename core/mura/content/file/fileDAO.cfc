@@ -85,21 +85,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.settingsManager=arguments.settingsManager />
 		<cfset variables.pluginManager=arguments.pluginManager />
 		<cfset variables.fileWriter=arguments.fileWriter>
-		<cfif variables.configBean.getFileStoreAccessInfo() neq ''>
-			<cfset variables.s3=createObject("component","s3").init(
-							listFirst(variables.configBean.getFileStoreAccessInfo(),'^'),
-							listGetAt(variables.configBean.getFileStoreAccessInfo(),2,'^'),
-							"#application.configBean.getFileDir()#/s3cache/",
-							variables.configBean.getFileStoreEndPoint())>
-			<cfif listLen(variables.configBean.getFileStoreAccessInfo(),"^") eq 3>
-				<cfset variables.bucket=listLast(variables.configBean.getFileStoreAccessInfo(),"^") />
-			<cfelse>
-				<cfset variables.bucket="sava" />
-			</cfif>
-		<cfelse>
-			<cfset variables.s3=""/>
-			<cfset variables.bucket=""/>
-		</cfif>
 
 <cfreturn this />
 </cffunction>
@@ -150,66 +135,45 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.pluginManager.announceEvent("onBeforeFileCache",pluginEvent)>
 
 
-		<cfswitch expression="#variables.configBean.getFileStore()#">
-			<cfcase value="fileDir">
-				<cfif isBinary(arguments.fileObj)>
+		<cfscript>
+			var storageService = getBean('fileStorageService');
+			var cachePath = arguments.siteid & "/cache/file/";
 
-					<cfset variables.fileWriter.writeFile(mode="774", file="#application.configBean.getFileDir()#/#arguments.siteid#/cache/file/#arguments.fileID#.#arguments.fileExt#", output="#arguments.fileObj#")>
+			if (isBinary(arguments.fileObj)) {
+				storageService.uploadBinary(arguments.fileObj, ct, cachePath & arguments.fileid & "." & arguments.fileExt);
+			} else {
+				storageService.writeFromLocal(arguments.fileObj, cachePath & arguments.fileid & "." & arguments.fileExt);
+			}
 
-					<cfif listFindNoCase("png,gif,jpg,jpeg",arguments.fileExt)>
-						<cfif isBinary(arguments.fileObjSource)>
-							<cfset variables.fileWriter.writeFile(mode="774", file="#application.configBean.getFileDir()#/#arguments.siteid#/cache/file/#arguments.fileID#_source.#arguments.fileExt#", output="#arguments.fileObjSource#")>
-						</cfif>
-						<cfif isBinary(arguments.fileObjSmall)>
-							<cfset variables.fileWriter.writeFile(mode="774", file="#application.configBean.getFileDir()#/#arguments.siteid#/cache/file/#arguments.fileID#_small.#arguments.fileExt#", output="#arguments.fileObjSmall#")>
-						</cfif>
-						<cfif isBinary(arguments.fileObjMedium)>
-							<cfset variables.fileWriter.writeFile(mode="774", file="#application.configBean.getFileDir()#/#arguments.siteid#/cache/file/#arguments.fileID#_medium.#arguments.fileExt#", output="#arguments.fileObjMedium#")/>
-						</cfif>
-					<cfelseif arguments.fileExt eq 'flv'>
-						<cfif isBinary(arguments.fileObjSmall)>
-							<cfset variables.fileWriter.writeFile(mode="774", file="#application.configBean.getFileDir()#/#arguments.siteid#/cache/file/#arguments.fileID#_small.jpg", output="#arguments.fileObjSmall#")>
-						</cfif>
-						<cfif isBinary(arguments.fileObjMedium)>
-							<cfset variables.fileWriter.writeFile( mode="774",  file="#application.configBean.getFileDir()#/#arguments.siteid#/cache/file/#arguments.fileID#_medium.jpg", output="#arguments.fileObjMedium#")>
-						</cfif>
-					</cfif>
-				<cfelse>
-					<cfset variables.fileWriter.moveFile(mode="774", destination="#application.configBean.getFileDir()#/#arguments.siteid#/cache/file/#arguments.fileID#.#arguments.fileExt#", source="#arguments.fileObj#")>
-
-					<cfif listFindNoCase("png,gif,jpg,jpeg",arguments.fileExt)>
-						<cfif len(arguments.fileObjSource) AND FileExists(arguments.fileObjSource)>
-							<cfset variables.fileWriter.moveFile(mode="774", destination="#application.configBean.getFileDir()#/#arguments.siteid#/cache/file/#arguments.fileID#_source.#arguments.fileExt#", source="#arguments.fileObjSource#")>
-						</cfif>
-						<cfif len(arguments.fileObjSmall) AND FileExists(arguments.fileObjSmall)>
-							<cfset variables.fileWriter.moveFile(mode="774", destination="#application.configBean.getFileDir()#/#arguments.siteid#/cache/file/#arguments.fileID#_small.#arguments.fileExt#", source="#arguments.fileObjSmall#")>
-						</cfif>
-						<cfif len(arguments.fileObjMedium) AND FileExists(arguments.fileObjMedium)>
-							<cfset variables.fileWriter.moveFile(mode="774", destination="#application.configBean.getFileDir()#/#arguments.siteid#/cache/file/#arguments.fileID#_medium.#arguments.fileExt#", source="#arguments.fileObjMedium#")/>
-						</cfif>
-					<cfelseif arguments.fileExt eq 'flv'>
-						<cfif len(arguments.fileObjSmall) AND FileExists(arguments.fileObjSmall)>
-							<cfset variables.fileWriter.moveFile(mode="774", destination="#application.configBean.getFileDir()#/#arguments.siteid#/cache/file/#arguments.fileID#_small.jpg", source="#arguments.fileObjSmall#")>
-						</cfif>
-						<cfif len(arguments.fileObjMedium) AND FileExists(arguments.fileObjMedium)>
-							<cfset variables.fileWriter.writeFile( mode="774",  destination="#application.configBean.getFileDir()#/#arguments.siteid#/cache/file/#arguments.fileID#_medium.jpg", source="#arguments.fileObjMedium#")>
-						</cfif>
-					</cfif>
-				</cfif>
-			</cfcase>
-			<cfcase value="s3">
-				<cfset variables.s3.putFileOnS3(arguments.fileObj,ct,variables.bucket,'#arguments.siteid#/#arguments.fileid#.#arguments.fileExt#') />
-		        <cfset var s3_path = "#arguments.siteid#/cache/file/">
-		        <cfset variables.s3.putFileOnS3(arguments.fileObj,ct,variables.bucket,'#s3_path##arguments.fileid#.#arguments.fileExt#') />
-		        <cfif arguments.fileExt eq 'jpg' or arguments.fileExt eq 'jpeg' or arguments.fileExt eq 'png' or arguments.fileExt eq 'gif'>
-		       	 	<cfif isBinary(fileObjSmall)><cfset variables.s3.putFileOnS3(arguments.fileObjSmall,ct,variables.bucket,'#s3_path##arguments.fileid#_small.#arguments.fileExt#') /></cfif>
-		          	<cfif isBinary(fileObjMedium)><cfset variables.s3.putFileOnS3(arguments.fileObjMedium,ct,variables.bucket,'#s3_path##arguments.fileid#_medium.#arguments.fileExt#') /></cfif>
-		         <cfelseif arguments.fileExt eq 'flv'>
-		          	<cfif isBinary(fileObjSmall)><cfset variables.s3.putFileOnS3(arguments.fileObjSmall,'image/jpeg',variables.bucket,'#s3_path##arguments.fileid#_small.jpg') /></cfif>
-		          	<cfif isBinary(fileObjMedium)><cfset variables.s3.putFileOnS3(arguments.fileObjMedium,'image/jpeg',variables.bucket,'#s3_path##arguments.fileid#_medium.jpg') /></cfif>
-		         </cfif>
-			</cfcase>
-		</cfswitch>
+			if (listFindNoCase("png,gif,jpg,jpeg", arguments.fileExt)) {
+				if (isBinary(arguments.fileObjSource)) {
+					storageService.uploadBinary(arguments.fileObjSource, ct, cachePath & arguments.fileid & "_source." & arguments.fileExt);
+				} else if (len(arguments.fileObjSource) && fileExists(arguments.fileObjSource)) {
+					storageService.writeFromLocal(arguments.fileObjSource, cachePath & arguments.fileid & "_source." & arguments.fileExt);
+				}
+				if (isBinary(arguments.fileObjSmall)) {
+					storageService.uploadBinary(arguments.fileObjSmall, ct, cachePath & arguments.fileid & "_small." & arguments.fileExt);
+				} else if (len(arguments.fileObjSmall) && fileExists(arguments.fileObjSmall)) {
+					storageService.writeFromLocal(arguments.fileObjSmall, cachePath & arguments.fileid & "_small." & arguments.fileExt);
+				}
+				if (isBinary(arguments.fileObjMedium)) {
+					storageService.uploadBinary(arguments.fileObjMedium, ct, cachePath & arguments.fileid & "_medium." & arguments.fileExt);
+				} else if (len(arguments.fileObjMedium) && fileExists(arguments.fileObjMedium)) {
+					storageService.writeFromLocal(arguments.fileObjMedium, cachePath & arguments.fileid & "_medium." & arguments.fileExt);
+				}
+			} else if (arguments.fileExt eq "flv") {
+				if (isBinary(arguments.fileObjSmall)) {
+					storageService.uploadBinary(arguments.fileObjSmall, "image/jpeg", cachePath & arguments.fileid & "_small.jpg");
+				} else if (len(arguments.fileObjSmall) && fileExists(arguments.fileObjSmall)) {
+					storageService.writeFromLocal(arguments.fileObjSmall, cachePath & arguments.fileid & "_small.jpg");
+				}
+				if (isBinary(arguments.fileObjMedium)) {
+					storageService.uploadBinary(arguments.fileObjMedium, "image/jpeg", cachePath & arguments.fileid & "_medium.jpg");
+				} else if (len(arguments.fileObjMedium) && fileExists(arguments.fileObjMedium)) {
+					storageService.writeFromLocal(arguments.fileObjMedium, cachePath & arguments.fileid & "_medium.jpg");
+				}
+			}
+		</cfscript>
 
 		<cfset fileBean.save(processFile=false)>
 
@@ -384,8 +348,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var rsFile=readMeta(arguments.fileID) />
 		<cfset var pluginEvent = createObject("component","mura.event") />
 		<cfset var data=arguments />
-		<cfset var filePath="#application.configBean.getFileDir()#/#rsfile.siteID#/cache/file/"/>
-		<cfset var rsDir=""/>
 		<cfset data.siteID=rsFile.siteID />
 		<cfset data.rsFile=rsFile />
 		<cfset pluginEvent.init(data)>
@@ -393,26 +355,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.pluginManager.announceEvent("onFileCacheDelete",pluginEvent)>
 		<cfset variables.pluginManager.announceEvent("onBeforeFileCacheDelete",pluginEvent)>
 
-		<cfswitch expression="#variables.configBean.getFileStore()#">
-		<cfcase value="fileDir">
-			<cfdirectory action="list" name="rsDIR" directory="#filepath#" filter="#arguments.fileid#*">
-			<cfloop query="rsDir">
-				<cffile action="delete" file="#filepath##rsDir.name#">
-			</cfloop>
-		</cfcase>
-
-		<cfcase value="s3">
-			<cfset variables.s3.deleteS3File(variables.bucket,'#rsFile.siteID#/#arguments.fileid#.#rsFile.fileExt#') />
-			<cfif listFindNoCase("png,gif,jpg,jpeg",rsFile.fileExt)>
-				<cfset variables.s3.deleteS3File(variables.bucket,'#rsFile.siteID#/#arguments.fileid#_small.#rsFile.fileExt#') />
-				<cfset variables.s3.deleteS3File(variables.bucket,'#rsFile.siteID#/#arguments.fileid#_medium.#rsFile.fileExt#') />
-			<cfelseif rsFile.fileEXT eq "flv">
-				<cfset variables.s3.deleteS3File(variables.bucket,'#rsFile.siteID#/#arguments.fileid#_small.jpg') />
-				<cfset variables.s3.deleteS3File(variables.bucket,'#rsFile.siteID#/#arguments.fileid#_medium.jpg') />
-			</cfif>
-		</cfcase>
-
-		</cfswitch>
+		<cfscript>
+			var storageService = getBean('fileStorageService');
+			var cachePath = rsFile.siteID & "/cache/file/";
+			storageService.deleteObject(cachePath & arguments.fileid & "." & rsFile.fileExt);
+			storageService.deleteObject(cachePath & arguments.fileid & "_source." & rsFile.fileExt);
+			if (listFindNoCase("png,gif,jpg,jpeg", rsFile.fileExt)) {
+				storageService.deleteObject(cachePath & arguments.fileid & "_small." & rsFile.fileExt);
+				storageService.deleteObject(cachePath & arguments.fileid & "_medium." & rsFile.fileExt);
+			} else if (rsFile.fileExt eq "flv") {
+				storageService.deleteObject(cachePath & arguments.fileid & "_small.jpg");
+				storageService.deleteObject(cachePath & arguments.fileid & "_medium.jpg");
+			}
+		</cfscript>
 
 		<cfset variables.pluginManager.announceEvent("onAfterFileCacheDelete",pluginEvent)>
 </cffunction>
