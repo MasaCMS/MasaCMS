@@ -230,7 +230,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 				<cfset pluginManager.announceEvent("onAfterFileRender",pluginEvent)>
 			</cfcase>
-			<cfcase value="filedir">
+			<cfdefaultcase>
 				<cfset rsFileData=readMeta(arguments.fileid) />
 				<cfif not rsFileData.recordcount>
 					<cfset getBean("contentServer").render404()>
@@ -239,31 +239,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset arguments.rsFile=rsFileData>
 				<cfset pluginEvent.init(arguments)>
 				<cfset pluginManager.announceEvent("onBeforeFileRender",pluginEvent)>
-
-				<cfif listFindNoCase('png,jpg,jpeg,gif',rsFileData.fileExt) and len(arguments.size)>
-					<cfset theFileLocation="#variables.configBean.getFileDir()#/#rsFileData.siteid#/cache/file/#arguments.fileID#_#arguments.size#.#rsFileData.fileExt#" />
-					<cfif not fileExists(theFileLocation)>
-						<cfset cropAndScale(fileid=arguments.fileID,size=arguments.size,siteid=rsFileData.siteid)>
-					</cfif>
-				<cfelse>
-					<cfset theFileLocation="#variables.configBean.getFileDir()#/#rsFileData.siteid#/cache/file/#arguments.fileID#.#rsFileData.fileExt#" />
-				</cfif>
-
-				<cfset streamFile(theFileLocation,rsfileData.filename,"#rsfileData.contentType#/#rsfileData.contentSubType#",arguments.method,rsfileData.created)>
+				<cfscript>
+					var _suffix = (listFindNoCase("png,jpg,jpeg,gif", rsFileData.fileExt) && len(arguments.size)) ? "_" & arguments.size : "";
+					var _key    = rsFileData.siteid & "/cache/file/" & arguments.fileID & _suffix & "." & rsFileData.fileExt;
+					var _svc    = getBean("fileStorageService");
+					if (!_svc.streamToResponse(_key, arguments.method)) {
+						var _local = _svc.resolveToLocal(_key);
+						if (!len(_local) || !fileExists(_local)) {
+							getBean("contentServer").render404();
+						}
+						streamFile(_local, rsFileData.filename, rsFileData.contentType & "/" & rsFileData.contentSubType, arguments.method, rsFileData.created);
+					}
+				</cfscript>
 				<cfset pluginManager.announceEvent("onAfterFileRender",pluginEvent)>
-			</cfcase>
-			<cfcase value="S3">
-				<cfset rsFileData=readMeta(arguments.fileid) />
-				<cfif not rsFileData.recordcount>
-					<cfset getBean("contentServer").render404()>
-				</cfif>
-				<cfset arguments.siteID=rsFileData.siteid>
-				<cfset arguments.rsFile=rsFileData>
-				<cfset pluginEvent.init(arguments)>
-				<cfset pluginManager.announceEvent("onBeforeFileRender",pluginEvent)>
-				<cfset renderS3(fileid=arguments.fileid,method=arguments.method,size="normal") />
-				<cfset pluginManager.announceEvent("onAfterFileRender",pluginEvent)>
-			</cfcase>
+			</cfdefaultcase>
 		</cfswitch>
 
 </cffunction>
@@ -295,17 +284,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset createObject("component","mura.content.file.renderLucee").init("#rsfile.contentType#/#rsfile.contentSubType#",rsFile.imageSmall)>
 				</cfif>
 			</cfcase>
-			<cfcase value="filedir">
+			<cfdefaultcase>
 				<cfset rsFile=readMeta(arguments.fileid) />
 				<cfif not rsFile.recordcount>
 					<cfset getBean("contentServer").render404()>
 				</cfif>
-				<cfset theFileLocation="#variables.configBean.getFileDir()#/#rsFile.siteid#/cache/file/#arguments.fileID#_small.#rsFile.fileExt#" />
-				<cfset streamFile(theFileLocation,rsFile.filename,"#rsFile.contentType#/#rsFile.contentSubType#",arguments.method,rsFile.created)>
-			</cfcase>
-			<cfcase value="S3">
-				<cfset renderS3(fileid=arguments.fileid,method=arguments.method,size="_small") />
-			</cfcase>
+				<cfscript>
+					var _key = rsFile.siteid & "/cache/file/" & arguments.fileID & "_small." & rsFile.fileExt;
+					var _svc = getBean("fileStorageService");
+					if (!_svc.streamToResponse(_key, arguments.method)) {
+						var _local = _svc.resolveToLocal(_key);
+						if (!len(_local) || !fileExists(_local)) { getBean("contentServer").render404(); }
+						streamFile(_local, rsFile.filename, rsFile.contentType & "/" & rsFile.contentSubType, arguments.method, rsFile.created);
+					}
+				</cfscript>
+			</cfdefaultcase>
 		</cfswitch>
 
 </cffunction>
@@ -337,17 +330,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset createObject("component","mura.content.file.renderLucee").init("#rsfile.contentType#/#rsfile.contentSubType#",rsFile.imageMedium)>
 				</cfif>
 			</cfcase>
-			<cfcase value="filedir">
+			<cfdefaultcase>
 				<cfset rsFile=readMeta(arguments.fileid) />
 				<cfif not rsFile.recordcount>
 					<cfset getBean("contentServer").render404()>
 				</cfif>
-				<cfset theFileLocation="#variables.configBean.getFileDir()#/#rsFile.siteid#/cache/file/#arguments.fileID#_medium.#rsFile.fileExt#" />
-				<cfset streamFile(theFileLocation,rsFile.filename,"#rsFile.contentType#/#rsFile.contentSubType#",arguments.method,rsFile.created)>
-			</cfcase>
-			<cfcase value="S3">
-				<cfset renderS3(fileid=arguments.fileid,method=arguments.method,size="_medium") />
-			</cfcase>
+				<cfscript>
+					var _key = rsFile.siteid & "/cache/file/" & arguments.fileID & "_medium." & rsFile.fileExt;
+					var _svc = getBean("fileStorageService");
+					if (!_svc.streamToResponse(_key, arguments.method)) {
+						var _local = _svc.resolveToLocal(_key);
+						if (!len(_local) || !fileExists(_local)) { getBean("contentServer").render404(); }
+						streamFile(_local, rsFile.filename, rsFile.contentType & "/" & rsFile.contentSubType, arguments.method, rsFile.created);
+					}
+				</cfscript>
+			</cfdefaultcase>
 		</cfswitch>
 
 </cffunction>
@@ -397,6 +394,32 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	} />
 
 	<cfset streamFile(asset.fileLocation, asset.filename, asset.mimeType, arguments.method, asset.dateModified, false, true)>
+</cffunction>
+
+<cffunction name="proxyUserAsset" output="true"
+	hint="Proxy a User_Assets request to the active storage backend.
+	      Calls getBean('fileStorageService').streamToResponse() for true streaming (cloud).
+	      Falls back to resolveToLocal() + local file streaming (local storage).">
+	<cfargument name="siteid" type="string" required="true">
+	<cfargument name="relativePath" type="string" required="true">
+	<cfargument name="subType" type="string" default="assets" hint="'assets' or 'cache'">
+	<cfargument name="method" type="string" default="inline">
+	<cfscript>
+		var safe = rereplace(arguments.relativePath, "\.\.[\\]{0,1}[\/]{0,1}", "", "all");
+		var service = getBean("fileStorageService");
+		var key = arguments.siteid & "/" & arguments.subType & safe;
+		if (service.streamToResponse(key, arguments.method)) {
+			return;
+		}
+		var localPath = service.resolveToLocal(key);
+		if (!len(localPath) || !fileExists(localPath)) {
+			getBean("contentServer").render404();
+		}
+		var mimeType = FileGetMimeType(localPath);
+		var filename = getFileFromPath(localPath);
+		streamFile(localPath, filename, mimeType, arguments.method,
+		           getFileInfo(localPath).lastModified, false, true);
+	</cfscript>
 </cffunction>
 
 <cffunction name="normalizePath" output="false">

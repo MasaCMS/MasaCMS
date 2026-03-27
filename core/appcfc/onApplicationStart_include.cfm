@@ -350,6 +350,9 @@ if ( application.setupComplete ) {
 
 		variables.serviceFactory.declareBean("beanValidator", "mura.bean.beanValidator", true);
 
+		variables.serviceFactory.declareBean("localStorageService", "mura.fileStorage.localStorageService", true);
+		variables.serviceFactory.addAlias("fileStorageService", "localStorageService");
+
 		variables.serviceFactory.addAlias("scriptProtectionFilter","Portcullis");
 		variables.serviceFactory.addAlias("eventManager","pluginManager");
 		variables.serviceFactory.addAlias("permUtility","permission");

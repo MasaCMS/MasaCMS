@@ -1,4 +1,4 @@
-﻿<!---
+<!---
 This file is part of Masa CMS. Masa CMS is based on Mura CMS, and adopts the
 same licensing model. It is, therefore, licensed under the Gnu General Public License
 version 2 only, (GPLv2) subject to the same special exception that appears in the licensing
@@ -783,6 +783,39 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif listFindNoCase('_api,tasks',listFirst(path,'/'))>
 		<cfreturn handleAPIRequest(path)>
 	<cfelse>
+
+		<!--- Proxy /{siteDir}/{siteid}/(assets|cache)/... for cloud storage backends --->
+		<cfscript>
+			var _pathParts = listToArray(path, "/");
+			var _siteIdIdx = 0;
+			var _subTypeIdx = 0;
+			// Support both /sites/{siteid}/... and /{siteid}/... patterns
+			if (arrayLen(_pathParts) >= 3 && _pathParts[1] == application.configBean.getValue("siteDir")) {
+				_siteIdIdx  = 2;
+				_subTypeIdx = 3;
+			} else if (arrayLen(_pathParts) >= 2) {
+				_siteIdIdx  = 1;
+				_subTypeIdx = 2;
+			}
+			if (_siteIdIdx > 0) {
+				var _possibleSiteId = _pathParts[_siteIdIdx];
+				var _subType = (_subTypeIdx <= arrayLen(_pathParts)) ? _pathParts[_subTypeIdx] : "";
+				if (listFindNoCase("assets,cache", _subType)
+						&& application.settingsManager.siteExists(_possibleSiteId)) {
+					// relativePath is the portion AFTER the subType segment (e.g. /logo.png, not /assets/logo.png)
+					// because localStorageService.basePath already ends with /assets or /cache
+					var _afterSubType = arraySlice(_pathParts, _subTypeIdx + 1);
+					var _relToSite = arrayLen(_afterSubType) ? "/" & arrayToList(_afterSubType, "/") : "/";
+					var _method = (structKeyExists(url, "method") ? url.method : "inline");
+					return getBean('fileManager').proxyUserAsset(
+						siteid       = _possibleSiteId,
+						subType      = _subType,
+						relativePath = _relToSite,
+						method       = _method
+					);
+				}
+			}
+		</cfscript>
 
 		<cfif not len(cgi.path_info) and application.configBean.getSiteIDInURLS()>
 			<cfset application.contentServer.redirect()>
