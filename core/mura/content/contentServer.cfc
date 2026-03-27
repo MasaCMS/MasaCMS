@@ -76,30 +76,37 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfcomponent extends="mura.cfobject" output="false" hint="This provides frontend request lifecycle functionality">
 
 <cffunction name="forcePathDirectoryStructure" output="false" access="remote">
-<cfargument name="cgi_path">
-<cfargument name="siteID">
-<cfif application.configBean.getValue(property="forceDirectoryStructure",defaultValue=true)>
-	<cfset var qstring="">
-	<cfset var contentRenderer=application.settingsManager.getSite(arguments.siteID).getContentRenderer()>
-	<cfset var indexFileLen=0>
-	<cfset var last=listLast(arguments.cgi_path,"/") >
-	<cfset var indexFile="" >
+	<cfargument name="cgi_path">
+	<cfargument name="siteID">
+	
+	<cfif application.configBean.getValue(property="forceDirectoryStructure",defaultValue=true)>
+		<cfset var qstring="">
+		<cfset var contentRenderer=application.settingsManager.getSite(arguments.siteID).getContentRenderer()>
+		<cfset var indexFileLen=0>
+		<cfset var last=listLast(arguments.cgi_path,"/") >
+		<cfset var indexFile="" >
+		<cfset var stem="" >
 
-	<cfif find(".",last)>
-		<cfset indexFile=last>
-	</cfif>
-
-	<cfset indexFileLen=len(indexFile)>
-
-	<cfif len(arguments.cgi_path) and right(arguments.cgi_path,1) neq "/"  and (not indexFileLen or indexFileLen and (right(cgi_path,indexFileLen) neq indexFile))>
-		<cfif len(cgi.query_string)>
-		<cfset qstring="?" & cgi.query_string>
-		<cfelse>
-		<cfset qstring="" />
+		<cfif find(".",last)>
+			<cfset indexFile=last>
 		</cfif>
-		<cfset getBean('contentRenderer').redirect("#application.configBean.getContext()##contentRenderer.getURLStem(arguments.siteID,url.path)##qstring#")>
+
+		<cfset indexFileLen=len(indexFile)>
+
+		<cfif len(arguments.cgi_path) and right(arguments.cgi_path,1) neq "/"  and (not indexFileLen or indexFileLen and (right(cgi_path,indexFileLen) neq indexFile))>
+			<cfif len(cgi.query_string)>
+				<cfset qstring="?" & cgi.query_string>
+			<cfelse>
+				<cfset qstring="" />
+			</cfif>
+			<cfset stem = contentRenderer.getURLStem(arguments.siteID,url.path)>
+
+			<!--- Sanitize location to prevent open redirect vulnerabilities via scheme-relative URLs (//domain.com) --->
+			<cfset stem = getBean('utility').removeLeadingDoubleSlash(stem)>
+
+			<cfset getBean('contentRenderer').redirect("#application.configBean.getContext()##stem##qstring#")>
+		</cfif>
 	</cfif>
-</cfif>
 </cffunction>
 
 <cffunction name="setCGIPath" output="false" access="remote">
