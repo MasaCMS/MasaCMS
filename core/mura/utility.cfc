@@ -1191,6 +1191,34 @@ Blog: www.codfusion.com--->
 	<cfreturn arguments.href>
 </cffunction>
 
+<cffunction name="removeLeadingDoubleSlash" output="false" hint="Removes leading double slashes to prevent scheme-relative URL redirects that could lead to open redirect vulnerabilities">
+	<cfargument name="url" type="string" required="true" hint="The URL to sanitize">
+	
+	<!--- Trim whitespace that could be used to bypass detection --->
+	<cfset var cleanUrl = trim(arguments.url)>
+	
+	<!--- Check if it starts with // but NOT http:// or https:// --->
+	<cfif len(cleanUrl) gt 1 
+		and left(cleanUrl, 2) eq "//" 
+		and not (left(cleanUrl, 7) eq "http://" or left(cleanUrl, 8) eq "https://")>
+		
+		<!--- Remove the leading // to convert to a safe relative path --->
+		<cfif len(cleanUrl) gt 2>
+			<cfset cleanUrl = right(cleanUrl, len(cleanUrl) - 2)>
+		<cfelse>
+			<!--- Edge case: input is exactly "//" --->
+			<cfset cleanUrl = "">
+		</cfif>
+		
+		<!--- Ensure it starts with / to make it a proper relative path --->
+		<cfif len(cleanUrl) eq 0 or left(cleanUrl, 1) neq "/">
+			<cfset cleanUrl = "/" & cleanUrl>
+		</cfif>
+	</cfif>
+	
+	<cfreturn cleanUrl>
+</cffunction>
+
 <cfscript>
 	public string function stripTags(text='', tagsToStrip='script,style,embed,object') {
 		var t = '';
