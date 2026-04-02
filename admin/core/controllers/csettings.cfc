@@ -240,7 +240,30 @@ component extends="controller" output="false" {
 	}
 
 	public function createBundle(rc) output=false {
+		// CVE-2025-55043: Validate CSRF token before processing bundle creation
+		// Handle both single-module (from editplugin.cfm) and multi-module (from selectbundleoptions.cfm) cases
 		param default="" name="arguments.rc.moduleID";
+
+		// Determine CSRF context based on whether we have a specific module or site-level bundle
+		var csrfContext = 'createbundle';
+		if ( len(arguments.rc.moduleID) && !isArray(arguments.rc.moduleID) ) {
+			// Single module case (quick bundle creation from editplugin.cfm)
+			csrfContext &= arguments.rc.moduleID;
+		} else {
+			// Multi-module or site bundle case (from selectbundleoptions.cfm)
+			csrfContext &= arguments.rc.siteID;
+		}
+
+		if ( !arguments.rc.$.validateCSRFTokens(context=csrfContext) ) {
+			arguments.rc.alert = "Invalid security token. Bundle creation blocked.";
+			if ( len(arguments.rc.moduleID) && !isArray(arguments.rc.moduleID) ) {
+				variables.fw.redirect(action="cSettings.editPlugin", append="moduleID,siteID", path="./");
+			} else {
+				variables.fw.redirect(action="cSettings.selectBundleOptions", append="siteID", path="./");
+			}
+			return;
+		}
+
 		param default="copy" name="arguments.rc.bundleImportKeyMode";
 		param default="" name="arguments.rc.BundleName";
 		param default=false name="arguments.rc.includeTrash";
