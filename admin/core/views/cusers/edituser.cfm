@@ -448,7 +448,7 @@ This file is part of Mura CMS.
 															</li>
 															<cfif rsAddresses.isPrimary neq 1>
 																<li class="delete">
-																	<a title="Delete" href="./?muraAction=cUsers.updateAddress&amp;userid=#esapiEncode('url',rc.userid)#&amp;action=delete&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;routeID=#esapiEncode('url',rc.routeid)#&amp;addressID=#rsAddresses.addressID#" onclick="return confirmDialog('#jsStringFormat(rbKey('user.deleteaddressconfirm'))#',this.href);">
+																	<a title="Delete" href="./?muraAction=cUsers.updateAddress&amp;userid=#esapiEncode('url',rc.userid)#&amp;action=delete&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;routeID=#esapiEncode('url',rc.routeid)#&amp;addressID=#rsAddresses.addressID##rc.$.renderCSRFTokens(context='updateaddress' & rc.userid, format='url')#" onclick="return confirmDialog('#jsStringFormat(rbKey('user.deleteaddressconfirm'))#',this.href);">
 																		<i class="mi-trash"></i>
 																	</a>
 																</li>
