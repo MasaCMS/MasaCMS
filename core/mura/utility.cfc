@@ -1082,12 +1082,48 @@ Blog: www.codfusion.com--->
 		
 		if (normalizedDirection != 'asc' && normalizedDirection != 'desc') {
 			throw(
-				type="invalidParameters",
+				type="Masa.InvalidSortDirection",
 				message="Invalid sort direction '#arguments.direction#'. Only 'asc' or 'desc' allowed to prevent SQL injection."
 			);
 		}
 		
 		return normalizedDirection;
+	}
+
+	/**
+	 * Validates and normalizes sort by field names to prevent SQL injection.
+	 * Only accepts comma-separated list of field names containing letters, numbers, and underscores.
+	 *
+	 * @param sortBy The sort by string to validate (comma-separated field names)
+	 * @return Returns validated and trimmed field names
+	 * @throws Mura.InvalidSortBy if any field contains invalid characters
+	 */
+	public string function validateSortBy(required string sortBy) {
+		// Return empty/null values as-is
+		if (len(trim(arguments.sortBy)) == 0) {
+			return arguments.sortBy;
+		}
+		
+		var fields = listToArray(arguments.sortBy, ',');
+		var validatedFields = [];
+		var fieldPattern = '^[a-zA-Z0-9_]+$';
+		
+		for (var field in fields) {
+			var trimmedField = trim(field);
+			
+			// Validate field name contains only allowed characters
+			if (!reFindNoCase(fieldPattern, trimmedField)) {
+				throw(
+					type = "Masa.InvalidSortBy",
+					message = "Invalid sort by field: '#trimmedField#'",
+					detail = "Sort by fields must contain only letters, numbers, and underscores."
+				);
+			}
+			
+			arrayAppend(validatedFields, trimmedField);
+		}
+		
+		return arrayToList(validatedFields, ',');
 	}
 </cfscript>
 

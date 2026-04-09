@@ -179,7 +179,7 @@ component extends="testbox.system.BaseSpec"{
 				body=function(){
 					expect(function(){
 						utility.validateSortDirection('invalid');
-					}).toThrow(type='invalidParameters');
+					}).toThrow(type='Masa.InvalidSortDirection');
 				}
 			);
 
@@ -188,7 +188,7 @@ component extends="testbox.system.BaseSpec"{
 				body=function(){
 					expect(function(){
 						utility.validateSortDirection('asc; DROP TABLE');
-					}).toThrow(type='invalidParameters');
+					}).toThrow(type='Masa.InvalidSortDirection');
 				}
 			);
 
@@ -197,7 +197,7 @@ component extends="testbox.system.BaseSpec"{
 				body=function(){
 					expect(function(){
 						utility.validateSortDirection('desc OR 1=1');
-					}).toThrow(type='invalidParameters');
+					}).toThrow(type='Masa.InvalidSortDirection');
 				}
 			);
 
@@ -206,7 +206,7 @@ component extends="testbox.system.BaseSpec"{
 				body=function(){
 					expect(function(){
 						utility.validateSortDirection('');
-					}).toThrow(type='invalidParameters');
+					}).toThrow(type='Masa.InvalidSortDirection');
 				}
 			);
 
@@ -215,7 +215,7 @@ component extends="testbox.system.BaseSpec"{
 				body=function(){
 					expect(function(){
 						utility.validateSortDirection('@##$%');
-					}).toThrow(type='invalidParameters');
+					}).toThrow(type='Masa.InvalidSortDirection');
 				}
 			);
 
@@ -224,9 +224,163 @@ component extends="testbox.system.BaseSpec"{
 				body=function(){
 					expect(function(){
 						utility.validateSortDirection('123');
-					}).toThrow(type='invalidParameters');
+					}).toThrow(type='Masa.InvalidSortDirection');
 				}
 			);
-		}
-	);
+		});
+
+		describe("Testing validateSortBy", function() {
+
+			var utility=application.serviceFactory.getBean('utility');
+
+			it(
+				title="Should accept valid single field name 'username'",
+				body=function(){
+					expect(utility.validateSortBy('username')).toBe('username');
+				}
+			);
+
+			it(
+				title="Should accept valid multiple field names 'username,email,created_date'",
+				body=function(){
+					expect(utility.validateSortBy('username,email,created_date')).toBe('username,email,created_date');
+				}
+			);
+
+			it(
+				title="Should accept field names with numbers 'field1,field2,user_id'",
+				body=function(){
+					expect(utility.validateSortBy('field1,field2,user_id')).toBe('field1,field2,user_id');
+				}
+			);
+
+			it(
+				title="Should accept field names with underscores 'first_name,last_name,user_id'",
+				body=function(){
+					expect(utility.validateSortBy('first_name,last_name,user_id')).toBe('first_name,last_name,user_id');
+				}
+			);
+
+			it(
+				title="Should trim spaces around commas 'field1 , field2 , field3'",
+				body=function(){
+					expect(utility.validateSortBy('field1 , field2 , field3')).toBe('field1,field2,field3');
+				}
+			);
+
+			it(
+				title="Should trim leading and trailing spaces ' field1, field2 '",
+				body=function(){
+					expect(utility.validateSortBy(' field1, field2 ')).toBe('field1,field2');
+				}
+			);
+
+			it(
+				title="Should return empty string as-is",
+				body=function(){
+					expect(utility.validateSortBy('')).toBe('');
+				}
+			);
+
+			it(
+				title="Should return whitespace-only string as-is",
+				body=function(){
+					expect(utility.validateSortBy('   ')).toBe('   ');
+				}
+			);
+
+			it(
+				title="Should throw exception for field with space 'user name'",
+				body=function(){
+					expect(function(){
+						utility.validateSortBy('user name');
+					}).toThrow(type='Masa.InvalidSortBy');
+				}
+			);
+
+			it(
+				title="Should throw exception for SQL injection 'field1;DROP TABLE users'",
+				body=function(){
+					expect(function(){
+						utility.validateSortBy('field1;DROP TABLE users');
+					}).toThrow(type='Masa.InvalidSortBy');
+				}
+			);
+
+			it(
+				title="Should throw exception for SQL injection 'field1 OR 1=1'",
+				body=function(){
+					expect(function(){
+						utility.validateSortBy('field1 OR 1=1');
+					}).toThrow(type='Masa.InvalidSortBy');
+				}
+			);
+
+			it(
+				title="Should throw exception for SQL injection 'field1 UNION SELECT'",
+				body=function(){
+					expect(function(){
+						utility.validateSortBy('field1 UNION SELECT');
+					}).toThrow(type='Masa.InvalidSortBy');
+				}
+			);
+
+			it(
+				title="Should throw exception for special characters 'field@domain.com'",
+				body=function(){
+					expect(function(){
+						utility.validateSortBy('field@domain.com');
+					}).toThrow(type='Masa.InvalidSortBy');
+				}
+			);
+
+			it(
+				title="Should throw exception for dash in field name 'field-name'",
+				body=function(){
+					expect(function(){
+						utility.validateSortBy('field-name');
+					}).toThrow(type='Masa.InvalidSortBy');
+				}
+			);
+
+			it(
+				title="Should handle consecutive commas 'field1,,field2'",
+				body=function(){
+					expect(utility.validateSortBy('field1,,field2')).toBe('field1,field2');
+				}
+			);
+
+			it(
+				title="Should handle leading comma ',field1,field2'",
+				body=function(){
+					expect(utility.validateSortBy(',field1,field2')).toBe('field1,field2');
+				}
+			);
+
+			it(
+				title="Should handle trailing comma 'field1,field2,'",
+				body=function(){
+					expect(utility.validateSortBy('field1,field2,')).toBe('field1,field2');
+				}
+			);
+
+			it(
+				title="Should throw exception for parentheses 'COUNT(*)'",
+				body=function(){
+					expect(function(){
+						utility.validateSortBy('COUNT(*)');
+					}).toThrow(type='Masa.InvalidSortBy');
+				}
+			);
+
+			it(
+				title="Should throw exception for dots in field name 'table.field'",
+				body=function(){
+					expect(function(){
+						utility.validateSortBy('table.field');
+					}).toThrow(type='Masa.InvalidSortBy');
+				}
+			);
+		});
+	}
 }
