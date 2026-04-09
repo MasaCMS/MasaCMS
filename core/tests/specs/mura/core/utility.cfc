@@ -382,5 +382,180 @@ component extends="testbox.system.BaseSpec"{
 				}
 			);
 		});
+
+		describe("Testing validateSort", function() {
+
+			var utility=application.serviceFactory.getBean('utility');
+
+			it(
+				title="Should accept valid single field with direction 'username ASC'",
+				body=function(){
+					expect(utility.validateSort('username ASC')).toBe('username asc');
+				}
+			);
+
+			it(
+				title="Should accept valid single field without direction 'username' and default to asc",
+				body=function(){
+					expect(utility.validateSort('username')).toBe('username asc');
+				}
+			);
+
+			it(
+				title="Should accept valid multiple fields with explicit directions 'field1 ASC, field2 DESC'",
+				body=function(){
+					expect(utility.validateSort('field1 ASC, field2 DESC')).toBe('field1 asc,field2 desc');
+				}
+			);
+
+			it(
+				title="Should accept valid multiple fields without directions 'field1, field2'",
+				body=function(){
+					expect(utility.validateSort('field1, field2')).toBe('field1 asc,field2 asc');
+				}
+			);
+
+			it(
+				title="Should accept valid mixed fields 'field1 ASC, field2, field3 DESC'",
+				body=function(){
+					expect(utility.validateSort('field1 ASC, field2, field3 DESC')).toBe('field1 asc,field2 asc,field3 desc');
+				}
+			);
+
+			it(
+				title="Should normalize case for 'field1 DESC'",
+				body=function(){
+					expect(utility.validateSort('field1 DESC')).toBe('field1 desc');
+				}
+			);
+
+			it(
+				title="Should normalize case for 'field1 desc'",
+				body=function(){
+					expect(utility.validateSort('field1 desc')).toBe('field1 desc');
+				}
+			);
+
+			it(
+				title="Should normalize case for 'field1 Desc'",
+				body=function(){
+					expect(utility.validateSort('field1 Desc')).toBe('field1 desc');
+				}
+			);
+
+			it(
+				title="Should trim whitespace ' field1  ASC  ,  field2  DESC '",
+				body=function(){
+					expect(utility.validateSort(' field1  ASC  ,  field2  DESC ')).toBe('field1 asc,field2 desc');
+				}
+			);
+
+			it(
+				title="Should handle multiple spaces between field and direction 'field1    ASC'",
+				body=function(){
+					expect(utility.validateSort('field1    ASC')).toBe('field1 asc');
+				}
+			);
+
+			it(
+				title="Should accept field with underscore and numbers 'user_id_123 DESC'",
+				body=function(){
+					expect(utility.validateSort('user_id_123 DESC')).toBe('user_id_123 desc');
+				}
+			);
+
+			it(
+				title="Should return empty string as-is",
+				body=function(){
+					expect(utility.validateSort('')).toBe('');
+				}
+			);
+
+			it(
+				title="Should return whitespace-only string as-is",
+				body=function(){
+					expect(utility.validateSort('   ')).toBe('   ');
+				}
+			);
+
+			it(
+				title="Should throw exception for field with space 'user name ASC'",
+				body=function(){
+					expect(function(){
+						utility.validateSort('user name ASC');
+					}).toThrow(type='Masa.InvalidSortBy');
+				}
+			);
+
+			it(
+				title="Should throw exception for SQL injection in field 'field1;DROP TABLE ASC'",
+				body=function(){
+					expect(function(){
+						utility.validateSort('field1;DROP TABLE ASC');
+					}).toThrow(type='Masa.InvalidSortBy');
+				}
+			);
+
+			it(
+				title="Should throw exception for special chars in field 'field@domain.com DESC'",
+				body=function(){
+					expect(function(){
+						utility.validateSort('field@domain.com DESC');
+					}).toThrow(type='Masa.InvalidSortBy');
+				}
+			);
+
+			it(
+				title="Should throw exception for invalid direction 'field1 INVALID'",
+				body=function(){
+					expect(function(){
+						utility.validateSort('field1 INVALID');
+					}).toThrow(type='Masa.InvalidSortDirection');
+				}
+			);
+
+			it(
+				title="Should throw exception for SQL injection in direction 'field1 ASC OR 1=1'",
+				body=function(){
+					expect(function(){
+						utility.validateSort('field1 ASC OR 1=1');
+					}).toThrow(type='Masa.InvalidSortBy');
+				}
+			);
+
+			it(
+				title="Should throw exception for both invalid field and direction 'bad field INVALID'",
+				body=function(){
+					expect(function(){
+						utility.validateSort('bad field INVALID');
+					}).toThrow(type='Masa.InvalidSortBy');
+				}
+			);
+
+			it(
+				title="Should handle complex valid case 'created_date DESC, username ASC, id'",
+				body=function(){
+					expect(utility.validateSort('created_date DESC, username ASC, id')).toBe('created_date desc,username asc,id asc');
+				}
+			);
+
+			it(
+				title="Should throw exception for dash in field 'user-name ASC'",
+				body=function(){
+					expect(function(){
+						utility.validateSort('user-name ASC');
+					}).toThrow(type='Masa.InvalidSortBy');
+				}
+			);
+
+			it(
+				title="Should throw exception for dot in field 'table.field ASC'",
+				body=function(){
+					expect(function(){
+						utility.validateSort('table.field ASC');
+					}).toThrow(type='Masa.InvalidSortBy');
+				}
+			);
+		});
 	}
 }
