@@ -1116,6 +1116,65 @@ Blog: www.codfusion.com--->
 		
 		return arrayToList(validatedFields, ',');
 	}
+
+	/**
+	 * Validates and normalizes sort fields with directions to prevent SQL injection.
+	 * Accepts comma-separated list of fields with optional directions (e.g., 'field1 ASC, field2 DESC, field3').
+	 * Directions are optional and default to 'asc'.
+	 *
+	 * @param sort The sort string to validate (comma-separated field/direction pairs)
+	 * @return Returns normalized string with validated fields and directions (e.g., 'field1 asc,field2 desc')
+	 * @throws Masa.InvalidSortBy if any field contains invalid characters
+	 * @throws invalidParameters if any direction is invalid
+	 */
+	public string function validateSort(required string sort) {
+		// Return empty/null values as-is
+		if (len(trim(arguments.sort)) == 0) {
+			return arguments.sort;
+		}
+		
+		var sortItems = listToArray(arguments.sort, ',');
+		var validatedItems = [];
+		
+		for (var sortItem in sortItems) {
+			var trimmedItem = trim(sortItem);
+			
+			// Split by whitespace to separate field and direction
+			// REReplace to normalize multiple spaces to single space first
+			var normalizedItem = reReplace(trimmedItem, '\s+', ' ', 'all');
+			var parts = listToArray(normalizedItem, ' ');
+			
+			var field = '';
+			var direction = 'asc'; // Default direction
+			var numParts = arrayLen(parts);
+			
+			if (numParts >= 2) {
+				// Multiple parts: last part is direction, everything else is the field
+				direction = parts[numParts];
+				
+				// Join all parts except the last one for the field
+				var fieldParts = [];
+				for (var i = 1; i <= numParts - 1; i++) {
+					arrayAppend(fieldParts, parts[i]);
+				}
+				field = arrayToList(fieldParts, ' ');
+			} else {
+				// Single part: it's the field, use default direction
+				field = parts[1];
+			}
+			
+			// Validate field using validateSortBy (one field at a time)
+			var validatedField = validateSortBy(field);
+			
+			// Validate direction using validateSortDirection
+			var validatedDirection = validateSortDirection(direction);
+			
+			// Build normalized result: 'field direction'
+			arrayAppend(validatedItems, validatedField & ' ' & validatedDirection);
+		}
+		
+		return arrayToList(validatedItems, ',');
+	}
 </cfscript>
 
 <cffunction name="formatError" output="false">
