@@ -146,7 +146,7 @@ This file is part of Mura CMS.
 		<cfset nextn.firstPage= 1 />
 	</cfif>
 
-	<cfset nextN.lastPage =nextn.firstPage + (2 * arguments.pageBuffer)/>
+	<cfset nextN.lastPage = nextn.firstPage + (2 * arguments.pageBuffer)/>
 
 	<cfif nextn.NumberOfPages lt nextN.lastPage>
 		<cfset nextN.lastPage=nextn.NumberOfPages />
@@ -978,88 +978,204 @@ Blog: www.codfusion.com--->
 		</cfloop>
 	</cffunction>
 
-	<cfscript>
-		public boolean function reCAPTCHA(required event) {
-			var verified = false;
-			var $ = arguments.event.getValue('muraScope');
-			var secret = $.siteConfig('reCAPTCHASecret');
+<cfscript>
+	public boolean function reCAPTCHA(required event) {
+		var verified = false;
+		var $ = arguments.event.getValue('muraScope');
+		var secret = $.siteConfig('reCAPTCHASecret');
 
-			if ( Len(secret) && StructKeyExists(form, 'g-recaptcha-response') && Len(form['g-recaptcha-response']) ) {
-				var reCaptcha = new mura.reCAPTCHA(secret);
-				var verified = reCaptcha.verifyResponse(response=form['g-recaptcha-response'], remoteid=request.remoteAddr);
+		if ( Len(secret) && StructKeyExists(form, 'g-recaptcha-response') && Len(form['g-recaptcha-response']) ) {
+			var reCaptcha = new mura.reCAPTCHA(secret);
+			var verified = reCaptcha.verifyResponse(response=form['g-recaptcha-response'], remoteid=request.remoteAddr);
+		}
+
+		return verified;
+	}
+
+	public struct function getReCAPTCHAKeys(required event) {
+		var $ = arguments.event.getValue('muraScope');
+		return {
+			'siteKey' = $.siteConfig('reCAPTCHASiteKey')
+			, 'secret' = $.siteConfig('reCAPTCHASecret')
+			, 'language' = $.siteConfig('reCAPTCHALanguage')
+		};
+	}
+
+	public boolean function isHuman(required event) {
+		var reCAPTCHAKeys = getReCAPTCHAKeys(argumentCollection=arguments);
+
+		return Len(reCAPTCHAKeys.siteKey) && Len(reCAPTCHAKeys.secret)
+			? reCAPTCHA(argumentCollection=arguments)
+			: cfformprotect(argumentCollection=arguments);
+	}
+
+	public struct function getReCAPTCHALanguages() {
+		return {
+			'Arabic'='ar'
+			,'Bulgarian'='bg'
+			,'Catalan'='ca'
+			,'Chinese (Simplified)'='zh-CN'
+			,'Chinese (Traditional)'='zh-TW'
+			,'Croatian'='hr'
+			,'Czech'='cs'
+			,'Danish'='da'
+			,'Dutch'='nl'
+			,'English (UK)'='en-GB'
+			,'English (US)'='en'
+			,'Filipino'='fil'
+			,'Finnish'='fi'
+			,'French'='fr'
+			,'French (Canadian)'='fr-CA'
+			,'German'='de'
+			,'German (Austria)'='de-AT'
+			,'German (Switzerland)'='de-CH'
+			,'Greek'='el'
+			,'Hebrew'='iw'
+			,'Hindi'='hi'
+			,'Hungarain'='hu'
+			,'Indonesian'='id'
+			,'Italian'='it'
+			,'Japanese'='ja'
+			,'Korean'='ko'
+			,'Latvian'='lv'
+			,'Lithuanian'='lt'
+			,'Norwegian'='no'
+			,'Persian'='fa'
+			,'Polish'='pl'
+			,'Portuguese'='pt'
+			,'Portuguese (Brazil)'='pt-BR'
+			,'Portuguese (Portugal)'='pt-PT'
+			,'Romanian'='ro'
+			,'Russian'='ru'
+			,'Serbian'='sr'
+			,'Slovak'='sk'
+			,'Slovenian'='sl'
+			,'Spanish'='es'
+			,'Spanish (Latin America)'='es-419'
+			,'Swedish'='sv'
+			,'Thai'='th'
+			,'Turkish'='tr'
+			,'Ukrainian'='uk'
+			,'Vietnamese'='vi'
+		};
+	}
+
+	/**
+	 * Validates and normalizes sort direction input to prevent SQL injection.
+	 * Only accepts 'asc' or 'desc' (case-insensitive).
+	 *
+	 * @param direction The sort direction string to validate
+	 * @return Returns normalized lowercase sort direction ('asc' or 'desc')
+	 * @throws invalidParameters if direction is not 'asc' or 'desc'
+	 */
+	public string function validateSortDirection(required string direction) {
+		var normalizedDirection = lcase(trim(arguments.direction));
+		
+		if (normalizedDirection != 'asc' && normalizedDirection != 'desc') {
+			throw(
+				type="Masa.InvalidSortDirection",
+				message="Invalid sort direction '#arguments.direction#'. Only 'asc' or 'desc' allowed to prevent SQL injection."
+			);
+		}
+		
+		return normalizedDirection;
+	}
+
+	/**
+	 * Validates and normalizes sort by field names to prevent SQL injection.
+	 * Only accepts comma-separated list of field names containing letters, numbers, and underscores.
+	 *
+	 * @param sortBy The sort by string to validate (comma-separated field names)
+	 * @return Returns validated and trimmed field names
+	 * @throws Mura.InvalidSortBy if any field contains invalid characters
+	 */
+	public string function validateSortBy(required string sortBy) {
+		// Return empty/null values as-is
+		if (len(trim(arguments.sortBy)) == 0) {
+			return arguments.sortBy;
+		}
+		
+		var fields = listToArray(arguments.sortBy, ',');
+		var validatedFields = [];
+		var fieldPattern = '^[a-zA-Z0-9_]+$';
+		
+		for (var field in fields) {
+			var trimmedField = trim(field);
+			
+			// Validate field name contains only allowed characters
+			if (!reFindNoCase(fieldPattern, trimmedField)) {
+				throw(
+					type = "Masa.InvalidSortBy",
+					message = "Invalid sort by field: '#trimmedField#'",
+					detail = "Sort by fields must contain only letters, numbers, and underscores."
+				);
 			}
-
-			return verified;
+			
+			arrayAppend(validatedFields, trimmedField);
 		}
+		
+		return arrayToList(validatedFields, ',');
+	}
 
-		public struct function getReCAPTCHAKeys(required event) {
-			var $ = arguments.event.getValue('muraScope');
-			return {
-				'siteKey' = $.siteConfig('reCAPTCHASiteKey')
-				, 'secret' = $.siteConfig('reCAPTCHASecret')
-				, 'language' = $.siteConfig('reCAPTCHALanguage')
-			};
+	/**
+	 * Validates and normalizes sort fields with directions to prevent SQL injection.
+	 * Accepts comma-separated list of fields with optional directions (e.g., 'field1 ASC, field2 DESC, field3').
+	 * Directions are optional and default to 'asc'.
+	 *
+	 * @param sort The sort string to validate (comma-separated field/direction pairs)
+	 * @return Returns normalized string with validated fields and directions (e.g., 'field1 asc,field2 desc')
+	 * @throws Masa.InvalidSortBy if any field contains invalid characters
+	 * @throws invalidParameters if any direction is invalid
+	 */
+	public string function validateSort(required string sort) {
+		// Return empty/null values as-is
+		if (len(trim(arguments.sort)) == 0) {
+			return arguments.sort;
 		}
-
-		public boolean function isHuman(required event) {
-			var reCAPTCHAKeys = getReCAPTCHAKeys(argumentCollection=arguments);
-
-			return Len(reCAPTCHAKeys.siteKey) && Len(reCAPTCHAKeys.secret)
-				? reCAPTCHA(argumentCollection=arguments)
-				: cfformprotect(argumentCollection=arguments);
+		
+		var sortItems = listToArray(arguments.sort, ',');
+		var validatedItems = [];
+		
+		for (var sortItem in sortItems) {
+			var trimmedItem = trim(sortItem);
+			
+			// Split by whitespace to separate field and direction
+			// REReplace to normalize multiple spaces to single space first
+			var normalizedItem = reReplace(trimmedItem, '\s+', ' ', 'all');
+			var parts = listToArray(normalizedItem, ' ');
+			
+			var field = '';
+			var direction = 'asc'; // Default direction
+			var numParts = arrayLen(parts);
+			
+			if (numParts >= 2) {
+				// Multiple parts: last part is direction, everything else is the field
+				direction = parts[numParts];
+				
+				// Join all parts except the last one for the field
+				var fieldParts = [];
+				for (var i = 1; i <= numParts - 1; i++) {
+					arrayAppend(fieldParts, parts[i]);
+				}
+				field = arrayToList(fieldParts, ' ');
+			} else {
+				// Single part: it's the field, use default direction
+				field = parts[1];
+			}
+			
+			// Validate field using validateSortBy (one field at a time)
+			var validatedField = validateSortBy(field);
+			
+			// Validate direction using validateSortDirection
+			var validatedDirection = validateSortDirection(direction);
+			
+			// Build normalized result: 'field direction'
+			arrayAppend(validatedItems, validatedField & ' ' & validatedDirection);
 		}
-
-		public struct function getReCAPTCHALanguages() {
-			return {
-				'Arabic'='ar'
-				,'Bulgarian'='bg'
-				,'Catalan'='ca'
-				,'Chinese (Simplified)'='zh-CN'
-				,'Chinese (Traditional)'='zh-TW'
-				,'Croatian'='hr'
-				,'Czech'='cs'
-				,'Danish'='da'
-				,'Dutch'='nl'
-				,'English (UK)'='en-GB'
-				,'English (US)'='en'
-				,'Filipino'='fil'
-				,'Finnish'='fi'
-				,'French'='fr'
-				,'French (Canadian)'='fr-CA'
-				,'German'='de'
-				,'German (Austria)'='de-AT'
-				,'German (Switzerland)'='de-CH'
-				,'Greek'='el'
-				,'Hebrew'='iw'
-				,'Hindi'='hi'
-				,'Hungarain'='hu'
-				,'Indonesian'='id'
-				,'Italian'='it'
-				,'Japanese'='ja'
-				,'Korean'='ko'
-				,'Latvian'='lv'
-				,'Lithuanian'='lt'
-				,'Norwegian'='no'
-				,'Persian'='fa'
-				,'Polish'='pl'
-				,'Portuguese'='pt'
-				,'Portuguese (Brazil)'='pt-BR'
-				,'Portuguese (Portugal)'='pt-PT'
-				,'Romanian'='ro'
-				,'Russian'='ru'
-				,'Serbian'='sr'
-				,'Slovak'='sk'
-				,'Slovenian'='sl'
-				,'Spanish'='es'
-				,'Spanish (Latin America)'='es-419'
-				,'Swedish'='sv'
-				,'Thai'='th'
-				,'Turkish'='tr'
-				,'Ukrainian'='uk'
-				,'Vietnamese'='vi'
-			};
-		}
-	</cfscript>
+		
+		return arrayToList(validatedItems, ',');
+	}
+</cfscript>
 
 <cffunction name="formatError" output="false">
 <cfargument name="exception">
@@ -1180,6 +1296,34 @@ Blog: www.codfusion.com--->
 	</cfif>	
 
 	<cfreturn arguments.href>
+</cffunction>
+
+<cffunction name="removeLeadingDoubleSlash" output="false" hint="Removes leading double slashes to prevent scheme-relative URL redirects that could lead to open redirect vulnerabilities">
+	<cfargument name="url" type="string" required="true" hint="The URL to sanitize">
+	
+	<!--- Trim whitespace that could be used to bypass detection --->
+	<cfset var cleanUrl = trim(arguments.url)>
+	
+	<!--- Check if it starts with // but NOT http:// or https:// --->
+	<cfif len(cleanUrl) gt 1 
+		and left(cleanUrl, 2) eq "//" 
+		and not (left(cleanUrl, 7) eq "http://" or left(cleanUrl, 8) eq "https://")>
+		
+		<!--- Remove the leading // to convert to a safe relative path --->
+		<cfif len(cleanUrl) gt 2>
+			<cfset cleanUrl = right(cleanUrl, len(cleanUrl) - 2)>
+		<cfelse>
+			<!--- Edge case: input is exactly "//" --->
+			<cfset cleanUrl = "">
+		</cfif>
+		
+		<!--- Ensure it starts with / to make it a proper relative path --->
+		<cfif len(cleanUrl) eq 0 or left(cleanUrl, 1) neq "/">
+			<cfset cleanUrl = "/" & cleanUrl>
+		</cfif>
+	</cfif>
+	
+	<cfreturn cleanUrl>
 </cffunction>
 
 <cfscript>

@@ -862,22 +862,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									dbms_random.value
 								</cfif>
 							<cfelse>
-									#REReplace(arguments.feedBean.getOrderBy(),"[^0-9A-Za-z\._,\-%//""'' ]","","all")#
+								#getBean('utility').validateSort(arguments.feedBean.getOrderBy())#
 							</cfif>
 						<cfelse>
 							<cfswitch expression="#arguments.feedBean.getSortBy()#">
 								<cfcase value="menutitle,title,lastupdate,releasedate,orderno,displaystart,displaystop,created,expires,credits,type,subtype">
 									<cfif dbType neq "oracle" or listFindNoCase("orderno,releaseDate,lastUpdate,created,displayStart,displayStop",arguments.feedBean.getSortBy())>
-										tcontent.#arguments.feedBean.getSortBy()# #REReplace(arguments.feedBean.getSortDirection(),"[^A-Za-z]","","all")#
+										tcontent.#getBean('utility').validateSortBy(arguments.feedBean.getSortBy())# #getBean('utility').validateSortDirection(arguments.feedBean.getSortDirection())#
 									<cfelse>
-										lower(tcontent.#arguments.feedBean.getSortBy()#) #REReplace(arguments.feedBean.getSortDirection(),"[^A-Za-z]","","all")#
+										lower(tcontent.#getBean('utility').validateSortBy(arguments.feedBean.getSortBy())#) #getBean('utility').validateSortDirection(arguments.feedBean.getSortDirection())#
 									</cfif>
 								</cfcase>
 								<cfcase value="rating">
-									tcontentstats.rating #REReplace(arguments.feedBean.getSortDirection(),"[^A-Za-z]","","all")#, tcontentstats.totalVotes #REReplace(arguments.feedBean.getSortDirection(),"[^A-Za-z]","","all")#
+									tcontentstats.rating #getBean('utility').validateSortDirection(arguments.feedBean.getSortDirection())#, tcontentstats.totalVotes #getBean('utility').validateSortDirection(arguments.feedBean.getSortDirection())#
 								</cfcase>
 								<cfcase value="comments">
-									tcontentstats.comments #REReplace(arguments.feedBean.getSortDirection(),"[^A-Za-z]","","all")#
+									tcontentstats.comments #getBean('utility').validateSortDirection(arguments.feedBean.getSortDirection())#
 								</cfcase>
 								<cfcase value="random">
 									<cfif dbType eq "mysql">
@@ -892,9 +892,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								</cfcase>
 								<cfdefaultcase>
 									<cfif mxpRelevanceSort>
-										total_points #REReplace(arguments.feedBean.getSortDirection(),"[^A-Za-z]","","all")# , total_score #REReplace(arguments.feedBean.getSortDirection(),"[^A-Za-z]","","all")#, tcontent.releaseDate #REReplace(arguments.feedBean.getSortDirection(),"[^A-Za-z]","","all")#, tcontent.lastUpdate #REReplace(arguments.feedBean.getSortDirection(),"[^A-Za-z]","","all")#
+										total_points #getBean('utility').validateSortDirection(arguments.feedBean.getSortDirection())# , total_score #getBean('utility').validateSortDirection(arguments.feedBean.getSortDirection())#, tcontent.releaseDate #getBean('utility').validateSortDirection(arguments.feedBean.getSortDirection())#, tcontent.lastUpdate #getBean('utility').validateSortDirection(arguments.feedBean.getSortDirection())#
 									<cfelseif isExtendedSort>
-										qExtendedSort.extendedSort #REReplace(arguments.feedBean.getSortDirection(),"[^A-Za-z]","","all")#
+										qExtendedSort.extendedSort #getBean('utility').validateSortDirection(arguments.feedBean.getSortDirection())#
 									<cfelse>
 										tcontent.releaseDate desc,tcontent.lastUpdate desc,tcontent.menutitle
 									</cfif>

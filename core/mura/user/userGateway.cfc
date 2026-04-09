@@ -547,16 +547,16 @@ This file is part of Mura CMS.
 
 		<cfif not arguments.countOnly>
 			<cfif len(params.getOrderBy())>
-					#REReplace(params.getOrderBy(),"[^0-9A-Za-z\._,\-%//""'' ]","","all")#
+				#getBean('utility').validateSort(params.getOrderBy())#
 			<cfelseif len(params.getSortTable())>
-				#REReplace("#params.getSortTable()#.#params.getSortBy()# #params.getSortDirection()#","[^0-9A-Za-z\._,\- ]","","all")#
+				#REReplace(params.getSortTable(),"[^0-9A-Za-z\._,\- ]","","all") & "." & getBean('utility').validateSort(params.getSortBy() & " " & params.getSortDirection())#
 			<cfelseif isExtendedSort>
-				qExtendedSort.extendedSort #REReplace(params.getSortDirection(),"[^0-9A-Za-z\._,\- ]","","all")#
+				qExtendedSort.extendedSort #getBean('utility').validateSortDirection(params.getSortDirection())#
 			<cfelse>
 				<cfif variables.configBean.getDbType() neq "oracle" or listFindNoCase("lastUpdate,created,isPublic",params.getSortBy())>
-					#REReplace("tusers.#params.getSortBy()# #params.getSortDirection()#","[^0-9A-Za-z\._,\- ]","","all")#
+					tusers.#getBean('utility').validateSort("#params.getSortBy()# #params.getSortDirection()#")#
 				<cfelse>
-					lower(tusers.#REReplace(params.getSortBy(),"[^0-9A-Za-z\._,\- ]","","all")#) #REReplace(params.getSortDirection(),"[^A-Za-z]","","all")#
+					lower(tusers.#getBean('utility').validateSortBy(params.getSortBy())#) #getBean('utility').validateSortDirection(params.getSortDirection())#
 				</cfif>
 			</cfif>
 

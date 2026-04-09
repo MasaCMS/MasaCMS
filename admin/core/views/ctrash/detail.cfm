@@ -106,9 +106,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</div> <!-- /.block-content -->
 				<div class="mura-actions">
 				<div class="clearfix form-actions">
-					<button class="btn mura-primary" onclick="return confirmDialog('Restore Item From Trash?','?muraAction=cTrash.restore&objectID=#rc.trashItem.getObjectID()#&siteid=#rc.trashItem.getSiteID()#');"><i class="mi-cogs"></i>Restore Item</button>
+					<button class="btn mura-primary" onclick="return confirmDialog('Restore Item From Trash?','?muraAction=cTrash.restore&objectID=#rc.trashItem.getObjectID()#&siteid=#rc.trashItem.getSiteID()##rc.$.renderCSRFTokens(context='restore' & rc.trashItem.getObjectID(), format='url')#');"><i class="mi-cogs"></i>Restore Item</button>
 					<cfif len(rc.trashItem.getDeleteID())>
-					<button class="btn" onclick="return confirmDialog('Restore All Items in Delete Transaction from Trash?','?muraAction=cTrash.restore&objectID=#rc.trashItem.getObjectID()#&deleteID=#rc.trashItem.getDeleteID()#&siteid=#rc.trashItem.getSiteID()#');"><i class="mi-cogs"></i>Restore All Items in Delete Transaction</button>
+					<button class="btn" onclick="return confirmDialog('Restore All Items in Delete Transaction from Trash?','?muraAction=cTrash.restore&objectID=#rc.trashItem.getObjectID()#&deleteID=#rc.trashItem.getDeleteID()#&siteid=#rc.trashItem.getSiteID()##rc.$.renderCSRFTokens(context='restore' & rc.trashItem.getObjectID(), format='url')#');"><i class="mi-cogs"></i>Restore All Items in Delete Transaction</button>
 					</cfif>
 				</div>
 			</div>
@@ -150,7 +150,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			}
 
 			if(parentid.length==35){
-				confirmDialog('Restore Item From Trash?',"?muraAction=cTrash.restore&siteID=#rc.trashItem.getSiteID()#&objectID=#rc.trashItem.getObjectID()#&parentid=" + parentid);
+				confirmDialog('Restore Item From Trash?',"?muraAction=cTrash.restore&siteID=#rc.trashItem.getSiteID()#&objectID=#rc.trashItem.getObjectID()##rc.$.renderCSRFTokens(context='restore' & rc.trashItem.getObjectID(), format='url')#&parentid=" + parentid);
 			}else{
 				alertDialog('Please select a valid content parent.');
 			}
@@ -166,7 +166,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			}
 
 			if(parentid.length==35){
-				confirmDialog('Restore Item From Trash?',"?muraAction=cTrash.restore&siteID=#rc.trashItem.getSiteID()#&objectID=#rc.trashItem.getObjectID()#&deleteID=#rc.trashItem.getDeleteID()#&parentid=" + parentid);
+				confirmDialog('Restore Item From Trash?',"?muraAction=cTrash.restore&siteID=#rc.trashItem.getSiteID()#&objectID=#rc.trashItem.getObjectID()#&deleteID=#rc.trashItem.getDeleteID()##rc.$.renderCSRFTokens(context='restore' & rc.trashItem.getObjectID(), format='url')#&parentid=" + parentid);
 			}else{
 				alertDialog('Please select a valid content parent.');
 			}
