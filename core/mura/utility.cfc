@@ -146,7 +146,7 @@ This file is part of Mura CMS.
 		<cfset nextn.firstPage= 1 />
 	</cfif>
 
-	<cfset nextN.lastPage =nextn.firstPage + (2 * arguments.pageBuffer)/>
+	<cfset nextN.lastPage = nextn.firstPage + (2 * arguments.pageBuffer)/>
 
 	<cfif nextn.NumberOfPages lt nextN.lastPage>
 		<cfset nextN.lastPage=nextn.NumberOfPages />
@@ -978,88 +978,109 @@ Blog: www.codfusion.com--->
 		</cfloop>
 	</cffunction>
 
-	<cfscript>
-		public boolean function reCAPTCHA(required event) {
-			var verified = false;
-			var $ = arguments.event.getValue('muraScope');
-			var secret = $.siteConfig('reCAPTCHASecret');
+<cfscript>
+	public boolean function reCAPTCHA(required event) {
+		var verified = false;
+		var $ = arguments.event.getValue('muraScope');
+		var secret = $.siteConfig('reCAPTCHASecret');
 
-			if ( Len(secret) && StructKeyExists(form, 'g-recaptcha-response') && Len(form['g-recaptcha-response']) ) {
-				var reCaptcha = new mura.reCAPTCHA(secret);
-				var verified = reCaptcha.verifyResponse(response=form['g-recaptcha-response'], remoteid=request.remoteAddr);
-			}
-
-			return verified;
+		if ( Len(secret) && StructKeyExists(form, 'g-recaptcha-response') && Len(form['g-recaptcha-response']) ) {
+			var reCaptcha = new mura.reCAPTCHA(secret);
+			var verified = reCaptcha.verifyResponse(response=form['g-recaptcha-response'], remoteid=request.remoteAddr);
 		}
 
-		public struct function getReCAPTCHAKeys(required event) {
-			var $ = arguments.event.getValue('muraScope');
-			return {
-				'siteKey' = $.siteConfig('reCAPTCHASiteKey')
-				, 'secret' = $.siteConfig('reCAPTCHASecret')
-				, 'language' = $.siteConfig('reCAPTCHALanguage')
-			};
-		}
+		return verified;
+	}
 
-		public boolean function isHuman(required event) {
-			var reCAPTCHAKeys = getReCAPTCHAKeys(argumentCollection=arguments);
+	public struct function getReCAPTCHAKeys(required event) {
+		var $ = arguments.event.getValue('muraScope');
+		return {
+			'siteKey' = $.siteConfig('reCAPTCHASiteKey')
+			, 'secret' = $.siteConfig('reCAPTCHASecret')
+			, 'language' = $.siteConfig('reCAPTCHALanguage')
+		};
+	}
 
-			return Len(reCAPTCHAKeys.siteKey) && Len(reCAPTCHAKeys.secret)
-				? reCAPTCHA(argumentCollection=arguments)
-				: cfformprotect(argumentCollection=arguments);
-		}
+	public boolean function isHuman(required event) {
+		var reCAPTCHAKeys = getReCAPTCHAKeys(argumentCollection=arguments);
 
-		public struct function getReCAPTCHALanguages() {
-			return {
-				'Arabic'='ar'
-				,'Bulgarian'='bg'
-				,'Catalan'='ca'
-				,'Chinese (Simplified)'='zh-CN'
-				,'Chinese (Traditional)'='zh-TW'
-				,'Croatian'='hr'
-				,'Czech'='cs'
-				,'Danish'='da'
-				,'Dutch'='nl'
-				,'English (UK)'='en-GB'
-				,'English (US)'='en'
-				,'Filipino'='fil'
-				,'Finnish'='fi'
-				,'French'='fr'
-				,'French (Canadian)'='fr-CA'
-				,'German'='de'
-				,'German (Austria)'='de-AT'
-				,'German (Switzerland)'='de-CH'
-				,'Greek'='el'
-				,'Hebrew'='iw'
-				,'Hindi'='hi'
-				,'Hungarain'='hu'
-				,'Indonesian'='id'
-				,'Italian'='it'
-				,'Japanese'='ja'
-				,'Korean'='ko'
-				,'Latvian'='lv'
-				,'Lithuanian'='lt'
-				,'Norwegian'='no'
-				,'Persian'='fa'
-				,'Polish'='pl'
-				,'Portuguese'='pt'
-				,'Portuguese (Brazil)'='pt-BR'
-				,'Portuguese (Portugal)'='pt-PT'
-				,'Romanian'='ro'
-				,'Russian'='ru'
-				,'Serbian'='sr'
-				,'Slovak'='sk'
-				,'Slovenian'='sl'
-				,'Spanish'='es'
-				,'Spanish (Latin America)'='es-419'
-				,'Swedish'='sv'
-				,'Thai'='th'
-				,'Turkish'='tr'
-				,'Ukrainian'='uk'
-				,'Vietnamese'='vi'
-			};
+		return Len(reCAPTCHAKeys.siteKey) && Len(reCAPTCHAKeys.secret)
+			? reCAPTCHA(argumentCollection=arguments)
+			: cfformprotect(argumentCollection=arguments);
+	}
+
+	public struct function getReCAPTCHALanguages() {
+		return {
+			'Arabic'='ar'
+			,'Bulgarian'='bg'
+			,'Catalan'='ca'
+			,'Chinese (Simplified)'='zh-CN'
+			,'Chinese (Traditional)'='zh-TW'
+			,'Croatian'='hr'
+			,'Czech'='cs'
+			,'Danish'='da'
+			,'Dutch'='nl'
+			,'English (UK)'='en-GB'
+			,'English (US)'='en'
+			,'Filipino'='fil'
+			,'Finnish'='fi'
+			,'French'='fr'
+			,'French (Canadian)'='fr-CA'
+			,'German'='de'
+			,'German (Austria)'='de-AT'
+			,'German (Switzerland)'='de-CH'
+			,'Greek'='el'
+			,'Hebrew'='iw'
+			,'Hindi'='hi'
+			,'Hungarain'='hu'
+			,'Indonesian'='id'
+			,'Italian'='it'
+			,'Japanese'='ja'
+			,'Korean'='ko'
+			,'Latvian'='lv'
+			,'Lithuanian'='lt'
+			,'Norwegian'='no'
+			,'Persian'='fa'
+			,'Polish'='pl'
+			,'Portuguese'='pt'
+			,'Portuguese (Brazil)'='pt-BR'
+			,'Portuguese (Portugal)'='pt-PT'
+			,'Romanian'='ro'
+			,'Russian'='ru'
+			,'Serbian'='sr'
+			,'Slovak'='sk'
+			,'Slovenian'='sl'
+			,'Spanish'='es'
+			,'Spanish (Latin America)'='es-419'
+			,'Swedish'='sv'
+			,'Thai'='th'
+			,'Turkish'='tr'
+			,'Ukrainian'='uk'
+			,'Vietnamese'='vi'
+		};
+	}
+
+	/**
+	 * Validates and normalizes sort direction input to prevent SQL injection.
+	 * Only accepts 'asc' or 'desc' (case-insensitive).
+	 *
+	 * @param direction The sort direction string to validate
+	 * @return Returns normalized lowercase sort direction ('asc' or 'desc')
+	 * @throws invalidParameters if direction is not 'asc' or 'desc'
+	 */
+	public string function validateSortDirection(required string direction) {
+		var normalizedDirection = lcase(trim(arguments.direction));
+		
+		if (normalizedDirection != 'asc' && normalizedDirection != 'desc') {
+			throw(
+				type="invalidParameters",
+				message="Invalid sort direction '#arguments.direction#'. Only 'asc' or 'desc' allowed to prevent SQL injection."
+			);
 		}
-	</cfscript>
+		
+		return normalizedDirection;
+	}
+</cfscript>
 
 <cffunction name="formatError" output="false">
 <cfargument name="exception">
