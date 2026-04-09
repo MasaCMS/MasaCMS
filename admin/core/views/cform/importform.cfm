@@ -1,34 +1,34 @@
-﻿<!--- 
-This file is part of Masa CMS. Masa CMS is based on Mura CMS, and adopts the  
-same licensing model. It is, therefore, licensed under the Gnu General Public License 
-version 2 only, (GPLv2) subject to the same special exception that appears in the licensing 
-notice set out below. That exception is also granted by the copyright holders of Masa CMS 
-also applies to this file and Masa CMS in general. 
+﻿<!---
+This file is part of Masa CMS. Masa CMS is based on Mura CMS, and adopts the
+same licensing model. It is, therefore, licensed under the Gnu General Public License
+version 2 only, (GPLv2) subject to the same special exception that appears in the licensing
+notice set out below. That exception is also granted by the copyright holders of Masa CMS
+also applies to this file and Masa CMS in general.
 
-This file has been modified from the original version received from Mura CMS. The 
+This file has been modified from the original version received from Mura CMS. The
 change was made on: 2021-07-27
-Although this file is based on Mura™ CMS, Masa CMS is not associated with the copyright 
-holders or developers of Mura™CMS, and the use of the terms Mura™ and Mura™CMS are retained 
-only to ensure software compatibility, and compliance with the terms of the GPLv2 and 
-the exception set out below. That use is not intended to suggest any commercial relationship 
-or endorsement of Mura™CMS by Masa CMS or its developers, copyright holders or sponsors or visa versa. 
+Although this file is based on Mura™ CMS, Masa CMS is not associated with the copyright
+holders or developers of Mura™CMS, and the use of the terms Mura™ and Mura™CMS are retained
+only to ensure software compatibility, and compliance with the terms of the GPLv2 and
+the exception set out below. That use is not intended to suggest any commercial relationship
+or endorsement of Mura™CMS by Masa CMS or its developers, copyright holders or sponsors or visa versa.
 
 If you want an original copy of Mura™ CMS please go to murasoftware.com .  
-For more information about the unaffiliated Masa CMS, please go to masacms.com  
+For more information about the unaffiliated Masa CMS, please go to masacms.com
 
-Masa CMS is free software: you can redistribute it and/or modify 
-it under the terms of the GNU General Public License as published by 
-the Free Software Foundation, Version 2 of the License. 
-Masa CMS is distributed in the hope that it will be useful, 
-but WITHOUT ANY WARRANTY; without even the implied warranty of 
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
-GNU General Public License for more details. 
+Masa CMS is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, Version 2 of the License.
+Masa CMS is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License 
-along with Masa CMS. If not, see <http://www.gnu.org/licenses/>. 
+You should have received a copy of the GNU General Public License
+along with Masa CMS. If not, see <http://www.gnu.org/licenses/>.
 
-The original complete licensing notice from the Mura CMS version of this file is as 
-follows: 
+The original complete licensing notice from the Mura CMS version of this file is as
+follows:
 
 This file is part of Mura CMS.
 
@@ -74,63 +74,58 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput>
-<div class="mura-header">
-	<h1>#rc.$.rbKey('sitemanager.content.importform')#</h1>
+	<div class="mura-header">
+		<h1>#rc.$.rbKey('sitemanager.content.importform')#</h1>
 
-	<div class="nav-module-specific btn-group">
-		<a class="btn" href="./?muraAction=cArch.list&amp;siteid=#esapiEncode('url',rc.siteid)#">
-			<i class="mi-arrow-circle-left"></i>
-			#rc.$.rbKey('sitemanager.backtositemanager')#
-		</a>
-	</div>
-</div> <!-- /.mura-header -->
+		<div class="nav-module-specific btn-group">
+			<a class="btn" href="./?muraAction=cArch.list&amp;siteid=#esapiEncode('url',rc.siteid)#">
+				<i class="mi-arrow-circle-left"></i>
+				#rc.$.rbKey('sitemanager.backtositemanager')#
+			</a>
+		</div>
+	</div> <!-- /.mura-header -->
 </cfoutput>
+
 <form novalidate="novalidate" action="?muraAction=cForm.importform" method="post" enctype="multipart/form-data">
-
+	<cfoutput>#rc.$.renderCSRFTokens(context='formimport', format='form')#</cfoutput>
 	<div class="block block-constrain" style="min-height: 1052px;">
-
 		<!-- tab content -->
 		<div class="block-content tab-content">
 
-<div id="tabBasic" class="tab-pane active">
+		<div id="tabBasic" class="tab-pane active">
 
 		<!-- block -->
-	  <div class="block block-bordered">
-	  	<!-- block header -->
-	    <div class="block-header">
-			<h3 class="block-title">Form Builder</h3>
-	    </div>
-
-		<div class="block-content">
-			<span id="extendset-container-tabbasictop" class="extendset-container"></span>
-
-			<div class="mura-control-group">
-				<label>
-				Title
-				</label>
-			<input type="text" id="title" name="title" maxlength="255" required="true" message="The 'Title' field is required">
+		<div class="block block-bordered">
+			<!-- block header -->
+			<div class="block-header">
+				<h3 class="block-title">Form Builder</h3>
 			</div>
 
-			<div class="mura-control-group">
-				<label>
-				Form To Import (Zip File)
-				</label>
-				<input type="file" id="formzip" name="formzip" message="The 'Title' field is required">
+			<div class="block-content">
+				<span id="extendset-container-tabbasictop" class="extendset-container"></span>
+
+				<div class="mura-control-group">
+					<label>
+					Title
+					</label>
+					<input type="text" id="title" name="title" maxlength="255" required="true" message="The 'Title' field is required">
+				</div>
+
+				<div class="mura-control-group">
+					<label>
+					Form To Import (Zip File)
+					</label>
+					<input type="file" id="formzip" name="formzip" message="The 'Title' field is required">
+				</div>
 			</div>
 		</div>
-	</div>
 
-	<div class="mura-actions">
-		<div class="form-actions">
-
+		<div class="mura-actions">
+			<div class="form-actions">
 				<button type="submit" class="btn mura-primary">
 						<i class="mi-check"></i>Import
 				</button>
-
 			</div>
 		</div>
-
-
 	</div><!-- /.block-constrain -->
-
-	</form>
+</form>
