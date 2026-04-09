@@ -1053,7 +1053,7 @@ function getEndRow() output=false {
 
 	<cfif not arguments.countOnly>
 		<cfif len(variables.instance.orderby)>
-			order by #caseInsensitiveOrderBy(REReplace(variables.instance.orderby,"[^0-9A-Za-z\._,\-%//""'' ]","","all"))#
+			order by #caseInsensitiveOrderBy(getBean('utility').validateSort(variables.instance.orderby))#
 			<cfif listFindNoCase("oracle,postgresql", dbType)>
 				<cfif lcase(listLast(variables.instance.orderby, " ")) eq "asc">
 					NULLS FIRST
@@ -1062,7 +1062,7 @@ function getEndRow() output=false {
 				</cfif>
 			</cfif>
 		<cfelseif len(variables.instance.sortBy)>
-			order by #caseInsensitiveOrderBy(REReplace("#variables.instance.table#.#variables.instance.sortby# #variables.instance.sortDirection#","[^0-9A-Za-z\._,\- ]","","all"))#
+			order by #caseInsensitiveOrderBy("#variables.instance.table#.#getBean('utility').validateSortBy(variables.instance.sortBy)# #getBean('utility').validateSortDirection(variables.instance.sortDirection)#")#
 			<cfif listFindNoCase("oracle,postgresql", dbType)>
 				<cfif variables.instance.sortDirection eq "asc">
 					NULLS FIRST
