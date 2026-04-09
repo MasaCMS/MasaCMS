@@ -32,6 +32,8 @@ component extends="testbox.system.BaseSpec"{
 
 		describe("removeLeadingDoubleSlash() - Open Redirect Protection", function() {
 
+			var utility=application.serviceFactory.getBean('utility');
+
 			it("should remove leading // from malicious URLs", function() {
 				var result = utility.removeLeadingDoubleSlash("//evil.com/test");
 				expect(result).toBe("/evil.com/test");
