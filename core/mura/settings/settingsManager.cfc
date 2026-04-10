@@ -526,6 +526,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					.set('contentTypeLookUpArray',duplicate(siteTemplate.get('contentTypeLookUpArray')))
 					.discoverContentTypes()>
 
+				<cfset builtSites['#rs.siteid#'].discoverGlobalModules()>
+				<cfset builtSites['#rs.siteid#'].discoverGlobalContentTypes()>
 				<cfset builtSites['#rs.siteid#'].discoverBeans()>
 				<cfset commitTracepoint(tracepoint2)>
 			</cfif>
