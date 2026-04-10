@@ -1562,9 +1562,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						 select max(orderno) as theBottom from tcontent where parentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newBean.getparentid()#">
 						 and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newBean.getsiteid()#">
 						 and type in ('Page','Folder','Link','File','Component','Calendar','Form') and active=1
+						 and contentid <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#newBean.getcontentid()#">
 						 </cfquery>
 
-						<cfif isNumeric(rsOrder.theBottom) and rsOrder.theBottom neq newBean.getOrderNo()>
+						<cfif isNumeric(rsOrder.theBottom)>
 							<cfset newBean.setOrderNo(rsOrder.theBottom + 1) >
 						<cfelse>
 							<cfset newBean.setOrderNo(1) >
