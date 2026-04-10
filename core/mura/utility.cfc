@@ -1097,7 +1097,7 @@ Blog: www.codfusion.com--->
 		
 		var fields = listToArray(arguments.sortBy, ',');
 		var validatedFields = [];
-		var fieldPattern = '^[a-zA-Z0-9_]+$';
+		var fieldPattern = '^[a-zA-Z0-9_\.]+$';
 		
 		for (var field in fields) {
 			var trimmedField = trim(field);

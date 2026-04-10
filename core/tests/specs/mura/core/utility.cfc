@@ -376,11 +376,9 @@ component extends="testbox.system.BaseSpec"{
 			);
 
 			it(
-				title="Should throw exception for dots in field name 'table.field'",
+				title="Should accept dots in field name 'table.field'",
 				body=function(){
-					expect(function(){
-						utility.validateSortBy('table.field');
-					}).toThrow(type='Masa.InvalidSortBy');
+					expect(utility.validateSortBy('table.field')).toBe('table.field');
 				}
 			);
 		});
@@ -551,11 +549,9 @@ component extends="testbox.system.BaseSpec"{
 			);
 
 			it(
-				title="Should throw exception for dot in field 'table.field ASC'",
+				title="Should accept dot in field 'table.field ASC'",
 				body=function(){
-					expect(function(){
-						utility.validateSort('table.field ASC');
-					}).toThrow(type='Masa.InvalidSortBy');
+					expect(utility.validateSort('table.field ASC')).toBe('table.field asc');
 				}
 			);
 		});
