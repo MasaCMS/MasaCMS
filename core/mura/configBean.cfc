@@ -1799,6 +1799,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif not getValue(property='allowQueryCaching',defaultValue=true)>
 		<cfset structDelete(arguments,'cachedWithin')>
 	</cfif>
+	
+	<cfif arguments.keyExists('blockfactor')>
+		<cfset arguments.blockfactor = this.getBlockFactor(arguments.blockfactor)>
+	</cfif>
 
 	<cfset structDelete(arguments,'readOnly')>
 	<cfreturn arguments>
