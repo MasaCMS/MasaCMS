@@ -28,7 +28,16 @@
 	<cfset attributes.datetime=''>
 </cfif>
 
-<cfinclude template="/mura/backport/backport.cfm">
+<cfscript>
+	if(server.coldfusion.productname != 'ColdFusion Server'){
+		backportdir='';
+		include "/mura/backport/backport.cfm";
+	} else {
+		backportdir='/mura/backport/';
+		include "#backportdir#backport.cfm";
+	}
+</cfscript>
+
 </cfsilent>
 
 <cfoutput>

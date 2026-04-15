@@ -1103,16 +1103,8 @@ Sincerely,
 
 	<cfset var rs="" />
 	<cfset var newPath = "" />
-	<cfset var updateDSN=arguments.datasource>
-	<cfset var updatePWD="">
-	<cfset var updateUSER="">
 
-	<cfset attributeCollection = getQueryAttrs(name="rs") />
-	<cfif updateDSN neq variables.dsn>
-		<cfset attributeCollection.datasource = updateDSN />
-	</cfif>
-
-	<cfquery attributeCollection="#attributeCollection#">
+	<cfquery attributeCollection="#getQueryAttrs(name="rs", datasource=arguments.datasource)#">
 		select contentID from tcontent
 		where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 		and parentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentID#" />
@@ -1121,13 +1113,14 @@ Sincerely,
 
 	<cfloop query="rs">
 		<cfset newPath=listappend(arguments.path,rs.contentID) />
-		<cfquery attributeCollection="#attributeCollection#">
+		<cfquery attributeCollection="#getQueryAttrs(datasource=arguments.datasource)#">
 		update tcontent
 		set path=<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#newPath#" />
 		where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 		and contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.contentID#" />
 		</cfquery>
-		<cfset this.updateGlobalMaterializedPath(arguments.siteID,rs.contentID,newPath,updateDSN) />
+
+		<cfset this.updateGlobalMaterializedPath(arguments.siteID,rs.contentID,newPath,arguments.datasource) />
 	</cfloop>
 
 </cffunction>
@@ -1140,16 +1133,8 @@ Sincerely,
 
 	<cfset var rs="" />
 	<cfset var newPath = "" />
-	<cfset var updateDSN=arguments.datasource>
-	<cfset var updatePWD="">
-	<cfset var updateUSER="">
 
-	<cfset attributeCollection = getQueryAttrs(name="rs") />
-	<cfif updateDSN neq variables.dsn>
-		<cfset attributeCollection.datasource = updateDSN />
-	</cfif>
-
-	<cfquery attributeCollection="#attributeCollection#">
+	<cfquery attributeCollection="#getQueryAttrs(name="rs", datasource=arguments.datasource)#">
 		select commentID from tcontentcomments
 		where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 		<cfif len(arguments.parentID)>
@@ -1161,13 +1146,13 @@ Sincerely,
 
 	<cfloop query="rs">
 		<cfset newPath=listappend(arguments.path,rs.commentID) />
-		<cfquery attributeCollection="#attributeCollection#">
+		<cfquery attributeCollection="#getQueryAttrs(datasource=arguments.datasource)#">
 		update tcontentcomments
 		set path=<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#newPath#" />
 		where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 		and commentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.commentID#" />
 		</cfquery>
-		<cfset this.updateGlobalCommentsMaterializedPath(arguments.siteID,rs.commentID,newPath,updateDSN) />
+		<cfset this.updateGlobalCommentsMaterializedPath(arguments.siteID,rs.commentID,newPath,arguments.datasource) />
 	</cfloop>
 
 </cffunction>

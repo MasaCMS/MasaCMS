@@ -129,3 +129,18 @@ to your own modified versions of Mura CMS.
   <!--- send back the location --->
   <cfreturn errorFile />
 </cffunction>
+
+<cffunction name="getBCrypt" output="false">
+	<cfif not isDefined('variables.bCrypt')>
+    <cfset variables.bCrypt=createObject("java","BCrypt")>
+	</cfif>
+	<cfreturn variables.bCrypt>
+</cffunction>
+
+<cffunction name="toBCryptHash" output="false">
+	<cfargument name="string">
+	<cfargument name="logRounds" default="12">
+	<cfset var salt = getBCrypt().gensalt(JavaCast('int',arguments.logRounds))>
+	<cfset var hash = getBCrypt().hashpw(JavaCast('string',arguments.string), salt)>
+	<cfreturn hash>
+</cffunction>
