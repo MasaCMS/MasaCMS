@@ -1269,6 +1269,35 @@ Blog: www.codfusion.com--->
 	<cfreturn parsed>
 </cffunction>
 
+<!---
+ * Sanitizes and validates href/URL values to prevent open redirect vulnerabilities.
+ * 
+ * This function performs domain validation on absolute URLs (http://, https://) 
+ * and replaces external domains (domains that are not configured in site configuration) 
+ * with the site's configured domain if they are not in the configured domain list.
+ * 
+ * SECURITY: Scheme-relative URLs (starting with //) are not allowed as they can be 
+ * exploited for open redirect attacks. The leading // is removed to convert them to 
+ * safe relative paths.
+ * 
+ * Behavior:
+ * - Relative paths (e.g., /path/to/page): Passed through unchanged
+ * - Scheme-relative URLs (e.g., //domain/path): Leading // removed, converted to /domain/path
+ * - Absolute URLs with allowed domains: Passed through unchanged  
+ * - Absolute URLs with external domains: Domain replaced with site domain
+ * - Non-HTTP(S) protocols (data:, javascript:, etc.): Passed through unchanged
+ * 
+ * @param href The URL/href to sanitize. Can be relative path, absolute URL, or other URI scheme.
+ * @param siteid Optional site ID. If not provided, uses current session's site ID.
+ * @return The sanitized URL with external domains replaced by the site domain (where applicable)
+ * 
+ * @example
+ * sanitizeHref('/feedback-thank-you/') -> '/feedback-thank-you/' (relative path preserved)
+ * sanitizeHref('http://localhost/page') -> 'http://localhost/page' (allowed domain preserved)
+ * sanitizeHref('http://evil.com/page') -> 'http://localhost/page' (external domain replaced)
+ * sanitizeHref('//external.com/path') -> '/external.com/path' (scheme-relative URL - // removed)
+ * sanitizeHref('//evil.com/phishing') -> '/evil.com/phishing' (open redirect prevented)
+ --->
 <cffunction name="sanitizeHref" output="false">
 	<cfargument name="href">
 	<cfargument name="siteid" default="">
