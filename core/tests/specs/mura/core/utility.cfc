@@ -383,6 +383,243 @@ component extends="testbox.system.BaseSpec"{
 			);
 		});
 
+		describe("Testing sanitizeHref() - URL Security & Domain Validation", function() {
+
+			var utility=application.serviceFactory.getBean('utility');
+			var siteid='default';
+
+			// Note: These tests assume 'localhost' is the configured site domain
+			// and is in the allowed domain list for the default site
+
+			describe("Relative Path Handling", function() {
+				
+				it("should preserve simple relative path unchanged", function() {
+					var result = utility.sanitizeHref('/feedback-thank-you/', siteid);
+					expect(result).toBe('/feedback-thank-you/');
+				});
+
+				it("should preserve relative path with multiple segments", function() {
+					var result = utility.sanitizeHref('/admin/login/index', siteid);
+					expect(result).toBe('/admin/login/index');
+				});
+
+				it("should preserve relative path with query string", function() {
+					var result = utility.sanitizeHref('/search?q=test&page=1', siteid);
+					expect(result).toBe('/search?q=test&page=1');
+				});
+
+				it("should preserve relative path with fragment", function() {
+					var result = utility.sanitizeHref('/page##section', siteid);
+					expect(result).toBe('/page##section');
+				});
+
+				it("should preserve root path", function() {
+					var result = utility.sanitizeHref('/', siteid);
+					expect(result).toBe('/');
+				});
+
+				it("should preserve relative path with file extension", function() {
+					var result = utility.sanitizeHref('/downloads/file.pdf', siteid);
+					expect(result).toBe('/downloads/file.pdf');
+				});
+
+			});
+
+			describe("Absolute URL Handling - HTTP Protocol", function() {
+
+				it("should preserve http URL with localhost domain (allowed)", function() {
+					var result = utility.sanitizeHref('http://localhost/page', siteid);
+					expect(result).toBe('http://localhost/page');
+				});
+
+				it("should preserve http URL with localhost and port (allowed)", function() {
+					var result = utility.sanitizeHref('http://localhost:8080/admin', siteid);
+					expect(result).toBe('http://localhost:8080/admin');
+				});
+
+				it("should preserve http URL with localhost and query string (allowed)", function() {
+					var result = utility.sanitizeHref('http://localhost/search?q=test', siteid);
+					expect(result).toBe('http://localhost/search?q=test');
+				});
+
+				it("should replace external domain with site domain", function() {
+					var result = utility.sanitizeHref('http://evil.com/page', siteid);
+					// Should replace evil.com with localhost (the site domain)
+					expect(result).notToInclude('evil.com');
+					expect(result).toBe('http://localhost/page');
+				});
+
+			});
+
+			describe("Absolute URL Handling - HTTPS Protocol", function() {
+
+				it("should preserve https URL with localhost domain (allowed)", function() {
+					var result = utility.sanitizeHref('https://localhost/secure', siteid);
+					expect(result).toBe('https://localhost/secure');
+				});
+
+				it("should preserve https URL with localhost and port (allowed)", function() {
+					var result = utility.sanitizeHref('https://localhost:443/admin', siteid);
+					expect(result).toBe('https://localhost:443/admin');
+				});
+
+				it("should replace external domain with site domain", function() {
+					var result = utility.sanitizeHref('https://malicious.com/phishing', siteid);
+					// Should replace malicious.com with localhost
+					expect(result).notToInclude('malicious.com');
+					expect(result).toBe('https://localhost/phishing');
+				});
+
+			});
+
+			describe("Domain-Only Strings (No Protocol)", function() {
+
+				it("should handle domain with port (no protocol)", function() {
+					var result = utility.sanitizeHref('localhost:8080', siteid);
+					expect(result).toBe('localhost:8080');
+				});
+
+				it("should preserve ambiguous string as relative path (no protocol)", function() {
+					// example.com/path has no protocol, so should be treated as relative path
+					var result = utility.sanitizeHref('example.com/path', siteid);
+					expect(result).toBe('example.com/path');
+				});
+
+			});
+
+			describe("Edge Cases & Special Characters", function() {
+
+				it("should handle empty string", function() {
+					var result = utility.sanitizeHref('', siteid);
+					expect(result).toBe('');
+				});
+
+				it("should handle URL with encoded characters", function() {
+					var result = utility.sanitizeHref('/path/to/page%20with%20spaces', siteid);
+					expect(result).toBe('/path/to/page%20with%20spaces');
+				});
+
+				it("should handle URL with special characters in query", function() {
+					var result = utility.sanitizeHref('/search?name=John+Doe&email=test@example.com', siteid);
+					expect(result).toBe('/search?name=John+Doe&email=test@example.com');
+				});
+
+				it("should handle multiple query parameters", function() {
+					var result = utility.sanitizeHref('/page?param1=value1&param2=value2&param3=value3', siteid);
+					expect(result).toBe('/page?param1=value1&param2=value2&param3=value3');
+				});
+
+			});
+
+			describe("Real-World Use Cases", function() {
+
+				it("should handle form redirect_url (the bug case)", function() {
+					// This was the original bug: relative path was treated as domain
+					var result = utility.sanitizeHref('/feedback-thank-you/', siteid);
+					expect(result).toBe('/feedback-thank-you/');
+					// Should NOT become 'localhost' or any other transformation
+					expect(result).notToInclude('localhost/');
+				});
+
+				it("should handle login return URL (relative)", function() {
+					var result = utility.sanitizeHref('/admin/login', siteid);
+					expect(result).toBe('/admin/login');
+				});
+
+				it("should handle gated asset redirect (relative)", function() {
+					var result = utility.sanitizeHref('/downloads/protected-file.pdf', siteid);
+					expect(result).toBe('/downloads/protected-file.pdf');
+				});
+
+				it("should sanitize external login return URL by replacing domain", function() {
+					var result = utility.sanitizeHref('http://attacker.com/steal-session', siteid);
+					// Should replace attacker.com domain with site domain
+					expect(result).notToInclude('attacker.com');
+					expect(result).toBe('http://localhost/steal-session');
+				});
+
+			});
+
+			describe("Scheme-Relative URLs (// prefix) - Security", function() {
+
+				it("should remove leading // from scheme-relative URL", function() {
+					var result = utility.sanitizeHref('//example.com/path', siteid);
+					// Leading // should be removed to prevent open redirect
+					expect(result).toBe('/example.com/path');
+					expect(result).notToInclude('//');
+				});
+
+				it("should remove leading // from malicious scheme-relative URL", function() {
+					var result = utility.sanitizeHref('//evil.com/phishing', siteid);
+					expect(result).toBe('/evil.com/phishing');
+					expect(result).notToInclude('//');
+				});
+
+				it("should remove leading // with port number", function() {
+					var result = utility.sanitizeHref('//attacker.com:8080/steal', siteid);
+					expect(result).toBe('/attacker.com:8080/steal');
+					expect(result).notToInclude('//');
+				});
+
+				it("should remove leading // with query parameters", function() {
+					var result = utility.sanitizeHref('//external.com/page?redirect=evil', siteid);
+					expect(result).toBe('/external.com/page?redirect=evil');
+					expect(result).notToInclude('//');
+				});
+
+				it("should remove leading // with fragment", function() {
+					var result = utility.sanitizeHref('//external.com/page##section', siteid);
+					expect(result).toBe('/external.com/page##section');
+					expect(result).notToInclude('//');
+				});
+
+				it("should handle whitespace before // in scheme-relative URL", function() {
+					var result = utility.sanitizeHref('  //evil.com/test', siteid);
+					expect(result).toBe('/evil.com/test');
+					expect(result).notToInclude('//');
+				});
+
+				it("should handle just // as scheme-relative URL", function() {
+					var result = utility.sanitizeHref('//', siteid);
+					expect(result).toBe('/');
+					expect(result).notToInclude('//');
+				});
+
+			});
+
+			describe("Security & Open Redirect Prevention", function() {
+
+				it("should prevent open redirect via external domain in absolute URL", function() {
+					var result = utility.sanitizeHref('http://evil.com/fake-login', siteid);
+					// Domain should be replaced with site domain
+					expect(result).notToInclude('evil.com');
+					expect(result).toBe('http://localhost/fake-login');
+				});
+
+				it("should prevent open redirect via external domain in absolute URL path", function() {
+					var result = utility.sanitizeHref('http://localhost//evil.com/fake-login', siteid);
+					// Should not contain evil.com after sanitization
+					expect(result).notToInclude('evil.com');
+				});
+
+				it("should pass through data URI unchanged (not HTTP/HTTPS)", function() {
+					// Data URIs don't have http/https protocol and no // prefix
+					// Function should pass them through (actual security filtering should happen elsewhere)
+					var result = utility.sanitizeHref('data:text/html,<script>alert(1)</script>', siteid);
+					expect(result).toBe('data:text/html,<script>alert(1)</script>');
+				});
+
+				it("should pass through javascript URI unchanged (not HTTP/HTTPS)", function() {
+					// Javascript pseudo-protocol is dangerous but this function only validates HTTP(S) domains
+					// XSS prevention should happen at a different layer
+					var result = utility.sanitizeHref('javascript:alert(1)', siteid);
+					expect(result).toBe('javascript:alert(1)');
+				});
+
+			});
+
+		});
+
 		describe("Testing validateSort", function() {
 
 			var utility=application.serviceFactory.getBean('utility');
