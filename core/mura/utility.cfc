@@ -1439,4 +1439,59 @@ Blog: www.codfusion.com--->
 		<cfhtmlhead text="#arguments.value#">
 </cffunction>
 
+<cfscript>
+	/**
+	 * Returns the earlier of two dates, preserving the date object type.
+	 * This is useful for BoxLang compatibility where Min() may convert dates to numeric values.
+	 *
+	 * @param date1 First date to compare
+	 * @param date2 Second date to compare
+	 * @return The earlier of the two dates
+	 */
+	public date function dateMin(required date date1, required date date2) {
+		return arguments.date1 LT arguments.date2 ? arguments.date1 : arguments.date2;
+	}
+
+	/**
+	 * Returns the later of two dates, preserving the date object type.
+	 * This is useful for BoxLang compatibility where Max() may convert dates to numeric values.
+	 *
+	 * @param date1 First date to compare
+	 * @param date2 Second date to compare
+	 * @return The later of the two dates
+	 */
+	public date function dateMax(required date date1, required date date2) {
+		return arguments.date1 GT arguments.date2 ? arguments.date1 : arguments.date2;
+	}
+
+	/**
+	 * Returns only the date part of a datetime, stripping the time component.
+	 * This is the BoxLang-compatible replacement for Fix() which converts dates to integers.
+	 * Preserves the date object type instead of converting to a numeric value.
+	 *
+	 * @param datetime The date or datetime to strip the time from
+	 * @return A date object with only the date part (time set to 00:00:00)
+	 */
+	public date function dateOnly(required date datetime) {
+		return CreateDate(Year(arguments.datetime), Month(arguments.datetime), Day(arguments.datetime));
+	}
+
+	/**
+	 * Returns the minimum date from an array of dates, preserving the date object type.
+	 * This is useful for BoxLang compatibility where arrayMin() returns a numeric value.
+	 *
+	 * @param dateArray Array of dates to find the minimum from
+	 * @return The earliest date from the array as a date object
+	 */
+	public date function dateArrayMin(required array dateArray) {
+		if (ArrayLen(arguments.dateArray) == 0) {
+			throw(type="EmptyArrayException", message="Cannot find minimum of empty array");
+		}
+
+		return dateArray.Reduce(function(carry, value){
+				return dateMin(carry, value);
+			}, dateArray[1] );
+	}
+</cfscript>
+
 </cfcomponent>
