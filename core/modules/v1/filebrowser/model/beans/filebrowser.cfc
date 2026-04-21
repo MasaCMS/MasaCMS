@@ -41,12 +41,15 @@ component
 			pathRoot = currentSite.getRootPath(complete=arguments.complete);
 		}
 		else {
-			if(isValid('URL', application.configBean.getAssetPath())) {
-				pathRoot = application.configBean.getAssetPath() & '/assets';
-			}
-			else {
-				pathRoot = currentSite.getFileAssetPath(complete=arguments.complete) & '/assets';
-			}
+			// FIX: Use filePoolID for shared resource pools
+		    var poolID = len(currentSite.getFilePoolID()) ? currentSite.getFilePoolID() : arguments.siteid;
+		    
+		    if(isValid('URL', application.configBean.getAssetPath())) {
+		        pathRoot = application.configBean.getAssetPath() & '/' & poolID & '/assets';
+		    }
+		    else {
+		        pathRoot = currentSite.getFileAssetPath(complete=arguments.complete) & '/assets';
+		    }
 		}
 
 		return pathRoot;
@@ -970,23 +973,13 @@ component
 		response['directory'] = rereplace(response['directory'],"\\","\/","all");
 		response['directory'] = rereplace(response['directory'],"$\\","");
 
-		// move to getBaseResourcePath() --> getFileAssetPath()
+		// FIX: Always use getBaseResourcePath() which handles filePoolID correctly
 		var complete = (m.siteConfig('isremote') || (isdefined('arguments.completepath') && isBoolean(arguments.completepath) && arguments.completepath));
-		var preAssetPath = getBean('configBean').get('assetPath');
-
-		if(len(preAssetPath)) {
-			if(arguments.resourcePath == "Site_Files") {
-				preAssetPath = preAssetPath & "/" & arguments.siteid & response['directory'];
-			}
-			else if(arguments.resourcePath == "Application_Root") {
-				preAssetPath = response['directory'];
-			}
-			else {
-				preAssetPath = preAssetPath & "/" & arguments.siteid & "/assets" & response['directory'];
-			}
-		}
-		else {
-			preAssetPath = getBaseResourcePath(siteid=arguments.siteid,resourcePath=arguments.resourcePath,complete=complete);
+		var preAssetPath = getBaseResourcePath(siteid=arguments.siteid,resourcePath=arguments.resourcePath,complete=complete);
+		
+		// Append directory path if needed
+		if(arguments.resourcePath != "Application_Root" && len(response['directory'])) {
+		    preAssetPath = preAssetPath & response['directory'];
 		}
 
 		var rsDirectory = directoryList(conditionalExpandPath(filePath),false,"query");
