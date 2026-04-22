@@ -204,6 +204,8 @@ this.secureJSONPrefix = "";
 this.welcomeFileList = "";
 //  Compile cfml in all cfincluded files
 this.compileextforinclude="*";
+// An explicit whitelist of file extensions that are allowed to be uploaded - overrides any values in the disallowedWriteExtensions
+this.allowedFileOperationExtensions = [ "cfm", ".ini.cfm", "cfc", "xml", "xml.cfm" ];
 
 //  define custom coldfusion mappings. Keys are mapping names, values are full paths
 //  This is here for older mappings.cfm files
