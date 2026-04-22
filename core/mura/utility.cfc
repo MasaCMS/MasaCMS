@@ -1301,30 +1301,80 @@ Blog: www.codfusion.com--->
 <cffunction name="sanitizeHref" output="false">
 	<cfargument name="href">
 	<cfargument name="siteid" default="">
-	<cfset var returnProtocol = "">
 	
-	<cfif not len(arguments.siteid)>
-		<cfset sessionData=getSession()>
-		<cfset arguments.siteid=sessionData.siteid>
+	<!--- Handle empty or whitespace-only input --->
+	<cfif not len(trim(arguments.href))>
+		<cfreturn arguments.href>
 	</cfif>
 	
-	<cfset var currentSite  = getBean('settingsManager').getSite(arguments.siteid)>
-
-	<cfif len(arguments.href) and (
-		listFindNoCase("http,https",listFirst(arguments.href,":"))
-		or len(arguments.href) gt 1 and left(arguments.href,2) eq "//"
-	)>	
-		<cfset  returnProtocol = listFirst(arguments.href,':') />	
-	<cfelse>		
-		<cfset returnProtocol = lcase(currentSite.getProtocol()) />				
+	<!--- Trim whitespace to prevent bypass attempts --->
+	<cfset var cleanHref = trim(arguments.href)>
+	
+	<!--- SECURITY: Handle scheme-relative URLs (//domain/path) --->
+	<!--- These must be converted to safe relative paths to prevent open redirect --->
+	<cfif len(cleanHref) gt 1 and left(cleanHref, 2) eq "//">
+		<!--- Remove leading // to convert to safe relative path --->
+		<cfif len(cleanHref) eq 2>
+			<!--- Edge case: input is exactly "//" --->
+			<cfreturn "/">
+		<cfelse>
+			<cfset cleanHref = right(cleanHref, len(cleanHref) - 2)>
+		</cfif>
+		
+		<!--- Ensure it starts with / to make it a proper relative path --->
+		<cfif left(cleanHref, 1) neq "/">
+			<cfset cleanHref = "/" & cleanHref>
+		</cfif>
+		
+		<cfreturn cleanHref>
 	</cfif>
-			
-	<cfset returnDomain = parseDomain(arguments.href) />
-	<cfif not listfindNoCase(getBean('settingsManager').getAccessControlOriginDomainList(),returnDomain) and len(returnDomain)>	
-		<cfset arguments.href=replace(arguments.href,returnDomain,getBean('settingsManager').getSite(arguments.siteid).getDomain())>
-	</cfif>	
-
-	<cfreturn arguments.href>
+	
+	<!--- Check if this is an http or https URL that needs domain validation --->
+	<cfif len(cleanHref) and listFindNoCase("http,https", listFirst(cleanHref, ":"))>
+		
+		<!--- Get site configuration --->
+		<cfif not len(arguments.siteid)>
+			<cfset var sessionData = getSession()>
+			<cfset arguments.siteid = sessionData.siteid>
+		</cfif>
+		
+		<cfset var currentSite = getBean('settingsManager').getSite(arguments.siteid)>
+		
+		<!--- SECURITY: Remove scheme-relative URL patterns in the path component --->
+		<!--- Pattern like http://localhost//evil.com/path could be exploited --->
+		<!--- We remove the //domain portion to prevent open redirects --->
+		<cfset var protocolEnd = find("://", cleanHref)>
+		<cfif protocolEnd gt 0>
+			<cfset var afterProtocol = mid(cleanHref, protocolEnd + 3, len(cleanHref))>
+			<!--- Find first slash after domain (start of path) --->
+			<cfset var firstSlashPos = find("/", afterProtocol)>
+			<cfif firstSlashPos gt 0>
+				<cfset var domainPart = left(afterProtocol, firstSlashPos - 1)>
+				<cfset var pathPart = mid(afterProtocol, firstSlashPos, len(afterProtocol))>
+				
+				<!--- Remove //domain patterns from the path (open redirect attempt) --->
+				<!--- Match //anything that looks like a domain and remove it --->
+				<cfset pathPart = reReplace(pathPart, "//[^/]+", "", "all")>
+				
+				<cfset cleanHref = listFirst(cleanHref, ":") & "://" & domainPart & pathPart>
+			</cfif>
+		</cfif>
+		
+		<!--- Extract domain from the URL --->
+		<cfset var urlDomain = parseDomain(cleanHref)>
+		
+		<!--- Check if domain is in the allowed list --->
+		<cfif len(urlDomain) and not listfindNoCase(getBean('settingsManager').getAccessControlOriginDomainList(), urlDomain)>
+			<!--- External domain detected - replace with site domain --->
+			<cfset cleanHref = replace(cleanHref, urlDomain, getBean('settingsManager').getSite(arguments.siteid).getDomain())>
+		</cfif>
+		
+		<cfreturn cleanHref>
+	</cfif>
+	
+	<!--- For all other cases (relative paths, non-HTTP protocols, domain-only strings, etc.), --->
+	<!--- pass through unchanged --->
+	<cfreturn cleanHref>
 </cffunction>
 
 <cffunction name="removeLeadingDoubleSlash" output="false" hint="Removes leading double slashes to prevent scheme-relative URL redirects that could lead to open redirect vulnerabilities">
