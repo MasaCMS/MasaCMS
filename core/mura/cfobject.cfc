@@ -281,6 +281,10 @@ component output="false" hint="This provides base functionality to all Masa CMS 
 				structDelete(arguments,'cachedWithin');
 			}
 
+			if (arguments.keyExists('blockfactor')) {
+				arguments.blockfactor = this.getBlockFactor(arguments.blockfactor);
+			}
+
 			structDelete(arguments,'readOnly');
 
 			return arguments;
@@ -292,11 +296,30 @@ component output="false" hint="This provides base functionality to all Masa CMS 
 					structDelete(arguments,'username');
 					structDelete(arguments,'password');
 				}
+
+				if (arguments.keyExists('blockfactor')) {
+					arguments.blockfactor = this.getBlockFactor(arguments.blockfactor);
+				}
+
 				structDelete(arguments,'readOnly');
 				return arguments;
 			}
 		} else {
 			return structNew();
+		}
+	}
+
+	/**
+	 * Validates and returns a blockfactor value between 1 and 100.
+	 *
+	 * @param blockfactor The blockfactor value to validate.
+	 * @return The blockfactor if between 1 and 100, otherwise 1.
+	 */
+	numeric function getBlockFactor(numeric blockfactor) {
+		if (isNumeric(arguments.blockfactor) && arguments.blockfactor >= 1 && arguments.blockfactor <= 100) {
+			return arguments.blockfactor;
+		} else {
+			return 1;
 		}
 	}
 
