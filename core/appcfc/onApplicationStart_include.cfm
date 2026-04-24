@@ -317,8 +317,8 @@ if ( application.setupComplete ) {
 						if(len(application.configBean.getDefaultThemeURL())){
 							local.theme=application.configBean.getHTTPService(
 								url=application.configBean.getDefaultThemeURL(),
-								 method="get",
-								 charset="utf-8"
+								method="get",
+								binary=true
 							);
 							local.fileWriter.writeFile(file="#application.configBean.getWebRoot()#/#local.themeZip#",output=local.theme.filecontent);
 						}
