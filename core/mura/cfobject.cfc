@@ -323,43 +323,79 @@ component output="false" hint="This provides base functionality to all Masa CMS 
 		}
 	}
 
-	function getHTTPService(required string url , string method="get" , string charset="utf-8"){
+	function getHTTPService(required string url , string method="get" , string charset="utf-8", boolean binary=false){
 		var configBean=getBean('configBean');
 		var httpResult="";
 
 		if(len(configBean.getProxyServer())){
 			if(configBean.getProxyAuthType() == 'NTLM'){
+				if(arguments.binary){
+					cfhttp(
+						url=arguments.url,
+						method=arguments.method,
+						getAsBinary="yes",
+						result="httpResult",
+						proxyserver= configBean.getProxyServer(),
+						proxyport= configBean.getProxyPort(),
+						proxyuser= configBean.getProxyUser(),
+						proxypassword= configBean.getProxyPassword(),
+						authType="NTLM"
+					);
+				} else {
+					cfhttp(
+						url=arguments.url,
+						method=arguments.method,
+						charset=arguments.charset,
+						result="httpResult",
+						proxyserver= configBean.getProxyServer(),
+						proxyport= configBean.getProxyPort(),
+						proxyuser= configBean.getProxyUser(),
+						proxypassword= configBean.getProxyPassword(),
+						authType="NTLM"
+					);
+				}
+			} else {
+				if(arguments.binary){
+					cfhttp(
+						url=arguments.url,
+						method=arguments.method,
+						getAsBinary="yes",
+						result="httpResult",
+						proxyserver= configBean.getProxyServer(),
+						proxyport= configBean.getProxyPort(),
+						proxyuser= configBean.getProxyUser(),
+						proxypassword= configBean.getProxyPassword()
+					);
+				} else {
+					cfhttp(
+						url=arguments.url,
+						method=arguments.method,
+						charset=arguments.charset,
+						result="httpResult",
+						proxyserver= configBean.getProxyServer(),
+						proxyport= configBean.getProxyPort(),
+						proxyuser= configBean.getProxyUser(),
+						proxypassword= configBean.getProxyPassword()
+					);
+				}
+			}
+		}
+		else {
+			if(arguments.binary){
 				cfhttp(
 					url=arguments.url,
 					method=arguments.method,
-					charset=arguments.charset,
-					result="httpResult",
-					proxyserver= configBean.getProxyServer(),
-					proxyport= configBean.getProxyPort(),
-					proxyuser= configBean.getProxyUser(),
-					proxypassword= configBean.getProxyPassword(),
-					authType="NTLM"
+					getAsBinary="yes",
+					result="httpResult"
 				);
 			} else {
 				cfhttp(
 					url=arguments.url,
 					method=arguments.method,
 					charset=arguments.charset,
-					result="httpResult",
-					proxyserver= configBean.getProxyServer(),
-					proxyport= configBean.getProxyPort(),
-					proxyuser= configBean.getProxyUser(),
-					proxypassword= configBean.getProxyPassword()
+					result="httpResult"
 				);
 			}
-		}
-		else {
-			cfhttp(
-				url=arguments.url,
-				method=arguments.method,
-				charset=arguments.charset,
-				result="httpResult"
-			);
 		}
 
 		return httpResult;
