@@ -318,8 +318,15 @@ if ( application.setupComplete ) {
 							local.theme=application.configBean.getHTTPService(
 								url=application.configBean.getDefaultThemeURL(),
 								method="get",
-								binary=true
+								binary="yes"
 							);
+							// Validate HTTP response before writing to file
+							if(structKeyExists(local.theme, "statusCode") && local.theme.statusCode != "200 OK"){
+								throw(message="HTTP request failed with status: #local.theme.statusCode#");
+							}
+							if(!IsBinary(local.theme.filecontent)){
+								throw(message="The theme download did not return valid binary content");
+							}
 							local.fileWriter.writeFile(file="#application.configBean.getWebRoot()#/#local.themeZip#",output=local.theme.filecontent);
 						}
 					} catch (any e){
