@@ -323,7 +323,7 @@ component output="false" hint="This provides base functionality to all Masa CMS 
 		}
 	}
 
-	function getHTTPService(required string url , string method="get" , string charset="utf-8"){
+	function getHTTPService(required string url , string method="get" , string charset="utf-8", string binary="auto"){
 		var configBean=getBean('configBean');
 		var httpResult="";
 
@@ -332,6 +332,7 @@ component output="false" hint="This provides base functionality to all Masa CMS 
 				cfhttp(
 					url=arguments.url,
 					method=arguments.method,
+					getAsBinary=arguments.binary,
 					charset=arguments.charset,
 					result="httpResult",
 					proxyserver= configBean.getProxyServer(),
@@ -344,6 +345,7 @@ component output="false" hint="This provides base functionality to all Masa CMS 
 				cfhttp(
 					url=arguments.url,
 					method=arguments.method,
+					getAsBinary=arguments.binary,
 					charset=arguments.charset,
 					result="httpResult",
 					proxyserver= configBean.getProxyServer(),
@@ -357,6 +359,7 @@ component output="false" hint="This provides base functionality to all Masa CMS 
 			cfhttp(
 				url=arguments.url,
 				method=arguments.method,
+				getAsBinary=arguments.binary,
 				charset=arguments.charset,
 				result="httpResult"
 			);
