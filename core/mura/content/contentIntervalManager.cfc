@@ -246,7 +246,7 @@
 		<cfset arguments.from = getBean('utility').dateOnly(arguments.from) />
 		<cfset arguments.to = getBean('utility').dateOnly(arguments.to) />
 
-		<cfif isDefined('arguments.query.parentType')>
+		<cfif isDefined('arguments.query.parentType') and arguments.current neq 0>
 			<cfset arguments.current = getBean('utility').dateOnly(arguments.current) />
 		<cfelse>
 			<cfset arguments.current = 0>
