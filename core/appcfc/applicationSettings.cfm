@@ -627,10 +627,6 @@ if(len(getINIProperty('s3SecretKey',''))){
 	this.s3.awsSecretKey=evalSetting(getINIProperty('s3SecretKey',''));
 } 
 
-if(len(getINIProperty('s3Acl',''))){
-	this.s3.acl=evalSetting(getINIProperty('s3Acl',''));
-}
-
 function initINI(required string iniPath) output=false {
 	var file = "";
 	var line = "";
