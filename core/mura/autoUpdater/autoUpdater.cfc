@@ -206,7 +206,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfif arrayLen(updatedArray)>
-		<cfif structKetExists(server, 'lucee')>
+		<cfif structKeyExists(server, 'lucee')>
 			<cfscript>pagePoolClear();</cfscript>
 		</cfif>
 	</cfif>
