@@ -466,7 +466,7 @@ This file is part of Mura CMS.
 
 	<cfif arguments.event.getValue("contentBean").getIsNew()>
 		<cfset request.mura404=true>
-		<cfset var local.filename=arguments.event.getValue('currentFilenameAdjusted')>
+		<cfset local.filename=arguments.event.getValue('currentFilenameAdjusted')>
 
 		<cfloop condition="listLen(local.filename,'/')">
 			<cfset var archived=getBean('contentFilenameArchive').loadBy(filename=local.filename,siteid=event.getValue('siteid'))>
