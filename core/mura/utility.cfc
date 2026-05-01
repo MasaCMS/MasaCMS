@@ -425,11 +425,7 @@ This file is part of Mura CMS.
 		<cfelseif StructKeyExists(headers,"Front-End-Https") and isBoolean(headers["Front-End-Https"]) and headers["Front-End-Https"]>
 			<cfreturn "https">
 		<cfelse>
-			<cfif server.keyExists("boxlang")>
-				<cfset returnValue = listFirst(cgi.request_url, ":")>
-			<cfelse>
-			    <cfset returnValue = getPageContext().getRequest().getScheme()>
-			</cfif>
+			<cfset returnValue = getPageContext().getRequest().getScheme()>
 			<cfreturn returnValue>
 		</cfif>
 
