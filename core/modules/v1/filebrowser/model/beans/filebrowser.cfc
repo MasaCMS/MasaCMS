@@ -1077,12 +1077,15 @@ component
 		response['totalitems'] = rsFiles.recordCount;
 		response['pre'] = serializeJSON(rsPrefix);
 
+		var rowType = "";
 		for(var x = response['startindex'];x <= response['endindex'];x++) {
 
 
 			frow = {};
-			frow['isfile'] = rsFiles['type'][x] == 'File' ? 1 : 0;
-			frow['isfolder'] = rsFiles['type'][x] == 'Dir' ? 1 : 0;
+			// cfdirectory / engine queries may use "file"/"dir" (Lucee) or "File"/"Dir" (ACF); normalize for UI isfile / folder icons
+			rowType = trim(toString(rsFiles['type'][x]));
+			frow['isfile'] = (compareNoCase(rowType, 'file') eq 0) ? 1 : 0;
+			frow['isfolder'] = (compareNoCase(rowType, 'dir') eq 0 || compareNoCase(rowType, 'directory') eq 0) ? 1 : 0;
 			frow['fullname'] = rsFiles['name'][x];
 			frow['size'] = int(rsFiles['size'][x]/1000);
 			frow['name'] = rereplace(frow['fullname'],"\..*","");
