@@ -240,10 +240,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset pluginEvent.init(arguments)>
 				<cfset pluginManager.announceEvent("onBeforeFileRender",pluginEvent)>
 				<cfscript>
-					var _suffix = (listFindNoCase("png,jpg,jpeg,gif", rsFileData.fileExt) && len(arguments.size)) ? "_" & arguments.size : "";
+					var _isSizedImage = listFindNoCase("png,jpg,jpeg,gif", rsFileData.fileExt) && len(arguments.size);
+					var _suffix = _isSizedImage ? "_" & arguments.size : "";
 					var _key    = rsFileData.siteid & "/cache/file/" & arguments.fileID & _suffix & "." & rsFileData.fileExt;
 					var _svc    = getBean("fileStorageService");
-					if (!_svc.streamToResponse(_key, arguments.method)) {
+					var _streamed = _svc.streamToResponse(_key, arguments.method);
+					if (!_streamed && _isSizedImage) {
+						ensureCachedImageSize(
+							fileID = arguments.fileID,
+							size = arguments.size,
+							siteID = rsFileData.siteid,
+							fileExt = rsFileData.fileExt
+						);
+						_streamed = _svc.streamToResponse(_key, arguments.method);
+					}
+					if (!_streamed) {
 						var _local = _svc.resolveToLocal(_key);
 						if (!len(_local) || !fileExists(_local)) {
 							getBean("contentServer").render404();
@@ -925,6 +936,45 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
+<cffunction name="ensureCachedImageSize" output="false" returntype="boolean"
+	hint="Generates a missing cached image size on demand and writes it back to the active storage service.">
+	<cfargument name="fileID" type="string" required="true">
+	<cfargument name="size" type="string" required="true">
+	<cfargument name="siteID" type="string" required="true">
+	<cfargument name="fileExt" type="string" required="true">
+	<cfscript>
+		var storageService = getBean("fileStorageService");
+		var originalKey = arguments.siteID & "/cache/file/" & arguments.fileID & "." & arguments.fileExt;
+		var cacheKey = arguments.siteID & "/cache/file/" & arguments.fileID & "_" & arguments.size & "." & arguments.fileExt;
+		var sourceLocal = "";
+		var targetLocal = application.configBean.getTempDir() & replace(createUUID(), "-", "", "ALL") & "_" & lcase(arguments.size) & "." & arguments.fileExt;
+
+		if (storageService.fileExists(cacheKey)) {
+			return true;
+		}
+
+		if (!storageService.fileExists(originalKey)) {
+			return false;
+		}
+
+		sourceLocal = storageService.resolveToLocal(originalKey);
+		if (!len(sourceLocal)) {
+			return false;
+		}
+
+		cropAndScale(
+			fileID = arguments.fileID,
+			size = arguments.size,
+			siteID = arguments.siteID,
+			sourcePath = sourceLocal,
+			targetPath = targetLocal,
+			storageKey = cacheKey
+		);
+
+		return storageService.fileExists(cacheKey);
+	</cfscript>
+</cffunction>
+
 <cffunction name="streamFile" output="false">
 <cfargument name="filePath">
 <cfargument name="filename">
@@ -1098,35 +1148,46 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="height">
 	<cfargument name="width">
 	<cfargument name="siteid">
+	<cfargument name="sourcePath" default="">
+	<cfargument name="targetPath" default="">
+	<cfargument name="storageKey" default="">
 
 	<cfset arguments.siteid=variables.settingsManager.getSite(arguments.siteid).getFilePoolID()>
 
 	<cfset var rsMeta=readMeta(arguments.fileID)>
 	<cfset var site=variables.settingsManager.getSite(rsMeta.siteID)>
 	<cfset var file="">
-	<cfset var source="#application.configBean.getFileDir()#/#arguments.siteID#/cache/file/#arguments.fileID#_source.#rsMeta.fileExt#">
+	<cfset var source="">
 	<cfset var cropper=structNew()>
 	<cfset var customImageSize="">
 	<cfset var pluginEvent = createObject("component","mura.event") />
 	<cfset arguments.action="cropAndScale">
 	<cfset pluginEvent.init(arguments)>
 	<cfset var pluginManager=getBean("pluginManager")>
+	<cfset var storageService=getBean("fileStorageService")>
+	<cfset var sourceKey=getCacheImageKey(arguments.siteID, arguments.fileID, rsMeta.fileExt, "source")>
+	<cfset var originalKey=getCacheImageKey(arguments.siteID, arguments.fileID, rsMeta.fileExt, "large")>
+	<cfset var targetKey=len(arguments.storageKey) ? arguments.storageKey : getCacheImageKey(arguments.siteID, arguments.fileID, rsMeta.fileExt, arguments.size)>
 
 
 	<cfset arguments.size=lcase(arguments.size)>
 
 	<cfset pluginManager.announceEvent("onBeforeImageManipulation",pluginEvent)>
 
-	<cfif not fileExists(source)>
-		<cfset source="#application.configBean.getFileDir()#/#arguments.siteID#/cache/file/#arguments.fileID#.#rsMeta.fileExt#">
+	<cfif len(arguments.sourcePath)>
+		<cfset source=arguments.sourcePath>
+	<cfelseif storageService.fileExists(sourceKey)>
+		<cfset source=storageService.resolveToLocal(sourceKey)>
+	<cfelseif storageService.fileExists(originalKey)>
+		<cfset source=storageService.resolveToLocal(originalKey)>
 	</cfif>
 
-	<cfif rsMeta.recordcount and IsImageFile(source)>
+	<cfif rsMeta.recordcount and len(source) and IsImageFile(source)>
 
-		<cfif arguments.size eq "large">
-			<cfset var file="#application.configBean.getFileDir()#/#arguments.siteID#/cache/file/#arguments.fileID#.#rsMeta.fileExt#">
+		<cfif len(arguments.targetPath)>
+			<cfset var file=arguments.targetPath>
 		<cfelse>
-			<cfset var file="#application.configBean.getFileDir()#/#arguments.siteID#/cache/file/#arguments.fileID#_#arguments.size#.#rsMeta.fileExt#">
+			<cfset var file=createTempImagePath(targetKey)>
 		</cfif>
 
 		<cfif fileExists(file)>
@@ -1167,7 +1228,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<!--- Assume it's an adhoc custom size with HX_WX name --->
 					<cfset customImageSize.setName(arguments.size)>
 					<cfset customImageSize.parseName()>
-					<cfset file="#application.configBean.getFileDir()#/#arguments.siteID#/cache/file/#arguments.fileID#_#ucase(arguments.size)#.#rsMeta.fileExt#">
 					<cfset variables.imageProcessor.resizeImage(
 						image=file,
 						height=customImageSize.getHeight(),
@@ -1196,7 +1256,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<!--- Assume it's an adhoc custom size with HX_WX name --->
 					<cfset customImageSize.setName(arguments.size)>
 					<cfset customImageSize.parseName()>
-					<cfset file="#application.configBean.getFileDir()#/#arguments.siteID#/cache/file/#arguments.fileID#_#ucase(arguments.size)#.#rsMeta.fileExt#">
 					<cfset variables.imageProcessor.resizeImage(
 						image=file,
 						height=customImageSize.getHeight(),
@@ -1209,6 +1268,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfset cropper=imageRead(file)>
 
+		<cfif storageService.fileExists(targetKey)>
+			<cfset storageService.deleteFile(targetKey)>
+		</cfif>
+
+		<cfset storageService.writeFromLocal(file, targetKey)>
+
 		<cfset pluginManager.announceEvent("onAfterImageManipulation",pluginEvent)>
 
 		<cfreturn ImageInfo(cropper)>
@@ -1220,21 +1285,34 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="degrees" default="90">
 
 	<cfset var rsMeta=readMeta(arguments.fileID)>
-	<cfset var source="#application.configBean.getFileDir()#/#rsMeta.siteID#/cache/file/#arguments.fileID#_source.#rsMeta.fileExt#">
+	<cfset var storageService=getBean("fileStorageService")>
+	<cfset var sourceKey=getCacheImageKey(rsMeta.siteID, arguments.fileID, rsMeta.fileExt, "source")>
+	<cfset var source="">
+	<cfset var target=createTempImagePath(sourceKey)>
 	<cfset var myImage="">
 	<cfset var pluginEvent = createObject("component","mura.event") />
 	<cfset arguments.action="rotate">
 	<cfset pluginEvent.init(arguments)>
 	<cfset var pluginManager=getBean("pluginManager")>
 
-	<cfif rsMeta.recordcount and IsImageFile(source)>
+	<cfset touchSourceImage(arguments.fileID)>
+	<cfif storageService.fileExists(sourceKey)>
+		<cfset source=storageService.resolveToLocal(sourceKey)>
+	</cfif>
+
+	<cfif rsMeta.recordcount and len(source) and IsImageFile(source)>
 		<cfset getBean("pluginManager").announceEvent("onBeforeImageManipulation",pluginEvent)>
 
 		<cfscript>
 			myImage=imageRead(source);
 			ImageRotate(myImage,arguments.degrees);
-			imageWrite(myImage,source,variables.configBean.getImageQuality());
+			imageWrite(myImage,target,variables.configBean.getImageQuality());
 		</cfscript>
+
+		<cfif storageService.fileExists(sourceKey)>
+			<cfset storageService.deleteFile(sourceKey)>
+		</cfif>
+		<cfset storageService.writeFromLocal(target, sourceKey)>
 
 		<cfset var pluginEvent = createObject("component","mura.event") />
 		<cfset arguments.action="rate">
@@ -1248,20 +1326,32 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="transpose" default="horizontal">
 
 	<cfset var rsMeta=readMeta(arguments.fileID)>
-	<cfset var source="#application.configBean.getFileDir()#/#rsMeta.siteID#/cache/file/#arguments.fileID#_source.#rsMeta.fileExt#">
+	<cfset var storageService=getBean("fileStorageService")>
+	<cfset var sourceKey=getCacheImageKey(rsMeta.siteID, arguments.fileID, rsMeta.fileExt, "source")>
+	<cfset var source="">
+	<cfset var target=createTempImagePath(sourceKey)>
 	<cfset var myImage="">
 	<cfset var pluginEvent = createObject("component","mura.event") />
 	<cfset arguments.action="flip">
 	<cfset pluginEvent.init(arguments)>
 	<cfset var pluginManager=getBean("pluginManager")>
 
-	<cfif rsMeta.recordcount and IsImageFile(source)>
+	<cfset touchSourceImage(arguments.fileID)>
+	<cfif storageService.fileExists(sourceKey)>
+		<cfset source=storageService.resolveToLocal(sourceKey)>
+	</cfif>
+
+	<cfif rsMeta.recordcount and len(source) and IsImageFile(source)>
 		<cfset pluginManager.announceEvent("onBeforeImageManipulation",pluginEvent)>
 		<cfscript>
 			myImage=imageRead(source);
 			ImageFlip(myImage,arguments.transpose);
-			imageWrite(myImage,source,variables.configBean.getImageQuality());
+			imageWrite(myImage,target,variables.configBean.getImageQuality());
 		</cfscript>
+		<cfif storageService.fileExists(sourceKey)>
+			<cfset storageService.deleteFile(sourceKey)>
+		</cfif>
+		<cfset storageService.writeFromLocal(target, sourceKey)>
 		<cfset pluginManager.announceEvent("onAfterImageManipulation",pluginEvent)>
 	</cfif>
 </cffunction>
@@ -1270,22 +1360,55 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="fileID">
 
 	<cfset var rsMeta=readMeta(arguments.fileID)>
-	<cfset var source="#application.configBean.getFileDir()#/#rsMeta.siteID#/cache/file/#rsMeta.fileID#_source.#rsMeta.fileExt#">
+	<cfset var storageService=getBean("fileStorageService")>
+	<cfset var sourceKey=getCacheImageKey(rsMeta.siteID, rsMeta.fileID, rsMeta.fileExt, "source")>
+	<cfset var originalKey=getCacheImageKey(rsMeta.siteID, rsMeta.fileID, rsMeta.fileExt, "large")>
 
-	<cfif rsMeta.recordcount and not fileExists(source)>
-		<cfset getBean('fileWriter').copyFile(source="#application.configBean.getFileDir()#/#rsMeta.siteID#/cache/file/#rsMeta.fileID#.#rsMeta.fileExt#", destination=source)>
+	<cfif rsMeta.recordcount and not storageService.fileExists(sourceKey) and storageService.fileExists(originalKey)>
+		<cfset storageService.copyFile(originalKey, sourceKey)>
 	</cfif>
 </cffunction>
 
 <cffunction name="readSourceImage" output="false">
 	<cfargument name="fileID">
 	<cfset var rsMeta=readMeta(arguments.fileID)>
-	<cfset var source="#application.configBean.getFileDir()#/#rsMeta.siteID#/cache/file/#rsMeta.fileID#_source.#rsMeta.fileExt#">
-	<cfif rsMeta.recordcount and not fileExists(source)>
-		<cfset getBean('fileWriter').copyFile(source="#application.configBean.getFileDir()#/#rsMeta.siteID#/cache/file/#rsMeta.fileID#.#rsMeta.fileExt#", destination=source)>
+	<cfset var storageService=getBean("fileStorageService")>
+	<cfset var sourceKey=getCacheImageKey(rsMeta.siteID, rsMeta.fileID, rsMeta.fileExt, "source")>
+	<cfset var originalKey=getCacheImageKey(rsMeta.siteID, rsMeta.fileID, rsMeta.fileExt, "large")>
+	<cfset var source="">
+	<cfset touchSourceImage(arguments.fileID)>
+	<cfif rsMeta.recordcount and storageService.fileExists(sourceKey)>
+		<cfset source=storageService.resolveToLocal(sourceKey)>
+	<cfelseif rsMeta.recordcount and storageService.fileExists(originalKey)>
+		<cfset source=storageService.resolveToLocal(originalKey)>
 	</cfif>
-	<cfset source=imageRead(source)>
-	<cfreturn source>
+	<cfif len(source)>
+		<cfreturn imageRead(source)>
+	</cfif>
+	<cfreturn "">
+</cffunction>
+
+<cffunction name="getCacheImageKey" output="false" returntype="string">
+	<cfargument name="siteID" type="string" required="true">
+	<cfargument name="fileID" type="string" required="true">
+	<cfargument name="fileExt" type="string" required="true">
+	<cfargument name="size" type="string" required="true">
+	<cfscript>
+		var suffix = "";
+		if (arguments.size eq "source") {
+			suffix = "_source";
+		} else if (lcase(arguments.size) neq "large") {
+			suffix = "_" & arguments.size;
+		}
+		return arguments.siteID & "/cache/file/" & arguments.fileID & suffix & "." & arguments.fileExt;
+	</cfscript>
+</cffunction>
+
+<cffunction name="createTempImagePath" output="false" returntype="string">
+	<cfargument name="storageKey" type="string" required="true">
+	<cfscript>
+		return application.configBean.getTempDir() & replace(createUUID(), "-", "", "ALL") & "_" & listLast(arguments.storageKey, "/");
+	</cfscript>
 </cffunction>
 
 </cfcomponent>
