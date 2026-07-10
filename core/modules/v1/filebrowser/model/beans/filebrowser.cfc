@@ -347,7 +347,8 @@ component
 		var tempFile2 = tempDir & timage & "_crop." & arguments.file.ext;
 		ImageWrite(sourceImage, tempFile2);
 		fw.writeFromLocal(tempFile2, conditionalExpandPath(filePath));
-		workImage = ImageNew(conditionalExpandPath(filePath));
+		var croppedLocalPath = fw.resolveToLocal(conditionalExpandPath(filePath));
+		workImage = ImageNew(croppedLocalPath);
 
 		response.info = imageInfo(workImage);
 		response.aspect = aspect;
