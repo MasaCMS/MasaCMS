@@ -157,4 +157,25 @@ the Free Software Foundation, Version 2 of the License.
 		<cfargument name="siteid" type="string" required="true" hint="Site identifier">
 	</cffunction>
 
+	<!--- ==================== DIRECT CORE OPERATIONS ==================== --->
+
+	<cffunction name="streamToResponse" returntype="void" access="public" output="false"
+		hint="Stream an object directly from storage to the current HTTP response.
+		      Used by core download/render flows to avoid requiring a local file copy.">
+		<cfargument name="path" type="string" required="true" hint="Relative path within User_Assets root">
+	</cffunction>
+
+	<cffunction name="uploadBinary" returntype="struct" access="public" output="false"
+		hint="Persist binary content to the storage backend.
+		      Returns a struct describing the stored object, matching the backend's
+		      existing upload result conventions.">
+		<cfargument name="destination" type="string" required="true" hint="Relative destination path within User_Assets root">
+		<cfargument name="content" type="any" required="true" hint="Binary content to store">
+	</cffunction>
+
+	<cffunction name="deleteObject" returntype="void" access="public" output="false"
+		hint="Delete a stored object from the backend.">
+		<cfargument name="path" type="string" required="true" hint="Relative path within User_Assets root">
+	</cffunction>
+
 </cfinterface>
