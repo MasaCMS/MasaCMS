@@ -37,7 +37,7 @@ the Free Software Foundation, Version 2 of the License.
 			hint="URL prefix for assets. Empty = singleton mode (resolved per-call from settingsManager).">
 		<cfset variables.basePath = arguments.basePath>
 		<cfset variables.baseUrl  = arguments.baseUrl>
-		<cfset variables.fw = getBean('fileWriter').init(routeUserAssets=false)>
+		<cfset variables.fw = new mura.fileWriter().init(routeUserAssets=false)>
 		<cfreturn this>
 	</cffunction>
 
