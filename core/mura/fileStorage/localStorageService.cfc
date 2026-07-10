@@ -44,14 +44,32 @@ the Free Software Foundation, Version 2 of the License.
 	<!---
 		Resolve a relative key to an absolute local path.
 		- Per-site mode:  basePath is set at init → prepend it (original behaviour).
-		- Singleton mode: basePath is empty → key is "{siteid}/assets/…" style → prepend configBean.getFileDir().
+		- Singleton mode: basePath is empty → key is "{siteid}/{subtype}/…" style →
+		  resolve "assets" under configBean.getAssetDir() and "cache" under configBean.getFileDir().
 	--->
+	<cffunction name="resolveSingletonRoot" access="private" returntype="string" output="false">
+		<cfargument name="path" type="string" required="true">
+		<cfset var normalizedPath = reReplace(replace(arguments.path, "\", "/", "ALL"), "^/+", "")>
+		<cfset var subtype = "">
+
+		<cfif listLen(normalizedPath, "/") GTE 2>
+			<cfset subtype = lCase(listGetAt(normalizedPath, 2, "/"))>
+		</cfif>
+
+		<cfif subtype EQ "assets">
+			<cfreturn application.configBean.getAssetDir()>
+		<cfelse>
+			<cfreturn application.configBean.getFileDir()>
+		</cfif>
+	</cffunction>
+
 	<cffunction name="fullPath" access="private" returntype="string" output="false">
 		<cfargument name="path" type="string" required="true">
+		<cfset var normalizedPath = reReplace(replace(arguments.path, "\", "/", "ALL"), "^/+", "")>
 		<cfif len(variables.basePath)>
 			<cfreturn variables.basePath & arguments.path>
 		<cfelse>
-			<cfreturn application.configBean.getFileDir() & "/" & reReplace(replace(arguments.path, "\", "/", "ALL"), "^/+", "")>
+			<cfreturn resolveSingletonRoot(normalizedPath) & "/" & normalizedPath>
 		</cfif>
 	</cffunction>
 
