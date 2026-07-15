@@ -919,7 +919,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			}
 
 			if(arrayLen(pathInfo) > 1){
-				if(isDefined(pathInfo[2]) && pathInfo[2] != 'file'){
+				if(isValid('variableName',pathInfo[2]) && isDefined('#pathInfo[2]#') && pathInfo[2] != 'file'){
 					params.method=pathInfo[2];
 
 					if(!(listFindNoCase('validate,processAsyncObject',params.method) || apiEnabled)){
