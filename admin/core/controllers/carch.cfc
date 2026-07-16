@@ -413,7 +413,11 @@ component extends="controller" output="false" {
 			}
 			if ( (arguments.rc.closeCompactDisplay != 'true'  || arguments.rc.murakeepediting) && arguments.rc.action != 'multiFileUpload' ) {
 				if ( len(arguments.rc.returnURL) && (arguments.rc.action == 'delete' || arguments.rc.action == 'deletehistall' || (arguments.rc.preview == 0 && !arguments.rc.murakeepediting)) ) {
-					location(url=rc.returnURL, addtoken=false );
+					// Neutralise off-site / scheme-relative redirect targets before honouring them.
+					var safeReturnURL = variables.utility.sanitizeHref(
+						variables.utility.removeLeadingDoubleSlash(arguments.rc.returnURL)
+					);
+					location(url=safeReturnURL, addtoken=false );
 				}
 				if ( arguments.rc.action == 'delete' || arguments.rc.action == 'deletehistall' || (arguments.rc.return == 'hist' && arguments.rc.preview == 0 && !arguments.rc.murakeepediting && structIsEmpty(arguments.rc.contentBean.getErrors())) ) {
 					variables.fw.redirect(action="cArch.hist",append="contentid,siteid,startrow,moduleid,parentid,type,compactDisplay");
