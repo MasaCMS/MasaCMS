@@ -3983,7 +3983,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 							if(structIsEmpty($.event().getValue('userBean').getErrors()) && !$.event().valueExists('passwordNoCache')){
 								$.getBean('userManager').sendLoginByUser($.event().getValue('userBean'),$.event().getValue('siteid'),true);
-								result={redirect=$.event('returnurl')};
+								result={redirect=getBean('utility').sanitizeHREF($.event('returnurl'))};
 
 							} else if (structIsEmpty($.event().getValue('userBean').getErrors()) && $.event().valueExists('passwordNoCache') && $.event().getValue('userBean').getInactive() eq 0){
 								$.event().setValue('userID',$.event().getValue('userBean').getUserID());
