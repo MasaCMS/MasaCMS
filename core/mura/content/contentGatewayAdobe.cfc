@@ -1236,7 +1236,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		select * from rsDraftList3
 	union
 		select * from rsDraftList4
-	order by #arguments.sortBy# #arguments.sortDirection#
+	order by #getBean('utility').validateSortBy(arguments.sortBy)# #getBean('utility').validateSortDirection(arguments.sortDirection)#
 	</cfquery>
 
 	<cfreturn rsDraftList />
@@ -1290,7 +1290,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfquery name="rs" dbtype="query" maxrows="#arguments.limit#">
 	select * from rs
-	order by #arguments.sortBy# #arguments.sortDirection#
+	order by #getBean('utility').validateSortBy(arguments.sortBy)# #getBean('utility').validateSortDirection(arguments.sortDirection)#
 	</cfquery>
 
 	<cfreturn rs>
@@ -1344,7 +1344,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfquery name="rs" dbtype="query" maxrows="#arguments.limit#">
 	select * from rs
-	order by #arguments.sortBy# #arguments.sortDirection#
+	order by #getBean('utility').validateSortBy(arguments.sortBy)# #getBean('utility').validateSortDirection(arguments.sortDirection)#
 	</cfquery>
 
 	<cfreturn rs>

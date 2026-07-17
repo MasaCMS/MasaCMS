@@ -235,7 +235,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="orderby" default="name" required="true">
 <cfset var rsAllPlugins="">
 <cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsAllPlugins')#">
-select * from tplugins order by #arguments.orderby#
+select * from tplugins order by #getBean('utility').validateSort(arguments.orderby)#
 </cfquery>
 <cfreturn rsAllPlugins/>
 </cffunction>
