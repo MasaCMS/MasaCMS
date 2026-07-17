@@ -868,7 +868,7 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 			}
 
 			if(structKeyExists(arguments,'orderby') && len(arguments.orderby)){
-				writeOutput("order by #arguments.orderby# ");
+				writeOutput("order by #getBean('utility').validateSort(arguments.orderby)# ");
 			} else if(len(getOrderBy())){
 				writeOutput("order by #getOrderBy()# ");
 			}

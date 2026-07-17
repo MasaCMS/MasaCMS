@@ -3770,6 +3770,13 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 	
 		if(isDefined('arguments.data.bean') && isDefined('arguments.data.loadby') && arguments.data.bean != 'bean'){
 
+			// Security: loadby must never resolve to one of loadBy()'s own internal
+			// control arguments. Bean properties are dynamically extensible, so this
+			// is deliberately a denylist rather than a per-bean property allowlist.
+			if(listFindNoCase('orderby,returnFormat,cachedWithin',arguments.data.loadby)){
+				throw(type="invalidParameters");
+			}
+
 			var bean=getBean(arguments.data.bean);
 			var args={
 				'#arguments.data.loadby#'=arguments.data[arguments.data.loadby],
