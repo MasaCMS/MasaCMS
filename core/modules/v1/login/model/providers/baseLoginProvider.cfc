@@ -15,10 +15,12 @@ component extends="mura.cfobject" accessors=true output=false {
 	function setReturnURL(){
 		session.mura.returnURL='';
 
+		// Neutralise off-site redirect targets before storing them in the session; the stored
+		// value is later handed to location() in the OAuth callback handler (authHandler.cfc).
 		if(isDefined('form.returnURL')){
-			session.mura.returnURL = form.returnURL;
+			session.mura.returnURL = variables.utility.sanitizeHref(form.returnURL);
 		} else if(isDefined('url.returnURL')){
-				session.mura.returnURL = url.returnURL;
+				session.mura.returnURL = variables.utility.sanitizeHref(url.returnURL);
 		} else {
 			 session.mura.returnURL = getBean('configBean').getContext();
 		}
