@@ -3809,6 +3809,17 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 	}
 
+	public any function filterAsyncFeedParams(required string object, required any params, required string siteid){
+		if(listFindNoCase('feed,feed_no_summary,feed_slideshow,feed_slideshow_no_summary,feed_table,dragable_feeds',arguments.object)
+				&& isStruct(arguments.params)
+				&& !getBean('permUtility').getModulePerm('00000000000000000000000000000000011',arguments.siteid)){
+			for(var protectedFeedField in ['channelLink','type','isNew','isActive','authtype','siteid']){
+				structDelete(arguments.params,protectedFeedField);
+			}
+		}
+		return arguments.params;
+	}
+
 	function processAsyncObject(siteid){
 		var sessionData=getSession();
 
@@ -4056,6 +4067,11 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 					}
 
 				}
+
+				// strip caller-supplied feed trust-state fields unless the caller holds 
+				// the Feeds module permission, preventing unauthenticated SSRF through 
+				// the remote feed display object.
+				args.params=filterAsyncFeedParams($.event('object'),args.params,arguments.siteid);
 
 				/*
 				if(listFindNoCase('folder,gallery,calendar,page',$.event('object'))){
