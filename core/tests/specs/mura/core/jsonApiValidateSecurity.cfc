@@ -34,7 +34,7 @@ component extends="testbox.system.BaseSpec" {
 						loadby="orderby",
 						orderby="(select sleep(1))",
 						fields="name"
-					});
+					}, siteId="default");
 				}).toThrow(type="invalidParameters");
 			});
 
@@ -46,7 +46,7 @@ component extends="testbox.system.BaseSpec" {
 						loadby="orderby",
 						orderby="name",
 						fields="name"
-					});
+					}, siteId="default");
 				}).toThrow(type="invalidParameters");
 			});
 
@@ -58,7 +58,7 @@ component extends="testbox.system.BaseSpec" {
 						loadby="returnFormat",
 						returnFormat="query",
 						fields="name"
-					});
+					}, siteId="default");
 				}).toThrow(type="invalidParameters");
 			});
 
@@ -70,7 +70,7 @@ component extends="testbox.system.BaseSpec" {
 						loadby="cachedWithin",
 						cachedWithin="1",
 						fields="name"
-					});
+					}, siteId="default");
 				}).toThrow(type="invalidParameters");
 			});
 
@@ -82,7 +82,7 @@ component extends="testbox.system.BaseSpec" {
 						loadby="OrderBy",
 						orderby="name",
 						fields="name"
-					});
+					}, siteId="default");
 				}).toThrow(type="invalidParameters");
 			});
 
@@ -94,7 +94,7 @@ component extends="testbox.system.BaseSpec" {
 						loadby="entityid",
 						entityid=createUUID(),
 						fields="name"
-					});
+					}, siteId="default");
 				}).notToThrow();
 			});
 
