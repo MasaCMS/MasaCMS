@@ -1262,6 +1262,10 @@ Blog: www.codfusion.com--->
 
 <cffunction name="parseDomain" output="false">
 	<cfargument name="urlstring">
+	<cfif not (reFindNoCase("^\w+://", arguments.urlstring) or (len(arguments.urlstring) gt 1 and left(arguments.urlstring,2) eq '//'))>
+    	<cfreturn "">
+	</cfif>
+	
 	<cfset var parsed=reReplace(arguments.urlstring, "^\w+://([^\/:]+)[\w\W]*$", "\1", "one")>
 	<cfif len(parsed) gt 1 and left(parsed,2) eq '//'>
 		<cfset parsed=listFirst(right(parsed,len(parsed)-2),'/')>
