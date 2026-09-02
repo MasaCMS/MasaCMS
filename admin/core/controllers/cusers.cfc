@@ -379,7 +379,11 @@ component persistent='false' accessors='true' output='false' extends='controller
 
 		if ( !Len(arguments.rc.routeid) ) {
 			if ( Len(arguments.rc.returnurl) ) {
-				location(url=arguments.rc.returnurl, addtoken=false);
+				// Neutralise off-site / scheme-relative redirect targets before honouring them.
+				var safeReturnURL = variables.utility.sanitizeHref(
+					variables.utility.removeLeadingDoubleSlash(arguments.rc.returnurl)
+				);
+				location(url=safeReturnURL, addtoken=false);
 			} else {
 				variables.fw.redirect(action='cUsers.listusers', append='siteid,ispublic', path='./');
 			}
