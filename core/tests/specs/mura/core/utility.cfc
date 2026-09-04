@@ -618,6 +618,71 @@ component extends="testbox.system.BaseSpec"{
 
 			});
 
+			describe("Malformed Scheme / Missing-Slash Bypass Prevention", function() {
+
+				// Real browsers treat http/https as "special" schemes (WHATWG URL Standard) and
+				// will normalize a malformed scheme prefix - missing slashes, or slashes swapped
+				// for backslashes - straight into a real absolute URL: "http:evil.com",
+				// "http:/evil.com" and "http:\\evil.com" are all resolved by browsers exactly like
+				// "http://evil.com". parseDomain()'s regex requires a literal "://" to recognize a
+				// domain, so these inputs don't match it; sanitizeHref() then treats the *entire*
+				// input as the "domain" and replaces it whole with the site's configured domain -
+				// which incidentally neutralizes the attacker-controlled host. These tests pin that
+				// neutralizing behavior down so a future change to parseDomain()/sanitizeHref() (e.g.
+				// making parseDomain() return "" for anything that isn't a strict "scheme://" or "//"
+				// match) can't silently let the attacker's host pass through untouched instead.
+				// See issue #444 / PR #445 for the related (but distinct) relative-URL corruption bug.
+
+				it("should neutralize a scheme with no slashes at all (http:evil.com)", function() {
+					var result = utility.sanitizeHref('http:evil.com/phish', siteid);
+					expect(result).notToInclude('evil.com');
+					expect(result).toBe('localhost');
+				});
+
+				it("should neutralize an https scheme with no slashes at all (https:evil.com)", function() {
+					var result = utility.sanitizeHref('https:evil.com/phish', siteid);
+					expect(result).notToInclude('evil.com');
+					expect(result).toBe('localhost');
+				});
+
+				it("should neutralize a scheme with only a single slash (http:/evil.com)", function() {
+					var result = utility.sanitizeHref('http:/evil.com/phish', siteid);
+					expect(result).notToInclude('evil.com');
+					expect(result).toBe('localhost');
+				});
+
+				it("should neutralize a scheme using double backslashes (http:\\\\evil.com)", function() {
+					var result = utility.sanitizeHref('http:\\\\evil.com/phish', siteid);
+					expect(result).notToInclude('evil.com');
+					expect(result).toBe('localhost');
+				});
+
+				it("should neutralize a scheme using a single backslash (http:\\evil.com)", function() {
+					var result = utility.sanitizeHref('http:\evil.com/phish', siteid);
+					expect(result).notToInclude('evil.com');
+					expect(result).toBe('localhost');
+				});
+
+				it("should neutralize a malformed scheme regardless of case (HTTP:evil.com)", function() {
+					var result = utility.sanitizeHref('HTTP:evil.com/phish', siteid);
+					expect(result).notToInclude('evil.com');
+					expect(result).toBe('localhost');
+				});
+
+				it("should neutralize a malformed scheme with no path at all (http:evil.com)", function() {
+					var result = utility.sanitizeHref('http:evil.com', siteid);
+					expect(result).notToInclude('evil.com');
+					expect(result).toBe('localhost');
+				});
+
+				it("should still validate a well-formed absolute URL normally (control case)", function() {
+					var result = utility.sanitizeHref('https://evil.com/phish', siteid);
+					expect(result).notToInclude('evil.com');
+					expect(result).toBe('https://localhost/phish');
+				});
+
+			});
+
 		});
 
 		describe("Testing validateSort", function() {
