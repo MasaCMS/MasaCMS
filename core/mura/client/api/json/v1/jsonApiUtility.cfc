@@ -920,7 +920,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			}
 
 			if(arrayLen(pathInfo) > 1){
-				if(isDefined(pathInfo[2]) && pathInfo[2] != 'file'){
+				if(isValid('variableName',pathInfo[2]) && isDefined('#pathInfo[2]#') && pathInfo[2] != 'file'){
 					params.method=pathInfo[2];
 
 					if(!(listFindNoCase('validate,processAsyncObject',params.method) || apiEnabled)){
@@ -3781,6 +3781,13 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		if(isDefined('arguments.data.bean') && isDefined('arguments.data.loadby') && arguments.data.bean != 'bean'){
 
+			// Security: loadby must never resolve to one of loadBy()'s own internal
+			// control arguments. Bean properties are dynamically extensible, so this
+			// is deliberately a denylist rather than a per-bean property allowlist.
+			if(listFindNoCase('orderby,returnFormat,cachedWithin',arguments.data.loadby)){
+				throw(type="invalidParameters");
+			}
+
 			var bean=getBean(arguments.data.bean);
 			var args={
 				'#arguments.data.loadby#'=arguments.data[arguments.data.loadby],
@@ -3800,6 +3807,17 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		return errors;
 
+	}
+
+	public any function filterAsyncFeedParams(required string object, required any params, required string siteid){
+		if(listFindNoCase('feed,feed_no_summary,feed_slideshow,feed_slideshow_no_summary,feed_table,dragable_feeds',arguments.object)
+				&& isStruct(arguments.params)
+				&& !getBean('permUtility').getModulePerm('00000000000000000000000000000000011',arguments.siteid)){
+			for(var protectedFeedField in ['channelLink','type','isNew','isActive','authtype','siteid']){
+				structDelete(arguments.params,protectedFeedField);
+			}
+		}
+		return arguments.params;
 	}
 
 	function processAsyncObject(siteid){
@@ -3983,7 +4001,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 							if(structIsEmpty($.event().getValue('userBean').getErrors()) && !$.event().valueExists('passwordNoCache')){
 								$.getBean('userManager').sendLoginByUser($.event().getValue('userBean'),$.event().getValue('siteid'),true);
-								result={redirect=$.event('returnurl')};
+								result={redirect=getBean('utility').sanitizeHREF($.event('returnurl'))};
 
 							} else if (structIsEmpty($.event().getValue('userBean').getErrors()) && $.event().valueExists('passwordNoCache') && $.event().getValue('userBean').getInactive() eq 0){
 								$.event().setValue('userID',$.event().getValue('userBean').getUserID());
@@ -4049,6 +4067,11 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 					}
 
 				}
+
+				// strip caller-supplied feed trust-state fields unless the caller holds 
+				// the Feeds module permission, preventing unauthenticated SSRF through 
+				// the remote feed display object.
+				args.params=filterAsyncFeedParams($.event('object'),args.params,arguments.siteid);
 
 				/*
 				if(listFindNoCase('folder,gallery,calendar,page',$.event('object'))){

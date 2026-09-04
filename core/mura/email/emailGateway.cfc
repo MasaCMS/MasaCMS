@@ -151,7 +151,14 @@ Mura CMS.
 		<cfif isDefined('data.direction') and data.direction neq "">
 			<cfset session.emaillist.direction = data.direction>
 		</cfif>
-		
+
+		<!--- Security: validate orderBy/direction before they reach the SQL string, since neither can be parameterized as identifiers/syntax. --->
+		<cfset var safeEmailOrderBy = getBean('utility').validateSort(session.emaillist.orderBy)>
+		<cfset var safeEmailDirection = "">
+		<cfif len(trim(session.emaillist.direction))>
+			<cfset safeEmailDirection = getBean('utility').validateSortDirection(session.emaillist.direction)>
+		</cfif>
+
 		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 			select temails.emailid, subject, status, createddate, deliverydate, lastupdatebyid, numbersent
 			from temails
@@ -183,7 +190,7 @@ Mura CMS.
 			
 			and isDeleted = 0
 			
-			ORDER BY #session.emaillist.orderBy# #session.emaillist.direction#
+			ORDER BY #safeEmailOrderBy# #safeEmailDirection#
 		</cfquery>
 		<cfreturn rs />
 	</cffunction>
