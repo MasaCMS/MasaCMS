@@ -279,7 +279,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		variables.instance.resourceSSL=0;
 		variables.instance.resourceDomain="";
 		variables.instance.contentTypeFilePathLookup={};
-		variables.instance.contentTypeLoopUpArray=[];
+		variables.instance.contentTypeLookUpArray=[];
 		variables.instance.displayObjectLookup={};
 		variables.instance.displayObjectFilePathLookup={};
 		variables.instance.displayObjectLookUpArray=[];
@@ -1674,10 +1674,10 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		}
 		var dir="";
 		var result="";
-		var coreIndex=arrayLen(variables.instance.contentTypeLoopUpArray)-2;
+		var coreIndex=arrayLen(variables.instance.contentTypeLookUpArray)-2;
 		var dirIndex=0;
 		var utility=getBean('utility');
-		for ( dir in variables.instance.contentTypeLoopUpArray ) {
+		for ( dir in variables.instance.contentTypeLookUpArray ) {
 			dirIndex=dirIndex+1;
 			if ( !arguments.customonly || dirIndex < coreIndex ) {
 				result=dir & arguments.filePath;
@@ -1746,7 +1746,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 	}
 
 	public function getContentTypeLookupArray() output=false {
-		return variables.instance.contentTypeLoopUpArray;
+		return variables.instance.contentTypeLookUpArray;
 	}
 
 	public function registerContentTypeDir(dir,package="",deferred=[]) output=false {
@@ -1837,7 +1837,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 			if ( !listFind('/,\',right(arguments.dir,1)) ) {
 				arguments.dir=arguments.dir & getBean('configBean').getFileDelim();
 			}
-			arrayPrepend(variables.instance.contentTypeLoopUpArray,arguments.dir);
+			arrayPrepend(variables.instance.contentTypeLookUpArray,arguments.dir);
 		}
 		return arguments.deferred;
 	}
