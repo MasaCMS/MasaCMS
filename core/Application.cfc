@@ -95,7 +95,7 @@ component output="false" {
 				NOTE: If you need to allow direct access to a file located under your site/theme (e.g., a remote web service, etc.),
 				just add the file name to the list of files below.
 		*/
-		if ( !(listFindNoCase("runner.cfm,",listLast(cgi.SCRIPT_NAME,"/"))) ) {
+		if ( !(listFindNoCase("runner.cfm,uploadHarness.cfm",listLast(cgi.SCRIPT_NAME,"/"))) ) {
 			writeOutput("Access Restricted.");
 			abort;
 		}

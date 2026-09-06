@@ -1,0 +1,4 @@
+Not a real FLV video. Nothing in fileDAO.create()'s flv cache-naming
+branch (or anything upstream of it) actually parses this file's content -
+it only needs a file with a ".flv" extension to move into place, so this
+fixture is plain text standing in for one.
