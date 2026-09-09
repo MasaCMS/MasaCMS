@@ -4,14 +4,14 @@
   "description": "[Masa CMS](http://www.masacms.com) is a digital experience platform, created by [blueriver](http://www.blueriver.com) as Mura CMS, forked by [We Are North](https://www.wearenorth.eu). Masa CMS was designed to build ambitious web, multi-channel, business-to-business and business-to-employee applications, and create Flow in the digital experience for Content Managers, Content Contributors, Marketers and Developers.",
   "main": "gulpfile.js",
   "devDependencies": {
-    "gulp": "^5.0.0",
+    "gulp": "^5.0.1",
     "gulp-clean-css": "^4.3.0",
     "gulp-less": "^5.0.0",
     "gulp-minify": "^3.1.0",
-    "gulp-rename": "^2.0.0",
-    "gulp-sourcemaps": "^3.0.0",
-    "vinyl-fs": "^4.0.0",
-	"terser": "^5.38.0"
+    "gulp-rename": "^2.1.0",
+    "gulp-sourcemaps": "^2.6.5",
+    "terser": "^5.51.2",
+    "vinyl-fs": "^4.0.2"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
