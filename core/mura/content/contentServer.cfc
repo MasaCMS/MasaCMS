@@ -449,7 +449,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cftry>
 	</cfloop>
 
-	<cfif listFirst(cgi.http_host,":") eq application.configBean.getAdminDomain()>
+	<cfif application.configBean.getAdminDomain() neq "" and application.configBean.isAdminDomain()>
 		<cfset getBean('contentRenderer').redirect("#application.configBean.getContext()##application.configBean.getAdminDir()#/")>
 	<cfelse>
 		<cfset site=application.settingsManager.getSite(rsSites.siteID)>

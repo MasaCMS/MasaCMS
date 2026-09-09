@@ -1195,9 +1195,9 @@
 		<cfif showEditable>
 			<cfif len(application.configBean.getAdminDomain())>
 				<cfif application.configBean.getAdminSSL()>
-					<cfset editableControl.editLink="https://#application.configBean.getAdminDomain()#" & editableControl.editLink/>
+					<cfset editableControl.editLink="https://#application.configBean.getCurrentAdminDomain()#" & editableControl.editLink/>
 				<cfelse>
-					<cfset editableControl.editLink="#application.settingsManager.getSite(arguments.siteID).getScheme()#://#application.configBean.getAdminDomain()#" & editableControl.editLink/>
+					<cfset editableControl.editLink="#application.settingsManager.getSite(arguments.siteID).getScheme()#://#application.configBean.getCurrentAdminDomain()#" & editableControl.editLink/>
 				</cfif>
 			</cfif>
 
