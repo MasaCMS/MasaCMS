@@ -1195,9 +1195,9 @@
 		<cfif showEditable>
 			<cfif len(application.configBean.getAdminDomain())>
 				<cfif application.configBean.getAdminSSL()>
-					<cfset editableControl.editLink="https://#application.configBean.getAdminDomain()#" & editableControl.editLink/>
+					<cfset editableControl.editLink="https://#application.configBean.getCurrentAdminDomain()#" & editableControl.editLink/>
 				<cfelse>
-					<cfset editableControl.editLink="#application.settingsManager.getSite(arguments.siteID).getScheme()#://#application.configBean.getAdminDomain()#" & editableControl.editLink/>
+					<cfset editableControl.editLink="#application.settingsManager.getSite(arguments.siteID).getScheme()#://#application.configBean.getCurrentAdminDomain()#" & editableControl.editLink/>
 				</cfif>
 			</cfif>
 
@@ -1326,7 +1326,7 @@
 				<cfcase value="ad"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_ad.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator)></cfcase>
 				<cfcase value="comments"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_comments.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator)></cfcase>
 				<cfcase value="event_reminder_form"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_event_reminder_form.cfm",cachekey=cacheKeyContentId,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname,returnformat=arguments.returnformat)></cfcase>
-				<cfcase value="forward_email"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_forward_email.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname,returnformat=arguments.returnformat)></cfcase>				
+				<cfcase value="forward_email"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_forward_email.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname,returnformat=arguments.returnformat)></cfcase>
 				<cfcase value="feed">
 					<cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteID=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_feed.cfm",cacheKey=cacheKeyObjectId  & arguments.renderer.getListFormat() & "startrow#request.startrow#",params=arguments.params,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname,returnformat=arguments.returnformat)>
 				</cfcase>

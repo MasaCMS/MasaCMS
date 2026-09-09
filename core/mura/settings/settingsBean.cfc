@@ -279,7 +279,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		variables.instance.resourceSSL=0;
 		variables.instance.resourceDomain="";
 		variables.instance.contentTypeFilePathLookup={};
-		variables.instance.contentTypeLoopUpArray=[];
+		variables.instance.contentTypeLookUpArray=[];
 		variables.instance.displayObjectLookup={};
 		variables.instance.displayObjectFilePathLookup={};
 		variables.instance.displayObjectLookUpArray=[];
@@ -1414,7 +1414,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 
 	public function getAdminPath(useProtocol="1",complete="0",domain="",secure="#getValue('useSSL')#") output=false {
 		if(len(application.configBean.getAdminDomain())){
-			arguments.domain=application.configBean.getAdminDomain();
+			arguments.domain=application.configBean.getCurrentAdminDomain();
 			arguments.complete=1;
 		}
 		if(!(getValue('isRemote') && len(getValue('resourceDomain'))) && len(application.configBean.getAdminDomain())){
@@ -1533,8 +1533,8 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		var lineBreak=chr(13)&chr(10);
 
 		if ( len(application.configBean.getAdminDomain()) ) {
-			if ( !ListFindNoCase(thelist, application.configBean.getAdminDomain()) ) {
-				thelist = listAppend(thelist,application.configBean.getAdminDomain());
+			if ( !ListFindNoCase(thelist, application.configBean.getCurrentAdminDomain()) ) {
+				thelist = listAppend(thelist,application.configBean.getCurrentAdminDomain());
 			}
 		}
 
@@ -1575,21 +1575,21 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 			thelist = listAppend(thelist,'https://#theurl#');
 		}
 		if ( len(application.configBean.getAdminDomain()) ) {
-			theurl="#application.configBean.getAdminDomain()#";
+			theurl="#application.configBean.getCurrentAdminDomain()#";
 			if ( !ListFindNoCase(thelist, 'http://#theurl#') ) {
 				thelist = listAppend(thelist,theurl);
 			}
 			if ( !ListFindNoCase(thelist, 'https://#theurl#') ) {
 				thelist = listAppend(thelist,theurl);
 			}
-			theurl="#application.configBean.getAdminDomain()##application.configBean.getServerPort()#";
+			theurl="#application.configBean.getCurrentAdminDomain()##application.configBean.getServerPort()#";
 			if ( !ListFindNoCase(thelist, 'http://#theurl#') ) {
 				thelist = listAppend(thelist,theurl);
 			}
 			if ( !ListFindNoCase(thelist, 'https://#theurl#') ) {
 				thelist = listAppend(thelist,theurl);
 			}
-			theurl="#application.configBean.getAdminDomain()#:#cgi.server_port#";
+			theurl="#application.configBean.getCurrentAdminDomain()#:#cgi.server_port#";
 			if ( !ListFindNoCase(thelist, 'http://#theurl#') ) {
 				thelist = listAppend(thelist,theurl);
 			}
@@ -1674,10 +1674,10 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		}
 		var dir="";
 		var result="";
-		var coreIndex=arrayLen(variables.instance.contentTypeLoopUpArray)-2;
+		var coreIndex=arrayLen(variables.instance.contentTypeLookUpArray)-2;
 		var dirIndex=0;
 		var utility=getBean('utility');
-		for ( dir in variables.instance.contentTypeLoopUpArray ) {
+		for ( dir in variables.instance.contentTypeLookUpArray ) {
 			dirIndex=dirIndex+1;
 			if ( !arguments.customonly || dirIndex < coreIndex ) {
 				result=dir & arguments.filePath;
@@ -1746,7 +1746,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 	}
 
 	public function getContentTypeLookupArray() output=false {
-		return variables.instance.contentTypeLoopUpArray;
+		return variables.instance.contentTypeLookUpArray;
 	}
 
 	public function registerContentTypeDir(dir,package="",deferred=[]) output=false {
@@ -1837,7 +1837,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 			if ( !listFind('/,\',right(arguments.dir,1)) ) {
 				arguments.dir=arguments.dir & getBean('configBean').getFileDelim();
 			}
-			arrayPrepend(variables.instance.contentTypeLoopUpArray,arguments.dir);
+			arrayPrepend(variables.instance.contentTypeLookUpArray,arguments.dir);
 		}
 		return arguments.deferred;
 	}

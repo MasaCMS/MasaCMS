@@ -424,7 +424,8 @@ component extends="framework" output="false" {
 			application.serviceFactory.getBean("userUtility").returnLoginCheck(request.event.getValue("MuraScope"));
 		}
 
-		if(application.configBean.getValue(property="disableAdmin",defaultValue=false) or application.configBean.getAdminDomain() neq '' and application.configBean.getAdminDomain() neq listFirst(cgi.http_host,":")){
+
+		if(application.configBean.getValue(property="disableAdmin",defaultValue=false) or (application.configBean.getAdminDomain() neq '' and not application.configBean.isAdminDomain())){
 			application.contentServer.renderFilename("#application.configBean.getAdminDir()#/",false);
 			abort;
 		}

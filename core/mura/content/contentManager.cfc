@@ -1564,7 +1564,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						 and type in ('Page','Folder','Link','File','Component','Calendar','Form') and active=1
 						 </cfquery>
 
-						<cfif isNumeric(rsOrder.theBottom) and rsOrder.theBottom neq newBean.getOrderNo()>
+						<cfif isNumeric(rsOrder.theBottom)>
 							<cfset newBean.setOrderNo(rsOrder.theBottom + 1) >
 						<cfelse>
 							<cfset newBean.setOrderNo(1) >
