@@ -1,0 +1,3 @@
+MasaCMS local file storage test fixture. Content is fixed and arbitrary -
+these tests only care that a plain, non-image file of known content
+exists on disk to copy from.
