@@ -1,0 +1,39 @@
+# Nginx equivalent of htaccess.txt (Apache) URL rewriting rules
+# ngx_http_rewrite_module Docs: https://nginx.org/en/docs/http/ngx_http_rewrite_module.html
+# try_files Docs: https://nginx.org/en/docs/http/ngx_http_core_module.html#try_files
+#
+# USAGE:
+# Unlike Apache's .htaccess, nginx has no per-directory drop-in config file,
+# so this file cannot simply be placed in the webroot. Instead, copy the
+# `location` blocks below into the `server { }` block for your Masa CMS site
+# (or `include` this file from there), then reload nginx.
+#
+# This file only covers URL rewriting. It assumes nginx is already configured
+# to hand off requests for *.cfm (and the rewritten /index.cfm/... paths
+# below) to your ColdFusion/Lucee engine; that connector setup is outside the
+# scope of this file.
+
+# -------------------------------------------------------------------------------
+# Masa CMS REWRITE OPTIONS
+#
+# NOTE: If running on Tomcat with sites using the SiteID in the URL
+# a custom servlet mapping will be required for each site.
+# -------------------------------------------------------------------------------
+
+# The same rewrite rule applies in either option listed below.
+# However, configuration of the `settings.ini.cfm` file may vary
+# OPTION 1 :: WITHOUT SiteID
+# In /config/settings.ini.cfm, set both siteidinurls and indexfileinurls to 0
+# and reload the Masa CMS application
+# OPTION 2 :: WITH SiteID
+# In /config/settings.ini.cfm, set indexfileinurls to 0
+location / {
+	# Rewrite only nonexistent file or directory paths to /index.cfm/...,
+	# preserving any query string (equivalent to Apache's QSA flag)
+	try_files $uri $uri/ /index.cfm$uri$is_args$args;
+}
+
+# Forbid executable files from being downloaded
+location ~* \.exe$ {
+	deny all;
+}
