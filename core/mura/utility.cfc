@@ -1509,6 +1509,14 @@ Blog: www.codfusion.com--->
 		);
 	}
 
+	// A theme name maps to a single directory segment; strip anything that could introduce path traversal.
+	function sanitizeThemeName(theme=""){
+		if ( !isSimpleValue(arguments.theme) ) {
+			return "";
+		}
+		return REReplace(arguments.theme, "[^a-zA-Z0-9_\-]", "", "ALL");
+	}
+
 	function datetimeToTimespanInterval(datetime=now(),timespan=''){
 		if(!(0+arguments.timespan)){
 			arguments.timespan=createTimeSpan(0,0,5,0);
