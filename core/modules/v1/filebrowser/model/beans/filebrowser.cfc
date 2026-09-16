@@ -1119,36 +1119,58 @@ component
 	}
 
 	function isPathLegal(resourcePath,path,siteid){
-		var expandedPath = conditionalExpandPath(getBaseFileDir( arguments.siteid,arguments.resourcePath));
-		var rootPath=replaceNoCase(conditionalExpandPath(getBaseFileDir(arguments.siteid,arguments.resourcePath)),"\", "/","ALL");
-
 		if(!hasPermission(arguments.resourcePath)) {
 			return false;
 		}
 
-		arguments.path=replace(conditionalExpandPath(arguments.path), "\", "/", "ALL");
+		var rootPath = canonicalizeForContainment(getBaseFileDir(arguments.siteid,arguments.resourcePath));
+		var targetPath = canonicalizeForContainment(arguments.path);
 
-		var pathcheck = len(arguments.path) >= len(expandedPath) && lcase(left(arguments.path,len(expandedPath))) == lcase(expandedPath);
-
-		// different root than murawrm
-		if(!pathcheck) {
-			var realroot = rereplacenocase(arguments.path,"^\/([a-zA-Z]{1,})\/.*","\1");
-			rootPath = replaceNoCase(rootPath, 'murawrm', realroot);
-			pathcheck = len(arguments.path) >= len(rootPath) && lcase(left(arguments.path,len(rootPath))) == lcase(rootPath);
+		// Fail closed if either path could not be resolved.
+		if(!len(rootPath) || !len(targetPath)) {
+			return false;
 		}
 
-		if(!pathcheck) {
-			writeDump("Path Error");
-			writeDump(arguments);
-			writeDump(expandedPath);
-			writeDump(rootPath);
-			writeDump(pathcheck);
-			writeDump(result);
-			abort;
+		return isContainedWithin(targetPath,rootPath);
+	}
+
+	/**
+	 * Resolve a path to a canonical absolute path for a security containment
+	 * check: resolve '..'/'.' segments and symlinks and normalize separators to
+	 * '/'. The callers pass already-absolute paths (see getBaseFileDir), so the
+	 * raw path is canonicalized directly - expandPath is deliberately avoided
+	 * because, for a non-existent absolute path, it re-prepends the web root and
+	 * produces a doubled path. Returns an empty string when the path cannot be
+	 * resolved so callers fail closed.
+	 */
+	private function canonicalizeForContainment(path){
+		try {
+			var canonical = createObject("java","java.io.File").init(arguments.path).getCanonicalPath();
+			return replace(canonical,"\","/","ALL");
+		} catch(any e) {
+			return "";
+		}
+	}
+
+	/**
+	 * True only when target is the root itself or a descendant of it, compared
+	 * on a path-separator boundary so a sibling whose name merely starts with
+	 * the root name (e.g. '/assets-evil' vs '/assets') is not treated as
+	 * contained.
+	 */
+	private function isContainedWithin(target,root){
+		var normalizedRoot = arguments.root;
+		if(right(normalizedRoot,1) == "/") {
+			normalizedRoot = left(normalizedRoot,len(normalizedRoot)-1);
 		}
 
+		if(lcase(arguments.target) == lcase(normalizedRoot)) {
+			return true;
+		}
 
-		return true;
+		var rootWithDelim = normalizedRoot & "/";
+		return len(arguments.target) > len(rootWithDelim)
+			&& lcase(left(arguments.target,len(rootWithDelim))) == lcase(rootWithDelim);
 	}
 
 	function hasPermission(resourcePath) {
