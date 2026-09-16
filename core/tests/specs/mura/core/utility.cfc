@@ -857,5 +857,58 @@ component extends="testbox.system.BaseSpec"{
 				}
 			);
 		});
+
+		describe("Testing sanitizeThemeName", function() {
+
+			var utility=application.serviceFactory.getBean('utility');
+
+			it("should preserve a valid theme name", function() {
+				expect(utility.sanitizeThemeName("default")).toBe("default");
+			});
+
+			it("should preserve underscores and hyphens", function() {
+				expect(utility.sanitizeThemeName("my_theme-v2")).toBe("my_theme-v2");
+			});
+
+			it("should strip forward slashes", function() {
+				expect(utility.sanitizeThemeName("foo/bar")).toBe("foobar");
+			});
+
+			it("should strip backslashes", function() {
+				expect(utility.sanitizeThemeName("foo\bar")).toBe("foobar");
+			});
+
+			it("should strip dot segments used for traversal", function() {
+				expect(utility.sanitizeThemeName("..")).toBe("");
+			});
+
+			it("should neutralise the exploit payload so no traversal survives", function() {
+				var result = utility.sanitizeThemeName("../../../../../../../../tmp/masaverify");
+				expect(result).notToInclude("..");
+				expect(result).notToInclude("/");
+				expect(result).toBe("tmpmasaverify");
+			});
+
+			it("should return empty string for a non-simple value", function() {
+				expect(utility.sanitizeThemeName([1,2,3])).toBe("");
+			});
+
+		});
+
+		describe("Testing isPathLegal", function() {
+
+			var utility=application.serviceFactory.getBean('utility');
+
+			it("should accept a path inside the webroot", function() {
+				expect(utility.isPathLegal("/index.cfm")).toBeTrue();
+			});
+
+			it("should reject an alttheme traversal path outside the webroot", function() {
+				expect(
+					utility.isPathLegal("/../../../../../../../../tmp/masaverify/display_objects/dsp_contact.cfm")
+				).toBeFalse();
+			});
+
+		});
 	}
 }
