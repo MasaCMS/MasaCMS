@@ -865,6 +865,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 	}
 
 	public function getThemeIncludePath(theme="#request.altTheme#") output=false {
+		arguments.theme=getBean('utility').sanitizeThemeName(arguments.theme);
 		if ( !len(arguments.theme) ) {
 			arguments.theme=variables.instance.theme;
 		}
@@ -1679,7 +1680,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		arguments.filePath=REReplace(listFirst(Replace(arguments.filePath, "\", "/", "ALL"),"/"), "[^a-zA-Z0-9_]", "", "ALL") & "/index.cfm";
 		if ( len(request.altTheme) ) {
 			var altThemePath=getThemeIncludePath(request.altTheme) & "/content_types/" & arguments.filePath;
-			if ( fileExists(expandPath(altThemePath)) ) {
+			if ( fileExists(expandPath(altThemePath)) && getBean('utility').isPathLegal(altThemePath) ) {
 				return altThemePath;
 			}
 		}
@@ -2048,11 +2049,11 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		arguments.filePath=Replace(arguments.filePath, "\", "/", "ALL");
 		if ( len(request.altTheme) ) {
 			var altThemePath=getThemeIncludePath(request.altTheme) & "/display_objects/" & arguments.filePath;
-			if ( fileExists(expandPath(altThemePath)) ) {
+			if ( fileExists(expandPath(altThemePath)) && getBean('utility').isPathLegal(altThemePath) ) {
 				return altThemePath;
 			}
 			altThemePath=getThemeIncludePath(request.altTheme) & "/modules/" & arguments.filePath;
-			if ( fileExists(expandPath(altThemePath)) ) {
+			if ( fileExists(expandPath(altThemePath)) && getBean('utility').isPathLegal(altThemePath) ) {
 				return altThemePath;
 			}
 		}
