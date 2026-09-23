@@ -157,7 +157,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.confirmSaveAsDraft=true />
 <cfset variables.instance.notifyWithVersionLink=true />
 <cfset variables.instance.scriptProtect=true />
-<cfset variables.instance.scriptProtectExceptions="body,source,params" />
+<cfset variables.instance.scriptProtectExceptions="body,source,params,objectlist1,objectlist2,objectlist3,objectlist4,objectlist5,objectlist6,objectlist7,contenteditfield,content" />
+<cfset variables.instance.deniedFeedJoinTables="tusers,tusersmemb,tusergroups,tsettings,tusersession,toauthtokens,tremembertokens,tpermissions,tsessiontracking" />
+<cfset variables.instance.deniedBundleAssetExtensions="cfm,cfml,cfc,cfs,cfr,jsp,jspx,php,php3,php4,php5,phtml,phps,asp,aspx,ashx,asmx,sh,bash,bat,cmd,exe,pl,py,rb,jar,war,class,htaccess,htpasswd" />
 <cfset variables.instance.appreloadKey="appreload" />
 <cfset variables.instance.loginStrikes=4 />
 <cfset variables.instance.encryptPasswords=true />
