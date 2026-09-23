@@ -570,6 +570,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var site=getBean('settingsManager').getSite(arguments.siteid)>
 		<cfset var filePoolID=site.getFilePoolID()>
 		<cfset var destDir = variables.configBean.getValue('assetdir') & '/' & filePoolID & "/assets" />
+		<cfset var deniedExt = variables.configBean.getValue('deniedBundleAssetExtensions') />
+		<cfset var zipEntries = "" />
+
+		<!--- Reject bundles that carry executable files into the asset directory. --->
+		<cfif fileExists(zipPath) and len(deniedExt)>
+			<cfzip action="list" file="#zipPath#" name="zipEntries">
+			<cfloop query="zipEntries">
+				<cfif zipEntries.type eq "file" and listFindNoCase(deniedExt,listLast(zipEntries.name,"."))>
+					<cfthrow type="mura.security.executableAsset" message="Import rejected: the asset archive contains a disallowed executable file (#zipEntries.name#).">
+				</cfif>
+			</cfloop>
+		</cfif>
 
 		<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=destDir, overwriteFiles=true)>
 	</cffunction>
