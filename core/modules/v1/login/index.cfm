@@ -232,7 +232,7 @@ This file is part of Mura CMS.
 								</div>
 							</div>
 
-							<cfif not variables.$.getBean('configBean').getValue(property='MFA',defaultValue=false)>
+							<cfif not variables.$.getBean('configBean').getValue(property='MFA',defaultValue=false) and len(variables.$.getBean('configBean').getEncryptionKey())>
 								<!--- Remember Me --->
 								<div class="#this.loginFormGroupWrapperClass#">
 									<div class="#this.loginFormPrefsClass#">

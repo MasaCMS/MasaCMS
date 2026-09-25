@@ -116,14 +116,16 @@ This file is part of Mura CMS.
 						</div>
 					</div>
 
-					<!--- Remember Me --->
-					<div class="#this.userToolsFormGroupWrapperClass#">
-						<div class="#this.userToolsLoginFormFieldInnerClass#">
-							<label class="#this.userToolsLoginFormCheckboxClass#" for="cbRemember">
-								<input type="checkbox" id="cbRemember" name="rememberMe" value="1"> #variables.$.rbKey('user.rememberme')#
-							</label>
+					<cfif len(variables.$.getBean('configBean').getEncryptionKey())>
+						<!--- Remember Me --->
+						<div class="#this.userToolsFormGroupWrapperClass#">
+							<div class="#this.userToolsLoginFormFieldInnerClass#">
+								<label class="#this.userToolsLoginFormCheckboxClass#" for="cbRemember">
+									<input type="checkbox" id="cbRemember" name="rememberMe" value="1"> #variables.$.rbKey('user.rememberme')#
+								</label>
+							</div>
 						</div>
-					</div>
+					</cfif>
 
 					<div class="#this.userToolsFormGroupWrapperClass#">
 						<div class="#this.userToolsLoginFormFieldInnerClass#">
