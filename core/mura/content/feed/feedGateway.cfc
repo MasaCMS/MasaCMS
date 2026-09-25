@@ -86,8 +86,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.contentIntervalManager=arguments.contentIntervalManager>
 	<cfset variables.permUtility=arguments.permUtility>
 	<cfset variables.utility=arguments.utility>
-	<!--- Tables a public feed may never join to or aggregate over; default lives in configBean, overridable via config. --->
-	<cfset variables.deniedFeedTables=variables.configBean.getValue(property="deniedFeedJoinTables") />
 	<cfreturn this />
 </cffunction>
 
@@ -214,8 +212,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfloop query="rsParams">
 		<cfif listLen(rsParams.field,".") eq 2>
-			<cfset jointable=sanitizeFeedIdentifier(listFirst(rsParams.field,".")) >
-			<cfif isDeniedFeedTable(jointable)>
+			<cfset jointable=variables.utility.sanitizeFeedIdentifier(listFirst(rsParams.field,".")) >
+			<cfif variables.utility.isDeniedFeedTable(jointable)>
 				<cfthrow type="authorization" detail="Feed reference to a restricted table is not allowed.">
 			</cfif>
 			<cfif not listFindNoCase("tcontent,tcontentstats,tfiles,tparent,tcontentcategoryassign,tcontenttags,tcontentcategories",jointable) and not listFind(jointables,jointable)>
@@ -227,12 +225,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<!--- Reject aggregate/group/sort columns that reference denied tables (defense in depth). --->
 	<cfloop list="GroupBy,SumVal,CountVal,AvgVal,MinVal,MaxVal" index="local.aggName">
 		<cfloop array="#invoke(arguments.feedBean,'get' & local.aggName & 'Array')#" index="local.aggCol">
-			<cfif isDeniedFeedTable(local.aggCol)>
+			<cfif variables.utility.isDeniedFeedTable(local.aggCol)>
 				<cfthrow type="authorization" detail="Feed reference to a restricted table is not allowed.">
 			</cfif>
 		</cfloop>
 	</cfloop>
-	<cfif listLen(arguments.feedBean.getSortBy(),".") gt 1 and isDeniedFeedTable(arguments.feedBean.getSortBy())>
+	<cfif listLen(arguments.feedBean.getSortBy(),".") gt 1 and variables.utility.isDeniedFeedTable(arguments.feedBean.getSortBy())>
 		<cfthrow type="authorization" detail="Feed reference to a restricted table is not allowed.">
 	</cfif>
 
@@ -1083,16 +1081,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="keepCharacterRegex" type="string" required="false" default="" hint="regular expression for characters that should be kept">
 
 	<cfreturn REReplace(arguments.value,"[^0-9A-Za-z\._,\*#arguments.keepCharacterRegex#]","","all")>
-</cffunction>
-
-<cffunction name="sanitizeFeedIdentifier" access="private" output="false" returntype="string" hint="Reduce a user-supplied SQL identifier to bare word characters, removing comment/quote injection vectors">
-	<cfargument name="value" type="string" required="yes">
-	<cfreturn REReplace(arguments.value,"[^0-9A-Za-z_]","","all")>
-</cffunction>
-
-<cffunction name="isDeniedFeedTable" access="private" output="false" returntype="boolean" hint="True when a (possibly table.column) reference points at a denylisted table">
-	<cfargument name="reference" type="string" required="yes">
-	<cfreturn listFindNoCase(variables.deniedFeedTables, sanitizeFeedIdentifier(listFirst(arguments.reference,"."))) gt 0>
 </cffunction>
 
 </cfcomponent>
