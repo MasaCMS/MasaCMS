@@ -223,13 +223,34 @@ This file is part of Mura CMS.
 		</cfif>
 
 		<cfset rsParams=params.getParams() />
+		<cfset var feedUtil=getBean('utility') />
 
 		<cfloop query="rsParams">
 			<cfif listLen(rsParams.field,".") eq 2>
-				<cfset jointable=REReplace(listFirst(rsParams.field,"."),"[^0-9A-Za-z_,\- ]","","all") >
+				<cfset jointable=feedUtil.sanitizeFeedIdentifier(listFirst(rsParams.field,".")) >
+				<cfif feedUtil.isDeniedFeedTable(jointable, "tusers")>
+					<cfthrow type="authorization" detail="Feed reference to a restricted table is not allowed.">
+				</cfif>
 				<cfif jointable neq "tusers" and not listFind(jointables,jointable) and not params.hasJoin(jointable)>
 					<cfset jointables=listAppend(jointables,jointable)>
 				</cfif>
+			</cfif>
+		</cfloop>
+
+		<!--- Reject aggregate/group/sort references to denied tables (defense in depth). --->
+		<cfloop list="getGroupByArray,getSumValArray,getCountValArray,getAvgValArray,getMinValArray,getMaxValArray" index="local.aggGetter">
+			<cfloop array="#invoke(params,local.aggGetter)#" index="local.aggCol">
+				<cfif feedUtil.isDeniedFeedTable(local.aggCol, "tusers")>
+					<cfthrow type="authorization" detail="Feed reference to a restricted table is not allowed.">
+				</cfif>
+			</cfloop>
+		</cfloop>
+		<cfif len(params.getSortTable()) and feedUtil.isDeniedFeedTable(params.getSortTable(), "tusers")>
+			<cfthrow type="authorization" detail="Feed reference to a restricted table is not allowed.">
+		</cfif>
+		<cfloop list="#params.getOrderBy()#" index="local.ob">
+			<cfif feedUtil.isDeniedFeedTable(listFirst(trim(local.ob)," "), "tusers")>
+				<cfthrow type="authorization" detail="Feed reference to a restricted table is not allowed.">
 			</cfif>
 		</cfloop>
 
