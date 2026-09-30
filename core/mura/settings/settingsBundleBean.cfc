@@ -117,6 +117,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfif fileExists( arguments.BundleFile )>
 			<cfif application.settingsManager.isBundle(arguments.BundleFile)>
+				<cfset variables.utility.validateBundleArchive(arguments.BundleFile)>
 				<cfset variables.zipTool.Extract(zipFilePath="#arguments.BundleFile#",extractPath=variables.unpackPath, overwriteFiles=true)>
 			<cfelse>
 				<cffile action="delete" file="#arguments.BundleFile#">
@@ -168,6 +169,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfif fileExists( arguments.BundleFile )>
 			<cfif application.settingsManager.isPartialBundle(arguments.BundleFile)>
+				<cfset variables.utility.validateBundleArchive(arguments.BundleFile)>
 				<cfset variables.zipTool.Extract(zipFilePath="#arguments.BundleFile#",extractPath=variables.unpackPath, overwriteFiles=true)>
 			<cfelse>
 				<cffile action="delete" file="#arguments.BundleFile#">
@@ -298,6 +300,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					or not directoryExists(expandPath($.siteConfig().getIncludePath() & "/themes/#$.siteConfig('theme')#"))
 				) and directoryExists(expandPath($.globalConfig().getWebRoot() & "/themes/#$.siteConfig('theme')#"))>
 				<!---<cfzip action="zip" file="#variables.backupDir#sitefiles.zip" source="#expandPath($.globalConfig().getWebRoot() & '/themes/' & $.siteConfig('theme'))#" prefix="themes/#$.siteConfig('theme')#">--->
+				<cfset variables.utility.validateBundleArchive("#variables.backupDir#sitefiles.zip", true)>
 				<cfset variables.zipTool.Extract(zipFilePath="#variables.backupDir#sitefiles.zip",extractPath=expandPath($.globalConfig().getWebRoot() & '/themes/') & $.siteConfig('theme'),  extractDirs="themes/#$.siteConfig('theme')#", overwriteFiles=true)>
 			</cfif>
 
@@ -526,6 +529,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfif not directoryExists(getBundle() & "cachefiles") >
 			<cfset zipPath = getBundle() & "cachefiles.zip" />
+			<cfset variables.utility.validateBundleArchive(zipPath)>
 			<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=destDir, overwriteFiles=true)>
 		</cfif>
 
@@ -547,6 +551,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var site=getBean('settingsManager').getSite(arguments.siteid)>
 		<cfset var filePoolID=site.getFilePoolID()>
 		<cfset var destDir = variables.configBean.getValue('assetdir') & '/' & filePoolID & "/assets" />
+
+		<cfset variables.utility.validateBundleArchive(zipPath)>
 
 		<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=destDir, overwriteFiles=true)>
 	</cffunction>
@@ -587,6 +593,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif len(arguments.siteID)>
 			<cfset var site=getBean('settingsManager').getSite(arguments.siteid)>
 			<cfset var filePoolID=site.getFilePoolID()>
+
+			<!--- validate every archive before any of it is written to disk --->
+			<cfif fileExists( getBundle() & "sitefiles.zip" )>
+				<cfset variables.utility.validateBundleArchive(getBundle() & "sitefiles.zip", true)>
+			</cfif>
+			<cfif fileExists( getBundle() & "assetfiles.zip" )>
+				<cfset variables.utility.validateBundleArchive(getBundle() & "assetfiles.zip")>
+			</cfif>
+			<cfif fileExists( getBundle() & "filefiles.zip" )>
+				<cfset variables.utility.validateBundleArchive(getBundle() & "filefiles.zip")>
+			</cfif>
 
 			<cfif arguments.contentMode eq "all">
 
