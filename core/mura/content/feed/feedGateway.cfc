@@ -212,12 +212,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfloop query="rsParams">
 		<cfif listLen(rsParams.field,".") eq 2>
-			<cfset jointable=REReplace(listFirst(rsParams.field,"."),"[^0-9A-Za-z_,\- ]","","all") >
+			<cfset jointable=variables.utility.sanitizeFeedIdentifier(listFirst(rsParams.field,".")) >
+			<cfif variables.utility.isDeniedFeedTable(jointable)>
+				<cfthrow type="authorization" detail="Feed reference to a restricted table is not allowed.">
+			</cfif>
 			<cfif not listFindNoCase("tcontent,tcontentstats,tfiles,tparent,tcontentcategoryassign,tcontenttags,tcontentcategories",jointable) and not listFind(jointables,jointable)>
 				<cfset jointables=listAppend(jointables,jointable)>
 			</cfif>
 		</cfif>
 	</cfloop>
+
+	<!--- Reject aggregate/group/sort columns that reference denied tables (defense in depth). --->
+	<cfloop list="GroupBy,SumVal,CountVal,AvgVal,MinVal,MaxVal" index="local.aggName">
+		<cfloop array="#invoke(arguments.feedBean,'get' & local.aggName & 'Array')#" index="local.aggCol">
+			<cfif variables.utility.isDeniedFeedTable(local.aggCol)>
+				<cfthrow type="authorization" detail="Feed reference to a restricted table is not allowed.">
+			</cfif>
+		</cfloop>
+	</cfloop>
+	<cfif listLen(arguments.feedBean.getSortBy(),".") gt 1 and variables.utility.isDeniedFeedTable(arguments.feedBean.getSortBy())>
+		<cfthrow type="authorization" detail="Feed reference to a restricted table is not allowed.">
+	</cfif>
 
 	<cfif (arguments.feedBean.getSortBy() eq 'mxpRelevance' or listFirst(arguments.feedBean.getOrderBy(),' ') eq 'mxpRelevance' ) and not (arguments.countOnly)>
 		<cfif not isDefined('session.mura.mxp')>
@@ -1063,7 +1078,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="value">
 	<cfargument name="keepCharacterRegex" type="string" required="false" default="" hint="regular expression for characters that should be kept">
 
-	<cfreturn REReplace(arguments.value,"[^0-9A-Za-z\._,\-\*#arguments.keepCharacterRegex#]","","all")>
+	<cfreturn REReplace(arguments.value,"[^0-9A-Za-z\._,\*#arguments.keepCharacterRegex#]","","all")>
 </cffunction>
 
 </cfcomponent>

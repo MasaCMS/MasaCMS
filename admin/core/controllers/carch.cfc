@@ -132,6 +132,10 @@ component extends="controller" output="false" {
 	}
 
 	public function importcontent(rc) output=false {
+		if ( !rc.$.validateCSRFTokens(context=rc.contentid) ) {
+			variables.fw.redirect(action="cArch.import",append="contentid,moduleid,siteid",path="./");
+			return;
+		}
 		var contentUtility = arguments.rc.$.getBean('contentUtility');
 		var hasChangesets = rc.$.getBean('settingsManager').getSite(rc.$.event('siteID')).getValue('hasChangesets');
 		var enforceChangesets = rc.$.getBean('settingsManager').getSite(rc.$.event('siteID')).getValue('enforceChangesets');

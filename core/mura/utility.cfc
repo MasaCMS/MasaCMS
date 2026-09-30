@@ -331,6 +331,69 @@ This file is part of Mura CMS.
 	<cfset variables.fileWriter.createDir(directory=arguments.baseDir)>
 </cffunction>
 
+<cffunction name="sanitizeFeedIdentifier" output="false" returntype="string" hint="Reduce a user-supplied SQL identifier to bare word characters, removing comment/quote injection vectors">
+	<cfargument name="value" type="string" required="true">
+	<cfreturn REReplace(arguments.value,"[^0-9A-Za-z_]","","all")>
+</cffunction>
+
+<cffunction name="isDeniedFeedTable" output="false" returntype="boolean" hint="True when a (possibly table.column) reference points at a table that public feeds may never join to, aggregate over, group by, or sort on. The feed's own base table (allowedTable) is always permitted.">
+	<cfargument name="reference" type="string" required="true">
+	<cfargument name="allowedTable" type="string" required="false" default="">
+	<cfset var t=sanitizeFeedIdentifier(listFirst(arguments.reference,"."))>
+	<cfif len(arguments.allowedTable) and t eq sanitizeFeedIdentifier(arguments.allowedTable)>
+		<cfreturn false>
+	</cfif>
+	<cfreturn listFindNoCase(application.configBean.getValue('deniedFeedJoinTables'), t) gt 0>
+</cffunction>
+
+<cffunction name="validateBundleArchive" output="false" returntype="void" hint="Rejects zip entries that are unsafe to extract: absolute paths, '.'/'..' path segments, server-configuration files, and (unless allowTemplates) executable code.">
+	<cfargument name="zipPath" type="string" required="true">
+	<cfargument name="allowTemplates" type="boolean" required="false" default="false" hint="When true (site/theme archives) executable templates are permitted outside asset/cache paths; config files and path traversal are always rejected.">
+
+	<cfset var rsEntries="">
+	<cfset var normalized="">
+	<cfset var segment="">
+	<cfset var leaf="">
+	<cfset var codeExt=application.configBean.getValue('deniedBundleAssetExtensions')>
+	<cfset var configFiles=application.configBean.getValue('deniedBundleConfigFiles')>
+
+	<cfif not fileExists(arguments.zipPath)>
+		<cfreturn>
+	</cfif>
+
+	<cfzip action="list" file="#arguments.zipPath#" name="rsEntries">
+	<cfloop query="rsEntries">
+		<cfset normalized=replace(rsEntries.name,"\","/","all")>
+
+		<!--- absolute paths (unix, windows drive, UNC) --->
+		<cfif left(normalized,1) eq "/" or left(normalized,2) eq "//" or reFindNoCase("^[a-z]:",normalized)>
+			<cfthrow type="mura.security.unsafeBundleEntry" message="Bundle import rejected: absolute path in archive (#rsEntries.name#).">
+		</cfif>
+
+		<!--- '.' / '..' path segments (zip slip) --->
+		<cfloop list="#normalized#" index="segment" delimiters="/">
+			<cfif segment eq "." or segment eq "..">
+				<cfthrow type="mura.security.unsafeBundleEntry" message="Bundle import rejected: unsafe path segment in archive (#rsEntries.name#).">
+			</cfif>
+		</cfloop>
+
+		<cfif rsEntries.type eq "file">
+			<cfset leaf=listLast(normalized,"/")>
+
+			<!--- server-configuration files are never allowed, even in site archives --->
+			<cfif len(configFiles) and listFindNoCase(configFiles,leaf)>
+				<cfthrow type="mura.security.unsafeBundleEntry" message="Bundle import rejected: server-configuration file in archive (#rsEntries.name#).">
+			</cfif>
+
+			<!--- executable code is rejected for data archives, and for site archives only under web-served asset/cache paths --->
+			<cfif len(codeExt) and listFindNoCase(codeExt,listLast(leaf,"."))
+				and ( not arguments.allowTemplates or listFindNoCase('assets,cache',listFirst(normalized,"/")) )>
+				<cfthrow type="mura.security.unsafeBundleEntry" message="Bundle import rejected: executable file in archive (#rsEntries.name#).">
+			</cfif>
+		</cfif>
+	</cfloop>
+</cffunction>
+
 <cffunction name="arrayFind">
 	<cfargument name="array" required="yes" type="array">
 	<cfargument name="stringa" required="yes" type="string">
@@ -1591,6 +1654,14 @@ Blog: www.codfusion.com--->
 				len(arguments.path) >= len(pluginPath) && left(arguments.path,len(pluginPath)) == pluginPath
 			)
 		);
+	}
+
+	// A theme name maps to a single directory segment; strip anything that could introduce path traversal.
+	function sanitizeThemeName(theme=""){
+		if ( !isSimpleValue(arguments.theme) ) {
+			return "";
+		}
+		return REReplace(arguments.theme, "[^a-zA-Z0-9_\-]", "", "ALL");
 	}
 
 	function datetimeToTimespanInterval(datetime=now(),timespan=''){

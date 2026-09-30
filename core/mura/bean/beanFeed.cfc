@@ -834,14 +834,40 @@ function getEndRow() output=false {
 		<cfset addParam(column=hasDiscriminatorColumn(),criteria=hasDiscriminatorValue())>
 	</cfif>
 
+	<cfset var feedUtil=getBean('utility')>
 	<cfloop query="variables.instance.params">
 		<cfif listLen(variables.instance.params.field,".") eq 2>
-			<cfset jointable=REReplace(listFirst(variables.instance.params.field,"."),"[^0-9A-Za-z\._,\- ]","","all") >
+			<cfset jointable=feedUtil.sanitizeFeedIdentifier(listFirst(variables.instance.params.field,".")) >
+			<cfif feedUtil.isDeniedFeedTable(jointable, variables.instance.table)>
+				<cfthrow type="authorization" detail="Feed reference to a restricted table is not allowed.">
+			</cfif>
 			<cfif jointable neq variables.instance.table and not listFind(jointables,jointable)>
 				<cfset jointables=listAppend(jointables,jointable)>
 			</cfif>
 		</cfif>
 	</cfloop>
+
+	<!--- Reject aggregate/group/sort/explicit-join references to denied tables (defense in depth). --->
+	<cfloop list="groupByArray,sumValArray,countValArray,avgValArray,minValArray,maxValArray" index="local.aggName">
+		<cfloop array="#variables.instance[local.aggName]#" index="local.aggCol">
+			<cfif feedUtil.isDeniedFeedTable(local.aggCol, variables.instance.table)>
+				<cfthrow type="authorization" detail="Feed reference to a restricted table is not allowed.">
+			</cfif>
+		</cfloop>
+	</cfloop>
+	<cfloop from="1" to="#arrayLen(variables.instance.joins)#" index="local.i">
+		<cfif len(variables.instance.joins[local.i].table) and feedUtil.isDeniedFeedTable(variables.instance.joins[local.i].table, variables.instance.table)>
+			<cfthrow type="authorization" detail="Feed reference to a restricted table is not allowed.">
+		</cfif>
+	</cfloop>
+	<cfloop list="#variables.instance.orderby#" index="local.ob">
+		<cfif feedUtil.isDeniedFeedTable(listFirst(trim(local.ob)," "), variables.instance.table)>
+			<cfthrow type="authorization" detail="Feed reference to a restricted table is not allowed.">
+		</cfif>
+	</cfloop>
+	<cfif len(variables.instance.sortBy) and listLen(variables.instance.sortBy,".") gt 1 and feedUtil.isDeniedFeedTable(variables.instance.sortBy, variables.instance.table)>
+		<cfthrow type="authorization" detail="Feed reference to a restricted table is not allowed.">
+	</cfif>
 
 	<cfquery attributeCollection="#getQueryAttrs(name='rs',cachedWithin=arguments.cachedWithin)#">
 		<cfif not arguments.countOnly and dbType eq "oracle" and variables.instance.maxItems>select * from (</cfif>

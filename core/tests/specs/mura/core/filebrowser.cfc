@@ -53,6 +53,9 @@ component extends="testbox.system.BaseSpec"{
 		// ownerSiteID, regardless of which site's siteid the URL ends up using.
 		variables.physicalDir = settingsManager.getSite(ownerSiteID).getAssetDir() & '/assets/' & fixtureDir;
 
+		// The User_Assets sandbox root for path-traversal specs below.
+		variables.assetRoot = settingsManager.getSite(ownerSiteID).getAssetDir() & '/assets';
+
 		if( directoryExists(physicalDir) ){
 			directoryDelete(physicalDir, true);
 		}
@@ -122,6 +125,68 @@ component extends="testbox.system.BaseSpec"{
 					// physically lives under ownerSiteID's storage - a 404 in the browser.
 					expect(pooledURL).notToInclude('/#pooledSiteID#/');
 					expect(pooledURL).toBe(ownerURL);
+				}
+			);
+
+		});
+
+		describe("filebrowser.isPathLegal() - User_Assets path-traversal protection", function(){
+
+			var fb = application.serviceFactory.getBean('$').init('default').getBean('filebrowser');
+
+			it(
+				title="allows a file directly inside the asset root",
+				body=function(){
+					expect(fb.isPathLegal('User_Assets', assetRoot & '/probe.png', 'default')).toBeTrue();
+				}
+			);
+
+			it(
+				title="allows a file inside a nested folder of the asset root",
+				body=function(){
+					expect(fb.isPathLegal('User_Assets', assetRoot & '/sub/folder/probe.png', 'default')).toBeTrue();
+				}
+			);
+
+			it(
+				title="allows the asset root itself",
+				body=function(){
+					expect(fb.isPathLegal('User_Assets', assetRoot, 'default')).toBeTrue();
+				}
+			);
+
+			it(
+				title="rejects a single '..' segment that escapes the asset root",
+				body=function(){
+					expect(fb.isPathLegal('User_Assets', assetRoot & '/../probe.png', 'default')).toBeFalse();
+				}
+			);
+
+			it(
+				title="rejects multiple '..' segments reaching outside the sandbox",
+				body=function(){
+					expect(fb.isPathLegal('User_Assets', assetRoot & '/../../../../../../etc/passwd', 'default')).toBeFalse();
+				}
+			);
+
+			it(
+				title="rejects a sibling directory whose name merely starts with the root name",
+				body=function(){
+					// e.g. '/.../assets-evil/probe.png' must not pass a '/.../assets' root check.
+					expect(fb.isPathLegal('User_Assets', assetRoot & '-evil/probe.png', 'default')).toBeFalse();
+				}
+			);
+
+			it(
+				title="rejects any resourcePath other than User_Assets for a non-super-user session",
+				body=function(){
+					var restore = session.mura.memberships;
+					session.mura.memberships = '';
+					try {
+						expect(fb.isPathLegal('Application_Root', assetRoot & '/probe.png', 'default')).toBeFalse();
+					} finally {
+						session.mura.memberships = restore;
+					}
 				}
 			);
 
