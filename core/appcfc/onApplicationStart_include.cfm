@@ -873,8 +873,10 @@ if ( application.setupComplete ) {
 				variables.themeConfig=fileRead(variables.themedir & "/" & variables.themeConfig);
 			}
 			if ( IsValid('xml', variables.themeConfig) ) {
-				backportdir='/mura/backport/';
-				include "#backportdir#backport.cfm";
+				if ( !structKeyExists(variables,'parseXML') ) {
+					backportdir='/mura/backport/';
+					include "#backportdir#backport.cfm";
+				}
 				variables.themeConfig=parseXML(variables.themeConfig);
 				application.configBean.getClassExtensionManager().loadConfigXML(variables.themeConfig,variables.rsSites['siteid'][i]);
 			}

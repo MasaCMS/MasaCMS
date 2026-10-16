@@ -193,36 +193,36 @@ if ( fileExists(expandPath("/muraWRM/config/settings.custom.vars.cfm")) ) {
 
 try {
 	if ( !sessionData.mura.isLoggedIn && isDefined('cookie.rememberme') && cookie.rememberme != '' ) {
-		var rememberMeCookieParts=listToArray(cookie.rememberme,":",true);
-		if ( arrayLen(rememberMeCookieParts) == 2
-			&& reFind("^[A-Za-z0-9_-]{43}$",rememberMeCookieParts[1])
-			&& reFind("^[A-Za-z0-9_-]{43}$",rememberMeCookieParts[2]) ) {
+		variables.rememberMeCookieParts=listToArray(cookie.rememberme,":",true);
+		if ( arrayLen(variables.rememberMeCookieParts) == 2
+			&& reFind("^[A-Za-z0-9_-]{43}$",variables.rememberMeCookieParts[1])
+			&& reFind("^[A-Za-z0-9_-]{43}$",variables.rememberMeCookieParts[2]) ) {
 			application.loginManager.rememberMe(
-				selector=rememberMeCookieParts[1],
-				validator=rememberMeCookieParts[2]
+				selector=variables.rememberMeCookieParts[1],
+				validator=variables.rememberMeCookieParts[2]
 			);
 		} else {
 			application.utility.deleteCookie(name="rememberme");
 			sessionData.rememberMe=0;
 		}
 	}
-	} catch (any cfcatch) {
+} catch (any cfcatch) {
 	application.utility.deleteCookie(name="rememberme");
 	sessionData.rememberMe=0;
 }
 try {
 	if ( structKeyExists(sessionData,"rememberMe") && sessionData.rememberMe == 1 && sessionData.mura.isLoggedIn && !structKeyExists(sessionData,"rememberMeTokenIssued") ) {
 		if ( !isDefined('cookie.rememberme') || cookie.rememberme == '' ) {
-			var rememberMeToken=application.loginManager.createRememberMeToken(
+			variables.rememberMeToken=application.loginManager.createRememberMeToken(
 				userID=sessionData.mura.userID,
 				siteID=sessionData.mura.siteID
 			);
 			application.utility.setCookie(
 				name="rememberme",
-				value=rememberMeToken.selector & ":" & rememberMeToken.validator,
-				expires=rememberMeToken.expires
+				value=variables.rememberMeToken.selector & ":" & variables.rememberMeToken.validator,
+				expires=variables.rememberMeToken.expires
 			);
-			sessionData.rememberMeSelector=rememberMeToken.selector;
+			sessionData.rememberMeSelector=variables.rememberMeToken.selector;
 		}
 		sessionData.rememberMeTokenIssued=1;
 	}
@@ -329,9 +329,9 @@ if (
 application.pluginManager.executeScripts('onGlobalRequestStart');
 
 // HSTS: https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security
-local.HSTSMaxAge=application.configBean.getValue(property='HSTSMaxAge',defaultValue=1200);
+variables.HSTSMaxAge=application.configBean.getValue(property='HSTSMaxAge',defaultValue=1200);
 
-if(local.HSTSMaxAge){
+if(variables.HSTSMaxAge){
 	getPageContext()
 		.getResponse()
 		.setHeader('Strict-Transport-Security', 'max-age=#application.configBean.getValue(property='HSTSMaxAge',defaultValue=1200)#');

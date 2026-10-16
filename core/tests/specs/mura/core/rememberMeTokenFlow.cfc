@@ -65,9 +65,17 @@ component extends="testbox.system.BaseSpec" {
 
                 for (var headerName in httpResult.responseHeader) {
                     if (compareNoCase(headerName, "Set-Cookie") == 0) {
-                        setCookieHeaders = isArray(httpResult.responseHeader[headerName])
-                            ? arrayToList(httpResult.responseHeader[headerName], chr(10))
-                            : httpResult.responseHeader[headerName];
+                        var headerValue = httpResult.responseHeader[headerName];
+
+                        if (isStruct(headerValue)) {
+                            for (var key in headerValue) {
+                                setCookieHeaders = listAppend(setCookieHeaders, headerValue[key], chr(10));
+                            }
+                        } else if (isArray(headerValue)) {
+                            setCookieHeaders = arrayToList(headerValue, chr(10));
+                        } else {
+                            setCookieHeaders = headerValue;
+                        }
                     }
                 }
 

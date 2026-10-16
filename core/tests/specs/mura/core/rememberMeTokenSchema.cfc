@@ -29,9 +29,14 @@ component extends="testbox.system.BaseSpec" {
                         .toBeTrue("Expected #column# in #table#");
                 }
 
-                expect(variables.dbUtility.indexExists(column="selector", table=table)).toBeTrue();
-                expect(variables.dbUtility.indexExists(column="userid", table=table)).toBeTrue();
-                expect(variables.dbUtility.indexExists(column="siteid", table=table)).toBeTrue();
+                var indexNames = "";
+                for (var index in variables.dbUtility.indexes(table)) {
+                    indexNames = listAppend(indexNames, index.name);
+                }
+
+                expect(listFindNoCase(indexNames, "UQ_tremembertokens_selector")).toBeGT(0);
+                expect(listFindNoCase(indexNames, "IX_tremembertokens_user_site")).toBeGT(0);
+                expect(listFindNoCase(indexNames, "IX_tremembertokens_expiry")).toBeGT(0);
             });
         });
     }
