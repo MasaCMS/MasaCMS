@@ -172,11 +172,19 @@ This file is part of Mura CMS.
 			if (variables.routeUserAssets) {
 				var srcInfo = isUserAssetPath(arguments.source);
 				var dstInfo = isUserAssetPath(arguments.destination);
-				if (srcInfo.isUserAsset || dstInfo.isUserAsset) {
-					var srcKey = srcInfo.isUserAsset ? assetKey(srcInfo) : arguments.source;
-					var dstKey = dstInfo.isUserAsset ? assetKey(dstInfo) : arguments.destination;
-					getBean('fileStorageService').copyFile(srcKey, dstKey);
+				// The storage service only takes User_Assets keys, so a copy across the
+				// User_Assets boundary goes through a local file on the non-asset side.
+				if (srcInfo.isUserAsset && dstInfo.isUserAsset) {
+					getBean('fileStorageService').copyFile(assetKey(srcInfo), assetKey(dstInfo));
 					return this;
+				} else if (dstInfo.isUserAsset) {
+					// writeFromLocal() consumes its file, so hand it a temp copy.
+					var tempCopy = variables.tempDir & createUUID() & "." & listLast(arguments.source, ".");
+					fileCopy(arguments.source, tempCopy);
+					getBean('fileStorageService').writeFromLocal(tempCopy, assetKey(dstInfo));
+					return this;
+				} else if (srcInfo.isUserAsset) {
+					arguments.source = getBean('fileStorageService').resolveToLocal(assetKey(srcInfo));
 				}
 			}
 		</cfscript>
@@ -207,15 +215,23 @@ This file is part of Mura CMS.
 		<cfargument name="source">
 		<cfargument name="destination">
 		<cfargument name="mode" required="true" default="#variables.defaultFileMode#">
+		<cfset var movedAssetKey = "">
 		<cfscript>
 			if (variables.routeUserAssets) {
 				var srcInfo = isUserAssetPath(arguments.source);
 				var dstInfo = isUserAssetPath(arguments.destination);
-				if (srcInfo.isUserAsset || dstInfo.isUserAsset) {
-					var srcKey = srcInfo.isUserAsset ? assetKey(srcInfo) : arguments.source;
-					var dstKey = dstInfo.isUserAsset ? assetKey(dstInfo) : arguments.destination;
-					getBean('fileStorageService').moveFile(srcKey, dstKey);
+				// The storage service only takes User_Assets keys, so a move across the
+				// User_Assets boundary goes through a local file on the non-asset side.
+				if (srcInfo.isUserAsset && dstInfo.isUserAsset) {
+					getBean('fileStorageService').moveFile(assetKey(srcInfo), assetKey(dstInfo));
 					return this;
+				} else if (dstInfo.isUserAsset) {
+					getBean('fileStorageService').writeFromLocal(arguments.source, assetKey(dstInfo));
+					return this;
+				} else if (srcInfo.isUserAsset) {
+					// Move a local copy of the asset below, then remove the asset itself.
+					movedAssetKey = assetKey(srcInfo);
+					arguments.source = getBean('fileStorageService').resolveToLocal(movedAssetKey);
 				}
 			}
 		</cfscript>
@@ -228,6 +244,9 @@ This file is part of Mura CMS.
 				<cftry><cffile action="delete" file="#arguments.source#" /><cfcatch></cfcatch></cftry>
 			</cfif>
 		</cflock>
+		<cfif len(movedAssetKey)>
+			<cfset getBean('fileStorageService').deleteFile(movedAssetKey)>
+		</cfif>
 		<cfreturn this />
 	</cffunction>
 
@@ -269,7 +288,13 @@ This file is part of Mura CMS.
 			if (variables.routeUserAssets) {
 				var assetInfo = isUserAssetPath(arguments.file);
 				if (assetInfo.isUserAsset) {
-					getBean('fileStorageService').writeFile(assetKey(assetInfo), arguments.output);
+					// The storage service writes content exactly as given, so apply
+					// addNewLine here, as cffile action="write" would below.
+					var content = arguments.output;
+					if (arguments.addNewLine && isSimpleValue(content)) {
+						content &= createObject("java", "java.lang.System").lineSeparator();
+					}
+					getBean('fileStorageService').writeFile(assetKey(assetInfo), content);
 					return this;
 				}
 			}
@@ -366,7 +391,13 @@ This file is part of Mura CMS.
 			if (variables.routeUserAssets) {
 				var assetInfo = isUserAssetPath(arguments.directory);
 				if (assetInfo.isUserAsset) {
-					getBean('fileStorageService').createDirectory(assetKey(assetInfo));
+					var dirKey = assetKey(assetInfo);
+					// The storage contract makes createDirectory() a no-op for an existing
+					// directory; createDir() has always thrown then, like cfdirectory does below.
+					if (getBean('fileStorageService').directoryExists(dirKey)) {
+						throw(type="application", message="The specified directory [#arguments.directory#] could not be created.", detail="The directory already exists.");
+					}
+					getBean('fileStorageService').createDirectory(dirKey);
 					return this;
 				}
 			}
