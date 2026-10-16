@@ -400,7 +400,7 @@ component
 		}
 
 		if(getBean('configBean').getCompiler()=='Adobe'){
-			var item = fileUpload(tempDir,'',"MakeUnique");
+			var item = fileUpload(tempDir,'','',"MakeUnique");
 		} else {
 			var item = fileUpload(tempDir,'','',"Overwrite");
 		}
@@ -658,7 +658,7 @@ component
 
 		var baseFilePath = getBaseFileDir( arguments.siteid,arguments.resourcePath );
 		var filePath = baseFilePath  & m.globalConfig().getFileDelim() & rereplace(arguments.directory,"\.{1,}","\.","all");
-		var path = expandpath(filePath) & application.configBean.getFileDelim() & arguments.filename;
+		var path = conditionalExpandPath(filePath) & application.configBean.getFileDelim() & arguments.filename;
 
 		if(!isPathLegal(arguments.resourcepath,conditionalExpandPath(filePath),arguments.siteid)) {
 			throw(message="File path illegal");
@@ -703,14 +703,15 @@ component
 
 		var baseFilePath = getBaseFileDir( arguments.siteid,arguments.resourcePath );
 		var filePath = baseFilePath  & m.globalConfig().getFileDelim() & rereplace(arguments.directory,"\.{1,}","\.","all");
-		var path = expandpath(filePath) & application.configBean.getFileDelim() & arguments.filename;
+		var path = conditionalExpandPath(filePath) & application.configBean.getFileDelim() & arguments.filename;
 
 		if(!isPathLegal(arguments.resourcepath,conditionalExpandPath(filePath),arguments.siteid)) {
 			throw(message="File path illegal");
 		}
 
 		try {
-			fileWrite(path,arguments.content);
+			var fw = getBean('fileWriter');
+			fw.writeFile(file=path, output=arguments.content, addNewLine=false);
 		}
 		catch( any e ) {
 			response['error'] = e;
@@ -839,7 +840,7 @@ component
 			}
 		}
 		else if(directoryExists(currentFilePath)) {
-			var newFilePath = expandpath(filePath) & application.configBean.getFileDelim() & safeName;
+			var newFilePath = conditionalExpandPath(filePath) & application.configBean.getFileDelim() & safeName;
 
 			try {
 				directoryRename(currentFilePath,newFilePath);
