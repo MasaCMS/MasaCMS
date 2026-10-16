@@ -1012,27 +1012,8 @@ component
 		// Always resolve through getBaseResourcePath() so FilePoolID (shared File
 		// Pools) is honored consistently for every resourcePath - see PR #427.
 		var complete = (m.siteConfig('isremote') || (isdefined('arguments.completepath') && isBoolean(arguments.completepath) && arguments.completepath));
-		var preAssetPath = getBean('configBean').get('assetPath');
-
-		if(len(preAssetPath)) {
-			if(arguments.resourcePath == "Site_Files") {
-				preAssetPath = preAssetPath & "/" & arguments.siteid & response['directory'];
-			}
-			else if(arguments.resourcePath == "Application_Root") {
-				preAssetPath = response['directory'];
-			}
-			else {
-				preAssetPath = preAssetPath & "/" & arguments.siteid & "/assets" & response['directory'];
-			}
-		}
-		else {
-			if(arguments.resourcePath == "User_Assets") {
-				preAssetPath = fw.getAssetUrl(arguments.siteid) & response['directory'];
-			}
-			else {
-				preAssetPath = getBaseResourcePath(siteid=arguments.siteid,resourcePath=arguments.resourcePath,complete=complete);
-			}
-		}
+		var preAssetPath = getBaseResourcePath(siteid=arguments.siteid,resourcePath=arguments.resourcePath,complete=complete);
+		preAssetPath = preAssetPath & response['directory'];
 
 		var rsDirectory = fw.getDirectoryList(directory=conditionalExpandPath(filePath), type="all");
 
