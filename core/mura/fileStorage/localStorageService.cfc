@@ -29,6 +29,7 @@ the Free Software Foundation, Version 2 of the License.
 	<cfset variables.fw       = "">
 	<cfset variables.basePath = "">
 	<cfset variables.baseUrl  = "">
+	<cfset variables.storageKeys = new mura.fileStorage.storageKey()>
 
 	<cffunction name="init" access="public" returntype="any" output="false">
 		<cfargument name="basePath" type="string" required="false" default=""
@@ -42,34 +43,17 @@ the Free Software Foundation, Version 2 of the License.
 	</cffunction>
 
 	<!---
-		Resolve a relative key to an absolute local path.
+		Resolve a key to an absolute local path.
 		- Per-site mode:  basePath is set at init → prepend it (original behaviour).
-		- Singleton mode: basePath is empty → key is "{siteid}/{subtype}/…" style →
-		  resolve "assets" under configBean.getAssetDir() and "cache" under configBean.getFileDir().
+		- Singleton mode: basePath is empty → the key is a storage key ({poolID}/{subtype}/…),
+		  resolved by mura.fileStorage.storageKey.
 	--->
-	<cffunction name="resolveSingletonRoot" access="private" returntype="string" output="false">
-		<cfargument name="path" type="string" required="true">
-		<cfset var normalizedPath = reReplace(replace(arguments.path, "\", "/", "ALL"), "^/+", "")>
-		<cfset var subtype = "">
-
-		<cfif listLen(normalizedPath, "/") GTE 2>
-			<cfset subtype = lCase(listGetAt(normalizedPath, 2, "/"))>
-		</cfif>
-
-		<cfif subtype EQ "assets">
-			<cfreturn application.configBean.getAssetDir()>
-		<cfelse>
-			<cfreturn application.configBean.getFileDir()>
-		</cfif>
-	</cffunction>
-
 	<cffunction name="fullPath" access="private" returntype="string" output="false">
 		<cfargument name="path" type="string" required="true">
-		<cfset var normalizedPath = reReplace(replace(arguments.path, "\", "/", "ALL"), "^/+", "")>
 		<cfif len(variables.basePath)>
 			<cfreturn variables.basePath & arguments.path>
 		<cfelse>
-			<cfreturn resolveSingletonRoot(normalizedPath) & "/" & normalizedPath>
+			<cfreturn variables.storageKeys.toLocalPath(arguments.path)>
 		</cfif>
 	</cffunction>
 
@@ -216,8 +200,8 @@ the Free Software Foundation, Version 2 of the License.
 
 	<!--- ==================== BINARY CACHE (used by fileDAO) ==================== --->
 	<!---
-		uploadBinary and deleteObject use the unified key format {siteid}/{subtype}/{path}
-		and always resolve relative to configBean.getFileDir() regardless of basePath.
+		uploadBinary, deleteObject and listObjects take storage keys ({poolID}/cache/file/…) and
+		always resolve them through mura.fileStorage.storageKey, regardless of basePath.
 		A cloud backend (shipped as its own module) implements the same methods against its bucket.
 	--->
 
@@ -227,7 +211,7 @@ the Free Software Foundation, Version 2 of the License.
 		<cfargument name="contentType" type="string" required="true">
 		<cfargument name="key" type="string" required="true">
 		<cfscript>
-			var fp = application.configBean.getFileDir() & "/" & reReplace(replace(arguments.key, "\", "/", "ALL"), "^/+", "");
+			var fp = variables.storageKeys.toLocalPath(arguments.key);
 			variables.fw.touchDir(getDirectoryFromPath(fp));
 			if (isBinary(arguments.data)) {
 				fileWrite(fp, arguments.data);
@@ -241,7 +225,7 @@ the Free Software Foundation, Version 2 of the License.
 		hint="Delete a cached file by key. key = {siteid}/cache/file/{id}.{ext}">
 		<cfargument name="key" type="string" required="true">
 		<cfscript>
-			var fp = application.configBean.getFileDir() & "/" & reReplace(replace(arguments.key, "\", "/", "ALL"), "^/+", "");
+			var fp = variables.storageKeys.toLocalPath(arguments.key);
 			if (fileExists(fp)) { fileDelete(fp); }
 		</cfscript>
 	</cffunction>
@@ -251,8 +235,8 @@ the Free Software Foundation, Version 2 of the License.
 		<cfargument name="path" type="string" required="true">
 		<cfargument name="prefix" type="string" required="false" default="">
 		<cfscript>
-			var dirKey = reReplace(replace(arguments.path, "\", "/", "ALL"), "^/+|/+$", "", "ALL");
-			var dir = application.configBean.getFileDir() & "/" & dirKey;
+			var dirKey = reReplace(variables.storageKeys.normalize(arguments.path), "/+$", "");
+			var dir = variables.storageKeys.toLocalPath(dirKey);
 			var keys = [];
 			if (directoryExists(dir)) {
 				for (var name in directoryList(dir, false, "name", arguments.prefix & "*", "", "file")) {
