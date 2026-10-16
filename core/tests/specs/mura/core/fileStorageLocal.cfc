@@ -558,6 +558,67 @@ component extends="testbox.system.BaseSpec" {
 
 		});
 
+		describe("Local file storage - storage keys (mura.fileStorage.storageKey)", function(){
+
+			var keys = new mura.fileStorage.storageKey();
+			var assetRoot = replace(application.configBean.getAssetDir(), "\", "/", "all");
+			var fileRoot = replace(application.configBean.getFileDir(), "\", "/", "all");
+
+			it("should build a User_Assets key from the File Pool directory", function(){
+				var site = application.settingsManager.getSite("default");
+				var path = site.getAssetDir() & "/assets/sub/photo.jpg";
+				expect(keys.fromAssetPath(path)).toBe(site.getFilePoolID() & "/assets/sub/photo.jpg");
+				expect(keys.fromAssetPath(replace(path, "/", "\", "all"))).toBe(site.getFilePoolID() & "/assets/sub/photo.jpg");
+			});
+
+			it("should give every site sharing a File Pool the same key", function(){
+				var pooled = application.settingsManager.getSite("test-modules");
+				var owner = application.settingsManager.getSite("default");
+				if (pooled.getFilePoolID() != owner.getFilePoolID()) {
+					return;
+				}
+				expect(keys.fromAssetPath(pooled.getAssetDir() & "/assets/photo.jpg")).toBe("default/assets/photo.jpg");
+			});
+
+			it("should build a key for the User_Assets directory itself", function(){
+				expect(keys.fromAssetPath(assetRoot & "/default/assets")).toBe("default/assets");
+			});
+
+			it("should return no key for paths outside a site's User_Assets", function(){
+				expect(keys.fromAssetPath(assetRoot & "/default/cache/file/x.png")).toBe("");
+				expect(keys.fromAssetPath(assetRoot & "/default/assets-old/x.png")).toBe("");
+				expect(keys.fromAssetPath(assetRoot & "/no-such-pool-" & variables.runTag & "/assets/x.png")).toBe("");
+				expect(keys.fromAssetPath(application.configBean.getTempDir() & "/x.png")).toBe("");
+			});
+
+			it("should resolve 'assets' keys under the asset dir and other keys under the file dir", function(){
+				expect(keys.toLocalPath("default/assets/photo.jpg")).toBe(assetRoot & "/default/assets/photo.jpg");
+				expect(keys.toLocalPath("/default/cache/file/x.png")).toBe(fileRoot & "/default/cache/file/x.png");
+				expect(keys.toLocalPath("default\cache\file\x.png")).toBe(fileRoot & "/default/cache/file/x.png");
+			});
+
+			it("should build file cache keys, with and without a variant", function(){
+				expect(keys.cacheDirKey("default")).toBe("default/cache/file");
+				expect(keys.cacheFileKey("default", "ABC", "png")).toBe("default/cache/file/ABC.png");
+				expect(keys.cacheFileKey("default", "ABC", "png", "small")).toBe("default/cache/file/ABC_small.png");
+				expect(keys.cacheFileKey("default", "ABC", "jpg", "200x100")).toBe("default/cache/file/ABC_200x100.jpg");
+				expect(keys.toLocalPath(keys.cacheFileKey("default", "ABC", "png"))).toBe(fileRoot & "/default/cache/file/ABC.png");
+			});
+
+			it("should keep fileManager.getCacheImageKey()'s size mapping", function(){
+				var fm = application.serviceFactory.getBean('fileManager');
+				expect(fm.getCacheImageKey("default", "ABC", "png", "large")).toBe("default/cache/file/ABC.png");
+				expect(fm.getCacheImageKey("default", "ABC", "png", "Source")).toBe("default/cache/file/ABC_source.png");
+				expect(fm.getCacheImageKey("default", "ABC", "png", "medium")).toBe("default/cache/file/ABC_medium.png");
+			});
+
+			it("should round-trip a User_Assets path through its key", function(){
+				var path = application.settingsManager.getSite("default").getAssetDir() & "/assets/a/b.txt";
+				expect(keys.toLocalPath(keys.fromAssetPath(path))).toBe(replace(path, "\", "/", "all"));
+			});
+
+		});
+
 		describe("Local file storage - storage service local-file handling", function(){
 
 			it("should replace an existing object via writeFromLocal() and consume the local file", function(){
