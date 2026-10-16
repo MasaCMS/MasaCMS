@@ -539,23 +539,18 @@ component extends="testbox.system.BaseSpec" {
 				expect(fileExists(collisionDir & "/marker.txt")).toBeTrue();
 			});
 
-			it("should silently overwrite an existing file name via rename() - no collision protection", function(){
-				// Unlike addFolder() above (directoryCreate() throws on an
-				// existing directory, and the pre-existing one survives),
-				// rename()'s underlying fileMove() does NOT throw when the
-				// destination filename already exists - confirmed live: it
-				// just overwrites it, rename() reports success, and the
-				// pre-existing target's original content is gone. A real,
-				// asymmetric data-loss risk between the two methods, not
-				// something to assume protection for without checking -
-				// see the to-do list.
+			it("should not overwrite an existing file name via rename()", function(){
+				// rename()'s underlying move overwrites an existing destination
+				// file without complaint, so rename() has to check for a
+				// collision itself. Both files must survive untouched.
 				var sourceName = "rename-src.txt";
 				var targetBaseName = "rename-target";
 				var sourcePath = variables.baseAssetDir & "/" & variables.imageTestDirName & "/" & sourceName;
 				var targetPath = variables.baseAssetDir & "/" & variables.imageTestDirName & "/" & targetBaseName & ".txt";
 				var sourceContent = fileRead(variables.fixtureSourceText);
+				var targetContent = "pre-existing rename target - must survive";
 				fileCopy(variables.fixtureSourceText, sourcePath);
-				fileWrite(targetPath, "pre-existing target - gets overwritten, not protected");
+				fileWrite(targetPath, targetContent);
 
 				var csrf = csrfFor("rename");
 				var result = variables.fb.rename(
@@ -568,10 +563,58 @@ component extends="testbox.system.BaseSpec" {
 					csrf_token_expires = csrf.expires
 				);
 
-				expect(result.success).toBe(1);
-				expect(fileExists(sourcePath)).toBeFalse();
+				expect(result.success).toBe(0);
+				expect(fileExists(sourcePath)).toBeTrue();
+				expect(fileRead(sourcePath)).toBe(sourceContent);
 				expect(fileExists(targetPath)).toBeTrue();
-				expect(fileRead(targetPath)).toBe(sourceContent);
+				expect(fileRead(targetPath)).toBe(targetContent);
+			});
+
+			it("should not overwrite an existing folder name via rename()", function(){
+				var sourceDir = variables.baseAssetDir & "/" & variables.imageTestDirName & "/rename-src-dir";
+				var targetDir = variables.baseAssetDir & "/" & variables.imageTestDirName & "/rename-target-dir";
+				directoryCreate(sourceDir);
+				directoryCreate(targetDir);
+				fileCopy(variables.fixtureSourceText, sourceDir & "/source-marker.txt");
+				fileCopy(variables.fixtureSourceText, targetDir & "/target-marker.txt");
+
+				var csrf = csrfFor("rename");
+				var result = variables.fb.rename(
+					siteid             = variables.siteid,
+					directory          = "/" & variables.imageTestDirName,
+					filename           = "rename-src-dir",
+					name               = "rename-target-dir",
+					resourcePath       = variables.resourcePath,
+					csrf_token         = csrf.token,
+					csrf_token_expires = csrf.expires
+				);
+
+				expect(result.success).toBe(0);
+				expect(fileExists(sourceDir & "/source-marker.txt")).toBeTrue();
+				expect(fileExists(targetDir & "/target-marker.txt")).toBeTrue();
+				expect(fileExists(targetDir & "/source-marker.txt")).toBeFalse();
+			});
+
+			it("should keep a file intact when rename() is given its current name", function(){
+				var fileName = "rename-same.txt";
+				var filePath = variables.baseAssetDir & "/" & variables.imageTestDirName & "/" & fileName;
+				var content = fileRead(variables.fixtureSourceText);
+				fileCopy(variables.fixtureSourceText, filePath);
+
+				var csrf = csrfFor("rename");
+				var result = variables.fb.rename(
+					siteid             = variables.siteid,
+					directory          = "/" & variables.imageTestDirName,
+					filename           = fileName,
+					name               = "rename-same",
+					resourcePath       = variables.resourcePath,
+					csrf_token         = csrf.token,
+					csrf_token_expires = csrf.expires
+				);
+
+				expect(result.success).toBe(1);
+				expect(fileExists(filePath)).toBeTrue();
+				expect(fileRead(filePath)).toBe(content);
 			});
 
 		});
