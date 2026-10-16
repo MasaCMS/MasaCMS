@@ -99,6 +99,12 @@ component extends="testbox.system.BaseSpec" {
 		// (currently skipped) path-traversal test below.
 		variables.traversalTargetPath = variables.baseAssetDir & "/../fstest-traversal-" & variables.runTag & ".png";
 		fileCopy(variables.fixtureSourceImage, variables.traversalTargetPath);
+
+		// The test event handler (core/tests/resources/model/handlers/
+		// eventHandler.cfc) records onAfterFileDelete's event data in
+		// request.fileBrowserDeleteEvents, keyed by filePath.
+		application.serviceFactory.getBean('configBean').registerModelDir(dir="/muraWRM/core/tests/resources/model", siteid=variables.siteid);
+		request.fileBrowserDeleteEvents = {};
 	}
 
 	function afterAll(){
@@ -140,6 +146,20 @@ component extends="testbox.system.BaseSpec" {
 	// name already seeded into imageTestDirPath.
 	function imageFileArg(imgName){
 		return { url: "/assets/" & variables.imageTestDirName & "/" & arguments.imgName, ext: "png" };
+	}
+
+	// The recorded onAfterFileDelete event data for a deleted file or folder
+	// in imageTestDirPath, or an empty struct. Matched on the path's last
+	// segment, so it doesn't depend on how delete() joins its path.
+	function findDeleteEvent(name){
+		param name="request.fileBrowserDeleteEvents" default={};
+		for (var recordedPath in request.fileBrowserDeleteEvents) {
+			var normalized = replace(recordedPath, "\", "/", "all");
+			if (findNoCase(variables.imageTestDirName, normalized) && listLast(normalized, "/") == arguments.name) {
+				return request.fileBrowserDeleteEvents[recordedPath];
+			}
+		}
+		return {};
 	}
 
 	function csrfFor(context){
@@ -615,6 +635,59 @@ component extends="testbox.system.BaseSpec" {
 				expect(result.success).toBe(1);
 				expect(fileExists(filePath)).toBeTrue();
 				expect(fileRead(filePath)).toBe(content);
+			});
+
+		});
+
+		describe("Local asset browser - onAfterFileDelete event data", function(){
+
+			it("should describe a deleted file with its real metadata", function(){
+				var fileName = "event-file.txt";
+				var filePath = variables.imageTestDirPath & "/" & fileName;
+				fileCopy(variables.fixtureSourceText, filePath);
+				var expected = getFileInfo(filePath);
+
+				var csrf = csrfFor("delete");
+				var result = variables.fb.delete(
+					siteid             = variables.siteid,
+					directory          = "/" & variables.imageTestDirName,
+					filename           = fileName,
+					resourcePath       = variables.resourcePath,
+					csrf_token         = csrf.token,
+					csrf_token_expires = csrf.expires
+				);
+
+				expect(result.success).toBe(1);
+				var info = findDeleteEvent(fileName);
+				expect(info).notToBeEmpty("No onAfterFileDelete event was recorded for " & fileName);
+				expect(info.name).toBe(fileName);
+				expect(info.type).toBe("file");
+				expect(info.size).toBe(expected.size);
+				expect(dateCompare(info.lastModified, expected.lastModified, "s")).toBe(0);
+			});
+
+			it("should describe a deleted folder with the same fields as a file", function(){
+				var dirName = "event-dir";
+				directoryCreate(variables.imageTestDirPath & "/" & dirName);
+
+				var csrf = csrfFor("delete");
+				var result = variables.fb.delete(
+					siteid             = variables.siteid,
+					directory          = "/" & variables.imageTestDirName,
+					filename           = dirName,
+					resourcePath       = variables.resourcePath,
+					csrf_token         = csrf.token,
+					csrf_token_expires = csrf.expires
+				);
+
+				expect(result.success).toBe(1);
+				var info = findDeleteEvent(dirName);
+				expect(info).notToBeEmpty("No onAfterFileDelete event was recorded for " & dirName);
+				expect(info).toHaveKey("name");
+				expect(info.name).toBe(dirName);
+				expect(info.type).toBe("directory");
+				expect(info).toHaveKey("size");
+				expect(isDate(info.lastModified)).toBeTrue();
 			});
 
 		});
