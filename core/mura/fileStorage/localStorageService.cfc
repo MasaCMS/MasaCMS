@@ -90,7 +90,7 @@ the Free Software Foundation, Version 2 of the License.
 	<cffunction name="writeFile" access="public" returntype="void" output="false">
 		<cfargument name="path" type="string" required="true">
 		<cfargument name="content" type="any" required="true">
-		<cfset variables.fw.writeFile(file=fullPath(arguments.path), output=arguments.content)>
+		<cfset variables.fw.writeFile(file=fullPath(arguments.path), output=arguments.content, addNewLine=false)>
 	</cffunction>
 
 	<!--- ==================== DELETE ==================== --->
