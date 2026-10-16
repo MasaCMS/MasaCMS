@@ -18,9 +18,12 @@ the Free Software Foundation, Version 2 of the License.
 	      User_Assets. Core code never references an implementation directly: it resolves
 	      the 'fileStorageService' bean, which onApplicationStart_include.cfm aliases to
 	      the default 'localStorageService' singleton. To use another backend, declare it
-	      as a bean and point the alias at it, e.g. when your module loads:
+	      as a bean and point the alias at it:
 	        serviceFactory.declareBean('myStorageService', 'path.to.myStorageService', true);
-	        serviceFactory.addAlias('fileStorageService', 'myStorageService');">
+	        serviceFactory.addAlias('fileStorageService', 'myStorageService');
+	      This must happen before anything resolves 'fileStorageService': the factory
+	      caches a singleton under the name it was requested by, so re-pointing the alias
+	      afterwards has no effect until the factory is reloaded.">
 
 	<!--- ==================== READ ==================== --->
 
@@ -137,13 +140,26 @@ the Free Software Foundation, Version 2 of the License.
 		      For local storage: returns the absolute path directly (no-op).
 		      For cloud storage: downloads the file to a temp directory first.
 		      Used by image operations (ImageNew, ImageRead) that require local files.
+		      Callers must pass the returned path to releaseLocal() when they are done
+		      with it, and must never delete it themselves: for local storage it is the
+		      stored file itself.
 		      Returns: string -- absolute local filesystem path">
 		<cfargument name="path" type="string" required="true" hint="Relative path within User_Assets root">
 	</cffunction>
 
+	<cffunction name="releaseLocal" returntype="void" access="public" output="false"
+		hint="Release a path returned by resolveToLocal() once the caller is done with it.
+		      For local storage: no-op.
+		      For cloud storage: deletes the temp copy that resolveToLocal() downloaded.
+		      Must only delete temp copies this backend created, and leave any other path
+		      untouched, so callers can release unconditionally.">
+		<cfargument name="localPath" type="string" required="true" hint="A path returned by resolveToLocal()">
+	</cffunction>
+
 	<cffunction name="writeFromLocal" returntype="void" access="public" output="false"
-		hint="Write a local file to the storage backend.
-		      For local storage: moves the file using fileMove (same as before).
+		hint="Write a local file to the storage backend, replacing any existing object at
+		      remotePath (callers rely on this instead of deleting the old object first).
+		      For local storage: moves the file into place.
 		      For cloud storage: uploads the file then removes the local temp copy.
 		      Used after image processing to persist the result back to storage.">
 		<cfargument name="localPath" type="string" required="true" hint="Absolute path to the local source file">

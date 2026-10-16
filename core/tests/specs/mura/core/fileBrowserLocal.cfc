@@ -162,6 +162,33 @@ component extends="testbox.system.BaseSpec" {
 		return {};
 	}
 
+	// Same helper as fileStorageLocal.cfc's: runs body() while recording every
+	// resolveToLocal() result and releaseLocal() argument on the active storage
+	// service, by wrapping the singleton's two methods for the duration.
+	function trackLocalPaths(required function body){
+		var svc = application.serviceFactory.getBean('fileStorageService');
+		var real = new mura.fileStorage.localStorageService().init();
+		var calls = { resolved: [], released: [] };
+		var originalResolve = svc.resolveToLocal;
+		var originalRelease = svc.releaseLocal;
+		svc.resolveToLocal = function(path){
+			var localPath = real.resolveToLocal(arguments.path);
+			arrayAppend(calls.resolved, localPath);
+			return localPath;
+		};
+		svc.releaseLocal = function(localPath){
+			arrayAppend(calls.released, arguments.localPath);
+			real.releaseLocal(arguments.localPath);
+		};
+		try {
+			arguments.body();
+		} finally {
+			svc.resolveToLocal = originalResolve;
+			svc.releaseLocal = originalRelease;
+		}
+		return calls;
+	}
+
 	function csrfFor(context){
 		// validateCSRFTokens() reads the token back via $.event('csrf_token'),
 		// which is Mura's own request-scoped "event" object - not the plain
@@ -448,6 +475,37 @@ component extends="testbox.system.BaseSpec" {
 
 				expect(result.success).toBe(1);
 				expect(hash(fileReadBinary(imgPath), "MD5")).notToBe(beforeHash);
+			});
+
+			it("should release every path the image endpoints and browse() resolve", function(){
+				var calls = trackLocalPaths(function(){
+					var csrf = csrfFor("resize");
+					variables.fb.resize(resourcePath=variables.resourcePath, file=imageFileArg(seedImageFile()),
+						dimensions={ aspect: "within", width: 20, height: 20 }, siteid=variables.siteid,
+						csrf_token=csrf.token, csrf_token_expires=csrf.expires);
+
+					csrf = csrfFor("duplicate");
+					variables.fb.duplicate(resourcePath=variables.resourcePath, file=imageFileArg(seedImageFile()),
+						siteid=variables.siteid, csrf_token=csrf.token, csrf_token_expires=csrf.expires);
+
+					csrf = csrfFor("rotate");
+					variables.fb.rotate(resourcePath=variables.resourcePath, file=imageFileArg(seedImageFile()),
+						direction="clock", siteid=variables.siteid, csrf_token=csrf.token, csrf_token_expires=csrf.expires);
+
+					csrf = csrfFor("processCrop");
+					variables.fb.processCrop(resourcePath=variables.resourcePath, file=imageFileArg(seedImageFile()),
+						size={ width: 40, height: 100 }, crop={ x: 0, y: 0, width: 10, height: 10 },
+						siteid=variables.siteid, csrf_token=csrf.token, csrf_token_expires=csrf.expires);
+
+					// browse() resolves every listed image to read its dimensions.
+					variables.fb.browse(siteid=variables.siteid, directory="/" & variables.imageTestDirName,
+						resourcePath=variables.resourcePath);
+				});
+
+				expect(arrayLen(calls.resolved)).toBeGT(0);
+				arraySort(calls.resolved, "textnocase");
+				arraySort(calls.released, "textnocase");
+				expect(calls.released).toBe(calls.resolved);
 			});
 
 		});

@@ -172,6 +172,36 @@ component extends="testbox.system.BaseSpec" {
 		return { contentID: newContentID, fileID: newFileID, owner: owner };
 	}
 
+	// Runs body() while recording every resolveToLocal() result and
+	// releaseLocal() argument on the active storage service. The singleton's
+	// two methods are wrapped for the duration (delegating to a fresh
+	// localStorageService) and restored afterwards: re-pointing the
+	// fileStorageService alias can't swap in a spy, because the factory caches
+	// the instance under the name it was first requested by.
+	function trackLocalPaths(required function body){
+		var svc = application.serviceFactory.getBean('fileStorageService');
+		var real = new mura.fileStorage.localStorageService().init();
+		var calls = { resolved: [], released: [] };
+		var originalResolve = svc.resolveToLocal;
+		var originalRelease = svc.releaseLocal;
+		svc.resolveToLocal = function(path){
+			var localPath = real.resolveToLocal(arguments.path);
+			arrayAppend(calls.resolved, localPath);
+			return localPath;
+		};
+		svc.releaseLocal = function(localPath){
+			arrayAppend(calls.released, arguments.localPath);
+			real.releaseLocal(arguments.localPath);
+		};
+		try {
+			arguments.body();
+		} finally {
+			svc.resolveToLocal = originalResolve;
+			svc.releaseLocal = originalRelease;
+		}
+		return calls;
+	}
+
 	function run(){
 
 		describe("Local file storage - File content lifecycle", function(){
@@ -524,6 +554,69 @@ component extends="testbox.system.BaseSpec" {
 
 				expect(fileExists(smallPath)).toBeTrue();
 				expect(fileExists(mediumPath)).toBeTrue();
+			});
+
+		});
+
+		describe("Local file storage - storage service local-file handling", function(){
+
+			it("should replace an existing object via writeFromLocal() and consume the local file", function(){
+				// rotate()/flip()/cropAndScale() rely on this instead of
+				// deleting the old object first, so a failed write can't
+				// lose it.
+				var svc = application.serviceFactory.getBean('fileStorageService');
+				var key = variables.siteid & "/cache/file/fstest-replace-" & variables.runTag & ".txt";
+				var storedPath = application.configBean.getFileDir() & "/" & key;
+				var localFile = application.configBean.getTempDir() & "/fstest-replace-" & variables.runTag & ".txt";
+				arrayAppend(variables.extraTempFiles, storedPath);
+				arrayAppend(variables.extraTempFiles, localFile);
+				fileWrite(storedPath, "old content");
+				fileWrite(localFile, "new content");
+
+				svc.writeFromLocal(localFile, key);
+
+				expect(fileRead(storedPath)).toBe("new content");
+				expect(fileExists(localFile)).toBeFalse();
+			});
+
+			it("should apply addNewLine when fileWriter.writeFile() writes to User_Assets", function(){
+				// writeFile() routes User_Assets paths to the storage service,
+				// which writes content as given, so fileWriter appends the
+				// newline itself, matching cffile action="write" addnewline.
+				var fw = application.serviceFactory.getBean('fileWriter');
+				var assetDir = application.settingsManager.getSite(variables.siteid).getAssetDir() & "/assets";
+				var withNewLine = assetDir & "/fstest-newline-" & variables.runTag & ".txt";
+				var withoutNewLine = assetDir & "/fstest-nonewline-" & variables.runTag & ".txt";
+				arrayAppend(variables.extraTempFiles, withNewLine);
+				arrayAppend(variables.extraTempFiles, withoutNewLine);
+				var newLine = findNoCase("Windows", server.os.name) ? chr(13) & chr(10) : chr(10);
+
+				fw.writeFile(file=withNewLine, output="content");
+				fw.writeFile(file=withoutNewLine, output="content", addNewLine=false);
+
+				expect(fileRead(withNewLine)).toBe("content" & newLine);
+				expect(fileRead(withoutNewLine)).toBe("content");
+			});
+
+			it("should release every path the fileManager image operations resolve", function(){
+				var testFile = createTestFile("releaseLocal test");
+				var mediumPath = cacheFilePath(testFile.fileID, "_medium", "png");
+
+				var calls = trackLocalPaths(function(){
+					variables.fileManager.rotate(fileID=testFile.fileID);
+					variables.fileManager.flip(fileID=testFile.fileID);
+					variables.fileManager.cropAndScale(fileID=testFile.fileID, size="small", siteid=variables.siteid);
+					variables.fileManager.readSourceImage(fileID=testFile.fileID);
+					// ensureCachedImageSize() only regenerates a missing size.
+					fileDelete(mediumPath);
+					variables.fileManager.ensureCachedImageSize(fileID=testFile.fileID, size="medium", siteID=variables.siteid, fileExt="png");
+				});
+
+				expect(fileExists(mediumPath)).toBeTrue();
+				expect(arrayLen(calls.resolved)).toBeGT(0);
+				arraySort(calls.resolved, "textnocase");
+				arraySort(calls.released, "textnocase");
+				expect(calls.released).toBe(calls.resolved);
 			});
 
 		});
