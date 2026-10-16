@@ -944,6 +944,105 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfscript>
 </cffunction>
 
+<cffunction name="ensureCustomCacheImage" output="false" returntype="string"
+	hint="Returns the cache file name of a custom size of a cached image ({fileID}_{size}.{ext} for a
+	      named size, {fileID}_W{width}_H{height}.{ext} otherwise), generating it through the storage
+	      service when it's missing. Returns an empty string when the size has no usable dimensions.
+	      The storage-backed counterpart of processImgCfimage.getCustomImage(), which works on local files.">
+	<cfargument name="siteID" type="string" required="true" hint="File Pool ID">
+	<cfargument name="fileID" type="string" required="true">
+	<cfargument name="fileExt" type="string" required="true">
+	<cfargument name="size" default="">
+	<cfargument name="width" default="AUTO">
+	<cfargument name="height" default="AUTO">
+	<cfargument name="attempt" default="1">
+	<cfscript>
+		var storageService = getBean("fileStorageService");
+		var variant = "";
+
+		if (len(arguments.size)) {
+			variant = lcase(arguments.size);
+		} else if (arguments.width != "AUTO" || arguments.height != "AUTO") {
+			arguments.width = trim(replaceNoCase(arguments.width, "px", "", "all"));
+			arguments.height = trim(replaceNoCase(arguments.height, "px", "", "all"));
+			variant = "W#arguments.width#_H#arguments.height#";
+		}
+
+		var variantKey = variables.storageKeys.cacheFileKey(arguments.siteID, arguments.fileID, arguments.fileExt, variant);
+		var variantName = listLast(variantKey, "/");
+
+		if (cachedImageExists(variantKey, arguments.attempt)) {
+			return variantName;
+		}
+
+		var sourceKey = variables.storageKeys.cacheFileKey(arguments.siteID, arguments.fileID, arguments.fileExt, "source");
+		if (!cachedImageExists(sourceKey, arguments.attempt)) {
+			sourceKey = variables.storageKeys.cacheFileKey(arguments.siteID, arguments.fileID, arguments.fileExt);
+		}
+		// Without an original the custom size can't be created.
+		if (!cachedImageExists(sourceKey, arguments.attempt)) {
+			return variantName;
+		}
+
+		if (len(arguments.size)) {
+			var customImageSize = getBean('imageSize').loadBy(name=arguments.size, siteID=arguments.siteID);
+			arguments.width = customImageSize.getWidth();
+			arguments.height = customImageSize.getHeight();
+		}
+		if (!isNumeric(arguments.width) && !isNumeric(arguments.height)) {
+			return "";
+		}
+
+		var sourceLocal = "";
+		var target = createTempImagePath(variantKey);
+		try {
+			sourceLocal = storageService.resolveToLocal(sourceKey);
+			fileCopy(sourceLocal, target);
+			// resizeImage() leaves the copy as it is when no resize is needed.
+			variables.imageProcessor.resizeImage(image=target, height=arguments.height, width=arguments.width);
+			storageService.writeFromLocal(target, variantKey);
+		} catch (any e) {
+			if (arguments.attempt == 1) {
+				arguments.attempt = 2;
+				return ensureCustomCacheImage(argumentCollection=arguments);
+			}
+			rethrow;
+		} finally {
+			if (len(sourceLocal)) {
+				storageService.releaseLocal(sourceLocal);
+			}
+			if (fileExists(target)) {
+				fileDelete(target);
+			}
+		}
+
+		return variantName;
+	</cfscript>
+</cffunction>
+
+<cffunction name="cachedImageExists" access="private" output="false" returntype="boolean"
+	hint="Whether a cache object exists in storage. Remembers objects found when the cacheImageFileLookups setting is on, like processImgCfimage.doesImageFileExist(); attempt 2 checks storage again.">
+	<cfargument name="key" type="string" required="true">
+	<cfargument name="attempt" default="1">
+	<cfscript>
+		if (!variables.configBean.getValue(property="cacheImageFileLookups", defaultValue=false)) {
+			return getBean("fileStorageService").fileExists(arguments.key);
+		}
+		param name="variables.imageKeyLookup" default={};
+		if (arguments.attempt != 1) {
+			structDelete(variables.imageKeyLookup, arguments.key);
+		}
+		if (structKeyExists(variables.imageKeyLookup, arguments.key)) {
+			return true;
+		}
+		if (getBean("fileStorageService").fileExists(arguments.key)) {
+			variables.imageKeyLookup[arguments.key] = true;
+			return true;
+		}
+		return false;
+	</cfscript>
+</cffunction>
+
 <cffunction name="streamFile" output="false">
 <cfargument name="filePath">
 <cfargument name="filename">
@@ -1082,7 +1181,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset returnURL=begin & "/cache/file/" & arguments.fileID & imgSuffix & "." & arguments.fileEXT>
 
 			<cfelseif arguments.size neq 'custom'>
-				<cfset returnURL = getCustomImage(image="#application.configBean.getFileDir()#/#site.getFilePoolID()#/cache/file/#arguments.fileID#.#arguments.fileExt#",size=arguments.size,siteID=site.getFilePoolID())>
+				<cfset returnURL = ensureCustomCacheImage(siteID=site.getFilePoolID(),fileID=arguments.fileID,fileExt=arguments.fileExt,size=arguments.size)>
  				<cfif len(returnURL)>
  					<cfset returnURL = begin & "/cache/file/" & returnURL>
  				</cfif>
@@ -1093,7 +1192,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif not len(arguments.height)>
 					<cfset arguments.height="auto">
 				</cfif>
-				<cfset returnURL = begin & "/cache/file/" & getCustomImage(image="#application.configBean.getFileDir()#/#site.getFilePoolID()#/cache/file/#arguments.fileID#.#arguments.fileExt#",height=arguments.height,width=arguments.width,siteID=site.getFilePoolID())>
+				<cfset returnURL = begin & "/cache/file/" & ensureCustomCacheImage(siteID=site.getFilePoolID(),fileID=arguments.fileID,fileExt=arguments.fileExt,height=arguments.height,width=arguments.width)>
 			</cfif>
 		</cfif>
 	<cfelse>
