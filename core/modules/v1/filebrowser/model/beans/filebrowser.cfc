@@ -864,6 +864,18 @@ component
 		if(fw.checkFileExists(currentFilePath)) {
 			var newFilePath = conditionalexpandpath(filePath) & application.configBean.getFileDelim() & safeName & ext;
 
+			// Moving a file onto itself would delete it.
+			if(!compare(newFilePath, currentFilePath)) {
+				response.success = 1;
+				return response;
+			}
+
+			// The move would silently overwrite an existing file.
+			if(fw.checkFileExists(newFilePath) || fw.checkDirectoryExists(newFilePath)) {
+				response.message = "A file or folder with that name already exists.";
+				return response;
+			}
+
 			try {
 				fw.moveFile(currentFilePath, newFilePath);
 				success = 1;
@@ -874,6 +886,16 @@ component
 		}
 		else if(fw.checkDirectoryExists(currentFilePath)) {
 			var newFilePath = expandpath(filePath) & application.configBean.getFileDelim() & safeName;
+
+			if(!compare(newFilePath, currentFilePath)) {
+				response.success = 1;
+				return response;
+			}
+
+			if(fw.checkFileExists(newFilePath) || fw.checkDirectoryExists(newFilePath)) {
+				response.message = "A file or folder with that name already exists.";
+				return response;
+			}
 
 			try {
 				fw.renameDir(directory=currentFilePath, newDirectory=newFilePath);
