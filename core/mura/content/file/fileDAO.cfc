@@ -89,10 +89,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfreturn this />
 </cffunction>
 
-<cffunction name="getS3" output="false">
-	<cfreturn variables.s3 />
-</cffunction>
-
 <cffunction name="create" output="false">
 		<cfargument name="fileObj" type="any" required="yes"/>
 		<cfargument name="contentid" type="any" required="yes"/>
