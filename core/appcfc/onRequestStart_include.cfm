@@ -192,31 +192,48 @@ if ( fileExists(expandPath("/muraWRM/config/settings.custom.vars.cfm")) ) {
 }
 
 try {
-	if ( (not isdefined('cookie.userid') || cookie.userid == '') && structKeyExists(sessionData,"rememberMe") && session.rememberMe == 1 && sessionData.mura.isLoggedIn && len(application.configBean.getEncryptionKey()) ) {
-		application.utility.setCookie(name="userid",value=sessionData.mura.userID);
-		application.utility.setCookie(name="userHash",value=encrypt(application.userManager.readUserHash(sessionData.mura.userID).userHash,hash(application.configBean.getEncryptionKey() & application.userManager.readUserPassword(sessionData.mura.userID),'SHA-256'),application.configBean.getDefaultHashAlgorithm(),'hex'));
+	if ( !sessionData.mura.isLoggedIn && isDefined('cookie.rememberme') && cookie.rememberme != '' ) {
+		var rememberMeCookieParts=listToArray(cookie.rememberme,":",true);
+		if ( arrayLen(rememberMeCookieParts) == 2
+			&& reFind("^[A-Za-z0-9_-]{43}$",rememberMeCookieParts[1])
+			&& reFind("^[A-Za-z0-9_-]{43}$",rememberMeCookieParts[2]) ) {
+			application.loginManager.rememberMe(
+				selector=rememberMeCookieParts[1],
+				validator=rememberMeCookieParts[2]
+			);
+		} else {
+			application.utility.deleteCookie(name="rememberme");
+			sessionData.rememberMe=0;
+		}
 	}
-} catch (any cfcatch) {
-	application.utility.deleteCookie(name="userHash");
-	application.utility.deleteCookie(name="userid");
+	} catch (any cfcatch) {
+	application.utility.deleteCookie(name="rememberme");
+	sessionData.rememberMe=0;
 }
 try {
-	if ( isDefined('cookie.userid') && cookie.userid != ''
-		&& isDefined('cookie.userHash') && cookie.userHash != ''
-		&& !sessionData.mura.isLoggedIn
-		&& len(application.configBean.getEncryptionKey()) ) {
-		application.loginManager.rememberMe(cookie.userid,decrypt(cookie.userHash,hash(application.configBean.getEncryptionKey() & application.userManager.readUserPassword(cookie.userid),'SHA-256'),application.configBean.getDefaultHashAlgorithm(),'hex'));
+	if ( structKeyExists(sessionData,"rememberMe") && sessionData.rememberMe == 1 && sessionData.mura.isLoggedIn && !structKeyExists(sessionData,"rememberMeTokenIssued") ) {
+		if ( !isDefined('cookie.rememberme') || cookie.rememberme == '' ) {
+			var rememberMeToken=application.loginManager.createRememberMeToken(
+				userID=sessionData.mura.userID,
+				siteID=sessionData.mura.siteID
+			);
+			application.utility.setCookie(
+				name="rememberme",
+				value=rememberMeToken.selector & ":" & rememberMeToken.validator,
+				expires=rememberMeToken.expires
+			);
+			sessionData.rememberMeSelector=rememberMeToken.selector;
+		}
+		sessionData.rememberMeTokenIssued=1;
 	}
 } catch (any cfcatch) {
+	application.utility.deleteCookie(name="rememberme");
 }
-try {
-	if ( isDefined('cookie.userid') && cookie.userid != '' && structKeyExists(sessionData,"rememberMe") && sessionData.rememberMe == 0 && sessionData.mura.isLoggedIn ) {
-		application.utility.deleteCookie(name="userHash");
-		application.utility.deleteCookie(name="userid");
-	}
-} catch (any cfcatch) {
-	application.utility.deleteCookie(name="userHash");
+if ( isDefined('cookie.userid') && cookie.userid != '' ) {
 	application.utility.deleteCookie(name="userid");
+}
+if ( isDefined('cookie.userHash') && cookie.userHash != '' ) {
+	application.utility.deleteCookie(name="userHash");
 }
 
 if(request.muraSessionManagement){
