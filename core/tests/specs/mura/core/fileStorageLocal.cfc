@@ -202,6 +202,41 @@ component extends="testbox.system.BaseSpec" {
 		return calls;
 	}
 
+	// Runs body() while recording the keys passed to the storage service's
+	// listDirectory(), deleteObject() and fileExists(), the calls the
+	// cache-maintenance functions make. Wraps the singleton's methods for the
+	// duration, like trackLocalPaths() above.
+	function recordCacheStorageCalls(required function body){
+		var svc = application.serviceFactory.getBean('fileStorageService');
+		var real = new mura.fileStorage.localStorageService().init();
+		var calls = { listDirectory: [], deleteObject: [], fileExists: [] };
+		var originalListDirectory = svc.listDirectory;
+		var originalDeleteObject = svc.deleteObject;
+		var originalFileExists = svc.fileExists;
+		svc.listDirectory = function(path, filter="*", type="all"){
+			arrayAppend(calls.listDirectory, arguments.path);
+			return real.listDirectory(arguments.path, arguments.filter, arguments.type);
+		};
+		svc.deleteObject = function(key){
+			arrayAppend(calls.deleteObject, arguments.key);
+			real.deleteObject(arguments.key);
+		};
+		svc.fileExists = function(path){
+			arrayAppend(calls.fileExists, arguments.path);
+			return real.fileExists(arguments.path);
+		};
+		try {
+			arguments.body();
+		} finally {
+			// Restored one by one: a for-in loop inside this finally block
+			// crashes Lucee's compiler ("Operand stack underflow").
+			svc.listDirectory = originalListDirectory;
+			svc.deleteObject = originalDeleteObject;
+			svc.fileExists = originalFileExists;
+		}
+		return calls;
+	}
+
 	function run(){
 
 		describe("Local file storage - File content lifecycle", function(){
@@ -539,6 +574,39 @@ component extends="testbox.system.BaseSpec" {
 					expect(fileExists(variantPath)).toBeFalse("Expected cached variant to be removed by the purge: " & variantPath);
 				}
 				expect(fileExists(otherSmallPath)).toBeTrue();
+			});
+
+			it("should do its cache maintenance through the storage service", function(){
+				// The specs around this one check the results on disk, which
+				// they'd see either way with local storage. This one checks the
+				// cache is read and changed through the storage service, so a
+				// cloud backend's cache gets maintained too.
+				var testFile = createTestFile("cache maintenance routing test");
+				var keys = new mura.fileStorage.storageKey();
+				var cacheDir = keys.cacheDirKey(variables.siteid);
+
+				var orphanID = createUUID();
+				fileCopy(variables.fixtureSourceImage, cacheFilePath(orphanID, "", "png"));
+				var customSizeName = testFile.fileID & "_100_H.png";
+				var customSizePath = application.configBean.getFileDir() & "/" & variables.siteid & "/cache/file/" & customSizeName;
+
+				var calls = recordCacheStorageCalls(function(){
+					variables.fileManager.cleanFileCache(siteID=variables.siteid);
+					fileCopy(variables.fixtureSourceImage, customSizePath);
+					variables.fileManager.deleteCustomImageCache(siteID=variables.siteid, threshold=0);
+					variables.fileManager.rebuildImageCache(siteID=variables.siteid, size="small");
+				});
+
+				// cleanFileCache() and deleteCustomImageCache() list the cache...
+				expect(arrayFind(calls.listDirectory, cacheDir)).toBeGT(0);
+				// ...and delete through the service: the orphan, then the custom size.
+				expect(arrayFind(calls.deleteObject, keys.cacheFileKey(variables.siteid, orphanID, "png"))).toBeGT(0);
+				expect(arrayFind(calls.deleteObject, cacheDir & "/" & customSizeName)).toBeGT(0);
+				// rebuildImageCache() looks for each image's source in storage.
+				expect(arrayFind(calls.fileExists, keys.cacheFileKey(variables.siteid, testFile.fileID, "png", "source"))).toBeGT(0);
+
+				expect(fileExists(cacheFilePath(orphanID, "", "png"))).toBeFalse();
+				expect(fileExists(customSizePath)).toBeFalse();
 			});
 
 			it("should regenerate missing small/medium cache files via rebuildImageCache()", function(){

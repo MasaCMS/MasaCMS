@@ -762,7 +762,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rsDB="">
 	<cfset var rsDIR="">
 	<cfset var rsCheck="">
-	<cfset var filePath="#application.configBean.getFileDir()#/#arguments.siteID#/cache/file/">
+	<cfset var storageService=getBean("fileStorageService")>
+	<cfset var cacheDir=variables.storageKeys.cacheDirKey(arguments.siteID)>
 	<cfset var check="">
 
 	<!--- Allow function to be escaped for huge file directories --->
@@ -774,7 +775,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	select fileID from tfiles where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
 	</cfquery>
 
-	<cfdirectory action="list" name="rsDIR" directory="#filePath#">
+	<cfset rsDIR=storageService.listDirectory(cacheDir, "*", "file")>
 
 	<cfloop query="rsDir">
 		<cfif not find('.svn',#rsDir.name#)>
@@ -783,12 +784,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfquery>
 
 			<cfif not rsCheck.recordcount>
-				<cffile action="delete" file="#filepath##rsDir.name#">
+				<cfset storageService.deleteObject(cacheDir & "/" & rsDir.name)>
 			</cfif>
 		</cfif>
 	</cfloop>
 
-	<cfdirectory action="list" name="rsDIR" directory="#filePath#">
+	<cfset rsDIR=storageService.listDirectory(cacheDir, "*", "file")>
 
 	<cfquery name="rsCheck" dbType="query">
 	select * from rsDIR where name like '%\_H%' ESCAPE '\'
@@ -801,7 +802,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif len(check) gt 1>
 					<cfset check=mid(check,2,1)>
 					<cfif isNumeric(check)>
-						<cffile action="delete" file="#filepath##rsCheck.name#">
+						<cfset storageService.deleteObject(cacheDir & "/" & rsCheck.name)>
 					</cfif>
 				</cfif>
 			</cfif>
@@ -829,13 +830,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="siteID">
 <cfargument name="threshold" type="numeric" default="1" hint="How old in days the image must be before it is removed.">
 
-	<cfset var cacheFilePath=application.configBean.getFileDir() & "/" & arguments.siteID & "/cache/file/">
+	<cfset arguments.siteid=variables.settingsManager.getSite(arguments.siteid).getFilePoolID()>
+
+	<cfset var storageService=getBean("fileStorageService")>
+	<cfset var cacheDir=variables.storageKeys.cacheDirKey(arguments.siteID)>
 	<cfset var check = "">
 	<cfset var rsDir="">
 	<cfset var rsCustomImages="">
 	<cfset var thresholdDate = dateAdd("d", -arguments.threshold, now())>
 
-	<cfdirectory action="list" name="rsDIR" directory="#cacheFilePath#">
+	<cfset rsDIR=storageService.listDirectory(cacheDir, "*", "file")>
 
 	<cfquery name="rsCustomImages" dbType="query">
 		select * from rsDIR where name like '%_H%' and dateLastModified < <cfqueryparam cfsqltype="cf_sql_timestamp" value="#thresholdDate#">
@@ -843,7 +847,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfloop query="rsCustomImages">
 		<cfif isNumeric(replaceNoCase(listGetAt(rsCustomImages.name, 2, "_"), "w", "", "one"))>
-			<cffile action="delete" file="#cacheFilePath##rsCustomImages.name#">
+			<cfset storageService.deleteObject(cacheDir & "/" & rsCustomImages.name)>
 		</cfif>
 	</cfloop>
 </cffunction>
@@ -855,7 +859,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset arguments.siteid=variables.settingsManager.getSite(arguments.siteid).getFilePoolID()>
 
-	<cfset var cacheFilePath=application.configBean.getFileDir() & "/" & arguments.siteID & "/cache/file/">
+	<cfset var storageService=getBean("fileStorageService")>
 	<cfset var currentSite=variables.settingsManager.getSite(arguments.siteID)>
 	<cfset var currentSource="">
 	<cfset var imageSize="">
@@ -873,15 +877,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<!--- Determine source file and rebuild image file cache. --->
 	<cfloop query="rsDB">
-		<cfset currentSource=cacheFilePath & rsDB.fileID & "_source." & rsDB.fileEXT>
+		<cfset currentSource=getCacheImageKey(arguments.siteID, rsDB.fileID, rsDB.fileEXT, "source")>
 
 		<!--- Source file is missing, use large file. --->
-		<cfif not fileExists(currentSource)>
-			<cfset currentSource=cacheFilePath & rsDB.fileID & "." & rsDB.fileEXT>
+		<cfif not storageService.fileExists(currentSource)>
+			<cfset currentSource=getCacheImageKey(arguments.siteID, rsDB.fileID, rsDB.fileEXT, "large")>
 		</cfif>
 
 
-		<cfif fileExists(currentSource)>
+		<cfif storageService.fileExists(currentSource)>
 			<cfloop list="#sizeList#" index="imageSize">
 				<cfset cropAndScale(fileID=rsDB.fileID,size=imageSize,siteid=arguments.siteid)>
 			</cfloop>
