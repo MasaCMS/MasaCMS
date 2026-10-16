@@ -757,14 +757,15 @@ This file is part of Mura CMS.
 	</cffunction>
 
 	<cffunction name="getAssetUrl" output="false" returntype="string"
-		hint="Returns the stable local proxy URL for a site's User_Assets, regardless of backend.">
+		hint="Returns the public URL of a site's User_Assets. Resolves through the site's File Pool and honors the assetPath / fileAssetPath config, like filebrowser's getBaseResourcePath().">
 		<cfargument name="siteid" type="string" required="true">
+		<cfargument name="complete" required="false" default="0" hint="Return an absolute URL including the domain">
 		<cfscript>
 			var site = application.settingsManager.getSite(arguments.siteid);
-			return application.configBean.getContext()
-				& application.configBean.getSiteAssetPath()
-				& "/" & site.getFilepoolID()
-				& "/assets";
+			if (isValid('URL', application.configBean.getAssetPath())) {
+				return application.configBean.getAssetPath() & "/" & site.getFilePoolID() & "/assets";
+			}
+			return site.getFileAssetPath(complete=arguments.complete) & "/assets";
 		</cfscript>
 	</cffunction>
 
