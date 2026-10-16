@@ -583,34 +583,30 @@ component extends="testbox.system.BaseSpec" {
 				variables.fileManager.deleteAll(contentID=plainContentID);
 			});
 
-			it("should write a .jpg small thumbnail for a flv-extension file", function(){
+			it("should write .jpg small and medium thumbnails for a flv-extension file", function(){
 				// A real .flv upload never reaches this branch with
 				// anything to write: Process()'s image-manipulation step
 				// only fires for jpg/jpeg/png/gif, so fileObjSmall/
 				// fileObjMedium always come back empty for a real flv file
 				// going through emulateUpload()+Process(). This calls
-				// create() directly with a real, pre-made "poster frame"
-				// image instead, to exercise the flv branch's own logic in
-				// isolation - it writes whatever small image it's given as
-				// "_small.jpg" regardless of the main file's own extension.
+				// create() directly with real, pre-made "poster frame"
+				// images instead, to exercise the flv branch's own logic in
+				// isolation - it writes whatever small/medium images it's
+				// given as "_small.jpg"/"_medium.jpg" regardless of the main
+				// file's own extension.
 				//
-				// fileObjMedium is deliberately NOT provided: this branch's
-				// own medium-thumbnail line (fileDAO.cfc, the non-binary/
-				// fileDir "flv" case) calls fileWriter.writeFile() with
-				// moveFile()'s argument names (destination=/source=) rather
-				// than writeFile()'s actual ones (file=/output=) - confirmed
-				// live, it throws "[.../core/mura] is not a file" the
-				// moment fileObjMedium is non-empty. A real pre-existing
-				// bug, near-certainly never hit in production (nothing
-				// upstream ever populates a non-empty fileObjMedium for a
-				// real flv upload through this pipeline either) - worth
-				// fixing, but not something to paper over by making this
-				// test avoid it silently.
+				// On release/8.0 the medium-thumbnail line called
+				// fileWriter.writeFile() with moveFile()'s argument names
+				// (destination=/source=) and threw "[.../core/mura] is not a
+				// file" for any non-empty fileObjMedium.
 				var posterSmall = application.configBean.getTempDir() & "/fstest-flvsmall-" & variables.runTag & ".png";
+				var posterMedium = application.configBean.getTempDir() & "/fstest-flvmedium-" & variables.runTag & ".png";
 				var mainFlv = application.configBean.getTempDir() & "/fstest-video-" & variables.runTag & ".flv";
 				fileCopy(variables.fixtureSourceImage, posterSmall);
+				fileCopy(variables.fixtureSourceImage, posterMedium);
 				fileCopy(variables.fixtureSourceFlv, mainFlv);
 				arrayAppend(variables.extraTempFiles, posterSmall);
+				arrayAppend(variables.extraTempFiles, posterMedium);
 				arrayAppend(variables.extraTempFiles, mainFlv);
 
 				var contentBean = variables.$.getBean('content');
@@ -633,21 +629,18 @@ component extends="testbox.system.BaseSpec" {
 					moduleID       = "00000000000000000000000000000000000",
 					fileExt        = "flv",
 					fileObjSmall   = posterSmall,
-					// Required by create()'s own signature (no default) -
-					// left empty on purpose so its `len(fileObjMedium) AND
-					// FileExists(...)` guard evaluates false and the known-
-					// broken medium-thumbnail line never executes.
-					fileObjMedium  = ""
+					fileObjMedium  = posterMedium
 				);
 
 				contentBean.setValue('fileid', flvFileID);
 				contentBean.save();
 
-				// create() moves fileObj/fileObjSmall into place rather than
-				// copying them, so the temp paths registered above are
-				// already gone at this point - no double-cleanup needed.
+				// create() moves fileObj/fileObjSmall/fileObjMedium into place
+				// rather than copying them, so the temp paths registered above
+				// are already gone at this point - no double-cleanup needed.
 				expect(fileExists(cacheFilePath(flvFileID, "", "flv"))).toBeTrue();
 				expect(fileExists(cacheFilePath(flvFileID, "_small", "jpg"))).toBeTrue();
+				expect(fileExists(cacheFilePath(flvFileID, "_medium", "jpg"))).toBeTrue();
 
 				variables.fileManager.deleteAll(contentID=flvContentID);
 			});
