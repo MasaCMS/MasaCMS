@@ -179,4 +179,17 @@ the Free Software Foundation, Version 2 of the License.
 		<cfargument name="key" type="string" required="true" hint="Storage key, e.g. {siteid}/cache/file/{id}.{ext}">
 	</cffunction>
 
+	<cffunction name="listObjects" returntype="array" access="public" output="false"
+		hint="List the stored objects directly under a path whose names start with prefix (not recursive).
+		      Returns an array of full storage keys (path + name), usable with deleteObject().
+		      Returns an empty array if nothing matches or the path does not exist.
+		      Required: fileDAO.deleteCachedFile() relies on it to remove every cached variant
+		      of a file, including custom image sizes. There is no fallback, so a backend whose
+		      store cannot list by prefix must handle that inside its own listObjects(), and a
+		      cloud backend needs list permission (e.g. s3:ListBucket, storage.objects.list)
+		      as well as delete permission.">
+		<cfargument name="path" type="string" required="true" hint="Storage key of the containing directory, e.g. {siteid}/cache/file/">
+		<cfargument name="prefix" type="string" required="false" default="" hint="Only include objects whose names start with this, e.g. a fileID">
+	</cffunction>
+
 </cfinterface>

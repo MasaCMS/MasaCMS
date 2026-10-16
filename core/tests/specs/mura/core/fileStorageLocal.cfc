@@ -478,6 +478,39 @@ component extends="testbox.system.BaseSpec" {
 				expect(fileExists(realSmallPath)).toBeTrue();
 			});
 
+			it("should remove every cached variant of a file, including custom sizes, when purgeDeleted() removes it", function(){
+				// purgeDeleted() -> fileDAO.deleteCachedFile() must delete every
+				// {fileID}* file in the cache, not just the fixed default /
+				// _source / _small / _medium names: custom-size variants
+				// (cropAndScale(), ensureCachedImageSize()) are named
+				// {fileID}_{size}.{ext}.
+				var testFile = createTestFile("purge custom size test");
+				var cachedVariants = [
+					cacheFilePath(testFile.fileID, "", "png"),
+					cacheFilePath(testFile.fileID, "_source", "png"),
+					cacheFilePath(testFile.fileID, "_small", "png"),
+					cacheFilePath(testFile.fileID, "_medium", "png"),
+					cacheFilePath(testFile.fileID, "_200x100", "png")
+				];
+				fileCopy(variables.fixtureSourceImage, cachedVariants[5]);
+
+				// A live file's cache must survive the same purge.
+				var otherFile = createTestFile("purge custom size bystander");
+				var otherSmallPath = cacheFilePath(otherFile.fileID, "_small", "png");
+
+				for (var variantPath in cachedVariants) {
+					expect(fileExists(variantPath)).toBeTrue("Expected cached variant to exist before the purge: " & variantPath);
+				}
+
+				variables.fileManager.deleteVersion(fileID=testFile.fileID);
+				variables.fileManager.purgeDeleted(siteid=variables.siteid);
+
+				for (var variantPath in cachedVariants) {
+					expect(fileExists(variantPath)).toBeFalse("Expected cached variant to be removed by the purge: " & variantPath);
+				}
+				expect(fileExists(otherSmallPath)).toBeTrue();
+			});
+
 			it("should regenerate missing small/medium cache files via rebuildImageCache()", function(){
 				var testFile = createTestFile("rebuildImageCache test");
 				var smallPath = cacheFilePath(testFile.fileID, "_small", "png");
