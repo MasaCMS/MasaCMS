@@ -404,6 +404,7 @@ if ( application.setupComplete ) {
 		variables.serviceFactory.addAlias("contentDisplayInterval","contentDisplayIntervalBean");
 		variables.serviceFactory.addAlias("oauthClient","oauthClientBean");
 		variables.serviceFactory.addAlias("oauthToken","oauthTokenBean");
+		variables.serviceFactory.addAlias("rememberMeToken","rememberMeTokenBean");
 		variables.serviceFactory.addAlias("dataCollection","dataCollectionBean");
 		variables.serviceFactory.addAlias("entity","beanEntity");
 
@@ -465,6 +466,7 @@ if ( application.setupComplete ) {
 		variables.serviceFactory.getBean('variationTargeting');
 		variables.serviceFactory.getBean('oauthClient');
 		variables.serviceFactory.getBean('oauthToken');
+		variables.serviceFactory.getBean('rememberMeToken');
 		variables.serviceFactory.getBean('entity');
 	}
 
@@ -589,6 +591,23 @@ if ( application.setupComplete ) {
 			);
 			commitTracePoint(variables.tracePoint);
 		}
+	} catch (any cfcatch) {
+	}
+	try {
+		local.rememberMeCleanupURL = "http://" & listFirst(cgi.http_host, ":")
+			& application.configBean.getContext() & "/index.cfm/_api/internal/rememberme-cleanup/";
+		application.serviceFactory.getBean('utility').scheduleTask(
+			action = "update",
+			task = "muraRememberMeTokenCleanup",
+			operation = "HTTPRequest",
+			url = local.rememberMeCleanupURL,
+			port = "#variables.port#",
+			startDate = "#dateFormat(now(),'mm/dd/yyyy')#",
+			startTime = "#createTime(1,0,0)#",
+			publish = "No",
+			interval = "86400",
+			requestTimeOut = "60"
+		);
 	} catch (any cfcatch) {
 	}
 
@@ -854,6 +873,10 @@ if ( application.setupComplete ) {
 				variables.themeConfig=fileRead(variables.themedir & "/" & variables.themeConfig);
 			}
 			if ( IsValid('xml', variables.themeConfig) ) {
+				if ( !structKeyExists(variables,'parseXML') ) {
+					backportdir='/mura/backport/';
+					include "#backportdir#backport.cfm";
+				}
 				variables.themeConfig=parseXML(variables.themeConfig);
 				application.configBean.getClassExtensionManager().loadConfigXML(variables.themeConfig,variables.rsSites['siteid'][i]);
 			}
