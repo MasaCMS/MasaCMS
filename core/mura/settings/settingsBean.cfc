@@ -2099,7 +2099,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		return this;
 	}
 
-	ublic function setModuleFilePath(filepath, result) output=false {
+	public function setModuleFilePath(filepath, result) output=false {
 		setDisplayObjectFilePath(argumentCollection=arguments);
 		return this;
 	}
