@@ -15,8 +15,12 @@ the Free Software Foundation, Version 2 of the License.
 	      at instantiation. Expected internal structures (query columns, struct keys)
 	      are documented per method and match CFML native returns.
 	      Implement this interface to create a pluggable storage backend for Masa CMS
-	      User_Assets. Register the implementation via a module eventHandler that overrides
-	      standardUserAssetActionHandler.">
+	      User_Assets. Core code never references an implementation directly: it resolves
+	      the 'fileStorageService' bean, which onApplicationStart_include.cfm aliases to
+	      the default 'localStorageService' singleton. To use another backend, declare it
+	      as a bean and point the alias at it, e.g. when your module loads:
+	        serviceFactory.declareBean('myStorageService', 'path.to.myStorageService', true);
+	        serviceFactory.addAlias('fileStorageService', 'myStorageService');">
 
 	<!--- ==================== READ ==================== --->
 
