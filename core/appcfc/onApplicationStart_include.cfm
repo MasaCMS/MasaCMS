@@ -591,6 +591,23 @@ if ( application.setupComplete ) {
 		}
 	} catch (any cfcatch) {
 	}
+	try {
+		local.rememberMeCleanupURL = "http://" & listFirst(cgi.http_host, ":")
+			& application.configBean.getContext() & "/index.cfm/_api/internal/rememberme-cleanup/";
+		application.serviceFactory.getBean('utility').scheduleTask(
+			action = "update",
+			task = "muraRememberMeTokenCleanup",
+			operation = "HTTPRequest",
+			url = local.rememberMeCleanupURL,
+			port = "#variables.port#",
+			startDate = "#dateFormat(now(),'mm/dd/yyyy')#",
+			startTime = "#createTime(1,0,0)#",
+			publish = "No",
+			interval = "86400",
+			requestTimeOut = "60"
+		);
+	} catch (any cfcatch) {
+	}
 
 	//BEGIN CONFIG DIR MANAGEMENT
 	if ( !fileExists(application.configBean.getWebRoot() & "/config/Application.cfc") ) {
@@ -854,6 +871,8 @@ if ( application.setupComplete ) {
 				variables.themeConfig=fileRead(variables.themedir & "/" & variables.themeConfig);
 			}
 			if ( IsValid('xml', variables.themeConfig) ) {
+				backportdir='/mura/backport/';
+				include "#backportdir#backport.cfm";
 				variables.themeConfig=parseXML(variables.themeConfig);
 				application.configBean.getClassExtensionManager().loadConfigXML(variables.themeConfig,variables.rsSites['siteid'][i]);
 			}

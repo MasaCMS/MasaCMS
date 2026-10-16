@@ -708,6 +708,89 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rsUserHash/>
 </cffunction>
 
+<cffunction name="createRememberMeToken" output="false">
+	<cfargument name="tokenID" type="string" required="true">
+	<cfargument name="userID" type="string" required="true">
+	<cfargument name="siteID" type="string" required="true">
+	<cfargument name="selector" type="string" required="true">
+	<cfargument name="validatorHash" type="string" required="true">
+	<cfargument name="expires" type="date" required="true">
+	<cfargument name="created" type="date" required="true">
+	<cfargument name="lastused" type="date" required="true">
+
+	<cfquery>
+		INSERT INTO tremembertokens (tokenID, userID, siteID, selector, validatorHash, expires, created, lastused)
+		VALUES (
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tokenID#">,
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#">,
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">,
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.selector#">,
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.validatorHash#">,
+			<cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.expires#">,
+			<cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.created#">,
+			<cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.lastused#">
+		)
+	</cfquery>
+
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="readRememberMeToken" output="false">
+	<cfargument name="selector" type="string" required="true">
+	<cfset var rsToken="">
+
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsToken')#">
+		SELECT tokenID, userID, siteID, selector, validatorHash, expires, created, lastused
+		FROM tremembertokens
+		WHERE selector=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.selector#">
+	</cfquery>
+
+	<cfreturn rsToken>
+</cffunction>
+
+<cffunction name="rotateRememberMeToken" output="false">
+	<cfargument name="tokenID" type="string" required="true">
+	<cfargument name="oldValidatorHash" type="string" required="true">
+	<cfargument name="validatorHash" type="string" required="true">
+	<cfargument name="expires" type="date" required="true">
+	<cfargument name="lastused" type="date" required="true">
+	<cfset var updateResult={recordCount=0}>
+
+	<cfquery result="updateResult">
+		UPDATE tremembertokens
+		SET validatorHash=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.validatorHash#">,
+			expires=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.expires#">,
+			lastused=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.lastused#">
+		WHERE tokenID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tokenID#">
+			AND validatorHash=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.oldValidatorHash#">
+	</cfquery>
+
+	<cfreturn updateResult.recordCount eq 1>
+</cffunction>
+
+<cffunction name="deleteRememberMeToken" output="false">
+	<cfargument name="selector" type="string" required="true">
+
+	<cfquery>
+		DELETE FROM tremembertokens
+		WHERE selector=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.selector#">
+	</cfquery>
+
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="deleteExpiredRememberMeTokens" output="false">
+	<cfargument name="lastUsedBefore" type="date" required="true">
+
+	<cfquery>
+		DELETE FROM tremembertokens
+		WHERE expires <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
+			OR lastused <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.lastUsedBefore#">
+	</cfquery>
+
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="readAddress" output="false">
 		<cfargument name="addressid" type="string" required="yes" />
 		<cfargument name="addressBean" />
