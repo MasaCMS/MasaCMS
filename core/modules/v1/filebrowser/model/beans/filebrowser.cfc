@@ -141,7 +141,11 @@ component
 
 		var fw = getBean('fileWriter');
 		var localPath = fw.resolveToLocal(conditionalExpandPath(filePath));
-		var sourceImage = ImageNew(localPath);
+		try {
+			var sourceImage = ImageNew(localPath);
+		} finally {
+			fw.releaseLocal(localPath);
+		}
 
 		if(arguments.dimensions.aspect eq "within") {
 			if(!isNumeric(arguments.dimensions.width) || !isNumeric(arguments.dimensions.height) || arguments.dimensions.width < 1 || arguments.dimensions.height < 1) {
@@ -229,7 +233,11 @@ component
 
 		var fw = getBean('fileWriter');
 		var localPath = fw.resolveToLocal(conditionalExpandPath(filePath));
-		var sourceImage = ImageNew(localPath);
+		try {
+			var sourceImage = ImageNew(localPath);
+		} finally {
+			fw.releaseLocal(localPath);
+		}
 
 		while(fw.checkFileExists(destination)) {
 			version++;
@@ -287,7 +295,11 @@ component
 
 		var fw = getBean('fileWriter');
 		var localPath = fw.resolveToLocal(conditionalExpandPath(filePath));
-		var sourceImage = ImageNew(localPath);
+		try {
+			var sourceImage = ImageNew(localPath);
+		} finally {
+			fw.releaseLocal(localPath);
+		}
 		var sourceImageInfo = imageInfo(sourceImage);
 		ImageRotate(sourceImage,int(sourceImageInfo.width/2),int(sourceImageInfo.height/2),rotation);
 
@@ -350,13 +362,20 @@ component
 
 		var fw = getBean('fileWriter');
 		var localPath = fw.resolveToLocal(conditionalExpandPath(filePath));
-		var sourceImage = ImageNew(localPath);
-
-		ImageScaleToFit(sourceImage,size.width,size.height,"highestPerformance");
 		var tempFile1 = tempDir & timage & "." & arguments.file.ext;
-		ImageWrite(sourceImage, tempFile1);
-		var workImage = ImageNew(tempFile1);
-		sourceImage = ImageNew(localPath);
+		try {
+			var sourceImage = ImageNew(localPath);
+
+			ImageScaleToFit(sourceImage,size.width,size.height,"highestPerformance");
+			ImageWrite(sourceImage, tempFile1);
+			var workImage = ImageNew(tempFile1);
+			sourceImage = ImageNew(localPath);
+		} finally {
+			fw.releaseLocal(localPath);
+			if(fileExists(tempFile1)) {
+				fileDelete(tempFile1);
+			}
+		}
 
 		var workImageInfo = imageInfo(workImage);
 		var sourceImageInfo = imageInfo(sourceImage);
@@ -374,7 +393,11 @@ component
 		ImageWrite(sourceImage, tempFile2);
 		fw.writeFromLocal(tempFile2, conditionalExpandPath(filePath));
 		var croppedLocalPath = fw.resolveToLocal(conditionalExpandPath(filePath));
-		workImage = ImageNew(croppedLocalPath);
+		try {
+			workImage = ImageNew(croppedLocalPath);
+		} finally {
+			fw.releaseLocal(croppedLocalPath);
+		}
 
 		response.info = imageInfo(workImage);
 		response.aspect = aspect;
@@ -1117,8 +1140,9 @@ component
 				frow['ext'] = rereplace(frow['fullname'],".[^\.]*\.","");
 			if( frow['isimage'] ) {
 			// Reading an image could fail
+			var localImagePath = "";
 			try {
-					var localImagePath = fw.resolveToLocal(conditionalExpandPath(filePath) & application.configBean.getFileDelim() & frow['fullname']);
+					localImagePath = fw.resolveToLocal(conditionalExpandPath(filePath) & application.configBean.getFileDelim() & frow['fullname']);
 					var readImage = imageRead(localImagePath);
 					var iinfo = imageInfo(readImage);
 					if( isStruct(iinfo)) {
@@ -1127,6 +1151,10 @@ component
 						}
 				} catch (any e) {
 					// Do nothing; reading image has failed, no width and height info is available
+				} finally {
+					if(len(localImagePath)) {
+						fw.releaseLocal(localImagePath);
+					}
 				}
 			}
 			}
