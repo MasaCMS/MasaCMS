@@ -218,7 +218,7 @@ the Free Software Foundation, Version 2 of the License.
 	<!---
 		uploadBinary and deleteObject use the unified key format {siteid}/{subtype}/{path}
 		and always resolve relative to configBean.getFileDir() regardless of basePath.
-		They are the counterparts to the same methods on gcsStorageService / s3StorageService.
+		A cloud backend (shipped as its own module) implements the same methods against its bucket.
 	--->
 
 	<cffunction name="uploadBinary" access="public" returntype="void" output="false"
