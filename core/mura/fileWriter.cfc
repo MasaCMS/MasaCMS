@@ -168,6 +168,7 @@ This file is part of Mura CMS.
 		<cfargument name="source">
 		<cfargument name="destination">
 		<cfargument name="mode" required="true" default="#variables.defaultFileMode#">
+		<cfset var resolvedSource = "">
 		<cfscript>
 			if (variables.routeUserAssets) {
 				var srcInfo = isUserAssetPath(arguments.source);
@@ -184,30 +185,39 @@ This file is part of Mura CMS.
 					getBean('fileStorageService').writeFromLocal(tempCopy, assetKey(dstInfo));
 					return this;
 				} else if (srcInfo.isUserAsset) {
-					arguments.source = getBean('fileStorageService').resolveToLocal(assetKey(srcInfo));
+					resolvedSource = getBean('fileStorageService').resolveToLocal(assetKey(srcInfo));
+					arguments.source = resolvedSource;
 				}
 			}
 		</cfscript>
-		<cflock name="mfw#hash(arguments.source)#" type="exclusive" timeout="5">
-			<cftry>
-				<cfif variables.useMode >
-					<cffile action="copy" mode="#arguments.mode#" source="#arguments.source#" destination="#arguments.destination#" />
-				<cfelse>
-					<cffile action="copy" source="#arguments.source#" destination="#arguments.destination#" />
-				</cfif>
-				<cfcatch>
-					<cfset sleep(RandRange(500, 1000))>
-					<cfif fileExists(arguments.destination)>
-						<cfset fileDelete(arguments.destination)>
-					</cfif>
+		<cftry>
+			<cflock name="mfw#hash(arguments.source)#" type="exclusive" timeout="5">
+				<cftry>
 					<cfif variables.useMode >
 						<cffile action="copy" mode="#arguments.mode#" source="#arguments.source#" destination="#arguments.destination#" />
 					<cfelse>
 						<cffile action="copy" source="#arguments.source#" destination="#arguments.destination#" />
 					</cfif>
-				</cfcatch>
-			</cftry>
-		</cflock>
+					<cfcatch>
+						<cfset sleep(RandRange(500, 1000))>
+						<cfif fileExists(arguments.destination)>
+							<cfset fileDelete(arguments.destination)>
+						</cfif>
+						<cfif variables.useMode >
+							<cffile action="copy" mode="#arguments.mode#" source="#arguments.source#" destination="#arguments.destination#" />
+						<cfelse>
+							<cffile action="copy" source="#arguments.source#" destination="#arguments.destination#" />
+						</cfif>
+					</cfcatch>
+				</cftry>
+			</cflock>
+			
+			<cffinally>
+				<cfif len(resolvedSource)>
+					<cfset getBean('fileStorageService').releaseLocal(resolvedSource)>
+				</cfif>
+			</cffinally>
+		</cftry>
 		<cfreturn this />
 	</cffunction>
 
@@ -292,7 +302,7 @@ This file is part of Mura CMS.
 					// addNewLine here, as cffile action="write" would below.
 					var content = arguments.output;
 					if (arguments.addNewLine && isSimpleValue(content)) {
-						content &= createObject("java", "java.lang.System").lineSeparator();
+						content &= findNoCase("Windows", server.os.name) ? chr(13) & chr(10) : chr(10);
 					}
 					getBean('fileStorageService').writeFile(assetKey(assetInfo), content);
 					return this;
@@ -727,7 +737,7 @@ This file is part of Mura CMS.
 	</cffunction>
 
 	<cffunction name="resolveToLocal" output="false" returntype="string"
-		hint="Resolve a User_Assets path to an absolute local filesystem path. For cloud storage, downloads to temp.">
+		hint="Resolve a User_Assets path to an absolute local filesystem path. For cloud storage, downloads to temp. Pass the result to releaseLocal() when done.">
 		<cfargument name="file" type="string" required="true">
 		<cfscript>
 			if (variables.routeUserAssets) {
@@ -738,6 +748,14 @@ This file is part of Mura CMS.
 			}
 			return arguments.file;
 		</cfscript>
+	</cffunction>
+
+	<cffunction name="releaseLocal" output="false" returntype="void"
+		hint="Release a path returned by resolveToLocal() once done with it. Safe for any path: the storage service only deletes temp copies it created.">
+		<cfargument name="localPath" type="string" required="true">
+		<cfif variables.routeUserAssets>
+			<cfset getBean('fileStorageService').releaseLocal(arguments.localPath)>
+		</cfif>
 	</cffunction>
 
 	<cffunction name="writeFromLocal" output="false" returntype="void"

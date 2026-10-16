@@ -250,10 +250,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					}
 					if (!_streamed) {
 						var _local = _svc.resolveToLocal(_key);
-						if (!len(_local) || !fileExists(_local)) {
-							getBean("contentServer").render404();
+						try {
+							if (!len(_local) || !fileExists(_local)) {
+								getBean("contentServer").render404();
+							}
+							streamFile(_local, rsFileData.filename, rsFileData.contentType & "/" & rsFileData.contentSubType, arguments.method, rsFileData.created);
+						} finally {
+							// Runs even though streamFile()/render404() end the request.
+							_svc.releaseLocal(_local);
 						}
-						streamFile(_local, rsFileData.filename, rsFileData.contentType & "/" & rsFileData.contentSubType, arguments.method, rsFileData.created);
 					}
 				</cfscript>
 				<cfset pluginManager.announceEvent("onAfterFileRender",pluginEvent)>
@@ -299,8 +304,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					var _svc = getBean("fileStorageService");
 					if (!_svc.streamToResponse(_key, arguments.method)) {
 						var _local = _svc.resolveToLocal(_key);
-						if (!len(_local) || !fileExists(_local)) { getBean("contentServer").render404(); }
-						streamFile(_local, rsFile.filename, rsFile.contentType & "/" & rsFile.contentSubType, arguments.method, rsFile.created);
+						try {
+							if (!len(_local) || !fileExists(_local)) { getBean("contentServer").render404(); }
+							streamFile(_local, rsFile.filename, rsFile.contentType & "/" & rsFile.contentSubType, arguments.method, rsFile.created);
+						} finally {
+							_svc.releaseLocal(_local);
+						}
 					}
 				</cfscript>
 			</cfdefaultcase>
@@ -345,8 +354,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					var _svc = getBean("fileStorageService");
 					if (!_svc.streamToResponse(_key, arguments.method)) {
 						var _local = _svc.resolveToLocal(_key);
-						if (!len(_local) || !fileExists(_local)) { getBean("contentServer").render404(); }
-						streamFile(_local, rsFile.filename, rsFile.contentType & "/" & rsFile.contentSubType, arguments.method, rsFile.created);
+						try {
+							if (!len(_local) || !fileExists(_local)) { getBean("contentServer").render404(); }
+							streamFile(_local, rsFile.filename, rsFile.contentType & "/" & rsFile.contentSubType, arguments.method, rsFile.created);
+						} finally {
+							_svc.releaseLocal(_local);
+						}
 					}
 				</cfscript>
 			</cfdefaultcase>
@@ -417,13 +430,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			return;
 		}
 		var localPath = service.resolveToLocal(key);
-		if (!len(localPath) || !fileExists(localPath)) {
-			getBean("contentServer").render404();
+		try {
+			if (!len(localPath) || !fileExists(localPath)) {
+				getBean("contentServer").render404();
+			}
+			var mimeType = FileGetMimeType(localPath);
+			var filename = getFileFromPath(localPath);
+			streamFile(localPath, filename, mimeType, arguments.method,
+			           getFileInfo(localPath).lastModified, false, true);
+		} finally {
+			// Runs even though streamFile()/render404() end the request.
+			service.releaseLocal(localPath);
 		}
-		var mimeType = FileGetMimeType(localPath);
-		var filename = getFileFromPath(localPath);
-		streamFile(localPath, filename, mimeType, arguments.method,
-		           getFileInfo(localPath).lastModified, false, true);
 	</cfscript>
 </cffunction>
 
@@ -901,14 +919,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			return false;
 		}
 
-		cropAndScale(
-			fileID = arguments.fileID,
-			size = arguments.size,
-			siteID = arguments.siteID,
-			sourcePath = sourceLocal,
-			targetPath = targetLocal,
-			storageKey = cacheKey
-		);
+		try {
+			cropAndScale(
+				fileID = arguments.fileID,
+				size = arguments.size,
+				siteID = arguments.siteID,
+				sourcePath = sourceLocal,
+				targetPath = targetLocal,
+				storageKey = cacheKey
+			);
+		} finally {
+			storageService.releaseLocal(sourceLocal);
+			// cropAndScale() leaves a caller-supplied targetPath to the caller.
+			if (fileExists(targetLocal)) {
+				fileDelete(targetLocal);
+			}
+		}
 
 		return storageService.fileExists(cacheKey);
 	</cfscript>
@@ -1113,14 +1139,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset pluginManager.announceEvent("onBeforeImageManipulation",pluginEvent)>
 
+	<!--- Only a source resolved here is released here; a caller-supplied sourcePath is the caller's. --->
+	<cfset var resolvedSource="">
 	<cfif len(arguments.sourcePath)>
 		<cfset source=arguments.sourcePath>
 	<cfelseif storageService.fileExists(sourceKey)>
-		<cfset source=storageService.resolveToLocal(sourceKey)>
+		<cfset resolvedSource=storageService.resolveToLocal(sourceKey)>
+		<cfset source=resolvedSource>
 	<cfelseif storageService.fileExists(originalKey)>
-		<cfset source=storageService.resolveToLocal(originalKey)>
+		<cfset resolvedSource=storageService.resolveToLocal(originalKey)>
+		<cfset source=resolvedSource>
 	</cfif>
 
+	<cftry>
 	<cfif rsMeta.recordcount and len(source) and IsImageFile(source)>
 
 		<cfif len(arguments.targetPath)>
@@ -1208,10 +1239,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<cfset cropper=imageRead(file)>
 
-			<cfif storageService.fileExists(targetKey)>
-				<cfset storageService.deleteFile(targetKey)>
-			</cfif>
-
+			<!--- Replaces any existing target; deleting it first would lose it if the write failed. --->
 			<cfset storageService.writeFromLocal(file, targetKey)>
 			
 			<cffinally>
@@ -1227,6 +1255,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfreturn ImageInfo(cropper)>
 	</cfif>
+		<cffinally>
+			<cfif len(resolvedSource)>
+				<cfset storageService.releaseLocal(resolvedSource)>
+			</cfif>
+		</cffinally>
+	</cftry>
 </cffunction>
 
 <cffunction name="rotate">
@@ -1249,33 +1283,34 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset source=storageService.resolveToLocal(sourceKey)>
 	</cfif>
 
-	<cfif rsMeta.recordcount and len(source) and IsImageFile(source)>
-		<cfset getBean("pluginManager").announceEvent("onBeforeImageManipulation",pluginEvent)>
+	<cftry>
+		<cfif rsMeta.recordcount and len(source) and IsImageFile(source)>
+			<cfset getBean("pluginManager").announceEvent("onBeforeImageManipulation",pluginEvent)>
 
-		<cftry>
 			<cfscript>
 				myImage=imageRead(source);
 				ImageRotate(myImage,arguments.degrees);
 				imageWrite(myImage,target,variables.configBean.getImageQuality());
 			</cfscript>
 
-			<cfif storageService.fileExists(sourceKey)>
-				<cfset storageService.deleteFile(sourceKey)>
-			</cfif>
+			<!--- Replaces the source image; deleting it first would lose it if the write failed. --->
 			<cfset storageService.writeFromLocal(target, sourceKey)>
-			<cffinally>
-				<!--- writeFromLocal() consumes the temp file; this only runs on a failure. --->
-				<cfif fileExists(target)>
-					<cfset fileDelete(target)>
-				</cfif>
-			</cffinally>
-		</cftry>
 
-		<cfset var pluginEvent = createObject("component","mura.event") />
-		<cfset arguments.action="rate">
-		<cfset pluginEvent.init(arguments)>
-		<cfset getBean("pluginManager").announceEvent("onAfterImageManipulation",pluginEvent)>
-	</cfif>
+			<cfset var pluginEvent = createObject("component","mura.event") />
+			<cfset arguments.action="rate">
+			<cfset pluginEvent.init(arguments)>
+			<cfset getBean("pluginManager").announceEvent("onAfterImageManipulation",pluginEvent)>
+		</cfif>
+		<cffinally>
+			<!--- writeFromLocal() consumes the temp file; it only remains after a failure. --->
+			<cfif fileExists(target)>
+				<cfset fileDelete(target)>
+			</cfif>
+			<cfif len(source)>
+				<cfset storageService.releaseLocal(source)>
+			</cfif>
+		</cffinally>
+	</cftry>
 </cffunction>
 
 <cffunction name="flip">
@@ -1298,27 +1333,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset source=storageService.resolveToLocal(sourceKey)>
 	</cfif>
 
-	<cfif rsMeta.recordcount and len(source) and IsImageFile(source)>
-		<cfset pluginManager.announceEvent("onBeforeImageManipulation",pluginEvent)>
-		<cftry>
+	<cftry>
+		<cfif rsMeta.recordcount and len(source) and IsImageFile(source)>
+			<cfset pluginManager.announceEvent("onBeforeImageManipulation",pluginEvent)>
 			<cfscript>
 				myImage=imageRead(source);
 				ImageFlip(myImage,arguments.transpose);
 				imageWrite(myImage,target,variables.configBean.getImageQuality());
 			</cfscript>
-			<cfif storageService.fileExists(sourceKey)>
-				<cfset storageService.deleteFile(sourceKey)>
-			</cfif>
+			<!--- Replaces the source image; deleting it first would lose it if the write failed. --->
 			<cfset storageService.writeFromLocal(target, sourceKey)>
-			<cffinally>
-				<!--- writeFromLocal() consumes the temp file; this only runs on a failure. --->
-				<cfif fileExists(target)>
-					<cfset fileDelete(target)>
-				</cfif>
-			</cffinally>
-		</cftry>
-		<cfset pluginManager.announceEvent("onAfterImageManipulation",pluginEvent)>
-	</cfif>
+			<cfset pluginManager.announceEvent("onAfterImageManipulation",pluginEvent)>
+		</cfif>
+		<cffinally>
+			<!--- writeFromLocal() consumes the temp file; it only remains after a failure. --->
+			<cfif fileExists(target)>
+				<cfset fileDelete(target)>
+			</cfif>
+			<cfif len(source)>
+				<cfset storageService.releaseLocal(source)>
+			</cfif>
+		</cffinally>
+	</cftry>
 </cffunction>
 
 <cffunction name="touchSourceImage" output="false">
@@ -1348,7 +1384,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset source=storageService.resolveToLocal(originalKey)>
 	</cfif>
 	<cfif len(source)>
-		<cfreturn imageRead(source)>
+		<cftry>
+			<cfreturn imageRead(source)>
+			<cffinally>
+				<cfset storageService.releaseLocal(source)>
+			</cffinally>
+		</cftry>
 	</cfif>
 	<cfreturn "">
 </cffunction>
