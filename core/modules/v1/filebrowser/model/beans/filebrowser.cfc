@@ -55,6 +55,32 @@ component
 		return pathRoot;
 	}
 
+	// Describes a file or folder for filebrowser events; call it before the item
+	// is deleted. Uses getFileInfo() when the item is on local disk, otherwise
+	// (a cloud storage backend) the storage listing, which every backend supports.
+	private struct function getItemInfo( required string path ) {
+		var info = {};
+
+		if(fileExists(arguments.path) || directoryExists(arguments.path)) {
+			info = getFileInfo(arguments.path);
+		} else {
+			var name = getFileFromPath(arguments.path);
+			var parent = getDirectoryFromPath(arguments.path);
+			info = { name: name, path: arguments.path, parent: parent };
+
+			var rs = getBean('fileWriter').getDirectoryList(directory=parent, filter=name, type="all");
+			if(rs.recordCount) {
+				// Same values getFileInfo() uses.
+				info['type'] = rs.type[1] == "Dir" ? "directory" : "file";
+				info['size'] = rs.size[1];
+				info['lastModified'] = rs.datelastmodified[1];
+			}
+		}
+
+		info['filePath'] = arguments.path;
+		return info;
+	}
+
 	private any function checkPerms( siteid,context,resourcePath )  {
 		var m=getBean('$').init(arguments.siteid);
 		var permission = {message: '',success: 0};
@@ -789,25 +815,14 @@ component
 					return response;
 				}
 				else {
+					info = getItemInfo(path);
 					fw.deleteDir(directory=path, recurse=false);
-					info['filePath'] = path;
 					m.event('fileBrowser',info).announceEvent('onAfterFileDelete');
 
 				}
 			}
 			else if(fw.checkFileExists(path)) {
-				try {
-					info = getFileInfo( path );
-				} catch (any e) {
-					// File may exist only in cloud storage — build a minimal info struct
-					info = {
-						name:         getFileFromPath(path),
-						type:         "file",
-						size:         0,
-						lastModified: now()
-					};
-				}
-				info['filePath'] = path;
+				info = getItemInfo(path);
 				fw.deleteFile(path);
 				m.event('fileBrowser',info).announceEvent('onAfterFileDelete');
 			}
