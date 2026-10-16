@@ -83,6 +83,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.configBean=arguments.configBean />
 		<cfset variables.fileDAO=arguments.fileDAO />
 		<cfset variables.settingsManager=arguments.settingsManager />
+		<cfset variables.storageKeys=new mura.fileStorage.storageKey() />
 
 		<cfset variables.imageProcessor=createObject("component","processImgCfimage").init(arguments.configBean,arguments.settingsManager) />
 
@@ -235,8 +236,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset pluginManager.announceEvent("onBeforeFileRender",pluginEvent)>
 				<cfscript>
 					var _isSizedImage = listFindNoCase("png,jpg,jpeg,gif", rsFileData.fileExt) && len(arguments.size);
-					var _suffix = _isSizedImage ? "_" & arguments.size : "";
-					var _key    = rsFileData.siteid & "/cache/file/" & arguments.fileID & _suffix & "." & rsFileData.fileExt;
+					var _key    = variables.storageKeys.cacheFileKey(rsFileData.siteid, arguments.fileID, rsFileData.fileExt, _isSizedImage ? arguments.size : "");
 					var _svc    = getBean("fileStorageService");
 					var _streamed = _svc.streamToResponse(_key, arguments.method);
 					if (!_streamed && _isSizedImage) {
@@ -300,7 +300,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset getBean("contentServer").render404()>
 				</cfif>
 				<cfscript>
-					var _key = rsFile.siteid & "/cache/file/" & arguments.fileID & "_small." & rsFile.fileExt;
+					var _key = variables.storageKeys.cacheFileKey(rsFile.siteid, arguments.fileID, rsFile.fileExt, "small");
 					var _svc = getBean("fileStorageService");
 					if (!_svc.streamToResponse(_key, arguments.method)) {
 						var _local = _svc.resolveToLocal(_key);
@@ -350,7 +350,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset getBean("contentServer").render404()>
 				</cfif>
 				<cfscript>
-					var _key = rsFile.siteid & "/cache/file/" & arguments.fileID & "_medium." & rsFile.fileExt;
+					var _key = variables.storageKeys.cacheFileKey(rsFile.siteid, arguments.fileID, rsFile.fileExt, "medium");
 					var _svc = getBean("fileStorageService");
 					if (!_svc.streamToResponse(_key, arguments.method)) {
 						var _local = _svc.resolveToLocal(_key);
@@ -901,8 +901,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="fileExt" type="string" required="true">
 	<cfscript>
 		var storageService = getBean("fileStorageService");
-		var originalKey = arguments.siteID & "/cache/file/" & arguments.fileID & "." & arguments.fileExt;
-		var cacheKey = arguments.siteID & "/cache/file/" & arguments.fileID & "_" & arguments.size & "." & arguments.fileExt;
+		var originalKey = variables.storageKeys.cacheFileKey(arguments.siteID, arguments.fileID, arguments.fileExt);
+		var cacheKey = variables.storageKeys.cacheFileKey(arguments.siteID, arguments.fileID, arguments.fileExt, arguments.size);
 		var sourceLocal = "";
 		var targetLocal = application.configBean.getTempDir() & replace(createUUID(), "-", "", "ALL") & "_" & lcase(arguments.size) & "." & arguments.fileExt;
 
@@ -1400,13 +1400,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="fileExt" type="string" required="true">
 	<cfargument name="size" type="string" required="true">
 	<cfscript>
-		var suffix = "";
-		if (arguments.size eq "source") {
-			suffix = "_source";
-		} else if (lcase(arguments.size) neq "large") {
-			suffix = "_" & arguments.size;
+		// "large" is the original upload, stored without a variant suffix.
+		var variant = arguments.size;
+		if (lcase(variant) eq "large") {
+			variant = "";
+		} else if (lcase(variant) eq "source") {
+			variant = "source";
 		}
-		return arguments.siteID & "/cache/file/" & arguments.fileID & suffix & "." & arguments.fileExt;
+		return variables.storageKeys.cacheFileKey(arguments.siteID, arguments.fileID, arguments.fileExt, variant);
 	</cfscript>
 </cffunction>
 
