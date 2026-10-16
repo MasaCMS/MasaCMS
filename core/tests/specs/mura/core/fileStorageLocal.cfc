@@ -203,16 +203,17 @@ component extends="testbox.system.BaseSpec" {
 	}
 
 	// Runs body() while recording the keys passed to the storage service's
-	// listDirectory(), deleteObject() and fileExists(), the calls the
-	// cache-maintenance functions make. Wraps the singleton's methods for the
+	// listDirectory(), deleteObject(), fileExists() and writeFromLocal(), the
+	// calls the cache functions make. Wraps the singleton's methods for the
 	// duration, like trackLocalPaths() above.
 	function recordCacheStorageCalls(required function body){
 		var svc = application.serviceFactory.getBean('fileStorageService');
 		var real = new mura.fileStorage.localStorageService().init();
-		var calls = { listDirectory: [], deleteObject: [], fileExists: [] };
+		var calls = { listDirectory: [], deleteObject: [], fileExists: [], writeFromLocal: [] };
 		var originalListDirectory = svc.listDirectory;
 		var originalDeleteObject = svc.deleteObject;
 		var originalFileExists = svc.fileExists;
+		var originalWriteFromLocal = svc.writeFromLocal;
 		svc.listDirectory = function(path, filter="*", type="all"){
 			arrayAppend(calls.listDirectory, arguments.path);
 			return real.listDirectory(arguments.path, arguments.filter, arguments.type);
@@ -225,6 +226,10 @@ component extends="testbox.system.BaseSpec" {
 			arrayAppend(calls.fileExists, arguments.path);
 			return real.fileExists(arguments.path);
 		};
+		svc.writeFromLocal = function(localPath, remotePath){
+			arrayAppend(calls.writeFromLocal, arguments.remotePath);
+			real.writeFromLocal(arguments.localPath, arguments.remotePath);
+		};
 		try {
 			arguments.body();
 		} finally {
@@ -233,6 +238,7 @@ component extends="testbox.system.BaseSpec" {
 			svc.listDirectory = originalListDirectory;
 			svc.deleteObject = originalDeleteObject;
 			svc.fileExists = originalFileExists;
+			svc.writeFromLocal = originalWriteFromLocal;
 		}
 		return calls;
 	}
@@ -609,6 +615,33 @@ component extends="testbox.system.BaseSpec" {
 				expect(fileExists(customSizePath)).toBeFalse();
 			});
 
+			it("should generate a custom image size for a direct URL through the storage service", function(){
+				var testFile = createTestFile("custom size URL test");
+				var keys = new mura.fileStorage.storageKey();
+				var variantKey = keys.cacheFileKey(variables.siteid, testFile.fileID, "png", "W30_H20");
+				var variantPath = cacheFilePath(testFile.fileID, "_W30_H20", "png");
+				var hrefArgs = { siteID: variables.siteid, fileID: testFile.fileID, fileExt: "png", width: 30, height: 20, direct: true };
+
+				var firstCalls = recordCacheStorageCalls(function(){
+					variables.fileManager.createHREFForImage(argumentCollection=hrefArgs);
+				});
+				var imageURL = variables.fileManager.createHREFForImage(argumentCollection=hrefArgs);
+				var secondCalls = recordCacheStorageCalls(function(){
+					variables.fileManager.createHREFForImage(argumentCollection=hrefArgs);
+				});
+
+				expect(imageURL).toInclude("/cache/file/" & testFile.fileID & "_W30_H20.png");
+				// Generated through storage the first time...
+				expect(arrayFind(firstCalls.writeFromLocal, variantKey)).toBeGT(0);
+				expect(fileExists(variantPath)).toBeTrue();
+				var info = imageInfo(imageRead(variantPath));
+				expect(info.width).toBe(30);
+				expect(info.height).toBe(20);
+				// ...and found in storage, not regenerated, afterwards.
+				expect(arrayFind(secondCalls.fileExists, variantKey)).toBeGT(0);
+				expect(secondCalls.writeFromLocal).toBeEmpty();
+			});
+
 			it("should regenerate missing small/medium cache files via rebuildImageCache()", function(){
 				var testFile = createTestFile("rebuildImageCache test");
 				var smallPath = cacheFilePath(testFile.fileID, "_small", "png");
@@ -739,6 +772,7 @@ component extends="testbox.system.BaseSpec" {
 					// ensureCachedImageSize() only regenerates a missing size.
 					fileDelete(mediumPath);
 					variables.fileManager.ensureCachedImageSize(fileID=testFile.fileID, size="medium", siteID=variables.siteid, fileExt="png");
+					variables.fileManager.ensureCustomCacheImage(siteID=variables.siteid, fileID=testFile.fileID, fileExt="png", width=25, height=25);
 				});
 
 				expect(fileExists(mediumPath)).toBeTrue();
