@@ -240,6 +240,23 @@ the Free Software Foundation, Version 2 of the License.
 		</cfscript>
 	</cffunction>
 
+	<cffunction name="listObjects" access="public" returntype="array" output="false"
+		hint="List cached files whose names start with prefix. path = {siteid}/cache/file/; returns keys = {siteid}/cache/file/{name}">
+		<cfargument name="path" type="string" required="true">
+		<cfargument name="prefix" type="string" required="false" default="">
+		<cfscript>
+			var dirKey = reReplace(replace(arguments.path, "\", "/", "ALL"), "^/+|/+$", "", "ALL");
+			var dir = application.configBean.getFileDir() & "/" & dirKey;
+			var keys = [];
+			if (directoryExists(dir)) {
+				for (var name in directoryList(dir, false, "name", arguments.prefix & "*", "", "file")) {
+					arrayAppend(keys, dirKey & "/" & name);
+				}
+			}
+			return keys;
+		</cfscript>
+	</cffunction>
+
 	<!--- ==================== STREAMING PROXY ==================== --->
 
 	<cffunction name="streamToResponse" access="public" returntype="boolean" output="false"
