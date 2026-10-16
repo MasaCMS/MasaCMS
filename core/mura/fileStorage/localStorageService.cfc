@@ -270,19 +270,19 @@ the Free Software Foundation, Version 2 of the License.
 			var disposition = (arguments.method eq "attachment") ? "attachment" : "inline";
 			response.setHeader("Content-Disposition", disposition & "; filename=""" & filename & """");
 			response.setHeader("Cache-Control", "max-age=86400");
-			var is = createObject("java", "java.io.FileInputStream").init(fp);
-			var os = response.getOutputStream();
+			var inputStream = createObject("java", "java.io.FileInputStream").init(fp);
+			var outputStream = response.getOutputStream();
 			var buffer = createObject("java", "java.lang.reflect.Array").newInstance(
 				createObject("java", "java.lang.Byte").TYPE, 65536
 			);
 			var bytesRead = 0;
 			while (true) {
-				bytesRead = is.read(buffer);
+				bytesRead = inputStream.read(buffer);
 				if (bytesRead eq -1) { break; }
-				os.write(buffer, 0, bytesRead);
+				outputStream.write(buffer, 0, bytesRead);
 			}
-			os.flush();
-			is.close();
+			outputStream.flush();
+			inputStream.close();
 			return true;
 		</cfscript>
 	</cffunction>
