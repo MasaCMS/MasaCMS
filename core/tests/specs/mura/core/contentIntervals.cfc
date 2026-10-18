@@ -7,66 +7,69 @@ component extends="testbox.system.BaseSpec"{
 
 	function beforeAll(){
 		session.siteid='default';
+		variables.$=application.serviceFactory.getBean('$').init('default');
 
-		config={
-			title="My Unit Test",
-			menutitle="My Unit Testing Calendar",
-			filename="my-unit-test",
-			urltitle="my-unit-test",
+		// Unique per run so concurrent runs against a shared database (e.g. Lucee and Adobe CF) can't see each other's events
+		variables.runID=createUUID();
+		variables.eventIDs=[];
+
+		// A fixed Monday in the past keeps weekdays and expected dates deterministic,
+		// and stays well within the interval manager's default repeat limit of one year from now
+		variables.anchor=createDateTime(2025,1,6,10,0,0);
+
+		variables.calendar=variables.$.getBean('content').set({
+			title="Unit Test Calendar #variables.runID#",
+			menutitle="Unit Test Calendar #variables.runID#",
+			filename="unit-test-calendar-#variables.runID#",
+			urltitle="unit-test-calendar-#variables.runID#",
 			siteID="default",
 			parentID="00000000000000000000000000000000001",
-			contentID="0000000000000000000000000000000test",
-			type="Page",
-			subtype="Default",
-			remoteID="remoteIDforUnitTest"
-		};
-
-		entityName='content';
-		entityClass='mura.content.contentBean';
-
-		$=application.serviceFactory.getBean('$').init(config.siteid);
-
-		calendarConfig={
-		   title="My Unit Testing Calendar",
-		   menutitle="My Unit Testing Calendar",
-		   filename="my-unit-testing-calendar",
-		   urltitle="my-unit-testing-calendar",
-		   siteID="default",
-		   parentID="00000000000000000000000000000000001",
-		   contentID='0000000000000000000000000000000test',
-		   type="Calendar",
-		   approved="1"
-	   };
-
-	   calendar=$.getBean('content').loadBy(contentid=calendarConfig.contentid);
-
-	   if(calendar.exists()){
-		   calendar.delete();
-		   calendar=$.getBean('content').loadBy(contentid=calendarConfig.contentid);
-	   }
-
-	   calendar.set(calendarConfig).save();
-
-	   events='';
-	   params={};
-	   eventConfig={
-		   title="My Unit Testing Event",
-		   filename="my-unit-testing-event",
-		   urltitle="my-unit-testing-event",
-		   siteID="default",
-		   parentID=calendar.getContentID(),
-		   type="Page",
-		   approved="1",
-		   display=2,
-		   displayStart=now(),
-		   displayStop=now()
-	   };
-
-	   event=$.getBean('content').set(eventConfig).save();
+			type="Calendar",
+			approved="1"
+		}).save();
 	}
 
 	function afterAll(){
-		$.getBean('content').loadBy(contentid='0000000000000000000000000000000test').delete();
+		// Deleting the calendar also deletes any events left under it
+		var bean=variables.$.getBean('content').loadBy(contentid=variables.calendar.getContentID());
+		if(bean.exists()){
+			bean.delete();
+		}
+	}
+
+	// Creates a repeating event under this run's calendar, starting at the anchor date.
+	// Pass an 'end' (never/after/on) like the admin does: setDisplayInterval() derives displayStop from it
+	private function createEvent(required struct displayInterval){
+		var event=variables.$.getBean('content').set({
+			title="Unit Test Event #variables.runID#",
+			filename="unit-test-event-#variables.runID#",
+			urltitle="unit-test-event-#variables.runID#",
+			siteID="default",
+			parentID=variables.calendar.getContentID(),
+			type="Page",
+			approved="1",
+			display=2,
+			displayStart=variables.anchor,
+			displayStop=''
+		});
+		event.setDisplayInterval(arguments.displayInterval).save();
+		arrayAppend(variables.eventIDs,event.getContentID());
+		return event;
+	}
+
+	// Returns the 'yyyy-mm-dd' dates of the event's occurrences between start and end, ignoring any other calendar items
+	private function getOccurrenceDates(required event, required date start, required date end){
+		var dates=[];
+		var occurrences=variables.calendar.getEventsIterator(start=arguments.start,end=arguments.end);
+
+		while(occurrences.hasNext()){
+			var occurrence=occurrences.next();
+			if(occurrence.getContentID() == arguments.event.getContentID()){
+				arrayAppend(dates,dateFormat(occurrence.getDisplayStart(),'yyyy-mm-dd'));
+			}
+		}
+
+		return dates;
 	}
 
 /*********************************** BDD SUITES ***********************************/
@@ -74,371 +77,136 @@ component extends="testbox.system.BaseSpec"{
 	function run(){
 		describe("Testing Content Intervals", function() {
 
-			it(
-				title="DAILY: Should have an event each day until the to date",
-				body=function() {
-					//Daily
-					event.setDisplayInterval({
-						repeats=1,
-						event=1,
-						type='daily'
-					}).setApproved(1).save();
-
-					params=	{
-						from=now(),
-						to=dateAdd('m',1,now())
-					};
-
-					events=calendar.getEventsIterator(
-						argumentCollection=params
-					);
-
-					var instance='';
-					var current=params.from;
-					var complete=true;
-
-					while(events.hasNext()){
-						instance=events.next();
-
-						if(dateFormat(instance.getdisplayStart(),'yyyy-mm-dd') != dateFormat(current,'yyyy-mm-dd')){
-							complete=false;
-							break;
-						}
-
-						current=dateAdd('d',1,current);
+			afterEach(function() {
+				// Each spec gets its own event; remove it so the next spec starts from an empty calendar
+				for(var eventID in variables.eventIDs){
+					var bean=variables.$.getBean('content').loadBy(contentid=eventID);
+					if(bean.exists()){
+						bean.delete();
 					}
+				}
+				variables.eventIDs=[];
+			});
 
-					expect(complete).tobeTrue();
+			it(
+				title="DAILY: Should have an event each day in the window",
+				body=function() {
+					var event=createEvent({repeats=1,end='never',type='daily'});
+
+					expect( getOccurrenceDates(event,createDate(2025,1,6),createDate(2025,1,12)) ).toBe([
+						'2025-01-06','2025-01-07','2025-01-08','2025-01-09','2025-01-10','2025-01-11','2025-01-12'
+					]);
+				}
+			);
+
+			it(
+				title="DAILY: Should only have events inside a window that starts after the event",
+				body=function() {
+					var event=createEvent({repeats=1,end='never',type='daily'});
+
+					expect( getOccurrenceDates(event,createDate(2025,1,20),createDate(2025,1,22)) ).toBe([
+						'2025-01-20','2025-01-21','2025-01-22'
+					]);
 				}
 			);
 
 			it(
 				title="WEEKLY: Should only have events on days 1,3,5,7",
 				body=function() {
+					var event=createEvent({repeats=1,end='never',type='weekly',daysofweek='1,3,5,7'});
 
-					//Weekly
-					event.setDisplayInterval({
-						repeats=1,
-						event=1,
-						type='weekly',
-						daysofweek='1,3,5,7'
-					}).setApproved(1).save();
-
-					params=	{
-						from=now(),
-						to=dateAdd('m',1,now()),
-						daysofweek="1,3,5,7"
-					};
-
-					events=calendar.getEventsIterator(
-						argumentCollection=params
-					);
-
-					var instance='';
-					var current=params.from;
-					var complete=true;
-
-					while(events.hasNext()){
-						instance=events.next();
-
-						if(!listFind(params.daysofweek,dayofWeek(instance.getdisplayStart()))){
-							complete=false;
-							break;
-						}
-					}
-
-					expect(complete).tobeTrue();
+					expect( getOccurrenceDates(event,createDate(2025,1,6),createDate(2025,1,19)) ).toBe([
+						'2025-01-07','2025-01-09','2025-01-11','2025-01-12','2025-01-14','2025-01-16','2025-01-18','2025-01-19'
+					]);
 				}
 			);
 
 			it(
 				title="WEEKENDS: Should only have events on days 1,7",
 				body=function() {
+					var event=createEvent({repeats=1,end='never',type='weekends'});
 
-					//WeekEnds
-					event.setDisplayInterval({
-						repeats=1,
-						type='weekends'
-					}).setApproved(1).save();
-
-					params=	{
-						from=now(),
-						to=dateAdd('m',1,now()),
-						daysofweek='1,7'
-					};
-
-					events=calendar.getEventsIterator(
-						argumentCollection=params
-					);
-
-					var instance='';
-					var current=params.from;
-					var complete=true;
-
-					while(events.hasNext()){
-						instance=events.next();
-
-						if(!listFind(params.daysofweek,dayofWeek(instance.getdisplayStart()))){
-							complete=false;
-							break;
-						}
-					}
-
-					expect(complete).tobeTrue();
+					expect( getOccurrenceDates(event,createDate(2025,1,6),createDate(2025,1,19)) ).toBe([
+						'2025-01-11','2025-01-12','2025-01-18','2025-01-19'
+					]);
 				}
 			);
-
 
 			it(
 				title="WEEKDAYS: Should only have events on days 2,3,4,5,6",
 				body=function() {
+					var event=createEvent({repeats=1,end='never',type='weekdays'});
 
-					//WeekDays
-					event.setDisplayInterval({
-						repeats=1,
-						type='weekdays'
-					}).setApproved(1).save();
-
-					params=	{
-						from=now(),
-						to=dateAdd('m',1,now()),
-						daysofweek="2,3,4,5,6"
-					};
-
-					events=calendar.getEventsIterator(
-						argumentCollection=params
-					);
-
-					var instance='';
-					var current=params.from;
-					var complete=true;
-
-					while(events.hasNext()){
-						instance=events.next();
-
-						if(!listFind(params.daysofweek,dayofWeek(instance.getdisplayStart()))){
-							complete=false;
-							break;
-						}
-					}
-
-					expect(complete).tobeTrue();
+					expect( getOccurrenceDates(event,createDate(2025,1,6),createDate(2025,1,17)) ).toBe([
+						'2025-01-06','2025-01-07','2025-01-08','2025-01-09','2025-01-10',
+						'2025-01-13','2025-01-14','2025-01-15','2025-01-16','2025-01-17'
+					]);
 				}
 			);
 
 			it(
 				title="BI-WEEKLY: Should have 14 days between dates",
 				body=function() {
+					var event=createEvent({repeats=1,end='never',type='bi-weekly',daysofweek=dayOfWeek(variables.anchor)});
 
-					//Bi-Weekly
-					event.setDisplayInterval({
-						repeats=1,
-						type='bi-weekly',
-						daysofweek=dayofweek(now())
-					}).setApproved(1).save();
-
-					params=	{
-						from=now(),
-						to=dateAdd('m',1,now()),
-						daysofweek=dayofweek(now())
-					};
-
-					events=calendar.getEventsIterator(
-						argumentCollection=params
-					);
-
-					var instance='';
-					var current=params.from;
-					var complete=true;
-					var previous=params.from;
-					var diff=0;
-					var started=false;
-
-					while(events.hasNext()){
-						instance=events.next();
-						diff=dateDiff('d',previous,instance.getdisplayStart());
-
-						if(started && diff!=14){
-							complete=false;
-							break;
-						} else {
-							started=true;
-						}
-
-						previous=instance.getdisplayStart();
-					}
-
-					expect(complete).tobeTrue();
+					expect( getOccurrenceDates(event,createDate(2025,1,6),createDate(2025,2,16)) ).toBe([
+						'2025-01-06','2025-01-20','2025-02-03'
+					]);
 				}
 			);
 
 			it(
 				title="MONTHLY: Should have 1 month between dates",
 				body=function() {
+					var event=createEvent({repeats=1,end='never',type='monthly'});
 
-					//Monthly
-					event.setDisplayInterval({
-						repeats=1,
-						type='monthly'
-					}).setApproved(1).save();
-
-					params=	{
-						from=now(),
-						to=dateAdd('m',3,now())
-					};
-
-					events=calendar.getEventsIterator(
-						argumentCollection=params
-					);
-
-					var instance='';
-					var current=params.from;
-					var complete=true;
-					var previous=params.from;
-					var diff=0;
-					var started=false;
-
-					while(events.hasNext()){
-						instance=events.next();
-						diff=dateDiff('m',previous,instance.getdisplayStart());
-
-						if(started && diff!=1){
-							complete=false;
-							break;
-						} else {
-							started=true;
-						}
-
-						previous=instance.getdisplayStart();
-					}
-
-					expect(complete).tobeTrue();
+					expect( getOccurrenceDates(event,createDate(2025,1,6),createDate(2025,4,30)) ).toBe([
+						'2025-01-06','2025-02-06','2025-03-06','2025-04-06'
+					]);
 				}
 			);
 
 			it(
 				title="YEARLY: Should have 1 year between dates",
 				body=function() {
+					var event=createEvent({repeats=1,end='never',type='yearly'});
 
-					//Yearly
-					event.setDisplayInterval({
-						repeats=1,
-						type='yearly'
-					}).setApproved(1).save();
-
-					params=	{
-						from=now(),
-						to=dateAdd('yyyy',3,now())
-					};
-
-					events=calendar.getEventsIterator(
-						argumentCollection=params
-					);
-
-					var instance='';
-					var current=params.from;
-					var complete=true;
-					var previous=params.from;
-					var diff=0;
-					var started=false;
-
-					while(events.hasNext()){
-						instance=events.next();
-						diff=dateDiff('yyyy',previous,instance.getdisplayStart());
-
-						if(started && diff!=1){
-							complete=false;
-							break;
-						} else {
-							started=true;
-						}
-
-						previous=instance.getdisplayStart();
-					}
-
-					expect(complete).tobeTrue();
+					expect( getOccurrenceDates(event,createDate(2025,1,1),createDate(2026,12,31)) ).toBe([
+						'2025-01-06','2026-01-06'
+					]);
 				}
 			);
 
 			it(
 				title="ENDS AFTER: Should only have 5 events",
 				body=function() {
+					var event=createEvent({repeats=1,type='daily',end='after',endafter=5});
 
-					//End After
-					event.setDisplayStop('');
-					event.setDisplayInterval({
-						repeats=1,
-						type='daily',
-						end='after',
-						endafter=5
-					}).setApproved(1).save();
-
-					params=	{
-						from=now(),
-						to=dateAdd('m',1,now())
-					};
-
-					events=calendar.getEventsIterator(
-						argumentCollection=params
-					);
-
-					var instance='';
-					var current=params.from;
-					var complete=true;
-					var i=0;
-
-					while(events.hasNext()){
-						events.next();
-						i++;
-
-						if(i > 5){
-							complete=false;
-							break;
-						}
-					}
-
-					expect(complete).tobeTrue();
+					expect( getOccurrenceDates(event,createDate(2025,1,6),createDate(2025,1,31)) ).toBe([
+						'2025-01-06','2025-01-07','2025-01-08','2025-01-09','2025-01-10'
+					]);
 				}
 			);
 
 			it(
-				title="ENDS ON: Should only have events before end date",
+				title="ENDS AFTER: Should count events from the event start, not the window start",
 				body=function() {
+					var event=createEvent({repeats=1,type='daily',end='after',endafter=5});
 
-					//End On
-					event.setDisplayStop('');
-					event.setDisplayInterval({
-						repeats=1,
-						type='daily',
-						end='on',
-						endon=dateAdd('d',5,now())
-					}).setApproved(1).save();
+					expect( getOccurrenceDates(event,createDate(2025,1,8),createDate(2025,1,31)) ).toBe([
+						'2025-01-08','2025-01-09','2025-01-10'
+					]);
+				}
+			);
 
-					params=	{
-						from=now(),
-						to=dateAdd('m',1,now()),
-						endon=dateAdd('d',5,now())
-					};
+			it(
+				title="ENDS ON: Should only have events up to the end date",
+				body=function() {
+					var event=createEvent({repeats=1,type='daily',end='on',endon=createDate(2025,1,10)});
 
-					events=calendar.getEventsIterator(
-						argumentCollection=params
-					);
-
-					var instance='';
-					var current=params.from;
-					var complete=true;
-					var i=0;
-
-					while(events.hasNext()){
-						instance=events.next();
-
-						if(fix(instance.getDisplayStart()) > fix(params.endon)){
-							complete=false;
-							break;
-						}
-					}
-
-					expect(complete).tobeTrue();
+					expect( getOccurrenceDates(event,createDate(2025,1,6),createDate(2025,1,31)) ).toBe([
+						'2025-01-06','2025-01-07','2025-01-08','2025-01-09','2025-01-10'
+					]);
 				}
 			);
 		});
