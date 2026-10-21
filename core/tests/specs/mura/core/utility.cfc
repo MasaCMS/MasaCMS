@@ -909,6 +909,32 @@ component extends="testbox.system.BaseSpec"{
 				).toBeFalse();
 			});
 
+			it("should accept a path whose '..' segments stay inside the webroot", function() {
+				expect(utility.isPathLegal("/core/../index.cfm")).toBeTrue();
+			});
+
+			it("should reject a traversal path that reaches a real file outside the webroot", function() {
+				// Callers pair fileExists(expandPath(path)) with isPathLegal(path), so
+				// the target must really exist for this to cover what they do.
+				var outsideFile=replace(getTempDirectory(), "\", "/", "ALL") & "/isPathLegal_" & createUUID() & ".cfm";
+				fileWrite(outsideFile, "probe");
+				try {
+					var traversal="/" & repeatString("../", 30) & reReplace(outsideFile, "^/+", "");
+					expect(fileExists(expandPath(traversal))).toBeTrue();
+					expect(utility.isPathLegal(traversal)).toBeFalse();
+
+					var throughDirectory="/core/" & repeatString("../", 30) & reReplace(outsideFile, "^/+", "");
+					expect(utility.isPathLegal(throughDirectory)).toBeFalse();
+				} finally {
+					fileDelete(outsideFile);
+				}
+			});
+
+			it("should reject a sibling directory whose name only starts with the webroot name", function() {
+				var webRoot=reReplace(replace(application.configBean.getWebRoot(), "\", "/", "ALL"), "/+$", "");
+				expect(utility.isPathLegal("/../" & listLast(webRoot, "/") & "-evil/index.cfm")).toBeFalse();
+			});
+
 		});
 	}
 }

@@ -56,6 +56,13 @@ component extends="testbox.system.BaseSpec"{
 		// The User_Assets sandbox root for path-traversal specs below.
 		variables.assetRoot = settingsManager.getSite(ownerSiteID).getAssetDir() & '/assets';
 
+		// A canary one level above the asset root - i.e. outside User_Assets -
+		// that the filename-traversal specs try (and must fail) to reach with
+		// filename='../<canaryFile>' and an empty directory.
+		variables.canaryFile    = 'filebrowserTraversalCanary.txt';
+		variables.canaryPath    = settingsManager.getSite(ownerSiteID).getAssetDir() & '/' & canaryFile;
+		variables.canaryContent = 'filebrowser traversal canary - safe to delete';
+
 		if( directoryExists(physicalDir) ){
 			directoryDelete(physicalDir, true);
 		}
@@ -70,6 +77,26 @@ component extends="testbox.system.BaseSpec"{
 
 		if( directoryExists(physicalDir) ){
 			directoryDelete(physicalDir, true);
+		}
+		if( fileExists(canaryPath) ){
+			fileDelete(canaryPath);
+		}
+	}
+
+	/**
+	 * Calls a CSRF-protected filebrowser method with a freshly generated,
+	 * single-use token. The method's own MuraScope builds its event from the url
+	 * scope, so the token is placed there and removed afterwards.
+	 */
+	private function invokeWithCSRF(required string method, required string context, required struct args){
+		var csrf = $.generateCSRFTokens(context=arguments.context);
+		url.csrf_token = csrf.token;
+		url.csrf_token_expires = csrf.expires;
+		try {
+			return invoke($.getBean('filebrowser'), arguments.method, arguments.args);
+		} finally {
+			structDelete(url, 'csrf_token');
+			structDelete(url, 'csrf_token_expires');
 		}
 	}
 
@@ -189,6 +216,95 @@ component extends="testbox.system.BaseSpec"{
 					}
 				}
 			);
+
+		});
+
+		describe("filebrowser.isLegalFileName() - filename must be a single path segment", function(){
+
+			var fb = application.serviceFactory.getBean('$').init('default').getBean('filebrowser');
+
+			it("allows plain file names, including dotfiles and names containing '..'", function(){
+				expect(fb.isLegalFileName('probe.txt')).toBeTrue();
+				expect(fb.isLegalFileName('.htaccess')).toBeTrue();
+				expect(fb.isLegalFileName('archive.tar.gz')).toBeTrue();
+				expect(fb.isLegalFileName('my file (1).txt')).toBeTrue();
+				expect(fb.isLegalFileName('..probe.txt')).toBeTrue();
+			});
+
+			it("rejects '..' traversal with forward or back slashes", function(){
+				expect(fb.isLegalFileName('../probe.txt')).toBeFalse();
+				expect(fb.isLegalFileName('../../../config/settings.ini.cfm')).toBeFalse();
+				expect(fb.isLegalFileName('..\probe.txt')).toBeFalse();
+				expect(fb.isLegalFileName('sub/probe.txt')).toBeFalse();
+				expect(fb.isLegalFileName('/etc/passwd')).toBeFalse();
+			});
+
+			it("rejects empty, '.', '..' and dot/whitespace-only names", function(){
+				expect(fb.isLegalFileName('')).toBeFalse();
+				expect(fb.isLegalFileName('.')).toBeFalse();
+				expect(fb.isLegalFileName('..')).toBeFalse();
+				expect(fb.isLegalFileName('.. ')).toBeFalse();
+				expect(fb.isLegalFileName('...')).toBeFalse();
+			});
+
+		});
+
+		describe("filebrowser filename traversal - filename must not escape User_Assets", function(){
+
+			beforeEach(function(){
+				fileWrite(canaryPath, canaryContent);
+			});
+
+			it("edit() rejects a filename that reads a file outside the asset root", function(){
+				expect(function(){
+					$.getBean('filebrowser').edit(siteid='default', directory='', filename='../' & canaryFile, resourcePath='User_Assets');
+				}).toThrow(regex="File path illegal");
+			});
+
+			it("update() rejects a filename that writes a file outside the asset root", function(){
+				expect(function(){
+					invokeWithCSRF('update', 'update', {siteid='default', directory='', filename='../' & canaryFile, resourcePath='User_Assets', content='overwritten'});
+				}).toThrow(regex="File path illegal");
+				expect(fileRead(canaryPath)).toBe(canaryContent);
+			});
+
+			it("delete() rejects a filename that deletes a file outside the asset root", function(){
+				expect(function(){
+					invokeWithCSRF('delete', 'delete', {siteid='default', directory='', filename='../' & canaryFile, resourcePath='User_Assets'});
+				}).toThrow(regex="File path illegal");
+				expect(fileExists(canaryPath)).toBeTrue();
+			});
+
+			it("rename() rejects a filename that renames a file outside the asset root", function(){
+				expect(function(){
+					invokeWithCSRF('rename', 'rename', {siteid='default', directory='', filename='../' & canaryFile, name='renamedCanary', resourcePath='User_Assets'});
+				}).toThrow(regex="File path illegal");
+				expect(fileExists(canaryPath)).toBeTrue();
+				expect(fileExists(assetRoot & '/renamedCanary.txt')).toBeFalse();
+			});
+
+			it("move() rejects a filename that moves a file from outside the asset root", function(){
+				expect(function(){
+					invokeWithCSRF('move', 'move', {siteid='default', directory='', destination='/' & fixtureDir, filename='../' & canaryFile, resourcePath='User_Assets'});
+				}).toThrow(regex="Illegal file path");
+				expect(fileExists(canaryPath)).toBeTrue();
+				// The destination also gets the raw filename appended, so an unfixed
+				// move lands the canary at <destination>/../<canaryFile>, i.e. assetRoot.
+				expect(fileExists(assetRoot & '/' & canaryFile)).toBeFalse();
+				expect(fileExists(physicalDir & '/' & canaryFile)).toBeFalse();
+			});
+
+			it("edit() still reads a file inside the asset root", function(){
+				var response = $.getBean('filebrowser').edit(siteid='default', directory='/' & fixtureDir, filename=fixtureFile, resourcePath='User_Assets');
+				expect(response.success).toBe(1);
+				expect(response.content).toInclude('filebrowser unit test probe file');
+			});
+
+			it("update() still writes a file inside the asset root", function(){
+				var response = invokeWithCSRF('update', 'update', {siteid='default', directory='/' & fixtureDir, filename=fixtureFile, resourcePath='User_Assets', content='filebrowser unit test probe file - updated'});
+				expect(response.success).toBe(1);
+				expect(fileRead(physicalDir & '/' & fixtureFile)).toBe('filebrowser unit test probe file - updated');
+			});
 
 		});
 
