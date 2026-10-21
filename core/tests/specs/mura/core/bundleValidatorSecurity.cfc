@@ -33,7 +33,7 @@ component extends="testbox.system.BaseSpec" {
 			var full = srcDir & f;
 			var dir = getDirectoryFromPath(full);
 			if (!directoryExists(dir)) {
-				directoryCreate(dir, true);
+				directoryCreate(dir);
 			}
 			fileWrite(full, "x");
 		}
