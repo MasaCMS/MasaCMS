@@ -5,13 +5,13 @@
 # USAGE:
 # Unlike Apache's .htaccess, nginx has no per-directory drop-in config file,
 # so this file cannot simply be placed in the webroot. Instead, copy the
-# `location` blocks below into the `server { }` block for your Masa CMS site
+# directives below into the `server { }` block for your Masa CMS site
 # (or `include` this file from there), then reload nginx.
 #
 # This file only covers URL rewriting. It assumes nginx is already configured
 # to hand off requests for *.cfm (and the rewritten /index.cfm/... paths
-# below) to your ColdFusion/Lucee engine; that connector setup is outside the
-# scope of this file.
+# below) to your ColdFusion/Lucee engine. See STEP 2 for what that handoff
+# must look like for the rewrites to work.
 
 # -------------------------------------------------------------------------------
 # Masa CMS REWRITE OPTIONS
@@ -27,6 +27,42 @@
 # and reload the Masa CMS application
 # OPTION 2 :: WITH SiteID
 # In /config/settings.ini.cfm, set indexfileinurls to 0
+
+# -------------------------------------------------------------------------------
+# STEP 1 :: Webroot
+#
+# try_files below checks whether a requested file exists on disk, so nginx
+# must be able to see the Masa CMS webroot: `root` must point to it and the
+# nginx user needs read access. If it can't, every file counts as missing and
+# CSS, JS, images and downloads are all sent to Masa (and break).
+#
+# If nginx only proxies to a ColdFusion/Lucee engine on another host or
+# container and cannot see its files, use ALTERNATIVE (no webroot access)
+# at the bottom of this file instead of the `location /` block.
+# -------------------------------------------------------------------------------
+# root /var/www/masacms;
+index index.cfm;
+
+# -------------------------------------------------------------------------------
+# STEP 2 :: ColdFusion/Lucee handoff
+#
+# Masa CMS URLs carry the page path after the script name (/index.cfm/site/page),
+# so the location that hands requests to the engine must match those as well.
+# A location matching only `\.cfm$` does not match /index.cfm/site/page: the
+# request then falls back into `location /` and ends in a rewrite loop (500).
+# Example for a proxied engine (adjust the upstream to your setup):
+# -------------------------------------------------------------------------------
+# location ~ \.cfm(/|$) {
+# 	proxy_pass http://127.0.0.1:8888;
+# 	proxy_set_header Host $host;
+# 	proxy_set_header X-Real-IP $remote_addr;
+# 	proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+# 	proxy_set_header X-Forwarded-Proto $scheme;
+# }
+
+# -------------------------------------------------------------------------------
+# STEP 3 :: Rewrite
+# -------------------------------------------------------------------------------
 location / {
 	# Rewrite only nonexistent file or directory paths to /index.cfm/...,
 	# preserving any query string (equivalent to Apache's QSA flag)
@@ -37,3 +73,48 @@ location / {
 location ~* \.exe$ {
 	deny all;
 }
+
+# -------------------------------------------------------------------------------
+# OPTIONAL :: Redirect old index.cfm links
+#
+# When switching an existing site from indexfileinurls=1 to 0, this sends a
+# 301 from /index.cfm/<path> (or /<siteid>/index.cfm/<path>) to /<path>
+# (or /<siteid>/<path>), keeping the query string, so old links and search
+# engine results keep working.
+# - Only GET/HEAD requests are redirected, so form POSTs are not broken.
+# - The JSON API (/index.cfm/_api/...) is left alone.
+# - $request_uri is checked (not $uri) so the internal /index.cfm/... rewrite
+#   from STEP 3 is never redirected back.
+# -------------------------------------------------------------------------------
+# set $masa_redirect "";
+# if ($request_uri ~ "^(/[^/?]+)?/index\.cfm/(?!_api/)") {
+# 	set $masa_redirect "Y";
+# }
+# if ($request_method ~ ^(GET|HEAD)$) {
+# 	set $masa_redirect "${masa_redirect}Y";
+# }
+# if ($masa_redirect = "YY") {
+# 	rewrite ^(/[^/]+)?/index\.cfm/(.*)$ $1/$2 permanent;
+# }
+
+# -------------------------------------------------------------------------------
+# ALTERNATIVE (no webroot access) :: Rewrite by URL pattern
+#
+# Replaces the `location /` block from STEP 3 for setups where nginx cannot
+# see the Masa CMS webroot. Instead of checking the disk, it rewrites URLs by
+# pattern. Only works with SiteIDs in the URL (OPTION 2). Trade-offs:
+# - Every SiteID must be listed (replace site1|site2), and the list updated
+#   when a site is added.
+# - Page URLs containing a dot (e.g. /site1/v1.2/) are not rewritten.
+# - Other Masa routes outside the sites (such as /_api/) need their own rule.
+# - Unknown paths outside the listed sites get nginx's 404 instead of Masa's.
+# -------------------------------------------------------------------------------
+# location / {
+# 	# JSON API without index.cfm -> /index.cfm/_api/...
+# 	rewrite ^/_api/(.*)$ /index.cfm/_api/$1 last;
+# 	# Clean URLs /<siteid>/<path> (no file extension) -> /index.cfm/<siteid>/<path>
+# 	rewrite ^/(site1|site2)(/[^.]*)?$ /index.cfm/$1$2 last;
+# 	# Everything else (static files) goes straight to the engine
+# 	proxy_pass http://127.0.0.1:8888;
+# 	proxy_set_header Host $host;
+# }
