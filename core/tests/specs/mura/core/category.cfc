@@ -7,11 +7,17 @@ component extends="testbox.system.BaseSpec"{
 
 	function beforeAll(){
 		session.siteid='default';
+		variables.$=application.serviceFactory.getBean('$').init('default');
+		variables.createdCategoryIDs=[];
 	}
 
 	function afterAll(){
-		if(isDefined('bean') && bean.exists()){
-			bean.delete();
+		// Clean up by the IDs this run created; loadBy(filename/name) can return an array when duplicates exist
+		for(var categoryID in variables.createdCategoryIDs){
+			var bean=variables.$.getBean('category').loadBy(categoryid=categoryID);
+			if(bean.exists()){
+				bean.delete();
+			}
 		}
 		console( "Executed afterAll() at #now()#" );
 	}
@@ -22,66 +28,64 @@ component extends="testbox.system.BaseSpec"{
 
 		describe("Testing persistence", function() {
 
-			config={
-				name="My Unit Test",
+			// Unique per run so leftovers from an earlier, crashed run can't collide.
+			// The filename is derived from the name on save, so it is read back from the saved bean.
+			var runID=createUUID();
+
+			variables.config={
+				name="My Unit Test #runID#",
 				siteID="default",
-				categoryID="",
-				remoteID="remoteID",
-				filename="my-unit-test"
+				remoteID="unit-test-category-#runID#"
 			};
-
-			entityName='category';
-
-			$=application.serviceFactory.getBean('$').init(config.siteid);
-			
-			bean=$.getBean(entityName).loadBy(categoryid=config.categoryid);
-
-			if(bean.exists()){
-				bean.delete();
-				bean=$.getBean(entityName).loadBy(categoryid=config.categoryid);
-			}
 
 		 	it(
 		 		title="Should be able to load an empty categoryBean",
 			 	body=function() {
-			 		bean=$.getBean(entityName);
-				 	expect( bean ).toBeInstanceOf('mura.category.categoryBean');
-				},
-				bean=bean
+				 	expect( variables.$.getBean('category') ).toBeInstanceOf('mura.category.categoryBean');
+				}
 			);
 
 			it(
 				title="Should not exist",
 			 	body=function() {
-				 	expect(yesNoFormat(bean.exists()) ).toBeFalse();
-				},
-				bean=bean
+				 	expect( variables.$.getBean('category').loadBy(name=variables.config.name).exists() ).toBeFalse();
+				}
 			);
 
 			it(
 				title="Should be able to save",
 			 	body=function() {
-				 	expect( bean.set(config).save().exists() ).toBeTrue;
-				},
-				bean=bean
+					var bean=variables.$.getBean('category').set(variables.config).save();
+
+					if(len(bean.getCategoryID())){
+						arrayAppend(variables.createdCategoryIDs,bean.getCategoryID());
+					}
+
+					variables.savedCategoryID=bean.getCategoryID();
+					variables.savedFilename=bean.getFilename();
+
+				 	expect( structIsEmpty(bean.getErrors()) ).toBeTrue();
+				 	expect( bean.exists() ).toBeTrue();
+				}
 			);
 
-			loadChecks=['categoryid','filename'];
-			
-			for(var key in loadChecks){
-				args={'#key#'=config[key]};
+			it(
+				title="Should be able to load by categoryid",
+		 		body=function() {
+			 		var bean=variables.$.getBean('category').loadBy(categoryid=variables.savedCategoryID);
+				 	expect( bean.exists() ).toBeTrue();
+				 	expect( bean.getName() ).toBe( variables.config.name );
+				}
+			);
 
-				it(
-					title="Should be able to load by #key#",
-			 		body=function() {
-				 		bean=$.getBean(entityName).loadBy(argumentCollection=args);
-					 	expect( bean.exists() ).toBeTrue();
-					},
-					entityName=entityName,
-					args=args
-				);
-
-			}
+			it(
+				title="Should be able to load by filename",
+		 		body=function() {
+			 		var bean=variables.$.getBean('category').loadBy(filename=variables.savedFilename);
+				 	expect( bean.exists() ).toBeTrue();
+				 	expect( bean.getCategoryID() ).toBe( variables.savedCategoryID );
+				}
+			);
 
 		});
 	}
