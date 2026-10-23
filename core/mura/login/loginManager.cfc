@@ -87,24 +87,111 @@ component extends="mura.cfobject" output="false" hint="This provides primary log
 		return this;
 	}
 
-	public boolean function rememberMe(required string userid="", required string userHash="") output=false {
-		var rsUser=variables.userDAO.readUserHash(arguments.userid);
-		var isLoggedin=0;
+	public struct function createRememberMeToken(required string userID, required string siteID) output=false {
+		var created=now();
+		var selector=getBean('utility').generateSecureToken();
+		var validator=getBean('utility').generateSecureToken();
+		var expires=dateAdd("d",30,created);
+
+		variables.userDAO.createRememberMeToken(
+			tokenID=createUUID(),
+			userID=arguments.userID,
+			siteID=arguments.siteID,
+			selector=selector,
+			validatorHash=hash(validator,"SHA-256"),
+			expires=expires,
+			created=created,
+			lastused=created
+		);
+
+		return {selector=selector, validator=validator, expires=expires};
+	}
+
+	public boolean function rememberMe(required string selector="", required string validator="") output=false {
+		var rsToken=queryNew("");
 		var sessionData=getSession();
-		if ( !getBean('configBean').getValue(property='MFA',defaultValue=false)
-			&& len(arguments.userid) && len(arguments.userHash) && arguments.userHash == rsUser.userHash
-			) {
-			isloggedin=variables.userUtility.loginByUserID(rsUser.userID,rsUser.siteID);
-		}
-		if ( isloggedin ) {
-			sessionData.rememberMe=1;
-			return true;
-		} else {
-			variables.globalUtility.deleteCookie(name="userHash");
-			variables.globalUtility.deleteCookie(name="userid");
+		var currentTime=now();
+		var validatorHash="";
+		var nextValidator="";
+		var nextValidatorHash="";
+		var nextExpires="";
+		var isLoggedIn=false;
+
+		if ( getBean('configBean').getValue(property='MFA',defaultValue=false)
+			|| !reFind("^[A-Za-z0-9_-]{43}$",arguments.selector)
+			|| !reFind("^[A-Za-z0-9_-]{43}$",arguments.validator) ) {
+			variables.globalUtility.deleteCookie(name="rememberme");
 			sessionData.rememberMe=0;
 			return false;
 		}
+
+		rsToken=variables.userDAO.readRememberMeToken(arguments.selector);
+		if ( rsToken.recordCount neq 1 ) {
+			variables.globalUtility.deleteCookie(name="rememberme");
+			sessionData.rememberMe=0;
+			return false;
+		}
+
+		if ( dateCompare(rsToken.expires,currentTime) lte 0 ) {
+			variables.userDAO.deleteRememberMeToken(arguments.selector);
+			variables.globalUtility.deleteCookie(name="rememberme");
+			sessionData.rememberMe=0;
+			return false;
+		}
+
+		validatorHash=hash(arguments.validator,"SHA-256");
+		if ( !constantTimeHashEquals(validatorHash,rsToken.validatorHash) ) {
+			variables.userDAO.deleteRememberMeToken(arguments.selector);
+			variables.globalUtility.deleteCookie(name="rememberme");
+			sessionData.rememberMe=0;
+			return false;
+		}
+
+		nextValidator=getBean('utility').generateSecureToken();
+		nextValidatorHash=hash(nextValidator,"SHA-256");
+		nextExpires=dateAdd("d",30,currentTime);
+		if ( !variables.userDAO.rotateRememberMeToken(
+			tokenID=rsToken.tokenID,
+			oldValidatorHash=rsToken.validatorHash,
+			validatorHash=nextValidatorHash,
+			expires=nextExpires,
+			lastused=currentTime
+		) ) {
+			variables.userDAO.deleteRememberMeToken(arguments.selector);
+			variables.globalUtility.deleteCookie(name="rememberme");
+			sessionData.rememberMe=0;
+			return false;
+		}
+
+		isLoggedIn=variables.userUtility.loginByUserID(rsToken.userID,rsToken.siteID);
+		if ( !isLoggedIn ) {
+			variables.userDAO.deleteRememberMeToken(arguments.selector);
+			variables.globalUtility.deleteCookie(name="rememberme");
+			sessionData.rememberMe=0;
+			return false;
+		}
+
+		sessionData.rememberMe=1;
+		sessionData.rememberMeTokenIssued=1;
+		sessionData.rememberMeSelector=arguments.selector;
+		variables.globalUtility.setCookie(
+			name="rememberme",
+			value=arguments.selector & ":" & nextValidator,
+			expires=nextExpires
+		);
+		return true;
+	}
+
+	private boolean function constantTimeHashEquals(required string candidateHash, required string storedHash) output=false {
+		if ( !reFind("^[A-Fa-f0-9]{64}$",arguments.candidateHash)
+			|| !reFind("^[A-Fa-f0-9]{64}$",arguments.storedHash) ) {
+			return false;
+		}
+
+		return createObject("java","java.security.MessageDigest").isEqual(
+			binaryDecode(arguments.candidateHash,"hex"),
+			binaryDecode(arguments.storedHash,"hex")
+		);
 	}
 
 	public function handleSuccess(returnUrl="", rememberMe="0", contentid="", linkServID="", isAdminLogin="false", compactDisplay="false", deviceid="", publicDevice="false") output=false {
@@ -475,6 +562,24 @@ If you did not request a new authorization, contact #contactEmail#.");
 
 	public function logout() output=false {
 		var pluginEvent="";
+		var sessionData=getSession();
+		var rememberMeSelectors=[];
+		var rememberMeCookieParts=[];
+		if ( structKeyExists(sessionData,"rememberMeSelector") ) {
+			arrayAppend(rememberMeSelectors,sessionData.rememberMeSelector);
+			structDelete(sessionData,"rememberMeSelector");
+		}
+		if ( isDefined('cookie.rememberme') && cookie.rememberme != '' ) {
+			rememberMeCookieParts=listToArray(cookie.rememberme,":",true);
+			if ( arrayLen(rememberMeCookieParts) == 2 ) {
+				arrayAppend(rememberMeSelectors,rememberMeCookieParts[1]);
+			}
+		}
+		for ( var rememberMeSelector in rememberMeSelectors ) {
+			if ( reFind("^[A-Za-z0-9_-]{43}$",rememberMeSelector) ) {
+				variables.userDAO.deleteRememberMeToken(rememberMeSelector);
+			}
+		}
 		if ( structKeyExists(request,"servletEvent") ) {
 			pluginEvent=request.servletEvent;
 		} else if ( structKeyExists(request,"event") ) {
@@ -500,6 +605,7 @@ If you did not request a new authorization, contact #contactEmail#.");
 		    j2eeSession.invalidate();
 			sessionInvalidate();
 		}
+		variables.globalUtility.deleteCookie(name="rememberme");
 		variables.globalUtility.deleteCookie(name="userHash");
 		variables.globalUtility.deleteCookie(name="userid");
 		getSession();
