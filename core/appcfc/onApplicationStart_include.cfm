@@ -595,7 +595,9 @@ if ( application.setupComplete ) {
 	}
 	try {
 		local.rememberMeCleanupURL = "http://" & listFirst(cgi.http_host, ":")
-			& application.configBean.getContext() & "/index.cfm/_api/internal/rememberme-cleanup/";
+			& application.configBean.getContext()
+			& (application.configBean.getIndexFileInAPI() ? "/index.cfm" : "")
+			& "/_api/internal/rememberme-cleanup/";
 		application.serviceFactory.getBean('utility').scheduleTask(
 			action = "update",
 			task = "muraRememberMeTokenCleanup",

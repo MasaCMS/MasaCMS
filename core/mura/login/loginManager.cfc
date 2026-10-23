@@ -89,8 +89,8 @@ component extends="mura.cfobject" output="false" hint="This provides primary log
 
 	public struct function createRememberMeToken(required string userID, required string siteID) output=false {
 		var created=now();
-		var selector=generateRememberMeSecret();
-		var validator=generateRememberMeSecret();
+		var selector=getBean('utility').generateSecureToken();
+		var validator=getBean('utility').generateSecureToken();
 		var expires=dateAdd("d",30,created);
 
 		variables.userDAO.createRememberMeToken(
@@ -105,13 +105,6 @@ component extends="mura.cfobject" output="false" hint="This provides primary log
 		);
 
 		return {selector=selector, validator=validator, expires=expires};
-	}
-
-	private string function generateRememberMeSecret() output=false {
-		var secureRandom=createObject("java","java.security.SecureRandom").init();
-		var encoded=binaryEncode(secureRandom.generateSeed(32),"base64");
-		encoded=replace(replace(encoded,"+","-","all"),"/","_","all");
-		return reReplace(encoded,"=+$","");
 	}
 
 	public boolean function rememberMe(required string selector="", required string validator="") output=false {
@@ -154,7 +147,7 @@ component extends="mura.cfobject" output="false" hint="This provides primary log
 			return false;
 		}
 
-		nextValidator=generateRememberMeSecret();
+		nextValidator=getBean('utility').generateSecureToken();
 		nextValidatorHash=hash(nextValidator,"SHA-256");
 		nextExpires=dateAdd("d",30,currentTime);
 		if ( !variables.userDAO.rotateRememberMeToken(
