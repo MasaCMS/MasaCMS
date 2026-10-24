@@ -760,6 +760,34 @@ component extends="testbox.system.BaseSpec" {
 				expect(fileRead(withoutNewLine)).toBe("content");
 			});
 
+			it("should proxy a pooled site's asset requests to the File Pool", function(){
+				// Not every test environment has a pooled site, so give
+				// "default" a different File Pool ID for the duration.
+				var site = application.settingsManager.getSite(variables.siteid);
+				var poolID = "fstest-pool-" & variables.runTag;
+				var originalPoolID = site.getFilePoolID();
+				// Record the key instead of streaming, which would end the request.
+				var svc = application.serviceFactory.getBean('fileStorageService');
+				var originalStream = svc.streamToResponse;
+				var keys = [];
+				site.setFilePoolID(poolID);
+				svc.streamToResponse = function(path, method){
+					arrayAppend(keys, arguments.path);
+					return true;
+				};
+				try {
+					variables.fileManager.proxyUserAsset(siteid=variables.siteid, subType="assets", relativePath="/photo.jpg");
+					variables.fileManager.proxyUserAsset(siteid=variables.siteid, subType="cache", relativePath="/file/ABC.png");
+				} finally {
+					site.setFilePoolID(originalPoolID);
+					svc.streamToResponse = originalStream;
+				}
+				expect(keys).toBe([
+					poolID & "/assets/photo.jpg",
+					poolID & "/cache/file/ABC.png"
+				]);
+			});
+
 			it("should release every path the fileManager image operations resolve", function(){
 				var testFile = createTestFile("releaseLocal test");
 				var mediumPath = cacheFilePath(testFile.fileID, "_medium", "png");
