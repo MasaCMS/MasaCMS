@@ -425,7 +425,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfscript>
 		var safe = rereplace(arguments.relativePath, "\.\.[\\]{0,1}[\/]{0,1}", "", "all");
 		var service = getBean("fileStorageService");
-		var key = arguments.siteid & "/" & arguments.subType & safe;
+		// Assets and cache live under the File Pool, not under every site sharing it.
+		var key = variables.settingsManager.getSite(arguments.siteid).getFilePoolID() & "/" & arguments.subType & safe;
 		if (service.streamToResponse(key, arguments.method)) {
 			return;
 		}
