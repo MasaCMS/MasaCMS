@@ -99,6 +99,12 @@ component extends="testbox.system.BaseSpec" {
 		// (currently skipped) path-traversal test below.
 		variables.traversalTargetPath = variables.baseAssetDir & "/../fstest-traversal-" & variables.runTag & ".png";
 		fileCopy(variables.fixtureSourceImage, variables.traversalTargetPath);
+
+		// The test event handler (core/tests/resources/model/handlers/
+		// eventHandler.cfc) records onAfterFileDelete's event data in
+		// request.fileBrowserDeleteEvents, keyed by filePath.
+		application.serviceFactory.getBean('configBean').registerModelDir(dir="/muraWRM/core/tests/resources/model", siteid=variables.siteid);
+		request.fileBrowserDeleteEvents = {};
 	}
 
 	function afterAll(){
@@ -140,6 +146,47 @@ component extends="testbox.system.BaseSpec" {
 	// name already seeded into imageTestDirPath.
 	function imageFileArg(imgName){
 		return { url: "/assets/" & variables.imageTestDirName & "/" & arguments.imgName, ext: "png" };
+	}
+
+	// The recorded onAfterFileDelete event data for a deleted file or folder
+	// in imageTestDirPath, or an empty struct. Matched on the path's last
+	// segment, so it doesn't depend on how delete() joins its path.
+	function findDeleteEvent(name){
+		param name="request.fileBrowserDeleteEvents" default={};
+		for (var recordedPath in request.fileBrowserDeleteEvents) {
+			var normalized = replace(recordedPath, "\", "/", "all");
+			if (findNoCase(variables.imageTestDirName, normalized) && listLast(normalized, "/") == arguments.name) {
+				return request.fileBrowserDeleteEvents[recordedPath];
+			}
+		}
+		return {};
+	}
+
+	// Same helper as fileStorageLocal.cfc's: runs body() while recording every
+	// resolveToLocal() result and releaseLocal() argument on the active storage
+	// service, by wrapping the singleton's two methods for the duration.
+	function trackLocalPaths(required function body){
+		var svc = application.serviceFactory.getBean('fileStorageService');
+		var real = new mura.fileStorage.localStorageService().init();
+		var calls = { resolved: [], released: [] };
+		var originalResolve = svc.resolveToLocal;
+		var originalRelease = svc.releaseLocal;
+		svc.resolveToLocal = function(path){
+			var localPath = real.resolveToLocal(arguments.path);
+			arrayAppend(calls.resolved, localPath);
+			return localPath;
+		};
+		svc.releaseLocal = function(localPath){
+			arrayAppend(calls.released, arguments.localPath);
+			real.releaseLocal(arguments.localPath);
+		};
+		try {
+			arguments.body();
+		} finally {
+			svc.resolveToLocal = originalResolve;
+			svc.releaseLocal = originalRelease;
+		}
+		return calls;
 	}
 
 	function csrfFor(context){
@@ -430,6 +477,37 @@ component extends="testbox.system.BaseSpec" {
 				expect(hash(fileReadBinary(imgPath), "MD5")).notToBe(beforeHash);
 			});
 
+			it("should release every path the image endpoints and browse() resolve", function(){
+				var calls = trackLocalPaths(function(){
+					var csrf = csrfFor("resize");
+					variables.fb.resize(resourcePath=variables.resourcePath, file=imageFileArg(seedImageFile()),
+						dimensions={ aspect: "within", width: 20, height: 20 }, siteid=variables.siteid,
+						csrf_token=csrf.token, csrf_token_expires=csrf.expires);
+
+					csrf = csrfFor("duplicate");
+					variables.fb.duplicate(resourcePath=variables.resourcePath, file=imageFileArg(seedImageFile()),
+						siteid=variables.siteid, csrf_token=csrf.token, csrf_token_expires=csrf.expires);
+
+					csrf = csrfFor("rotate");
+					variables.fb.rotate(resourcePath=variables.resourcePath, file=imageFileArg(seedImageFile()),
+						direction="clock", siteid=variables.siteid, csrf_token=csrf.token, csrf_token_expires=csrf.expires);
+
+					csrf = csrfFor("processCrop");
+					variables.fb.processCrop(resourcePath=variables.resourcePath, file=imageFileArg(seedImageFile()),
+						size={ width: 40, height: 100 }, crop={ x: 0, y: 0, width: 10, height: 10 },
+						siteid=variables.siteid, csrf_token=csrf.token, csrf_token_expires=csrf.expires);
+
+					// browse() resolves every listed image to read its dimensions.
+					variables.fb.browse(siteid=variables.siteid, directory="/" & variables.imageTestDirName,
+						resourcePath=variables.resourcePath);
+				});
+
+				expect(arrayLen(calls.resolved)).toBeGT(0);
+				arraySort(calls.resolved, "textnocase");
+				arraySort(calls.released, "textnocase");
+				expect(calls.released).toBe(calls.resolved);
+			});
+
 		});
 
 		describe("Local asset browser - nested directories, non-empty deletes, and name collisions", function(){
@@ -539,23 +617,18 @@ component extends="testbox.system.BaseSpec" {
 				expect(fileExists(collisionDir & "/marker.txt")).toBeTrue();
 			});
 
-			it("should silently overwrite an existing file name via rename() - no collision protection", function(){
-				// Unlike addFolder() above (directoryCreate() throws on an
-				// existing directory, and the pre-existing one survives),
-				// rename()'s underlying fileMove() does NOT throw when the
-				// destination filename already exists - confirmed live: it
-				// just overwrites it, rename() reports success, and the
-				// pre-existing target's original content is gone. A real,
-				// asymmetric data-loss risk between the two methods, not
-				// something to assume protection for without checking -
-				// see the to-do list.
+			it("should not overwrite an existing file name via rename()", function(){
+				// rename()'s underlying move overwrites an existing destination
+				// file without complaint, so rename() has to check for a
+				// collision itself. Both files must survive untouched.
 				var sourceName = "rename-src.txt";
 				var targetBaseName = "rename-target";
 				var sourcePath = variables.baseAssetDir & "/" & variables.imageTestDirName & "/" & sourceName;
 				var targetPath = variables.baseAssetDir & "/" & variables.imageTestDirName & "/" & targetBaseName & ".txt";
 				var sourceContent = fileRead(variables.fixtureSourceText);
+				var targetContent = "pre-existing rename target - must survive";
 				fileCopy(variables.fixtureSourceText, sourcePath);
-				fileWrite(targetPath, "pre-existing target - gets overwritten, not protected");
+				fileWrite(targetPath, targetContent);
 
 				var csrf = csrfFor("rename");
 				var result = variables.fb.rename(
@@ -568,10 +641,111 @@ component extends="testbox.system.BaseSpec" {
 					csrf_token_expires = csrf.expires
 				);
 
-				expect(result.success).toBe(1);
-				expect(fileExists(sourcePath)).toBeFalse();
+				expect(result.success).toBe(0);
+				expect(fileExists(sourcePath)).toBeTrue();
+				expect(fileRead(sourcePath)).toBe(sourceContent);
 				expect(fileExists(targetPath)).toBeTrue();
-				expect(fileRead(targetPath)).toBe(sourceContent);
+				expect(fileRead(targetPath)).toBe(targetContent);
+			});
+
+			it("should not overwrite an existing folder name via rename()", function(){
+				var sourceDir = variables.baseAssetDir & "/" & variables.imageTestDirName & "/rename-src-dir";
+				var targetDir = variables.baseAssetDir & "/" & variables.imageTestDirName & "/rename-target-dir";
+				directoryCreate(sourceDir);
+				directoryCreate(targetDir);
+				fileCopy(variables.fixtureSourceText, sourceDir & "/source-marker.txt");
+				fileCopy(variables.fixtureSourceText, targetDir & "/target-marker.txt");
+
+				var csrf = csrfFor("rename");
+				var result = variables.fb.rename(
+					siteid             = variables.siteid,
+					directory          = "/" & variables.imageTestDirName,
+					filename           = "rename-src-dir",
+					name               = "rename-target-dir",
+					resourcePath       = variables.resourcePath,
+					csrf_token         = csrf.token,
+					csrf_token_expires = csrf.expires
+				);
+
+				expect(result.success).toBe(0);
+				expect(fileExists(sourceDir & "/source-marker.txt")).toBeTrue();
+				expect(fileExists(targetDir & "/target-marker.txt")).toBeTrue();
+				expect(fileExists(targetDir & "/source-marker.txt")).toBeFalse();
+			});
+
+			it("should keep a file intact when rename() is given its current name", function(){
+				var fileName = "rename-same.txt";
+				var filePath = variables.baseAssetDir & "/" & variables.imageTestDirName & "/" & fileName;
+				var content = fileRead(variables.fixtureSourceText);
+				fileCopy(variables.fixtureSourceText, filePath);
+
+				var csrf = csrfFor("rename");
+				var result = variables.fb.rename(
+					siteid             = variables.siteid,
+					directory          = "/" & variables.imageTestDirName,
+					filename           = fileName,
+					name               = "rename-same",
+					resourcePath       = variables.resourcePath,
+					csrf_token         = csrf.token,
+					csrf_token_expires = csrf.expires
+				);
+
+				expect(result.success).toBe(1);
+				expect(fileExists(filePath)).toBeTrue();
+				expect(fileRead(filePath)).toBe(content);
+			});
+
+		});
+
+		describe("Local asset browser - onAfterFileDelete event data", function(){
+
+			it("should describe a deleted file with its real metadata", function(){
+				var fileName = "event-file.txt";
+				var filePath = variables.imageTestDirPath & "/" & fileName;
+				fileCopy(variables.fixtureSourceText, filePath);
+				var expected = getFileInfo(filePath);
+
+				var csrf = csrfFor("delete");
+				var result = variables.fb.delete(
+					siteid             = variables.siteid,
+					directory          = "/" & variables.imageTestDirName,
+					filename           = fileName,
+					resourcePath       = variables.resourcePath,
+					csrf_token         = csrf.token,
+					csrf_token_expires = csrf.expires
+				);
+
+				expect(result.success).toBe(1);
+				var info = findDeleteEvent(fileName);
+				expect(info).notToBeEmpty("No onAfterFileDelete event was recorded for " & fileName);
+				expect(info.name).toBe(fileName);
+				expect(info.type).toBe("file");
+				expect(info.size).toBe(expected.size);
+				expect(dateCompare(info.lastModified, expected.lastModified, "s")).toBe(0);
+			});
+
+			it("should describe a deleted folder with the same fields as a file", function(){
+				var dirName = "event-dir";
+				directoryCreate(variables.imageTestDirPath & "/" & dirName);
+
+				var csrf = csrfFor("delete");
+				var result = variables.fb.delete(
+					siteid             = variables.siteid,
+					directory          = "/" & variables.imageTestDirName,
+					filename           = dirName,
+					resourcePath       = variables.resourcePath,
+					csrf_token         = csrf.token,
+					csrf_token_expires = csrf.expires
+				);
+
+				expect(result.success).toBe(1);
+				var info = findDeleteEvent(dirName);
+				expect(info).notToBeEmpty("No onAfterFileDelete event was recorded for " & dirName);
+				expect(info).toHaveKey("name");
+				expect(info.name).toBe(dirName);
+				expect(info.type).toBe("directory");
+				expect(info).toHaveKey("size");
+				expect(isDate(info.lastModified)).toBeTrue();
 			});
 
 		});
