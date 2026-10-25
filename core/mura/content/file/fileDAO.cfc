@@ -85,12 +85,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.settingsManager=arguments.settingsManager />
 		<cfset variables.pluginManager=arguments.pluginManager />
 		<cfset variables.fileWriter=arguments.fileWriter>
+		<cfset variables.storageKeys=new mura.fileStorage.storageKey()>
 
 <cfreturn this />
-</cffunction>
-
-<cffunction name="getS3" output="false">
-	<cfreturn variables.s3 />
 </cffunction>
 
 <cffunction name="create" output="false">
@@ -137,40 +134,47 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfscript>
 			var storageService = getBean('fileStorageService');
-			var cachePath = arguments.siteid & "/cache/file/";
+			var keys = variables.storageKeys;
+			var mainKey = keys.cacheFileKey(arguments.siteid, arguments.fileid, arguments.fileExt);
 
 			if (isBinary(arguments.fileObj)) {
-				storageService.uploadBinary(arguments.fileObj, ct, cachePath & arguments.fileid & "." & arguments.fileExt);
+				storageService.uploadBinary(arguments.fileObj, ct, mainKey);
 			} else {
-				storageService.writeFromLocal(arguments.fileObj, cachePath & arguments.fileid & "." & arguments.fileExt);
+				storageService.writeFromLocal(arguments.fileObj, mainKey);
 			}
 
 			if (listFindNoCase("png,gif,jpg,jpeg", arguments.fileExt)) {
+				var sourceKey = keys.cacheFileKey(arguments.siteid, arguments.fileid, arguments.fileExt, "source");
+				var smallKey = keys.cacheFileKey(arguments.siteid, arguments.fileid, arguments.fileExt, "small");
+				var mediumKey = keys.cacheFileKey(arguments.siteid, arguments.fileid, arguments.fileExt, "medium");
 				if (isBinary(arguments.fileObjSource)) {
-					storageService.uploadBinary(arguments.fileObjSource, ct, cachePath & arguments.fileid & "_source." & arguments.fileExt);
+					storageService.uploadBinary(arguments.fileObjSource, ct, sourceKey);
 				} else if (len(arguments.fileObjSource) && fileExists(arguments.fileObjSource)) {
-					storageService.writeFromLocal(arguments.fileObjSource, cachePath & arguments.fileid & "_source." & arguments.fileExt);
+					storageService.writeFromLocal(arguments.fileObjSource, sourceKey);
 				}
 				if (isBinary(arguments.fileObjSmall)) {
-					storageService.uploadBinary(arguments.fileObjSmall, ct, cachePath & arguments.fileid & "_small." & arguments.fileExt);
+					storageService.uploadBinary(arguments.fileObjSmall, ct, smallKey);
 				} else if (len(arguments.fileObjSmall) && fileExists(arguments.fileObjSmall)) {
-					storageService.writeFromLocal(arguments.fileObjSmall, cachePath & arguments.fileid & "_small." & arguments.fileExt);
+					storageService.writeFromLocal(arguments.fileObjSmall, smallKey);
 				}
 				if (isBinary(arguments.fileObjMedium)) {
-					storageService.uploadBinary(arguments.fileObjMedium, ct, cachePath & arguments.fileid & "_medium." & arguments.fileExt);
+					storageService.uploadBinary(arguments.fileObjMedium, ct, mediumKey);
 				} else if (len(arguments.fileObjMedium) && fileExists(arguments.fileObjMedium)) {
-					storageService.writeFromLocal(arguments.fileObjMedium, cachePath & arguments.fileid & "_medium." & arguments.fileExt);
+					storageService.writeFromLocal(arguments.fileObjMedium, mediumKey);
 				}
 			} else if (arguments.fileExt eq "flv") {
+				// A video's thumbnails are always jpg.
+				var smallKey = keys.cacheFileKey(arguments.siteid, arguments.fileid, "jpg", "small");
+				var mediumKey = keys.cacheFileKey(arguments.siteid, arguments.fileid, "jpg", "medium");
 				if (isBinary(arguments.fileObjSmall)) {
-					storageService.uploadBinary(arguments.fileObjSmall, "image/jpeg", cachePath & arguments.fileid & "_small.jpg");
+					storageService.uploadBinary(arguments.fileObjSmall, "image/jpeg", smallKey);
 				} else if (len(arguments.fileObjSmall) && fileExists(arguments.fileObjSmall)) {
-					storageService.writeFromLocal(arguments.fileObjSmall, cachePath & arguments.fileid & "_small.jpg");
+					storageService.writeFromLocal(arguments.fileObjSmall, smallKey);
 				}
 				if (isBinary(arguments.fileObjMedium)) {
-					storageService.uploadBinary(arguments.fileObjMedium, "image/jpeg", cachePath & arguments.fileid & "_medium.jpg");
+					storageService.uploadBinary(arguments.fileObjMedium, "image/jpeg", mediumKey);
 				} else if (len(arguments.fileObjMedium) && fileExists(arguments.fileObjMedium)) {
-					storageService.writeFromLocal(arguments.fileObjMedium, cachePath & arguments.fileid & "_medium.jpg");
+					storageService.writeFromLocal(arguments.fileObjMedium, mediumKey);
 				}
 			}
 		</cfscript>
@@ -357,47 +361,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfscript>
 			var storageService = getBean('fileStorageService');
-			var cachePath = rsFile.siteID & "/cache/file/";
-			var cacheKeyPrefix = cachePath & arguments.fileID;
-			var cachedObjects = [];
-			var cachedObject = "";
-			var objectKey = "";
 
 			// Delete every cached variant for this fileID, including custom sizes
 			// generated by image manipulation methods.
-			try {
-				cachedObjects = storageService.listObjects(cachePath, arguments.fileID);
-
-				for (cachedObject in cachedObjects) {
-					if (isSimpleValue(cachedObject)) {
-						objectKey = cachedObject;
-					} else if (isStruct(cachedObject) and structKeyExists(cachedObject, "key")) {
-						objectKey = cachedObject.key;
-					} else if (isStruct(cachedObject) and structKeyExists(cachedObject, "name")) {
-						objectKey = cachedObject.name;
-					} else {
-						objectKey = "";
-					}
-
-					if (len(objectKey)) {
-						if (left(objectKey, len(cacheKeyPrefix)) neq cacheKeyPrefix) {
-							objectKey = cachePath & objectKey;
-						}
-						storageService.deleteObject(objectKey);
-					}
-				}
-			} catch(any e) {
-				// Fallback for storage providers without list support: preserve the
-				// previous explicit deletions for default cache variants.
-				storageService.deleteObject(cachePath & arguments.fileID & "." & rsFile.fileExt);
-				storageService.deleteObject(cachePath & arguments.fileID & "_source." & rsFile.fileExt);
-				if (listFindNoCase("png,gif,jpg,jpeg", rsFile.fileExt)) {
-					storageService.deleteObject(cachePath & arguments.fileID & "_small." & rsFile.fileExt);
-					storageService.deleteObject(cachePath & arguments.fileID & "_medium." & rsFile.fileExt);
-				} else if (rsFile.fileExt eq "flv") {
-					storageService.deleteObject(cachePath & arguments.fileID & "_small.jpg");
-					storageService.deleteObject(cachePath & arguments.fileID & "_medium.jpg");
-				}
+			for (var objectKey in storageService.listObjects(variables.storageKeys.cacheDirKey(rsFile.siteID), arguments.fileID)) {
+				storageService.deleteObject(objectKey);
 			}
 		</cfscript>
 

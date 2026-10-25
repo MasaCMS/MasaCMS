@@ -55,6 +55,32 @@ component
 		return pathRoot;
 	}
 
+	// Describes a file or folder for filebrowser events; call it before the item
+	// is deleted. Uses getFileInfo() when the item is on local disk, otherwise
+	// (a cloud storage backend) the storage listing, which every backend supports.
+	private struct function getItemInfo( required string path ) {
+		var info = {};
+
+		if(fileExists(arguments.path) || directoryExists(arguments.path)) {
+			info = getFileInfo(arguments.path);
+		} else {
+			var name = getFileFromPath(arguments.path);
+			var parent = getDirectoryFromPath(arguments.path);
+			info = { name: name, path: arguments.path, parent: parent };
+
+			var rs = getBean('fileWriter').getDirectoryList(directory=parent, filter=name, type="all");
+			if(rs.recordCount) {
+				// Same values getFileInfo() uses.
+				info['type'] = rs.type[1] == "Dir" ? "directory" : "file";
+				info['size'] = rs.size[1];
+				info['lastModified'] = rs.datelastmodified[1];
+			}
+		}
+
+		info['filePath'] = arguments.path;
+		return info;
+	}
+
 	private any function checkPerms( siteid,context,resourcePath )  {
 		var m=getBean('$').init(arguments.siteid);
 		var permission = {message: '',success: 0};
@@ -115,7 +141,11 @@ component
 
 		var fw = getBean('fileWriter');
 		var localPath = fw.resolveToLocal(conditionalExpandPath(filePath));
-		var sourceImage = ImageNew(localPath);
+		try {
+			var sourceImage = ImageNew(localPath);
+		} finally {
+			fw.releaseLocal(localPath);
+		}
 
 		if(arguments.dimensions.aspect eq "within") {
 			if(!isNumeric(arguments.dimensions.width) || !isNumeric(arguments.dimensions.height) || arguments.dimensions.width < 1 || arguments.dimensions.height < 1) {
@@ -203,7 +233,11 @@ component
 
 		var fw = getBean('fileWriter');
 		var localPath = fw.resolveToLocal(conditionalExpandPath(filePath));
-		var sourceImage = ImageNew(localPath);
+		try {
+			var sourceImage = ImageNew(localPath);
+		} finally {
+			fw.releaseLocal(localPath);
+		}
 
 		while(fw.checkFileExists(destination)) {
 			version++;
@@ -261,7 +295,11 @@ component
 
 		var fw = getBean('fileWriter');
 		var localPath = fw.resolveToLocal(conditionalExpandPath(filePath));
-		var sourceImage = ImageNew(localPath);
+		try {
+			var sourceImage = ImageNew(localPath);
+		} finally {
+			fw.releaseLocal(localPath);
+		}
 		var sourceImageInfo = imageInfo(sourceImage);
 		ImageRotate(sourceImage,int(sourceImageInfo.width/2),int(sourceImageInfo.height/2),rotation);
 
@@ -324,13 +362,20 @@ component
 
 		var fw = getBean('fileWriter');
 		var localPath = fw.resolveToLocal(conditionalExpandPath(filePath));
-		var sourceImage = ImageNew(localPath);
-
-		ImageScaleToFit(sourceImage,size.width,size.height,"highestPerformance");
 		var tempFile1 = tempDir & timage & "." & arguments.file.ext;
-		ImageWrite(sourceImage, tempFile1);
-		var workImage = ImageNew(tempFile1);
-		sourceImage = ImageNew(localPath);
+		try {
+			var sourceImage = ImageNew(localPath);
+
+			ImageScaleToFit(sourceImage,size.width,size.height,"highestPerformance");
+			ImageWrite(sourceImage, tempFile1);
+			var workImage = ImageNew(tempFile1);
+			sourceImage = ImageNew(localPath);
+		} finally {
+			fw.releaseLocal(localPath);
+			if(fileExists(tempFile1)) {
+				fileDelete(tempFile1);
+			}
+		}
 
 		var workImageInfo = imageInfo(workImage);
 		var sourceImageInfo = imageInfo(sourceImage);
@@ -348,7 +393,11 @@ component
 		ImageWrite(sourceImage, tempFile2);
 		fw.writeFromLocal(tempFile2, conditionalExpandPath(filePath));
 		var croppedLocalPath = fw.resolveToLocal(conditionalExpandPath(filePath));
-		workImage = ImageNew(croppedLocalPath);
+		try {
+			workImage = ImageNew(croppedLocalPath);
+		} finally {
+			fw.releaseLocal(croppedLocalPath);
+		}
 
 		response.info = imageInfo(workImage);
 		response.aspect = aspect;
@@ -789,25 +838,14 @@ component
 					return response;
 				}
 				else {
+					info = getItemInfo(path);
 					fw.deleteDir(directory=path, recurse=false);
-					info['filePath'] = path;
 					m.event('fileBrowser',info).announceEvent('onAfterFileDelete');
 
 				}
 			}
 			else if(fw.checkFileExists(path)) {
-				try {
-					info = getFileInfo( path );
-				} catch (any e) {
-					// File may exist only in cloud storage — build a minimal info struct
-					info = {
-						name:         getFileFromPath(path),
-						type:         "file",
-						size:         0,
-						lastModified: now()
-					};
-				}
-				info['filePath'] = path;
+				info = getItemInfo(path);
 				fw.deleteFile(path);
 				m.event('fileBrowser',info).announceEvent('onAfterFileDelete');
 			}
@@ -864,6 +902,18 @@ component
 		if(fw.checkFileExists(currentFilePath)) {
 			var newFilePath = conditionalexpandpath(filePath) & application.configBean.getFileDelim() & safeName & ext;
 
+			// Moving a file onto itself would delete it.
+			if(!compare(newFilePath, currentFilePath)) {
+				response.success = 1;
+				return response;
+			}
+
+			// The move would silently overwrite an existing file.
+			if(fw.checkFileExists(newFilePath) || fw.checkDirectoryExists(newFilePath)) {
+				response.message = "A file or folder with that name already exists.";
+				return response;
+			}
+
 			try {
 				fw.moveFile(currentFilePath, newFilePath);
 				success = 1;
@@ -874,6 +924,16 @@ component
 		}
 		else if(fw.checkDirectoryExists(currentFilePath)) {
 			var newFilePath = conditionalExpandPath(filePath) & application.configBean.getFileDelim() & safeName;
+
+			if(!compare(newFilePath, currentFilePath)) {
+				response.success = 1;
+				return response;
+			}
+
+			if(fw.checkFileExists(newFilePath) || fw.checkDirectoryExists(newFilePath)) {
+				response.message = "A file or folder with that name already exists.";
+				return response;
+			}
 
 			try {
 				fw.renameDir(directory=currentFilePath, newDirectory=newFilePath);
@@ -1012,27 +1072,8 @@ component
 		// Always resolve through getBaseResourcePath() so FilePoolID (shared File
 		// Pools) is honored consistently for every resourcePath - see PR #427.
 		var complete = (m.siteConfig('isremote') || (isdefined('arguments.completepath') && isBoolean(arguments.completepath) && arguments.completepath));
-		var preAssetPath = getBean('configBean').get('assetPath');
-
-		if(len(preAssetPath)) {
-			if(arguments.resourcePath == "Site_Files") {
-				preAssetPath = preAssetPath & "/" & arguments.siteid & response['directory'];
-			}
-			else if(arguments.resourcePath == "Application_Root") {
-				preAssetPath = response['directory'];
-			}
-			else {
-				preAssetPath = preAssetPath & "/" & arguments.siteid & "/assets" & response['directory'];
-			}
-		}
-		else {
-			if(arguments.resourcePath == "User_Assets") {
-				preAssetPath = fw.getAssetUrl(arguments.siteid) & response['directory'];
-			}
-			else {
-				preAssetPath = getBaseResourcePath(siteid=arguments.siteid,resourcePath=arguments.resourcePath,complete=complete);
-			}
-		}
+		var preAssetPath = getBaseResourcePath(siteid=arguments.siteid,resourcePath=arguments.resourcePath,complete=complete);
+		preAssetPath = preAssetPath & response['directory'];
 
 		var rsDirectory = fw.getDirectoryList(directory=conditionalExpandPath(filePath), type="all");
 
@@ -1099,8 +1140,9 @@ component
 				frow['ext'] = rereplace(frow['fullname'],".[^\.]*\.","");
 			if( frow['isimage'] ) {
 			// Reading an image could fail
+			var localImagePath = "";
 			try {
-					var localImagePath = fw.resolveToLocal(conditionalExpandPath(filePath) & application.configBean.getFileDelim() & frow['fullname']);
+					localImagePath = fw.resolveToLocal(conditionalExpandPath(filePath) & application.configBean.getFileDelim() & frow['fullname']);
 					var readImage = imageRead(localImagePath);
 					var iinfo = imageInfo(readImage);
 					if( isStruct(iinfo)) {
@@ -1109,6 +1151,10 @@ component
 						}
 				} catch (any e) {
 					// Do nothing; reading image has failed, no width and height info is available
+				} finally {
+					if(len(localImagePath)) {
+						fw.releaseLocal(localImagePath);
+					}
 				}
 			}
 			}
