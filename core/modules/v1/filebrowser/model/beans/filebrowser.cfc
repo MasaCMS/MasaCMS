@@ -400,7 +400,7 @@ component
 		}
 
 		if(getBean('configBean').getCompiler()=='Adobe'){
-			var item = fileUpload(tempDir,'',"MakeUnique");
+			var item = fileUpload(tempDir,'','',"MakeUnique");
 		} else {
 			var item = fileUpload(tempDir,'','',"Overwrite");
 		}
