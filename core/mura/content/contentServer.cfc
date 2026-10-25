@@ -804,8 +804,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						&& application.settingsManager.siteExists(_possibleSiteId)) {
 					// relativePath is the portion AFTER the subType segment (e.g. /logo.png, not /assets/logo.png)
 					// because localStorageService.basePath already ends with /assets or /cache
-					var _afterSubType = arraySlice(_pathParts, _subTypeIdx + 1);
-					var _relToSite = arrayLen(_afterSubType) ? "/" & arrayToList(_afterSubType, "/") : "/";
+					// Adobe CF's arraySlice() throws when the offset is past the end.
+					var _relToSite = arrayLen(_pathParts) > _subTypeIdx ? "/" & arrayToList(arraySlice(_pathParts, _subTypeIdx + 1), "/") : "/";
 					var _method = (structKeyExists(url, "method") ? url.method : "inline");
 					return getBean('fileManager').proxyUserAsset(
 						siteid       = _possibleSiteId,

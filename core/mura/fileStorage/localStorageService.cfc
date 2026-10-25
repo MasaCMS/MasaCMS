@@ -250,39 +250,16 @@ the Free Software Foundation, Version 2 of the License.
 	<!--- ==================== STREAMING PROXY ==================== --->
 
 	<cffunction name="streamToResponse" access="public" returntype="boolean" output="false"
-		hint="Stream a local file directly to the servlet response. Returns false if the file does not exist.">
+		hint="Send a local file as the response with cfcontent, which ends the request. Returns false if the file does not exist.">
 		<cfargument name="path" type="string" required="true">
 		<cfargument name="method" type="string" required="false" default="inline">
 		<cfscript>
 			var fp = fullPath(arguments.path);
 			if (!fileExists(fp)) { return false; }
-			var filename      = listLast(replace(fp, "\", "/", "ALL"), "/");
-			var contentType   = "";
-			try {
-				contentType = createObject("java", "java.nio.file.Files").probeContentType(
-					createObject("java", "java.io.File").init(fp).toPath()
-				);
-			} catch (any e) {}
-			if (isNull(contentType) || !len(contentType)) { contentType = "application/octet-stream"; }
-			var response = getPageContext().getResponse();
-			response.setContentType(contentType);
-			response.setHeader("Content-Length", getFileInfo(fp).size);
 			var disposition = (arguments.method eq "attachment") ? "attachment" : "inline";
-			response.setHeader("Content-Disposition", disposition & "; filename=""" & filename & """");
-			response.setHeader("Cache-Control", "max-age=86400");
-			var inputStream = createObject("java", "java.io.FileInputStream").init(fp);
-			var outputStream = response.getOutputStream();
-			var buffer = createObject("java", "java.lang.reflect.Array").newInstance(
-				createObject("java", "java.lang.Byte").TYPE, 65536
-			);
-			var bytesRead = 0;
-			while (true) {
-				bytesRead = inputStream.read(buffer);
-				if (bytesRead eq -1) { break; }
-				outputStream.write(buffer, 0, bytesRead);
-			}
-			outputStream.flush();
-			inputStream.close();
+			cfheader(name="Content-Disposition", value=disposition & "; filename=""" & getFileFromPath(fp) & """");
+			cfheader(name="Cache-Control", value="max-age=86400");
+			cfcontent(file=fp, type=fileGetMimeType(fp));
 			return true;
 		</cfscript>
 	</cffunction>
