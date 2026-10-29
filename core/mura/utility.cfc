@@ -1640,20 +1640,62 @@ Blog: www.codfusion.com--->
 	}
 
 	function isPathLegal(path){
-		var rootPath=replace(variables.configBean.getWebRoot(), "\", "/", "ALL");
-		var pluginPath=replace(variables.configBean.getPluginDir(), "\", "/", "ALL");
-		arguments.path=replace(expandPath(arguments.path), "\", "/", "ALL");
-		return (
-			len(arguments.path) >= len(rootPath) && left(arguments.path,len(rootPath)) == rootPath
-		) && (
-			rootPath & "/plugins" == pluginPath
+		var rootPath=normalizePath(variables.configBean.getWebRoot());
+		var pluginPath=normalizePath(variables.configBean.getPluginDir());
+		// expandPath() does not resolve '..' segments on every engine (Adobe CF
+		// leaves them in place), so the target is normalized before comparing.
+		var targetPath=normalizePath(expandPath(arguments.path));
 
-			||
+		// Fail closed if a path could not be normalized.
+		if ( !len(rootPath) || !len(pluginPath) || !len(targetPath) ) {
+			return false;
+		}
 
-			(
-				len(arguments.path) >= len(pluginPath) && left(arguments.path,len(pluginPath)) == pluginPath
-			)
+		return isPathWithin(targetPath,rootPath) && (
+			rootPath & "/plugins" == pluginPath || isPathWithin(targetPath,pluginPath)
 		);
+	}
+
+	/**
+	 * Lexically normalizes a path: '\' becomes '/', and empty, '.' and '..'
+	 * segments are resolved. Returns an empty string when '..' would climb above
+	 * the path's root, so callers fail closed. Symbolic links are not resolved.
+	 */
+	private function normalizePath(path){
+		var normalized=replace(arguments.path, "\", "/", "ALL");
+		var prefix="";
+		var segments=[];
+
+		if ( reFind("^[A-Za-z]:", normalized) ) {
+			prefix=left(normalized, 2);
+			normalized=mid(normalized, 3, len(normalized));
+		}
+		if ( left(normalized, 1) == "/" ) {
+			prefix&="/";
+		}
+
+		for ( var segment in listToArray(normalized, "/") ) {
+			if ( segment == "." ) {
+				continue;
+			} else if ( segment == ".." ) {
+				if ( !arrayLen(segments) ) {
+					return "";
+				}
+				arrayDeleteAt(segments, arrayLen(segments));
+			} else {
+				arrayAppend(segments, segment);
+			}
+		}
+
+		return prefix & arrayToList(segments, "/");
+	}
+
+	// True when path is root itself or inside it, compared on a separator
+	// boundary so '/var/www-evil' is not treated as inside '/var/www'.
+	private function isPathWithin(path, root){
+		var rootWithDelim=right(arguments.root, 1) == "/" ? arguments.root : arguments.root & "/";
+		return arguments.path == arguments.root
+			|| ( len(arguments.path) > len(rootWithDelim) && left(arguments.path, len(rootWithDelim)) == rootWithDelim );
 	}
 
 	// A theme name maps to a single directory segment; strip anything that could introduce path traversal.

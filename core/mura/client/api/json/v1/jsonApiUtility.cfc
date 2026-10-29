@@ -1168,6 +1168,14 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 						var entity=getBean(params.entityName);
 						var result=invoke(entity,pathInfo[3],params);
+
+						// A remote function that returns a serialized JSON object (e.g. filebrowser.ckeditor_quick_upload)
+						// owns its response shape. Scalars like "true" are valid JSON too, so they still get wrapped.
+						if(isSimpleValue(result) && left(trim(result),1) == '{' && isJSON(result)){
+							getpagecontext().getResponse().setContentType('application/json; charset=utf-8');
+							return result;
+						}
+
 						return serializeResponse(statusCode=200,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'data'=result});
 					} else if (params.entityName=='content') {
 						params.id=pathInfo[3];
