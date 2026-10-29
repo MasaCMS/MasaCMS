@@ -643,8 +643,14 @@ component
 		var origin=conditionalExpandPath(filePath) & m.globalConfig().getFileDelim() & arguments.filename;
 		var finalDestination=conditionalExpandPath(destinationPath) & m.globalConfig().getFileDelim() & arguments.filename;
 
+		if(!isLegalFileName(arguments.filename)
+			|| !isPathLegal(arguments.resourcepath,origin,arguments.siteid)
+			|| !isPathLegal(arguments.resourcepath,finalDestination,arguments.siteid)) {
+			throw(message="Illegal file path C",errorcode ="invalidParameters");
+		}
+
 		fileMove(origin,tempDir & arguments.filename);
-		fileMove(tempDir & filename,finalDestination);
+		fileMove(tempDir & arguments.filename,finalDestination);
 
 		var info = {};
 		info['filePath'] = finalDestination;
@@ -668,9 +674,11 @@ component
 
 		var baseFilePath = getBaseFileDir( arguments.siteid,arguments.resourcePath );
 		var filePath = baseFilePath  & m.globalConfig().getFileDelim() & rereplace(arguments.directory,"\.{1,}","\.","all");
-		var path = expandpath(filePath) & application.configBean.getFileDelim() & arguments.filename;
+		var path = conditionalExpandPath(filePath) & application.configBean.getFileDelim() & arguments.filename;
 
-		if(!isPathLegal(arguments.resourcepath,conditionalExpandPath(filePath),arguments.siteid)) {
+		if(!isPathLegal(arguments.resourcepath,conditionalExpandPath(filePath),arguments.siteid)
+			|| !isLegalFileName(arguments.filename)
+			|| !isPathLegal(arguments.resourcepath,path,arguments.siteid)) {
 			throw(message="File path illegal");
 		}
 
@@ -713,9 +721,11 @@ component
 
 		var baseFilePath = getBaseFileDir( arguments.siteid,arguments.resourcePath );
 		var filePath = baseFilePath  & m.globalConfig().getFileDelim() & rereplace(arguments.directory,"\.{1,}","\.","all");
-		var path = expandpath(filePath) & application.configBean.getFileDelim() & arguments.filename;
+		var path = conditionalExpandPath(filePath) & application.configBean.getFileDelim() & arguments.filename;
 
-		if(!isPathLegal(arguments.resourcepath,conditionalExpandPath(filePath),arguments.siteid)) {
+		if(!isPathLegal(arguments.resourcepath,conditionalExpandPath(filePath),arguments.siteid)
+			|| !isLegalFileName(arguments.filename)
+			|| !isPathLegal(arguments.resourcepath,path,arguments.siteid)) {
 			throw(message="File path illegal");
 		}
 
@@ -760,7 +770,9 @@ component
 		var filePath = baseFilePath  & m.globalConfig().getFileDelim() & rereplace(arguments.directory,"\.{1,}","\.","all");
 		var path = conditionalExpandPath(filePath) & application.configBean.getFileDelim() & arguments.filename;
 
-		if(!isPathLegal(arguments.resourcepath,conditionalExpandPath(filePath),arguments.siteid)) {
+		if(!isPathLegal(arguments.resourcepath,conditionalExpandPath(filePath),arguments.siteid)
+			|| !isLegalFileName(arguments.filename)
+			|| !isPathLegal(arguments.resourcepath,path,arguments.siteid)) {
 			throw(message="File path illegal");
 		}
 
@@ -826,15 +838,17 @@ component
 		var baseFilePath = getBaseFileDir( arguments.siteid,arguments.resourcePath );
 		var filePath = baseFilePath  & m.globalConfig().getFileDelim() & rereplace(arguments.directory,"\.{1,}","\.","all");
 		var ext = rereplacenocase(arguments.filename,".[^\.]*","");
+		var currentFilePath = conditionalexpandpath(filePath) & application.configBean.getFileDelim() & arguments.filename;
 
-		if(!isPathLegal(arguments.resourcepath,conditionalExpandPath(filePath),arguments.siteid)) {
+		if(!isPathLegal(arguments.resourcepath,conditionalExpandPath(filePath),arguments.siteid)
+			|| !isLegalFileName(arguments.filename)
+			|| !isPathLegal(arguments.resourcepath,currentFilePath,arguments.siteid)) {
 			throw(message="File path illegal");
 		}
 
 		var safeName = rereplaceNoCase(arguments.name,"[[:space:]]","_","ALL");
 		safeName = rereplaceNoCase(safeName,"[^[:alnum:]\_\-]","","ALL");
 
-		var currentFilePath = conditionalexpandpath(filePath) & application.configBean.getFileDelim() & arguments.filename;
 		var success = 0;
 
 		if(fileExists(currentFilePath)) {
@@ -1131,6 +1145,20 @@ component
 		}
 
 		return isContainedWithin(targetPath,rootPath);
+	}
+
+	/**
+	 * True only when filename is a single path segment. Callers build the target
+	 * as <validated directory> & delim & filename, so a filename that adds or
+	 * climbs a segment would escape the directory isPathLegal() approved.
+	 * Rejects separators and names made only of dots/whitespace ('.', '..', and
+	 * '.. ', which Windows normalizes to '..').
+	 */
+	function isLegalFileName(filename=""){
+		return isSimpleValue(arguments.filename)
+			&& len(arguments.filename)
+			&& !reFind("^[.[:space:]]+$",arguments.filename)
+			&& !reFind("[/\\]",arguments.filename);
 	}
 
 	/**
