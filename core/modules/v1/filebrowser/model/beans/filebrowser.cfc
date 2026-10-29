@@ -396,11 +396,16 @@ component
 
 		//if(!isPathLegal(arguments.siteid,arguments.resourcepath,conditionalExpandPath(filePath))){
 		if(!isPathLegal(arguments.resourcepath,conditionalExpandPath(filePath),arguments.siteid)) {
-			throw(message="Illegal file path",errorcode ="invalidParameters");
+			return serializeJSON({
+				"uploaded": 0,
+				"error": {
+					"message": "Illegal file path."
+				}
+			});
 		}
 
 		if(getBean('configBean').getCompiler()=='Adobe'){
-			var item = fileUpload(tempDir,'',"MakeUnique");
+			var item = fileUpload(tempDir,'','',"MakeUnique");
 		} else {
 			var item = fileUpload(tempDir,'','',"Overwrite");
 		}
@@ -452,14 +457,14 @@ component
 			});
 		}
 
-		var fileurl=getBaseResourcePath(arguments.siteid,arguments.resourcePath) & replace(arguments.directory,"\","/","all") & m.globalConfig().getFileDelim() & newFileName;
+		var fileurl=getBaseResourcePath(arguments.siteid,arguments.resourcePath) & replace(arguments.directory,"\","/","all") & "/" & safeName;
 		response.success = 1;
 
 		if(response.success) {
 			// this is the only one that counts
 			return serializeJSON({
 				"uploaded": 1,
-				"fileName": item.serverfile,
+				"fileName": safeName,
 				"url": fileurl
 			});
 		}
