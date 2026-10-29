@@ -351,14 +351,19 @@ component
 		arguments.siteid == "" ? "default" : arguments.siteid;
 
 		var m=getBean('m').init(arguments.siteid);
-		var sentCSRF = arguments.ckcsrftoken;
-		var cookieCSRF = cookie.ckcsrftoken;
 
-		if(cookieCSRF != cookieCSRF) {
+		// CKEditor protects uploads with a double-submit cookie: it sends the
+		// ckCsrfToken field and sets a matching ckCsrfToken cookie on the same
+		// origin. A cross-site request cannot read that cookie, so it cannot
+		// forge a matching field. Reject unless both are present and equal.
+		var sentCSRF = structKeyExists(arguments,'ckcsrftoken') ? arguments.ckcsrftoken : '';
+		var cookieCSRF = structKeyExists(cookie,'ckcsrftoken') ? cookie.ckcsrftoken : '';
+
+		if(!len(sentCSRF) || !len(cookieCSRF) || compare(sentCSRF,cookieCSRF) != 0) {
 			return serializeJSON({
 				"uploaded": 0,
 				"error": {
-					"message": "Not supported."
+					"message": "Invalid CSRF token."
 				}
 			});
 		}
