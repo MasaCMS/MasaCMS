@@ -117,6 +117,8 @@ component extends="mura.cfobject" output="false" hint="This provides primary log
 		var nextExpires="";
 		var isLoggedIn=false;
 
+		// MFA sites don't support remember-me, and a selector/validator that doesn't fit the
+		// shape generateSecureToken() produces can't be a real token - reject it up front.
 		if ( getBean('configBean').getValue(property='MFA',defaultValue=false)
 			|| !reFind("^[A-Za-z0-9_-]{43}$",arguments.selector)
 			|| !reFind("^[A-Za-z0-9_-]{43}$",arguments.validator) ) {
@@ -125,6 +127,7 @@ component extends="mura.cfobject" output="false" hint="This provides primary log
 			return false;
 		}
 
+		// The selector is the token's lookup key, not a secret - it just names which row to check.
 		rsToken=variables.userDAO.readRememberMeToken(arguments.selector);
 		if ( rsToken.recordCount neq 1 ) {
 			variables.globalUtility.deleteCookie(name="rememberme");
@@ -139,6 +142,8 @@ component extends="mura.cfobject" output="false" hint="This provides primary log
 			return false;
 		}
 
+		// The validator is the secret half of the token. Compare its hash in constant time so a
+		// timing difference can't leak how much of it matched.
 		validatorHash=hash(arguments.validator,"SHA-256");
 		if ( !constantTimeHashEquals(validatorHash,rsToken.validatorHash) ) {
 			variables.userDAO.deleteRememberMeToken(arguments.selector);
@@ -147,6 +152,10 @@ component extends="mura.cfobject" output="false" hint="This provides primary log
 			return false;
 		}
 
+		// Issue a fresh validator and swap it in before logging the user in. rotateRememberMeToken()
+		// only updates the row if it still holds the validatorHash just checked above, so a second,
+		// concurrent use of the same cookie - e.g. a stolen copy already consumed once - loses that
+		// race and falls through to the deletion below instead of producing a second valid login.
 		nextValidator=getBean('utility').generateSecureToken();
 		nextValidatorHash=hash(nextValidator,"SHA-256");
 		nextExpires=dateAdd("d",30,currentTime);
@@ -163,6 +172,8 @@ component extends="mura.cfobject" output="false" hint="This provides primary log
 			return false;
 		}
 
+		// The token checked out, but the account behind it may since have been removed or
+		// disabled - loginByUserID() is the same gate a password login goes through.
 		isLoggedIn=variables.userUtility.loginByUserID(rsToken.userID,rsToken.siteID);
 		if ( !isLoggedIn ) {
 			variables.userDAO.deleteRememberMeToken(arguments.selector);
@@ -171,6 +182,8 @@ component extends="mura.cfobject" output="false" hint="This provides primary log
 			return false;
 		}
 
+		// Reissue the cookie with the selector unchanged but the new validator, so the next
+		// request presents the validator this request just rotated the token to.
 		sessionData.rememberMe=1;
 		sessionData.rememberMeTokenIssued=1;
 		sessionData.rememberMeSelector=arguments.selector;
