@@ -802,8 +802,9 @@ component extends="testbox.system.BaseSpec" {
 				var localFile = application.configBean.getTempDir() & "/fstest-replace-" & variables.runTag & ".txt";
 				arrayAppend(variables.extraTempFiles, storedPath);
 				arrayAppend(variables.extraTempFiles, localFile);
-				fileWrite(storedPath, "old content");
-				fileWrite(localFile, "new content");
+				// Written as binary: Adobe CF's fileWrite() appends a newline to string data.
+				fileWrite(storedPath, charsetDecode("old content", "utf-8"));
+				fileWrite(localFile, charsetDecode("new content", "utf-8"));
 
 				svc.writeFromLocal(localFile, key);
 
@@ -897,16 +898,16 @@ component extends="testbox.system.BaseSpec" {
 				var localFile = application.configBean.getTempDir() & "/fstest-rename-" & variables.runTag & ".txt";
 				arrayAppend(variables.extraTempFiles, assetFile);
 				arrayAppend(variables.extraTempFiles, localFile);
-				fileWrite(localFile, "rename test");
+				// Written as binary: Adobe CF's fileWrite() appends a newline to string data.
+				fileWrite(localFile, charsetDecode("rename test", "utf-8"));
 
-				// trim(): Adobe CF's fileWrite()/fileRead() round trip adds a trailing newline.
 				fw.renameFile(source=localFile, destination=assetFile);
 				expect(fileExists(localFile)).toBeFalse();
-				expect(trim(fileRead(assetFile))).toBe("rename test");
+				expect(fileRead(assetFile)).toBe("rename test");
 
 				fw.renameFile(source=assetFile, destination=localFile);
 				expect(fileExists(assetFile)).toBeFalse();
-				expect(trim(fileRead(localFile))).toBe("rename test");
+				expect(fileRead(localFile)).toBe("rename test");
 			});
 
 			it("should refuse to rename a directory into or out of User_Assets", function(){
