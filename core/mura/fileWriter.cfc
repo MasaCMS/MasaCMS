@@ -230,10 +230,13 @@ This file is part of Mura CMS.
 		<cfargument name="mode" required="true" default="#variables.defaultFileMode#">
 		<cfscript>
 			var srcKey = userAssetKey(arguments.source);
-			if (len(srcKey)) {
-				var dstKey = userAssetKey(arguments.destination);
-				getBean('fileStorageService').renameFile(srcKey, len(dstKey) ? dstKey : arguments.destination);
+			var dstKey = userAssetKey(arguments.destination);
+			if (len(srcKey) && len(dstKey)) {
+				getBean('fileStorageService').renameFile(srcKey, dstKey);
 				return this;
+			} else if (len(srcKey) || len(dstKey)) {
+				// Across the User_Assets boundary a rename is a move, which goes through a local file.
+				return moveFile(argumentCollection=arguments);
 			}
 		</cfscript>
 		<cflock name="mfw#hash(arguments.source)#" type="exclusive" timeout= "5">
@@ -390,10 +393,14 @@ This file is part of Mura CMS.
 		<cfargument name="mode" required="true" default="#variables.defaultFileMode#">
 		<cfscript>
 			var srcKey = userAssetKey(arguments.directory);
-			if (len(srcKey)) {
-				var dstKey = userAssetKey(arguments.newDirectory);
-				getBean('fileStorageService').renameFile(srcKey, len(dstKey) ? dstKey : arguments.newDirectory);
+			var dstKey = userAssetKey(arguments.newDirectory);
+			if (len(srcKey) && len(dstKey)) {
+				getBean('fileStorageService').renameFile(srcKey, dstKey);
 				return this;
+			} else if (len(srcKey) || len(dstKey)) {
+				throw(type="mura.fileWriter.crossBoundaryRename",
+				      message="A directory can't be renamed into or out of User_Assets.",
+				      detail="#arguments.directory# -> #arguments.newDirectory#");
 			}
 		</cfscript>
 		<cfif variables.useMode >

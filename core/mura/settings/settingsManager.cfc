@@ -479,6 +479,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset commitTracepoint(tracepoint1)>
 
 		<cfset variables.sites=builtSites>
+		<!--- Rebuilt from the new sites on next use. --->
+		<cfset structDelete(variables, "filePoolIDs")>
 
 		<cfset tracepoint1=initTracepoint("Loading deferred global assets")>
 		<cfif arrayLen(muraDeferredModuleAssets)>
@@ -569,6 +571,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getSites" output="false">
 	<cfparam name="variables.sites" default="#structNew()#">
 	<cfreturn variables.sites />
+</cffunction>
+
+<cffunction name="getFilePoolIDs" output="false" returntype="struct"
+	hint="The File Pool IDs of all loaded sites, as struct keys. Built on first use and cleared by setSites(), which runs whenever a site is created, updated or deleted.">
+	<cfscript>
+		var poolIDs = variables.filePoolIDs ?: "";
+		if (isStruct(poolIDs)) {
+			return poolIDs;
+		}
+		poolIDs = {};
+		var sites = getSites();
+		for (var siteID in sites) {
+			poolIDs[sites[siteID].getFilePoolID()] = true;
+		}
+		variables.filePoolIDs = poolIDs;
+		return poolIDs;
+	</cfscript>
 </cffunction>
 
 <cffunction name="purgeAllCache" output="false">

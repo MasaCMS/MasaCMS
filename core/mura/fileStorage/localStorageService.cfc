@@ -51,7 +51,7 @@ the Free Software Foundation, Version 2 of the License.
 	<cffunction name="fullPath" access="private" returntype="string" output="false">
 		<cfargument name="path" type="string" required="true">
 		<cfif len(variables.basePath)>
-			<cfreturn variables.basePath & arguments.path>
+			<cfreturn variables.storageKeys.joinContained(reReplace(variables.basePath, "[\\/]+$", ""), arguments.path)>
 		<cfelse>
 			<cfreturn variables.storageKeys.toLocalPath(arguments.path)>
 		</cfif>
@@ -256,8 +256,7 @@ the Free Software Foundation, Version 2 of the License.
 		<cfscript>
 			var fp = fullPath(arguments.path);
 			if (!fileExists(fp)) { return false; }
-			var disposition = (arguments.method eq "attachment") ? "attachment" : "inline";
-			cfheader(name="Content-Disposition", value=disposition & "; filename=""" & getFileFromPath(fp) & """");
+			cfheader(name="Content-Disposition", value=getBean('utility').contentDisposition(arguments.method, getFileFromPath(fp)));
 			cfheader(name="Cache-Control", value="max-age=86400");
 			cfcontent(file=fp, type=fileGetMimeType(fp));
 			return true;

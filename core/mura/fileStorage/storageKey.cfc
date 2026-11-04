@@ -50,11 +50,37 @@ the Free Software Foundation, Version 2 of the License.
 	</cffunction>
 
 	<cffunction name="toLocalPath" access="public" returntype="string" output="false"
-		hint="The absolute local filesystem path for a key.">
+		hint="The absolute local filesystem path for a key. Throws mura.fileStorage.invalidKey
+		      when the key could resolve outside its root.">
 		<cfargument name="key" type="string" required="true">
 		<cfset var normalizedKey = normalize(arguments.key)>
 		<cfset var root = getSubtype(normalizedKey) EQ "assets" ? application.configBean.getAssetDir() : application.configBean.getFileDir()>
-		<cfreturn root & "/" & normalizedKey>
+		<cfreturn joinContained(root, normalizedKey)>
+	</cffunction>
+
+	<cffunction name="joinContained" access="public" returntype="string" output="false"
+		hint="root & '/' & relativePath, after checking that relativePath stays inside root: no
+		      '.' or '..' segments, no drive or scheme prefix, no control characters.
+		      Throws mura.fileStorage.invalidKey otherwise.">
+		<cfargument name="root" type="string" required="true">
+		<cfargument name="relativePath" type="string" required="true">
+		<cfscript>
+			var relative = reReplace(replace(arguments.relativePath, "\", "/", "ALL"), "^/+", "");
+			var invalid = reFind("[[:cntrl:]]", relative) || find(":", relative);
+			if (!invalid) {
+				for (var segment in listToArray(relative, "/")) {
+					// Some filesystems ignore trailing dots and spaces, so ". " or "..." can act as "..".
+					if (!len(reReplace(segment, "[. ]", "", "ALL"))) {
+						invalid = true;
+						break;
+					}
+				}
+			}
+			if (invalid) {
+				throw(type="mura.fileStorage.invalidKey", message="Path is outside the storage root.", detail=arguments.relativePath);
+			}
+			return arguments.root & "/" & relative;
+		</cfscript>
 	</cffunction>
 
 	<cffunction name="fromAssetPath" access="public" returntype="string" output="false"
@@ -89,22 +115,11 @@ the Free Software Foundation, Version 2 of the License.
 
 	<cffunction name="isFilePoolID" access="private" returntype="boolean" output="false">
 		<cfargument name="poolID" type="string" required="true">
-		<cfscript>
-			var sites = "";
-			try {
-				sites = application.settingsManager.getList();
-			} catch (any e) {
-				return false;
-			}
-			for (var i = 1; i <= sites.recordCount; i++) {
-				try {
-					if (application.settingsManager.getSite(sites.siteID[i]).getFilePoolID() == arguments.poolID) {
-						return true;
-					}
-				} catch (any e) {}
-			}
-			return false;
-		</cfscript>
+		<!--- fileWriter runs during application start, before the settingsManager exists. --->
+		<cfif not structKeyExists(application, "settingsManager")>
+			<cfreturn false>
+		</cfif>
+		<cfreturn structKeyExists(application.settingsManager.getFilePoolIDs(), arguments.poolID)>
 	</cffunction>
 
 </cfcomponent>

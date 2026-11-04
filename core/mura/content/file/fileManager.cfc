@@ -216,7 +216,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset arguments.rsFile=rsFileData>
 				<cfset pluginEvent.init(arguments)>
 				<cfset pluginManager.announceEvent("onBeforeFileRender",pluginEvent)>
-				<cfheader name="Content-Disposition" value='#arguments.method#;filename="#rsfileData.filename#"'>
+				<cfheader name="Content-Disposition" value="#getBean('utility').contentDisposition(arguments.method, rsfileData.filename)#">
 				<cfheader name="Content-Length" value="#arrayLen(rsFileData.image)#">
 				<cfif variables.configBean.getCompiler() eq 'Adobe'>
 					<cfset createObject("component","mura.content.file.renderAdobe").init("#rsfileData.contentType#/#rsfileData.contentSubType#",rsFileData.image)>
@@ -286,7 +286,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif not rsFile.recordcount>
 					<cfset getBean("contentServer").render404()>
 				</cfif>
-				<cfheader name="Content-Disposition" value='#arguments.method#;filename="#rsfile.filename#"'>
+				<cfheader name="Content-Disposition" value="#getBean('utility').contentDisposition(arguments.method, rsfile.filename)#">
 				<cfheader name="Content-Length" value="#arrayLen(rsFile.imageSmall)#">
 				<cfif variables.configBean.getCompiler() eq 'Adobe'>
 					<cfset createObject("component","mura.content.file.renderAdobe").init("#rsfile.contentType#/#rsfile.contentSubType#",rsFile.imageSmall)>
@@ -336,7 +336,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif not rsFile.recordcount>
 					<cfset getBean("contentServer").render404()>
 				</cfif>
-				<cfheader name="Content-Disposition" value='#arguments.method#;filename="#rsfile.filename#"'>
+				<cfheader name="Content-Disposition" value="#getBean('utility').contentDisposition(arguments.method, rsfile.filename)#">
 				<cfheader name="Content-Length" value="#arrayLen(rsFile.imageMedium)#">
 				<cfif variables.configBean.getCompiler() eq 'Adobe'>
 					<cfset createObject("component","mura.content.file.renderAdobe").init("#rsfile.contentType#/#rsfile.contentSubType#",rsFile.imageMedium)>
@@ -423,14 +423,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="subType" type="string" default="assets" hint="'assets' or 'cache'">
 	<cfargument name="method" type="string" default="inline">
 	<cfscript>
-		var safe = rereplace(arguments.relativePath, "\.\.[\\]{0,1}[\/]{0,1}", "", "all");
 		var service = getBean("fileStorageService");
 		// Assets and cache live under the File Pool, not under every site sharing it.
-		var key = variables.settingsManager.getSite(arguments.siteid).getFilePoolID() & "/" & arguments.subType & safe;
-		if (service.streamToResponse(key, arguments.method)) {
+		// The subtype is lowercased because the directories are, and the URL check is case-insensitive.
+		var key = variables.settingsManager.getSite(arguments.siteid).getFilePoolID() & "/" & lCase(arguments.subType) & arguments.relativePath;
+		var localPath = "";
+		try {
+			if (service.streamToResponse(key, arguments.method)) {
+				return;
+			}
+			localPath = service.resolveToLocal(key);
+		} catch (any e) {
+			if (e.type != "mura.fileStorage.invalidKey") {
+				rethrow;
+			}
+			getBean("contentServer").render404();
 			return;
 		}
-		var localPath = service.resolveToLocal(key);
 		try {
 			if (!len(localPath) || !fileExists(localPath)) {
 				getBean("contentServer").render404();
@@ -1077,7 +1086,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     	<cfset FileClose(local.fileCheck)>
     </cfif>
 
-	<cfheader name="Content-Disposition" value='#arguments.method#;filename="#arguments.filename#"'>
+	<cfheader name="Content-Disposition" value="#getBean('utility').contentDisposition(arguments.method, arguments.filename)#">
 	<cfcontent file="#arguments.filePath#" type="#arguments.mimetype#" deletefile="#arguments.deleteFile#">
 
 </cffunction>

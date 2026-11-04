@@ -718,6 +718,76 @@ component extends="testbox.system.BaseSpec" {
 				expect(keys.toLocalPath(keys.fromAssetPath(path))).toBe(replace(path, "\", "/", "all"));
 			});
 
+			it("should refuse keys that could resolve outside their root", function(){
+				var badKeys = [
+					"default/assets/../../x.txt",
+					"default/assets/..\..\x.txt",
+					"default/assets/....//x.txt",
+					"default/assets/..././x.txt",
+					"default/assets/./x.txt",
+					"default/assets/.. /x.txt",
+					"default/assets/..",
+					"../default/assets/x.txt",
+					"default/assets/C:/x.txt",
+					"default/assets/x.txt" & chr(9) & ".jpg"
+				];
+				var accepted = [];
+				for (var badKey in badKeys) {
+					try {
+						keys.toLocalPath(badKey);
+						arrayAppend(accepted, badKey);
+					} catch (any e) {
+						if (e.type != "mura.fileStorage.invalidKey") {
+							rethrow;
+						}
+					}
+				}
+				expect(serializeJSON(accepted)).toBe("[]");
+				// Dots inside a name are fine.
+				expect(keys.toLocalPath("default/assets/a..b/.htaccess")).toBe(assetRoot & "/default/assets/a..b/.htaccess");
+			});
+
+			it("should recognise a File Pool added to a site once the sites are reloaded", function(){
+				var site = application.settingsManager.getSite("default");
+				var originalPoolID = site.getFilePoolID();
+				var poolID = "fstest-poolids-" & variables.runTag;
+				var path = assetRoot & "/" & poolID & "/assets/x.png";
+				expect(application.settingsManager.getFilePoolIDs()).toHaveKey(originalPoolID);
+				try {
+					site.setFilePoolID(poolID);
+					// The cached set still has the old pool until setSites() runs.
+					expect(keys.fromAssetPath(path)).toBe("");
+					application.settingsManager.setSites(missingOnly=true);
+					expect(keys.fromAssetPath(path)).toBe(poolID & "/assets/x.png");
+				} finally {
+					site.setFilePoolID(originalPoolID);
+					application.settingsManager.setSites(missingOnly=true);
+				}
+				expect(keys.fromAssetPath(path)).toBe("");
+			});
+
+		});
+
+		describe("Local file storage - Content-Disposition header", function(){
+
+			var utility = application.serviceFactory.getBean('utility');
+
+			it("should only allow inline or attachment", function(){
+				expect(utility.contentDisposition("attachment", "a.txt")).toBe('attachment; filename="a.txt"');
+				expect(utility.contentDisposition("inline", "a.txt")).toBe('inline; filename="a.txt"');
+				expect(utility.contentDisposition("inline" & chr(13) & chr(10) & "X-Evil: 1", "a.txt")).toBe('inline; filename="a.txt"');
+			});
+
+			it("should escape quotes and backslashes and drop control characters", function(){
+				expect(utility.contentDisposition("inline", 'a"b\c.txt')).toBe('inline; filename="a\"b\\c.txt"');
+				expect(utility.contentDisposition("inline", "a" & chr(13) & chr(10) & "b.txt")).toBe('inline; filename="ab.txt"');
+			});
+
+			it("should add filename* for non-ASCII names", function(){
+				expect(utility.contentDisposition("inline", "caf" & chr(233) & " 1.txt"))
+					.toBe("inline; filename=""caf" & chr(233) & " 1.txt""; filename*=UTF-8''caf%C3%A9%201.txt");
+			});
+
 		});
 
 		describe("Local file storage - storage service local-file handling", function(){
@@ -786,6 +856,76 @@ component extends="testbox.system.BaseSpec" {
 					poolID & "/assets/photo.jpg",
 					poolID & "/cache/file/ABC.png"
 				]);
+			});
+
+			it("should proxy a wrong-case subtype to the lowercase directory", function(){
+				var svc = application.serviceFactory.getBean('fileStorageService');
+				var originalStream = svc.streamToResponse;
+				var keys = [];
+				svc.streamToResponse = function(path, method){
+					arrayAppend(keys, arguments.path);
+					return true;
+				};
+				try {
+					variables.fileManager.proxyUserAsset(siteid=variables.siteid, subType="Assets", relativePath="/photo.jpg");
+				} finally {
+					svc.streamToResponse = originalStream;
+				}
+				expect(keys).toBe([application.settingsManager.getSite(variables.siteid).getFilePoolID() & "/assets/photo.jpg"]);
+			});
+
+			it("should answer a traversal attempt through the asset proxy with a 404", function(){
+				// The real streamToResponse() runs, so a resolved path would be streamed.
+				var contentServer = application.serviceFactory.getBean('contentServer');
+				var originalRender404 = contentServer.render404;
+				var notFound = 0;
+				contentServer.render404 = function(){
+					notFound++;
+				};
+				try {
+					variables.fileManager.proxyUserAsset(siteid=variables.siteid, subType="assets", relativePath="/../../config/settings.ini.cfm");
+					variables.fileManager.proxyUserAsset(siteid=variables.siteid, subType="cache", relativePath="/....//....//x.txt");
+				} finally {
+					contentServer.render404 = originalRender404;
+				}
+				expect(notFound).toBe(2);
+			});
+
+			it("should rename a file into and out of User_Assets as a move", function(){
+				var fw = application.serviceFactory.getBean('fileWriter');
+				var assetFile = application.settingsManager.getSite(variables.siteid).getAssetDir() & "/assets/fstest-rename-" & variables.runTag & ".txt";
+				var localFile = application.configBean.getTempDir() & "/fstest-rename-" & variables.runTag & ".txt";
+				arrayAppend(variables.extraTempFiles, assetFile);
+				arrayAppend(variables.extraTempFiles, localFile);
+				fileWrite(localFile, "rename test");
+
+				// trim(): Adobe CF's fileWrite()/fileRead() round trip adds a trailing newline.
+				fw.renameFile(source=localFile, destination=assetFile);
+				expect(fileExists(localFile)).toBeFalse();
+				expect(trim(fileRead(assetFile))).toBe("rename test");
+
+				fw.renameFile(source=assetFile, destination=localFile);
+				expect(fileExists(assetFile)).toBeFalse();
+				expect(trim(fileRead(localFile))).toBe("rename test");
+			});
+
+			it("should refuse to rename a directory into or out of User_Assets", function(){
+				var fw = application.serviceFactory.getBean('fileWriter');
+				var assetDir = application.settingsManager.getSite(variables.siteid).getAssetDir() & "/assets/fstest-renamedir-" & variables.runTag;
+				var localDir = application.configBean.getTempDir() & "/fstest-renamedir-" & variables.runTag;
+				directoryCreate(assetDir);
+				directoryCreate(localDir);
+				try {
+					expect(function(){ fw.renameDir(directory=assetDir, newDirectory=localDir & "-out"); })
+						.toThrow("mura.fileWriter.crossBoundaryRename");
+					expect(function(){ fw.renameDir(directory=localDir, newDirectory=assetDir & "-in"); })
+						.toThrow("mura.fileWriter.crossBoundaryRename");
+					expect(directoryExists(assetDir)).toBeTrue();
+					expect(directoryExists(localDir)).toBeTrue();
+				} finally {
+					directoryDelete(assetDir, true);
+					directoryDelete(localDir, true);
+				}
 			});
 
 			it("should release every path the fileManager image operations resolve", function(){
