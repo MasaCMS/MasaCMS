@@ -1049,7 +1049,7 @@ Blog: www.codfusion.com--->
 
 		if ( Len(secret) && StructKeyExists(form, 'g-recaptcha-response') && Len(form['g-recaptcha-response']) ) {
 			var reCaptcha = new mura.reCAPTCHA(secret);
-			var verified = reCaptcha.verifyResponse(response=form['g-recaptcha-response'], remoteid=request.remoteAddr);
+			verified = reCaptcha.verifyResponse(response=form['g-recaptcha-response'], remoteip=request.remoteAddr);
 		}
 
 		return verified;
