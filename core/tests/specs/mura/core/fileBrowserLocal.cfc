@@ -628,7 +628,8 @@ component extends="testbox.system.BaseSpec" {
 				var sourceContent = fileRead(variables.fixtureSourceText);
 				var targetContent = "pre-existing rename target - must survive";
 				fileCopy(variables.fixtureSourceText, sourcePath);
-				fileWrite(targetPath, targetContent);
+				// Written as binary: Adobe CF's fileWrite() appends a newline to string data.
+				fileWrite(targetPath, charsetDecode(targetContent, "utf-8"));
 
 				var csrf = csrfFor("rename");
 				var result = variables.fb.rename(
