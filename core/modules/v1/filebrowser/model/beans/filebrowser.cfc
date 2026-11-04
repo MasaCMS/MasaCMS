@@ -903,7 +903,7 @@ component
 			var newFilePath = conditionalexpandpath(filePath) & application.configBean.getFileDelim() & safeName & ext;
 
 			// Moving a file onto itself would delete it.
-			if(!compare(newFilePath, currentFilePath)) {
+			if(!compareNoCase(newFilePath, currentFilePath)) {
 				response.success = 1;
 				return response;
 			}
