@@ -708,6 +708,66 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rsUserHash/>
 </cffunction>
 
+<cffunction name="createRememberMeToken" output="false">
+	<cfargument name="tokenID" type="string" required="true">
+	<cfargument name="userID" type="string" required="true">
+	<cfargument name="siteID" type="string" required="true">
+	<cfargument name="selector" type="string" required="true">
+	<cfargument name="validatorHash" type="string" required="true">
+	<cfargument name="expires" type="date" required="true">
+	<cfargument name="created" type="date" required="true">
+	<cfargument name="lastused" type="date" required="true">
+
+	<cfset var token=getBean("rememberMeToken").set(arguments)>
+
+	<cfset token.save()>
+	<cfif token.hasErrors()>
+		<cfthrow type="MasaCMS.RememberMeToken" message="Unable to save remember-me token.">
+	</cfif>
+
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="readRememberMeToken" output="false">
+	<cfargument name="selector" type="string" required="true">
+
+	<cfreturn getBean("rememberMeToken").loadBy(selector=arguments.selector,returnFormat="query")>
+</cffunction>
+
+<cffunction name="rotateRememberMeToken" output="false">
+	<cfargument name="tokenID" type="string" required="true">
+	<cfargument name="oldValidatorHash" type="string" required="true">
+	<cfargument name="validatorHash" type="string" required="true">
+	<cfargument name="expires" type="date" required="true">
+	<cfargument name="lastused" type="date" required="true">
+
+	<cfreturn getBean("rememberMeToken").set("tokenID",arguments.tokenID).rotate(
+		oldValidatorHash=arguments.oldValidatorHash,
+		validatorHash=arguments.validatorHash,
+		expires=arguments.expires,
+		lastused=arguments.lastused
+	)>
+</cffunction>
+
+<cffunction name="deleteRememberMeToken" output="false">
+	<cfargument name="selector" type="string" required="true">
+	<cfset var token=getBean("rememberMeToken").loadBy(selector=arguments.selector)>
+
+	<cfif token.exists()>
+		<cfset token.delete()>
+	</cfif>
+
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="deleteExpiredRememberMeTokens" output="false">
+	<cfargument name="lastUsedBefore" type="date" required="true">
+
+	<cfset getBean("rememberMeToken").deleteExpired(lastUsedBefore=arguments.lastUsedBefore)>
+
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="readAddress" output="false">
 		<cfargument name="addressid" type="string" required="yes" />
 		<cfargument name="addressBean" />
