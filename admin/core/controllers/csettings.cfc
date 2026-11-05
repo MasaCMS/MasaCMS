@@ -241,22 +241,18 @@ component extends="controller" output="false" {
 
 	public function createBundle(rc) output=false {
 		// CVE-2025-55043: Validate CSRF token before processing bundle creation
-		// Handle both single-module (from editplugin.cfm) and multi-module (from selectbundleoptions.cfm) cases
 		param default="" name="arguments.rc.moduleID";
+		param default="" name="arguments.rc.bundleMode";
 
-		// Determine CSRF context based on whether we have a specific module or site-level bundle
-		var csrfContext = 'createbundle';
-		if ( len(arguments.rc.moduleID) && !isArray(arguments.rc.moduleID) ) {
-			// Single module case (quick bundle creation from editplugin.cfm)
-			csrfContext &= arguments.rc.moduleID;
-		} else {
-			// Multi-module or site bundle case (from selectbundleoptions.cfm)
-			csrfContext &= arguments.rc.siteID;
-		}
+		// Only the plugin bundle link (editplugin.cfm) sends bundleMode=plugin; its token is
+		// rendered for the moduleID. The site bundle form (selectbundleoptions.cfm) renders its
+		// token for the siteID, and may send any number of ticked plugins as moduleID.
+		var isPluginBundle = (arguments.rc.bundleMode == 'plugin');
+		var csrfContext = 'createbundle' & (isPluginBundle ? arguments.rc.moduleID : arguments.rc.siteID);
 
 		if ( !arguments.rc.$.validateCSRFTokens(context=csrfContext) ) {
 			arguments.rc.alert = "Invalid security token. Bundle creation blocked.";
-			if ( len(arguments.rc.moduleID) && !isArray(arguments.rc.moduleID) ) {
+			if ( isPluginBundle ) {
 				variables.fw.redirect(action="cSettings.editPlugin", append="moduleID,siteID", path="./");
 			} else {
 				variables.fw.redirect(action="cSettings.selectBundleOptions", append="siteID", path="./");
@@ -274,7 +270,6 @@ component extends="controller" output="false" {
 		param default=false name="arguments.rc.includeFormData";
 		param default=false name="arguments.rc.saveFile";
 		param default="" name="arguments.rc.saveFileDir";
-		param default="" name="arguments.rc.bundleMode";
 		if ( len(arguments.rc.saveFileDir) ) {
 			if ( directoryExists(arguments.rc.saveFileDir) ) {
 				arguments.rc.saveFile=true;
