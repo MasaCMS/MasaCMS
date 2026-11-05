@@ -1477,21 +1477,45 @@ MuraFileBrowser = {
 	
 			this.$root.isDisplayContext = 0;
 	
-			var left = Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().left);
-			var top =  Math.floor(document.getElementById('fileitem-'+index).getBoundingClientRect().top) + window.scrollX-5;
-	
+			var btn = document.getElementById('fileitem-'+index);
+
 			this.$nextTick(function () {
 				this.$root.isDisplayContext = 1;
+				// wait for the menu to render so its offsetParent and height are known
+				this.$nextTick(function () {
+					this.positionMenu(btn);
+				});
 			});
 	
 			this.$root.isDisplayWindow = '';
 			this.$root.currentFile = file;
 			this.$root.currentFile.index = index;
 			this.$root.currentIndex = index;
-			this.menux = left;
-			this.menuy = top;
-	
+
 			e.preventDefault();
+			}
+			, positionMenu: function(btn) {
+			var menuEl = this.$el.querySelector('#newContentMenu');
+			if(!menuEl || !btn) {
+				return;
+			}
+
+			// the menu is position:absolute, so convert viewport coords to its offsetParent (e.g. the modal)
+			var parent = menuEl.offsetParent || document.body;
+			var parentRect = parent.getBoundingClientRect();
+			var btnRect = btn.getBoundingClientRect();
+			var originTop = parentRect.top + parent.clientTop - parent.scrollTop;
+			var originLeft = parentRect.left + parent.clientLeft - parent.scrollLeft;
+
+			var top = btnRect.top - 5;
+			// flip above the button when it would run past the bottom of the viewport
+			if(top + menuEl.offsetHeight > window.innerHeight) {
+				top = btnRect.bottom - menuEl.offsetHeight;
+			}
+
+			// contextmenu renders left as menux + 20 and top as menuy + pageYOffset
+			this.menux = Math.floor(btnRect.left - originLeft);
+			this.menuy = Math.floor(top - originTop) - window.pageYOffset;
 			}
 		}
 		});
