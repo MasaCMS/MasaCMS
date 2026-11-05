@@ -738,6 +738,11 @@ select * from tplugins order by #getBean('utility').validateSort(arguments.order
 	<cffile action="rename" source="#pluginMappingsTempFilePathName#" destination="#pluginMappingsFilePathName#" />
 	<cffile action="rename" source="#pluginCfapplicationTempFilePathName#" destination="#pluginCfapplicationFilePathName#" />
 
+	<!--- Lucee can keep serving the old includes for a moment; force a re-check so the next request (often an app reload) gets the new mappings --->
+	<cfif structKeyExists(server, 'lucee')>
+		<cfscript>inspectTemplates();</cfscript>
+	</cfif>
+
 	</cflock>
 	</cflock>
 	</cflock>
