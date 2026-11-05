@@ -635,7 +635,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var tempfile="">
 	<cfset var deletetempfile=true>
 
-	<cfif isDefined("arguments.data.serverBundlePath") and len(arguments.data.serverBundlePath) and fileExists(arguments.data.serverBundlePath)>
+	<cfif isDefined("arguments.data.serverBundlePath") and len(arguments.data.serverBundlePath)>
+		<cfif not fileExists(arguments.data.serverBundlePath)>
+			<cfset arguments.errors.serverBundlePath="The bundle file '#encodeForHTML(arguments.data.serverBundlePath)#' could not be found on the server.">
+			<cfreturn>
+		</cfif>
 		<cfset arguments.data.bundleFile=arguments.data.serverBundlePath>
 	</cfif>
 
