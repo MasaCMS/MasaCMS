@@ -377,7 +377,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 
 		<!--- Plugins --->
+		<cfquery name="rstplugins">
+			select * from tplugins where
+			1=1
+			<cfif len(arguments.siteID)>
+				and moduleID in ( select moduleID from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/> and type='Plugin')
+			</cfif>
+			<cfif len(arguments.moduleID)>
+				and moduleID in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true">)
+			<cfelse>
+				and 0=1
+			</cfif>
+		</cfquery>
 
+		<cfif rstplugins.recordcount>
+			<cfif not directoryExists("#variables.backupDir#plugins/")>
+				<cfdirectory action="create" directory="#variables.backupDir#plugins/">
+				<cffile action="write" file="#variables.backupDir#plugins/blank.txt" output="empty file" />
+			</cfif>
+			<cfloop query="rstplugins">
+				<cfset variables.utility.copyDir("#variables.configBean.getPluginDir()#/#rstplugins.directory#","#variables.backupDir#plugins/#rstplugins.directory#" )>
+			</cfloop>
+			<cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#pluginfiles.zip",directory="#variables.backupDir#plugins/",recurse="true")>
+		</cfif>
 		<!--- end plugins --->
 
 	</cffunction>
