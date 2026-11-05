@@ -444,6 +444,11 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 					}
 				}
 
+				queryParams['primarykey'] = {
+					value: variables.instance[getPrimaryKey()],
+					cfsqltype: "varchar"
+				};
+
 				if(!hasErrors() || getSaveErrors()){
 
 					savecontent variable="sql" {
