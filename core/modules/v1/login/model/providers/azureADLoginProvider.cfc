@@ -71,12 +71,12 @@ component extends="baseLoginProvider" accessors=true output=false {
 		cfhttp(url="https://graph.microsoft.com/v1.0/me",
 				method="get",
 				resolveURL="true",
-				result=result)
+				result="local.result")
 				{
 					cfhttpparam(type="header",name="Authorization",value="Bearer #accesstoken#");
 					cfhttpparam(type="header",name="Content-Type",value="application/json");
 				};
-		return deserializeJSON(result.filecontent.toString());
+		return deserializeJSON(local.result.filecontent.toString());
 	}
 
 	//Credit: http://www.sitekickr.com/blog/http-post-oauth-coldfusion
@@ -90,14 +90,15 @@ component extends="baseLoginProvider" accessors=true output=false {
 			 postBody = postBody & "scope=https%3A%2F%2Fgraph.microsoft.com%2Fuser.read&";
 			 postBody = postBody & "grant_type=authorization_code";
 
-			var h = new http();
-			h.setURL("https://login.microsoftonline.com/#variables.configBean.getAzureADTenantID()#/oauth2/v2.0/token?");
-			h.setMethod("post");
-			h.addParam(type="header",name="Content-Type",value="application/x-www-form-urlencoded");
-			h.addParam(type="body",value="#postBody#");
-			h.setResolveURL(true);
-			var result = h.send().getPrefix();
-			return deserializeJSON(result.filecontent.toString());
+			cfhttp(url="https://login.microsoftonline.com/#variables.configBean.getAzureADTenantID()#/oauth2/v2.0/token?",
+				method="post",
+				resolveURL="true",
+				result="local.result")
+				{
+					cfhttpparam(type="header",name="Content-Type",value="application/x-www-form-urlencoded");
+					cfhttpparam(type="body",value="#postBody#");
+				};
+			return deserializeJSON(local.result.filecontent.toString());
 	}
 
 }

@@ -55,14 +55,12 @@ component extends="baseLoginProvider" accessors=true output=false {
 		cfhttp(url="https://graph.facebook.com/me",
 				 method="get",
 				 resolveURL="true",
-				 result=result)
+				 result="local.result")
 				{
 					cfhttpparam(type="url",name="fields",value="email,name,first_name,last_name");
 					cfhttpparam(type="url",name="access_token",value="#accesstoken#");
 				};
-
-		var result = h.send().getPrefix();
-		return deserializeJSON(result.filecontent.toString());
+		return deserializeJSON(local.result.filecontent.toString());
 	}
 
 	private function getAuthToken(code) {
@@ -76,12 +74,12 @@ component extends="baseLoginProvider" accessors=true output=false {
 			 cfhttp(url="https://graph.facebook.com/v2.12/oauth/access_token",
 				method="post",
 				resolveURL="true",
-				result=result)
+				result="local.result")
 				{
 					cfhttpparam(type="header",name="Content-Type",value="application/x-www-form-urlencoded");
 					cfhttpparam(type="body",value="#postBody#");
 				};
-			return deserializeJSON(result.filecontent.toString());
+			return deserializeJSON(local.result.filecontent.toString());
 	}
 
 }

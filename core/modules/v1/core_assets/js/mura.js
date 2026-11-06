@@ -4418,7 +4418,7 @@ function submitForm(frm, obj) {
       var reCaptchaCheck = Mura(frm).find("#g-recaptcha-response");
 
       if (reCaptchaCheck.length && typeof reCaptchaCheck.val() != 'undefined') {
-        data['g-recaptcha-response'] = eCaptchaCheck.val();
+        data['g-recaptcha-response'] = reCaptchaCheck.val();
       }
     }
 
@@ -17542,7 +17542,13 @@ Mura.UI.Form = Mura.UI.extend(
           }
 
           Mura.post(Mura.getAPIEndpoint() + '?method=processAsyncObject', data).then(function (resp) {
-            if (_typeof(resp.data.errors) == 'object' && !Mura.isEmptyObject(resp.data.errors)) {
+            if (!resp || _typeof(resp.data) != 'object' || resp.error) {
+              // API error envelope ({apiversion, method, error}) carries no data
+              self.showErrors({
+                "systemerror": "We're sorry, a system error has occurred. Please try again later."
+              });
+              self.trigger('afterErrorRender');
+            } else if (_typeof(resp.data.errors) == 'object' && !Mura.isEmptyObject(resp.data.errors)) {
               self.showErrors(resp.data.errors);
               self.trigger('afterErrorRender');
             } else {

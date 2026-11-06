@@ -108,7 +108,7 @@ component accessors=true output=false hint="This provides the ability to interac
 		proxyServer="#application.configBean.getProxyServer()#",
 		proxyPort="#application.configBean.getProxyPort()#",
 		charset="utf-8",
-		result = recaptchaResponse.result )
+		result="local.httpResult" )
 		{
 		   cfhttpparam(type='formfield', name='secret', value=this.getSecret());
 		   cfhttpparam(type='formfield', name='remoteip', value=arguments.remoteip);
@@ -118,12 +118,13 @@ component accessors=true output=false hint="This provides the ability to interac
 		cfhttp(url="#this._siteVerifyUrl#",
 				method="post",
 				charset="utf-8",
-				result = recaptchaResponse.result ){
+				result="local.httpResult" ){
 			cfhttpparam(type='formfield', name='secret', value=this.getSecret());
 			cfhttpparam(type='formfield', name='remoteip', value=arguments.remoteip);
 			cfhttpparam(type='formfield', name='response', value=arguments.response);
 		};
 	}
+	recaptchaResponse.result = local.httpResult;
     var answers = StructKeyExists(recaptchaResponse.result, 'Filecontent') && IsJson(recaptchaResponse.result.Filecontent)
       ? DeserializeJson(recaptchaResponse.result.FileContent)
       : recaptchaResponse;

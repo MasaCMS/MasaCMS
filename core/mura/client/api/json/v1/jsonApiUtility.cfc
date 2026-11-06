@@ -1849,11 +1849,11 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		cfhttp(url="https://bpi.briteverify.com/emails.json?address=#arguments.email#&apikey=#$.siteConfig('mmpBrightVerifyAPIKey')#",
 			method="get",
 			charset="utf-8",
-			result=result
+			result="local.result"
 		);
 
 		try{
-			var response=getSerializer().serialize(result.filecontent);
+			var response=getSerializer().serialize(local.result.filecontent);
 		} catch(any e){
 			var response={status='invalid'};
 		}
