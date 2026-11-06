@@ -57,12 +57,12 @@ component extends="baseLoginProvider" accessors=true output=false {
 		cfhttp(url="https://www.googleapis.com/oauth2/v1/userinfo",
 				 method="get",
 				 resolveURL="true",
-				 result=result)
+				 result="local.result")
 				 {
 					cfhttpparam(type="header",name="Authorization",value="OAuth #accesstoken#");
 					cfhttpparam(type="header",name="GData-Version",value="3");
 				};
-		return deserializeJSON(result.filecontent.toString());
+		return deserializeJSON(local.result.filecontent.toString());
 	}
 
 	//Credit: http://www.sitekickr.com/blog/http-post-oauth-coldfusion
@@ -76,12 +76,12 @@ component extends="baseLoginProvider" accessors=true output=false {
 			 cfhttp(url="https://accounts.google.com/o/oauth2/token",
 					method="post",
 					resolveURL="true",
-					result=result)
+					result="local.result")
 					{
 						cfhttpparam(type="header",name="Content-Type",value="application/x-www-form-urlencoded");
 						cfhttpparam(type="body",value="#postBody#");
 					};
-			return deserializeJSON(result.filecontent.toString());
+			return deserializeJSON(local.result.filecontent.toString());
 	}
 
 }
