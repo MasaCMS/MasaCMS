@@ -130,6 +130,81 @@ component extends="testbox.system.BaseSpec"{
 
 		});
 
+		// fileWriter.getAssetUrl() must resolve a site's User_Assets URL the same way
+		// getBaseResourcePath() does: through FilePoolID, honoring a CDN-style
+		// assetPath and a fileAssetPath override.
+		describe("fileWriter.getAssetUrl() - File Pool URL resolution", function(){
+
+			var fw = application.serviceFactory.getBean('fileWriter');
+			var configBean = application.configBean;
+
+			it(
+				title="returns the site's file asset path plus /assets",
+				body=function(){
+					var assetUrl = fw.getAssetUrl(ownerSiteID);
+
+					expect(assetUrl).toBe(settingsManager.getSite(ownerSiteID).getFileAssetPath() & '/assets');
+					expect(assetUrl).toInclude('/#ownerSiteID#/assets');
+				}
+			);
+
+			it(
+				title="returns an absolute URL when complete=true",
+				body=function(){
+					var assetUrl = fw.getAssetUrl(siteid=ownerSiteID, complete=true);
+
+					expect(assetUrl).toBe(settingsManager.getSite(ownerSiteID).getFileAssetPath(complete=true) & '/assets');
+					expect(assetUrl).toMatch('^https?://');
+					expect(assetUrl).toInclude(fw.getAssetUrl(ownerSiteID));
+				}
+			);
+
+			it(
+				title="with a shared pool: returns the pool owner's URL, not one built from the sharing site's own siteid",
+				skip=!poolIsSharedAtCollectionTime,
+				body=function(){
+					var pooledUrl = fw.getAssetUrl(pooledSiteID);
+
+					expect(pooledUrl).notToInclude('/#pooledSiteID#/');
+					expect(pooledUrl).toBe(fw.getAssetUrl(ownerSiteID));
+				}
+			);
+
+			it(
+				title="honors a CDN-style assetPath URL, resolved through the File Pool",
+				body=function(){
+					var originalAssetPath = configBean.getAssetPath();
+					try {
+						configBean.setAssetPath('https://cdn.example.com/sites');
+
+						expect(fw.getAssetUrl(ownerSiteID)).toBe('https://cdn.example.com/sites/#ownerSiteID#/assets');
+						if( poolIsShared ){
+							expect(fw.getAssetUrl(pooledSiteID)).toBe('https://cdn.example.com/sites/#ownerSiteID#/assets');
+						}
+					}
+					finally {
+						configBean.setAssetPath(originalAssetPath);
+					}
+				}
+			);
+
+			it(
+				title="honors a fileAssetPath override",
+				body=function(){
+					var originalFileAssetPath = configBean.getValue('fileAssetPath');
+					try {
+						configBean.setValue('fileAssetPath', 'https://files.example.com');
+
+						expect(fw.getAssetUrl(ownerSiteID)).toBe('https://files.example.com/#ownerSiteID#/assets');
+					}
+					finally {
+						configBean.setValue('fileAssetPath', originalFileAssetPath);
+					}
+				}
+			);
+
+		});
+
 		describe("filebrowser.isPathLegal() - User_Assets path-traversal protection", function(){
 
 			var fb = application.serviceFactory.getBean('$').init('default').getBean('filebrowser');

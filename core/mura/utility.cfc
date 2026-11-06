@@ -1782,6 +1782,22 @@ Blog: www.codfusion.com--->
 				return dateMin(carry, value);
 			}, dateArray[1] );
 	}
+
+	/**
+	 * A Content-Disposition header value. The type is "attachment" or "inline"; anything else
+	 * becomes "inline". The quoted filename has quotes, backslashes and control characters
+	 * escaped or removed, and a filename* parameter (RFC 6266) carries non-ASCII names.
+	 */
+	public string function contentDisposition(required string method, required string filename) {
+		var type = arguments.method == "attachment" ? "attachment" : "inline";
+		var name = reReplace(arguments.filename, "[[:cntrl:]]", "", "ALL");
+		var quoted = replace(replace(name, "\", "\\", "ALL"), """", "\""", "ALL");
+		var value = type & "; filename=""" & quoted & """";
+		if (reFind("[^\x20-\x7E]", name)) {
+			value &= "; filename*=UTF-8''" & replace(encodeForURL(name), "+", "%20", "ALL");
+		}
+		return value;
+	}
 </cfscript>
 
 </cfcomponent>
