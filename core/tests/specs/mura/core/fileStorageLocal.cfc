@@ -812,6 +812,25 @@ component extends="testbox.system.BaseSpec" {
 				expect(fileExists(localFile)).toBeFalse();
 			});
 
+			it("should create the destination directory in writeFromLocal()", function(){
+				var svc = application.serviceFactory.getBean('fileStorageService');
+				var assetDir = application.settingsManager.getSite(variables.siteid).getAssetDir() & "/assets";
+				var poolID = application.settingsManager.getSite(variables.siteid).getFilePoolID();
+				var dirName = "fstest-newdir-" & variables.runTag;
+				var localFile = application.configBean.getTempDir() & "/fstest-newdir-" & variables.runTag & ".txt";
+				arrayAppend(variables.extraTempFiles, localFile);
+				fileWrite(localFile, charsetDecode("content", "utf-8"));
+				try {
+					svc.writeFromLocal(localFile, poolID & "/assets/" & dirName & "/sub/file.txt");
+
+					expect(fileRead(assetDir & "/" & dirName & "/sub/file.txt")).toBe("content");
+				} finally {
+					if (directoryExists(assetDir & "/" & dirName)) {
+						directoryDelete(assetDir & "/" & dirName, true);
+					}
+				}
+			});
+
 			it("should rename a directory via renameFile()", function(){
 				var svc = application.serviceFactory.getBean('fileStorageService');
 				var assetDir = application.settingsManager.getSite(variables.siteid).getAssetDir() & "/assets";

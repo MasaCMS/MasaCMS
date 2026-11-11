@@ -185,8 +185,10 @@ the Free Software Foundation, Version 2 of the License.
 		<cfargument name="localPath" type="string" required="true">
 		<cfargument name="remotePath" type="string" required="true">
 		<!--- Local storage: move the temp file to its final destination; fileMove()
-		      replaces an existing file there. --->
-		<cfset fileMove(arguments.localPath, fullPath(arguments.remotePath))>
+		      replaces an existing file there, but needs the directory to exist. --->
+		<cfset var destination = fullPath(arguments.remotePath)>
+		<cfset variables.fw.touchDir(getDirectoryFromPath(destination))>
+		<cfset fileMove(arguments.localPath, destination)>
 	</cffunction>
 
 	<cffunction name="releaseLocal" access="public" returntype="void" output="false">
