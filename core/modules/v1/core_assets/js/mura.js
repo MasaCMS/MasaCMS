@@ -17542,7 +17542,7 @@ Mura.UI.Form = Mura.UI.extend(
           }
 
           Mura.post(Mura.getAPIEndpoint() + '?method=processAsyncObject', data).then(function (resp) {
-            if (!resp || _typeof(resp.data) != 'object' || resp.error) {
+            if (!resp || !resp.data || _typeof(resp.data) != 'object' || resp.error) {
               // API error envelope ({apiversion, method, error}) carries no data
               self.showErrors({
                 "systemerror": "We're sorry, a system error has occurred. Please try again later."
