@@ -2229,7 +2229,7 @@ var Mura=(function(){
 				var reCaptchaCheck = Mura(frm).find("#g-recaptcha-response");
 
 				if (reCaptchaCheck.length && typeof reCaptchaCheck.val() != 'undefined') {
-					data['g-recaptcha-response'] = eCaptchaCheck.val();
+					data['g-recaptcha-response'] = reCaptchaCheck.val();
 				}
 			}
 
