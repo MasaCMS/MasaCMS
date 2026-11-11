@@ -202,7 +202,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset arguments.method="inline">
 	</cfif>
 
-	<cfif not isValid("UUID",arguments.fileID) or find(".",arguments.size)>
+	<!--- Size names are letters, digits, "-" and "_"; anything else can't name a cached image. --->
+	<cfif not isValid("UUID",arguments.fileID) or reFind("[^A-Za-z0-9_-]",arguments.size)>
 		<cfset getBean("contentServer").render404()>
 	</cfif>
 

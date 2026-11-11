@@ -840,6 +840,35 @@ component extends="testbox.system.BaseSpec" {
 				expect(calls[1].method).toBe("attachment");
 			});
 
+			it("should answer a render request with an invalid size with a 404", function(){
+				var testFile = createTestFile("fstest render size");
+				var contentServer = application.serviceFactory.getBean('contentServer');
+				var originalRender404 = contentServer.render404;
+				var svc = application.serviceFactory.getBean('fileStorageService');
+				var originalStream = svc.streamToResponse;
+				var notFound = 0;
+				// The mocks return, so renderFile() carries on after render404().
+				contentServer.render404 = function(){
+					notFound++;
+				};
+				svc.streamToResponse = function(){
+					return true;
+				};
+				try {
+					for (var size in ["a:b", "../x", "a b", "a/b", "a" & chr(10)]) {
+						variables.fileManager.renderFile(fileID=testFile.fileID, size=size);
+					}
+					expect(notFound).toBe(5);
+					for (var size in ["small", "hero-image", "H100-W200", "W200_H100"]) {
+						variables.fileManager.renderFile(fileID=testFile.fileID, size=size);
+					}
+					expect(notFound).toBe(5);
+				} finally {
+					contentServer.render404 = originalRender404;
+					svc.streamToResponse = originalStream;
+				}
+			});
+
 			it("should hand streamToResponse() metadata to fileManager.streamFile(), defaulting to the object's own", function(){
 				var svc = application.serviceFactory.getBean('fileStorageService');
 				var key = variables.siteid & "/cache/file/fstest-stream-" & variables.runTag & ".txt";
