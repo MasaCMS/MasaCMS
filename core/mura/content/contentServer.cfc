@@ -78,7 +78,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="forcePathDirectoryStructure" output="false" access="remote">
 	<cfargument name="cgi_path">
 	<cfargument name="siteID">
-	
+
 	<cfif application.configBean.getValue(property="forceDirectoryStructure",defaultValue=true)>
 		<cfset var qstring="">
 		<cfset var contentRenderer=application.settingsManager.getSite(arguments.siteID).getContentRenderer()>
@@ -598,6 +598,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var feedendpoint="/_api/feed/v1">
 	<cfset var fileendpoint="/_api/render/">
 	<cfset var emailendpoint="/_api/email/trackopen">
+	<cfset var remembermetokencleanupendpoint="/_api/internal/rememberme-cleanup">
 	<cfset var sitemonitorendpoint="/_api/sitemonitor">
 	<cfset var variationendpoint="/_api/resource/variation">
 	<cfset var assetendpoint="/_api/asset/">
@@ -666,6 +667,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfreturn application.contentRenderer.renderFile(url.fileID,url.method,url.size)>
 			</cfdefaultcase>
 		</cfswitch>
+	<cfelseif left(arguments.path,len(remembermetokencleanupendpoint)) eq remembermetokencleanupendpoint>
+		<!--- No caller check: only tokens rememberMe() would already reject are removed. --->
+		<cfset application.serviceFactory.getBean('userDAO').deleteExpiredRememberMeTokens(
+			lastUsedBefore=dateAdd("d",-30,now())
+		)>
+		<cfreturn "">
 	<cfelseif left(arguments.path,len(sitemonitorendpoint)) eq sitemonitorendpoint>
 		<cfset var theTime=now()/>
 		<cfset var emailList="" />
