@@ -96,11 +96,10 @@ This file is part of Mura CMS.
 	<cfreturn this >
 </cffunction>
 
-<cffunction name="generateSecureToken" returntype="string" output="false">
-	<cfargument name="bytes" default="32">
+<cffunction name="generateSecureToken" returntype="string" output="false" hint="Returns a 43 character URL-safe base64 token (256 bits).">
 	<cfscript>
 		var secureRandom=createObject("java","java.security.SecureRandom").init();
-		var encoded=binaryEncode(secureRandom.generateSeed(arguments.bytes),"base64");
+		var encoded=binaryEncode(secureRandom.generateSeed(32),"base64");
 		encoded=replace(replace(encoded,"+","-","all"),"/","_","all");
 		return reReplace(encoded,"=+$","");
 	</cfscript>

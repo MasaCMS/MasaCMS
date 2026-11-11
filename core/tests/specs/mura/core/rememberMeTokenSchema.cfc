@@ -17,6 +17,7 @@ component extends="testbox.system.BaseSpec" {
                     "siteid",
                     "selector",
                     "validatorhash",
+                    "previousvalidatorhash",
                     "expires",
                     "created",
                     "lastused"

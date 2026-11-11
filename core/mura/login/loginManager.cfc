@@ -107,6 +107,32 @@ component extends="mura.cfobject" output="false" hint="This provides primary log
 		return {selector=selector, validator=validator, expires=expires};
 	}
 
+	// The one place that knows the remember-me cookie format: "selector:validator", each a
+	// 43 character URL-safe base64 string as produced by utility.generateSecureToken().
+	public struct function parseRememberMeCookie(required string value) output=false {
+		var parts=listToArray(arguments.value,":",true);
+		var result={valid=false, selector="", validator=""};
+
+		if ( arrayLen(parts) == 2
+			&& reFind("^[A-Za-z0-9_-]{43}$",parts[1])
+			&& reFind("^[A-Za-z0-9_-]{43}$",parts[2]) ) {
+			result={valid=true, selector=parts[1], validator=parts[2]};
+		}
+
+		return result;
+	}
+
+	// Common exit for every way a remember-me attempt can fail: drop the token row (when we know
+	// which one), expire the cookie and clear the session flag.
+	private boolean function rejectRememberMe(string selector="") output=false {
+		if ( len(arguments.selector) ) {
+			variables.userDAO.deleteRememberMeToken(arguments.selector);
+		}
+		variables.globalUtility.deleteCookie(name="rememberme");
+		getSession().rememberMe=0;
+		return false;
+	}
+
 	public boolean function rememberMe(required string selector="", required string validator="") output=false {
 		var rsToken=queryNew("");
 		var sessionData=getSession();
@@ -116,46 +142,54 @@ component extends="mura.cfobject" output="false" hint="This provides primary log
 		var nextValidatorHash="";
 		var nextExpires="";
 		var isLoggedIn=false;
+		// How long after a rotation the previous validator is still honoured. Parallel requests
+		// from one browser (assets, XHR) all carry the old cookie until the first response lands.
+		var graceSeconds=10;
 
-		// MFA sites don't support remember-me, and a selector/validator that doesn't fit the
-		// shape generateSecureToken() produces can't be a real token - reject it up front.
-		if ( getBean('configBean').getValue(property='MFA',defaultValue=false)
-			|| !reFind("^[A-Za-z0-9_-]{43}$",arguments.selector)
-			|| !reFind("^[A-Za-z0-9_-]{43}$",arguments.validator) ) {
-			variables.globalUtility.deleteCookie(name="rememberme");
-			sessionData.rememberMe=0;
-			return false;
+		// A selector/validator that doesn't fit the shape generateSecureToken() produces can't
+		// be a real token. On MFA sites remember-me isn't supported, so any token is dropped.
+		if ( !parseRememberMeCookie(arguments.selector & ":" & arguments.validator).valid ) {
+			return rejectRememberMe();
+		}
+		if ( getBean('configBean').getValue(property='MFA',defaultValue=false) ) {
+			return rejectRememberMe(arguments.selector);
 		}
 
 		// The selector is the token's lookup key, not a secret - it just names which row to check.
 		rsToken=variables.userDAO.readRememberMeToken(arguments.selector);
 		if ( rsToken.recordCount neq 1 ) {
-			variables.globalUtility.deleteCookie(name="rememberme");
-			sessionData.rememberMe=0;
-			return false;
+			return rejectRememberMe();
 		}
 
 		if ( dateCompare(rsToken.expires,currentTime) lte 0 ) {
-			variables.userDAO.deleteRememberMeToken(arguments.selector);
-			variables.globalUtility.deleteCookie(name="rememberme");
-			sessionData.rememberMe=0;
-			return false;
+			return rejectRememberMe(arguments.selector);
 		}
 
 		// The validator is the secret half of the token. Compare its hash in constant time so a
 		// timing difference can't leak how much of it matched.
 		validatorHash=hash(arguments.validator,"SHA-256");
 		if ( !constantTimeHashEquals(validatorHash,rsToken.validatorHash) ) {
-			variables.userDAO.deleteRememberMeToken(arguments.selector);
-			variables.globalUtility.deleteCookie(name="rememberme");
-			sessionData.rememberMe=0;
-			return false;
+			// The previous validator is accepted for a few seconds after a rotation: this is a
+			// parallel request that left the browser before the new cookie arrived. The winning
+			// response sets the new cookie, so this one logs in without rotating or reissuing.
+			if ( len(rsToken.previousValidatorHash)
+				&& constantTimeHashEquals(validatorHash,rsToken.previousValidatorHash)
+				&& dateDiff("s",rsToken.lastused,currentTime) lte graceSeconds ) {
+				if ( !variables.userUtility.loginByUserID(rsToken.userID,rsToken.siteID) ) {
+					return rejectRememberMe(arguments.selector);
+				}
+				sessionData.rememberMe=1;
+				sessionData.rememberMeTokenIssued=1;
+				sessionData.rememberMeSelector=arguments.selector;
+				return true;
+			}
+			return rejectRememberMe(arguments.selector);
 		}
 
 		// Issue a fresh validator and swap it in before logging the user in. rotateRememberMeToken()
-		// only updates the row if it still holds the validatorHash just checked above, so a second,
-		// concurrent use of the same cookie - e.g. a stolen copy already consumed once - loses that
-		// race and falls through to the deletion below instead of producing a second valid login.
+		// only updates the row if it still holds the validatorHash just checked above, so two
+		// requests can't both rotate the same validator; the loser is revoked unless it arrived
+		// within the grace period of the winner, which is re-checked on that row.
 		nextValidator=getBean('utility').generateSecureToken();
 		nextValidatorHash=hash(nextValidator,"SHA-256");
 		nextExpires=dateAdd("d",30,currentTime);
@@ -166,20 +200,25 @@ component extends="mura.cfobject" output="false" hint="This provides primary log
 			expires=nextExpires,
 			lastused=currentTime
 		) ) {
-			variables.userDAO.deleteRememberMeToken(arguments.selector);
-			variables.globalUtility.deleteCookie(name="rememberme");
-			sessionData.rememberMe=0;
-			return false;
+			// Lost the race to a parallel request that presented the same, current validator.
+			rsToken=variables.userDAO.readRememberMeToken(arguments.selector);
+			if ( rsToken.recordCount eq 1
+				&& constantTimeHashEquals(validatorHash,rsToken.previousValidatorHash)
+				&& dateDiff("s",rsToken.lastused,currentTime) lte graceSeconds
+				&& variables.userUtility.loginByUserID(rsToken.userID,rsToken.siteID) ) {
+				sessionData.rememberMe=1;
+				sessionData.rememberMeTokenIssued=1;
+				sessionData.rememberMeSelector=arguments.selector;
+				return true;
+			}
+			return rejectRememberMe(arguments.selector);
 		}
 
 		// The token checked out, but the account behind it may since have been removed or
 		// disabled - loginByUserID() is the same gate a password login goes through.
 		isLoggedIn=variables.userUtility.loginByUserID(rsToken.userID,rsToken.siteID);
 		if ( !isLoggedIn ) {
-			variables.userDAO.deleteRememberMeToken(arguments.selector);
-			variables.globalUtility.deleteCookie(name="rememberme");
-			sessionData.rememberMe=0;
-			return false;
+			return rejectRememberMe(arguments.selector);
 		}
 
 		// Reissue the cookie with the selector unchanged but the new validator, so the next
@@ -577,21 +616,19 @@ If you did not request a new authorization, contact #contactEmail#.");
 		var pluginEvent="";
 		var sessionData=getSession();
 		var rememberMeSelectors=[];
-		var rememberMeCookieParts=[];
+		var rememberMeCookie={valid=false};
 		if ( structKeyExists(sessionData,"rememberMeSelector") ) {
 			arrayAppend(rememberMeSelectors,sessionData.rememberMeSelector);
 			structDelete(sessionData,"rememberMeSelector");
 		}
-		if ( isDefined('cookie.rememberme') && cookie.rememberme != '' ) {
-			rememberMeCookieParts=listToArray(cookie.rememberme,":",true);
-			if ( arrayLen(rememberMeCookieParts) == 2 ) {
-				arrayAppend(rememberMeSelectors,rememberMeCookieParts[1]);
+		if ( isDefined('cookie.rememberme') ) {
+			rememberMeCookie=parseRememberMeCookie(cookie.rememberme);
+			if ( rememberMeCookie.valid ) {
+				arrayAppend(rememberMeSelectors,rememberMeCookie.selector);
 			}
 		}
 		for ( var rememberMeSelector in rememberMeSelectors ) {
-			if ( reFind("^[A-Za-z0-9_-]{43}$",rememberMeSelector) ) {
-				variables.userDAO.deleteRememberMeToken(rememberMeSelector);
-			}
+			variables.userDAO.deleteRememberMeToken(rememberMeSelector);
 		}
 		if ( structKeyExists(request,"servletEvent") ) {
 			pluginEvent=request.servletEvent;

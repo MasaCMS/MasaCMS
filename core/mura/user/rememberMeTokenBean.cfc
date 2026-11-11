@@ -5,6 +5,9 @@ component extends="mura.bean.beanORM" table="tremembertokens" entityName="rememb
 	property name="siteID" datatype="varchar" length="25" required=true;
 	property name="selector" datatype="varchar" length="43" required=true;
 	property name="validatorHash" datatype="char" length="64" required=true;
+	// Hash of the validator this token held before its last rotation; lets a parallel request that
+	// still carries the old cookie succeed for a short grace period instead of revoking the token.
+	property name="previousValidatorHash" datatype="char" length="64" required=false;
 	property name="expires" datatype="datetime" required=true;
 	property name="created" datatype="datetime" required=true;
 	property name="lastused" datatype="datetime" required=true;
@@ -20,7 +23,7 @@ component extends="mura.bean.beanORM" table="tremembertokens" entityName="rememb
 
 		queryExecute(
 			sql="UPDATE #getTable()#
-				SET validatorHash=:validatorHash, expires=:expires, lastused=:lastused
+				SET previousValidatorHash=:oldValidatorHash, validatorHash=:validatorHash, expires=:expires, lastused=:lastused
 				WHERE tokenID=:tokenID AND validatorHash=:oldValidatorHash",
 			params={
 				validatorHash={value=arguments.validatorHash, cfsqltype="varchar"},
@@ -33,6 +36,7 @@ component extends="mura.bean.beanORM" table="tremembertokens" entityName="rememb
 		);
 
 		if(updateResult.recordCount == 1){
+			set('previousValidatorHash',arguments.oldValidatorHash);
 			set('validatorHash',arguments.validatorHash);
 			set('expires',arguments.expires);
 			set('lastused',arguments.lastused);
@@ -40,6 +44,14 @@ component extends="mura.bean.beanORM" table="tremembertokens" entityName="rememb
 		}
 
 		return false;
+	}
+
+	function deleteForUser(required string userID){
+		queryExecute(
+			sql="DELETE FROM #getTable()# WHERE userID=:userID",
+			params={userID={value=arguments.userID, cfsqltype="varchar"}}
+		);
+		return this;
 	}
 
 	function deleteExpired(required date lastUsedBefore){

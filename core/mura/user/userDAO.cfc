@@ -358,6 +358,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="UserID" type="String" />
 		<cfargument name="Type" type="String" />
 
+		<cfset deleteRememberMeTokensForUser(arguments.UserID) />
+
 		<cfset deleteExtendData(arguments.UserID) />
 		<cfset deleteTags(arguments.UserID) />
 
@@ -454,6 +456,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
        WHERE UserID = '#arguments.userBean.getUserID()#'
    </CFQUERY>
+
+	<cfif arguments.userBean.getPassword() neq ''>
+		<cfset deleteRememberMeTokensForUser(arguments.userBean.getUserID())>
+	</cfif>
 
 
 	<!--- <cfif arguments.userBean.gettype() EQ 2 > --->
@@ -692,10 +698,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	 <cfquery>
       UPDATE tusers SET
-	  	 password =  <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.password neq '',de('no'),de('yes'))#" value="#encryptPassword(arguments.userBean.getPassword())#">,
+	  	 password =  <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.password neq '',de('no'),de('yes'))#" value="#encryptPassword(arguments.password)#">,
 		 passwordCreated =<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
        WHERE UserID =<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#">
    </CFQUERY>
+
+	<!--- A password change invalidates every remember-me cookie the user holds. --->
+	<cfset deleteRememberMeTokensForUser(arguments.userID)>
 </cffunction>
 
 <cffunction name="readUserHash" output="false">
@@ -756,6 +765,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif token.exists()>
 		<cfset token.delete()>
 	</cfif>
+
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="deleteRememberMeTokensForUser" output="false">
+	<cfargument name="userID" type="string" required="true">
+
+	<cfset getBean("rememberMeToken").deleteForUser(arguments.userID)>
 
 	<cfreturn this>
 </cffunction>

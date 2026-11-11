@@ -114,6 +114,123 @@ component extends="testbox.system.BaseSpec" {
                         .notToBe(originalToken.validatorHash);
                 });
 
+                it("rejects and revokes a token whose validator does not match", function() {
+                    var loginManager = variables.$.getBean("loginManager");
+                    var userDAO = variables.$.getBean("userDAO");
+                    var token = loginManager.createRememberMeToken(userID=variables.user.getUserID(), siteID=variables.siteID);
+                    var wrongValidator = variables.$.getBean("utility").generateSecureToken();
+
+                    expect(loginManager.rememberMe(selector=token.selector, validator=wrongValidator)).toBeFalse();
+                    expect(userDAO.readRememberMeToken(token.selector).recordCount).toBe(0);
+                });
+
+                it("rejects and removes an expired token", function() {
+                    var userDAO = variables.$.getBean("userDAO");
+                    var utility = variables.$.getBean("utility");
+                    var selector = utility.generateSecureToken();
+                    var validator = utility.generateSecureToken();
+
+                    userDAO.createRememberMeToken(
+                        tokenID=createUUID(), userID=variables.user.getUserID(), siteID=variables.siteID,
+                        selector=selector, validatorHash=hash(validator,"SHA-256"),
+                        expires=dateAdd("d",-1,now()), created=dateAdd("d",-31,now()), lastused=dateAdd("d",-1,now())
+                    );
+
+                    expect(variables.$.getBean("loginManager").rememberMe(selector=selector, validator=validator)).toBeFalse();
+                    expect(userDAO.readRememberMeToken(selector).recordCount).toBe(0);
+                });
+
+                it("rejects and removes the token on MFA sites", function() {
+                    var loginManager = variables.$.getBean("loginManager");
+                    var userDAO = variables.$.getBean("userDAO");
+                    var token = loginManager.createRememberMeToken(userID=variables.user.getUserID(), siteID=variables.siteID);
+                    var originalMFA = application.configBean.getValue(property="MFA", defaultValue=false);
+
+                    application.configBean.setValue("MFA", true);
+                    try {
+                        expect(loginManager.rememberMe(selector=token.selector, validator=token.validator)).toBeFalse();
+                    } finally {
+                        application.configBean.setValue("MFA", originalMFA);
+                    }
+                    expect(userDAO.readRememberMeToken(token.selector).recordCount).toBe(0);
+                });
+
+                it("rejects and removes the token of an inactive user", function() {
+                    var loginManager = variables.$.getBean("loginManager");
+                    var userDAO = variables.$.getBean("userDAO");
+                    var inactiveName = "rememberMeInactive#left(hash(createUUID()), 12)#";
+                    var inactiveUser = variables.$.getBean("user").set({
+                        userID=createUUID(), siteID=variables.siteID, username=inactiveName,
+                        password="TestPassword-#left(hash(createUUID()), 12)#", fname="Inactive", lname="Test",
+                        email="#inactiveName#@example.test", type=2, isPublic=0, inactive=1
+                    }).save();
+                    var token = loginManager.createRememberMeToken(userID=inactiveUser.getUserID(), siteID=variables.siteID);
+
+                    try {
+                        expect(loginManager.rememberMe(selector=token.selector, validator=token.validator)).toBeFalse();
+                        expect(userDAO.readRememberMeToken(token.selector).recordCount).toBe(0);
+                    } finally {
+                        inactiveUser.delete();
+                    }
+                });
+
+                it("accepts the previous validator within the grace period without rotating again", function() {
+                    var loginManager = variables.$.getBean("loginManager");
+                    var userDAO = variables.$.getBean("userDAO");
+                    var token = loginManager.createRememberMeToken(userID=variables.user.getUserID(), siteID=variables.siteID);
+                    var afterFirst = "";
+
+                    arrayAppend(variables.tokenSelectors,token.selector);
+                    expect(loginManager.rememberMe(selector=token.selector, validator=token.validator)).toBeTrue();
+                    afterFirst = userDAO.readRememberMeToken(token.selector).validatorHash;
+
+                    // A parallel request still carrying the old validator.
+                    expect(loginManager.rememberMe(selector=token.selector, validator=token.validator)).toBeTrue();
+                    expect(userDAO.readRememberMeToken(token.selector).validatorHash).toBe(afterFirst);
+                });
+
+                it("revokes the token when the previous validator is replayed after the grace period", function() {
+                    var loginManager = variables.$.getBean("loginManager");
+                    var userDAO = variables.$.getBean("userDAO");
+                    var token = loginManager.createRememberMeToken(userID=variables.user.getUserID(), siteID=variables.siteID);
+
+                    expect(loginManager.rememberMe(selector=token.selector, validator=token.validator)).toBeTrue();
+                    queryExecute(
+                        "UPDATE tremembertokens SET lastused=:old WHERE selector=:selector",
+                        {old={value=dateAdd("n",-5,now()), cfsqltype="timestamp"}, selector={value=token.selector, cfsqltype="varchar"}}
+                    );
+
+                    expect(loginManager.rememberMe(selector=token.selector, validator=token.validator)).toBeFalse();
+                    expect(userDAO.readRememberMeToken(token.selector).recordCount).toBe(0);
+                });
+
+                it("revokes all of a user's tokens when the password changes", function() {
+                    var loginManager = variables.$.getBean("loginManager");
+                    var userDAO = variables.$.getBean("userDAO");
+                    var tokenA = loginManager.createRememberMeToken(userID=variables.user.getUserID(), siteID=variables.siteID);
+                    var tokenB = loginManager.createRememberMeToken(userID=variables.user.getUserID(), siteID=variables.siteID);
+
+                    userDAO.savePassword(userID=variables.user.getUserID(), password="NewPassword-#left(hash(createUUID()), 12)#");
+
+                    expect(userDAO.readRememberMeToken(tokenA.selector).recordCount).toBe(0);
+                    expect(userDAO.readRememberMeToken(tokenB.selector).recordCount).toBe(0);
+                });
+
+                it("parses only well-formed remember-me cookies", function() {
+                    var loginManager = variables.$.getBean("loginManager");
+                    var utility = variables.$.getBean("utility");
+                    var a = utility.generateSecureToken();
+                    var b = utility.generateSecureToken();
+                    var parsed = loginManager.parseRememberMeCookie(a & ":" & b);
+
+                    expect(parsed.valid).toBeTrue();
+                    expect(parsed.selector).toBe(a);
+                    expect(parsed.validator).toBe(b);
+                    expect(loginManager.parseRememberMeCookie(a).valid).toBeFalse();
+                    expect(loginManager.parseRememberMeCookie(a & ":" & b & ":x").valid).toBeFalse();
+                    expect(loginManager.parseRememberMeCookie("bad:" & b).valid).toBeFalse();
+                });
+
                 it("revokes the current token on logout", function() {
                     var loginManager = variables.$.getBean("loginManager");
                     var userDAO = variables.$.getBean("userDAO");

@@ -193,13 +193,11 @@ if ( fileExists(expandPath("/muraWRM/config/settings.custom.vars.cfm")) ) {
 
 try {
 	if ( !sessionData.mura.isLoggedIn && isDefined('cookie.rememberme') && cookie.rememberme != '' ) {
-		variables.rememberMeCookieParts=listToArray(cookie.rememberme,":",true);
-		if ( arrayLen(variables.rememberMeCookieParts) == 2
-			&& reFind("^[A-Za-z0-9_-]{43}$",variables.rememberMeCookieParts[1])
-			&& reFind("^[A-Za-z0-9_-]{43}$",variables.rememberMeCookieParts[2]) ) {
+		variables.rememberMeCookie=application.loginManager.parseRememberMeCookie(cookie.rememberme);
+		if ( variables.rememberMeCookie.valid ) {
 			application.loginManager.rememberMe(
-				selector=variables.rememberMeCookieParts[1],
-				validator=variables.rememberMeCookieParts[2]
+				selector=variables.rememberMeCookie.selector,
+				validator=variables.rememberMeCookie.validator
 			);
 		} else {
 			application.utility.deleteCookie(name="rememberme");
@@ -212,18 +210,24 @@ try {
 }
 try {
 	if ( structKeyExists(sessionData,"rememberMe") && sessionData.rememberMe == 1 && sessionData.mura.isLoggedIn && !structKeyExists(sessionData,"rememberMeTokenIssued") ) {
-		if ( !isDefined('cookie.rememberme') || cookie.rememberme == '' ) {
-			variables.rememberMeToken=application.loginManager.createRememberMeToken(
-				userID=sessionData.mura.userID,
-				siteID=sessionData.mura.siteID
-			);
-			application.utility.setCookie(
-				name="rememberme",
-				value=variables.rememberMeToken.selector & ":" & variables.rememberMeToken.validator,
-				expires=variables.rememberMeToken.expires
-			);
-			sessionData.rememberMeSelector=variables.rememberMeToken.selector;
+		// A fresh remembered login always gets a new token. Any cookie still present is stale
+		// (a restored session would have set rememberMeTokenIssued), so revoke it first.
+		if ( isDefined('cookie.rememberme') ) {
+			variables.staleRememberMeCookie=application.loginManager.parseRememberMeCookie(cookie.rememberme);
+			if ( variables.staleRememberMeCookie.valid ) {
+				application.serviceFactory.getBean('userDAO').deleteRememberMeToken(variables.staleRememberMeCookie.selector);
+			}
 		}
+		variables.rememberMeToken=application.loginManager.createRememberMeToken(
+			userID=sessionData.mura.userID,
+			siteID=sessionData.mura.siteID
+		);
+		application.utility.setCookie(
+			name="rememberme",
+			value=variables.rememberMeToken.selector & ":" & variables.rememberMeToken.validator,
+			expires=variables.rememberMeToken.expires
+		);
+		sessionData.rememberMeSelector=variables.rememberMeToken.selector;
 		sessionData.rememberMeTokenIssued=1;
 	}
 } catch (any cfcatch) {

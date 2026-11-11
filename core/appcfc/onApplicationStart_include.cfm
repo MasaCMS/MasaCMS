@@ -594,13 +594,25 @@ if ( application.setupComplete ) {
 	} catch (any cfcatch) {
 	}
 	try {
-		local.rememberMeCleanupURL = "http://" & listFirst(cgi.http_host, ":")
+		variables.tracePoint=initTracePoint("Setting Remember Me Cleanup Scheduled Task");
+		// The host comes from configuration, never from the request that happens to start the app:
+		// a forged Host header there would otherwise point this daily task at an outside host.
+		local.rememberMeCleanupHost=listFirst(application.configBean.getAdminDomain());
+		if ( !len(local.rememberMeCleanupHost) ) {
+			local.rememberMeCleanupHost="localhost";
+		}
+		local.rememberMeCleanupURL = "http://" & local.rememberMeCleanupHost
 			& application.configBean.getContext()
 			& (application.configBean.getIndexFileInAPI() ? "/index.cfm" : "")
 			& "/_api/internal/rememberme-cleanup/";
+		if ( listFindNoCase('Railo,Lucee',application.configBean.getCompiler()) ) {
+			variables.rememberMeCleanupTask="muraRememberMeTokenCleanup";
+		} else {
+			variables.rememberMeCleanupTask=local.rememberMeCleanupURL;
+		}
 		application.serviceFactory.getBean('utility').scheduleTask(
 			action = "update",
-			task = "muraRememberMeTokenCleanup",
+			task = "#variables.rememberMeCleanupTask#",
 			operation = "HTTPRequest",
 			url = local.rememberMeCleanupURL,
 			port = "#variables.port#",
@@ -610,6 +622,7 @@ if ( application.setupComplete ) {
 			interval = "86400",
 			requestTimeOut = "60"
 		);
+		commitTracePoint(variables.tracePoint);
 	} catch (any cfcatch) {
 	}
 
