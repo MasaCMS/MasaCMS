@@ -226,7 +226,7 @@ the Free Software Foundation, Version 2 of the License.
 			if (isBinary(arguments.data)) {
 				fileWrite(fp, arguments.data);
 			} else {
-				variables.fw.writeFile(file=fp, output=arguments.data);
+				variables.fw.writeFile(file=fp, output=arguments.data, addNewLine=false);
 			}
 		</cfscript>
 	</cffunction>

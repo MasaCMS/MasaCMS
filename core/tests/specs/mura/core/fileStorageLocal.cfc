@@ -812,6 +812,16 @@ component extends="testbox.system.BaseSpec" {
 				expect(fileExists(localFile)).toBeFalse();
 			});
 
+			it("should store string content exactly as given via uploadBinary()", function(){
+				var svc = application.serviceFactory.getBean('fileStorageService');
+				var key = variables.siteid & "/cache/file/fstest-uploadstring-" & variables.runTag & ".txt";
+				arrayAppend(variables.extraTempFiles, application.configBean.getFileDir() & "/" & key);
+
+				svc.uploadBinary("content", "text/plain", key);
+
+				expect(fileRead(application.configBean.getFileDir() & "/" & key)).toBe("content");
+			});
+
 			it("should create the destination directory in writeFromLocal()", function(){
 				var svc = application.serviceFactory.getBean('fileStorageService');
 				var assetDir = application.settingsManager.getSite(variables.siteid).getAssetDir() & "/assets";
