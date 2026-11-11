@@ -58,7 +58,7 @@ the Free Software Foundation, Version 2 of the License.
 
 	<cffunction name="deleteDirectory" returntype="void" access="public" output="false"
 		hint="Delete a directory. Throws if recurse=false and directory is not empty.">
-		<cfargument name="path" type="string" required="true" hint="Storage key, e.g. default/assets/photo.jpg or default/cache/file/{fileID}.png">
+		<cfargument name="path" type="string" required="true" hint="Storage key of the directory, e.g. default/assets/images or default/cache/file">
 		<cfargument name="recurse" type="boolean" required="false" default="false" hint="Delete recursively">
 	</cffunction>
 
@@ -71,7 +71,7 @@ the Free Software Foundation, Version 2 of the License.
 
 	<cffunction name="directoryExists" returntype="boolean" access="public" output="false"
 		hint="Check if a directory exists. Returns: boolean -- same as directoryExists()">
-		<cfargument name="path" type="string" required="true" hint="Storage key, e.g. default/assets/photo.jpg or default/cache/file/{fileID}.png">
+		<cfargument name="path" type="string" required="true" hint="Storage key of the directory, e.g. default/assets/images or default/cache/file">
 	</cffunction>
 
 	<!--- ==================== LIST ==================== --->
@@ -84,7 +84,7 @@ the Free Software Foundation, Version 2 of the License.
 		        size (numeric) - file size in bytes (0 for directories)
 		        type (varchar) - 'File' or 'Dir'
 		        datelastmodified (date) - last modification timestamp">
-		<cfargument name="path" type="string" required="true" hint="Storage key, e.g. default/assets/photo.jpg or default/cache/file/{fileID}.png">
+		<cfargument name="path" type="string" required="true" hint="Storage key of the directory, e.g. default/assets/images or default/cache/file">
 		<cfargument name="filter" type="string" required="false" default="*" hint="Filename filter (e.g. '*.jpg')">
 		<cfargument name="type" type="string" required="false" default="all" hint="'all', 'file', or 'dir'">
 	</cffunction>
@@ -93,7 +93,7 @@ the Free Software Foundation, Version 2 of the License.
 
 	<cffunction name="createDirectory" returntype="void" access="public" output="false"
 		hint="Create a directory. Creates parent directories if needed. No-op if already exists.">
-		<cfargument name="path" type="string" required="true" hint="Storage key, e.g. default/assets/photo.jpg or default/cache/file/{fileID}.png">
+		<cfargument name="path" type="string" required="true" hint="Storage key of the directory, e.g. default/assets/images or default/cache/file">
 	</cffunction>
 
 	<!--- ==================== COPY / MOVE / RENAME ==================== --->
