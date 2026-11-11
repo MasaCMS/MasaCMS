@@ -86,6 +86,7 @@ This file is part of Mura CMS.
 component accessors=true output=false hint="This provides the ability to interact with Google's reCaptcha functionality"{
 
   property name='secret' default='';
+  property name='errorCodes' hint='Error codes from the last verifyResponse() call';
 
   this._signupUrl='https://www.google.com/recaptcha/admin';
   this._siteVerifyUrl='https://www.recaptcha.net/recaptcha/api/siteverify?';
@@ -97,7 +98,7 @@ component accessors=true output=false hint="This provides the ability to interac
   public boolean function verifyResponse(required string response, string remoteip=cgi.remote_addr) {
     var recaptchaResponse = {
       'success' = false
-      , 'errorCodes' = ''
+      , 'errorCodes' = []
     };
 
     if ( Len(application.configBean.getProxyServer()) ) {
@@ -137,6 +138,7 @@ component accessors=true output=false hint="This provides the ability to interac
       recaptchaResponse.errorCodes = ['check-siteVerifyUrl'];
     }
 
+    setErrorCodes(recaptchaResponse.errorCodes);
     return recaptchaResponse.success;
   }
 

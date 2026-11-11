@@ -1,30 +1,33 @@
 /**
 * reCAPTCHA server-side verification (GitHub #464).
-* Uses Google's public reCAPTCHA v2 test secret against the live siteverify endpoint.
 */
 component extends="testbox.system.BaseSpec"{
 
+	// Google's public reCAPTCHA v2 test secret
 	variables.testSecret = '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WNFKwX';
 
 	function run(){
 		describe("reCAPTCHA.verifyResponse", function() {
 
 			it(
-				title="returns a boolean instead of throwing on the siteverify call",
+				title="returns false with check-siteVerifyUrl when the verify endpoint is unreachable",
 				body=function() {
 					var reCaptcha = new mura.reCAPTCHA(testSecret);
-					var verified = reCaptcha.verifyResponse(response='any-token', remoteip='127.0.0.1');
+					reCaptcha._siteVerifyUrl = 'http://127.0.0.1:1/';
 
-					expect(isBoolean(verified)).toBeTrue();
+					expect(reCaptcha.verifyResponse(response='any-token', remoteip='127.0.0.1')).toBeFalse();
+					expect(reCaptcha.getErrorCodes()).toBe(['check-siteVerifyUrl']);
 				}
 			);
 
 			it(
-				title="rejects a response token that Google did not issue",
+				title="parses Google's rejection of a token it did not issue",
+				labels="network",
 				body=function() {
 					var reCaptcha = new mura.reCAPTCHA(testSecret);
 
 					expect(reCaptcha.verifyResponse(response='any-token', remoteip='127.0.0.1')).toBeFalse();
+					expect(reCaptcha.getErrorCodes()).toInclude('invalid-input-response', 'siteverify was not reached or its response was not parsed');
 				}
 			);
 
