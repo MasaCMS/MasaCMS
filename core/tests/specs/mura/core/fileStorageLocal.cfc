@@ -840,6 +840,42 @@ component extends="testbox.system.BaseSpec" {
 				expect(calls[1].method).toBe("attachment");
 			});
 
+			it("should name cache files with the lowercase size, whatever the caller's case", function(){
+				// getURLForImage() links to the lowercase name, so a crop saved under
+				// another case would never be served on a case-sensitive filesystem.
+				var testFile = createTestFile("fstest size case");
+				var keys = new mura.fileStorage.storageKey();
+				var mediumKey = keys.cacheFileKey(variables.siteid, testFile.fileID, "png", "medium");
+				var adHocKey = keys.cacheFileKey(variables.siteid, testFile.fileID, "png", "h20-w10");
+
+				var calls = recordCacheStorageCalls(function(){
+					variables.fileManager.cropAndScale(fileID=testFile.fileID, size="Medium", siteid=variables.siteid);
+					variables.fileManager.cropAndScale(fileID=testFile.fileID, size="H20-W10", siteid=variables.siteid);
+					variables.fileManager.ensureCachedImageSize(fileID=testFile.fileID, size="H30-W15", siteID=variables.siteid, fileExt="png");
+				});
+				// toBe() compares strings case-insensitively.
+				expect(arrayToList(calls.writeFromLocal)).toBeWithCase(arrayToList([
+					mediumKey,
+					adHocKey,
+					keys.cacheFileKey(variables.siteid, testFile.fileID, "png", "h30-w15")
+				]));
+
+				// Record the key instead of streaming, which would end the request.
+				var svc = application.serviceFactory.getBean('fileStorageService');
+				var originalStream = svc.streamToResponse;
+				var streamed = [];
+				svc.streamToResponse = function(){
+					arrayAppend(streamed, arguments.path);
+					return true;
+				};
+				try {
+					variables.fileManager.renderFile(fileID=testFile.fileID, size="Medium");
+				} finally {
+					svc.streamToResponse = originalStream;
+				}
+				expect(arrayToList(streamed)).toBeWithCase(mediumKey);
+			});
+
 			it("should answer a render request with an invalid size with a 404", function(){
 				var testFile = createTestFile("fstest render size");
 				var contentServer = application.serviceFactory.getBean('contentServer');

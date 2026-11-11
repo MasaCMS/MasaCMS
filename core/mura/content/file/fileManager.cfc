@@ -207,6 +207,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset getBean("contentServer").render404()>
 	</cfif>
 
+	<!--- Cache file names use the lowercase size, like cropAndScale() and getURLForImage(). --->
+	<cfset arguments.size=lcase(arguments.size)>
+
 		<cfswitch expression="#variables.configBean.getFileStore()#">
 			<cfcase value="database">
 				<cfset rsFileData=read(arguments.fileid) />
@@ -926,10 +929,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="fileExt" type="string" required="true">
 	<cfscript>
 		var storageService = getBean("fileStorageService");
+		// Cache file names use the lowercase size, like cropAndScale().
+		arguments.size = lcase(arguments.size);
 		var originalKey = variables.storageKeys.cacheFileKey(arguments.siteID, arguments.fileID, arguments.fileExt);
 		var cacheKey = variables.storageKeys.cacheFileKey(arguments.siteID, arguments.fileID, arguments.fileExt, arguments.size);
 		var sourceLocal = "";
-		var targetLocal = application.configBean.getTempDir() & replace(createUUID(), "-", "", "ALL") & "_" & lcase(arguments.size) & "." & arguments.fileExt;
+		var targetLocal = application.configBean.getTempDir() & replace(createUUID(), "-", "", "ALL") & "_" & arguments.size & "." & arguments.fileExt;
 
 		if (storageService.fileExists(cacheKey)) {
 			return true;
@@ -1256,10 +1261,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var storageService=getBean("fileStorageService")>
 	<cfset var sourceKey=getCacheImageKey(arguments.siteID, arguments.fileID, rsMeta.fileExt, "source")>
 	<cfset var originalKey=getCacheImageKey(arguments.siteID, arguments.fileID, rsMeta.fileExt, "large")>
-	<cfset var targetKey=len(arguments.storageKey) ? arguments.storageKey : getCacheImageKey(arguments.siteID, arguments.fileID, rsMeta.fileExt, arguments.size)>
 
-
+	<!--- Cache file names use the lowercase size, like getURLForImage() and renderFile(). --->
 	<cfset arguments.size=lcase(arguments.size)>
+	<cfset var targetKey=len(arguments.storageKey) ? arguments.storageKey : getCacheImageKey(arguments.siteID, arguments.fileID, rsMeta.fileExt, arguments.size)>
 
 	<cfset pluginManager.announceEvent("onBeforeImageManipulation",pluginEvent)>
 
