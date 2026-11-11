@@ -250,15 +250,24 @@ the Free Software Foundation, Version 2 of the License.
 	<!--- ==================== STREAMING PROXY ==================== --->
 
 	<cffunction name="streamToResponse" access="public" returntype="boolean" output="false"
-		hint="Send a local file as the response with cfcontent, which ends the request. Returns false if the file does not exist.">
+		hint="Send a local file as the response through fileManager.streamFile(), which ends the request. Returns false if the file does not exist.">
 		<cfargument name="path" type="string" required="true">
 		<cfargument name="method" type="string" required="false" default="inline">
+		<cfargument name="filename" type="string" required="false" default="">
+		<cfargument name="mimeType" type="string" required="false" default="">
+		<cfargument name="lastModified" type="any" required="false" default="">
 		<cfscript>
 			var fp = fullPath(arguments.path);
 			if (!fileExists(fp)) { return false; }
-			cfheader(name="Content-Disposition", value=getBean('utility').contentDisposition(arguments.method, getFileFromPath(fp)));
 			cfheader(name="Cache-Control", value="max-age=86400");
-			cfcontent(file=fp, type=fileGetMimeType(fp));
+			// streamFile() handles If-Modified-Since (304), Last-Modified, Content-Length and video downloads.
+			getBean('fileManager').streamFile(
+				filePath     = fp,
+				filename     = len(arguments.filename) ? arguments.filename : getFileFromPath(fp),
+				mimetype     = len(arguments.mimeType) ? arguments.mimeType : fileGetMimeType(fp),
+				method       = arguments.method,
+				lastModified = isDate(arguments.lastModified) ? arguments.lastModified : getFileInfo(fp).lastModified
+			);
 			return true;
 		</cfscript>
 	</cffunction>

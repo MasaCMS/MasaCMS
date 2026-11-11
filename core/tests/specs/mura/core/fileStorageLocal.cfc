@@ -812,6 +812,67 @@ component extends="testbox.system.BaseSpec" {
 				expect(fileExists(localFile)).toBeFalse();
 			});
 
+			it("should serve a rendered file with its own name, type and date, not the cache object's", function(){
+				var testFile = createTestFile("fstest render metadata");
+				var rsMeta = variables.fileManager.readMeta(testFile.fileID);
+				// Record the arguments instead of streaming, which would end the request.
+				var svc = application.serviceFactory.getBean('fileStorageService');
+				var originalStream = svc.streamToResponse;
+				var calls = [];
+				svc.streamToResponse = function(){
+					arrayAppend(calls, duplicate(arguments));
+					return true;
+				};
+				try {
+					variables.fileManager.renderFile(fileID=testFile.fileID, method="attachment");
+					variables.fileManager.renderSmall(fileID=testFile.fileID, method="inline");
+					variables.fileManager.renderMedium(fileID=testFile.fileID, method="inline");
+				} finally {
+					svc.streamToResponse = originalStream;
+				}
+
+				expect(calls).toHaveLength(3);
+				for (var call in calls) {
+					expect(call.filename).toBe(rsMeta.filename);
+					expect(call.mimeType).toBe(rsMeta.contentType & "/" & rsMeta.contentSubType);
+					expect(dateCompare(call.lastModified, rsMeta.created)).toBe(0);
+				}
+				expect(calls[1].method).toBe("attachment");
+			});
+
+			it("should hand streamToResponse() metadata to fileManager.streamFile(), defaulting to the object's own", function(){
+				var svc = application.serviceFactory.getBean('fileStorageService');
+				var key = variables.siteid & "/cache/file/fstest-stream-" & variables.runTag & ".txt";
+				var storedPath = application.configBean.getFileDir() & "/" & key;
+				arrayAppend(variables.extraTempFiles, storedPath);
+				fileWrite(storedPath, charsetDecode("content", "utf-8"));
+				// streamFile() ends the request, so record its arguments instead.
+				var originalStreamFile = variables.fileManager.streamFile;
+				var calls = [];
+				variables.fileManager.streamFile = function(){
+					arrayAppend(calls, duplicate(arguments));
+				};
+				var created = createDateTime(2020, 1, 2, 3, 4, 5);
+				try {
+					expect(svc.streamToResponse(path=key, method="attachment", filename="report.pdf",
+						mimeType="application/pdf", lastModified=created)).toBeTrue();
+					expect(svc.streamToResponse(path=key)).toBeTrue();
+					expect(svc.streamToResponse(path=key & ".missing")).toBeFalse();
+				} finally {
+					variables.fileManager.streamFile = originalStreamFile;
+				}
+
+				expect(calls).toHaveLength(2);
+				expect(calls[1].filename).toBe("report.pdf");
+				expect(calls[1].mimetype).toBe("application/pdf");
+				expect(calls[1].method).toBe("attachment");
+				expect(dateCompare(calls[1].lastModified, created)).toBe(0);
+				expect(calls[2].filename).toBe(getFileFromPath(storedPath));
+				expect(calls[2].mimetype).toBe(fileGetMimeType(storedPath));
+				expect(calls[2].method).toBe("inline");
+				expect(dateCompare(calls[2].lastModified, getFileInfo(storedPath).lastModified)).toBe(0);
+			});
+
 			it("should apply addNewLine when fileWriter.writeFile() writes to User_Assets", function(){
 				// writeFile() routes User_Assets paths to the storage service,
 				// which writes content as given, so fileWriter appends the

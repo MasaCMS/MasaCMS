@@ -192,6 +192,9 @@ the Free Software Foundation, Version 2 of the License.
 		      Returns false if the object does not exist, so the caller can fall back.">
 		<cfargument name="path" type="string" required="true" hint="Storage key, e.g. default/assets/photo.jpg or default/cache/file/{fileID}.png">
 		<cfargument name="method" type="string" required="false" default="inline" hint="Content-Disposition: inline or attachment">
+		<cfargument name="filename" type="string" required="false" default="" hint="Download name for the Content-Disposition header. Empty = the object's own name.">
+		<cfargument name="mimeType" type="string" required="false" default="" hint="Content-Type. Empty = derived from the object.">
+		<cfargument name="lastModified" type="any" required="false" default="" hint="Date for Last-Modified and If-Modified-Since (304) handling. Empty = the object's own modification date.">
 	</cffunction>
 
 	<cffunction name="uploadBinary" returntype="void" access="public" output="false"

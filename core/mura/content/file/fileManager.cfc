@@ -238,7 +238,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					var _isSizedImage = listFindNoCase("png,jpg,jpeg,gif", rsFileData.fileExt) && len(arguments.size);
 					var _key    = variables.storageKeys.cacheFileKey(rsFileData.siteid, arguments.fileID, rsFileData.fileExt, _isSizedImage ? arguments.size : "");
 					var _svc    = getBean("fileStorageService");
-					var _streamed = _svc.streamToResponse(_key, arguments.method);
+					// Serve with the file's own name, type and date, not the cache object's.
+					var _meta   = {
+						path         = _key,
+						method       = arguments.method,
+						filename     = rsFileData.filename,
+						mimeType     = rsFileData.contentType & "/" & rsFileData.contentSubType,
+						lastModified = rsFileData.created
+					};
+					var _streamed = _svc.streamToResponse(argumentCollection=_meta);
 					if (!_streamed && _isSizedImage) {
 						ensureCachedImageSize(
 							fileID = arguments.fileID,
@@ -246,7 +254,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							siteID = rsFileData.siteid,
 							fileExt = rsFileData.fileExt
 						);
-						_streamed = _svc.streamToResponse(_key, arguments.method);
+						_streamed = _svc.streamToResponse(argumentCollection=_meta);
 					}
 					if (!_streamed) {
 						var _local = _svc.resolveToLocal(_key);
@@ -302,7 +310,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfscript>
 					var _key = variables.storageKeys.cacheFileKey(rsFile.siteid, arguments.fileID, rsFile.fileExt, "small");
 					var _svc = getBean("fileStorageService");
-					if (!_svc.streamToResponse(_key, arguments.method)) {
+					if (!_svc.streamToResponse(path=_key, method=arguments.method, filename=rsFile.filename,
+							mimeType=rsFile.contentType & "/" & rsFile.contentSubType, lastModified=rsFile.created)) {
 						var _local = _svc.resolveToLocal(_key);
 						try {
 							if (!len(_local) || !fileExists(_local)) { getBean("contentServer").render404(); }
@@ -352,7 +361,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfscript>
 					var _key = variables.storageKeys.cacheFileKey(rsFile.siteid, arguments.fileID, rsFile.fileExt, "medium");
 					var _svc = getBean("fileStorageService");
-					if (!_svc.streamToResponse(_key, arguments.method)) {
+					if (!_svc.streamToResponse(path=_key, method=arguments.method, filename=rsFile.filename,
+							mimeType=rsFile.contentType & "/" & rsFile.contentSubType, lastModified=rsFile.created)) {
 						var _local = _svc.resolveToLocal(_key);
 						try {
 							if (!len(_local) || !fileExists(_local)) { getBean("contentServer").render404(); }
