@@ -812,6 +812,43 @@ component extends="testbox.system.BaseSpec" {
 				expect(fileExists(localFile)).toBeFalse();
 			});
 
+			it("should hand an open file to the storage service as a file when fileWriter.writeFile() writes to User_Assets", function(){
+				// A storage service only takes content or a local file, not an open file object.
+				var fw = application.serviceFactory.getBean('fileWriter');
+				var svc = application.serviceFactory.getBean('fileStorageService');
+				var real = new mura.fileStorage.localStorageService().init();
+				var poolID = application.settingsManager.getSite(variables.siteid).getFilePoolID();
+				var assetPath = application.settingsManager.getSite(variables.siteid).getAssetDir() & "/assets/fstest-fileobject-" & variables.runTag & ".txt";
+				var sourcePath = application.configBean.getTempDir() & "/fstest-fileobject-" & variables.runTag & ".txt";
+				var content = "caf" & chr(233) & " content";
+				arrayAppend(variables.extraTempFiles, assetPath);
+				arrayAppend(variables.extraTempFiles, sourcePath);
+				fileWrite(sourcePath, charsetDecode(content, "utf-8"));
+
+				var calls = { writeFile: [], writeFromLocal: [] };
+				var originalWriteFile = svc.writeFile;
+				var originalWriteFromLocal = svc.writeFromLocal;
+				svc.writeFile = function(path, content){
+					arrayAppend(calls.writeFile, arguments.path);
+					real.writeFile(arguments.path, arguments.content);
+				};
+				svc.writeFromLocal = function(localPath, remotePath){
+					arrayAppend(calls.writeFromLocal, arguments.remotePath);
+					real.writeFromLocal(arguments.localPath, arguments.remotePath);
+				};
+				var source = fileOpen(sourcePath, "read", "utf-8");
+				try {
+					fw.writeFile(file=assetPath, output=source, charset="utf-8");
+				} finally {
+					svc.writeFile = originalWriteFile;
+					svc.writeFromLocal = originalWriteFromLocal;
+				}
+
+				expect(calls.writeFile).toBeEmpty();
+				expect(calls.writeFromLocal).toBe([poolID & "/assets/" & getFileFromPath(assetPath)]);
+				expect(fileRead(assetPath, "utf-8")).toBe(content);
+			});
+
 			it("should store string content exactly as given via uploadBinary()", function(){
 				var svc = application.serviceFactory.getBean('fileStorageService');
 				var key = variables.siteid & "/cache/file/fstest-uploadstring-" & variables.runTag & ".txt";

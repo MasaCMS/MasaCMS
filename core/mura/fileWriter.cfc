@@ -258,22 +258,29 @@ This file is part of Mura CMS.
 		<cfset var new = "">
 		<cfset var x = "">
 		<cfset var counter = 0>
+		<cfset var target = arguments.file>
 		<cfscript>
 			var assetKey = userAssetKey(arguments.file);
 			if (len(assetKey)) {
-				// The storage service writes content exactly as given, so apply
-				// addNewLine here, as cffile action="write" would below.
-				var content = arguments.output;
-				if (arguments.addNewLine && isSimpleValue(content)) {
-					content &= findNoCase("Windows", server.os.name) ? chr(13) & chr(10) : chr(10);
+				if (isDefined('arguments.output.mode')) {
+					// An open file is copied to a local temp file below, with its charset,
+					// and that file is handed to the storage service afterwards.
+					target = variables.tempDir & createUUID() & "." & listLast(arguments.file, ".");
+				} else {
+					// The storage service writes content exactly as given, so apply
+					// addNewLine here, as cffile action="write" would below.
+					var content = arguments.output;
+					if (arguments.addNewLine && isSimpleValue(content)) {
+						content &= findNoCase("Windows", server.os.name) ? chr(13) & chr(10) : chr(10);
+					}
+					getBean('fileStorageService').writeFile(assetKey, content);
+					return this;
 				}
-				getBean('fileStorageService').writeFile(assetKey, content);
-				return this;
 			}
 		</cfscript>
 
 		<cfif isDefined('arguments.output.mode')>
-				<cfset new = FileOpen(arguments.file, "write")>
+				<cfset new = FileOpen(target, "write")>
 
 				<cfloop condition="!fileIsEOF( arguments.output )">
 					<cfset x = FileRead(arguments.output, 10000)>
@@ -292,6 +299,11 @@ This file is part of Mura CMS.
 					<cfset FileDelete(arguments.output.path)>
 				<cfelseif fileExists(arguments.output.path & "/" & arguments.output.name)>
 					<cfset FileDelete(arguments.output.path & "/" & arguments.output.name)>
+				</cfif>
+
+				<cfif len(assetKey)>
+					<!--- writeFromLocal() consumes the temp file. --->
+					<cfset getBean('fileStorageService').writeFromLocal(target, assetKey)>
 				</cfif>
 		<cfelse>
 			<cfif variables.useMode >
