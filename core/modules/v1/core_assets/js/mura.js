@@ -17193,7 +17193,11 @@ Mura.UI.Form = Mura.UI.extend(
             data['csrf_token_expires'] = resp.data['csrf_token_expires'];
             data['csrf_token'] = resp.data['csrf_token'];
             Mura.post(Mura.getAPIEndpoint() + '?method=processAsyncObject', data).then(function (resp) {
-              if (_typeof(resp.data.errors) == 'object' && !Mura.isEmptyObject(resp.data.errors)) {
+              if (self.isApiErrorResponse(resp)) {
+                self.showErrors({
+                  "systemerror": "We're sorry, a system error has occurred. Please try again later."
+                });
+              } else if (_typeof(resp.data.errors) == 'object' && !Mura.isEmptyObject(resp.data.errors)) {
                 self.showErrors(resp.data.errors);
               } else if (typeof resp.data.redirect != 'undefined') {
                 if (resp.data.redirect && resp.data.redirect != location.href) {
@@ -17542,8 +17546,7 @@ Mura.UI.Form = Mura.UI.extend(
           }
 
           Mura.post(Mura.getAPIEndpoint() + '?method=processAsyncObject', data).then(function (resp) {
-            if (!resp || !resp.data || _typeof(resp.data) != 'object' || resp.error) {
-              // API error envelope ({apiversion, method, error}) carries no data
+            if (self.isApiErrorResponse(resp)) {
               self.showErrors({
                 "systemerror": "We're sorry, a system error has occurred. Please try again later."
               });
@@ -17580,6 +17583,10 @@ Mura.UI.Form = Mura.UI.extend(
         }
       });
     }
+  },
+  isApiErrorResponse: function isApiErrorResponse(resp) {
+    // API error envelope ({apiversion, method, error}) carries no data
+    return !resp || !resp.data || _typeof(resp.data) != 'object' || !!resp.error;
   },
   showErrors: function showErrors(errors) {
     var self = this;
