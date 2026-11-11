@@ -674,6 +674,79 @@ component extends="testbox.system.BaseSpec" {
 				expect(fileExists(targetDir & "/source-marker.txt")).toBeFalse();
 			});
 
+			it("should change only the case of a file name via rename()", function(){
+				var dirPath = variables.baseAssetDir & "/" & variables.imageTestDirName;
+				var content = fileRead(variables.fixtureSourceText);
+				fileCopy(variables.fixtureSourceText, dirPath & "/rename-case.txt");
+
+				var csrf = csrfFor("rename");
+				var result = variables.fb.rename(
+					siteid             = variables.siteid,
+					directory          = "/" & variables.imageTestDirName,
+					filename           = "rename-case.txt",
+					name               = "Rename-Case",
+					resourcePath       = variables.resourcePath,
+					csrf_token         = csrf.token,
+					csrf_token_expires = csrf.expires
+				);
+
+				expect(result.success).toBe(1);
+				// arrayFind() is case-sensitive, so this checks the name as stored.
+				var names = directoryList(dirPath, false, "name");
+				expect(arrayFind(names, "Rename-Case.txt")).toBeGT(0);
+				expect(arrayFind(names, "rename-case.txt")).toBe(0);
+				expect(fileRead(dirPath & "/Rename-Case.txt")).toBe(content);
+			});
+
+			it("should change only the case of a folder name via rename()", function(){
+				var dirPath = variables.baseAssetDir & "/" & variables.imageTestDirName;
+				directoryCreate(dirPath & "/rename-case-dir");
+				fileCopy(variables.fixtureSourceText, dirPath & "/rename-case-dir/marker.txt");
+
+				var csrf = csrfFor("rename");
+				var result = variables.fb.rename(
+					siteid             = variables.siteid,
+					directory          = "/" & variables.imageTestDirName,
+					filename           = "rename-case-dir",
+					name               = "Rename-Case-Dir",
+					resourcePath       = variables.resourcePath,
+					csrf_token         = csrf.token,
+					csrf_token_expires = csrf.expires
+				);
+
+				expect(result.success).toBe(1);
+				var names = directoryList(dirPath, false, "name");
+				expect(arrayFind(names, "Rename-Case-Dir")).toBeGT(0);
+				expect(arrayFind(names, "rename-case-dir")).toBe(0);
+				expect(fileExists(dirPath & "/Rename-Case-Dir/marker.txt")).toBeTrue();
+			});
+
+			it("should not overwrite a file whose name differs only in case via rename()", function(){
+				// Only possible on a case-sensitive filesystem, where both files can exist.
+				var dirPath = variables.baseAssetDir & "/" & variables.imageTestDirName;
+				fileWrite(dirPath & "/rename-twin.txt", charsetDecode("lower", "utf-8"));
+				fileWrite(dirPath & "/Rename-Twin.txt", charsetDecode("upper", "utf-8"));
+				var names = directoryList(dirPath, false, "name");
+				if (!arrayFind(names, "rename-twin.txt") || !arrayFind(names, "Rename-Twin.txt")) {
+					return;
+				}
+
+				var csrf = csrfFor("rename");
+				var result = variables.fb.rename(
+					siteid             = variables.siteid,
+					directory          = "/" & variables.imageTestDirName,
+					filename           = "rename-twin.txt",
+					name               = "Rename-Twin",
+					resourcePath       = variables.resourcePath,
+					csrf_token         = csrf.token,
+					csrf_token_expires = csrf.expires
+				);
+
+				expect(result.success).toBe(0);
+				expect(fileRead(dirPath & "/rename-twin.txt")).toBe("lower");
+				expect(fileRead(dirPath & "/Rename-Twin.txt")).toBe("upper");
+			});
+
 			it("should keep a file intact when rename() is given its current name", function(){
 				var fileName = "rename-same.txt";
 				var filePath = variables.baseAssetDir & "/" & variables.imageTestDirName & "/" & fileName;

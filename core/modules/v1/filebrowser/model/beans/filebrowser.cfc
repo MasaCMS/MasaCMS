@@ -920,47 +920,59 @@ component
 		var safeName = rereplaceNoCase(arguments.name,"[[:space:]]","_","ALL");
 		safeName = rereplaceNoCase(safeName,"[^[:alnum:]\_\-]","","ALL");
 
+		var dirPath = conditionalexpandpath(filePath);
+		var delim = application.configBean.getFileDelim();
 		var success = 0;
 		var fw = getBean('fileWriter');
+		var isFile = fw.checkFileExists(currentFilePath);
 
-		if(fw.checkFileExists(currentFilePath)) {
-			var newFilePath = conditionalexpandpath(filePath) & application.configBean.getFileDelim() & safeName & ext;
-
-			// Moving a file onto itself would delete it.
-			if(!compareNoCase(newFilePath, currentFilePath)) {
-				response.success = 1;
-				return response;
-			}
-
-			// The move would silently overwrite an existing file.
-			if(fw.checkFileExists(newFilePath) || fw.checkDirectoryExists(newFilePath)) {
-				response.message = "A file or folder with that name already exists.";
-				return response;
-			}
-
-			try {
-				fw.moveFile(currentFilePath, newFilePath);
-				success = 1;
-			}
-			catch( any e ) {
-				return( e );
-			}
-		}
-		else if(fw.checkDirectoryExists(currentFilePath)) {
-			var newFilePath = conditionalExpandPath(filePath) & application.configBean.getFileDelim() & safeName;
+		if(isFile || fw.checkDirectoryExists(currentFilePath)) {
+			var newName = isFile ? safeName & ext : safeName;
+			var newFilePath = dirPath & delim & newName;
 
 			if(!compare(newFilePath, currentFilePath)) {
 				response.success = 1;
 				return response;
 			}
 
-			if(fw.checkFileExists(newFilePath) || fw.checkDirectoryExists(newFilePath)) {
+			// A rename that only changes the case names the same entry on a case-insensitive
+			// filesystem, so only an entry spelled exactly like the new name is a collision.
+			var caseOnly = !compareNoCase(newFilePath, currentFilePath);
+			var nameTaken = false;
+			if(caseOnly) {
+				var rsDir = fw.getDirectoryList(directory=dirPath);
+				for(var row in rsDir) {
+					if(!compare(row.name, newName)) {
+						nameTaken = true;
+						break;
+					}
+				}
+			}
+			else {
+				nameTaken = fw.checkFileExists(newFilePath) || fw.checkDirectoryExists(newFilePath);
+			}
+
+			// The move would silently overwrite an existing file.
+			if(nameTaken) {
 				response.message = "A file or folder with that name already exists.";
 				return response;
 			}
 
 			try {
-				fw.renameDir(directory=currentFilePath, newDirectory=newFilePath);
+				// A case-only change goes through a temporary name: on a case-insensitive
+				// filesystem a direct move would copy the file onto itself and then delete it.
+				var tempPath = dirPath & delim & "." & newName & "-" & createUUID();
+				var steps = caseOnly
+					? [[currentFilePath, tempPath], [tempPath, newFilePath]]
+					: [[currentFilePath, newFilePath]];
+				for(var step in steps) {
+					if(isFile) {
+						fw.moveFile(step[1], step[2]);
+					}
+					else {
+						fw.renameDir(directory=step[1], newDirectory=step[2]);
+					}
+				}
 				success = 1;
 			}
 			catch( any e ) {
