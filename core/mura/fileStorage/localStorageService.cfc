@@ -148,10 +148,18 @@ the Free Software Foundation, Version 2 of the License.
 	<cffunction name="renameFile" access="public" returntype="void" output="false">
 		<cfargument name="source" type="string" required="true">
 		<cfargument name="destination" type="string" required="true">
-		<cfset variables.fw.renameFile(
-			source      = fullPath(arguments.source),
-			destination = fullPath(arguments.destination)
-		)>
+		<!--- cffile action="rename" only takes files on Lucee, so directories go through cfdirectory. --->
+		<cfif directoryExists(fullPath(arguments.source))>
+			<cfset variables.fw.renameDir(
+				directory    = fullPath(arguments.source),
+				newDirectory = fullPath(arguments.destination)
+			)>
+		<cfelse>
+			<cfset variables.fw.renameFile(
+				source      = fullPath(arguments.source),
+				destination = fullPath(arguments.destination)
+			)>
+		</cfif>
 	</cffunction>
 
 	<!--- ==================== UPLOAD ==================== --->

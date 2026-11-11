@@ -812,6 +812,30 @@ component extends="testbox.system.BaseSpec" {
 				expect(fileExists(localFile)).toBeFalse();
 			});
 
+			it("should rename a directory via renameFile()", function(){
+				var svc = application.serviceFactory.getBean('fileStorageService');
+				var assetDir = application.settingsManager.getSite(variables.siteid).getAssetDir() & "/assets";
+				var poolID = application.settingsManager.getSite(variables.siteid).getFilePoolID();
+				var fromName = "fstest-renamedir-" & variables.runTag;
+				var toName = fromName & "-renamed";
+				directoryCreate(assetDir & "/" & fromName);
+				fileWrite(assetDir & "/" & fromName & "/marker.txt", charsetDecode("marker", "utf-8"));
+				try {
+					svc.renameFile(poolID & "/assets/" & fromName, poolID & "/assets/" & toName);
+
+					expect(directoryExists(assetDir & "/" & fromName)).toBeFalse();
+					expect(fileRead(assetDir & "/" & toName & "/marker.txt")).toBe("marker");
+				} finally {
+					// No for-in loop: one inside a finally block crashes Lucee's compiler.
+					if (directoryExists(assetDir & "/" & fromName)) {
+						directoryDelete(assetDir & "/" & fromName, true);
+					}
+					if (directoryExists(assetDir & "/" & toName)) {
+						directoryDelete(assetDir & "/" & toName, true);
+					}
+				}
+			});
+
 			it("should serve a rendered file with its own name, type and date, not the cache object's", function(){
 				var testFile = createTestFile("fstest render metadata");
 				var rsMeta = variables.fileManager.readMeta(testFile.fileID);
