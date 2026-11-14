@@ -1,0 +1,285 @@
+<!---
+
+This file is part of Masa CMS. Masa CMS is based on Mura CMS, and adopts the
+same licensing model. It is, therefore, licensed under the Gnu General Public License
+version 2 only, (GPLv2) subject to the same special exception that appears in the licensing
+notice set out below.
+
+Masa CMS is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, Version 2 of the License.
+
+--->
+<cfcomponent
+	displayname="Local Storage Service"
+	implements="mura.fileStorage.IUserAssetStorageService"
+	extends="mura.cfobject"
+	output="false"
+	hint="Local filesystem implementation of IUserAssetStorageService.
+
+	      Can be used in two modes:
+
+	      1. Singleton (no-arg init) — registered as the default 'fileStorageService' bean.
+	         Resolves all keys relative to configBean.getFileDir(). Unified key format:
+	         {siteid}/{subtype}/{filename}  (same layout as GCS/S3 bucket keys).
+
+	      2. Per-site (basePath/baseUrl init) — still used directly by standardEventsHandler
+	         for backward compatibility when the simple relative-path form is needed.">
+
+	<cfset variables.fw       = "">
+	<cfset variables.basePath = "">
+	<cfset variables.baseUrl  = "">
+	<cfset variables.storageKeys = new mura.fileStorage.storageKey()>
+
+	<cffunction name="init" access="public" returntype="any" output="false">
+		<cfargument name="basePath" type="string" required="false" default=""
+			hint="Absolute filesystem root. Empty = singleton mode (resolves via configBean.getFileDir()).">
+		<cfargument name="baseUrl" type="string" required="false" default=""
+			hint="URL prefix for assets. Empty = singleton mode (resolved per-call from settingsManager).">
+		<cfset variables.basePath = arguments.basePath>
+		<cfset variables.baseUrl  = arguments.baseUrl>
+		<cfset variables.fw = new mura.fileWriter().init(routeUserAssets=false)>
+		<cfreturn this>
+	</cffunction>
+
+	<!---
+		Resolve a key to an absolute local path.
+		- Per-site mode:  basePath is set at init → prepend it (original behaviour).
+		- Singleton mode: basePath is empty → the key is a storage key ({poolID}/{subtype}/…),
+		  resolved by mura.fileStorage.storageKey.
+	--->
+	<cffunction name="fullPath" access="private" returntype="string" output="false">
+		<cfargument name="path" type="string" required="true">
+		<cfif len(variables.basePath)>
+			<cfreturn variables.storageKeys.joinContained(reReplace(variables.basePath, "[\\/]+$", ""), arguments.path)>
+		<cfelse>
+			<cfreturn variables.storageKeys.toLocalPath(arguments.path)>
+		</cfif>
+	</cffunction>
+
+	<!--- ==================== READ ==================== --->
+
+	<cffunction name="readFile" access="public" returntype="string" output="false">
+		<cfargument name="path" type="string" required="true">
+		<cfreturn fileRead(fullPath(arguments.path))>
+	</cffunction>
+
+	<cffunction name="readFileBinary" access="public" returntype="any" output="false">
+		<cfargument name="path" type="string" required="true">
+		<cfreturn fileReadBinary(fullPath(arguments.path))>
+	</cffunction>
+
+	<!--- ==================== WRITE ==================== --->
+
+	<cffunction name="writeFile" access="public" returntype="void" output="false">
+		<cfargument name="path" type="string" required="true">
+		<cfargument name="content" type="any" required="true">
+		<cfset variables.fw.writeFile(file=fullPath(arguments.path), output=arguments.content, addNewLine=false)>
+	</cffunction>
+
+	<!--- ==================== DELETE ==================== --->
+
+	<cffunction name="deleteFile" access="public" returntype="void" output="false">
+		<cfargument name="path" type="string" required="true">
+		<cfset var fp = fullPath(arguments.path)>
+		<cfif fileExists(fp)>
+			<cfset fileDelete(fp)>
+		</cfif>
+	</cffunction>
+
+	<cffunction name="deleteDirectory" access="public" returntype="void" output="false">
+		<cfargument name="path" type="string" required="true">
+		<cfargument name="recurse" type="boolean" required="false" default="false">
+		<cfset variables.fw.deleteDir(directory=fullPath(arguments.path), recurse=arguments.recurse)>
+	</cffunction>
+
+	<!--- ==================== EXISTS ==================== --->
+
+	<cffunction name="fileExists" access="public" returntype="boolean" output="false">
+		<cfargument name="path" type="string" required="true">
+		<cfreturn fileExists(fullPath(arguments.path))>
+	</cffunction>
+
+	<cffunction name="directoryExists" access="public" returntype="boolean" output="false">
+		<cfargument name="path" type="string" required="true">
+		<cfreturn directoryExists(fullPath(arguments.path))>
+	</cffunction>
+
+	<!--- ==================== LIST ==================== --->
+
+	<cffunction name="listDirectory" access="public" returntype="query" output="false">
+		<cfargument name="path" type="string" required="true">
+		<cfargument name="filter" type="string" required="false" default="*">
+		<cfargument name="type" type="string" required="false" default="all">
+		<cfreturn variables.fw.getDirectoryList(
+			directory = fullPath(arguments.path),
+			filter    = arguments.filter,
+			type      = arguments.type
+		)>
+	</cffunction>
+
+	<!--- ==================== DIRECTORIES ==================== --->
+
+	<cffunction name="createDirectory" access="public" returntype="void" output="false">
+		<cfargument name="path" type="string" required="true">
+		<cfset variables.fw.touchDir(fullPath(arguments.path))>
+	</cffunction>
+
+	<!--- ==================== COPY / MOVE / RENAME ==================== --->
+
+	<cffunction name="copyFile" access="public" returntype="void" output="false">
+		<cfargument name="source" type="string" required="true">
+		<cfargument name="destination" type="string" required="true">
+		<cfset variables.fw.copyFile(
+			source      = fullPath(arguments.source),
+			destination = fullPath(arguments.destination)
+		)>
+	</cffunction>
+
+	<cffunction name="moveFile" access="public" returntype="void" output="false">
+		<cfargument name="source" type="string" required="true">
+		<cfargument name="destination" type="string" required="true">
+		<cfset variables.fw.moveFile(
+			source      = fullPath(arguments.source),
+			destination = fullPath(arguments.destination)
+		)>
+	</cffunction>
+
+	<cffunction name="renameFile" access="public" returntype="void" output="false">
+		<cfargument name="source" type="string" required="true">
+		<cfargument name="destination" type="string" required="true">
+		<!--- cffile action="rename" only takes files on Lucee, so directories go through cfdirectory. --->
+		<cfif directoryExists(fullPath(arguments.source))>
+			<cfset variables.fw.renameDir(
+				directory    = fullPath(arguments.source),
+				newDirectory = fullPath(arguments.destination)
+			)>
+		<cfelse>
+			<cfset variables.fw.renameFile(
+				source      = fullPath(arguments.source),
+				destination = fullPath(arguments.destination)
+			)>
+		</cfif>
+	</cffunction>
+
+	<!--- ==================== UPLOAD ==================== --->
+
+	<cffunction name="uploadFile" access="public" returntype="struct" output="false">
+		<cfargument name="destination" type="string" required="true">
+		<cfargument name="fileField" type="string" required="true">
+		<cfreturn variables.fw.uploadFile(
+			filefield   = arguments.fileField,
+			destination = fullPath(arguments.destination)
+		)>
+	</cffunction>
+
+	<!--- ==================== LOCAL RESOLUTION (for image ops) ==================== --->
+
+	<cffunction name="resolveToLocal" access="public" returntype="string" output="false">
+		<cfargument name="path" type="string" required="true">
+		<!--- Local storage: the path IS the local path already --->
+		<cfreturn fullPath(arguments.path)>
+	</cffunction>
+
+	<cffunction name="writeFromLocal" access="public" returntype="void" output="false">
+		<cfargument name="localPath" type="string" required="true">
+		<cfargument name="remotePath" type="string" required="true">
+		<!--- Local storage: move the temp file to its final destination; fileMove()
+		      replaces an existing file there, but needs the directory to exist. --->
+		<cfset var destination = fullPath(arguments.remotePath)>
+		<cfset variables.fw.touchDir(getDirectoryFromPath(destination))>
+		<cfset fileMove(arguments.localPath, destination)>
+	</cffunction>
+
+	<cffunction name="releaseLocal" access="public" returntype="void" output="false">
+		<cfargument name="localPath" type="string" required="true">
+		<!--- Local storage: resolveToLocal() returns the stored file itself, nothing to release --->
+	</cffunction>
+
+	<!--- ==================== URL ==================== --->
+
+	<cffunction name="getBaseUrl" access="public" returntype="string" output="false">
+		<cfargument name="siteid" type="string" required="true">
+		<cfif len(variables.baseUrl)>
+			<cfreturn variables.baseUrl>
+		<cfelse>
+			<!--- Singleton mode: look up site URL dynamically --->
+			<cfreturn application.settingsManager.getSite(arguments.siteid).getFileAssetPath() & "/assets">
+		</cfif>
+	</cffunction>
+
+	<!--- ==================== BINARY CACHE (used by fileDAO) ==================== --->
+	<!---
+		uploadBinary, deleteObject and listObjects take storage keys ({poolID}/cache/file/…) and
+		always resolve them through mura.fileStorage.storageKey, regardless of basePath.
+		A cloud backend (shipped as its own module) implements the same methods against its bucket.
+	--->
+
+	<cffunction name="uploadBinary" access="public" returntype="void" output="false"
+		hint="Write raw binary content to the local cache. key = {siteid}/cache/file/{id}.{ext}">
+		<cfargument name="data" type="any" required="true">
+		<cfargument name="contentType" type="string" required="true">
+		<cfargument name="key" type="string" required="true">
+		<cfscript>
+			var fp = variables.storageKeys.toLocalPath(arguments.key);
+			variables.fw.touchDir(getDirectoryFromPath(fp));
+			if (isBinary(arguments.data)) {
+				fileWrite(fp, arguments.data);
+			} else {
+				variables.fw.writeFile(file=fp, output=arguments.data, addNewLine=false);
+			}
+		</cfscript>
+	</cffunction>
+
+	<cffunction name="deleteObject" access="public" returntype="void" output="false"
+		hint="Delete a cached file by key. key = {siteid}/cache/file/{id}.{ext}">
+		<cfargument name="key" type="string" required="true">
+		<cfscript>
+			var fp = variables.storageKeys.toLocalPath(arguments.key);
+			if (fileExists(fp)) { fileDelete(fp); }
+		</cfscript>
+	</cffunction>
+
+	<cffunction name="listObjects" access="public" returntype="array" output="false"
+		hint="List cached files whose names start with prefix. path = {siteid}/cache/file/; returns keys = {siteid}/cache/file/{name}">
+		<cfargument name="path" type="string" required="true">
+		<cfargument name="prefix" type="string" required="false" default="">
+		<cfscript>
+			var dirKey = reReplace(variables.storageKeys.normalize(arguments.path), "/+$", "");
+			var dir = variables.storageKeys.toLocalPath(dirKey);
+			var keys = [];
+			if (directoryExists(dir)) {
+				for (var name in directoryList(dir, false, "name", arguments.prefix & "*", "", "file")) {
+					arrayAppend(keys, dirKey & "/" & name);
+				}
+			}
+			return keys;
+		</cfscript>
+	</cffunction>
+
+	<!--- ==================== STREAMING PROXY ==================== --->
+
+	<cffunction name="streamToResponse" access="public" returntype="boolean" output="false"
+		hint="Send a local file as the response through fileManager.streamFile(), which ends the request. Returns false if the file does not exist.">
+		<cfargument name="path" type="string" required="true">
+		<cfargument name="method" type="string" required="false" default="inline">
+		<cfargument name="filename" type="string" required="false" default="">
+		<cfargument name="mimeType" type="string" required="false" default="">
+		<cfargument name="lastModified" type="any" required="false" default="">
+		<cfscript>
+			var fp = fullPath(arguments.path);
+			if (!fileExists(fp)) { return false; }
+			cfheader(name="Cache-Control", value="max-age=86400");
+			// streamFile() handles If-Modified-Since (304), Last-Modified, Content-Length and video downloads.
+			getBean('fileManager').streamFile(
+				filePath     = fp,
+				filename     = len(arguments.filename) ? arguments.filename : getFileFromPath(fp),
+				mimetype     = len(arguments.mimeType) ? arguments.mimeType : fileGetMimeType(fp),
+				method       = arguments.method,
+				lastModified = isDate(arguments.lastModified) ? arguments.lastModified : getFileInfo(fp).lastModified
+			);
+			return true;
+		</cfscript>
+	</cffunction>
+
+</cfcomponent>

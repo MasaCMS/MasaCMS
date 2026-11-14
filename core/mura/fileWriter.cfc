@@ -83,13 +83,17 @@ This file is part of Mura CMS.
   may, if you choose, apply this exception to your own modified versions of
   Mura CMS.
 --->
-<cfcomponent extends="mura.cfobject" output="false" hint="This provides a CRUD utility for the host file system">
+<cfcomponent extends="mura.cfobject" output="false" hint="CRUD utility for the host file system. When routeUserAssets=true (default), paths inside a site's User_Assets directory are automatically routed to getBean('fileStorageService'), which is the active storage singleton (localStorageService by default; replaced by a cloud service on module load).">
 
 	<cfset variables.useMode=true>
+	<cfset variables.routeUserAssets=true>
+	<cfset variables.storageKeys=new mura.fileStorage.storageKey()>
 
 	<cffunction name="init" output="false">
 		<cfargument name="useMode" required="true" default="">
 		<cfargument name="tempDir" required="true" default="#application.configBean.getTempDir()#">
+		<cfargument name="routeUserAssets" required="false" default="true"
+			hint="Set false to disable User_Assets routing (used by localStorageService to avoid recursion)">
 
 		<cfif findNoCase(server.os.name,"Windows")>
 			<cfset variables.useMode=false>
@@ -101,7 +105,8 @@ This file is part of Mura CMS.
 			</cfif>
 		</cfif>
 
-		<cfset variables.tempDir=arguments.tempDir >
+		<cfset variables.tempDir=arguments.tempDir>
+		<cfset variables.routeUserAssets=isBoolean(arguments.routeUserAssets) && arguments.routeUserAssets>
 
 		<cfif isNumeric(application.configBean.getValue("defaultFileMode"))>
 			<cfset variables.defaultFileMode=application.configBean.getValue("defaultFileMode")>
@@ -112,30 +117,72 @@ This file is part of Mura CMS.
 		<cfreturn this />
 	</cffunction>
 
+	<!---
+		userAssetKey: the storage key for a path inside a site's User_Assets directory when
+		User_Assets routing is on (e.g. "default/assets/photo.jpg"), otherwise empty.
+		Each wrapper below routes to the storage service when this returns a key.
+	--->
+	<cffunction name="userAssetKey" access="private" output="false" returntype="string">
+		<cfargument name="path" type="string" required="true">
+		<cfif not variables.routeUserAssets>
+			<cfreturn "">
+		</cfif>
+		<cfreturn variables.storageKeys.fromAssetPath(arguments.path)>
+	</cffunction>
+
 	<cffunction name="copyFile" output="false">
 		<cfargument name="source">
 		<cfargument name="destination">
 		<cfargument name="mode" required="true" default="#variables.defaultFileMode#">
-		<cflock name="mfw#hash(arguments.source)#" type="exclusive" timeout="5">
-			<cftry>
-				<cfif variables.useMode >
-					<cffile action="copy" mode="#arguments.mode#" source="#arguments.source#" destination="#arguments.destination#" />
-				<cfelse>
-					<cffile action="copy" source="#arguments.source#" destination="#arguments.destination#" />
-				</cfif>
-				<cfcatch>
-					<cfset sleep(RandRange(500, 1000))>
-					<cfif fileExists(arguments.destination)>
-						<cfset fileDelete(arguments.destination)>
-					</cfif>
+		<cfset var resolvedSource = "">
+		<cfset var storageService = getBean('fileStorageService')>
+		<cfscript>
+			var srcKey = userAssetKey(arguments.source);
+			var dstKey = userAssetKey(arguments.destination);
+			// The storage service only takes User_Assets keys, so a copy across the
+			// User_Assets boundary goes through a local file on the non-asset side.
+			if (len(srcKey) && len(dstKey)) {
+				storageService.copyFile(srcKey, dstKey);
+				return this;
+			} else if (len(dstKey)) {
+				// writeFromLocal() consumes its file, so hand it a temp copy.
+				var tempCopy = variables.tempDir & createUUID() & "." & listLast(arguments.source, ".");
+				fileCopy(arguments.source, tempCopy);
+				storageService.writeFromLocal(tempCopy, dstKey);
+				return this;
+			} else if (len(srcKey)) {
+				resolvedSource = storageService.resolveToLocal(srcKey);
+				arguments.source = resolvedSource;
+			}
+		</cfscript>
+		<cftry>
+			<cflock name="mfw#hash(arguments.source)#" type="exclusive" timeout="5">
+				<cftry>
 					<cfif variables.useMode >
 						<cffile action="copy" mode="#arguments.mode#" source="#arguments.source#" destination="#arguments.destination#" />
 					<cfelse>
 						<cffile action="copy" source="#arguments.source#" destination="#arguments.destination#" />
 					</cfif>
-				</cfcatch>
-			</cftry>
-		</cflock>
+					<cfcatch>
+						<cfset sleep(RandRange(500, 1000))>
+						<cfif fileExists(arguments.destination)>
+							<cfset fileDelete(arguments.destination)>
+						</cfif>
+						<cfif variables.useMode >
+							<cffile action="copy" mode="#arguments.mode#" source="#arguments.source#" destination="#arguments.destination#" />
+						<cfelse>
+							<cffile action="copy" source="#arguments.source#" destination="#arguments.destination#" />
+						</cfif>
+					</cfcatch>
+				</cftry>
+			</cflock>
+			
+			<cffinally>
+				<cfif len(resolvedSource)>
+					<cfset storageService.releaseLocal(resolvedSource)>
+				</cfif>
+			</cffinally>
+		</cftry>
 		<cfreturn this />
 	</cffunction>
 
@@ -143,22 +190,37 @@ This file is part of Mura CMS.
 		<cfargument name="source">
 		<cfargument name="destination">
 		<cfargument name="mode" required="true" default="#variables.defaultFileMode#">
+		<cfset var movedAssetKey = "">
+		<cfset var storageService = getBean('fileStorageService')>
+		<cfscript>
+			var srcKey = userAssetKey(arguments.source);
+			var dstKey = userAssetKey(arguments.destination);
+			// The storage service only takes User_Assets keys, so a move across the
+			// User_Assets boundary goes through a local file on the non-asset side.
+			if (len(srcKey) && len(dstKey)) {
+				storageService.moveFile(srcKey, dstKey);
+				return this;
+			} else if (len(dstKey)) {
+				storageService.writeFromLocal(arguments.source, dstKey);
+				return this;
+			} else if (len(srcKey)) {
+				// Move a local copy of the asset below, then remove the asset itself.
+				movedAssetKey = srcKey;
+				arguments.source = storageService.resolveToLocal(movedAssetKey);
+			}
+		</cfscript>
 		<cflock name="mfw#hash(arguments.source)#" type="exclusive" timeout="5">
-			<!---<cfif not listFirst(expandPath(arguments.file),':') eq 's3>--->
-				<cfif variables.useMode >
-					<cffile action="copy" mode="#arguments.mode#" source="#arguments.source#" destination="#arguments.destination#" />
-					<cftry><cffile action="delete" file="#arguments.source#" /><cfcatch></cfcatch></cftry>
-				<cfelse>
-					<cffile action="copy" source="#arguments.source#" destination="#arguments.destination#" />
-					<cftry><cffile action="delete" file="#arguments.source#" /><cfcatch></cfcatch></cftry>
-				</cfif>
-			<!---
+			<cfif variables.useMode >
+				<cffile action="copy" mode="#arguments.mode#" source="#arguments.source#" destination="#arguments.destination#" />
+				<cftry><cffile action="delete" file="#arguments.source#" /><cfcatch></cfcatch></cftry>
 			<cfelse>
-				<cffile action="copy" acl="private" source="#arguments.source#" destination="#arguments.destination#" />
+				<cffile action="copy" source="#arguments.source#" destination="#arguments.destination#" />
 				<cftry><cffile action="delete" file="#arguments.source#" /><cfcatch></cfcatch></cftry>
 			</cfif>
-			--->
 		</cflock>
+		<cfif len(movedAssetKey)>
+			<cfset storageService.deleteFile(movedAssetKey)>
+		</cfif>
 		<cfreturn this />
 	</cffunction>
 
@@ -166,6 +228,17 @@ This file is part of Mura CMS.
 		<cfargument name="source">
 		<cfargument name="destination">
 		<cfargument name="mode" required="true" default="#variables.defaultFileMode#">
+		<cfscript>
+			var srcKey = userAssetKey(arguments.source);
+			var dstKey = userAssetKey(arguments.destination);
+			if (len(srcKey) && len(dstKey)) {
+				getBean('fileStorageService').renameFile(srcKey, dstKey);
+				return this;
+			} else if (len(srcKey) || len(dstKey)) {
+				// Across the User_Assets boundary a rename is a move, which goes through a local file.
+				return moveFile(argumentCollection=arguments);
+			}
+		</cfscript>
 		<cflock name="mfw#hash(arguments.source)#" type="exclusive" timeout= "5">
 			<cfif variables.useMode >
 				<cffile action="rename" mode="#arguments.mode#" source="#arguments.source#" destination="#arguments.destination#" />
@@ -185,9 +258,29 @@ This file is part of Mura CMS.
 		<cfset var new = "">
 		<cfset var x = "">
 		<cfset var counter = 0>
+		<cfset var target = arguments.file>
+		<cfscript>
+			var assetKey = userAssetKey(arguments.file);
+			if (len(assetKey)) {
+				if (isDefined('arguments.output.mode')) {
+					// An open file is copied to a local temp file below, with its charset,
+					// and that file is handed to the storage service afterwards.
+					target = variables.tempDir & createUUID() & "." & listLast(arguments.file, ".");
+				} else {
+					// The storage service writes content exactly as given, so apply
+					// addNewLine here, as cffile action="write" would below.
+					var content = arguments.output;
+					if (arguments.addNewLine && isSimpleValue(content)) {
+						content &= findNoCase("Windows", server.os.name) ? chr(13) & chr(10) : chr(10);
+					}
+					getBean('fileStorageService').writeFile(assetKey, content);
+					return this;
+				}
+			}
+		</cfscript>
 
 		<cfif isDefined('arguments.output.mode')>
-				<cfset new = FileOpen(arguments.file, "write")>
+				<cfset new = FileOpen(target, "write")>
 
 				<cfloop condition="!fileIsEOF( arguments.output )">
 					<cfset x = FileRead(arguments.output, 10000)>
@@ -207,16 +300,17 @@ This file is part of Mura CMS.
 				<cfelseif fileExists(arguments.output.path & "/" & arguments.output.name)>
 					<cfset FileDelete(arguments.output.path & "/" & arguments.output.name)>
 				</cfif>
-		<cfelse>
-			<!---<cfif not listFirst(expandPath(arguments.file),':') eq 's3>--->
-				<cfif variables.useMode >
-					<cffile action="write" mode="#arguments.mode#" file="#arguments.file#" output="#arguments.output#" addnewline="#arguments.addNewLine#"/>
-				<cfelse>
-					<cffile action="write" file="#arguments.file#" output="#arguments.output#" addnewline="#arguments.addNewLine#"/>
+
+				<cfif len(assetKey)>
+					<!--- writeFromLocal() consumes the temp file. --->
+					<cfset getBean('fileStorageService').writeFromLocal(target, assetKey)>
 				</cfif>
-			<!---<cfelse>
-				<cffile action="write" acl="private" file="#arguments.file#" output="#arguments.output#" addnewline="#arguments.addNewLine#"/>
-			</cfif>--->
+		<cfelse>
+			<cfif variables.useMode >
+				<cffile action="write" mode="#arguments.mode#" file="#arguments.file#" output="#arguments.output#" addnewline="#arguments.addNewLine#"/>
+			<cfelse>
+				<cffile action="write" file="#arguments.file#" output="#arguments.output#" addnewline="#arguments.addNewLine#"/>
+			</cfif>
 		</cfif>
 		<cfreturn this />
 	</cffunction>
@@ -228,6 +322,12 @@ This file is part of Mura CMS.
 		<cfargument name="attributes" required="true" default="normal">
 		<cfargument name="mode" required="true" default="#variables.defaultFileMode#">
 		<cfargument name="accept" required="false" default="" />
+		<cfscript>
+			var assetKey = userAssetKey(arguments.destination);
+			if (len(assetKey)) {
+				return getBean('fileStorageService').uploadFile(assetKey, arguments.filefield);
+			}
+		</cfscript>
 
 		<cfset touchDir(arguments.destination,arguments.mode) />
 
@@ -269,6 +369,19 @@ This file is part of Mura CMS.
 	<cffunction name="createDir" output="false">
 		<cfargument name="directory">
 		<cfargument name="mode" required="true" default="#variables.defaultFileMode#">
+		<cfscript>
+			var assetKey = userAssetKey(arguments.directory);
+			if (len(assetKey)) {
+				var storageService = getBean('fileStorageService');
+				// The storage contract makes createDirectory() a no-op for an existing
+				// directory; createDir() has always thrown then, like cfdirectory does below.
+				if (storageService.directoryExists(assetKey)) {
+					throw(type="application", message="The specified directory [#arguments.directory#] could not be created.", detail="The directory already exists.");
+				}
+				storageService.createDirectory(assetKey);
+				return this;
+			}
+		</cfscript>
 		<cfif variables.useMode >
 			<cfdirectory action="create" mode="#arguments.mode#" directory="#arguments.directory#"/>
 		<cfelse>
@@ -290,6 +403,18 @@ This file is part of Mura CMS.
 		<cfargument name="directory">
 		<cfargument name="newDirectory">
 		<cfargument name="mode" required="true" default="#variables.defaultFileMode#">
+		<cfscript>
+			var srcKey = userAssetKey(arguments.directory);
+			var dstKey = userAssetKey(arguments.newDirectory);
+			if (len(srcKey) && len(dstKey)) {
+				getBean('fileStorageService').renameFile(srcKey, dstKey);
+				return this;
+			} else if (len(srcKey) || len(dstKey)) {
+				throw(type="mura.fileWriter.crossBoundaryRename",
+				      message="A directory can't be renamed into or out of User_Assets.",
+				      detail="#arguments.directory# -> #arguments.newDirectory#");
+			}
+		</cfscript>
 		<cfif variables.useMode >
 			<cfdirectory action="rename" mode="#arguments.mode#" directory="#arguments.directory#" newDirectory="#arguments.newDirectory#"/>
 		<cfelse>
@@ -301,6 +426,13 @@ This file is part of Mura CMS.
 	<cffunction name="deleteDir" output="false">
 		<cfargument name="directory">
 		<cfargument name="recurse" required="true" default="true">
+		<cfscript>
+			var assetKey = userAssetKey(arguments.directory);
+			if (len(assetKey)) {
+				getBean('fileStorageService').deleteDirectory(assetKey, arguments.recurse);
+				return this;
+			}
+		</cfscript>
 		<cfdirectory action="delete" directory="#arguments.directory#" recurse="#arguments.recurse#"/>
 		<cfreturn this />
 	</cffunction>
@@ -323,7 +455,6 @@ This file is part of Mura CMS.
 
 		<cfif arguments.baseDir neq arguments.destDir>
 			<cfdirectory directory="#arguments.baseDir#" name="rsAll" action="list" recurse="true" />
-			<!--- filter out Subversion hidden folders --->
 
 			<cfset rsAll=fixQueryPaths(rsAll)>
 
@@ -470,6 +601,12 @@ This file is part of Mura CMS.
 		<cfargument name="directory">
 		<cfargument name="filter" default="*">
 		<cfargument name="type" default="all">
+		<cfscript>
+			var assetKey = userAssetKey(arguments.directory);
+			if (len(assetKey)) {
+				return getBean('fileStorageService').listDirectory(assetKey, arguments.filter, arguments.type);
+			}
+		</cfscript>
 		<cfset var rs="">
 		<cfdirectory directory="#arguments.directory#" filter="#arguments.filter#" type="#arguments.type#" name="rs" action="list">
 		<cfreturn rs>
@@ -493,4 +630,114 @@ This file is part of Mura CMS.
 			}
 		}
 	</cfscript>
+
+	<!--- ==================== User_Assets-aware wrappers ==================== --->
+
+	<cffunction name="deleteFile" output="false" returntype="void">
+		<cfargument name="file" type="string" required="true">
+		<cfscript>
+			var assetKey = userAssetKey(arguments.file);
+			if (len(assetKey)) {
+				getBean('fileStorageService').deleteFile(assetKey);
+				return;
+			}
+			if (fileExists(arguments.file)) {
+				fileDelete(arguments.file);
+			}
+		</cfscript>
+	</cffunction>
+
+	<cffunction name="readFile" output="false" returntype="string">
+		<cfargument name="file" type="string" required="true">
+		<cfscript>
+			var assetKey = userAssetKey(arguments.file);
+			if (len(assetKey)) {
+				return getBean('fileStorageService').readFile(assetKey);
+			}
+			return fileRead(arguments.file);
+		</cfscript>
+	</cffunction>
+
+	<cffunction name="readFileBinary" output="false" returntype="any">
+		<cfargument name="file" type="string" required="true">
+		<cfscript>
+			var assetKey = userAssetKey(arguments.file);
+			if (len(assetKey)) {
+				return getBean('fileStorageService').readFileBinary(assetKey);
+			}
+			return fileReadBinary(arguments.file);
+		</cfscript>
+	</cffunction>
+
+	<cffunction name="checkFileExists" output="false" returntype="boolean"
+		hint="Named checkFileExists to avoid shadowing the built-in fileExists().">
+		<cfargument name="file" type="string" required="true">
+		<cfscript>
+			var assetKey = userAssetKey(arguments.file);
+			if (len(assetKey)) {
+				return getBean('fileStorageService').fileExists(assetKey);
+			}
+			return fileExists(arguments.file);
+		</cfscript>
+	</cffunction>
+
+	<cffunction name="checkDirectoryExists" output="false" returntype="boolean"
+		hint="Named checkDirectoryExists to avoid shadowing the built-in directoryExists().">
+		<cfargument name="directory" type="string" required="true">
+		<cfscript>
+			var assetKey = userAssetKey(arguments.directory);
+			if (len(assetKey)) {
+				return getBean('fileStorageService').directoryExists(assetKey);
+			}
+			return directoryExists(arguments.directory);
+		</cfscript>
+	</cffunction>
+
+	<cffunction name="resolveToLocal" output="false" returntype="string"
+		hint="Resolve a User_Assets path to an absolute local filesystem path. For cloud storage, downloads to temp. Pass the result to releaseLocal() when done.">
+		<cfargument name="file" type="string" required="true">
+		<cfscript>
+			var assetKey = userAssetKey(arguments.file);
+			if (len(assetKey)) {
+				return getBean('fileStorageService').resolveToLocal(assetKey);
+			}
+			return arguments.file;
+		</cfscript>
+	</cffunction>
+
+	<cffunction name="releaseLocal" output="false" returntype="void"
+		hint="Release a path returned by resolveToLocal() once done with it. Safe for any path: the storage service only deletes temp copies it created.">
+		<cfargument name="localPath" type="string" required="true">
+		<cfif variables.routeUserAssets>
+			<cfset getBean('fileStorageService').releaseLocal(arguments.localPath)>
+		</cfif>
+	</cffunction>
+
+	<cffunction name="writeFromLocal" output="false" returntype="void"
+		hint="Write a local file to a User_Assets path. For cloud storage, uploads and removes the local copy.">
+		<cfargument name="localPath" type="string" required="true">
+		<cfargument name="remotePath" type="string" required="true">
+		<cfscript>
+			var assetKey = userAssetKey(arguments.remotePath);
+			if (len(assetKey)) {
+				getBean('fileStorageService').writeFromLocal(arguments.localPath, assetKey);
+				return;
+			}
+			fileMove(arguments.localPath, arguments.remotePath);
+		</cfscript>
+	</cffunction>
+
+	<cffunction name="getAssetUrl" output="false" returntype="string"
+		hint="Returns the public URL of a site's User_Assets. Resolves through the site's File Pool and honors the assetPath / fileAssetPath config, like filebrowser's getBaseResourcePath().">
+		<cfargument name="siteid" type="string" required="true">
+		<cfargument name="complete" required="false" default="0" hint="Return an absolute URL including the domain">
+		<cfscript>
+			var site = application.settingsManager.getSite(arguments.siteid);
+			if (isValid('URL', application.configBean.getAssetPath())) {
+				return application.configBean.getAssetPath() & "/" & site.getFilePoolID() & "/assets";
+			}
+			return site.getFileAssetPath(complete=arguments.complete) & "/assets";
+		</cfscript>
+	</cffunction>
+
 </cfcomponent>

@@ -55,6 +55,32 @@ component
 		return pathRoot;
 	}
 
+	// Describes a file or folder for filebrowser events; call it before the item
+	// is deleted. Uses getFileInfo() when the item is on local disk, otherwise
+	// (a cloud storage backend) the storage listing, which every backend supports.
+	private struct function getItemInfo( required string path ) {
+		var info = {};
+
+		if(fileExists(arguments.path) || directoryExists(arguments.path)) {
+			info = getFileInfo(arguments.path);
+		} else {
+			var name = getFileFromPath(arguments.path);
+			var parent = getDirectoryFromPath(arguments.path);
+			info = { name: name, path: arguments.path, parent: parent };
+
+			var rs = getBean('fileWriter').getDirectoryList(directory=parent, filter=name, type="all");
+			if(rs.recordCount) {
+				// Same values getFileInfo() uses.
+				info['type'] = rs.type[1] == "Dir" ? "directory" : "file";
+				info['size'] = rs.size[1];
+				info['lastModified'] = rs.datelastmodified[1];
+			}
+		}
+
+		info['filePath'] = arguments.path;
+		return info;
+	}
+
 	private any function checkPerms( siteid,context,resourcePath )  {
 		var m=getBean('$').init(arguments.siteid);
 		var permission = {message: '',success: 0};
@@ -107,11 +133,18 @@ component
 		var timage = replace(createUUID(),"-","","all");
 		var delim = rereplace(baseFilePath,".*\/","");
 		var filePath = baseFilePath & rereplace(arguments.file.url,".*?#delim#","");
-		var sourceImage = ImageNew(filePath);
 		var response = {};
 
 		if(!isPathLegal(arguments.resourcepath,conditionalExpandPath(filePath),arguments.siteid)) {
 			throw(message="File path illegal");
+		}
+
+		var fw = getBean('fileWriter');
+		var localPath = fw.resolveToLocal(conditionalExpandPath(filePath));
+		try {
+			var sourceImage = ImageNew(localPath);
+		} finally {
+			fw.releaseLocal(localPath);
 		}
 
 		if(arguments.dimensions.aspect eq "within") {
@@ -151,10 +184,9 @@ component
 		}
 
 		var sourceImageInfo = imageInfo(sourceImage);
-		var destination = replace(filePath,".#arguments.file.ext#","-resize-#randrange(10000,99999)#.#arguments.file.ext#");
-
-		ImageWrite(sourceImage,tempDir & timage & "." & arguments.file.ext);
-		fileMove(tempDir & timage & "." & arguments.file.ext,filePath);
+		var tempFile = tempDir & timage & "." & arguments.file.ext;
+		ImageWrite(sourceImage, tempFile);
+		fw.writeFromLocal(tempFile, conditionalExpandPath(filePath));
 
 		response.info = imageInfo(sourceImage);
 		response.success = 1;
@@ -192,7 +224,6 @@ component
 		var timage = replace(createUUID(),"-","","all");
 		var delim = rereplace(baseFilePath,".*\/","");
 		var filePath = baseFilePath & rereplace(arguments.file.url,".*?#delim#","");
-		var sourceImage = ImageNew(filePath);
 		var destination = replace(filePath,".#arguments.file.ext#","-copy1.#arguments.file.ext#");
 		var version = 1;
 
@@ -200,13 +231,22 @@ component
 			throw(message="File path illegal");
 		}
 
-		while(fileExists(destination)) {
+		var fw = getBean('fileWriter');
+		var localPath = fw.resolveToLocal(conditionalExpandPath(filePath));
+		try {
+			var sourceImage = ImageNew(localPath);
+		} finally {
+			fw.releaseLocal(localPath);
+		}
+
+		while(fw.checkFileExists(destination)) {
 			version++;
 			destination = replace(filePath,".#arguments.file.ext#","-copy#version#.#arguments.file.ext#");
 		}
 
-		ImageWrite(sourceImage,tempDir & timage & "." & arguments.file.ext);
-		fileMove(tempDir & timage & "." & arguments.file.ext,destination);
+		var tempFile = tempDir & timage & "." & arguments.file.ext;
+		ImageWrite(sourceImage, tempFile);
+		fw.writeFromLocal(tempFile, conditionalExpandPath(destination));
 
 		var info = {};
 		info['filePath'] = destination;
@@ -242,7 +282,6 @@ component
 		var timage = replace(createUUID(),"-","","all");
 		var delim = rereplace(baseFilePath,".*\/","");
 		var filePath = baseFilePath & rereplace(arguments.file.url,".*?#delim#","");
-		var sourceImage = ImageNew(filePath);
 		var response = {};
 		var rotation = 90;
 
@@ -254,11 +293,19 @@ component
 			rotation = -90;
 		}
 
+		var fw = getBean('fileWriter');
+		var localPath = fw.resolveToLocal(conditionalExpandPath(filePath));
+		try {
+			var sourceImage = ImageNew(localPath);
+		} finally {
+			fw.releaseLocal(localPath);
+		}
 		var sourceImageInfo = imageInfo(sourceImage);
 		ImageRotate(sourceImage,int(sourceImageInfo.width/2),int(sourceImageInfo.height/2),rotation);
 
-		ImageWrite(sourceImage,tempDir & timage & "." & arguments.file.ext);
-		fileMove(tempDir & timage & "." & arguments.file.ext,filePath);
+		var tempFile = tempDir & timage & "." & arguments.file.ext;
+		ImageWrite(sourceImage, tempFile);
+		fw.writeFromLocal(tempFile, conditionalExpandPath(filePath));
 
 		var info = {};
 		info['filePath'] = filePath;
@@ -313,12 +360,22 @@ component
 			arguments.size = deserializeJSON(arguments.size);
 		}
 
-		var sourceImage = ImageNew(filePath);
+		var fw = getBean('fileWriter');
+		var localPath = fw.resolveToLocal(conditionalExpandPath(filePath));
+		var tempFile1 = tempDir & timage & "." & arguments.file.ext;
+		try {
+			var sourceImage = ImageNew(localPath);
 
-		ImageScaleToFit(sourceImage,size.width,size.height,"highestPerformance");
-		ImageWrite(sourceImage,tempDir & timage & "." & arguments.file.ext);
-		var workImage = ImageNew(tempDir & timage & "." & arguments.file.ext);
-		sourceImage = ImageNew(filePath);
+			ImageScaleToFit(sourceImage,size.width,size.height,"highestPerformance");
+			ImageWrite(sourceImage, tempFile1);
+			var workImage = ImageNew(tempFile1);
+			sourceImage = ImageNew(localPath);
+		} finally {
+			fw.releaseLocal(localPath);
+			if(fileExists(tempFile1)) {
+				fileDelete(tempFile1);
+			}
+		}
 
 		var workImageInfo = imageInfo(workImage);
 		var sourceImageInfo = imageInfo(sourceImage);
@@ -332,9 +389,15 @@ component
 		}
 
 		ImageCrop(sourceImage,arguments.crop.x*aspect,arguments.crop.y*aspect,arguments.crop.width*aspect,arguments.crop.height*aspect);
-		ImageWrite(sourceImage,tempDir & timage & "." & arguments.file.ext);
-		fileMove(tempDir & timage & "." & arguments.file.ext,filePath);
-		workImage = ImageNew(filePath);
+		var tempFile2 = tempDir & timage & "_crop." & arguments.file.ext;
+		ImageWrite(sourceImage, tempFile2);
+		fw.writeFromLocal(tempFile2, conditionalExpandPath(filePath));
+		var croppedLocalPath = fw.resolveToLocal(conditionalExpandPath(filePath));
+		try {
+			workImage = ImageNew(croppedLocalPath);
+		} finally {
+			fw.releaseLocal(croppedLocalPath);
+		}
 
 		response.info = imageInfo(workImage);
 		response.aspect = aspect;
@@ -421,12 +484,15 @@ component
 		var dotDelimArray = listToArray(namePostFix,'~');
 		var newFileName = dotDelimArray[1]  & dateTimeFormat( item.timecreated,'yyyymmddhhnnss'  ) & '.'  & dotDelimArray[arrayLen(dotDelimArray)];
 
+		var fw = getBean('fileWriter');
+
 		if(listFindNoCase(allowedExtensions,item.serverfileext)) {
-			if(fileExists(conditionalExpandPath(filePath) & m.globalConfig().getFileDelim() & item.serverfile)) {
-				fileDelete(conditionalExpandPath(filePath) & m.globalConfig().getFileDelim() & item.serverfile );
+			var existingFile = conditionalExpandPath(filePath) & m.globalConfig().getFileDelim() & item.serverfile;
+			if(fw.checkFileExists(existingFile)) {
+				fw.deleteFile(existingFile);
 			}
-			if(!directoryExists(conditionalExpandPath(filePath))){
-				directoryCreate(conditionalExpandPath(filePath));
+			if(!fw.checkDirectoryExists(conditionalExpandPath(filePath))){
+				fw.createDir(directory=conditionalExpandPath(filePath));
 			}
 			//moving and renaming file
 			var safePostFix = listToArray(newFileName,".");
@@ -445,7 +511,7 @@ component
 			safeName = rereplaceNoCase(safeName,"[^[:alnum:]\_\-]","","ALL") & "." & safePostFix[2];
 			var newFilePath=conditionalExpandPath(filePath) & m.globalConfig().getFileDelim() & safeName;
 
-			fileMove(item.serverdirectory & m.globalConfig().getFileDelim() & item.serverfile, newFilePath );
+			fw.writeFromLocal(item.serverdirectory & m.globalConfig().getFileDelim() & item.serverfile, newFilePath);
 
 			var info = {};
 			info['filePath'] = newFilePath;
@@ -527,6 +593,8 @@ component
 
 		response.allowedExtensions = allowedExtensions;
 
+		var fw = getBean('fileWriter');
+
 		for(var i = 1; i lte ArrayLen(response.uploaded);i++ ) {
 			var item = response.uploaded[i];
 			var valid = false;
@@ -548,7 +616,7 @@ component
 						var newFilePath=conditionalExpandPath(filePath) & m.globalConfig().getFileDelim() & safeName;
 
 						var finalFilePath = conditionalExpandPath(filePath) & m.globalConfig().getFileDelim() & safeName;
-						fileMove(item.serverdirectory & m.globalConfig().getFileDelim() & item.serverfile, finalFilePath);
+						fw.writeFromLocal(item.serverdirectory & m.globalConfig().getFileDelim() & item.serverfile, finalFilePath);
 						ArrayAppend(response.saved,item);
 						info['filePath'] = finalFilePath;
 						m.event('fileBrowser',info).announceEvent('onAfterFileUpload');
@@ -649,8 +717,9 @@ component
 			throw(message="Illegal file path C",errorcode ="invalidParameters");
 		}
 
-		fileMove(origin,tempDir & arguments.filename);
-		fileMove(tempDir & arguments.filename,finalDestination);
+		var fw = getBean('fileWriter');
+		fw.moveFile(origin, tempDir & arguments.filename);
+		fw.moveFile(tempDir & arguments.filename, finalDestination);
 
 		var info = {};
 		info['filePath'] = finalDestination;
@@ -683,7 +752,8 @@ component
 		}
 
 		try {
-			var fileContent = fileRead(path);
+			var fw = getBean('fileWriter');
+			var fileContent = fw.readFile(path);
 		}
 		catch( any e ) {
 			response['error'] = e;
@@ -780,8 +850,9 @@ component
 		var info = {};
 
 		try {
-			if(directoryExists(path)) {
-				var list = directoryList(path,false,"query");
+			var fw = getBean('fileWriter');
+			if(fw.checkDirectoryExists(path)) {
+				var list = fw.getDirectoryList(directory=path, type="all");
 
 				if(list.recordcount) {
 					response.message = "Directory is not empty.";
@@ -789,16 +860,15 @@ component
 					return response;
 				}
 				else {
-					fileDelete(path);
-					info['filePath'] = path;
+					info = getItemInfo(path);
+					fw.deleteDir(directory=path, recurse=false);
 					m.event('fileBrowser',info).announceEvent('onAfterFileDelete');
 
 				}
 			}
-			else if(fileExists(path)) {
-				info = getFileInfo ( path );
-				info['filePath'] = path;
-				fileDelete(path);
+			else if(fw.checkFileExists(path)) {
+				info = getItemInfo(path);
+				fw.deleteFile(path);
 				m.event('fileBrowser',info).announceEvent('onAfterFileDelete');
 			}
 
@@ -850,24 +920,59 @@ component
 		var safeName = rereplaceNoCase(arguments.name,"[[:space:]]","_","ALL");
 		safeName = rereplaceNoCase(safeName,"[^[:alnum:]\_\-]","","ALL");
 
+		var dirPath = conditionalexpandpath(filePath);
+		var delim = application.configBean.getFileDelim();
 		var success = 0;
+		var fw = getBean('fileWriter');
+		var isFile = fw.checkFileExists(currentFilePath);
 
-		if(fileExists(currentFilePath)) {
-			var newFilePath = conditionalexpandpath(filePath) & application.configBean.getFileDelim() & safeName & ext;
+		if(isFile || fw.checkDirectoryExists(currentFilePath)) {
+			var newName = isFile ? safeName & ext : safeName;
+			var newFilePath = dirPath & delim & newName;
+
+			if(!compare(newFilePath, currentFilePath)) {
+				response.success = 1;
+				return response;
+			}
+
+			// A rename that only changes the case names the same entry on a case-insensitive
+			// filesystem, so only an entry spelled exactly like the new name is a collision.
+			var caseOnly = !compareNoCase(newFilePath, currentFilePath);
+			var nameTaken = false;
+			if(caseOnly) {
+				var rsDir = fw.getDirectoryList(directory=dirPath);
+				for(var row in rsDir) {
+					if(!compare(row.name, newName)) {
+						nameTaken = true;
+						break;
+					}
+				}
+			}
+			else {
+				nameTaken = fw.checkFileExists(newFilePath) || fw.checkDirectoryExists(newFilePath);
+			}
+
+			// The move would silently overwrite an existing file.
+			if(nameTaken) {
+				response.message = "A file or folder with that name already exists.";
+				return response;
+			}
 
 			try {
-				filemove(currentFilePath,newFilePath);
-				success = 1;
-			}
-			catch( any e ) {
-				return( e );
-			}
-		}
-		else if(directoryExists(currentFilePath)) {
-			var newFilePath = conditionalExpandPath(filePath) & application.configBean.getFileDelim() & safeName;
-
-			try {
-				directoryRename(currentFilePath,newFilePath);
+				// A case-only change goes through a temporary name: on a case-insensitive
+				// filesystem a direct move would copy the file onto itself and then delete it.
+				var tempPath = dirPath & delim & "." & newName & "-" & createUUID();
+				var steps = caseOnly
+					? [[currentFilePath, tempPath], [tempPath, newFilePath]]
+					: [[currentFilePath, newFilePath]];
+				for(var step in steps) {
+					if(isFile) {
+						fw.moveFile(step[1], step[2]);
+					}
+					else {
+						fw.renameDir(directory=step[1], newDirectory=step[2]);
+					}
+				}
 				success = 1;
 			}
 			catch( any e ) {
@@ -919,7 +1024,8 @@ component
 		}
 
 		try {
-			directorycreate(conditionalExpandPath(filePath) & application.configBean.getFileDelim() & cleanName);
+			var fw = getBean('fileWriter');
+			fw.createDir(directory=conditionalExpandPath(filePath) & application.configBean.getFileDelim() & cleanName);
 		}
 		catch( any e ) {
 			return( e );
@@ -974,9 +1080,10 @@ component
 		var expandedBaseFilePath = conditionalExpandPath(baseFilePath);
 		var filePath = baseFilePath  & m.globalConfig().getFileDelim() & rereplace(arguments.directory,"\.{1,}","\.","all");
 		var expandedFilePath = conditionalExpandPath(filePath);
+		var fw = getBean('fileWriter');
 
 		// directory does not exist
-		if(!directoryExists(conditionalExpandPath(filePath))) {
+		if(!fw.checkDirectoryExists(conditionalExpandPath(filePath))) {
 			response['dne'] = 1;
 			structDelete(cookie,'fbFolderTree');
 			filePath = baseFilePath;
@@ -1004,7 +1111,7 @@ component
 		var preAssetPath = getBaseResourcePath(siteid=arguments.siteid,resourcePath=arguments.resourcePath,complete=complete);
 		preAssetPath = preAssetPath & response['directory'];
 
-		var rsDirectory = directoryList(conditionalExpandPath(filePath),false,"query");
+		var rsDirectory = fw.getDirectoryList(directory=conditionalExpandPath(filePath), type="all");
 
 		response['startindex'] = 1 + response['itemsperpage'] * pageIndex - response['itemsperpage'];
 		response['endindex'] = response['startindex'] + response['itemsperpage'] - 1;
@@ -1048,12 +1155,15 @@ component
 		response['totalitems'] = rsFiles.recordCount;
 		response['pre'] = serializeJSON(rsPrefix);
 
+		var rowType = "";
 		for(var x = response['startindex'];x <= response['endindex'];x++) {
 
 
 			frow = {};
-			frow['isfile'] = rsFiles['type'][x] == 'File' ? 1 : 0;
-			frow['isfolder'] = rsFiles['type'][x] == 'Dir' ? 1 : 0;
+			// cfdirectory / engine queries may use "file"/"dir" (Lucee) or "File"/"Dir" (ACF); normalize for UI isfile / folder icons
+			rowType = trim(toString(rsFiles['type'][x]));
+			frow['isfile'] = (compareNoCase(rowType, 'file') eq 0) ? 1 : 0;
+			frow['isfolder'] = (compareNoCase(rowType, 'dir') eq 0 || compareNoCase(rowType, 'directory') eq 0) ? 1 : 0;
 			frow['fullname'] = rsFiles['name'][x];
 			frow['size'] = int(rsFiles['size'][x]/1000);
 			frow['name'] = rereplace(frow['fullname'],"\..*","");
@@ -1064,19 +1174,25 @@ component
 			frow['info'] = {};
 			if(frow['isfile']) {
 				frow['ext'] = rereplace(frow['fullname'],".[^\.]*\.","");
-				if( frow['isimage'] ) {
-				// Reading an image could fail
-				try {
-						var readImage = imageRead(conditionalExpandPath(filePath) & application.configBean.getFileDelim() & frow['fullname']);
-						var iinfo = imageInfo(readImage);
-						if( isStruct(iinfo)) {
-								frow['info']['height'] = iinfo.height;
-								frow['info']['width'] = iinfo.width;
-							}
-					} catch (any e) {
-						// Do nothing; reading image has failed, no width and height info is available
+			if( frow['isimage'] ) {
+			// Reading an image could fail
+			var localImagePath = "";
+			try {
+					localImagePath = fw.resolveToLocal(conditionalExpandPath(filePath) & application.configBean.getFileDelim() & frow['fullname']);
+					var readImage = imageRead(localImagePath);
+					var iinfo = imageInfo(readImage);
+					if( isStruct(iinfo)) {
+							frow['info']['height'] = iinfo.height;
+							frow['info']['width'] = iinfo.width;
+						}
+				} catch (any e) {
+					// Do nothing; reading image has failed, no width and height info is available
+				} finally {
+					if(len(localImagePath)) {
+						fw.releaseLocal(localImagePath);
 					}
 				}
+			}
 			}
 
 			frow['lastmodified'] = rsFiles['datelastmodified'][x];

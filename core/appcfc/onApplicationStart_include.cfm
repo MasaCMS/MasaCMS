@@ -350,6 +350,12 @@ if ( application.setupComplete ) {
 
 		variables.serviceFactory.declareBean("beanValidator", "mura.bean.beanValidator", true);
 
+		variables.serviceFactory.declareBean("localStorageService", "mura.fileStorage.localStorageService", true);
+		variables.serviceFactory.addAlias("fileStorageService", "localStorageService");
+		if (application.configBean.getFileStore() == "s3") {
+			writeLog(type="Warning", file="application", text="The fileStore setting is 's3', but S3 storage was removed from Masa CMS core. Files are stored on the local filesystem; install a cloud storage module to use S3.");
+		}
+
 		variables.serviceFactory.addAlias("scriptProtectionFilter","Portcullis");
 		variables.serviceFactory.addAlias("eventManager","pluginManager");
 		variables.serviceFactory.addAlias("permUtility","permission");

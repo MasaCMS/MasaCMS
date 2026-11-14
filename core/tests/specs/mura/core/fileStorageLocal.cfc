@@ -172,6 +172,77 @@ component extends="testbox.system.BaseSpec" {
 		return { contentID: newContentID, fileID: newFileID, owner: owner };
 	}
 
+	// Runs body() while recording every resolveToLocal() result and
+	// releaseLocal() argument on the active storage service. The singleton's
+	// two methods are wrapped for the duration (delegating to a fresh
+	// localStorageService) and restored afterwards: re-pointing the
+	// fileStorageService alias can't swap in a spy, because the factory caches
+	// the instance under the name it was first requested by.
+	function trackLocalPaths(required function body){
+		var svc = application.serviceFactory.getBean('fileStorageService');
+		var real = new mura.fileStorage.localStorageService().init();
+		var calls = { resolved: [], released: [] };
+		var originalResolve = svc.resolveToLocal;
+		var originalRelease = svc.releaseLocal;
+		svc.resolveToLocal = function(path){
+			var localPath = real.resolveToLocal(arguments.path);
+			arrayAppend(calls.resolved, localPath);
+			return localPath;
+		};
+		svc.releaseLocal = function(localPath){
+			arrayAppend(calls.released, arguments.localPath);
+			real.releaseLocal(arguments.localPath);
+		};
+		try {
+			arguments.body();
+		} finally {
+			svc.resolveToLocal = originalResolve;
+			svc.releaseLocal = originalRelease;
+		}
+		return calls;
+	}
+
+	// Runs body() while recording the keys passed to the storage service's
+	// listDirectory(), deleteObject(), fileExists() and writeFromLocal(), the
+	// calls the cache functions make. Wraps the singleton's methods for the
+	// duration, like trackLocalPaths() above.
+	function recordCacheStorageCalls(required function body){
+		var svc = application.serviceFactory.getBean('fileStorageService');
+		var real = new mura.fileStorage.localStorageService().init();
+		var calls = { listDirectory: [], deleteObject: [], fileExists: [], writeFromLocal: [] };
+		var originalListDirectory = svc.listDirectory;
+		var originalDeleteObject = svc.deleteObject;
+		var originalFileExists = svc.fileExists;
+		var originalWriteFromLocal = svc.writeFromLocal;
+		svc.listDirectory = function(path, filter="*", type="all"){
+			arrayAppend(calls.listDirectory, arguments.path);
+			return real.listDirectory(arguments.path, arguments.filter, arguments.type);
+		};
+		svc.deleteObject = function(key){
+			arrayAppend(calls.deleteObject, arguments.key);
+			real.deleteObject(arguments.key);
+		};
+		svc.fileExists = function(path){
+			arrayAppend(calls.fileExists, arguments.path);
+			return real.fileExists(arguments.path);
+		};
+		svc.writeFromLocal = function(localPath, remotePath){
+			arrayAppend(calls.writeFromLocal, arguments.remotePath);
+			real.writeFromLocal(arguments.localPath, arguments.remotePath);
+		};
+		try {
+			arguments.body();
+		} finally {
+			// Restored one by one: a for-in loop inside this finally block
+			// crashes Lucee's compiler ("Operand stack underflow").
+			svc.listDirectory = originalListDirectory;
+			svc.deleteObject = originalDeleteObject;
+			svc.fileExists = originalFileExists;
+			svc.writeFromLocal = originalWriteFromLocal;
+		}
+		return calls;
+	}
+
 	function run(){
 
 		describe("Local file storage - File content lifecycle", function(){
@@ -478,6 +549,99 @@ component extends="testbox.system.BaseSpec" {
 				expect(fileExists(realSmallPath)).toBeTrue();
 			});
 
+			it("should remove every cached variant of a file, including custom sizes, when purgeDeleted() removes it", function(){
+				// purgeDeleted() -> fileDAO.deleteCachedFile() must delete every
+				// {fileID}* file in the cache, not just the fixed default /
+				// _source / _small / _medium names: custom-size variants
+				// (cropAndScale(), ensureCachedImageSize()) are named
+				// {fileID}_{size}.{ext}.
+				var testFile = createTestFile("purge custom size test");
+				var cachedVariants = [
+					cacheFilePath(testFile.fileID, "", "png"),
+					cacheFilePath(testFile.fileID, "_source", "png"),
+					cacheFilePath(testFile.fileID, "_small", "png"),
+					cacheFilePath(testFile.fileID, "_medium", "png"),
+					cacheFilePath(testFile.fileID, "_200x100", "png")
+				];
+				fileCopy(variables.fixtureSourceImage, cachedVariants[5]);
+
+				// A live file's cache must survive the same purge.
+				var otherFile = createTestFile("purge custom size bystander");
+				var otherSmallPath = cacheFilePath(otherFile.fileID, "_small", "png");
+
+				for (var variantPath in cachedVariants) {
+					expect(fileExists(variantPath)).toBeTrue("Expected cached variant to exist before the purge: " & variantPath);
+				}
+
+				variables.fileManager.deleteVersion(fileID=testFile.fileID);
+				variables.fileManager.purgeDeleted(siteid=variables.siteid);
+
+				for (var variantPath in cachedVariants) {
+					expect(fileExists(variantPath)).toBeFalse("Expected cached variant to be removed by the purge: " & variantPath);
+				}
+				expect(fileExists(otherSmallPath)).toBeTrue();
+			});
+
+			it("should do its cache maintenance through the storage service", function(){
+				// The specs around this one check the results on disk, which
+				// they'd see either way with local storage. This one checks the
+				// cache is read and changed through the storage service, so a
+				// cloud backend's cache gets maintained too.
+				var testFile = createTestFile("cache maintenance routing test");
+				var keys = new mura.fileStorage.storageKey();
+				var cacheDir = keys.cacheDirKey(variables.siteid);
+
+				var orphanID = createUUID();
+				fileCopy(variables.fixtureSourceImage, cacheFilePath(orphanID, "", "png"));
+				var customSizeName = testFile.fileID & "_100_H.png";
+				var customSizePath = application.configBean.getFileDir() & "/" & variables.siteid & "/cache/file/" & customSizeName;
+
+				var calls = recordCacheStorageCalls(function(){
+					variables.fileManager.cleanFileCache(siteID=variables.siteid);
+					fileCopy(variables.fixtureSourceImage, customSizePath);
+					variables.fileManager.deleteCustomImageCache(siteID=variables.siteid, threshold=0);
+					variables.fileManager.rebuildImageCache(siteID=variables.siteid, size="small");
+				});
+
+				// cleanFileCache() and deleteCustomImageCache() list the cache...
+				expect(arrayFind(calls.listDirectory, cacheDir)).toBeGT(0);
+				// ...and delete through the service: the orphan, then the custom size.
+				expect(arrayFind(calls.deleteObject, keys.cacheFileKey(variables.siteid, orphanID, "png"))).toBeGT(0);
+				expect(arrayFind(calls.deleteObject, cacheDir & "/" & customSizeName)).toBeGT(0);
+				// rebuildImageCache() looks for each image's source in storage.
+				expect(arrayFind(calls.fileExists, keys.cacheFileKey(variables.siteid, testFile.fileID, "png", "source"))).toBeGT(0);
+
+				expect(fileExists(cacheFilePath(orphanID, "", "png"))).toBeFalse();
+				expect(fileExists(customSizePath)).toBeFalse();
+			});
+
+			it("should generate a custom image size for a direct URL through the storage service", function(){
+				var testFile = createTestFile("custom size URL test");
+				var keys = new mura.fileStorage.storageKey();
+				var variantKey = keys.cacheFileKey(variables.siteid, testFile.fileID, "png", "W30_H20");
+				var variantPath = cacheFilePath(testFile.fileID, "_W30_H20", "png");
+				var hrefArgs = { siteID: variables.siteid, fileID: testFile.fileID, fileExt: "png", width: 30, height: 20, direct: true };
+
+				var firstCalls = recordCacheStorageCalls(function(){
+					variables.fileManager.createHREFForImage(argumentCollection=hrefArgs);
+				});
+				var imageURL = variables.fileManager.createHREFForImage(argumentCollection=hrefArgs);
+				var secondCalls = recordCacheStorageCalls(function(){
+					variables.fileManager.createHREFForImage(argumentCollection=hrefArgs);
+				});
+
+				expect(imageURL).toInclude("/cache/file/" & testFile.fileID & "_W30_H20.png");
+				// Generated through storage the first time...
+				expect(arrayFind(firstCalls.writeFromLocal, variantKey)).toBeGT(0);
+				expect(fileExists(variantPath)).toBeTrue();
+				var info = imageInfo(imageRead(variantPath));
+				expect(info.width).toBe(30);
+				expect(info.height).toBe(20);
+				// ...and found in storage, not regenerated, afterwards.
+				expect(arrayFind(secondCalls.fileExists, variantKey)).toBeGT(0);
+				expect(secondCalls.writeFromLocal).toBeEmpty();
+			});
+
 			it("should regenerate missing small/medium cache files via rebuildImageCache()", function(){
 				var testFile = createTestFile("rebuildImageCache test");
 				var smallPath = cacheFilePath(testFile.fileID, "_small", "png");
@@ -491,6 +655,516 @@ component extends="testbox.system.BaseSpec" {
 
 				expect(fileExists(smallPath)).toBeTrue();
 				expect(fileExists(mediumPath)).toBeTrue();
+			});
+
+		});
+
+		describe("Local file storage - storage keys (mura.fileStorage.storageKey)", function(){
+
+			var keys = new mura.fileStorage.storageKey();
+			var assetRoot = replace(application.configBean.getAssetDir(), "\", "/", "all");
+			var fileRoot = replace(application.configBean.getFileDir(), "\", "/", "all");
+
+			it("should build a User_Assets key from the File Pool directory", function(){
+				var site = application.settingsManager.getSite("default");
+				var path = site.getAssetDir() & "/assets/sub/photo.jpg";
+				expect(keys.fromAssetPath(path)).toBe(site.getFilePoolID() & "/assets/sub/photo.jpg");
+				expect(keys.fromAssetPath(replace(path, "/", "\", "all"))).toBe(site.getFilePoolID() & "/assets/sub/photo.jpg");
+			});
+
+			it("should give every site sharing a File Pool the same key", function(){
+				var pooled = application.settingsManager.getSite("test-modules");
+				var owner = application.settingsManager.getSite("default");
+				if (pooled.getFilePoolID() != owner.getFilePoolID()) {
+					return;
+				}
+				expect(keys.fromAssetPath(pooled.getAssetDir() & "/assets/photo.jpg")).toBe("default/assets/photo.jpg");
+			});
+
+			it("should build a key for the User_Assets directory itself", function(){
+				expect(keys.fromAssetPath(assetRoot & "/default/assets")).toBe("default/assets");
+			});
+
+			it("should return no key for paths outside a site's User_Assets", function(){
+				expect(keys.fromAssetPath(assetRoot & "/default/cache/file/x.png")).toBe("");
+				expect(keys.fromAssetPath(assetRoot & "/default/assets-old/x.png")).toBe("");
+				expect(keys.fromAssetPath(assetRoot & "/no-such-pool-" & variables.runTag & "/assets/x.png")).toBe("");
+				expect(keys.fromAssetPath(application.configBean.getTempDir() & "/x.png")).toBe("");
+			});
+
+			it("should resolve 'assets' keys under the asset dir and other keys under the file dir", function(){
+				expect(keys.toLocalPath("default/assets/photo.jpg")).toBe(assetRoot & "/default/assets/photo.jpg");
+				expect(keys.toLocalPath("/default/cache/file/x.png")).toBe(fileRoot & "/default/cache/file/x.png");
+				expect(keys.toLocalPath("default\cache\file\x.png")).toBe(fileRoot & "/default/cache/file/x.png");
+			});
+
+			it("should build file cache keys, with and without a variant", function(){
+				expect(keys.cacheDirKey("default")).toBe("default/cache/file");
+				expect(keys.cacheFileKey("default", "ABC", "png")).toBe("default/cache/file/ABC.png");
+				expect(keys.cacheFileKey("default", "ABC", "png", "small")).toBe("default/cache/file/ABC_small.png");
+				expect(keys.cacheFileKey("default", "ABC", "jpg", "200x100")).toBe("default/cache/file/ABC_200x100.jpg");
+				expect(keys.toLocalPath(keys.cacheFileKey("default", "ABC", "png"))).toBe(fileRoot & "/default/cache/file/ABC.png");
+			});
+
+			it("should keep fileManager.getCacheImageKey()'s size mapping", function(){
+				var fm = application.serviceFactory.getBean('fileManager');
+				expect(fm.getCacheImageKey("default", "ABC", "png", "large")).toBe("default/cache/file/ABC.png");
+				expect(fm.getCacheImageKey("default", "ABC", "png", "Source")).toBe("default/cache/file/ABC_source.png");
+				expect(fm.getCacheImageKey("default", "ABC", "png", "medium")).toBe("default/cache/file/ABC_medium.png");
+			});
+
+			it("should round-trip a User_Assets path through its key", function(){
+				var path = application.settingsManager.getSite("default").getAssetDir() & "/assets/a/b.txt";
+				expect(keys.toLocalPath(keys.fromAssetPath(path))).toBe(replace(path, "\", "/", "all"));
+			});
+
+			it("should refuse keys that could resolve outside their root", function(){
+				var badKeys = [
+					"default/assets/../../x.txt",
+					"default/assets/..\..\x.txt",
+					"default/assets/....//x.txt",
+					"default/assets/..././x.txt",
+					"default/assets/./x.txt",
+					"default/assets/.. /x.txt",
+					"default/assets/..",
+					"../default/assets/x.txt",
+					"default/assets/C:/x.txt",
+					"default/assets/x.txt" & chr(9) & ".jpg"
+				];
+				var accepted = [];
+				for (var badKey in badKeys) {
+					try {
+						keys.toLocalPath(badKey);
+						arrayAppend(accepted, badKey);
+					} catch (any e) {
+						if (e.type != "mura.fileStorage.invalidKey") {
+							rethrow;
+						}
+					}
+				}
+				expect(serializeJSON(accepted)).toBe("[]");
+				// Dots inside a name are fine.
+				expect(keys.toLocalPath("default/assets/a..b/.htaccess")).toBe(assetRoot & "/default/assets/a..b/.htaccess");
+			});
+
+			it("should recognise a File Pool added to a site once the sites are reloaded", function(){
+				var site = application.settingsManager.getSite("default");
+				var originalPoolID = site.getFilePoolID();
+				var poolID = "fstest-poolids-" & variables.runTag;
+				var path = assetRoot & "/" & poolID & "/assets/x.png";
+				expect(application.settingsManager.getFilePoolIDs()).toHaveKey(originalPoolID);
+				try {
+					site.setFilePoolID(poolID);
+					// The cached set still has the old pool until setSites() runs.
+					expect(keys.fromAssetPath(path)).toBe("");
+					application.settingsManager.setSites(missingOnly=true);
+					expect(keys.fromAssetPath(path)).toBe(poolID & "/assets/x.png");
+				} finally {
+					site.setFilePoolID(originalPoolID);
+					application.settingsManager.setSites(missingOnly=true);
+				}
+				expect(keys.fromAssetPath(path)).toBe("");
+			});
+
+		});
+
+		describe("Local file storage - Content-Disposition header", function(){
+
+			var utility = application.serviceFactory.getBean('utility');
+
+			it("should only allow inline or attachment", function(){
+				expect(utility.contentDisposition("attachment", "a.txt")).toBe('attachment; filename="a.txt"');
+				expect(utility.contentDisposition("inline", "a.txt")).toBe('inline; filename="a.txt"');
+				expect(utility.contentDisposition("inline" & chr(13) & chr(10) & "X-Evil: 1", "a.txt")).toBe('inline; filename="a.txt"');
+			});
+
+			it("should escape quotes and backslashes and drop control characters", function(){
+				expect(utility.contentDisposition("inline", 'a"b\c.txt')).toBe('inline; filename="a\"b\\c.txt"');
+				expect(utility.contentDisposition("inline", "a" & chr(13) & chr(10) & "b.txt")).toBe('inline; filename="ab.txt"');
+			});
+
+			it("should add filename* for non-ASCII names", function(){
+				expect(utility.contentDisposition("inline", "caf" & chr(233) & " 1.txt"))
+					.toBe("inline; filename=""caf" & chr(233) & " 1.txt""; filename*=UTF-8''caf%C3%A9%201.txt");
+			});
+
+		});
+
+		describe("Local file storage - storage service local-file handling", function(){
+
+			it("should replace an existing object via writeFromLocal() and consume the local file", function(){
+				// rotate()/flip()/cropAndScale() rely on this instead of
+				// deleting the old object first, so a failed write can't
+				// lose it.
+				var svc = application.serviceFactory.getBean('fileStorageService');
+				var key = variables.siteid & "/cache/file/fstest-replace-" & variables.runTag & ".txt";
+				var storedPath = application.configBean.getFileDir() & "/" & key;
+				var localFile = application.configBean.getTempDir() & "/fstest-replace-" & variables.runTag & ".txt";
+				arrayAppend(variables.extraTempFiles, storedPath);
+				arrayAppend(variables.extraTempFiles, localFile);
+				// Written as binary: Adobe CF's fileWrite() appends a newline to string data.
+				fileWrite(storedPath, charsetDecode("old content", "utf-8"));
+				fileWrite(localFile, charsetDecode("new content", "utf-8"));
+
+				svc.writeFromLocal(localFile, key);
+
+				expect(fileRead(storedPath)).toBe("new content");
+				expect(fileExists(localFile)).toBeFalse();
+			});
+
+			it("should hand an open file to the storage service as a file when fileWriter.writeFile() writes to User_Assets", function(){
+				// A storage service only takes content or a local file, not an open file object.
+				var fw = application.serviceFactory.getBean('fileWriter');
+				var svc = application.serviceFactory.getBean('fileStorageService');
+				var real = new mura.fileStorage.localStorageService().init();
+				var poolID = application.settingsManager.getSite(variables.siteid).getFilePoolID();
+				var assetPath = application.settingsManager.getSite(variables.siteid).getAssetDir() & "/assets/fstest-fileobject-" & variables.runTag & ".txt";
+				var sourcePath = application.configBean.getTempDir() & "/fstest-fileobject-" & variables.runTag & ".txt";
+				var content = "caf" & chr(233) & " content";
+				arrayAppend(variables.extraTempFiles, assetPath);
+				arrayAppend(variables.extraTempFiles, sourcePath);
+				fileWrite(sourcePath, charsetDecode(content, "utf-8"));
+
+				var calls = { writeFile: [], writeFromLocal: [] };
+				var originalWriteFile = svc.writeFile;
+				var originalWriteFromLocal = svc.writeFromLocal;
+				svc.writeFile = function(path, content){
+					arrayAppend(calls.writeFile, arguments.path);
+					real.writeFile(arguments.path, arguments.content);
+				};
+				svc.writeFromLocal = function(localPath, remotePath){
+					arrayAppend(calls.writeFromLocal, arguments.remotePath);
+					real.writeFromLocal(arguments.localPath, arguments.remotePath);
+				};
+				var source = fileOpen(sourcePath, "read", "utf-8");
+				try {
+					fw.writeFile(file=assetPath, output=source, charset="utf-8");
+				} finally {
+					svc.writeFile = originalWriteFile;
+					svc.writeFromLocal = originalWriteFromLocal;
+				}
+
+				expect(calls.writeFile).toBeEmpty();
+				expect(calls.writeFromLocal).toBe([poolID & "/assets/" & getFileFromPath(assetPath)]);
+				expect(fileRead(assetPath, "utf-8")).toBe(content);
+			});
+
+			it("should store string content exactly as given via uploadBinary()", function(){
+				var svc = application.serviceFactory.getBean('fileStorageService');
+				var key = variables.siteid & "/cache/file/fstest-uploadstring-" & variables.runTag & ".txt";
+				arrayAppend(variables.extraTempFiles, application.configBean.getFileDir() & "/" & key);
+
+				svc.uploadBinary("content", "text/plain", key);
+
+				expect(fileRead(application.configBean.getFileDir() & "/" & key)).toBe("content");
+			});
+
+			it("should create the destination directory in writeFromLocal()", function(){
+				var svc = application.serviceFactory.getBean('fileStorageService');
+				var assetDir = application.settingsManager.getSite(variables.siteid).getAssetDir() & "/assets";
+				var poolID = application.settingsManager.getSite(variables.siteid).getFilePoolID();
+				var dirName = "fstest-newdir-" & variables.runTag;
+				var localFile = application.configBean.getTempDir() & "/fstest-newdir-" & variables.runTag & ".txt";
+				arrayAppend(variables.extraTempFiles, localFile);
+				fileWrite(localFile, charsetDecode("content", "utf-8"));
+				try {
+					svc.writeFromLocal(localFile, poolID & "/assets/" & dirName & "/sub/file.txt");
+
+					expect(fileRead(assetDir & "/" & dirName & "/sub/file.txt")).toBe("content");
+				} finally {
+					if (directoryExists(assetDir & "/" & dirName)) {
+						directoryDelete(assetDir & "/" & dirName, true);
+					}
+				}
+			});
+
+			it("should rename a directory via renameFile()", function(){
+				var svc = application.serviceFactory.getBean('fileStorageService');
+				var assetDir = application.settingsManager.getSite(variables.siteid).getAssetDir() & "/assets";
+				var poolID = application.settingsManager.getSite(variables.siteid).getFilePoolID();
+				var fromName = "fstest-renamedir-" & variables.runTag;
+				var toName = fromName & "-renamed";
+				directoryCreate(assetDir & "/" & fromName);
+				fileWrite(assetDir & "/" & fromName & "/marker.txt", charsetDecode("marker", "utf-8"));
+				try {
+					svc.renameFile(poolID & "/assets/" & fromName, poolID & "/assets/" & toName);
+
+					expect(directoryExists(assetDir & "/" & fromName)).toBeFalse();
+					expect(fileRead(assetDir & "/" & toName & "/marker.txt")).toBe("marker");
+				} finally {
+					// No for-in loop: one inside a finally block crashes Lucee's compiler.
+					if (directoryExists(assetDir & "/" & fromName)) {
+						directoryDelete(assetDir & "/" & fromName, true);
+					}
+					if (directoryExists(assetDir & "/" & toName)) {
+						directoryDelete(assetDir & "/" & toName, true);
+					}
+				}
+			});
+
+			it("should serve a rendered file with its own name, type and date, not the cache object's", function(){
+				var testFile = createTestFile("fstest render metadata");
+				var rsMeta = variables.fileManager.readMeta(testFile.fileID);
+				// Record the arguments instead of streaming, which would end the request.
+				var svc = application.serviceFactory.getBean('fileStorageService');
+				var originalStream = svc.streamToResponse;
+				var calls = [];
+				svc.streamToResponse = function(){
+					arrayAppend(calls, duplicate(arguments));
+					return true;
+				};
+				try {
+					variables.fileManager.renderFile(fileID=testFile.fileID, method="attachment");
+					variables.fileManager.renderSmall(fileID=testFile.fileID, method="inline");
+					variables.fileManager.renderMedium(fileID=testFile.fileID, method="inline");
+				} finally {
+					svc.streamToResponse = originalStream;
+				}
+
+				expect(calls).toHaveLength(3);
+				for (var call in calls) {
+					expect(call.filename).toBe(rsMeta.filename);
+					expect(call.mimeType).toBe(rsMeta.contentType & "/" & rsMeta.contentSubType);
+					expect(dateCompare(call.lastModified, rsMeta.created)).toBe(0);
+				}
+				expect(calls[1].method).toBe("attachment");
+			});
+
+			it("should name cache files with the lowercase size, whatever the caller's case", function(){
+				// getURLForImage() links to the lowercase name, so a crop saved under
+				// another case would never be served on a case-sensitive filesystem.
+				var testFile = createTestFile("fstest size case");
+				var keys = new mura.fileStorage.storageKey();
+				var mediumKey = keys.cacheFileKey(variables.siteid, testFile.fileID, "png", "medium");
+				var adHocKey = keys.cacheFileKey(variables.siteid, testFile.fileID, "png", "h20-w10");
+
+				var calls = recordCacheStorageCalls(function(){
+					variables.fileManager.cropAndScale(fileID=testFile.fileID, size="Medium", siteid=variables.siteid);
+					variables.fileManager.cropAndScale(fileID=testFile.fileID, size="H20-W10", siteid=variables.siteid);
+					variables.fileManager.ensureCachedImageSize(fileID=testFile.fileID, size="H30-W15", siteID=variables.siteid, fileExt="png");
+				});
+				// toBe() compares strings case-insensitively.
+				expect(arrayToList(calls.writeFromLocal)).toBeWithCase(arrayToList([
+					mediumKey,
+					adHocKey,
+					keys.cacheFileKey(variables.siteid, testFile.fileID, "png", "h30-w15")
+				]));
+
+				// Record the key instead of streaming, which would end the request.
+				var svc = application.serviceFactory.getBean('fileStorageService');
+				var originalStream = svc.streamToResponse;
+				var streamed = [];
+				svc.streamToResponse = function(){
+					arrayAppend(streamed, arguments.path);
+					return true;
+				};
+				try {
+					variables.fileManager.renderFile(fileID=testFile.fileID, size="Medium");
+				} finally {
+					svc.streamToResponse = originalStream;
+				}
+				expect(arrayToList(streamed)).toBeWithCase(mediumKey);
+			});
+
+			it("should answer a render request with an invalid size with a 404", function(){
+				var testFile = createTestFile("fstest render size");
+				var contentServer = application.serviceFactory.getBean('contentServer');
+				var originalRender404 = contentServer.render404;
+				var svc = application.serviceFactory.getBean('fileStorageService');
+				var originalStream = svc.streamToResponse;
+				var notFound = 0;
+				// The mocks return, so renderFile() carries on after render404().
+				contentServer.render404 = function(){
+					notFound++;
+				};
+				svc.streamToResponse = function(){
+					return true;
+				};
+				try {
+					for (var size in ["a:b", "../x", "a b", "a/b", "a" & chr(10)]) {
+						variables.fileManager.renderFile(fileID=testFile.fileID, size=size);
+					}
+					expect(notFound).toBe(5);
+					for (var size in ["small", "hero-image", "H100-W200", "W200_H100"]) {
+						variables.fileManager.renderFile(fileID=testFile.fileID, size=size);
+					}
+					expect(notFound).toBe(5);
+				} finally {
+					contentServer.render404 = originalRender404;
+					svc.streamToResponse = originalStream;
+				}
+			});
+
+			it("should hand streamToResponse() metadata to fileManager.streamFile(), defaulting to the object's own", function(){
+				var svc = application.serviceFactory.getBean('fileStorageService');
+				var key = variables.siteid & "/cache/file/fstest-stream-" & variables.runTag & ".txt";
+				var storedPath = application.configBean.getFileDir() & "/" & key;
+				arrayAppend(variables.extraTempFiles, storedPath);
+				fileWrite(storedPath, charsetDecode("content", "utf-8"));
+				// streamFile() ends the request, so record its arguments instead.
+				var originalStreamFile = variables.fileManager.streamFile;
+				var calls = [];
+				variables.fileManager.streamFile = function(){
+					arrayAppend(calls, duplicate(arguments));
+				};
+				var created = createDateTime(2020, 1, 2, 3, 4, 5);
+				try {
+					expect(svc.streamToResponse(path=key, method="attachment", filename="report.pdf",
+						mimeType="application/pdf", lastModified=created)).toBeTrue();
+					expect(svc.streamToResponse(path=key)).toBeTrue();
+					expect(svc.streamToResponse(path=key & ".missing")).toBeFalse();
+				} finally {
+					variables.fileManager.streamFile = originalStreamFile;
+				}
+
+				expect(calls).toHaveLength(2);
+				expect(calls[1].filename).toBe("report.pdf");
+				expect(calls[1].mimetype).toBe("application/pdf");
+				expect(calls[1].method).toBe("attachment");
+				expect(dateCompare(calls[1].lastModified, created)).toBe(0);
+				expect(calls[2].filename).toBe(getFileFromPath(storedPath));
+				expect(calls[2].mimetype).toBe(fileGetMimeType(storedPath));
+				expect(calls[2].method).toBe("inline");
+				expect(dateCompare(calls[2].lastModified, getFileInfo(storedPath).lastModified)).toBe(0);
+			});
+
+			it("should apply addNewLine when fileWriter.writeFile() writes to User_Assets", function(){
+				// writeFile() routes User_Assets paths to the storage service,
+				// which writes content as given, so fileWriter appends the
+				// newline itself, matching cffile action="write" addnewline.
+				var fw = application.serviceFactory.getBean('fileWriter');
+				var assetDir = application.settingsManager.getSite(variables.siteid).getAssetDir() & "/assets";
+				var withNewLine = assetDir & "/fstest-newline-" & variables.runTag & ".txt";
+				var withoutNewLine = assetDir & "/fstest-nonewline-" & variables.runTag & ".txt";
+				arrayAppend(variables.extraTempFiles, withNewLine);
+				arrayAppend(variables.extraTempFiles, withoutNewLine);
+				var newLine = findNoCase("Windows", server.os.name) ? chr(13) & chr(10) : chr(10);
+
+				fw.writeFile(file=withNewLine, output="content");
+				fw.writeFile(file=withoutNewLine, output="content", addNewLine=false);
+
+				expect(fileRead(withNewLine)).toBe("content" & newLine);
+				expect(fileRead(withoutNewLine)).toBe("content");
+			});
+
+			it("should proxy a pooled site's asset requests to the File Pool", function(){
+				// Not every test environment has a pooled site, so give
+				// "default" a different File Pool ID for the duration.
+				var site = application.settingsManager.getSite(variables.siteid);
+				var poolID = "fstest-pool-" & variables.runTag;
+				var originalPoolID = site.getFilePoolID();
+				// Record the key instead of streaming, which would end the request.
+				var svc = application.serviceFactory.getBean('fileStorageService');
+				var originalStream = svc.streamToResponse;
+				var keys = [];
+				site.setFilePoolID(poolID);
+				svc.streamToResponse = function(path, method){
+					arrayAppend(keys, arguments.path);
+					return true;
+				};
+				try {
+					variables.fileManager.proxyUserAsset(siteid=variables.siteid, subType="assets", relativePath="/photo.jpg");
+					variables.fileManager.proxyUserAsset(siteid=variables.siteid, subType="cache", relativePath="/file/ABC.png");
+				} finally {
+					site.setFilePoolID(originalPoolID);
+					svc.streamToResponse = originalStream;
+				}
+				expect(keys).toBe([
+					poolID & "/assets/photo.jpg",
+					poolID & "/cache/file/ABC.png"
+				]);
+			});
+
+			it("should proxy a wrong-case subtype to the lowercase directory", function(){
+				var svc = application.serviceFactory.getBean('fileStorageService');
+				var originalStream = svc.streamToResponse;
+				var keys = [];
+				svc.streamToResponse = function(path, method){
+					arrayAppend(keys, arguments.path);
+					return true;
+				};
+				try {
+					variables.fileManager.proxyUserAsset(siteid=variables.siteid, subType="Assets", relativePath="/photo.jpg");
+				} finally {
+					svc.streamToResponse = originalStream;
+				}
+				expect(keys).toBe([application.settingsManager.getSite(variables.siteid).getFilePoolID() & "/assets/photo.jpg"]);
+			});
+
+			it("should answer a traversal attempt through the asset proxy with a 404", function(){
+				// The real streamToResponse() runs, so a resolved path would be streamed.
+				var contentServer = application.serviceFactory.getBean('contentServer');
+				var originalRender404 = contentServer.render404;
+				var notFound = 0;
+				contentServer.render404 = function(){
+					notFound++;
+				};
+				try {
+					variables.fileManager.proxyUserAsset(siteid=variables.siteid, subType="assets", relativePath="/../../config/settings.ini.cfm");
+					variables.fileManager.proxyUserAsset(siteid=variables.siteid, subType="cache", relativePath="/....//....//x.txt");
+				} finally {
+					contentServer.render404 = originalRender404;
+				}
+				expect(notFound).toBe(2);
+			});
+
+			it("should rename a file into and out of User_Assets as a move", function(){
+				var fw = application.serviceFactory.getBean('fileWriter');
+				var assetFile = application.settingsManager.getSite(variables.siteid).getAssetDir() & "/assets/fstest-rename-" & variables.runTag & ".txt";
+				var localFile = application.configBean.getTempDir() & "/fstest-rename-" & variables.runTag & ".txt";
+				arrayAppend(variables.extraTempFiles, assetFile);
+				arrayAppend(variables.extraTempFiles, localFile);
+				// Written as binary: Adobe CF's fileWrite() appends a newline to string data.
+				fileWrite(localFile, charsetDecode("rename test", "utf-8"));
+
+				fw.renameFile(source=localFile, destination=assetFile);
+				expect(fileExists(localFile)).toBeFalse();
+				expect(fileRead(assetFile)).toBe("rename test");
+
+				fw.renameFile(source=assetFile, destination=localFile);
+				expect(fileExists(assetFile)).toBeFalse();
+				expect(fileRead(localFile)).toBe("rename test");
+			});
+
+			it("should refuse to rename a directory into or out of User_Assets", function(){
+				var fw = application.serviceFactory.getBean('fileWriter');
+				var assetDir = application.settingsManager.getSite(variables.siteid).getAssetDir() & "/assets/fstest-renamedir-" & variables.runTag;
+				var localDir = application.configBean.getTempDir() & "/fstest-renamedir-" & variables.runTag;
+				directoryCreate(assetDir);
+				directoryCreate(localDir);
+				try {
+					expect(function(){ fw.renameDir(directory=assetDir, newDirectory=localDir & "-out"); })
+						.toThrow("mura.fileWriter.crossBoundaryRename");
+					expect(function(){ fw.renameDir(directory=localDir, newDirectory=assetDir & "-in"); })
+						.toThrow("mura.fileWriter.crossBoundaryRename");
+					expect(directoryExists(assetDir)).toBeTrue();
+					expect(directoryExists(localDir)).toBeTrue();
+				} finally {
+					directoryDelete(assetDir, true);
+					directoryDelete(localDir, true);
+				}
+			});
+
+			it("should release every path the fileManager image operations resolve", function(){
+				var testFile = createTestFile("releaseLocal test");
+				var mediumPath = cacheFilePath(testFile.fileID, "_medium", "png");
+
+				var calls = trackLocalPaths(function(){
+					variables.fileManager.rotate(fileID=testFile.fileID);
+					variables.fileManager.flip(fileID=testFile.fileID);
+					variables.fileManager.cropAndScale(fileID=testFile.fileID, size="small", siteid=variables.siteid);
+					variables.fileManager.readSourceImage(fileID=testFile.fileID);
+					// ensureCachedImageSize() only regenerates a missing size.
+					fileDelete(mediumPath);
+					variables.fileManager.ensureCachedImageSize(fileID=testFile.fileID, size="medium", siteID=variables.siteid, fileExt="png");
+					variables.fileManager.ensureCustomCacheImage(siteID=variables.siteid, fileID=testFile.fileID, fileExt="png", width=25, height=25);
+				});
+
+				expect(fileExists(mediumPath)).toBeTrue();
+				expect(arrayLen(calls.resolved)).toBeGT(0);
+				arraySort(calls.resolved, "textnocase");
+				arraySort(calls.released, "textnocase");
+				expect(calls.released).toBe(calls.resolved);
 			});
 
 		});
@@ -550,34 +1224,30 @@ component extends="testbox.system.BaseSpec" {
 				variables.fileManager.deleteAll(contentID=plainContentID);
 			});
 
-			it("should write a .jpg small thumbnail for a flv-extension file", function(){
+			it("should write .jpg small and medium thumbnails for a flv-extension file", function(){
 				// A real .flv upload never reaches this branch with
 				// anything to write: Process()'s image-manipulation step
 				// only fires for jpg/jpeg/png/gif, so fileObjSmall/
 				// fileObjMedium always come back empty for a real flv file
 				// going through emulateUpload()+Process(). This calls
-				// create() directly with a real, pre-made "poster frame"
-				// image instead, to exercise the flv branch's own logic in
-				// isolation - it writes whatever small image it's given as
-				// "_small.jpg" regardless of the main file's own extension.
+				// create() directly with real, pre-made "poster frame"
+				// images instead, to exercise the flv branch's own logic in
+				// isolation - it writes whatever small/medium images it's
+				// given as "_small.jpg"/"_medium.jpg" regardless of the main
+				// file's own extension.
 				//
-				// fileObjMedium is deliberately NOT provided: this branch's
-				// own medium-thumbnail line (fileDAO.cfc, the non-binary/
-				// fileDir "flv" case) calls fileWriter.writeFile() with
-				// moveFile()'s argument names (destination=/source=) rather
-				// than writeFile()'s actual ones (file=/output=) - confirmed
-				// live, it throws "[.../core/mura] is not a file" the
-				// moment fileObjMedium is non-empty. A real pre-existing
-				// bug, near-certainly never hit in production (nothing
-				// upstream ever populates a non-empty fileObjMedium for a
-				// real flv upload through this pipeline either) - worth
-				// fixing, but not something to paper over by making this
-				// test avoid it silently.
+				// On release/8.0 the medium-thumbnail line called
+				// fileWriter.writeFile() with moveFile()'s argument names
+				// (destination=/source=) and threw "[.../core/mura] is not a
+				// file" for any non-empty fileObjMedium.
 				var posterSmall = application.configBean.getTempDir() & "/fstest-flvsmall-" & variables.runTag & ".png";
+				var posterMedium = application.configBean.getTempDir() & "/fstest-flvmedium-" & variables.runTag & ".png";
 				var mainFlv = application.configBean.getTempDir() & "/fstest-video-" & variables.runTag & ".flv";
 				fileCopy(variables.fixtureSourceImage, posterSmall);
+				fileCopy(variables.fixtureSourceImage, posterMedium);
 				fileCopy(variables.fixtureSourceFlv, mainFlv);
 				arrayAppend(variables.extraTempFiles, posterSmall);
+				arrayAppend(variables.extraTempFiles, posterMedium);
 				arrayAppend(variables.extraTempFiles, mainFlv);
 
 				var contentBean = variables.$.getBean('content');
@@ -600,21 +1270,18 @@ component extends="testbox.system.BaseSpec" {
 					moduleID       = "00000000000000000000000000000000000",
 					fileExt        = "flv",
 					fileObjSmall   = posterSmall,
-					// Required by create()'s own signature (no default) -
-					// left empty on purpose so its `len(fileObjMedium) AND
-					// FileExists(...)` guard evaluates false and the known-
-					// broken medium-thumbnail line never executes.
-					fileObjMedium  = ""
+					fileObjMedium  = posterMedium
 				);
 
 				contentBean.setValue('fileid', flvFileID);
 				contentBean.save();
 
-				// create() moves fileObj/fileObjSmall into place rather than
-				// copying them, so the temp paths registered above are
-				// already gone at this point - no double-cleanup needed.
+				// create() moves fileObj/fileObjSmall/fileObjMedium into place
+				// rather than copying them, so the temp paths registered above
+				// are already gone at this point - no double-cleanup needed.
 				expect(fileExists(cacheFilePath(flvFileID, "", "flv"))).toBeTrue();
 				expect(fileExists(cacheFilePath(flvFileID, "_small", "jpg"))).toBeTrue();
+				expect(fileExists(cacheFilePath(flvFileID, "_medium", "jpg"))).toBeTrue();
 
 				variables.fileManager.deleteAll(contentID=flvContentID);
 			});
