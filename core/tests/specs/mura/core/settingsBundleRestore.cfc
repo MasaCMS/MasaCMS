@@ -27,12 +27,12 @@ component extends="testbox.system.BaseSpec" {
 
 		var innerDir = variables.tmp & createUUID() & "/";
 		directoryCreate(innerDir);
-		fileWrite(innerDir & "readme.txt", "x");
+		fileWrite(innerDir & "readme.txt", charsetDecode("x", "utf-8"));
 		cfzip(action="zip", file=srcDir & arguments.markerEntry, source=innerDir);
 
 		var wddx = "";
 		cfwddx(action="cfml2wddx", input={ title: "before|after" }, output="wddx");
-		fileWrite(srcDir & "wddx_test.xml", replace(wddx, "|", chr(0)), "utf-8");
+		fileWrite(srcDir & "wddx_test.xml", charsetDecode(replace(wddx, "|", chr(0)), "utf-8"));
 
 		var zipPath = variables.tmp & createUUID() & ".zip";
 		cfzip(action="zip", file=zipPath, source=srcDir);

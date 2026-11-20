@@ -67,7 +67,7 @@ component extends="testbox.system.BaseSpec"{
 			directoryDelete(physicalDir, true);
 		}
 		directoryCreate(physicalDir);
-		fileWrite(physicalDir & '/' & fixtureFile, 'filebrowser unit test probe file - safe to delete');
+		fileWrite(physicalDir & '/' & fixtureFile, charsetDecode('filebrowser unit test probe file - safe to delete', 'utf-8'));
 
 		variables.poolIsShared = ( settingsManager.getSite(pooledSiteID).getFilePoolID() eq ownerSiteID );
 	}
@@ -327,7 +327,7 @@ component extends="testbox.system.BaseSpec"{
 		describe("filebrowser filename traversal - filename must not escape User_Assets", function(){
 
 			beforeEach(function(){
-				fileWrite(canaryPath, canaryContent);
+				fileWrite(canaryPath, charsetDecode(canaryContent, 'utf-8'));
 			});
 
 			it("edit() rejects a filename that reads a file outside the asset root", function(){

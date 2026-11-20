@@ -7,10 +7,6 @@
         return xmlParse(xmlString);
     }
 
-    function masaFileWrite(required string filePath, required string data) {
-        fileWrite(filePath, data);
-    }
-
     function masaFileCopy(required string source, required string destination) {
         fileCopy(source, destination);
     }

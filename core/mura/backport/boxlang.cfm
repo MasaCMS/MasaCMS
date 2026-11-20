@@ -7,16 +7,7 @@
         return xmlParse(xmlString);
     }
 
-    function masaFileWrite(required string filePath, required string data) {
-        var writer = createObject("java", "java.io.BufferedWriter")
-            .init(createObject("java", "java.io.FilterWriter")
-                .init(arguments.filePath)
-            );
-        writer.write(data);
-        writer.close();
-    }
-
     function masaFileCopy(required string source, required string destination) {
-        masaFileWrite(destination, fileRead(source));
+        fileCopy(source, destination);
     }
 </cfscript>

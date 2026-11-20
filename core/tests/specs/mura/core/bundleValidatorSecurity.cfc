@@ -35,7 +35,7 @@ component extends="testbox.system.BaseSpec" {
 			if (!directoryExists(dir)) {
 				directoryCreate(dir);
 			}
-			fileWrite(full, "x");
+			fileWrite(full, charsetDecode("x", "utf-8"));
 		}
 		cfzip(action="zip", file=zipPath, source=srcDir, recurse=true);
 		return zipPath;
