@@ -96,7 +96,7 @@ component extends="testbox.system.BaseSpec" {
 
 		// A real file placed one directory above the site's own asset
 		// root - i.e. genuinely outside the User_Assets sandbox - for the
-		// (currently skipped) path-traversal test below.
+		// path-traversal test below.
 		variables.traversalTargetPath = variables.baseAssetDir & "/../fstest-traversal-" & variables.runTag & ".png";
 		fileCopy(variables.fixtureSourceImage, variables.traversalTargetPath);
 
@@ -950,31 +950,38 @@ component extends="testbox.system.BaseSpec" {
 
 			it(
 				title="should reject a path-traversal attempt via resize()/duplicate()/rotate()/processCrop()'s file.url",
-				skip=true,
 				body=function(){
-					// Routed through uploadHarness.cfm's "traversal" target
-					// rather than calling filebrowser in-process directly -
-					// the underlying call can terminate its own request
-					// outright, so it must stay isolated to that one
-					// harness request rather than run inside this suite's
-					// own shared request. The target file's own integrity
-					// is the assertion, not the harness's HTTP status or
-					// response shape.
+					// Each method runs in its own uploadHarness.cfm request
+					// (target "traversal"), with a file.url that resolves to a
+					// real file just outside the asset root. Two checks per
+					// method: the target is left alone (and duplicate() leaves
+					// no copy next to it), and the rejection comes from
+					// filebrowser's own isPathLegal() guard. The storage layer
+					// below rejects the same path, so the file check alone
+					// would still pass if the filebrowser guard were removed.
 					var beforeHash = hash(fileReadBinary(variables.traversalTargetPath), "MD5");
 					var targetName = listLast(variables.traversalTargetPath, "/");
+					var copyPath = replace(variables.traversalTargetPath, ".png", "-copy1.png");
 
 					var harnessUrl = "http://localhost:" & getPageContext().getRequest().getLocalPort()
 						& "/core/tests/uploadHarness.cfm";
 
-					var httpResult = "";
-					cfhttp(url=harnessUrl, method="post", result="httpResult", timeout=30, throwonerror=false){
-						cfhttpparam(type="formfield", name="target", value="traversal");
-						cfhttpparam(type="formfield", name="siteid", value=variables.siteid);
-						cfhttpparam(type="formfield", name="fileUrl", value="/assets/../" & targetName);
-						cfhttpparam(type="formfield", name="ext", value="png");
-					}
+					for (var operation in ["rotate", "resize", "duplicate", "processCrop"]) {
+						var httpResult = "";
+						cfhttp(url=harnessUrl, method="post", result="httpResult", timeout=30, throwonerror=false){
+							cfhttpparam(type="formfield", name="target", value="traversal");
+							cfhttpparam(type="formfield", name="operation", value=operation);
+							cfhttpparam(type="formfield", name="siteid", value=variables.siteid);
+							cfhttpparam(type="formfield", name="fileUrl", value="/assets/../" & targetName);
+							cfhttpparam(type="formfield", name="ext", value="png");
+						}
 
-					expect(hash(fileReadBinary(variables.traversalTargetPath), "MD5")).toBe(beforeHash);
+						var json = deserializeJSON(httpResult.fileContent);
+						expect(json.success).toBeFalse(operation & "() should have been rejected");
+						expect(json.error.message).toBe("File path illegal", operation & "() should be stopped by filebrowser's path guard");
+						expect(hash(fileReadBinary(variables.traversalTargetPath), "MD5")).toBe(beforeHash, operation & "() changed the target");
+						expect(fileExists(copyPath)).toBeFalse(operation & "() wrote a copy next to the target");
+					}
 				}
 			);
 
