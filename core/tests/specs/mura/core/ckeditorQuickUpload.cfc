@@ -49,6 +49,8 @@ component extends="testbox.system.BaseSpec"{
 				cfhttp(url=endpoint, method="post", result="local.httpResult", timeout=30, throwonerror=false, useragent="MasaCMS-TestBox"){
 					cfhttpparam(type="cookie", name="CFID", value=session.cfid);
 					cfhttpparam(type="cookie", name="CFTOKEN", value=session.cftoken);
+					// BoxLang identifies the session by its jsessionid cookie, not CFID/CFTOKEN.
+					cfhttpparam(type="cookie", name="JSESSIONID", value=session.jsessionID ?: "");
 					cfhttpparam(type="cookie", name="ckCsrfToken", value="test");
 					cfhttpparam(type="formfield", name="ckCsrfToken", value="test");
 					cfhttpparam(type="file", name="upload", file=fixtureFile, mimetype="image/png");
