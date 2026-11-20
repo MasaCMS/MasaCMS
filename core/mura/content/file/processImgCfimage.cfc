@@ -294,12 +294,12 @@ This file is part of Mura CMS.
 			<cfelseif ImageAspectRatio lt NewAspectRatio>
 				<cfset ImageResize(ThisImage,arguments.width,'',variables.instance.imageInterpolation)>
 				<cfset CropY = (ThisImage.height - arguments.height)/2 />
-				<cfset ImageCrop(ThisImage, 0, CropY, arguments.Width, arguments.height) />
+				<cfset ImageCrop(ThisImage, 0, int(CropY), int(arguments.Width), int(arguments.height)) />
 				<cfset ImageWrite(ThisImage,arguments.image,variables.instance.imageQuality)>
 			<cfelseif ImageAspectRatio gt NewAspectRatio>
 				<cfset ImageResize(ThisImage,'',arguments.height,variables.instance.imageInterpolation)>
 				<cfset CropX = (ThisImage.width - arguments.width)/2 />
-				<cfset ImageCrop(ThisImage, CropX, 0, arguments.width, arguments.height) />
+				<cfset ImageCrop(ThisImage, int(CropX), 0, int(arguments.width), int(arguments.height)) />
 				<cfset ImageWrite(ThisImage,arguments.image,variables.instance.imageQuality)>
 			</cfif>
 		</cfif>

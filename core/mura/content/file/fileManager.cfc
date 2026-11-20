@@ -1307,7 +1307,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 
 			<cfif isDefined('arguments.x')>
-				<cfset imageCrop(cropper,arguments.x,arguments.y,arguments.width,arguments.height)>
+				<cfset imageCrop(cropper,int(arguments.x),int(arguments.y),int(arguments.width),int(arguments.height))>
 				<cfset ImageWrite(cropper,file,variables.configBean.getImageQuality())>
 
 				<cfif listFindNoCase('small,medium,large',arguments.size)>
