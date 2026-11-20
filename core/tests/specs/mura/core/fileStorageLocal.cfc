@@ -532,9 +532,10 @@ component extends="testbox.system.BaseSpec" {
 			it("should remove an old custom-size cache file via deleteCustomImageCache() without touching the small/medium cache", function(){
 				// deleteCustomImageCache() targets a specific legacy naming
 				// convention - a "_H" marker with a numeric segment right
-				// after the first underscore - and an age threshold. A
-				// threshold of 0 days makes "just written" already count as
-				// old enough, so this doesn't need to fake file timestamps.
+				// after the first underscore - and an age threshold. The file
+				// is backdated rather than relying on threshold=0 alone: a file
+				// written in the same second as now() isn't older than it on
+				// BoxLang, which compares datetimes to the second.
 				var testFile = createTestFile("deleteCustomImageCache test");
 				var realSmallPath = cacheFilePath(testFile.fileID, "_small", "png");
 				expect(fileExists(realSmallPath)).toBeTrue();
@@ -542,6 +543,7 @@ component extends="testbox.system.BaseSpec" {
 				var customSizeName = testFile.fileID & "_100_H.png";
 				var customSizePath = application.configBean.getFileDir() & "/" & variables.siteid & "/cache/file/" & customSizeName;
 				fileCopy(variables.fixtureSourceImage, customSizePath);
+				fileSetLastModified(customSizePath, dateAdd("d", -2, now()));
 
 				variables.fileManager.deleteCustomImageCache(siteID=variables.siteid, threshold=0);
 
@@ -599,6 +601,8 @@ component extends="testbox.system.BaseSpec" {
 				var calls = recordCacheStorageCalls(function(){
 					variables.fileManager.cleanFileCache(siteID=variables.siteid);
 					fileCopy(variables.fixtureSourceImage, customSizePath);
+					// Backdated so it's older than now() on every engine (see the spec above).
+					fileSetLastModified(customSizePath, dateAdd("d", -2, now()));
 					variables.fileManager.deleteCustomImageCache(siteID=variables.siteid, threshold=0);
 					variables.fileManager.rebuildImageCache(siteID=variables.siteid, size="small");
 				});
