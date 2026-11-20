@@ -37,7 +37,7 @@ component extends="testbox.system.BaseSpec" {
                 var sessionData = application.mura.getSession();
                 var httpResult = "";
                 var sessionTokens = {};
-                var requestUrl = "http://localhost:" & getPageContext().getRequest().getLocalPort()
+                var requestUrl = "http://localhost:" & new muraWRM.core.tests.resources.localServer().port()
                     & application.configBean.getContext()
                     & "/index.cfm";
                 var setCookieHeaders = "";

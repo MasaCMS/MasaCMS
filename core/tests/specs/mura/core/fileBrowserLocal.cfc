@@ -839,18 +839,9 @@ component extends="testbox.system.BaseSpec" {
 				var uploadFixture = application.configBean.getTempDir() & "/fbtest-" & variables.runTag & ".txt";
 				fileCopy(variables.fixtureSourceText, uploadFixture);
 
-				// Self-connect using the real socket port the request
-				// arrived on, not cgi.server_port - confirmed live that
-				// cgi.server_port reports 18181 here (the externally-mapped
-				// Docker port, which the Lucee image's Tomcat connector is
-				// configured to *claim* as its port for URL generation),
-				// while the container's actual listening port is 8888 -
-				// nothing inside the container's own network namespace can
-				// reach 18181. getRequest().getLocalPort() bypasses whatever
-				// proxyPort override is configured and reports the port the
-				// connection was truly accepted on, so this is portable
-				// across whatever engine/port combination it's run under.
-				var harnessUrl = "http://localhost:" & getPageContext().getRequest().getLocalPort()
+				// Self-connect on the container's real listening port, not
+				// cgi.server_port (see tests/resources/localServer.cfc).
+				var harnessUrl = "http://localhost:" & new muraWRM.core.tests.resources.localServer().port()
 					& "/core/tests/uploadHarness.cfm";
 
 				var httpResult = "";
@@ -911,7 +902,7 @@ component extends="testbox.system.BaseSpec" {
 				var uploadFixture = application.configBean.getTempDir() & "/cktest-" & variables.runTag & ".txt";
 				fileCopy(variables.fixtureSourceText, uploadFixture);
 
-				var harnessUrl = "http://localhost:" & getPageContext().getRequest().getLocalPort()
+				var harnessUrl = "http://localhost:" & new muraWRM.core.tests.resources.localServer().port()
 					& "/core/tests/uploadHarness.cfm";
 
 				var httpResult = "";
@@ -963,7 +954,7 @@ component extends="testbox.system.BaseSpec" {
 					var targetName = listLast(variables.traversalTargetPath, "/");
 					var copyPath = replace(variables.traversalTargetPath, ".png", "-copy1.png");
 
-					var harnessUrl = "http://localhost:" & getPageContext().getRequest().getLocalPort()
+					var harnessUrl = "http://localhost:" & new muraWRM.core.tests.resources.localServer().port()
 						& "/core/tests/uploadHarness.cfm";
 
 					for (var operation in ["rotate", "resize", "duplicate", "processCrop"]) {
