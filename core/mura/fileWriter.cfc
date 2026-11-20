@@ -280,15 +280,17 @@ This file is part of Mura CMS.
 		</cfscript>
 
 		<cfif isDefined('arguments.output.mode')>
-				<cfset new = FileOpen(target, "write")>
+				<!--- The charset goes on fileOpen(): Adobe CF ignores fileWrite()'s
+				      charset for an open file and uses the JVM default instead. --->
+				<cfif isDefined('arguments.charset')>
+					<cfset new = FileOpen(target, "write", arguments.charset)>
+				<cfelse>
+					<cfset new = FileOpen(target, "write")>
+				</cfif>
 
 				<cfloop condition="!fileIsEOF( arguments.output )">
 					<cfset x = FileRead(arguments.output, 10000)>
-					<cfif isDefined('arguments.charset')>
-						<cfset FileWrite(new, x, arguments.charset)>
-					<cfelse>
-						<cfset FileWrite(new, x)>
-					</cfif>
+					<cfset FileWrite(new, x)>
 					<cfset counter = counter + 1>
 				</cfloop>
 
