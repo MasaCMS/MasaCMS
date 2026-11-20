@@ -28,14 +28,14 @@
 		siteid     = site id (default "default")
 		directory  = target directory, filebrowser/ckeditor only, relative
 		             to the resourcePath root (default "/")
-		fileUrl    = traversal only - the "file.url" value passed to
-		             filebrowser.rotate()
+		operation  = traversal only - the filebrowser image method to call:
+		             "rotate" (default) | "resize" | "duplicate" | "processCrop"
+		fileUrl    = traversal only - the "file.url" value passed to it
 		file       = the multipart file field - see FILEFIELD below
 
-	"traversal" is a second reason this harness exists beyond real
-	multipart uploads: the filebrowser call it exercises can terminate its
-	own request outright, so it must stay isolated here rather than run
-	inside the main test suite's own request.
+	"traversal" runs one image method per request with an attacker-chosen
+	file.url, so each call gets its own CSRF token and its rejection comes
+	back as this page's JSON error.
 --->
 <cfsetting showdebugoutput="false">
 
@@ -48,6 +48,7 @@
 <cfparam name="form.directory" default="/">
 <cfparam name="form.fileUrl" default="">
 <cfparam name="form.ext" default="png">
+<cfparam name="form.operation" default="rotate">
 
 <cfset FILEFIELD = "file">
 <cfset result = { success: false }>
@@ -151,20 +152,35 @@
 			<cfset session.mura.memberships = listAppend(session.mura.memberships, "S2")>
 		</cfif>
 
+		<cfif not listFindNoCase("rotate,resize,duplicate,processCrop", form.operation)>
+			<cfthrow message="Unknown traversal operation: #form.operation#">
+		</cfif>
+
 		<cfset fb3 = application.serviceFactory.getBean('filebrowser')>
 		<cfset m3 = application.serviceFactory.getBean('$').init(form.siteid)>
-		<cfset csrf3 = m3.generateCSRFTokens(context='rotate')>
+		<cfset csrf3 = m3.generateCSRFTokens(context=form.operation)>
 		<cfset url.csrf_token = csrf3.token>
 		<cfset url.csrf_token_expires = csrf3.expires>
 
-		<cfset traversalResponse = fb3.rotate(
+		<!--- Valid arguments for each method (same values as the in-process
+		      image specs in fileBrowserLocal.cfc), so only file.url is hostile. --->
+		<cfset traversalArgs = {
 			resourcePath       = "User_Assets",
 			file               = { url: form.fileUrl, ext: form.ext },
-			direction          = "clock",
 			siteid             = form.siteid,
 			csrf_token         = csrf3.token,
 			csrf_token_expires = csrf3.expires
-		)>
+		}>
+		<cfif form.operation eq "rotate">
+			<cfset traversalArgs.direction = "clock">
+		<cfelseif form.operation eq "resize">
+			<cfset traversalArgs.dimensions = { aspect: "within", width: 20, height: 20 }>
+		<cfelseif form.operation eq "processCrop">
+			<cfset traversalArgs.size = { width: 40, height: 100 }>
+			<cfset traversalArgs.crop = { x: 0, y: 0, width: 10, height: 10 }>
+		</cfif>
+
+		<cfinvoke component="#fb3#" method="#form.operation#" argumentCollection="#traversalArgs#" returnVariable="traversalResponse">
 
 		<cfset result.success = true>
 		<cfset result.response = traversalResponse>
