@@ -1172,7 +1172,7 @@ component extends="testbox.system.BaseSpec"{
 				// Callers pair fileExists(expandPath(path)) with isPathLegal(path), so
 				// the target must really exist for this to cover what they do.
 				var outsideFile=replace(getTempDirectory(), "\", "/", "ALL") & "/isPathLegal_" & createUUID() & ".cfm";
-				fileWrite(outsideFile, "probe");
+				fileWrite(outsideFile, charsetDecode("probe", "utf-8"));
 				try {
 					var traversal="/" & repeatString("../", 30) & reReplace(outsideFile, "^/+", "");
 					expect(fileExists(expandPath(traversal))).toBeTrue();
