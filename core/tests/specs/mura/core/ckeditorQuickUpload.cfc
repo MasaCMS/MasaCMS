@@ -41,7 +41,7 @@ component extends="testbox.system.BaseSpec"{
 		describe("filebrowser.ckeditor_quick_upload()", function(){
 
 			it("returns a url and fileName that match the file it saved", function(){
-				var endpoint = "http://localhost:" & getPageContext().getRequest().getLocalPort()
+				var endpoint = "http://localhost:" & new muraWRM.core.tests.resources.localServer().port()
 					& "/index.cfm/_api/json/v1/default/filebrowser/ckeditor_quick_upload?resourcepath=User_Assets&directory=/Image&responseType=json";
 
 				// Non-bot UA: Mura treats "lucee" (cfhttp's default UA) as a bot and drops the
