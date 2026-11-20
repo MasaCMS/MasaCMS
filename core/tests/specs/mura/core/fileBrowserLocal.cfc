@@ -613,7 +613,9 @@ component extends="testbox.system.BaseSpec" {
 				// something this test papers over. What matters for safety:
 				// the pre-existing folder and its content survive
 				// untouched.
-				expect(result).notToBe(true);
+				// Not notToBe(true): on BoxLang, TestBox ends up calling the
+				// exception's struct equals(), which rejects a boolean.
+				expect(isBoolean(result) && result).toBeFalse();
 				expect(fileExists(collisionDir & "/marker.txt")).toBeTrue();
 			});
 
