@@ -388,7 +388,8 @@ component
 			aspect = floor(sourceImageInfo.height/workImageInfo.height*1000)/1000;
 		}
 
-		ImageCrop(sourceImage,arguments.crop.x*aspect,arguments.crop.y*aspect,arguments.crop.width*aspect,arguments.crop.height*aspect);
+		// BoxLang's ImageCrop() only takes whole pixels; Lucee and ACF truncate fractions the same way.
+		ImageCrop(sourceImage,int(arguments.crop.x*aspect),int(arguments.crop.y*aspect),int(arguments.crop.width*aspect),int(arguments.crop.height*aspect));
 		var tempFile2 = tempDir & timage & "_crop." & arguments.file.ext;
 		ImageWrite(sourceImage, tempFile2);
 		fw.writeFromLocal(tempFile2, conditionalExpandPath(filePath));
