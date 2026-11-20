@@ -297,7 +297,14 @@ This file is part of Mura CMS.
 				<cfset FileClose(arguments.output)>
 				<cfset FileClose(new)>
 
-				<cfif fileExists(arguments.output.path)>
+				<!--- File handles name their path differently: BoxLang has filepath,
+				      ACF a full path in path, Lucee the directory in path plus name.
+				      BoxLang throws on path/name, so check filepath first. --->
+				<cfif isDefined('arguments.output.filepath')>
+					<cfif fileExists(arguments.output.filepath)>
+						<cfset FileDelete(arguments.output.filepath)>
+					</cfif>
+				<cfelseif fileExists(arguments.output.path)>
 					<cfset FileDelete(arguments.output.path)>
 				<cfelseif fileExists(arguments.output.path & "/" & arguments.output.name)>
 					<cfset FileDelete(arguments.output.path & "/" & arguments.output.name)>
