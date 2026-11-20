@@ -62,7 +62,8 @@ component extends="testbox.system.BaseSpec" {
                 cfhttp(url=requestUrl, method="get", result="httpResult", timeout=30, throwonerror=false, redirect=false, useragent="MasaCMS-TestBox") {
                     cfhttpparam(type="cookie", name="CFID", value=sessionTokens.CFID ?: cookie.CFID ?: "");
                     cfhttpparam(type="cookie", name="CFTOKEN", value=sessionTokens.CFTOKEN ?: cookie.CFTOKEN ?: "");
-                    cfhttpparam(type="cookie", name="JSESSIONID", value=sessionTokens.JSESSIONID ?: cookie.JSESSIONID ?: "");
+                    // BoxLang identifies the session by its jsessionid cookie, which urlToken doesn't carry.
+                    cfhttpparam(type="cookie", name="JSESSIONID", value=sessionTokens.JSESSIONID ?: cookie.JSESSIONID ?: sessionData.jsessionID ?: "");
                 }
 
                 for (var headerName in httpResult.responseHeader) {
