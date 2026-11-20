@@ -57,7 +57,9 @@ component extends="testbox.system.BaseSpec" {
                 })).toBeTrue();
                 expect(sessionData.mura.isLoggedIn).toBeTrue();
 
-                cfhttp(url=requestUrl, method="get", result="httpResult", timeout=30, throwonerror=false, redirect=false) {
+                // Non-bot UA: Mura treats "lucee" (cfhttp's default UA) as a bot and drops the
+                // shared session's timeout to 2s, which can expire it mid-suite.
+                cfhttp(url=requestUrl, method="get", result="httpResult", timeout=30, throwonerror=false, redirect=false, useragent="MasaCMS-TestBox") {
                     cfhttpparam(type="cookie", name="CFID", value=sessionTokens.CFID ?: cookie.CFID ?: "");
                     cfhttpparam(type="cookie", name="CFTOKEN", value=sessionTokens.CFTOKEN ?: cookie.CFTOKEN ?: "");
                     cfhttpparam(type="cookie", name="JSESSIONID", value=sessionTokens.JSESSIONID ?: cookie.JSESSIONID ?: "");

@@ -44,7 +44,9 @@ component extends="testbox.system.BaseSpec"{
 				var endpoint = "http://localhost:" & getPageContext().getRequest().getLocalPort()
 					& "/index.cfm/_api/json/v1/default/filebrowser/ckeditor_quick_upload?resourcepath=User_Assets&directory=/Image&responseType=json";
 
-				cfhttp(url=endpoint, method="post", result="local.httpResult", timeout=30, throwonerror=false){
+				// Non-bot UA: Mura treats "lucee" (cfhttp's default UA) as a bot and drops the
+				// shared session's timeout to 2s, which can expire it mid-suite.
+				cfhttp(url=endpoint, method="post", result="local.httpResult", timeout=30, throwonerror=false, useragent="MasaCMS-TestBox"){
 					cfhttpparam(type="cookie", name="CFID", value=session.cfid);
 					cfhttpparam(type="cookie", name="CFTOKEN", value=session.cftoken);
 					cfhttpparam(type="cookie", name="ckCsrfToken", value="test");
