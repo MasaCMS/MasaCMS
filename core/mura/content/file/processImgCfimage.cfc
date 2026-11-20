@@ -265,7 +265,7 @@ This file is part of Mura CMS.
 			This a workaround to ensure jpegs can be process
 			https://luceeserver.atlassian.net/browse/LDEV-1874
 		--->
-		<cfif listFindNoCase('jpg,jpeg',listLast(ThisImage.source,'.')) >
+		<cfif listFindNoCase('jpg,jpeg',listLast(arguments.image,'.')) >
 			<cfset var origImage=ThisImage>
 			<cfset ThisImage = imageNew("", ThisImage.width, ThisImage.height, "rgb") />
 			<cfset imagePaste(ThisImage, origImage, 0, 0) />
