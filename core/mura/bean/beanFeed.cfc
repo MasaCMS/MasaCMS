@@ -137,6 +137,9 @@ function getEntityName() output=false {
 }
 
 function setEntityName(entityName) output=false {
+	if ( len(arguments.entityName) && !isValid('variableName',arguments.entityName) ) {
+		throw(type="invalidParameters", message="Invalid entity name");
+	}
 	variables.instance.entityName=arguments.entityName;
 	return this;
 }
@@ -313,6 +316,11 @@ function addParam(required string field="", required string relationship="and", 
 
 	arguments.field=sanitizedValue(arguments.field);
 
+	// The entity is fixed when the feed is created and authorized; filters must not change it.
+	if ( arguments.field == 'entityName' ) {
+		return this;
+	}
+
 	if(isValid('variablename',arguments.field) && isdefined('set#arguments.field#')){
 			setValue(arguments.field,arguments.criteria);
 			return this;
@@ -400,16 +408,30 @@ function getDbType() output=false {
 	}
 }
 
+private struct function getEntityMapping() output=false {
+	var entityName=getEntityName();
+	if ( !structKeyExists(application,'objectMappings')
+		|| !structKeyExists(application.objectMappings,entityName)
+		|| !isStruct(application.objectMappings[entityName]) ) {
+		return {};
+	}
+	return application.objectMappings[entityName];
+}
+
 function hasColumn(column) output=false {
-	return isDefined("application.objectMappings.#getValue('entityName')#.columns.#arguments.column#");
+	var mapping=getEntityMapping();
+	return structKeyExists(mapping,'columns') && isStruct(mapping.columns)
+		&& structKeyExists(mapping.columns,arguments.column);
 }
 
 function hasDiscriminatorColumn() output=false {
-	return isDefined("application.objectMappings.#getValue('entityName')#.discriminatorColumn") && len(application.objectMappings[getValue('entityName')].discriminatorColumn);
+	var mapping=getEntityMapping();
+	return structKeyExists(mapping,'discriminatorColumn') && len(mapping.discriminatorColumn);
 }
 
 function getIsHistorical() output=false {
-	return isDefined("application.objectMappings.#getValue('entityName')#.historical") && IsBoolean(application.objectMappings[getValue('entityName')].historical) && application.objectMappings[getValue('entityName')].historical;
+	var mapping=getEntityMapping();
+	return structKeyExists(mapping,'historical') && isBoolean(mapping.historical) && mapping.historical;
 }
 
 function getDiscriminatorColumn() output=false {
