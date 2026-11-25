@@ -139,7 +139,7 @@ component extends="mura.cfobject" output="false" hint="This provides a proxy to 
 
 	public function getValue(property) output=false {
 		if ( len(arguments.property) ) {
-			if ( isDefined("this.get#arguments.property#") ) {
+			if ( structKeyExists(this,"get" & arguments.property) ) {
 				var tempFunc=this["get#arguments.property#"];
 				return tempFunc();
 			} else if ( structKeyExists(variables.instance.struct,"#arguments.property#") ) {
@@ -155,7 +155,7 @@ component extends="mura.cfobject" output="false" hint="This provides a proxy to 
 	}
 
 	public function setValue(property, propertyValue) output=false {
-		if ( isDefined("this.set#arguments.property#") ) {
+		if ( structKeyExists(this,"set" & arguments.property) ) {
 			var tempFunc=this["set#arguments.property#"];
 			tempFunc(arguments.propertyValue);
 		} else {
