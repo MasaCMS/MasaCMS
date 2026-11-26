@@ -269,13 +269,6 @@ component persistent='false' accessors='true' output='false' extends='controller
 		variables.fw.redirect(action='cUsers.download', preserve='records');
 	}
 
-	public any function addToGroup(rc) {
-		if ( arguments.rc.$.validateCSRFTokens(context=arguments.rc.userid & arguments.rc.groupid & 'addtogroup') ) {
-			getUserManager().createUserInGroup(arguments.rc.userid, arguments.rc.groupid);
-		}
-		route(arguments.rc);
-	}
-
 	public any function removeFromGroup(rc) {
 		getUserManager().deleteUserFromGroup(arguments.rc.userid, arguments.rc.groupid);
 		variables.fw.redirect(action='cUsers.editGroupMembers', preserve='groupid,siteid');
