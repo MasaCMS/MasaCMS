@@ -1145,7 +1145,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 			}
 
 			rsFinal = queryExecute(
-						sql = "select distinct name from rsFinalorder by name asc"
+						sql = "select distinct name from rsFinal order by name asc"
 						, options = { dbtype = "query"}
 					);
 
