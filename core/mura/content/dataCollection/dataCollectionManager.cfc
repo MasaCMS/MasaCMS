@@ -95,6 +95,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var info=structnew()>
 		<cfset var templist=''>
 		<cfset var theFileStruct=structnew()>
+		<cfset var uploadResult="">
 		<cfset var formid=arguments.data.formid>
 		<cfset var siteid=arguments.data.siteid>
 		<cfset var fieldlist="">
@@ -147,10 +148,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfset scopeCheck={test=arguments.data['#thefield#']}>
 						<cfif not variables.fileManager.requestHasRestrictedFiles(scope=scopeCheck,allowedExtensions=variables.configBean.getFMPublicAllowedExtensions())>
 							<cftry>
-							<cffile action="upload" filefield="#thefield#" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
-							<cfset theFileStruct=variables.fileManager.process(file,siteID) />
-							<cfset arguments.data['#thefield#']=variables.fileManager.create(theFileStruct.fileObj,formid,siteID,file.ClientFile,file.ContentType,file.ContentSubType,file.FileSize,'00000000000000000000000000000000004',file.ServerFileExt,theFileStruct.fileObjSmall,theFileStruct.fileObjMedium,createUUID(),theFileStruct.fileObjSource) />
-							<cfcatch></cfcatch>
+							<!--- Use an explicit result: BoxLang doesn't set the implicit "file" variable after an upload --->
+							<cffile action="upload" result="uploadResult" filefield="#thefield#" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
+							<cfset theFileStruct=variables.fileManager.process(uploadResult,siteID) />
+							<cfset arguments.data['#thefield#']=variables.fileManager.create(theFileStruct.fileObj,formid,siteID,uploadResult.ClientFile,uploadResult.ContentType,uploadResult.ContentSubType,uploadResult.FileSize,'00000000000000000000000000000000004',uploadResult.ServerFileExt,theFileStruct.fileObjSmall,theFileStruct.fileObjMedium,createUUID(),theFileStruct.fileObjSource) />
+							<cfcatch><cfset logError(cfcatch)></cfcatch>
 							</cftry>
 							<cfset info['#thefield#']=arguments.data['#thefield#']>
 						<cfelse>
