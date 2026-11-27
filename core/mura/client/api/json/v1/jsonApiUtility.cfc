@@ -1668,7 +1668,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 	}
 
 	function getRelationship(from,to){
-		if(isDefined("application.objectMappings.#arguments.from#")){
+		if(structKeyExists(application.objectMappings,arguments.from)){
 
 			for(var p in application.objectMappings['#arguments.from#'].hasOne){
 				if(p.name==arguments.to || p.cfc==arguments.to){
@@ -2781,6 +2781,8 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			throw(type="authorization");
 		}
 
+		var authorizedEntityName=feed.getEntityName();
+
 		if(entity.getEntityName()=='user'){
 			if(isDefined('arguments.params.isPublic') && isNumeric($.event('isPublic'))){
 				feed.setIsPublic($.event('isPublic'));
@@ -2805,7 +2807,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			var started=false;
 
 			for(var p in arguments.params){
-				if(!listFindNoCase('expanddepth,muraPointInTime,liveOnly,feedid,maxItems,pageIndex,sort,itemsPerPage,sortBy,sortDirection,contentpoolid,shownavonly,showexcludesearch,includehomepage,feedname,expand,useCategoryIntersect,useDataNamespace',p)){
+				if(!listFindNoCase('entityName,expanddepth,muraPointInTime,liveOnly,feedid,maxItems,pageIndex,sort,itemsPerPage,sortBy,sortDirection,contentpoolid,shownavonly,showexcludesearch,includehomepage,feedname,expand,useCategoryIntersect,useDataNamespace',feed.sanitizedValue(p))){
 					feed.addParam(column=p,criteria=arguments.params[p]);
 
 					if(started){
@@ -2911,6 +2913,11 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		}
 
 		setFeedProps(feed,arguments.params);
+
+		// Request params must never move the query to a different entity than the one authorized above.
+		if(feed.getEntityName() != authorizedEntityName){
+			throw(type="authorization");
+		}
 
 		if(isdefined('arguments.params.countOnly') && isBoolean(arguments.params.countOnly) && arguments.params.countOnly){
 			return {count=feed.getAvailableCount()};
@@ -3817,17 +3824,6 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 	}
 
-	public any function filterAsyncFeedParams(required string object, required any params, required string siteid){
-		if(listFindNoCase('feed,feed_no_summary,feed_slideshow,feed_slideshow_no_summary,feed_table,dragable_feeds',arguments.object)
-				&& isStruct(arguments.params)
-				&& !getBean('permUtility').getModulePerm('00000000000000000000000000000000011',arguments.siteid)){
-			for(var protectedFeedField in ['channelLink','type','isNew','isActive','authtype','siteid']){
-				structDelete(arguments.params,protectedFeedField);
-			}
-		}
-		return arguments.params;
-	}
-
 	function processAsyncObject(siteid){
 		var sessionData=getSession();
 
@@ -4075,20 +4071,6 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 					}
 
 				}
-
-				// strip caller-supplied feed trust-state fields unless the caller holds 
-				// the Feeds module permission, preventing unauthenticated SSRF through 
-				// the remote feed display object.
-				args.params=filterAsyncFeedParams($.event('object'),args.params,arguments.siteid);
-
-				/*
-				if(listFindNoCase('folder,gallery,calendar,page',$.event('object'))){
-					result={
-						html=$.getContentRenderer().dspContentTypeBody(params=args.params)
-					};
-					break;
-				}
-				*/
 
 				result=$.dspObject(argumentCollection=args);
 

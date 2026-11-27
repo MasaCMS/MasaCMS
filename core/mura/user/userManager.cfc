@@ -489,7 +489,7 @@ This file is part of Mura CMS.
 			</cfif>
 
 			<cfif structKeyExists(arguments.data,"extendSetID") and len(arguments.data.extendSetID)>
-				<cfset variables.ClassExtensionManager.saveExtendedData(userBean.getUserID(),arguments.data,'tclassextenddatauseractivity')/>
+				<cfset variables.ClassExtensionManager.saveExtendedData(userBean.getUserID(),arguments.data,'tclassextenddatauseractivity',variables.permUtility.getModulePerm('00000000000000000000000000000000008',userBean.getSiteID()))/>
 			</cfif>
 
 			<cfif structKeyExists(arguments.data,"newFile") and len(arguments.data.newfile)>
@@ -644,7 +644,7 @@ This file is part of Mura CMS.
 			<cfset arguments.data=userBean.getAllValues()>
 
 			<cfif structKeyExists(arguments.data,"extendSetID") and len(arguments.data.extendSetID)>
-				<cfset variables.ClassExtensionManager.saveExtendedData(userBean.getUserID(),arguments.data,'tclassextenddatauseractivity')/>
+				<cfset variables.ClassExtensionManager.saveExtendedData(userBean.getUserID(),arguments.data,'tclassextenddatauseractivity',variables.permUtility.getModulePerm('00000000000000000000000000000000008',userBean.getSiteID()))/>
 			</cfif>
 
 			<cfif structKeyExists(arguments.data,"newFile") and len(arguments.data.newfile)>
@@ -887,7 +887,7 @@ This file is part of Mura CMS.
 			<cfset variables.userDAO.createAddress(addressBean) />
 			<cfif structKeyExists(arguments.data,"extendSetID")>
 				<cfset arguments.data.siteID=addressBean.getSiteID() />
-				<cfset variables.ClassExtensionManager.saveExtendedData(addressBean.getAddressID(),arguments.data,'tclassextenddatauseractivity')/>
+				<cfset variables.ClassExtensionManager.saveExtendedData(addressBean.getAddressID(),arguments.data,'tclassextenddatauseractivity',variables.permUtility.getModulePerm('00000000000000000000000000000000008',addressBean.getSiteID()))/>
 			</cfif>
 		</cfif>
 		<cfset variables.trashManager.takeOut(addressBean)>
@@ -929,7 +929,7 @@ This file is part of Mura CMS.
 			<cfset variables.userDAO.updateAddress(addressBean) />
 			<cfif structKeyExists(arguments.data,"extendSetID")>
 				<cfset arguments.data.siteID=addressBean.getSiteID() />
-				<cfset variables.ClassExtensionManager.saveExtendedData(addressBean.getAddressID(),arguments.data,'tclassextenddatauseractivity')/>
+				<cfset variables.ClassExtensionManager.saveExtendedData(addressBean.getAddressID(),arguments.data,'tclassextenddatauseractivity',variables.permUtility.getModulePerm('00000000000000000000000000000000008',addressBean.getSiteID()))/>
 			</cfif>
 		</cfif>
 
@@ -993,9 +993,13 @@ This file is part of Mura CMS.
 		<!--- Check to see if it's a posted binary file--->
 		<cfif variables.fileManager.isPostedFile(userBean.getNewFile())>
 			<cffile action="upload" result="tempFile" filefield="NewFile" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
-		<!--- Else fake it to think it was a posted files--->
-		<cfelse>
+		<!--- Else fake it to think it was a posted files. Only callers with the Users module
+			permission may do this: emulateUpload() fetches URLs and reads server paths, so
+			allowing it for site members would be SSRF / local file disclosure. --->
+		<cfelseif variables.permUtility.getModulePerm('00000000000000000000000000000000008',arguments.userBean.getSiteID())>
 			<cfset tempFile=variables.fileManager.emulateUpload(userBean.getNewFile())>
+		<cfelse>
+			<cfreturn>
 		</cfif>
 
 		<cfif (tempFile.ServerFileExt eq "jpeg" or tempFile.ServerFileExt eq "jpg" or tempFile.ServerFileExt eq "gif" or tempFile.ServerFileExt eq "png") and tempFile.ContentType eq "Image">

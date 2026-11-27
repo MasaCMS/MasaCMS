@@ -572,4 +572,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
+<cffunction name="filterRemoteFeedParams" returntype="struct" output="false" hint="Removes caller-supplied feed trust-state fields (remote source URL, type, active/new flags, auth credentials, siteid, feedid) from a set of display-object params unless the caller holds the Feeds module permission. This is the guard against unauthenticated SSRF through the remote feed display object: without it, anonymous request params could point a feed at an arbitrary URL that the server then fetches. A saved remote feed still renders, because its trust-state comes from the loaded feed bean rather than the request.">
+	<cfargument name="params" type="struct" required="true">
+	<cfargument name="siteid" type="string" required="true">
+	<cfset var protectedFeedField="">
+	<cfset var filteredParams=structCopy(arguments.params)>
+
+	<cfif not getBean('permUtility').getModulePerm('00000000000000000000000000000000011',arguments.siteid)>
+		<cfloop array="#['channelLink','type','isNew','isActive','authtype','siteid','feedid']#" index="protectedFeedField">
+			<cfset structDelete(filteredParams,protectedFeedField)>
+		</cfloop>
+	</cfif>
+
+	<cfreturn filteredParams>
+</cffunction>
+
 </cfcomponent>

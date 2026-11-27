@@ -444,6 +444,7 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 <cfargument name="baseID">
 <cfargument name="data">
 <cfargument name="dataTable" required="true" default="tclassextenddata"/>
+<cfargument name="allowFileImport" type="boolean" required="true" default="true" hint="When false, a File attribute only accepts a posted upload or an existing fileID, never a URL or server path."/>
 
 <cfset var setLen=0/>
 <cfset var key=""/>
@@ -619,8 +620,10 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 				<cfif fileManager.isPostedFile(arguments.data[formField])>
 					<cffile action="upload" result="tempFile" filefield="#formField#" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
 				<!--- Else fake it to think it was a posted files--->
-				<cfelse>
+				<cfelseif arguments.allowFileImport>
 					<cfset tempFile=fileManager.emulateUpload(arguments.data[formField])>
+				<cfelse>
+					<cfset tempFile={}>
 				</cfif>
 				<cfif not StructIsEmpty(tempFile)>
 					<cfset theFileStruct=fileManager.process(tempFile,arguments.data.siteID) />

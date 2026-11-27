@@ -91,6 +91,7 @@ This file is part of Mura CMS.
 		<cfset variables.feedBean = variables.$.getBean("feed").loadBy(name=arguments.objectID,siteID=arguments.siteID)>
 	</cfif>
 	<cfif not structIsEmpty(objectparams)>
+		<cfset objectparams=variables.$.getBean('feedManager').filterRemoteFeedParams(objectparams,arguments.siteID)>
 		<cfset variables.feedBean.set(objectparams)>
 	<cfelseif variables.feedBean.getType() eq "Local" and not arguments.hasSummary>
 		<cfset variables.contentListFields=listDeleteAt(variables.feedBean.getDisplayList(),listFindNoCase(variables.feedBean.getDisplayList(),"Summary"))>
