@@ -518,6 +518,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="update" output="false">
 <cfargument name="data" type="struct" />
 <cfset var rsGroups=""/>
+<cfset var fieldName=""/>
 
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsGroups')#">
 	select UserID from tusers where type =1
@@ -528,17 +529,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfquery>
 
 	<cfloop query="rsGroups">
-<cfif isdefined('arguments.data.p#replacelist(rsGroups.userid,"-","")#')
-and (form['p#replacelist(rsGroups.userid,"-","")#'] eq 'Editor'
- or arguments.data['p#replacelist(rsGroups.userid,"-","")#'] eq 'Author'
- or arguments.data['p#replacelist(rsGroups.userid,"-","")#'] eq 'Read'
- or arguments.data['p#replacelist(rsGroups.userid,"-","")#'] eq 'Deny')>
+	<!--- Not replaceList(): BoxLang keeps the dashes when the replacement list is empty --->
+	<cfset fieldName="p" & replace(rsGroups.userid,"-","","all")>
+	<cfif structKeyExists(arguments.data,fieldName) and listFindNoCase('Editor,Author,Read,Deny',arguments.data[fieldName])>
 	<cfquery>
 	Insert Into tpermissions  (ContentID,GroupID,Type,siteid)
 	values(
 	<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.ContentID#"/>,
 	<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsGroups.UserID#"/>,
-	<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data['p#replacelist(rsGroups.userid,"-","")#']#"/>,
+	<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data[fieldName]#"/>,
 	<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.siteid#"/>
 	)</cfquery>
 
@@ -554,6 +553,7 @@ and (form['p#replacelist(rsGroups.userid,"-","")#'] eq 'Editor'
 <cffunction name="updateGroup" output="true">
 <cfargument name="data" type="struct" />
 <cfset var rsContentlist=""/>
+<cfset var fieldName=""/>
 
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsContentList')#">
 	select contentID from tcontent where siteid='#arguments.data.siteid#' group by contentid
@@ -564,18 +564,15 @@ and (form['p#replacelist(rsGroups.userid,"-","")#'] eq 'Editor'
 	</cfquery>
 
 	<cfloop query="rsContentlist">
-		<cfif isdefined('arguments.data.p#replacelist(rsContentlist.contentid,"-","")#')
-		 and
-		 (arguments.data['p#replacelist(rsContentlist.contentid,"-","")#'] eq 'Editor'
-		 	or arguments.data['p#replacelist(rsContentlist.contentid,"-","")#'] eq 'Author'
-			or arguments.data['p#replacelist(rsContentlist.contentid,"-","")#'] eq 'Module')>
+		<cfset fieldName="p" & replace(rsContentlist.contentid,"-","","all")>
+		<cfif structKeyExists(arguments.data,fieldName) and listFindNoCase('Editor,Author,Module',arguments.data[fieldName])>
 
 			<cfquery>
 			Insert Into tpermissions  (ContentID,GroupID,Type,siteid)
 			values(
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsContentlist.ContentID#"/>,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.groupid#"/>,
-			<cfqueryparam cfsqltype="cf_sql_varchar" value="#form['p#replacelist(rsContentlist.contentid,"-","")#']#"/>,
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data[fieldName]#"/>,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.siteid#"/>
 			)</cfquery>
 
