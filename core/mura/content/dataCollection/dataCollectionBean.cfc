@@ -114,7 +114,8 @@ component extends="mura.bean.bean" entityname="dataCollection" hint="This provid
 			structDelete(form, "fieldnameOrder");
 			structDelete(aguments.data, "fieldnameOrder");
 
-		} else if (application.configBean.getCompiler() neq "Adobe"){
+		} else if (!listFindNoCase("Adobe,BoxLang", application.configBean.getCompiler())){
+			// BoxLang is excluded along with Adobe: its form scope has no getRaw()
 			arguments.data.fieldnames='';
 			local.aRawForm = form.getRaw();
 
