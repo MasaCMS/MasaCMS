@@ -24,7 +24,7 @@
 
 	POST params:
 		target     = "fileManager" (default) | "filebrowser" | "ckeditor"
-		             | "traversal" | "postedFile" | "formResponse"
+		             | "traversal" | "postedFile" | "formResponse" | "streamFile"
 		siteid     = site id (default "default")
 		directory  = target directory, filebrowser/ckeditor only, relative
 		             to the resourcePath root (default "/")
@@ -33,6 +33,9 @@
 		fileUrl    = traversal only - the "file.url" value passed to it
 		file       = the multipart file field - see FILEFIELD below
 		             ("upload_attachment" for formResponse)
+		content    = streamFile only - the file's content (text, or base64)
+		binary     = streamFile only - "true" when content is base64
+		ext        = streamFile only - the file's extension
 
 	"traversal" runs one image method per request with an attacker-chosen
 	file.url, so each call gets its own CSRF token and its rejection comes
@@ -198,6 +201,24 @@
 			postedClientFileName     = fmCheck.getPostedClientFileName(FILEFIELD),
 			requestHasRestrictedFiles = fmCheck.requestHasRestrictedFiles(scope={ "#FILEFIELD#" = form[FILEFIELD], "siteid" = form.siteid }, allowedExtensions="png")
 		}>
+
+	<cfelseif form.target eq "streamFile">
+
+		<!--- Streams a file through fileManager.streamFile(), which ends the
+		      request with cfcontent, so a spec can only check it over HTTP.
+		      "content" is written to a temp file with extension "ext", as text,
+		      or decoded from base64 when "binary" is true; streamFile()
+		      deletes the file afterwards. --->
+		<cfparam name="form.content" default="">
+		<cfparam name="form.binary" default="false">
+		<cfset streamPath = getTempDirectory() & "streamFile_" & createUUID() & "." & form.ext>
+		<cfset fileWrite(streamPath, form.binary ? binaryDecode(form.content, "base64") : charsetDecode(form.content, "utf-8"))>
+		<cfset application.serviceFactory.getBean('fileManager').streamFile(
+			filePath   = streamPath,
+			filename   = "streamed." & form.ext,
+			mimetype   = fileGetMimeType(streamPath),
+			deleteFile = true
+		)>
 
 	<cfelseif form.target eq "formResponse">
 
