@@ -1066,7 +1066,7 @@ select * from tplugins order by #getBean('utility').validateSort(arguments.order
 			<cfset directory=directory & i>
 		</cfloop>
 
-		<cfset variables.fileWriter.renameDir(directory = "#variables.configBean.getPluginDir()#/#pluginConfig.getDirectory()#", newDirectory = "#directory#")>
+		<cfset variables.fileWriter.renameDir(directory = "#variables.configBean.getPluginDir()#/#pluginConfig.getDirectory()#", newDirectory = "#variables.configBean.getPluginDir()#/#directory#")>
 
 		<cfquery>
 		update tplugins set directory=<cfqueryparam cfsqltype="cf_sql_varchar" value="#directory#">
