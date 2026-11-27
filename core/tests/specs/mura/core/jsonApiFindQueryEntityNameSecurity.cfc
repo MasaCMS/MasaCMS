@@ -149,7 +149,7 @@ component extends="testbox.system.BaseSpec" {
 			describe("contentNavBean accessors", function() {
 
 				it("does not evaluate a malicious property name in getValue", function() {
-					var nav = $.getBean('contentNavBean').set({}, '');
+					var nav = $.getBean('contentNavBean').set({siteID='default'}, '');
 
 					try {
 						nav.getValue(probe('title'));
@@ -160,7 +160,7 @@ component extends="testbox.system.BaseSpec" {
 				});
 
 				it("does not evaluate a malicious property name in setValue", function() {
-					var nav = $.getBean('contentNavBean').set({}, '');
+					var nav = $.getBean('contentNavBean').set({siteID='default'}, '');
 
 					try {
 						nav.setValue(probe('title'), 'x');
