@@ -174,13 +174,10 @@ this.name=evalSetting(getINIProperty("appname","mura" & hash(getCurrentTemplateP
 
 //  How long application vars persist
 this.applicationTimeout = createTimeSpan(3,0,0,0);
-//  Where should cflogin stuff persist
 
 this.sessionManagement = !(left(cgi.path_info,11) == '/_api/rest/');
 
 if(this.sessionManagement){
-	this.loginStorage = "session";
-
 	//  We don't set client cookies here, because they are not set secure if required. We use setSessionCookies()
 	this.setClientCookies = false;
 	param name="this.sessioncookies" default=structNew();
