@@ -665,7 +665,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="isPostedFile" output="false">
 	<cfargument name="fileField">
-	<cfreturn (structKeyExists(form,arguments.fileField) and listFindNoCase("tmp,upload",listLast(form['#arguments.fileField#'],"."))) or listFindNoCase("tmp,upload",listLast(arguments.fileField,"."))>
+	<!--- Lucee names upload temp files *.upload, Adobe *.tmp, BoxLang (Undertow) undertow<digits>upload without a dot --->
+	<cfset var tempFilePattern="(^|\.|[\\/]undertow\d+)(tmp|upload)$">
+	<cfreturn (structKeyExists(form,arguments.fileField) and isSimpleValue(form[arguments.fileField]) and reFindNoCase(tempFilePattern,form[arguments.fileField])) or reFindNoCase(tempFilePattern,arguments.fileField)>
 </cffunction>
 
 <cffunction name="requestHasRestrictedFiles" output="false">
@@ -756,6 +758,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		            </cfif>
 		        </cfloop>
 		    </cfif>
+	    <cfelseif variables.configBean.getCompiler() eq 'BoxLang'>
+		    <cfloop array="#GetPageContext().getExchange().getUploadData()#" index="local.upload">
+		        <cfif local.upload.formFieldName() EQ arguments.fieldName>
+		            <cfreturn local.upload.originalFileName() />
+		        </cfif>
+		    </cfloop>
 	    <cfelse>
 	    	<cfreturn GetPageContext().formScope().getUploadResource(arguments.fieldname).getName()>
 	    </cfif>
