@@ -197,6 +197,9 @@ this.scriptProtect = false;
 this.secureJSON = false;
 //  Should we use a prefix in front of JSON strings?
 this.secureJSONPrefix = "";
+//  Keep keys such as "title[0]" as they are. Lucee 8 turns them into nested structs by
+//  default, which made the JSON API ignore feed filters
+this.formUrlAsStruct = false;
 //  Used to help CF work with missing files and dir indexes
 this.welcomeFileList = "";
 //  Compile cfml in all cfincluded files
