@@ -24,7 +24,7 @@
 
 	POST params:
 		target     = "fileManager" (default) | "filebrowser" | "ckeditor"
-		             | "traversal"
+		             | "traversal" | "postedFile" | "formResponse"
 		siteid     = site id (default "default")
 		directory  = target directory, filebrowser/ckeditor only, relative
 		             to the resourcePath root (default "/")
@@ -32,6 +32,7 @@
 		             "rotate" (default) | "resize" | "duplicate" | "processCrop"
 		fileUrl    = traversal only - the "file.url" value passed to it
 		file       = the multipart file field - see FILEFIELD below
+		             ("upload_attachment" for formResponse)
 
 	"traversal" runs one image method per request with an attacker-chosen
 	file.url, so each call gets its own CSRF token and its rejection comes
@@ -196,6 +197,45 @@
 			isPostedFileByValue      = fmCheck.isPostedFile(form[FILEFIELD]),
 			postedClientFileName     = fmCheck.getPostedClientFileName(FILEFIELD),
 			requestHasRestrictedFiles = fmCheck.requestHasRestrictedFiles(scope={ "#FILEFIELD#" = form[FILEFIELD], "siteid" = form.siteid }, allowedExtensions="png")
+		}>
+
+	<cfelseif form.target eq "formResponse">
+
+		<!--- A form response with an attachment field, as a visitor's submit
+		      stores it (MASA-482). The file is posted as "upload_attachment":
+		      dataCollectionManager.update() only uploads fields whose name
+		      contains "attachment". The response, its file record and the
+		      stored file are removed again before the result is returned. --->
+		<cfset dcm = application.serviceFactory.getBean('dataCollectionManager')>
+		<cfset responseData = {
+			formid           = createUUID(),
+			siteid           = form.siteid,
+			fieldnames       = "name,upload_attachment",
+			name             = "MASA-482",
+			upload_attachment = form.upload_attachment
+		}>
+		<cfset info = dcm.update(responseData)>
+		<cfset storedValue = info.upload_attachment>
+		<cfset rsFile = queryExecute(
+			"select filename from tfiles where fileid = :fileid",
+			{ fileid = { value = storedValue, cfsqltype = "cf_sql_varchar" } }
+		)>
+
+		<cfset dcm.delete(info.responseid, true)>
+		<cfif rsFile.recordCount>
+			<cfset application.serviceFactory.getBean('fileDAO').deleteCachedFile(storedValue)>
+			<cfset queryExecute(
+				"delete from tfiles where fileid = :fileid",
+				{ fileid = { value = storedValue, cfsqltype = "cf_sql_varchar" } }
+			)>
+		</cfif>
+
+		<cfset result.success = true>
+		<cfset result.response = {
+			storedValue = storedValue,
+			isFileID    = isValid("UUID", storedValue),
+			fileStored  = rsFile.recordCount eq 1,
+			fileName    = rsFile.recordCount ? rsFile.filename : ""
 		}>
 
 	<cfelse>
