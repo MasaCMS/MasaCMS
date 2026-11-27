@@ -23,9 +23,19 @@ component extends="testbox.system.BaseSpec"{
 				title="cffp.cfm renders the protection fields of a form",
 				body=function() {
 					var output = "";
+					var hadJS = structKeyExists(request, "cffpJS");
 
-					savecontent variable="output" {
-						include "/cfformprotect/cffp.cfm";
+					// cffp.cfm skips its cfhtmlhead once request.cffpJS is set. On BoxLang a
+					// cfhtmlhead during a test run empties the runner's whole report.
+					request.cffpJS = true;
+					try {
+						savecontent variable="output" {
+							include "/cfformprotect/cffp.cfm";
+						}
+					} finally {
+						if (!hadJS) {
+							structDelete(request, "cffpJS");
+						}
 					}
 
 					expect(output).toInclude("cffm_applied");
