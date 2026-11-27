@@ -60,6 +60,9 @@ NOTES       : Dave Shuck - created
 		var i = "";
 		variables.Config = StructNew();
 
+		// BoxLang returns each section as a struct instead of a list of entry names
+		if (isStruct(IniEntries)) { IniEntries = StructKeyList(IniEntries); }
+
 		for (i=1;i LTE ListLen(IniEntries);i=i+1)	{
 			variables.Config[ListGetAt(IniEntries,i)] = GetProfileString(arguments.ConfigPath & "/" & arguments.ConfigFilename,"CFFormProtect",ListGetAt(IniEntries,i));
 		}
