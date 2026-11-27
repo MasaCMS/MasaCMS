@@ -739,7 +739,8 @@ select * from tplugins order by #getBean('utility').validateSort(arguments.order
 	<cffile action="rename" source="#pluginCfapplicationTempFilePathName#" destination="#pluginCfapplicationFilePathName#" />
 
 	<!--- Lucee can keep serving the old includes for a moment; force a re-check so the next request (often an app reload) gets the new mappings --->
-	<cfif structKeyExists(server, 'lucee')>
+	<!--- not server.lucee: bx-compat-cfml defines it on BoxLang too, which has no inspectTemplates() --->
+	<cfif variables.configBean.getCompiler() eq 'Lucee'>
 		<cfscript>inspectTemplates();</cfscript>
 	</cfif>
 
