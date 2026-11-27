@@ -280,7 +280,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif (not directoryExists(expandPath($.siteConfig().getIncludePath() & "/includes/themes/#$.siteConfig('theme')#"))
 					or not directoryExists(expandPath($.siteConfig().getIncludePath() & "/themes/#$.siteConfig('theme')#"))
 				) and directoryExists(expandPath($.globalConfig().getWebRoot() & "/themes/#$.siteConfig('theme')#"))>
-				<cfzip action="zip" file="#variables.backupDir#sitefiles.zip" source="#expandPath($.globalConfig().getWebRoot() & '/themes/' & $.siteConfig('theme'))#" prefix="themes/#$.siteConfig('theme')#">
+				<!--- BoxLang's cfzip can't add to an existing archive, so rebuild it from a staging folder --->
+				<cfset var siteFilesStage = variables.backupDir & "sitefiles/">
+				<cfzip action="unzip" file="#variables.backupDir#sitefiles.zip" destination="#siteFilesStage#">
+				<cfset directoryCopy(expandPath($.globalConfig().getWebRoot() & '/themes/' & $.siteConfig('theme')), siteFilesStage & "themes/" & $.siteConfig('theme'), true)>
+				<cfset fileDelete(variables.backupDir & "sitefiles.zip")>
+				<cfzip action="zip" file="#variables.backupDir#sitefiles.zip" source="#siteFilesStage#">
+				<cfset directoryDelete(siteFilesStage, true)>
 			</cfif>
 
 			<cfset var filePoolID=getBean('settingsManager').getSite(arguments.siteid).getFilePoolID()>
