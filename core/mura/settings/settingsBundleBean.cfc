@@ -295,14 +295,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset started=true>
 				</cfif>
 			</cfquery>
-			<!--- If the theme does not live in the site directory add it from the global directory --->
-			<cfif (not directoryExists(expandPath($.siteConfig().getIncludePath() & "/includes/themes/#$.siteConfig('theme')#"))
-					or not directoryExists(expandPath($.siteConfig().getIncludePath() & "/themes/#$.siteConfig('theme')#"))
-				) and directoryExists(expandPath($.globalConfig().getWebRoot() & "/themes/#$.siteConfig('theme')#"))>
-				<!---<cfzip action="zip" file="#variables.backupDir#sitefiles.zip" source="#expandPath($.globalConfig().getWebRoot() & '/themes/' & $.siteConfig('theme'))#" prefix="themes/#$.siteConfig('theme')#">--->
-				<cfset variables.utility.validateBundleArchive("#variables.backupDir#sitefiles.zip", true)>
-				<cfset variables.zipTool.Extract(zipFilePath="#variables.backupDir#sitefiles.zip",extractPath=expandPath($.globalConfig().getWebRoot() & '/themes/') & $.siteConfig('theme'),  extractDirs="themes/#$.siteConfig('theme')#", overwriteFiles=true)>
-			</cfif>
 
 			<cfif arguments.includeStructuredAssets>
 				<cfset var filePoolID=getBean('settingsManager').getSite(arguments.siteid).getFilePoolID()>
