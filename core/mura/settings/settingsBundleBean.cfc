@@ -279,11 +279,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<!--- If the theme does not live in the site directory add it from the global directory --->
 			<cfif (not directoryExists(expandPath($.siteConfig().getIncludePath() & "/includes/themes/#$.siteConfig('theme')#"))
 					or not directoryExists(expandPath($.siteConfig().getIncludePath() & "/themes/#$.siteConfig('theme')#"))
-				) and directoryExists(expandPath($.globalConfig().getWebRoot() & "/themes/#$.siteConfig('theme')#"))>
+				) and directoryExists($.globalConfig().getWebRoot() & "/themes/#$.siteConfig('theme')#")>
 				<!--- BoxLang's cfzip can't add to an existing archive, so rebuild it from a staging folder --->
 				<cfset var siteFilesStage = variables.backupDir & "sitefiles/">
+				<cfset directoryCreate(siteFilesStage)>
 				<cfzip action="unzip" file="#variables.backupDir#sitefiles.zip" destination="#siteFilesStage#">
-				<cfset directoryCopy(expandPath($.globalConfig().getWebRoot() & '/themes/' & $.siteConfig('theme')), siteFilesStage & "themes/" & $.siteConfig('theme'), true)>
+				<cfset directoryCopy($.globalConfig().getWebRoot() & '/themes/' & $.siteConfig('theme'), siteFilesStage & "themes/" & $.siteConfig('theme'), true)>
 				<cfset fileDelete(variables.backupDir & "sitefiles.zip")>
 				<cfzip action="zip" file="#variables.backupDir#sitefiles.zip" source="#siteFilesStage#">
 				<cfset directoryDelete(siteFilesStage, true)>
