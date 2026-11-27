@@ -185,6 +185,19 @@
 		<cfset result.success = true>
 		<cfset result.response = traversalResponse>
 
+	<cfelseif form.target eq "postedFile">
+
+		<!--- Upload detection only: what fileManager sees for the posted
+		      file field, without saving the file anywhere. --->
+		<cfset fmCheck = application.serviceFactory.getBean('fileManager')>
+		<cfset result.success = true>
+		<cfset result.response = {
+			isPostedFile             = fmCheck.isPostedFile(FILEFIELD),
+			isPostedFileByValue      = fmCheck.isPostedFile(form[FILEFIELD]),
+			postedClientFileName     = fmCheck.getPostedClientFileName(FILEFIELD),
+			requestHasRestrictedFiles = fmCheck.requestHasRestrictedFiles(scope={ "#FILEFIELD#" = form[FILEFIELD], "siteid" = form.siteid }, allowedExtensions="png")
+		}>
+
 	<cfelse>
 
 		<cfset fm = application.serviceFactory.getBean('fileManager')>
