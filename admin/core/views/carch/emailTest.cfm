@@ -103,7 +103,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		    	props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 		    }
 
-		    mailSession = createObject( "java", "javax.mail.Session" ).getInstance( props, javacast( "null", "" ) );
+		    // BoxLang provides Jakarta Mail, Lucee and Adobe provide javax.mail
+		    mailPackage = $.globalConfig().getCompiler() == "BoxLang" ? "jakarta.mail" : "javax.mail";
+		    mailSession = createObject( "java", mailPackage & ".Session" ).getInstance( props, javacast( "null", "" ) );
 		    transport = mailSession.getTransport( "smtp" );
 		    transport.connect( host, port, user, pwd );
 		    transport.close();
@@ -114,9 +116,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		    WriteOutput( myContent );
 		 } 
-		catch(javax.mail.MessagingException e) {
+		catch(any e) {
 		    savecontent variable="myContent" {
-		    	WriteOutput("<p>Error: "& e.type &"</p><p>"& e.message & "</p>");
+		    	WriteOutput("<p>Error: "& encodeForHTML(e.type) &"</p><p>"& encodeForHTML(e.message) & "</p>");
 		    }
 
 		    WriteOutput( myContent );
