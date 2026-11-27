@@ -65,7 +65,7 @@ component extends='mura.cfobject' hint="This provides content calendar utility m
 		}
 
 		// End Date
-		if ( !IsDate(arguments.end) || ( IsDate(arguments.end) && Fix(arguments.end) < Fix(arguments.start) )  ) {
+		if ( !IsDate(arguments.end) || DateCompare(arguments.end, arguments.start, 'd') < 0 ) {
 			arguments.end = CreateDate(Year(arguments.start), Month(arguments.start), DaysInMonth(arguments.start));
 		}
 
