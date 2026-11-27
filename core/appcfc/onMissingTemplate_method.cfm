@@ -76,6 +76,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 */
 
 boolean function onMissingTemplate(required targetPage) output=true {
+	// Stays set when the request is aborted, a redirect included, so that onError can tell
+	request.muraInMissingTemplate=true;
 	include "/muraWRM/core/appcfc/onMissingTemplate_include.cfm";
+	structDelete(request,"muraInMissingTemplate");
 }
 </cfscript>
