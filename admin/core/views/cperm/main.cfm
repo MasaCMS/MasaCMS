@@ -149,11 +149,11 @@ This file is part of Mura CMS.
 								</cfsilent>
 		            <tr>
 		            <cfif chains.hasNext()><td><input name="exemptID" type="checkbox" class="checkbox" value="#rc.rslist.userid#"<cfif perm eq 'editor' and len(assignment.getExemptID()) and listFindNoCase(assignment.getExemptID(),rc.rslist.userid)> checked</cfif><cfif perm neq 'editor'> disabled</cfif>></td></cfif>
-		            <td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="editor" <cfif perm eq 'Editor'>checked</cfif>></td>
-		            <td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="author" <cfif perm eq 'Author'>checked</cfif>></td>
-		            <cfif not isModule><td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="none" <cfif perm eq 'None'>checked</cfif><cfif isModule>disabled</cfif>></td></cfif>
-		            <cfif rc.moduleid eq "00000000000000000000000000000000000"><td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="read" <cfif perm eq 'Read'>checked</cfif>></td></cfif>
-		            <td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="deny" <cfif perm eq 'Deny'>checked</cfif>></td>
+		            <td><input name="p#replace(rc.rslist.userid,"-","","all")#" type="radio" class="checkbox" value="editor" <cfif perm eq 'Editor'>checked</cfif>></td>
+		            <td><input name="p#replace(rc.rslist.userid,"-","","all")#" type="radio" class="checkbox" value="author" <cfif perm eq 'Author'>checked</cfif>></td>
+		            <cfif not isModule><td><input name="p#replace(rc.rslist.userid,"-","","all")#" type="radio" class="checkbox" value="none" <cfif perm eq 'None'>checked</cfif><cfif isModule>disabled</cfif>></td></cfif>
+		            <cfif rc.moduleid eq "00000000000000000000000000000000000"><td><input name="p#replace(rc.rslist.userid,"-","","all")#" type="radio" class="checkbox" value="read" <cfif perm eq 'Read'>checked</cfif>></td></cfif>
+		            <td><input name="p#replace(rc.rslist.userid,"-","","all")#" type="radio" class="checkbox" value="deny" <cfif perm eq 'Deny'>checked</cfif>></td>
 		            <td nowrap class="var-width">#esapiEncode('html',rc.rslist.GroupName)#</td>
 		            </tr>
 		        </cfloop>
@@ -192,11 +192,11 @@ This file is part of Mura CMS.
 							</cfsilent>
 			        <tr>
 			         <cfif chains.hasNext()><td><input name="exemptID" type="checkbox" class="checkbox" value="#rc.rslist.userid#" <cfif perm eq 'editior' and len(assignment.getExemptID()) and listFind(assignment.getExemptID(),rc.rslist.userid)>checked</cfif><cfif perm neq 'editior'>disabled</cfif>></td></cfif>
-			          <td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="editor" <cfif perm eq 'Editor'>checked</cfif>></td>
-			    			<td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="author" <cfif perm eq 'Author'>checked</cfif>></td>
-			   				<cfif not isModule><td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="none" <cfif perm eq 'None'>checked</cfif><cfif isModule>disabled</cfif>></td></cfif>
-			    			<cfif rc.moduleid eq "00000000000000000000000000000000000"><td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="read" <cfif perm eq 'Read'>checked</cfif>></td></cfif>
-			    			<td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="deny" <cfif perm eq 'Deny'>checked</cfif>></td>
+			          <td><input name="p#replace(rc.rslist.userid,"-","","all")#" type="radio" class="checkbox" value="editor" <cfif perm eq 'Editor'>checked</cfif>></td>
+			    			<td><input name="p#replace(rc.rslist.userid,"-","","all")#" type="radio" class="checkbox" value="author" <cfif perm eq 'Author'>checked</cfif>></td>
+			   				<cfif not isModule><td><input name="p#replace(rc.rslist.userid,"-","","all")#" type="radio" class="checkbox" value="none" <cfif perm eq 'None'>checked</cfif><cfif isModule>disabled</cfif>></td></cfif>
+			    			<cfif rc.moduleid eq "00000000000000000000000000000000000"><td><input name="p#replace(rc.rslist.userid,"-","","all")#" type="radio" class="checkbox" value="read" <cfif perm eq 'Read'>checked</cfif>></td></cfif>
+			    			<td><input name="p#replace(rc.rslist.userid,"-","","all")#" type="radio" class="checkbox" value="deny" <cfif perm eq 'Deny'>checked</cfif>></td>
 								<td nowrap class="var-width">#esapiEncode('html',rc.rslist.GroupName)#</td>
 			        </tr>
 						</cfloop>
