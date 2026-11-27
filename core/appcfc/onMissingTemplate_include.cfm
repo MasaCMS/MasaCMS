@@ -147,8 +147,8 @@ if ( isDefined("application.contentServer") ) {
 	if ( listFind('_api,tasks',firstItem) ) {
 		writeOutput("#application.contentServer.handleAPIRequest('/' & local.filename)#");
 		abort;
-	} else if ( !len(cgi.path_info) ) {
-		// handle /missing.cfm/ file with 404 
+	} else if ( !listLen(cgi.path_info, '\/') ) {
+		// handle /missing.cfm, /missing.cfm/ and /missing.cfm// with 404
 		application.contentServer.render404();
 	} else {
 	
